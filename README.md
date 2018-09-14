@@ -2,6 +2,8 @@ CoastalME (Coastal Modelling Environment) simulates the long-term behaviour of a
 
 By David Favis-Mortlock (Environmental Change Institute, University of Oxford) and Andres Payo (British Geological Survey)
 
+See <a href="https://doi.org/10.5281/zenodo.1418810"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.1418810.svg" alt="DOI"></a> for the first release of the source code.
+
 See <a href="https://github.com/coastalme/coastalme" target="_blank">https://github.com/coastalme/coastalme</a> for the latest version of the source code.
 
 INSTRUCTIONS
