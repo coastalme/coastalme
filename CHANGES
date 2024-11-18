@@ -1,0 +1,29 @@
+CoastalME CHANGELOG
+
+1.0     Initial release
+
+1.1     Revised unconsolidated sediment transport algorithm, improved logfile output, bug fix to cliff collapse, many other bug fixes (24 Aug 2023)
+1.1.01  Bug fixes in CME and CShore (26 Aug 2023)
+1.1.02  Improved cliff collapse deposition (31 Aug 2023)
+1.1.03  Bug fixes (2 Sep 2023)
+1.1.04  Changed cliff collapse deposition, fixed wave bugs, removed un-needed OGR error messages (7 Sep 2023)
+1.1.05  More changes to cliff collapse deposition, fixed -Wfloat-equal warnings, added more safety checks to CME and CShore (13 Sep 2023)
+1.1.06  Tidying (14 Sep 2023)
+1.1.07  Minor bug fixes (16 Sep 2023)
+1.1.08  Tidying and minor bug fixes (17 Sep 2023)
+1.1.09  Annotate and re-format code for Doxygen class and variable documentation (12 Oct 2023)
+1.1.10  More Doxygen class and variable documentation (20 Oct 2023)
+1.1.11  Ditto (23 Oct 2023)
+1.1.12  Ditto (26 Oct 2023)
+1.1.13  Removed dummy estuaries routine, more Doxygen documentation (27 Oct 2023)
+1.1.14  More Doxygen documentation (3 Nov 2023)
+1.1.15  Code tidying, more Doxygen documentation, cppcheck (6 Nov 2023)
+1.1.16  Ditto (10 Nov 2023)
+1.1.17  Ditto plus some variable renaming (27 Nov 2023)
+1.1.18  Ditto plus some variable renaming (06 Jan 2024)
+1.1.19  Ditto plus set up for clang-tidy (6 Feb 2024)
+1.1.20  Code tidying, comments re. Manuel info needed (18 Feb 2024)
+1.1.21  Organised buglist and todo-list, both are now in cme.h. New 'usual' options to reduce number of raster and vector GIS output files. Other code tidying (20 May 2024)
+1.1.22  Changed CMakeLists.txt to no longer use deprecated exec_program(). Began use of gcc -fsanitize options to show any runtime problems: as a result, made several changes especially to cliff collapse deposition routines (3 Jul 2024)
+
+1.2.0  For GDAL, used DMD_EXTENSIONS instead of DMD_EXTENSION, which is not implemented for newer drivers. Changes to calculation of erosion during Dean profile deposition (DDPD); also re-processing of polygons where there are circularities in sequence of polygon processing, both to fix mass balance problems. Updated CShore code to compile with GFortran 14.2.0. Many cosmetic changes
