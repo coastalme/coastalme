@@ -1,3 +1,4 @@
+
 #!/bin/sh
 
 # Change this to change build type
@@ -21,19 +22,20 @@ cshoreinout=ARG
 echo "Building all versions of the CShore library"
 echo ""
 cd cshore
-./make_cshore_lib.sh
+sh ./make_cshore_lib.sh
 cd ..
+
 
 # Now run CMake for CoastalME
 echo ""
 echo "================================================================="
 echo ""
-echo "CoastalME: starting CMake for Linux (using gcc, $buildtype build, $cshorelibrary CShore library, CShore input/output method=$cshoreinout)"
+echo "CoastalME: starting CMake for Apple Silicone (using gcc, $buildtype build, $cshorelibrary CShore library, CShore input/output method=$cshoreinout)"
 echo ""
 
 rm -f CMakeCache.txt
 cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=$buildtype -DCSHORE_LIBRARY=$cshorelibrary -DCSHORE_INOUT=$cshoreinout .
-#cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=$buildtype -DCSHORE_LIBRARY=$cshorelibrary -DCSHORE_INOUT=$cshoreinout -DCMAKE_VERBOSE_MAKEFILE=ON .
+# cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=$buildtype -DCSHORE_LIBRARY=$cshorelibrary -DCSHORE_INOUT=$cshoreinout -DCMAKE_VERBOSE_MAKEFILE=ON .
 #cmake -DCMAKE_BUILD_TYPE=$buildtype -DCSHORE_LIBRARY=$cshorelibrary -DCSHORE_INOUT=$cshoreinout . -G"CodeBlocks - Unix Makefiles"
 
 echo ""
