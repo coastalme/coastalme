@@ -28,14 +28,14 @@ It is an engineering tool for advanced modellers seeking to simulate the interac
 
 The software is written in C++ following the object oriented paradigm and has been documented using [Doxygen](https://codedocs.xyz/apayo/CoastalME).
 
-The C++ source code is available for [download](https://github.com/apayo/CoastalME) under [GNU](https://github.com/apayo/CoastalME/tree/master?tab=GPL-3.0-1-ov-file) open source license.
+The C++ source code is available for [download](https://github.com/coastalme/coastalme) under [GNU](https://github.com/coastalme/CoastalME/tree/master?tab=GPL-3.0-1-ov-file) open source license.
 
 * Main site: https://www.osgeo.org/projects/coastalme/ - Developer docs, links to other resources
 * Wiki site: https://earthwise.bgs.ac.uk/index.php/Category:Coastal_Modeling_Environment - User docs, links to other resources
 * Master GIT repository: https://github.com/apayo/CoastalME - Master code
 * Testing GIT repository: https://github.com/davefavismortlock/CoastalME_TESTING - For the very latest (possibly untested) CoastalME source code. Warning! Use at your own risk!
 * Bug tracker: https://github.com/apayo/CoastalME/issues
-* [CoastlME Discussions forum](https://github.com/apayo/CoastalME/discussions/19#discussion-7445785) 
+* [CoastlME Discussions forum](https://github.com/coastalme/coastalme/discussions/) 
 * [Which GiHub-discussion tool should I use?](https://docs.github.com/en/get-started/using-github/communicating-on-github#which-discussion-tool-should-i-use)
 
 ## Quick Start
@@ -45,7 +45,7 @@ CoastalME builds easily using Linux. If you wish to run CoastalME on Windows, th
 Create a local copy of the github repository, for example by downloading a zipfile, then unpacking it or cloning. We suggest unpacking it to something like "/home/YOUR NAME/Projects/CoastalME/", this is your CoastalME folder.
 
 ```
-git clone https://github.com/apayo/CoastalME
+git clone https://github.com/coastalme/coastalme
 ```
 
 In a terminal window (i.e. at a command-line prompt) move to the CoastalME folder. 
@@ -105,4 +105,4 @@ See [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)
 
 ## Credits
 
-Devised by [Andres Payo](https://github.com/apayo) and [David Favis-Mortlock](https://github.com/davefavismortlock/). Lead developer and Version Control Administrator is [David Favis-Mortlock](https://github.com/davefavismortlock/) 
+Devised by [Andres Payo](https://github.com/coastalme) and [David Favis-Mortlock](https://github.com/davefavismortlock/). Lead developer and Version Control Administrator is [David Favis-Mortlock](https://github.com/davefavismortlock/) 
