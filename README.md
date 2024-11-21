@@ -42,7 +42,7 @@ The C++ source code is available for [download](https://github.com/coastalme/co
 
 CoastalME builds easily using Linux. If you wish to run CoastalME on Windows, then we currently recommend using the Windows Subsystem Linux (WSL) software to do this.
 
-Create a local copy of the github repository, for example by downloading a zipfile, then unpacking it or cloning. We suggest unpacking it to something like "/home/YOUR NAME/Projects/CoastalME/", this is your CoastalME folder.
+Create a local copy of the github repository, for example by downloading a zipfile, then unpacking it or cloning. We suggest unpacking it to something like "/home/YOUR NAME/Projects/CoastalME/", this is then your CoastalME folder.
 
 ```
 git clone https://github.com/coastalme/coastalme
@@ -55,17 +55,17 @@ Then move to the the src folder Then run run_cmake.sh.
 cd CoastalME/src
 ./run_cmake.sh
 ```
-If you get the Permission denied message `-bash: ./run_cmake.sh: Permission denied` you will have to grant permission using `chmod a+x run_cmake.sh`, `chmod a+x cshore/make_cshore.sh` and then `./run_cmake.sh`
+If you get a "Permission denied" message `-bash: ./run_cmake.sh: Permission denied` you will have to grant permission using `chmod a+x run_cmake.sh`, `chmod a+x cshore/make_cshore.sh` and then `./run_cmake.sh`
 
-If you see error messages re. missing software (for example, telling you that CMake cannot be found or is too old, or GDAL cannot be found or is too old) then you need to install or update the software that is causing the problem.
+If you see error messages about missing software (for example, telling you that CMake cannot be found or is too old, or GDAL cannot be found or is too old) then you need to install or update the software that is causing the problem.
 
 Run make install `make install`. This will create an executable file called cme in the CoastalME folder.
 
-Edit cme.ini to tell CoastalME which input file to read (for example, in/simple_fast/simple_fast.dat)
+Edit cme.ini to tell CoastalME which input file to read (for example, in/test_suite/minimal_wave_angle_230/minimal.dat). You'll need to make sure that the "Path for output" listed in cme.ini (for example, out/test_suite/minimal_wave_angle_230) exists. If it doesn't exist, then create it: `mkdir -p out/test_suite/minimal_wave_angle_230/`.
 
-Run cme `./cme`. Output will appear in the out/ folder.
+Run cme `./cme`. Output will appear in the "Path for output" folder.
 
-To test that your installation is running OK, you can run a suite of pre defined tests by running the following commands
+To test that your installation is running correctly, you can run a suite of pre-defined tests by running the following commands:
 
 	chmod a+x run_test_suite.sh
 	./run_test_suite.sh
