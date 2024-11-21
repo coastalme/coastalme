@@ -35,7 +35,7 @@ The C++ source code is available for [download](https://github.com/coastalme/co
 * Wiki site: https://earthwise.bgs.ac.uk/index.php/Category:Coastal_Modeling_Environment - User docs, links to other resources
 * GIT repository: https://github.com/coastalme/coastalme
 * Bug tracker: https://github.com/coastalme/coastalme/issues
-* [CoastlME Discussions forum](https://github.com/coastalme/coastalme/discussions/) 
+* [CoastalME Discussions forum](https://github.com/coastalme/coastalme/discussions/)
 * [Which GiHub-discussion tool should I use?](https://docs.github.com/en/get-started/using-github/communicating-on-github#which-discussion-tool-should-i-use)
 
 ## Quick Start
