@@ -21,7 +21,7 @@ By <a href="https://www.bgs.ac.uk/people/payo-garcia-andres/">Andres Payo</a> an
 - [Credits](#credits)
 
 ## About
-CoastalME (Coastal Modelling Environment) is a Free and Open Source Software for geospatial modelling to simulate decadal and longer coastal morphological changes.
+CoastalME (Coastal Modelling Environment) is a Free and Open Source software for geospatial modelling to simulate decadal and longer coastal morphological changes.
 
 It is an engineering tool for advanced modellers seeking to simulate the interaction of multiple coastal landforms and different types of human interventions.
 
