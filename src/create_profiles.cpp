@@ -391,7 +391,7 @@ void CSimulation::CreateRestOfNormalProfiles(int const nCoast, int &nProfile, in
       {
          // Calculate the profile spacing, this will vary if we have a random factor but will be the same in both up-coast and down-coast directions
          //             nProfileDist = tMax(m_nCoastNormalAvgSpacing, static_cast<int>(nProfileToNodeSpacing * (1 + (dGetRand0Gaussian() * m_dCoastNormalRandSpacingFactor))));
-         int nProfileDist = nProfileToNodeSpacing * (1 + static_cast<int>(abs(dGetRand0Gaussian() * m_dCoastNormalRandSpacingFactor)));
+         int nProfileDist = nProfileToNodeSpacing * (1 + static_cast<int>(tAbs(dGetRand0Gaussian() * m_dCoastNormalRandSpacingFactor)));
 
          // TODO 014 Assume that the above is the profile spacing on straight bits of coast. Try gradually increasing the profile spacing with increasing concavity, and decreasing the profile spacing with increasing convexity. Could use a Michaelis-Menten S-curve relationship
          //          double fReN = pow(NowCell[nX][nY].dGetReynolds(m_dNu), m_dDepN);

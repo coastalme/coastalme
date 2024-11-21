@@ -54,13 +54,11 @@ By Blake Morrison (2018). See <a href="https://www.penguin.co.uk/books/419911/sh
 
    USER INPUT
    TODO should user input be split in two main files: one for frequently-changed things, one for rarely-changed things? If so, what should go into each file ('testing only' OK, but what else?
-
    TODO 011 Should this constant be a user input?
    TODO 036 Read in changed deep water wave values
    TODO 030 Do we also need to be able to input landform sub-categories?
    TODO 027 Sort out GDAL problem with raster reference units
    TODO 022 Get intervention update working
-   TODO 041 Read in SWL per-timestep
    TODO 042 Should we have a smallest valid input for KLS in the CERC equation?
    TODO 045 Method of getting depth of closure value needs to be a user input
    TODO 047 Where is the GDAL description for the deep water wave stations vector file?
@@ -87,6 +85,7 @@ By Blake Morrison (2018). See <a href="https://www.penguin.co.uk/books/419911/sh
    TODO 038 Do better error handling if insufficient memory
    TODO 053 Improve handling of situation where landward elevation of profile is -ve
    TODO 055 Maybe add a safety check?
+   TODO 072 CShore crashes occasionally, is it because of -ve Z values here? CHECK
 
    THEORY/EFFICIENCY
    TODO 002 Do we really need D50 for drift landform class? What do we need for drift?
@@ -94,12 +93,11 @@ By Blake Morrison (2018). See <a href="https://www.penguin.co.uk/books/419911/sh
    TODO 010 Do we also need to update the active zone cells?
    TODO 012 Change finding of adjacent polygons, and calculation of the length of shared normals, when we make polygon seaward length determined by depth of closure
    TODO 013 Change calculation (need user input?) of coastline smoothing convexity threshold
-   TODO 014 Profile spacing, vould try gradually increasing the profile spacing with increasing concavity, and decreasing the profile spacing with increasing convexity
+   TODO 014 Profile spacing, should try gradually increasing the profile spacing with increasing concavity, and decreasing the profile spacing with increasing convexity
    TODO 016 Check mass balance for recirculating unconsolidated sediment option
    TODO 023 Only calculate shore platform erosion if cell is in a polygon
    TODO 024 Should we calculate platform erosion on a profile that has hit dry land?
    TODO 037 Need more info on nFindIndex()
-   TODO 039 Rewrite reading of multiple random number seeds
    TODO 044 Estuaries :-)
    TODO 050 Update for recent versions of Windows
    TODO 051 Implement other ways of calculating depth of closure, see TODO 045
@@ -110,10 +108,10 @@ By Blake Morrison (2018). See <a href="https://www.penguin.co.uk/books/419911/sh
    TODO 061 Is this safety check to depth of breaking a reasonable thing to do?
    TODO 066 Should this be for all layers? Check
    TODO 067 Is this ever non-zero? Check
-   TODO 070 Change CShore to use allocatable arrays (https://fortran-lang.org/en/learn/best_practices/allocatable_arrays/) so that profiles can have more than 500 points; make length of profile a user input?
+   TODO 070 Change CShore to use allocatable arrays (https://fortran-lang.org/en/learn/best_practices/allocatable_arrays/) so that the number of points in the CShore output profiles can either be a user input, or determined by e.g. the physical length of the profile
 
    OUTPUT
-   TODO 065 Get GPKG output working: currently get floating point exception on pDriver->Create(). Also seems not to support raster overwrite. Will need to convert float to byte RGBA, see e.g. https://www.gamedev.net/forums/topic/486847-encoding-16-and-32-bit-floating-point-value-into-rgba-byte-texture/ And what about gpkg input?
+   TODO 065 Get GPKG output working: GDAL 3.9.1 does not yet implement this correctly. Currently is OK for vector output (but is very slow), not yet working for raster output
    TODO 063 Add NetCDF support, see https://trac.osgeo.org/gdal/wiki/NetCDF
    TODO 064 Add support for grids that are not oriented N-S and W-E, but are still rectangular (will need to add a transformation in the reading and writing process, the first to bring it to the local base and the second to save it in global coordinates)
    TODO 031 Get raster slice output working with multiple slices
@@ -125,12 +123,15 @@ By Blake Morrison (2018). See <a href="https://www.penguin.co.uk/books/419911/sh
    TODO 062 Show end-of-iteration number of cells with sediment somewhere
    TODO 068 Only show output in log file that is relevant to processes being simulated
 
-   071 is max
+   072 is max
 
    COMPLETED
    TODO 003 Make coastline curvature moving window size a user input FIXED in 1.1.22
    TODO 046 Why is cliff collapse eroded during deposition (three size classes) no longer calculated? FIXED IN 1.1.22
    TODO 058 Dave to check this DONE in 1.1.22
+   TODO 039 Rewrite reading of multiple random number seeds DONE in 1.2.1, 8 Nov 2024
+   TODO 041 Read in SWL per-timestep
+
 */
 
 #ifndef CME_H
@@ -275,7 +276,10 @@ int const CAPE_POINT_MIN_SPACING = 10;                         // In cells: for 
 int const CLOCK_CHECK_ITERATION = 5000;                        // If have done this many timesteps then reset the CPU time running total
 int const COAST_LENGTH_MAX = 10;                               // For safety check when tracing coast
 int const COAST_LENGTH_MIN_X_PROF_SPACE = 20;                  // Ignore very short coasts less than this x profile spacing
-int const CSHOREARRAYOUTSIZE = 500;                            // The size of the arrays output by CShore, this must be the same as the value set when CShore is compiled TODO 070
+
+//! The size of the arrays output by CShore. If you change this, then you must also set the same value on line 12 of cshore_wrapper.f03 (integer, parameter :: NN = 1000, NL = 1) and recompile CShore. Eventually we should move to dynamically allocated arrays TODO 070
+int const CSHOREARRAYOUTSIZE = 1000;
+
 int const FLOOD_FILL_START_OFFSET = 2;                         // In cells: flood fill starts this distance inside polygon
 int const GRID_MARGIN = 10;                                    // Ignore this many along-coast grid-edge points re. shadow zone calcs
 int const INT_NODATA = -9999;                                  // CME's internal NODATA value for ints
@@ -612,7 +616,7 @@ double const CLIFF_COLLAPSE_HEIGHT_INCREMENT = 0.1;      // Increment the fracti
 
 double const DBL_NODATA = -9999;
 
-string const PROGRAM_NAME = "Coastal Modelling Environment (CoastalME) version 1.2.0 (06 Nov 2024)";
+string const PROGRAM_NAME = "Coastal Modelling Environment (CoastalME) version 1.2.1 (21 Nov 2024)";
 string const PROGRAM_NAME_SHORT = "CME";
 string const CME_INI = "cme.ini";
 

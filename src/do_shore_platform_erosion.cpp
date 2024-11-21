@@ -99,7 +99,7 @@ int CSimulation::nDoAllShorePlatFormErosion(void)
       for (int nY = 0; nY < m_nYGridMax; nY++)
       {
          if (m_pRasterGrid->m_Cell[nX][nY].bPotentialPlatformErosion())
-            // Calculate actual (supply-limited) shore platform erosion on each cell that has potential platform erosion, also add the eroded sand/coarse sediment to that cells's polygon, ready to be redistributed within the polygon during beach erosion/deposition
+            // Calculate actual (supply-limited) shore platform erosion on each cell that has potential platform erosion, also add the eroded sand/coarse sediment to that cell's polygon, ready to be redistributed within the polygon during beach erosion/deposition
             DoActualPlatformErosionOnCell(nX, nY);
       }
    }

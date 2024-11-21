@@ -211,7 +211,7 @@ CGeomLine CSimulation::LSmoothCoastRunningMean(CGeomLine* pLineIn) const
          for (int j = 0; j <= i; j++)
          {
             // // For points at both ends of the coastline, use a smaller window
-            double weight = (dHalfWindow - abs(i - j)) / dHalfWindow;
+            double weight = (dHalfWindow - tAbs(i - j)) / dHalfWindow;
             dWindowTotX += pLineIn->dGetXAt(j) * weight;
             dWindowTotY += pLineIn->dGetYAt(j) * weight;
             nTmpWindow += weight;
@@ -221,7 +221,7 @@ CGeomLine CSimulation::LSmoothCoastRunningMean(CGeomLine* pLineIn) const
       {
          for (int j = nSize - 1; j >= i; j--)
          {
-            double weight = (dHalfWindow - abs(i - j)) / dHalfWindow;
+            double weight = (dHalfWindow - tAbs(i - j)) / dHalfWindow;
             dWindowTotX += pLineIn->dGetXAt(j) * weight;
             dWindowTotY += pLineIn->dGetYAt(j) * weight;
             nTmpWindow += weight;
@@ -231,7 +231,7 @@ CGeomLine CSimulation::LSmoothCoastRunningMean(CGeomLine* pLineIn) const
       {
          for (int j = i - nHalfWindow; j < i + nHalfWindow; j++)
          {
-            double weight = (dHalfWindow - abs(i - j)) / dHalfWindow;
+            double weight = (dHalfWindow - tAbs(i - j)) / dHalfWindow;
             dWindowTotX += pLineIn->dGetXAt(j) * weight;
             dWindowTotY += pLineIn->dGetYAt(j) * weight;
             nTmpWindow += weight;

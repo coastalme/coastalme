@@ -140,9 +140,9 @@ void CSimulation::WriteStartRunDetails(void)
    else if (m_nLogFileDetail == LOG_FILE_MIDDLE_DETAIL)
       LogStream << "2 (medium detail)";
    else if (m_nLogFileDetail == LOG_FILE_HIGH_DETAIL)
-      OutStream << "3 (high detail)";
+      LogStream << "3 (high detail)";
    else if (m_nLogFileDetail == LOG_FILE_ALL)
-      OutStream << "4 (everything)";
+      LogStream << "4 (everything)";
    LogStream << endl << endl;
 
    OutStream << " Simulation start date/time                                \t: ";
@@ -409,7 +409,7 @@ void CSimulation::WriteStartRunDetails(void)
    if (m_nWavePropagationModel == WAVE_MODEL_COVE)
       OutStream << "COVE";
    else if (m_nWavePropagationModel == WAVE_MODEL_CSHORE)
-      OutStream << "CShore";
+      OutStream << "CShore (output arrays have " << CSHOREARRAYOUTSIZE << " points)";
    OutStream << endl;
    OutStream << " Density of sea water                                     \t: " << resetiosflags(ios::floatfield) << std::fixed << setprecision(0) << m_dSeaWaterDensity << " kg/m^3" << endl;
    OutStream << " Initial still water level                                 \t: " << resetiosflags(ios::floatfield) << std::fixed << setprecision(1) << m_dOrigSWL << " m" << endl;

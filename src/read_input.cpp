@@ -70,9 +70,8 @@ bool CSimulation::bReadIniFile(void)
       return false;
    }
 
-   int
-      nLine = 0,
-      i = 0;
+   int nLine = 0;
+   int i = 0;
    string strRec, strErr;
 
    while (getline(InStream, strRec))
@@ -281,16 +280,14 @@ bool CSimulation::bReadRunDataFile(void)
          // For Windows, make sure has backslashes, not Unix-style slashes
          strRH = pstrChangeToBackslash(&strRH);
 #endif
-         bool
-             bFirst = true;
-         int
-             nRet = 0,
-             nHour = 0,
-             nMin = 0,
-             nSec = 0,
-             nDay = 0,
-             nMonth = 0,
-             nYear = 0;
+         bool bFirst = true;
+         int nRet = 0;
+         int nHour = 0;
+         int nMin = 0;
+         int nSec = 0;
+         int nDay = 0;
+         int nMonth = 0;
+         int nYear = 0;
          double dMult = 0;
          string strTmp;
          vector<string> VstrTmp;
@@ -491,7 +488,6 @@ bool CSimulation::bReadRunDataFile(void)
                   // Now look for another space
                   nPos = strRH.find(SPACE);
                }
-               //               while (nPos != string::npos);
                while (strRH.size() > 1);
 
                // Check that we have at least 2 numbers
@@ -525,38 +521,59 @@ bool CSimulation::bReadRunDataFile(void)
 
          case 7:
             // Random number seed(s)
-            m_ulRandSeed[0] = atol(strRH.c_str());
-            if (0 == m_ulRandSeed[0])
+            if (strRH.empty())
             {
-               strErr = "line " + to_string(nLine) + ": random number seed";
-               break;
-            }
+               // User didn't specify a random number seed, so choose one based on system time
+               m_ulRandSeed[0] = time(NULL);
 
-            // TODO 039 Rewrite this, similar to reading raster slice elevations
-            // OK, so find out whether we're dealing with a single seed or more than one: check for a space
-            nPos = strRH.find(SPACE);
-            if (nPos != string::npos)
-            {
-               // There's a space, so we must have more than one number
-               int n = 0;
-               do
-               {
-                  // Trim off the part before the first space then remove leading whitespace
-                  strRH.erase(0, nPos);
-                  strRH = strTrimLeft(&strRH);
-
-                  // Put the number into the array
-                  m_ulRandSeed[++n] = atol(strRH.c_str());
-
-                  // Now look for another space
-                  nPos = strRH.find(SPACE);
-               } while ((n < NRNG) && (nPos != string::npos));
-            }
-            else
-            {
                // Only one seed specified, so make all seeds the same
                for (int n = 1; n < NRNG; n++)
                   m_ulRandSeed[n] = m_ulRandSeed[n - 1];
+            }
+            else
+            {
+               // User did specify at least one random number seed. Next find out whether we're dealing with a single seed or more than one: check for a space
+               nPos = strRH.find(SPACE);
+               if (nPos == string::npos)
+               {
+                  // No space, so we have just one one number
+                  m_ulRandSeed[0] = atol(strRH.c_str());
+
+                  // Only one seed specified, so make all seeds the same
+                  for (int n = 1; n < NRNG; n++)
+                     m_ulRandSeed[n] = m_ulRandSeed[n - 1];
+               }
+               else
+               {
+                  // The user has supplied more than one random number seed
+                  int n = 0;
+                  do
+                  {
+                     // Get LH bit
+                     strTmp = strRH.substr(0, nPos);
+                     m_ulRandSeed[n++] = atol(strTmp.c_str());
+
+                     if (n == NRNG)
+                        // All random number seeds read
+                        break;
+
+                     // We need more seeds, so get the RH bit
+                     strRH = strRH.substr(nPos, strRH.size() - nPos);
+                     strRH = strTrimLeft(&strRH);
+
+                     if (strRH.size() == 0)
+                        // No more seeds left to read
+                        break;
+                  }
+                  while (true);
+
+                  // If we haven't filled all random number seeds, make all the remainder the same as the last one read
+                  if (n < NRNG-1)
+                  {
+                     for (int m = n; m < NRNG; m++)
+                        m_ulRandSeed[m] = m_ulRandSeed[m - 1];
+                  }
+               }
             }
             break;
 
@@ -1076,9 +1093,9 @@ bool CSimulation::bReadRunDataFile(void)
             // Raster GIS output format (note must retain original case). Blank means use same format as input DEM file (if possible)
             m_strRasterGISOutFormat = strTrimLeft(&strRH);
                                     
-            // TODO 065 Remove this when GDAL gpkg output is working correctly
+            // TODO 065 Remove this when GDAL gpkg raster output is working correctly
             if (strRH.find("gpkg") != string::npos)
-               strErr = "GDAL gpkg create() gives floating-point exception. Please choose another output format.";
+               strErr = "GDAL gpkg raster create() is not yet working correctly. Please choose another output format.";
 
             break;
 
@@ -2839,9 +2856,17 @@ bool CSimulation::bReadRunDataFile(void)
 
             m_bOutputProfileData = false;
             if (strRH.find("y") != string::npos)
+            {
                m_bOutputProfileData = true;
 
+               if (! m_bDoShorePlatformErosion)
+               {
+                  strErr = "line " + to_string(nLine) + ": cannot save profiile data if not simulating shore platform erosion";
+                  break;
+               }
+
             // TODO 043 What about randomness of profile spacing, since profile location is determined by curvature?
+            }
 
             break;
 
@@ -3059,10 +3084,9 @@ int CSimulation::nReadShapeFunctionFile()
    InStream >> nExpected;
 
    // Set up the vectors to hold the input data
-   vector<double>
-       VdDepthOverDB,
-       VdErosionPotential,
-       VdErosionPotentialFirstDeriv;
+   vector<double> VdDepthOverDB;
+   vector<double> VdErosionPotential;
+   vector<double> VdErosionPotentialFirstDeriv;
 
    // Now read the rest of the data from the file to get the Erosion Potential Shape function
    while (getline(InStream, strRec))
@@ -3154,11 +3178,10 @@ int CSimulation::nReadWaveStationTimeSeriesFile(int const nWaveStations)
    }
 
    // Opened OK
-   int
-       nLine = 0,
-       nExpectedStations = 0,
-       nRead = 0,
-       nTimeStepsRead = 0;
+   int nLine = 0;
+   int nExpectedStations = 0;
+   int nRead = 0;
+   int nTimeStepsRead = 0;
    string strRec, strErr;
 
    // Read each line, ignoring comment lines
@@ -3214,16 +3237,14 @@ int CSimulation::nReadWaveStationTimeSeriesFile(int const nWaveStations)
             // Remove trailing whitespace
             strRH = strTrimRight(&strRH);
 
-            int
-                nSec = 0,
-                nMin = 0,
-                nHour = 0,
-                nDay = 0,
-                nMonth = 0,
-                nYear = 0;
-            double
-                dMult,
-                dThisIter;
+            int nSec = 0;
+            int nMin = 0;
+            int nHour = 0;
+            int nDay = 0;
+            int nMonth = 0;
+            int nYear = 0;
+            double dMult;
+            double dThisIter;
             vector<string> VstrTmp;
 
             switch (nRead)
@@ -3477,9 +3498,8 @@ int CSimulation::nReadSedimentInputEventTimeSeriesFile(void)
    }
 
    // Opened OK
-   int
-      nLine = 0,
-      nRead = 0;
+   int nLine = 0;
+   int nRead = 0;
    string strRec, strErr;
 
    // Read each line, ignoring comment lines

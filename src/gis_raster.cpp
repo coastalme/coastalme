@@ -1970,7 +1970,7 @@ int CSimulation::nInterpolateWavesToPolygonCells(vector<double> const* pVdX, vec
          {
             if (! isfinite(VdOutX[n]))
                VdOutX[n] = m_dMissingValue;
-            else if (fabs(VdOutX[n]) > 1e10)
+            else if (tAbs(VdOutX[n]) > 1e10)
                VdOutX[n] = m_dMissingValue;               
             else   
             {
@@ -1990,7 +1990,7 @@ int CSimulation::nInterpolateWavesToPolygonCells(vector<double> const* pVdX, vec
          {
             if (! isfinite(VdOutY[n]))
                VdOutY[n] = m_dMissingValue;
-            else if (fabs(VdOutY[n]) > 1e10)
+            else if (tAbs(VdOutY[n]) > 1e10)
                VdOutY[n] = m_dMissingValue;               
             else
             {

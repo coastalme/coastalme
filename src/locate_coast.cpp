@@ -93,9 +93,8 @@ void CSimulation::FindAllSeaCells(void)
       if (m_bOmitSearchEastEdge && m_VEdgeCellEdge[n] == EAST)
          continue;
 
-      int
-          nX = m_VEdgeCell[n].nGetX(),
-          nY = m_VEdgeCell[n].nGetY();
+      int nX = m_VEdgeCell[n].nGetX();
+      int nY = m_VEdgeCell[n].nGetY();
 
       // if ((m_pRasterGrid->m_Cell[nX][nY].bIsInundated()) && (m_pRasterGrid->m_Cell[nX][nY].dGetSeaDepth() == 0))
       if ((m_pRasterGrid->m_Cell[nX][nY].bIsInundated()) && (bFPIsEqual(m_pRasterGrid->m_Cell[nX][nY].dGetSeaDepth(), 0.0, TOLERANCE)))
@@ -1103,7 +1102,7 @@ void CSimulation::FloodFillLand(int const nXStart, int const nYStart)
             dAuxWaterLevelDiff = m_VCoast[nCoast].dGetLevel(nCoastPoint, m_nLevel);
             if (! isnan(dAuxWaterLevelDiff))
             {
-               if (abs(dAuxWaterLevelDiff) < 1)       // Limiting the maximum value that can be found (dAuxWaterLevelDiff != DBL_NODATA)
+               if (tAbs(dAuxWaterLevelDiff) < 1)       // Limiting the maximum value that can be found (dAuxWaterLevelDiff != DBL_NODATA)
                {
                   pointCounter++;
                   dDiffTotWaterLevel += dAuxWaterLevelDiff;

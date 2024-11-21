@@ -454,9 +454,8 @@ int CGeomProfile::nGetCellGivenDepth(CGeomRasterGrid const* pGrid, double const 
 
    for (unsigned int n = 0; n < m_VCellInProfile.size(); n++)
    {
-      int
-          nX = m_VCellInProfile[n].nGetX(),
-          nY = m_VCellInProfile[n].nGetY();
+      int nX = m_VCellInProfile[n].nGetX();
+      int nY = m_VCellInProfile[n].nGetY();
 
       double dCellDepth = pGrid->m_Cell[nX][nY].dGetSeaDepth();
       if (dCellDepth >= dDepthIn)
