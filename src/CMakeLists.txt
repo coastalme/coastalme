@@ -22,7 +22,8 @@ if (UNIX)
    endif ()
 
    if (APPLE)
-      message (FATAL_ERROR "CoastalME cannot be built on OSX... yet")
+      set (LINUX TRUE)
+      message ("Creating OSX-Unix Makefile for CoastalME")
    endif ()
 endif ()
 
@@ -56,14 +57,18 @@ set (CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules/"
 # Detect the compiler and set compiler-specific flags etc.
 message ("Checking compiler")
 
-# We are using c++
+# We are using C++
 enable_language (CXX)
 
 # We need c++11, first set the c++11 flag (note that later on we check the compiler for c++11 capability)
 set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
 # Set the CoastalME CPU flag TODO Need to change this for different CPU architectures
-set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DCPU -Dx86")
+if (APPLE)
+   set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DCPU -Dxarm64")
+else()
+   set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DCPU -Dx86")
+endif()
 
 # Use 64-bit libraries
 set (FIND_LIBRARY_USE_LIB64_PATHS true)
@@ -287,7 +292,51 @@ if (UNIX)
    endif ()
 
    if (APPLE)
-      # TODO
+      if (CSHORE_INOUT_LC STREQUAL "file")
+         if ((CMAKE_BUILD_TYPE_LC STREQUAL "debug") OR (CMAKE_BUILD_TYPE_LC STREQUAL "valgrind"))
+            if (CSHORE_LIBRARY_LC STREQUAL "shared")
+               execute_process (COMMAND ln -s -f "${CMAKE_SOURCE_DIR}/lib/libcshore.so.DEBUG.LINUX.FILEINOUT" "${CMAKE_SOURCE_DIR}/lib/libcshore.so")
+            else ()
+               execute_process (COMMAND ln -s -f "${CMAKE_SOURCE_DIR}/lib/libcshore.a.DEBUG.LINUX.FILEINOUT" "${CMAKE_SOURCE_DIR}/lib/libcshore.a")
+            endif ()
+         else ()
+            if (CSHORE_LIBRARY_LC STREQUAL "shared")
+               execute_process (COMMAND ln -s -f "${CMAKE_SOURCE_DIR}/lib/libcshore.so.RELEASE.LINUX.FILEINOUT" "${CMAKE_SOURCE_DIR}/lib/libcshore.so")
+            else ()
+               execute_process (COMMAND ln -s -f "${CMAKE_SOURCE_DIR}/lib/libcshore.a.RELEASE.LINUX.FILEINOUT" "${CMAKE_SOURCE_DIR}/lib/libcshore.a")
+            endif ()
+         endif ()
+
+      elseif (CSHORE_INOUT_LC STREQUAL "arg")
+         if ((CMAKE_BUILD_TYPE_LC STREQUAL "debug") OR (CMAKE_BUILD_TYPE_LC STREQUAL "valgrind"))
+            if (CSHORE_LIBRARY_LC STREQUAL "shared")
+               execute_process (COMMAND ln -s -f "${CMAKE_SOURCE_DIR}/lib/libcshore.so.DEBUG.LINUX.ARGINOUT" "${CMAKE_SOURCE_DIR}/lib/libcshore.so")
+            else ()
+               execute_process (COMMAND ln -s -f "${CMAKE_SOURCE_DIR}/lib/libcshore.a.DEBUG.LINUX.ARGINOUT" "${CMAKE_SOURCE_DIR}/lib/libcshore.a")
+            endif ()
+         else ()
+            if (CSHORE_LIBRARY_LC STREQUAL "shared")
+               execute_process (COMMAND ln -s -f "${CMAKE_SOURCE_DIR}/lib/libcshore.so.RELEASE.LINUX.ARGINOUT" "${CMAKE_SOURCE_DIR}/lib/libcshore.so")
+            else ()
+               execute_process (COMMAND ln -s -f "${CMAKE_SOURCE_DIR}/lib/libcshore.a.RELEASE.LINUX.ARGINOUT" "${CMAKE_SOURCE_DIR}/lib/libcshore.a")
+            endif ()
+         endif ()
+
+      elseif (CSHORE_INOUT_LC STREQUAL "both")
+         if ((CMAKE_BUILD_TYPE_LC STREQUAL "debug") OR (CMAKE_BUILD_TYPE_LC STREQUAL "valgrind"))
+            if (CSHORE_LIBRARY_LC STREQUAL "shared")
+               execute_process (COMMAND ln -s -f "${CMAKE_SOURCE_DIR}/lib/libcshore.so.DEBUG.LINUX.ARGINBOTHOUT" "${CMAKE_SOURCE_DIR}/lib/libcshore.so")
+            else ()
+               execute_process (COMMAND ln -s -f "${CMAKE_SOURCE_DIR}/lib/libcshore.a.DEBUG.LINUX.ARGINBOTHOUT" "${CMAKE_SOURCE_DIR}/lib/libcshore.a")
+            endif ()
+         else ()
+            if (CSHORE_LIBRARY_LC STREQUAL "shared")
+               execute_process (COMMAND ln -s -f "${CMAKE_SOURCE_DIR}/lib/libcshore.so.RELEASE.LINUX.ARGINBOTHOUT" "${CMAKE_SOURCE_DIR}/lib/libcshore.so")
+            else ()
+               execute_process (COMMAND ln -s -f "${CMAKE_SOURCE_DIR}/lib/libcshore.a.RELEASE.LINUX.ARGINBOTHOUT" "${CMAKE_SOURCE_DIR}/lib/libcshore.a")
+            endif ()
+         endif ()
+      endif ()
    endif ()
 endif ()
 
