@@ -604,6 +604,8 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
    if (! bReadIniFile())
       return (RTN_ERR_INI);
 
+   // TODO 073 Check if output dir exists, if not then create it (ask user first)
+
    // We have the name of the run-data input file, so read it
    if (! bReadRunDataFile())
       return RTN_ERR_RUNDATA;
