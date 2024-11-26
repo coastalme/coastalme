@@ -4,6 +4,10 @@
 *~
 *kate-swp
 
+# Git and GitHub
+.git
+.github
+
 # Prerequisites
 *.d
 
