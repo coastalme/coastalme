@@ -12,7 +12,7 @@ rm -f out/test_suite/minimal_wave_angle_270/*
 cp in/test_suite/minimal_wave_angle_270/cme.ini .
 ./cme
 
-mkdir -p out/test_suite/minimal_wave_angle_210/
+mkdir -p out/test_suite/minimal_wave_angle_310/
 rm -f out/test_suite/minimal_wave_angle_310/*
 cp in/test_suite/minimal_wave_angle_310/cme.ini .
 ./cme
