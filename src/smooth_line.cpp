@@ -92,7 +92,7 @@ CGeomLine CSimulation::LSmoothCoastSavitzkyGolay(CGeomLine* pLineIn, int const n
       CGeom2DIPoint PtiThis = PtiExtCRSToGrid(&PtThis);
       int nXThis = PtiThis.nGetX();
       int nYThis = PtiThis.nGetY();
-      if (bIsIntervention(nXThis, nYThis))
+      if (bIsInterventionCell(nXThis, nYThis))
       {
          LTemp[i] = pLineIn->pPtGetAt(i);
          continue;
@@ -218,7 +218,7 @@ CGeomLine CSimulation::LSmoothCoastRunningMean(CGeomLine* pLineIn) const
       CGeom2DIPoint PtiThis = PtiExtCRSToGrid(&PtThis);
       int nXThis = PtiThis.nGetX();
       int nYThis = PtiThis.nGetY();
-      if (bIsIntervention(nXThis, nYThis))
+      if (bIsInterventionCell(nXThis, nYThis))
       {
          LTemp[i] = pLineIn->pPtGetAt(i);
          continue;

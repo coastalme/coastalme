@@ -1408,7 +1408,7 @@ void CSimulation::GetRasterOutputMinMax(int const nDataItem, double&dMin, double
 
             case (RASTER_PLOT_INTERVENTION_CLASS):
                dTmp = INT_NODATA;
-               if (bIsIntervention(nX, nY))
+               if (bIsInterventionCell(nX, nY))
                   dTmp = m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->nGetLFSubCategory();
                break;
 

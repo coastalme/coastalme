@@ -1639,7 +1639,7 @@ private:
    int nSetAllCoastpointDeepWaterWaveValues(void);
    int nDoSedimentInputEvent(int const);
    void AllPolygonsUpdateStoredUncons(int const);
-   bool bIsIntervention(int const, int const) const;
+   bool bIsInterventionCell(int const, int const) const;
 
    // GIS utility routines
    int nMarkBoundingBoxEdgeCells(void);

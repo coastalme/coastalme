@@ -689,7 +689,7 @@ int CSimulation::nTraceCoastLine(unsigned int const nTraceFromStartCellIndex, in
             if (! m_pRasterGrid->m_Cell[nX][nY].bIsCoastline())
             {
                // Not already marked, is this an intervention cell with the top above SWL?
-               if ((bIsIntervention(nX, nY)) && (m_pRasterGrid->m_Cell[nX][nY].dGetInterventionTopElev() >= m_dThisIterSWL))
+               if ((bIsInterventionCell(nX, nY)) && (m_pRasterGrid->m_Cell[nX][nY].dGetInterventionTopElev() >= m_dThisIterSWL))
                {
                   // It is, so mark as coast and add it to the vector object
                   m_pRasterGrid->m_Cell[nX][nY].SetAsCoastline(true);
@@ -728,7 +728,7 @@ int CSimulation::nTraceCoastLine(unsigned int const nTraceFromStartCellIndex, in
             if (! m_pRasterGrid->m_Cell[nX][nY].bIsCoastline())
             {
                // Not already marked, is this an intervention cell with the top above SWL?
-               if ((bIsIntervention(nX, nY)) && (m_pRasterGrid->m_Cell[nX][nY].dGetInterventionTopElev() >= m_dThisIterSWL))
+               if ((bIsInterventionCell(nX, nY)) && (m_pRasterGrid->m_Cell[nX][nY].dGetInterventionTopElev() >= m_dThisIterSWL))
                {
                   // It is, so mark as coast and add it to the vector object
                   m_pRasterGrid->m_Cell[nX][nY].SetAsCoastline(true);
@@ -766,7 +766,7 @@ int CSimulation::nTraceCoastLine(unsigned int const nTraceFromStartCellIndex, in
             if (! m_pRasterGrid->m_Cell[nX][nY].bIsCoastline())
             {
                // Not already marked, is this an intervention cell with the top above SWL?
-               if ((bIsIntervention(nX, nY)) && (m_pRasterGrid->m_Cell[nX][nY].dGetInterventionTopElev() >= m_dThisIterSWL))
+               if ((bIsInterventionCell(nX, nY)) && (m_pRasterGrid->m_Cell[nX][nY].dGetInterventionTopElev() >= m_dThisIterSWL))
                {
                   // It is, so mark as coast and add it to the vector object
                   m_pRasterGrid->m_Cell[nX][nY].SetAsCoastline(true);
@@ -1655,7 +1655,7 @@ int CSimulation::nTraceFloodCoastLine(unsigned int const nTraceFromStartCellInde
             if (! m_pRasterGrid->m_Cell[nX][nY].bIsFloodLine())
             {
                // Not already marked, is this an intervention cell with the top above SWL?
-               if ((bIsIntervention(nX, nY)) && (! m_pRasterGrid->m_Cell[nX][nY].bIsElevLessThanWaterLevel()))
+               if ((bIsInterventionCell(nX, nY)) && (! m_pRasterGrid->m_Cell[nX][nY].bIsElevLessThanWaterLevel()))
                {
                   // It is, so mark as coast and add it to the vector object
                   m_pRasterGrid->m_Cell[nX][nY].SetAsFloodLine(true);
@@ -1694,7 +1694,7 @@ int CSimulation::nTraceFloodCoastLine(unsigned int const nTraceFromStartCellInde
             if (! m_pRasterGrid->m_Cell[nX][nY].bIsFloodLine())
             {
                // Not already marked, is this an intervention cell with the top above SWL?
-               if ((bIsIntervention(nX, nY)) && (! m_pRasterGrid->m_Cell[nX][nY].bIsElevLessThanWaterLevel()))
+               if ((bIsInterventionCell(nX, nY)) && (! m_pRasterGrid->m_Cell[nX][nY].bIsElevLessThanWaterLevel()))
                {
                   // It is, so mark as coast and add it to the vector object
                   m_pRasterGrid->m_Cell[nX][nY].SetAsFloodLine(true);
@@ -1732,7 +1732,7 @@ int CSimulation::nTraceFloodCoastLine(unsigned int const nTraceFromStartCellInde
             if (! m_pRasterGrid->m_Cell[nX][nY].bIsFloodLine())
             {
                // Not already marked, is this an intervention cell with the top above SWL?
-               if ((bIsIntervention(nX, nY)) && (! m_pRasterGrid->m_Cell[nX][nY].bIsElevLessThanWaterLevel()))
+               if ((bIsInterventionCell(nX, nY)) && (! m_pRasterGrid->m_Cell[nX][nY].bIsElevLessThanWaterLevel()))
                {
                   // It is, so mark as coast and add it to the vector object
                   m_pRasterGrid->m_Cell[nX][nY].SetAsFloodLine(true);

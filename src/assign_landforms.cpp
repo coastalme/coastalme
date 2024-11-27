@@ -55,7 +55,7 @@ int CSimulation::nAssignAllCoastalLandforms(void)
          m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->SetPointOnCoast(j);
 
          // OK, start assigning coastal landforms. First, is there an intervention here?
-         if (bIsIntervention(nX, nY) || m_pRasterGrid->m_Cell[nX][nY].dGetInterventionHeight() > 0)
+         if (bIsInterventionCell(nX, nY) || m_pRasterGrid->m_Cell[nX][nY].dGetInterventionHeight() > 0)
          {
             // There is, so create an intervention object on the vector coastline with these attributes
             CACoastLandform* pIntervention = new CRWIntervention(&m_VCoast[nCoast], nCoast, j);
