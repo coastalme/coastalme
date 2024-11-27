@@ -75,6 +75,8 @@ in/GMD2017/
 in/Happisburgh/jsme_wilf.dat
 in/simple*
 in/Wilf_ScenB
+libcshore.a*
+libcshore.so*
 Misc/
 out/
 src/.cache/
