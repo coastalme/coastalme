@@ -39,7 +39,7 @@ public:
 
    double dGetXAt(int const);
    double dGetYAt(int const);
-   // CGeom2DPoint* pPtGetAt(int const);
+   CGeom2DPoint* pPtGetAt(int const);
    // void SetXAt(int const, double const);
    // void SetYAt(int const, double const);
 //    bool bIsPresent(CGeom2DPoint*);

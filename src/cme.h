@@ -38,7 +38,6 @@ By Blake Morrison (2018). See <a href="https://www.penguin.co.uk/books/419911/sh
    NOTE Before releasing a new version, do a debug build with -fsanitize options enabled (see CMakeLists.txt) then run the test suite BUT NOT UNDER DEBUG (i.e. not using gdb)
 
    BUGLIST ************************************************************************************************************
-   BUG 004 Don't smooth intervention coastline
    BUG 005 Do sanity checking on wave and tide input
    BUG 001 Do we get -ve breaking wave heights here?
 
@@ -136,6 +135,7 @@ By Blake Morrison (2018). See <a href="https://www.penguin.co.uk/books/419911/sh
    TODO 041 Read in SWL per-timestep
    BUG 002 Useless output e.g. clay layers even if no clay input DONE in 1.1.21
    BUG 003 Use mean SWL for elevations of Dean profiles DONE in 1.2.1, 27 Nov 2024
+   BUG 004 Don't smooth intervention coastline DONE 1.2.1, 27 Nov 2024
 
 */
 

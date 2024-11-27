@@ -77,13 +77,11 @@ double CSimulation::dGridCentroidYToExtCRSY(int const nGridY) const
 //===============================================================================================================================
 CGeom2DPoint CSimulation::PtGridCentroidToExt(CGeom2DIPoint const* pPtiIn) const
 {
-   int
-       nGridX = pPtiIn->nGetX(),
-       nGridY = pPtiIn->nGetY();
+   int nGridX = pPtiIn->nGetX();
+   int nGridY = pPtiIn->nGetY();
 
-   double
-       dX = m_dGeoTransform[0] + (nGridX * m_dGeoTransform[1]) + (m_dGeoTransform[1] / 2),
-       dY = m_dGeoTransform[3] + (nGridY * m_dGeoTransform[5]) + (m_dGeoTransform[5] / 2);
+   double dX = m_dGeoTransform[0] + (nGridX * m_dGeoTransform[1]) + (m_dGeoTransform[1] / 2);
+   double dY = m_dGeoTransform[3] + (nGridY * m_dGeoTransform[5]) + (m_dGeoTransform[5] / 2);
 
    return CGeom2DPoint(dX, dY);
 }
@@ -125,15 +123,11 @@ double CSimulation::dExtCRSYToGridY(double const dExtCRSY) const
 //===============================================================================================================================
 CGeom2DIPoint CSimulation::PtiExtCRSToGrid(CGeom2DPoint const* pPtIn) const
 {
-   double
-       dX = pPtIn->dGetX(),
-       dY = pPtIn->dGetY();
+   double dX = pPtIn->dGetX();
+   double dY = pPtIn->dGetY();
 
-   int
-       //       nX = nRound((dX - m_dGeoTransform[0]) / m_dGeoTransform[1]),
-       //       nY = nRound((dY - m_dGeoTransform[3]) / m_dGeoTransform[5]);
-       nX = static_cast<int>((dX - m_dGeoTransform[0]) / m_dGeoTransform[1]),
-       nY = static_cast<int>((dY - m_dGeoTransform[3]) / m_dGeoTransform[5]);
+   int nX = static_cast<int>((dX - m_dGeoTransform[0]) / m_dGeoTransform[1]);
+   int nY = static_cast<int>((dY - m_dGeoTransform[3]) / m_dGeoTransform[5]);
 
    return CGeom2DIPoint(nX, nY);
 }
@@ -143,9 +137,8 @@ CGeom2DIPoint CSimulation::PtiExtCRSToGrid(CGeom2DPoint const* pPtIn) const
 //===============================================================================================================================
 double CSimulation::dGetDistanceBetween(CGeom2DPoint const *Pt1, CGeom2DPoint const *Pt2)
 {
-   double
-       dXDist = Pt1->dGetX() - Pt2->dGetX(),
-       dYDist = Pt1->dGetY() - Pt2->dGetY();
+   double dXDist = Pt1->dGetX() - Pt2->dGetX();
+   double dYDist = Pt1->dGetY() - Pt2->dGetY();
 
    return hypot(dXDist, dYDist);
 }
@@ -155,9 +148,8 @@ double CSimulation::dGetDistanceBetween(CGeom2DPoint const *Pt1, CGeom2DPoint co
 //===============================================================================================================================
 double CSimulation::dGetDistanceBetween(CGeom2DIPoint const* Pti1, CGeom2DIPoint const* Pti2)
 {
-   double
-       dXDist = Pti1->nGetX() - Pti2->nGetX(),
-       dYDist = Pti1->nGetY() - Pti2->nGetY();
+   double dXDist = Pti1->nGetX() - Pti2->nGetX();
+   double dYDist = Pti1->nGetY() - Pti2->nGetY();
 
    return hypot(dXDist, dYDist);
 }
@@ -227,9 +219,8 @@ void CSimulation::KeepWithinValidGrid(int nX0, int nY0, int &nX1, int &nY1) cons
       nY0 = 0;
 
    // OK let's go
-   int
-       nDiffX = nX0 - nX1,
-       nDiffY = nY0 - nY1;
+   int nDiffX = nX0 - nX1;
+   int nDiffY = nY0 - nY1;
 
    if (nDiffX == 0)
    {
@@ -286,9 +277,8 @@ void CSimulation::KeepWithinValidGrid(int nX0, int nY0, int &nX1, int &nY1) cons
    else
    {
       // The two points have different x co-ordinates and different y co-ordinates, so we have to work harder. First find which of the co-ordinates is the greatest distance outside the grid, and constrain that co-ord for efficiency (since this will reduce the number of times round the loop). Note that both may be inside the grid, if the incorrect co-ord is in the invalid margin, in which case arbitrarily contrain the x co-ord
-      int
-          nXDistanceOutside = 0,
-          nYDistanceOutside = 0;
+      int nXDistanceOutside = 0;
+      int nYDistanceOutside = 0;
 
       if (nX1 < 0)
          nXDistanceOutside = -nX1;
@@ -1418,7 +1408,7 @@ void CSimulation::GetRasterOutputMinMax(int const nDataItem, double&dMin, double
 
             case (RASTER_PLOT_INTERVENTION_CLASS):
                dTmp = INT_NODATA;
-               if (m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->nGetLFCategory() == LF_CAT_INTERVENTION)
+               if (bIsIntervention(nX, nY))
                   dTmp = m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->nGetLFSubCategory();
                break;
 

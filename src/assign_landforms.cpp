@@ -47,16 +47,15 @@ int CSimulation::nAssignAllCoastalLandforms(void)
       for (int j = 0; j < m_VCoast[nCoast].nGetCoastlineSize(); j++)
       {
          // Get the coords of the grid cell marked as coastline for the coastal landform object
-         int
-            nX = m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(j)->nGetX(),
-            nY = m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(j)->nGetY();
+         int nX = m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(j)->nGetX();
+         int nY = m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(j)->nGetY();
 
          // Store the coastline number and the number of the coastline point in the cell so we can get these quickly later
          m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->SetCoast(nCoast);
          m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->SetPointOnCoast(j);
 
          // OK, start assigning coastal landforms. First, is there an intervention here?
-         if (m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->nGetLFCategory() == LF_CAT_INTERVENTION || m_pRasterGrid->m_Cell[nX][nY].dGetInterventionHeight() > 0)
+         if (bIsIntervention(nX, nY) || m_pRasterGrid->m_Cell[nX][nY].dGetInterventionHeight() > 0)
          {
             // There is, so create an intervention object on the vector coastline with these attributes
             CACoastLandform* pIntervention = new CRWIntervention(&m_VCoast[nCoast], nCoast, j);

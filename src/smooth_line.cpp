@@ -72,7 +72,7 @@ void CSimulation::CalcSavitzkyGolayCoeffs(void)
 }
 
 //===============================================================================================================================
-//! Does smoothing of a CGeomLine coastline vector using a Savitzky-Golay filter. Derived from a C original by Jean-Pierre Moreau (jpmoreau@wanadoo.fr, http://jean-pierre.moreau.pagesperso-orange.fr/index.html), to whom we are much indebted
+//! Does smoothing of a CGeomLine coastline vector (is in external CRS coordinates) using a Savitzky-Golay filter. Derived from a C original by Jean-Pierre Moreau (jpmoreau@wanadoo.fr, http://jean-pierre.moreau.pagesperso-orange.fr/index.html), to whom we are much indebted
 //===============================================================================================================================
 CGeomLine CSimulation::LSmoothCoastSavitzkyGolay(CGeomLine* pLineIn, int const nStartEdge, int const nEndEdge) const
 {
@@ -87,6 +87,17 @@ CGeomLine CSimulation::LSmoothCoastSavitzkyGolay(CGeomLine* pLineIn, int const n
    // Apply the Savitzky-Golay smoothing filter
    for (int i = 0; i < nSize; i++)
    {
+      // Don't smooth intervention cells
+      CGeom2DPoint PtThis(pLineIn->dGetXAt(i), pLineIn->dGetYAt(i));
+      CGeom2DIPoint PtiThis = PtiExtCRSToGrid(&PtThis);
+      int nXThis = PtiThis.nGetX();
+      int nYThis = PtiThis.nGetY();
+      if (bIsIntervention(nXThis, nYThis))
+      {
+         LTemp[i] = pLineIn->pPtGetAt(i);
+         continue;
+      }
+
       if (i < nHalfWindow)
       {
          // For the first few values of LTemp, just apply a running mean with a variable-sized window
@@ -186,7 +197,7 @@ CGeomLine CSimulation::LSmoothCoastSavitzkyGolay(CGeomLine* pLineIn, int const n
 }
 
 //===============================================================================================================================
-//! Does running-mean smoothing of a CGeomLine coastline vector
+//! Does running-mean smoothing of a CGeomLine coastline vector (is in external CRS coordinates)
 //===============================================================================================================================
 CGeomLine CSimulation::LSmoothCoastRunningMean(CGeomLine* pLineIn) const
 {
@@ -202,6 +213,17 @@ CGeomLine CSimulation::LSmoothCoastRunningMean(CGeomLine* pLineIn) const
    // Apply the running mean smoothing filter, with a variable window size at both ends of the line
    for (int i = 0; i < nSize; i++)
    {
+      // Don't smooth intervention cells
+      CGeom2DPoint PtThis(pLineIn->dGetXAt(i), pLineIn->dGetYAt(i));
+      CGeom2DIPoint PtiThis = PtiExtCRSToGrid(&PtThis);
+      int nXThis = PtiThis.nGetX();
+      int nYThis = PtiThis.nGetY();
+      if (bIsIntervention(nXThis, nYThis))
+      {
+         LTemp[i] = pLineIn->pPtGetAt(i);
+         continue;
+      }
+
       // bool bNearStartEdge = false, bNearEndEdge = false;
       // int consTant = 0;
       double nTmpWindow = 0;

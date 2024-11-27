@@ -2758,3 +2758,13 @@ unsigned long CSimulation::ulConvertToTimestep(string const* pstrIn) const
    return ulTimeStep;
 }
 
+//===============================================================================================================================
+//! Returns true if the cell is an intervention
+//===============================================================================================================================
+bool CSimulation::bIsIntervention(int const nX, int const nY) const
+{
+   if (m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->nGetLFCategory() == LF_CAT_INTERVENTION)
+      return true;
+
+   return false;
+}

@@ -122,7 +122,7 @@ int CSimulation::nDoUnconsErosionOnPolygon(int const nCoast, int const nPoly, in
       //       LogStream << m_ulIter << ": nCoastX = " << nCoastX << ", nCoastY = " << nCoastY << ", this is {" << dGridCentroidXToExtCRSX(nCoastX) << ", " <<  dGridCentroidYToExtCRSY(nCoastY) << "}" << endl;
 
       // Is the coast cell an intervention structure?
-      if (m_pRasterGrid->m_Cell[nCoastX][nCoastY].pGetLandform()->nGetLFCategory() == LF_CAT_INTERVENTION)
+      if (bIsIntervention(nCoastX, nCoastY))
       {
          // No erosion possible on this parallel profile, so move on
          //          LogStream << m_ulIter << ": intervention structure at coast point [" << nCoastX << "][" << nCoastY << "] = {" << dGridCentroidXToExtCRSX(nCoastX) << ", " <<  dGridCentroidYToExtCRSY(nCoastY) << "}, cannot erode this parallel profile" << endl;
@@ -315,7 +315,7 @@ int CSimulation::nDoUnconsErosionOnPolygon(int const nCoast, int const nPoly, in
             }
 
             // Don't erode intervention cells
-            if (m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->nGetLFCategory() == LF_CAT_INTERVENTION)
+            if (bIsIntervention(nX, nY))
                bVProfileValid[m] = false;
 
             dVParProfileNow[m] = m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElev();
@@ -509,7 +509,7 @@ int CSimulation::nDoParallelProfileUnconsErosion(int const nPoly, int const nCoa
       }
 
       // Don't do anything to intervention cells
-      if (m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->nGetLFCategory() == LF_CAT_INTERVENTION)
+      if (bIsIntervention(nX, nY))
          continue;
 
       // Don't do cells twice
@@ -963,7 +963,7 @@ int CSimulation::nDoUnconsDepositionOnPolygon(int const nCoast, int const nPoly,
             }
 
             // Don't do anything to intervention cells
-            if (m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->nGetLFCategory() == LF_CAT_INTERVENTION)
+            if (bIsIntervention(nX, nY))
                continue;
 
             // Don't do cells twice
@@ -1074,7 +1074,7 @@ int CSimulation::nDoUnconsDepositionOnPolygon(int const nCoast, int const nPoly,
          }
 
          // Don't do anything to intervention cells
-         if (m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->nGetLFCategory() == LF_CAT_INTERVENTION)
+         if (bIsIntervention(nX, nY))
             continue;
 
          // Don't do cells twice
@@ -1448,7 +1448,7 @@ int CSimulation::nDoUnconsDepositionOnPolygon(int const nCoast, int const nPoly,
                }
 
                // Don't do anything to intervention cells
-               if (m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->nGetLFCategory() == LF_CAT_INTERVENTION)
+               if (bIsIntervention(nX, nY))
                   continue;
 
                // Don't do cells twice
@@ -1560,7 +1560,7 @@ int CSimulation::nDoUnconsDepositionOnPolygon(int const nCoast, int const nPoly,
             }
 
             // Don't do anything to intervention cells
-            if (m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->nGetLFCategory() == LF_CAT_INTERVENTION)
+            if (bIsIntervention(nX, nY))
                continue;
 
             // Don't do cells twice
