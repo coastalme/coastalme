@@ -175,9 +175,6 @@ int CSimulation::nDoAllPropagateWaves(void)
          vector<double> VdHeightX;
          vector<double> VdHeightY;
 
-         if ((m_ulIter == 7) && (nProfile == 3))
-            LogStream << endl;
-
          int nRet = nCalcWavePropertiesOnProfile(nCoast, nCoastSize, nProfile, &VdX, &VdY, &VdHeightX, &VdHeightY, &VbBreaking);
          if (nRet != RTN_OK)
             return nRet;

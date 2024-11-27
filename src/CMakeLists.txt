@@ -60,8 +60,8 @@ message ("Checking compiler")
 # We are using C++
 enable_language (CXX)
 
-# We need c++11, first set the c++11 flag (note that later on we check the compiler for c++11 capability)
-set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+# We need c++17 (for filesystem stuff, not that important howerver), so first set the flag (note that later on we check the compiler for c++17 capability)
+set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17")
 
 # Set the CoastalME CPU flag TODO Need to change this for different CPU architectures
 if (APPLE)
@@ -386,8 +386,8 @@ target_link_libraries (${CME_EXECUTABLE} ${LIBS})
 
 install (TARGETS ${CME_EXECUTABLE} RUNTIME DESTINATION ${CMAKE_INSTALL_DIR})
 
-# Check to see if the compiler supports c++11
-set_property (TARGET ${CME_EXECUTABLE} PROPERTY CXX_STANDARD 11)
+# Check to see if the compiler supports c++17
+set_property (TARGET ${CME_EXECUTABLE} PROPERTY CXX_STANDARD 17)
 set_property (TARGET ${CME_EXECUTABLE} PROPERTY CXX_STANDARD_REQUIRED ON)
 
 #########################################################################################
