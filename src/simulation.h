@@ -663,13 +663,16 @@ private:
    //! The end-of-simulation still water (m), is same as m_dOrigSWL unless SWL changes
    double m_dFinalSWL;
 
-   //! If SWL changes, the increment per timestep
+   //! If long-term SWL changes, the increment per timestep
    double m_dDeltaSWLPerTimestep;
 
-   //! The still water level for this timestep
+   //! The still water level for this timestep (this includes tidal changes and any long-term SWL change)
    double m_dThisIterSWL;
 
-   //! If SWL changes, the total change so far since the start of simulation
+   //! The mean still water level for this timestep (does not include tidal changes, but includes any long-term SWL change)
+   double m_dThisIterMeanSWL;
+
+   //! If long-term SWL changes, the total change so far since the start of simulation
    double m_dAccumulatedSeaLevelChange;
 
    //! Minimum still water level

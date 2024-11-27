@@ -261,6 +261,7 @@ CSimulation::CSimulation (void)
    m_dCPUClock =
    m_dSeaWaterDensity =
    m_dThisIterSWL =
+   m_dThisIterMeanSWL =
    m_dOrigSWL =
    m_dFinalSWL =
    m_dDeltaSWLPerTimestep =
@@ -913,7 +914,7 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
       if (nRet != RTN_OK)
          return nRet;
 
-      // Calculate changes due to external forcing
+      // Calculate changes due to external forcing (change in still water level, tide level and deep water waves height, orientation and period)
       nRet = nCalcExternalForcing();
       if (nRet != RTN_OK)
          return nRet;

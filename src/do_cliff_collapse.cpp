@@ -700,7 +700,7 @@ int CSimulation::nDoCliffCollapseDeposition(int const nCoast, CRWCliff const* pC
 
             dVProfileNow[n] = m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElev();
 
-            // Don't allow cliff collapse onto intervention cells
+            // Don't allow cliff collapse onto intervention cells TODO 078 Is this realistic? Should it change with different types on intervention?
             if (m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->nGetLFCategory() == LF_CAT_INTERVENTION)
                bVProfileValid[n] = false;
          }

@@ -913,8 +913,8 @@ int CSimulation::nDoUnconsDepositionOnPolygon(int const nCoast, int const nPoly,
 
          double dParProfEndElev = m_pRasterGrid->m_Cell[nSeaEndX][nSeaEndY].dGetSedimentTopElev();
 
-         // Set the start elevation for the Dean profile just a bit above SWL for this timestep, so that it is a Bruun profile
-         double dParProfStartElev = m_dThisIterSWL + m_dDeanProfileStartAboveSWL;
+         // Set the start elevation for the Dean profile just a bit above mean SWL for this timestep (i.e. so that it is a Bruun profile)
+         double dParProfStartElev = m_dThisIterMeanSWL + m_dDeanProfileStartAboveSWL;
 
          // Calculate the total length of the parallel profile, including any seaward offset
          double dParProfLen = dGetDistanceBetween(&PtiVParProfile.front(), &PtiVParProfile.back());
@@ -1402,8 +1402,8 @@ int CSimulation::nDoUnconsDepositionOnPolygon(int const nCoast, int const nPoly,
 
             double dParProfEndElev = m_pRasterGrid->m_Cell[nSeaEndX][nSeaEndY].dGetSedimentTopElev();
 
-            // Set the start elevation for the Dean profile just a bit above SWL for this timestep, so that it is a Bruun profile
-            double dParProfStartElev = m_dThisIterSWL + m_dDeanProfileStartAboveSWL;
+            // Set the start elevation for the Dean profile just a bit above mean SWL for this timestep (i.e. so that it is a Bruun profile)
+            double dParProfStartElev = m_dThisIterMeanSWL + m_dDeanProfileStartAboveSWL;
 
             // Calculate the total length of the parallel profile, including any seaward offset
             double dParProfLen = dGetDistanceBetween(&PtiVParProfile.front(), &PtiVParProfile.back());

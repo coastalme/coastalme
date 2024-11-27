@@ -797,7 +797,7 @@ bool CSimulation::bWriteTSFiles(void)
    if (m_bStillWaterLevelTSSave)
    {
       // Output as is (m)
-      StillWaterLevelTSStream << m_dSimElapsed << "\t,\t" << m_dThisIterSWL << endl;
+      StillWaterLevelTSStream << m_dSimElapsed << "\t,\t" << m_dThisIterSWL << "\t,\t" << m_dThisIterMeanSWL << endl;
 
       // Did a time series file write error occur?
       if (StillWaterLevelTSStream.fail())

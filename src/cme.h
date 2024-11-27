@@ -38,9 +38,9 @@ By Blake Morrison (2018). See <a href="https://www.penguin.co.uk/books/419911/sh
    NOTE Before releasing a new version, do a debug build with -fsanitize options enabled (see CMakeLists.txt) then run the test suite BUT NOT UNDER DEBUG (i.e. not using gdb)
 
    BUGLIST ************************************************************************************************************
-   BUG 003 Use mean SWL for elevations of Dean profiles
+   BUG 004 Don't smooth intervention coastline
+   BUG 005 Do sanity checking on wave and tide input
    BUG 001 Do we get -ve breaking wave heights here?
-   BUG 002 Useless output e.g. clay layers even if no clay input *** FIXED in 1.1.21
 
    TODOLIST ***********************************************************************************************************
    TODO 008 Read CShore surge outputs for Manuel's stuff and CSHORE_FILE_INOUT
@@ -108,6 +108,9 @@ By Blake Morrison (2018). See <a href="https://www.penguin.co.uk/books/419911/sh
    TODO 067 Is this ever non-zero? Check
    TODO 070 Change CShore to use allocatable arrays (https://fortran-lang.org/en/learn/best_practices/allocatable_arrays/) so that the number of points in the CShore output profiles can either be a user input, or determined by e.g. the physical length of the profile
    TODO 075 What if bedrock sticks above Dean profile?
+   TODO 076 When doing parallel profiles, start from the profile which is closest to a right angle with the coast
+   TODO 077 As traverse between the bounding profiles creating parallel profiles, gradually change the parallel profile orientation based on distance weighting of two bounding profiles
+   TODO 078 At present, we don't allow cliff collapse onto interventions. Is this realistic? Should it change with different types on intervention?
 
    OUTPUT
    TODO 065 Get GPKG output working: GDAL 3.9.1 does not yet implement this correctly. Currently is OK for vector output (but is very slow), not yet working for raster output
@@ -123,14 +126,16 @@ By Blake Morrison (2018). See <a href="https://www.penguin.co.uk/books/419911/sh
    TODO 068 Only show output in log file that is relevant to processes being simulated
    TODO 074 Output history of what landforms are on a particular cell or cells. User inputs cell(s), how?
 
-   075 is max
+   078 is max
 
    COMPLETED
-   TODO 003 Make coastline curvature moving window size a user input FIXED in 1.1.22
-   TODO 046 Why is cliff collapse eroded during deposition (three size classes) no longer calculated? FIXED IN 1.1.22
+   TODO 003 Make coastline curvature moving window size a user input DONE in 1.1.22
+   TODO 046 Why is cliff collapse eroded during deposition (three size classes) no longer calculated? DONE IN 1.1.22
    TODO 058 Dave to check this DONE in 1.1.22
    TODO 039 Rewrite reading of multiple random number seeds DONE in 1.2.1, 8 Nov 2024
    TODO 041 Read in SWL per-timestep
+   BUG 002 Useless output e.g. clay layers even if no clay input DONE in 1.1.21
+   BUG 003 Use mean SWL for elevations of Dean profiles DONE in 1.2.1, 27 Nov 2024
 
 */
 
@@ -616,7 +621,7 @@ double const CLIFF_COLLAPSE_HEIGHT_INCREMENT = 0.1;      // Increment the fracti
 
 double const DBL_NODATA = -9999;
 
-string const PROGRAM_NAME = "Coastal Modelling Environment (CoastalME) version 1.2.1 (26 Nov 2024)";
+string const PROGRAM_NAME = "Coastal Modelling Environment (CoastalME) version 1.2.1 (27 Nov 2024)";
 string const PROGRAM_NAME_SHORT = "CME";
 string const CME_INI = "cme.ini";
 

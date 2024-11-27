@@ -48,7 +48,11 @@ int CSimulation::nCalcExternalForcing(void)
       if (snTideDataCount > nSize-1)
          snTideDataCount = 0;
 
+      // This-iteration SWL includes both tidal change and long-term SWL change
       m_dThisIterSWL = m_dOrigSWL + m_VdTideData[snTideDataCount] + m_dAccumulatedSeaLevelChange;
+
+      // This-iteration mean SWL includes only long-term SWL change
+      m_dThisIterMeanSWL = m_dOrigSWL + m_dAccumulatedSeaLevelChange;
 
       // cout << m_dThisIterSWL << endl;
       snTideDataCount++;
@@ -80,9 +84,8 @@ int CSimulation::nCalcExternalForcing(void)
       else
       {
          // More than one wave station, so update this time step's deep water wave values for use in the nInterpolateAllDeepWaterWaveValues() routine. Note that the order on the vector is determined by the points ID i.e. to ensure that stations match with time series
-         int
-            nNumberDeepWaterWaveStations = static_cast<int>(m_VnDeepWaterWaveStationID.size()),
-            nTot = nNumberDeepWaterWaveStations * snWaveStationDataCount;
+         int nNumberDeepWaterWaveStations = static_cast<int>(m_VnDeepWaterWaveStationID.size());
+         int nTot = nNumberDeepWaterWaveStations * snWaveStationDataCount;
 
          for (int j = 0; j < nNumberDeepWaterWaveStations; j++)
          {
