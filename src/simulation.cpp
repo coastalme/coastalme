@@ -27,6 +27,7 @@ You should have received a copy of the GNU General Public License along with thi
 #include <iostream>
 using std::cerr;
 using std::cout;
+using std::cin;
 using std::endl;
 using std::ios;
 
@@ -37,6 +38,11 @@ using std::setprecision;
 
 #include <string>
 using std::to_string;
+
+#include <filesystem>      // C++17 and later, needed for missing output directory creation
+using std::filesystem::is_directory;
+using std::filesystem::exists;
+using std::filesystem::create_directories;
 
 #include "cme.h"
 #include "simulation.h"
@@ -605,7 +611,24 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
    if (! bReadIniFile())
       return (RTN_ERR_INI);
 
-   // TODO 073 Check if output dir exists, if not then create it (ask user first)
+   // Check if output dir exists
+   if ((! is_directory(m_strOutPath.c_str())) || (! exists(m_strOutPath.c_str())))
+   {
+      // It does not exist, does the user wish to create it?
+      char ch;
+      cerr << endl << "Output folder '" << m_strOutPath << "' does not exist. Create it? (Y/N) ";
+      cin.get(ch);
+
+      if ((ch == 'y') || (ch == 'Y'))
+      {
+         // Yes, so create the directory
+         create_directories(m_strOutPath.c_str());
+         cerr << m_strOutPath << " created" << endl << endl;
+      }
+      else
+         // Nope, just end the run
+         return RTN_USER_ABORT;
+   }
 
    // We have the name of the run-data input file, so read it
    if (! bReadRunDataFile())

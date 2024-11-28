@@ -1856,7 +1856,7 @@ string CSimulation::strGetErrorText(int const nErr)
    switch (nErr)
    {
    case RTN_USER_ABORT:
-      strErr = "aborted by user";
+      strErr = "run ended by user";
       break;
    case RTN_ERR_BADPARAM:
       strErr = "error in command-line parameter";

@@ -54,13 +54,18 @@ CoastalME CHANGELOG
          Updated CShore code to compile with GFortran 14.2.0
          Many cosmetic changes
 
-1.2.1 (11 Nov 2024)
-         TODO 039 Rewrite reading of multiple random number seeds
+1.2.1    TODO 039 Rewrite reading of multiple random number seeds
          CShore output arrays can now have more than 500 points
-         Code tidying
-
-1.2.1 (13 Nov 2024)
          TODO 072 Started work on problem with -ve elevations on coast-normal profiles (UNFINISHED)
          Code tidying
+
+1.2.2    BUG 003 Use mean SWL for elevations of Dean profiles DONE in 1.2.1, 27 Nov 2024
+         BUG 004 Don't smooth intervention coastline DONE 1.2.1, 27 Nov 2024
+         Move to C++ 17
+         TODO 073 If output dir does not exist, then create it (ask user first)
+         Code tidying
+
+
+
 
 

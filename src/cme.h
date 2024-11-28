@@ -82,7 +82,6 @@ By Blake Morrison (2018). See <a href="https://www.penguin.co.uk/books/419911/sh
    TODO 053 Improve handling of situation where landward elevation of profile is -ve
    TODO 055 Maybe add a safety check?
    TODO 072 CShore crashes occasionally, is it because of -ve Z values here? CHECK
-   TODO 073 If output dir does not exist, then create it (ask user first)
 
    THEORY/EFFICIENCY
    TODO 002 Do we really need D50 for drift landform class? What do we need for drift?
@@ -136,6 +135,7 @@ By Blake Morrison (2018). See <a href="https://www.penguin.co.uk/books/419911/sh
    BUG 002 Useless output e.g. clay layers even if no clay input DONE in 1.1.21
    BUG 003 Use mean SWL for elevations of Dean profiles DONE in 1.2.1, 27 Nov 2024
    BUG 004 Don't smooth intervention coastline DONE 1.2.1, 27 Nov 2024
+   TODO 073 If output dir does not exist, then create it (ask user first) DONE 1.2.2, 28 Nov 2024
 
 */
 
@@ -621,7 +621,7 @@ double const CLIFF_COLLAPSE_HEIGHT_INCREMENT = 0.1;      // Increment the fracti
 
 double const DBL_NODATA = -9999;
 
-string const PROGRAM_NAME = "Coastal Modelling Environment (CoastalME) version 1.2.1 (27 Nov 2024)";
+string const PROGRAM_NAME = "Coastal Modelling Environment (CoastalME) version 1.2.2 (28 Nov 2024)";
 string const PROGRAM_NAME_SHORT = "CME";
 string const CME_INI = "cme.ini";
 
