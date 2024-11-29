@@ -92,7 +92,7 @@ int CSimulation::nHandleCommandLineParams(int nArg, char const* pcArgv[])
 #endif
 
       // change to lower case
-      strArg = strToLower(&strArg);
+      // strArg = strToLower(&strArg);
 
       if (strArg.find("--gdal") != string::npos)
       {
@@ -113,32 +113,54 @@ int CSimulation::nHandleCommandLineParams(int nArg, char const* pcArgv[])
          return (RTN_HELP_ONLY);
       }
 
-      else if (strArg.find("--about") != string::npos)
-      {
-         // User wants information about CoastalME
-         cout << ABOUT << endl;
-         cout << THANKS << endl;
-
-         return (RTN_HELP_ONLY);
-      }
-
-      // TODO 049 Handle other command line parameters e.g. path to .ini file, path to datafile
 
       else
       {
-         // Display usage information
-         cout << USAGE << endl;
-         cout << USAGE1 << endl;
-         cout << USAGE2 << endl;
-         cout << USAGE3 << endl;
-         cout << USAGE4 << endl;
-         cout << USAGE5 << endl;
+         if (strArg.find("--about") != string::npos)
+         {
+            // User wants information about CoastalME
+            cout << ABOUT << endl;
+            cout << THANKS << endl;
 
-         return (RTN_HELP_ONLY);
+            return (RTN_HELP_ONLY);
+         }
+         else
+         {
+            if (strArg.find("--home") != string::npos)
+            {
+               // Read in user defined runtime directory
+               string strTmp;
+               size_t pos = strArg.find('=');  // Find the position of '='
+               if (pos != std::string::npos) {  // Check if '=' is found
+                  m_strCMEIni = strArg.substr(pos + 1);  // Get the substring after '=' and assign it to the global variable
+               } else {
+                  std::cout << "No '=' found in the input string!" << std::endl;
+               }
+               return (RTN_OK);
+            }
+            // TODO 049 Handle other command line parameters e.g. path to .ini file, path to datafile
+            else
+            {
+               // Display usage information
+               cout << USAGE << endl;
+               cout << USAGE1 << endl;
+               cout << USAGE2 << endl;
+               cout << USAGE3 << endl;
+               cout << USAGE4 << endl;
+               cout << USAGE5 << endl;
+
+               return (RTN_HELP_ONLY);
+            }
+         }
       }
+
    }
 
    return RTN_OK;
+}
+
+void CSimulation::setString(const std::string& str) {
+    m_strCMEIni = str;
 }
 
 //===============================================================================================================================
@@ -207,7 +229,6 @@ bool CSimulation::bFindExeDir(char const* pcArg)
 
    return true;
 }
-
 //===============================================================================================================================
 //! Tells the user about the licence
 //===============================================================================================================================
