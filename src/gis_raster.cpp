@@ -1238,7 +1238,7 @@ bool CSimulation::bWriteRasterGISFile(int const nDataItem, string const *strPlot
       if (NULL == pDataSet)
       {
          // Error, couldn't create file
-         cerr << ERR << "cannot create " << m_strRasterGISOutFormat << " file named " << strFilePathName << "\n"
+         cerr << ERR << "cannot create " << m_strRasterGISOutFormat << " file named " << strFilePathName << endl
               << CPLGetLastErrorMsg() << endl;
          return false;
       }
@@ -1251,7 +1251,7 @@ bool CSimulation::bWriteRasterGISFile(int const nDataItem, string const *strPlot
       if (NULL == pDataSet)
       {
          // Couldn't create in-memory file dataset
-         cerr << ERR << "cannot create in-memory file for " << m_strRasterGISOutFormat << " file named " << strFilePathName << "\n"
+         cerr << ERR << "cannot create in-memory file for " << m_strRasterGISOutFormat << " file named " << strFilePathName << endl
               << CPLGetLastErrorMsg() << endl;
          return false;
       }
@@ -1264,7 +1264,7 @@ bool CSimulation::bWriteRasterGISFile(int const nDataItem, string const *strPlot
 
    // Set geotransformation info for output dataset (will be same as was read in from DEM)
    if (CE_Failure == pDataSet->SetGeoTransform(m_dGeoTransform))
-      LogStream << WARN << "cannot write geotransformation information to " << m_strRasterGISOutFormat << " file named " << strFilePathName << "\n" << CPLGetLastErrorMsg() << endl;
+      LogStream << WARN << "cannot write geotransformation information to " << m_strRasterGISOutFormat << " file named " << strFilePathName << endl << CPLGetLastErrorMsg() << endl;
 
    // Allocate memory for a 1D array, to hold the floating point raster band data for GDAL
    double* pdRaster = new double[m_ulNumCells];
@@ -1840,7 +1840,7 @@ bool CSimulation::bWriteRasterGISFile(int const nDataItem, string const *strPlot
    if (CE_Failure == pBand->RasterIO(GF_Write, 0, 0, m_nXGridMax, m_nYGridMax, pdRaster, m_nXGridMax, m_nYGridMax, GDT_Float64, 0, 0, NULL))
    {
       // Write error, better error message
-      cerr << ERR << "cannot write data for " << m_strRasterGISOutFormat << " file named " << strFilePathName << "\n" << CPLGetLastErrorMsg() << endl;
+      cerr << ERR << "cannot write data for " << m_strRasterGISOutFormat << " file named " << strFilePathName << endl << CPLGetLastErrorMsg() << endl;
       delete[] pdRaster;
       return false;
    }
@@ -1864,7 +1864,7 @@ bool CSimulation::bWriteRasterGISFile(int const nDataItem, string const *strPlot
       if (NULL == pOutDataSet)
       {
          // Couldn't create file
-         cerr << ERR << "cannot create " << m_strRasterGISOutFormat << " file named " << strFilePathName << "\n"
+         cerr << ERR << "cannot create " << m_strRasterGISOutFormat << " file named " << strFilePathName << endl
               << CPLGetLastErrorMsg() << endl;
          return false;
       }

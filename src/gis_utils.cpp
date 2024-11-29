@@ -414,16 +414,14 @@ CGeom2DPoint CSimulation::PtAverage(CGeom2DPoint const* pPt1, CGeom2DPoint const
 //===============================================================================================================================
 CGeom2DIPoint CSimulation::PtiWeightedAverage(CGeom2DIPoint const* pPti1, CGeom2DIPoint const* pPti2, double const dWeight)
 {
-   int
-       nPti1X = pPti1->nGetX(),
-       nPti1Y = pPti1->nGetY(),
-       nPti2X = pPti2->nGetX(),
-       nPti2Y = pPti2->nGetY();
+   int nPti1X = pPti1->nGetX();
+   int nPti1Y = pPti1->nGetY();
+   int nPti2X = pPti2->nGetX();
+   int nPti2Y = pPti2->nGetY();
    double dOtherWeight = 1.0 - dWeight;
 
-   int
-       nPtiWeightAvgX = nRound((dWeight * nPti2X) + (dOtherWeight * nPti1X)),
-       nPtiWeightAvgY = nRound((dWeight * nPti2Y) + (dOtherWeight * nPti1Y));
+   int nPtiWeightAvgX = nRound((dWeight * nPti2X) + (dOtherWeight * nPti1X));
+   int nPtiWeightAvgY = nRound((dWeight * nPti2Y) + (dOtherWeight * nPti1Y));
 
    return CGeom2DIPoint(nPtiWeightAvgX, nPtiWeightAvgY);
 }
@@ -437,9 +435,8 @@ CGeom2DPoint CSimulation::PtAverage(vector<CGeom2DPoint>* pVIn)
    if (nSize == 0)
       return CGeom2DPoint(DBL_NODATA, DBL_NODATA);
 
-   double
-       dAvgX = 0,
-       dAvgY = 0;
+   double dAvgX = 0;
+   double dAvgY = 0;
 
    for (int n = 0; n < nSize; n++)
    {

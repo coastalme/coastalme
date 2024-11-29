@@ -567,7 +567,7 @@ int CSimulation::nDoAllPropagateWaves(void)
          double dBreakingWaveHeight = m_VCoast[nCoast].dGetBreakingWaveHeight(nCoastPoint);
          double dCoastPointWavePeriod = m_VCoast[nCoast].dGetCoastDeepWaterWavePeriod(nCoastPoint);
          
-         // BUG 001 Why do we get -ve dBreakingWaveHeight here?
+         // TODO 080 Why do we get -ve dBreakingWaveHeight here?
          if (bFPIsEqual(dBreakingWaveHeight, DBL_NODATA, TOLERANCE))
          {
             m_VCoast[nCoast].SetBreakingWaveHeight(nCoastPoint, 0);
@@ -914,7 +914,7 @@ int CSimulation::nCalcWavePropertiesOnProfile(int const nCoast, int const nCoast
       if (nRet != RTN_OK)
          return nRet;
 
-      // TODO 008 Read surge outputs
+      // TODO 007 Read surge outputs
       // VdTSurg = {dSurgeInitTime, dCShoreTimeStep},                           // Ditto
       // VdSWLin = {dSurgeLevel, dSurgeLevel},                                  // Ditto
 

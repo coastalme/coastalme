@@ -69,9 +69,8 @@ int CSimulation::nCreateAllProfiles(void)
 
    for (unsigned int nCoast = 0; nCoast < m_VCoast.size(); nCoast++)
    {
-      int
-          nProfile = -1,
-          nCoastSize = m_VCoast[nCoast].nGetCoastlineSize();
+      int nProfile = -1;
+      int nCoastSize = m_VCoast[nCoast].nGetCoastlineSize();
 
       // Any interventions?
       if (! m_strInterventionHeightFile.empty())
@@ -118,9 +117,8 @@ int CSimulation::nCreateAllProfiles(void)
 
       // TODO 013 Try just one SD below the mean
       // Calculate a convexity threshold, which is two standard deviations below the mean: will not create non-cape profiles on coast points with smoothed convexity which exceeds this (i.e. with smoothed curvature values which are less than this threshold)
-      double
-          dStdCurvature = m_VCoast[nCoast].dGetSmoothCurvatureSTD(),
-          dCoastProfileSmoothConvexityThreshold = m_VCoast[nCoast].dGetSmoothCurvatureMean(); // - (2 * dStdCurvature);
+      double dStdCurvature = m_VCoast[nCoast].dGetSmoothCurvatureSTD();
+      double dCoastProfileSmoothConvexityThreshold = m_VCoast[nCoast].dGetSmoothCurvatureMean(); // - (2 * dStdCurvature);
       //          dCoastProfileSmoothConvexityThreshold = m_VCoast[nCoast].dGetSmoothCurvatureMean() - dStdCurvature;
 
       // If we have a coast with almost identical curvature everywhere (e.g. a straight line), then set the threshold to a big -ve value, so that convexity at coastline points is ignored
@@ -207,9 +205,8 @@ int CSimulation::nCreateAllProfilesAndCheckForIntersection(void)
          {
             CGeom2DPoint const* pPtEnd = pProfile->pPtGetPointInProfile(pProfile->nGetProfileSize() - 1);
             CGeom2DIPoint PtiEnd = PtiExtCRSToGrid(pPtEnd);
-            int
-                nXEnd = PtiEnd.nGetX(),
-                nYEnd = PtiEnd.nGetY();
+            int nXEnd = PtiEnd.nGetX();
+            int nYEnd = PtiEnd.nGetY();
 
             // Safety check: the point may be outside the grid because of rounding, so keep it within the grid
             nXEnd = tMax(nXEnd, 0);
@@ -311,9 +308,8 @@ void CSimulation::CreateInterventionProfiles(int const nCoast, int &nProfile /*,
 //===============================================================================================================================
 void CSimulation::CreateNaturalCapeNormalProfiles(int const nCoast, int &nProfile, int const nProfileToNodeSpacing, vector<bool>* bVCoastPointSearched, vector<pair<int, double>> const* prVCurvature)
 {
-   int
-       nCoastSize = m_VCoast[nCoast].nGetCoastlineSize(),
-       nCapeProfilesCreated = 0;
+   int nCoastSize = m_VCoast[nCoast].nGetCoastlineSize();
+   int nCapeProfilesCreated = 0;
 
    // Work along the vector of curvature pairs starting at the convex end
    for (int n = nCoastSize - 2; n >= 1; n--)
@@ -549,9 +545,8 @@ int CSimulation::nCreateProfile(int const nCoast, int const nProfileStartPoint, 
       return nRet;      
    }
 
-   int
-       nXEnd = PtiEnd.nGetX(),
-       nYEnd = PtiEnd.nGetY();
+   int nXEnd = PtiEnd.nGetX();
+   int nYEnd = PtiEnd.nGetY();
 
    // Safety check: is the end point in the contiguous sea?
    if (! m_pRasterGrid->m_Cell[nXEnd][nYEnd].bIsInContiguousSea())
@@ -722,9 +717,8 @@ int CSimulation::nCreateGridEdgeProfile(bool const bCoastStart, int const nCoast
 
    for (unsigned int n = 0; n < VPtiNormalPoints.size(); n++)
    {
-      int
-          nX = VPtiNormalPoints[n].nGetX(),
-          nY = VPtiNormalPoints[n].nGetY();
+      int nX = VPtiNormalPoints[n].nGetX();
+      int nY = VPtiNormalPoints[n].nGetY();
 
       // Mark each cell in the raster grid
       m_pRasterGrid->m_Cell[nX][nY].SetProfile(nProfile);
@@ -742,14 +736,12 @@ int CSimulation::nCreateGridEdgeProfile(bool const bCoastStart, int const nCoast
    }
 
    // Get the deep water wave height and orientation values at the end of the profile
-   int
-       nEndX = VPtiNormalPoints.back().nGetX(),
-       nEndY = VPtiNormalPoints.back().nGetY();
+   int nEndX = VPtiNormalPoints.back().nGetX();
+   int nEndY = VPtiNormalPoints.back().nGetY();
 
-   double
-       dDeepWaterWaveHeight = m_pRasterGrid->m_Cell[nEndX][nEndY].dGetCellDeepWaterWaveHeight(),
-       dDeepWaterWaveAngle = m_pRasterGrid->m_Cell[nEndX][nEndY].dGetCellDeepWaterWaveAngle(),
-       dDeepWaterWavePeriod = m_pRasterGrid->m_Cell[nEndX][nEndY].dGetCellDeepWaterWavePeriod();
+   double dDeepWaterWaveHeight = m_pRasterGrid->m_Cell[nEndX][nEndY].dGetCellDeepWaterWaveHeight();
+   double dDeepWaterWaveAngle = m_pRasterGrid->m_Cell[nEndX][nEndY].dGetCellDeepWaterWaveAngle();
+   double dDeepWaterWavePeriod = m_pRasterGrid->m_Cell[nEndX][nEndY].dGetCellDeepWaterWavePeriod();
 
    // And store them for this profile
    pProfile->SetProfileDeepWaterWaveHeight(dDeepWaterWaveHeight);
@@ -771,19 +763,37 @@ int CSimulation::nCreateGridEdgeProfile(bool const bCoastStart, int const nCoast
 //===============================================================================================================================
 int CSimulation::nGetCoastNormalEndPoint(int const nCoast, int const nStartCoastPoint, int const nCoastSize, CGeom2DPoint const* pPtStart, double const dLineLength, CGeom2DPoint* pPtEnd, CGeom2DIPoint* pPtiEnd)
 {
-   // If at beginning or end of coast, need special treatment for points before and points after
-   int
-       nCoastPointBefore = tMax(nStartCoastPoint - 1, 0),
-       nCoastPointAfter = tMin(nStartCoastPoint + 1, nCoastSize - 1);
+   int const AVGSIZE = 21;    // TODO 011 This should be a user input
 
-   // Get the y = a * x + b equation of the straight line linking the coastline points before and after 'this' coastline point
-   CGeom2DPoint PtBefore = *m_VCoast[nCoast].pPtGetCoastlinePointExtCRS(nCoastPointBefore); // PtBefore has coordinates in external CRS
-   CGeom2DPoint PtAfter = *m_VCoast[nCoast].pPtGetCoastlinePointExtCRS(nCoastPointAfter);   // PtAfter has coordinates in external CRS
+   // Put a maximum of AVGSIZE points before the start point into a vector
+   vector<CGeom2DPoint> PtBeforeToAverage;
+   for (int n = 1; n <= AVGSIZE; n++)
+   {
+      int nPoint = nStartCoastPoint - n;
+      if (nPoint < 0)
+         break;
 
-   // For this linking line, slope a = (y2 - y1) / (x2 - x1)
-   double
-       dYDiff = PtAfter.dGetY() - PtBefore.dGetY(),
-       dXDiff = PtAfter.dGetX() - PtBefore.dGetX();
+      PtBeforeToAverage.push_back(*m_VCoast[nCoast].pPtGetCoastlinePointExtCRS(nPoint));
+   }
+
+   // Put a maximum of AVGSIZE points after the start point into a vector
+   vector<CGeom2DPoint> PtAfterToAverage;
+   for (int n = 1; n <= AVGSIZE; n++)
+   {
+      int nPoint = nStartCoastPoint + n;
+      if (nPoint > nCoastSize-1)
+         break;
+
+      PtAfterToAverage.push_back(*m_VCoast[nCoast].pPtGetCoastlinePointExtCRS(nPoint));
+   }
+
+   // Now average each of these vectors of points: PtBefore and PtAfter have coordinates in external CRS
+   CGeom2DPoint PtBefore = PtAverage(&PtBeforeToAverage);
+   CGeom2DPoint PtAfter = PtAverage(&PtAfterToAverage);
+
+   // Get the y = a * x + b equation of the straight line linking the coastline points before and after 'this' coastline point. For this linking line, slope a = (y2 - y1) / (x2 - x1)
+   double dYDiff = PtAfter.dGetY() - PtBefore.dGetY();
+   double dXDiff = PtAfter.dGetX() - PtBefore.dGetX();
 
    double dXEnd1 = 0, dXEnd2 = 0, dYEnd1 = 0, dYEnd2 = 0;
 
@@ -807,15 +817,13 @@ int CSimulation::nGetCoastNormalEndPoint(int const nCoast, int const nStartCoast
       double dA = dYDiff / dXDiff;
 
       // Now calculate the equation of the straight line which is perpendicular to this linking line
-      double
-          dAPerp = -1 / dA,
-          dBPerp = pPtStart->dGetY() - (dAPerp * pPtStart->dGetX());
+      double dAPerp = -1 / dA;
+      double dBPerp = pPtStart->dGetY() - (dAPerp * pPtStart->dGetX());
 
       // Calculate the end point of the profile: first do some substitution then rearrange as a quadratic equation i.e. in the form Ax^2 + Bx + C = 0 (see http://math.stackexchange.com/questions/228841/how-do-i-calculate-the-intersections-of-a-straight-line-and-a-circle)
-      double
-          dQuadA = 1 + (dAPerp * dAPerp),
-          dQuadB = 2 * ((dBPerp * dAPerp) - (dAPerp * pPtStart->dGetY()) - pPtStart->dGetX()),
-          dQuadC = ((pPtStart->dGetX() * pPtStart->dGetX()) + (pPtStart->dGetY() * pPtStart->dGetY()) + (dBPerp * dBPerp) - (2 * pPtStart->dGetY() * dBPerp) - (dLineLength * dLineLength));
+      double dQuadA = 1 + (dAPerp * dAPerp);
+      double dQuadB = 2 * ((dBPerp * dAPerp) - (dAPerp * pPtStart->dGetY()) - pPtStart->dGetX());
+      double dQuadC = ((pPtStart->dGetX() * pPtStart->dGetX()) + (pPtStart->dGetY() * pPtStart->dGetY()) + (dBPerp * dBPerp) - (2 * pPtStart->dGetY() * dBPerp) - (dLineLength * dLineLength));
 
       // Solve for x and y using the quadratic formula x = (−B ± sqrt(B^2 − 4AC)) / 2A
       double dDiscriminant = (dQuadB * dQuadB) - (4 * dQuadA * dQuadC);
@@ -1052,14 +1060,12 @@ int CSimulation::nModifyAllIntersectingProfiles(void)
                   continue;
 
                // OK go for it
-               int
-                   nProf1LineSeg = 0,
-                   nProf2LineSeg = 0;
-               double
-                   dIntersectX = 0,
-                   dIntersectY = 0,
-                   dAvgEndX = 0,
-                   dAvgEndY = 0;
+               int nProf1LineSeg = 0;
+               int nProf2LineSeg = 0;
+               double dIntersectX = 0;
+               double dIntersectY = 0;
+               double dAvgEndX = 0;
+               double dAvgEndY = 0;
 
                if (bCheckForIntersection(pFirstProfile, pSecondProfile, nProf1LineSeg, nProf2LineSeg, dIntersectX, dIntersectY, dAvgEndX, dAvgEndY))
                {
@@ -1085,9 +1091,8 @@ int CSimulation::nModifyAllIntersectingProfiles(void)
                   else
                   {
                      // The point of intersection is not already present in either profile, so get the number of line segments of each profile
-                     int
-                         nFirstProfileLineSegments = pFirstProfile->nGetNumLineSegments(),
-                         nSecondProfileLineSegments = pSecondProfile->nGetNumLineSegments();
+                     int nFirstProfileLineSegments = pFirstProfile->nGetNumLineSegments();
+                     int nSecondProfileLineSegments = pSecondProfile->nGetNumLineSegments();
 
                      //                   assert(nProf1LineSeg < nFirstProfileLineSegments);
                      //                   assert(nProf2LineSeg < nSecondProfileLineSegments);
@@ -1159,12 +1164,11 @@ int CSimulation::nModifyAllIntersectingProfiles(void)
 //===============================================================================================================================
 //! Checks all line segments of a pair of coastline-normal profiles for intersection. If the lines intersect, returns true with numbers of the line segments at which intersection occurs in nProfile1LineSegment and nProfile1LineSegment, the intersection point in dXIntersect and dYIntersect, and the 'average' seaward endpoint of the two intersecting profiles at dXAvgEnd and dYAvgEnd
 //===============================================================================================================================
-bool CSimulation::bCheckForIntersection(CGeomProfile *const pVProfile1, CGeomProfile *const pVProfile2, int &nProfile1LineSegment, int &nProfile2LineSegment, double&dXIntersect, double&dYIntersect, double&dXAvgEnd, double&dYAvgEnd)
+bool CSimulation::bCheckForIntersection(CGeomProfile *const pVProfile1, CGeomProfile *const pVProfile2, int &nProfile1LineSegment, int& nProfile2LineSegment, double& dXIntersect, double& dYIntersect, double& dXAvgEnd, double& dYAvgEnd)
 {
    // For both profiles, look at all line segments
-   int
-       nProfile1NumSegments = pVProfile1->nGetNumLineSegments(),
-       nProfile2NumSegments = pVProfile2->nGetNumLineSegments();
+   int nProfile1NumSegments = pVProfile1->nGetNumLineSegments();
+   int nProfile2NumSegments = pVProfile2->nGetNumLineSegments();
    //       nProfile1Size = pVProfile1->nGetProfileSize(),
    //       nProfile2Size = pVProfile2->nGetProfileSize();
 
@@ -1176,29 +1180,25 @@ bool CSimulation::bCheckForIntersection(CGeomProfile *const pVProfile1, CGeomPro
       for (int j = 0; j < nProfile2NumSegments; j++)
       {
          // In external coordinates
-         double
-             dX1 = pVProfile1->pPtVGetPoints()->at(i).dGetX(),
-             dY1 = pVProfile1->pPtVGetPoints()->at(i).dGetY(),
-             dX2 = pVProfile1->pPtVGetPoints()->at(i + 1).dGetX(),
-             dY2 = pVProfile1->pPtVGetPoints()->at(i + 1).dGetY();
+         double dX1 = pVProfile1->pPtVGetPoints()->at(i).dGetX();
+         double dY1 = pVProfile1->pPtVGetPoints()->at(i).dGetY();
+         double dX2 = pVProfile1->pPtVGetPoints()->at(i + 1).dGetX();
+         double dY2 = pVProfile1->pPtVGetPoints()->at(i + 1).dGetY();
 
-         double
-             dX3 = pVProfile2->pPtVGetPoints()->at(j).dGetX(),
-             dY3 = pVProfile2->pPtVGetPoints()->at(j).dGetY(),
-             dX4 = pVProfile2->pPtVGetPoints()->at(j + 1).dGetX(),
-             dY4 = pVProfile2->pPtVGetPoints()->at(j + 1).dGetY();
+         double dX3 = pVProfile2->pPtVGetPoints()->at(j).dGetX();
+         double dY3 = pVProfile2->pPtVGetPoints()->at(j).dGetY();
+         double dX4 = pVProfile2->pPtVGetPoints()->at(j + 1).dGetX();
+         double dY4 = pVProfile2->pPtVGetPoints()->at(j + 1).dGetY();
 
          // Uses Cramer's Rule to solve the equations. Modified from code at http://stackoverflow.com/questions/563198/how-do-you-detect-where-two-line-segments-intersect (in turn based on Andre LeMothe's "Tricks of the Windows Game Programming Gurus")
-         double
-             dDiffX1 = dX2 - dX1,
-             dDiffY1 = dY2 - dY1,
-             dDiffX2 = dX4 - dX3,
-             dDiffY2 = dY4 - dY3;
+         double dDiffX1 = dX2 - dX1;
+         double dDiffY1 = dY2 - dY1;
+         double dDiffX2 = dX4 - dX3;
+         double dDiffY2 = dY4 - dY3;
 
-         double
-             dS = -999,
-             dT = -999,
-             dTmp = 0;
+         double dS = -999;
+         double dT = -999;
+         double dTmp = 0;
 
          dTmp = -dDiffX2 * dDiffY1 + dDiffX1 * dDiffY2;
          if (! bFPIsEqual(dTmp, 0.0, TOLERANCE))
@@ -1276,12 +1276,11 @@ int CSimulation::nPutAllProfilesOntoGrid(void)
          // OK, go for it: set up temporary vectors to hold the x-y coords (in grid CRS) of the cells which we will mark
          vector<CGeom2DIPoint> VCellsToMark;
          vector<bool> bVShared;
-         bool
-             bTooShort = false,
-             bTruncated = false,
-             bHitCoast = false,
-             bHitLand = false,
-             bHitAnotherProfile = false;
+         bool bTooShort = false;
+         bool bTruncated = false;
+         bool bHitCoast = false;
+         bool bHitLand = false;
+         bool bHitAnotherProfile = false;
 
          RasterizeProfile(nCoast, nProfile, &VCellsToMark, &bVShared, bTooShort, bTruncated, bHitCoast, bHitLand, bHitAnotherProfile);
 
@@ -1316,10 +1315,9 @@ int CSimulation::nPutAllProfilesOntoGrid(void)
          }
 
          // Get the deep water wave height and orientation values at the end of the profile
-         double
-             dDeepWaterWaveHeight = m_pRasterGrid->m_Cell[VCellsToMark.back().nGetX()][VCellsToMark.back().nGetY()].dGetCellDeepWaterWaveHeight(),
-             dDeepWaterWaveAngle = m_pRasterGrid->m_Cell[VCellsToMark.back().nGetX()][VCellsToMark.back().nGetY()].dGetCellDeepWaterWaveAngle(),
-             dDeepWaterWavePeriod = m_pRasterGrid->m_Cell[VCellsToMark.back().nGetX()][VCellsToMark.back().nGetY()].dGetCellDeepWaterWavePeriod();
+         double dDeepWaterWaveHeight = m_pRasterGrid->m_Cell[VCellsToMark.back().nGetX()][VCellsToMark.back().nGetY()].dGetCellDeepWaterWaveHeight();
+         double dDeepWaterWaveAngle = m_pRasterGrid->m_Cell[VCellsToMark.back().nGetX()][VCellsToMark.back().nGetY()].dGetCellDeepWaterWaveAngle();
+         double dDeepWaterWavePeriod = m_pRasterGrid->m_Cell[VCellsToMark.back().nGetX()][VCellsToMark.back().nGetY()].dGetCellDeepWaterWavePeriod();
 
          // And store them for this profile
          pProfile->SetProfileDeepWaterWaveHeight(dDeepWaterWaveHeight);
@@ -1346,10 +1344,9 @@ void CSimulation::RasterizeProfile(int const nCoast, int const nProfile, vector<
    CGeomProfile* const pProfile = m_VCoast[nCoast].pGetProfile(nProfile);
 
    pVIPointsOut->clear();
-   int
-       nSeg = 0,
-       nSegments = pProfile->nGetNumLineSegments(),
-       nProfiles = m_VCoast[nCoast].nGetNumProfiles(); // TODO 015 This is a bodge, needed if we hit a profile which belongs to a different coast object
+   int nSeg = 0;
+   int nSegments = pProfile->nGetNumLineSegments();
+   int nProfiles = m_VCoast[nCoast].nGetNumProfiles(); // TODO 015 This is a bodge, needed if we hit a profile which belongs to a different coast object
 
    // This contains a list of 'other' profiles which intersect this profile, but which are OK (i.e. they are coincident profiles of this profile). Added for efficiency
    vector<int> VnOtherProfileOK;
@@ -1367,38 +1364,33 @@ void CSimulation::RasterizeProfile(int const nCoast, int const nProfile, vector<
          bShared = true;
 
       // The start point of the normal, must convert from the external CRS to grid CRS. If this is the first line segment of the profile, then the start point is the centroid of a coastline cell
-      double
-          dXStart = dExtCRSXToGridX(PtVSegment[0].dGetX()),
-          dYStart = dExtCRSYToGridY(PtVSegment[0].dGetY());
+      double dXStart = dExtCRSXToGridX(PtVSegment[0].dGetX());
+      double dYStart = dExtCRSYToGridY(PtVSegment[0].dGetY());
 
       // The end point of the normal, again convert from the external CRS to grid CRS. Note too that it could be off the grid
-      double
-          dXEnd = dExtCRSXToGridX(PtVSegment[1].dGetX()),
-          dYEnd = dExtCRSYToGridY(PtVSegment[1].dGetY());
+      double dXEnd = dExtCRSXToGridX(PtVSegment[1].dGetX());
+      double dYEnd = dExtCRSYToGridY(PtVSegment[1].dGetY());
           
       // Safety check
       if (bFPIsEqual(dXStart, dXEnd, TOLERANCE) && bFPIsEqual(dYStart, dYEnd, TOLERANCE))
          continue;
 
       // Interpolate between cells by a simple DDA line algorithm, see http://en.wikipedia.org/wiki/Digital_differential_analyzer_(graphics_algorithm) Note that Bresenham's algorithm gave occasional gaps
-      double
-          dXInc = dXEnd - dXStart,
-          dYInc = dYEnd - dYStart,
-          dLength = tMax(tAbs(dXInc), tAbs(dYInc));
+      double dXInc = dXEnd - dXStart;
+      double dYInc = dYEnd - dYStart;
+      double dLength = tMax(tAbs(dXInc), tAbs(dYInc));
 
       dXInc /= dLength;
       dYInc /= dLength;
 
-      double
-          dX = dXStart,
-          dY = dYStart;
+      double dX = dXStart;
+      double dY = dYStart;
 
       // Process each interpolated point
       for (int m = 0; m <= nRound(dLength); m++)
       {
-         int
-             nX = static_cast<int>(dX),
-             nY = static_cast<int>(dY);
+         int nX = static_cast<int>(dX);
+         int nY = static_cast<int>(dY);
 
          // Do some checking of this interpolated point, but only if this is not a grid-edge profile (these profiles are always valid)
          if ((!pProfile->bStartOfCoast()) && (!pProfile->bEndOfCoast()))
@@ -1626,8 +1618,7 @@ void CSimulation::MergeProfilesAtFinalLineSegments(int const nCoast, int const n
 {
    // The point of intersection is on the final (most seaward) line segment of both profiles. Put together a vector of coincident profile numbers (with no duplicates) for both profiles
    int nCombinedLastSeg = 0;
-   vector<pair<int, int>>
-       prVCombinedProfilesCoincidentProfilesLastSeg;
+   vector<pair<int, int>> prVCombinedProfilesCoincidentProfilesLastSeg;
    CGeomProfile* pFirstProfile = m_VCoast[nCoast].pGetProfile(nFirstProfile);
    CGeomProfile* pSecondProfile = m_VCoast[nCoast].pGetProfile(nSecondProfile);
 
@@ -1681,12 +1672,10 @@ void CSimulation::MergeProfilesAtFinalLineSegments(int const nCoast, int const n
    for (int m = 0; m < nCombinedLastSeg; m++)
       prVCombinedProfilesCoincidentProfilesLastSeg[m].second++;
 
-   vector<pair<int, int>>
-       prVFirstProfileCoincidentProfilesLastSeg = *pFirstProfile->pprVGetPairedCoincidentProfilesForLineSegment(nFirstProfileLineSegments - 1),
-       prVSecondProfileCoincidentProfilesLastSeg = *pSecondProfile->pprVGetPairedCoincidentProfilesForLineSegment(nSecondProfileLineSegments - 1);
-   int
-       nNumFirstProfileCoincidentProfilesLastSeg = static_cast<int>(prVFirstProfileCoincidentProfilesLastSeg.size()),
-       nNumSecondProfileCoincidentProfilesLastSeg = static_cast<int>(prVSecondProfileCoincidentProfilesLastSeg.size());
+   vector<pair<int, int>> prVFirstProfileCoincidentProfilesLastSeg = *pFirstProfile->pprVGetPairedCoincidentProfilesForLineSegment(nFirstProfileLineSegments - 1);
+   vector<pair<int, int>> prVSecondProfileCoincidentProfilesLastSeg = *pSecondProfile->pprVGetPairedCoincidentProfilesForLineSegment(nSecondProfileLineSegments - 1);
+   int nNumFirstProfileCoincidentProfilesLastSeg = static_cast<int>(prVFirstProfileCoincidentProfilesLastSeg.size());
+   int nNumSecondProfileCoincidentProfilesLastSeg = static_cast<int>(prVSecondProfileCoincidentProfilesLastSeg.size());
 
    //   LogStream << m_ulIter << ": END-SEGMENT INTERSECTION between profiles {" << nFirstProfile << "} and {" << nSecondProfile << "} at line segment " << nFirstProfileLineSegments-1 << "/" << nFirstProfileLineSegments-1 << ", and line segment " << nSecondProfileLineSegments-1 << "/" << nSecondProfileLineSegments-1 << ", respectively. Both truncated at [" << dIntersectX << ", " << dIntersectY << "] then profiles {" << nFirstProfile << "} and {" << nSecondProfile << "} extended to [" << dAvgEndX << ", " << dAvgEndY << "]" << endl;
 
@@ -1882,9 +1871,8 @@ int CSimulation::nInsertPointIntoProfilesIfNeededThenUpdate(int const nCoast, in
    // Do this for the main profile and all profiles which are co-incident for this line segment
    for (int nn = 0; nn < nNumCoincident; nn++)
    {
-      int
-          nThisProfile = prVCoincidentProfiles[nn].first,  // The number of this profile
-          nThisLineSeg = prVCoincidentProfiles[nn].second; // The line segment of this profile
+      int nThisProfile = prVCoincidentProfiles[nn].first;  // The number of this profile
+      int nThisLineSeg = prVCoincidentProfiles[nn].second; // The line segment of this profile
       CGeomProfile* pThisProfile = m_VCoast[nCoast].pGetProfile(nThisProfile);
 
       // Is the intersection point already present in the to-retain profile?
@@ -1937,9 +1925,8 @@ int CSimulation::nInsertPointIntoProfilesIfNeededThenUpdate(int const nCoast, in
          // Add the number of the to-truncate profile, and all its coincident profiles, to this line segment
          for (int m = 0; m < nNumToTruncateCoincident; m++)
          {
-            int
-                nProfileToAdd = prVToTruncateCoincidentProfiles[m].first,
-                nProfileToAddLineSeg = prVToTruncateCoincidentProfiles[m].second;
+            int nProfileToAdd = prVToTruncateCoincidentProfiles[m].first;
+            int nProfileToAddLineSeg = prVToTruncateCoincidentProfiles[m].second;
 
             //            LogStream << "\tAdding " << (nProfileToAdd == nProfileToTruncate ? "main" : "co-incident") << " truncate-profile number {" << nProfileToAdd << "}, line segment [" << nProfileToAddLineSeg + nIncr << "] to line segment " << nLineSeg << " of " << (nThisProfile == nMainProfile ? "main" : "co-incident") << " to-retain profile {" << nThisProfile << "}" << endl;
 
@@ -2045,9 +2032,8 @@ void CSimulation::TruncateProfileAndAppendNew(int const nCoast, int const nMainP
    for (int nn = 0; nn < nNumCoincident; nn++)
    {
       // Do this for the main to-truncate profile, and do the same for all its co-incident profiles
-      int
-          nThisProfile = prVCoincidentProfiles[nn].first,
-          nThisProfileLineSeg = prVCoincidentProfiles[nn].second;
+      int nThisProfile = prVCoincidentProfiles[nn].first;
+      int nThisProfileLineSeg = prVCoincidentProfiles[nn].second;
       CGeomProfile* pThisProfile = m_VCoast[nCoast].pGetProfile(nThisProfile);
 
       //       if (nThisProfile == nMainProfile)
@@ -2076,16 +2062,14 @@ void CSimulation::TruncateProfileAndAppendNew(int const nCoast, int const nMainP
       }
 
       // Fix the line seg numbers for this profile
-      vector<int>
-          nVProf,
-          nVProfsLineSeg;
+      vector<int> nVProf;
+      vector<int> nVProfsLineSeg;
       for (int nSeg = 0; nSeg < pThisProfile->nGetNumLineSegments(); nSeg++)
       {
          for (int nCoinc = 0; nCoinc < pThisProfile->nGetNumCoincidentProfilesInLineSegment(nSeg); nCoinc++)
          {
-            int
-                nProf = pThisProfile->nGetProf(nSeg, nCoinc),
-                nProfsLineSeg = pThisProfile->nGetProfsLineSeg(nSeg, nCoinc);
+            int nProf = pThisProfile->nGetProf(nSeg, nCoinc);
+            int nProfsLineSeg = pThisProfile->nGetProfsLineSeg(nSeg, nCoinc);
 
             auto it = find(nVProf.begin(), nVProf.end(), nProf);
             if (it == nVProf.end())

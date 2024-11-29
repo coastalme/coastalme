@@ -1907,6 +1907,7 @@ int CSimulation::nTraceFloodCoastLine(unsigned int const nTraceFromStartCellInde
       nCoast = static_cast<int>(m_VFloodWaveSetupSurge.size()) - 1;
       m_VFloodWaveSetupSurge[nCoast].SetCoastlineExtCRS(&LTempExtCRS);
       break;
+
    case 1:
       m_VFloodWaveSetupSurgeRunup.push_back(CoastTmp);
       nCoast = static_cast<int>(m_VFloodWaveSetupSurgeRunup.size()) - 1;

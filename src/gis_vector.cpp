@@ -46,13 +46,11 @@ using std::stringstream;
 //===============================================================================================================================
 int CSimulation::nReadVectorGISFile(int const nDataItem)
 {
-   int
-       nMaxLayer = 0,
-       nNeedGeometry = 0;
+   int nMaxLayer = 0;
+   int nNeedGeometry = 0;
 
-   string
-       strGISFile,
-       strGeometry;
+   string strGISFile;
+   string strGeometry;
 
    // Set up file name and constraints
    switch (nDataItem)
@@ -118,9 +116,8 @@ int CSimulation::nReadVectorGISFile(int const nDataItem)
          }
 
          // Now get the geometry type
-         int
-             nGeometry = wkbFlatten(pOGRGeometry->getGeometryType()),
-             nThisGeometry = 0;
+         int nGeometry = wkbFlatten(pOGRGeometry->getGeometryType());
+         int nThisGeometry = 0;
 
          switch (nGeometry)
          {
@@ -194,9 +191,8 @@ int CSimulation::nReadVectorGISFile(int const nDataItem)
                   // Point data
                   pOGRPoint = static_cast<OGRPoint*>(pOGRGeometry);
 
-                  int
-                     nPointGridX = nRound(dExtCRSXToGridX(pOGRPoint->getX())),
-                     nPointGridY = nRound(dExtCRSYToGridY(pOGRPoint->getY()));
+                  int nPointGridX = nRound(dExtCRSXToGridX(pOGRPoint->getX()));
+                  int nPointGridY = nRound(dExtCRSYToGridY(pOGRPoint->getY()));
 
                   // Check point data is inside the mesh
                   if ((nPointGridX < 0) || (nPointGridX > m_nXGridMax))
@@ -239,9 +235,8 @@ int CSimulation::nReadVectorGISFile(int const nDataItem)
          // Now get the attributes of this feature
          OGRFeatureDefn* pOGRFeatureDefn = pOGRLayer->GetLayerDefn();
 
-         int
-             nFieldIndex = -1,
-             nID = -1;
+         int nFieldIndex = -1;
+         int nID = -1;
 
          switch (nDataItem)
          {
@@ -428,15 +423,15 @@ bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const *strPlot
          strstrFileName << VECTOR_FLOOD_LINE_NAME;
          break;
 
-         // case (VECTOR_PLOT_FLOOD_SWL_SETUP_SURGE_LINE):
-         //    strFilePathName.append(VECTOR_FLOOD_SWL_SETUP_SURGE_LINE_NAME);
-         //    strstrFileName << VECTOR_FLOOD_SWL_SETUP_SURGE_LINE_NAME;
-         //    break;
+   // case (VECTOR_PLOT_FLOOD_SWL_SETUP_SURGE_LINE):
+   //    strFilePathName.append(VECTOR_FLOOD_SWL_SETUP_SURGE_LINE_NAME);
+   //    strstrFileName << VECTOR_FLOOD_SWL_SETUP_SURGE_LINE_NAME;
+   //    break;
 
-         // case (VECTOR_PLOT_FLOOD_SWL_SETUP_SURGE_RUNUP_LINE):
-         //    strFilePathName.append(VECTOR_FLOOD_SWL_SETUP_SURGE_RUNUP_LINE_NAME);
-         //    strstrFileName << VECTOR_FLOOD_SWL_SETUP_SURGE_RUNUP_LINE_NAME;
-         //    break;
+   // case (VECTOR_PLOT_FLOOD_SWL_SETUP_SURGE_RUNUP_LINE):
+   //    strFilePathName.append(VECTOR_FLOOD_SWL_SETUP_SURGE_RUNUP_LINE_NAME);
+   //    strstrFileName << VECTOR_FLOOD_SWL_SETUP_SURGE_RUNUP_LINE_NAME;
+   //    break;
    }
 
    // Append the 'save number' to the filename, and prepend zeros to the save number
@@ -474,7 +469,7 @@ bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const *strPlot
    GDALDataset* pGDALDataSet = pGDALDriver->Create(strFilePathName.c_str(), 0, 0, 0, GDT_Unknown, m_papszGDALVectorOptions);
    if (pGDALDataSet == NULL)
    {
-      cerr << ERR << "cannot create " << m_strVectorGISOutFormat << " named " << strFilePathName << "\n"
+      cerr << ERR << "cannot create " << m_strVectorGISOutFormat << " named " << strFilePathName << endl
            << CPLGetLastErrorMsg() << endl;
       return false;
    }
@@ -507,7 +502,7 @@ bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const *strPlot
 
    if (pOGRLayer == NULL)
    {
-      cerr << ERR << "cannot create '" << strType << "' layer in " << strFilePathName << "\n"
+      cerr << ERR << "cannot create '" << strType << "' layer in " << strFilePathName << endl
            << CPLGetLastErrorMsg() << endl;
       return false;
    }
@@ -527,7 +522,7 @@ bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const *strPlot
          OGRFieldDefn OGRField1(strFieldValue1.c_str(), OFTInteger);
          if (pOGRLayer->CreateField(&OGRField1) != OGRERR_NONE)
          {
-            cerr << ERR << "cannot create " << strType << " attribute field 1 '" << strFieldValue1 << "' in " << strFilePathName << "\n"
+            cerr << ERR << "cannot create " << strType << " attribute field 1 '" << strFieldValue1 << "' in " << strFilePathName << endl
                << CPLGetLastErrorMsg() << endl;
             return false;
          }
@@ -553,7 +548,7 @@ bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const *strPlot
             // Create the feature in the output layer
             if (pOGRLayer->CreateFeature(pOGRFeature) != OGRERR_NONE)
             {
-               cerr << ERR << "cannot create  " << strType << " feature " << strPlotTitle << " for coast " << i << " in " << strFilePathName << "\n"
+               cerr << ERR << "cannot create  " << strType << " feature " << strPlotTitle << " for coast " << i << " in " << strFilePathName << endl
                   << CPLGetLastErrorMsg() << endl;
                return false;
             }
@@ -585,13 +580,13 @@ bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const *strPlot
          // Testing coordinate system
          // if (pOGRLayer->CreateField(&OGRField1) != OGRERR_NONE)
          // {
-         //    cerr << ERR << "cannot create " << strType << " attribute field 1 '" << strFieldValue1 << "' in " << strFilePathName << "\n"
+         //    cerr << ERR << "cannot create " << strType << " attribute field 1 '" << strFieldValue1 << "' in " << strFilePathName << endl
          //         << CPLGetLastErrorMsg() << endl;
          //    return false;
          // }
          // if (pOGRLayer->CreateField(&OGRField2) != OGRERR_NONE)
          // {
-         //    cerr << ERR << "cannot create " << strType << " attribute field 2 '" << strFieldValue2 << "' in " << strFilePathName << "\n"
+         //    cerr << ERR << "cannot create " << strType << " attribute field 2 '" << strFieldValue2 << "' in " << strFilePathName << endl
          //         << CPLGetLastErrorMsg() << endl;
          //    return false;
          // }
@@ -600,7 +595,7 @@ bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const *strPlot
          // Create the feature in the output layer
          // if (pOGRLayer->CreateFeature(pOGRFeature) != OGRERR_NONE)
          // {
-         //    cerr << ERR << "cannot create  " << strType << " feature " << strPlotTitle << " in " << strFilePathName << "\n"
+         //    cerr << ERR << "cannot create  " << strType << " feature " << strPlotTitle << " in " << strFilePathName << endl
          //         << CPLGetLastErrorMsg() << endl;
          //    return false;
          // }
@@ -612,19 +607,19 @@ bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const *strPlot
          OGRFieldDefn OGRField3(strFieldValue3.c_str(), OFTInteger64);
          if (pOGRLayer->CreateField(&OGRField1) != OGRERR_NONE)
          {
-            cerr << ERR << "cannot create " << strType << " attribute field 1 '" << strFieldValue1 << "' in " << strFilePathName << "\n"
+            cerr << ERR << "cannot create " << strType << " attribute field 1 '" << strFieldValue1 << "' in " << strFilePathName << endl
                << CPLGetLastErrorMsg() << endl;
             return false;
          }
          if (pOGRLayer->CreateField(&OGRField2) != OGRERR_NONE)
          {
-            cerr << ERR << "cannot create " << strType << " attribute field 2 '" << strFieldValue2 << "' in " << strFilePathName << "\n"
+            cerr << ERR << "cannot create " << strType << " attribute field 2 '" << strFieldValue2 << "' in " << strFilePathName << endl
                << CPLGetLastErrorMsg() << endl;
             return false;
          }
          if (pOGRLayer->CreateField(&OGRField3) != OGRERR_NONE)
          {
-            cerr << ERR << "cannot create " << strType << " attribute field 3 '" << strFieldValue3 << "' in " << strFilePathName << "\n"
+            cerr << ERR << "cannot create " << strType << " attribute field 3 '" << strFieldValue3 << "' in " << strFilePathName << endl
                << CPLGetLastErrorMsg() << endl;
             return false;
          }
@@ -653,7 +648,7 @@ bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const *strPlot
          //    // Create the feature in the output layer
          //    if (pOGRLayer->CreateFeature(pOGR2Feature) != OGRERR_NONE)
          //    {
-         //       cerr << ERR << "cannot create  " << strType << " feature " << strPlotTitle << " for coast " << i << " in " << strFilePathName << "\n"
+         //       cerr << ERR << "cannot create  " << strType << " feature " << strPlotTitle << " for coast " << i << " in " << strFilePathName << endl
          //            << CPLGetLastErrorMsg() << endl;
          //       return false;
          //    }
@@ -671,19 +666,19 @@ bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const *strPlot
             OGRFieldDefn OGRField4(strFieldValue3.c_str(), OFTInteger64);
             if (pOGRLayer->CreateField(&OGRField6) != OGRERR_NONE)
             {
-               cerr << ERR << "cannot create " << strType << " attribute field 1 '" << strFieldValue1 << "' in " << strFilePathName << "\n"
+               cerr << ERR << "cannot create " << strType << " attribute field 1 '" << strFieldValue1 << "' in " << strFilePathName << endl
                   << CPLGetLastErrorMsg() << endl;
                return false;
             }
             if (pOGRLayer->CreateField(&OGRField7) != OGRERR_NONE)
             {
-               cerr << ERR << "cannot create " << strType << " attribute field 2 '" << strFieldValue2 << "' in " << strFilePathName << "\n"
+               cerr << ERR << "cannot create " << strType << " attribute field 2 '" << strFieldValue2 << "' in " << strFilePathName << endl
                   << CPLGetLastErrorMsg() << endl;
                return false;
             }
             if (pOGRLayer->CreateField(&OGRField4) != OGRERR_NONE)
             {
-               cerr << ERR << "cannot create " << strType << " attribute field 4 '" << strFieldValue4 << "' in " << strFilePathName << "\n"
+               cerr << ERR << "cannot create " << strType << " attribute field 4 '" << strFieldValue4 << "' in " << strFilePathName << endl
                   << CPLGetLastErrorMsg() << endl;
                return false;
             }
@@ -712,7 +707,7 @@ bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const *strPlot
                // Create the feature in the output layer
                if (pOGRLayer->CreateFeature(pOGR3Feature) != OGRERR_NONE)
                {
-                  cerr << ERR << "cannot create  " << strType << " feature " << strPlotTitle << " for coast " << i << " in " << strFilePathName << "\n"
+                  cerr << ERR << "cannot create  " << strType << " feature " << strPlotTitle << " for coast " << i << " in " << strFilePathName << endl
                      << CPLGetLastErrorMsg() << endl;
                   return false;
                }
@@ -731,20 +726,17 @@ bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const *strPlot
             OGRFieldDefn OGRField5(strFieldValue4.c_str(), OFTInteger64);
             if (pOGRLayer->CreateField(&OGRField8) != OGRERR_NONE)
             {
-               cerr << ERR << "cannot create " << strType << " attribute field 1 '" << strFieldValue1 << "' in " << strFilePathName << "\n"
-                  << CPLGetLastErrorMsg() << endl;
+               cerr << ERR << "cannot create " << strType << " attribute field 1 '" << strFieldValue1 << "' in " << strFilePathName << endl << CPLGetLastErrorMsg() << endl;
                return false;
             }
             if (pOGRLayer->CreateField(&OGRField9) != OGRERR_NONE)
             {
-               cerr << ERR << "cannot create " << strType << " attribute field 2 '" << strFieldValue2 << "' in " << strFilePathName << "\n"
-                  << CPLGetLastErrorMsg() << endl;
+               cerr << ERR << "cannot create " << strType << " attribute field 2 '" << strFieldValue2 << "' in " << strFilePathName << endl << CPLGetLastErrorMsg() << endl;
                return false;
             }
             if (pOGRLayer->CreateField(&OGRField5) != OGRERR_NONE)
             {
-               cerr << ERR << "cannot create " << strType << " attribute field 5 '" << strFieldValue4 << "' in " << strFilePathName << "\n"
-                  << CPLGetLastErrorMsg() << endl;
+               cerr << ERR << "cannot create " << strType << " attribute field 5 '" << strFieldValue4 << "' in " << strFilePathName << endl << CPLGetLastErrorMsg() << endl;
                return false;
             }
             // OK, now do features
@@ -771,8 +763,7 @@ bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const *strPlot
                // Create the feature in the output layer
                if (pOGRLayer->CreateFeature(pOGR4Feature) != OGRERR_NONE)
                {
-                  cerr << ERR << "cannot create  " << strType << " feature " << strPlotTitle << " for coast " << i << " in " << strFilePathName << "\n"
-                     << CPLGetLastErrorMsg() << endl;
+                  cerr << ERR << "cannot create  " << strType << " feature " << strPlotTitle << " for coast " << i << " in " << strFilePathName << endl << CPLGetLastErrorMsg() << endl;
                   return false;
                }
 
@@ -797,52 +788,47 @@ bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const *strPlot
          OGRFieldDefn OGRField1(strFieldValue1.c_str(), OFTInteger);
          if (pOGRLayer->CreateField(&OGRField1) != OGRERR_NONE)
          {
-            cerr << ERR << "cannot create " << strType << " attribute field 1 '" << strFieldValue1 << "' in " << strFilePathName << "\n"
+            cerr << ERR << "cannot create " << strType << " attribute field 1 '" << strFieldValue1 << "' in " << strFilePathName << endl
                << CPLGetLastErrorMsg() << endl;
             return false;
          }
 
          // Also create other integer-numbered values for the category codes of the coastline-normalprofile
-         string
-            strFieldValue2 = "StartCoast",
-            strFieldValue3 = "EndCoast",
-            strFieldValue4 = "HitLand",
-            strFieldValue5 = "HitCoast",
-            strFieldValue6 = "HitNormal";
-         OGRFieldDefn
-            OGRField2(strFieldValue2.c_str(), OFTInteger),
-            OGRField3(strFieldValue3.c_str(), OFTInteger),
-            OGRField4(strFieldValue4.c_str(), OFTInteger),
-            OGRField5(strFieldValue5.c_str(), OFTInteger),
-            OGRField6(strFieldValue6.c_str(), OFTInteger);
+         string strFieldValue2 = "StartCoast";
+         string strFieldValue3 = "EndCoast";
+         string strFieldValue4 = "HitLand";
+         string strFieldValue5 = "HitCoast";
+         string strFieldValue6 = "HitNormal";
+
+         OGRFieldDefn OGRField2(strFieldValue2.c_str(), OFTInteger);
+         OGRFieldDefn OGRField3(strFieldValue3.c_str(), OFTInteger);
+         OGRFieldDefn OGRField4(strFieldValue4.c_str(), OFTInteger);
+         OGRFieldDefn OGRField5(strFieldValue5.c_str(), OFTInteger);
+         OGRFieldDefn OGRField6(strFieldValue6.c_str(), OFTInteger);
+
          if (pOGRLayer->CreateField(&OGRField2) != OGRERR_NONE)
          {
-            cerr << ERR << "cannot create " << strType << " attribute field 2 '" << strFieldValue2 << "' in " << strFilePathName << "\n"
-               << CPLGetLastErrorMsg() << endl;
+            cerr << ERR << "cannot create " << strType << " attribute field 2 '" << strFieldValue2 << "' in " << strFilePathName << endl << CPLGetLastErrorMsg() << endl;
             return false;
          }
          if (pOGRLayer->CreateField(&OGRField3) != OGRERR_NONE)
          {
-            cerr << ERR << "cannot create " << strType << " attribute field 3 '" << strFieldValue3 << "' in " << strFilePathName << "\n"
-               << CPLGetLastErrorMsg() << endl;
+            cerr << ERR << "cannot create " << strType << " attribute field 3 '" << strFieldValue3 << "' in " << strFilePathName << endl << CPLGetLastErrorMsg() << endl;
             return false;
          }
          if (pOGRLayer->CreateField(&OGRField4) != OGRERR_NONE)
          {
-            cerr << ERR << "cannot create " << strType << " attribute field 4 '" << strFieldValue4 << "' in " << strFilePathName << "\n"
-               << CPLGetLastErrorMsg() << endl;
+            cerr << ERR << "cannot create " << strType << " attribute field 4 '" << strFieldValue4 << "' in " << strFilePathName << endl << CPLGetLastErrorMsg() << endl;
             return false;
          }
          if (pOGRLayer->CreateField(&OGRField5) != OGRERR_NONE)
          {
-            cerr << ERR << "cannot create " << strType << " attribute field 5 '" << strFieldValue5 << "' in " << strFilePathName << "\n"
-               << CPLGetLastErrorMsg() << endl;
+            cerr << ERR << "cannot create " << strType << " attribute field 5 '" << strFieldValue5 << "' in " << strFilePathName << endl << CPLGetLastErrorMsg() << endl;
             return false;
          }
          if (pOGRLayer->CreateField(&OGRField6) != OGRERR_NONE)
          {
-            cerr << ERR << "cannot create " << strType << " attribute field 6 '" << strFieldValue6 << "' in " << strFilePathName << "\n"
-               << CPLGetLastErrorMsg() << endl;
+            cerr << ERR << "cannot create " << strType << " attribute field 6 '" << strFieldValue6 << "' in " << strFilePathName << endl << CPLGetLastErrorMsg() << endl;
             return false;
          }
 
@@ -888,7 +874,7 @@ bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const *strPlot
                   // Create the feature in the output layer
                   if (pOGRLayer->CreateFeature(pOGRFeature) != OGRERR_NONE)
                   {
-                     cerr << ERR << "cannot create  " << strType << " feature " << strPlotTitle << " for coast " << i << " and profile " << j << " in " << strFilePathName << "\n"
+                     cerr << ERR << "cannot create  " << strType << " feature " << strPlotTitle << " for coast " << i << " and profile " << j << " in " << strFilePathName << endl
                         << CPLGetLastErrorMsg() << endl;
                      return false;
                   }
@@ -939,7 +925,7 @@ bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const *strPlot
          OGRFieldDefn OGRField1(strFieldValue1.c_str(), OFTReal);
          if (pOGRLayer->CreateField(&OGRField1) != OGRERR_NONE)
          {
-            cerr << ERR << "cannot create " << strType << " attribute field 1 '" << strFieldValue1 << "' in " << strFilePathName << "\n"
+            cerr << ERR << "cannot create " << strType << " attribute field 1 '" << strFieldValue1 << "' in " << strFilePathName << endl
                << CPLGetLastErrorMsg() << endl;
             return false;
          }
@@ -1051,7 +1037,7 @@ bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const *strPlot
                // Create the feature in the output layer
                if (pOGRLayer->CreateFeature(pOGRFeature) != OGRERR_NONE)
                {
-                  cerr << ERR << "cannot create " << strType << " feature " << strPlotTitle << " for coast " << i << " point " << j << " in " << strFilePathName << "\n"
+                  cerr << ERR << "cannot create " << strType << " feature " << strPlotTitle << " for coast " << i << " point " << j << " in " << strFilePathName << endl
                      << CPLGetLastErrorMsg() << endl;
                   return false;
                }
@@ -1078,7 +1064,7 @@ bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const *strPlot
          OGRFieldDefn OGRField1(strFieldValue1.c_str(), OFTReal);
          if (pOGRLayer->CreateField(&OGRField1) != OGRERR_NONE)
          {
-            cerr << ERR << "cannot create " << strType << " attribute field 1 '" << strFieldValue1 << "' in " << strFilePathName << "\n"
+            cerr << ERR << "cannot create " << strType << " attribute field 1 '" << strFieldValue1 << "' in " << strFilePathName << endl
                << CPLGetLastErrorMsg() << endl;
             return false;
          }
@@ -1087,7 +1073,7 @@ bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const *strPlot
          OGRFieldDefn OGRField2(strFieldValue2.c_str(), OFTReal);
          if (pOGRLayer->CreateField(&OGRField2) != OGRERR_NONE)
          {
-            cerr << ERR << "cannot create " << strType << " attribute field 2 '" << strFieldValue2 << "' in " << strFilePathName << "\n"
+            cerr << ERR << "cannot create " << strType << " attribute field 2 '" << strFieldValue2 << "' in " << strFilePathName << endl
                << CPLGetLastErrorMsg() << endl;
             return false;
          }
@@ -1126,7 +1112,7 @@ bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const *strPlot
                   // Create the feature in the output layer
                   if (pOGRLayer->CreateFeature(pOGRFeature) != OGRERR_NONE)
                   {
-                     cerr << ERR << "cannot create " << strType << " feature " << strPlotTitle << " for cell [" << nX << "][" << nY << "] in " << strFilePathName << "\n"
+                     cerr << ERR << "cannot create " << strType << " feature " << strPlotTitle << " for cell [" << nX << "][" << nY << "] in " << strFilePathName << endl
                         << CPLGetLastErrorMsg() << endl;
                      return false;
                   }
@@ -1154,7 +1140,7 @@ bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const *strPlot
          OGRFieldDefn OGRField1(strFieldValue1.c_str(), OFTReal);
          if (pOGRLayer->CreateField(&OGRField1) != OGRERR_NONE)
          {
-            cerr << ERR << "cannot create " << strType << " attribute field 1 '" << strFieldValue1 << "' in " << strFilePathName << "\n"
+            cerr << ERR << "cannot create " << strType << " attribute field 1 '" << strFieldValue1 << "' in " << strFilePathName << endl
                << CPLGetLastErrorMsg() << endl;
             return false;
          }
@@ -1163,7 +1149,7 @@ bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const *strPlot
          OGRFieldDefn OGRField2(strFieldValue2.c_str(), OFTReal);
          if (pOGRLayer->CreateField(&OGRField2) != OGRERR_NONE)
          {
-            cerr << ERR << "cannot create " << strType << " attribute field 2 '" << strFieldValue2 << "' in " << strFilePathName << "\n"
+            cerr << ERR << "cannot create " << strType << " attribute field 2 '" << strFieldValue2 << "' in " << strFilePathName << endl
                << CPLGetLastErrorMsg() << endl;
             return false;
          }
@@ -1199,7 +1185,7 @@ bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const *strPlot
                // Create the feature in the output layer
                if (pOGRLayer->CreateFeature(pOGRFeature) != OGRERR_NONE)
                {
-                  cerr << ERR << "cannot create " << strType << " feature " << strPlotTitle << " for cell [" << nX << "][" << nY << "] in " << strFilePathName << "\n"
+                  cerr << ERR << "cannot create " << strType << " feature " << strPlotTitle << " for cell [" << nX << "][" << nY << "] in " << strFilePathName << endl
                      << CPLGetLastErrorMsg() << endl;
                   return false;
                }
@@ -1229,7 +1215,7 @@ bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const *strPlot
          OGRFieldDefn OGRField1(strFieldValue1.c_str(), OFTInteger);
          if (pOGRLayer->CreateField(&OGRField1) != OGRERR_NONE)
          {
-            cerr << ERR << "cannot create " << strType << " attribute field 1 '" << strFieldValue1 << "' in " << strFilePathName << "\n"
+            cerr << ERR << "cannot create " << strType << " attribute field 1 '" << strFieldValue1 << "' in " << strFilePathName << endl
                << CPLGetLastErrorMsg() << endl;
             return false;
          }
@@ -1237,7 +1223,7 @@ bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const *strPlot
          OGRFieldDefn OGRField2(strFieldValue2.c_str(), OFTInteger);
          if (pOGRLayer->CreateField(&OGRField2) != OGRERR_NONE)
          {
-            cerr << ERR << "cannot create " << strType << " attribute field 2 '" << strFieldValue2 << "' in " << strFilePathName << "\n"
+            cerr << ERR << "cannot create " << strType << " attribute field 2 '" << strFieldValue2 << "' in " << strFilePathName << endl
                << CPLGetLastErrorMsg() << endl;
             return false;
          }
@@ -1245,7 +1231,7 @@ bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const *strPlot
          OGRFieldDefn OGRField3(strFieldValue3.c_str(), OFTReal);
          if (pOGRLayer->CreateField(&OGRField3) != OGRERR_NONE)
          {
-            cerr << ERR << "cannot create " << strType << " attribute field 3 '" << strFieldValue3 << "' in " << strFilePathName << "\n"
+            cerr << ERR << "cannot create " << strType << " attribute field 3 '" << strFieldValue3 << "' in " << strFilePathName << endl
                << CPLGetLastErrorMsg() << endl;
             return false;
          }
@@ -1253,7 +1239,7 @@ bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const *strPlot
          OGRFieldDefn OGRField4(strFieldValue4.c_str(), OFTReal);
          if (pOGRLayer->CreateField(&OGRField4) != OGRERR_NONE)
          {
-            cerr << ERR << "cannot create " << strType << " attribute field 4 '" << strFieldValue4 << "' in " << strFilePathName << "\n"
+            cerr << ERR << "cannot create " << strType << " attribute field 4 '" << strFieldValue4 << "' in " << strFilePathName << endl
                << CPLGetLastErrorMsg() << endl;
             return false;
          }
@@ -1261,7 +1247,7 @@ bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const *strPlot
          OGRFieldDefn OGRField5(strFieldValue5.c_str(), OFTReal);
          if (pOGRLayer->CreateField(&OGRField5) != OGRERR_NONE)
          {
-            cerr << ERR << "cannot create " << strType << " attribute field 5 '" << strFieldValue5 << "' in " << strFilePathName << "\n"
+            cerr << ERR << "cannot create " << strType << " attribute field 5 '" << strFieldValue5 << "' in " << strFilePathName << endl
                << CPLGetLastErrorMsg() << endl;
             return false;
          }
@@ -1269,7 +1255,7 @@ bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const *strPlot
          OGRFieldDefn OGRField6(strFieldValue6.c_str(), OFTReal);
          if (pOGRLayer->CreateField(&OGRField6) != OGRERR_NONE)
          {
-            cerr << ERR << "cannot create " << strType << " attribute field 6 '" << strFieldValue6 << "' in " << strFilePathName << "\n"
+            cerr << ERR << "cannot create " << strType << " attribute field 6 '" << strFieldValue6 << "' in " << strFilePathName << endl
                << CPLGetLastErrorMsg() << endl;
             return false;
          }
@@ -1304,7 +1290,7 @@ bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const *strPlot
                // Create the feature in the output layer
                if (pOGRLayer->CreateFeature(pOGRFeature) != OGRERR_NONE)
                {
-                  cerr << ERR << "cannot create " << strType << " feature " << strPlotTitle << " for coast " << i << " polygon " << j << " in " << strFilePathName << "\n"
+                  cerr << ERR << "cannot create " << strType << " feature " << strPlotTitle << " for coast " << i << " polygon " << j << " in " << strFilePathName << endl
                      << CPLGetLastErrorMsg() << endl;
                   return false;
                }
@@ -1328,7 +1314,7 @@ bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const *strPlot
          OGRFieldDefn OGRField1(strFieldValue1.c_str(), OFTInteger);
          if (pOGRLayer->CreateField(&OGRField1) != OGRERR_NONE)
          {
-            cerr << ERR << "cannot create " << strType << " attribute field 1 '" << strFieldValue1 << "' in " << strFilePathName << "\n"
+            cerr << ERR << "cannot create " << strType << " attribute field 1 '" << strFieldValue1 << "' in " << strFilePathName << endl
                << CPLGetLastErrorMsg() << endl;
             return false;
          }
@@ -1356,7 +1342,7 @@ bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const *strPlot
                // Create the feature in the output layer
                if (pOGRLayer->CreateFeature(pOGRFeature) != OGRERR_NONE)
                {
-                  cerr << ERR << "cannot create  " << strType << " feature " << strPlotTitle << j << " for coast " << i << " in " << strFilePathName << "\n"
+                  cerr << ERR << "cannot create  " << strType << " feature " << strPlotTitle << j << " for coast " << i << " in " << strFilePathName << endl
                      << CPLGetLastErrorMsg() << endl;
                   return false;
                }
@@ -1380,7 +1366,7 @@ bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const *strPlot
          OGRFieldDefn OGRField1(strFieldValue1.c_str(), OFTInteger);
          if (pOGRLayer->CreateField(&OGRField1) != OGRERR_NONE)
          {
-            cerr << ERR << "cannot create " << strType << " attribute field 1 '" << strFieldValue1 << "' in " << strFilePathName << "\n"
+            cerr << ERR << "cannot create " << strType << " attribute field 1 '" << strFieldValue1 << "' in " << strFilePathName << endl
                << CPLGetLastErrorMsg() << endl;
             return false;
          }
@@ -1408,7 +1394,7 @@ bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const *strPlot
                // Create the feature in the output layer
                if (pOGRLayer->CreateFeature(pOGRFeature) != OGRERR_NONE)
                {
-                  cerr << ERR << "cannot create  " << strType << " feature " << strPlotTitle << j << " for coast " << i << " in " << strFilePathName << "\n"
+                  cerr << ERR << "cannot create  " << strType << " feature " << strPlotTitle << j << " for coast " << i << " in " << strFilePathName << endl
                      << CPLGetLastErrorMsg() << endl;
                   return false;
                }
@@ -1436,7 +1422,7 @@ bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const *strPlot
          OGRFieldDefn OGRField1(strFieldValue1.c_str(), OFTReal);
          if (pOGRLayer->CreateField(&OGRField1) != OGRERR_NONE)
          {
-            cerr << ERR << "cannot create " << strType << " attribute field 1 '" << strFieldValue1 << "' in " << strFilePathName << "\n"
+            cerr << ERR << "cannot create " << strType << " attribute field 1 '" << strFieldValue1 << "' in " << strFilePathName << endl
                << CPLGetLastErrorMsg() << endl;
             return false;
          }
@@ -1445,7 +1431,7 @@ bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const *strPlot
          OGRFieldDefn OGRField2(strFieldValue2.c_str(), OFTReal);
          if (pOGRLayer->CreateField(&OGRField2) != OGRERR_NONE)
          {
-            cerr << ERR << "cannot create " << strType << " attribute field 2 '" << strFieldValue2 << "' in " << strFilePathName << "\n"
+            cerr << ERR << "cannot create " << strType << " attribute field 2 '" << strFieldValue2 << "' in " << strFilePathName << endl
                << CPLGetLastErrorMsg() << endl;
             return false;
          }
@@ -1481,7 +1467,7 @@ bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const *strPlot
                // Create the feature in the output layer
                if (pOGRLayer->CreateFeature(pOGRFeature) != OGRERR_NONE)
                {
-                  cerr << ERR << "cannot create " << strType << " feature " << strPlotTitle << " for cell [" << nX << "][" << nY << "] in " << strFilePathName << "\n"
+                  cerr << ERR << "cannot create " << strType << " feature " << strPlotTitle << " for cell [" << nX << "][" << nY << "] in " << strFilePathName << endl
                      << CPLGetLastErrorMsg() << endl;
                   return false;
                }

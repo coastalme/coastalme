@@ -37,16 +37,10 @@ By Blake Morrison (2018). See <a href="https://www.penguin.co.uk/books/419911/sh
 /*
    NOTE Before releasing a new version, do a debug build with -fsanitize options enabled (see CMakeLists.txt) then run the test suite BUT NOT UNDER DEBUG (i.e. not using gdb)
 
-   BUGLIST ************************************************************************************************************
-   BUG 005 Do sanity checking on wave and tide input
-   BUG 001 Do we get -ve breaking wave heights here?
-
    TODOLIST ***********************************************************************************************************
-   TODO 008 Read CShore surge outputs for Manuel's stuff and CSHORE_FILE_INOUT
-
    DOCUMENTATION
    TODO 001 Add more information about all classes
-   TODO 007 Need more info from Manuel: The variable VdWaveSetupSurge() represents the sea level rise due to wave effects (setup) and storm surge. CSHORE calculates them together and they can’t be separated. That’s what the VdWaveSetupSurge variable is. That’s why you saw my initial efforts to try to separate both variables from CSHORE commented out, which is impossible. What is possible is to get the RunUp from CSHORE, but since it uses an empirical formula for that, I finally decided to calculate it separately. To your question about whether you should remove VdStormSurge, the answer is yes. I left it because I still intend at some point to extract the cross-shore transport from CSHORE and balance it in CME with the longshore and cross-shore transports without needing the Dean profile. From my point of view, this would be even more realistic, though at first it will surely drive us crazy.
+   TODO 007 Need more info re. setup and surge from Manuel: The variable VdWaveSetupSurge() represents the sea level rise due to wave effects (setup) and storm surge. CSHORE calculates them together and they can’t be separated. That’s what the VdWaveSetupSurge variable is. That’s why you saw my initial efforts to try to separate both variables from CSHORE commented out, which is impossible. What is possible is to get the RunUp from CSHORE, but since it uses an empirical formula for that, I finally decided to calculate it separately. To your question about whether you should remove VdStormSurge, the answer is yes. I left it because I still intend at some point to extract the cross-shore transport from CSHORE and balance it in CME with the longshore and cross-shore transports without needing the Dean profile. From my point of view, this would be even more realistic, though at first it will surely drive us crazy.
 
    USER INPUT
    TODO should user input be split in two main files: one for frequently-changed things, one for rarely-changed things? If so, what should go into each file ('testing only' OK, but what else?
@@ -64,6 +58,7 @@ By Blake Morrison (2018). See <a href="https://www.penguin.co.uk/books/419911/sh
    TODO 054 Choose more files to omit from "usual" raster output
    TODO 069 Enable ability to represent intervention structures which have their foundation embedded in consolidated sediment. In other words, with the elevation of the base of the intervention structure *below* the top of all consolidated sediment layers. Will need some sanity checking of elevations
    TODO 071 If the user input file format is changed, write a Python script to convert from the old file format to the new
+   TODO 079 Do sanity checking on wave and tide input
 
    ERROR HANDLING
    TODO 004 Improve error handling of situation where we have a valid shadow zone but cannot find a neighbouring cell which is 'under' the coastline
@@ -82,6 +77,7 @@ By Blake Morrison (2018). See <a href="https://www.penguin.co.uk/books/419911/sh
    TODO 053 Improve handling of situation where landward elevation of profile is -ve
    TODO 055 Maybe add a safety check?
    TODO 072 CShore crashes occasionally, is it because of -ve Z values here? CHECK
+   TODO 080 Do we get -ve breaking wave heights here?
 
    THEORY/EFFICIENCY
    TODO 002 Do we really need D50 for drift landform class? What do we need for drift?
@@ -124,7 +120,7 @@ By Blake Morrison (2018). See <a href="https://www.penguin.co.uk/books/419911/sh
    TODO 068 Only show output in log file that is relevant to processes being simulated
    TODO 074 Output history of what landforms are on a particular cell or cells. User inputs cell(s), how?
 
-   078 is max
+   079 is max
 
    COMPLETED
    TODO 003 Make coastline curvature moving window size a user input DONE in 1.1.22
@@ -621,7 +617,7 @@ double const CLIFF_COLLAPSE_HEIGHT_INCREMENT = 0.1;      // Increment the fracti
 
 double const DBL_NODATA = -9999;
 
-string const PROGRAM_NAME = "Coastal Modelling Environment (CoastalME) version 1.2.2 (28 Nov 2024)";
+string const PROGRAM_NAME = "Coastal Modelling Environment (CoastalME) version 1.2.3 (29 Nov 2024)";
 string const PROGRAM_NAME_SHORT = "CME";
 string const CME_INI = "cme.ini";
 

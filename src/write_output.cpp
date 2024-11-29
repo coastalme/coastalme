@@ -488,7 +488,7 @@ void CSimulation::WriteStartRunDetails(void)
    OutStream << " Do riverine flooding?                                     \t: " << (m_bDoRiverineFlooding ? "Y" : "N") << endl;
    if (m_bDoRiverineFlooding)
    {
-      // BUG 002 Need more info on this
+      // TODO 007 Need more info on this
       OutStream << " FloodSWLSetupLine                                         \t: " << (m_bFloodSWLSetupLine ? "Y" : "N") << endl;
       OutStream << " FloodSWLSetupSurgeLine                                    \t: " << (m_bFloodSWLSetupSurgeLine ? "Y" : "N") << endl;
       OutStream << " m_bFloodSWLSetupSurgeRunupLine                            \t: " << (m_bFloodSWLSetupSurgeRunupLine ? "Y" : "N") << endl;

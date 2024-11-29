@@ -49,12 +49,15 @@ double dGetInterpolatedValue(vector<double> const* pVdXdata, vector<double> cons
    double dXL = pVdXdata->at(i);
    double dYL = pVdYdata->at(i);
    double dXR = pVdXdata->at(i+1);
-   double dYR = pVdYdata->at(i+1);                  // Points on either side (unless beyond ends)
+   double dYR = pVdYdata->at(i+1);              // Points on either side (unless beyond ends)
       
    if (! bExtrapolate)                          // If beyond ends of array and not extrapolating
    {
-      if (dX < dXL) dYR = dYL;
-      if (dX > dXR) dYL = dYR;
+      if (dX < dXL)
+         dYR = dYL;
+
+      if (dX > dXR)
+         dYL = dYR;
    }
 
    double ddYdX = (dYR - dYL) / (dXR - dXL);    // Gradient

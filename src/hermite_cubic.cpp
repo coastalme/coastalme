@@ -89,138 +89,128 @@ using std::ios;
 //===============================================================================================================================
 void r8vec_bracket3(int const n, double const* t, double const tval, int* left)
 {
-  int high;
-  int low;
-  int mid;
-//
-//  Check the input data.
-//
-  if ( n < 2 )
-  {
-    cerr << "\n";
-    cerr << "R8VEC_BRACKET3 - Fatal error!\n";
-    cerr << "  N must be at least 2.\n";
-    return;
-  }
-//
-//  If *LEFT is not between 0 and N-2, set it to the middle value.
-//
-  if ( *left < 0 || n - 2 < *left )
-  {
-    *left = ( n - 1 ) / 2;
-  }
-//
-//  CASE 1: TVAL < T[*LEFT]:
-//  Search for TVAL in (T[I],T[I+1]), for I = 0 to *LEFT-1.
-//
-  if ( tval < t[*left] )
-  {
-    if ( *left == 0 )
-    {
-      return;
-    }
-    else if ( *left == 1 )
-    {
-      *left = 0;
-      return;
-    }
-    else if ( t[*left-1] <= tval )
-    {
-      *left = *left - 1;
-      return;
-    }
-    else if ( tval <= t[1] )
-    {
-      *left = 0;
-      return;
-    }
-//
-//  ...Binary search for TVAL in (T[I],T[I+1]), for I = 1 to *LEFT-2.
-//
-    low = 1;
-    high = *left - 2;
+   int high;
+   int low;
+   int mid;
 
-    for ( ; ; )
-    {
-      if ( low == high )
+   //  Check the input data
+   if (n < 2)
+   {
+      cerr << endl << "R8VEC_BRACKET3 - Fatal error! N must be at least 2." << endl;
+      return;
+   }
+
+   // If *left is not between 0 and n-2, set it to the middle value
+   if ((*left < 0) || (n - 2 < *left))
+   {
+      *left = (n - 1) / 2;
+   }
+
+   //  CASE 1: TVAL < T[*LEFT]: search for TVAL in (T[I],T[I+1]), for I = 0 to *LEFT-1.
+   if ( tval < t[*left] )
+   {
+      if ( *left == 0 )
       {
-        *left = low;
-        return;
+         return;
+      }
+      else if ( *left == 1 )
+      {
+         *left = 0;
+         return;
+      }
+      else if ( t[*left-1] <= tval )
+      {
+         *left = *left - 1;
+         return;
+      }
+      else if ( tval <= t[1] )
+      {
+         *left = 0;
+         return;
+      }
+   //
+   //  ...Binary search for TVAL in (T[I],T[I+1]), for I = 1 to *LEFT-2.
+   //
+      low = 1;
+      high = *left - 2;
+
+      for ( ; ; )
+      {
+         if ( low == high )
+         {
+            *left = low;
+            return;
+         }
+
+         mid = ( low + high + 1 ) / 2;
+
+         if ( t[mid] <= tval )
+         {
+            low = mid;
+         }
+         else
+         {
+            high = mid - 1;
+         }
+      }
+   }
+   //
+   //  CASE 2: T[*LEFT+1] < TVAL:
+   //  Search for TVAL in (T[I],T[I+1]) for intervals I = *LEFT+1 to N-2.
+   //
+   else if ( t[*left+1] < tval )
+   {
+      if ( *left == n - 2 )
+      {
+         return;
+      }
+      else if ( *left == n - 3 )
+      {
+         *left = *left + 1;
+         return;
+      }
+      else if ( tval <= t[*left+2] )
+      {
+         *left = *left + 1;
+         return;
+      }
+      else if ( t[n-2] <= tval )
+      {
+         *left = n - 2;
+         return;
       }
 
-      mid = ( low + high + 1 ) / 2;
+      //  ...Binary search for TVAL in (T[I],T[I+1]) for intervals I = *LEFT+2 to N-3.
+      low = *left + 2;
+      high = n - 3;
 
-      if ( t[mid] <= tval )
+      for ( ; ; )
       {
-        low = mid;
-      }
-      else
-      {
-        high = mid - 1;
-      }
-    }
-  }
-//
-//  CASE 2: T[*LEFT+1] < TVAL:
-//  Search for TVAL in (T[I],T[I+1]) for intervals I = *LEFT+1 to N-2.
-//
-  else if ( t[*left+1] < tval )
-  {
-    if ( *left == n - 2 )
-    {
-      return;
-    }
-    else if ( *left == n - 3 )
-    {
-      *left = *left + 1;
-      return;
-    }
-    else if ( tval <= t[*left+2] )
-    {
-      *left = *left + 1;
-      return;
-    }
-    else if ( t[n-2] <= tval )
-    {
-      *left = n - 2;
-      return;
-    }
-//
-//  ...Binary search for TVAL in (T[I],T[I+1]) for intervals I = *LEFT+2 to N-3.
-//
-    low = *left + 2;
-    high = n - 3;
+         if ( low == high )
+         {
+            *left = low;
+            return;
+         }
 
-    for ( ; ; )
-    {
+         mid = ( low + high + 1 ) / 2;
 
-      if ( low == high )
-      {
-        *left = low;
-        return;
+         if ( t[mid] <= tval )
+         {
+            low = mid;
+         }
+         else
+         {
+            high = mid - 1;
+         }
       }
+   }
 
-      mid = ( low + high + 1 ) / 2;
+   //  CASE 3: T[*LEFT] <= TVAL <= T[*LEFT+1]: T is just where the user said it might be.
+   else
+   {
+   }
 
-      if ( t[mid] <= tval )
-      {
-        low = mid;
-      }
-      else
-      {
-        high = mid - 1;
-      }
-    }
-  }
-//
-//  CASE 3: T[*LEFT] <= TVAL <= T[*LEFT+1]:
-//  T is just where the user said it might be.
-//
-  else
-  {
-  }
-
-  return;
+   return;
 }
 
 //===============================================================================================================================

@@ -750,9 +750,8 @@ bool CSimulation::bIsWithinPolygon(CGeom2DPoint const* pPtStart, vector<CGeom2DP
 //===============================================================================================================================
 CGeom2DPoint CSimulation::PtFindPointInPolygon(vector<CGeom2DPoint> const* pPtPoints, int const nStartPoint)
 {
-   int
-      nPolySize = static_cast<int>(pPtPoints->size()),
-      nOffSet = 0;
+   int nPolySize = static_cast<int>(pPtPoints->size());
+   int nOffSet = 0;
    CGeom2DPoint PtStart;
 
    do

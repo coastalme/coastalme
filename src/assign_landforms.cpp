@@ -125,11 +125,10 @@ int CSimulation::nAssignAllCoastalLandforms(void)
             if (bConsSedAtSWL)
             {
                // We have consolidated sediment at SWL, so this is a cliff cell. Set some default values
-               double
-                  dAccumWaveEnergy  = 0,
-                  dNotchBaseElev    = m_dThisIterSWL, // APayo March 2018 replaced m_dMinSWL by m_dThisIterSWL
-                  dNotchDepth       = 0,
-                  dRemaining        = m_dCellSide;
+               double dAccumWaveEnergy = 0;
+               double dNotchBaseElev = m_dThisIterSWL;      // APayo March 2018 replaced m_dMinSWL by m_dThisIterSWL
+               double dNotchDepth = 0;
+               double dRemaining = m_dCellSide;
 
                // Get the existing landform category of this cell
                if (m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->nGetLFCategory() == LF_CAT_CLIFF)

@@ -655,11 +655,20 @@ int CSimulation::nDoCliffCollapseDeposition(int const nCoast, CRWCliff const* pC
          // Get the end point of this coastline-normal line
          CGeom2DIPoint PtiEnd;            // In grid CRS
          int nRtn = nGetCoastNormalEndPoint(nCoast, nThisPoint, nCoastSize, &PtStart, dThisProfileLength, &PtEnd, &PtiEnd);
+
+         // Safety check
          if (nRtn == RTN_ERR_NO_SOLUTION_FOR_ENDPOINT)
          {
             LogStream << m_ulIter << ": unable to deposit sufficient unconsolidated talus from cliff collapse, could not find a solution for the end point of the Dean profile" << endl;
             
             return nRtn;
+         }
+
+         // Safety check
+         if (PtStart == PtEnd)
+         {
+            // This would give a zero-length profile, and a zero-divide error during rasterization. So just move on to the next profile
+            break;
          }
          
          // OK, both the start and end points of this deposition profile are within the grid
@@ -1032,35 +1041,30 @@ void CSimulation::RasterizeCliffCollapseProfile(vector<CGeom2DPoint> const* pVPo
    pVIPointsOut->clear();
 
    // The start point of the normal is the centroid of a coastline cell. Convert from the external CRS to grid CRS
-   double
-      dXStart = dExtCRSXToGridX(pVPointsIn->at(0).dGetX()),
-      dYStart = dExtCRSYToGridY(pVPointsIn->at(0).dGetY());
+   double dXStart = dExtCRSXToGridX(pVPointsIn->at(0).dGetX());
+   double dYStart = dExtCRSYToGridY(pVPointsIn->at(0).dGetY());
 
    // The end point of the normal, again convert from the external CRS to grid CRS. Note too that it could be off the grid
-   double
-      dXEnd = dExtCRSXToGridX(pVPointsIn->at(1).dGetX()),
-      dYEnd = dExtCRSYToGridY(pVPointsIn->at(1).dGetY());
+   double dXEnd = dExtCRSXToGridX(pVPointsIn->at(1).dGetX());
+   double dYEnd = dExtCRSYToGridY(pVPointsIn->at(1).dGetY());
 
    // Interpolate between cells by a simple DDA line algorithm, see http://en.wikipedia.org/wiki/Digital_differential_analyzer_(graphics_algorithm) Note that Bresenham's algorithm gave occasional gaps
-   double
-      dXInc = dXEnd - dXStart,
-      dYInc = dYEnd - dYStart,
-      dLength = tMax(tAbs(dXInc), tAbs(dYInc));
+   double dXInc = dXEnd - dXStart;
+   double dYInc = dYEnd - dYStart;
+   double dLength = tMax(tAbs(dXInc), tAbs(dYInc));
 
    dXInc /= dLength;
    dYInc /= dLength;
 
-   double
-      dX = dXStart,
-      dY = dYStart;
+   double dX = dXStart;
+   double dY = dYStart;
 
    // Process each interpolated point
    int nLength = nRound(dLength);
    for (int m = 0; m <= nLength; m++)
    {
-      int
-         nX = static_cast<int>(dX),
-         nY = static_cast<int>(dY);
+      int nX = static_cast<int>(dX);
+      int nY = static_cast<int>(dY);
 
       // Make sure the interpolated point is within the raster grid (can get this kind of problem due to rounding)
       if (! bIsWithinValidGrid(nX, nY))

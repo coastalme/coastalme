@@ -1,8 +1,9 @@
 # TO DO LIST
 
-068 is max (also using github permalinks to code lines)
+078 is max (also using github permalinks to code lines)
 
 ## Table of contents
+- [Documentation]{#documentation)
 - [User input](#user-input)
 - [Error handling](#error-handling)
 - [Theory/Efficiency](#theory-efficiency)
@@ -10,6 +11,9 @@
 - [Completed](#completed)
 
 
+## Documentation
+-  TODO 001 [Add more information about all classes]
+-  TODO 007 [Need more info re. setup and surge from Manuel]
 
 ## User input
 - TODO 000 [Should user input be split in two main files]
@@ -29,6 +33,9 @@
 - TODO 049 [Handle other command line parameters e.g. path to .ini file, path to datafile](https://github.com/coastalme/coastalme/blob/730a0be2274de02125681ab3e14424dbbfadbaeb/src/utils.cpp#L125)
 - TODO 035 [Also handle other EPSG for vector spatial reference systems](https://github.com/coastalme/coastalme/blob/730a0be2274de02125681ab3e14424dbbfadbaeb/src/gis_vector.cpp#L492)
 - TODO 054 [Choose more files to omit from "usual" raster output]
+- TODO 069 [Enable ability to represent intervention structures which have their foundation embedded in consolidated sediment. In other words, with the elevation of the base of the intervention structure *below* the top of all consolidated sediment layers. Will need some sanity checking of elevations]
+- TODO 071 [If the user input file format is changed, write a Python script to convert from the old file format to the new]
+- TODO 079 [Do sanity checking on wave and tide input]
 
 ##   Error handling
 -  TODO 004 [Improve error handling of situation where we have a valid shadow zone but cannot find a neighbouring cell which is 'under' the coastline](https://github.com/coastalme/coastalme/blob/730a0be2274de02125681ab3e14424dbbfadbaeb/src/calc_shadow_zones.cpp#L490)
@@ -46,6 +53,8 @@
 -  TODO 038 [Do better error handling if insufficient memory](https://github.com/coastalme/coastalme/blob/730a0be2274de02125681ab3e14424dbbfadbaeb/src/gis_raster.cpp#L71)
 -  TODO 053 [Improve handling of situation where landward elevation of profile is -ve](https://github.com/coastalme/coastalme/blob/730a0be2274de02125681ab3e14424dbbfadbaeb/src/calc_waves.cpp#L1581)
 -  TODO 055 [Maybe add a safety check?]
+-  TODO 072 [CShore crashes occasionally, is it because of -ve Z values here? Check]
+-  TODO 080 [Do we get -ve breaking wave heights here?]
 
 ##   Theory/Efficiency
 -  TODO 002 [Do we really need D50 for drift landform class? What do we need for drift?](https://github.com/coastalme/coastalme/blob/730a0be2274de02125681ab3e14424dbbfadbaeb/src/assign_landforms.cpp#L346)
@@ -68,6 +77,11 @@
 -  TODO 061 [Is this safety check to depth of breaking a reasonable thing to do?]
 -  TODO 066 [Should this be for all layers? Check]
 -  TODO 067 [Is this ever non-zero? Check]
+-  TODO 070 [Change CShore to use allocatable arrays (https://fortran-lang.org/en/learn/best_practices/allocatable_arrays/) so that the number of points in the CShore output profiles can either be a user input, or determined by e.g. the physical length of the profile]
+-  TODO 075 [What if bedrock protrudes above Dean profile?]
+-  TODO 076 [When doing parallel profiles, start from the profile which is closest to a right angle with the coast]
+-  TODO 077 [As traverse between the bounding profiles creating parallel profiles, gradually change the parallel profile orientation based on distance weighting of two bounding profiles]
+-  TODO 078 [At present, we don't allow cliff collapse onto interventions. Is this realistic? Should it change with different types on intervention?]
 
 ##  Output
 -  TODO 065 [Get GPKG output working] 
@@ -80,12 +94,18 @@
 -  TODO 043 [When outputting profiles, how do we deal with randomness of profile spacing (since profile location is determined by curvature)?]
 -  TODO 052 [Improve saving of profiles and parallel profiles]
 -  TODO 062 [Show end-of-iteration number of cells with sediment somewhere]
--  TODO 068 Only show output in log file that is relevant to processes being simulated
-   
+-  TODO 068 [Only show output in log file that is relevant to processes being simulated]
+-  TODO 074 [Output history of what landforms are on a particular cell or cells. User inputs cell(s), how?]
+
 ## Completed
--  TODO 003 Make coastline curvature moving window size a user input *** FIXED in 1.1.22
--  TODO 046 Why is cliff collapse eroded during deposition (three size classes) no longer calculated? *** FIXED in 1.1.22
--  TODO 058 Dave to check this *** FIXED in 1.1.22
--  TODO 039 [Rewrite reading of multiple random number seeds](https://github.com/coastalme/coastalme/blob/730a0be2274de02125681ab3e14424dbbfadbaeb/src/read_input.cpp#L535) FIXED in 1.2.1 (8 Nov 2024)
+-  TODO 003 [Make coastline curvature moving window size a user input DONE in 1.1.22]
+-  TODO 046 [Why is cliff collapse eroded during deposition (three size classes) no longer calculated? DONE in 1.1.22]
+-  TODO 058 [Dave to check this DONE in 1.1.22]
+-  TODO 039 [Rewrite reading of multiple random number seeds DONE in 1.2.1, 8 Nov 2024](https://github.com/coastalme/coastalme/blob/730a0be2274de02125681ab3e14424dbbfadbaeb/src/read_input.cpp#L535)
+-  TODO 041 [Read in SWL per-timestep DONE]
+-  BUG 002 [Useless output e.g. clay layers even if no clay input DONE in 1.1.21]
+-  BUG 003 [Use mean SWL for elevations of Dean profiles DONE in 1.2.1, 27 Nov 2024]
+-  BUG 004 [Don't smooth intervention coastline DONE 1.2.1, 27 Nov 2024]
+-  TODO 073 [If output dir does not exist, then create it (ask user first) DONE 1.2.2, 28 Nov 2024]
 
    

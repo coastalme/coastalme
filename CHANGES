@@ -52,7 +52,7 @@ CoastalME CHANGELOG
          Changes to calculation of erosion during Dean profile deposition (DDPD)
          Re-processing of polygons where there are circularities in sequence of polygon processing
          Updated CShore code to compile with GFortran 14.2.0
-         Many cosmetic changes
+         Code tidying
 
 1.2.1    TODO 039 Rewrite reading of multiple random number seeds
          CShore output arrays can now have more than 500 points
@@ -65,7 +65,8 @@ CoastalME CHANGELOG
          TODO 073 If output dir does not exist, then create it (ask user first)
          Code tidying
 
-
+1.2.3    Coastline normals now better drawn
+         Code tidying
 
 
 
