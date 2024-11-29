@@ -1509,7 +1509,8 @@ private:
 
 private:
    // Input and output routines
-   static int nHandleCommandLineParams(int, char const* []);
+   int nHandleCommandLineParams(int, char const* []);
+   void setString(const std::string& str);
    bool bReadIniFile(void);
    bool bReadRunDataFile(void);
    bool bOpenLogFile(void);
