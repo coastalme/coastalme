@@ -595,14 +595,14 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
    // Start the clock ticking
    StartClock();
 
-   // Find out the folder in which the CoastalME executable sits, in order to open the .ini file (they are assumed to be in the same folder)
-   if (! bFindExeDir(pcArgv[0]))
-      return (RTN_ERR_CMEDIR);
-
    // Deal with command-line parameters
    int nRet = nHandleCommandLineParams (nArg, pcArgv);
    if (nRet != RTN_OK)
       return (nRet);
+
+   // Find out the folder in which the CoastalME executable sits, in order to open the .ini file (they are assumed to be in the same folder)
+   if (! bFindExeDir(pcArgv[0]))
+      return (RTN_ERR_CMEDIR);
 
    // OK, we are off, tell the user about the licence and the start time
    AnnounceLicence();
