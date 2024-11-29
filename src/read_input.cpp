@@ -47,8 +47,17 @@ using std::find;
 //===============================================================================================================================
 bool CSimulation::bReadIniFile(void)
 {
-   m_strCMEIni = m_strCMEDir;
+   // Check if user has supplied home directory
+   if (m_strCMEIni.empty())
+      // if not use the cme executable directory to find cme.ini
+      m_strCMEIni = m_strCMEDir;
+   else
+   {
+      // if user has supplied home directory replace cme run directory with user supplied dir
+      m_strCMEDir = m_strCMEIni;
+   }
    m_strCMEIni.append(CME_INI);
+
 
    // The .ini file is assumed to be in the CoastalME executable's directory
    string strFilePathName(m_strCMEIni);
