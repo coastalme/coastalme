@@ -39,8 +39,8 @@ By Blake Morrison (2018). See <a href="https://www.penguin.co.uk/books/419911/sh
 
    TODOLIST ***********************************************************************************************************
    DOCUMENTATION
-   TODO 001 Add more information about all classes
-   TODO 007 Manuel got setup and surge info ffrom CShore. But What shall we do with sthis info? "The variable VdWaveSetupSurge() represents the sea level rise due to wave effects (setup) and storm surge. CSHORE calculates them together and they can’t be separated. That’s what the VdWaveSetupSurge variable is. That’s why you saw my initial efforts to try to separate both variables from CSHORE commented out, which is impossible. What is possible is to get the RunUp from CSHORE, but since it uses an empirical formula for that, I finally decided to calculate it separately. To your question about whether you should remove VdStormSurge, the answer is yes. I left it because I still intend at some point to extract the cross-shore transport from CSHORE and balance it in CME with the longshore and cross-shore transports without needing the Dean profile. From my point of view, this would be even more realistic, though at first it will surely drive us crazy."
+   TODO 001 Add more Doxygen information about all classes
+   TODO 007 We now have setup and surge info from CShore (thanks to Manuel). But what shall we do with this info? "The variable VdWaveSetupSurge() represents the sea level rise due to wave effects (setup) and storm surge. CSHORE calculates them together and they can’t be separated. That’s what the VdWaveSetupSurge variable is. That’s why you saw my initial efforts to try to separate both variables from CSHORE commented out, which is impossible. What is possible is to get the RunUp from CSHORE, but since it uses an empirical formula for that, I finally decided to calculate it separately. To your question about whether you should remove VdStormSurge, the answer is yes. I left it because I still intend at some point to extract the cross-shore transport from CSHORE and balance it in CME with the longshore and cross-shore transports without needing the Dean profile. From my point of view, this would be even more realistic, though at first it will surely drive us crazy."
 
    USER INPUT
    TODO 000 Should user input be split in two main files: one for frequently-changed things, one for rarely-changed things? If so, what should go into each file ('testing only' OK, but what else?)
@@ -53,6 +53,7 @@ By Blake Morrison (2018). See <a href="https://www.penguin.co.uk/books/419911/sh
    TODO 049 Handle other command line parameters e.g. path to .ini file, path to datafile
    TODO 035 Also handle other EPSG for vector spatial reference systems
    TODO 054 Choose more files to omit from "usual" raster output
+   TODO 081 Choose more files to omit from "usual" vector output
    TODO 069 Enable ability to represent intervention structures which have their foundation embedded in consolidated sediment. In other words, with the elevation of the base of the intervention structure *below* the top of all consolidated sediment layers. Will need some sanity checking of elevations
    TODO 071 If the user input file format is changed, write a Python script to convert from the old file format to the new
 
@@ -79,7 +80,7 @@ By Blake Morrison (2018). See <a href="https://www.penguin.co.uk/books/419911/sh
    TODO 010 Do we also need to update the active zone cells?
    TODO 012 Change finding of adjacent polygons, and calculation of the length of shared normals, when we make polygon seaward length determined by depth of closure
    TODO 013 Change calculation (need user input?) of coastline smoothing convexity threshold
-   TODO 014 Profile spacing, should try gradually increasing the profile spacing with increasing concavity, and decreasing the profile spacing with increasing convexity
+   TODO 014 Profile spacing, could try gradually increasing the profile spacing with increasing concavity, and decreasing the profile spacing with increasing convexity
    TODO 016 Check mass balance for recirculating unconsolidated sediment option
    TODO 023 Only calculate shore platform erosion if cell is in a polygon
    TODO 024 Should we calculate platform erosion on a profile that has hit dry land?
@@ -96,12 +97,12 @@ By Blake Morrison (2018). See <a href="https://www.penguin.co.uk/books/419911/sh
    TODO 075 What if bedrock sticks above Dean profile?
    TODO 076 When doing parallel profiles, start from the profile which is closest to a right angle with the coast
    TODO 077 As traverse between the bounding profiles creating parallel profiles, gradually change the parallel profile orientation based on distance weighting of two bounding profiles
-   TODO 078 At present, we don't allow cliff collapse onto interventions. Is this realistic? Should it change with different types on intervention?
+   TODO 078 At present, we don't allow cliff collapse onto interventions. Is this realistic? Should it be different for different types on intervention?
 
    OUTPUT
    TODO 065 Get GPKG output working: GDAL 3.9.1 does not yet implement this correctly. Currently is OK for vector output (but is very slow), not yet working for raster output
    TODO 063 Add NetCDF support, see https://trac.osgeo.org/gdal/wiki/NetCDF
-   TODO 064 Add support for grids that are not oriented N-S and W-E, but are still rectangular (will need to add a transformation in the reading and writing process, the first to bring it to the local base and the second to save it in global coordinates)
+   TODO 064 Add support for grids that are not oriented N-S and W-E, but which are still rectangular (will need to add a transformation in the reading and writing process, the first to bring it to the local base and the second to save it in global coordinates)
    TODO 031 Get raster slice output working with multiple slices
    TODO 032 Improve output scaling for DBL_NODATA situation
    TODO 033 Also test and configure (e.g. by passing open() options) other vector output file formats
@@ -112,7 +113,7 @@ By Blake Morrison (2018). See <a href="https://www.penguin.co.uk/books/419911/sh
    TODO 068 Only show output in log file that is relevant to processes being simulated
    TODO 074 Output history of what landforms are on a particular cell or cells. User inputs cell(s), how?
 
-   080 is max
+   081 is max
 
    COMPLETED
    TODO 003 Make coastline curvature moving window size a user input DONE in 1.1.22

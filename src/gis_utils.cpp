@@ -1236,7 +1236,7 @@ bool CSimulation::bSaveAllRasterGISFiles(void)
 }
 
 //===============================================================================================================================
-//! The bSaveAllvectorGISFiles member function saves the vector GIS files
+//! The bSaveAllvectorGISFiles member function saves the vector GIS files TODO 081 Choose more files to omit from "usual" vector output
 //===============================================================================================================================
 bool CSimulation::bSaveAllVectorGISFiles(void)
 {
