@@ -162,7 +162,7 @@ CSimulation::CSimulation (void)
    m_bSedimentInputEventSave =
    m_bWaveSetupSave =
    m_bStormSurgeSave =
-   m_bDoRiverineFlooding =
+   m_bRiverineFlooding =
    m_bRunUpSave =
    m_bSetupSurgeFloodMaskSave =
    m_bSetupSurgeRunupFloodMaskSave =
@@ -596,7 +596,7 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
    StartClock();
 
    // Deal with command-line parameters
-   int nRet = nHandleCommandLineParams (nArg, pcArgv);
+   int nRet = nHandleCommandLineParams(nArg, pcArgv);
    if (nRet != RTN_OK)
       return (nRet);
 
@@ -832,7 +832,7 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
          m_bSingleDeepWaterWaveValues = true;
 
       // Read in time series values, and initialize the vector which stores each timestep's deep water wave height, orientation and period
-      nRet = nReadWaveStationTimeSeriesFile (nWaveStations);
+      nRet = nReadWaveStationInputFile (nWaveStations);
       if (nRet != RTN_OK)
          return (nRet);
    }
@@ -1272,7 +1272,7 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
 
       if (m_bFloodSWLSetupSurgeRunupLine || m_bSetupSurgeRunupFloodMaskSave)
       {
-         // TODO 007
+         // TODO 007 Info needed
          m_nLevel = 1;
          
          nRet = nLocateFloodAndCoasts();

@@ -66,6 +66,16 @@ CoastalME CHANGELOG
          Code tidying
 
 1.2.3    Coastline normals now better drawn
+         TODO 047 Where is the GDAL description for the deep water wave stations vector file?
+         TODO 048 Where is the GDAL description for the flood input locations point or vector file?
+         TODO 027 Sort out GDAL problem with raster reference units
+         TODO 038 Do better error handling if insufficient memory
+         TODO 079 Do sanity checking on wave and tide input
+         TODO 072 CShore crashes occasionally, is it because of -ve Z values here?
+         TODO 050 Update for recent versions of Windows
+         TODO 037 Need more info on nFindIndex()
+         Tidied TODOs
+         Output tidying
          Code tidying
 
 

@@ -880,7 +880,7 @@ int CSimulation::nDoCliffCollapseDeposition(int const nCoast, CRWCliff const* pC
 
             else if (dVDeanProfile[n] < dVProfileNow[n])
             {
-               // Here, the Dean profile is lower than the existing profile, so we must remove some sediment from this cell  *** TODO CONS or UNCONS?
+               // Here, the Dean profile is lower than the existing profile, so we must remove some sediment from this cell  *** TODO What if bedrock sticks above Dean profile?
                double dThisLowering = dVProfileNow[n] - dVDeanProfile[n];
 
                // Find out how much sediment we have available on this cell

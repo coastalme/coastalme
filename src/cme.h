@@ -40,25 +40,21 @@ By Blake Morrison (2018). See <a href="https://www.penguin.co.uk/books/419911/sh
    TODOLIST ***********************************************************************************************************
    DOCUMENTATION
    TODO 001 Add more information about all classes
-   TODO 007 Need more info re. setup and surge from Manuel: The variable VdWaveSetupSurge() represents the sea level rise due to wave effects (setup) and storm surge. CSHORE calculates them together and they can’t be separated. That’s what the VdWaveSetupSurge variable is. That’s why you saw my initial efforts to try to separate both variables from CSHORE commented out, which is impossible. What is possible is to get the RunUp from CSHORE, but since it uses an empirical formula for that, I finally decided to calculate it separately. To your question about whether you should remove VdStormSurge, the answer is yes. I left it because I still intend at some point to extract the cross-shore transport from CSHORE and balance it in CME with the longshore and cross-shore transports without needing the Dean profile. From my point of view, this would be even more realistic, though at first it will surely drive us crazy.
+   TODO 007 Manuel got setup and surge info ffrom CShore. But What shall we do with sthis info? "The variable VdWaveSetupSurge() represents the sea level rise due to wave effects (setup) and storm surge. CSHORE calculates them together and they can’t be separated. That’s what the VdWaveSetupSurge variable is. That’s why you saw my initial efforts to try to separate both variables from CSHORE commented out, which is impossible. What is possible is to get the RunUp from CSHORE, but since it uses an empirical formula for that, I finally decided to calculate it separately. To your question about whether you should remove VdStormSurge, the answer is yes. I left it because I still intend at some point to extract the cross-shore transport from CSHORE and balance it in CME with the longshore and cross-shore transports without needing the Dean profile. From my point of view, this would be even more realistic, though at first it will surely drive us crazy."
 
    USER INPUT
-   TODO should user input be split in two main files: one for frequently-changed things, one for rarely-changed things? If so, what should go into each file ('testing only' OK, but what else?
-   TODO 011 Should this constant be a user input?
-   TODO 036 Read in changed deep water wave values
-   TODO 030 Do we also need to be able to input landform sub-categories?
-   TODO 027 Sort out GDAL problem with raster reference units
-   TODO 022 Get intervention update working
+   TODO 000 Should user input be split in two main files: one for frequently-changed things, one for rarely-changed things? If so, what should go into each file ('testing only' OK, but what else?)
+   TODO 011 Should this constant be a user input? If so, TODO 071
+   TODO 036 Read in changed deep water wave values (need TODO 071)
+   TODO 030 Do we also need to be able to input landform sub-categories? (need TODO 071)
+   TODO 022 Get intervention update working (need TODO 071)
    TODO 042 Should we have a smallest valid input for KLS in the CERC equation?
-   TODO 045 Method of getting depth of closure value needs to be a user input
-   TODO 047 Where is the GDAL description for the deep water wave stations vector file?
-   TODO 048 Where is the GDAL description for the flood input locations point or vector file?
+   TODO 045 Method of getting depth of closure value needs to be a user input (need TODO 071)
    TODO 049 Handle other command line parameters e.g. path to .ini file, path to datafile
    TODO 035 Also handle other EPSG for vector spatial reference systems
    TODO 054 Choose more files to omit from "usual" raster output
    TODO 069 Enable ability to represent intervention structures which have their foundation embedded in consolidated sediment. In other words, with the elevation of the base of the intervention structure *below* the top of all consolidated sediment layers. Will need some sanity checking of elevations
    TODO 071 If the user input file format is changed, write a Python script to convert from the old file format to the new
-   TODO 079 Do sanity checking on wave and tide input
 
    ERROR HANDLING
    TODO 004 Improve error handling of situation where we have a valid shadow zone but cannot find a neighbouring cell which is 'under' the coastline
@@ -73,10 +69,8 @@ By Blake Morrison (2018). See <a href="https://www.penguin.co.uk/books/419911/sh
    TODO 025 Improve situation where this point has only zero thickness layers
    TODO 026 Check situation where cell in parallel profile is not in a polygon
    TODO 028 Give a warning if raster input layer has several bands
-   TODO 038 Do better error handling if insufficient memory
    TODO 053 Improve handling of situation where landward elevation of profile is -ve
-   TODO 055 Maybe add a safety check?
-   TODO 072 CShore crashes occasionally, is it because of -ve Z values here? CHECK
+   TODO 055 Maybe add a safety check here?
    TODO 080 Do we get -ve breaking wave heights here?
 
    THEORY/EFFICIENCY
@@ -89,9 +83,7 @@ By Blake Morrison (2018). See <a href="https://www.penguin.co.uk/books/419911/sh
    TODO 016 Check mass balance for recirculating unconsolidated sediment option
    TODO 023 Only calculate shore platform erosion if cell is in a polygon
    TODO 024 Should we calculate platform erosion on a profile that has hit dry land?
-   TODO 037 Need more info on nFindIndex()
    TODO 044 Estuaries :-)
-   TODO 050 Update for recent versions of Windows
    TODO 051 Implement other ways of calculating depth of closure, see TODO 045
    TODO 056 Check this please Andres
    TODO 057 Check this please Manuel
@@ -99,7 +91,7 @@ By Blake Morrison (2018). See <a href="https://www.penguin.co.uk/books/419911/sh
    TODO 060 Remove 'magic numbers' from code here
    TODO 061 Is this safety check to depth of breaking a reasonable thing to do?
    TODO 066 Should this be for all layers? Check
-   TODO 067 Is this ever non-zero? Check
+   TODO 067 Suspended fine sediment never decreases i.e. no suspended fine sediment ever leaves the grid. Is this OK?
    TODO 070 Change CShore to use allocatable arrays (https://fortran-lang.org/en/learn/best_practices/allocatable_arrays/) so that the number of points in the CShore output profiles can either be a user input, or determined by e.g. the physical length of the profile
    TODO 075 What if bedrock sticks above Dean profile?
    TODO 076 When doing parallel profiles, start from the profile which is closest to a right angle with the coast
@@ -120,7 +112,7 @@ By Blake Morrison (2018). See <a href="https://www.penguin.co.uk/books/419911/sh
    TODO 068 Only show output in log file that is relevant to processes being simulated
    TODO 074 Output history of what landforms are on a particular cell or cells. User inputs cell(s), how?
 
-   079 is max
+   080 is max
 
    COMPLETED
    TODO 003 Make coastline curvature moving window size a user input DONE in 1.1.22
@@ -132,6 +124,14 @@ By Blake Morrison (2018). See <a href="https://www.penguin.co.uk/books/419911/sh
    BUG 003 Use mean SWL for elevations of Dean profiles DONE in 1.2.1, 27 Nov 2024
    BUG 004 Don't smooth intervention coastline DONE 1.2.1, 27 Nov 2024
    TODO 073 If output dir does not exist, then create it (ask user first) DONE 1.2.2, 28 Nov 2024
+   TODO 047 Where is the GDAL description for the deep water wave stations vector file? DONE 1.2.3, 2 Dec 2024
+   TODO 048 Where is the GDAL description for the flood input locations point or vector file? DONE 1.2.3, 2 Dec 2024
+   TODO 027 Sort out GDAL problem with raster reference units DONE 1.2.3, 2 Dec 2024
+   TODO 038 Do better error handling if insufficient memory DONE 1.2.3, 2 Dec 2024
+   TODO 079 Do sanity checking on wave and tide input DONE 1.2.3, 2 Dec 2024
+   TODO 072 CShore crashes occasionally, is it because of -ve Z values here? DONE 1.2.3, 2 Dec 2024
+   TODO 050 Update for recent versions of Windows DONE 1.2.3, 2 Dec 2024
+   TODO 037 Need more info on nFindIndex() DONE 1.2.3, 2 Dec 2024
 
 */
 
@@ -617,7 +617,7 @@ double const CLIFF_COLLAPSE_HEIGHT_INCREMENT = 0.1;      // Increment the fracti
 
 double const DBL_NODATA = -9999;
 
-string const PROGRAM_NAME = "Coastal Modelling Environment (CoastalME) version 1.2.3 (29 Nov 2024)";
+string const PROGRAM_NAME = "Coastal Modelling Environment (CoastalME) version 1.2.3 (03 Dec 2024)";
 string const PROGRAM_NAME_SHORT = "CME";
 string const CME_INI = "cme.ini";
 
@@ -631,7 +631,7 @@ string const DISCLAIMER5 = "program; if not, contact the Free Software Foundatio
 string const DISCLAIMER6 = "Cambridge, MA 02139, USA.";
 
 string const ABOUT = "simulates the long-term behaviour of a coast. This initial version considers only simple soft cliff cross-shore effects";
-string const THANKS = "Many thanks to:\n\tManuel Cobos Budia\n\tMark Dickson\n\tJim W. Hall\n\tMartin D. Hurst\n\tMatthew Ives\n\tRobert J. Nicholls\n\tIan Townend\n\tMike J.A. Walkden";
+string const THANKS = "Many thanks to:\n\tWilf Chun\n\tManuel Cobos Budia\n\tMark Dickson\n\tJim W. Hall\n\tMartin D. Hurst\n\tMatthew Ives\n\tRobert J. Nicholls\n\tIan Townend\n\tMike J.A. Walkden";
 string const GDAL_DRIVERS = "GDAL drivers";
 
 string const USAGE = "Usage: cme [OPTION]...";

@@ -210,6 +210,7 @@ bool CSimulation::bReadIniFile(void)
 
 //===============================================================================================================================
 //! Reads the run details input file and does some initialization
+// TODO 000 Should user input be split in two main files: one for frequently-changed things, one for rarely-changed things? If so, what should go into each file ('testing only' OK, but what else?)
 //===============================================================================================================================
 bool CSimulation::bReadRunDataFile(void)
 {
@@ -2075,13 +2076,12 @@ bool CSimulation::bReadRunDataFile(void)
             break;
 
          case 37:
-            // Deep water wave height time series file
+            // Deep water wave height input file. Each point in m_strDeepWaterWavesInputFile is a triad of wave height, orientation and period for each time step
             if (m_bHaveWaveStationData)
             {
-               // Only read this if we have a file for wave height points. Each point in m_strDeepWaterWavesTimeSeriesFile is a triad of wave height, orientation and period for each time step
                if (strRH.empty())
                {
-                  strErr = "line " + to_string(nLine) + ": filename missing for deep water wave height time series";
+                  strErr = "line " + to_string(nLine) + ": filename missing for deep water wave height input";
                   break;
                }
 
@@ -2094,13 +2094,13 @@ bool CSimulation::bReadRunDataFile(void)
                if ((strRH[0] == PATH_SEPARATOR) || (strRH[0] == TILDE) || (strRH[1] == COLON))
                {
                   // It has an absolute path, so use it 'as is'
-                  m_strDeepWaterWavesTimeSeriesFile = strRH;
+                  m_strDeepWaterWavesInputFile = strRH;
                }
                else
                {
                   // It has a relative path, so prepend the CoastalME dir
-                  m_strDeepWaterWavesTimeSeriesFile = m_strCMEDir;
-                  m_strDeepWaterWavesTimeSeriesFile.append(strRH);
+                  m_strDeepWaterWavesInputFile = m_strCMEDir;
+                  m_strDeepWaterWavesInputFile.append(strRH);
                }
             }
             break;
@@ -2581,7 +2581,7 @@ bool CSimulation::bReadRunDataFile(void)
 
             if (strRH.find("y") != string::npos)
             {
-               m_bDoRiverineFlooding = true;
+               m_bRiverineFlooding = true;
                m_bSetupSurgeFloodMaskSave = true;
                m_bSetupSurgeRunupFloodMaskSave = true;
                m_bRasterWaveFloodLineSave = true;
@@ -2590,7 +2590,7 @@ bool CSimulation::bReadRunDataFile(void)
 
          case 67:
             // Output riverine flooding vector files
-            if (m_bDoRiverineFlooding)
+            if (m_bRiverineFlooding)
             {
                if (! strRH.empty())
                {
@@ -2636,7 +2636,7 @@ bool CSimulation::bReadRunDataFile(void)
             break;
 
          case 68:
-            if (m_bDoRiverineFlooding)
+            if (m_bRiverineFlooding)
             {
                // Run-up equation?
                if (bIsStringValidInt(strRH))
@@ -2649,7 +2649,7 @@ bool CSimulation::bReadRunDataFile(void)
             break;
 
          case 69:
-            if (m_bDoRiverineFlooding && m_bVectorWaveFloodLineSave)
+            if (m_bRiverineFlooding && m_bVectorWaveFloodLineSave)
             {
                // Characteristic locations for flood?
                strRH = strToLower(&strRH);
@@ -2663,7 +2663,7 @@ bool CSimulation::bReadRunDataFile(void)
             break;
 
          case 70:
-            if (m_bDoRiverineFlooding)
+            if (m_bRiverineFlooding)
             {
                // Path of location points file
                if (! strRH.empty())
@@ -2749,7 +2749,7 @@ bool CSimulation::bReadRunDataFile(void)
             {
                if (strRH.empty())
                {
-                  strErr = "line " + to_string(nLine) + ": filename missing for sediment input time series";
+                  strErr = "line " + to_string(nLine) + ": filename missing for sediment input";
                   break;
                }
 
@@ -2762,13 +2762,13 @@ bool CSimulation::bReadRunDataFile(void)
                if ((strRH[0] == PATH_SEPARATOR) || (strRH[0] == TILDE) || (strRH[1] == COLON))
                {
                   // It has an absolute path, so use it 'as is'
-                  m_strSedimentInputEventTimeSeriesFile = strRH;
+                  m_strSedimentInputEventFile = strRH;
                }
                else
                {
                   // It has a relative path, so prepend the CoastalME dir
-                  m_strSedimentInputEventTimeSeriesFile = m_strCMEDir;
-                  m_strSedimentInputEventTimeSeriesFile.append(strRH);
+                  m_strSedimentInputEventFile = m_strCMEDir;
+                  m_strSedimentInputEventFile.append(strRH);
                }
             }
             break;
@@ -3009,7 +3009,7 @@ bool CSimulation::bReadRunDataFile(void)
 }
 
 //===============================================================================================================================
-//! Reads the tide time series data TODO 079
+//! Reads the tide time series data
 //===============================================================================================================================
 int CSimulation::nReadTideDataFile()
 {
@@ -3046,7 +3046,7 @@ int CSimulation::nReadTideDataFile()
       // Check that this is a valid double
       if (! bIsStringValidDouble(strRec))
       {
-         cerr << ERR << "invalid floating point number for tide data '" << strRec << "' in " << m_strTideDataFile << endl;
+         cerr << ERR << "invalid floating point number for tide data '" << strRec << "' on line " << nLine << " of " << m_strTideDataFile << endl;
          return RTN_ERR_TIDEDATAFILE;
       }
 
@@ -3168,22 +3168,22 @@ int CSimulation::nReadShapeFunctionFile()
 }
 
 //===============================================================================================================================
-//! Reads the deep water wave station time series data
+//! Reads the deep water wave station input data. Each point in m_strDeepWaterWavesInputFile is a triad of wave height, orientation and period for each time step
 //===============================================================================================================================
-int CSimulation::nReadWaveStationTimeSeriesFile(int const nWaveStations)
+int CSimulation::nReadWaveStationInputFile(int const nWaveStations)
 {
    // Create an ifstream object
    ifstream InStream;
 
    // Try to open the file for input
-   InStream.open(m_strDeepWaterWavesTimeSeriesFile.c_str(), ios::in);
+   InStream.open(m_strDeepWaterWavesInputFile.c_str(), ios::in);
 
    // Did it open OK?
    if (!InStream.is_open())
    {
       // Error: cannot open time series file for input
-      cerr << ERR << "cannot open " << m_strDeepWaterWavesTimeSeriesFile << " for input" << endl;
-      return RTN_ERR_READING_SEDIMENT_INPUT_EVENT;
+      cerr << ERR << "cannot open " << m_strDeepWaterWavesInputFile << " for input" << endl;
+      return RTN_ERR_OPEN_DEEP_WATER_WAVE_DATA;
    }
 
    // Opened OK
@@ -3193,7 +3193,7 @@ int CSimulation::nReadWaveStationTimeSeriesFile(int const nWaveStations)
    int nTimeStepsRead = 0;
    string strRec, strErr;
 
-   // Read each line, ignoring comment lines
+   // Read each line, ignoring blank lines and comment lines
    while (getline(InStream, strRec))
    {
       nLine++;
@@ -3215,7 +3215,7 @@ int CSimulation::nReadWaveStationTimeSeriesFile(int const nWaveStations)
             if (nPos == string::npos)
             {
                // Error: badly formatted (no colon)
-               cerr << ERR << "on line " << to_string(nLine) << "badly formatted (no ':') in " << m_strDeepWaterWavesTimeSeriesFile << endl
+               cerr << ERR << "on line " << to_string(nLine) << "badly formatted (no ':') in " << m_strDeepWaterWavesInputFile << endl
                     << "'" << strRec << "'" << endl;
                return RTN_ERR_READING_DEEP_WATER_WAVE_DATA;
             }
@@ -3223,7 +3223,7 @@ int CSimulation::nReadWaveStationTimeSeriesFile(int const nWaveStations)
             if (nPos == strRec.size() - 1)
             {
                // Error: badly formatted (colon with nothing following)
-               cerr << ERR << "on line " << to_string(nLine) << "badly formatted (nothing following ':') in " << m_strDeepWaterWavesTimeSeriesFile << endl
+               cerr << ERR << "on line " << to_string(nLine) << "badly formatted (nothing following ':') in " << m_strDeepWaterWavesInputFile << endl
                     << "'" << strRec << "'" << endl;
                return RTN_ERR_READING_DEEP_WATER_WAVE_DATA;
             }
@@ -3343,7 +3343,7 @@ int CSimulation::nReadWaveStationTimeSeriesFile(int const nWaveStations)
                // Read the number of stations
                if (! bIsStringValidInt(strRH))
                {
-                  strErr = "line " + to_string(nLine) + ": invalid integer for number of wave stations '" + strRH + "' in " + m_strDeepWaterWavesTimeSeriesFile;
+                  strErr = "line " + to_string(nLine) + ": invalid integer for number of wave stations '" + strRH + "' in " + m_strDeepWaterWavesInputFile;
                   break;
                }
 
@@ -3395,7 +3395,7 @@ int CSimulation::nReadWaveStationTimeSeriesFile(int const nWaveStations)
                // Check that this is a valid double
                if (! bIsStringValidDouble(VstrTmp[i]))
                {
-                  strErr = "line " + to_string(nLine) + ": invalid floating point number for deep water wave value '" + VstrTmp[i] + "' in " + m_strDeepWaterWavesTimeSeriesFile;
+                  strErr = "line " + to_string(nLine) + ": invalid floating point number for deep water wave value '" + VstrTmp[i] + "' in " + m_strDeepWaterWavesInputFile;
                   break;
                }
             }
@@ -3424,7 +3424,7 @@ int CSimulation::nReadWaveStationTimeSeriesFile(int const nWaveStations)
       if (! strErr.empty())
       {
          // Error in input to initialisation file
-         cerr << ERR << strErr << " in deep water wave time series file " << m_strDeepWaterWavesTimeSeriesFile << endl
+         cerr << ERR << strErr << " in deep water wave time series file " << m_strDeepWaterWavesInputFile << endl
               << "'" << strRec << "'" << endl;
          InStream.close();
 
@@ -3435,7 +3435,7 @@ int CSimulation::nReadWaveStationTimeSeriesFile(int const nWaveStations)
    if (nTimeStepsRead != m_nDeepWaterWaveDataNumTimeSteps)
    {
       // Error: number of timesteps read does not match the number given in the file's header
-      cerr << ERR << "in " << m_strDeepWaterWavesTimeSeriesFile << ", data for " << nTimeStepsRead << " timesteps was read, but " << m_nDeepWaterWaveDataNumTimeSteps << " timesteps were specified in the file's header" << endl;
+      cerr << ERR << "in " << m_strDeepWaterWavesInputFile << ", data for " << nTimeStepsRead << " timesteps was read, but " << m_nDeepWaterWaveDataNumTimeSteps << " timesteps were specified in the file's header" << endl;
 
       return RTN_ERR_READING_DEEP_WATER_WAVE_DATA;
    }
@@ -3447,21 +3447,21 @@ int CSimulation::nReadWaveStationTimeSeriesFile(int const nWaveStations)
    unsigned int nTotExpected = nExpectedStations * m_nDeepWaterWaveDataNumTimeSteps;
    if (m_VdTSDeepWaterWaveStationHeight.size() != nTotExpected)
    {
-      cout << ERR << "read in " << m_VdTSDeepWaterWaveStationHeight.size() << " lines from " << m_strDeepWaterWavesTimeSeriesFile << " but " << nTotExpected << " values expected" << endl;
+      cout << ERR << "read in " << m_VdTSDeepWaterWaveStationHeight.size() << " lines from " << m_strDeepWaterWavesInputFile << " but " << nTotExpected << " values expected" << endl;
 
       return RTN_ERR_READING_DEEP_WATER_WAVE_DATA;
    }
 
    if (m_VdTSDeepWaterWaveStationAngle.size() != nTotExpected)
    {
-      cout << ERR << "read in " << m_VdTSDeepWaterWaveStationAngle.size() << " lines from " << m_strDeepWaterWavesTimeSeriesFile << " but " << nTotExpected << " values expected" << endl;
+      cout << ERR << "read in " << m_VdTSDeepWaterWaveStationAngle.size() << " lines from " << m_strDeepWaterWavesInputFile << " but " << nTotExpected << " values expected" << endl;
 
       return RTN_ERR_READING_DEEP_WATER_WAVE_DATA;
    }
 
    if (m_VdTSDeepWaterWaveStationPeriod.size() != nTotExpected)
    {
-      cout << ERR << "read in " << m_VdTSDeepWaterWaveStationPeriod.size() << " lines from " << m_strDeepWaterWavesTimeSeriesFile << " but " << nTotExpected << " values expected" << endl;
+      cout << ERR << "read in " << m_VdTSDeepWaterWaveStationPeriod.size() << " lines from " << m_strDeepWaterWavesInputFile << " but " << nTotExpected << " values expected" << endl;
 
       return RTN_ERR_READING_DEEP_WATER_WAVE_DATA;
    }
@@ -3496,13 +3496,13 @@ int CSimulation::nReadSedimentInputEventTimeSeriesFile(void)
    ifstream InStream;
 
    // Try to open the file for input
-   InStream.open(m_strSedimentInputEventTimeSeriesFile.c_str(), ios::in);
+   InStream.open(m_strSedimentInputEventFile.c_str(), ios::in);
 
    // Did it open OK?
    if (!InStream.is_open())
    {
       // Error: cannot open time series file for input
-      cerr << ERR << "cannot open " << m_strSedimentInputEventTimeSeriesFile << " for input" << endl;
+      cerr << ERR << "cannot open " << m_strSedimentInputEventFile << " for input" << endl;
       return RTN_ERR_READING_SEDIMENT_INPUT_EVENT;
    }
 
@@ -3534,14 +3534,14 @@ int CSimulation::nReadSedimentInputEventTimeSeriesFile(void)
             nTarget = 5;
          if (VstrTmp.size() < nTarget)
          {
-            strErr = "line " + to_string(nLine) + ": too few data items on data line '" + to_string(nRead) + "' in " + m_strSedimentInputEventTimeSeriesFile;
+            strErr = "line " + to_string(nLine) + ": too few data items on data line '" + to_string(nRead) + "' in " + m_strSedimentInputEventFile;
             break;
          }
 
          // First item is the Location ID of the sediment input event (same as the ID in the shapefile)
          if (! bIsStringValidInt(VstrTmp[0]))
          {
-            strErr = "line " + to_string(nLine) + ": invalid integer for Location ID of sediment input event '" + VstrTmp[0] + "' in " + m_strSedimentInputEventTimeSeriesFile;
+            strErr = "line " + to_string(nLine) + ": invalid integer for Location ID of sediment input event '" + VstrTmp[0] + "' in " + m_strSedimentInputEventFile;
             break;
          }
 
@@ -3551,7 +3551,7 @@ int CSimulation::nReadSedimentInputEventTimeSeriesFile(void)
          auto result = find(m_VnSedimentInputLocationID.begin(), m_VnSedimentInputLocationID.end(), nID);
          if (result == m_VnSedimentInputLocationID.end())
          {
-            strErr = "line " + to_string(nLine) + ": invalid Location ID '" + to_string(nID) + "' for sediment input event location event in " + m_strSedimentInputEventTimeSeriesFile;
+            strErr = "line " + to_string(nLine) + ": invalid Location ID '" + to_string(nID) + "' for sediment input event location event in " + m_strSedimentInputEventFile;
             break;
          }
 
@@ -3559,21 +3559,21 @@ int CSimulation::nReadSedimentInputEventTimeSeriesFile(void)
          unsigned long ulEventTimeStep = ulConvertToTimestep(&VstrTmp[1]);
          if (ulEventTimeStep == SEDIMENT_INPUT_EVENT_ERROR)
          {
-            strErr = "line " + to_string(nLine) + ": invalid time and/or date '" + VstrTmp[1] + "' for sediment input event in " + m_strSedimentInputEventTimeSeriesFile;
+            strErr = "line " + to_string(nLine) + ": invalid time and/or date '" + VstrTmp[1] + "' for sediment input event in " + m_strSedimentInputEventFile;
             break;
          }
 
          // Then the volume (m3) of fine sediment, first check that this is a valid double
          if (! bIsStringValidDouble(VstrTmp[2]))
          {
-            strErr = "line " + to_string(nLine) + ": invalid floating point number '" + VstrTmp[2] + "' for fine sediment volume for sediment input event in " + m_strSedimentInputEventTimeSeriesFile;
+            strErr = "line " + to_string(nLine) + ": invalid floating point number '" + VstrTmp[2] + "' for fine sediment volume for sediment input event in " + m_strSedimentInputEventFile;
             break;
          }
 
          double dFineSedVol = stod(strTrim(&VstrTmp[2]));
          if (dFineSedVol < 0)
          {
-            strErr = "line " + to_string(nLine) + ": negative number '" + to_string(dFineSedVol) + "' for fine sediment volume for sediment input event in " + m_strSedimentInputEventTimeSeriesFile;
+            strErr = "line " + to_string(nLine) + ": negative number '" + to_string(dFineSedVol) + "' for fine sediment volume for sediment input event in " + m_strSedimentInputEventFile;
             break;
          }
 
@@ -3583,14 +3583,14 @@ int CSimulation::nReadSedimentInputEventTimeSeriesFile(void)
          // Then the volume (m3) of sand sediment, first check that this is a valid double
          if (! bIsStringValidDouble(VstrTmp[3]))
          {
-            strErr = "line " + to_string(nLine) + ": invalid floating point number '" + VstrTmp[3] + "' for sand-sized sediment volume for sediment input event in " + m_strSedimentInputEventTimeSeriesFile;
+            strErr = "line " + to_string(nLine) + ": invalid floating point number '" + VstrTmp[3] + "' for sand-sized sediment volume for sediment input event in " + m_strSedimentInputEventFile;
             break;
          }
 
          double dSandSedVol = stod(strTrim(&VstrTmp[3]));
          if (dSandSedVol < 0)
          {
-            strErr = "line " + to_string(nLine) + ": negative number '" + to_string(dSandSedVol) + "' for sand-sized sediment volume for sediment input event in " + m_strSedimentInputEventTimeSeriesFile;
+            strErr = "line " + to_string(nLine) + ": negative number '" + to_string(dSandSedVol) + "' for sand-sized sediment volume for sediment input event in " + m_strSedimentInputEventFile;
             break;
          }
 
@@ -3600,14 +3600,14 @@ int CSimulation::nReadSedimentInputEventTimeSeriesFile(void)
          // Then the volume (m3) of coarse sediment, first check that this is a valid double
          if (! bIsStringValidDouble(VstrTmp[4]))
          {
-            strErr = "line " + to_string(nLine) + ": invalid floating point number '" + VstrTmp[4] + "' for coarse sediment volume for sediment input event in " + m_strSedimentInputEventTimeSeriesFile;
+            strErr = "line " + to_string(nLine) + ": invalid floating point number '" + VstrTmp[4] + "' for coarse sediment volume for sediment input event in " + m_strSedimentInputEventFile;
             break;
          }
 
          double dCoarseSedVol = stod(strTrim(&VstrTmp[4]));
          if (dCoarseSedVol < 0)
          {
-            strErr = "line " + to_string(nLine) + ": negative number '" + to_string(dCoarseSedVol) + "' for coarse sediment volume of sediment input event in " + m_strSedimentInputEventTimeSeriesFile;
+            strErr = "line " + to_string(nLine) + ": negative number '" + to_string(dCoarseSedVol) + "' for coarse sediment volume of sediment input event in " + m_strSedimentInputEventFile;
             break;
          }
 
@@ -3625,42 +3625,42 @@ int CSimulation::nReadSedimentInputEventTimeSeriesFile(void)
             // The coast-normal length (m) of the sediment block, first check that this is a valid double
             if (! bIsStringValidDouble(VstrTmp[5]))
             {
-               strErr = "line " + to_string(nLine) + ": invalid floating point number '" + VstrTmp[5] + "' for coast-normal length of sediment input event in " + m_strSedimentInputEventTimeSeriesFile;
+               strErr = "line " + to_string(nLine) + ": invalid floating point number '" + VstrTmp[5] + "' for coast-normal length of sediment input event in " + m_strSedimentInputEventFile;
                break;
             }
 
             dLen = stod(strTrim(&VstrTmp[5]));
             if (dLen <= 0)
             {
-               strErr = "line " + to_string(nLine) + ": coast-normal length L of the sediment block '" + to_string(dLen) + "' must be > 0 in " + m_strSedimentInputEventTimeSeriesFile;
+               strErr = "line " + to_string(nLine) + ": coast-normal length L of the sediment block '" + to_string(dLen) + "' must be > 0 in " + m_strSedimentInputEventFile;
                break;
             }
 
             // The along-coast width (m) of the sediment block, first check that this is a valid double
             if (! bIsStringValidDouble(VstrTmp[6]))
             {
-               strErr = "line " + to_string(nLine) + ": invalid floating point number '" + VstrTmp[6] + "' for along-coast width of sediment input event in " + m_strSedimentInputEventTimeSeriesFile;
+               strErr = "line " + to_string(nLine) + ": invalid floating point number '" + VstrTmp[6] + "' for along-coast width of sediment input event in " + m_strSedimentInputEventFile;
                break;
             }
 
             dWidth = stod(strTrim(&VstrTmp[6]));
             if ((! m_bSedimentInputAtCoast) && (dWidth <= 0))
             {
-               strErr = "line " + to_string(nLine) + ": along-coast width W (m) of the sediment block '" + to_string(dWidth) + "' must be > 0 in " + m_strSedimentInputEventTimeSeriesFile;
+               strErr = "line " + to_string(nLine) + ": along-coast width W (m) of the sediment block '" + to_string(dWidth) + "' must be > 0 in " + m_strSedimentInputEventFile;
                break;
             }
 
             // The along-coast thickness (m) of the sediment block, first check that this is a valid double
             // if (! bIsStringValidDouble(VstrTmp[7]))
             // {
-            //    strErr = "line " + to_string(nLine) + ": invalid floating point number '" + VstrTmp[7] + "' for along-coast thickness of sediment input event in " + m_strSedimentInputEventTimeSeriesFile;
+            //    strErr = "line " + to_string(nLine) + ": invalid floating point number '" + VstrTmp[7] + "' for along-coast thickness of sediment input event in " + m_strSedimentInputEventFile;
             //    break;
             // }
 
             // dThick = stod(strTrim(&VstrTmp[7]));
             // if ((! m_bSedimentInputAtCoast) && (dWidth <= 0))
             // {
-            //    strErr = "line " + to_string(nLine) + ": along-coast thickness E (m) of the sediment block '" + to_string(dThick) + "' must be > 0 in " + m_strSedimentInputEventTimeSeriesFile;
+            //    strErr = "line " + to_string(nLine) + ": along-coast thickness E (m) of the sediment block '" + to_string(dThick) + "' must be > 0 in " + m_strSedimentInputEventFile;
             //    break;
             // }
          }
@@ -3677,7 +3677,7 @@ int CSimulation::nReadSedimentInputEventTimeSeriesFile(void)
    if (! strErr.empty())
    {
       // Error in input to initialisation file
-      cerr << ERR << strErr << " in sediment input event file " << m_strSedimentInputEventTimeSeriesFile << endl
+      cerr << ERR << strErr << " in sediment input event file " << m_strSedimentInputEventFile << endl
            << "'" << strRec << "'" << endl;
       InStream.close();
 

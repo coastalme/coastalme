@@ -383,7 +383,7 @@ private:
    bool m_bSedimentInputThisIter;
 
    //! Are we doing flooding? TODO 007
-   bool m_bDoRiverineFlooding;
+   bool m_bRiverineFlooding;
 
    //! Are we saving the wave setup? TODO 007
    bool m_bWaveSetupSave;
@@ -681,16 +681,16 @@ private:
    //! Maximum still water level
    double m_dMaxSWL;
 
-   //! TODO 007
+   //! TODO 007 Info needed
    double m_dThisIterDiffTotWaterLevel;
 
-   //! TODO 007
+   //! TODO 007 Info needed
    double m_dThisIterDiffWaveSetupWaterLevel;
 
-   //! TODO 007
+   //! TODO 007 Info needed
    double m_dThisIterDiffWaveSetupSurgeWaterLevel;
 
-   //! TODO 007
+   //! TODO 007 Info needed
    double m_dThisIterDiffWaveSetupSurgeRunupWaterLevel;
 
    //! The height of breaking waves (m)
@@ -1198,7 +1198,8 @@ private:
    //! GDAL code for the deep water wave stations vector file
    string m_strOGRDWWVDriverCode;
 
-   // TODO 047 Where is the GDAL description for the deep water wave stations vector file?
+   // GDAL description for the deep water wave stations vector file
+   string m_strOGRDWWVDriverDesc;
 
    //! GDAL geometry for the deep water wave stations vector file
    string m_strOGRDWWVGeometry;
@@ -1209,7 +1210,8 @@ private:
    //! GDAL code for the sediment input event locations vector file
    string m_strOGRSedInputDriverCode;
 
-   // TODO Where is the GDAL description for the sediment input event locations vector file?
+   // GDAL description for the sediment input event locations vector file
+   string m_strOGRSedInputDriverDesc;
 
    //! GDAL geometry for the sediment input event locations vector file
    string m_strOGRSedInputGeometry;
@@ -1220,7 +1222,8 @@ private:
    //! GDAL code for the flood input locations point or vector file
    string m_strOGRFloodDriverCode;
 
-   // TODO 048 Where is the GDAL description for the flood input locations point or vector file?
+   // GDAL description for the flood input locations point or vector file
+   string m_strOGRFloodDriverDesc;
 
    //! GDAL geometry for the flood input locations point or vector file
    string m_strOGRFloodGeometry;
@@ -1247,13 +1250,13 @@ private:
    string m_strDeepWaterWaveStationsShapefile;
 
    //! The name of the deep water wave stations time series file
-   string m_strDeepWaterWavesTimeSeriesFile;
+   string m_strDeepWaterWavesInputFile;
 
    //! The name of the sediment input events shape file
    string m_strSedimentInputEventShapefile;
 
    //! The name of the sediment input events time series file
-   string m_strSedimentInputEventTimeSeriesFile;
+   string m_strSedimentInputEventFile;
 
    //! The name of the flood loction events shape file
    string m_strFloodLocationShapefile;
@@ -1486,10 +1489,10 @@ private:
    //! The coastline objects
    vector<CRWCoast> m_VCoast;
 
-   //! TODO 007
+   //! TODO 007 Info needed
    vector<CRWCoast> m_VFloodWaveSetupSurge;
 
-   //! TODO 007
+   //! TODO 007 Info needed
    vector<CRWCoast> m_VFloodWaveSetupSurgeRunup;
 
    //! Pointers to coast polygon objects
@@ -1510,7 +1513,6 @@ private:
 private:
    // Input and output routines
    int nHandleCommandLineParams(int, char const* []);
-   void setString(const std::string& str);
    bool bReadIniFile(void);
    bool bReadRunDataFile(void);
    bool bOpenLogFile(void);
@@ -1520,7 +1522,7 @@ private:
    bool bWriteTSFiles(void);
    int nWriteEndRunDetails(void);
    int nReadShapeFunctionFile(void);
-   int nReadWaveStationTimeSeriesFile(int const);
+   int nReadWaveStationInputFile(int const);
    int nReadSedimentInputEventTimeSeriesFile(void);
    int nReadTideDataFile(void);
    int nSaveProfile(int const, int const, int const, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<CGeom2DIPoint>* const, vector<double> const*) const;

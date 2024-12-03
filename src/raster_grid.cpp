@@ -22,6 +22,9 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 ===============================================================================================================================*/
+#include <new>
+using std::bad_alloc;
+
 #include "cme.h"
 #include "raster_grid.h"
 
@@ -67,10 +70,17 @@ int CGeomRasterGrid::nCreateGrid(void)
    int nXMax = m_pSim->nGetGridXMax();
    int nYMax = m_pSim->nGetGridYMax();
 
-   // TODO 038 Check if we don't have enough memory, if so return RTN_ERR_MEMALLOC
-   m_Cell = new CGeomCell * [nXMax];
-   for (int nX = 0; nX < nXMax; nX++)
-      m_Cell[nX] = new CGeomCell[nYMax];
+   try
+   {
+      m_Cell = new CGeomCell * [nXMax];
+      for (int nX = 0; nX < nXMax; nX++)
+         m_Cell[nX] = new CGeomCell[nYMax];
+   }
+   catch(bad_alloc&)
+   {
+      // Uh-oh, not enough memory
+      return RTN_ERR_MEMALLOC;
+   }
 
    // Initialize the CGeomCell shared pointer to the CGeomRasterGrid object
    CGeomCell::m_pGrid = this;

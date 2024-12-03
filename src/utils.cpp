@@ -97,8 +97,7 @@ int CSimulation::nHandleCommandLineParams(int nArg, char const* pcArgv[])
       if (strArg.find("--gdal") != string::npos)
       {
          // User wants to know what GDAL raster drivers are available
-         cout << GDAL_DRIVERS << endl
-              << endl;
+         cout << GDAL_DRIVERS << endl << endl;
 
          for (int j = 0; j < GDALGetDriverCount(); j++)
          {
@@ -130,11 +129,20 @@ int CSimulation::nHandleCommandLineParams(int nArg, char const* pcArgv[])
             {
                // Read in user defined runtime directory
                string strTmp;
-               size_t pos = strArg.find('=');  // Find the position of '='
-               if (pos != std::string::npos) {  // Check if '=' is found
-                  m_strCMEIni = strArg.substr(pos + 1);  // Get the substring after '=' and assign it to the global variable
-               } else {
-                  std::cout << "No '=' found in the input string!" << std::endl;
+
+               // Find the position of '='
+               size_t pos = strArg.find('=');
+
+               // Was '=' found?
+               if (pos != string::npos)
+               {
+                  // Yes, so get the substring after '=' and assign it to the global variable
+                  m_strCMEIni = strArg.substr(pos + 1);
+               }
+               else
+               {
+                  // No
+                  cout << "No '=' found in the input string!" << endl;
                }
                return (RTN_OK);
             }
@@ -153,14 +161,9 @@ int CSimulation::nHandleCommandLineParams(int nArg, char const* pcArgv[])
             }
          }
       }
-
    }
 
    return RTN_OK;
-}
-
-void CSimulation::setString(const std::string& str) {
-    m_strCMEIni = str;
 }
 
 //===============================================================================================================================
@@ -168,8 +171,7 @@ void CSimulation::setString(const std::string& str) {
 //===============================================================================================================================
 void CSimulation::AnnounceStart(void)
 {
-   cout << endl
-        << PROGRAM_NAME << " for " << PLATFORM << " " << strGetBuild() << endl;
+   cout << endl << PROGRAM_NAME << " for " << PLATFORM << " " << strGetBuild() << endl;
 }
 
 //===============================================================================================================================
@@ -470,11 +472,11 @@ void CSimulation::AnnounceReadIHGIS(void) const
 void CSimulation::AnnounceReadDeepWaterWaveValuesGIS(void) const
 {
    // Tell the user what is happening
-   if (! m_strDeepWaterWavesTimeSeriesFile.empty())
+   if (! m_strDeepWaterWavesInputFile.empty())
 #ifdef _WIN32
-      cout << READING_DEEP_WATER_WAVE_FILE << pstrChangeToForwardSlash(&m_strDeepWaterWavesTimeSeriesFile) << endl;
+      cout << READING_DEEP_WATER_WAVE_FILE << pstrChangeToForwardSlash(&m_strDeepWaterWavesInputFile) << endl;
 #else
-      cout << READING_DEEP_WATER_WAVE_FILE << m_strDeepWaterWavesTimeSeriesFile << endl;
+      cout << READING_DEEP_WATER_WAVE_FILE << m_strDeepWaterWavesInputFile << endl;
 #endif
 }
 
@@ -484,11 +486,11 @@ void CSimulation::AnnounceReadDeepWaterWaveValuesGIS(void) const
 void CSimulation::AnnounceReadSedimentEventInputValuesGIS(void) const
 {
    // Tell the user what is happening
-   if (! m_strSedimentInputEventTimeSeriesFile.empty())
+   if (! m_strSedimentInputEventFile.empty())
 #ifdef _WIN32
-      cout << READING_SED_INPUT_EVENT_FILE << pstrChangeToForwardSlash(&m_strSedimentInputEventTimeSeriesFile) << endl;
+      cout << READING_SED_INPUT_EVENT_FILE << pstrChangeToForwardSlash(&m_strSedimentInputEventFile) << endl;
 #else
-      cout << READING_SED_INPUT_EVENT_FILE << m_strSedimentInputEventTimeSeriesFile << endl;
+      cout << READING_SED_INPUT_EVENT_FILE << m_strSedimentInputEventFile << endl;
 #endif
 }
 
@@ -1738,15 +1740,15 @@ void CSimulation::CalcProcessStats(void)
          OutStream << "Windows 8.1 ";
       else if (10 == osvi.dwMajorVersion && 0 == osvi.dwMinorVersion)
          OutStream << "Windows 10 ";
+      else if (11 == osvi.dwMajorVersion && 0 == osvi.dwMinorVersion)
+         OutStream << "Windows 11 ";
       else
-         OutStream << "unknown Windows version ";     // TODO Update for recent versions of Windows
+         OutStream << "unknown Windows version ";
 
       // Display version, service pack (if any), and build number
       if (osvi.dwMajorVersion <= 4)
-         // TODO Update for recent versions of Windows
          OutStream << "version " << osvi.dwMajorVersion << "." << osvi.dwMinorVersion << " " << osvi.szCSDVersion << " (Build " << (osvi.dwBuildNumber & 0xFFFF) << ")" << endl;
       else
-         // TODO Update for recent versions of Windows
          OutStream << osvi.szCSDVersion << " (Build " << (osvi.dwBuildNumber & 0xFFFF) << ")" << endl;
       break;
 

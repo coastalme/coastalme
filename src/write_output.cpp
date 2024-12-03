@@ -248,6 +248,8 @@ void CSimulation::WriteStartRunDetails(void)
          OutStream << " Savitzky-Golay coastline smoothing polynomial order       \t: " << m_nSavGolCoastPoly << endl;
    }
    OutStream << " Size of profile slope smoothing window                    \t: " << m_nProfileSmoothWindow << endl;
+   OutStream << resetiosflags(ios::floatfield);
+   OutStream << std::fixed << setprecision(2);
    OutStream << " Max local slope on profile (m/m)                          \t: " << m_dProfileMaxSlope << endl;
    OutStream << " Vertical tolerance for beach to be included in smoothing  \t: " << m_dMaxBeachElevAboveSWL << " m" << endl;
    OutStream << endl;
@@ -386,20 +388,52 @@ void CSimulation::WriteStartRunDetails(void)
    // ---------------------------------------------------- Vector GIS stuff ------------------------------------------------------
    OutStream << "Vector GIS Input Files" << endl;
 
-   if (m_bSingleDeepWaterWaveValues)
+   if (m_bSingleDeepWaterWaveValues && (! m_bSedimentInput) && (! m_bRiverineFlooding))
       OutStream << " None" << endl;
    else
    {
+      if (! m_bSingleDeepWaterWaveValues)
+      {
+         OutStream << " Deep water wave stations shapefile                        \t: " << m_strDeepWaterWaveStationsShapefile << endl;
+         OutStream << " Deep water wave values file                               \t: " << m_strDeepWaterWavesInputFile << endl;
+         if (m_dWaveDataWrapHours > 0)
+            OutStream << " Deep water wave values will wrap every " << m_dWaveDataWrapHours << " hours" << endl;
+         OutStream << " GDAL/OGR deep water wave stations shapefile driver code   \t: " << m_strOGRDWWVDriverCode << endl;
+         OutStream << " GDAL/OGR deep water wave stations shapefile driver desc   \t: " << m_strOGRDWWVDriverDesc << endl;
+         OutStream << " GDAL/OGR deep water wave stations shapefile data type     \t: " << m_strOGRDWWVDataType << endl;
+         OutStream << " GDAL/OGR deep water wave stations shapefile geometry      \t: " << m_strOGRDWWVGeometry << endl;
+      }
 
-      OutStream << " Deep water wave stations shapefile                        \t: " << m_strDeepWaterWaveStationsShapefile << endl;
-      OutStream << " GDAL/OGR deep water wave stations shapefile driver code   \t: " << m_strOGRDWWVDriverCode << endl;
-      OutStream << " GDAL/OGR deep water wave stations shapefile data type     \t: " << m_strOGRDWWVDataType << endl;
-      OutStream << " GDAL/OGR deep water wave stations shapefile geometry      \t: " << m_strOGRDWWVGeometry << endl;
-      OutStream << " Deep water wave values file                               \t: " << m_strDeepWaterWavesTimeSeriesFile << endl;
+      if (m_bSedimentInput)
+      {
+         OutStream << " Sediment input event shapefile                            \t: " << m_strSedimentInputEventShapefile << endl;
+         OutStream << " Sediment input event values file                          \t: " << m_strSedimentInputEventFile << endl;
+         OutStream << " Sediment input event type                                 \t: ";
+         if (m_bSedimentInputAtPoint)
+            OutStream << "point";
+         else if (m_bSedimentInputAtCoast)
+            OutStream << "coast block";
+         else if (m_bSedimentInputAlongLine)
+            OutStream << "line";
+         OutStream << endl;
+         OutStream << " GDAL/OGR sediment input event shapefile driver code       \t: " << m_strOGRSedInputDriverCode << endl;
+         OutStream << " GDAL/OGR sediment input event shapefile driver desc       \t: " << m_strOGRSedInputDriverCode << endl;
+         OutStream << " GDAL/OGR sediment input event shapefile data type         \t: " << m_strOGRSedInputDataType << endl;
+         OutStream << " GDAL/OGR sediment input event shapefile geometry          \t: " << m_strOGRSedInputGeometry << endl;
+      }
 
-      if (m_dWaveDataWrapHours > 0)
-         OutStream << " Deep water wave values will wrap every " << m_dWaveDataWrapHours << " hours" << endl;
+      if (m_bRiverineFlooding)
+      {
+         OutStream << " Riverine flooding shapefile                               \t: " << m_strFloodLocationShapefile << endl;
+         OutStream << " Riverine flood location?                                  \t: " << (m_bFloodLocation ? "Y" : "N") << endl;
+         OutStream << " Riverine flood save?                                      \t: " << (m_bVectorWaveFloodLineSave ? "Y" : "N") << endl;
+         OutStream << " GDAL/OGR riverine flooding event shapefile driver code    \t: " << m_strOGRFloodDriverCode << endl;
+         OutStream << " GDAL/OGR riverine flooding shapefile driver desc          \t: " << m_strOGRFloodDriverDesc << endl;
+         OutStream << " GDAL/OGR riverine flooding shapefile data type            \t: " << m_strOGRFloodDataType << endl;
+         OutStream << " GDAL/OGR riverine flooding shapefile geometry             \t: " << m_strOGRFloodGeometry << endl;
+      }
    }
+
    OutStream << endl;
 
    // -------------------------------------------------------- Other data --------------------------------------------------------
@@ -429,7 +463,11 @@ void CSimulation::WriteStartRunDetails(void)
    OutStream << "*Depth of closure                                          \t: " << resetiosflags(ios::floatfield) << std::fixed << setprecision(3) << m_dDepthOfClosure << " m" << endl;
    OutStream << " Tide data file                                            \t: " << m_strTideDataFile << endl;
    OutStream << " Do coast platform erosion?                                \t: " << (m_bDoShorePlatformErosion ? "Y" : "N") << endl;
-   OutStream << " Coast platform resistance to erosion                      \t: " << resetiosflags(ios::floatfield) << std::fixed << setprecision(3) << m_dR << endl;
+   OutStream << resetiosflags(ios::floatfield);
+   OutStream << std::scientific << setprecision(2);
+   OutStream << " Coast platform resistance to erosion                      \t: " << m_dR << endl;
+   OutStream << resetiosflags(ios::floatfield);
+   OutStream << std::fixed << setprecision(1);
    OutStream << " Do beach sediment transport?                              \t: " << (m_bDoBeachSedimentTransport ? "Y" : "N") << endl;
    OutStream << " Handling of beach sediment at grid edges                  \t: ";
    if (m_nUnconsSedimentHandlingAtGridEdges == GRID_EDGE_CLOSED)
@@ -470,10 +508,14 @@ void CSimulation::WriteStartRunDetails(void)
       else if (m_bSedimentInputAlongLine)
          OutStream << "where line interests with coast";
       OutStream << endl;
-      OutStream << " Sediment input time series file                           \t: " << m_strSedimentInputEventTimeSeriesFile << endl;
+      OutStream << " Sediment input time series file                           \t: " << m_strSedimentInputEventFile << endl;
    }
    OutStream << " Do cliff collapse?                                        \t: " << (m_bDoCliffCollapse ? "Y" : "N") << endl;
+   OutStream << resetiosflags(ios::floatfield);
+   OutStream << std::scientific << setprecision(2);
    OutStream << " Cliff resistance to erosion                               \t: " << m_dCliffErosionResistance << endl;
+   OutStream << resetiosflags(ios::floatfield);
+   OutStream << std::fixed << setprecision(1);
    OutStream << " Notch overhang to initiate collapse                       \t: " << m_dNotchDepthAtCollapse << " m" << endl;
    OutStream << " Notch base below SWL                                      \t: " << m_dNotchBaseBelowSWL << " m" << endl;
    OutStream << " Scale parameter A for cliff deposition                    \t: ";
@@ -485,8 +527,8 @@ void CSimulation::WriteStartRunDetails(void)
    OutStream << " Planview width of cliff deposition talus                  \t: " << resetiosflags(ios::floatfield) << std::fixed << m_dCliffDepositionPlanviewWidth << " m" << endl;
    OutStream << " Planview length of cliff deposition talus                 \t: " << m_dCliffTalusMinDepositionLength << " m" << endl;
    OutStream << " Min height of land-end talus (fraction of cliff elevation)\t: " << m_dMinCliffTalusHeightFrac << endl;
-   OutStream << " Do riverine flooding?                                     \t: " << (m_bDoRiverineFlooding ? "Y" : "N") << endl;
-   if (m_bDoRiverineFlooding)
+   OutStream << " Do riverine flooding?                                     \t: " << (m_bRiverineFlooding ? "Y" : "N") << endl;
+   if (m_bRiverineFlooding)
    {
       // TODO 007 Need more info on this
       OutStream << " FloodSWLSetupLine                                         \t: " << (m_bFloodSWLSetupLine ? "Y" : "N") << endl;

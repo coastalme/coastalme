@@ -310,18 +310,33 @@ int CSimulation::nReadVectorGISFile(int const nDataItem)
    {
       case (DEEP_WATER_WAVE_STATIONS_VEC):
          m_strOGRDWWVDriverCode = pOGRDataSource->GetDriverName();
+         for (auto&& oFeatureLayerPair:pOGRDataSource->GetFeatures())
+         {
+               m_strOGRDWWVDriverDesc += oFeatureLayerPair.layer->GetName();
+               m_strOGRDWWVDriverDesc += SPACE;
+         }
          m_strOGRDWWVDataType = "integer";
          m_strOGRDWWVGeometry = strGeometry;
          break;
 
       case (SEDIMENT_INPUT_EVENT_LOCATION_VEC):
          m_strOGRSedInputDriverCode = pOGRDataSource->GetDriverName();
+         for (auto&& oFeatureLayerPair:pOGRDataSource->GetFeatures())
+         {
+               m_strOGRSedInputDriverDesc += oFeatureLayerPair.layer->GetName();
+               m_strOGRSedInputDriverDesc += SPACE;
+         }
          m_strOGRSedInputGeometry = "integer";
          m_strOGRSedInputDataType = strGeometry;
          break;
 
       case (FLOOD_LOCATION_VEC):
          m_strOGRFloodDriverCode = pOGRDataSource->GetDriverName();
+         for (auto&& oFeatureLayerPair:pOGRDataSource->GetFeatures())
+         {
+               m_strOGRFloodDriverDesc += oFeatureLayerPair.layer->GetName();
+               m_strOGRFloodDriverDesc += SPACE;
+         }
          m_strOGRFloodGeometry = "integer";
          m_strOGRFloodDataType = strGeometry;
          break;
@@ -484,7 +499,7 @@ bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const *strPlot
    }
    else
    {
-      OGRSpatialRef.importFromEPSG(25830); // TODO 035 Change for any EPSG
+      OGRSpatialRef.importFromEPSG(25830);      // TODO 035 Also handle other EPSG for vector spatial reference systems
    }
 
    OGRwkbGeometryType eGType = wkbUnknown;

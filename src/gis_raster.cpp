@@ -530,19 +530,6 @@ int CSimulation::nReadRasterGISFile(int const nDataItem, int const nLayer)
       strDriverDesc = pGDALDataset->GetDriver()->GetMetadataItem(GDAL_DMD_LONGNAME);
       strProjection = pGDALDataset->GetProjectionRef();
 
-      // If we have reference units, then check that they are in meters (note US spelling)
-      //   if (! strProjection.empty())
-      //   {
-      //      string strTmp = strToLower(&strProjection);
-      // TODO 027 this is causing problems with the test data
-      //      if ((strTmp.find("kilometer") != string::npos) || (strTmp.find("meter") == string::npos))
-      //      {
-      // error: x-y values must be in metres
-      //         cerr << ERR << "GIS file x-y values (" << strProjection << ") in " << strGISFile << " must be 'meter'" << endl;
-      //         return (RTN_ERR_RASTER_FILE_READ);
-      //      }
-      //   }
-
       // Get geotransformation info
       double dGeoTransform[6];
       if (CE_Failure == pGDALDataset->GetGeoTransform(dGeoTransform))

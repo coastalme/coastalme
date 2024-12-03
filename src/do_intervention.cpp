@@ -29,6 +29,6 @@ You should have received a copy of the GNU General Public License along with thi
 //===============================================================================================================================
 int CSimulation::nUpdateIntervention(void)
 {
-   // TODO 022
+   // TODO 022 Get intervention update working (need TODO 071)
    return RTN_OK;
 }

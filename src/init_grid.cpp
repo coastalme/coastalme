@@ -89,7 +89,7 @@ int CSimulation::nInitGridAndCalcStillWaterLevel(void)
    m_dThisIterActualPlatformErosionFineCons =
    m_dThisIterActualPlatformErosionSandCons =
    m_dThisIterActualPlatformErosionCoarseCons =
-   m_dThisIterLeftGridUnconsFine =                 // TODO 067
+   m_dThisIterLeftGridUnconsFine =                 // TODO 067 Suspended fine sediment never decreases i.e. no suspended fine sediment ever leaves the grid. Is this OK?
    m_dThisIterLeftGridUnconsSand =
    m_dThisIterLeftGridUnconsCoarse =
    m_dThisiterUnconsFineInput =

@@ -1347,7 +1347,7 @@ bool CSimulation::bSaveAllVectorGISFiles(void)
          return false;
    }
 
-   if (m_bDoRiverineFlooding && m_bVectorWaveFloodLineSave)
+   if (m_bRiverineFlooding && m_bVectorWaveFloodLineSave)
    {
       if (! bWriteVectorGISFile(VECTOR_PLOT_FLOOD_LINE, &VECTOR_PLOT_FLOOD_SWL_SETUP_LINE_TITLE))
          return false;

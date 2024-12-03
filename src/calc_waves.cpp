@@ -1563,13 +1563,6 @@ int CSimulation::nGetThisProfileElevationVectorsForCShore(int const nCoast, int 
       // Get the elevation for both consolidated and unconsolidated sediment on this cell
       double VdProfileZ = m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElev() + m_pRasterGrid->m_Cell[nX][nY].dGetInterventionHeight() - m_dThisIterSWL;
 
-      // // TODO 072 There is a problem here, is it because of -ve VdProfileZ values?
-      // if (VdProfileZ < 0)
-      // {
-      //    VdProfileZ = 0;
-      //    LogStream << m_ulIter << ": " << WARN << " elevation is -ve, changing for CShore profile elevation vector " << nProfile << endl;
-      // }
-
       // Check that landward location is +ve
       if (i == 0)
       {
