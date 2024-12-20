@@ -1581,7 +1581,7 @@ bool CSimulation::bWriteRasterGISFile(int const nDataItem, string const *strPlot
                break;
 
             case (RASTER_PLOT_SEDIMENT_INPUT):
-               dTmp = m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nTopLayer)->pGetUnconsolidatedSediment()->dGetTotSedimentInputDepth();
+               dTmp = m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nTopLayer)->pGetUnconsolidatedSediment()->dGetTotAllSedimentInputDepth();
                break;
 
             case (RASTER_PLOT_SETUP_SURGE_FLOOD_MASK):

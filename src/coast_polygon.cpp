@@ -73,6 +73,9 @@ CGeomCoastPolygon::CGeomCoastPolygon(int const nGlobalID, int const nCoastID, in
    m_dPreExistingConsFine(0),
    m_dPreExistingConsSand(0),
    m_dPreExistingConsCoarse(0),
+   m_dSedimentInputFine(0),
+   m_dSedimentInputSand(0),
+   m_dSedimentInputCoarse(0),
    m_PtiNode(*PtiNode),
    m_PtiAntinode(*PtiAntinode)
 {
@@ -676,4 +679,40 @@ void CGeomCoastPolygon::SetPreExistingConsCoarse(double const dDepth)
 double CGeomCoastPolygon::dGetPreExistingConsCoarse(void) const
 {
    return m_dPreExistingConsCoarse;
+}
+
+//! Set the value of fine sediment on the polygon derived from sediment input events(s)
+void CGeomCoastPolygon::SetSedimentInputUnconsFine(double const dDepth)
+{
+   m_dSedimentInputFine = dDepth;
+}
+
+//! Get the value of fine sediment on the polygon derived from sediment input events(s)
+double CGeomCoastPolygon::dGetSedimentInputUnconsFine(void) const
+{
+   return m_dSedimentInputFine;
+}
+
+//! Set the value of sand sediment on the polygon derived from sediment input events(s)
+void CGeomCoastPolygon::SetSedimentInputUnconsSand(double const dDepth)
+{
+   m_dSedimentInputSand = dDepth;
+}
+
+//! Get the value of sand sediment on the polygon derived from sediment input events(s)
+double CGeomCoastPolygon::dGetSedimentInputUnconsSand(void) const
+{
+   return m_dSedimentInputSand;
+}
+
+//! Set the value of coarse sediment on the polygon derived from sediment input events(s)
+void CGeomCoastPolygon::SetSedimentInputUnconsCoarse(double const dDepth)
+{
+   m_dSedimentInputCoarse = dDepth;
+}
+
+//! Get the value of coarse sediment on the polygon derived from sediment input events(s)
+double CGeomCoastPolygon::dGetSedimentInputUnconsCoarse(void) const
+{
+   return m_dSedimentInputCoarse;
 }

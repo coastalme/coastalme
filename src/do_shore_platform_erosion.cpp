@@ -108,7 +108,7 @@ int CSimulation::nDoAllShorePlatFormErosion(void)
    {
       LogStream << m_ulIter << ": total potential shore platform erosion (m^3) = " << m_dThisIterPotentialPlatformErosion * m_dCellArea << " (on profiles = " << m_dTotPotentialPlatformErosionOnProfiles * m_dCellArea << ", between profiles = " << m_dTotPotentialPlatformErosionBetweenProfiles * m_dCellArea << ")" << endl;
 
-      LogStream << m_ulIter << ": total actual shore platform erosion (m^3) = " << (m_dThisIterActualPlatformErosionFineCons + m_dThisIterActualPlatformErosionSandCons + m_dThisIterActualPlatformErosionCoarseCons) * m_dCellArea << " (fine = " << m_dThisIterActualPlatformErosionFineCons * m_dCellArea << ", sand = " << m_dThisIterActualPlatformErosionSandCons * m_dCellArea << ", coarse = " << m_dThisIterActualPlatformErosionCoarseCons * m_dCellArea << ")" << endl << endl;
+      LogStream << m_ulIter << ": total actual shore platform erosion (m^3) = " << (m_dThisIterActualPlatformErosionFineCons + m_dThisIterActualPlatformErosionSandCons + m_dThisIterActualPlatformErosionCoarseCons) * m_dCellArea << " (fine = " << m_dThisIterActualPlatformErosionFineCons * m_dCellArea << ", sand = " << m_dThisIterActualPlatformErosionSandCons * m_dCellArea << ", coarse = " << m_dThisIterActualPlatformErosionCoarseCons * m_dCellArea << ")" << endl;
    }
 
    return RTN_OK;
@@ -575,9 +575,8 @@ int CSimulation::nCalcPotentialPlatformErosionBetweenProfiles(int const nCoast, 
             dVParProfileErosionPotential[i] /= (-dTotalErosionPotential);
       }
 
-      vector<double>
-          dVParRecessionXY(nParProfSize, 0),
-          dVParSCAPEXY(nParProfSize, 0);
+      vector<double> dVParRecessionXY(nParProfSize, 0);
+      vector<double> dVParSCAPEXY(nParProfSize, 0);
 
       // Calculate recession at every point on the parallel profile
       for (int i = 0; i < nParProfSize; i++)
@@ -616,19 +615,17 @@ int CSimulation::nCalcPotentialPlatformErosionBetweenProfiles(int const nCoast, 
          if (bFPIsEqual(dSCAPEHorizDist, 0.0, TOLERANCE))
             continue;
              
-         double
-             dSCAPEVertDist = dVParConsProfileZ[i] - dVParConsProfileZ[i + 1],
-             dSCAPESlope = dSCAPEVertDist / dSCAPEHorizDist,
-             dDeltaZ = dVParRecessionXY[i] * dSCAPESlope;
+         double dSCAPEVertDist = dVParConsProfileZ[i] - dVParConsProfileZ[i + 1];
+         double dSCAPESlope = dSCAPEVertDist / dSCAPEHorizDist;
+         double dDeltaZ = dVParRecessionXY[i] * dSCAPESlope;
              // Safety check: if thickness model has some jumps, dVConsProfileZ might be very high, limiting dSCAPESlope to 0 because all time erode a high fix quantity
          if (dSCAPESlope > 1)
          {
             dDeltaZ = 0;
          }
 
-         int const
-             nXPar = PtiVGridParProfile[i].nGetX(),
-             nYPar = PtiVGridParProfile[i].nGetY();
+         int const nXPar = PtiVGridParProfile[i].nGetX();
+         int const nYPar = PtiVGridParProfile[i].nGetY();
 
          // Store the local slope of the consolidated sediment, this is just for output display purposes
          m_pRasterGrid->m_Cell[nXPar][nYPar].SetLocalConsSlope(dVParConsSlope[i]);

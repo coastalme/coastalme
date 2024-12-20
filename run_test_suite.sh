@@ -47,10 +47,20 @@ cp in/test_suite/minimal_with_two_wavestations/cme.ini .
 ./cme
 echo ===============================================================================
 
-rm -f out/test_suite/minimal_with_sediment_input/*
-cp in/test_suite/minimal_with_sediment_input/cme.ini .
+rm -f out/test_suite/minimal_with_sediment_input_point/*
+cp in/test_suite/minimal_with_sediment_input_point/cme.ini .
 ./cme
 echo ===============================================================================
+
+rm -f out/test_suite/minimal_with_sediment_input_line/*
+cp in/test_suite/minimal_with_sediment_input_line/cme.ini .
+./cme
+echo ===============================================================================
+
+# rm -f out/test_suite/minimal_with_sediment_input_block/*
+# cp in/test_suite/minimal_with_sediment_input_block/cme.ini .
+# ./cme
+# echo ===============================================================================
 
 rm -f out/test_suite/Happisburgh/*
 cp in/test_suite/Happisburgh/cme.ini .

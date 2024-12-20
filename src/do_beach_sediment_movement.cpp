@@ -99,7 +99,7 @@ int CSimulation::nDoAllActualBeachErosionAndDeposition(void)
       if (m_nLogFileDetail >= LOG_FILE_MIDDLE_DETAIL)
          LogStream << m_ulIter << ": Calculating unconsolidated sediment transport" << endl;
 
-      // Update the values of pre-existing unconsolidated sediment, for all three size classes, to include unconsolidated sediment derived from platform erosion and/or cliff collapse
+      // Update the values of pre-existing unconsolidated sediment, for all three size classes, to include unconsolidated sediment derived from platform erosion, cliff collapse, and sediment input events
       AllPolygonsUpdateStoredUncons(nCoast);
 
       if (m_nLogFileDetail >= LOG_FILE_MIDDLE_DETAIL)
@@ -680,21 +680,26 @@ int CSimulation::nDoAllActualBeachErosionAndDeposition(void)
 }
 
 //===============================================================================================================================
-//! Update the values of pre-existing unconsolidated sediment, for all three size classes, to include unconsolidated sediment derived from platform erosion and/or cliff collapse
+//! Before simulating beach erosion, update the per-polygon values of pre-existing unconsolidated sediment for all three size classes, to include unconsolidated sediment derived from platform erosion, cliff collapse, and sediment input events
 //===============================================================================================================================
 void CSimulation::AllPolygonsUpdateStoredUncons(int const nCoast)
 {
    int nNumPolygons = m_VCoast[nCoast].nGetNumPolygons();
 
-   // Update the polygons, unconsolidated sand and coarse only (any fine sediment from platform erosion and cliff collapse goes to suspension)
    for (int nPoly = 0; nPoly < nNumPolygons; nPoly++)
    {
       CGeomCoastPolygon* pPolygon = m_VCoast[nCoast].pGetPolygon(nPoly);
-      
-      double dSand = pPolygon->dGetPreExistingUnconsSand() + pPolygon->dGetPlatformErosionUnconsSand() + pPolygon->dGetCliffCollapseUnconsSandDeposition();
+
+      // Only include unconsolidated fine sediment from sediment input events, don't include any unconsolidated fine sediment from platform erosion and cliff collapse since these have gone to suspension
+      double dFine = pPolygon->dGetSedimentInputUnconsFine();
+      pPolygon->SetPreExistingUnconsFine(dFine);
+
+      // Include unconsolidated sand sediment derived from platform erosion, cliff collapse, and sediment input events
+      double dSand = pPolygon->dGetPreExistingUnconsSand() + pPolygon->dGetPlatformErosionUnconsSand() + pPolygon->dGetCliffCollapseUnconsSandDeposition() + pPolygon->dGetSedimentInputUnconsSand();
       pPolygon->SetPreExistingUnconsSand(dSand);
       
-      double dCoarse = pPolygon->dGetPreExistingUnconsCoarse() + pPolygon->dGetPlatformErosionUnconsCoarse() + pPolygon->dGetCliffCollapseUnconsCoarseDeposition();
+      // Include unconsolidated coarse sediment derived from platform erosion, cliff collapse, and sediment input events
+      double dCoarse = pPolygon->dGetPreExistingUnconsCoarse() + pPolygon->dGetPlatformErosionUnconsCoarse() + pPolygon->dGetCliffCollapseUnconsCoarseDeposition() + pPolygon->dGetSedimentInputUnconsCoarse();
       pPolygon->SetPreExistingUnconsCoarse(dCoarse);
    }   
 }

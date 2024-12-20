@@ -197,10 +197,10 @@ int CSimulation::nDoAllShadowZones(void)
                         VnPossibleShadowBoundaryCoastPoint.push_back(nShadowZoneBoundaryEndPoint);
                         bLastDownCoastAndOnshore = false;
 
-                        CGeom2DPoint PtTmp = *m_VCoast[nCoast].pPtGetCoastlinePointExtCRS(nShadowZoneBoundaryEndPoint);
+                        // CGeom2DPoint PtTmp = *m_VCoast[nCoast].pPtGetCoastlinePointExtCRS(nShadowZoneBoundaryEndPoint);
                         
-                        if (m_nLogFileDetail >= LOG_FILE_ALL)
-                           LogStream << m_ulIter << ": Coast " << nCoast << " has possible shadow boundary start at {" << PtTmp.dGetX() << ", " << PtTmp.dGetY() << "}. Found while going down-coast, this is coast point " << nShadowZoneBoundaryEndPoint << endl;
+                        // if (m_nLogFileDetail >= LOG_FILE_ALL)
+                        //    LogStream << m_ulIter << ": Coast " << nCoast << " has possible shadow boundary start at {" << PtTmp.dGetX() << ", " << PtTmp.dGetY() << "}. Found while going down-coast, this is coast point " << nShadowZoneBoundaryEndPoint << endl;
                      }
                   }
                   else if (bDownCoast && bOnShore)
@@ -257,10 +257,10 @@ int CSimulation::nDoAllShadowZones(void)
                         VnPossibleShadowBoundaryCoastPoint.push_back(nShadowZoneBoundaryEndPoint);
                         bLastUpCoastAndOnshore = false;
 
-                        CGeom2DPoint PtTmp = *m_VCoast[nCoast].pPtGetCoastlinePointExtCRS(nShadowZoneBoundaryEndPoint);
+                        // CGeom2DPoint PtTmp = *m_VCoast[nCoast].pPtGetCoastlinePointExtCRS(nShadowZoneBoundaryEndPoint);
                         
-                        if (m_nLogFileDetail >= LOG_FILE_ALL)
-                           LogStream << m_ulIter << ": Coast " << nCoast << " has possible shadow boundary start at {" << PtTmp.dGetX() << ", " << PtTmp.dGetY() << "}. Found while going up-coast, this is coast point " << nShadowZoneBoundaryEndPoint << endl;
+                        // if (m_nLogFileDetail >= LOG_FILE_ALL)
+                        //    LogStream << m_ulIter << ": Coast " << nCoast << " has possible shadow boundary start at {" << PtTmp.dGetX() << ", " << PtTmp.dGetY() << "}. Found while going up-coast, this is coast point " << nShadowZoneBoundaryEndPoint << endl;
                      }
                   }
                   else if ((! bDownCoast) && bOnShore)
@@ -293,8 +293,8 @@ int CSimulation::nDoAllShadowZones(void)
 
       for (int nStartPoint = 0; nStartPoint < static_cast<int>(VnPossibleShadowBoundaryCoastPoint.size()); nStartPoint++)
       {
-         if (m_nLogFileDetail >= LOG_FILE_ALL)
-            LogStream << m_ulIter << ": Coast " << nCoast << ", processing possible shadow boundary start point " << nStartPoint << " of " << VnPossibleShadowBoundaryCoastPoint.size() << endl;
+         // if (m_nLogFileDetail >= LOG_FILE_ALL)
+         //    LogStream << m_ulIter << ": Coast " << nCoast << " processing possible shadow boundary start point " << nStartPoint << " of " << VnPossibleShadowBoundaryCoastPoint.size() << endl;
 
          bool
              bHitEdge = false,
@@ -460,8 +460,8 @@ int CSimulation::nDoAllShadowZones(void)
          if (bStillInland)
          {
             // Shadow line is still inland after crossing MAX_LAND_LENGTH_OF_SHADOW_ZONE_LINE calls
-            if (m_nLogFileDetail >= LOG_FILE_ALL)
-               LogStream << m_ulIter << ": Coast " << nCoast << ", possible shadow boundary from start point " << nStartPoint << " is still inland after crossing " << MAX_LAND_LENGTH_OF_SHADOW_ZONE_LINE << " cells, abandoning. It starts at [" << ILShadowBoundary[0].nGetX() << "][" << ILShadowBoundary[0].nGetY() << "] = {" << dGridCentroidXToExtCRSX(ILShadowBoundary[0].nGetX()) << ", " << dGridCentroidYToExtCRSY(ILShadowBoundary[0].nGetY()) << "} and was abandoned at [" << ILShadowBoundary.Back().nGetX() << "][" << ILShadowBoundary.Back().nGetY() << "] = {" << dGridCentroidXToExtCRSX(ILShadowBoundary.Back().nGetX()) << ", " << dGridCentroidYToExtCRSY(ILShadowBoundary.Back().nGetY()) << "}" << endl;
+            // if (m_nLogFileDetail >= LOG_FILE_ALL)
+            //    LogStream << m_ulIter << ": Coast " << nCoast << ", possible shadow boundary from start point " << nStartPoint << " is still inland after crossing " << MAX_LAND_LENGTH_OF_SHADOW_ZONE_LINE << " cells, abandoning. It starts at [" << ILShadowBoundary[0].nGetX() << "][" << ILShadowBoundary[0].nGetY() << "] = {" << dGridCentroidXToExtCRSX(ILShadowBoundary[0].nGetX()) << ", " << dGridCentroidYToExtCRSY(ILShadowBoundary[0].nGetY()) << "} and was abandoned at [" << ILShadowBoundary.Back().nGetX() << "][" << ILShadowBoundary.Back().nGetY() << "] = {" << dGridCentroidXToExtCRSX(ILShadowBoundary.Back().nGetX()) << ", " << dGridCentroidYToExtCRSY(ILShadowBoundary.Back().nGetY()) << "}" << endl;
 
             continue;
          }
