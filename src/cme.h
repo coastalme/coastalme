@@ -4,7 +4,7 @@
 
 <b>CoastalME</b> (Coastal Modelling Environment) simulates the long-term behaviour of a coast. This initial version considers only simple soft cliff cross-shore effects. However, development of CoastalME is ongoing. Watch this space!\n\n
 
-CoastalME was devised and constructed by Andres Payo Garcia (British Geological Survey: agarcia@bgs.ac.uk) and David Favis-Mortlock (British Geological Survey: dfm1@bgs.ac.uk). We are very grateful to the following for support, assistance, and inspiration: Tom ashby, Manuel Cobos Budia, Wilf Chun, Mark Dickson, Jim W. Hall, Martin D. Hurst, Matthew Ives, Robert J. Nicholls, Ian Townend, and Mike J.A. Walkden.\n\n
+CoastalME was devised and constructed by Andres Payo Garcia (British Geological Survey: agarcia@bgs.ac.uk) and David Favis-Mortlock (British Geological Survey: dfm1@bgs.ac.uk). We are very grateful to the following for support, assistance, and inspiration: Tom Ashby, Manuel Cobos Budia, Wilf Chun, Mark Dickson, Jim W. Hall, Martin D. Hurst, Matthew Ives, Robert J. Nicholls, Ian Townend, and Mike J.A. Walkden.\n\n
 
 See <a href="https://github.com/coastalme/coastalme" target="_blank">https://github.com/coastalme/coastalme</a> for the stable release version, and the unstable development version, of the source code.\n
 \n
@@ -31,7 +31,7 @@ CoastalME builds easily using Linux. If you wish to run CoastalME on Windows, th
 
 Create a local copy of the github repository, for example by downloading a zipfile, then unpacking it or cloning. We suggest unpacking it to something like "/home/YOUR NAME/Projects/CoastalME/", this is then your CoastalME folder.
 
-\t git clone https://github.com/coastalme/coastalme
+      git clone https://github.com/coastalme/coastalme
 
 \subsection step2 Building CoastalME
 
@@ -39,62 +39,59 @@ In a terminal window (i.e. at a command-line prompt) move to the CoastalME folde
 
 Then move to the the src folder
 
-\t cd CoastalME/src
+      cd CoastalME/src
 
-and run run_cmake.sh.
+and run run_cmake.sh
 
-\t ./run_cmake.sh
+      ./run_cmake.sh
 
 If you get a "Permission denied" message:
 
-\t -bash: ./run_cmake.sh: Permission denied
+      -bash: ./run_cmake.sh: Permission denied
 
 you will have to grant executable permission using
 
-\t chmod a+x run_cmake.sh, chmod a+x cshore/make_cshore.sh and then ./run_cmake.sh
+      chmod a+x run_cmake.sh, chmod a+x cshore/make_cshore.sh and then ./run_cmake.sh
 
-If you see error messages about missing software (for example, telling you that CMake cannot be found or is too old, or GDAL cannot be found or is too old) then you need to install or update the software that is causing the problem.
+This will build CShore, look for GDAL, and write the CMake files. If you see error messages about missing software (for example, telling you that CMake cannot be found or is too old, or GDAL cannot be found or is too old) then you need to install or update the software that is causing the problem.
 
 Next, run
 
-\t make install
-
-and
-
-\t make install
+      make install
 
 This will create an executable file called cme in the CoastalME folder.
 
-\section install_sec Running CoastalME
+\section run_sec Running CoastalME
 
-\subsection step1 Specifying input files
+\subsection step3 Specifying input files
 
 Edit cme.ini to tell CoastalME which input file to read (for example, in/test_suite/minimal_wave_angle_230/minimal.dat).
 
-\subsection step2 Running CoastalME
+\subsection step4 Running CoastalME
 
-Run cme
+Leave the src folder, and run cme
 
-\t ./cme
+      cd ..
+      ./cme
 
 Output will appear in the "Path for output" folder.
 
-\subsection step3 Running CoastalME's test suite
+\subsection step5 Running CoastalME's test suite
 
 To check that your installation is running correctly, you can run a suite of pre-defined tests by running the following commands:
 
-\t chmod a+x run_test_suite.sh
-\t ./run_test_suite.sh
+      chmod a+x run_test_suite.sh
+      ./run_test_suite.sh
 
-The chmod comand ensures that you have permission to execute the run_test_suite.sh file.
+The `chmod` comand ensures that you have permission to execute the run_test_suite.sh file.
 
-\subsection step4 Managing CoastalME's output
+\subsection step6 Managing CoastalME's output
 
 Once you have CoastalME (CME) up and running, you can reduce the quantity of output (it can be overwhelming!) in several ways.
 
 Change "Content of log file" in the main CME input file for any of the test suite runs (the name of this main input file is listed in cme.ini, both are simple text files). If you set "Content of log file" to zero, then CME won't output a log file; setting it to 4 (all output) is really only useful to developers.
 
-Change "GIS vector files to output" and "GIS vector files to output" in the main CME input file. These are both set to "all" in the test suite files on GitHub. Instead of "all" you can list the space-separated codes for only the output that you want to see. A list of CME GIS output codes is in codes.txt"
+Change "GIS vector files to output" and "GIS vector files to output" in the main CME input file. These are both set to "all" in the test suite files on GitHub. Instead of "all" you can list the space-separated codes for only the output that you want to see. A list of CME GIS output codes is in codes.txt.
 
 Enjoy!
 
