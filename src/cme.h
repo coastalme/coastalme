@@ -1,11 +1,12 @@
 /*!
 \mainpage
 \section intro_sec Introduction
+
 <b>CoastalME</b> (Coastal Modelling Environment) simulates the long-term behaviour of a coast. This initial version considers only simple soft cliff cross-shore effects. However, development of CoastalME is ongoing. Watch this space!\n\n
 
-CoastalME was devised and constructed by Andres Payo Garcia (British Geological Survey: agarcia@bgs.ac.uk) and David Favis-Mortlock (British Geological Survey: dfm1@bgs.ac.uk). We are very grateful to the following for support, assistance, and inspiration: Manuel Cobos Budia, Mark Dickson, Jim W. Hall, Martin D. Hurst, Matthew Ives, Robert J. Nicholls, Ian Townend, and Mike J.A. Walkden.\n\n
+CoastalME was devised and constructed by Andres Payo Garcia (British Geological Survey: agarcia@bgs.ac.uk) and David Favis-Mortlock (British Geological Survey: dfm1@bgs.ac.uk). We are very grateful to the following for support, assistance, and inspiration: Tom ashby, Manuel Cobos Budia, Wilf Chun, Mark Dickson, Jim W. Hall, Martin D. Hurst, Matthew Ives, Robert J. Nicholls, Ian Townend, and Mike J.A. Walkden.\n\n
 
-See <a href="https://github.com/coastalme/coastalme_TESTING" target="_blank">https://github.com/coastalme/coastalme_TESTING</a> for the up-to-date version of the source code, and <a href="https://github.com/coastalme/coastalme" target="_blank">https://github.com/coastalme/coastalme</a> for the out-of-date stable version.\n
+See <a href="https://github.com/coastalme/coastalme" target="_blank">https://github.com/coastalme/coastalme</a> for the stable release version, and the unstable development version, of the source code.\n
 \n
 From Shingle Street\n
 To Orford Ness\n
@@ -22,13 +23,80 @@ Nothing lasts long on Shingle Street.\n
 \n
 By Blake Morrison (2018). See <a href="https://www.penguin.co.uk/books/419911/shingle-street-by-morrison-blake/9780701188771" target="_blank">https://www.penguin.co.uk/books/419911/shingle-street-by-morrison-blake/9780701188771</a>\n
 
-\section install_sec Installation
+\section install_sec Installing CoastalME
 
-\subsection step1 Step 1: Opening the box
+\subsection step1 Obtaining the source code
 
-\subsection step2 Step 2: Running CoastalME
+CoastalME builds easily using Linux. If you wish to run CoastalME on Windows, then we currently recommend using the Windows Subsystem Linux (WSL) software to do this.
 
-\subsection step3 Step 3: Building datasets
+Create a local copy of the github repository, for example by downloading a zipfile, then unpacking it or cloning. We suggest unpacking it to something like "/home/YOUR NAME/Projects/CoastalME/", this is then your CoastalME folder.
+
+\t git clone https://github.com/coastalme/coastalme
+
+\subsection step2 Building CoastalME
+
+In a terminal window (i.e. at a command-line prompt) move to the CoastalME folder.
+
+Then move to the the src folder
+
+\t cd CoastalME/src
+
+and run run_cmake.sh.
+
+\t ./run_cmake.sh
+
+If you get a "Permission denied" message:
+
+\t -bash: ./run_cmake.sh: Permission denied
+
+you will have to grant executable permission using
+
+\t chmod a+x run_cmake.sh, chmod a+x cshore/make_cshore.sh and then ./run_cmake.sh
+
+If you see error messages about missing software (for example, telling you that CMake cannot be found or is too old, or GDAL cannot be found or is too old) then you need to install or update the software that is causing the problem.
+
+Next, run
+
+\t make install
+
+and
+
+\t make install
+
+This will create an executable file called cme in the CoastalME folder.
+
+\section install_sec Running CoastalME
+
+\subsection step1 Specifying input files
+
+Edit cme.ini to tell CoastalME which input file to read (for example, in/test_suite/minimal_wave_angle_230/minimal.dat).
+
+\subsection step2 Running CoastalME
+
+Run cme
+
+\t ./cme
+
+Output will appear in the "Path for output" folder.
+
+\subsection step3 Running CoastalME's test suite
+
+To check that your installation is running correctly, you can run a suite of pre-defined tests by running the following commands:
+
+\t chmod a+x run_test_suite.sh
+\t ./run_test_suite.sh
+
+The chmod comand ensures that you have permission to execute the run_test_suite.sh file.
+
+\subsection step4 Managing CoastalME's output
+
+Once you have CoastalME (CME) up and running, you can reduce the quantity of output (it can be overwhelming!) in several ways.
+
+Change "Content of log file" in the main CME input file for any of the test suite runs (the name of this main input file is listed in cme.ini, both are simple text files). If you set "Content of log file" to zero, then CME won't output a log file; setting it to 4 (all output) is really only useful to developers.
+
+Change "GIS vector files to output" and "GIS vector files to output" in the main CME input file. These are both set to "all" in the test suite files on GitHub. Instead of "all" you can list the space-separated codes for only the output that you want to see. A list of CME GIS output codes is in codes.txt"
+
+Enjoy!
 
 \file cme.h
 \brief This file contains global definitions for CoastalME
@@ -74,7 +142,6 @@ By Blake Morrison (2018). See <a href="https://www.penguin.co.uk/books/419911/sh
    TODO 053 Improve handling of situation where landward elevation of profile is -ve
    TODO 055 Maybe add a safety check here?
    TODO 080 Do we get -ve breaking wave heights here?
-   Why do we get patches of sediment in the sea?
 
    THEORY/EFFICIENCY
    TODO 002 Do we really need D50 for drift landform class? What do we need for drift?
@@ -100,6 +167,7 @@ By Blake Morrison (2018). See <a href="https://www.penguin.co.uk/books/419911/sh
    TODO 076 When doing parallel profiles, start from the profile which is closest to a right angle with the coast
    TODO 077 As traverse between the bounding profiles creating parallel profiles, gradually change the parallel profile orientation based on distance weighting of two bounding profiles
    TODO 078 At present, we don't allow cliff collapse onto interventions. Is this realistic? Should it be different for different types on intervention?
+   Why do we get patches of sediment in the sea?
 
    OUTPUT
    TODO 065 Get GPKG output working: GDAL 3.9.1 does not yet implement this correctly. Currently is OK for vector output (but is very slow), not yet working for raster output
@@ -620,7 +688,7 @@ double const CLIFF_COLLAPSE_HEIGHT_INCREMENT = 0.1;      // Increment the fracti
 
 double const DBL_NODATA = -9999;
 
-string const PROGRAM_NAME = "Coastal Modelling Environment (CoastalME) version 1.2.3 (20 Dec 2024)";
+string const PROGRAM_NAME = "Coastal Modelling Environment (CoastalME) version 1.2.4 (20 Dec 2024)";
 string const PROGRAM_NAME_SHORT = "CME";
 string const CME_INI = "cme.ini";
 
@@ -634,7 +702,7 @@ string const DISCLAIMER5 = "program; if not, contact the Free Software Foundatio
 string const DISCLAIMER6 = "Cambridge, MA 02139, USA.";
 
 string const ABOUT = "simulates the long-term behaviour of a coast. This initial version considers only simple soft cliff cross-shore effects";
-string const THANKS = "Many thanks to:\n\tWilf Chun\n\tManuel Cobos Budia\n\tMark Dickson\n\tJim W. Hall\n\tMartin D. Hurst\n\tMatthew Ives\n\tRobert J. Nicholls\n\tIan Townend\n\tMike J.A. Walkden";
+string const THANKS = "Many thanks to:\n\tTom Ashby\n\tManuel Cobos Budia\n\tWilf Chun\n\tMark Dickson\n\tJim W. Hall\n\tMartin D. Hurst\n\tMatthew Ives\n\tRobert J. Nicholls\n\tIan Townend\n\tMike J.A. Walkden";
 string const GDAL_DRIVERS = "GDAL drivers";
 
 string const USAGE = "Usage: cme [OPTION]...";
