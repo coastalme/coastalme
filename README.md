@@ -5,7 +5,11 @@
 # CoastalME
 The [latest release](https://github.com/coastalme/coastalme/releases) is version 1.2.0 (18 Nov 2024).
 
+<<<<<<< HEAD
 The testing version (use at your own risk!) is 1.2.4 (03 Dec 2024).
+=======
+The testing version (use at your own risk!) is 1.2.4 (20 Dec 2024).
+>>>>>>> 30201a28cdeaccde27a69336f3e95aff3eecd0da
 
 By <a href="https://www.bgs.ac.uk/people/payo-garcia-andres/">Andres Payo</a> and <a href="https://en.wikipedia.org/wiki/David_Favis-Mortlock">David Favis-Mortlock</a> and [others](COMMITERS.md).
 

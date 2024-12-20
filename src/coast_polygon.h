@@ -156,6 +156,15 @@ private:
    //! Depth of pre-existing consolidated coarse sediment
    double m_dPreExistingConsCoarse;
 
+   //! Depth of fine sediment added from this-iteration sediment input event(s)
+   double m_dSedimentInputFine;
+
+   //! Depth of sand sediment added from this-iteration sediment input event(s)
+   double m_dSedimentInputSand;
+
+   //! Depth of coarse sediment added from this-iteration sediment input event(s)
+   double m_dSedimentInputCoarse;
+
    //! Co-ordinates of the coast node cell (raster-grid CRS)
    CGeom2DIPoint m_PtiNode;
 
@@ -311,6 +320,13 @@ public:
    double dGetPreExistingConsSand(void) const;
    void SetPreExistingConsCoarse(double const);
    double dGetPreExistingConsCoarse(void) const;
+
+   void SetSedimentInputUnconsFine(double const);
+   double dGetSedimentInputUnconsFine(void) const;
+   void SetSedimentInputUnconsSand(double const);
+   double dGetSedimentInputUnconsSand(void) const;
+   void SetSedimentInputUnconsCoarse(double const);
+   double dGetSedimentInputUnconsCoarse(void) const;
 };
 #endif //COASTPOLYGON_H
 
