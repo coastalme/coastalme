@@ -835,6 +835,10 @@ void CGeomCell::InitCell(void)
    m_dWaveAngle = 0;
 
    m_dBeachProtectionFactor = DBL_NODATA;
+
+   // Initialize this-iteration sediment input event values
+   int nThisLayer = this->nGetTopNonZeroLayerAboveBasement();
+   m_VLayerAboveBasement[nThisLayer].pGetUnconsolidatedSediment()->InitThisIterSedimentInputAll();
 }
 
 //! Sets the wave height on this cell, also increments the total wave height

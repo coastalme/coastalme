@@ -2793,7 +2793,7 @@ bool CSimulation::bReadRunDataFile(void)
             m_dCoastNormalAvgSpacing = strtod(strRH.c_str(), NULL);
 
             if (bFPIsEqual(m_dCoastNormalAvgSpacing, 0.0, TOLERANCE))
-               m_nCoastNormalAvgSpacing = MIN_PROFILE_SPACING; // In cells, we will set m_dCoastNormalAvgSpacing later when we know m_dCellSide
+               m_nCoastNormalAvgSpacing = MIN_PROFILE_SPACING;       // In cells, we will set m_dCoastNormalAvgSpacing later when we know m_dCellSide
             else if (m_dCoastNormalAvgSpacing < 0)
                strErr = "line " + to_string(nLine) + ": spacing of coastline normals must be > 0";
             break;
@@ -2829,21 +2829,6 @@ bool CSimulation::bReadRunDataFile(void)
             break;
 
          case 79:
-            // Maximum number of 'cape' normals
-            if (! bIsStringValidInt(strRH))
-            {
-               strErr = "line " + to_string(nLine) + ": invalid integer for maximum number of 'cape' normals '" + strRH + "' in " + m_strDataPathName;
-               break;
-            }
-
-            m_nNaturalCapeNormals = stoi(strRH);
-
-            if (m_nNaturalCapeNormals < 0)
-               strErr = "line " + to_string(nLine) + ": number of 'cape' normals must be >= 0";
-
-            break;
-
-         case 80:
             // Start depth for wave calcs (ratio to deep water wave height), check that this is a valid double
             if (! bIsStringValidDouble(strRH))
             {
@@ -2859,7 +2844,7 @@ bool CSimulation::bReadRunDataFile(void)
 
 
          // ----------------------------------------------------- Testing only -------------------------------------------------
-         case 81:
+         case 80:
             // Output profile data?
             strRH = strToLower(&strRH);
 
@@ -2879,7 +2864,7 @@ bool CSimulation::bReadRunDataFile(void)
 
             break;
 
-         case 82:
+         case 81:
             // Numbers of profiles to be saved
             if (m_bOutputProfileData)
             {
@@ -2907,7 +2892,7 @@ bool CSimulation::bReadRunDataFile(void)
             }
             break;
 
-         case 83:
+         case 82:
             // Timesteps to save profiles
             if (m_bOutputProfileData)
             {
@@ -2927,7 +2912,7 @@ bool CSimulation::bReadRunDataFile(void)
             }
             break;
 
-         case 84:
+         case 83:
             // Output parallel profile data?
             strRH = strToLower(&strRH);
 
@@ -2936,7 +2921,7 @@ bool CSimulation::bReadRunDataFile(void)
                m_bOutputParallelProfileData = true;
             break;
 
-         case 85:
+         case 84:
             // Output erosion potential look-up data?
             strRH = strToLower(&strRH);
 
@@ -2945,7 +2930,7 @@ bool CSimulation::bReadRunDataFile(void)
                m_bOutputErosionPotentialData = true;
             break;
 
-         case 86:
+         case 85:
             // Erode shore platform in alternate direction each timestep?
             strRH = strToLower(&strRH);
 
@@ -2954,7 +2939,7 @@ bool CSimulation::bReadRunDataFile(void)
                m_bErodeShorePlatformAlternateDirection = true;
             break;
 
-         case 87:
+         case 86:
             // Size of moving window for coastline curvature calculation (must be odd)
             if (! bIsStringValidInt(strRH))
             {
@@ -3488,9 +3473,9 @@ int CSimulation::nReadWaveStationInputFile(int const nWaveStations)
 }
 
 //===============================================================================================================================
-//! Reads the sediment input events time series data
+//! Reads the sediment input event file
 //===============================================================================================================================
-int CSimulation::nReadSedimentInputEventTimeSeriesFile(void)
+int CSimulation::nReadSedimentInputEventFile(void)
 {
    // Create an ifstream object
    ifstream InStream;
@@ -3615,13 +3600,11 @@ int CSimulation::nReadSedimentInputEventTimeSeriesFile(void)
             m_bHaveCoarseSediment = true;
 
          // Only read the last two items if we have on-coast sediment block sediment input
-         double
-             dLen = 0,
-             dWidth = 0;
-         //  dThick = 0;
+         double dLen = 0;
+         double dWidth = 0;
+         // double dThick = 0;
          if (m_bSedimentInputAtCoast)
          {
-
             // The coast-normal length (m) of the sediment block, first check that this is a valid double
             if (! bIsStringValidDouble(VstrTmp[5]))
             {
@@ -3632,7 +3615,7 @@ int CSimulation::nReadSedimentInputEventTimeSeriesFile(void)
             dLen = stod(strTrim(&VstrTmp[5]));
             if (dLen <= 0)
             {
-               strErr = "line " + to_string(nLine) + ": coast-normal length L of the sediment block '" + to_string(dLen) + "' must be > 0 in " + m_strSedimentInputEventFile;
+               strErr = "line " + to_string(nLine) + ": coast-normal length of the sediment block '" + to_string(dLen) + "' must be > 0 in " + m_strSedimentInputEventFile;
                break;
             }
 
@@ -3646,21 +3629,21 @@ int CSimulation::nReadSedimentInputEventTimeSeriesFile(void)
             dWidth = stod(strTrim(&VstrTmp[6]));
             if ((! m_bSedimentInputAtCoast) && (dWidth <= 0))
             {
-               strErr = "line " + to_string(nLine) + ": along-coast width W (m) of the sediment block '" + to_string(dWidth) + "' must be > 0 in " + m_strSedimentInputEventFile;
+               strErr = "line " + to_string(nLine) + ": along-coast width (m) of the sediment block '" + to_string(dWidth) + "' must be > 0 in " + m_strSedimentInputEventFile;
                break;
             }
 
-            // The along-coast thickness (m) of the sediment block, first check that this is a valid double
+            // // The along-coast thickness (m) of the sediment block, first check that this is a valid double
             // if (! bIsStringValidDouble(VstrTmp[7]))
             // {
             //    strErr = "line " + to_string(nLine) + ": invalid floating point number '" + VstrTmp[7] + "' for along-coast thickness of sediment input event in " + m_strSedimentInputEventFile;
             //    break;
             // }
-
+            //
             // dThick = stod(strTrim(&VstrTmp[7]));
             // if ((! m_bSedimentInputAtCoast) && (dWidth <= 0))
             // {
-            //    strErr = "line " + to_string(nLine) + ": along-coast thickness E (m) of the sediment block '" + to_string(dThick) + "' must be > 0 in " + m_strSedimentInputEventFile;
+            //    strErr = "line " + to_string(nLine) + ": along-coast thickness (m) of the sediment block '" + to_string(dThick) + "' must be > 0 in " + m_strSedimentInputEventFile;
             //    break;
             // }
          }
@@ -3668,7 +3651,7 @@ int CSimulation::nReadSedimentInputEventTimeSeriesFile(void)
          // Create the CSedInputEvent object
          CSedInputEvent* pEvent = new CSedInputEvent(nID, ulEventTimeStep, dFineSedVol, dSandSedVol, dCoarseSedVol, dLen, dWidth); //, dThick);
 
-         // And store it in the m_pVSedInputEvent 2D vector
+         // And store it in the m_pVSedInputEvent vector
          m_pVSedInputEvent.push_back(pEvent);
       }
    }
@@ -3677,8 +3660,7 @@ int CSimulation::nReadSedimentInputEventTimeSeriesFile(void)
    if (! strErr.empty())
    {
       // Error in input to initialisation file
-      cerr << ERR << strErr << " in sediment input event file " << m_strSedimentInputEventFile << endl
-           << "'" << strRec << "'" << endl;
+      cerr << ERR << strErr << " in sediment input event file " << m_strSedimentInputEventFile << endl << "'" << strRec << "'" << endl;
       InStream.close();
 
       return RTN_ERR_READING_SEDIMENT_INPUT_EVENT;

@@ -186,7 +186,6 @@ CSimulation::CSimulation (void)
    m_nProfileSmoothWindow =
    m_nCoastNormalAvgSpacing =
    m_nCoastCurvatureInterval =
-   m_nNaturalCapeNormals =
    m_nGISMaxSaveDigits =
    m_nGISSave =
    m_nUSave =
@@ -704,14 +703,14 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
       // The user specified a profile spacing, is this too small?
       m_nCoastNormalAvgSpacing = nRound (m_dCoastNormalAvgSpacing / m_dCellSide);
 
-      if (m_nCoastNormalAvgSpacing < MIN_PROFILE_SPACING)
-      {
-         cerr << ERR << "profile spacing was specified as " << m_dCoastNormalAvgSpacing << " m, which is " << m_nCoastNormalAvgSpacing << " cells. Polygon creation works poorly if profile spacing is less than " << MIN_PROFILE_SPACING << " cells, i.e. " << MIN_PROFILE_SPACING *m_dCellSide << " m" << endl;
-
-         LogStream << ERR << "profile spacing was specified as " << m_dCoastNormalAvgSpacing << " m, which is " << m_nCoastNormalAvgSpacing << " cells. Polygon creation works poorly if profile spacing is less than " << MIN_PROFILE_SPACING << " cells, i.e. " << MIN_PROFILE_SPACING *m_dCellSide << " m" << endl;
-
-         return RTN_ERR_PROFILESPACING;
-      }
+      // if (m_nCoastNormalAvgSpacing < MIN_PROFILE_SPACING)
+      // {
+      //    cerr << ERR << "profile spacing was specified as " << m_dCoastNormalAvgSpacing << " m, which is " << m_nCoastNormalAvgSpacing << " cells. Polygon creation works poorly if profile spacing is less than " << MIN_PROFILE_SPACING << " cells, i.e. " << MIN_PROFILE_SPACING *m_dCellSide << " m" << endl;
+      //
+      //    LogStream << ERR << "profile spacing was specified as " << m_dCoastNormalAvgSpacing << " m, which is " << m_nCoastNormalAvgSpacing << " cells. Polygon creation works poorly if profile spacing is less than " << MIN_PROFILE_SPACING << " cells, i.e. " << MIN_PROFILE_SPACING *m_dCellSide << " m" << endl;
+      //
+      //    return RTN_ERR_PROFILESPACING;
+      // }
    }
 
    // We have at least one filename for the first layer, so add the correct number of layers. Note the the number of layers does not change during the simulation: however layers can decrease in thickness until they have zero thickness
@@ -849,7 +848,7 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
          return (nRet);
 
       // Read in the time series values for sediment input events
-      nRet = nReadSedimentInputEventTimeSeriesFile();
+      nRet = nReadSedimentInputEventFile();
       if (nRet != RTN_OK)
          return (nRet);
    }
@@ -968,18 +967,8 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
       if (nRet != RTN_OK)
          return nRet;
 
-      // If we have sediment input events, then check to see whether this is time for an event to occur. If it is, then do it
-      if (m_bSedimentInput)
-      {
-         m_bSedimentInputThisIter = false;
-
-         nRet = nCheckForSedimentInputEvent();
-         if (nRet != RTN_OK)
-            return nRet;
-      }
-
       // Create the coastline-normal profiles
-      nRet = nCreateAllProfilesAndCheckForIntersection();
+      nRet = nCreateAllProfilesAndCheckValidity();
       if (nRet != RTN_OK)
          return nRet;
 
@@ -1009,7 +998,7 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
       //       LogStream << "Before marking polygon cells, N cells with zero polygon ID = " << nPoly0 << endl;
       //       // DEBUG CODE =========================================
 
-      // Mark cells of the raster grid that are within each polygon
+      // Mark cells of the raster grid that are within each polygon, and do some polygon initialization
       MarkPolygonCells();
 
       // Calculate the length of the shared normal between each polygon and the adjacent polygon(s)
@@ -1050,14 +1039,13 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
       if (nRet != RTN_OK)
          return nRet;
 
-
       // Output polygon share table and pre-existing sediment table to log file
       if (m_nLogFileDetail >= LOG_FILE_MIDDLE_DETAIL)
       {
          for (int nCoast = 0; nCoast < nValidCoast; nCoast++)
          {
             WritePolygonShareTable(nCoast);
-            WritePolygonPreExistingSediment(nCoast);
+            WritePolygonPreExistingSedimentTable(nCoast);
          }
       }
 
@@ -1181,6 +1169,21 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
          nRet = nDoAllActualBeachErosionAndDeposition();
          if (nRet != RTN_OK)
             return nRet;
+      }
+
+      // If we have sediment input events, then check to see whether this is time for an event to occur. If it is, then do it
+      if (m_bSedimentInput)
+      {
+         nRet = nCheckForSedimentInputEvent();
+         if (nRet != RTN_OK)
+            return nRet;
+
+         // If we have had at least one sediment input event this iteration, then output the sediment event per polygon table to the log file
+         if (m_bSedimentInputThisIter && (m_nLogFileDetail >= LOG_FILE_MIDDLE_DETAIL))
+         {
+            for (int nCoast = 0; nCoast < nValidCoast; nCoast++)
+               WritePolygonSedimentInputEventTable(nCoast);
+         }
       }
 
 //       // Add the fine sediment that was eroded this timestep (from the shore platform, from cliff collapse, from erosion of existing fine sediment during cliff collapse talus deposition, and from beach erosion; minus the fine sediment from beach erosion that went off-grid) to the suspended sediment load

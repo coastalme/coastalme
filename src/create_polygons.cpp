@@ -279,11 +279,9 @@ void CSimulation::MarkPolygonCells(void)
          double dStoredConsFine = 0;
          double dStoredConsSand = 0;
          double dStoredConsCoarse = 0;
-            // dCliffCollapseErosionFine = 0,
-            // dCliffCollapseErosionSand = 0,
-            // dCliffCollapseErosionCoarse = 0,
-            // dCliffCollapseTalusSand = 0,
-            // dCliffCollapseTalusCoarse = 0;
+         double dSedimentInputFine = 0;
+         double dSedimentInputSand = 0;
+         double dSedimentInputCoarse = 0;
 
          CGeomCoastPolygon* pPolygon = m_VCoast[nCoast].pGetPolygon(nPoly);
          int nPolyID = pPolygon->nGetGlobalID();
@@ -302,9 +300,8 @@ void CSimulation::MarkPolygonCells(void)
             if (i == nSize-2)       // We must ignore the duplicated node point
                j = 0;
             
-            CGeom2DPoint
-               PtThis = *pPolygon->pPtGetBoundaryPoint(i),
-               PtNext = *pPolygon->pPtGetBoundaryPoint(j);
+            CGeom2DPoint PtThis = *pPolygon->pPtGetBoundaryPoint(i);
+            CGeom2DPoint PtNext = *pPolygon->pPtGetBoundaryPoint(j);
                
             // Safety check
             if (PtThis == PtNext)
@@ -364,7 +361,7 @@ void CSimulation::MarkPolygonCells(void)
 
             while ((nX < m_nXGridMax) && (m_pRasterGrid->m_Cell[nX][nY].nGetPolygonID() == INT_NODATA))
             {
-               // Mark the cell as being on this polygon
+               // Mark the cell as being in this polygon
                m_pRasterGrid->m_Cell[nX][nY].SetPolygonID(nPolyID);
 //                LogStream << "[" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "}" << endl;
                
@@ -389,7 +386,18 @@ void CSimulation::MarkPolygonCells(void)
 
                // Add to the start-iteration total of suspended fine sediment within polygons
                m_dStartIterSuspFineInPolygons += m_pRasterGrid->m_Cell[nX][nY].dGetSuspendedSediment();
-               
+
+               // Add to the total of sediment derived from sediment input events
+               dSedimentInputFine += m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nThisLayer)->pGetUnconsolidatedSediment()->dGetFineSedimentInputDepth();
+               dSedimentInputSand += m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nThisLayer)->pGetUnconsolidatedSediment()->dGetSandSedimentInputDepth();
+               dSedimentInputCoarse += m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nThisLayer)->pGetUnconsolidatedSediment()->dGetCoarseSedimentInputDepth();
+
+               if (dSedimentInputSand > 0)
+                  std::cout << endl;
+
+               if ((nX == 53) && (nY ==312))
+                  std::cout << endl;
+
                nCellsInPolygon++;
                dTotDepth += m_pRasterGrid->m_Cell[nX][nY].dGetSeaDepth();
 
@@ -421,7 +429,12 @@ void CSimulation::MarkPolygonCells(void)
          pPolygon->SetPreExistingUnconsFine(dStoredUnconsFine);
          pPolygon->SetPreExistingUnconsSand(dStoredUnconsSand);
          pPolygon->SetPreExistingUnconsCoarse(dStoredUnconsCoarse);
-         
+
+         // Store this polygon's values for unconsolidated sediment derived from sediment input event(s)
+         pPolygon->SetSedimentInputUnconsFine(dSedimentInputFine);
+         pPolygon->SetSedimentInputUnconsSand(dSedimentInputSand);
+         pPolygon->SetSedimentInputUnconsCoarse(dSedimentInputCoarse);
+
          // Store this polygon's stored consolidated sediment depths
          pPolygon->SetPreExistingConsFine(dStoredConsFine);
          pPolygon->SetPreExistingConsSand(dStoredConsSand);

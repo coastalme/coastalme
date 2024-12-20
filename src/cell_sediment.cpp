@@ -36,34 +36,48 @@ CRWCellSediment::CRWCellSediment(void)
    m_dNotchSandLost(0),
    m_dCoarse(0),
    m_dNotchCoarseLost(0),
-   m_dTotSedimentInput(0)
+   m_dFineSedimentInputThisIter(0),
+   m_dSandSedimentInputThisIter(0),
+   m_dCoarseSedimentInputThisIter(0),
+   m_dTotFineSedimentInput(0),
+   m_dTotSandSedimentInput(0),
+   m_dTotCoarseSedimentInput(0)
 {
 }
 
 //! CRWCellSediment copy constructor
 CRWCellSediment::CRWCellSediment(CRWCellSediment const& OtherSediment)
 {
-   m_dFine                = OtherSediment.m_dFine;
-   m_dNotchFineLost       = OtherSediment.m_dNotchFineLost;
-   m_dSand                = OtherSediment.m_dSand;
-   m_dNotchSandLost       = OtherSediment.m_dNotchSandLost;
-   m_dCoarse              = OtherSediment.m_dCoarse;
-   m_dNotchCoarseLost     = OtherSediment.m_dNotchCoarseLost;
-   m_dTotSedimentInput    = OtherSediment.m_dTotSedimentInput;
+   m_dFine                        = OtherSediment.m_dFine;
+   m_dNotchFineLost               = OtherSediment.m_dNotchFineLost;
+   m_dSand                        = OtherSediment.m_dSand;
+   m_dNotchSandLost               = OtherSediment.m_dNotchSandLost;
+   m_dCoarse                      = OtherSediment.m_dCoarse;
+   m_dNotchCoarseLost             = OtherSediment.m_dNotchCoarseLost;
+   m_dFineSedimentInputThisIter   = OtherSediment.m_dFineSedimentInputThisIter;
+   m_dSandSedimentInputThisIter   = OtherSediment.m_dSandSedimentInputThisIter;
+   m_dCoarseSedimentInputThisIter = OtherSediment.m_dCoarseSedimentInputThisIter;
+   m_dTotFineSedimentInput        = OtherSediment.m_dTotFineSedimentInput;
+   m_dTotSandSedimentInput        = OtherSediment.m_dTotSandSedimentInput;
+   m_dTotCoarseSedimentInput      = OtherSediment.m_dTotCoarseSedimentInput;
 }
 
 //! Sets one CRWCellSediment object equal to another
 CRWCellSediment& CRWCellSediment::operator= (const CRWCellSediment& OtherSediment)
 {
    // This copies all fields from one object to another
-   m_dFine                = OtherSediment.m_dFine;
-   m_dNotchFineLost       = OtherSediment.m_dNotchFineLost;
-   m_dSand                = OtherSediment.m_dSand;
-   m_dNotchSandLost       = OtherSediment.m_dNotchSandLost;
-   m_dCoarse              = OtherSediment.m_dCoarse;
-   m_dNotchCoarseLost     = OtherSediment.m_dNotchCoarseLost;
-   m_dTotSedimentInput    = OtherSediment.m_dTotSedimentInput;
-
+   m_dFine                        = OtherSediment.m_dFine;
+   m_dNotchFineLost               = OtherSediment.m_dNotchFineLost;
+   m_dSand                        = OtherSediment.m_dSand;
+   m_dNotchSandLost               = OtherSediment.m_dNotchSandLost;
+   m_dCoarse                      = OtherSediment.m_dCoarse;
+   m_dNotchCoarseLost             = OtherSediment.m_dNotchCoarseLost;
+   m_dFineSedimentInputThisIter   = OtherSediment.m_dFineSedimentInputThisIter;
+   m_dSandSedimentInputThisIter   = OtherSediment.m_dSandSedimentInputThisIter;
+   m_dCoarseSedimentInputThisIter = OtherSediment.m_dCoarseSedimentInputThisIter;
+   m_dTotFineSedimentInput        = OtherSediment.m_dTotFineSedimentInput;
+   m_dTotSandSedimentInput        = OtherSediment.m_dTotSandSedimentInput;
+   m_dTotCoarseSedimentInput      = OtherSediment.m_dTotCoarseSedimentInput;
    return (*this);
 }
 
@@ -179,14 +193,56 @@ double CRWCellSediment::dGetNotchCoarseLost(void) const
    return m_dNotchCoarseLost;
 }
 
-//! Adds to the total (since the start of simulation) depth of sediment input, all size classes
-void CRWCellSediment::AddToTotSedimentInputDepth(double const dDepth)
+//! Adds to the this-iteration total depth of fine sediment input, and to the since-start-of-simulation total depth of fine sediment input (m)
+void CRWCellSediment::AddFineSedimentInputDepth(double const dDepth)
 {
-   m_dTotSedimentInput += dDepth;
+   m_dFineSedimentInputThisIter += dDepth;
+   m_dTotFineSedimentInput += dDepth;
 }
 
-//! Returns the total (since the start of simulation) depth of sediment input, all size classes
-double CRWCellSediment::dGetTotSedimentInputDepth(void) const
+//! Adds to the this-iteration total depth of sand sediment input, and to the since-start-of-simulation total depth of sand sediment input (m)
+void CRWCellSediment::AddSandSedimentInputDepth(double const dDepth)
 {
-   return m_dTotSedimentInput;
+   m_dSandSedimentInputThisIter += dDepth;
+   m_dTotSandSedimentInput += dDepth;
 }
+
+//! Adds to the this-iteration total depth of coarse sediment input, and to the since-start-of-simulation total depth of coarse sediment input (m)
+void CRWCellSediment::AddCoarseSedimentInputDepth(double const dDepth)
+{
+   m_dCoarseSedimentInputThisIter += dDepth;
+   m_dTotCoarseSedimentInput += dDepth;
+}
+
+//! Returns the this-iteration total depth of fine sediment input (m)
+double CRWCellSediment::dGetFineSedimentInputDepth(void) const
+{
+   return m_dFineSedimentInputThisIter;
+}
+
+//! Returns the this-iteration total depth of sand sediment input (m)
+double CRWCellSediment::dGetSandSedimentInputDepth(void) const
+{
+   return m_dSandSedimentInputThisIter;
+}
+
+//! Returns the this-iteration total depth of coarse sediment input (m)
+double CRWCellSediment::dGetCoarseSedimentInputDepth(void) const
+{
+   return m_dCoarseSedimentInputThisIter;
+}
+
+//! Returns the total (since the start of simulation) depth of sediment input (m, all size classes)
+double CRWCellSediment::dGetTotAllSedimentInputDepth(void) const
+{
+   return m_dTotFineSedimentInput + m_dTotSandSedimentInput + m_dTotCoarseSedimentInput;
+}
+
+//! Intializes the this-iteration total depth of sediment input for all size classes (m)
+void CRWCellSediment::InitThisIterSedimentInputAll(void)
+{
+   m_dFineSedimentInputThisIter =
+   m_dSandSedimentInputThisIter =
+   m_dCoarseSedimentInputThisIter = 0;
+}
+

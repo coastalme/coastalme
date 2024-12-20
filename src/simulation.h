@@ -454,9 +454,6 @@ private:
    //! Coast curvature interval is a length, measured in coastline points
    int m_nCoastCurvatureInterval;
 
-   //! The number of natural (i.e. not interventions) coast-normal profiles to be constructed on capes i.e. points on the coastline at which smoothed convexity is high
-   int m_nNaturalCapeNormals;
-
    //! The maximum number of digits in GIS filenames. These can be sequential, or the iteration number
    int m_nGISMaxSaveDigits;
 
@@ -1523,7 +1520,7 @@ private:
    int nWriteEndRunDetails(void);
    int nReadShapeFunctionFile(void);
    int nReadWaveStationInputFile(int const);
-   int nReadSedimentInputEventTimeSeriesFile(void);
+   int nReadSedimentInputEventFile(void);
    int nReadTideDataFile(void);
    int nSaveProfile(int const, int const, int const, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<CGeom2DIPoint>* const, vector<double> const*) const;
    bool bWriteProfileData(int const, int const, int const, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<CGeom2DIPoint>* const, vector<double> const*) const;
@@ -1570,13 +1567,11 @@ private:
    int nTraceFloodCoastLine(unsigned int const, int const, int const, vector<bool>*, vector<CGeom2DIPoint> const*);
    int nTraceAllFloodCoasts(void);
    void DoCoastCurvature(int const, int const);
-   int nCreateAllProfilesAndCheckForIntersection(void);
+   int nCreateAllProfilesAndCheckValidity(void);
    int nCreateAllProfiles(void);
-   void CreateNaturalCapeNormalProfiles(int const, int&, int const, vector<bool>*, vector<pair<int, double>> const*);
-   void CreateRestOfNormalProfiles(int const, int&, int const, double const, vector<bool>*, vector<pair<int, double>> const*);
-   void CreateInterventionProfiles(int const, int& /*, int const*/);
-   int nCreateProfile(int const, int const, int&);
-   int nCreateGridEdgeProfile(bool const, int const, int&);
+   void LocateAllProfiles(int const, int&, int const, vector<bool>*, vector<pair<int, double>> const*);
+   int nLocateProfile(int const, int const, int&, bool const);
+   int nLocateGridEdgeProfile(bool const, int const, int&);
    int nPutAllProfilesOntoGrid(void);
    int nModifyAllIntersectingProfiles(void);
    static bool bCheckForIntersection(CGeomProfile *const, CGeomProfile* const, int&, int&, double&, double&, double&, double&);
@@ -1597,7 +1592,7 @@ private:
    void DoActualPlatformErosionOnCell(int const, int const);
    double dLookUpErosionPotential(double const) const;
    static CGeom2DPoint PtChooseEndPoint(int const, CGeom2DPoint const*, CGeom2DPoint const*, double const, double const, double const, double const);
-   int nGetCoastNormalEndPoint(int const, int const, int const, CGeom2DPoint const*, double const, CGeom2DPoint*, CGeom2DIPoint*);
+   int nGetCoastNormalEndPoint(int const, int const, int const, CGeom2DPoint const*, double const, CGeom2DPoint*, CGeom2DIPoint*, bool const);
    int nLandformToGrid(int const, int const);
    int nCalcWavePropertiesOnProfile(int const, int const, int const, vector<double>*, vector<double>*, vector<double>*, vector<double>*, vector<bool>*);
    int nGetThisProfileElevationVectorsForCShore(int const, int const, int const, vector<double>*, vector<double>*, vector<double>*);
@@ -1756,7 +1751,8 @@ private:
    // static bool bIsNumeric(string const*);
    unsigned long ulConvertToTimestep(string const*) const;
    void WritePolygonShareTable(int const);
-   void WritePolygonPreExistingSediment(int const);
+   void WritePolygonPreExistingSedimentTable(int const);
+   void WritePolygonSedimentInputEventTable(int const);
    void WritePolygonShorePlatformErosion(int const);
    void WritePolygonCliffCollapseErosion(int const);
    void WritePolygonSedimentBeforeMovement(int const);

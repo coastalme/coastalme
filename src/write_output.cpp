@@ -502,13 +502,13 @@ void CSimulation::WriteStartRunDetails(void)
       OutStream << " Sediment input shapefile                                  \t: " << m_strSedimentInputEventShapefile << endl;
       OutStream << " Sediment input type                                       \t: ";
       if (m_bSedimentInputAtPoint)
-         OutStream << "at point";
+         OutStream << "point";
       else if (m_bSedimentInputAtCoast)
-         OutStream << "in block on coast";
+         OutStream << "block on coast";
       else if (m_bSedimentInputAlongLine)
-         OutStream << "where line interests with coast";
+         OutStream << "line intersection with coast";
       OutStream << endl;
-      OutStream << " Sediment input time series file                           \t: " << m_strSedimentInputEventFile << endl;
+      OutStream << " Sediment input file                                       \t: " << m_strSedimentInputEventFile << endl;
    }
    OutStream << " Do cliff collapse?                                        \t: " << (m_bDoCliffCollapse ? "Y" : "N") << endl;
    OutStream << resetiosflags(ios::floatfield);
@@ -539,7 +539,6 @@ void CSimulation::WriteStartRunDetails(void)
    OutStream << " Minimum spacing of coastline normals                      \t: " << resetiosflags(ios::floatfield) << std::fixed << m_dCoastNormalAvgSpacing << " m" << endl;
    OutStream << " Random factor for spacing of normals                      \t: " << resetiosflags(ios::floatfield) << std::fixed << m_dCoastNormalRandSpacingFactor << endl;
    OutStream << " Length of coastline normals                               \t: " << m_dCoastNormalLength << " m" << endl;
-   OutStream << " Maximum number of 'cape' normals                          \t: " << m_nNaturalCapeNormals << endl;
    OutStream << endl;
    /*
       OutStream << std::fixed << setprecision(8);
@@ -752,7 +751,7 @@ bool CSimulation::bWritePerTimestepResults(void)
       OutStream << setw(4) << SPACE;
 
    // Output the this-timestep sediment input in m ==============================================================================
-   OutStream << std::fixed << setprecision(1);
+   OutStream << std::scientific << setprecision(0);
 
    if (m_dThisiterUnconsFineInput > 0)
       OutStream << setw(4) << m_dThisiterUnconsFineInput;
@@ -1379,7 +1378,7 @@ void CSimulation::WritePolygonShareTable(int const nCoast)
 //===============================================================================================================================
 //! Writes to the log file a table showing per-polygon pre-existing unconsolidated sediment
 //===============================================================================================================================
-void CSimulation::WritePolygonPreExistingSediment(int const nCoast)
+void CSimulation::WritePolygonPreExistingSedimentTable(int const nCoast)
 {
    double dTmpTot = 0;
    double dTmpFineTot = 0;
@@ -1393,11 +1392,11 @@ void CSimulation::WritePolygonPreExistingSediment(int const nCoast)
    m_dTotalSandUnconsInPolygons =
    m_dTotalCoarseUnconsInPolygons = 0;
 
-   // ALSO PRINT m_dStartIterUnconsFineAllCells etc.
+   // TODO 082 Also show m_dStartIterUnconsFineAllCells etc.
 
    LogStream << m_ulIter << ": Per-polygon pre-existing unconsolidated sediment. Note that this does not include pre-existing unconsolidated sediment outside the polygons.";
    if (m_ulIter > 1)
-      LogStream << " Note that the all-polygon total will be slightly different from the all-polygon total at the end of the last timestep, since the coastline and polygons have been re-drawn.";
+      LogStream << " Also the all-polygon total will be slightly different from the all-polygon total at the end of the last timestep, since the coastline and polygons have been re-drawn.";
    LogStream << endl;
    
    LogStream << "-----------|-----------|-----------|--------------|--------------|--------------|--------------|" << endl;
@@ -1413,9 +1412,9 @@ void CSimulation::WritePolygonPreExistingSediment(int const nCoast)
       m_dTotalCoarseConsInPolygons += m_pVCoastPolygon[n]->dGetPreExistingConsCoarse();
 
       // Now consider unconsolidated sediment
-      double dThisFine = m_pVCoastPolygon[n]->dGetPreExistingUnconsFine();
-      double dThisSand = m_pVCoastPolygon[n]->dGetPreExistingUnconsSand();
-      double dThisCoarse = m_pVCoastPolygon[n]->dGetPreExistingUnconsCoarse();
+      double dThisFine = m_pVCoastPolygon[n]->dGetPreExistingUnconsFine() + m_pVCoastPolygon[n]->dGetSedimentInputUnconsFine();
+      double dThisSand = m_pVCoastPolygon[n]->dGetPreExistingUnconsSand() + m_pVCoastPolygon[n]->dGetSedimentInputUnconsSand();
+      double dThisCoarse = m_pVCoastPolygon[n]->dGetPreExistingUnconsCoarse() + m_pVCoastPolygon[n]->dGetSedimentInputUnconsCoarse();
 
       LogStream << strIntRight(m_pVCoastPolygon[n]->nGetGlobalID(), 11) << "|" << strIntRight(nCoast, 11) << "|" << strIntRight(m_pVCoastPolygon[n]->nGetCoastID(), 11) << "|" << strDblRight((dThisFine + dThisSand + dThisCoarse) * m_dCellArea, 0, 14) << "|" << strDblRight(dThisFine * m_dCellArea, 0, 14) << "|" <<  strDblRight(dThisSand * m_dCellArea, 0, 14) << "|" << strDblRight(dThisCoarse * m_dCellArea, 0, 14) << "|" << endl;
 
@@ -1428,6 +1427,42 @@ void CSimulation::WritePolygonPreExistingSediment(int const nCoast)
       m_dTotalFineUnconsInPolygons += dThisFine;
       m_dTotalSandUnconsInPolygons += dThisSand;
       m_dTotalCoarseUnconsInPolygons += dThisCoarse;
+   }
+
+   LogStream << "-----------|-----------|-----------|--------------|--------------|--------------|--------------|" << endl;
+   LogStream << "TOTAL                              |" << strDblRight(dTmpTot, 0, 14) << "|" << strDblRight(dTmpFineTot, 0, 14) << "|" << strDblRight(dTmpSandTot, 0, 14) << "|" << strDblRight(dTmpCoarseTot, 0, 14) << "|" << endl;
+   LogStream << "-----------|-----------|-----------|--------------|--------------|--------------|--------------|" << endl << endl;
+}
+
+//===============================================================================================================================
+//! Writes to the log file a table showing per-polygon sediment input event totals
+//===============================================================================================================================
+void CSimulation::WritePolygonSedimentInputEventTable(int const nCoast)
+{
+   LogStream << m_ulIter << ": Per-polygon sediment input event totals." << endl;
+
+   LogStream << "-----------|-----------|-----------|--------------|--------------|--------------|--------------|" << endl;
+   LogStream << strCentre("Polygon", 11) << "|" << strCentre("Coast", 11) << "|" << strCentre("Polygon", 11) << "|" << strCentre("All", 14) << "|" << strCentre("Fine", 14) << "|" << strCentre("Sand", 14) << "|" << strCentre("Coarse", 14) << "|" << endl;
+   LogStream << strCentre("Global ID", 11) << "|" << strCentre("", 11) << "|" << strCentre("Coast ID", 11) << "|" << strCentre("Sediment", 14) << "|" << strCentre("Sediment", 14) << "|" << strCentre("Sediment", 14) << "|" << strCentre("Sediment", 14) << "|" << endl;
+   LogStream << "-----------|-----------|-----------|--------------|--------------|--------------|--------------|" << endl;
+
+   double dTmpFineTot = 0;
+   double dTmpSandTot = 0;
+   double dTmpCoarseTot = 0;
+   double dTmpTot = 0;
+
+   for (unsigned int n = 0; n < m_pVCoastPolygon.size(); n++)
+   {
+      double dThisFine = m_pVCoastPolygon[n]->dGetSedimentInputUnconsFine();
+      double dThisSand = m_pVCoastPolygon[n]->dGetSedimentInputUnconsSand();
+      double dThisCoarse = m_pVCoastPolygon[n]->dGetSedimentInputUnconsCoarse();
+
+      LogStream << strIntRight(m_pVCoastPolygon[n]->nGetGlobalID(), 11) << "|" << strIntRight(nCoast, 11) << "|" << strIntRight(m_pVCoastPolygon[n]->nGetCoastID(), 11) << "|" << strDblRight((dThisFine + dThisSand + dThisCoarse) * m_dCellArea, 0, 14) << "|" << strDblRight(dThisFine * m_dCellArea, 0, 14) << "|" <<  strDblRight(dThisSand * m_dCellArea, 0, 14) << "|" << strDblRight(dThisCoarse * m_dCellArea, 0, 14) << "|" << endl;
+
+      dTmpFineTot += (dThisFine * m_dCellArea);
+      dTmpSandTot += (dThisSand * m_dCellArea);
+      dTmpCoarseTot += (dThisCoarse * m_dCellArea);
+      dTmpTot += (dThisFine + dThisSand + dThisCoarse) * m_dCellArea;
    }
 
    LogStream << "-----------|-----------|-----------|--------------|--------------|--------------|--------------|" << endl;
@@ -1471,7 +1506,7 @@ void CSimulation::WritePolygonShorePlatformErosion(int const nCoast)
 //===============================================================================================================================
 void CSimulation::WritePolygonCliffCollapseErosion(int const nCoast)
 {
-   LogStream << endl << m_ulIter << ": Per-polygon cliff collapse (all m^3). Fine sediment derived from cliff collapse goes to suspension, sand/coarse sediment derived from cliff collapse becomes unconsolidated talus (DDPD = During Dean Profile Deposition)." << endl;
+   LogStream << m_ulIter << ": Per-polygon cliff collapse (all m^3). Fine sediment derived from cliff collapse goes to suspension, sand/coarse sediment derived from cliff collapse becomes unconsolidated talus (DDPD = During Dean Profile Deposition)." << endl;
    
    LogStream << "-----------|-----------|-----------|--------------------------------------------|-----------------------------|--------------------------------------------|--------------------------------------------|" << endl;
    LogStream << strCentre("Polygon", 11) << "|" << strCentre("Coast", 11) << "|" << strCentre("Polygon", 11) << "|" << strCentre("All sediment", 44) << "|" << strCentre("Fine sediment", 29) << "|" << strCentre("Sand sediment", 44) << "|" << strCentre("Coarse sediment", 44) << "|" << endl;
@@ -1536,7 +1571,7 @@ void CSimulation::WritePolygonCliffCollapseErosion(int const nCoast)
 //===============================================================================================================================
 void CSimulation::WritePolygonSedimentBeforeMovement(int const nCoast)
 {
-   LogStream << endl << m_ulIter << ": Per-polygon totals of stored unconsolidated beach sediment prior to polygon-to-polygon movement (all m^3). Note that this does not include unconsolidated sediment stored outside the polygons." << endl;
+   LogStream << m_ulIter << ": Per-polygon totals of stored unconsolidated beach sediment prior to polygon-to-polygon movement (all m^3). Note that this does not include unconsolidated sediment stored outside the polygons." << endl;
    
    LogStream << "-----------|-----------|-----------|--------------|--------------|--------------|--------------|" << endl;
    LogStream << strCentre("Polygon", 11) << "|" << strCentre("Coast", 11) << "|" << strCentre("Polygon", 11) << "|" << strCentre("All", 14) << "|" << strCentre("Fine", 14) << "|" << strCentre("Sand", 14) << "|" << strCentre("Coarse", 14) << "|" << endl;
@@ -1874,21 +1909,23 @@ void CSimulation::DoTimestepTotals(void)
                nSuspFineCellsAllCells++;
             }
 
-            double dUnconsFine = m_pRasterGrid->m_Cell[nX][nY].dGetTotUnconsFine();
+            int nThisLayer = m_pRasterGrid->m_Cell[nX][nY].nGetTopNonZeroLayerAboveBasement();
+
+            double dUnconsFine = m_pRasterGrid->m_Cell[nX][nY].dGetTotUnconsFine() + m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nThisLayer)->pGetUnconsolidatedSediment()->dGetFineSedimentInputDepth();
             if (dUnconsFine > 0)
             {
                dEndIterUnconsFineAllCells += dUnconsFine;
                nUnconsFineCellsAllCells++;
             }
 
-            double dUnconsSand = m_pRasterGrid->m_Cell[nX][nY].dGetTotUnconsSand();
+            double dUnconsSand = m_pRasterGrid->m_Cell[nX][nY].dGetTotUnconsSand() + m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nThisLayer)->pGetUnconsolidatedSediment()->dGetSandSedimentInputDepth();
             if (dUnconsSand > 0)
             {
                dEndIterUnconsSandAllCells += dUnconsSand;
                nUnconsSandCellsAllCells++;
             }
 
-            double dUnconsCoarse = m_pRasterGrid->m_Cell[nX][nY].dGetTotUnconsCoarse();
+            double dUnconsCoarse = m_pRasterGrid->m_Cell[nX][nY].dGetTotUnconsCoarse() + m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nThisLayer)->pGetUnconsolidatedSediment()->dGetCoarseSedimentInputDepth();
             if (dUnconsCoarse > 0)
             {
                dEndIterUnconsCoarseAllCells += dUnconsCoarse;

@@ -133,7 +133,7 @@ private:
 
    // These do not have the same length as m_LCoastlineExtCRS
 
-   //! Coast profile objects, in the sequence in which they were created (concave coastline curvature)
+   //! Coast profile objects, in the sequence in which they were created (i.e. first intervention profiles, then natural cape profiles in sequence of concave coastline curvature)
    vector<CGeomProfile> m_VProfile;
 
    //! Indices of coast profiles sorted into along-coastline sequence, size = number of profiles

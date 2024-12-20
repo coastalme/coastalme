@@ -56,6 +56,7 @@ By Blake Morrison (2018). See <a href="https://www.penguin.co.uk/books/419911/sh
    TODO 081 Choose more files to omit from "usual" vector output
    TODO 069 Enable ability to represent intervention structures which have their foundation embedded in consolidated sediment. In other words, with the elevation of the base of the intervention structure *below* the top of all consolidated sediment layers. Will need some sanity checking of elevations
    TODO 071 If the user input file format is changed, write a Python script to convert from the old file format to the new
+   TODO 083 Get all three kinds of sedimebt input events working correctly
 
    ERROR HANDLING
    TODO 004 Improve error handling of situation where we have a valid shadow zone but cannot find a neighbouring cell which is 'under' the coastline
@@ -73,6 +74,7 @@ By Blake Morrison (2018). See <a href="https://www.penguin.co.uk/books/419911/sh
    TODO 053 Improve handling of situation where landward elevation of profile is -ve
    TODO 055 Maybe add a safety check here?
    TODO 080 Do we get -ve breaking wave heights here?
+   Why do we get patches of sediment in the sea?
 
    THEORY/EFFICIENCY
    TODO 002 Do we really need D50 for drift landform class? What do we need for drift?
@@ -112,8 +114,9 @@ By Blake Morrison (2018). See <a href="https://www.penguin.co.uk/books/419911/sh
    TODO 062 Show end-of-iteration number of cells with sediment somewhere
    TODO 068 Only show output in log file that is relevant to processes being simulated
    TODO 074 Output history of what landforms are on a particular cell or cells. User inputs cell(s), how?
+   TODO 082 Also show m_dStartIterUnconsFineAllCells etc. in log file
 
-   081 is max
+   083 is max
 
    COMPLETED
    TODO 003 Make coastline curvature moving window size a user input DONE in 1.1.22
@@ -133,7 +136,7 @@ By Blake Morrison (2018). See <a href="https://www.penguin.co.uk/books/419911/sh
    TODO 072 CShore crashes occasionally, is it because of -ve Z values here? DONE 1.2.3, 2 Dec 2024
    TODO 050 Update for recent versions of Windows DONE 1.2.3, 2 Dec 2024
    TODO 037 Need more info on nFindIndex() DONE 1.2.3, 2 Dec 2024
-
+   Improve coast normals DONE 1.2.3, 20 Dec 2024
 */
 
 #ifndef CME_H
@@ -293,8 +296,7 @@ int const MAX_SEAWARD_OFFSET_FOR_CLIFF_TALUS = 20;             // In cells: maxi
 int const MIN_INLAND_OFFSET_FOR_BEACH_EROSION_ESTIMATION = 5;  // Used in estimation of beach erosion
 int const MIN_PARALLEL_PROFILE_SIZE = 3;                       // In cells: min size for valid unconsolidated sediment parallel profile
 int const MIN_PROFILE_SIZE = 3;                                // In cells: min size for valid unconsolidated sediment profile
-int const MIN_PROFILE_SPACING = 20;                            // In cells: profile creation does not work well if profiles are too closely spaced
-int const NUMBER_OF_INTERVENTION_CAPES = 4;                    // Max number of intervention cape profiles
+int const MIN_PROFILE_SPACING = 15;                            // In cells: profile creation does not work well if profiles are too closely spaced
 int const SAVGOL_POLYNOMIAL_MAX_ORDER = 6;                     // Maximum order of Savitsky-Golay smoothing polynomial
 
 // Log file detail level
@@ -618,7 +620,7 @@ double const CLIFF_COLLAPSE_HEIGHT_INCREMENT = 0.1;      // Increment the fracti
 
 double const DBL_NODATA = -9999;
 
-string const PROGRAM_NAME = "Coastal Modelling Environment (CoastalME) version 1.2.3 (03 Dec 2024)";
+string const PROGRAM_NAME = "Coastal Modelling Environment (CoastalME) version 1.2.3 (20 Dec 2024)";
 string const PROGRAM_NAME_SHORT = "CME";
 string const CME_INI = "cme.ini";
 

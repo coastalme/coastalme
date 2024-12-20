@@ -48,8 +48,23 @@ private:
    //! Depth equivalent (m) of coarse sediment lost via notch incision
    double m_dNotchCoarseLost;
 
-   //! Total depth (m, all size classes) of sediment input events, since start of simulation
-   double m_dTotSedimentInput;
+   //! Depth equivalent (m) of fine sediment added via sediment input events, this iteration
+   double m_dFineSedimentInputThisIter;
+
+   //! Depth equivalent (m) of sand sediment added via sediment input events, this iteration
+   double m_dSandSedimentInputThisIter;
+
+   //! Depth equivalent (m) of coarse sediment added via sediment input events, this iteration
+   double m_dCoarseSedimentInputThisIter;
+
+   //! Depth equivalent (m) of fine sediment added via sediment input events, since start of simulation
+   double m_dTotFineSedimentInput;
+
+   //! Depth equivalent (m) of sand sediment added via sediment input events, since start of simulation
+   double m_dTotSandSedimentInput;
+
+   //! Depth equivalent (m) of coarse sediment added via sediment input events, since start of simulation
+   double m_dTotCoarseSedimentInput;
 
 public:
    CRWCellSediment(void);
@@ -81,7 +96,13 @@ public:
    // void IncrNotchCoarseLost(double const);
    double dGetNotchCoarseLost(void) const;
 
-   void AddToTotSedimentInputDepth(double const);
-   double dGetTotSedimentInputDepth(void) const;
+   void AddFineSedimentInputDepth(double const);
+   void AddSandSedimentInputDepth(double const);
+   void AddCoarseSedimentInputDepth(double const);
+   double dGetFineSedimentInputDepth(void) const;
+   double dGetSandSedimentInputDepth(void) const;
+   double dGetCoarseSedimentInputDepth(void) const;
+   double dGetTotAllSedimentInputDepth(void) const;
+   void InitThisIterSedimentInputAll(void);
 };
 #endif // SEDIMENT_H
