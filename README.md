@@ -5,7 +5,7 @@
 # CoastalME
 The [latest release](https://github.com/coastalme/coastalme/releases) is version 1.2.0 (18 Nov 2024).
 
-The testing version (use at your own risk!) is 1.2.3 (03 Dec 2024).
+The testing version (use at your own risk!) is 1.2.4 (03 Dec 2024).
 
 By <a href="https://www.bgs.ac.uk/people/payo-garcia-andres/">Andres Payo</a> and <a href="https://en.wikipedia.org/wiki/David_Favis-Mortlock">David Favis-Mortlock</a> and [others](COMMITERS.md).
 
@@ -25,7 +25,7 @@ CoastalME (Coastal Modelling Environment) is a Free and Open Source software for
 
 It is an engineering tool for advanced modellers seeking to simulate the interaction of multiple coastal landforms and different types of human interventions.
 
-[Payo et al., (2017)](https://doi.org/10.5194/gmd-10-2715-2017) described in detail the rationale behind CoastalME and demonstrated how it can be used to integrate; the Soft Cliff and Platform Erosion model [SCAPE](http://www.bioone.org/doi/abs/10.2112/JCOASTRES-D-10-00099.1), the Coastal Vector Evolution Model [COVE](http://onlinelibrary.wiley.com/doi/10.1002/2015JF003704/full) and the Cross Shore model [CSHORE](http://ascelibrary.org/doi/10.1061/(ASCE)WW.1943-5460.0000347).
+[Payo et al. (2017)](https://doi.org/10.5194/gmd-10-2715-2017) described in detail the rationale behind CoastalME and demonstrated how it can be used to integrate; the Soft Cliff and Platform Erosion model [SCAPE](http://www.bioone.org/doi/abs/10.2112/JCOASTRES-D-10-00099.1), the Coastal Vector Evolution Model [COVE](http://onlinelibrary.wiley.com/doi/10.1002/2015JF003704/full) and the Cross Shore model [CSHORE](http://ascelibrary.org/doi/10.1061/(ASCE)WW.1943-5460.0000347).
 
 The software is written in C++ following the object-oriented paradigm. Source code documentation using Doxygen is available [here](https://codedocs.xyz/coastalme/coastalme).
 
