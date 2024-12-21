@@ -25,7 +25,7 @@ By Blake Morrison (2018). See <a href="https://www.penguin.co.uk/books/419911/sh
 
 \section install_sec Installing CoastalME
 
-\subsection step1 Obtaining the source code
+\subsection install_step1 Obtaining the source code
 
 CoastalME builds easily using Linux. If you wish to run CoastalME on Windows, then we currently recommend using the Windows Subsystem Linux (WSL) software to do this.
 
@@ -33,7 +33,7 @@ Create a local copy of the github repository, for example by downloading a zipfi
 
       git clone https://github.com/coastalme/coastalme
 
-\subsection step2 Building CoastalME
+\subsection install_step2 Building CoastalME
 
 In a terminal window (i.e. at a command-line prompt) move to the CoastalME folder.
 
@@ -63,11 +63,11 @@ This will create an executable file called cme in the CoastalME folder.
 
 \section run_sec Running CoastalME
 
-\subsection step3 Specifying input files
+\subsection run_step1 Specifying the input file
 
 Edit cme.ini to tell CoastalME which input file to read (for example, in/test_suite/minimal_wave_angle_230/minimal.dat).
 
-\subsection step4 Running CoastalME
+\subsection run_step2 Running CoastalME
 
 Leave the src folder, and run cme
 
@@ -76,7 +76,7 @@ Leave the src folder, and run cme
 
 Output will appear in the "Path for output" folder.
 
-\subsection step5 Running CoastalME's test suite
+\subsection run_step3 Running CoastalME's test suite
 
 To check that your installation is running correctly, you can run a suite of pre-defined tests by running the following commands:
 
@@ -85,13 +85,13 @@ To check that your installation is running correctly, you can run a suite of pre
 
 The `chmod` comand ensures that you have permission to execute the run_test_suite.sh file.
 
-\subsection step6 Managing CoastalME's output
+\subsection run_step4 Managing CoastalME's output
 
 Once you have CoastalME (CME) up and running, you can reduce the quantity of output (it can be overwhelming!) in several ways.
 
-Change "Content of log file" in the main CME input file for any of the test suite runs (the name of this main input file is listed in cme.ini, both are simple text files). If you set "Content of log file" to zero, then CME won't output a log file; setting it to 4 (all output) is really only useful to developers.
+Change "Content of log file" in the CME input file for any of the test suite runs (the name of this input file is listed in cme.ini, both are simple text files). If you set "Content of log file" to zero, then CME won't output a log file; setting it to 4 (all output) is really only useful to developers.
 
-Change "GIS vector files to output" and "GIS vector files to output" in the main CME input file. These are both set to "all" in the test suite files on GitHub. Instead of "all" you can list the space-separated codes for only the output that you want to see. A list of CME GIS output codes is in codes.txt.
+Change "GIS vector files to output" and "GIS vector files to output" in the CME input file. These are both set to "all" in the test suite files on GitHub. Instead of "all" you can list the space-separated codes for only the GIS output that you want to see. A list of CME GIS output codes is in codes.txt.
 
 Enjoy!
 
@@ -121,7 +121,7 @@ Enjoy!
    TODO 081 Choose more files to omit from "usual" vector output
    TODO 069 Enable ability to represent intervention structures which have their foundation embedded in consolidated sediment. In other words, with the elevation of the base of the intervention structure *below* the top of all consolidated sediment layers. Will need some sanity checking of elevations
    TODO 071 If the user input file format is changed, write a Python script to convert from the old file format to the new
-   TODO 083 Get all three kinds of sedimebt input events working correctly
+   TODO 083 Get all three kinds of sediment input events working correctly
 
    ERROR HANDLING
    TODO 004 Improve error handling of situation where we have a valid shadow zone but cannot find a neighbouring cell which is 'under' the coastline
@@ -685,7 +685,7 @@ double const CLIFF_COLLAPSE_HEIGHT_INCREMENT = 0.1;      // Increment the fracti
 
 double const DBL_NODATA = -9999;
 
-string const PROGRAM_NAME = "Coastal Modelling Environment (CoastalME) version 1.2.4 (20 Dec 2024)";
+string const PROGRAM_NAME = "Coastal Modelling Environment (CoastalME) version 1.2.4 (21 Dec 2024)";
 string const PROGRAM_NAME_SHORT = "CME";
 string const CME_INI = "cme.ini";
 

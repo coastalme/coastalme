@@ -1,7 +1,7 @@
 /*!
  *
  * \file do_shore_platform_erosion.cpp
- * \brief Erodes the consolidated sediment of the shore platform, extrapolating from erosion calculated on coastline-normal profiles. Eroded sediment from the shore platform becomes unconsolidated sediment stored in coastal polygons
+ * \brief Erodes the consolidated sediment of the shore platform. Eroded sediment from the shore platform becomes unconsolidated sediment stored in coastal polygons
  * \details TODO 001 A more detailed description of these routines.
  * \author David Favis-Mortlock
  * \author Andres Payo

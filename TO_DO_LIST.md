@@ -35,7 +35,7 @@
 - TODO 054 [Choose more files to omit from "usual" raster output]
 - TODO 069 [Enable ability to represent intervention structures which have their foundation embedded in consolidated sediment. In other words, with the elevation of the base of the intervention structure *below* the top of all consolidated sediment layers. Will need some sanity checking of elevations]
 - TODO 071 [If the user input file format is changed, write a Python script to convert from the old file format to the new]
-- TODO 079 [Do sanity checking on wave and tide input]
+- TODO 083 [Get all three kinds of sedimebt input events working correctly]
 
 ##   Error handling
 -  TODO 004 [Improve error handling of situation where we have a valid shadow zone but cannot find a neighbouring cell which is 'under' the coastline](https://github.com/coastalme/coastalme/blob/730a0be2274de02125681ab3e14424dbbfadbaeb/src/calc_shadow_zones.cpp#L490)
@@ -82,6 +82,7 @@
 -  TODO 076 [When doing parallel profiles, start from the profile which is closest to a right angle with the coast]
 -  TODO 077 [As traverse between the bounding profiles creating parallel profiles, gradually change the parallel profile orientation based on distance weighting of two bounding profiles]
 -  TODO 078 [At present, we don't allow cliff collapse onto interventions. Is this realistic? Should it change with different types on intervention?]
+-  [Why do we get patches of sediment in the sea?]
 
 ##  Output
 -  TODO 065 [Get GPKG output working] 
@@ -96,6 +97,7 @@
 -  TODO 062 [Show end-of-iteration number of cells with sediment somewhere]
 -  TODO 068 [Only show output in log file that is relevant to processes being simulated]
 -  TODO 074 [Output history of what landforms are on a particular cell or cells. User inputs cell(s), how?]
+-  TODO 082 [Also show m_dStartIterUnconsFineAllCells etc. in log file]
 
 ## Completed
 -  TODO 003 [Make coastline curvature moving window size a user input DONE in 1.1.22]
@@ -107,5 +109,13 @@
 -  BUG 003 [Use mean SWL for elevations of Dean profiles DONE in 1.2.1, 27 Nov 2024]
 -  BUG 004 [Don't smooth intervention coastline DONE 1.2.1, 27 Nov 2024]
 -  TODO 073 [If output dir does not exist, then create it (ask user first) DONE 1.2.2, 28 Nov 2024]
-
+-  TODO 047 [Where is the GDAL description for the deep water wave stations vector file? DONE 1.2.3, 2 Dec 2024]
+-  TODO 048 [Where is the GDAL description for the flood input locations point or vector file? DONE 1.2.3, 2 Dec 2024]
+-  TODO 027 [Sort out GDAL problem with raster reference units DONE 1.2.3, 2 Dec 2024]
+-  TODO 038 [Do better error handling if insufficient memory DONE 1.2.3, 2 Dec 2024]
+-  TODO 079 [Do sanity checking on wave and tide input DONE 1.2.3, 2 Dec 2024]
+-  TODO 072 [CShore crashes occasionally, is it because of -ve Z values here? DONE 1.2.3, 2 Dec 2024]
+-  TODO 050 [Update for recent versions of Windows DONE 1.2.3, 2 Dec 2024]
+-  TODO 037 [Need more info on nFindIndex() DONE 1.2.3, 2 Dec 2024]
+-  [Improve coast normals DONE 1.2.3, 20 Dec 2024]
    
