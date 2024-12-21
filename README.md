@@ -37,6 +37,7 @@ The C++ source code is available for [download](https://github.com/coastalme/co
 * Bug tracker: https://github.com/coastalme/coastalme/issues
 * [CoastalME Discussions forum](https://github.com/coastalme/coastalme/discussions/)
 * [Which GitHub-discussion tool should I use?](https://docs.github.com/en/get-started/using-github/communicating-on-github#which-discussion-tool-should-i-use)
+* [Doxygen documentation](https://codedocs.xyz/coastalme/coastalme)
 
 ## Quick Start
 
