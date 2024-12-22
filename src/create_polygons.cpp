@@ -244,8 +244,10 @@ void CSimulation::RasterizePolygonJoiningLine(CGeom2DPoint const* pPt1, CGeom2DP
    // Process each interpolated point
    for (int m = 0; m <= nRound(dLength); m++)
    {
-      int nX = static_cast<int>(dX);
-      int nY = static_cast<int>(dY);
+      // int nX = static_cast<int>(dX);
+      // int nY = static_cast<int>(dY);
+      int nX = nRound(dX);
+      int nY = nRound(dY);
 
       // Safety check
       if (! bIsWithinValidGrid(nX, nY))
@@ -391,12 +393,6 @@ void CSimulation::MarkPolygonCells(void)
                dSedimentInputFine += m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nThisLayer)->pGetUnconsolidatedSediment()->dGetFineSedimentInputDepth();
                dSedimentInputSand += m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nThisLayer)->pGetUnconsolidatedSediment()->dGetSandSedimentInputDepth();
                dSedimentInputCoarse += m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nThisLayer)->pGetUnconsolidatedSediment()->dGetCoarseSedimentInputDepth();
-
-               if (dSedimentInputSand > 0)
-                  std::cout << endl;
-
-               if ((nX == 53) && (nY ==312))
-                  std::cout << endl;
 
                nCellsInPolygon++;
                dTotDepth += m_pRasterGrid->m_Cell[nX][nY].dGetSeaDepth();
@@ -575,6 +571,11 @@ int CSimulation::nDoPolygonSharedBoundaries(void)
                for (int nCoinc = 0; nCoinc < nNumCoinc; nCoinc++)
                {
                   int nProf = pProfile->nGetCoincidentProfileForLineSegment(nPoint, nCoinc);
+
+                  // Safety check
+                  if (nProf == -1)
+                     continue;
+
                   CGeomProfile const* pProf = m_VCoast[nCoast].pGetProfile(nProf);
 
                   if (pProf->bProfileOK())
@@ -622,9 +623,8 @@ int CSimulation::nDoPolygonSharedBoundaries(void)
          else
          {
             // We are not at the end of the coastline, so there is at least one other polygon adjacent to the down-coast profile of this polygon
-            int
-               nProfile = pPolygon->nGetDownCoastProfile(),
-               nPointsInProfile = pPolygon->nGetDownCoastProfileNumPointsUsed();
+            int nProfile = pPolygon->nGetDownCoastProfile();
+            int nPointsInProfile = pPolygon->nGetDownCoastProfileNumPointsUsed();
 
             double dDownCoastTotBoundaryLen = 0;
 
@@ -632,21 +632,24 @@ int CSimulation::nDoPolygonSharedBoundaries(void)
 
             for (int nPoint = 0; nPoint < nPointsInProfile-1; nPoint++)
             {
-               CGeom2DPoint
-                  PtStart = *pProfile->pPtGetPointInProfile(nPoint),
-                  PtEnd = *pProfile->pPtGetPointInProfile(nPoint+1);
+               CGeom2DPoint PtStart = *pProfile->pPtGetPointInProfile(nPoint);
+               CGeom2DPoint PtEnd = *pProfile->pPtGetPointInProfile(nPoint+1);
 
                // Calculate the length of this segment of the normal profile. Note that it should not be zero, since we checked for duplicate points when creating profiles
                double dDistBetween = dGetDistanceBetween(&PtStart, &PtEnd);
 
                // Find out which polygon is adjacent to each line segment of the polygon's down-coast profile boundary. The basic approach used is to count the number of coincident profiles in each line segment, and (because we are going down-coast) add this number to 'this' polygon's number. However, some of these coincident profiles may be invalid, so we must count only the valid co-incident profiles
-               int
-                  nNumCoinc = pProfile->nGetNumCoincidentProfilesInLineSegment(nPoint),
-                  nNumValidCoinc = 0;
+               int nNumCoinc = pProfile->nGetNumCoincidentProfilesInLineSegment(nPoint);
+               int nNumValidCoinc = 0;
 
                for (int nCoinc = 0; nCoinc < nNumCoinc; nCoinc++)
                {
                   int nProf = pProfile->nGetCoincidentProfileForLineSegment(nPoint, nCoinc);
+
+                  // Safety check
+                  if (nProf == -1)
+                     continue;
+
                   CGeomProfile const* pProf = m_VCoast[nCoast].pGetProfile(nProf);
 
                   if (pProf->bProfileOK())

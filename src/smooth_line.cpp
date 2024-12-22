@@ -216,8 +216,8 @@ CGeomLine CSimulation::LSmoothCoastRunningMean(CGeomLine* pLineIn) const
       // Don't smooth intervention cells
       CGeom2DPoint PtThis(pLineIn->dGetXAt(i), pLineIn->dGetYAt(i));
       CGeom2DIPoint PtiThis = PtiExtCRSToGrid(&PtThis);
-      int nXThis = PtiThis.nGetX();
-      int nYThis = PtiThis.nGetY();
+      int nXThis = tMin(PtiThis.nGetX(), m_nXGridMax-1);
+      int nYThis = tMin(PtiThis.nGetY(), m_nYGridMax-1);
       if (bIsInterventionCell(nXThis, nYThis))
       {
          LTemp[i] = pLineIn->pPtGetAt(i);

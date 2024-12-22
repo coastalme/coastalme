@@ -100,26 +100,65 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
       // Is this sediment input event at a pre-specified point, or at a block on a coast, or along a line intersecting with a coast?
       if (m_bSedimentInputAtPoint)
       {
-         // Sediment input is at a pre-specified point
+         // Sediment input is at a user-specified point
          if (m_nLogFileDetail >= LOG_FILE_MIDDLE_DETAIL)
-            LogStream << m_ulIter << ": Sediment input event " << nEvent << " at pre-specified point [" << nPointGridX << "][" << nPointGridY << "] = {" << dGridXToExtCRSX(nPointGridX) << ", " << dGridYToExtCRSY(nPointGridY) << "] with Location ID " << nLocID;
+            LogStream << m_ulIter << ": Sediment input event " << nEvent+1 << " at point [" << nPointGridX << "][" << nPointGridY << "] = {" << dGridXToExtCRSX(nPointGridX) << ", " << dGridYToExtCRSY(nPointGridY) << "] with location ID " << nLocID;
 
          int nTopLayer = m_pRasterGrid->m_Cell[nPointGridX][nPointGridY].nGetTopLayerAboveBasement();
 
-         // Add to this cell's fine unconsolidated sediment
+         // Has some fine unconsolidated sediment been input?
          double dFineDepth = dFineSedVol / m_dCellArea;
-         m_pRasterGrid->m_Cell[nPointGridX][nPointGridY].pGetLayerAboveBasement(nTopLayer)->pGetUnconsolidatedSediment()->AddFineSedimentInputDepth(dFineDepth);
-         m_dThisiterUnconsFineInput += dFineDepth;
+         if (dFineDepth > 0)
+         {
+            // Yes, so add to this cell's fine unconsolidated sediment
+            m_pRasterGrid->m_Cell[nPointGridX][nPointGridY].pGetLayerAboveBasement(nTopLayer)->pGetUnconsolidatedSediment()->AddFineSedimentInputDepth(dFineDepth);
 
-         // Add to this cell's sand unconsolidated sediment
+            int nThisPoly = m_pRasterGrid->m_Cell[nPointGridX][nPointGridY].nGetPolygonID();
+            if (nThisPoly != INT_NODATA)
+            {
+               // Add to this polygon's fine sediment input total
+               m_pVCoastPolygon[nThisPoly]->SetSedimentInputUnconsFine(dFineDepth);
+            }
+
+            // Add to the this-iteration total of fine sediment input
+            m_dThisiterUnconsFineInput += dFineDepth;
+         }
+
+         // Has some sand-sized unconsolidated sediment been input?
          double dSandDepth = dSandSedVol / m_dCellArea;
-         m_pRasterGrid->m_Cell[nPointGridX][nPointGridY].pGetLayerAboveBasement(nTopLayer)->pGetUnconsolidatedSediment()->AddSandSedimentInputDepth(dSandDepth);
-         m_dThisiterUnconsSandInput += dSandDepth;
+         if (dSandDepth > 0)
+         {
+            // Yes, so add to this cell's sand unconsolidated sediment
+            m_pRasterGrid->m_Cell[nPointGridX][nPointGridY].pGetLayerAboveBasement(nTopLayer)->pGetUnconsolidatedSediment()->AddSandSedimentInputDepth(dSandDepth);
 
-         // Add to this cell's coarse unconsolidated sediment
+            int nThisPoly = m_pRasterGrid->m_Cell[nPointGridX][nPointGridY].nGetPolygonID();
+            if (nThisPoly != INT_NODATA)
+            {
+               // Add to this polygon's sand sediment input total
+               m_pVCoastPolygon[nThisPoly]->SetSedimentInputUnconsSand(dSandDepth);
+            }
+
+            // Add to the this-iteration total of sand sediment input
+            m_dThisiterUnconsSandInput += dSandDepth;
+         }
+
+         // Has some coarse unconsolidated sediment been input?
          double dCoarseDepth = dCoarseSedVol / m_dCellArea;
-         m_pRasterGrid->m_Cell[nPointGridX][nPointGridY].pGetLayerAboveBasement(nTopLayer)->pGetUnconsolidatedSediment()->AddCoarseSedimentInputDepth(dCoarseDepth);
-         m_dThisiterUnconsCoarseInput += dCoarseDepth;
+         if (dCoarseDepth > 0)
+         {
+            // Yes, so add to this cell's coarse unconsolidated sediment
+            m_pRasterGrid->m_Cell[nPointGridX][nPointGridY].pGetLayerAboveBasement(nTopLayer)->pGetUnconsolidatedSediment()->AddCoarseSedimentInputDepth(dCoarseDepth);
+
+            int nThisPoly = m_pRasterGrid->m_Cell[nPointGridX][nPointGridY].nGetPolygonID();
+            if (nThisPoly != INT_NODATA)
+            {
+               // Add to this polygon's coarse sediment input total
+               m_pVCoastPolygon[nThisPoly]->SetSedimentInputUnconsCoarse(dCoarseDepth);
+            }
+
+            // Add to the this-iteration total of coarse sediment input
+            m_dThisiterUnconsCoarseInput += dCoarseDepth;
+         }
 
          if (m_nLogFileDetail >= LOG_FILE_MIDDLE_DETAIL)
             LogStream << ", depth of fine sediment added = " << dFineDepth << " m, depth of sand sediment added = " << dSandDepth << " m, depth of coarse sediment added = " << dCoarseDepth << " m" << endl;
@@ -128,7 +167,7 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
       {
          // Is in a sediment block, seaward from a coast
          if (m_nLogFileDetail >= LOG_FILE_MIDDLE_DETAIL)
-            LogStream << m_ulIter << ": Sediment input event " << nEvent << " with Location ID " << nLocID << " at closest point on coast to [" << nPointGridX << "][" << nPointGridY << "] = {" << dGridXToExtCRSX(nPointGridX) << ", " << dGridYToExtCRSY(nPointGridY) << "]" << endl;
+            LogStream << m_ulIter << ": Sediment input event " << nEvent+1 << " with location ID " << nLocID << " at closest point on coast to [" << nPointGridX << "][" << nPointGridY << "] = {" << dGridXToExtCRSX(nPointGridX) << ", " << dGridYToExtCRSY(nPointGridY) << "]" << endl;
 
          // Find the closest point on the coastline
          CGeom2DIPoint PtiCoastPoint = PtiFindClosestCoastPoint(nPointGridX, nPointGridY);
@@ -352,8 +391,10 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
          // Process each interpolated point
          for (int m = 0; m <= nRound(dLength); m++)
          {
-            int nX = static_cast<int>(dX);
-            int nY = static_cast<int>(dY);
+            // int nX = static_cast<int>(dX);
+            // int nY = static_cast<int>(dY);
+            int nX = nRound(dX);
+            int nY = nRound(dY);
 
             // Have we hit a coastline cell?
             if (bIsWithinValidGrid(nX, nY) && m_pRasterGrid->m_Cell[nX][nY].bIsCoastline())

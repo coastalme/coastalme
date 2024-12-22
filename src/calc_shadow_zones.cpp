@@ -900,18 +900,18 @@ void CSimulation::DoShadowZoneAndDownDriftZone(int const nCoast, int const nZone
    dYInc /= dLength;
 
    int nTotDownDriftBoundaryDistance = 0;
-   double
-      dX = nXStart,
-      dY = nYStart;
+   double dX = nXStart;
+   double dY = nYStart;
 
    CGeomLine LDownDriftBoundary;
 
    // Process each interpolated point
    for (int m = 0; m <= nRound(dLength); m++)
    {
-      int
-         nX = static_cast<int>(dX),
-         nY = static_cast<int>(dY);
+      // int nX = static_cast<int>(dX);
+      // int nY = static_cast<int>(dY);
+      int nX = nRound(dX);
+      int nY = nRound(dY);
 
       if (! bIsWithinValidGrid(nX, nY))
       {

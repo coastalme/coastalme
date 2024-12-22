@@ -358,17 +358,34 @@ int CSimulation::nAssignNonCoastlineLandforms(void)
    {
       for (int nY = 0; nY < m_nYGridMax; nY++)
       {
-         if (m_pRasterGrid->m_Cell[nX][nY].bBasementElevIsMissingValue())
-            continue;
-
+         // Get this cell's landform category
          CRWCellLandform* pLandform = m_pRasterGrid->m_Cell[nX][nY].pGetLandform();
          int nCat = pLandform->nGetLFCategory();
 
-         if (nCat == LF_CAT_SEA)
-            // Do nothing
+         if (m_pRasterGrid->m_Cell[nX][nY].bBasementElevIsMissingValue())
+         {
+            // Set to unknown landform
+            pLandform->SetLFCategory(LF_NONE);
             continue;
+         }
 
-         // Ok, this is coast or inland
+         if (nCat == LF_CAT_SEA)
+         {
+            // This is a sea cell. Is it surrounded by drift cells, or drift and cliff?
+            if (bSurroundedByDriftCells(nX, nY))
+            {
+               // It is. We can can get 'holes' in the beach (due to rounding issues), so set this cell's landform to beach
+               pLandform->SetLFSubCategory(LF_SUBCAT_DRIFT_BEACH);
+               continue;
+            }
+            else
+            {
+               // Keep it as sea
+               continue;
+            }
+         }
+
+         // Ok, this cell is either coast or inland
          if (! m_pRasterGrid->m_Cell[nX][nY].bIsCoastline())
          {
             // Is not coastline
@@ -393,4 +410,65 @@ int CSimulation::nAssignNonCoastlineLandforms(void)
    }
 
    return RTN_OK;
+}
+//===============================================================================================================================
+//! Returns true if this cell has four drift cells surrounding it
+//===============================================================================================================================
+bool CSimulation::bSurroundedByDriftCells(int const nX, int const nY)
+{
+   int nXTmp;
+   int nYTmp;
+   int nAdjacent = 0;
+
+   // North
+   nXTmp = nX;
+   nYTmp = nY - 1;
+   if (bIsWithinValidGrid(nXTmp, nYTmp))
+   {
+      CRWCellLandform* pLandform = m_pRasterGrid->m_Cell[nXTmp][nYTmp].pGetLandform();
+      int nCat = pLandform->nGetLFCategory();
+      if ((nCat == LF_CAT_DRIFT) || (nCat == LF_CAT_CLIFF))
+         nAdjacent++;
+   }
+
+   // East
+   nXTmp = nX + 1;
+   nYTmp = nY;
+   if (bIsWithinValidGrid(nXTmp, nYTmp))
+   {
+      CRWCellLandform* pLandform = m_pRasterGrid->m_Cell[nXTmp][nYTmp].pGetLandform();
+      int nCat = pLandform->nGetLFCategory();
+      if ((nCat == LF_CAT_DRIFT) || (nCat == LF_CAT_CLIFF))
+         nAdjacent++;
+   }
+
+   // South
+   nXTmp = nX;
+   nYTmp = nY + 1;
+   if (bIsWithinValidGrid(nXTmp, nYTmp))
+   {
+      CRWCellLandform* pLandform = m_pRasterGrid->m_Cell[nXTmp][nYTmp].pGetLandform();
+      int nCat = pLandform->nGetLFCategory();
+      if ((nCat == LF_CAT_DRIFT) || (nCat == LF_CAT_CLIFF))
+         nAdjacent++;
+   }
+
+   // West
+   nXTmp = nX - 1;
+   nYTmp = nY;
+   if (bIsWithinValidGrid(nXTmp, nYTmp))
+   {
+      CRWCellLandform* pLandform = m_pRasterGrid->m_Cell[nXTmp][nYTmp].pGetLandform();
+      int nCat = pLandform->nGetLFCategory();
+      if ((nCat == LF_CAT_DRIFT) || (nCat == LF_CAT_CLIFF))
+         nAdjacent++;
+   }
+
+   if (nAdjacent == 4)
+   {
+      // This cell has four LF_CAT_DRIFT neighbours
+      return true;
+   }
+
+   return false;
 }

@@ -466,7 +466,11 @@ int CSimulation::nCalcPotentialPlatformErosionBetweenProfiles(int const nCoast, 
       double const dParProfileLenXY = dGetDistanceBetween(&PtVExtCRSParProfile[0], &PtVExtCRSParProfile[nParProfSize - 1]);
 
       // Next calculate the distance between profile points, again in external CRS units. Assume that the sample points are equally spaced along the parallel profile (not quite true)
-      double const dParSpacingXY = dParProfileLenXY / (nParProfSize - 1);
+      double dParSpacingXY = dParProfileLenXY / (nParProfSize - 1);
+
+      // Safety check
+      if (bFPIsEqual(dParSpacingXY, 0.0, TOLERANCE))
+         dParSpacingXY = TOLERANCE;
       //      LogStream << "dParSpacingXY = " << dParSpacingXY << endl;
 
       vector<double> dVParProfileZ(nParProfSize, 0);      // Initial (pre-erosion) elevation of both consolidated and unconsolidated sediment for cells 'under' the parallel profile

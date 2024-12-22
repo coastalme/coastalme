@@ -78,7 +78,10 @@ CoastalME CHANGELOG
          Output tidying
          Code tidying
 
-1.2.4    Code tidying
+1.2.4    Sediment input events at a point now working correctly
+         Extra safety checks
+         Extra safety check in CShore
+         Code tidying
 
 
 

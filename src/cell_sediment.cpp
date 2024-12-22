@@ -196,6 +196,8 @@ double CRWCellSediment::dGetNotchCoarseLost(void) const
 //! Adds to the this-iteration total depth of fine sediment input, and to the since-start-of-simulation total depth of fine sediment input (m)
 void CRWCellSediment::AddFineSedimentInputDepth(double const dDepth)
 {
+   m_dFine += dDepth;
+
    m_dFineSedimentInputThisIter += dDepth;
    m_dTotFineSedimentInput += dDepth;
 }
@@ -203,6 +205,8 @@ void CRWCellSediment::AddFineSedimentInputDepth(double const dDepth)
 //! Adds to the this-iteration total depth of sand sediment input, and to the since-start-of-simulation total depth of sand sediment input (m)
 void CRWCellSediment::AddSandSedimentInputDepth(double const dDepth)
 {
+   m_dSand += dDepth;
+
    m_dSandSedimentInputThisIter += dDepth;
    m_dTotSandSedimentInput += dDepth;
 }
@@ -210,6 +214,8 @@ void CRWCellSediment::AddSandSedimentInputDepth(double const dDepth)
 //! Adds to the this-iteration total depth of coarse sediment input, and to the since-start-of-simulation total depth of coarse sediment input (m)
 void CRWCellSediment::AddCoarseSedimentInputDepth(double const dDepth)
 {
+   m_dCoarse += dDepth;
+
    m_dCoarseSedimentInputThisIter += dDepth;
    m_dTotCoarseSedimentInput += dDepth;
 }

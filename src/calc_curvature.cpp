@@ -173,13 +173,13 @@ double CSimulation::dCalcCurvature(int const nHandedness, CGeom2DPoint const* pP
       
    // Safety checks
    if (bFPIsEqual(dDist1, 0.0, TOLERANCE))
-      dDist1 = 1e-3;
+      dDist1 = TOLERANCE;
 
    if (bFPIsEqual(dDist2, 0.0, TOLERANCE))
-      dDist2 = 1e-3;
+      dDist2 = TOLERANCE;
 
    if (bFPIsEqual(dDist3, 0.0, TOLERANCE))
-      dDist3 = 1e-3;
+      dDist3 = TOLERANCE;
 
    double dCurvature = dAreax4 / (dDist1 * dDist2 * dDist3);
 

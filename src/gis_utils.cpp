@@ -126,8 +126,8 @@ CGeom2DIPoint CSimulation::PtiExtCRSToGrid(CGeom2DPoint const* pPtIn) const
    double dX = pPtIn->dGetX();
    double dY = pPtIn->dGetY();
 
-   int nX = static_cast<int>((dX - m_dGeoTransform[0]) / m_dGeoTransform[1]);
-   int nY = static_cast<int>((dY - m_dGeoTransform[3]) / m_dGeoTransform[5]);
+   int nX = nRound((dX - m_dGeoTransform[0]) / m_dGeoTransform[1]);
+   int nY = nRound((dY - m_dGeoTransform[3]) / m_dGeoTransform[5]);
 
    return CGeom2DIPoint(nX, nY);
 }
@@ -382,13 +382,12 @@ double CSimulation::dKeepWithin360(double const dAngle)
 //===============================================================================================================================
 CGeom2DPoint CSimulation::PtAverage(CGeom2DPoint const* pPt1, CGeom2DPoint const* pPt2)
 {
-   double
-       dPt1X = pPt1->dGetX(),
-       dPt1Y = pPt1->dGetY(),
-       dPt2X = pPt2->dGetX(),
-       dPt2Y = pPt2->dGetY(),
-       dPtAvgX = (dPt1X + dPt2X) / 2,
-       dPtAvgY = (dPt1Y + dPt2Y) / 2;
+   double dPt1X = pPt1->dGetX();
+   double dPt1Y = pPt1->dGetY();
+   double dPt2X = pPt2->dGetX();
+   double dPt2Y = pPt2->dGetY();
+   double dPtAvgX = (dPt1X + dPt2X) / 2;
+   double dPtAvgY = (dPt1Y + dPt2Y) / 2;
 
    return CGeom2DPoint(dPtAvgX, dPtAvgY);
 }
@@ -398,13 +397,12 @@ CGeom2DPoint CSimulation::PtAverage(CGeom2DPoint const* pPt1, CGeom2DPoint const
 // //===============================================================================================================================
 // CGeom2DIPoint CSimulation::PtiAverage(CGeom2DIPoint const* pPti1, CGeom2DIPoint const* pPti2)
 // {
-//    int
-//        nPti1X = pPti1->nGetX(),
-//        nPti1Y = pPti1->nGetY(),
-//        nPti2X = pPti2->nGetX(),
-//        nPti2Y = pPti2->nGetY(),
-//        nPtiAvgX = (nPti1X + nPti2X) / 2,
-//        nPtiAvgY = (nPti1Y + nPti2Y) / 2;
+//    int nPti1X = pPti1->nGetX();
+//    int nPti1Y = pPti1->nGetY();
+//    int nPti2X = pPti2->nGetX();
+//    int nPti2Y = pPti2->nGetY();
+//    int nPtiAvgX = (nPti1X + nPti2X) / 2;
+//    int nPtiAvgY = (nPti1Y + nPti2Y) / 2;
 //
 //    return CGeom2DIPoint(nPtiAvgX, nPtiAvgY);
 // }
@@ -459,9 +457,8 @@ CGeom2DPoint CSimulation::PtAverage(vector<CGeom2DPoint>* pVIn)
 //    if (nSize == 0)
 //       return CGeom2DIPoint(INT_NODATA, INT_NODATA);
 //
-//    double
-//        dAvgX = 0,
-//        dAvgY = 0;
+//    double dAvgX = 0;
+//    double dAvgY = 0;
 //
 //    for (int n = 0; n < nSize; n++)
 //    {
@@ -481,16 +478,14 @@ CGeom2DPoint CSimulation::PtAverage(vector<CGeom2DPoint>* pVIn)
 CGeom2DIPoint CSimulation::PtiPolygonCentroid(vector<CGeom2DIPoint>* pVIn)
 {
    CGeom2DIPoint PtiCentroid(0, 0);
-   int
-       nSize = static_cast<int>(pVIn->size()),
-       nX0 = 0, // Current vertex X
-       nY0 = 0, // Current vertex Y
-       nX1 = 0, // Next vertex X
-       nY1 = 0; // Next vertex Y
+   int nSize = static_cast<int>(pVIn->size());
+   int nX0 = 0;      // Current vertex X
+   int nY0 = 0;      // Current vertex Y
+   int nX1 = 0;      // Next vertex X
+   int nY1 = 0;      // Next vertex Y
 
-   double
-       dA = 0, // Partial signed area
-       dSignedArea = 0.0;
+   double dA = 0;    // Partial signed area
+   double dSignedArea = 0.0;
 
    // For all vertices except last
    for (int i = 0; i < nSize - 1; ++i)
@@ -559,10 +554,9 @@ Returns a vector which is perpendicular to an existing vector
 //===============================================================================================================================
 CGeom2DPoint CSimulation::PtGetPerpendicular(CGeom2DPoint const *PtStart, CGeom2DPoint const *PtNext, double const dDesiredLength, int const nHandedness)
 {
-   double
-       dXLen = PtNext->dGetX() - PtStart->dGetX(),
-       dYLen = PtNext->dGetY() - PtStart->dGetY(),
-       dLength;
+   double dXLen = PtNext->dGetX() - PtStart->dGetX();
+   double dYLen = PtNext->dGetY() - PtStart->dGetY();
+   double dLength;
 
    if (bFPIsEqual(dXLen, 0.0, TOLERANCE))
       dLength = dYLen;
@@ -594,10 +588,9 @@ CGeom2DPoint CSimulation::PtGetPerpendicular(CGeom2DPoint const *PtStart, CGeom2
 //===============================================================================================================================
 CGeom2DIPoint CSimulation::PtiGetPerpendicular(CGeom2DIPoint const *PtiStart, CGeom2DIPoint const *PtiNext, double const dDesiredLength, int const nHandedness)
 {
-   double
-       dXLen = PtiNext->nGetX() - PtiStart->nGetX(),
-       dYLen = PtiNext->nGetY() - PtiStart->nGetY(),
-       dLength;
+   double dXLen = PtiNext->nGetX() - PtiStart->nGetX();
+   double dYLen = PtiNext->nGetY() - PtiStart->nGetY();
+   double dLength;
 
    if (bFPIsEqual(dXLen, 0.0, TOLERANCE))
       dLength = dYLen;
@@ -629,10 +622,9 @@ CGeom2DIPoint CSimulation::PtiGetPerpendicular(CGeom2DIPoint const *PtiStart, CG
 //===============================================================================================================================
 CGeom2DIPoint CSimulation::PtiGetPerpendicular(int const nStartX, int const nStartY, int const nNextX, int const nNextY, double const dDesiredLength, int const nHandedness)
 {
-   double
-       dXLen = nNextX - nStartX,
-       dYLen = nNextY - nStartY,
-       dLength;
+   double dXLen = nNextX - nStartX;
+   double dYLen = nNextY - nStartY;
+   double dLength;
 
    if (bFPIsEqual(dXLen, 0.0, TOLERANCE))
       dLength = dYLen;

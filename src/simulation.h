@@ -1638,6 +1638,7 @@ private:
    int nDoSedimentInputEvent(int const);
    void AllPolygonsUpdateStoredUncons(int const);
    bool bIsInterventionCell(int const, int const) const;
+   bool bSurroundedByDriftCells(int const, int const);
 
    // GIS utility routines
    int nMarkBoundingBoxEdgeCells(void);

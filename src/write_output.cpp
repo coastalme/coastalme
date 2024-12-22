@@ -95,30 +95,30 @@ void CSimulation::WriteStartRunDetails(void)
 
    OutStream << " Main output file (this file)                              \t: "
 #ifdef _WIN32
-             << pstrChangeToForwardSlash(&m_strOutFile) << OUTEXT << endl;
+             << pstrChangeToForwardSlash(&m_strOutFile) << endl;
 #else
-             << m_strOutFile << OUTEXT << endl;
+             << m_strOutFile << endl;
 #endif
 
    LogStream << "Main output file                                          \t: "
 #ifdef _WIN32
-             << pstrChangeToForwardSlash(&m_strOutFile) << OUTEXT << endl;
+             << pstrChangeToForwardSlash(&m_strOutFile) << endl;
 #else
-             << m_strOutFile << OUTEXT << endl;
+             << m_strOutFile << endl;
 #endif
 
    OutStream << " Log file                                                  \t: "
 #ifdef _WIN32
-             << pstrChangeToForwardSlash(&m_strOutFile) << LOGEXT << endl;
+             << pstrChangeToForwardSlash(&m_strOutFile) << endl;
 #else
-             << m_strOutFile << LOGEXT << endl;
+             << m_strOutFile << endl;
 #endif
 
    LogStream << "Log file (this file)                                      \t: "
 #ifdef _WIN32
-             << pstrChangeToForwardSlash(&m_strOutFile) << LOGEXT << endl;
+             << pstrChangeToForwardSlash(&m_strOutFile) << endl;
 #else
-             << m_strOutFile << LOGEXT << endl;
+             << m_strOutFile << endl;
 #endif
 
    OutStream << " Level of Log detail                                       \t: ";
@@ -1909,23 +1909,21 @@ void CSimulation::DoTimestepTotals(void)
                nSuspFineCellsAllCells++;
             }
 
-            int nThisLayer = m_pRasterGrid->m_Cell[nX][nY].nGetTopNonZeroLayerAboveBasement();
-
-            double dUnconsFine = m_pRasterGrid->m_Cell[nX][nY].dGetTotUnconsFine() + m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nThisLayer)->pGetUnconsolidatedSediment()->dGetFineSedimentInputDepth();
+            double dUnconsFine = m_pRasterGrid->m_Cell[nX][nY].dGetTotUnconsFine();
             if (dUnconsFine > 0)
             {
                dEndIterUnconsFineAllCells += dUnconsFine;
                nUnconsFineCellsAllCells++;
             }
 
-            double dUnconsSand = m_pRasterGrid->m_Cell[nX][nY].dGetTotUnconsSand() + m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nThisLayer)->pGetUnconsolidatedSediment()->dGetSandSedimentInputDepth();
+            double dUnconsSand = m_pRasterGrid->m_Cell[nX][nY].dGetTotUnconsSand();
             if (dUnconsSand > 0)
             {
                dEndIterUnconsSandAllCells += dUnconsSand;
                nUnconsSandCellsAllCells++;
             }
 
-            double dUnconsCoarse = m_pRasterGrid->m_Cell[nX][nY].dGetTotUnconsCoarse() + m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nThisLayer)->pGetUnconsolidatedSediment()->dGetCoarseSedimentInputDepth();
+            double dUnconsCoarse = m_pRasterGrid->m_Cell[nX][nY].dGetTotUnconsCoarse();
             if (dUnconsCoarse > 0)
             {
                dEndIterUnconsCoarseAllCells += dUnconsCoarse;
