@@ -102,6 +102,8 @@ var cme_8h =
     [ "LF_SUBCAT_DRIFT_TALUS", "d6/d2a/cme_8h.html#a8a73c1e3b62bdc03aeb0be69f0fa018b", null ],
     [ "LF_SUBCAT_INTERVENTION_NON_STRUCT", "d6/d2a/cme_8h.html#a86914c8c5c64faf6b854ff11417a5a28", null ],
     [ "LF_SUBCAT_INTERVENTION_STRUCT", "d6/d2a/cme_8h.html#aeea803c9e4147aec35f6133516b99273", null ],
+    [ "LF_SUBCAT_SEDIMENT_INPUT_CONSOLIDATED", "d6/d2a/cme_8h.html#a2a57d2c7cf54d06649190eb554f9484e", null ],
+    [ "LF_SUBCAT_SEDIMENT_INPUT_UNCONSOLIDATED", "d6/d2a/cme_8h.html#a56f1c9f93ab411eaf2a771e799ca8b46", null ],
     [ "LINE", "d6/d2a/cme_8h.html#ad276789e6a2dec8b20a800bc4bd7ae5d", null ],
     [ "LOG_FILE_ALL", "d6/d2a/cme_8h.html#aa58b13ad2e88aaa20449bfea242396a4", null ],
     [ "LOG_FILE_HIGH_DETAIL", "d6/d2a/cme_8h.html#a85da1142fa4655ec66f1e391444a6d9a", null ],
