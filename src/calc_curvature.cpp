@@ -165,11 +165,10 @@ void CSimulation::DoCoastCurvature(int const nCoast, int const nHandedness)
 //===============================================================================================================================
 double CSimulation::dCalcCurvature(int const nHandedness, CGeom2DPoint const* pPtBefore, CGeom2DPoint const* pPtThis, CGeom2DPoint const* pPtAfter)
 {
-   double
-      dAreax4 = 2 * dTriangleAreax2(pPtBefore, pPtThis, pPtAfter),
-      dDist1 = dGetDistanceBetween(pPtBefore, pPtThis),
-      dDist2 = dGetDistanceBetween(pPtThis, pPtAfter),
-      dDist3 = dGetDistanceBetween(pPtBefore, pPtAfter);
+   double dAreax4 = 2 * dTriangleAreax2(pPtBefore, pPtThis, pPtAfter);
+   double dDist1 = dGetDistanceBetween(pPtBefore, pPtThis);
+   double dDist2 = dGetDistanceBetween(pPtThis, pPtAfter);
+   double dDist3 = dGetDistanceBetween(pPtBefore, pPtAfter);
       
    // Safety checks
    if (bFPIsEqual(dDist1, 0.0, TOLERANCE))
