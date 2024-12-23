@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['nassignallcoastallandforms_0',['nAssignAllCoastalLandforms',['../d1/d98/classCSimulation.html#aa6c2806c9abd46ad2c30401886ddf514',1,'CSimulation']]],
-  ['nassignnoncoastlinelandforms_1',['nAssignNonCoastlineLandforms',['../d1/d98/classCSimulation.html#ab9da80fc33eb8edc4558308b3ed1517f',1,'CSimulation']]],
+  ['nassignlandformsforallcells_0',['nAssignLandformsForAllCells',['../d1/d98/classCSimulation.html#a9b1ac2474ec8804fc063381a44d35161',1,'CSimulation']]],
+  ['nassignlandformsforallcoasts_1',['nAssignLandformsForAllCoasts',['../d1/d98/classCSimulation.html#a16fa334ddfaabec608ba57253da83387',1,'CSimulation']]],
   ['ncalcexternalforcing_2',['nCalcExternalForcing',['../d1/d98/classCSimulation.html#a2e53c27590e5217827b7e96000b2e4af',1,'CSimulation']]],
   ['ncalcpotentialplatformerosionbetweenprofiles_3',['nCalcPotentialPlatformErosionBetweenProfiles',['../d1/d98/classCSimulation.html#a90408df47e3e8e518f2d62e2419fe5f4',1,'CSimulation']]],
   ['ncalcpotentialplatformerosiononprofile_4',['nCalcPotentialPlatformErosionOnProfile',['../d1/d98/classCSimulation.html#a0a89a848fc8861a8c4d2b879bf764699',1,'CSimulation']]],
