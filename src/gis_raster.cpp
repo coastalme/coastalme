@@ -419,7 +419,7 @@ int CSimulation::nMarkBoundingBoxEdgeCells(void)
    for (int nY = VPtiBoundingBoxCorner[3].nGetY(); nY >= VPtiBoundingBoxCorner[0].nGetY(); nY--)
    {
       for (int nX = VPtiBoundingBoxCorner[3].nGetX(); nX < m_nXGridMax - 1; nX++)
-      // for (int nX = VPtiBoundingBoxCorner[3].nGetX(); nX < VPtiBoundingBoxCorner[3].nGetX(); nX++) //APayo April 2018
+      // for (int nX = VPtiBoundingBoxCorner[3].nGetX(); nX < VPtiBoundingBoxCorner[3].nGetX(); nX++)
       {
          if (m_pRasterGrid->m_Cell[nX][nY].bBasementElevIsMissingValue())
          {
@@ -1306,7 +1306,7 @@ bool CSimulation::bWriteRasterGISFile(int const nDataItem, string const *strPlot
                break;
 
             case (RASTER_PLOT_OVERALL_TOP_ELEVATION):
-               dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetSedimentPlusInterventionTopElev(); // APayo April 2018 this is now sed top elev + intervention
+               dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetSedimentPlusInterventionTopElev();
                break;
 
             case (RASTER_PLOT_LOCAL_SLOPE_OF_CONSOLIDATED_SEDIMENT):

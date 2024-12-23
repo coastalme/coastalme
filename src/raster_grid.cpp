@@ -70,6 +70,7 @@ int CGeomRasterGrid::nCreateGrid(void)
    int nXMax = m_pSim->nGetGridXMax();
    int nYMax = m_pSim->nGetGridYMax();
 
+   // TODO 038 Do better error handling if insufficient memory
    try
    {
       m_Cell = new CGeomCell * [nXMax];

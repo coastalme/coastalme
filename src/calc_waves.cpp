@@ -1563,15 +1563,15 @@ int CSimulation::nGetThisProfileElevationVectorsForCShore(int const nCoast, int 
       // Get the elevation for both consolidated and unconsolidated sediment on this cell
       double VdProfileZ = m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElev() + m_pRasterGrid->m_Cell[nX][nY].dGetInterventionHeight() - m_dThisIterSWL;
 
-      // Check that landward location is +ve
+      // Check that landward elevation is greater than SWL
       if (i == 0)
       {
          if (VdProfileZ < 0)
          {
-            VdVZ->push_back(0.5);      // TODO 053 Set it to a small +ve elevation. However there must be a better way of doing this
+            VdVZ->push_back(0.1);      // TODO 053 Set it to a small +ve elevation (compared with SWL). However there must be a better way of doing this
             
             // Could not create the profile elevation vectors
-            LogStream << m_ulIter << ": " << WARN << " landward location is -ve, changing for CShore profile elevation vector " << nProfile << endl;
+            LogStream << m_ulIter << ": " << WARN << " landward elevation is lower than SWL, changing this for CShore profile elevation vector " << nProfile << endl;
          }
          else
          {

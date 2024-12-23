@@ -1063,8 +1063,6 @@ void CSimulation::RasterizeCliffCollapseProfile(vector<CGeom2DPoint> const* pVPo
    int nLength = nRound(dLength);
    for (int m = 0; m <= nLength; m++)
    {
-      // int nX = static_cast<int>(dX);
-      // int nY = static_cast<int>(dY);
       int nX = nRound(dX);
       int nY = nRound(dY);
 

@@ -97,7 +97,7 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
          // Should never get here
          return RTN_ERR_SEDIMENT_INPUT_EVENT;
 
-      // Is this sediment input event at a pre-specified point, or at a block on a coast, or along a line intersecting with a coast?
+      // Is this sediment input event at a pre-specified fixed point, or in a block on a coast, or where a line intersects with a coast?
       if (m_bSedimentInputAtPoint)
       {
          // Sediment input is at a user-specified point
@@ -391,8 +391,6 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
          // Process each interpolated point
          for (int m = 0; m <= nRound(dLength); m++)
          {
-            // int nX = static_cast<int>(dX);
-            // int nY = static_cast<int>(dY);
             int nX = nRound(dX);
             int nY = nRound(dY);
 

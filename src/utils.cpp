@@ -2415,7 +2415,7 @@ void CSimulation::CalcDeanProfile(vector<double>* pdVDeanProfile, double const d
       for (int n = 1; n < static_cast<int>(pdVDeanProfile->size()); n++)
       {
          if (n <= nSeawardOffset)
-            // As we extend the profile seaward, the elevation of any points coastward of the new coast point of the Dean profile are set to the elevation of the original coast  or the talus top (is this realistic for talus?)
+            // As we extend the profile seaward, the elevation of any points coastward of the new coast point of the Dean profile are set to the elevation of the original coast or the talus top (is this realistic for talus?)
             pdVDeanProfile->at(n) = dStartCellElev;
          else
          {

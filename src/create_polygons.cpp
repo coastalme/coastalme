@@ -244,8 +244,6 @@ void CSimulation::RasterizePolygonJoiningLine(CGeom2DPoint const* pPt1, CGeom2DP
    // Process each interpolated point
    for (int m = 0; m <= nRound(dLength); m++)
    {
-      // int nX = static_cast<int>(dX);
-      // int nY = static_cast<int>(dY);
       int nX = nRound(dX);
       int nY = nRound(dY);
 

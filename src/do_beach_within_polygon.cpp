@@ -265,9 +265,8 @@ int CSimulation::nDoUnconsErosionOnPolygon(int const nCoast, int const nPoly, in
          //          LogStream << endl;
 
          // Get the distance between the start and end of the parallel profile, in external CRS units. Note that the parallel profile co-ordinates are in reverse sequence
-         CGeom2DPoint
-             PtStart = PtGridCentroidToExt(&VPtiParProfile.back()),
-             PtEnd = PtGridCentroidToExt(&VPtiParProfile[0]);
+         CGeom2DPoint PtStart = PtGridCentroidToExt(&VPtiParProfile.back());
+         CGeom2DPoint PtEnd = PtGridCentroidToExt(&VPtiParProfile[0]);
 
          // Calculate the length of the parallel profile
          double dParProfileLen = dGetDistanceBetween(&PtStart, &PtEnd);
@@ -855,15 +854,13 @@ int CSimulation::nDoUnconsDepositionOnPolygon(int const nCoast, int const nPoly,
       // Pick a random coast point
       int nCoastPoint = nVCoastPoint[n];
       CGeom2DIPoint PtiCoastPoint = *m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(nCoastPoint);
-      int
-          nCoastX = PtiCoastPoint.nGetX(),
-          nCoastY = PtiCoastPoint.nGetY();
+      int nCoastX = PtiCoastPoint.nGetX();
+      int nCoastY = PtiCoastPoint.nGetY();
 
       // Calculate the x-y offset between this coast point, and the coast point of the up-coast normal
-      int
-          nXOffset = nCoastX - nXUpCoastProfileExistingCoastPoint,
-          nYOffset = nCoastY - nYUpCoastProfileExistingCoastPoint,
-          nSeawardOffset = -1;
+      int nXOffset = nCoastX - nXUpCoastProfileExistingCoastPoint;
+      int nYOffset = nCoastY - nYUpCoastProfileExistingCoastPoint;
+      int nSeawardOffset = -1;
       //          nParProfLen;
       vector<CGeom2DIPoint> PtiVParProfile;
       vector<double> VdParProfileDeanElev;

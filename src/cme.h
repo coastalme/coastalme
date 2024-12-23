@@ -124,6 +124,7 @@ Enjoy!
    TODO 083 Get all three kinds of sediment input events working correctly
 
    ERROR HANDLING
+   TODO 038 Do better error handling if insufficient memory
    TODO 004 Improve error handling of situation where we have a valid shadow zone but cannot find a neighbouring cell which is 'under' the coastline
    TODO 006 Check GDALGridCreate() with only start-of-coast or an end-of-coast profiles
    TODO 009 Decide what to do when we have eroded down to basement
@@ -196,7 +197,6 @@ Enjoy!
    TODO 047 Where is the GDAL description for the deep water wave stations vector file? DONE 1.2.3, 2 Dec 2024
    TODO 048 Where is the GDAL description for the flood input locations point or vector file? DONE 1.2.3, 2 Dec 2024
    TODO 027 Sort out GDAL problem with raster reference units DONE 1.2.3, 2 Dec 2024
-   TODO 038 Do better error handling if insufficient memory DONE 1.2.3, 2 Dec 2024
    TODO 079 Do sanity checking on wave and tide input DONE 1.2.3, 2 Dec 2024
    TODO 072 CShore crashes occasionally, is it because of -ve Z values here? DONE 1.2.3, 2 Dec 2024
    TODO 050 Update for recent versions of Windows DONE 1.2.3, 2 Dec 2024

@@ -82,6 +82,9 @@ subroutine BOTTOM
       ! write (*,*) "CROSS =", CROSS
       
       IF (CROSS > 0.D0) goto 900
+
+      ! DFM safety check
+      if (SLOPE(K) == 0.D0) SLOPE(K) = 1.0D-6
    
       XS(L) = XBINP(K+1,L) - ZBINP(K+1,L) / SLOPE(K)      
       

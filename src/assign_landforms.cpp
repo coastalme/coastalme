@@ -95,7 +95,7 @@ int CSimulation::nAssignAllCoastalLandforms(void)
             {
                // First timestep: we have consolidated sediment at SWL, so this is a cliff cell. Set some initial values for the cliff object's attributes
                m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->SetLFSubCategory(LF_SUBCAT_CLIFF_ON_COASTLINE);
-               m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->SetCliffNotchBaseElev(m_dThisIterSWL);      // APayo March 2018 replaced m_dMinSWL by m_dThisIterSWL
+               m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->SetCliffNotchBaseElev(m_dThisIterSWL);
                m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->SetCliffNotchDepth(0);
                m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->SetCliffRemaining(m_dCellSide);
 
@@ -126,7 +126,7 @@ int CSimulation::nAssignAllCoastalLandforms(void)
             {
                // We have consolidated sediment at SWL, so this is a cliff cell. Set some default values
                double dAccumWaveEnergy = 0;
-               double dNotchBaseElev = m_dThisIterSWL;      // APayo March 2018 replaced m_dMinSWL by m_dThisIterSWL
+               double dNotchBaseElev = m_dThisIterSWL;
                double dNotchDepth = 0;
                double dRemaining = m_dCellSide;
 
