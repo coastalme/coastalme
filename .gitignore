@@ -6,7 +6,7 @@
 
 # Git and GitHub
 .git
-.github
+#.github
 
 # Prerequisites
 *.d
