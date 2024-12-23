@@ -5,7 +5,7 @@
 # CoastalME
 The [latest release](https://github.com/coastalme/coastalme/releases) is version 1.2.0 (18 Nov 2024).
 
-The testing version (use at your own risk!) is 1.2.4 (21 Dec 2024).
+The testing version (use at your own risk!) is 1.2.4 (23 Dec 2024).
 
 By <a href="https://www.bgs.ac.uk/people/payo-garcia-andres/">Andres Payo</a> and <a href="https://en.wikipedia.org/wiki/David_Favis-Mortlock">David Favis-Mortlock</a> and [others](COMMITERS.md).
 
@@ -27,7 +27,7 @@ It is an engineering tool for advanced modellers seeking to simulate the interac
 
 [Payo et al. (2017)](https://doi.org/10.5194/gmd-10-2715-2017) described in detail the rationale behind CoastalME and demonstrated how it can be used to integrate; the Soft Cliff and Platform Erosion model [SCAPE](http://www.bioone.org/doi/abs/10.2112/JCOASTRES-D-10-00099.1), the Coastal Vector Evolution Model [COVE](http://onlinelibrary.wiley.com/doi/10.1002/2015JF003704/full) and the Cross Shore model [CSHORE](http://ascelibrary.org/doi/10.1061/(ASCE)WW.1943-5460.0000347).
 
-The software is written in C++ following the object-oriented paradigm. Source code documentation using Doxygen is available [here](https://codedocs.xyz/coastalme/coastalme).
+The software is written in C++ following the object-oriented paradigm. Source code documentation using Doxygen is available [here](https://coastalme.github.io/coastalme/).
 
 The C++ source code is available for [download](https://github.com/coastalme/coastalme) under [GNU](https://github.com/coastalme/CoastalME/tree/master?tab=GPL-3.0-1-ov-file) open source license.
 
@@ -37,7 +37,7 @@ The C++ source code is available for [download](https://github.com/coastalme/co
 * Bug tracker: https://github.com/coastalme/coastalme/issues
 * [CoastalME Discussions forum](https://github.com/coastalme/coastalme/discussions/)
 * [Which GitHub-discussion tool should I use?](https://docs.github.com/en/get-started/using-github/communicating-on-github#which-discussion-tool-should-i-use)
-* [Doxygen documentation](https://codedocs.xyz/coastalme/coastalme)
+* [Doxygen documentation](https://coastalme.github.io/coastalme/)
 
 ## Quick Start
 
