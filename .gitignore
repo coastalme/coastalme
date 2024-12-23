@@ -54,6 +54,10 @@ install_manifest.txt
 Makefile
 Testing
 
+# Documentation
+*.html
+*.latex
+
 # CoastalME-specific
 c*warnings.txt
 00_old/
@@ -71,6 +75,7 @@ Doxygen/
 in/00*
 in/Andalucia/
 in/DEM*
+in/Exmouth
 in/GMD2017/
 in/Happisburgh/jsme_wilf.dat
 in/simple*
