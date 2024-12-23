@@ -416,8 +416,8 @@ int const LF_CAT_SEA = 2;
 int const LF_CAT_CLIFF = 3;
 int const LF_CAT_DRIFT = 4;
 int const LF_CAT_INTERVENTION = 5;
-int const LF_CAT_ISLAND = 12;
-int const LF_CAT_SEDIMENT_INPUT = 13;
+int const LF_CAT_ISLAND = 14;
+int const LF_CAT_SEDIMENT_INPUT = 15;
 
 // Landform sub-category codes for cells, LF_CAT_CLIFF
 int const LF_SUBCAT_CLIFF_ON_COASTLINE = 6;
@@ -433,6 +433,10 @@ int const LF_SUBCAT_DRIFT_DUNES = 11;
 // Landform sub-category codes for cells, for LF_CAT_INTERVENTION. See also "Intervention input and output codes"
 int const LF_SUBCAT_INTERVENTION_STRUCT = 12;
 int const LF_SUBCAT_INTERVENTION_NON_STRUCT = 13;
+
+// Landform sub-category codes for sediment input events
+int const LF_SUBCAT_SEDIMENT_INPUT_UNCONSOLIDATED = 16;
+int const LF_SUBCAT_SEDIMENT_INPUT_CONSOLIDATED = 17;
 
 // GIS raster input codes
 int const FINE_CONS_RASTER = 1;

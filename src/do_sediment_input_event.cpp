@@ -125,7 +125,8 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
 
             // And assign the cell's landform
             CRWCellLandform* pLandform = m_pRasterGrid->m_Cell[nPointGridX][nPointGridY].pGetLandform();
-            pLandform->SetLFSubCategory(LF_CAT_SEDIMENT_INPUT);
+            pLandform->SetLFCategory(LF_CAT_SEDIMENT_INPUT);
+            pLandform->SetLFSubCategory(LF_SUBCAT_SEDIMENT_INPUT_UNCONSOLIDATED);
          }
 
          // Has some sand-sized unconsolidated sediment been input?
