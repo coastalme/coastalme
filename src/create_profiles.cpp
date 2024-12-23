@@ -1193,8 +1193,9 @@ void CSimulation::RasterizeProfile(int const nCoast, int const nProfile, vector<
       // Process each interpolated point
       for (int m = 0; m <= nRound(dLength); m++)
       {
-         int nX = nRound(dX);
-         int nY = nRound(dY);
+         // Note: using nRound() here gives "landward elevation is lower than SWL" warning later
+         int nX = static_cast<int>(dX);
+         int nY = static_cast<int>(dY);
 
          // Do some checking of this interpolated point, but only if this is not a grid-edge profile (these profiles are always valid)
          if ((!pProfile->bStartOfCoast()) && (!pProfile->bEndOfCoast()))
