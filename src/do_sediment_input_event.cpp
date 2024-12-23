@@ -122,6 +122,10 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
 
             // Add to the this-iteration total of fine sediment input
             m_dThisiterUnconsFineInput += dFineDepth;
+
+            // And assign the cell's landform
+            CRWCellLandform* pLandform = m_pRasterGrid->m_Cell[nPointGridX][nPointGridY].pGetLandform();
+            pLandform->SetLFSubCategory(LF_CAT_SEDIMENT_INPUT);
          }
 
          // Has some sand-sized unconsolidated sediment been input?

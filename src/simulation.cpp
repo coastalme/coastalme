@@ -957,13 +957,13 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
 
       // Locate estuaries TODO 044 someday...
 
-      // Sort out hinterland landforms
-      nRet = nAssignNonCoastlineLandforms();
+      // For all cells, use classification rules to assign sea and hinterland landform categories
+      nRet = nAssignLandformsForAllCells();
       if (nRet != RTN_OK)
          return nRet;
 
-      // For each coastline, use classification rules to assign landform categories
-      nRet = nAssignAllCoastalLandforms();
+      // For every coastline, use classification rules to assign landform categories
+      nRet = nAssignLandformsForAllCoasts();
       if (nRet != RTN_OK)
          return nRet;
 

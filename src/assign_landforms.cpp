@@ -39,7 +39,7 @@ using std::endl;
 //===============================================================================================================================
 //! Each timestep, classify coastal landforms and assign a coastal landform object to every point on every coastline. If, for a given cell, the coastal landform class has not changed then it inherits values from the previous timestep
 //===============================================================================================================================
-int CSimulation::nAssignAllCoastalLandforms(void)
+int CSimulation::nAssignLandformsForAllCoasts(void)
 {
    // For each coastline, put a coastal landform at every point along the coastline
    for (int nCoast = 0; nCoast < static_cast<int>(m_VCoast.size()); nCoast++)
@@ -351,13 +351,21 @@ int CSimulation::nLandformToGrid(int const nCoast, int const nPoint)
 //===============================================================================================================================
 //! Each timestep, classify landforms for cells that are not on the coastline
 //===============================================================================================================================
-int CSimulation::nAssignNonCoastlineLandforms(void)
+int CSimulation::nAssignLandformsForAllCells(void)
 {
    // Go through all cells in the RasterGrid array
    for (int nX = 0; nX < m_nXGridMax; nX++)
    {
       for (int nY = 0; nY < m_nYGridMax; nY++)
       {
+         // DEBUG CODE ====================
+         if (m_ulIter > 8)
+         {
+            if ((nX == 111) && (nY == 295))
+               cout << endl;
+         }
+         // DEBUG CODE ====================
+
          // Get this cell's landform category
          CRWCellLandform* pLandform = m_pRasterGrid->m_Cell[nX][nY].pGetLandform();
          int nCat = pLandform->nGetLFCategory();
@@ -376,6 +384,12 @@ int CSimulation::nAssignNonCoastlineLandforms(void)
             {
                // It is. We can can get 'holes' in the beach (due to rounding issues), so set this cell's landform to beach
                pLandform->SetLFSubCategory(LF_SUBCAT_DRIFT_BEACH);
+               continue;
+            }
+            else if (m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElev() > m_dThisIterSWL)
+            {
+               // This is an island
+               pLandform->SetLFCategory(LF_CAT_ISLAND);
                continue;
             }
             else

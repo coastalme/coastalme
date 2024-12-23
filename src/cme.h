@@ -416,6 +416,8 @@ int const LF_CAT_SEA = 2;
 int const LF_CAT_CLIFF = 3;
 int const LF_CAT_DRIFT = 4;
 int const LF_CAT_INTERVENTION = 5;
+int const LF_CAT_ISLAND = 12;
+int const LF_CAT_SEDIMENT_INPUT = 13;
 
 // Landform sub-category codes for cells, LF_CAT_CLIFF
 int const LF_SUBCAT_CLIFF_ON_COASTLINE = 6;
