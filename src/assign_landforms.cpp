@@ -359,11 +359,11 @@ int CSimulation::nAssignLandformsForAllCells(void)
       for (int nY = 0; nY < m_nYGridMax; nY++)
       {
          // DEBUG CODE ====================
-         if (m_ulIter > 8)
-         {
-            if ((nX == 111) && (nY == 295))
-               cout << endl;
-         }
+         // if (m_ulIter > 8)
+         // {
+         //    if ((nX == 111) && (nY == 295))
+         //       cout << endl;
+         // }
          // DEBUG CODE ====================
 
          // Get this cell's landform category
