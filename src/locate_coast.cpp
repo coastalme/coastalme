@@ -145,12 +145,34 @@ void CSimulation::FloodFillSea(int const nXStart, int const nYStart)
          // Set the sea depth for this cell
          m_pRasterGrid->m_Cell[nX][nY].SetSeaDepth();
 
-         // Mark as sea
-         m_pRasterGrid->m_Cell[nX][nY].SetInContiguousSea();
-         m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->SetLFCategory(LF_CAT_SEA);
+         // DEBUG CODE ====================
+         if ((nX == 111) && (nY == 295))
+            LogStream << m_ulIter << ": in FloodFillSea() BEFORE [" << nX << "][" << nY << "] landform category = " << m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->nGetLFCategory() << " landform subcategory = " << m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->nGetLFSubCategory() << endl;
+         // DEBUG CODE ====================
 
-         // Set this sea cell to have deep water (off-shore) wave orientation and height, will change this later for cells closer to the shoreline if we have on-shore waves
-         m_pRasterGrid->m_Cell[nX][nY].SetWaveValuesToDeepWaterWaveValues();
+         CRWCellLandform* pLandform = m_pRasterGrid->m_Cell[nX][nY].pGetLandform();
+
+         // Did we previously have sediment input here?
+         if ((pLandform->nGetLFCategory() == LF_CAT_SEDIMENT_INPUT) && (! m_pRasterGrid->m_Cell[nX][nY].bIsInundated()))
+         {
+            // Yes, we had sediment input here, and the top of the sediment is above this-iteration SWL
+            double dElev = m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElev();
+            LogStream << "&&&&&& dElev = " << dElev << " m_dThisIterSWL = " << m_dThisIterSWL << endl;
+         }
+         else
+         {
+            // No sediment input here, just mark as sea
+            m_pRasterGrid->m_Cell[nX][nY].SetInContiguousSea();
+            pLandform->SetLFCategory(LF_CAT_SEA);
+
+            // Set this sea cell to have deep water (off-shore) wave orientation and height, will change this later for cells closer to the shoreline if we have on-shore waves
+            m_pRasterGrid->m_Cell[nX][nY].SetWaveValuesToDeepWaterWaveValues();
+         }
+
+         // DEBUG CODE ====================
+         if ((nX == 111) && (nY == 295))
+            LogStream << m_ulIter << ": in FloodFillSea() AFTER [" << nX << "][" << nY << "] landform category = " << m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->nGetLFCategory() << " landform subcategory = " << m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->nGetLFSubCategory() << endl;
+         // DEBUG CODE ====================
 
          // Now sort out the x-y extremities of the contiguous sea for the bounding box (used later in wave propagation)
          if (nX < m_nXMinBoundingBox)

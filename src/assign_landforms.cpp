@@ -359,11 +359,8 @@ int CSimulation::nAssignLandformsForAllCells(void)
       for (int nY = 0; nY < m_nYGridMax; nY++)
       {
          // DEBUG CODE ====================
-         // if (m_ulIter > 8)
-         // {
-         //    if ((nX == 111) && (nY == 295))
-         //       cout << endl;
-         // }
+         if ((nX == 111) && (nY == 295))
+            LogStream << m_ulIter << ": in nAssignLandformsForAllCells() [" << nX << "][" << nY << "] landform category = " << m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->nGetLFCategory() << " landform subcategory = " << m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->nGetLFSubCategory() << endl;
          // DEBUG CODE ====================
 
          // Get this cell's landform category

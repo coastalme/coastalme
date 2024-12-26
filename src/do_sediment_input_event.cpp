@@ -97,6 +97,9 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
          // Should never get here
          return RTN_ERR_SEDIMENT_INPUT_EVENT;
 
+      // All OK, so get landform
+      CRWCellLandform* pLandform = m_pRasterGrid->m_Cell[nPointGridX][nPointGridY].pGetLandform();
+
       // Is this sediment input event at a pre-specified fixed point, or in a block on a coast, or where a line intersects with a coast?
       if (m_bSedimentInputAtPoint)
       {
@@ -113,6 +116,9 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
             // Yes, so add to this cell's fine unconsolidated sediment
             m_pRasterGrid->m_Cell[nPointGridX][nPointGridY].pGetLayerAboveBasement(nTopLayer)->pGetUnconsolidatedSediment()->AddFineSedimentInputDepth(dFineDepth);
 
+            // And update the sediment top elevation value
+            m_pRasterGrid->m_Cell[nPointGridX][nPointGridY].CalcAllLayerElevsAndD50();
+
             int nThisPoly = m_pRasterGrid->m_Cell[nPointGridX][nPointGridY].nGetPolygonID();
             if (nThisPoly != INT_NODATA)
             {
@@ -124,7 +130,6 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
             m_dThisiterUnconsFineInput += dFineDepth;
 
             // And assign the cell's landform
-            CRWCellLandform* pLandform = m_pRasterGrid->m_Cell[nPointGridX][nPointGridY].pGetLandform();
             pLandform->SetLFCategory(LF_CAT_SEDIMENT_INPUT);
             pLandform->SetLFSubCategory(LF_SUBCAT_SEDIMENT_INPUT_UNCONSOLIDATED);
          }
@@ -136,6 +141,9 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
             // Yes, so add to this cell's sand unconsolidated sediment
             m_pRasterGrid->m_Cell[nPointGridX][nPointGridY].pGetLayerAboveBasement(nTopLayer)->pGetUnconsolidatedSediment()->AddSandSedimentInputDepth(dSandDepth);
 
+            // And update the sediment top elevation value
+            m_pRasterGrid->m_Cell[nPointGridX][nPointGridY].CalcAllLayerElevsAndD50();
+
             int nThisPoly = m_pRasterGrid->m_Cell[nPointGridX][nPointGridY].nGetPolygonID();
             if (nThisPoly != INT_NODATA)
             {
@@ -145,6 +153,15 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
 
             // Add to the this-iteration total of sand sediment input
             m_dThisiterUnconsSandInput += dSandDepth;
+
+            // And assign the cell's landform
+            pLandform->SetLFCategory(LF_CAT_SEDIMENT_INPUT);
+            pLandform->SetLFSubCategory(LF_SUBCAT_SEDIMENT_INPUT_UNCONSOLIDATED);
+
+            // DEBUG CODE ====================
+            if ((nPointGridX == 111) && (nPointGridY == 295))
+               LogStream << m_ulIter << ": in nDoSedimentInputEvent() [" << nPointGridX << "][" << nPointGridY << "] landform category = " << m_pRasterGrid->m_Cell[nPointGridX][nPointGridY].pGetLandform()->nGetLFCategory() << " landform subcategory = " << m_pRasterGrid->m_Cell[nPointGridX][nPointGridY].pGetLandform()->nGetLFSubCategory() << endl;
+            // DEBUG CODE ====================
          }
 
          // Has some coarse unconsolidated sediment been input?
@@ -153,6 +170,9 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
          {
             // Yes, so add to this cell's coarse unconsolidated sediment
             m_pRasterGrid->m_Cell[nPointGridX][nPointGridY].pGetLayerAboveBasement(nTopLayer)->pGetUnconsolidatedSediment()->AddCoarseSedimentInputDepth(dCoarseDepth);
+
+            // And update the sediment top elevation value
+            m_pRasterGrid->m_Cell[nPointGridX][nPointGridY].CalcAllLayerElevsAndD50();
 
             int nThisPoly = m_pRasterGrid->m_Cell[nPointGridX][nPointGridY].nGetPolygonID();
             if (nThisPoly != INT_NODATA)
@@ -163,6 +183,10 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
 
             // Add to the this-iteration total of coarse sediment input
             m_dThisiterUnconsCoarseInput += dCoarseDepth;
+
+            // And assign the cell's landform
+            pLandform->SetLFCategory(LF_CAT_SEDIMENT_INPUT);
+            pLandform->SetLFSubCategory(LF_SUBCAT_SEDIMENT_INPUT_UNCONSOLIDATED);
          }
 
          if (m_nLogFileDetail >= LOG_FILE_MIDDLE_DETAIL)

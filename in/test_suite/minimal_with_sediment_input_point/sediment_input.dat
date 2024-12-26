@@ -15,9 +15,9 @@
 ;
 ; Rows should be in time sequence. If more than one sediment input event occurs simultaneously (i.e. events occur at the same time at more than one location or line), then list each event on its own line.
 
-1, 50 hours, 0, 5.8, 0
-1, 100 hours, 0, 1.9, 0
-1, 200 hours, 0, 1.7, 0
+# 1, 50 hours, 0, 1.8, 0
+# 1, 100 hours, 0, 0.9, 0
+# 1, 200 hours, 0, 1.7, 0
 1, 5 days, 0, 3.6, 0
 1, 20 days, 0, 1.2, 0
 1, 22 days, 0, 5.7, 0
