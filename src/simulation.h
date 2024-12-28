@@ -428,10 +428,10 @@ private:
    char** m_papszGDALVectorOptions;
 
    //! The size of the grid in the x direction
-   int m_nXGridMax;
+   int m_nXGridSize;
 
    //! The size of the grid in the y direction
-   int m_nYGridMax;
+   int m_nYGridSize;
 
    //! The number of sediment layers
    int m_nLayers;
@@ -466,10 +466,10 @@ private:
    //! Used in calculations of GIS save intervals
    int m_nThisSave;
 
-   //! Maximum valid coast length when searching for coasts, actually is COAST_LENGTH_MAX * tMax(m_nXGridMax, m_nYGridMax)
+   //! Maximum valid coast length when searching for coasts, actually is COAST_LENGTH_MAX * tMax(m_nXGridSize, m_nYGridSize)
    int m_nCoastMax;
 
-   //! Minimum valid coast legth when searching for coass, actualli is tMin(m_nXGridMax, m_nYGridMax)
+   //! Minimum valid coast legth when searching for coass, actualli is tMin(m_nXGridSize, m_nYGridSize)
    int m_nCoastMin;
 
    // NOT USED
@@ -1654,7 +1654,7 @@ private:
    double dGridYToExtCRSY(double const) const;
    // double dExtCRSXToGridCentroidX(double const) const;
    // double dExtCRSYToGridCentroidY(double const) const;
-   CGeom2DIPoint PtiExtCRSToGrid(CGeom2DPoint const*) const;
+   CGeom2DIPoint PtiExtCRSToGridRound(CGeom2DPoint const*) const;
    CGeom2DPoint PtGridCentroidToExt(CGeom2DIPoint const*) const;
    double dExtCRSXToGridX(double const) const;
    double dExtCRSYToGridY(double const) const;

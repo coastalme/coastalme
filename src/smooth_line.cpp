@@ -89,9 +89,17 @@ CGeomLine CSimulation::LSmoothCoastSavitzkyGolay(CGeomLine* pLineIn, int const n
    {
       // Don't smooth intervention cells
       CGeom2DPoint PtThis(pLineIn->dGetXAt(i), pLineIn->dGetYAt(i));
-      CGeom2DIPoint PtiThis = PtiExtCRSToGrid(&PtThis);
+      CGeom2DIPoint PtiThis = PtiExtCRSToGridRound(&PtThis);
       int nXThis = PtiThis.nGetX();
       int nYThis = PtiThis.nGetY();
+
+      // Safety checks
+      if (nXThis >= m_nXGridSize)
+         continue;
+
+      if (nYThis >= m_nYGridSize)
+         continue;
+
       if (bIsInterventionCell(nXThis, nYThis))
       {
          LTemp[i] = pLineIn->pPtGetAt(i);
@@ -215,9 +223,14 @@ CGeomLine CSimulation::LSmoothCoastRunningMean(CGeomLine* pLineIn) const
    {
       // Don't smooth intervention cells
       CGeom2DPoint PtThis(pLineIn->dGetXAt(i), pLineIn->dGetYAt(i));
-      CGeom2DIPoint PtiThis = PtiExtCRSToGrid(&PtThis);
-      int nXThis = tMin(PtiThis.nGetX(), m_nXGridMax-1);
-      int nYThis = tMin(PtiThis.nGetY(), m_nYGridMax-1);
+      CGeom2DIPoint PtiThis = PtiExtCRSToGridRound(&PtThis);
+      int nXThis = tMin(PtiThis.nGetX(), m_nXGridSize-1);
+      int nYThis = tMin(PtiThis.nGetY(), m_nYGridSize-1);
+
+      // Safety checks
+      nXThis = tMax(nXThis, 0);
+      nYThis = tMax(nYThis, 0);
+
       if (bIsInterventionCell(nXThis, nYThis))
       {
          LTemp[i] = pLineIn->pPtGetAt(i);

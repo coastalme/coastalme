@@ -354,9 +354,9 @@ int CSimulation::nLandformToGrid(int const nCoast, int const nPoint)
 int CSimulation::nAssignLandformsForAllCells(void)
 {
    // Go through all cells in the RasterGrid array
-   for (int nX = 0; nX < m_nXGridMax; nX++)
+   for (int nX = 0; nX < m_nXGridSize; nX++)
    {
-      for (int nY = 0; nY < m_nYGridMax; nY++)
+      for (int nY = 0; nY < m_nYGridSize; nY++)
       {
          // DEBUG CODE ====================
          if ((nX == 111) && (nY == 295))

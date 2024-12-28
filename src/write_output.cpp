@@ -266,7 +266,7 @@ void CSimulation::WriteStartRunDetails(void)
    OutStream << " GDAL basement DEM driver description                      \t: " << m_strGDALBasementDEMDriverDesc << endl;
    OutStream << " GDAL basement DEM projection                              \t: " << m_strGDALBasementDEMProjection << endl;
    OutStream << " GDAL basement DEM data type                               \t: " << m_strGDALBasementDEMDataType << endl;
-   OutStream << " Grid size (X by Y)                                        \t: " << m_nXGridMax << " by " << m_nYGridMax << endl;
+   OutStream << " Grid size (X by Y)                                        \t: " << m_nXGridSize << " by " << m_nYGridSize << endl;
    OutStream << resetiosflags(ios::floatfield);
    OutStream << std::fixed << setprecision(1);
    OutStream << "*Coordinates of NW corner of grid (external CRS)           \t: " << m_dNorthWestXExtCRS << ", " << m_dNorthWestYExtCRS << endl;
@@ -1894,9 +1894,9 @@ void CSimulation::DoTimestepTotals(void)
       double dEndIterConsCoarseInPolygons = 0;
 
       // Get depth of consolidated and unconsolidated (and suspended) sediment from each cell (both within and outside polygons)
-      for (int nX = 0; nX < m_nXGridMax; nX++)
+      for (int nX = 0; nX < m_nXGridSize; nX++)
       {
-         for (int nY = 0; nY < m_nYGridMax; nY++)
+         for (int nY = 0; nY < m_nYGridSize; nY++)
          {
             dEndIterConsFineAllCells += m_pRasterGrid->m_Cell[nX][nY].dGetTotConsFineThickConsiderNotch();
             dEndIterConsSandAllCells += m_pRasterGrid->m_Cell[nX][nY].dGetTotConsSandThickConsiderNotch();

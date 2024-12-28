@@ -226,7 +226,7 @@ int CSimulation::nDoAllPropagateWaves(void)
       dDeepWaterWaveY = m_dAllCellsDeepWaterWaveHeight * cos(m_dAllCellsDeepWaterWaveAngle * PI / 180);
    }
 
-   for (int nX = 0; nX < m_nXGridMax; nX++)
+   for (int nX = 0; nX < m_nXGridSize; nX++)
    {
       if (m_pRasterGrid->m_Cell[nX][0].bIsInContiguousSea())
       {
@@ -249,20 +249,20 @@ int CSimulation::nDoAllPropagateWaves(void)
          }
       }
 
-      if (m_pRasterGrid->m_Cell[nX][m_nYGridMax - 1].bIsInContiguousSea())
+      if (m_pRasterGrid->m_Cell[nX][m_nYGridSize - 1].bIsInContiguousSea())
       {
-         int nID = m_pRasterGrid->m_Cell[nX][m_nYGridMax - 1].nGetPolygonID();
+         int nID = m_pRasterGrid->m_Cell[nX][m_nYGridSize - 1].nGetPolygonID();
          if (nID == INT_NODATA)
          {
             // Not in a polygon
             VdXAll.push_back(nX);
-            VdYAll.push_back(m_nYGridMax - 1);
+            VdYAll.push_back(m_nYGridSize - 1);
 
             if (! m_bSingleDeepWaterWaveValues)
             {
                // Not using the same value of deep water height and angle for all cells, so get this cell's deep water height and angle values
-               dDeepWaterWaveX = m_pRasterGrid->m_Cell[nX][m_nYGridMax - 1].dGetCellDeepWaterWaveHeight() * sin(m_pRasterGrid->m_Cell[nX][m_nYGridMax - 1].dGetCellDeepWaterWaveAngle() * PI / 180);
-               dDeepWaterWaveY = m_pRasterGrid->m_Cell[nX][m_nYGridMax - 1].dGetCellDeepWaterWaveHeight() * cos(m_pRasterGrid->m_Cell[nX][m_nYGridMax - 1].dGetCellDeepWaterWaveAngle() * PI / 180);
+               dDeepWaterWaveX = m_pRasterGrid->m_Cell[nX][m_nYGridSize - 1].dGetCellDeepWaterWaveHeight() * sin(m_pRasterGrid->m_Cell[nX][m_nYGridSize - 1].dGetCellDeepWaterWaveAngle() * PI / 180);
+               dDeepWaterWaveY = m_pRasterGrid->m_Cell[nX][m_nYGridSize - 1].dGetCellDeepWaterWaveHeight() * cos(m_pRasterGrid->m_Cell[nX][m_nYGridSize - 1].dGetCellDeepWaterWaveAngle() * PI / 180);
             }
 
             VdHeightXAll.push_back(dDeepWaterWaveX);
@@ -271,7 +271,7 @@ int CSimulation::nDoAllPropagateWaves(void)
       }
    }
 
-   for (int nY = 0; nY < m_nYGridMax; nY++)
+   for (int nY = 0; nY < m_nYGridSize; nY++)
    {
       if (m_pRasterGrid->m_Cell[0][nY].bIsInContiguousSea())
       {
@@ -294,20 +294,20 @@ int CSimulation::nDoAllPropagateWaves(void)
          }
       }
 
-      if (m_pRasterGrid->m_Cell[m_nXGridMax - 1][nY].bIsInContiguousSea())
+      if (m_pRasterGrid->m_Cell[m_nXGridSize - 1][nY].bIsInContiguousSea())
       {
-         int nID = m_pRasterGrid->m_Cell[m_nXGridMax - 1][nY].nGetPolygonID();
+         int nID = m_pRasterGrid->m_Cell[m_nXGridSize - 1][nY].nGetPolygonID();
          if (nID == INT_NODATA)
          {
             // Not in a polygon
-            VdXAll.push_back(m_nXGridMax - 1);
+            VdXAll.push_back(m_nXGridSize - 1);
             VdYAll.push_back(nY);
 
             if (! m_bSingleDeepWaterWaveValues)
             {
                // Not using the same value of deep water height and angle for all cells, so get this cell's deep water height and angle values
-               dDeepWaterWaveX = m_pRasterGrid->m_Cell[m_nXGridMax - 1][nY].dGetCellDeepWaterWaveHeight() * sin(m_pRasterGrid->m_Cell[m_nXGridMax - 1][nY].dGetCellDeepWaterWaveAngle() * PI / 180);
-               dDeepWaterWaveY = m_pRasterGrid->m_Cell[m_nXGridMax - 1][nY].dGetCellDeepWaterWaveHeight() * cos(m_pRasterGrid->m_Cell[m_nXGridMax - 1][nY].dGetCellDeepWaterWaveAngle() * PI / 180);
+               dDeepWaterWaveX = m_pRasterGrid->m_Cell[m_nXGridSize - 1][nY].dGetCellDeepWaterWaveHeight() * sin(m_pRasterGrid->m_Cell[m_nXGridSize - 1][nY].dGetCellDeepWaterWaveAngle() * PI / 180);
+               dDeepWaterWaveY = m_pRasterGrid->m_Cell[m_nXGridSize - 1][nY].dGetCellDeepWaterWaveHeight() * cos(m_pRasterGrid->m_Cell[m_nXGridSize - 1][nY].dGetCellDeepWaterWaveAngle() * PI / 180);
             }
 
             VdHeightXAll.push_back(dDeepWaterWaveX);
@@ -345,15 +345,15 @@ int CSimulation::nDoAllPropagateWaves(void)
    //    strOutFile += ".tif";
    //
    //    GDALDriver* pDriver = GetGDALDriverManager()->GetDriverByName("gtiff");
-   //    GDALDataset* pDataSet = pDriver->Create(strOutFile.c_str(), m_nXGridMax, m_nYGridMax, 1, GDT_Float64, m_papszGDALRasterOptions);
+   //    GDALDataset* pDataSet = pDriver->Create(strOutFile.c_str(), m_nXGridSize, m_nYGridSize, 1, GDT_Float64, m_papszGDALRasterOptions);
    //    pDataSet->SetProjection(m_strGDALBasementDEMProjection.c_str());
    //    pDataSet->SetGeoTransform(m_dGeoTransform);
    //
    //    int nn = 0;
-   //    double* pdRaster = new double[m_nXGridMax * m_nYGridMax];
-   //    for (int nY = 0; nY < m_nYGridMax; nY++)
+   //    double* pdRaster = new double[m_nXGridSize * m_nYGridSize];
+   //    for (int nY = 0; nY < m_nYGridSize; nY++)
    //    {
-   //       for (int nX = 0; nX < m_nXGridMax; nX++)
+   //       for (int nX = 0; nX < m_nXGridSize; nX++)
    //       {
    //          pdRaster[nn++] = m_pRasterGrid->m_Cell[nX][nY].dGetWaveHeight();
    //       }
@@ -361,7 +361,7 @@ int CSimulation::nDoAllPropagateWaves(void)
    //
    //    GDALRasterBand* pBand = pDataSet->GetRasterBand(1);
    //    pBand->SetNoDataValue(m_dMissingValue);
-   //    nRet = pBand->RasterIO(GF_Write, 0, 0, m_nXGridMax, m_nYGridMax, pdRaster, m_nXGridMax, m_nYGridMax, GDT_Float64, 0, 0, NULL);
+   //    nRet = pBand->RasterIO(GF_Write, 0, 0, m_nXGridSize, m_nYGridSize, pdRaster, m_nXGridSize, m_nYGridSize, GDT_Float64, 0, 0, NULL);
    //
    //    if (nRet == CE_Failure)
    //       return RTN_ERR_GRIDCREATE;
@@ -377,15 +377,15 @@ int CSimulation::nDoAllPropagateWaves(void)
    //    strOutFile += ".tif";
    //
    //    pDriver = GetGDALDriverManager()->GetDriverByName("gtiff");
-   //    pDataSet = pDriver->Create(strOutFile.c_str(), m_nXGridMax, m_nYGridMax, 1, GDT_Float64, m_papszGDALRasterOptions);
+   //    pDataSet = pDriver->Create(strOutFile.c_str(), m_nXGridSize, m_nYGridSize, 1, GDT_Float64, m_papszGDALRasterOptions);
    //    pDataSet->SetProjection(m_strGDALBasementDEMProjection.c_str());
    //    pDataSet->SetGeoTransform(m_dGeoTransform);
    //
    //    nn = 0;
-   //    pdRaster = new double[m_nXGridMax * m_nYGridMax];
-   //    for (int nY = 0; nY < m_nYGridMax; nY++)
+   //    pdRaster = new double[m_nXGridSize * m_nYGridSize];
+   //    for (int nY = 0; nY < m_nYGridSize; nY++)
    //    {
-   //       for (int nX = 0; nX < m_nXGridMax; nX++)
+   //       for (int nX = 0; nX < m_nXGridSize; nX++)
    //       {
    //          pdRaster[nn++] = m_pRasterGrid->m_Cell[nX][nY].dGetWaveAngle();
    //       }
@@ -393,7 +393,7 @@ int CSimulation::nDoAllPropagateWaves(void)
    //
    //    pBand = pDataSet->GetRasterBand(1);
    //    pBand->SetNoDataValue(m_dMissingValue);
-   //    nRet = pBand->RasterIO(GF_Write, 0, 0, m_nXGridMax, m_nYGridMax, pdRaster, m_nXGridMax, m_nYGridMax, GDT_Float64, 0, 0, NULL);
+   //    nRet = pBand->RasterIO(GF_Write, 0, 0, m_nXGridSize, m_nYGridSize, pdRaster, m_nXGridSize, m_nYGridSize, GDT_Float64, 0, 0, NULL);
    //
    //    if (nRet == CE_Failure)
    //       return RTN_ERR_GRIDCREATE;
@@ -417,15 +417,15 @@ int CSimulation::nDoAllPropagateWaves(void)
    //    strOutFile += ".tif";
    //
    //    GDALDriver* pDriver = GetGDALDriverManager()->GetDriverByName("gtiff");
-   //    GDALDataset* pDataSet = pDriver->Create(strOutFile.c_str(), m_nXGridMax, m_nYGridMax, 1, GDT_Float64, m_papszGDALRasterOptions);
+   //    GDALDataset* pDataSet = pDriver->Create(strOutFile.c_str(), m_nXGridSize, m_nYGridSize, 1, GDT_Float64, m_papszGDALRasterOptions);
    //    pDataSet->SetProjection(m_strGDALBasementDEMProjection.c_str());
    //    pDataSet->SetGeoTransform(m_dGeoTransform);
    //
    //    int nn = 0;
-   //    double* pdRaster = new double[m_nXGridMax * m_nYGridMax];
-   //    for (int nY = 0; nY < m_nYGridMax; nY++)
+   //    double* pdRaster = new double[m_nXGridSize * m_nYGridSize];
+   //    for (int nY = 0; nY < m_nYGridSize; nY++)
    //    {
-   //       for (int nX = 0; nX < m_nXGridMax; nX++)
+   //       for (int nX = 0; nX < m_nXGridSize; nX++)
    //       {
    //          pdRaster[nn++] = m_pRasterGrid->m_Cell[nX][nY].dGetWaveHeight();
    //       }
@@ -433,7 +433,7 @@ int CSimulation::nDoAllPropagateWaves(void)
    //
    //    GDALRasterBand* pBand = pDataSet->GetRasterBand(1);
    //    pBand->SetNoDataValue(m_dMissingValue);
-   //    nRet = pBand->RasterIO(GF_Write, 0, 0, m_nXGridMax, m_nYGridMax, pdRaster, m_nXGridMax, m_nYGridMax, GDT_Float64, 0, 0, NULL);
+   //    nRet = pBand->RasterIO(GF_Write, 0, 0, m_nXGridSize, m_nYGridSize, pdRaster, m_nXGridSize, m_nYGridSize, GDT_Float64, 0, 0, NULL);
    //
    //    if (nRet == CE_Failure)
    //       return RTN_ERR_GRIDCREATE;
@@ -449,15 +449,15 @@ int CSimulation::nDoAllPropagateWaves(void)
    //    strOutFile += ".tif";
    //
    //    pDriver = GetGDALDriverManager()->GetDriverByName("gtiff");
-   //    pDataSet = pDriver->Create(strOutFile.c_str(), m_nXGridMax, m_nYGridMax, 1, GDT_Float64, m_papszGDALRasterOptions);
+   //    pDataSet = pDriver->Create(strOutFile.c_str(), m_nXGridSize, m_nYGridSize, 1, GDT_Float64, m_papszGDALRasterOptions);
    //    pDataSet->SetProjection(m_strGDALBasementDEMProjection.c_str());
    //    pDataSet->SetGeoTransform(m_dGeoTransform);
    //
    //    nn = 0;
-   //    pdRaster = new double[m_nXGridMax * m_nYGridMax];
-   //    for (int nY = 0; nY < m_nYGridMax; nY++)
+   //    pdRaster = new double[m_nXGridSize * m_nYGridSize];
+   //    for (int nY = 0; nY < m_nYGridSize; nY++)
    //    {
-   //       for (int nX = 0; nX < m_nXGridMax; nX++)
+   //       for (int nX = 0; nX < m_nXGridSize; nX++)
    //       {
    //          pdRaster[nn++] = m_pRasterGrid->m_Cell[nX][nY].dGetWaveAngle();
    //       }
@@ -465,7 +465,7 @@ int CSimulation::nDoAllPropagateWaves(void)
    //
    //    pBand = pDataSet->GetRasterBand(1);
    //    pBand->SetNoDataValue(m_dMissingValue);
-   //    nRet = pBand->RasterIO(GF_Write, 0, 0, m_nXGridMax, m_nYGridMax, pdRaster, m_nXGridMax, m_nYGridMax, GDT_Float64, 0, 0, NULL);
+   //    nRet = pBand->RasterIO(GF_Write, 0, 0, m_nXGridSize, m_nYGridSize, pdRaster, m_nXGridSize, m_nYGridSize, GDT_Float64, 0, 0, NULL);
    //
    //    if (nRet == CE_Failure)
    //       return RTN_ERR_GRIDCREATE;
@@ -490,15 +490,15 @@ int CSimulation::nDoAllPropagateWaves(void)
    //    strOutFile += ".tif";
    //
    //    GDALDriver* pDriver = GetGDALDriverManager()->GetDriverByName("gtiff");
-   //    GDALDataset* pDataSet = pDriver->Create(strOutFile.c_str(), m_nXGridMax, m_nYGridMax, 1, GDT_Float64, m_papszGDALRasterOptions);
+   //    GDALDataset* pDataSet = pDriver->Create(strOutFile.c_str(), m_nXGridSize, m_nYGridSize, 1, GDT_Float64, m_papszGDALRasterOptions);
    //    pDataSet->SetProjection(m_strGDALBasementDEMProjection.c_str());
    //    pDataSet->SetGeoTransform(m_dGeoTransform);
    //
    //    int nn = 0;
-   //    double* pdRaster = new double[m_nXGridMax * m_nYGridMax];
-   //    for (int nY = 0; nY < m_nYGridMax; nY++)
+   //    double* pdRaster = new double[m_nXGridSize * m_nYGridSize];
+   //    for (int nY = 0; nY < m_nYGridSize; nY++)
    //    {
-   //       for (int nX = 0; nX < m_nXGridMax; nX++)
+   //       for (int nX = 0; nX < m_nXGridSize; nX++)
    //       {
    //          pdRaster[nn++] = m_pRasterGrid->m_Cell[nX][nY].dGetWaveHeight();
    //       }
@@ -506,7 +506,7 @@ int CSimulation::nDoAllPropagateWaves(void)
    //
    //    GDALRasterBand* pBand = pDataSet->GetRasterBand(1);
    //    pBand->SetNoDataValue(m_dMissingValue);
-   //    nRet = pBand->RasterIO(GF_Write, 0, 0, m_nXGridMax, m_nYGridMax, pdRaster, m_nXGridMax, m_nYGridMax, GDT_Float64, 0, 0, NULL);
+   //    nRet = pBand->RasterIO(GF_Write, 0, 0, m_nXGridSize, m_nYGridSize, pdRaster, m_nXGridSize, m_nYGridSize, GDT_Float64, 0, 0, NULL);
    //
    //    if (nRet == CE_Failure)
    //       return RTN_ERR_GRIDCREATE;
@@ -522,15 +522,15 @@ int CSimulation::nDoAllPropagateWaves(void)
    //    strOutFile += ".tif";
    //
    //    pDriver = GetGDALDriverManager()->GetDriverByName("gtiff");
-   //    pDataSet = pDriver->Create(strOutFile.c_str(), m_nXGridMax, m_nYGridMax, 1, GDT_Float64, m_papszGDALRasterOptions);
+   //    pDataSet = pDriver->Create(strOutFile.c_str(), m_nXGridSize, m_nYGridSize, 1, GDT_Float64, m_papszGDALRasterOptions);
    //    pDataSet->SetProjection(m_strGDALBasementDEMProjection.c_str());
    //    pDataSet->SetGeoTransform(m_dGeoTransform);
    //
    //    nn = 0;
-   //    pdRaster = new double[m_nXGridMax * m_nYGridMax];
-   //    for (int nY = 0; nY < m_nYGridMax; nY++)
+   //    pdRaster = new double[m_nXGridSize * m_nYGridSize];
+   //    for (int nY = 0; nY < m_nYGridSize; nY++)
    //    {
-   //       for (int nX = 0; nX < m_nXGridMax; nX++)
+   //       for (int nX = 0; nX < m_nXGridSize; nX++)
    //       {
    //          pdRaster[nn++] = m_pRasterGrid->m_Cell[nX][nY].dGetWaveAngle();
    //       }
@@ -538,7 +538,7 @@ int CSimulation::nDoAllPropagateWaves(void)
    //
    //    pBand = pDataSet->GetRasterBand(1);
    //    pBand->SetNoDataValue(m_dMissingValue);
-   //    nRet = pBand->RasterIO(GF_Write, 0, 0, m_nXGridMax, m_nYGridMax, pdRaster, m_nXGridMax, m_nYGridMax, GDT_Float64, 0, 0, NULL);
+   //    nRet = pBand->RasterIO(GF_Write, 0, 0, m_nXGridSize, m_nYGridSize, pdRaster, m_nXGridSize, m_nYGridSize, GDT_Float64, 0, 0, NULL);
    //
    //    if (nRet == CE_Failure)
    //       return RTN_ERR_GRIDCREATE;
@@ -2137,9 +2137,9 @@ void CSimulation::CalcD50AndFillWaveCalcHoles(void)
    vector<int> VnPolygonD50Count(m_nGlobalPolygonID + 1, 0);
    vector<double> VdPolygonD50(m_nGlobalPolygonID + 1, 0);
 
-   for (int nX = 0; nX < m_nXGridMax; nX++)
+   for (int nX = 0; nX < m_nXGridSize; nX++)
    {
-      for (int nY = 0; nY < m_nYGridMax; nY++)
+      for (int nY = 0; nY < m_nYGridSize; nY++)
       {
          if (m_pRasterGrid->m_Cell[nX][nY].bIsInContiguousSea())
          {

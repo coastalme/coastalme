@@ -110,7 +110,7 @@ void CSimulation::FindAllSeaCells(void)
 void CSimulation::FloodFillSea(int const nXStart, int const nYStart)
 {
    // For safety check
-   int nRoundLoopMax = m_nXGridMax * m_nYGridMax;
+   int nRoundLoopMax = m_nXGridSize * m_nYGridSize;
    
    // Create an empty stack
    stack<CGeom2DIPoint> PtiStack;
@@ -140,7 +140,7 @@ void CSimulation::FloodFillSea(int const nXStart, int const nYStart)
       bool bSpanAbove = false;
       bool bSpanBelow = false;
 
-      while ((nX < m_nXGridMax) && (! m_pRasterGrid->m_Cell[nX][nY].bBasementElevIsMissingValue()) && (m_pRasterGrid->m_Cell[nX][nY].bIsInundated()) && (bFPIsEqual(m_pRasterGrid->m_Cell[nX][nY].dGetSeaDepth(), 0.0, TOLERANCE)))
+      while ((nX < m_nXGridSize) && (! m_pRasterGrid->m_Cell[nX][nY].bBasementElevIsMissingValue()) && (m_pRasterGrid->m_Cell[nX][nY].bIsInundated()) && (bFPIsEqual(m_pRasterGrid->m_Cell[nX][nY].dGetSeaDepth(), 0.0, TOLERANCE)))
       {
          // Set the sea depth for this cell
          m_pRasterGrid->m_Cell[nX][nY].SetSeaDepth();
@@ -200,12 +200,12 @@ void CSimulation::FloodFillSea(int const nXStart, int const nYStart)
             bSpanAbove = false;
          }
 
-         if ((! bSpanBelow) && (nY < m_nYGridMax-1) && (! m_pRasterGrid->m_Cell[nX][nY+1].bBasementElevIsMissingValue()) && (m_pRasterGrid->m_Cell[nX][nY+1].bIsInundated()))
+         if ((! bSpanBelow) && (nY < m_nYGridSize-1) && (! m_pRasterGrid->m_Cell[nX][nY+1].bBasementElevIsMissingValue()) && (m_pRasterGrid->m_Cell[nX][nY+1].bIsInundated()))
          {
             PtiStack.push(CGeom2DIPoint(nX, nY+1));
             bSpanBelow = true;
          }
-         else if (bSpanBelow && (nY < m_nYGridMax-1) && (! m_pRasterGrid->m_Cell[nX][nY+1].bBasementElevIsMissingValue()) && (! m_pRasterGrid->m_Cell[nX][nY+1].bIsInundated()))
+         else if (bSpanBelow && (nY < m_nYGridSize-1) && (! m_pRasterGrid->m_Cell[nX][nY+1].bBasementElevIsMissingValue()) && (! m_pRasterGrid->m_Cell[nX][nY+1].bIsInundated()))
          {
             bSpanBelow = false;
          }
@@ -220,14 +220,14 @@ void CSimulation::FloodFillSea(int const nXStart, int const nYStart)
    // strOutFile += ".tif";
 
    // GDALDriver* pDriver = GetGDALDriverManager()->GetDriverByName("gtiff");
-   // GDALDataset* pDataSet = pDriver->Create(strOutFile.c_str(), m_nXGridMax, m_nYGridMax, 1, GDT_Float64, m_papszGDALRasterOptions);
+   // GDALDataset* pDataSet = pDriver->Create(strOutFile.c_str(), m_nXGridSize, m_nYGridSize, 1, GDT_Float64, m_papszGDALRasterOptions);
    // pDataSet->SetProjection(m_strGDALBasementDEMProjection.c_str());
    // pDataSet->SetGeoTransform(m_dGeoTransform);
-   // double* pdRaster = new double[m_nXGridMax * m_nYGridMax];
+   // double* pdRaster = new double[m_nXGridSize * m_nYGridSize];
    // int n = 0;
-   // for (int nY = 0; nY < m_nYGridMax; nY++)
+   // for (int nY = 0; nY < m_nYGridSize; nY++)
    // {
-   //    for (int nX = 0; nX < m_nXGridMax; nX++)
+   //    for (int nX = 0; nX < m_nXGridSize; nX++)
    //    {
    //       pdRaster[n++] = m_pRasterGrid->m_Cell[nX][nY].bIsInContiguousSea();
    //    }
@@ -235,7 +235,7 @@ void CSimulation::FloodFillSea(int const nXStart, int const nYStart)
 
    // GDALRasterBand* pBand = pDataSet->GetRasterBand(1);
    // pBand->SetNoDataValue(m_dMissingValue);
-   // int nRet = pBand->RasterIO(GF_Write, 0, 0, m_nXGridMax, m_nYGridMax, pdRaster, m_nXGridMax, m_nYGridMax, GDT_Float64, 0, 0, NULL);
+   // int nRet = pBand->RasterIO(GF_Write, 0, 0, m_nXGridSize, m_nYGridSize, pdRaster, m_nXGridSize, m_nYGridSize, GDT_Float64, 0, 0, NULL);
    // if (nRet == CE_Failure)
    //    return;
 
@@ -247,20 +247,20 @@ void CSimulation::FloodFillSea(int const nXStart, int const nYStart)
    // strOutFile += ".tif";
 
    // GDALDriver* pDriver = GetGDALDriverManager()->GetDriverByName("gtiff");
-   // GDALDataset* pDataSet = pDriver->Create(strOutFile.c_str(), m_nXGridMax, m_nYGridMax, 1, GDT_Float64, m_papszGDALRasterOptions);
+   // GDALDataset* pDataSet = pDriver->Create(strOutFile.c_str(), m_nXGridSize, m_nYGridSize, 1, GDT_Float64, m_papszGDALRasterOptions);
    // pDataSet->SetProjection(m_strGDALBasementDEMProjection.c_str());
    // pDataSet->SetGeoTransform(m_dGeoTransform);
-   // double* pdRaster = new double[m_nXGridMax * m_nYGridMax];
+   // double* pdRaster = new double[m_nXGridSize * m_nYGridSize];
 
-   // pDataSet = pDriver->Create(strOutFile.c_str(), m_nXGridMax, m_nYGridMax, 1, GDT_Float64, m_papszGDALRasterOptions);
+   // pDataSet = pDriver->Create(strOutFile.c_str(), m_nXGridSize, m_nYGridSize, 1, GDT_Float64, m_papszGDALRasterOptions);
    // pDataSet->SetProjection(m_strGDALBasementDEMProjection.c_str());
    // pDataSet->SetGeoTransform(m_dGeoTransform);
 
-   // pdRaster = new double[m_nXGridMax * m_nYGridMax];
+   // pdRaster = new double[m_nXGridSize * m_nYGridSize];
    // int n = 0;
-   // for (int nY = 0; nY < m_nYGridMax; nY++)
+   // for (int nY = 0; nY < m_nYGridSize; nY++)
    // {
-   //    for (int nX = 0; nX < m_nXGridMax; nX++)
+   //    for (int nX = 0; nX < m_nXGridSize; nX++)
    //    {
    //       pdRaster[n++] = m_pRasterGrid->m_Cell[nX][nY].bIsInundated();
    //    }
@@ -269,7 +269,7 @@ void CSimulation::FloodFillSea(int const nXStart, int const nYStart)
    // GDALRasterBand* pBand = pDataSet->GetRasterBand(1);
    // pBand = pDataSet->GetRasterBand(1);
    // pBand->SetNoDataValue(m_dMissingValue);
-   // int nRet = pBand->RasterIO(GF_Write, 0, 0, m_nXGridMax, m_nYGridMax, pdRaster, m_nXGridMax, m_nYGridMax, GDT_Float64, 0, 0, NULL);
+   // int nRet = pBand->RasterIO(GF_Write, 0, 0, m_nXGridSize, m_nYGridSize, pdRaster, m_nXGridSize, m_nYGridSize, GDT_Float64, 0, 0, NULL);
    // if (nRet == CE_Failure)
    //    return;
 
@@ -1066,9 +1066,9 @@ int CSimulation::nLocateFloodAndCoasts(void)
 //===============================================================================================================================
 int CSimulation::FindAllInundatedCells(void)
 {
-   for (int nX = 0; nX < m_nXGridMax; nX++)
+   for (int nX = 0; nX < m_nXGridSize; nX++)
    {
-      for (int nY = 0; nY < m_nYGridMax; nY++)
+      for (int nY = 0; nY < m_nYGridSize; nY++)
       {
          m_pRasterGrid->m_Cell[nX][nY].UnSetCheckFloodCell();        // TODO 007 Do we need this?
          m_pRasterGrid->m_Cell[nX][nY].UnSetInContiguousFlood();     // TODO 007 Do we need this?
@@ -1211,7 +1211,7 @@ void CSimulation::FloodFillLand(int const nXStart, int const nYStart)
       bool bSpanAbove = false;
       bool bSpanBelow = false;
 
-      while (nX < m_nXGridMax)
+      while (nX < m_nXGridSize)
       {
          if (m_pRasterGrid->m_Cell[nX][nY].bIsCellFloodCheck())
             break;
@@ -1242,12 +1242,12 @@ void CSimulation::FloodFillLand(int const nXStart, int const nYStart)
             bSpanAbove = false;
          }
 
-         if ((! bSpanBelow) && (nY < m_nYGridMax - 1) && (m_pRasterGrid->m_Cell[nX][nY + 1].bIsElevLessThanWaterLevel()) && (! m_pRasterGrid->m_Cell[nX][nY + 1].bIsCellFloodCheck()))
+         if ((! bSpanBelow) && (nY < m_nYGridSize - 1) && (m_pRasterGrid->m_Cell[nX][nY + 1].bIsElevLessThanWaterLevel()) && (! m_pRasterGrid->m_Cell[nX][nY + 1].bIsCellFloodCheck()))
          {
             PtiStackFlood.push(CGeom2DIPoint(nX, nY + 1));
             bSpanBelow = true;
          }
-         else if (bSpanBelow && (nY < m_nYGridMax - 1) && (! m_pRasterGrid->m_Cell[nX][nY + 1].bIsElevLessThanWaterLevel()))
+         else if (bSpanBelow && (nY < m_nYGridSize - 1) && (! m_pRasterGrid->m_Cell[nX][nY + 1].bIsElevLessThanWaterLevel()))
          {
             bSpanBelow = false;
          }

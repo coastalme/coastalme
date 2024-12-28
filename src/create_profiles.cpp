@@ -214,15 +214,13 @@ int CSimulation::nCreateAllProfilesAndCheckValidity(void)
             }
 
             CGeom2DPoint const* pPtEnd = pProfile->pPtGetPointInProfile(nSize - 1);
-            CGeom2DIPoint PtiEnd = PtiExtCRSToGrid(pPtEnd);
+            CGeom2DIPoint PtiEnd = PtiExtCRSToGridRound(pPtEnd);
             int nXEnd = PtiEnd.nGetX();
             int nYEnd = PtiEnd.nGetY();
 
-            // Safety check: the point may be outside the grid because of rounding, so keep it within the grid
-            nXEnd = tMax(nXEnd, 0);
-            nXEnd = tMin(nXEnd, m_nXGridMax - 1);
-            nYEnd = tMax(nYEnd, 0);
-            nYEnd = tMin(nYEnd, m_nYGridMax - 1);
+            // Safety check: the point may be outside the grid in the +VE direction, so keep it within the grid
+            nXEnd = tMin(nXEnd, m_nXGridSize - 1);
+            nYEnd = tMin(nYEnd, m_nYGridSize - 1);
 
             if (m_pRasterGrid->m_Cell[nXEnd][nYEnd].dGetSeaDepth() < m_dDepthOfClosure)
             {
@@ -647,7 +645,7 @@ int CSimulation::nGetCoastNormalEndPoint(int const nCoast, int const nStartCoast
    int nSeaHand = m_VCoast[nCoast].nGetSeaHandedness(); // Assumes handedness is either 0 or 1 (i.e. not -1)
    *pPtEnd = PtChooseEndPoint(nSeaHand, &PtBefore, &PtAfter, dXEnd1, dYEnd1, dXEnd2, dYEnd2);
 
-   // Check that pPtiEnd is not off the grid. Note that pPtiEnd is NOT (necessarily) a cell centroid
+   // Check that pPtiEnd is not off the grid. Note that pPtiEnd is not necessarily a cell centroid
    pPtiEnd->SetXY(nRound(dExtCRSXToGridX(pPtEnd->dGetX())), nRound(dExtCRSYToGridY(pPtEnd->dGetY())));
    if (! bIsWithinValidGrid(pPtiEnd))
    {

@@ -94,9 +94,9 @@ int CSimulation::nDoAllShorePlatFormErosion(void)
    FillInBeachProtectionHoles();
 
    // Finally calculate actual platform erosion on all sea cells (both on profiles, and between profiles)
-   for (int nX = 0; nX < m_nXGridMax; nX++)
+   for (int nX = 0; nX < m_nXGridSize; nX++)
    {
-      for (int nY = 0; nY < m_nYGridMax; nY++)
+      for (int nY = 0; nY < m_nYGridSize; nY++)
       {
          if (m_pRasterGrid->m_Cell[nX][nY].bPotentialPlatformErosion())
             // Calculate actual (supply-limited) shore platform erosion on each cell that has potential platform erosion, also add the eroded sand/coarse sediment to that cell's polygon, ready to be redistributed within the polygon during beach erosion/deposition
@@ -860,7 +860,7 @@ void CSimulation::DoActualPlatformErosionOnCell(int const nX, int const nY)
                int
                    nXAdj = nX + 1,
                    nYAdj = nY - 1;
-               if ((nXAdj < m_nXGridMax) && (nYAdj >= 0))
+               if ((nXAdj < m_nXGridSize) && (nYAdj >= 0))
                {
                   nPolyID = m_pRasterGrid->m_Cell[nXAdj][nYAdj].nGetPolygonID();
                   if (nPolyID != INT_NODATA)
@@ -872,7 +872,7 @@ void CSimulation::DoActualPlatformErosionOnCell(int const nX, int const nY)
                int
                    nXAdj = nX + 1,
                    nYAdj = nY;
-               if (nXAdj < m_nXGridMax)
+               if (nXAdj < m_nXGridSize)
                {
                   nPolyID = m_pRasterGrid->m_Cell[nXAdj][nYAdj].nGetPolygonID();
                   if (nPolyID != INT_NODATA)
@@ -884,7 +884,7 @@ void CSimulation::DoActualPlatformErosionOnCell(int const nX, int const nY)
                int
                    nXAdj = nX + 1,
                    nYAdj = nY + 1;
-               if ((nXAdj < m_nXGridMax) && (nYAdj < m_nYGridMax))
+               if ((nXAdj < m_nXGridSize) && (nYAdj < m_nYGridSize))
                {
                   nPolyID = m_pRasterGrid->m_Cell[nXAdj][nYAdj].nGetPolygonID();
                   if (nPolyID != INT_NODATA)
@@ -896,7 +896,7 @@ void CSimulation::DoActualPlatformErosionOnCell(int const nX, int const nY)
                int
                    nXAdj = nX,
                    nYAdj = nY + 1;
-               if (nYAdj < m_nYGridMax)
+               if (nYAdj < m_nYGridSize)
                {
                   nPolyID = m_pRasterGrid->m_Cell[nXAdj][nYAdj].nGetPolygonID();
                   if (nPolyID != INT_NODATA)
@@ -908,7 +908,7 @@ void CSimulation::DoActualPlatformErosionOnCell(int const nX, int const nY)
                int
                    nXAdj = nX - 1,
                    nYAdj = nY + 1;
-               if ((nXAdj >= 0) && (nXAdj < m_nXGridMax))
+               if ((nXAdj >= 0) && (nXAdj < m_nXGridSize))
                {
                   nPolyID = m_pRasterGrid->m_Cell[nXAdj][nYAdj].nGetPolygonID();
                   if (nPolyID != INT_NODATA)
@@ -1070,9 +1070,9 @@ double CSimulation::dCalcBeachProtectionFactor(int const nX, int const nY, doubl
 //===============================================================================================================================
 void CSimulation::FillInBeachProtectionHoles(void)
 {
-   for (int nX = 0; nX < m_nXGridMax; nX++)
+   for (int nX = 0; nX < m_nXGridSize; nX++)
    {
-      for (int nY = 0; nY < m_nYGridMax; nY++)
+      for (int nY = 0; nY < m_nYGridSize; nY++)
       {
          if ((m_pRasterGrid->m_Cell[nX][nY].bIsInContiguousSea()) && (bFPIsEqual(m_pRasterGrid->m_Cell[nX][nY].dGetBeachProtectionFactor(), DBL_NODATA, TOLERANCE)))
          {
@@ -1135,9 +1135,9 @@ void CSimulation::FillInBeachProtectionHoles(void)
 //===============================================================================================================================
 void CSimulation::FillPotentialPlatformErosionHoles(void)
 {
-   for (int nX = 0; nX < m_nXGridMax; nX++)
+   for (int nX = 0; nX < m_nXGridSize; nX++)
    {
-      for (int nY = 0; nY < m_nYGridMax; nY++)
+      for (int nY = 0; nY < m_nYGridSize; nY++)
       {
          if ((m_pRasterGrid->m_Cell[nX][nY].bIsInContiguousSea()) && (bFPIsEqual(m_pRasterGrid->m_Cell[nX][nY].dGetPotentialPlatformErosion(), 0.0, TOLERANCE)))
          {

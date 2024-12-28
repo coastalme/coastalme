@@ -17,7 +17,7 @@
    In a north-up image, padfTransform[1] is the pixel width, and padfTransform[5] is the pixel height. The upper left corner of the upper left pixel is at position
       (padfTransform[0], padfTransform[3]).
 
- 3. Usually, raster grid CRS values are integer, i.e. they refer to a point which is at the centroid of a cell. They may also be -ve or greater than m_nXGridMax-1 i.e. may refer to a point which lies outside any cell of the raster grid.
+ 3. Usually, raster grid CRS values are integer, i.e. they refer to a point which is at the centroid of a cell. They may also be -ve or greater than m_nXGridSize-1 i.e. may refer to a point which lies outside any cell of the raster grid.
 
  * \author David Favis-Mortlock
  * \author Andres Payo
@@ -61,6 +61,7 @@ using std::ios;
 //===============================================================================================================================
 double CSimulation::dGridCentroidXToExtCRSX(int const nGridX) const
 {
+   // TODO 064
    return (m_dGeoTransform[0] + (nGridX * m_dGeoTransform[1]) + (m_dGeoTransform[1] / 2));
 }
 
@@ -69,6 +70,7 @@ double CSimulation::dGridCentroidXToExtCRSX(int const nGridX) const
 //===============================================================================================================================
 double CSimulation::dGridCentroidYToExtCRSY(int const nGridY) const
 {
+   // TODO 064
    return (m_dGeoTransform[3] + (nGridY * m_dGeoTransform[5]) + (m_dGeoTransform[5] / 2));
 }
 
@@ -77,6 +79,7 @@ double CSimulation::dGridCentroidYToExtCRSY(int const nGridY) const
 //===============================================================================================================================
 CGeom2DPoint CSimulation::PtGridCentroidToExt(CGeom2DIPoint const* pPtiIn) const
 {
+   // TODO 064
    int nGridX = pPtiIn->nGetX();
    int nGridY = pPtiIn->nGetY();
 
@@ -91,6 +94,7 @@ CGeom2DPoint CSimulation::PtGridCentroidToExt(CGeom2DIPoint const* pPtiIn) const
 //===============================================================================================================================
 double CSimulation::dGridXToExtCRSX(double const dGridX) const
 {
+   // TODO 064 Xgeo = GT(0) + Xpixel*GT(1) + Yline*GT(2)
    return (m_dGeoTransform[0] + (dGridX * m_dGeoTransform[1]));
 }
 
@@ -99,35 +103,36 @@ double CSimulation::dGridXToExtCRSX(double const dGridX) const
 //===============================================================================================================================
 double CSimulation::dGridYToExtCRSY(double const dGridY) const
 {
+   // TODO 064 Ygeo = GT(3) + Xpixel*GT(4) + Yline*GT(5)
    return (m_dGeoTransform[3] + (dGridY * m_dGeoTransform[5]));
 }
 
 //===============================================================================================================================
-//! Transforms an X-axis ordinate in the external CRS to the equivalent X-axis ordinate in the raster-grid CRS (the result may not be integer, and may be outside the grid)
+//! Transforms an X-axis ordinate in the external CRS to the equivalent X-axis ordinate in the raster-grid CRS (the result is not rounded, and so may not be integer, and may be outside the grid in the +ve direction)
 //===============================================================================================================================
 double CSimulation::dExtCRSXToGridX(double const dExtCRSX) const
 {
-   return ((dExtCRSX - m_dGeoTransform[0]) / m_dGeoTransform[1]);
+   // TODO 064
+   return tMax(((dExtCRSX - m_dGeoTransform[0]) / m_dGeoTransform[1]) - 1, 0.0);
 }
 
 //===============================================================================================================================
-//! Transforms a Y-axis ordinate in the external CRS to the equivalent Y-axis ordinate in the raster-grid CRS (the result may not be integer, and may be outside the grid)
+//! Transforms a Y-axis ordinate in the external CRS to the equivalent Y-axis ordinate in the raster-grid CRS (the result is not rounded, and so may not be integer, and may be outside the grid in the +ve direction)
 //===============================================================================================================================
 double CSimulation::dExtCRSYToGridY(double const dExtCRSY) const
 {
-   return ((dExtCRSY - m_dGeoTransform[3]) / m_dGeoTransform[5]);
+   // TODO 064
+   return tMax(((dExtCRSY - m_dGeoTransform[3]) / m_dGeoTransform[5]) - 1, 0.0);
 }
 
 //===============================================================================================================================
-//! Transforms a pointer to a CGeom2DPoint in the external CRS to the equivalent CGeom2DIPoint in the raster-grid CRS (both values rounded). Note that the result may be outside the grid, because of rounding
+//! Transforms a pointer to a CGeom2DPoint in the external CRS to the equivalent CGeom2DIPoint in the raster-grid CRS (both values rounded). The result may be outside the grid in the +ve direction
 //===============================================================================================================================
-CGeom2DIPoint CSimulation::PtiExtCRSToGrid(CGeom2DPoint const* pPtIn) const
+CGeom2DIPoint CSimulation::PtiExtCRSToGridRound(CGeom2DPoint const* pPtIn) const
 {
-   double dX = pPtIn->dGetX();
-   double dY = pPtIn->dGetY();
-
-   int nX = nRound((dX - m_dGeoTransform[0]) / m_dGeoTransform[1]);
-   int nY = nRound((dY - m_dGeoTransform[3]) / m_dGeoTransform[5]);
+   // TODO 064
+   int nX = tMax(nRound(((pPtIn->dGetX() - m_dGeoTransform[0]) / m_dGeoTransform[1]) - 1), 0);
+   int nY = tMax(nRound(((pPtIn->dGetY() - m_dGeoTransform[3]) / m_dGeoTransform[5]) - 1), 0);
 
    return CGeom2DIPoint(nX, nY);
 }
@@ -167,7 +172,7 @@ double CSimulation::dTriangleAreax2(CGeom2DPoint const* pPtA, CGeom2DPoint const
 //===============================================================================================================================
 bool CSimulation::bIsWithinValidGrid(int const nX, int const nY) const
 {
-   if ((nX < 0) || (nX >= m_nXGridMax) || (nY < 0) || (nY >= m_nYGridMax) || m_pRasterGrid->m_Cell[nX][nY].bBasementElevIsMissingValue())
+   if ((nX < 0) || (nX >= m_nXGridSize) || (nY < 0) || (nY >= m_nYGridSize) || m_pRasterGrid->m_Cell[nX][nY].bBasementElevIsMissingValue())
       return false;
 
    return true;
@@ -180,12 +185,12 @@ bool CSimulation::bIsWithinValidGrid(CGeom2DIPoint const *Pti) const
 {
    int nX = Pti->nGetX();
 
-   if ((nX < 0) || (nX >= m_nXGridMax))
+   if ((nX < 0) || (nX >= m_nXGridSize))
       return false;
 
    int nY = Pti->nGetY();
 
-   if ((nY < 0) || (nY >= m_nYGridMax))
+   if ((nY < 0) || (nY >= m_nYGridSize))
       return false;
 
    if (m_pRasterGrid->m_Cell[nX][nY].bBasementElevIsMissingValue())
@@ -208,13 +213,13 @@ void CSimulation::KeepWithinValidGrid(CGeom2DIPoint const *Pti0, CGeom2DIPoint *
 void CSimulation::KeepWithinValidGrid(int nX0, int nY0, int &nX1, int &nY1) const
 {
    // Safety check: make sure that the first point is within the valid grid
-   if (nX0 >= m_nXGridMax)
-      nX0 = m_nXGridMax - 1;
+   if (nX0 >= m_nXGridSize)
+      nX0 = m_nXGridSize - 1;
    else if (nX0 < 0)
       nX0 = 0;
 
-   if (nY0 >= m_nYGridMax)
-      nY0 = m_nYGridMax - 1;
+   if (nY0 >= m_nYGridSize)
+      nY0 = m_nYGridSize - 1;
    else if (nY0 < 0)
       nY0 = 0;
 
@@ -238,7 +243,7 @@ void CSimulation::KeepWithinValidGrid(int nX0, int nY0, int &nX1, int &nY1) cons
       }
       else
       {
-         nY1 = m_nYGridMax;
+         nY1 = m_nYGridSize;
 
          do
          {
@@ -264,7 +269,7 @@ void CSimulation::KeepWithinValidGrid(int nX0, int nY0, int &nX1, int &nY1) cons
       }
       else
       {
-         nX1 = m_nXGridMax;
+         nX1 = m_nXGridSize;
 
          do
          {
@@ -282,13 +287,13 @@ void CSimulation::KeepWithinValidGrid(int nX0, int nY0, int &nX1, int &nY1) cons
 
       if (nX1 < 0)
          nXDistanceOutside = -nX1;
-      else if (nX1 >= m_nXGridMax)
-         nXDistanceOutside = nX1 - m_nXGridMax + 1;
+      else if (nX1 >= m_nXGridSize)
+         nXDistanceOutside = nX1 - m_nXGridSize + 1;
 
       if (nY1 < 0)
          nYDistanceOutside = -nY1;
-      else if (nY1 >= m_nYGridMax)
-         nXDistanceOutside = nY1 - m_nYGridMax + 1;
+      else if (nY1 >= m_nYGridSize)
+         nXDistanceOutside = nY1 - m_nYGridSize + 1;
 
       if (nXDistanceOutside >= nYDistanceOutside)
       {
@@ -303,7 +308,7 @@ void CSimulation::KeepWithinValidGrid(int nX0, int nY0, int &nX1, int &nY1) cons
                nX1++;
 
                nY1 = nY0 + nRound(((nX1 - nX0) * nDiffY) / static_cast<double>(nDiffX));
-            } while ((nY1 < 0) || (nY1 >= m_nYGridMax) || (m_pRasterGrid->m_Cell[nX1][nY1].bBasementElevIsMissingValue()));
+            } while ((nY1 < 0) || (nY1 >= m_nYGridSize) || (m_pRasterGrid->m_Cell[nX1][nY1].bBasementElevIsMissingValue()));
 
             return;
          }
@@ -311,14 +316,14 @@ void CSimulation::KeepWithinValidGrid(int nX0, int nY0, int &nX1, int &nY1) cons
          else
          {
             // The incorrect x co-ord is greater than the correct x-co-ord: constrain it and find the y co-ord
-            nX1 = m_nXGridMax;
+            nX1 = m_nXGridSize;
 
             do
             {
                nX1--;
 
                nY1 = nY0 + nRound(((nX1 - nX0) * nDiffY) / static_cast<double>(nDiffX));
-            } while ((nY1 < 0) || (nY1 >= m_nYGridMax) || (m_pRasterGrid->m_Cell[nX1][nY1].bBasementElevIsMissingValue()));
+            } while ((nY1 < 0) || (nY1 >= m_nYGridSize) || (m_pRasterGrid->m_Cell[nX1][nY1].bBasementElevIsMissingValue()));
 
             return;
          }
@@ -336,7 +341,7 @@ void CSimulation::KeepWithinValidGrid(int nX0, int nY0, int &nX1, int &nY1) cons
                nY1++;
 
                nX1 = nX0 + nRound(((nY1 - nY0) * nDiffX) / static_cast<double>(nDiffY));
-            } while ((nX1 < 0) || (nX1 >= m_nXGridMax) || (m_pRasterGrid->m_Cell[nX1][nY1].bBasementElevIsMissingValue()));
+            } while ((nX1 < 0) || (nX1 >= m_nXGridSize) || (m_pRasterGrid->m_Cell[nX1][nY1].bBasementElevIsMissingValue()));
 
             return;
          }
@@ -344,14 +349,14 @@ void CSimulation::KeepWithinValidGrid(int nX0, int nY0, int &nX1, int &nY1) cons
          else
          {
             // The incorrect y co-ord is greater than the correct y co-ord: constrain it and find the x co-ord
-            nY1 = m_nYGridMax;
+            nY1 = m_nYGridSize;
 
             do
             {
                nY1--;
 
                nX1 = nX0 + nRound(((nY1 - nY0) * nDiffX) / static_cast<double>(nDiffY));
-            } while ((nX1 < 0) || (nX1 >= m_nXGridMax) || (m_pRasterGrid->m_Cell[nX1][nY1].bBasementElevIsMissingValue()));
+            } while ((nX1 < 0) || (nX1 >= m_nXGridSize) || (m_pRasterGrid->m_Cell[nX1][nY1].bBasementElevIsMissingValue()));
 
             return;
          }
@@ -1381,9 +1386,9 @@ void CSimulation::GetRasterOutputMinMax(int const nDataItem, double&dMin, double
    dMax = DBL_MIN;
 
    double dTmp = 0;
-   for (int nY = 0; nY < m_nYGridMax; nY++)
+   for (int nY = 0; nY < m_nYGridSize; nY++)
    {
-      for (int nX = 0; nX < m_nXGridMax; nX++)
+      for (int nX = 0; nX < m_nXGridSize; nX++)
       {
          switch (nDataItem)
          {

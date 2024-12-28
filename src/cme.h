@@ -630,9 +630,10 @@ int const RTN_ERR_BOUNDING_BOX = 63;
 int const RTN_ERR_READING_SEDIMENT_INPUT_EVENT = 64;
 int const RTN_ERR_SEDIMENT_INPUT_EVENT = 65;
 int const RTN_ERR_SEDIMENT_INPUT_EVENT_LOCATION = 66;
-int const RTN_ERR_FLOOD_LOCATION = 67;
-int const RTN_ERR_CLIFF_NOT_IN_POLYGON = 68;
-int const RTN_ERR_UNKNOWN = 69;
+int const RTN_ERR_WAVESTATION_LOCATION = 67;
+int const RTN_ERR_FLOOD_LOCATION = 68;
+int const RTN_ERR_CLIFF_NOT_IN_POLYGON = 69;
+int const RTN_ERR_UNKNOWN = 70;
 
 // Elevation and 'slice' codes
 int const ELEV_IN_BASEMENT = -1;
@@ -691,7 +692,7 @@ double const CLIFF_COLLAPSE_HEIGHT_INCREMENT = 0.1;      // Increment the fracti
 
 double const DBL_NODATA = -9999;
 
-string const PROGRAM_NAME = "Coastal Modelling Environment (CoastalME) version 1.2.4 (26 Dec 2024)";
+string const PROGRAM_NAME = "Coastal Modelling Environment (CoastalME) version 1.2.4 (28 Dec 2024)";
 string const PROGRAM_NAME_SHORT = "CME";
 string const CME_INI = "cme.ini";
 

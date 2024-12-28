@@ -174,65 +174,92 @@ int CSimulation::nReadVectorGISFile(int const nDataItem)
          int nPoints = 0;
          OGRPoint* pOGRPoint;
          OGRLineString* pOGRLineString;
+         double dPointGridX;
+         double dPointGridY;
          switch (nDataItem)
          {
             case (DEEP_WATER_WAVE_STATIONS_VEC):
-               // Point data
+               // Point data: convert the wave station co-ordinates from ext CRS to grid CRS
                pOGRPoint = static_cast<OGRPoint*>(pOGRGeometry);
+               dPointGridX = dExtCRSXToGridX(pOGRPoint->getX());
+               dPointGridY = dExtCRSYToGridY(pOGRPoint->getY());
 
-               // Convert the wave station co-ordinates to grid CRS and store them: we will use these in the spatial interpolation of deep water waves
-               m_VdDeepWaterWaveStationX.push_back(dExtCRSXToGridX(pOGRPoint->getX()));
-               m_VdDeepWaterWaveStationY.push_back(dExtCRSYToGridY(pOGRPoint->getY()));
+               // Safety check to ensure that point is inside the grid in the +ve direction
+               if (dPointGridX >= m_nXGridSize)
+                  return RTN_ERR_WAVESTATION_LOCATION;
+
+               if (dPointGridY >= m_nYGridSize)
+                  return RTN_ERR_WAVESTATION_LOCATION;
+
+               // Now store the wave station co-ordinates, we will use these in the spatial interpolation of deep water waves
+               m_VdDeepWaterWaveStationX.push_back(dExtCRSXToGridX(dPointGridX));
+               m_VdDeepWaterWaveStationY.push_back(dExtCRSYToGridY(dPointGridY));
                break;
 
             case (SEDIMENT_INPUT_EVENT_LOCATION_VEC):
                if (m_bSedimentInputAtPoint || m_bSedimentInputAtCoast)
                {
-                  // Point data
+                  // Point data: convert the sediment input co-ordinates from ext CRS to grid CRS
                   pOGRPoint = static_cast<OGRPoint*>(pOGRGeometry);
+                  dPointGridX = dExtCRSXToGridX(pOGRPoint->getX());
+                  dPointGridY = dExtCRSYToGridY(pOGRPoint->getY());
 
-                  int nPointGridX = nRound(dExtCRSXToGridX(pOGRPoint->getX()));
-                  int nPointGridY = nRound(dExtCRSYToGridY(pOGRPoint->getY()));
-
-                  // Check point data is inside the mesh
-                  if ((nPointGridX < 0) || (nPointGridX > m_nXGridMax))
+                  // Check point data is inside the grid in the +ve direction
+                  if (dPointGridX >= m_nXGridSize)
                      return RTN_ERR_SEDIMENT_INPUT_EVENT_LOCATION;
 
-                  if ((nPointGridY < 0) || (nPointGridY > m_nYGridMax))
+                  if (dPointGridY >= m_nYGridSize)
                      return RTN_ERR_SEDIMENT_INPUT_EVENT_LOCATION;
 
-                  // Convert the point co-ordinates to grid CRS and store them
-                  m_VdSedimentInputLocationX.push_back(nPointGridX);
-                  m_VdSedimentInputLocationY.push_back(nPointGridY);
+                  // Now store the sediment input co-ordinates
+                  m_VdSedimentInputLocationX.push_back(dPointGridX);
+                  m_VdSedimentInputLocationY.push_back(dPointGridY);
                }
                else if (m_bSedimentInputAlongLine)
                {
-                  // Line data
+                  // Line data: convert the sediment input co-ordinates from ext CRS to grid CRS
                   pOGRLineString = static_cast<OGRLineString*>(pOGRGeometry);
 
                   nPoints = pOGRLineString->getNumPoints();
                   for (int i = 0; i < nPoints; i++)
                   {
-                     // Convert the co-ordinates for each point in the line to grid CRS and store them
-                     m_VdSedimentInputLocationX.push_back(dExtCRSXToGridX(pOGRLineString->getX(i)));
-                     m_VdSedimentInputLocationY.push_back(dExtCRSYToGridY(pOGRLineString->getY(i)));
+                     double dX = dExtCRSXToGridX(pOGRLineString->getX(i));
+                     double dY = dExtCRSYToGridY(pOGRLineString->getY(i));
+
+                     // Check point data is inside the grid in the +ve direction
+                     if (dX >= m_nXGridSize)
+                        continue;
+
+                     if (dY >= m_nYGridSize)
+                        continue;
+
+                     // Now store the sediment input co-ordinates
+                     m_VdSedimentInputLocationX.push_back(dX);
+                     m_VdSedimentInputLocationY.push_back(dY);
                   }
                }
                break;
 
             case (FLOOD_LOCATION_VEC):
-
-               // Point data
+               // Point data: convert the flood location co-ordinates from ext CRS to grid CRS
                pOGRPoint = static_cast<OGRPoint*>(pOGRGeometry);
+               dPointGridX = dExtCRSXToGridX(pOGRPoint->getX());
+               dPointGridY = dExtCRSYToGridY(pOGRPoint->getY());
 
-               // Convert the wave station co-ordinates to grid CRS and store them: we will use these in the spatial interpolation of deep water waves
-               m_VdFloodLocationX.push_back(pOGRPoint->getX());
-               m_VdFloodLocationY.push_back(pOGRPoint->getY());
+               // Check point data is inside the grid in the +ve direction
+               if (dPointGridX >= m_nXGridSize)
+                  return RTN_ERR_SEDIMENT_INPUT_EVENT_LOCATION;
 
+               if (dPointGridY >= m_nYGridSize)
+                  return RTN_ERR_SEDIMENT_INPUT_EVENT_LOCATION;
+
+               // Now stote the flood location co-ordinates
+               m_VdFloodLocationX.push_back(dPointGridX);
+               m_VdFloodLocationY.push_back(dPointGridY);
                break;
          }
 
-         // Now get the attributes of this feature
+         // Next get the attributes of this feature
          OGRFeatureDefn* pOGRFeatureDefn = pOGRLayer->GetLayerDefn();
 
          int nFieldIndex = -1;
@@ -1098,9 +1125,9 @@ bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const *strPlot
          OGRMultiLineString OGRmls;
          OGRPoint OGRPt;
 
-         for (int nX = 0; nX < m_nXGridMax; nX++)
+         for (int nX = 0; nX < m_nXGridSize; nX++)
          {
-            for (int nY = 0; nY < m_nYGridMax; nY++)
+            for (int nY = 0; nY < m_nYGridSize; nY++)
             {
                // Only output a value if the cell is a sea cell which is not in the active zone (wave height and angle values are meaningless if in the active zone)
                if ((m_pRasterGrid->m_Cell[nX][nY].bIsInContiguousSea()) && (! m_pRasterGrid->m_Cell[nX][nY].bIsInActiveZone()))
@@ -1174,9 +1201,9 @@ bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const *strPlot
          OGRMultiLineString OGRmls;
          OGRPoint OGRPt;
 
-         for (int nX = 0; nX < m_nXGridMax; nX++)
+         for (int nX = 0; nX < m_nXGridSize; nX++)
          {
-            for (int nY = 0; nY < m_nYGridMax; nY++)
+            for (int nY = 0; nY < m_nYGridSize; nY++)
             {
                // Create a feature object, one per sea cell
                OGRFeature* pOGRFeature = OGRFeature::CreateFeature(pOGRLayer->GetLayerDefn());
@@ -1456,9 +1483,9 @@ bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const *strPlot
          OGRMultiLineString OGRmls;
          OGRPoint OGRPt;
 
-         for (int nX = 0; nX < m_nXGridMax; nX++)
+         for (int nX = 0; nX < m_nXGridSize; nX++)
          {
-            for (int nY = 0; nY < m_nYGridMax; nY++)
+            for (int nY = 0; nY < m_nYGridSize; nY++)
             {
                // Create a feature object, one per cell (does this whether the sea is a sea cell or a land cell)
                OGRFeature* pOGRFeature = OGRFeature::CreateFeature(pOGRLayer->GetLayerDefn());

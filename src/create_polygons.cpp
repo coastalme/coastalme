@@ -152,12 +152,14 @@ int CSimulation::nCreateAllPolygons(void)
                // Now identify the 'anti-node', this is the seaward point 'opposite' the polygon's coastal node
                CGeom2DIPoint PtiAntiNode;
                if (bMeetsAtAPoint)
-                  PtiAntiNode = PtiExtCRSToGrid(&PtCoastwardTip);
+                  PtiAntiNode = PtiExtCRSToGridRound(&PtCoastwardTip);
                else
                {
                   CGeom2DPoint PtAvg = PtAverage(pThisProfile->pPtGetPointInProfile(nThisProfileEnd), pPrevProfile->pPtGetPointInProfile(nPrevProfileEnd));
-                  PtiAntiNode = PtiExtCRSToGrid(&PtAvg);
+                  PtiAntiNode = PtiExtCRSToGridRound(&PtAvg);
                }
+
+               // Safety check
 
                // Create the coast's polygon object
                m_VCoast[nCoast].CreatePolygon(++m_nGlobalPolygonID, ++nPolygon, nNodePoint, &PtiNode, &PtiAntiNode, nPrevProfile, nThisProfile, &PtVBoundary, nPrevProfileEnd+1, nThisProfileEnd+1, nPointInPolygonStartPoint);
@@ -337,7 +339,7 @@ void CSimulation::MarkPolygonCells(void)
          }
 
          // We have a flood fill start point which is definitely within the polygon so push this point onto the stack
-         CGeom2DIPoint PtiStart = PtiExtCRSToGrid(&PtStart);                // Grid CRS
+         CGeom2DIPoint PtiStart = PtiExtCRSToGridRound(&PtStart);                // Grid CRS
          PtiStack.push(PtiStart);
 
 //          LogStream << m_ulIter << ": filling polygon " << nPoly << " from [" << PtiStart.nGetX() << "][" << PtiStart.nGetY() << "] = {" << dGridCentroidXToExtCRSX(PtiStart.nGetX()) << ", " << dGridCentroidYToExtCRSY(PtiStart.nGetY()) << "}" << endl;
@@ -359,7 +361,7 @@ void CSimulation::MarkPolygonCells(void)
             bool bSpanAbove = false;
             bool bSpanBelow = false;
 
-            while ((nX < m_nXGridMax) && (m_pRasterGrid->m_Cell[nX][nY].nGetPolygonID() == INT_NODATA))
+            while ((nX < m_nXGridSize) && (m_pRasterGrid->m_Cell[nX][nY].nGetPolygonID() == INT_NODATA))
             {
                // Mark the cell as being in this polygon
                m_pRasterGrid->m_Cell[nX][nY].SetPolygonID(nPolyID);
@@ -405,12 +407,12 @@ void CSimulation::MarkPolygonCells(void)
                   bSpanAbove = false;
                }
 
-               if ((! bSpanBelow) && (nY < m_nYGridMax-1) && (m_pRasterGrid->m_Cell[nX][nY+1].nGetPolygonID() == INT_NODATA))
+               if ((! bSpanBelow) && (nY < m_nYGridSize-1) && (m_pRasterGrid->m_Cell[nX][nY+1].nGetPolygonID() == INT_NODATA))
                {
                   PtiStack.push(CGeom2DIPoint(nX, nY+1));
                   bSpanBelow = true;
                }
-               else if (bSpanBelow && (nY < m_nYGridMax-1) && (m_pRasterGrid->m_Cell[nX][nY+1].nGetPolygonID() != INT_NODATA))
+               else if (bSpanBelow && (nY < m_nYGridSize-1) && (m_pRasterGrid->m_Cell[nX][nY+1].nGetPolygonID() != INT_NODATA))
                {
                   bSpanBelow = false;
                }
@@ -450,18 +452,18 @@ void CSimulation::MarkPolygonCells(void)
 //    strOutFile += ".tif";
 // 
 //    GDALDriver* pDriver = GetGDALDriverManager()->GetDriverByName("gtiff");
-//    GDALDataset* pDataSet = pDriver->Create(strOutFile.c_str(), m_nXGridMax, m_nYGridMax, 1, GDT_Float64, m_papszGDALRasterOptions);
+//    GDALDataset* pDataSet = pDriver->Create(strOutFile.c_str(), m_nXGridSize, m_nYGridSize, 1, GDT_Float64, m_papszGDALRasterOptions);
 //    pDataSet->SetProjection(m_strGDALBasementDEMProjection.c_str());
 //    pDataSet->SetGeoTransform(m_dGeoTransform);
-//    double* pdRaster = new double[m_nXGridMax * m_nYGridMax];
+//    double* pdRaster = new double[m_nXGridSize * m_nYGridSize];
 //    int
 //       n = 0,
 //       nInPoly = 0,
 //       nNotInPoly = 0;
 //       
-//    for (int nY = 0; nY < m_nYGridMax; nY++)
+//    for (int nY = 0; nY < m_nYGridSize; nY++)
 //    {
-//       for (int nX = 0; nX < m_nXGridMax; nX++)
+//       for (int nX = 0; nX < m_nXGridSize; nX++)
 //       {
 //          int nID = m_pRasterGrid->m_Cell[nX][nY].nGetPolygonID();
 //          if (nID == INT_NODATA)
@@ -493,7 +495,7 @@ void CSimulation::MarkPolygonCells(void)
 // 
 //    GDALRasterBand* pBand = pDataSet->GetRasterBand(1);
 //    pBand->SetNoDataValue(m_dMissingValue);
-//    int nRet = pBand->RasterIO(GF_Write, 0, 0, m_nXGridMax, m_nYGridMax, pdRaster, m_nXGridMax, m_nYGridMax, GDT_Float64, 0, 0, NULL);
+//    int nRet = pBand->RasterIO(GF_Write, 0, 0, m_nXGridSize, m_nYGridSize, pdRaster, m_nXGridSize, m_nYGridSize, GDT_Float64, 0, 0, NULL);
 //    if (nRet == CE_Failure)
 //       return;
 // 

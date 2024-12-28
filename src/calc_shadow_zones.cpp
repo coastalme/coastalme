@@ -752,7 +752,7 @@ int CSimulation::nFloodFillShadowZone(int const nZone, CGeom2DIPoint const* pPti
           bSpanAbove = false,
           bSpanBelow = false;
 
-      while ((nX < m_nXGridMax) && m_pRasterGrid->m_Cell[nX][nY].bIsInContiguousSea() && (! m_pRasterGrid->m_Cell[nX][nY].bIsinThisShadowZone(-nZone - 1)) && (! m_pRasterGrid->m_Cell[nX][nY].bIsShadowZoneBoundary()) && (! m_pRasterGrid->m_Cell[nX][nY].bIsCoastline()))
+      while ((nX < m_nXGridSize) && m_pRasterGrid->m_Cell[nX][nY].bIsInContiguousSea() && (! m_pRasterGrid->m_Cell[nX][nY].bIsinThisShadowZone(-nZone - 1)) && (! m_pRasterGrid->m_Cell[nX][nY].bIsShadowZoneBoundary()) && (! m_pRasterGrid->m_Cell[nX][nY].bIsCoastline()))
       {
          // Mark the cell as being in the shadow zone but not yet processed (a -ve number, with -1 being zone 1)
          m_pRasterGrid->m_Cell[nX][nY].SetShadowZoneNumber(-nZone - 1);
@@ -769,12 +769,12 @@ int CSimulation::nFloodFillShadowZone(int const nZone, CGeom2DIPoint const* pPti
             bSpanAbove = false;
          }
 
-         if ((! bSpanBelow) && m_pRasterGrid->m_Cell[nX][nY].bIsInContiguousSea() && (nY < m_nYGridMax-1) && (! m_pRasterGrid->m_Cell[nX][nY+1].bIsinThisShadowZone(-nZone - 1)) && (! m_pRasterGrid->m_Cell[nX][nY+1].bIsShadowZoneBoundary()) && (! m_pRasterGrid->m_Cell[nX][nY+1].bIsCoastline()))
+         if ((! bSpanBelow) && m_pRasterGrid->m_Cell[nX][nY].bIsInContiguousSea() && (nY < m_nYGridSize-1) && (! m_pRasterGrid->m_Cell[nX][nY+1].bIsinThisShadowZone(-nZone - 1)) && (! m_pRasterGrid->m_Cell[nX][nY+1].bIsShadowZoneBoundary()) && (! m_pRasterGrid->m_Cell[nX][nY+1].bIsCoastline()))
          {
             PtiStack.push(CGeom2DIPoint(nX, nY+1));
             bSpanBelow = true;
          }
-         else if (bSpanBelow && (nY < m_nYGridMax-1) && ((! m_pRasterGrid->m_Cell[nX][nY+1].bIsInContiguousSea()) || m_pRasterGrid->m_Cell[nX][nY+1].bIsinThisShadowZone(-nZone - 1) || m_pRasterGrid->m_Cell[nX][nY+1].bIsShadowZoneBoundary() || m_pRasterGrid->m_Cell[nX][nY+1].bIsCoastline()))
+         else if (bSpanBelow && (nY < m_nYGridSize-1) && ((! m_pRasterGrid->m_Cell[nX][nY+1].bIsInContiguousSea()) || m_pRasterGrid->m_Cell[nX][nY+1].bIsinThisShadowZone(-nZone - 1) || m_pRasterGrid->m_Cell[nX][nY+1].bIsShadowZoneBoundary() || m_pRasterGrid->m_Cell[nX][nY+1].bIsCoastline()))
          {
             bSpanBelow = false;
          }
@@ -834,7 +834,7 @@ void CSimulation::DoShadowZoneAndDownDriftZone(int const nCoast, int const nZone
       else if (nStartEdge == SOUTH)
       {
          PtiDownDriftEndPoint.SetX(m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(0)->nGetX());
-         PtiDownDriftEndPoint.SetY(m_nYGridMax - nDownDriftEndPoint - 1);
+         PtiDownDriftEndPoint.SetY(m_nYGridSize - nDownDriftEndPoint - 1);
       }
       else if (nStartEdge == WEST)
       {
@@ -843,7 +843,7 @@ void CSimulation::DoShadowZoneAndDownDriftZone(int const nCoast, int const nZone
       }
       else if (nStartEdge == EAST)
       {
-         PtiDownDriftEndPoint.SetX(m_nXGridMax - nDownDriftEndPoint - 1);
+         PtiDownDriftEndPoint.SetX(m_nXGridSize - nDownDriftEndPoint - 1);
          PtiDownDriftEndPoint.SetY(m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(0)->nGetY());
       }
    }
@@ -861,7 +861,7 @@ void CSimulation::DoShadowZoneAndDownDriftZone(int const nCoast, int const nZone
       else if (nEndEdge == SOUTH)
       {
          PtiDownDriftEndPoint.SetX(m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(nCoastSize - 1)->nGetX());
-         PtiDownDriftEndPoint.SetY(m_nYGridMax + nDownDriftEndPoint);
+         PtiDownDriftEndPoint.SetY(m_nYGridSize + nDownDriftEndPoint);
       }
       else if (nEndEdge == WEST)
       {
@@ -870,7 +870,7 @@ void CSimulation::DoShadowZoneAndDownDriftZone(int const nCoast, int const nZone
       }
       else if (nEndEdge == EAST)
       {
-         PtiDownDriftEndPoint.SetX(m_nXGridMax + nDownDriftEndPoint);
+         PtiDownDriftEndPoint.SetX(m_nXGridSize + nDownDriftEndPoint);
          PtiDownDriftEndPoint.SetY(m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(nCoastSize - 1)->nGetY());
       }
    }
@@ -1015,13 +1015,20 @@ void CSimulation::DoShadowZoneAndDownDriftZone(int const nCoast, int const nZone
 
       // Get the two endpoints of the linking line
       CGeom2DIPoint const* pPtiCoast = m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(nAlongCoast);
-      int
-         nCoastX = pPtiCoast->nGetX(),
-         nCoastY = pPtiCoast->nGetY();
+      int nCoastX = pPtiCoast->nGetX();
+      int nCoastY = pPtiCoast->nGetY();
 
-      int
-         nDownDriftX = nRound(dExtCRSXToGridX(LDownDriftBoundary[nAlongDownDriftBoundary].dGetX())),
-         nDownDriftY = nRound(dExtCRSYToGridY(LDownDriftBoundary[nAlongDownDriftBoundary].dGetY()));
+      int nDownDriftX = nRound(dExtCRSXToGridX(LDownDriftBoundary[nAlongDownDriftBoundary].dGetX()));
+
+      // Safety check
+      if (nCoastX >= m_nXGridSize)
+         continue;
+
+      int nDownDriftY = nRound(dExtCRSYToGridY(LDownDriftBoundary[nAlongDownDriftBoundary].dGetY()));
+
+      // Safety check
+      if (nCoastY >= m_nYGridSize)
+         continue;
 
       // Safety check, in case the two points are identical (can happen due to rounding)
       if ((nCoastX == nDownDriftX) && (nCoastY == nDownDriftY))

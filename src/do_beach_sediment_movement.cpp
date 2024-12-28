@@ -194,9 +194,9 @@ int CSimulation::nDoAllActualBeachErosionAndDeposition(void)
          // if (m_ulIter == 5)
          // {
          //    double dTmpSandUncons = 0;
-         //    for (int nX1 = 0; nX1 < m_nXGridMax; nX1++)
+         //    for (int nX1 = 0; nX1 < m_nXGridSize; nX1++)
          //    {
-         //       for (int nY1 = 0; nY1 < m_nYGridMax; nY1++)
+         //       for (int nY1 = 0; nY1 < m_nYGridSize; nY1++)
          //       {
          //          dTmpSandUncons += m_pRasterGrid->m_Cell[nX1][nY1].dGetTotUnconsSand();
          //       }
@@ -277,9 +277,9 @@ int CSimulation::nDoAllActualBeachErosionAndDeposition(void)
             //    LogStream << m_ulIter << ": after sand deposition on nPoly = " << nPoly << " dSandDepositionTarget = " << dSandDepositionTarget * m_dCellArea << " dSandDeposited = " << dSandDeposited * m_dCellArea << " dSandNotDeposited = " << dSandNotDeposited * m_dCellArea << " m_dDepositionSandDiff = " << m_dDepositionSandDiff * m_dCellArea << endl;
             //
             //    double dTmpSandUncons = 0;
-            //    for (int nX1 = 0; nX1 < m_nXGridMax; nX1++)
+            //    for (int nX1 = 0; nX1 < m_nXGridSize; nX1++)
             //    {
-            //       for (int nY1 = 0; nY1 < m_nYGridMax; nY1++)
+            //       for (int nY1 = 0; nY1 < m_nYGridSize; nY1++)
             //       {
             //          dTmpSandUncons += m_pRasterGrid->m_Cell[nX1][nY1].dGetTotUnconsSand();
             //       }
@@ -355,9 +355,9 @@ int CSimulation::nDoAllActualBeachErosionAndDeposition(void)
                //    LogStream << m_ulIter << ": nPoly = " << nPoly << " dSandErosionTarget = " << dSandErosionTarget * m_dCellArea << " m_dDepositionSandDiff = " << m_dDepositionSandDiff * m_dCellArea << " dSandEroded = " << dSandEroded * m_dCellArea << " m_dThisIterBeachErosionSand = " << m_dThisIterBeachErosionSand * m_dCellArea << endl;
                //
                //    double dTmpSandUncons = 0;
-               //    for (int nX1 = 0; nX1 < m_nXGridMax; nX1++)
+               //    for (int nX1 = 0; nX1 < m_nXGridSize; nX1++)
                //    {
-               //       for (int nY1 = 0; nY1 < m_nYGridMax; nY1++)
+               //       for (int nY1 = 0; nY1 < m_nYGridSize; nY1++)
                //       {
                //          dTmpSandUncons += m_pRasterGrid->m_Cell[nX1][nY1].dGetTotUnconsSand();
                //       }
@@ -598,9 +598,9 @@ int CSimulation::nDoAllActualBeachErosionAndDeposition(void)
          // if (m_ulIter == 5)
          // {
          //    double dTmpSandUncons = 0;
-         //    for (int nX1 = 0; nX1 < m_nXGridMax; nX1++)
+         //    for (int nX1 = 0; nX1 < m_nXGridSize; nX1++)
          //    {
-         //       for (int nY1 = 0; nY1 < m_nYGridMax; nY1++)
+         //       for (int nY1 = 0; nY1 < m_nYGridSize; nY1++)
          //       {
          //          dTmpSandUncons += m_pRasterGrid->m_Cell[nX1][nY1].dGetTotUnconsSand();
          //       }

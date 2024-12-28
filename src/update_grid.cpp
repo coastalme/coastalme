@@ -39,9 +39,9 @@ int CSimulation::nUpdateGrid(void)
    // Go through all cells in the raster grid and calculate some this-timestep totals
    m_dThisIterTopElevMax = -DBL_MAX;
    m_dThisIterTopElevMin = DBL_MAX;
-   for (int nX = 0; nX < m_nXGridMax; nX++)
+   for (int nX = 0; nX < m_nXGridSize; nX++)
    {
-      for (int nY = 0; nY < m_nYGridMax; nY++)
+      for (int nY = 0; nY < m_nYGridSize; nY++)
       {
          if (m_pRasterGrid->m_Cell[nX][nY].bIsCoastline())
             m_ulThisIterNumCoastCells++;
@@ -76,9 +76,9 @@ int CSimulation::nUpdateGrid(void)
 
    // Now go through all cells again and sort out suspended sediment load
    double dSuspPerSeaCell = m_dThisIterFineSedimentToSuspension / static_cast<double>(m_ulThisIterNumSeaCells);
-   for (int nX = 0; nX < m_nXGridMax; nX++)
+   for (int nX = 0; nX < m_nXGridSize; nX++)
    {
-      for (int nY = 0; nY < m_nYGridMax; nY++)
+      for (int nY = 0; nY < m_nYGridSize; nY++)
       {
          if (m_pRasterGrid->m_Cell[nX][nY].bIsInContiguousSea())
             m_pRasterGrid->m_Cell[nX][nY].AddSuspendedSediment(dSuspPerSeaCell);

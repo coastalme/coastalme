@@ -88,9 +88,9 @@ int CSimulation::nDoAllWaveEnergyToCoastLandforms(void)
                // {
                //    double dTmpSandCons = 0;
                //    double dTmpSandUncons = 0;
-               //    for (int nX1 = 0; nX1 < m_nXGridMax; nX1++)
+               //    for (int nX1 = 0; nX1 < m_nXGridSize; nX1++)
                //    {
-               //       for (int nY1 = 0; nY1 < m_nYGridMax; nY1++)
+               //       for (int nY1 = 0; nY1 < m_nYGridSize; nY1++)
                //       {
                //          dTmpSandCons += m_pRasterGrid->m_Cell[nX1][nY1].dGetTotConsSandThickConsiderNotch();
                //
@@ -137,9 +137,9 @@ int CSimulation::nDoAllWaveEnergyToCoastLandforms(void)
                // {
                //    double dTmpSandCons = 0;
                //    double dTmpSandUncons = 0;
-               //    for (int nX1 = 0; nX1 < m_nXGridMax; nX1++)
+               //    for (int nX1 = 0; nX1 < m_nXGridSize; nX1++)
                //    {
-               //       for (int nY1 = 0; nY1 < m_nYGridMax; nY1++)
+               //       for (int nY1 = 0; nY1 < m_nYGridSize; nY1++)
                //       {
                //          dTmpSandCons += m_pRasterGrid->m_Cell[nX1][nY1].dGetTotConsSandThickConsiderNotch();
                //

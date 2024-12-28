@@ -75,7 +75,7 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
    double dWidth = m_pVSedInputEvent[nEvent]->dGetWidth();
    // double dThick = m_pVSedInputEvent[nEvent]->dGetThick();
 
-   // TODO 083 Get all three kinds of sedimebt input events working correctly
+   // TODO 083 Get all three kinds of sediment input events working correctly
 
    if (m_bSedimentInputAtPoint || m_bSedimentInputAtCoast)
    {

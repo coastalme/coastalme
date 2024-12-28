@@ -2062,7 +2062,10 @@ string CSimulation::strGetErrorText(int const nErr)
       strErr = "simulating sediment input event";
       break;
    case RTN_ERR_SEDIMENT_INPUT_EVENT_LOCATION:
-      strErr = "bad location of sediment input";
+      strErr = "location of sediment input event is outside grod";
+      break;
+   case RTN_ERR_WAVESTATION_LOCATION:
+      strErr = "location of wavestation is outside grid";
       break;
    case RTN_ERR_CLIFF_NOT_IN_POLYGON:
       strErr = "cliff not in polygon";
