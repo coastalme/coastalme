@@ -146,18 +146,38 @@ void CSimulation::FloodFillSea(int const nXStart, int const nYStart)
          m_pRasterGrid->m_Cell[nX][nY].SetSeaDepth();
 
          // DEBUG CODE ====================
-         if ((nX == 111) && (nY == 295))
+         if ((nX == 110) && (nY == 294))
             LogStream << m_ulIter << ": in FloodFillSea() BEFORE [" << nX << "][" << nY << "] landform category = " << m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->nGetLFCategory() << " landform subcategory = " << m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->nGetLFSubCategory() << endl;
          // DEBUG CODE ====================
 
          CRWCellLandform* pLandform = m_pRasterGrid->m_Cell[nX][nY].pGetLandform();
+         int nCat = pLandform->nGetLFCategory();
 
-         // Did we previously have sediment input here?
-         if ((pLandform->nGetLFCategory() == LF_CAT_SEDIMENT_INPUT) && (! m_pRasterGrid->m_Cell[nX][nY].bIsInundated()))
+         // Have we had sediment input here?
+         if ((nCat == LF_CAT_SEDIMENT_INPUT) || (nCat == LF_CAT_SEDIMENT_INPUT_SUBMERGED) || (nCat == LF_CAT_SEDIMENT_INPUT_NOT_SUBMERGED))
          {
-            // Yes, we had sediment input here, and the top of the sediment is above this-iteration SWL
-            double dElev = m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElev();
-            LogStream << "&&&&&& dElev = " << dElev << " m_dThisIterSWL = " << m_dThisIterSWL << endl;
+            if (m_pRasterGrid->m_Cell[nX][nY].bIsInundated())
+            {
+               pLandform->SetLFCategory(LF_CAT_SEDIMENT_INPUT_SUBMERGED);
+               m_pRasterGrid->m_Cell[nX][nY].SetInContiguousSea();
+
+               // Set this sea cell to have deep water (off-shore) wave orientation and height, will change this later for cells closer to the shoreline if we have on-shore waves
+               m_pRasterGrid->m_Cell[nX][nY].SetWaveValuesToDeepWaterWaveValues();
+
+               // DEBUG CODE ====================
+               if ((nX == 110) && (nY == 294))
+                  LogStream << m_ulIter << ": in FloodFillSea() SUBMERGED [" << nX << "][" << nY << "] landform category = " << m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->nGetLFCategory() << " landform subcategory = " << m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->nGetLFSubCategory() << " sediment top elev = " << m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElev() << " SWL = " << m_dThisIterSWL << endl;
+               // DEBUG CODE ====================
+            }
+            else
+            {
+               pLandform->SetLFCategory(LF_CAT_SEDIMENT_INPUT_NOT_SUBMERGED);
+
+               // DEBUG CODE ====================
+               if ((nX == 110) && (nY == 294))
+                  LogStream << m_ulIter << ": in FloodFillSea() NOT SUBMERGED [" << nX << "][" << nY << "] landform category = " << m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->nGetLFCategory() << " landform subcategory = " << m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->nGetLFSubCategory() << " sediment top elev = " << m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElev() << " SWL = " << m_dThisIterSWL << endl;
+               // DEBUG CODE ====================
+            }
          }
          else
          {
@@ -170,7 +190,7 @@ void CSimulation::FloodFillSea(int const nXStart, int const nYStart)
          }
 
          // DEBUG CODE ====================
-         if ((nX == 111) && (nY == 295))
+         if ((nX == 110) && (nY == 294))
             LogStream << m_ulIter << ": in FloodFillSea() AFTER [" << nX << "][" << nY << "] landform category = " << m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->nGetLFCategory() << " landform subcategory = " << m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->nGetLFSubCategory() << endl;
          // DEBUG CODE ====================
 

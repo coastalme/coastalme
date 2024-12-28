@@ -1495,9 +1495,8 @@ bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const *strPlot
                OGRPt.setY(dGridCentroidYToExtCRSY(nY));
                pOGRFeature->SetGeometry(&OGRPt);
 
-               double
-                  dOrientation = m_pRasterGrid->m_Cell[nX][nY].dGetCellDeepWaterWaveAngle(),
-                  dHeight = m_pRasterGrid->m_Cell[nX][nY].dGetCellDeepWaterWaveHeight();
+               double dOrientation = m_pRasterGrid->m_Cell[nX][nY].dGetCellDeepWaterWaveAngle();
+               double dHeight = m_pRasterGrid->m_Cell[nX][nY].dGetCellDeepWaterWaveHeight();
 
                if (bFPIsEqual(dHeight, DBL_NODATA, TOLERANCE) || bFPIsEqual(dOrientation, DBL_NODATA, TOLERANCE) || (! m_pRasterGrid->m_Cell[nX][nY].bIsInContiguousSea()))
                   continue;

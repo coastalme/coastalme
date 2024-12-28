@@ -170,7 +170,7 @@ Enjoy!
    OUTPUT
    TODO 065 Get GPKG output working: GDAL 3.9.1 does not yet implement this correctly. Currently is OK for vector output (but is very slow), not yet working for raster output
    TODO 063 Add NetCDF support, see https://trac.osgeo.org/gdal/wiki/NetCDF
-   TODO 064 Add support for grids that are not oriented N-S and W-E, but which are still rectangular (will need to add a transformation in the reading and writing process, the first to bring it to the local base and the second to save it in global coordinates)
+   TODO 064 Add support for grids that are not oriented N-S and W-E, but which are still rectangular. See https://gdal.org/en/stable/tutorials/geotransforms_tut.html
    TODO 031 Get raster slice output working with multiple slices
    TODO 032 Improve output scaling for DBL_NODATA situation
    TODO 033 Also test and configure (e.g. by passing open() options) other vector output file formats
@@ -407,17 +407,21 @@ int const IO_INTERVENTION_NONE = 0;
 int const IO_INTERVENTION_STRUCT = 1;
 int const IO_INTERVENTION_NON_STRUCT = 2;
 
-// Generic landform code
+// Default landform category and subcategory code
 int const LF_NONE = 0;
 
-// Landform category codes for cells and coast landform objects
+// Landform category codes for cells
 int const LF_CAT_HINTERLAND = 1;
 int const LF_CAT_SEA = 2;
+int const LF_CAT_ISLAND = 14;
+int const LF_CAT_SEDIMENT_INPUT = 15;
+int const LF_CAT_SEDIMENT_INPUT_SUBMERGED = 16;
+int const LF_CAT_SEDIMENT_INPUT_NOT_SUBMERGED = 17;
+
+// Landform category codes for cells and coast landform objects
 int const LF_CAT_CLIFF = 3;
 int const LF_CAT_DRIFT = 4;
 int const LF_CAT_INTERVENTION = 5;
-int const LF_CAT_ISLAND = 14;
-int const LF_CAT_SEDIMENT_INPUT = 15;
 
 // Landform sub-category codes for cells, LF_CAT_CLIFF
 int const LF_SUBCAT_CLIFF_ON_COASTLINE = 6;
@@ -435,8 +439,8 @@ int const LF_SUBCAT_INTERVENTION_STRUCT = 12;
 int const LF_SUBCAT_INTERVENTION_NON_STRUCT = 13;
 
 // Landform sub-category codes for sediment input events
-int const LF_SUBCAT_SEDIMENT_INPUT_UNCONSOLIDATED = 16;
-int const LF_SUBCAT_SEDIMENT_INPUT_CONSOLIDATED = 17;
+int const LF_SUBCAT_SEDIMENT_INPUT_UNCONSOLIDATED = 20;
+int const LF_SUBCAT_SEDIMENT_INPUT_CONSOLIDATED = 21;
 
 // GIS raster input codes
 int const FINE_CONS_RASTER = 1;

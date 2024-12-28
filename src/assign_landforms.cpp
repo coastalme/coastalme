@@ -359,8 +359,13 @@ int CSimulation::nAssignLandformsForAllCells(void)
       for (int nY = 0; nY < m_nYGridSize; nY++)
       {
          // DEBUG CODE ====================
-         if ((nX == 111) && (nY == 295))
+         if ((nX == 110) && (nY == 294))
+         {
             LogStream << m_ulIter << ": in nAssignLandformsForAllCells() [" << nX << "][" << nY << "] landform category = " << m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->nGetLFCategory() << " landform subcategory = " << m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->nGetLFSubCategory() << endl;
+
+            // if (m_ulIter == 21)
+            //    LogStream << endl;
+         }
          // DEBUG CODE ====================
 
          // Get this cell's landform category
@@ -371,6 +376,40 @@ int CSimulation::nAssignLandformsForAllCells(void)
          {
             // Set to unknown landform
             pLandform->SetLFCategory(LF_NONE);
+            continue;
+         }
+
+         if ((nCat == LF_CAT_SEDIMENT_INPUT) || (nCat == LF_CAT_SEDIMENT_INPUT_SUBMERGED) || (nCat == LF_CAT_SEDIMENT_INPUT_NOT_SUBMERGED))
+         {
+            if (m_pRasterGrid->m_Cell[nX][nY].bIsInundated())
+            {
+               pLandform->SetLFCategory(LF_CAT_SEDIMENT_INPUT_SUBMERGED);
+               m_pRasterGrid->m_Cell[nX][nY].SetInContiguousSea();
+
+               // DEBUG CODE ====================
+               if ((nX == 110) && (nY == 294))
+               {
+                  LogStream << m_ulIter << ": in nAssignLandformsForAllCells() SUBMERGED [" << nX << "][" << nY << "] landform category = " << m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->nGetLFCategory() << " landform subcategory = " << m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->nGetLFSubCategory() << " sediment top elev = " << m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElev() << " SWL = " << m_dThisIterSWL << endl;
+
+                  // if (m_ulIter == 21)
+                  //    LogStream << endl;
+               }
+               // DEBUG CODE ====================
+            }
+            else
+            {
+               pLandform->SetLFCategory(LF_CAT_SEDIMENT_INPUT_NOT_SUBMERGED);
+
+               // DEBUG CODE ====================
+               if ((nX == 110) && (nY == 294))
+               {
+                  LogStream << m_ulIter << ": in nAssignLandformsForAllCells() NOT SUBMERGED [" << nX << "][" << nY << "] landform category = " << m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->nGetLFCategory() << " landform subcategory = " << m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->nGetLFSubCategory() << " sediment top elev = " << m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElev() << " SWL = " << m_dThisIterSWL << endl;
+
+                  // if (m_ulIter == 21)
+                  //    LogStream << endl;
+               }
+               // DEBUG CODE ====================
+            }
             continue;
          }
 

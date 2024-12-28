@@ -40,11 +40,10 @@ CRWCellLandform::~CRWCellLandform(void)
 {
 }
 
-//! Set the landform category and initialise the sub-category
+//! Set the landform category
 void CRWCellLandform::SetLFCategory(int const nClassIn)
 {
     m_nCategory = nClassIn;
-    m_nSubCategory = LF_NONE;
 }
 
 //! Get the landform category
@@ -68,7 +67,7 @@ void CRWCellLandform::SetLFSubCategory(int const nClassIn)
 //! Get the landform sub-category
 int CRWCellLandform::nGetLFSubCategory(void) const
 {
-   return  m_nSubCategory;
+   return m_nSubCategory;
 }
 
 //! Set the coast number

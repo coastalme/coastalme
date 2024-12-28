@@ -80,11 +80,8 @@ double CSimulation::dGridCentroidYToExtCRSY(int const nGridY) const
 CGeom2DPoint CSimulation::PtGridCentroidToExt(CGeom2DIPoint const* pPtiIn) const
 {
    // TODO 064
-   int nGridX = pPtiIn->nGetX();
-   int nGridY = pPtiIn->nGetY();
-
-   double dX = m_dGeoTransform[0] + (nGridX * m_dGeoTransform[1]) + (m_dGeoTransform[1] / 2);
-   double dY = m_dGeoTransform[3] + (nGridY * m_dGeoTransform[5]) + (m_dGeoTransform[5] / 2);
+   double dX = m_dGeoTransform[0] + (pPtiIn->nGetX() * m_dGeoTransform[1]) + (m_dGeoTransform[1] / 2);
+   double dY = m_dGeoTransform[3] + (pPtiIn->nGetY() * m_dGeoTransform[5]) + (m_dGeoTransform[5] / 2);
 
    return CGeom2DPoint(dX, dY);
 }
@@ -95,7 +92,7 @@ CGeom2DPoint CSimulation::PtGridCentroidToExt(CGeom2DIPoint const* pPtiIn) const
 double CSimulation::dGridXToExtCRSX(double const dGridX) const
 {
    // TODO 064 Xgeo = GT(0) + Xpixel*GT(1) + Yline*GT(2)
-   return (m_dGeoTransform[0] + (dGridX * m_dGeoTransform[1]));
+   return m_dGeoTransform[0] + (dGridX * m_dGeoTransform[1]) - 1;
 }
 
 //===============================================================================================================================
@@ -104,7 +101,7 @@ double CSimulation::dGridXToExtCRSX(double const dGridX) const
 double CSimulation::dGridYToExtCRSY(double const dGridY) const
 {
    // TODO 064 Ygeo = GT(3) + Xpixel*GT(4) + Yline*GT(5)
-   return (m_dGeoTransform[3] + (dGridY * m_dGeoTransform[5]));
+   return m_dGeoTransform[3] + (dGridY * m_dGeoTransform[5]) - 1;
 }
 
 //===============================================================================================================================
