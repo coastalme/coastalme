@@ -483,6 +483,7 @@ var cme_8h =
     [ "RTN_ERR_VECTOR_FILE_WRITE", "d6/d2a/cme_8h.html#aac3c7a3e7d0567e93cd89d8a8e138c15", null ],
     [ "RTN_ERR_VECTOR_GIS_OUT_FORMAT", "d6/d2a/cme_8h.html#a925d41f084c87d8a0546558cdc9ca74c", null ],
     [ "RTN_ERR_WAVE_INTERPOLATION_LOOKUP", "d6/d2a/cme_8h.html#a5505efdbf3e4f84ebf5acf56f15b4d97", null ],
+    [ "RTN_ERR_WAVESTATION_LOCATION", "d6/d2a/cme_8h.html#a2ac32f22bbea79706d8968d015e90752", null ],
     [ "RTN_HELP_ONLY", "d6/d2a/cme_8h.html#a1d77594d38058a2fcbee765e65d50731", null ],
     [ "RTN_OK", "d6/d2a/cme_8h.html#aa768cb14b5c6123ee95e6e4ebd9fe331", null ],
     [ "RTN_USER_ABORT", "d6/d2a/cme_8h.html#a946e19fd87af97d4d12f96c33c55ef6b", null ],

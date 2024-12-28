@@ -38,7 +38,7 @@ var searchData=
   ['ptgetcentroid_35',['PtGetCentroid',['../d9/d0e/classCA2DShape.html#ac72351d5502907edbf335a7611a2b7ca',1,'CA2DShape']]],
   ['ptgetperpendicular_36',['PtGetPerpendicular',['../d1/d98/classCSimulation.html#ab13fd70564940a88390f06694fe4a9ad',1,'CSimulation']]],
   ['ptgridcentroidtoext_37',['PtGridCentroidToExt',['../d1/d98/classCSimulation.html#ad18b9d326110c99e4ba9494689c308f8',1,'CSimulation']]],
-  ['ptiextcrstogrid_38',['PtiExtCRSToGrid',['../d1/d98/classCSimulation.html#a966f8779c47e896547ae927110ebd0f6',1,'CSimulation']]],
+  ['ptiextcrstogridround_38',['PtiExtCRSToGridRound',['../d1/d98/classCSimulation.html#a1cdb36fc97d2f40d471edc2d59734960',1,'CSimulation']]],
   ['ptifindclosestcoastpoint_39',['PtiFindClosestCoastPoint',['../d1/d98/classCSimulation.html#aad98f5cce345a2609aca71910a662970',1,'CSimulation']]],
   ['ptifollowwaveangle_40',['PtiFollowWaveAngle',['../d1/d98/classCSimulation.html#a9941423d85fd30f67adf5870c97da675',1,'CSimulation']]],
   ['ptigetperpendicular_41',['PtiGetPerpendicular',['../d1/d98/classCSimulation.html#a3d8b585c586578b5227d9e95c10eba6a',1,'CSimulation::PtiGetPerpendicular(CGeom2DIPoint const *, CGeom2DIPoint const *, double const, int const)'],['../d1/d98/classCSimulation.html#a05a7c69ea38767304e4b25080be42e63',1,'CSimulation::PtiGetPerpendicular(int const, int const, int const, int const, double const, int const)']]],
