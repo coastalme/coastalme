@@ -93,6 +93,8 @@ var cme_8h =
     [ "LF_CAT_ISLAND", "d6/d2a/cme_8h.html#ae147e1ac95783dcf61dd2572f35b0a5f", null ],
     [ "LF_CAT_SEA", "d6/d2a/cme_8h.html#a14b47e1272cd63a7c770dca9ef08882d", null ],
     [ "LF_CAT_SEDIMENT_INPUT", "d6/d2a/cme_8h.html#a2113878b63a7dc5971c9500654865d55", null ],
+    [ "LF_CAT_SEDIMENT_INPUT_NOT_SUBMERGED", "d6/d2a/cme_8h.html#ac79118ee70069f5e1a7e50430aef4597", null ],
+    [ "LF_CAT_SEDIMENT_INPUT_SUBMERGED", "d6/d2a/cme_8h.html#a2c56dd72d6afc9eb107a42a919bef8b0", null ],
     [ "LF_NONE", "d6/d2a/cme_8h.html#acad20aef3e8203f3fc004898a3c1637e", null ],
     [ "LF_SUBCAT_CLIFF_INLAND", "d6/d2a/cme_8h.html#a8c495740237a611fe331cd4d06a97ee0", null ],
     [ "LF_SUBCAT_CLIFF_ON_COASTLINE", "d6/d2a/cme_8h.html#a159c5886feeb5802c0a13e16843d0edb", null ],
