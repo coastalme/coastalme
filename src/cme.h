@@ -410,7 +410,7 @@ int const IO_INTERVENTION_NON_STRUCT = 2;
 // Default landform category and subcategory code
 int const LF_NONE = 0;
 
-// Landform category codes for cells
+// Landform category codes for cells (is easiest if each has a unique numeric value, irrepective of whether it is category or subcategory, 19 is max now)
 int const LF_CAT_HINTERLAND = 1;
 int const LF_CAT_SEA = 2;
 int const LF_CAT_ISLAND = 14;
@@ -419,8 +419,8 @@ int const LF_CAT_SEDIMENT_INPUT_SUBMERGED = 16;
 int const LF_CAT_SEDIMENT_INPUT_NOT_SUBMERGED = 17;
 
 // Landform category codes for cells and coast landform objects
-int const LF_CAT_CLIFF = 3;
-int const LF_CAT_DRIFT = 4;
+int const LF_CAT_CLIFF = 3;            // Raster output of LF_CAT_CLIFF shows LF_CAT_CLIFF subcategories, rather than just LF_CAT_CLIFF
+int const LF_CAT_DRIFT = 4;            // Raster output of LF_CAT_DRIFT shows LF_CAT_DRIFT subcategories, rather than just LF_CAT_DRIFT
 int const LF_CAT_INTERVENTION = 5;
 
 // Landform sub-category codes for cells, LF_CAT_CLIFF
@@ -439,8 +439,8 @@ int const LF_SUBCAT_INTERVENTION_STRUCT = 12;
 int const LF_SUBCAT_INTERVENTION_NON_STRUCT = 13;
 
 // Landform sub-category codes for sediment input events
-int const LF_SUBCAT_SEDIMENT_INPUT_UNCONSOLIDATED = 20;
-int const LF_SUBCAT_SEDIMENT_INPUT_CONSOLIDATED = 21;
+int const LF_SUBCAT_SEDIMENT_INPUT_UNCONSOLIDATED = 18;
+int const LF_SUBCAT_SEDIMENT_INPUT_CONSOLIDATED = 19;
 
 // GIS raster input codes
 int const FINE_CONS_RASTER = 1;
@@ -696,7 +696,7 @@ double const CLIFF_COLLAPSE_HEIGHT_INCREMENT = 0.1;      // Increment the fracti
 
 double const DBL_NODATA = -9999;
 
-string const PROGRAM_NAME = "Coastal Modelling Environment (CoastalME) version 1.2.4 (28 Dec 2024)";
+string const PROGRAM_NAME = "Coastal Modelling Environment (CoastalME) version 1.2.4 (30 Dec 2024)";
 string const PROGRAM_NAME_SHORT = "CME";
 string const CME_INI = "cme.ini";
 
