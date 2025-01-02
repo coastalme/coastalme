@@ -1,7 +1,7 @@
 var classCRWCliff =
 [
     [ "CRWCliff", "d9/d8b/classCRWCliff.html#a6e629fb69cde0a0ce49eaf59445dd28a", null ],
-    [ "~CRWCliff", "d9/d8b/classCRWCliff.html#ad637979919fc4f022ab8cbd89133bad7", null ],
+    [ "~CRWCliff", "d9/d8b/classCRWCliff.html#a4cd9876dcfb98b42ee1f9cd0de46cc76", null ],
     [ "bHasCollapsed", "d9/d8b/classCRWCliff.html#a08e6c29f7302b939d1292b46cd04bd24", null ],
     [ "bReadyToCollapse", "d9/d8b/classCRWCliff.html#a230895c26a89fb53f0160d59e156137c", null ],
     [ "DeepenErosionalNotch", "d9/d8b/classCRWCliff.html#a6ded2d94f7a674e8a6d8315e5f301a6f", null ],

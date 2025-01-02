@@ -1,7 +1,7 @@
 var classCGeomMultiLine =
 [
     [ "CGeomMultiLine", "d0/d89/classCGeomMultiLine.html#ab0d5944c5bc2371b4f42d469b08b1f5a", null ],
-    [ "~CGeomMultiLine", "d0/d89/classCGeomMultiLine.html#a268b827f81745b1351d36995cac97ed3", null ],
+    [ "~CGeomMultiLine", "d0/d89/classCGeomMultiLine.html#ad04fbcb6021e7031d1603be6e7160d00", null ],
     [ "AddCoincidentProfileToExistingLineSegment", "d0/d89/classCGeomMultiLine.html#add6b741fa71f3eae355876dcc4232ec8", null ],
     [ "AppendCoincidentProfileToLineSegments", "d0/d89/classCGeomMultiLine.html#a679d5893191ff6dc5ab6b9acd1f5c770", null ],
     [ "AppendLineSegment", "d0/d89/classCGeomMultiLine.html#afdbe517c9f47370fe67557d46eb309c1", null ],

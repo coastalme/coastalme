@@ -1,5 +1,8 @@
 var NAVTREEINDEX9 =
 {
+"df/d45/classCGeomCoastPolygon.html#a69422222d594f1a56d2f5f078c970905":[3,0,6,54],
+"df/d45/classCGeomCoastPolygon.html#a6b42ec53178379945ca004050f30f039":[3,0,6,94],
+"df/d45/classCGeomCoastPolygon.html#a6b5ffeec7205b08bb49c2c068924474a":[3,0,6,146],
 "df/d45/classCGeomCoastPolygon.html#a6bb0df831ea85fb62da1d1df60f8c0ee":[3,0,6,69],
 "df/d45/classCGeomCoastPolygon.html#a6c9745f804cdb808529464f9c09f96e9":[3,0,6,47],
 "df/d45/classCGeomCoastPolygon.html#a6dbd16337b1ed5d27bc690dcb5f7d0c7":[3,0,6,139],
@@ -52,6 +55,7 @@ var NAVTREEINDEX9 =
 "df/d45/classCGeomCoastPolygon.html#ab818a1e8093aef554e8ea19a9a631386":[3,0,6,113],
 "df/d45/classCGeomCoastPolygon.html#ab852fa65536ccc1e4d5357a9b40806f6":[3,0,6,61],
 "df/d45/classCGeomCoastPolygon.html#ab9d0d39c3f1e724fd5adc736bae7bbe8":[3,0,6,23],
+"df/d45/classCGeomCoastPolygon.html#abd148c21ce612def32950d1716dbcc30":[3,0,6,1],
 "df/d45/classCGeomCoastPolygon.html#abdb77248b1f7a026e656bf4e4e08696b":[3,0,6,90],
 "df/d45/classCGeomCoastPolygon.html#ac2fd75b100986ae3ead032757d14643f":[3,0,6,116],
 "df/d45/classCGeomCoastPolygon.html#ac4e07f9c8971e4743afc32df1eb7e032":[3,0,6,56],

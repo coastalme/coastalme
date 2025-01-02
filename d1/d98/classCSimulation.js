@@ -35,6 +35,7 @@ var classCSimulation =
     [ "bCheckRasterGISOutputFormat", "d1/d98/classCSimulation.html#a0b40f1158fcf0634cc10c4a57304bcd7", null ],
     [ "bCheckVectorGISOutputFormat", "d1/d98/classCSimulation.html#a6f83b389985b0abe80ebad67c89c1d6f", null ],
     [ "bCreateErosionPotentialLookUp", "d1/d98/classCSimulation.html#ae7a8e20ea5a852f69bee1296ea3db020", null ],
+    [ "bElevAboveDeanElev", "d1/d98/classCSimulation.html#a9dd7fb01dcca71833981c89be78fed63", null ],
     [ "bFindExeDir", "d1/d98/classCSimulation.html#a5acdefb8bb186392993368a55fb111bf", null ],
     [ "bIsInterventionCell", "d1/d98/classCSimulation.html#ae293573ac53f0a8d536037d0edffd25f", null ],
     [ "bIsWithinPolygon", "d1/d98/classCSimulation.html#af26b975e1c0f041d6fdaaf83065ef2c8", null ],

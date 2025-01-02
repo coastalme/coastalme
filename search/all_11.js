@@ -278,7 +278,7 @@ var searchData=
   ['reading_5funcons_5ffine_5fsediment_5ffile_275',['READING_UNCONS_FINE_SEDIMENT_FILE',['../d6/d2a/cme_8h.html#ae79a5d0e009cd6179b7082a2e3ea5c04',1,'cme.h']]],
   ['reading_5funcons_5fsand_5fsediment_5ffile_276',['READING_UNCONS_SAND_SEDIMENT_FILE',['../d6/d2a/cme_8h.html#a0388b9bb7da2a7df927b155024936efa',1,'cme.h']]],
   ['reading_5fvector_5ffiles_277',['READING_VECTOR_FILES',['../d6/d2a/cme_8h.html#a11bcae41a292d98b5978454e29d4342d',1,'cme.h']]],
-  ['removelinesegment_278',['RemoveLineSegment',['../d0/d89/classCGeomMultiLine.html#a5dd8429e85926cd127b0397ef61efecb',1,'CGeomMultiLine::RemoveLineSegment()'],['../da/dae/classCGeomProfile.html#a8d1b894dd6f5b3d7036d4d2b1ccc887a',1,'CGeomProfile::RemoveLineSegment()']]],
+  ['removelinesegment_278',['RemoveLineSegment',['../d0/d89/classCGeomMultiLine.html#a5dd8429e85926cd127b0397ef61efecb',1,'CGeomMultiLine']]],
   ['resize_279',['Resize',['../d9/d0e/classCA2DShape.html#ac764ca3a47555ac461c8c21b25d8984d',1,'CA2DShape::Resize()'],['../d2/d0f/classCA2DIShape.html#a6bcbed70e0bf967bae2358c9dade4e3d',1,'CA2DIShape::Resize()']]],
   ['reverse_280',['Reverse',['../d9/d0e/classCA2DShape.html#a54eb0a2ab77aa22b8d1af5f8f1f40383',1,'CA2DShape']]],
   ['right_5fhanded_281',['RIGHT_HANDED',['../d6/d2a/cme_8h.html#ade186989e07cd54874887cd10d4a8465',1,'cme.h']]],

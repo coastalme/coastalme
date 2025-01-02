@@ -116,9 +116,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aba6c59322f19b7bf64eb903307209146" id="r_aba6c59322f19b7bf64eb903307209146"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aba6c59322f19b7bf64eb903307209146">CGeomProfile</a> (int const)</td></tr>
 <tr class="memdesc:aba6c59322f19b7bf64eb903307209146"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor with initialization list, requires one parameter (the coast point at which the profile starts)  <br /></td></tr>
 <tr class="separator:aba6c59322f19b7bf64eb903307209146"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a50bb814ed8c4a6e0e2079b433db95e26" id="r_a50bb814ed8c4a6e0e2079b433db95e26"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a50bb814ed8c4a6e0e2079b433db95e26">~CGeomProfile</a> (void)</td></tr>
-<tr class="memdesc:a50bb814ed8c4a6e0e2079b433db95e26"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <br /></td></tr>
-<tr class="separator:a50bb814ed8c4a6e0e2079b433db95e26"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa18e581521a57606595cbec27daa5754" id="r_aa18e581521a57606595cbec27daa5754"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa18e581521a57606595cbec27daa5754">~CGeomProfile</a> (void) override</td></tr>
+<tr class="memdesc:aa18e581521a57606595cbec27daa5754"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <br /></td></tr>
+<tr class="separator:aa18e581521a57606595cbec27daa5754"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0aead517e2105d6c1a14c27126b1fe92" id="r_a0aead517e2105d6c1a14c27126b1fe92"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0aead517e2105d6c1a14c27126b1fe92">nGetNumCoastPoint</a> (void) const</td></tr>
 <tr class="memdesc:a0aead517e2105d6c1a14c27126b1fe92"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the coast point at which the profile starts.  <br /></td></tr>
 <tr class="separator:a0aead517e2105d6c1a14c27126b1fe92"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -134,6 +134,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aec35bc03fc47a65349def96364c99bbd" id="r_aec35bc03fc47a65349def96364c99bbd"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aec35bc03fc47a65349def96364c99bbd">bEndOfCoast</a> (void) const</td></tr>
 <tr class="memdesc:aec35bc03fc47a65349def96364c99bbd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the switch to indicate whether this is an end-of-coast profile.  <br /></td></tr>
 <tr class="separator:aec35bc03fc47a65349def96364c99bbd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad5381cb54ceb34b7a566f2757b76ebcb" id="r_ad5381cb54ceb34b7a566f2757b76ebcb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad5381cb54ceb34b7a566f2757b76ebcb">SetHitLand</a> (bool const)</td></tr>
+<tr class="memdesc:ad5381cb54ceb34b7a566f2757b76ebcb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets a switch which indicates whether this profile has hit land.  <br /></td></tr>
+<tr class="separator:ad5381cb54ceb34b7a566f2757b76ebcb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7b77c8e990a81cf5304e3be2f6c578ed" id="r_a7b77c8e990a81cf5304e3be2f6c578ed"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7b77c8e990a81cf5304e3be2f6c578ed">bHitLand</a> (void) const</td></tr>
 <tr class="memdesc:a7b77c8e990a81cf5304e3be2f6c578ed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the switch which indicates whether this profile has hit land.  <br /></td></tr>
 <tr class="separator:a7b77c8e990a81cf5304e3be2f6c578ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -188,11 +191,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a72b3263ad5f64527b4c21307139b3c5f" id="r_a72b3263ad5f64527b4c21307139b3c5f"><td class="memItemLeft" align="right" valign="top">vector&lt; <a class="el" href="../../d5/d4e/classCGeom2DPoint.html">CGeom2DPoint</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a72b3263ad5f64527b4c21307139b3c5f">PtVGetThisPointAndAllAfter</a> (int const)</td></tr>
 <tr class="memdesc:a72b3263ad5f64527b4c21307139b3c5f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a given point from the profile, and all points after this.  <br /></td></tr>
 <tr class="separator:a72b3263ad5f64527b4c21307139b3c5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8d1b894dd6f5b3d7036d4d2b1ccc887a" id="r_a8d1b894dd6f5b3d7036d4d2b1ccc887a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8d1b894dd6f5b3d7036d4d2b1ccc887a">RemoveLineSegment</a> (int const)</td></tr>
-<tr class="memdesc:a8d1b894dd6f5b3d7036d4d2b1ccc887a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes a line segment from the profile.  <br /></td></tr>
-<tr class="separator:a8d1b894dd6f5b3d7036d4d2b1ccc887a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a442e3a6584e1a5b76e7ace39828f2bfc" id="r_a442e3a6584e1a5b76e7ace39828f2bfc"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a442e3a6584e1a5b76e7ace39828f2bfc">bIsPointInProfile</a> (double const, double const)</td></tr>
-<tr class="memdesc:a442e3a6584e1a5b76e7ace39828f2bfc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Queries the profile: is the given point a profile point?  <br /></td></tr>
+<tr class="memdesc:a442e3a6584e1a5b76e7ace39828f2bfc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes a line segment from the profile.  <br /></td></tr>
 <tr class="separator:a442e3a6584e1a5b76e7ace39828f2bfc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1db7af57b7e0ddcb37e57c134a13b1f8" id="r_a1db7af57b7e0ddcb37e57c134a13b1f8"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1db7af57b7e0ddcb37e57c134a13b1f8">bIsPointInProfile</a> (double const, double const, int &amp;)</td></tr>
 <tr class="memdesc:a1db7af57b7e0ddcb37e57c134a13b1f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Queries the profile: is the given point a profile point? If so, then it also returns the number of the point in the profile.  <br /></td></tr>
@@ -243,9 +243,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ab0d5944c5bc2371b4f42d469b08b1f5a inherit pub_methods_classCGeomMultiLine" id="r_ab0d5944c5bc2371b4f42d469b08b1f5a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d89/classCGeomMultiLine.html#ab0d5944c5bc2371b4f42d469b08b1f5a">CGeomMultiLine</a> (void)</td></tr>
 <tr class="memdesc:ab0d5944c5bc2371b4f42d469b08b1f5a inherit pub_methods_classCGeomMultiLine"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor, no parameters.  <br /></td></tr>
 <tr class="separator:ab0d5944c5bc2371b4f42d469b08b1f5a inherit pub_methods_classCGeomMultiLine"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a268b827f81745b1351d36995cac97ed3 inherit pub_methods_classCGeomMultiLine" id="r_a268b827f81745b1351d36995cac97ed3"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d89/classCGeomMultiLine.html#a268b827f81745b1351d36995cac97ed3">~CGeomMultiLine</a> (void)</td></tr>
-<tr class="memdesc:a268b827f81745b1351d36995cac97ed3 inherit pub_methods_classCGeomMultiLine"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <br /></td></tr>
-<tr class="separator:a268b827f81745b1351d36995cac97ed3 inherit pub_methods_classCGeomMultiLine"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad04fbcb6021e7031d1603be6e7160d00 inherit pub_methods_classCGeomMultiLine" id="r_ad04fbcb6021e7031d1603be6e7160d00"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d89/classCGeomMultiLine.html#ad04fbcb6021e7031d1603be6e7160d00">~CGeomMultiLine</a> (void) override</td></tr>
+<tr class="memdesc:ad04fbcb6021e7031d1603be6e7160d00 inherit pub_methods_classCGeomMultiLine"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <br /></td></tr>
+<tr class="separator:ad04fbcb6021e7031d1603be6e7160d00 inherit pub_methods_classCGeomMultiLine"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3f99a9c2ac66b75c432941ec88fc8538 inherit pub_methods_classCGeomMultiLine" id="r_a3f99a9c2ac66b75c432941ec88fc8538"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d89/classCGeomMultiLine.html#a3f99a9c2ac66b75c432941ec88fc8538">AppendLineSegment</a> (void)</td></tr>
 <tr class="memdesc:a3f99a9c2ac66b75c432941ec88fc8538 inherit pub_methods_classCGeomMultiLine"><td class="mdescLeft">&#160;</td><td class="mdescRight">Appends a new empty line segment.  <br /></td></tr>
 <tr class="separator:a3f99a9c2ac66b75c432941ec88fc8538 inherit pub_methods_classCGeomMultiLine"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -310,9 +310,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a604353dd1cc04b681ea98f13d5cefe02 inherit pub_methods_classCGeomLine" id="r_a604353dd1cc04b681ea98f13d5cefe02"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/dd3/classCGeomLine.html#a604353dd1cc04b681ea98f13d5cefe02">CGeomLine</a> (int const)</td></tr>
 <tr class="memdesc:a604353dd1cc04b681ea98f13d5cefe02 inherit pub_methods_classCGeomLine"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overloaded constructor with one parameter, this creates a given number of uninitialized points.  <br /></td></tr>
 <tr class="separator:a604353dd1cc04b681ea98f13d5cefe02 inherit pub_methods_classCGeomLine"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adc50aa4504b1605753ccc27175812158 inherit pub_methods_classCGeomLine" id="r_adc50aa4504b1605753ccc27175812158"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/dd3/classCGeomLine.html#adc50aa4504b1605753ccc27175812158">~CGeomLine</a> (void)</td></tr>
-<tr class="memdesc:adc50aa4504b1605753ccc27175812158 inherit pub_methods_classCGeomLine"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <br /></td></tr>
-<tr class="separator:adc50aa4504b1605753ccc27175812158 inherit pub_methods_classCGeomLine"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa9751625358274178c91304f18352967 inherit pub_methods_classCGeomLine" id="r_aa9751625358274178c91304f18352967"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/dd3/classCGeomLine.html#aa9751625358274178c91304f18352967">~CGeomLine</a> (void) override</td></tr>
+<tr class="memdesc:aa9751625358274178c91304f18352967 inherit pub_methods_classCGeomLine"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <br /></td></tr>
+<tr class="separator:aa9751625358274178c91304f18352967 inherit pub_methods_classCGeomLine"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa82ca672ab0572c44e0d163e79587aac inherit pub_methods_classCGeomLine" id="r_aa82ca672ab0572c44e0d163e79587aac"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/dd3/classCGeomLine.html#aa82ca672ab0572c44e0d163e79587aac">dGetXAt</a> (int const)</td></tr>
 <tr class="memdesc:aa82ca672ab0572c44e0d163e79587aac inherit pub_methods_classCGeomLine"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the X value at a given place in the line.  <br /></td></tr>
 <tr class="separator:aa82ca672ab0572c44e0d163e79587aac inherit pub_methods_classCGeomLine"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -425,7 +425,7 @@ Additional Inherited Members</h2></td></tr>
 <p>TODO 001 This is a more detailed description of the <a class="el" href="../../da/dae/classCGeomProfile.html" title="Geometry class used to represent coast profile objects.">CGeomProfile</a> class. </p><dl class="section author"><dt>Author</dt><dd>David Favis-Mortlock </dd>
 <dd>
 Andres Payo</dd></dl>
-<dl class="section date"><dt>Date</dt><dd>2024 </dd></dl>
+<dl class="section date"><dt>Date</dt><dd>2025 </dd></dl>
 <dl class="section copyright"><dt>Copyright</dt><dd>GNU General Public License </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../de/d45/profile_8h_source.html#l00036">36</a> of file <a class="el" href="../../de/d45/profile_8h_source.html">profile.h</a>.</p>
@@ -459,11 +459,14 @@ Andres Payo</dd></dl>
 
 </div>
 </div>
-<a id="a50bb814ed8c4a6e0e2079b433db95e26" name="a50bb814ed8c4a6e0e2079b433db95e26"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a50bb814ed8c4a6e0e2079b433db95e26">&#9670;&#160;</a></span>~CGeomProfile()</h2>
+<a id="aa18e581521a57606595cbec27daa5754" name="aa18e581521a57606595cbec27daa5754"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa18e581521a57606595cbec27daa5754">&#9670;&#160;</a></span>~CGeomProfile()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">CGeomProfile::~CGeomProfile </td>
@@ -472,6 +475,11 @@ Andres Payo</dd></dl>
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Destructor. </p>
@@ -621,7 +629,7 @@ Andres Payo</dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../db/dfa/profile_8cpp_source.html#l00206">206</a> of file <a class="el" href="../../db/dfa/profile_8cpp_source.html">profile.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../da/db2/create__profiles_8cpp_source.html#l01420">CSimulation::MergeProfilesAtFinalLineSegments()</a>, <a class="el" href="../../da/db2/create__profiles_8cpp_source.html#l00382">CSimulation::nLocateGridEdgeProfile()</a>, and <a class="el" href="../../da/db2/create__profiles_8cpp_source.html#l01780">CSimulation::TruncateProfileAndAppendNew()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../da/db2/create__profiles_8cpp_source.html#l01421">CSimulation::MergeProfilesAtFinalLineSegments()</a>, <a class="el" href="../../da/db2/create__profiles_8cpp_source.html#l00382">CSimulation::nLocateGridEdgeProfile()</a>, and <a class="el" href="../../da/db2/create__profiles_8cpp_source.html#l01781">CSimulation::TruncateProfileAndAppendNew()</a>.</p>
 
 </div>
 </div>
@@ -745,7 +753,7 @@ Andres Payo</dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../db/dfa/profile_8cpp_source.html#l00218">218</a> of file <a class="el" href="../../db/dfa/profile_8cpp_source.html">profile.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../da/db2/create__profiles_8cpp_source.html#l01604">CSimulation::nInsertPointIntoProfilesIfNeededThenUpdate()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../da/db2/create__profiles_8cpp_source.html#l01605">CSimulation::nInsertPointIntoProfilesIfNeededThenUpdate()</a>.</p>
 
 </div>
 </div>
@@ -768,6 +776,7 @@ Andres Payo</dd></dl>
       </table>
 </div><div class="memdoc">
 
+<p>Removes a line segment from the profile. </p>
 <p>Queries the profile: is the given point a profile point? </p>
 
 <p class="definition">Definition at line <a class="el" href="../../db/dfa/profile_8cpp_source.html#l00282">282</a> of file <a class="el" href="../../db/dfa/profile_8cpp_source.html">profile.cpp</a>.</p>
@@ -825,7 +834,7 @@ Andres Payo</dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../db/dfa/profile_8cpp_source.html#l00164">164</a> of file <a class="el" href="../../db/dfa/profile_8cpp_source.html">profile.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d3/d14/gis__vector_8cpp_source.html#l00381">CSimulation::bWriteVectorGISFile()</a>, <a class="el" href="../../d2/d24/calc__waves_8cpp_source.html#l01764">CSimulation::ModifyBreakingWavePropertiesWithinShadowZoneToCoastline()</a>, <a class="el" href="../../d6/db6/do__shore__platform__erosion_8cpp_source.html#l00360">CSimulation::nCalcPotentialPlatformErosionBetweenProfiles()</a>, <a class="el" href="../../d6/db6/do__shore__platform__erosion_8cpp_source.html#l00120">CSimulation::nCalcPotentialPlatformErosionOnProfile()</a>, <a class="el" href="../../d2/d24/calc__waves_8cpp_source.html#l00611">CSimulation::nCalcWavePropertiesOnProfile()</a>, <a class="el" href="../../d6/d91/create__polygons_8cpp_source.html#l00042">CSimulation::nCreateAllPolygons()</a>, and <a class="el" href="../../da/db2/create__profiles_8cpp_source.html#l01040">CSimulation::nPutAllProfilesOntoGrid()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d3/d14/gis__vector_8cpp_source.html#l00381">CSimulation::bWriteVectorGISFile()</a>, <a class="el" href="../../d2/d24/calc__waves_8cpp_source.html#l01764">CSimulation::ModifyBreakingWavePropertiesWithinShadowZoneToCoastline()</a>, <a class="el" href="../../d6/db6/do__shore__platform__erosion_8cpp_source.html#l00362">CSimulation::nCalcPotentialPlatformErosionBetweenProfiles()</a>, <a class="el" href="../../d6/db6/do__shore__platform__erosion_8cpp_source.html#l00122">CSimulation::nCalcPotentialPlatformErosionOnProfile()</a>, <a class="el" href="../../d2/d24/calc__waves_8cpp_source.html#l00611">CSimulation::nCalcWavePropertiesOnProfile()</a>, <a class="el" href="../../d6/d91/create__polygons_8cpp_source.html#l00042">CSimulation::nCreateAllPolygons()</a>, and <a class="el" href="../../da/db2/create__profiles_8cpp_source.html#l01040">CSimulation::nPutAllProfilesOntoGrid()</a>.</p>
 
 </div>
 </div>
@@ -967,7 +976,7 @@ Andres Payo</dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../db/dfa/profile_8cpp_source.html#l00451">451</a> of file <a class="el" href="../../db/dfa/profile_8cpp_source.html">profile.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../df/dda/do__beach__within__polygon_8cpp_source.html#l00731">CSimulation::nDoUnconsDepositionOnPolygon()</a>, and <a class="el" href="../../df/dda/do__beach__within__polygon_8cpp_source.html#l00040">CSimulation::nDoUnconsErosionOnPolygon()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../df/dda/do__beach__within__polygon_8cpp_source.html#l00735">CSimulation::nDoUnconsDepositionOnPolygon()</a>, and <a class="el" href="../../df/dda/do__beach__within__polygon_8cpp_source.html#l00040">CSimulation::nDoUnconsErosionOnPolygon()</a>.</p>
 
 </div>
 </div>
@@ -990,7 +999,7 @@ Andres Payo</dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../db/dfa/profile_8cpp_source.html#l00424">424</a> of file <a class="el" href="../../db/dfa/profile_8cpp_source.html">profile.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d2/d24/calc__waves_8cpp_source.html#l01764">CSimulation::ModifyBreakingWavePropertiesWithinShadowZoneToCoastline()</a>, <a class="el" href="../../d6/db6/do__shore__platform__erosion_8cpp_source.html#l00360">CSimulation::nCalcPotentialPlatformErosionBetweenProfiles()</a>, <a class="el" href="../../d6/db6/do__shore__platform__erosion_8cpp_source.html#l00120">CSimulation::nCalcPotentialPlatformErosionOnProfile()</a>, <a class="el" href="../../d2/d24/calc__waves_8cpp_source.html#l00611">CSimulation::nCalcWavePropertiesOnProfile()</a>, <a class="el" href="../../d6/d91/create__polygons_8cpp_source.html#l00042">CSimulation::nCreateAllPolygons()</a>, <a class="el" href="../../df/dda/do__beach__within__polygon_8cpp_source.html#l00731">CSimulation::nDoUnconsDepositionOnPolygon()</a>, and <a class="el" href="../../df/dda/do__beach__within__polygon_8cpp_source.html#l00040">CSimulation::nDoUnconsErosionOnPolygon()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d2/d24/calc__waves_8cpp_source.html#l01764">CSimulation::ModifyBreakingWavePropertiesWithinShadowZoneToCoastline()</a>, <a class="el" href="../../d6/db6/do__shore__platform__erosion_8cpp_source.html#l00362">CSimulation::nCalcPotentialPlatformErosionBetweenProfiles()</a>, <a class="el" href="../../d6/db6/do__shore__platform__erosion_8cpp_source.html#l00122">CSimulation::nCalcPotentialPlatformErosionOnProfile()</a>, <a class="el" href="../../d2/d24/calc__waves_8cpp_source.html#l00611">CSimulation::nCalcWavePropertiesOnProfile()</a>, <a class="el" href="../../d6/d91/create__polygons_8cpp_source.html#l00042">CSimulation::nCreateAllPolygons()</a>, <a class="el" href="../../df/dda/do__beach__within__polygon_8cpp_source.html#l00735">CSimulation::nDoUnconsDepositionOnPolygon()</a>, and <a class="el" href="../../df/dda/do__beach__within__polygon_8cpp_source.html#l00040">CSimulation::nDoUnconsErosionOnPolygon()</a>.</p>
 
 </div>
 </div>
@@ -1013,7 +1022,7 @@ Andres Payo</dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../db/dfa/profile_8cpp_source.html#l00058">58</a> of file <a class="el" href="../../db/dfa/profile_8cpp_source.html">profile.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d2/d24/calc__waves_8cpp_source.html#l01852">CSimulation::InterpolateWavePropertiesBetweenProfiles()</a>, <a class="el" href="../../d2/d24/calc__waves_8cpp_source.html#l01764">CSimulation::ModifyBreakingWavePropertiesWithinShadowZoneToCoastline()</a>, <a class="el" href="../../d6/db6/do__shore__platform__erosion_8cpp_source.html#l00360">CSimulation::nCalcPotentialPlatformErosionBetweenProfiles()</a>, <a class="el" href="../../d6/db6/do__shore__platform__erosion_8cpp_source.html#l00120">CSimulation::nCalcPotentialPlatformErosionOnProfile()</a>, <a class="el" href="../../d2/d24/calc__waves_8cpp_source.html#l00611">CSimulation::nCalcWavePropertiesOnProfile()</a>, <a class="el" href="../../df/dda/do__beach__within__polygon_8cpp_source.html#l00731">CSimulation::nDoUnconsDepositionOnPolygon()</a>, <a class="el" href="../../df/dda/do__beach__within__polygon_8cpp_source.html#l00040">CSimulation::nDoUnconsErosionOnPolygon()</a>, and <a class="el" href="../../d2/d24/calc__waves_8cpp_source.html#l00063">CSimulation::nSetAllCoastpointDeepWaterWaveValues()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d2/d24/calc__waves_8cpp_source.html#l01844">CSimulation::InterpolateWavePropertiesBetweenProfiles()</a>, <a class="el" href="../../d2/d24/calc__waves_8cpp_source.html#l01764">CSimulation::ModifyBreakingWavePropertiesWithinShadowZoneToCoastline()</a>, <a class="el" href="../../d6/db6/do__shore__platform__erosion_8cpp_source.html#l00362">CSimulation::nCalcPotentialPlatformErosionBetweenProfiles()</a>, <a class="el" href="../../d6/db6/do__shore__platform__erosion_8cpp_source.html#l00122">CSimulation::nCalcPotentialPlatformErosionOnProfile()</a>, <a class="el" href="../../d2/d24/calc__waves_8cpp_source.html#l00611">CSimulation::nCalcWavePropertiesOnProfile()</a>, <a class="el" href="../../df/dda/do__beach__within__polygon_8cpp_source.html#l00735">CSimulation::nDoUnconsDepositionOnPolygon()</a>, <a class="el" href="../../df/dda/do__beach__within__polygon_8cpp_source.html#l00040">CSimulation::nDoUnconsErosionOnPolygon()</a>, and <a class="el" href="../../d2/d24/calc__waves_8cpp_source.html#l00063">CSimulation::nSetAllCoastpointDeepWaterWaveValues()</a>.</p>
 
 </div>
 </div>
@@ -1036,7 +1045,7 @@ Andres Payo</dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../db/dfa/profile_8cpp_source.html#l00257">257</a> of file <a class="el" href="../../db/dfa/profile_8cpp_source.html">profile.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d3/d14/gis__vector_8cpp_source.html#l00381">CSimulation::bWriteVectorGISFile()</a>, <a class="el" href="../../da/db2/create__profiles_8cpp_source.html#l01420">CSimulation::MergeProfilesAtFinalLineSegments()</a>, <a class="el" href="../../d6/db6/do__shore__platform__erosion_8cpp_source.html#l00120">CSimulation::nCalcPotentialPlatformErosionOnProfile()</a>, <a class="el" href="../../d6/d91/create__polygons_8cpp_source.html#l00042">CSimulation::nCreateAllPolygons()</a>, <a class="el" href="../../da/db2/create__profiles_8cpp_source.html#l00186">CSimulation::nCreateAllProfilesAndCheckValidity()</a>, and <a class="el" href="../../da/db2/create__profiles_8cpp_source.html#l01040">CSimulation::nPutAllProfilesOntoGrid()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d3/d14/gis__vector_8cpp_source.html#l00381">CSimulation::bWriteVectorGISFile()</a>, <a class="el" href="../../da/db2/create__profiles_8cpp_source.html#l01421">CSimulation::MergeProfilesAtFinalLineSegments()</a>, <a class="el" href="../../d6/db6/do__shore__platform__erosion_8cpp_source.html#l00122">CSimulation::nCalcPotentialPlatformErosionOnProfile()</a>, <a class="el" href="../../d6/d91/create__polygons_8cpp_source.html#l00042">CSimulation::nCreateAllPolygons()</a>, <a class="el" href="../../da/db2/create__profiles_8cpp_source.html#l00186">CSimulation::nCreateAllProfilesAndCheckValidity()</a>, and <a class="el" href="../../da/db2/create__profiles_8cpp_source.html#l01040">CSimulation::nPutAllProfilesOntoGrid()</a>.</p>
 
 </div>
 </div>
@@ -1059,7 +1068,7 @@ Andres Payo</dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../db/dfa/profile_8cpp_source.html#l00263">263</a> of file <a class="el" href="../../db/dfa/profile_8cpp_source.html">profile.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d3/d14/gis__vector_8cpp_source.html#l00381">CSimulation::bWriteVectorGISFile()</a>, <a class="el" href="../../d6/db6/do__shore__platform__erosion_8cpp_source.html#l00120">CSimulation::nCalcPotentialPlatformErosionOnProfile()</a>, <a class="el" href="../../d6/d91/create__polygons_8cpp_source.html#l00042">CSimulation::nCreateAllPolygons()</a>, <a class="el" href="../../da/db2/create__profiles_8cpp_source.html#l00186">CSimulation::nCreateAllProfilesAndCheckValidity()</a>, <a class="el" href="../../d6/d91/create__polygons_8cpp_source.html#l00515">CSimulation::nDoPolygonSharedBoundaries()</a>, and <a class="el" href="../../da/db2/create__profiles_8cpp_source.html#l01144">CSimulation::RasterizeProfile()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d3/d14/gis__vector_8cpp_source.html#l00381">CSimulation::bWriteVectorGISFile()</a>, <a class="el" href="../../d6/db6/do__shore__platform__erosion_8cpp_source.html#l00122">CSimulation::nCalcPotentialPlatformErosionOnProfile()</a>, <a class="el" href="../../d6/d91/create__polygons_8cpp_source.html#l00042">CSimulation::nCreateAllPolygons()</a>, <a class="el" href="../../da/db2/create__profiles_8cpp_source.html#l00186">CSimulation::nCreateAllProfilesAndCheckValidity()</a>, <a class="el" href="../../d6/d91/create__polygons_8cpp_source.html#l00515">CSimulation::nDoPolygonSharedBoundaries()</a>, and <a class="el" href="../../da/db2/create__profiles_8cpp_source.html#l01144">CSimulation::RasterizeProfile()</a>.</p>
 
 </div>
 </div>
@@ -1082,7 +1091,7 @@ Andres Payo</dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../db/dfa/profile_8cpp_source.html#l00417">417</a> of file <a class="el" href="../../db/dfa/profile_8cpp_source.html">profile.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d2/d24/calc__waves_8cpp_source.html#l01764">CSimulation::ModifyBreakingWavePropertiesWithinShadowZoneToCoastline()</a>, <a class="el" href="../../d2/d24/calc__waves_8cpp_source.html#l00611">CSimulation::nCalcWavePropertiesOnProfile()</a>, <a class="el" href="../../d6/d91/create__polygons_8cpp_source.html#l00042">CSimulation::nCreateAllPolygons()</a>, <a class="el" href="../../df/dda/do__beach__within__polygon_8cpp_source.html#l00731">CSimulation::nDoUnconsDepositionOnPolygon()</a>, and <a class="el" href="../../df/dda/do__beach__within__polygon_8cpp_source.html#l00040">CSimulation::nDoUnconsErosionOnPolygon()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d2/d24/calc__waves_8cpp_source.html#l01764">CSimulation::ModifyBreakingWavePropertiesWithinShadowZoneToCoastline()</a>, <a class="el" href="../../d2/d24/calc__waves_8cpp_source.html#l00611">CSimulation::nCalcWavePropertiesOnProfile()</a>, <a class="el" href="../../d6/d91/create__polygons_8cpp_source.html#l00042">CSimulation::nCreateAllPolygons()</a>, <a class="el" href="../../df/dda/do__beach__within__polygon_8cpp_source.html#l00735">CSimulation::nDoUnconsDepositionOnPolygon()</a>, and <a class="el" href="../../df/dda/do__beach__within__polygon_8cpp_source.html#l00040">CSimulation::nDoUnconsErosionOnPolygon()</a>.</p>
 
 </div>
 </div>
@@ -1105,7 +1114,7 @@ Andres Payo</dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../db/dfa/profile_8cpp_source.html#l00410">410</a> of file <a class="el" href="../../db/dfa/profile_8cpp_source.html">profile.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d6/db6/do__shore__platform__erosion_8cpp_source.html#l00360">CSimulation::nCalcPotentialPlatformErosionBetweenProfiles()</a>, <a class="el" href="../../d6/db6/do__shore__platform__erosion_8cpp_source.html#l00120">CSimulation::nCalcPotentialPlatformErosionOnProfile()</a>, and <a class="el" href="../../d2/d24/calc__waves_8cpp_source.html#l01514">CSimulation::nGetThisProfileElevationVectorsForCShore()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d6/db6/do__shore__platform__erosion_8cpp_source.html#l00362">CSimulation::nCalcPotentialPlatformErosionBetweenProfiles()</a>, <a class="el" href="../../d6/db6/do__shore__platform__erosion_8cpp_source.html#l00122">CSimulation::nCalcPotentialPlatformErosionOnProfile()</a>, and <a class="el" href="../../d2/d24/calc__waves_8cpp_source.html#l01514">CSimulation::nGetThisProfileElevationVectorsForCShore()</a>.</p>
 
 </div>
 </div>
@@ -1128,28 +1137,7 @@ Andres Payo</dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../db/dfa/profile_8cpp_source.html#l00269">269</a> of file <a class="el" href="../../db/dfa/profile_8cpp_source.html">profile.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../da/db2/create__profiles_8cpp_source.html#l01565">CSimulation::TruncateOneProfileRetainOtherProfile()</a>.</p>
-
-</div>
-</div>
-<a id="a8d1b894dd6f5b3d7036d4d2b1ccc887a" name="a8d1b894dd6f5b3d7036d4d2b1ccc887a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8d1b894dd6f5b3d7036d4d2b1ccc887a">&#9670;&#160;</a></span>RemoveLineSegment()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void CGeomProfile::RemoveLineSegment </td>
-          <td>(</td>
-          <td class="paramtype">int const</td>          <td class="paramname"><span class="paramname"><em>nPoint</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Removes a line segment from the profile. </p>
-
-<p class="definition">Definition at line <a class="el" href="../../db/dfa/profile_8cpp_source.html#l00275">275</a> of file <a class="el" href="../../db/dfa/profile_8cpp_source.html">profile.cpp</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../da/db2/create__profiles_8cpp_source.html#l01566">CSimulation::TruncateOneProfileRetainOtherProfile()</a>.</p>
 
 </div>
 </div>
@@ -1245,6 +1233,29 @@ Andres Payo</dd></dl>
 
 </div>
 </div>
+<a id="ad5381cb54ceb34b7a566f2757b76ebcb" name="ad5381cb54ceb34b7a566f2757b76ebcb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad5381cb54ceb34b7a566f2757b76ebcb">&#9670;&#160;</a></span>SetHitLand()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void CGeomProfile::SetHitLand </td>
+          <td>(</td>
+          <td class="paramtype">bool const</td>          <td class="paramname"><span class="paramname"><em>bFlag</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Sets a switch which indicates whether this profile has hit land. </p>
+
+<p class="definition">Definition at line <a class="el" href="../../db/dfa/profile_8cpp_source.html#l00088">88</a> of file <a class="el" href="../../db/dfa/profile_8cpp_source.html">profile.cpp</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="../../da/db2/create__profiles_8cpp_source.html#l01144">CSimulation::RasterizeProfile()</a>.</p>
+
+</div>
+</div>
 <a id="ab9adb1e70e847258501607c9b1330d18" name="ab9adb1e70e847258501607c9b1330d18"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab9adb1e70e847258501607c9b1330d18">&#9670;&#160;</a></span>SetPointInProfile()</h2>
 
@@ -1273,7 +1284,7 @@ Andres Payo</dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../db/dfa/profile_8cpp_source.html#l00199">199</a> of file <a class="el" href="../../db/dfa/profile_8cpp_source.html">profile.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../da/db2/create__profiles_8cpp_source.html#l01420">CSimulation::MergeProfilesAtFinalLineSegments()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../da/db2/create__profiles_8cpp_source.html#l01421">CSimulation::MergeProfilesAtFinalLineSegments()</a>.</p>
 
 </div>
 </div>
@@ -1434,7 +1445,7 @@ Andres Payo</dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../db/dfa/profile_8cpp_source.html#l00237">237</a> of file <a class="el" href="../../db/dfa/profile_8cpp_source.html">profile.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../da/db2/create__profiles_8cpp_source.html#l01780">CSimulation::TruncateProfileAndAppendNew()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../da/db2/create__profiles_8cpp_source.html#l01781">CSimulation::TruncateProfileAndAppendNew()</a>.</p>
 
 </div>
 </div>
@@ -1547,7 +1558,7 @@ Andres Payo</dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../de/d45/profile_8h_source.html#l00046">46</a> of file <a class="el" href="../../de/d45/profile_8h_source.html">profile.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../db/dfa/profile_8cpp_source.html#l00094">bHitLand()</a>, <a class="el" href="../../db/dfa/profile_8cpp_source.html#l00164">bOKIncStartAndEndOfCoast()</a>, and <a class="el" href="../../db/dfa/profile_8cpp_source.html#l00148">bProfileOK()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../db/dfa/profile_8cpp_source.html#l00094">bHitLand()</a>, <a class="el" href="../../db/dfa/profile_8cpp_source.html#l00164">bOKIncStartAndEndOfCoast()</a>, <a class="el" href="../../db/dfa/profile_8cpp_source.html#l00148">bProfileOK()</a>, and <a class="el" href="../../db/dfa/profile_8cpp_source.html#l00088">SetHitLand()</a>.</p>
 
 </div>
 </div>
@@ -1865,7 +1876,7 @@ Andres Payo</dd></dl>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../da/dae/classCGeomProfile.html">CGeomProfile</a></li>
-    <li class="footer">Generated on Mon Dec 30 2024 10:41:51 for CoastalME (Coastal Modelling Environment) by <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.12.0 </li>
+    <li class="footer">Generated on Thu Jan 2 2025 11:25:45 for CoastalME (Coastal Modelling Environment) by <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.12.0 </li>
   </ul>
 </div>
 </body>

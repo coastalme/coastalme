@@ -1,7 +1,7 @@
 var classCGeomCoastPolygon =
 [
     [ "CGeomCoastPolygon", "df/d45/classCGeomCoastPolygon.html#a86b402f668739e80549157a1a00bac9b", null ],
-    [ "~CGeomCoastPolygon", "df/d45/classCGeomCoastPolygon.html#a417103424c09d6cf726fafc5a530dd8b", null ],
+    [ "~CGeomCoastPolygon", "df/d45/classCGeomCoastPolygon.html#abd148c21ce612def32950d1716dbcc30", null ],
     [ "AddBeachCoarseErodedDeanProfile", "df/d45/classCGeomCoastPolygon.html#a302681ffb3b0fde018a3c21bbf65d728", null ],
     [ "AddBeachSandErodedDeanProfile", "df/d45/classCGeomCoastPolygon.html#a6919867633aeb36b985f2eda77bc919c", null ],
     [ "AddCircularity", "df/d45/classCGeomCoastPolygon.html#aee5138a4a86f8cf9cc6476976a9df07a", null ],

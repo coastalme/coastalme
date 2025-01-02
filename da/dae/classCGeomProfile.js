@@ -1,7 +1,7 @@
 var classCGeomProfile =
 [
     [ "CGeomProfile", "da/dae/classCGeomProfile.html#aba6c59322f19b7bf64eb903307209146", null ],
-    [ "~CGeomProfile", "da/dae/classCGeomProfile.html#a50bb814ed8c4a6e0e2079b433db95e26", null ],
+    [ "~CGeomProfile", "da/dae/classCGeomProfile.html#aa18e581521a57606595cbec27daa5754", null ],
     [ "AppendCellInProfile", "da/dae/classCGeomProfile.html#aafb35166293c29d0492621850d5d06d4", null ],
     [ "AppendCellInProfile", "da/dae/classCGeomProfile.html#a90bfa2a20b533585f66a69d5a88bef4f", null ],
     [ "AppendCellInProfileExtCRS", "da/dae/classCGeomProfile.html#a5c704703e70d7db543bd95bfb0b36806", null ],
@@ -29,11 +29,11 @@ var classCGeomProfile =
     [ "pPtiGetCellInProfile", "da/dae/classCGeomProfile.html#a6d13079f744085f2d132405e0120ca54", null ],
     [ "pPtiVGetCellsInProfile", "da/dae/classCGeomProfile.html#ada96aa991d179ac71f4523de7a4be560", null ],
     [ "PtVGetThisPointAndAllAfter", "da/dae/classCGeomProfile.html#a72b3263ad5f64527b4c21307139b3c5f", null ],
-    [ "RemoveLineSegment", "da/dae/classCGeomProfile.html#a8d1b894dd6f5b3d7036d4d2b1ccc887a", null ],
     [ "SetAllPointsInProfile", "da/dae/classCGeomProfile.html#a4d89e6572d043fea4e19aaf251349c67", null ],
     [ "SetEndOfCoast", "da/dae/classCGeomProfile.html#a11548359d3db93535befcaf518468f64", null ],
     [ "SetHitAnotherProfile", "da/dae/classCGeomProfile.html#a6d4286ac64e3fe9aef428c93fdcd4230", null ],
     [ "SetHitCoast", "da/dae/classCGeomProfile.html#a45410879aaf7f8f9abc073fc54363d03", null ],
+    [ "SetHitLand", "da/dae/classCGeomProfile.html#ad5381cb54ceb34b7a566f2757b76ebcb", null ],
     [ "SetPointInProfile", "da/dae/classCGeomProfile.html#ab9adb1e70e847258501607c9b1330d18", null ],
     [ "SetProfileDeepWaterWaveAngle", "da/dae/classCGeomProfile.html#af7caa9a58827f7ab1511e1acfda10bbb", null ],
     [ "SetProfileDeepWaterWaveHeight", "da/dae/classCGeomProfile.html#a8e440a77b79c7e47db4b825ae2d47593", null ],
