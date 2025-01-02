@@ -6,7 +6,7 @@
  * \author David Favis-Mortlock
  * \author Andres Payo
 
- * \date 2024
+ * \date 2025
  * \copyright GNU General Public License
  *
  */
@@ -84,11 +84,11 @@ bool CGeomProfile::bEndOfCoast(void) const
    return m_bEndOfCoast;
 }
 
-// //! Sets a switch which indicates whether this profile has hit land
-// void CGeomProfile::SetHitLand(bool const bFlag)
-// {
-//    m_bHitLand = bFlag;
-// }
+//! Sets a switch which indicates whether this profile has hit land
+void CGeomProfile::SetHitLand(bool const bFlag)
+{
+   m_bHitLand = bFlag;
+}
 
 //! Returns the switch which indicates whether this profile has hit land
 bool CGeomProfile::bHitLand(void) const
@@ -272,11 +272,11 @@ vector<CGeom2DPoint> CGeomProfile::PtVGetThisPointAndAllAfter(int const nStart)
 }
 
 //! Removes a line segment from the profile
-void CGeomProfile::RemoveLineSegment(int const nPoint)
-{
-   m_VPoints.erase(m_VPoints.begin() + nPoint);
-   CGeomMultiLine::RemoveLineSegment(nPoint);
-}
+// void CGeomProfile::RemoveLineSegment(int const nPoint)
+// {
+//    m_VPoints.erase(m_VPoints.begin() + nPoint);
+//    CGeomMultiLine::RemoveLineSegment(nPoint);
+// }
 
 //! Queries the profile: is the given point a profile point?
 bool CGeomProfile::bIsPointInProfile(double const dX, double const dY)

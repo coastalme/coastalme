@@ -4,7 +4,7 @@
  * \details TODO 001 This is a more detailed description of the hermite_cubic routines.
  * \author John Burkardt
  * \author Modified by David Favis-Mortlock and Andres Payo
- * \date 2024
+ * \date 2025
  * \copyright GNU Lesser General Public License
  *
  * \file hermite_cubic.h

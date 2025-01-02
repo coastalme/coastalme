@@ -6,7 +6,7 @@
  * \author David Favis-Mortlock
  * \author Andres Payo
 
- * \date 2024
+ * \date 2025
  * \copyright GNU General Public License
  *
  */
@@ -635,7 +635,7 @@ int CSimulation::nDoAllActualBeachErosionAndDeposition(void)
       for (int nn = nPolygons-1; nn >= 0; nn--)
       {
          int nThisPoly = nVVPolyAndAdjacent[nn][0];
-         CGeomCoastPolygon* pThisPolygon = m_VCoast[nCoast].pGetPolygon(nThisPoly);
+         CGeomCoastPolygon const* pThisPolygon = m_VCoast[nCoast].pGetPolygon(nThisPoly);
 
          double dSandToDepositOnPoly = pThisPolygon->dGetToDoBeachDepositionUnconsSand();
          if (dSandToDepositOnPoly > 0)

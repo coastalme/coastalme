@@ -6,7 +6,7 @@
  * \author David Favis-Mortlock
  * \author Andres Payo
 
- * \date 2024
+ * \date 2025
  * \copyright GNU General Public License
  *
  */
@@ -189,12 +189,12 @@ void CSimulation::DoAllPotentialBeachErosion(void)
 
                if (dAvgBreakingDist > 0)
                {
-                  double dBeachSlope = dAvgBreakingDepth / dAvgBreakingDist;
-
                   double dD50 = pPolygon->dGetAvgUnconsD50();
                   if (dD50 > 0)
-                  // Note that we use a calibration constant here (m_dKamphuis)
                   {
+                     double dBeachSlope = dAvgBreakingDepth / dAvgBreakingDist;
+
+                     // Note that we use a calibration constant here (m_dKamphuis)
                      dImmersedWeightTransport = m_dKamphuis * 2.33 * pow(dAvgDeepWaterWavePeriod, 1.5) * pow(dBeachSlope, 0.75) * pow(dD50, -0.25) * pow(dAvgBreakingWaveHeight, 2) * pow(sin((PI / 180) * 2 * dThetaBr), 0.6);
                   }
                }

@@ -6,7 +6,7 @@
  * \author David Favis-Mortlock
  * \author Andres Payo
 
- * \date 2024
+ * \date 2025
  * \copyright GNU General Public License
  *
  * \file intervention.h
@@ -37,7 +37,7 @@ private:
 
 public:
    CRWIntervention(CRWCoast*, int const, int const);
-   ~CRWIntervention(void);
+   ~CRWIntervention(void) override;
 
    void Display(void) override;
 };

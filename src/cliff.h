@@ -6,7 +6,7 @@
  * \author David Favis-Mortlock
  * \author Andres Payo
 
- * \date 2024
+ * \date 2025
  * \copyright GNU General Public License
  *
  * \file cliff.h
@@ -48,7 +48,7 @@ private:
 
 public:
    CRWCliff(CRWCoast*, int const, int const, double const, double const, double const, double const);
-   ~CRWCliff(void);
+   ~CRWCliff(void) override;
 
    void SetCliffCollapsed(void);
    bool bHasCollapsed(void) const;

@@ -6,7 +6,7 @@
  * \author David Favis-Mortlock
  * \author Andres Payo
 
- * \date 2024
+ * \date 2025
  * \copyright GNU General Public License
  *
  * \file line.h
@@ -35,7 +35,7 @@ public:
    CGeomLine(void);
    CGeomLine(CGeom2DPoint const*, CGeom2DPoint const*);
    explicit CGeomLine(int const);
-   ~CGeomLine(void);
+   ~CGeomLine(void) override;
 
    double dGetXAt(int const);
    double dGetYAt(int const);

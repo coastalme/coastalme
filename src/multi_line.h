@@ -6,7 +6,7 @@
  * \author David Favis-Mortlock
  * \author Andres Payo
 
- * \date 2024
+ * \date 2025
  * \copyright GNU General Public License
  *
  * \file multi_line.h
@@ -41,7 +41,7 @@ private:
 
 public:
    CGeomMultiLine(void);
-   ~CGeomMultiLine(void);
+   ~CGeomMultiLine(void) override;
 
    void AppendLineSegment(void);
    void AppendLineSegment(vector<pair<int, int> >*);

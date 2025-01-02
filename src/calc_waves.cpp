@@ -6,7 +6,7 @@
  * \author David Favis-Mortlock
  * \author Andres Payo
 
- * \date 2024
+ * \date 2025
  * \copyright GNU General Public License
  *
  */
@@ -1770,25 +1770,20 @@ void CSimulation::ModifyBreakingWavePropertiesWithinShadowZoneToCoastline(int co
    if (!pProfile->bOKIncStartAndEndOfCoast())
       return;
 
-   int
-       nThisCoastPoint = pProfile->nGetNumCoastPoint(),
-       nProfileSize = pProfile->nGetNumCellsInProfile();
-
+   bool bModfiedWaveHeightisBreaking = false;
+   bool bProfileIsinShadowZone = false;
+   int nThisCoastPoint = pProfile->nGetNumCoastPoint();
+   int nProfileSize = pProfile->nGetNumCellsInProfile();
    int nThisBreakingDist = m_VCoast[nCoast].nGetBreakingDistance(nThisCoastPoint);
-   double
-       dThisBreakingWaveHeight = m_VCoast[nCoast].dGetBreakingWaveHeight(nThisCoastPoint), // This could be DBL_NODATA
-       dThisBreakingWaveAngle = m_VCoast[nCoast].dGetBreakingWaveAngle(nThisCoastPoint),
-       dThisBreakingDepth = m_VCoast[nCoast].dGetDepthOfBreaking(nThisCoastPoint);
-   bool
-       bModfiedWaveHeightisBreaking = false,
-       bProfileIsinShadowZone = false;
+   double dThisBreakingWaveHeight = m_VCoast[nCoast].dGetBreakingWaveHeight(nThisCoastPoint);      // This could be DBL_NODATA
+   double dThisBreakingWaveAngle = m_VCoast[nCoast].dGetBreakingWaveAngle(nThisCoastPoint);
+   double dThisBreakingDepth = m_VCoast[nCoast].dGetDepthOfBreaking(nThisCoastPoint);
 
    // Traverse the profile landwards, checking if any profile cell is within the shadow zone
    for (int nProfilePoint = (nProfileSize - 1); nProfilePoint >= 0; nProfilePoint--)
    {
-      int
-          nX = pProfile->pPtiGetCellInProfile(nProfilePoint)->nGetX(),
-          nY = pProfile->pPtiGetCellInProfile(nProfilePoint)->nGetY();
+      int nX = pProfile->pPtiGetCellInProfile(nProfilePoint)->nGetX();
+      int nY = pProfile->pPtiGetCellInProfile(nProfilePoint)->nGetY();
 
       // If there is any cell profile  within the shadow zone and waves are breaking then modify wave breaking properties otherwise continue
       if (m_pRasterGrid->m_Cell[nX][nY].bIsinAnyShadowZone())
@@ -1796,10 +1791,7 @@ void CSimulation::ModifyBreakingWavePropertiesWithinShadowZoneToCoastline(int co
          bProfileIsinShadowZone = true;
 
          // Check if the new wave height is breaking
-         double
-             // dSeaDepth = m_pRasterGrid->m_Cell[nX][nY].dGetSeaDepth(),
-             dWaveHeight = m_pRasterGrid->m_Cell[nX][nY].dGetWaveHeight(),
-             dWaveAngle = m_pRasterGrid->m_Cell[nX][nY].dGetWaveAngle();
+         double dWaveHeight = m_pRasterGrid->m_Cell[nX][nY].dGetWaveHeight();
 
          // Check that wave height at the given point is lower than maximum real wave height. If breaking wave height is expected that no good wave height are obtained, so, do not take it
          if (dWaveHeight > (m_dDepthOfClosure * m_dBreakingWaveHeightDepthRatio) && (! bModfiedWaveHeightisBreaking) && (! bFPIsEqual(dThisBreakingWaveHeight, DBL_NODATA, TOLERANCE)))
@@ -1808,7 +1800,7 @@ void CSimulation::ModifyBreakingWavePropertiesWithinShadowZoneToCoastline(int co
             bModfiedWaveHeightisBreaking = true;
 
             dThisBreakingWaveHeight = m_dDepthOfClosure * m_dBreakingWaveHeightDepthRatio;
-            dThisBreakingWaveAngle = dWaveAngle;
+            dThisBreakingWaveAngle = m_pRasterGrid->m_Cell[nX][nY].dGetWaveAngle();
             dThisBreakingDepth = m_dDepthOfClosure;
             nThisBreakingDist = nProfilePoint;
          }
@@ -1816,12 +1808,12 @@ void CSimulation::ModifyBreakingWavePropertiesWithinShadowZoneToCoastline(int co
    }
 
    // Update breaking wave properties along coastal line object (Wave height, dir, distance). TODO 010 Update the active zone cells
-   if (bProfileIsinShadowZone && bModfiedWaveHeightisBreaking) // Modified wave height is still breaking
+   if (bProfileIsinShadowZone && bModfiedWaveHeightisBreaking)    // Modified wave height is still breaking
    {
       // This coast point is in the active zone, so set breaking wave height, breaking wave angle, and depth of breaking for the coast point TODO 007 Where does the 0.78 come from? TODO 011 Should it be an input variable or a named constant?
       if (dThisBreakingWaveHeight > dThisBreakingDepth * 0.78)
       {
-         dThisBreakingWaveHeight = dThisBreakingDepth * 0.78; // Likely CShore output wave height is not adequately reproduced due to input profile and wave properties. TODO 007 Info needed. Does something need to be changed then?
+         dThisBreakingWaveHeight = dThisBreakingDepth * 0.78;     // Likely CShore output wave height is not adequately reproduced due to input profile and wave properties. TODO 007 Info needed. Does something need to be changed then?
       }
 
       // assert(dThisBreakingWaveHeight >= 0);

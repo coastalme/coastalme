@@ -696,7 +696,7 @@ double const CLIFF_COLLAPSE_HEIGHT_INCREMENT = 0.1;      // Increment the fracti
 
 double const DBL_NODATA = -9999;
 
-string const PROGRAM_NAME = "Coastal Modelling Environment (CoastalME) version 1.2.4 (30 Dec 2024)";
+string const PROGRAM_NAME = "Coastal Modelling Environment (CoastalME) version 1.2.4 (02 Jan 2025)";
 string const PROGRAM_NAME_SHORT = "CME";
 string const CME_INI = "cme.ini";
 
@@ -1196,14 +1196,17 @@ struct FillToWidth
     char chFill;
     int nWidth;
 };
-ostream &operator<<(ostream &, const FillToWidth &);
+ostream &operator<<(ostream&, const FillToWidth&);
 
 string strDbl(double const, int const);
 string strDblRight(double const, int const, int const, bool const = true);
 string strIntRight(int const, int const);
-string strCentre(string const, int const);
-string strRight(string const, int const);
-string strLeft(string const, int const);
+string strCentre(const char*, int const);
+string strCentre(const string&, int const);
+string strRight(const string&, int const);
+string strRight(const char*, int const);
+string strLeft(const string&, int const);
+string strLeft(const char*, int const);
 string strRightPerCent(double const, double const, int const, int const, bool const = true);
 #endif
 

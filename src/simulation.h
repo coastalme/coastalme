@@ -6,7 +6,7 @@
  * \author David Favis-Mortlock
  * \author Andres Payo
 
- * \date 2024
+ * \date 2025
  * \copyright GNU General Public License
  *
  * \file simulation.h
@@ -60,6 +60,7 @@ class CGeomProfile;
 class CGeomCoastPolygon;
 class CRWCliff;
 class CSedInputEvent;
+class CRWCellLandform;
 
 class CSimulation
 {
@@ -1639,6 +1640,8 @@ private:
    void AllPolygonsUpdateStoredUncons(int const);
    bool bIsInterventionCell(int const, int const) const;
    bool bSurroundedByDriftCells(int const, int const);
+   bool bElevAboveDeanElev(int const, int const, double const, CRWCellLandform const*);
+
 
    // GIS utility routines
    int nMarkBoundingBoxEdgeCells(void);

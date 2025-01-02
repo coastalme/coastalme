@@ -6,7 +6,7 @@
  * \author David Favis-Mortlock
  * \author Andres Payo
  *
- * \date 2024
+ * \date 2025
  * \copyright GNU General Public License
  *
  */
@@ -157,11 +157,6 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
             // And assign the cell's landform
             pLandform->SetLFCategory(LF_CAT_SEDIMENT_INPUT);
             pLandform->SetLFSubCategory(LF_SUBCAT_SEDIMENT_INPUT_UNCONSOLIDATED);
-
-            // // DEBUG CODE ====================
-            // if ((nPointGridX == 111) && (nPointGridY == 295))
-            //    LogStream << m_ulIter << ": in nDoSedimentInputEvent() [" << nPointGridX << "][" << nPointGridY << "] landform category = " << m_pRasterGrid->m_Cell[nPointGridX][nPointGridY].pGetLandform()->nGetLFCategory() << " landform subcategory = " << m_pRasterGrid->m_Cell[nPointGridX][nPointGridY].pGetLandform()->nGetLFSubCategory() << endl;
-            // // DEBUG CODE ====================
          }
 
          // Is some coarse unconsolidated sediment being input?
@@ -375,9 +370,10 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
    }
    else if (m_bSedimentInputAlongLine)
    {
-      // The location of the sediment input event is where a line intersects a coast. First get the line, values read from the shapefile
+      // The location of the sediment input event is where a line intersects a coast. First get the line, using values read from the shapefile
       int nPoints = static_cast<int>(m_VnSedimentInputLocationID.size());
-      vector<int> VnLineGridX, VnLineGridY;
+      vector<int> VnLineGridX;
+      vector<int> VnLineGridY;
 
       for (int n = 0; n < nPoints; n++)
       {
@@ -388,12 +384,53 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
          }
       }
 
+      // // DEBUG CODE ===========================================
+      // string strOutFile = m_strOutPath;
+      // strOutFile += "00_sediment_input_line_CHECK_";
+      // strOutFile += std::to_string(m_ulIter);
+      // strOutFile += ".tif";
+      //
+      // GDALDriver* pDriver = GetGDALDriverManager()->GetDriverByName("gtiff");
+      // GDALDataset* pDataSet = pDriver->Create(strOutFile.c_str(), m_nXGridSize, m_nYGridSize, 1, GDT_Float64, m_papszGDALRasterOptions);
+      // pDataSet->SetProjection(m_strGDALBasementDEMProjection.c_str());
+      // pDataSet->SetGeoTransform(m_dGeoTransform);
+      //
+      // int nn = 0;
+      // double* pdRaster = new double[m_nXGridSize * m_nYGridSize];
+      // for (int nY = 0; nY < m_nYGridSize; nY++)
+      // {
+      //    for (int nX = 0; nX < m_nXGridSize; nX++)
+      //    {
+      //       pdRaster[nn++] = 0;
+      //    }
+      // }
+      //
+      // for (unsigned int n = 0; n < VnLineGridX.size() - 1; n++)
+      // {
+      //    int nX = VnLineGridX[n];
+      //    int nY = VnLineGridY[n];
+      //    int m = (nY * m_nXGridSize) + nX;
+      //
+      //    pdRaster[m] = 1;
+      // }
+      //
+      // GDALRasterBand* pBand = pDataSet->GetRasterBand(1);
+      // pBand->SetNoDataValue(m_dMissingValue);
+      // int nRet = pBand->RasterIO(GF_Write, 0, 0, m_nXGridSize, m_nYGridSize, pdRaster, m_nXGridSize, m_nYGridSize, GDT_Float64, 0, 0, NULL);
+      //
+      // if (nRet == CE_Failure)
+      //    return RTN_ERR_GRIDCREATE;
+      //
+      // GDALClose(pDataSet);
+      // delete[] pdRaster;
+      // // DEBUG CODE ===========================================
+
       // Should never get here
       if (VnLineGridX.size() == 0)
          return RTN_ERR_SEDIMENT_INPUT_EVENT;
 
       if (m_nLogFileDetail >= LOG_FILE_MIDDLE_DETAIL)
-         LogStream << m_ulIter << ": Sediment input event " << nEvent << " at line/coast intersection for line with ID " << nLocID;
+         LogStream << m_ulIter << ": Sediment input event " << nEvent << " at line/coast intersection for line with ID " << nLocID << endl;
 
       // Now go along the line, joining each pair of points by a straight line
       int nCoastX = -1;
@@ -461,7 +498,7 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
 
       // OK we have an intersection of the line and coast. We will input the sediment here
       if (m_nLogFileDetail >= LOG_FILE_MIDDLE_DETAIL)
-         LogStream << ", intersection is at [" << nCoastX << "][" << nCoastY << "] = {" << dGridXToExtCRSX(nCoastX) << ", " << dGridYToExtCRSY(nCoastY) << "}" << endl;
+         LogStream << m_ulIter << ": line/coast intersection is at [" << nCoastX << "][" << nCoastY << "] = {" << dGridXToExtCRSX(nCoastX) << ", " << dGridYToExtCRSY(nCoastY) << "}" << endl;
 
       // Get landform and top layer
       CRWCellLandform* pLandform = m_pRasterGrid->m_Cell[nCoastX][nCoastY].pGetLandform();
@@ -543,7 +580,7 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
       }
 
       if (m_nLogFileDetail >= LOG_FILE_MIDDLE_DETAIL)
-         LogStream << ", depth of fine sediment added = " << dFineDepth << " m, depth of sand sediment added = " << dSandDepth << " m, depth of coarse sediment added = " << dCoarseDepth << " m" << endl;
+         LogStream << m_ulIter << "; depth of fine sediment added = " << dFineDepth << " m, depth of sand sediment added = " << dSandDepth << " m, depth of coarse sediment added = " << dCoarseDepth << " m" << endl;
    }
 
    return RTN_OK;

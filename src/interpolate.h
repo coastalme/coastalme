@@ -4,7 +4,7 @@
  * \brief Definitions of routines which return interpolated value at x from parallel arrays
  * \details TODO 001 A more detailed description of these routines.
  * \author Modified by David Favis-Mortlock and Andres Payo
- * \date 2024
+ * \date 2025
  * \copyright GNU Lesser General Public License
  *
  */

@@ -5,7 +5,7 @@
  * \author David Favis-Mortlock
  * \author Andres Payo
 
- * \date 2024
+ * \date 2025
  * \copyright GNU General Public License
  *
  * \file coast_polygon.h
@@ -188,7 +188,7 @@ private:
 
 public:
    CGeomCoastPolygon(int const, int const, int const, int const, int const, vector<CGeom2DPoint> const*, int const, int const, CGeom2DIPoint const*, CGeom2DIPoint const*, int const);
-   ~CGeomCoastPolygon(void);
+   ~CGeomCoastPolygon(void) override;
 
    void SetDownCoastThisIter(bool const);
    bool bDownCoastThisIter(void) const;

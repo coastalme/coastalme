@@ -5,7 +5,7 @@
  * \details This class represent a sediment input event such as sediment derived from inland (e.g. at the mouth of a gully or rambla), or sediment from an intervention such as beach nourishment
  * \author David Favis-Mortlock
  * \author Andres Payo
- * \date 2024
+ * \date 2025
  * \copyright GNU General Public License
  *
  * \file sediment_input_event.h

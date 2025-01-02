@@ -6,7 +6,7 @@
  * \author David Favis-Mortlock
  * \author Andres Payo
 
- * \date 2024
+ * \date 2025
  * \copyright GNU General Public License
  *
  * \file drift.h
@@ -39,7 +39,7 @@ private:
 
 public:
    CRWDrift(CRWCoast*, int const, int const);
-   ~CRWDrift(void);
+   ~CRWDrift(void) override;
 
    void Display(void) override;
 };

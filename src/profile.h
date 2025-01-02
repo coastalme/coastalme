@@ -6,7 +6,7 @@
  * \author David Favis-Mortlock
  * \author Andres Payo
 
- * \date 2024
+ * \date 2025
  * \copyright GNU General Public License
  *
  * \file profile.h
@@ -87,7 +87,7 @@ private:
 
 public:
    explicit CGeomProfile(int const);
-   ~CGeomProfile(void);
+   ~CGeomProfile(void) override;
 
    int nGetNumCoastPoint(void) const;
 
@@ -97,7 +97,7 @@ public:
    void SetEndOfCoast(bool const);
    bool bEndOfCoast(void) const;
 
-   // void SetHitLand(bool const);
+   void SetHitLand(bool const);
    bool bHitLand(void) const;
 
    void SetHitCoast(bool const);
@@ -127,7 +127,7 @@ public:
    int nGetProfileSize(void) const;
    CGeom2DPoint* pPtGetPointInProfile(int const);
    vector<CGeom2DPoint> PtVGetThisPointAndAllAfter(int const);
-   void RemoveLineSegment(int const);
+   // void RemoveLineSegment(int const);
    bool bIsPointInProfile(double const, double const);
    bool bIsPointInProfile(double const, double const, int&);
 //    int nFindInsertionLineSeg(double const, double const);

@@ -6,7 +6,7 @@
  * \author David Favis-Mortlock
  * \author Andres Payo
 
- * \date 2024
+ * \date 2025
  * \copyright GNU General Public License
  *
  */
@@ -145,11 +145,6 @@ void CSimulation::FloodFillSea(int const nXStart, int const nYStart)
          // Set the sea depth for this cell
          m_pRasterGrid->m_Cell[nX][nY].SetSeaDepth();
 
-         // // DEBUG CODE ====================
-         // if ((nX == 110) && (nY == 294))
-         //    LogStream << m_ulIter << ": in FloodFillSea() BEFORE [" << nX << "][" << nY << "] landform category = " << m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->nGetLFCategory() << " landform subcategory = " << m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->nGetLFSubCategory() << endl;
-         // // DEBUG CODE ====================
-
          CRWCellLandform* pLandform = m_pRasterGrid->m_Cell[nX][nY].pGetLandform();
          int nCat = pLandform->nGetLFCategory();
 
@@ -163,20 +158,10 @@ void CSimulation::FloodFillSea(int const nXStart, int const nYStart)
 
                // Set this sea cell to have deep water (off-shore) wave orientation and height, will change this later for cells closer to the shoreline if we have on-shore waves
                m_pRasterGrid->m_Cell[nX][nY].SetWaveValuesToDeepWaterWaveValues();
-
-               // // DEBUG CODE ====================
-               // if ((nX == 110) && (nY == 294))
-               //    LogStream << m_ulIter << ": in FloodFillSea() SUBMERGED [" << nX << "][" << nY << "] landform category = " << m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->nGetLFCategory() << " landform subcategory = " << m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->nGetLFSubCategory() << " sediment top elev = " << m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElev() << " SWL = " << m_dThisIterSWL << endl;
-               // // DEBUG CODE ====================
             }
             else
             {
                pLandform->SetLFCategory(LF_CAT_SEDIMENT_INPUT_NOT_SUBMERGED);
-
-               // // DEBUG CODE ====================
-               // if ((nX == 110) && (nY == 294))
-               //    LogStream << m_ulIter << ": in FloodFillSea() NOT SUBMERGED [" << nX << "][" << nY << "] landform category = " << m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->nGetLFCategory() << " landform subcategory = " << m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->nGetLFSubCategory() << " sediment top elev = " << m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElev() << " SWL = " << m_dThisIterSWL << endl;
-               // // DEBUG CODE ====================
             }
          }
          else
@@ -188,11 +173,6 @@ void CSimulation::FloodFillSea(int const nXStart, int const nYStart)
             // Set this sea cell to have deep water (off-shore) wave orientation and height, will change this later for cells closer to the shoreline if we have on-shore waves
             m_pRasterGrid->m_Cell[nX][nY].SetWaveValuesToDeepWaterWaveValues();
          }
-
-         // // DEBUG CODE ====================
-         // if ((nX == 110) && (nY == 294))
-         //    LogStream << m_ulIter << ": in FloodFillSea() AFTER [" << nX << "][" << nY << "] landform category = " << m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->nGetLFCategory() << " landform subcategory = " << m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->nGetLFSubCategory() << endl;
-         // // DEBUG CODE ====================
 
          // Now sort out the x-y extremities of the contiguous sea for the bounding box (used later in wave propagation)
          if (nX < m_nXMinBoundingBox)

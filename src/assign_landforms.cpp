@@ -6,7 +6,7 @@
  * \author David Favis-Mortlock
  * \author Andres Payo
 
- * \date 2024
+ * \date 2025
  * \copyright GNU General Public License
  *
  */
@@ -419,7 +419,7 @@ int CSimulation::nAssignLandformsForAllCells(void)
                continue;
             }
 
-            if ((nCat == LF_CAT_DRIFT) || (nCat == LF_CAT_INTERVENTION))
+            if ((nCat == LF_CAT_DRIFT) || (nCat == LF_CAT_INTERVENTION) || (nCat == LF_CAT_SEDIMENT_INPUT) || (nCat == LF_CAT_SEDIMENT_INPUT_SUBMERGED) || (nCat == LF_CAT_SEDIMENT_INPUT_NOT_SUBMERGED))
                // Do nothing
                continue;
 
@@ -445,7 +445,7 @@ bool CSimulation::bSurroundedByDriftCells(int const nX, int const nY)
    nYTmp = nY - 1;
    if (bIsWithinValidGrid(nXTmp, nYTmp))
    {
-      CRWCellLandform* pLandform = m_pRasterGrid->m_Cell[nXTmp][nYTmp].pGetLandform();
+      CRWCellLandform const* pLandform = m_pRasterGrid->m_Cell[nXTmp][nYTmp].pGetLandform();
       int nCat = pLandform->nGetLFCategory();
       if ((nCat == LF_CAT_DRIFT) || (nCat == LF_CAT_CLIFF))
          nAdjacent++;
@@ -456,7 +456,7 @@ bool CSimulation::bSurroundedByDriftCells(int const nX, int const nY)
    nYTmp = nY;
    if (bIsWithinValidGrid(nXTmp, nYTmp))
    {
-      CRWCellLandform* pLandform = m_pRasterGrid->m_Cell[nXTmp][nYTmp].pGetLandform();
+      CRWCellLandform const* pLandform = m_pRasterGrid->m_Cell[nXTmp][nYTmp].pGetLandform();
       int nCat = pLandform->nGetLFCategory();
       if ((nCat == LF_CAT_DRIFT) || (nCat == LF_CAT_CLIFF))
          nAdjacent++;
@@ -467,7 +467,7 @@ bool CSimulation::bSurroundedByDriftCells(int const nX, int const nY)
    nYTmp = nY + 1;
    if (bIsWithinValidGrid(nXTmp, nYTmp))
    {
-      CRWCellLandform* pLandform = m_pRasterGrid->m_Cell[nXTmp][nYTmp].pGetLandform();
+      CRWCellLandform const* pLandform = m_pRasterGrid->m_Cell[nXTmp][nYTmp].pGetLandform();
       int nCat = pLandform->nGetLFCategory();
       if ((nCat == LF_CAT_DRIFT) || (nCat == LF_CAT_CLIFF))
          nAdjacent++;
@@ -478,7 +478,7 @@ bool CSimulation::bSurroundedByDriftCells(int const nX, int const nY)
    nYTmp = nY;
    if (bIsWithinValidGrid(nXTmp, nYTmp))
    {
-      CRWCellLandform* pLandform = m_pRasterGrid->m_Cell[nXTmp][nYTmp].pGetLandform();
+      CRWCellLandform const* pLandform = m_pRasterGrid->m_Cell[nXTmp][nYTmp].pGetLandform();
       int nCat = pLandform->nGetLFCategory();
       if ((nCat == LF_CAT_DRIFT) || (nCat == LF_CAT_CLIFF))
          nAdjacent++;

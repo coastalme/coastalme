@@ -6,7 +6,7 @@
  * \author David Favis-Mortlock
  * \author Andres Payo
 
- * \date 2024
+ * \date 2025
  * \copyright GNU General Public License
  *
  */
@@ -60,6 +60,8 @@ int CSimulation::nDoAllShorePlatFormErosion(void)
 
       // Calculate potential erosion on every coastline-normal profile. Can do this in the original, curvature-related, sequence of profiles
       int nProfile = 0;
+
+      // cppcheck-suppress internalAstError
       for ((bForward ? nProfile = 0 : nProfile = (nNumProfiles - 1)); (bForward ? nProfile < nNumProfiles : nProfile >= 0); (bForward ? nProfile++ : nProfile--))
       {
          // Calculate potential platform erosion along the length of this profile
@@ -666,13 +668,13 @@ int CSimulation::nCalcPotentialPlatformErosionBetweenProfiles(int const nCoast, 
 
             // Set the potential (unconstrained) erosion for this cell, it is a +ve value
             m_pRasterGrid->m_Cell[nXPar][nYPar].SetPotentialPlatformErosion(-dDeltaZ);
-            //               LogStream << "[" << nXPar << "][" << nYPar << "] = {" << dGridCentroidXToExtCRSX(nXPar) << ", " <<  dGridCentroidYToExtCRSY(nYPar) << "} has potential platform erosion = " << -dDeltaZ << endl;
+//               LogStream << "[" << nXPar << "][" << nYPar << "] = {" << dGridCentroidXToExtCRSX(nXPar) << ", " <<  dGridCentroidYToExtCRSY(nYPar) << "} has potential platform erosion = " << -dDeltaZ << endl;
 
             // Update this-timestep totals
             m_ulThisIterNumPotentialPlatformErosionCells++;
             m_dThisIterPotentialPlatformErosion -= dDeltaZ; // Since dDeltaZ is a -ve value
-                                                            //             assert(isfinite(m_dThisIterPotentialPlatformErosion));
-                                                            //             assert(m_dThisIterPotentialPlatformErosion >= 0);
+//             assert(isfinite(m_dThisIterPotentialPlatformErosion));
+//             assert(m_dThisIterPotentialPlatformErosion >= 0);
 
             // Increment the check values
             m_ulTotPotentialPlatformErosionBetweenProfiles++;

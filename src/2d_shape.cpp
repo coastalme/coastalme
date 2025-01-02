@@ -4,7 +4,7 @@
 \details Abstract class, used as a base class for 2D objects (line, area, etc.)
 \author David Favis-Mortlock
 \author Andres Payo
-\date 2024
+\date 2025
 \copyright GNU General Public License
 */
 

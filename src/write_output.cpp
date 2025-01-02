@@ -6,7 +6,7 @@
  * \author David Favis-Mortlock
  * \author Andres Payo
 
- * \date 2024
+ * \date 2025
  * \copyright GNU General Public License
  *
  */
@@ -1777,7 +1777,7 @@ void CSimulation::WritePolygonActualMovement(int const nCoast, vector<vector<int
    double dTmpTotAllDeposition = 0;
 
    double dTmpFineErosion = 0;
-   double dTmpFineDeposition = 0;
+   // double dTmpFineDeposition = 0;
 
    double dTmpSandErosion = 0;
    double dTmpSandErosionDDPD = 0;

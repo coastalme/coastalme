@@ -5,7 +5,7 @@
  * \details The CGeom2DIPoint geometry class is used to represent 2D points where the x and y co-ordinates can only be integer values, e.g. points for which the x and y co-ordinates are in the raster-grid CRS (co-ordinate reference system)
  * \author David Favis-Mortlock
  * \author Andres Payo
- * \date 2024
+ * \date 2025
  * \copyright GNU General Public License
  *
  */

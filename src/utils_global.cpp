@@ -6,7 +6,7 @@
  * \author David Favis-Mortlock
  * \author Andres Payo
 
- * \date 2024
+ * \date 2025
  * \copyright GNU General Public License
  *
  */
@@ -157,10 +157,11 @@ string strIntRight(int const nX, int const nWidth)
 }
 
 //===============================================================================================================================
-//! Centre-aligns string or char within a field of given width, pads with blank spaces to enforce alignment. From https://stackoverflow.com/questions/14765155/how-can-i-easily-format-my-data-table-in-c
+//! Centre-aligns char array within a field of given width, pads with blank spaces to enforce alignment. From https://stackoverflow.com/questions/14765155/how-can-i-easily-format-my-data-table-in-c
 //===============================================================================================================================
-string strCentre(string const strIn, int const nWidth)
+string strCentre(const char* pchIn, int const nWidth)
 {
+   string strIn(pchIn);
    stringstream ss, spaces;
    int nPadding = nWidth - static_cast<int>(strIn.size());
    
@@ -176,10 +177,44 @@ string strCentre(string const strIn, int const nWidth)
 }
 
 //===============================================================================================================================
+//! Centre-aligns string within a field of given width, pads with blank spaces to enforce alignment. From https://stackoverflow.com/questions/14765155/how-can-i-easily-format-my-data-table-in-c
+//===============================================================================================================================
+string strCentre(const string& strIn, int const nWidth)
+{
+   stringstream ss, spaces;
+   int nPadding = nWidth - static_cast<int>(strIn.size());
+
+   for (int i = 0; i < nPadding / 2; ++i)
+      spaces << " ";
+
+   ss << spaces.str() << strIn << spaces.str();
+
+   if (nPadding > 0 && nPadding % 2 != 0)       // If odd number, add one space
+      ss << " ";
+
+   return ss.str();
+}
+
+//===============================================================================================================================
 //! Right-aligns string within a field of given width, pads with blank spaces to enforce alignment. From https://stackoverflow.com/questions/14765155/how-can-i-easily-format-my-data-table-in-c
 //===============================================================================================================================
-string strRight(string const strIn, int const nWidth)
+string strRight(const string& strIn, int const nWidth)
 {
+   stringstream ss, spaces;
+   int nPadding = nWidth - static_cast<int>(strIn.size()) - 1;
+   for (int i = 0; i < nPadding; ++i)
+      spaces << " ";
+   ss << spaces.str() << strIn;
+   ss << " ";
+   return ss.str();
+}
+
+//===============================================================================================================================
+//! Right-aligns char array within a field of given width, pads with blank spaces to enforce alignment. From https://stackoverflow.com/questions/14765155/how-can-i-easily-format-my-data-table-in-c
+//===============================================================================================================================
+string strRight(const char* pchIn, int const nWidth)
+{
+   string strIn(pchIn);
    stringstream ss, spaces;
    int nPadding = nWidth - static_cast<int>(strIn.size()) - 1;
    for (int i = 0; i < nPadding; ++i)
@@ -192,8 +227,22 @@ string strRight(string const strIn, int const nWidth)
 //===============================================================================================================================
 //! Left-aligns string within a field of given width, pads with blank spaces to enforce alignment. From https://stackoverflow.com/questions/14765155/how-can-i-easily-format-my-data-table-in-c
 //===============================================================================================================================
-string strLeft(string const strIn, int const nWidth)
+string strLeft(const string& strIn, int const nWidth)
 {
+   stringstream ss, spaces;
+   int nPadding = nWidth - static_cast<int>(strIn.size());
+   for (int i = 0; i < nPadding; ++i)
+      spaces << " ";
+   ss << strIn << spaces.str();
+   return ss.str();
+}
+
+//===============================================================================================================================
+//! Left-aligns char array within a field of given width, pads with blank spaces to enforce alignment. From https://stackoverflow.com/questions/14765155/how-can-i-easily-format-my-data-table-in-c
+//===============================================================================================================================
+string strLeft(const char* pchIn, int const nWidth)
+{
+   string strIn(pchIn);
    stringstream ss, spaces;
    int nPadding = nWidth - static_cast<int>(strIn.size());
    for (int i = 0; i < nPadding; ++i)

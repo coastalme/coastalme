@@ -6,7 +6,7 @@
  * \author David Favis-Mortlock
  * \author Andres Payo
 
- * \date 2024
+ * \date 2025
  * \copyright GNU General Public License
  *
  */
@@ -220,7 +220,9 @@ CSimulation::CSimulation (void)
    m_nYMinBoundingBox = INT_MAX;
    m_nYMaxBoundingBox = INT_MIN;
 
-   m_GDALWriteIntDataType =
+   // cppcheck-suppress useInitializationList
+   m_GDALWriteIntDataType = GDT_Unknown;
+   // cppcheck-suppress useInitializationList
    m_GDALWriteFloatDataType = GDT_Unknown;
 
    m_lGDALMaxCanWrite =
@@ -365,7 +367,10 @@ CSimulation::CSimulation (void)
    m_dTotalSandUnconsInPolygons =
    m_dTotalCoarseUnconsInPolygons =
    m_dUnconsSandNotDepositedLastIter =
-   m_dUnconsCoarseNotDepositedLastIter = 0;
+   m_dUnconsCoarseNotDepositedLastIter =
+   m_dTotalFineConsInPolygons =
+   m_dTotalSandConsInPolygons =
+   m_dTotalCoarseConsInPolygons = 0;
 
    m_dMinSWL = DBL_MAX;
    m_dMaxSWL = DBL_MIN;
@@ -681,6 +686,7 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
    }
 
    // Do some more initialisation
+   // cppcheck-suppress truncLongCastAssignment
    m_ulNumCells = m_nXGridSize * m_nYGridSize;
 
    // Mark edge cells, as defined by the basement layer

@@ -6,7 +6,7 @@
  * \author David Favis-Mortlock
  * \author Andres Payo
 
- * \date 2024
+ * \date 2025
  * \copyright GNU General Public License
  *
  */
@@ -127,7 +127,7 @@ vector<vector<pair<int, int> > > CGeomMultiLine::prVVGetAllLineSegAfter(int cons
 //! Removes a line segment
 void CGeomMultiLine::RemoveLineSegment(int const nSegment)
 {
-   m_prVVLineSegment.erase(m_prVVLineSegment.begin()+nSegment);
+   m_prVVLineSegment.erase(m_prVVLineSegment.begin() + nSegment);
 }
 
 //! Appends a coincident profile pair to the CGeomMultiLine object's final line segment

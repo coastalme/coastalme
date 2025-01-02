@@ -6,7 +6,7 @@
  * \author David Favis-Mortlock
  * \author Andres Payo
 
- * \date 2024
+ * \date 2025
  * \copyright GNU General Public License
  *
  */
@@ -678,14 +678,12 @@ int CSimulation::nReadRasterGISFile(int const nDataItem, int const nLayer)
       }
 
       // If present, get the missing value setting
-      int nMissingValue;
-      double dMissingValue;
       string strTmp = strToLower(&strDataType);
       if (strTmp.find("int") != string::npos)
       {
          // This is an integer layer
-         CPLPushErrorHandler(CPLQuietErrorHandler);                     // Needed to get next line to fail silently, if it fails
-         nMissingValue = static_cast<int>(pGDALBand->GetNoDataValue()); // Note will fail for some formats
+         CPLPushErrorHandler(CPLQuietErrorHandler);                              // Needed to get next line to fail silently, if it fails
+         int nMissingValue = static_cast<int>(pGDALBand->GetNoDataValue());      // Note will fail for some formats
          CPLPopErrorHandler();
 
          if (nMissingValue != m_nMissingValue)
@@ -696,8 +694,8 @@ int CSimulation::nReadRasterGISFile(int const nDataItem, int const nLayer)
       else
       {
          // This is a floating point layer
-         CPLPushErrorHandler(CPLQuietErrorHandler);   // Needed to get next line to fail silently, if it fails
-         dMissingValue = pGDALBand->GetNoDataValue(); // Note will fail for some formats
+         CPLPushErrorHandler(CPLQuietErrorHandler);                              // Needed to get next line to fail silently, if it fails
+         double dMissingValue = pGDALBand->GetNoDataValue();                     // Note will fail for some formats
          CPLPopErrorHandler();
 
          if (! bFPIsEqual(dMissingValue, m_dMissingValue, TOLERANCE))
@@ -1512,10 +1510,12 @@ bool CSimulation::bWriteRasterGISFile(int const nDataItem, string const *strPlot
                break;
 
             case (RASTER_PLOT_POTENTIAL_PLATFORM_EROSION_MASK):
+               // cppcheck-suppress assignBoolToFloat
                dTmp = m_pRasterGrid->m_Cell[nX][nY].bPotentialPlatformErosion();
                break;
 
             case (RASTER_PLOT_INUNDATION_MASK):
+               // cppcheck-suppress assignBoolToFloat
                dTmp = m_pRasterGrid->m_Cell[nX][nY].bIsInContiguousSea();
                break;
 

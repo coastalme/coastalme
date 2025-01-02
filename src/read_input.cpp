@@ -6,7 +6,7 @@
  * \author David Favis-Mortlock
  * \author Andres Payo
 
- * \date 2024
+ * \date 2025
  * \copyright GNU General Public License
  *
  */
@@ -581,7 +581,7 @@ bool CSimulation::bReadRunDataFile(void)
                   if (n < NRNG-1)
                   {
                      for (int m = n; m < NRNG; m++)
-                        m_ulRandSeed[m] = m_ulRandSeed[m - 1];
+                        m_ulRandSeed[m] = m_ulRandSeed[n];
                   }
                }
             }

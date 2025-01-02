@@ -79,9 +79,11 @@ CoastalME CHANGELOG
          Code tidying
 
 1.2.4    Sediment input events at a point now working correctly
-         Extra safety checks
+         Sediment input events on a line mostly working
+         Several extra safety checks
          Extra safety check in CShore
          Code tidying
+         Implemented some Cppcheck suggestions
 
 
 

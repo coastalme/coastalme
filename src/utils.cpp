@@ -6,7 +6,7 @@
  * \author David Favis-Mortlock
  * \author Andres Payo
 
- * \date 2024
+ * \date 2025
  * \copyright GNU General Public License
  *
  */
@@ -128,7 +128,7 @@ int CSimulation::nHandleCommandLineParams(int nArg, char const* pcArgv[])
             if (strArg.find("--home") != string::npos)
             {
                // Read in user defined runtime directory
-               string strTmp;
+               // string strTmp;
 
                // Find the position of '='
                size_t pos = strArg.find('=');
@@ -142,7 +142,7 @@ int CSimulation::nHandleCommandLineParams(int nArg, char const* pcArgv[])
                else
                {
                   // No
-                  cout << "No '=' found in the input string!" << endl;
+                  cout << "No '=' found in the input string" << endl;
                }
                return (RTN_OK);
             }

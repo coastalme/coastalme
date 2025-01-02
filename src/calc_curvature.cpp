@@ -6,7 +6,7 @@
  * \author David Favis-Mortlock
  * \author Andres Payo
 
- * \date 2024
+ * \date 2025
  * \copyright GNU General Public License
  *
  */
@@ -107,40 +107,29 @@ void CSimulation::DoCoastCurvature(int const nCoast, int const nHandedness)
    dSquareSum = inner_product(pVSmooth->begin(), pVSmooth->end(), pVSmooth->begin(), 0.0), dSTD = sqrt(dSquareSum / static_cast<double>(pVSmooth->size()) - dMean * dMean);
    m_VCoast[nCoast].SetSmoothCurvatureSTD(dSTD);
 
-   int nMaxConvexSmoothedCoastPoint = -1;
-   int nMaxConvexDetailedCoastPoint = -1;
    double dMaxConvexDetailed = DBL_MAX;
    double dMaxConvexSmoothed = DBL_MAX;
    for (int mm = 0; mm < nCoastSize; mm++)
    {
-//       CGeom2DIPoint PtiThis = *m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(mm);
-//       CGeom2DPoint PtThis = *m_VCoast[nCoast].pPtGetCoastlinePointExtCRS(mm);
-
-//       LogStream << m_ulIter << ": at coast point (" << mm << ") [" << PtiThis.nGetX() << "][" << PtiThis.nGetY() << "] = {" << PtThis.dGetX() << ", " << PtThis.dGetY() << "} curvature = " << m_VCoast[nCoast].dGetDetailedCurvature(mm) << " smoothed curvature = " << m_VCoast[nCoast].dGetSmoothCurvature(mm) << endl;
-
       if (m_VCoast[nCoast].dGetDetailedCurvature(mm) < dMaxConvexDetailed)
       {
          dMaxConvexDetailed = m_VCoast[nCoast].dGetDetailedCurvature(mm);
-         nMaxConvexDetailedCoastPoint = mm;
       }
 
       if (m_VCoast[nCoast].dGetSmoothCurvature(mm) < dMaxConvexSmoothed)
       {
          dMaxConvexSmoothed = m_VCoast[nCoast].dGetSmoothCurvature(mm);
-         nMaxConvexSmoothedCoastPoint = mm;
+         // nMaxConvexSmoothedCoastPoint = mm;
       }
    }
 
    if (bFPIsEqual(dMaxConvexDetailed, 0.0, TOLERANCE))
    {
-      // We have a straight-line coast, so set the point of maximum detailed convexity at the coast mid-point
-      nMaxConvexDetailedCoastPoint =
-      nMaxConvexSmoothedCoastPoint = nCoastSize / 2;
+      // We have a straight-line coast, so set the point of maximum convexity at the coast mid-point
+      int nMaxConvexCoastPoint = nCoastSize / 2;
 
-      m_VCoast[nCoast].SetDetailedCurvature(nMaxConvexDetailedCoastPoint, STRAIGHT_COAST_MAX_DETAILED_CURVATURE);
-
-      // And set the point of maximum smoothed convexity at the same point
-      m_VCoast[nCoast].SetSmoothCurvature(nMaxConvexSmoothedCoastPoint, STRAIGHT_COAST_MAX_SMOOTH_CURVATURE);
+      m_VCoast[nCoast].SetDetailedCurvature(nMaxConvexCoastPoint, STRAIGHT_COAST_MAX_DETAILED_CURVATURE);
+      m_VCoast[nCoast].SetSmoothCurvature(nMaxConvexCoastPoint, STRAIGHT_COAST_MAX_SMOOTH_CURVATURE);
    }
 
 //    LogStream << "-----------------" << endl;
