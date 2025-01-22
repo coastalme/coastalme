@@ -100,7 +100,7 @@ Enjoy!
 */
 
 /*
-   NOTE Before releasing a new version, do a debug build with -fsanitize options enabled (see CMakeLists.txt) then run the test suite BUT NOT UNDER DEBUG (i.e. not using gdb)
+   NOTE Before releasing a new version, do a pre-release build with -fsanitize options enabled (see CMakeLists.txt) then run the test suite BUT NOT UNDER DEBUG (i.e. not using gdb)
 
    TODOLIST ***********************************************************************************************************
    DOCUMENTATION
@@ -128,7 +128,7 @@ Enjoy!
    TODO 004 Improve error handling of situation where we have a valid shadow zone but cannot find a neighbouring cell which is 'under' the coastline
    TODO 006 Check GDALGridCreate() with only start-of-coast or an end-of-coast profiles
    TODO 009 Decide what to do when we have eroded down to basement
-   TODO 015 Improve situation where profile hits another profile which belongs to a different coast object (will certainly need this for estuaries)
+   TODO 015 Improve situation where profile hits another profile which belongs to a different coast object. Will certainly need this for estuaries TODO 085 *** NOT YET IN ISSUES
    TODO 017 Extra safety check needed, make sure that each point is within valid grid
    TODO 018 Improve situation where new landwards point on parallel profile is not within the raster grid
    TODO 019 Improve situation where Dean profile has a near-zero elevation difference
@@ -140,6 +140,7 @@ Enjoy!
    TODO 053 Improve handling of situation where landward elevation of profile is -ve
    TODO 055 Maybe add a safety check here?
    TODO 080 Do we get -ve breaking wave heights here?
+   TODO 084 Improve handling of situation where consecutive profile are same distance from shoreline *** NOT YET IN ISSUES
 
    THEORY/EFFICIENCY
    TODO 002 Do we really need D50 for drift landform class? What do we need for drift?
@@ -151,10 +152,9 @@ Enjoy!
    TODO 016 Check mass balance for recirculating unconsolidated sediment option
    TODO 023 Only calculate shore platform erosion if cell is in a polygon
    TODO 024 Should we calculate platform erosion on a profile that has hit dry land?
-   TODO 044 Estuaries :-)
+   TODO 044 Implement estuaries. Before we can do this, we will need to deal with multiple coastlines TODO 085 *** UPDATE ISSUES
    TODO 051 Implement other ways of calculating depth of closure, see TODO 045
    TODO 056 Check this please Andres
-   TODO 057 Check this please Manuel
    TODO 059 Implement dune landform class
    TODO 060 Remove 'magic numbers' from code here
    TODO 061 Is this safety check to depth of breaking a reasonable thing to do?
@@ -166,6 +166,7 @@ Enjoy!
    TODO 077 As traverse between the bounding profiles creating parallel profiles, gradually change the parallel profile orientation based on distance weighting of two bounding profiles
    TODO 078 At present, we don't allow cliff collapse onto interventions. Is this realistic? Should it be different for different types on intervention?
    Why do we get patches of sediment in the sea?
+   TODO 085 Complete support for multiple coastlines. This is partly in place, but some things remain to be done
 
    OUTPUT
    TODO 065 Get GPKG output working: GDAL 3.9.1 does not yet implement this correctly. Currently is OK for vector output (but is very slow), not yet working for raster output
@@ -182,7 +183,7 @@ Enjoy!
    TODO 074 Output history of what landforms are on a particular cell or cells. User inputs cell(s), how?
    TODO 082 Also show m_dStartIterUnconsFineAllCells etc. in log file
 
-   083 is max
+   085 is max
 
    COMPLETED
    TODO 003 Make coastline curvature moving window size a user input DONE in 1.1.22
@@ -202,6 +203,8 @@ Enjoy!
    TODO 050 Update for recent versions of Windows DONE 1.2.3, 2 Dec 2024
    TODO 037 Need more info on nFindIndex() DONE 1.2.3, 2 Dec 2024
    Improve coast normals DONE 1.2.3, 20 Dec 2024
+   TODO 057 Check this please Manuel DONE 1.2.4, 4 Han 2025 *** TO ISSUES
+
 */
 
 #ifndef CME_H
@@ -696,11 +699,11 @@ double const CLIFF_COLLAPSE_HEIGHT_INCREMENT = 0.1;      // Increment the fracti
 
 double const DBL_NODATA = -9999;
 
-string const PROGRAM_NAME = "Coastal Modelling Environment (CoastalME) version 1.2.4 (02 Jan 2025)";
+string const PROGRAM_NAME = "Coastal Modelling Environment (CoastalME) version 1.3.0 (22 Jan 2025)";
 string const PROGRAM_NAME_SHORT = "CME";
 string const CME_INI = "cme.ini";
 
-string const COPYRIGHT = "(C) 2024 Andres Payo and David Favis-Mortlock";
+string const COPYRIGHT = "(C) 2025 Andres Payo and David Favis-Mortlock";
 string const LINE = "-------------------------------------------------------------------------------";
 string const DISCLAIMER1 = "This program is distributed in the hope that it will be useful, but WITHOUT ANY";
 string const DISCLAIMER2 = "WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A";

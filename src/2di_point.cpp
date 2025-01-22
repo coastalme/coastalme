@@ -1,8 +1,8 @@
 /*!
  *
  * \file 2di_point.cpp
- * \brief Geometry class used to represent 2D point objects with integer co-ordinates
- * \details The CGeom2DIPoint geometry class is used to represent 2D points where the x and y co-ordinates can only be integer values, e.g. points for which the x and y co-ordinates are in the raster-grid CRS (co-ordinate reference system)
+ * \brief Geometry class used to represent 2D point objects with integer coordinates
+ * \details The CGeom2DIPoint geometry class is used to represent 2D points where the x and y coordinates are integer values (e.g. for the raster grid coordinate reference system)
  * \author David Favis-Mortlock
  * \author Andres Payo
  * \date 2025
@@ -24,85 +24,85 @@ You should have received a copy of the GNU General Public License along with thi
 #include "2di_point.h"
 #include "cme.h"
 
-//! Constructor with no parameters (the X and Y co-ordinates of the CGeom2DIPoint object are set to zero in an initialization list)
+//! Constructor with no parameters (the X and Y coordinates of the CGeom2DIPoint object are set to zero in an initialization list)
 CGeom2DIPoint::CGeom2DIPoint(void)
 :  nX(0),
    nY(0)
 {
 }
 
-//! Constructor with two integer parameters, for the X and Y co-ordinates of the CGeom2DIPoint object
+//! Constructor with two integer parameters, for the X and Y coordinates of the CGeom2DIPoint object
 CGeom2DIPoint::CGeom2DIPoint(int const nNewX, int const nNewY)
 :  nX(nNewX),
    nY(nNewY)
 {
 }
 
-//! Returns the CGeom2DIPoint object's integer X co-ordinate
+//! Returns the CGeom2DIPoint object's integer X coordinate
 int CGeom2DIPoint::nGetX(void) const
 {
    return nX;
 }
 
-//! Returns the CGeom2DIPoint object's integer Y co-ordinate
+//! Returns the CGeom2DIPoint object's integer Y coordinate
 int CGeom2DIPoint::nGetY(void) const
 {
    return nY;
 }
 
-//! Returns a reference to the CGeom2DIPoint object's integer X co-ordinate
+//! Returns a reference to the CGeom2DIPoint object's integer X coordinate
 int* CGeom2DIPoint::pnGetX(void)
 {
    return &nX;
 }
 
-//! Returns a reference to the CGeom2DIPoint object's integer Y co-ordinate
+//! Returns a reference to the CGeom2DIPoint object's integer Y coordinate
 int* CGeom2DIPoint::pnGetY(void)
 {
    return &nY;
 }
 
-//! The integer parameter sets a value for the CGeom2DIPoint object's X co-ordinate
+//! The integer parameter sets a value for the CGeom2DIPoint object's X coordinate
 void CGeom2DIPoint::SetX(int const nNewX)
 {
    nX = nNewX;
 }
 
-//! The integer parameter sets a value for the CGeom2DIPoint object's Y co-ordinate
+//! The integer parameter sets a value for the CGeom2DIPoint object's Y coordinate
 void CGeom2DIPoint::SetY(int const nNewY)
 {
    nY = nNewY;
 }
 
-//! The two integer parameters set values for the CGeom2DIPoint object's X and Y co-ordinates
+//! The two integer parameters set values for the CGeom2DIPoint object's X and Y coordinates
 void CGeom2DIPoint::SetXY(int const nNewX, int const nNewY)
 {
    nX = nNewX;
    nY = nNewY;
 }
 
-//! The parameter is a pointer to a CGeom2DIPoint object, this is used to set values for the CGeom2DIPoint object's X and Y co-ordinates
+//! The parameter is a pointer to a CGeom2DIPoint object, this is used to set values for the CGeom2DIPoint object's X and Y coordinates
 // void CGeom2DIPoint::SetXY(CGeom2DIPoint const* Pti)
 // {
 //    nX = Pti->nGetX();
 //    nY = Pti->nGetY();
 // }
 
-//! Adds the first integer parameter to the CGeom2DIPoint object's X co-ordinate, adds the second integer parameter to the CGeom2DIPoint object's Y co-ordinate
+//! Adds the first integer parameter to the CGeom2DIPoint object's X coordinate, adds the second integer parameter to the CGeom2DIPoint object's Y coordinate
 void CGeom2DIPoint::AddXAddY(int const nXToAdd, int const nYToAdd)
 {
    nX += nXToAdd;
    nY += nYToAdd;
 }
 
-//! Adds the first double parameter (rounded) to the CGeom2DIPoint object's X co-ordinate, adds the second double parameter (rounded) to the CGeom2DIPoint object's Y co-ordinate
+//! Adds the first double parameter (rounded) to the CGeom2DIPoint object's X coordinate, adds the second double parameter (rounded) to the CGeom2DIPoint object's Y coordinate
 void CGeom2DIPoint::AddXAddY(double const dXToAdd, double const dYToAdd)
 {
    nX += nRound(dXToAdd);
    nY += nRound(dYToAdd);
 }
 
-//! Divides the CGeom2DIPoint object's X co-ordinate by the first double parameter (rounded), divides the CGeom2DIPoint object's Y co-ordinate by the second double parameter (rounded)
+//! Divides the CGeom2DIPoint object's X coordinate by the first double parameter (rounded), divides the CGeom2DIPoint object's Y coordinate by the second double parameter (rounded)
 void CGeom2DIPoint::DivXDivY(double const dXDiv, double const dYDiv)
 {
    int

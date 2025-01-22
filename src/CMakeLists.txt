@@ -81,21 +81,43 @@ if (CMAKE_COMPILER_IS_GNUCC)
 
    set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=native")
 
-   # For Debug builds under gcc
+   # Debug build using gcc
    if (CMAKE_BUILD_TYPE_LC STREQUAL "debug")
       set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -W -Wall -Wextra -Wpointer-arith -Wconversion -Wcast-qual -Wcast-align -Wwrite-strings -Wredundant-decls -Wno-strict-overflow -Wshadow -Wuninitialized -Wnull-dereference -Wformat -Wformat-overflow -Wformat-signedness -Wuseless-cast -Wempty-body -Wfloat-equal")
 
-      # # Use these before a release ====================================================================================
-      # if (CMAKE_CXX_COMPILER_VERSION VERSION_GREATER "5.0")
-      #    set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=undefined -fsanitize=shift -fsanitize=integer-divide-by-zero -fsanitize=unreachable -fsanitize=null -fsanitize=return -fsanitize=vla-bound -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fsanitize=bounds -fsanitize=alignment -fsanitize=object-size -fsanitize=vptr")
-      #    #  -fsanitize=address
-      # endif ()
-      # # END Use these before a release ================================================================================
+      # ===============================================================================================================
+      # Also use these with debug builds to check for vulnerabilities at compile time, see https://best.openssf.org/Compiler-Hardening-Guides/Compiler-Options-Hardening-Guide-for-C-and-C++.html
+      # ===============================================================================================================
+      if (CMAKE_CXX_COMPILER_VERSION VERSION_GREATER "7.0")
+         set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wformat -Wformat=2 -Wimplicit-fallthrough -Werror=format-security -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=3 -D_GLIBCXX_ASSERTIONS -fstrict-flex-arrays=3 -fstack-clash-protection -fstack-protector-strong -Wl,-z,nodlopen -Wl,-z,noexecstack -Wl,-z,relro -Wl,-z,now -Wl,--as-needed -Wl,--no-copy-dt-needed-entries")
+      # -Wtrampolines
+      # -Wbidi-chars=any
+      # -fPIE -pie
+      # (for x86_64)	-fcf-protection=full
+      endif ()
+      # ===============================================================================================================
 
 #      set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Weffc++")
    endif ()
 
-   # Finally set some gcc-specific linker flags
+   if (CMAKE_BUILD_TYPE_LC STREQUAL "prerelease")
+      # Pre-release build using gcc, do this before a release to check for memory access problems. Note that -fsanitize=address (and the other sanitize options?) DO NOT work if run under gdb
+      # # ===============================================================================================================
+      if (CMAKE_CXX_COMPILER_VERSION VERSION_GREATER "5.0")
+         set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=undefined -fsanitize=shift -fsanitize=integer-divide-by-zero -fsanitize=unreachable -fsanitize=null -fsanitize=return -fsanitize=vla-bound -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fsanitize=bounds -fsanitize=alignment -fsanitize=object-size -fsanitize=vptr -fsanitize=address")
+         # Note  -fsanitize-ignorelist=sanitize_ignorelist.txt not yet working for gcc, need this to hide GDAL errors
+      endif ()
+      # # ===============================================================================================================
+   endif()
+
+   if (CMAKE_BUILD_TYPE_LC STREQUAL "release")
+      # Production build using gcc
+      # # ===============================================================================================================
+         set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -Wall -fno-delete-null-pointer-checks -fno-strict-overflow -fno-strict-aliasing -ftrivial-auto-var-init=zero")
+      # # ===============================================================================================================
+   endif()
+
+   # Finally set some gcc-specific linker flags, for all build types
    set (CMAKE_EXE_LINKER_FLAGS "-Wl,--as-needed -Wl,--no-undefined")
 endif ()
 

@@ -38,7 +38,7 @@ class CGeomRasterGrid
    //! The CSimulation class is a friend of the CGeomRasterGrid class
    friend class CSimulation;
 
-   //! The CGeomProfile is a friend of the CGeomRasterGrid class
+   //! The CGeomProfile class is a friend of the CGeomRasterGrid class
    friend class CGeomProfile;
 
 private:
@@ -56,6 +56,8 @@ private:
 
    //! The 2D array of m_Cell objects. A c-style 2D array seems to be faster than using 2D STL vectors
    CGeomCell** m_Cell;
+
+protected:
 
 public:
    explicit CGeomRasterGrid(CSimulation*);

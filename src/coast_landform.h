@@ -33,6 +33,8 @@ You should have received a copy of the GNU General Public License along with thi
 
 class CACoastLandform
 {
+private:
+
 protected:
    //! The coast number on which this coast landform sits
    int m_nCoast;

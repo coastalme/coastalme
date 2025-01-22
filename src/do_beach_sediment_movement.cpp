@@ -112,7 +112,7 @@ int CSimulation::nDoAllActualBeachErosionAndDeposition(void)
       vector<vector<int> > nVVPolyAndAdjacent;
       for (int nPoly = 0; nPoly < m_VCoast[nCoast].nGetNumPolygons(); nPoly++)
       {
-         CGeomCoastPolygon const* pPoly = m_VCoast[nCoast].pGetPolygon(nPoly);
+         CGeomCoastPolygon const* pPoly = m_VCoast[nCoast].pGetPolygonDownCoastSeq(nPoly);
 
          vector<int> nVPolyAndAdj;
 
@@ -169,10 +169,10 @@ int CSimulation::nDoAllActualBeachErosionAndDeposition(void)
                if (it != VnSourcePolygons.end())
                {
                   // Uh-oh: this polygon is in the list of previously-processed source polygons. So store the numbers of the polygons with circularity
-                  CGeomCoastPolygon* pPoly = m_VCoast[nCoast].pGetPolygon(nVVPolyAndAdjacent[nPoly][0]);
+                  CGeomCoastPolygon* pPoly = m_VCoast[nCoast].pGetPolygonDownCoastSeq(nVVPolyAndAdjacent[nPoly][0]);
                   pPoly->AddCircularity(*it);
                   
-                  pPoly = m_VCoast[nCoast].pGetPolygon(*it);
+                  pPoly = m_VCoast[nCoast].pGetPolygonDownCoastSeq(*it);
                   pPoly->AddCircularity(nVVPolyAndAdjacent[nPoly][0]);                     
                }
             }            
@@ -189,7 +189,7 @@ int CSimulation::nDoAllActualBeachErosionAndDeposition(void)
       {
          int nPoly = nVVPolyAndAdjacent[n][0];
 
-         // // DEBUG CODE ============================================================================
+         // // DEBUG CODE ============================================================================================================================================
          // // Get total depths of sand consolidated and unconsolidated for every cell
          // if (m_ulIter == 5)
          // {
@@ -206,10 +206,10 @@ int CSimulation::nDoAllActualBeachErosionAndDeposition(void)
          //    LogStream << "*****************************" << endl;
          //    LogStream << m_ulIter << ": before beach movement on nPoly = " << nPoly << " TOTAL UNCONSOLIDATED SAND ON ALL CELLS = " << dTmpSandUncons * m_dCellArea << endl;
          // }
-         // // DEBUG CODE ============================================================================
+         // // DEBUG CODE ============================================================================================================================================
 
          // Do deposition first: does this polygon have coarse deposition?
-         double dCoarseDepositionTarget = m_VCoast[nCoast].pGetPolygon(nPoly)->dGetToDoBeachDepositionUnconsCoarse();
+         double dCoarseDepositionTarget = m_VCoast[nCoast].pGetPolygonDownCoastSeq(nPoly)->dGetToDoBeachDepositionUnconsCoarse();
          
          if (dCoarseDepositionTarget > 0)
          {
@@ -241,7 +241,7 @@ int CSimulation::nDoAllActualBeachErosionAndDeposition(void)
          }
          
          // Does this polygon have sand deposition?
-         double dSandDepositionTarget = m_VCoast[nCoast].pGetPolygon(nPoly)->dGetToDoBeachDepositionUnconsSand();
+         double dSandDepositionTarget = m_VCoast[nCoast].pGetPolygonDownCoastSeq(nPoly)->dGetToDoBeachDepositionUnconsSand();
          
          if (dSandDepositionTarget > 0)
          {
@@ -291,11 +291,11 @@ int CSimulation::nDoAllActualBeachErosionAndDeposition(void)
          }
          
          // Now do erosion
-         double dPotentialErosion = -m_VCoast[nCoast].pGetPolygon(nPoly)->dGetPotentialErosion();
+         double dPotentialErosion = -m_VCoast[nCoast].pGetPolygonDownCoastSeq(nPoly)->dGetPotentialErosion();
          if (dPotentialErosion > 0)
          {
             // There is some erosion on this polygon: process this in the sequence fine, sand, coarse. Is there any fine sediment on this polygon?
-            double dExistingUnconsFine = m_VCoast[nCoast].pGetPolygon(nPoly)->dGetPreExistingUnconsFine();
+            double dExistingUnconsFine = m_VCoast[nCoast].pGetPolygonDownCoastSeq(nPoly)->dGetPreExistingUnconsFine();
             
             if (dExistingUnconsFine > 0)
             {
@@ -320,12 +320,12 @@ int CSimulation::nDoAllActualBeachErosionAndDeposition(void)
                   m_dThisIterFineSedimentToSuspension += dFineEroded;
                
                   // Store the amount of unconsolidated fine beach sediment eroded for this polygon
-                  m_VCoast[nCoast].pGetPolygon(nPoly)->SetBeachErosionUnconsFine(-dFineEroded);
+                  m_VCoast[nCoast].pGetPolygonDownCoastSeq(nPoly)->SetBeachErosionUnconsFine(-dFineEroded);
                }
             }
             
             // Is there any sand-sized sediment on this polygon?
-            double dExistingUnconsSand = m_VCoast[nCoast].pGetPolygon(nPoly)->dGetPreExistingUnconsSand();
+            double dExistingUnconsSand = m_VCoast[nCoast].pGetPolygonDownCoastSeq(nPoly)->dGetPreExistingUnconsSand();
             double dSandEroded = 0;            
             if (dExistingUnconsSand > 0)
             {
@@ -346,7 +346,7 @@ int CSimulation::nDoAllActualBeachErosionAndDeposition(void)
                   m_dThisIterBeachErosionSand += dSandEroded;
                
                   // Store the amount eroded for this polygon
-                  m_VCoast[nCoast].pGetPolygon(nPoly)->SetBeachErosionUnconsSand(-dSandEroded);
+                  m_VCoast[nCoast].pGetPolygonDownCoastSeq(nPoly)->SetBeachErosionUnconsSand(-dSandEroded);
                }               
 
                // // DEBUG CODE #####################
@@ -369,7 +369,7 @@ int CSimulation::nDoAllActualBeachErosionAndDeposition(void)
             }
             
             // Is there any coarse sediment on this polygon?
-            double dExistingUnconsCoarse = m_VCoast[nCoast].pGetPolygon(nPoly)->dGetPreExistingUnconsCoarse();
+            double dExistingUnconsCoarse = m_VCoast[nCoast].pGetPolygonDownCoastSeq(nPoly)->dGetPreExistingUnconsCoarse();
             double dCoarseEroded = 0;
             if (dExistingUnconsCoarse > 0)
             {
@@ -390,14 +390,14 @@ int CSimulation::nDoAllActualBeachErosionAndDeposition(void)
                   m_dThisIterBeachErosionCoarse += dCoarseEroded;
                
                   // Store the amount eroded for this polygon
-                  m_VCoast[nCoast].pGetPolygon(nPoly)->SetBeachErosionUnconsCoarse(-dCoarseEroded);
+                  m_VCoast[nCoast].pGetPolygonDownCoastSeq(nPoly)->SetBeachErosionUnconsCoarse(-dCoarseEroded);
                }               
             }
             
             // OK we now have the actual values of sediment eroded from this polygon, so next determine where this eroded sand and coarse sediment goes (have to consider fine sediment too, because this goes off-grid on grid-edge polygons). Only do this if some sand or coarse was eroded on this polygon
             if ((dSandEroded + dCoarseEroded) > 0)        
             {
-               CGeomCoastPolygon const* pPolygon = m_VCoast[nCoast].pGetPolygon(nPoly);
+               CGeomCoastPolygon const* pPolygon = m_VCoast[nCoast].pGetPolygonDownCoastSeq(nPoly);
 
                if (pPolygon->bDownCoastThisIter())
                {
@@ -447,7 +447,7 @@ int CSimulation::nDoAllActualBeachErosionAndDeposition(void)
                            {
                               // Re-circulating grid edges, so adjust the sediment exported to the polygon at the up-coast end of this coastline
                               int nOtherEndPoly = 0;
-                              CGeomCoastPolygon* pOtherEndPoly = m_VCoast[nCoast].pGetPolygon(nOtherEndPoly);
+                              CGeomCoastPolygon* pOtherEndPoly = m_VCoast[nCoast].pGetPolygonDownCoastSeq(nOtherEndPoly);
                               
                               if (dSandEroded > 0)
                               {
@@ -466,7 +466,7 @@ int CSimulation::nDoAllActualBeachErosionAndDeposition(void)
                      else
                      {
                         // This polygon is not at the grid edge
-                        CGeomCoastPolygon* pAdjPolygon = m_VCoast[nCoast].pGetPolygon(nAdjPoly);
+                        CGeomCoastPolygon* pAdjPolygon = m_VCoast[nCoast].pGetPolygonDownCoastSeq(nAdjPoly);
                         double dBoundaryShare = pPolygon->dGetDownCoastAdjacentPolygonBoundaryShare(nn);
 
                         if (dSandEroded > 0)
@@ -538,7 +538,7 @@ int CSimulation::nDoAllActualBeachErosionAndDeposition(void)
                            {
                               // Re-circulating grid edges, so adjust the sediment exported to the polygon at the up-coast end of this coastline TODO 016 Check whether this causes mass balance problems, depending on the sequence of polygon processing
                               int nOtherEndPoly = 0;
-                              CGeomCoastPolygon* pOtherEndPoly = m_VCoast[nCoast].pGetPolygon(nOtherEndPoly);
+                              CGeomCoastPolygon* pOtherEndPoly = m_VCoast[nCoast].pGetPolygonDownCoastSeq(nOtherEndPoly);
 
                               if (dSandEroded > 0)
                               {
@@ -557,7 +557,7 @@ int CSimulation::nDoAllActualBeachErosionAndDeposition(void)
                      else
                      {
                         // This polygon is not at the grid edge
-                        CGeomCoastPolygon* pAdjPolygon = m_VCoast[nCoast].pGetPolygon(nAdjPoly);
+                        CGeomCoastPolygon* pAdjPolygon = m_VCoast[nCoast].pGetPolygonDownCoastSeq(nAdjPoly);
                         double dBoundaryShare = pPolygon->dGetUpCoastAdjacentPolygonBoundaryShare(nn);
 
                         if (dSandEroded > 0)
@@ -593,7 +593,7 @@ int CSimulation::nDoAllActualBeachErosionAndDeposition(void)
             
          }     // if (dPotentialErosion > 0)
 
-         // // DEBUG CODE ============================================================================
+         // // DEBUG CODE ============================================================================================================================================
          // // Get total depths of unconsolidated sand for every cell
          // if (m_ulIter == 5)
          // {
@@ -614,7 +614,7 @@ int CSimulation::nDoAllActualBeachErosionAndDeposition(void)
          //
          //    for (int nn = 0; nn < nPolygons; nn++)
          //    {
-         //       CGeomCoastPolygon* pThisPolygon = m_VCoast[nCoast].pGetPolygon(nn);
+         //       CGeomCoastPolygon* pThisPolygon = m_VCoast[nCoast].pGetPolygonDownCoastSeq(nn);
          //       dToDoTot += pThisPolygon->dGetToDoBeachDepositionUnconsSand();
          //    }
          //
@@ -625,7 +625,7 @@ int CSimulation::nDoAllActualBeachErosionAndDeposition(void)
          //
          //    LogStream << "*****************************" << endl;
          // }
-         // // DEBUG CODE ============================================================================
+         // // DEBUG CODE ============================================================================================================================================
 
       }     // for (int n = 0; n < nNumPolygons; n++)
 
@@ -635,7 +635,7 @@ int CSimulation::nDoAllActualBeachErosionAndDeposition(void)
       for (int nn = nPolygons-1; nn >= 0; nn--)
       {
          int nThisPoly = nVVPolyAndAdjacent[nn][0];
-         CGeomCoastPolygon const* pThisPolygon = m_VCoast[nCoast].pGetPolygon(nThisPoly);
+         CGeomCoastPolygon const* pThisPolygon = m_VCoast[nCoast].pGetPolygonDownCoastSeq(nThisPoly);
 
          double dSandToDepositOnPoly = pThisPolygon->dGetToDoBeachDepositionUnconsSand();
          if (dSandToDepositOnPoly > 0)
@@ -688,7 +688,7 @@ void CSimulation::AllPolygonsUpdateStoredUncons(int const nCoast)
 
    for (int nPoly = 0; nPoly < nNumPolygons; nPoly++)
    {
-      CGeomCoastPolygon* pPolygon = m_VCoast[nCoast].pGetPolygon(nPoly);
+      CGeomCoastPolygon* pPolygon = m_VCoast[nCoast].pGetPolygonDownCoastSeq(nPoly);
 
       // Only include unconsolidated fine sediment from sediment input events, don't include any unconsolidated fine sediment from platform erosion and cliff collapse since these have gone to suspension
       double dFine = pPolygon->dGetSedimentInputUnconsFine();

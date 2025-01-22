@@ -82,7 +82,7 @@ int CSimulation::nDoAllWaveEnergyToCoastLandforms(void)
             // OK, is the notch now extended enough to cause collapse (either because the overhang is greater than the threshold overhang, or because there is no sediment remaining)?
             if (pCliff->bReadyToCollapse(m_dNotchDepthAtCollapse))
             {
-               // // DEBUG CODE ============================================================================
+               // // DEBUG CODE ============================================================================================================================================
                // // Get total depths of sand consolidated and unconsolidated for every cell
                // if (m_ulIter == 5)
                // {
@@ -109,7 +109,7 @@ int CSimulation::nDoAllWaveEnergyToCoastLandforms(void)
                //    LogStream << "*****************************" << endl;
                //    LogStream << m_ulIter << ": before cliff collapse on nPoly = " << nPoly << " total consolidated sand = " << dTmpSandCons * m_dCellArea << " total unconsolidated sand = " << dTmpSandUncons * m_dCellArea << endl;
                // }
-               // // DEBUG CODE ============================================================================
+               // // DEBUG CODE ============================================================================================================================================
 
                // It is ready to collapse
                double dCliffElevPreCollapse = 0;
@@ -131,7 +131,7 @@ int CSimulation::nDoAllWaveEnergyToCoastLandforms(void)
                if (nRet != RTN_OK)
                   return nRet;
 
-               // // DEBUG CODE ============================================================================
+               // // DEBUG CODE ============================================================================================================================================
                // // Get total depths of sand consolidated and unconsolidated for every cell
                // if (m_ulIter == 5)
                // {
@@ -162,12 +162,12 @@ int CSimulation::nDoAllWaveEnergyToCoastLandforms(void)
                //
                //    double dTmpAllPolySandErosion = 0;
                //    double dTmpAllPolySandDeposition = 0;
-               //    for (unsigned int n = 0; n < m_pVCoastPolygon.size(); n++)
+               //    for (unsigned int n = 0; n < m_pVCoastPolygonDownCoastSeq.size(); n++)
                //    {
-               //       double dTmpSandErosion = m_pVCoastPolygon[n]->dGetCliffCollapseErosionSand() * m_dCellArea ;
-               //       double dTmpSandDeposition = m_pVCoastPolygon[n]->dGetCliffCollapseUnconsSandDeposition() * m_dCellArea ;
+               //       double dTmpSandErosion = m_pVCoastPolygonDownCoastSeq[n]->dGetCliffCollapseErosionSand() * m_dCellArea ;
+               //       double dTmpSandDeposition = m_pVCoastPolygonDownCoastSeq[n]->dGetCliffCollapseUnconsSandDeposition() * m_dCellArea ;
                //
-               //       LogStream << m_ulIter << ": polygon = " << m_pVCoastPolygon[n]->nGetGlobalID() << " sand erosion = " << dTmpSandErosion << " sand deposition = " << dTmpSandDeposition << endl;
+               //       LogStream << m_ulIter << ": polygon = " << m_pVCoastPolygonDownCoastSeq[n]->nGetGlobalID() << " sand erosion = " << dTmpSandErosion << " sand deposition = " << dTmpSandDeposition << endl;
                //
                //       dTmpAllPolySandErosion += dTmpSandErosion;
                //       dTmpAllPolySandDeposition += dTmpSandDeposition;
@@ -177,7 +177,7 @@ int CSimulation::nDoAllWaveEnergyToCoastLandforms(void)
                //    LogStream << m_ulIter << ": all polygons, sand erosion = " << dTmpAllPolySandErosion << " sand deposition = " << dTmpAllPolySandDeposition << endl;
                //    LogStream << "*****************************" << endl;
                // }
-               // // DEBUG CODE ============================================================================
+               // // DEBUG CODE ============================================================================================================================================
             }
          }
       }
@@ -208,7 +208,7 @@ int CSimulation::nDoCliffCollapse(int const nCoast, CRWCliff* pCliff, double& dF
       return RTN_ERR_CLIFF_NOT_IN_POLYGON;
    }
 
-   CGeomCoastPolygon* pPolygon = m_VCoast[nCoast].pGetPolygon(nPoly);
+   CGeomCoastPolygon* pPolygon = m_VCoast[nCoast].pGetPolygonDownCoastSeq(nPoly);
        
    // Get the elevation of the base of the notch from the cliff object
    double dNotchElev = pCliff->dGetNotchBaseElev() - m_dNotchBaseBelowSWL;
@@ -458,7 +458,7 @@ int CSimulation::nDoCliffCollapseDeposition(int const nCoast, CRWCliff const* pC
       return RTN_ERR_CLIFF_NOT_IN_POLYGON;
    }
 
-   CGeomCoastPolygon* pPolygon = m_VCoast[nCoast].pGetPolygon(nPoly);
+   CGeomCoastPolygon* pPolygon = m_VCoast[nCoast].pGetPolygonDownCoastSeq(nPoly);
        
    // OK, now set up the planview sequence talus deposition. First we deposit to create a Dean profile starting from the cliff collapse cell. Then we deposit along two profiles which start from the coast cells on either side of the cliff collapse cell, and then on two profiles starting on the next two "outside" coast cells, etc. However, we do have a "preferred" talus width
    int nTalusWidth = nConvertMetresToNumCells(m_dCliffDepositionPlanviewWidth);
@@ -743,7 +743,7 @@ int CSimulation::nDoCliffCollapseDeposition(int const nCoast, CRWCliff const* pC
          // Get the total difference in elevation between the two profiles (Dean profile - present profile). Since we want the Dean profile to be higher than the present profile, a good result is a +ve number
          double dTotElevDiff = dSubtractProfiles(&dVDeanProfile, &dVProfileNow, &bVProfileValid);
 
-         //          // DEBUG STUFF -----------------------------------------------------
+         //          // DEBUG CODE -----------------------------------------------------
          //          LogStream << endl;
          //          LogStream << "dTalusSlopeLength = " << dTalusSlopeLength << " dA = " << dA << endl;
          //          LogStream << "dDistFromTalusStart - dInc = " << dDistFromTalusStart - dInc << " dThisProfileLength - nSeawardOffset - 2 = " << dThisProfileLength - nSeawardOffset - 2 << endl;
@@ -769,7 +769,7 @@ int CSimulation::nDoCliffCollapseDeposition(int const nCoast, CRWCliff const* pC
          //             LogStream << dVDeanProfile[n] - dVProfileNow[n] << " ";
          //          }
          //          LogStream << endl;
-         //          // DEBUG STUFF -----------------------------------------------------
+         //          // DEBUG CODE -----------------------------------------------------
 
          // If we are not in a "just deposit what we can" situation, then for this planview profile, does the Dean equilibrium profile allow us to deposit all the talus sediment which we need to get rid of?
          if (! bJustDepositWhatWeCan && (dTotElevDiff < (dTargetSandToDepositOnThisProfile + dTargetCoarseToDepositOnThisProfile)))
@@ -1075,7 +1075,7 @@ void CSimulation::RasterizeCliffCollapseProfile(vector<CGeom2DPoint> const* pVPo
          KeepWithinValidGrid(nRound(dXStart), nRound(dYStart), nX, nY);
 
       // This point is fine, so append it to the output vector
-      pVIPointsOut->push_back(CGeom2DIPoint(nX, nY)); // In raster-grid co-ordinates
+      pVIPointsOut->push_back(CGeom2DIPoint(nX, nY)); // In raster grid coordinates
 
       // And increment for next time
       dX += dXInc;

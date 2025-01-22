@@ -197,7 +197,7 @@ int CSimulation::nReadRasterBasementDEM(void)
       {
          double dTmp = pdScanline[i];
 
-         if (! isfinite(dTmp)) // Deal with any NaN values
+         if (isnan(dTmp)) // Deal with any NaN values
             dTmp = m_dMissingValue;
 
          m_pRasterGrid->m_Cell[i][j].SetBasementElev(dTmp);
@@ -735,7 +735,7 @@ int CSimulation::nReadRasterGISFile(int const nDataItem, int const nLayer)
                   // Initial Landform Class GIS data, is integer TODO 030 Do we also need a landform sub-category input?
                   nTmp = static_cast<int>(pdScanline[nX]);
 
-                  if (! isfinite(nTmp)) // Deal with any NaN values
+                  if (isnan(nTmp)) // Deal with any NaN values
                   {
                      nTmp = m_nMissingValue;
                      nMissing++;
@@ -748,7 +748,7 @@ int CSimulation::nReadRasterGISFile(int const nDataItem, int const nLayer)
                   // Intervention class, is integer
                   nTmp = static_cast<int>(pdScanline[nX]);
 
-                  if (! isfinite(nTmp)) // Deal with any NaN values
+                  if (isnan(nTmp)) // Deal with any NaN values
                   {
                      nTmp = m_nMissingValue;
                      nMissing++;
@@ -761,7 +761,7 @@ int CSimulation::nReadRasterGISFile(int const nDataItem, int const nLayer)
                   // Intervention height
                   dTmp = pdScanline[nX];
 
-                  if (! isfinite(dTmp)) // Deal with any NaN values
+                  if (isnan(dTmp)) // Deal with any NaN values
                   {
                      dTmp = m_dMissingValue;
                      nMissing++;
@@ -774,7 +774,7 @@ int CSimulation::nReadRasterGISFile(int const nDataItem, int const nLayer)
                   // Initial Suspended Sediment GIS data
                   dTmp = pdScanline[nX];
 
-                  if (! isfinite(dTmp)) // Deal with any NaN values
+                  if (isnan(dTmp)) // Deal with any NaN values
                   {
                      dTmp = m_dMissingValue;
                      nMissing++;
@@ -787,7 +787,7 @@ int CSimulation::nReadRasterGISFile(int const nDataItem, int const nLayer)
                   // Initial Unconsolidated Fine Sediment GIS data
                   dTmp = pdScanline[nX];
 
-                  if (! isfinite(dTmp)) // Deal with any NaN values
+                  if (isnan(dTmp)) // Deal with any NaN values
                   {
                      dTmp = m_dMissingValue;
                      nMissing++;
@@ -800,7 +800,7 @@ int CSimulation::nReadRasterGISFile(int const nDataItem, int const nLayer)
                   // Initial Unconsolidated Sand Sediment GIS data
                   dTmp = pdScanline[nX];
 
-                  if (! isfinite(dTmp)) // Deal with any NaN values
+                  if (isnan(dTmp)) // Deal with any NaN values
                   {
                      dTmp = m_dMissingValue;
                      nMissing++;
@@ -813,7 +813,7 @@ int CSimulation::nReadRasterGISFile(int const nDataItem, int const nLayer)
                   // Initial Unconsolidated Coarse Sediment GIS data
                   dTmp = pdScanline[nX];
 
-                  if (! isfinite(dTmp)) // Deal with any NaN values
+                  if (isnan(dTmp)) // Deal with any NaN values
                   {
                      dTmp = m_dMissingValue;
                      nMissing++;
@@ -826,7 +826,7 @@ int CSimulation::nReadRasterGISFile(int const nDataItem, int const nLayer)
                   // Initial Consolidated Fine Sediment GIS data
                   dTmp = pdScanline[nX];
 
-                  if (! isfinite(dTmp)) // Deal with any NaN values
+                  if (isnan(dTmp)) // Deal with any NaN values
                   {
                      dTmp = m_dMissingValue;
                      nMissing++;
@@ -839,7 +839,7 @@ int CSimulation::nReadRasterGISFile(int const nDataItem, int const nLayer)
                   // Initial Consolidated Sand Sediment GIS data
                   dTmp = pdScanline[nX];
 
-                  if (! isfinite(dTmp)) // Deal with any NaN values
+                  if (isnan(dTmp)) // Deal with any NaN values
                   {
                      dTmp = m_dMissingValue;
                      nMissing++;
@@ -852,7 +852,7 @@ int CSimulation::nReadRasterGISFile(int const nDataItem, int const nLayer)
                   // Initial Consolidated Coarse Sediment GIS data
                   dTmp = pdScanline[nX];
 
-                  if (! isfinite(dTmp)) // Deal with any NaN values
+                  if (isnan(dTmp)) // Deal with any NaN values
                   {
                      dTmp = m_dMissingValue;
                      nMissing++;
@@ -1502,7 +1502,7 @@ bool CSimulation::bWriteRasterGISFile(int const nDataItem, string const *strPlot
                else
                {
                   // Get total volume (all sediment size classes) of change in sediment for this polygon for this timestep (-ve erosion, +ve deposition)
-                  dTmp = m_pVCoastPolygon[nPoly]->dGetBeachDepositionAndSuspensionAllUncons() * m_dCellArea;
+                  dTmp = m_pVCoastPolygonDownCoastSeq[nPoly]->dGetBeachDepositionAndSuspensionAllUncons() * m_dCellArea;
 
                   // Calculate the rate in m^3 / sec
                   dTmp /= (m_dTimeStep * 3600);
@@ -1573,7 +1573,7 @@ bool CSimulation::bWriteRasterGISFile(int const nDataItem, string const *strPlot
                   dTmp = m_nMissingValue;
                else
                {
-                  if (m_pVCoastPolygon[nPoly]->bDownCoastThisIter())
+                  if (m_pVCoastPolygonDownCoastSeq[nPoly]->bDownCoastThisIter())
                      dTmp = 1;
                   else
                      dTmp = 0;
@@ -1870,17 +1870,15 @@ bool CSimulation::bWriteRasterGISFile(int const nDataItem, string const *strPlot
 }
 
 //===============================================================================================================================
-//! Interpolates wave properties from all profiles to all within-polygon sea cells. We use GDALGridCreate(), the library version of external utility gdal_grid, to do this
+//! Interpolates wave properties from all profiles to all within-polygon sea cells, using GDALGridCreate(), the library version of external utility gdal_grid
 //===============================================================================================================================
 int CSimulation::nInterpolateWavesToPolygonCells(vector<double> const* pVdX, vector<double> const* pVdY, vector<double> const* pVdHeightX, vector<double> const* pVdHeightY)
 {
-   int
-       nXSize = 0,
-       nYSize = 0;
+   int nXSize = 0;
+   int nYSize = 0;
 
-   double
-       dXAvg = 0,
-       dYAvg = 0;
+   double dXAvg = 0;
+   double dYAvg = 0;
 
    nXSize = m_nXMaxBoundingBox - m_nXMinBoundingBox + 1;
    nYSize = m_nYMaxBoundingBox - m_nYMinBoundingBox + 1;
@@ -1888,7 +1886,7 @@ int CSimulation::nInterpolateWavesToPolygonCells(vector<double> const* pVdX, vec
 
    unsigned int nPoints = static_cast<unsigned int>(pVdX->size());
 
-   //    // DEBUG CODE ============================================
+   //    // DEBUG CODE ============================================================================================================
    //    for (int nn = 0; nn < nPoints; nn++)
    //    {
    //       LogStream << nn << " " << dX[nn] << " " << dY[nn] << " " << dZ[nn] << endl;
@@ -1898,19 +1896,18 @@ int CSimulation::nInterpolateWavesToPolygonCells(vector<double> const* pVdX, vec
    //    m_nYMaxBoundingBox = m_nYGridSize-1;
    //    m_nXMinBoundingBox = 0;
    //    m_nYMinBoundingBox = 0;
-   //    // DEBUG CODE ============================================
+   //    // DEBUG CODE ============================================================================================================
 
-   vector<double>
-       VdOutX(nGridSize, 0),
-       VdOutY(nGridSize, 0);
+   vector<double> VdOutX(nGridSize, 0);
+   vector<double> VdOutY(nGridSize, 0);
 
    // Do first for X, then for Y
    for (int nDirection = 0; nDirection < 2; nDirection++)
    {
       // Use the GDALGridCreate() linear interpolation algorithm: this computes a Delaunay triangulation of the point cloud, finding in which triangle of the triangulation the point is, and by doing linear interpolation from its barycentric coordinates within the triangle. If the point is not in any triangle, depending on the radius, the algorithm will use the value of the nearest point or the nodata value. Only available in GDAL 2.1 and later
       GDALGridLinearOptions* pOptions = new GDALGridLinearOptions();
-      pOptions->dfNoDataValue = m_dMissingValue; // Set the no-data marker to fill empty points
-      pOptions->dfRadius = -1;                   // Set the search radius to infinite
+      pOptions->dfNoDataValue = m_dMissingValue;                     // Set the no-data marker to fill empty points
+      pOptions->dfRadius = -1;                                       // Set the search radius to infinite
       pOptions->nSizeOfStructure = sizeof(GDALGridLinearOptions);    // Needed for GDAL 3.6 onwards, see https://gdal.org/api/gdal_alg.html#_CPPv421GDALGridLinearOptions
       
       //      pOptions.dfRadius = static_cast<double>(nXSize + nYSize) / 2.0;                       // Set the search radius
@@ -1952,10 +1949,10 @@ int CSimulation::nInterpolateWavesToPolygonCells(vector<double> const* pVdX, vec
       {
          int nXValid = 0;
 
-         // Safety check: unfortunately, GDALGridCreate(() outputs NaNs and other crazy values when the polygon are far from regular. So check for these
+         // Safety check: unfortunately, GDALGridCreate(() outputs NaNs and other crazy values when the polygons are far from regular. So check for these
          for (unsigned int n = 0; n < VdOutX.size(); n++)
          {
-            if (! isfinite(VdOutX[n]))
+            if (isnan(VdOutX[n]))
                VdOutX[n] = m_dMissingValue;
             else if (tAbs(VdOutX[n]) > 1e10)
                VdOutX[n] = m_dMissingValue;               
@@ -1975,7 +1972,7 @@ int CSimulation::nInterpolateWavesToPolygonCells(vector<double> const* pVdX, vec
          // Safety check: unfortunately, GDALGridCreate(() outputs NaNs and other crazy values when the polygon are far from regular. So check for these
          for (unsigned int n = 0; n < VdOutY.size(); n++)
          {
-            if (! isfinite(VdOutY[n]))
+            if (isnan(VdOutY[n]))
                VdOutY[n] = m_dMissingValue;
             else if (tAbs(VdOutY[n]) > 1e10)
                VdOutY[n] = m_dMissingValue;               
@@ -1989,123 +1986,123 @@ int CSimulation::nInterpolateWavesToPolygonCells(vector<double> const* pVdX, vec
          dYAvg /= nYValid;
       }
 
-      //       // DEBUG CODE ===========================================
-      //       string strOutFile = m_strOutPath;
-      //       strOutFile += "sea_wave_interpolation_";
-      //       if (nDirection == 0)
-      //          strOutFile += "X_";
-      //       else
-      //          strOutFile += "Y_";
-      //       strOutFile += to_string(m_ulIter);
-      //       strOutFile += ".tif";
-      //
-      //       GDALDriver* pDriver = GetGDALDriverManager()->GetDriverByName("gtiff");
-      //       GDALDataset* pDataSet = pDriver->Create(strOutFile.c_str(), m_nXGridSize, m_nYGridSize, 1, GDT_Float64, m_papszGDALRasterOptions);
-      //       pDataSet->SetProjection(m_strGDALBasementDEMProjection.c_str());
-      //       pDataSet->SetGeoTransform(m_dGeoTransform);
-      //       double* pdRaster = new double[m_nXGridSize * m_nYGridSize];
-      //       int m = 0;
-      //       int n = 0;
-      //       for (int nY = 0; nY < m_nYGridSize; nY++)
-      //       {
-      //          for (int nX = 0; nX < m_nXGridSize; nX++)
-      //          {
-      //             if ((nX < m_nXMinBoundingBox) || (nY < m_nYMinBoundingBox))
-      //             {
-      //                pdRaster[n++] = DBL_NODATA;
-      //             }
-      //             else
-      //             {
-      //                // Write this value to the array
-      //                if (nDirection == 0)
-      //                {
-      //                   pdRaster[n++] = VdOutX[m++];
-      //    //                LogStream << "nDirection = " << nDirection << " [" << nX << "][" << nY << "] = " << VpdOutX[n] << endl;
-      //                }
-      //                else
-      //                {
-      //                   pdRaster[n++] = VdOutY[m++];
-      //    //                LogStream << "nDirection = " << nDirection << " [" << nX << "][" << nY << "] = " << VpdOutY[n] << endl;
-      //                }
-      //             }
-      //          }
-      //       }
-      //
-      //       GDALRasterBand* pBand = pDataSet->GetRasterBand(1);
-      //       pBand->SetNoDataValue(m_dMissingValue);
-      //       nRet = pBand->RasterIO(GF_Write, 0, 0, m_nXGridSize, m_nYGridSize, pdRaster, m_nXGridSize, m_nYGridSize, GDT_Float64, 0, 0, NULL);
-      //
-      //       if (nRet == CE_Failure)
-      //          return RTN_ERR_GRIDCREATE;
-      //
-      //       GDALClose(pDataSet);
-      //       delete[] pdRaster;
-      //       // DEBUG CODE ===========================================
+      // DEBUG CODE ===========================================================================================================
+      string strOutFile = m_strOutPath;
+      strOutFile += "sea_wave_interpolation_";
+      if (nDirection == 0)
+         strOutFile += "X_";
+      else
+         strOutFile += "Y_";
+      strOutFile += to_string(m_ulIter);
+      strOutFile += ".tif";
+
+      GDALDriver* pDriver = GetGDALDriverManager()->GetDriverByName("gtiff");
+      GDALDataset* pDataSet = pDriver->Create(strOutFile.c_str(), m_nXGridSize, m_nYGridSize, 1, GDT_Float64, m_papszGDALRasterOptions);
+      pDataSet->SetProjection(m_strGDALBasementDEMProjection.c_str());
+      pDataSet->SetGeoTransform(m_dGeoTransform);
+      double* pdRaster = new double[m_nXGridSize * m_nYGridSize];
+      int m = 0;
+      int n = 0;
+      for (int nY = 0; nY < m_nYGridSize; nY++)
+      {
+         for (int nX = 0; nX < m_nXGridSize; nX++)
+         {
+            if ((nX < m_nXMinBoundingBox) || (nY < m_nYMinBoundingBox))
+            {
+               pdRaster[n++] = DBL_NODATA;
+            }
+            else
+            {
+               // Write this value to the array
+               if (nDirection == 0)
+               {
+                  pdRaster[n++] = VdOutX[m++];
+   //                LogStream << "nDirection = " << nDirection << " [" << nX << "][" << nY << "] = " << VpdOutX[n] << endl;
+               }
+               else
+               {
+                  pdRaster[n++] = VdOutY[m++];
+   //                LogStream << "nDirection = " << nDirection << " [" << nX << "][" << nY << "] = " << VpdOutY[n] << endl;
+               }
+            }
+         }
+      }
+
+      GDALRasterBand* pBand = pDataSet->GetRasterBand(1);
+      pBand->SetNoDataValue(m_dMissingValue);
+      nRet = pBand->RasterIO(GF_Write, 0, 0, m_nXGridSize, m_nYGridSize, pdRaster, m_nXGridSize, m_nYGridSize, GDT_Float64, 0, 0, NULL);
+
+      if (nRet == CE_Failure)
+         return RTN_ERR_GRIDCREATE;
+
+      GDALClose(pDataSet);
+      delete[] pdRaster;
+      // DEBUG CODE ===========================================================================================================
    }
 
-   //    // DEBUG CODE ===========================================
-   //    string strOutFile = m_strOutPath;
-   //    strOutFile += "sea_wave_height_before_";
-   //    strOutFile += to_string(m_ulIter);
-   //    strOutFile += ".tif";
-   //
-   //    GDALDriver* pDriver = GetGDALDriverManager()->GetDriverByName("gtiff");
-   //    GDALDataset* pDataSet = pDriver->Create(strOutFile.c_str(), m_nXGridSize, m_nYGridSize, 1, GDT_Float64, m_papszGDALRasterOptions);
-   //    pDataSet->SetProjection(m_strGDALBasementDEMProjection.c_str());
-   //    pDataSet->SetGeoTransform(m_dGeoTransform);
-   //
-   //    int nn = 0;
-   //    double* pdRaster = new double[m_nXGridSize * m_nYGridSize];
-   //    for (int nY = 0; nY < m_nYGridSize; nY++)
-   //    {
-   //       for (int nX = 0; nX < m_nXGridSize; nX++)
-   //       {
-   //          pdRaster[nn++] = m_pRasterGrid->m_Cell[nX][nY].dGetWaveHeight();
-   //       }
-   //    }
-   //
-   //    GDALRasterBand* pBand = pDataSet->GetRasterBand(1);
-   //    pBand->SetNoDataValue(m_dMissingValue);
-   //    int nRet = pBand->RasterIO(GF_Write, 0, 0, m_nXGridSize, m_nYGridSize, pdRaster, m_nXGridSize, m_nYGridSize, GDT_Float64, 0, 0, NULL);
-   //
-   //    if (nRet == CE_Failure)
-   //       return RTN_ERR_GRIDCREATE;
-   //
-   //    GDALClose(pDataSet);
-   //    delete[] pdRaster;
-   //    // DEBUG CODE ===========================================
+   // DEBUG CODE ===========================================================================================================
+   string strOutFile = m_strOutPath;
+   strOutFile += "sea_wave_height_before_";
+   strOutFile += to_string(m_ulIter);
+   strOutFile += ".tif";
 
-   //    // DEBUG CODE ===========================================
-   //    strOutFile = m_strOutPath;
-   //    strOutFile += "sea_wave_angle_before_";
-   //    strOutFile += to_string(m_ulIter);
-   //    strOutFile += ".tif";
-   //
-   //    pDriver = GetGDALDriverManager()->GetDriverByName("gtiff");
-   //    pDataSet = pDriver->Create(strOutFile.c_str(), m_nXGridSize, m_nYGridSize, 1, GDT_Float64, m_papszGDALRasterOptions);
-   //    pDataSet->SetProjection(m_strGDALBasementDEMProjection.c_str());
-   //    pDataSet->SetGeoTransform(m_dGeoTransform);
-   //
-   //    nn = 0;
-   //    pdRaster = new double[m_nXGridSize * m_nYGridSize];
-   //    for (int nY = 0; nY < m_nYGridSize; nY++)
-   //    {
-   //       for (int nX = 0; nX < m_nXGridSize; nX++)
-   //       {
-   //          pdRaster[nn++] = m_pRasterGrid->m_Cell[nX][nY].dGetWaveAngle();
-   //       }
-   //    }
-   //
-   //    pBand = pDataSet->GetRasterBand(1);
-   //    pBand->SetNoDataValue(m_dMissingValue);
-   //    nRet = pBand->RasterIO(GF_Write, 0, 0, m_nXGridSize, m_nYGridSize, pdRaster, m_nXGridSize, m_nYGridSize, GDT_Float64, 0, 0, NULL);
-   //
-   //    if (nRet == CE_Failure)
-   //       return RTN_ERR_GRIDCREATE;
-   //
-   //    GDALClose(pDataSet);
-   //    delete[] pdRaster;
-   //    // DEBUG CODE ===========================================
+   GDALDriver* pDriver = GetGDALDriverManager()->GetDriverByName("gtiff");
+   GDALDataset* pDataSet = pDriver->Create(strOutFile.c_str(), m_nXGridSize, m_nYGridSize, 1, GDT_Float64, m_papszGDALRasterOptions);
+   pDataSet->SetProjection(m_strGDALBasementDEMProjection.c_str());
+   pDataSet->SetGeoTransform(m_dGeoTransform);
+
+   int nn = 0;
+   double* pdRaster = new double[m_nXGridSize * m_nYGridSize];
+   for (int nY = 0; nY < m_nYGridSize; nY++)
+   {
+      for (int nX = 0; nX < m_nXGridSize; nX++)
+      {
+         pdRaster[nn++] = m_pRasterGrid->m_Cell[nX][nY].dGetWaveHeight();
+      }
+   }
+
+   GDALRasterBand* pBand = pDataSet->GetRasterBand(1);
+   pBand->SetNoDataValue(m_dMissingValue);
+   int nRet = pBand->RasterIO(GF_Write, 0, 0, m_nXGridSize, m_nYGridSize, pdRaster, m_nXGridSize, m_nYGridSize, GDT_Float64, 0, 0, NULL);
+
+   if (nRet == CE_Failure)
+      return RTN_ERR_GRIDCREATE;
+
+   GDALClose(pDataSet);
+   delete[] pdRaster;
+   // DEBUG CODE ===========================================================================================================
+
+   // DEBUG CODE ===========================================================================================================
+   strOutFile = m_strOutPath;
+   strOutFile += "sea_wave_angle_before_";
+   strOutFile += to_string(m_ulIter);
+   strOutFile += ".tif";
+
+   pDriver = GetGDALDriverManager()->GetDriverByName("gtiff");
+   pDataSet = pDriver->Create(strOutFile.c_str(), m_nXGridSize, m_nYGridSize, 1, GDT_Float64, m_papszGDALRasterOptions);
+   pDataSet->SetProjection(m_strGDALBasementDEMProjection.c_str());
+   pDataSet->SetGeoTransform(m_dGeoTransform);
+
+   nn = 0;
+   pdRaster = new double[m_nXGridSize * m_nYGridSize];
+   for (int nY = 0; nY < m_nYGridSize; nY++)
+   {
+      for (int nX = 0; nX < m_nXGridSize; nX++)
+      {
+         pdRaster[nn++] = m_pRasterGrid->m_Cell[nX][nY].dGetWaveAngle();
+      }
+   }
+
+   pBand = pDataSet->GetRasterBand(1);
+   pBand->SetNoDataValue(m_dMissingValue);
+   nRet = pBand->RasterIO(GF_Write, 0, 0, m_nXGridSize, m_nYGridSize, pdRaster, m_nXGridSize, m_nYGridSize, GDT_Float64, 0, 0, NULL);
+
+   if (nRet == CE_Failure)
+      return RTN_ERR_GRIDCREATE;
+
+   GDALClose(pDataSet);
+   delete[] pdRaster;
+   // DEBUG CODE ===========================================================================================================
 
    // Now put the X and Y directions together and update the raster cells
    int n = 0;
@@ -2113,9 +2110,8 @@ int CSimulation::nInterpolateWavesToPolygonCells(vector<double> const* pVdX, vec
    {
       for (int nX = 0; nX < nXSize; nX++)
       {
-         int
-             nActualX = nX + m_nXMinBoundingBox,
-             nActualY = nY + m_nYMinBoundingBox;
+         int nActualX = nX + m_nXMinBoundingBox;
+         int nActualY = nY + m_nYMinBoundingBox;
 
          if (m_pRasterGrid->m_Cell[nActualX][nActualY].bIsInContiguousSea())
          {
@@ -2132,25 +2128,23 @@ int CSimulation::nInterpolateWavesToPolygonCells(vector<double> const* pVdX, vec
             else
             {
                // This is in a polygon so is not a deep water sea cell
-               double
-                  dWaveHeightX,
-                  dWaveHeightY;
+               double dWaveHeightX;
+               double dWaveHeightY;
                    
                // Safety checks
-               if ((! isfinite(VdOutX[n])) || (bFPIsEqual(VdOutX[n], m_dMissingValue, TOLERANCE)))
+               if ((isnan(VdOutX[n])) || (bFPIsEqual(VdOutX[n], m_dMissingValue, TOLERANCE)))
                   dWaveHeightX = dXAvg;
                else
                   dWaveHeightX = VdOutX[n];
 
-               if ((! isfinite(VdOutY[n])) || (bFPIsEqual(VdOutY[n], m_dMissingValue, TOLERANCE)))
+               if ((isnan(VdOutY[n])) || (bFPIsEqual(VdOutY[n], m_dMissingValue, TOLERANCE)))
                   dWaveHeightY = dYAvg;
                else
                   dWaveHeightY = VdOutY[n];
 
                // Now calculate wave direction
-               double
-                   dWaveHeight = sqrt((dWaveHeightX * dWaveHeightX) + (dWaveHeightY * dWaveHeightY)),
-                   dWaveDir = atan2(dWaveHeightX, dWaveHeightY) * (180 / PI);
+               double dWaveHeight = sqrt((dWaveHeightX * dWaveHeightX) + (dWaveHeightY * dWaveHeightY));
+               double dWaveDir = atan2(dWaveHeightX, dWaveHeightY) * (180 / PI);
 
 //                assert(isfinite(dWaveHeight));
 //                assert(isfinite(dWaveDir));
@@ -2173,69 +2167,69 @@ int CSimulation::nInterpolateWavesToPolygonCells(vector<double> const* pVdX, vec
       }
    }
 
-   //    // DEBUG CODE ===========================================
-   //    strOutFile = m_strOutPath;
-   //    strOutFile += "sea_wave_height_after_";
-   //    strOutFile += to_string(m_ulIter);
-   //    strOutFile += ".tif";
-   //
-   //    pDriver = GetGDALDriverManager()->GetDriverByName("gtiff");
-   //    pDataSet = pDriver->Create(strOutFile.c_str(), m_nXGridSize, m_nYGridSize, 1, GDT_Float64, m_papszGDALRasterOptions);
-   //    pDataSet->SetProjection(m_strGDALBasementDEMProjection.c_str());
-   //    pDataSet->SetGeoTransform(m_dGeoTransform);
-   //
-   //    nn = 0;
-   //    pdRaster = new double[m_nXGridSize * m_nYGridSize];
-   //    for (int nY = 0; nY < m_nYGridSize; nY++)
-   //    {
-   //       for (int nX = 0; nX < m_nXGridSize; nX++)
-   //       {
-   //          pdRaster[nn++] = m_pRasterGrid->m_Cell[nX][nY].dGetWaveHeight();
-   //       }
-   //    }
-   //
-   //    pBand = pDataSet->GetRasterBand(1);
-   //    pBand->SetNoDataValue(m_dMissingValue);
-   //    nRet = pBand->RasterIO(GF_Write, 0, 0, m_nXGridSize, m_nYGridSize, pdRaster, m_nXGridSize, m_nYGridSize, GDT_Float64, 0, 0, NULL);
-   //
-   //    if (nRet == CE_Failure)
-   //       return RTN_ERR_GRIDCREATE;
-   //
-   //    GDALClose(pDataSet);
-   //    delete[] pdRaster;
-   //    // DEBUG CODE ===========================================
+   // DEBUG CODE ===========================================================================================================
+   strOutFile = m_strOutPath;
+   strOutFile += "sea_wave_height_after_";
+   strOutFile += to_string(m_ulIter);
+   strOutFile += ".tif";
 
-   //    // DEBUG CODE ===========================================
-   //    strOutFile = m_strOutPath;
-   //    strOutFile += "sea_wave_angle_after_";
-   //    strOutFile += to_string(m_ulIter);
-   //    strOutFile += ".tif";
-   //
-   //    pDriver = GetGDALDriverManager()->GetDriverByName("gtiff");
-   //    pDataSet = pDriver->Create(strOutFile.c_str(), m_nXGridSize, m_nYGridSize, 1, GDT_Float64, m_papszGDALRasterOptions);
-   //    pDataSet->SetProjection(m_strGDALBasementDEMProjection.c_str());
-   //    pDataSet->SetGeoTransform(m_dGeoTransform);
-   //
-   //    nn = 0;
-   //    pdRaster = new double[m_nXGridSize * m_nYGridSize];
-   //    for (int nY = 0; nY < m_nYGridSize; nY++)
-   //    {
-   //       for (int nX = 0; nX < m_nXGridSize; nX++)
-   //       {
-   //          pdRaster[nn++] = m_pRasterGrid->m_Cell[nX][nY].dGetWaveAngle();
-   //       }
-   //    }
-   //
-   //    pBand = pDataSet->GetRasterBand(1);
-   //    pBand->SetNoDataValue(m_dMissingValue);
-   //    nRet = pBand->RasterIO(GF_Write, 0, 0, m_nXGridSize, m_nYGridSize, pdRaster, m_nXGridSize, m_nYGridSize, GDT_Float64, 0, 0, NULL);
-   //
-   //    if (nRet == CE_Failure)
-   //       return RTN_ERR_GRIDCREATE;
-   //
-   //    GDALClose(pDataSet);
-   //    delete[] pdRaster;
-   //    // DEBUG CODE ===========================================
+   pDriver = GetGDALDriverManager()->GetDriverByName("gtiff");
+   pDataSet = pDriver->Create(strOutFile.c_str(), m_nXGridSize, m_nYGridSize, 1, GDT_Float64, m_papszGDALRasterOptions);
+   pDataSet->SetProjection(m_strGDALBasementDEMProjection.c_str());
+   pDataSet->SetGeoTransform(m_dGeoTransform);
+
+   nn = 0;
+   pdRaster = new double[m_nXGridSize * m_nYGridSize];
+   for (int nY = 0; nY < m_nYGridSize; nY++)
+   {
+      for (int nX = 0; nX < m_nXGridSize; nX++)
+      {
+         pdRaster[nn++] = m_pRasterGrid->m_Cell[nX][nY].dGetWaveHeight();
+      }
+   }
+
+   pBand = pDataSet->GetRasterBand(1);
+   pBand->SetNoDataValue(m_dMissingValue);
+   nRet = pBand->RasterIO(GF_Write, 0, 0, m_nXGridSize, m_nYGridSize, pdRaster, m_nXGridSize, m_nYGridSize, GDT_Float64, 0, 0, NULL);
+
+   if (nRet == CE_Failure)
+      return RTN_ERR_GRIDCREATE;
+
+   GDALClose(pDataSet);
+   delete[] pdRaster;
+   // DEBUG CODE ===========================================================================================================
+
+   // DEBUG CODE ===========================================================================================================
+   strOutFile = m_strOutPath;
+   strOutFile += "sea_wave_angle_after_";
+   strOutFile += to_string(m_ulIter);
+   strOutFile += ".tif";
+
+   pDriver = GetGDALDriverManager()->GetDriverByName("gtiff");
+   pDataSet = pDriver->Create(strOutFile.c_str(), m_nXGridSize, m_nYGridSize, 1, GDT_Float64, m_papszGDALRasterOptions);
+   pDataSet->SetProjection(m_strGDALBasementDEMProjection.c_str());
+   pDataSet->SetGeoTransform(m_dGeoTransform);
+
+   nn = 0;
+   pdRaster = new double[m_nXGridSize * m_nYGridSize];
+   for (int nY = 0; nY < m_nYGridSize; nY++)
+   {
+      for (int nX = 0; nX < m_nXGridSize; nX++)
+      {
+         pdRaster[nn++] = m_pRasterGrid->m_Cell[nX][nY].dGetWaveAngle();
+      }
+   }
+
+   pBand = pDataSet->GetRasterBand(1);
+   pBand->SetNoDataValue(m_dMissingValue);
+   nRet = pBand->RasterIO(GF_Write, 0, 0, m_nXGridSize, m_nYGridSize, pdRaster, m_nXGridSize, m_nYGridSize, GDT_Float64, 0, 0, NULL);
+
+   if (nRet == CE_Failure)
+      return RTN_ERR_GRIDCREATE;
+
+   GDALClose(pDataSet);
+   delete[] pdRaster;
+   // DEBUG CODE ===========================================================================================================
 
    return RTN_OK;
 }
@@ -2432,7 +2426,7 @@ int CSimulation::nInterpolateAllDeepWaterWaveValues(void)
       }
    }
 
-   // // DEBUG CODE ===========================================
+   // // DEBUG CODE ===========================================================================================================
    //    string strOutFile = m_strOutPath;
    //    strOutFile += "init_deep_water_wave_height_";
    //    strOutFile += to_string(m_ulIter);
@@ -2461,9 +2455,9 @@ int CSimulation::nInterpolateAllDeepWaterWaveValues(void)
    //       return RTN_ERR_GRIDCREATE;
    //
    //    GDALClose(pDataSet);
-   // // DEBUG CODE ===========================================
+   // // DEBUG CODE ===========================================================================================================
 
-   // // DEBUG CODE ===========================================
+   // // DEBUG CODE ===========================================================================================================
    //    strOutFile = m_strOutPath;
    //    strOutFile += "init_deep_water_wave_angle_";
    //    strOutFile += to_string(m_ulIter);
@@ -2491,7 +2485,7 @@ int CSimulation::nInterpolateAllDeepWaterWaveValues(void)
    //
    //    GDALClose(pDataSet);
    //    delete[] pdRaster;
-   // // DEBUG CODE ===========================================
+   // // DEBUG CODE ===========================================================================================================
 
    return RTN_OK;
 }

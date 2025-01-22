@@ -31,6 +31,11 @@ You should have received a copy of the GNU General Public License along with thi
 
 class CGeomILine : public CA2DIShape
 {
+private:
+
+protected:
+   void Display(void) override;
+
 public:
    CGeomILine(void);
    ~CGeomILine(void) override;
@@ -42,8 +47,6 @@ public:
    // void SetYAt(int const, int const);
 
    bool bIsPresent(int const, int const);
-
-   void Display(void) override;
 };
 #endif // ILINE_H
 

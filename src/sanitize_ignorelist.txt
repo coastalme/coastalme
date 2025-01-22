@@ -1,0 +1,7 @@
+
+fun:GetGDALDriverManager
+fun:GetDriverByName
+fun:GetRasterBand
+fun:GDALClose
+fun:Create
+fun:SetProjection

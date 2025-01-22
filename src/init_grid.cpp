@@ -47,11 +47,19 @@ using std::endl;
 int CSimulation::nInitGridAndCalcStillWaterLevel(void)
 {
    // Clear all vector coastlines, profiles, and polygons
+   for (int nCoast = 0; nCoast < static_cast<int>(m_VCoast.size()); nCoast++)
+   {
+      for (int nProfile = 0; nProfile < m_VCoast[nCoast].nGetNumProfiles(); nProfile++)
+      {
+         m_VCoast[nCoast].ClearProfile(nProfile);
+      }
+   }
    m_VCoast.clear();
    // m_VFloodWaveSetup.clear();
    m_VFloodWaveSetupSurge.clear();
    m_VFloodWaveSetupSurgeRunup.clear();
-   m_pVCoastPolygon.clear();
+   m_pVCoastPolygonDownCoastSeq.clear();
+   m_pVCoastPolygonDownCoastSeq.clear();
 
    // Do some every-timestep initialization
    m_nXMinBoundingBox = INT_MAX;
@@ -191,7 +199,7 @@ int CSimulation::nInitGridAndCalcStillWaterLevel(void)
       LogStream << m_ulIter << ": " << WARN << nZeroThickness << " cells have no sediment, is this correct?" << endl;
    }
 
-   //    // DEBUG CODE ===========================================
+   //    // DEBUG CODE ===========================================================================================================
    //    string strOutFile = m_strOutPath;
    //    strOutFile += "init_deep_water_wave_height_";
    //    strOutFile += to_string(m_ulIter);
@@ -220,9 +228,9 @@ int CSimulation::nInitGridAndCalcStillWaterLevel(void)
    //       return RTN_ERR_GRIDCREATE;
    //
    //    GDALClose(pDataSet);
-   //    // DEBUG CODE ===========================================
+   //    // DEBUG CODE ===========================================================================================================
 
-   //    // DEBUG CODE ===========================================
+   //    // DEBUG CODE ===========================================================================================================
    //    strOutFile = m_strOutPath;
    //    strOutFile += "init_deep_water_wave_angle_";
    //    strOutFile += to_string(m_ulIter);
@@ -249,9 +257,9 @@ int CSimulation::nInitGridAndCalcStillWaterLevel(void)
    //       return RTN_ERR_GRIDCREATE;
    //
    //    GDALClose(pDataSet);
-   //    // DEBUG CODE ===========================================
+   //    // DEBUG CODE ===========================================================================================================
 
-   //    // DEBUG CODE ===========================================
+   //    // DEBUG CODE ===========================================================================================================
    //    strOutFile = m_strOutPath;
    //    strOutFile += "init_water_wave_angle_";
    //    strOutFile += to_string(m_ulIter);
@@ -278,9 +286,9 @@ int CSimulation::nInitGridAndCalcStillWaterLevel(void)
    //       return RTN_ERR_GRIDCREATE;
    //
    //    GDALClose(pDataSet);
-   //    // DEBUG CODE ===========================================
+   //    // DEBUG CODE ===========================================================================================================
 
-   //    // DEBUG CODE ===========================================
+   //    // DEBUG CODE ===========================================================================================================
    //    strOutFile = m_strOutPath;
    //    strOutFile += "init_water_wave_height_";
    //    strOutFile += to_string(m_ulIter);
@@ -308,7 +316,7 @@ int CSimulation::nInitGridAndCalcStillWaterLevel(void)
    //
    //    GDALClose(pDataSet);
    //    delete[] pdRaster;
-   //    // DEBUG CODE ===========================================
+   //    // DEBUG CODE ===========================================================================================================
    
    return RTN_OK;
 }

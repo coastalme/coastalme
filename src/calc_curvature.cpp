@@ -121,6 +121,9 @@ void CSimulation::DoCoastCurvature(int const nCoast, int const nHandedness)
          dMaxConvexSmoothed = m_VCoast[nCoast].dGetSmoothCurvature(mm);
          // nMaxConvexSmoothedCoastPoint = mm;
       }
+
+      // Also set the pointer to a coastline-normal profile to null
+
    }
 
    if (bFPIsEqual(dMaxConvexDetailed, 0.0, TOLERANCE))

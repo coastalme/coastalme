@@ -37,6 +37,8 @@ private:
    //! The drift's d50
    double m_dD50;
 
+protected:
+
 public:
    CRWDrift(CRWCoast*, int const, int const);
    ~CRWDrift(void) override;

@@ -31,6 +31,15 @@ You should have received a copy of the GNU General Public License along with thi
 
 class CGeomLine : public CA2DShape
 {
+private:
+
+protected:
+//    void SetXAt(int const, double const);
+//    void SetYAt(int const, double const);
+//    bool bIsPresent(CGeom2DPoint*);
+
+   void Display(void) override;
+
 public:
    CGeomLine(void);
    CGeomLine(CGeom2DPoint const*, CGeom2DPoint const*);
@@ -40,11 +49,6 @@ public:
    double dGetXAt(int const);
    double dGetYAt(int const);
    CGeom2DPoint* pPtGetAt(int const);
-   // void SetXAt(int const, double const);
-   // void SetYAt(int const, double const);
-//    bool bIsPresent(CGeom2DPoint*);
-
-   void Display(void) override;
 };
 #endif // LINE_H
 

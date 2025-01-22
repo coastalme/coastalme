@@ -386,7 +386,7 @@ int CSimulation::nDoAllShadowZones(void)
             // Go upwave along the previous cell's wave orientation to find the new boundary cell
             CGeom2DIPoint PtiNew = PtiFollowWaveAngle(&PtiPrev, dPrevWaveAngle, dCorrection);
 
-            // Get the co-ordinates of 'this' cell
+            // Get the coordinates of 'this' cell
             int
                 nX = PtiNew.nGetX(),
                 nY = PtiNew.nGetY();
@@ -426,7 +426,7 @@ int CSimulation::nDoAllShadowZones(void)
                }
             }
 
-            // Store the co-ordinates of every cell which we cross
+            // Store the coordinates of every cell which we cross
             ILShadowBoundary.Append(&PtiNew);
 
             //             LogStream << m_ulIter << ": at [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "}" << endl;
@@ -479,7 +479,7 @@ int CSimulation::nDoAllShadowZones(void)
                continue;
             }
 
-            // We've found a valid shadow zone. Check the last point in the shadow boundary. Note that occasionally this last cell is not 'above' a cell but is above one of its neighbouring cells is: in which case, replace the last point in the shadow boundary with the co-ordinates of this neighbouring cell
+            // We've found a valid shadow zone. Check the last point in the shadow boundary. Note that occasionally this last cell is not 'above' a cell but is above one of its neighbouring cells is: in which case, replace the last point in the shadow boundary with the coordinates of this neighbouring cell
             int nShadowBoundaryCoastPoint = m_VCoast[nCoast].nGetCoastPointGivenCell(&ILShadowBoundary.Back());
             if (nShadowBoundaryCoastPoint == INT_NODATA)
             {
@@ -622,7 +622,7 @@ int CSimulation::nDoAllShadowZones(void)
             }
          }
 
-         //          // DEBUG CODE =======================================================
+         //          // DEBUG CODE =======================================================================================================================
          //          LogStream << "FIRST" << endl;
          //          for (int k = 0; k < LIBoundary.nGetSize(); k++)
          //          {
@@ -630,7 +630,7 @@ int CSimulation::nDoAllShadowZones(void)
          //             LogStream << k << " [" << PtiTmp.nGetX() << "][" << PtiTmp.nGetY() << "]" << endl;
          //          }
          //          LogStream << endl;
-         //          // DEBUG CODE =======================================================
+         //          // DEBUG CODE =======================================================================================================================
 
          // Calculate the centroid
          CGeom2DIPoint PtiCentroid = PtiPolygonCentroid(LIBoundary.pPtiVGetPoints());
@@ -733,7 +733,7 @@ int CSimulation::nFloodFillShadowZone(int const nZone, CGeom2DIPoint const* pPti
    // We have a flood fill start point so push this point onto the stack
    PtiStack.push(PtiFloodFillStart);
 
-   // Then do the flood fill: loop until there are no more cell co-ordinates on the stack
+   // Then do the flood fill: loop until there are no more cell coordinates on the stack
    while (!PtiStack.empty())
    {
       CGeom2DIPoint Pti = PtiStack.top();
@@ -917,13 +917,13 @@ void CSimulation::DoShadowZoneAndDownDriftZone(int const nCoast, int const nZone
          break;
       }
 
-      // OK, this is part of the downdrift boundary so store this co-ordinate and mark the cell
+      // OK, this is part of the downdrift boundary so store this coordinate and mark the cell
       CGeom2DPoint PtThis(dGridCentroidXToExtCRSX(nX), dGridCentroidYToExtCRSY(nY));
 
-      // Make sure we have not already stored this co-ordinate (can happen, due to rounding)
+      // Make sure we have not already stored this coordinate (can happen, due to rounding)
       if ((LDownDriftBoundary.nGetSize() == 0) || (PtThis != LDownDriftBoundary.pPtBack()))
       {
-         // Store this co-ordinate
+         // Store this coordinate
          LDownDriftBoundary.Append(&PtThis);
 
          // Mark the cell (a +ve number, same as the associated shadow zone number i.e. starting from 1)

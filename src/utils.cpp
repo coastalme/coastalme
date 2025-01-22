@@ -2070,9 +2070,12 @@ string CSimulation::strGetErrorText(int const nErr)
    case RTN_ERR_CLIFF_NOT_IN_POLYGON:
       strErr = "cliff not in polygon";
       break;
+   case RTN_ERR_UNKNOWN:
+      strErr = "unknown error";
+      break;
    default:
       // should never get here
-      strErr = "unknown error";
+      strErr = "totally unknown error";
    }
 
    return strErr;
@@ -2310,7 +2313,7 @@ string CSimulation::strRemoveSubstr(string* pStrIn, string const* pStrSub)
 //===============================================================================================================================
 //! From http://stackoverflow.com/questions/236129/split-a-string-in-c They implement (approximately) Python's split() function. This first version puts the results into a pre-constructed string vector. It ignores empty items
 //===============================================================================================================================
-vector<string> *CSimulation::VstrSplit(string const *s, char const delim, vector<string> *elems)
+vector<string> *CSimulation::VstrSplit(string const* s, char const delim, vector<string>* elems)
 {
    stringstream ss(*s);
    string item;
@@ -2460,7 +2463,7 @@ double CSimulation::dSubtractProfiles(vector<double> const* pdVFirstProfile, vec
       }
    }
 
-   //    // DEBUG STUFF -----------------------------------------------------
+   //    // DEBUG CODE -----------------------------------------------------
    //    LogStream << endl;
    //    LogStream << "First profile = ";
    //    for (int n = 0; n < static_cast<int>(pdVFirstProfile->size()); n++)
@@ -2480,7 +2483,7 @@ double CSimulation::dSubtractProfiles(vector<double> const* pdVFirstProfile, vec
    //       LogStream << pdVFirstProfile->at(n) - pdVSecondProfile->at(n) << " ";
    //    }
    //    LogStream << endl;
-   //    // DEBUG STUFF -----------------------------------------------------
+   //    // DEBUG CODE -----------------------------------------------------
 
    return dTotElevDiff;
 }
@@ -2794,3 +2797,55 @@ bool CSimulation::bIsInterventionCell(int const nX, int const nY) const
 
    return false;
 }
+
+//===============================================================================================================================
+//! Returns the size of the coast polygon vector
+//===============================================================================================================================
+int CSimulation::nGetCoastPolygonSize(void) const
+{
+   return static_cast<int>(m_pVCoastPolygonDownCoastSeq.size());
+}
+
+//===============================================================================================================================
+//! Returns a pointer to a coast polygon, specified in down-coast sequence
+//===============================================================================================================================
+CGeomCoastPolygon* CSimulation::pGetPolygonDownCoastSeq(int const nPoly) const
+{
+   // TODO 055 No check to see if nPoly < m_pVCoastPolygonDownCoastSeq.size()
+   return m_pVCoastPolygonDownCoastSeq[nPoly];
+}
+
+//===============================================================================================================================
+//! Appends a pointer to a coast polygon to the down-coast coast polygon vector
+//===============================================================================================================================
+void CSimulation::AppendPolygon(CGeomCoastPolygon* pPolygon)
+{
+   m_pVCoastPolygonDownCoastSeq.push_back(pPolygon);
+}
+
+//===============================================================================================================================
+//! Create an index to polygons in polygon ID sequence
+//===============================================================================================================================
+void CSimulation::CreatePolygonIndexIDSeq(void)
+{
+   int nNumPolygons = static_cast<int>(m_pVCoastPolygonDownCoastSeq.size());
+   m_pVCoastPolygonIDSeq.resize(nNumPolygons);
+
+   for (int n = 0; n < nNumPolygons; n++)
+   {
+      CGeomCoastPolygon* pPolygon = m_pVCoastPolygonDownCoastSeq[n];
+      int nPolygon = pPolygon->nGetCoastID();
+      m_pVCoastPolygonIDSeq[nPolygon] = pPolygon;
+   }
+}
+
+//===============================================================================================================================
+//! Returns a pointer to a coast polygon, specified in ID sequence
+//===============================================================================================================================
+CGeomCoastPolygon* CSimulation::pGetPolygonIDSeq(int const nPoly) const
+{
+   // TODO 055 No check to see if nPoly < m_pVCoastPolygonIDSeq.size()
+   return m_pVCoastPolygonIDSeq[nPoly];
+}
+
+

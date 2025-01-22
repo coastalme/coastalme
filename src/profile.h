@@ -42,6 +42,9 @@ private:
    //! Is this an end-of-coast profile?
    bool m_bEndOfCoast;
 
+   //! Has this profile encountered a CShore problem?
+   bool m_bCShoreProblem;
+
    //! Has this profile hit land?
    bool m_bHitLand;
 
@@ -57,8 +60,17 @@ private:
    //! Has this profile hit another profile?
    bool m_bHitAnotherProfile;
 
+   //! The coast from which this profile projects
+   int m_nCoast;
+
    //! The coastline point at which this profile hits the coast (not necessarily coincident wih the profile start cell)
    int m_nNumCoastPoint;
+
+   //! The this-coast ID of the profile
+   int m_nCoastID;
+
+   //! The global ID of the profile
+   int m_nGlobalID;
 
    //! The wave height at the end of the profile
    double m_dDeepWaterWaveHeight;
@@ -68,6 +80,18 @@ private:
 
    //! The wave period at the end of the profile
    double m_dDeepWaterWavePeriod;
+
+   //! The on-coast start point of the profile in grid CRS
+   CGeom2DIPoint PtiStart;
+
+   //! The seaward end point of the profile in grid CRS
+   CGeom2DIPoint PtiEnd;
+
+   //! Pointer to the adjacent up-coast profile (may be an invalid profile)
+   CGeomProfile* m_pUpCoastAdjacentProfile;
+
+   //! Pointer to the adjacent down-coast profile (may be an invalid profile)
+   CGeomProfile* m_pDownCoastAdjacentProfile;
 
    //! In the grid CRS, the integer coordinates of the cells 'under' this profile, point zero is the same as 'cell marked as coastline' in coast object
    vector<CGeom2DIPoint> m_VCellInProfile;
@@ -79,36 +103,38 @@ private:
    // Is this profile point part of a multi-line?
 //    vector<bool> m_bVShared;
 
-   //! The ID of the CoastPolygon to the left (looking seaward)
-   vector<int> m_VnCoastPolyToLeft;
-
-   //! The ID of the CoastPolygon to the right (looking seaward)
-   vector<int> m_VnCoastPolyToRight;
+protected:
 
 public:
-   explicit CGeomProfile(int const);
+   explicit CGeomProfile(int const, int const, int const, int const, CGeom2DIPoint const*);
    ~CGeomProfile(void) override;
 
+   void DeleteProfile(void);
+
+   int nGetCoastID(void) const;
+   int nGetGlobalID(void) const;
    int nGetNumCoastPoint(void) const;
+
+   CGeom2DIPoint* pPtiGetStartPoint(void);
+   void SetEndPoint(CGeom2DIPoint const*);
+   CGeom2DIPoint* pPtiGetEndPoint(void);
 
    void SetStartOfCoast(bool const);
    bool bStartOfCoast(void) const;
-
    void SetEndOfCoast(bool const);
    bool bEndOfCoast(void) const;
 
+   void SetCShoreProblem(bool const);
+   bool bCShoreProblem(void) const;
+
    void SetHitLand(bool const);
    bool bHitLand(void) const;
-
    void SetHitCoast(bool const);
    bool bHitCoast(void) const;
-
    void SetTooShort(bool const);
    // bool bTooShort(void) const;
-
    void SetTruncated(bool const);
    // bool bTruncated(void) const;
-
    void SetHitAnotherProfile(bool const);
    bool bHitAnotherProfile(void) const;
 
@@ -116,7 +142,7 @@ public:
    bool bOKIncStartAndEndOfCoast(void) const;
    // bool bOKIncStartOfCoast(void) const;
 
-   void SetAllPointsInProfile(vector<CGeom2DPoint> const*);
+   void SetPointsInProfile(vector<CGeom2DPoint> const*);
    void SetPointInProfile(int const, double const, double const);
    void AppendPointInProfile(double const, double const);
    void AppendPointInProfile(CGeom2DPoint const*);
@@ -135,11 +161,10 @@ public:
 //    void AppendPointShared(bool const);
 //    bool bPointShared(int const) const;
 
-//    void SetCoastPolyToLeft(int const, int const);
-//    int nGetCoastPolyToleft(int const);
-
-//    void SetCoastPolyToRight(int const, int const);
-//    int nGetCoastPolyToRight(int const);
+   void SetUpCoastAdjacentProfile(CGeomProfile*);
+   CGeomProfile* pGetUpCoastAdjacentProfile(void) const;
+   void SetDownCoastAdjacentProfile(CGeomProfile*);
+   CGeomProfile* pGetDownCoastAdjacentProfile(void) const;
 
    void AppendCellInProfile(CGeom2DIPoint const*);
    void AppendCellInProfile(int const, int const);
@@ -162,6 +187,7 @@ public:
 
    void SetProfileDeepWaterWavePeriod(double const);
    double dGetProfileDeepWaterWavePeriod(void) const;
+
 };
 #endif //PROFILE_H
 

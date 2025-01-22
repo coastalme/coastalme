@@ -39,6 +39,8 @@ private:
    //! A vector of line segments, each element is a vector of pairs. The first of the pair is a co-incident profile number, the second is that profile's 'own' line segment number
    vector<vector<pair<int, int> > > m_prVVLineSegment;
 
+protected:
+
 public:
    CGeomMultiLine(void);
    ~CGeomMultiLine(void) override;

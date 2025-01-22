@@ -43,7 +43,7 @@ using std::pair;
 //===============================================================================================================================
 //! Function used to sort polygon length values. If the first argument must be ordered before the second, return true
 //===============================================================================================================================
-bool bPolygonLengthPairCompare(const pair<int, double> &prLeft, const pair<int, double> &prRight)
+bool bPolygonLengthPairCompare(const pair<int, double>& prLeft, const pair<int, double>& prRight)
 {
    // Sort in ascending order (i.e. most concave first)
    return prLeft.second < prRight.second;
@@ -62,7 +62,11 @@ void CSimulation::DoAllPotentialBeachErosion(void)
       // Create a vector of pairs: the first value of the pair is the profile index, the second is the seaward length of that profile
       vector<pair<int, double>> prVPolygonLength;
       for (int nPoly = 0; nPoly < nNumPolygons; nPoly++)
-         prVPolygonLength.push_back(make_pair(nPoly, m_VCoast[nCoast].dGetPolygonLength(nPoly)));
+      {
+         CGeomCoastPolygon const* pPolygon = m_VCoast[nCoast].pGetPolygonDownCoastSeq(nPoly);
+         double dSeawardLength = pPolygon->dGetLength();
+         prVPolygonLength.push_back(make_pair(nPoly, dSeawardLength));
+      }
 
       // Sort this pair vector in ascending order, so that the polygons with the shortest length (i.e. the most concave polygons) are first
       sort(prVPolygonLength.begin(), prVPolygonLength.end(), bPolygonLengthPairCompare);
@@ -72,24 +76,22 @@ void CSimulation::DoAllPotentialBeachErosion(void)
       {
          int nThisPoly = prVPolygonLength[n].first;
 
-         CGeomCoastPolygon* pPolygon = m_VCoast[nCoast].pGetPolygon(nThisPoly);
+         CGeomCoastPolygon* pPolygon = m_VCoast[nCoast].pGetPolygonIDSeq(nThisPoly);
 
          // Calculate the average breaking wave height and angle along this polygon's segment of coastline
-         int
-             nStartNormal = pPolygon->nGetUpCoastProfile(),
-             nEndNormal = pPolygon->nGetDownCoastProfile(),
-             nCoastStartPoint = m_VCoast[nCoast].pGetProfile(nStartNormal)->nGetNumCoastPoint(),
-             nCoastEndPoint = m_VCoast[nCoast].pGetProfile(nEndNormal)->nGetNumCoastPoint(),
-             nCoastPoints = 0,
-             nActiveZonePoints = 0;
+         int nStartNormal = pPolygon->nGetUpCoastProfile();
+         int nEndNormal = pPolygon->nGetDownCoastProfile();
+         int nCoastStartPoint = m_VCoast[nCoast].pGetProfile(nStartNormal)->nGetNumCoastPoint();
+         int nCoastEndPoint = m_VCoast[nCoast].pGetProfile(nEndNormal)->nGetNumCoastPoint();
+         int nCoastPoints = 0;
+         int nActiveZonePoints = 0;
 
-         double
-             dAvgBreakingWaveHeight = 0,
-             dAvgBreakingWaveAngle = 0,
-             dAvgDeepWaterWavePeriod = 0,
-             dAvgFluxOrientation = 0,
-             dAvgBreakingDepth = 0,
-             dAvgBreakingDist = 0;
+         double dAvgBreakingWaveHeight = 0;
+         double dAvgBreakingWaveAngle = 0;
+         double dAvgDeepWaterWavePeriod = 0;
+         double dAvgFluxOrientation = 0;
+         double dAvgBreakingDepth = 0;
+         double dAvgBreakingDist = 0;
 
          // Calculate the average tangent to the polygon's coast segment, the average wave breaking height, the average depth of breaking, and the average distance of breaking, for this coast segment
          for (int nCoastPoint = nCoastStartPoint; nCoastPoint < nCoastEndPoint - 1; nCoastPoint++)

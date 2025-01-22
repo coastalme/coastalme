@@ -244,13 +244,13 @@ bool CGeomCell::bIsFloodLine(void) const
 }
 
 //! Marks this cell as 'under' a coastline-normal profile
-void CGeomCell::SetProfile(int const nNormal)
+void CGeomCell::SetProfileID(int const nNormal)
 {
    m_nCoastlineNormal = nNormal;
 }
 
 //! If this cell is 'under' a coastline-normal profile, returns the number of the profile. Otherwise it returns INT_NODATA
-int CGeomCell::nGetProfile(void) const
+int CGeomCell::nGetProfileID(void) const
 {
    return m_nCoastlineNormal;
 }

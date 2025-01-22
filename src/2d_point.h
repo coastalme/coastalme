@@ -1,7 +1,7 @@
 /*!
 \class CGeom2DPoint
-\brief Geometry class used to represent 2D point objects with floating-point co-ordinates
-\details The CGeom2DPoint geometry class is used to represent 2D points where the x and y co-ordinates are floating-point values, e.g. points for which the x and y co-ordinates are in the external CRS (co-ordinate reference system)
+\brief Geometry class used to represent 2D point objects with floating-point coordinates
+\details The CGeom2DPoint geometry class is used to represent 2D points where the x and y coordinates are floating-point values
 \author David Favis-Mortlock
 \author Andres Payo
 \date 2025
@@ -25,11 +25,13 @@ You should have received a copy of the GNU General Public License along with thi
 class CGeom2DPoint
 {
 private:
-   //! The x co-ordinate
+   //! The x coordinate
    double dX;
    
-   //! The y co-ordinate
+   //! The y coordinate
    double dY;
+
+protected:
 
 public:
    CGeom2DPoint(void);
@@ -46,5 +48,6 @@ public:
    bool operator== (CGeom2DPoint const*) const;
    bool operator== (CGeom2DPoint) const;
    bool operator!= (CGeom2DPoint const*) const;
+   bool operator!= (CGeom2DPoint) const;
 };
 #endif // C2DPOINT_H

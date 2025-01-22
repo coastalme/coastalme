@@ -595,16 +595,16 @@ private:
    //! Multiplier for duration units, to convert to hours
    double m_dDurationUnitsMult;
 
-   //! The north-west x co-ordinate, in the external co-ordinate reference system (CRS)
+   //! The north-west x coordinate, in the external coordinate reference system (CRS)
    double m_dNorthWestXExtCRS;
 
-   //! The north-west y co-ordinate, in the external co-ordinate reference system (CRS)
+   //! The north-west y coordinate, in the external coordinate reference system (CRS)
    double m_dNorthWestYExtCRS;
 
-   //! The south-east x co-ordinate, in the external co-ordinate reference system (CRS)
+   //! The south-east x coordinate, in the external coordinate reference system (CRS)
    double m_dSouthEastXExtCRS;
 
-   //! The south-east y co-ordinate, in the external co-ordinate reference system (CRS)
+   //! The south-east y coordinate, in the external coordinate reference system (CRS)
    double m_dSouthEastYExtCRS;
 
    //! The area of the grid (in external CRS units)
@@ -1355,10 +1355,10 @@ private:
    //! Tide data: one record per timestep, is the change (m) from still water level for that timestep
    vector<double> m_VdTideData;
 
-   //! X co-ordinate (grid CRS) for deep water wave station
+   //! X coordinate (grid CRS) for deep water wave station
    vector<double> m_VdDeepWaterWaveStationX;
 
-   //! Y co-ordinate (grid CRS) for deep water wave station
+   //! Y coordinate (grid CRS) for deep water wave station
    vector<double> m_VdDeepWaterWaveStationY;
 
    //! This-iteration wave height at deep water wave station
@@ -1379,16 +1379,16 @@ private:
    //! Time series of wave period at deep water wave station
    vector<double> m_VdTSDeepWaterWaveStationPeriod;
 
-   //! X co-ordinate (grid CRS) for sediment input event
+   //! X coordinate (grid CRS) for sediment input event
    vector<double> m_VdSedimentInputLocationX;
 
-   //! X co-ordinate (grid CRS) for sediment input event
+   //! X coordinate (grid CRS) for sediment input event
    vector<double> m_VdSedimentInputLocationY;
 
-   //! X co-ordinate (grid CRS) for total water level flooding
+   //! X coordinate (grid CRS) for total water level flooding
    vector<double> m_VdFloodLocationX;
 
-   //! X co-ordinate (grid CRS) for total water level flooding
+   //! X coordinate (grid CRS) for total water level flooding
    vector<double> m_VdFloodLocationY;
 
    //! The name of the initial fine-sized unconsolidated sediment GIS file
@@ -1493,8 +1493,11 @@ private:
    //! TODO 007 Info needed
    vector<CRWCoast> m_VFloodWaveSetupSurgeRunup;
 
-   //! Pointers to coast polygon objects
-   vector<CGeomCoastPolygon*> m_pVCoastPolygon;
+   //! Pointers to coast polygon objects, in down-coast sequence TODO 085 Will need to use global polygon ID here to support multiple coastlines
+   vector<CGeomCoastPolygon*> m_pVCoastPolygonDownCoastSeq;
+
+   //! Pointers to coast polygon objects, in natural (i.e. polygon numbering) sequence TODO 085 Will need to use global polygon ID here to support multiple coastlines
+   vector<CGeomCoastPolygon*> m_pVCoastPolygonIDSeq;
 
    //! Edge cells
    vector<CGeom2DIPoint> m_VEdgeCell;
@@ -1523,9 +1526,9 @@ private:
    int nReadWaveStationInputFile(int const);
    int nReadSedimentInputEventFile(void);
    int nReadTideDataFile(void);
-   int nSaveProfile(int const, int const, int const, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<CGeom2DIPoint>* const, vector<double> const*) const;
-   bool bWriteProfileData(int const, int const, int const, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<CGeom2DIPoint>* const, vector<double> const*) const;
-   int nSaveParProfile(int const, int const, int const, int const, int const, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<CGeom2DIPoint>*const, vector<double> const*) const;
+   int nSaveProfile(int const, CGeomProfile const*, int const, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<CGeom2DIPoint>* const, vector<double> const*) const;
+   bool bWriteProfileData(int const, CGeomProfile const*, int const, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<CGeom2DIPoint>* const, vector<double> const*) const;
+   int nSaveParProfile(int const, CGeomProfile const*, int const, int const, int const, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<CGeom2DIPoint>*const, vector<double> const*) const;
    bool bWriteParProfileData(int const, int const, int const, int const, int const, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<CGeom2DIPoint>*const, vector<double> const*) const;
    void WriteLookUpData(void) const;
 
@@ -1568,25 +1571,25 @@ private:
    int nTraceFloodCoastLine(unsigned int const, int const, int const, vector<bool>*, vector<CGeom2DIPoint> const*);
    int nTraceAllFloodCoasts(void);
    void DoCoastCurvature(int const, int const);
-   int nCreateAllProfilesAndCheckValidity(void);
+   int nCreateAndCheckAllProfiles(void);
    int nCreateAllProfiles(void);
-   void LocateAllProfiles(int const, int&, int const, vector<bool>*, vector<pair<int, double>> const*);
-   int nLocateProfile(int const, int const, int&, bool const);
-   int nLocateGridEdgeProfile(bool const, int const, int&);
-   int nPutAllProfilesOntoGrid(void);
-   int nModifyAllIntersectingProfiles(void);
-   static bool bCheckForIntersection(CGeomProfile *const, CGeomProfile* const, int&, int&, double&, double&, double&, double&);
-   void MergeProfilesAtFinalLineSegments(int const, int const, int const, int const, int const, double const, double const, double const, double const);
-   void TruncateOneProfileRetainOtherProfile(int const, int const, int const, double const, double const, int const, int const, bool const);
-   int nInsertPointIntoProfilesIfNeededThenUpdate(int const, int const, double const, double const, int const, int const, int const, bool const);
-   void TruncateProfileAndAppendNew(int const, int const, int const, vector<CGeom2DPoint> const*, vector<vector<pair<int, int>>> const*);
-   void RasterizeProfile(int const, int const, vector<CGeom2DIPoint>*, vector<bool>*, bool&, bool&, bool&, bool&, bool&);
+   void LocateAndCreateProfiles(int const, int&, int&, int const, vector<bool>*, vector<pair<int, double>> const*);
+   int nCreateProfile(int const, int const, int&, int&, bool const, CGeom2DIPoint const*);
+   int nLocateAndCreateGridEdgeProfile(bool const, int const, int&, int&);
+   int nMarkAllProfilesOnGrid(void);
+   void ModifyAllIntersectingProfiles(void);
+   static bool bCheckForIntersection(CGeomProfile* const, CGeomProfile* const, int&, int&, double&, double&, double&, double&);
+   void MergeProfilesAtFinalLineSegments(int const, CGeomProfile*, CGeomProfile*, int const, int const, double const, double const, double const, double const);
+   void TruncateOneProfileRetainOtherProfile(int const, CGeomProfile*, CGeomProfile*, double const, double const, int const, int const, bool const);
+   int nInsertPointIntoProfilesIfNeededThenUpdate(int const, CGeomProfile*, double const, double const, int const, CGeomProfile*, int const, bool const);
+   void TruncateProfileAndAppendNew(int const, CGeomProfile*, int const, vector<CGeom2DPoint> const*, vector<vector<pair<int, int>>> const*);
+   void CreateRasterizedProfile(int const, CGeomProfile*, CGeom2DIPoint const*, CGeom2DIPoint const*, vector<CGeom2DIPoint>*, vector<bool>*, bool&, bool&, bool&, bool&, bool&);
    static void CalcDeanProfile(vector<double>*, double const, double const, double const, bool const, int const, double const);
    static double dSubtractProfiles(vector<double> const*, vector<double> const*, vector<bool> const*);
    void RasterizeCliffCollapseProfile(vector<CGeom2DPoint> const*, vector<CGeom2DIPoint>*) const;
    int nCalcPotentialPlatformErosionOnProfile(int const, int const);
-   int nCalcPotentialPlatformErosionBetweenProfiles(int const, int const, int const);
-   void ConstructParallelProfile(int const, int const, int const, int const, int const, vector<CGeom2DIPoint>* const, vector<CGeom2DIPoint>*, vector<CGeom2DPoint> *);
+   int nCalcPotentialPlatformErosionBetweenProfiles(int const, CGeomProfile*, int const);
+   void ConstructParallelProfile(int const, int const, int const, int const, int const, vector<CGeom2DIPoint>* const, vector<CGeom2DIPoint>*, vector<CGeom2DPoint>*);
    double dCalcBeachProtectionFactor(int const, int const, double const);
    void FillInBeachProtectionHoles(void);
    void FillPotentialPlatformErosionHoles(void);
@@ -1595,14 +1598,14 @@ private:
    static CGeom2DPoint PtChooseEndPoint(int const, CGeom2DPoint const*, CGeom2DPoint const*, double const, double const, double const, double const);
    int nGetCoastNormalEndPoint(int const, int const, int const, CGeom2DPoint const*, double const, CGeom2DPoint*, CGeom2DIPoint*, bool const);
    int nLandformToGrid(int const, int const);
-   int nCalcWavePropertiesOnProfile(int const, int const, int const, vector<double>*, vector<double>*, vector<double>*, vector<double>*, vector<bool>*);
-   int nGetThisProfileElevationVectorsForCShore(int const, int const, int const, vector<double>*, vector<double>*, vector<double>*);
+   int nCalcWavePropertiesOnProfile(int const, int const, CGeomProfile*, vector<double>*, vector<double>*, vector<double>*, vector<double>*, vector<bool>*);
+   int nGetThisProfileElevationsForCShore(int const, CGeomProfile*, int const, vector<double>*, vector<double>*, vector<double>*);
    int nCreateCShoreInfile(int const, int const, int const, int const, int const, int const, int const, int const, int const, int const, int const, int const, int const, double const, double const, double const, double const, double const, double const, double const, double const, vector<double> const*, vector<double> const*, vector<double> const*);
    int nReadCShoreOutput(int const, string const*, int const, int const, vector<double> const*, vector<double>*);   
-   static void InterpolateCShoreOutput(vector<double> const*, int const, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<double>*, vector<double>*, vector<double>*, vector<double>*);
+/*   static */ void InterpolateCShoreOutput(vector<double> const*, int const, int const, vector<double>*, vector<double>*, vector<double>*, vector<double>*, vector<double>*, vector<double>*, vector<double>*, vector<double>*, vector<double>*);
    static double dCalcWaveAngleToCoastNormal(double const, double const, int const);
    void CalcCoastTangents(int const);
-   void InterpolateWavePropertiesBetweenProfiles(int const, int const, int const);
+   void InterpolateWavePropertiesBetweenProfiles(int const, int const);
    void InterpolateWaveHeightToCoastPoints(int const);
    // void InterpolateWavePropertiesToCells(int const, int const, int const);
    void ModifyBreakingWavePropertiesWithinShadowZoneToCoastline(int const, int const);
@@ -1617,7 +1620,7 @@ private:
    void ProcessDownDriftCell(int const, int const, int const, double const, int const);
    void ProcessShadowZoneCell(int const, int const, int const, CGeom2DIPoint const*, int const, int const, int const);
    int nCreateAllPolygons(void);
-   void RasterizePolygonJoiningLine(CGeom2DPoint const*, CGeom2DPoint const*);
+   void RasterizePolygonJoiningLine(CGeom2DIPoint const*, CGeom2DIPoint const*, int const);
    static bool bIsWithinPolygon(CGeom2DPoint const*, vector<CGeom2DPoint> const*);
    static CGeom2DPoint PtFindPointInPolygon(vector<CGeom2DPoint> const*, int const);
    void MarkPolygonCells(void);
@@ -1641,7 +1644,7 @@ private:
    bool bIsInterventionCell(int const, int const) const;
    bool bSurroundedByDriftCells(int const, int const);
    bool bElevAboveDeanElev(int const, int const, double const, CRWCellLandform const*);
-
+   void CreatePolygonIndexIDSeq(void);
 
    // GIS utility routines
    int nMarkBoundingBoxEdgeCells(void);
@@ -1746,7 +1749,7 @@ private:
    static string strToLower(string const*);
    //  static string strToUpper(string const*);
    static string strRemoveSubstr(string *, string const*);
-   static vector<string> *VstrSplit(string const*, char const, vector<string>*);
+   static vector<string>* VstrSplit(string const*, char const, vector<string>*);
    static vector<string> VstrSplit(string const*, char const);
    // static double dCrossProduct(double const, double const, double const, double const, double const, double const);
    // static double dGetMean(vector<double> const*);
@@ -1785,11 +1788,25 @@ private:
    void CheckRand(void) const;
 #endif
 
+protected:
+
 public:
    ofstream LogStream;
 
    CSimulation(void);
    ~CSimulation(void);
+
+   //! Returns the size of the coast polygon vector
+   int nGetCoastPolygonSize(void) const;
+
+   //! Returns a pointer to a coast polygon, in down-coast sequence
+   CGeomCoastPolygon* pGetPolygonDownCoastSeq(int const) const;
+
+   //! Returns a pointer to a coast polygon, in polygon ID sequence
+   CGeomCoastPolygon* pGetPolygonIDSeq(int const) const;
+
+   //! Appends a pointer to a coast polygon to the coast polygon vector
+   void AppendPolygon(CGeomCoastPolygon*);
 
    //! Returns the NODATA value
    double dGetMissingValue(void) const;

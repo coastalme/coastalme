@@ -179,7 +179,7 @@ int CSimulation::nReadVectorGISFile(int const nDataItem)
          switch (nDataItem)
          {
             case (DEEP_WATER_WAVE_STATIONS_VEC):
-               // Point data: convert the wave station co-ordinates from ext CRS to grid CRS
+               // Point data: convert the wave station coordinates from ext CRS to grid CRS
                pOGRPoint = static_cast<OGRPoint*>(pOGRGeometry);
                dPointGridX = dExtCRSXToGridX(pOGRPoint->getX());
                dPointGridY = dExtCRSYToGridY(pOGRPoint->getY());
@@ -191,7 +191,7 @@ int CSimulation::nReadVectorGISFile(int const nDataItem)
                if (dPointGridY >= m_nYGridSize)
                   return RTN_ERR_WAVESTATION_LOCATION;
 
-               // Now store the wave station co-ordinates, we will use these in the spatial interpolation of deep water waves
+               // Now store the wave station coordinates, we will use these in the spatial interpolation of deep water waves
                m_VdDeepWaterWaveStationX.push_back(dExtCRSXToGridX(dPointGridX));
                m_VdDeepWaterWaveStationY.push_back(dExtCRSYToGridY(dPointGridY));
                break;
@@ -199,7 +199,7 @@ int CSimulation::nReadVectorGISFile(int const nDataItem)
             case (SEDIMENT_INPUT_EVENT_LOCATION_VEC):
                if (m_bSedimentInputAtPoint || m_bSedimentInputAtCoast)
                {
-                  // Point data: convert the sediment input co-ordinates from ext CRS to grid CRS
+                  // Point data: convert the sediment input coordinates from ext CRS to grid CRS
                   pOGRPoint = static_cast<OGRPoint*>(pOGRGeometry);
                   dPointGridX = dExtCRSXToGridX(pOGRPoint->getX());
                   dPointGridY = dExtCRSYToGridY(pOGRPoint->getY());
@@ -211,13 +211,13 @@ int CSimulation::nReadVectorGISFile(int const nDataItem)
                   if (dPointGridY >= m_nYGridSize)
                      return RTN_ERR_SEDIMENT_INPUT_EVENT_LOCATION;
 
-                  // Now store the sediment input co-ordinates
+                  // Now store the sediment input coordinates
                   m_VdSedimentInputLocationX.push_back(dPointGridX);
                   m_VdSedimentInputLocationY.push_back(dPointGridY);
                }
                else if (m_bSedimentInputAlongLine)
                {
-                  // Line data: convert the sediment input co-ordinates from ext CRS to grid CRS
+                  // Line data: convert the sediment input coordinates from ext CRS to grid CRS
                   pOGRLineString = static_cast<OGRLineString*>(pOGRGeometry);
 
                   nPoints = pOGRLineString->getNumPoints();
@@ -233,7 +233,7 @@ int CSimulation::nReadVectorGISFile(int const nDataItem)
                      if (dY >= m_nYGridSize)
                         continue;
 
-                     // Now store the sediment input co-ordinates
+                     // Now store the sediment input coordinates
                      m_VdSedimentInputLocationX.push_back(dX);
                      m_VdSedimentInputLocationY.push_back(dY);
                   }
@@ -241,7 +241,7 @@ int CSimulation::nReadVectorGISFile(int const nDataItem)
                break;
 
             case (FLOOD_LOCATION_VEC):
-               // Point data: convert the flood location co-ordinates from ext CRS to grid CRS
+               // Point data: convert the flood location coordinates from ext CRS to grid CRS
                pOGRPoint = static_cast<OGRPoint*>(pOGRGeometry);
                dPointGridX = dExtCRSXToGridX(pOGRPoint->getX());
                dPointGridY = dExtCRSYToGridY(pOGRPoint->getY());
@@ -253,7 +253,7 @@ int CSimulation::nReadVectorGISFile(int const nDataItem)
                if (dPointGridY >= m_nYGridSize)
                   return RTN_ERR_SEDIMENT_INPUT_EVENT_LOCATION;
 
-               // Now stote the flood location co-ordinates
+               // Now stote the flood location coordinates
                m_VdFloodLocationX.push_back(dPointGridX);
                m_VdFloodLocationY.push_back(dPointGridY);
                break;
@@ -519,7 +519,7 @@ bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const *strPlot
    // Create a spatial reference object
    OGRSpatialReference OGRSpatialRef;
 
-   // And tell it about the co-ordinate system used by the basement raster layer
+   // And tell it about the coordinate system used by the basement raster layer
    if (m_strGDALBasementDEMProjection.empty())
    {
       OGRSpatialRef.importFromWkt(m_strGDALBasementDEMProjection.c_str());
@@ -1312,7 +1312,7 @@ bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const *strPlot
                // Create a feature object, one per polygon
                OGRFeature* pOGRFeature = OGRFeature::CreateFeature(pOGRLayer->GetLayerDefn());
 
-               CGeomCoastPolygon* pPolygon = m_VCoast[i].pGetPolygon(j);
+               CGeomCoastPolygon* pPolygon = m_VCoast[i].pGetPolygonDownCoastSeq(j);
 
                // Set the feature's attributes
                pOGRFeature->SetField(strFieldValue1.c_str(), j);

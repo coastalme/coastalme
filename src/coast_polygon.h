@@ -32,10 +32,16 @@ class CGeomCoastPolygon : public CA2DShape
 {
 private:
    //! Is the movement of unconsolidated sediment on this polygon down-coast during this iteration?
-   bool m_bDownCoastThisIter;
+   bool m_bUnconsSedimentMovementDownCoastThisIter;
 
    // Does the polygon meet at a point at its seaward end? (is it roughly triangular?)
-//   bool m_bIsPointedSeaward,
+//   bool m_bIsPointedSeaward;
+
+   //! Is this polygon at the end of the coastline?
+   bool m_bCoastEndPolygon;
+
+   //! Is this polygon at the start of the coastline?
+   bool m_bCoastStartPolygon;
 
    //! The simulation-global number of this polygon
    int m_nGlobalID;
@@ -61,9 +67,6 @@ private:
    //! The number of cells in the polygon
    int m_nNumCells;
 
-   //! The number of the vector point from which we start the point-in-polygon search
-   int m_nPointInPolygonSearchStartPoint;
-      
    //! The average d50 of unconsolidated sediment on this polygon
    double m_dAvgUnconsD50;
 
@@ -165,10 +168,13 @@ private:
    //! Depth of coarse sediment added from this-iteration sediment input event(s)
    double m_dSedimentInputCoarse;
 
-   //! Co-ordinates of the coast node cell (raster-grid CRS)
+   //! Coast polygon length
+   double m_dLength;
+
+   //! Coordinates of the coast node cell (raster grid CRS)
    CGeom2DIPoint m_PtiNode;
 
-   //! Co-ordinates of the cell (raster-grid CRS) which is at other (seaward) end of the polygon
+   //! Coordinates of the cell (raster grid CRS) which is at other (seaward) end of the polygon
    CGeom2DIPoint m_PtiAntinode;
 
    //! The ID(s) of the up-coast adjacent polygon(s)
@@ -186,12 +192,22 @@ private:
    //! The boundary share(s) (0 to 1) with adjacent up-coast polygon(s)
    vector<double> m_VdDownCoastAdjacentPolygonBoundaryShare;
 
+   //! The polygon's vertices (not all of them, just the ends of the profile sides), used to calculate the polygon's centroid for filling it
+   vector<CGeom2DIPoint> m_VPtiVertices;
+
+protected:
+
 public:
-   CGeomCoastPolygon(int const, int const, int const, int const, int const, vector<CGeom2DPoint> const*, int const, int const, CGeom2DIPoint const*, CGeom2DIPoint const*, int const);
+   CGeomCoastPolygon(int const, int const, int const, int const, int const, vector<CGeom2DPoint> const*, int const, int const, CGeom2DIPoint const*, CGeom2DIPoint const*);
    ~CGeomCoastPolygon(void) override;
 
    void SetDownCoastThisIter(bool const);
    bool bDownCoastThisIter(void) const;
+
+   void SetCoastEndPolygon(void);
+   bool bIsCoastEndPolygon(void) const;
+   void SetCoastStartPolygon(void);
+   bool bIsCoastStartPolygon(void) const;
 
    int nGetGlobalID(void) const;
 
@@ -201,6 +217,9 @@ public:
    int nGetNodeCoastPoint(void) const;
    CGeom2DIPoint* pPtiGetNode(void);
    CGeom2DIPoint* pPtiGetAntiNode(void);
+
+   void SetLength(double const);
+   double dGetLength(void) const;
 
 //    void SetNotPointed(void);
 //    bool bIsPointed(void) const;
@@ -216,8 +235,8 @@ public:
    CGeom2DPoint* pPtGetBoundaryPoint(int const);
    int nGetBoundarySize(void) const;
 
-   int nGetUpCoastProfileNumPointsUsed(void) const;
-   int nGetDownCoastProfileNumPointsUsed(void) const;
+   int nGetNumPointsUsedUpCoastProfile(void) const;
+   int nGetNumPointsUsedDownCoastProfile(void) const;
 
    void SetSeawaterVolume(const double);
    double dGetSeawaterVolume(void) const;
@@ -269,7 +288,7 @@ public:
    void SetDownCoastAdjacentPolygonBoundaryShares(vector<double> const*);
    double dGetDownCoastAdjacentPolygonBoundaryShare(int const) const;
 
-   int nGetPointInPolygonSearchStartPoint(void) const;
+   // int nGetPointInPolygonSearchStartPoint(void) const;
 
    void SetAvgUnconsD50(double const);
    double dGetAvgUnconsD50(void) const;
@@ -327,6 +346,12 @@ public:
    double dGetSedimentInputUnconsSand(void) const;
    void SetSedimentInputUnconsCoarse(double const);
    double dGetSedimentInputUnconsCoarse(void) const;
+
+   void AppendVertex(CGeom2DIPoint const*);
+   int nGetNumVertices(void) const;
+   CGeom2DIPoint PtiGetVertex(int const) const;
+
+   CGeom2DIPoint PtiGetFillStartPoint(void);
 };
 #endif //COASTPOLYGON_H
 

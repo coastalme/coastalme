@@ -47,7 +47,48 @@ int CSimulation::nDoAllShorePlatFormErosion(void)
 {
    if (m_nLogFileDetail >= LOG_FILE_MIDDLE_DETAIL)
       LogStream << m_ulIter << ": Calculating shore platform erosion" << endl;
-   
+
+   // // DEBUG CODE ===========================================================================================================
+   // string strOutFile = m_strOutPath + "01_polygon_shore_platform_test_";
+   // strOutFile += std::to_string(m_ulIter);
+   // strOutFile += ".tif";
+   //
+   // GDALDriver* pDriver = GetGDALDriverManager()->GetDriverByName("gtiff");
+   // GDALDataset* pDataSet = pDriver->Create(strOutFile.c_str(), m_nXGridSize, m_nYGridSize, 1, GDT_Float64, m_papszGDALRasterOptions);
+   // pDataSet->SetProjection(m_strGDALBasementDEMProjection.c_str());
+   // pDataSet->SetGeoTransform(m_dGeoTransform);
+   // double* pdRaster = new double[m_nXGridSize * m_nYGridSize];
+   // int n = 0;
+   // int nInPoly = 0;
+   // int nNotInPoly = 0;
+   //
+   // for (int nY = 0; nY < m_nYGridSize; nY++)
+   // {
+   //    for (int nX = 0; nX < m_nXGridSize; nX++)
+   //    {
+   //       int nID = m_pRasterGrid->m_Cell[nX][nY].nGetPolygonID();
+   //       if (nID == INT_NODATA)
+   //          nNotInPoly++;
+   //       else
+   //          nInPoly++;
+   //
+   //       pdRaster[n++] = nID;
+   //    }
+   // }
+   //
+   // GDALRasterBand* pBand = pDataSet->GetRasterBand(1);
+   // pBand->SetNoDataValue(m_dMissingValue);
+   // int nRet = pBand->RasterIO(GF_Write, 0, 0, m_nXGridSize, m_nYGridSize, pdRaster, m_nXGridSize, m_nYGridSize, GDT_Float64, 0, 0, NULL);
+   // if (nRet == CE_Failure)
+   //    LogStream << nRet << endl;
+   //
+   // GDALClose(pDataSet);
+   // delete[] pdRaster;
+   //
+   // LogStream << m_ulIter << " Number of cells in a polygon = " << nInPoly << endl;
+   // LogStream << m_ulIter << " Number of cells not in any polygon = " << nNotInPoly << endl;
+   // // DEBUG CODE ===========================================================================================================
+
    // TODO 023 Only do potential erosion if cell is in a polygon
 
    // Set direction
@@ -58,28 +99,25 @@ int CSimulation::nDoAllShorePlatFormErosion(void)
    {
       int const nNumProfiles = m_VCoast[nCoast].nGetNumProfiles();
 
-      // Calculate potential erosion on every coastline-normal profile. Can do this in the original, curvature-related, sequence of profiles
-      int nProfile = 0;
-
-      // cppcheck-suppress internalAstError
-      for ((bForward ? nProfile = 0 : nProfile = (nNumProfiles - 1)); (bForward ? nProfile < nNumProfiles : nProfile >= 0); (bForward ? nProfile++ : nProfile--))
+      // Calculate potential platform erosion along each coastline-normal profile, do in down-coast sequence
+      for (int nn = 0; nn < nNumProfiles; nn++)
       {
-         // Calculate potential platform erosion along the length of this profile
-         int const nRet = nCalcPotentialPlatformErosionOnProfile(nCoast, nProfile);
+         int const nRet = nCalcPotentialPlatformErosionOnProfile(nCoast, nn);
          if (nRet != RTN_OK)
             return nRet;
       }
 
-      // Calculate potential platform erosion between the coastline-normal profiles. Do this in along-coastline sequence
-      int nProfIndex = 0;
-      for ((bForward ? nProfIndex = 0 : nProfIndex = (nNumProfiles - 1)); (bForward ? nProfIndex < nNumProfiles : nProfIndex >= 0); (bForward ? nProfIndex++ : nProfIndex--))
+      // Calculate potential platform erosion between the coastline-normal profiles. Do this in down-coast sequence
+      for (int nn = 0; nn < nNumProfiles - 1; nn++)
       {
+         CGeomProfile* pProfile = m_VCoast[nCoast].pGetProfileDownCoastSeq(nn);
+
          // Calculate potential erosion for sea cells between this profile and the next profile (or up to the edge of the grid) on these cells
-         int nRet = nCalcPotentialPlatformErosionBetweenProfiles(nCoast, nProfIndex, DIRECTION_DOWNCOAST);
+         int nRet = nCalcPotentialPlatformErosionBetweenProfiles(nCoast, pProfile, DIRECTION_DOWNCOAST);
          if (nRet != RTN_OK)
             return nRet;
 
-         nRet = nCalcPotentialPlatformErosionBetweenProfiles(nCoast, nProfIndex, DIRECTION_UPCOAST);
+         nRet = nCalcPotentialPlatformErosionBetweenProfiles(nCoast, pProfile, DIRECTION_UPCOAST);
          if (nRet != RTN_OK)
             return nRet;
       }
@@ -119,18 +157,17 @@ int CSimulation::nDoAllShorePlatFormErosion(void)
 //===============================================================================================================================
 //! Calculates potential (i.e. unconstrained by available sediment) erosional lowering of the shore platform for a single coastline-normal profile, due to wave action. This routine uses a behavioural rule to modify the original surface elevation profile geometry, in which erosion rate/slope = f(d/Db) based on Walkden & Hall (2005). Originally coded in Matlab by Andres Payo
 //===============================================================================================================================
-int CSimulation::nCalcPotentialPlatformErosionOnProfile(int const nCoast, int const nProfile)
+int CSimulation::nCalcPotentialPlatformErosionOnProfile(int const nCoast, int const n)
 {
-   CGeomProfile *const pProfile = m_VCoast[nCoast].pGetProfile(nProfile);
+   CGeomProfile *const pProfile = m_VCoast[nCoast].pGetProfileDownCoastSeq(n);
 
    // Only work on this profile if it is problem-free TODO 024 Or if it has just hit dry land?
-   if (!pProfile->bOKIncStartAndEndOfCoast()) //  || (pProfile->nGetProblemCode() == PROFILE_DRYLAND))
+   if (! pProfile->bOKIncStartAndEndOfCoast())               //  || (pProfile->nGetProblemCode() == PROFILE_DRYLAND))
       return RTN_OK;
 
    // Get the length of the profile (in cells) and the index of the coast point at which this profile starts
-   int const
-       nProfSize = pProfile->nGetNumCellsInProfile(),
-       nCoastPoint = pProfile->nGetNumCoastPoint();
+   int const nProfSize = pProfile->nGetNumCellsInProfile();
+   int const nCoastPoint = pProfile->nGetNumCoastPoint();
 
    // Get the breaking depth for this profile from the coastline point
    double dDepthOfBreaking = m_VCoast[nCoast].dGetDepthOfBreaking(nCoastPoint);
@@ -142,7 +179,7 @@ int CSimulation::nCalcPotentialPlatformErosionOnProfile(int const nCoast, int co
    {
       // Safety check, altho' this shouldn't happen
       if (m_nLogFileDetail >= LOG_FILE_HIGH_DETAIL)
-         LogStream << m_ulIter << ": depth of breaking is zero on coast " << nCoast << " at profile " << nProfile << ", continuing however." << endl;
+         LogStream << m_ulIter << ": depth of breaking is zero on coast " << nCoast << " at profile " << pProfile->nGetCoastID() << ", continuing however." << endl;
       
       return RTN_OK;   
    }
@@ -158,11 +195,10 @@ int CSimulation::nCalcPotentialPlatformErosionOnProfile(int const nCoast, int co
    for (int nSeg = 0; nSeg < nSegments; nSeg++)
    {
       // Do once for every line segment
-      double const
-          dSegStartX = pProfile->pPtGetPointInProfile(nSeg)->dGetX(),
-          dSegStartY = pProfile->pPtGetPointInProfile(nSeg)->dGetY(),
-          dSegEndX = pProfile->pPtGetPointInProfile(nSeg + 1)->dGetX(), // Is OK
-          dSegEndY = pProfile->pPtGetPointInProfile(nSeg + 1)->dGetY();
+      double const dSegStartX = pProfile->pPtGetPointInProfile(nSeg)->dGetX();
+      double const dSegStartY = pProfile->pPtGetPointInProfile(nSeg)->dGetY();
+      double const dSegEndX = pProfile->pPtGetPointInProfile(nSeg + 1)->dGetX(); // Is OK
+      double const dSegEndY = pProfile->pPtGetPointInProfile(nSeg + 1)->dGetY();
 
       double const dSegLen = hypot(dSegStartX - dSegEndX, dSegStartY - dSegEndY);
       dProfileLenXY += dSegLen;
@@ -173,18 +209,16 @@ int CSimulation::nCalcPotentialPlatformErosionOnProfile(int const nCoast, int co
 
    // Set up vectors for the coastline-normal profile elevations. The length of this vector line is given by the number of cells 'under' the profile. Thus each point on the vector relates to a single cell in the grid. This assumes that all points on the profile vector are equally spaced (not quite true, depends on the orientation of the line segments which comprise the profile)
    // The elevation of each of these profile points is the elevation of the centroid of the cell that is 'under' the point. However we cannot always be confident that this is the 'true' elevation of the point on the vector since (unless the profile runs planview N-S or W-E) the vector does not always run exactly through the centroid of the cell
-   vector<double>
-       VdProfileZ(nProfSize, 0),      // Initial (pre-erosion) elevation of both consolidated and unconsolidated sediment for cells 'under' the profile
-       VdProfileDistXY(nProfSize, 0), // Along-profile distance measured from the coast, in external CRS units
-       dVConsProfileZ(nProfSize, 0),  // Initial (pre-erosion) elevation of consolidated sediment only for cells 'under' the profile
-       dVConsZDiff(nProfSize, 0),
-       dVConsSlope(nProfSize, 0);
+   vector<double> VdProfileZ(nProfSize, 0);        // Initial (pre-erosion) elevation of both consolidated and unconsolidated sediment for cells 'under' the profile
+   vector<double> VdProfileDistXY(nProfSize, 0);   // Along-profile distance measured from the coast, in external CRS units
+   vector<double> dVConsProfileZ(nProfSize, 0);    // Initial (pre-erosion) elevation of consolidated sediment only for cells 'under' the profile
+   vector<double> dVConsZDiff(nProfSize, 0);
+   vector<double> dVConsSlope(nProfSize, 0);
 
    for (int i = 0; i < nProfSize; i++)
    {
-      int const
-          nX = pProfile->pPtiVGetCellsInProfile()->at(i).nGetX(),
-          nY = pProfile->pPtiVGetCellsInProfile()->at(i).nGetY();
+      int const nX = pProfile->pPtiVGetCellsInProfile()->at(i).nGetX();
+      int const nY = pProfile->pPtiVGetCellsInProfile()->at(i).nGetY();
 
       // Get the number of the highest layer with non-zero thickness
       int const nTopLayer = m_pRasterGrid->m_Cell[nX][nY].nGetTopNonZeroLayerAboveBasement();
@@ -225,9 +259,8 @@ int CSimulation::nCalcPotentialPlatformErosionOnProfile(int const nCoast, int co
       dVConsSlope = dVSmoothProfileSlope(&dVConsSlope);
    }
 
-   vector<double>
-       dVProfileDepthOverDB(nProfSize, 0),      // Depth over wave breaking depth at the coastline-normal sample points
-       dVProfileErosionPotential(nProfSize, 0); // Erosion potential at the coastline-normal sample points
+   vector<double> dVProfileDepthOverDB(nProfSize, 0);          // Depth over wave breaking depth at the coastline-normal sample points
+   vector<double> dVProfileErosionPotential(nProfSize, 0);     // Erosion potential at the coastline-normal sample points
 
    // Calculate the erosion potential along this profile using the shape function
    double dTotalErosionPotential = 0;
@@ -259,9 +292,8 @@ int CSimulation::nCalcPotentialPlatformErosionOnProfile(int const nCoast, int co
          dVProfileErosionPotential[i] /= (-dTotalErosionPotential);
    }
 
-   vector<double>
-       dVRecessionXY(nProfSize, 0),
-       dVSCAPEXY(nProfSize, 0);
+   vector<double> dVRecessionXY(nProfSize, 0);
+   vector<double> dVSCAPEXY(nProfSize, 0);
 
    // Calculate recession at every point on the coastline-normal profile
    for (int i = 0; i < nProfSize; i++)
@@ -291,20 +323,18 @@ int CSimulation::nCalcPotentialPlatformErosionOnProfile(int const nCoast, int co
    for (int i = 1; i < nProfSize - 1; i++)
    {
       // Vertical lowering dZ = dXY * tan(a), where tan(a) is the slope of the SCAPE profile in the XY direction
-      double
-          dSCAPEHorizDist = dVSCAPEXY[i + 1] - dVSCAPEXY[i],
-          dSCAPEVertDist = dVConsProfileZ[i] - dVConsProfileZ[i + 1],
-          dSCAPESlope = dSCAPEVertDist / dSCAPEHorizDist,
-          dDeltaZ = dVRecessionXY[i] * dSCAPESlope;
+      double dSCAPEHorizDist = dVSCAPEXY[i + 1] - dVSCAPEXY[i];
+      double dSCAPEVertDist = dVConsProfileZ[i] - dVConsProfileZ[i + 1];
+      double dSCAPESlope = dSCAPEVertDist / dSCAPEHorizDist;
+      double dDeltaZ = dVRecessionXY[i] * dSCAPESlope;
       // Safety check: if thickness model has some jumps, dVConsProfileZ might be very high, limiting dSCAPESlope to 0 because all time erode a high fix quantity
       if (dSCAPESlope > 1)
       {
          dDeltaZ = 0;
       }
 
-      int const
-          nX = pProfile->pPtiVGetCellsInProfile()->at(i).nGetX(),
-          nY = pProfile->pPtiVGetCellsInProfile()->at(i).nGetY();
+      int const nX = pProfile->pPtiVGetCellsInProfile()->at(i).nGetX();
+      int const nY = pProfile->pPtiVGetCellsInProfile()->at(i).nGetY();
 
       // Store the local slope of the consolidated sediment, this is just for output display purposes
       m_pRasterGrid->m_Cell[nX][nY].SetLocalConsSlope(dVConsSlope[i]);
@@ -331,7 +361,7 @@ int CSimulation::nCalcPotentialPlatformErosionOnProfile(int const nCoast, int co
 
          // Update this-timestep totals
          m_ulThisIterNumPotentialPlatformErosionCells++;
-         m_dThisIterPotentialPlatformErosion -= dDeltaZ; // Since dDeltaZ is a -ve value
+         m_dThisIterPotentialPlatformErosion -= dDeltaZ;       // Since dDeltaZ is a -ve value
 //          assert(isfinite(m_dThisIterPotentialPlatformErosion));
 //          assert(m_dThisIterPotentialPlatformErosion >= 0);
 
@@ -348,7 +378,7 @@ int CSimulation::nCalcPotentialPlatformErosionOnProfile(int const nCoast, int co
    // If desired, save this coastline-normal profile data for checking purposes
    if (m_bOutputProfileData)
    {
-      int nRet = nSaveProfile(nProfile, nCoast, nProfSize, &VdProfileDistXY, &dVConsProfileZ, &dVProfileDepthOverDB, &dVProfileErosionPotential, &dVConsSlope, &dVRecessionXY, &dVChangeElevZ, pProfile->pPtiVGetCellsInProfile(), &dVSCAPEXY);
+      int nRet = nSaveProfile(nCoast, pProfile, nProfSize, &VdProfileDistXY, &dVConsProfileZ, &dVProfileDepthOverDB, &dVProfileErosionPotential, &dVConsSlope, &dVRecessionXY, &dVChangeElevZ, pProfile->pPtiVGetCellsInProfile(), &dVSCAPEXY);
       if (nRet != RTN_OK)
          return nRet;
    }
@@ -359,26 +389,20 @@ int CSimulation::nCalcPotentialPlatformErosionOnProfile(int const nCoast, int co
 //===============================================================================================================================
 //! Calculates potential platform erosion on cells to one side of a given coastline-normal profile, up to the next profile
 //===============================================================================================================================
-int CSimulation::nCalcPotentialPlatformErosionBetweenProfiles(int const nCoast, int const nProfIndex, int const nDirection)
+int CSimulation::nCalcPotentialPlatformErosionBetweenProfiles(int const nCoast, CGeomProfile* pProfile, int const nDirection)
 {
-   // Get the number of the coastline-normal profile
-   int const nProfile = m_VCoast[nCoast].nGetProfileFromAlongCoastProfileIndex(nProfIndex);
-   CGeomProfile *const pProfile = m_VCoast[nCoast].pGetProfile(nProfile);
-
    // Only work on this profile if it is problem-free
    if (! pProfile->bOKIncStartAndEndOfCoast())
       return RTN_OK;
 
-   int const
-       nProfSize = pProfile->nGetNumCellsInProfile(),
-       nCoastProfileStart = pProfile->nGetNumCoastPoint(),
-       nProfileStartX = pProfile->pPtiVGetCellsInProfile()->at(0).nGetX(),
-       nProfileStartY = pProfile->pPtiVGetCellsInProfile()->at(0).nGetY(),
-       nCoastMax = m_VCoast[nCoast].nGetCoastlineSize();
-   int
-       nDistFromProfile = 0,
-       nParCoastXLast = nProfileStartX,
-       nParCoastYLast = nProfileStartY;
+   int const nProfSize = pProfile->nGetNumCellsInProfile();
+   int const nCoastProfileStart = pProfile->nGetNumCoastPoint();
+   int const nProfileStartX = pProfile->pPtiVGetCellsInProfile()->at(0).nGetX();
+   int const nProfileStartY = pProfile->pPtiVGetCellsInProfile()->at(0).nGetY();
+   int const nCoastMax = m_VCoast[nCoast].nGetCoastlineSize();
+   int nDistFromProfile = 0;
+   int nParCoastXLast = nProfileStartX;
+   int nParCoastYLast = nProfileStartY;
 
    // Start at the coast end of this coastline-normal profile, then move one cell forward along the coast, then construct a parallel profile from this new coastline start cell. Calculate erosion along this parallel profile in the same way as above. Move another cell forward along the coastline, do the same. Keep going until hit another profile
    while (true)
@@ -416,14 +440,14 @@ int CSimulation::nCalcPotentialPlatformErosionBetweenProfiles(int const nCoast, 
       {
          // This parallel profile is not in the active zone, so no platform erosion here. Move on to the next point along the coastline in this direction
          if (m_nLogFileDetail == LOG_FILE_ALL)
-            LogStream << m_ulIter << ": not in active zone at coastline " << nCoast << " coast point " << nThisPointOnCoast << " when constructing parallel profile for potential platform erosion. Working from profile " << nProfile << ", " << (nDirection == DIRECTION_DOWNCOAST ? "down" : "up") << "-coast, dist from profile = " << nDistFromProfile << endl;
+            LogStream << m_ulIter << ": not in active zone at coastline " << nCoast << " coast point " << nThisPointOnCoast << " when constructing parallel profile for potential platform erosion. Working from profile " << pProfile->nGetCoastID() << ", " << (nDirection == DIRECTION_DOWNCOAST ? "down" : "up") << "-coast, dist from profile = " << nDistFromProfile << endl;
 
          continue;
       }
 
 //      LogStream << m_ulIter << ": BETWEEN PROFILES " << (nDirection == DIRECTION_DOWNCOAST ? "down" : "up") << "-coast from profile " << nProfile << " nThisPointOnCoast = " << nThisPointOnCoast << " dDepthOfBreaking = " << dDepthOfBreaking << " nParProfSize = " << nParProfSize << endl;
 
-      // All is OK, so get the grid co-ordinates of this point, which is the coastline start point for the parallel profile
+      // All is OK, so get the grid coordinates of this point, which is the coastline start point for the parallel profile
       int const nParCoastX = m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(nThisPointOnCoast)->nGetX();
       int const nParCoastY = m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(nThisPointOnCoast)->nGetY();
 
@@ -431,7 +455,7 @@ int CSimulation::nCalcPotentialPlatformErosionBetweenProfiles(int const nCoast, 
       {
          // Should not happen, but could do due to rounding errors
          if (m_nLogFileDetail >= LOG_FILE_ALL)
-            LogStream << WARN << m_ulIter << ": rounding problem on coast " << nCoast << " profile " << nProfile << " at [" << nParCoastX << "][" << nParCoastY << "]" << endl;
+            LogStream << WARN << m_ulIter << ": rounding problem on coast " << nCoast << " profile " << pProfile->nGetCoastID() << " at [" << nParCoastX << "][" << nParCoastY << "]" << endl;
 
          // So move on to the next point along the coastline in this direction
          continue;
@@ -449,7 +473,7 @@ int CSimulation::nCalcPotentialPlatformErosionBetweenProfiles(int const nCoast, 
 
       // OK, now construct a parallel profile
       vector<CGeom2DIPoint> PtiVGridParProfile; // Integer coords (grid CRS) of cells under the parallel profile
-      vector<CGeom2DPoint> PtVExtCRSParProfile; // Co-ordinates (external CRS) of cells under the parallel profile
+      vector<CGeom2DPoint> PtVExtCRSParProfile; // coordinates (external CRS) of cells under the parallel profile
 
       ConstructParallelProfile(nProfileStartX, nProfileStartY, nParCoastX, nParCoastY, nProfSize, pProfile->pPtiVGetCellsInProfile(), &PtiVGridParProfile, &PtVExtCRSParProfile);
 
@@ -689,7 +713,7 @@ int CSimulation::nCalcPotentialPlatformErosionBetweenProfiles(int const nCoast, 
       // If desired, save this parallel coastline-normal profile for checking purposes
       if (m_bOutputParallelProfileData)
       {
-         int const nRet = nSaveParProfile(nCoast, nProfile, nParProfSize, nDirection, nDistFromProfile, &dVParProfileDistXY, &dVParConsProfileZ, &dVParProfileDepthOverDB, &dVParProfileErosionPotential, &dVParConsSlope, &dVParRecessionXY, &dVParDeltaZ, pProfile->pPtiVGetCellsInProfile(), &dVParSCAPEXY);
+         int const nRet = nSaveParProfile(nCoast, pProfile, nParProfSize, nDirection, nDistFromProfile, &dVParProfileDistXY, &dVParConsProfileZ, &dVParProfileDepthOverDB, &dVParProfileErosionPotential, &dVParConsSlope, &dVParRecessionXY, &dVParDeltaZ, pProfile->pPtiVGetCellsInProfile(), &dVParSCAPEXY);
          if (nRet != RTN_OK)
             return nRet;
       }
@@ -733,22 +757,19 @@ void CSimulation::DoActualPlatformErosionOnCell(int const nX, int const nY)
       return;
 
    // OK, we have a layer that can be eroded so find out how much consolidated sediment we have available on this cell
-   double
-       dExistingAvailableFine = m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nThisLayer)->pGetConsolidatedSediment()->dGetFineDepth(),
-       dExistingAvailableSand = m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nThisLayer)->pGetConsolidatedSediment()->dGetSandDepth(),
-       dExistingAvailableCoarse = m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nThisLayer)->pGetConsolidatedSediment()->dGetCoarseDepth();
+   double dExistingAvailableFine = m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nThisLayer)->pGetConsolidatedSediment()->dGetFineDepth();
+   double dExistingAvailableSand = m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nThisLayer)->pGetConsolidatedSediment()->dGetSandDepth();
+   double dExistingAvailableCoarse = m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nThisLayer)->pGetConsolidatedSediment()->dGetCoarseDepth();
 
    // Now partition the total lowering for this cell between the three size fractions: do this by relative erodibility
-   int
-       nFineWeight = (dExistingAvailableFine > 0 ? 1 : 0),
-       nSandWeight = (dExistingAvailableSand > 0 ? 1 : 0),
-       nCoarseWeight = (dExistingAvailableCoarse > 0 ? 1 : 0);
+   int nFineWeight = (dExistingAvailableFine > 0 ? 1 : 0);
+   int nSandWeight = (dExistingAvailableSand > 0 ? 1 : 0);
+   int nCoarseWeight = (dExistingAvailableCoarse > 0 ? 1 : 0);
 
-   double
-       dTotErodibility = (nFineWeight * m_dFineErodibilityNormalized) + (nSandWeight * m_dSandErodibilityNormalized) + (nCoarseWeight * m_dCoarseErodibilityNormalized),
-       dTotActualErosion = 0,
-       dSandEroded = 0,
-       dCoarseEroded = 0;
+   double dTotErodibility = (nFineWeight * m_dFineErodibilityNormalized) + (nSandWeight * m_dSandErodibilityNormalized) + (nCoarseWeight * m_dCoarseErodibilityNormalized);
+   double dTotActualErosion = 0;
+   double dSandEroded = 0;
+   double dCoarseEroded = 0;
 
    if (nFineWeight)
    {
@@ -845,11 +866,13 @@ void CSimulation::DoActualPlatformErosionOnCell(int const nX, int const nY)
 
          for (int n = 0; n < 8; n++)
          {
+            int nXAdj;
+            int nYAdj;
+
             if (nDirection[n] == NORTH)
             {
-               int
-                   nXAdj = nX,
-                   nYAdj = nY - 1;
+               nXAdj = nX;
+               nYAdj = nY - 1;
                if (nYAdj >= 0)
                {
                   nPolyID = m_pRasterGrid->m_Cell[nXAdj][nYAdj].nGetPolygonID();
@@ -859,9 +882,8 @@ void CSimulation::DoActualPlatformErosionOnCell(int const nX, int const nY)
             }
             else if (nDirection[n] == NORTH_EAST)
             {
-               int
-                   nXAdj = nX + 1,
-                   nYAdj = nY - 1;
+               nXAdj = nX + 1;
+               nYAdj = nY - 1;
                if ((nXAdj < m_nXGridSize) && (nYAdj >= 0))
                {
                   nPolyID = m_pRasterGrid->m_Cell[nXAdj][nYAdj].nGetPolygonID();
@@ -871,9 +893,8 @@ void CSimulation::DoActualPlatformErosionOnCell(int const nX, int const nY)
             }
             else if (nDirection[n] == EAST)
             {
-               int
-                   nXAdj = nX + 1,
-                   nYAdj = nY;
+               nXAdj = nX + 1;
+               nYAdj = nY;
                if (nXAdj < m_nXGridSize)
                {
                   nPolyID = m_pRasterGrid->m_Cell[nXAdj][nYAdj].nGetPolygonID();
@@ -883,9 +904,8 @@ void CSimulation::DoActualPlatformErosionOnCell(int const nX, int const nY)
             }
             else if (nDirection[n] == SOUTH_EAST)
             {
-               int
-                   nXAdj = nX + 1,
-                   nYAdj = nY + 1;
+               nXAdj = nX + 1;
+               nYAdj = nY + 1;
                if ((nXAdj < m_nXGridSize) && (nYAdj < m_nYGridSize))
                {
                   nPolyID = m_pRasterGrid->m_Cell[nXAdj][nYAdj].nGetPolygonID();
@@ -895,9 +915,8 @@ void CSimulation::DoActualPlatformErosionOnCell(int const nX, int const nY)
             }
             else if (nDirection[n] == SOUTH)
             {
-               int
-                   nXAdj = nX,
-                   nYAdj = nY + 1;
+               nXAdj = nX;
+               nYAdj = nY + 1;
                if (nYAdj < m_nYGridSize)
                {
                   nPolyID = m_pRasterGrid->m_Cell[nXAdj][nYAdj].nGetPolygonID();
@@ -907,9 +926,8 @@ void CSimulation::DoActualPlatformErosionOnCell(int const nX, int const nY)
             }
             else if (nDirection[n] == SOUTH_WEST)
             {
-               int
-                   nXAdj = nX - 1,
-                   nYAdj = nY + 1;
+               nXAdj = nX - 1;
+               nYAdj = nY + 1;
                if ((nXAdj >= 0) && (nXAdj < m_nXGridSize))
                {
                   nPolyID = m_pRasterGrid->m_Cell[nXAdj][nYAdj].nGetPolygonID();
@@ -919,9 +937,8 @@ void CSimulation::DoActualPlatformErosionOnCell(int const nX, int const nY)
             }
             else if (nDirection[n] == WEST)
             {
-               int
-                   nXAdj = nX - 1,
-                   nYAdj = nY;
+               nXAdj = nX - 1;
+               nYAdj = nY;
                if (nXAdj >= 0)
                {
                   nPolyID = m_pRasterGrid->m_Cell[nXAdj][nYAdj].nGetPolygonID();
@@ -931,9 +948,8 @@ void CSimulation::DoActualPlatformErosionOnCell(int const nX, int const nY)
             }
             else if (nDirection[n] == NORTH_WEST)
             {
-               int
-                   nXAdj = nX - 1,
-                   nYAdj = nY - 1;
+               nXAdj = nX - 1;
+               nYAdj = nY - 1;
                if ((nXAdj >= 0) && (nYAdj >= 0))
                {
                   nPolyID = m_pRasterGrid->m_Cell[nXAdj][nYAdj].nGetPolygonID();
@@ -947,8 +963,8 @@ void CSimulation::DoActualPlatformErosionOnCell(int const nX, int const nY)
       if (nPolyID != INT_NODATA)
       {
          // Add this to the polygon's total of unconsolidated sand/coarse sediment, to be deposited or moved later. These values are +ve (deposition)
-         m_pVCoastPolygon[nPolyID]->AddPlatformErosionUnconsSand(dSandEroded);
-         m_pVCoastPolygon[nPolyID]->AddPlatformErosionUnconsCoarse(dCoarseEroded);
+         m_pVCoastPolygonDownCoastSeq[nPolyID]->AddPlatformErosionUnconsSand(dSandEroded);
+         m_pVCoastPolygonDownCoastSeq[nPolyID]->AddPlatformErosionUnconsCoarse(dCoarseEroded);
       }
       else
       {
@@ -966,25 +982,24 @@ void CSimulation::DoActualPlatformErosionOnCell(int const nX, int const nY)
 //===============================================================================================================================
 //! Creates a look-up table for erosion potential, given depth over DB
 //===============================================================================================================================
-bool CSimulation::bCreateErosionPotentialLookUp(vector<double> *VdDepthOverDBIn, vector<double> *VdErosionPotentialIn, vector<double> *VdErosionPotentialFirstDerivIn)
+bool CSimulation::bCreateErosionPotentialLookUp(vector<double>* VdDepthOverDBIn, vector<double>* VdErosionPotentialIn, vector<double>* VdErosionPotentialFirstDerivIn)
 {
    // Set up a temporary vector to hold the incremental DepthOverDB values
    vector<double> VdDepthOverDB;
    double dTempDOverDB = 0;
 
-   while (dTempDOverDB <= 1.1) // Arbitrary max value, we will adjust this later
+   while (dTempDOverDB <= 1.1)                     // Arbitrary max value, we will adjust this later
    {
-      VdDepthOverDB.push_back(dTempDOverDB); // These are the incremental sample values of DepthOverDB
+      VdDepthOverDB.push_back(dTempDOverDB);       // These are the incremental sample values of DepthOverDB
       dTempDOverDB += DEPTH_OVER_DB_INCREMENT;
 
-      m_VdErosionPotential.push_back(0); // This will hold the corresponding value of erosion potential for each sample point
+      m_VdErosionPotential.push_back(0);           // This will hold the corresponding value of erosion potential for each sample point
    }
 
    int nSize = static_cast<int>(VdDepthOverDB.size());
-   vector<double>
-       VdDeriv(nSize, 0),   // First derivative at the sample points: calculated by the spline function but not subsequently used
-       VdDeriv2(nSize, 0.), // Second derivative at the sample points, ditto
-       VdDeriv3(nSize, 0.); // Third derivative at the sample points, ditto
+   vector<double> VdDeriv(nSize, 0);               // First derivative at the sample points: calculated by the spline function but not subsequently used
+   vector<double> VdDeriv2(nSize, 0.);             // Second derivative at the sample points, ditto
+   vector<double> VdDeriv3(nSize, 0.);             // Third derivative at the sample points, ditto
 
    // Calculate the value of erosion potential (is a -ve value) for each of the sample values of DepthOverDB, and store it for use in the look-up function
    hermite_cubic_spline_value(static_cast<int>(VdDepthOverDBIn->size()), &(VdDepthOverDBIn->at(0)), &(VdErosionPotentialIn->at(0)), &(VdErosionPotentialFirstDerivIn->at(0)), nSize, &(VdDepthOverDB[0]), &(m_VdErosionPotential[0]), &(VdDeriv[0]), &(VdDeriv2[0]), &(VdDeriv3[0]));
@@ -1054,10 +1069,9 @@ double CSimulation::dCalcBeachProtectionFactor(int const nX, int const nY, doubl
       return 0;
 
    // In SCAPE, 0.23 * the significant breaking wave height is assumed to be the maximum depth of beach that waves can penetrate to erode a platform. For depths less than this, the beach protective ability is assumed to vary linearly
-   double
-       dBeachDepth = m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nThisLayer)->dGetUnconsolidatedThickness(),
-       dMaxPenetrationDepth = BEACH_PROTECTION_HB_RATIO * dBreakingWaveHeight,
-       dFactor = 0;
+   double dBeachDepth = m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nThisLayer)->dGetUnconsolidatedThickness();
+   double dMaxPenetrationDepth = BEACH_PROTECTION_HB_RATIO * dBreakingWaveHeight;
+   double dFactor = 0;
 
    if (dMaxPenetrationDepth > 0)
       dFactor = tMax(1 - (dBeachDepth / dMaxPenetrationDepth), 0.0);
@@ -1079,12 +1093,10 @@ void CSimulation::FillInBeachProtectionHoles(void)
          if ((m_pRasterGrid->m_Cell[nX][nY].bIsInContiguousSea()) && (bFPIsEqual(m_pRasterGrid->m_Cell[nX][nY].dGetBeachProtectionFactor(), DBL_NODATA, TOLERANCE)))
          {
             // This is a sea cell, and it has an initialized beach protection value. So look at its N-S and W-E neighbours
-            int
-                nXTmp,
-                nYTmp,
-                nAdjacent = 0;
-            double
-                dBeachProtection = 0;
+            int nXTmp;
+            int nYTmp;
+            int nAdjacent = 0;
+            double dBeachProtection = 0;
 
             // North
             nXTmp = nX;
@@ -1144,12 +1156,10 @@ void CSimulation::FillPotentialPlatformErosionHoles(void)
          if ((m_pRasterGrid->m_Cell[nX][nY].bIsInContiguousSea()) && (bFPIsEqual(m_pRasterGrid->m_Cell[nX][nY].dGetPotentialPlatformErosion(), 0.0, TOLERANCE)))
          {
             // This is a sea cell, it has a zero potential platform erosion value. So look at its N-S and W-E neighbours
-            int
-                nXTmp,
-                nYTmp,
-                nAdjacent = 0;
-            double
-                dPotentialPlatformErosion = 0;
+            int nXTmp;
+            int nYTmp;
+            int nAdjacent = 0;
+            double dPotentialPlatformErosion = 0;
 
             // North
             nXTmp = nX;
@@ -1214,22 +1224,19 @@ void CSimulation::FillPotentialPlatformErosionHoles(void)
 void CSimulation::ConstructParallelProfile(int const nProfileStartX, int const nProfileStartY, int const nParCoastX, int const nParCoastY, int const nProfSize, vector<CGeom2DIPoint>* const pPtViGridProfile, vector<CGeom2DIPoint>* pPtiVGridParProfile, vector<CGeom2DPoint>* pPtVExtCRSParProfile)
 {
    // OK, we have the coastline start point for the parallel profile. Now construct a temporary profile, parallel to the coastline-normal profile, starting from this point
-   int
-       nXOffset = nParCoastX - nProfileStartX,
-       nYOffset = nParCoastY - nProfileStartY;
+   int nXOffset = nParCoastX - nProfileStartX;
+   int nYOffset = nParCoastY - nProfileStartY;
 
    // Append co-ord values for the temporary profile
    for (int nProfileStartPoint = 0; nProfileStartPoint < nProfSize; nProfileStartPoint++)
    {
-      // Get the grid co-ordinates of the cell which is this distance seaward, from the coastline-normal profile
-      int
-          nXProf = pPtViGridProfile->at(nProfileStartPoint).nGetX(),
-          nYProf = pPtViGridProfile->at(nProfileStartPoint).nGetY();
+      // Get the grid coordinates of the cell which is this distance seaward, from the coastline-normal profile
+      int nXProf = pPtViGridProfile->at(nProfileStartPoint).nGetX();
+      int nYProf = pPtViGridProfile->at(nProfileStartPoint).nGetY();
 
-      // Now calculate the grid co-ordinates of this cell, which is potentially in the parallel profile
-      int
-          nXPar = nXProf + nXOffset,
-          nYPar = nYProf + nYOffset;
+      // Now calculate the grid coordinates of this cell, which is potentially in the parallel profile
+      int nXPar = nXProf + nXOffset;
+      int nYPar = nYProf + nYOffset;
 
       // Is this cell within the grid? If not, cut short the profile
       if (! bIsWithinValidGrid(nXPar, nYPar))
@@ -1241,7 +1248,7 @@ void CSimulation::ConstructParallelProfile(int const nProfileStartX, int const n
       // Have we hit an adjacent coastline-normal profile? If so, cut short
       if (m_pRasterGrid->m_Cell[nXPar][nYPar].bIsProfile())
       {
-         //         LogStream << "HIT PROFILE " << m_pRasterGrid->m_Cell[nXPar][nYPar].nGetProfile() << " at [" << nXPar << "][" << nYPar << "] = {" << dGridCentroidXToExtCRSX(nXPar) << ", " <<  dGridCentroidYToExtCRSY(nYPar) << "}" << endl;
+         //         LogStream << "HIT PROFILE " << m_pRasterGrid->m_Cell[nXPar][nYPar].nGetProfileID() << " at [" << nXPar << "][" << nYPar << "] = {" << dGridCentroidXToExtCRSX(nXPar) << ", " <<  dGridCentroidYToExtCRSY(nYPar) << "}" << endl;
          return;
       }
 

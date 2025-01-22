@@ -29,11 +29,13 @@ using std::cerr;
 #include "cme.h"
 #include "coast_polygon.h"
 
-//! Constructor with 8 parameters and initialization list
-CGeomCoastPolygon::CGeomCoastPolygon(int const nGlobalID, int const nCoastID, int const nNode, int const nProfileUpCoast, int const nProfileDownCoast, vector<CGeom2DPoint> const* pVIn, int const nLastPointUpCoast, const int nLastPointDownCoast, CGeom2DIPoint const* PtiNode, CGeom2DIPoint const* PtiAntinode, int const nPointInPolygonStartPoint)
+//! Constructor with 10 parameters and initialization list
+CGeomCoastPolygon::CGeomCoastPolygon(int const nGlobalID, int const nCoastID, int const nNode, int const nProfileUpCoast, int const nProfileDownCoast, vector<CGeom2DPoint> const* pVIn, int const nLastPointUpCoast, const int nLastPointDownCoast, CGeom2DIPoint const* PtiNode, CGeom2DIPoint const* PtiAntinode)
 :
 //    m_bIsPointedSeaward(true),
-   m_bDownCoastThisIter(false),
+   m_bUnconsSedimentMovementDownCoastThisIter(false),
+   m_bCoastEndPolygon(false),
+   m_bCoastStartPolygon(false),
    m_nGlobalID(nGlobalID),
    m_nCoastID(nCoastID),
    m_nCoastNode(nNode),
@@ -42,7 +44,6 @@ CGeomCoastPolygon::CGeomCoastPolygon(int const nGlobalID, int const nCoastID, in
    m_nProfileUpCoastNumPointsUsed(nLastPointUpCoast),
    m_nProfileDownCoastNumPointsUsed(nLastPointDownCoast),
    m_nNumCells(0),
-   m_nPointInPolygonSearchStartPoint(nPointInPolygonStartPoint),   
    m_dAvgUnconsD50(0),   
    m_dSeawaterVolume(0),
    m_dPotentialBeachErosionAllUncons(0),
@@ -76,6 +77,7 @@ CGeomCoastPolygon::CGeomCoastPolygon(int const nGlobalID, int const nCoastID, in
    m_dSedimentInputFine(0),
    m_dSedimentInputSand(0),
    m_dSedimentInputCoarse(0),
+   m_dLength(0),
    m_PtiNode(*PtiNode),
    m_PtiAntinode(*PtiAntinode)
 {
@@ -100,13 +102,37 @@ CGeomCoastPolygon::~CGeomCoastPolygon(void)
 //! Set a flag to say whether sediment movement on this polygon is downcoast this iteration
 void CGeomCoastPolygon::SetDownCoastThisIter(bool const bFlag)
 {
-   m_bDownCoastThisIter = bFlag;
+   m_bUnconsSedimentMovementDownCoastThisIter = bFlag;
 }
 
 //! Is sediment movement on this polygon downcoast this iteration?
 bool CGeomCoastPolygon::bDownCoastThisIter(void) const
 {
-   return m_bDownCoastThisIter;
+   return m_bUnconsSedimentMovementDownCoastThisIter;
+}
+
+//! Set this coast polygon as the coast-end polygon
+void CGeomCoastPolygon::SetCoastEndPolygon(void)
+{
+   m_bCoastEndPolygon = true;
+}
+
+//! Is this polygon the coast-end polygon?
+bool CGeomCoastPolygon::bIsCoastEndPolygon(void) const
+{
+   return m_bCoastEndPolygon;
+}
+
+//! Set this coast polygon as the coast-start polygon
+void CGeomCoastPolygon::SetCoastStartPolygon(void)
+{
+   m_bCoastStartPolygon = true;
+}
+
+//! Is this polygon the coast-start polygon?
+bool CGeomCoastPolygon::bIsCoastStartPolygon(void) const
+{
+   return m_bCoastStartPolygon;
 }
 
 //! Get the global ID
@@ -132,17 +158,29 @@ int CGeomCoastPolygon::nGetNodeCoastPoint(void) const
    return m_nCoastNode;
 }
 
-//! Get the grid co-ordinates of the cell on which the node sits
+//! Get the grid coordinates of the cell on which the node sits
 CGeom2DIPoint* CGeomCoastPolygon::pPtiGetNode(void)
 {
    return &m_PtiNode;
 
 }
 
-//! Get the anti-node (raster-grid CRS) which is at other (seaward) end of the polygon from the node
+//! Get the anti-node (raster grid CRS) which is at other (seaward) end of the polygon from the node
 CGeom2DIPoint* CGeomCoastPolygon::pPtiGetAntiNode(void)
 {
    return &m_PtiAntinode;
+}
+
+//! Sets the polygon's length
+void CGeomCoastPolygon::SetLength(double const dLength)
+{
+   m_dLength = dLength;
+}
+
+//! Gets the polygon's length
+double CGeomCoastPolygon::dGetLength(void) const
+{
+   return m_dLength;
 }
 
 //! Set the number of cells in the polygon
@@ -179,7 +217,7 @@ int CGeomCoastPolygon::nGetDownCoastProfile(void) const
 //    return &m_VPoints;
 // }
 
-//! Get the co-ordinates (external CRS) of a specified point on the polygon's boundary
+//! Get the coordinates (external CRS) of a specified point on the polygon's boundary
 CGeom2DPoint* CGeomCoastPolygon::pPtGetBoundaryPoint(int const nPoint)
 {
    // TODO 055 No check to see if nPoint < m_VPoints.size()
@@ -193,13 +231,13 @@ int CGeomCoastPolygon::nGetBoundarySize(void) const
 }
 
 //! Return the number of points in the up-coast profile
-int CGeomCoastPolygon::nGetUpCoastProfileNumPointsUsed(void) const
+int CGeomCoastPolygon::nGetNumPointsUsedUpCoastProfile(void) const
 {
    return m_nProfileUpCoastNumPointsUsed;
 }
 
 //! Return the number of points in the down-coast profile
-int CGeomCoastPolygon::nGetDownCoastProfileNumPointsUsed(void) const
+int CGeomCoastPolygon::nGetNumPointsUsedDownCoastProfile(void) const
 {
    return m_nProfileDownCoastNumPointsUsed;
 }
@@ -440,12 +478,6 @@ double CGeomCoastPolygon::dGetDownCoastAdjacentPolygonBoundaryShare(int const nI
 {
    // TODO 055 No check to see if nIndex < m_VdDownCoastAdjacentPolygonBoundaryShare.size()
    return m_VdDownCoastAdjacentPolygonBoundaryShare[nIndex];
-}
-
-//! Returns the start point for a point-in-polygon search
-int CGeomCoastPolygon::nGetPointInPolygonSearchStartPoint(void) const
-{
-   return m_nPointInPolygonSearchStartPoint;
 }
 
 //! Set the average d50 for unconsolidated sediment on this polygon
@@ -715,4 +747,37 @@ void CGeomCoastPolygon::SetSedimentInputUnconsCoarse(double const dDepth)
 double CGeomCoastPolygon::dGetSedimentInputUnconsCoarse(void) const
 {
    return m_dSedimentInputCoarse;
+}
+
+//! Appends the point cordinates (grid CRS) for a polygon vertex
+void CGeomCoastPolygon::AppendVertex(CGeom2DIPoint const* pPti)
+{
+   m_VPtiVertices.push_back(*pPti);
+}
+
+//! Returns the number of vertices for this polygon
+int CGeomCoastPolygon::nGetNumVertices(void) const
+{
+   return static_cast<int>(m_VPtiVertices.size());
+}
+
+//! Returns the point coordinates (grid CRS) for a single vertex of this polygon
+CGeom2DIPoint CGeomCoastPolygon::PtiGetVertex(int const nIndex) const
+{
+   // Note no check to see if nUndex < m_VPtiVertices.size()
+   return m_VPtiVertices[nIndex];
+}
+
+CGeom2DIPoint CGeomCoastPolygon::PtiGetFillStartPoint(void)
+{
+   int nVertices = static_cast<int>(m_VPtiVertices.size());
+   double dXTot = 0;
+   double dYTot = 0;
+
+   for (int n = 0; n < nVertices; n++)
+   {
+      dXTot += m_VPtiVertices[n].nGetX();
+      dYTot += m_VPtiVertices[n].nGetY();
+   }
+   return CGeom2DIPoint(nRound(dXTot / nVertices), nRound(dYTot / nVertices));
 }

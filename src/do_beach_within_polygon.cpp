@@ -51,7 +51,7 @@ int CSimulation::nDoUnconsErosionOnPolygon(int const nCoast, int const nPoly, in
    double dStillToErodeOnPolygon = dErosionTargetOnPolygon;
    dEroded = 0;
 
-   CGeomCoastPolygon const* pPolygon = m_VCoast[nCoast].pGetPolygon(nPoly);
+   CGeomCoastPolygon const* pPolygon = m_VCoast[nCoast].pGetPolygonDownCoastSeq(nPoly);
 
    // Get the up-coast and down-coast boundary details
    int nUpCoastProfile = pPolygon->nGetUpCoastProfile();
@@ -75,7 +75,7 @@ int CSimulation::nDoUnconsErosionOnPolygon(int const nCoast, int const nPoly, in
 
    //    assert(bIsWithinValidGrid(&PtiUpCoastPartProfileSeawardEnd));
 
-   // Store the cell co-ordinates of the boundary part-profile in reverse (sea to coast) order so we can append to the coastward end as we move inland (i.e. as nInlandOffset increases)
+   // Store the cell coordinates of the boundary part-profile in reverse (sea to coast) order so we can append to the coastward end as we move inland (i.e. as nInlandOffset increases)
    vector<CGeom2DIPoint> PtiVUpCoastPartProfileCell;
    for (int n = 0; n < nUpCoastPartProfileLen; n++)
       PtiVUpCoastPartProfileCell.push_back(*pUpCoastProfile->pPtiGetCellInProfile(nUpCoastPartProfileLen - n - 1));
@@ -133,9 +133,8 @@ int CSimulation::nDoUnconsErosionOnPolygon(int const nCoast, int const nPoly, in
       //       LogStream << m_ulIter << ": PtiVUpCoastPartProfileCell.back().nGetX() = " << PtiVUpCoastPartProfileCell.back().nGetX() << ", PtiVUpCoastPartProfileCell.back().nGetY() = " << PtiVUpCoastPartProfileCell.back().nGetY() << ", this is {" << dGridCentroidXToExtCRSX(PtiVUpCoastPartProfileCell.back().nGetX()) << ", " <<  dGridCentroidYToExtCRSY(PtiVUpCoastPartProfileCell.back().nGetY()) << "}" << endl;
 
       // Not an intervention structure, so calculate the x-y offset between this coast point, and the coast point of the up-coast normal
-      int
-          nXOffset = nCoastX - PtiVUpCoastPartProfileCell.back().nGetX(),
-          nYOffset = nCoastY - PtiVUpCoastPartProfileCell.back().nGetY();
+      int nXOffset = nCoastX - PtiVUpCoastPartProfileCell.back().nGetX();
+      int nYOffset = nCoastY - PtiVUpCoastPartProfileCell.back().nGetY();
 
       // Get the x-y coords of a profile starting from this coast point and parallel to the up-coast polygon boundary profile (these are in reverse sequence, like the boundary part-profile)
       vector<CGeom2DIPoint> VPtiParProfile;
@@ -200,7 +199,7 @@ int CSimulation::nDoUnconsErosionOnPolygon(int const nCoast, int const nPoly, in
             // Extend the parallel profile by one cell in the coastward direction. First get the coords of the cell that is nInlandOffset cells seaward from the existing up-coast part-profile start point
             CGeom2DIPoint PtiUpCoastTmp = *pUpCoastProfile->pPtiGetCellInProfile(nInlandOffset);
 
-            // Then get the offset between this PtiUpCoastTmp cell and the existing up-coast part-profile start point, and use the reverse of this offset to get the co-ordinates of the cell that extends the existing up-coast part-profile landwards
+            // Then get the offset between this PtiUpCoastTmp cell and the existing up-coast part-profile start point, and use the reverse of this offset to get the coordinates of the cell that extends the existing up-coast part-profile landwards
             int
                 nXUpCoastStartOffset = PtiUpCoastTmp.nGetX() - nXUpCoastProfileExistingCoastPoint,
                 nYUpCoastStartOffset = PtiUpCoastTmp.nGetY() - nYUpCoastProfileExistingCoastPoint,
@@ -220,7 +219,7 @@ int CSimulation::nDoUnconsErosionOnPolygon(int const nCoast, int const nPoly, in
 
             // CGeom2DIPoint PtiThisUpCoastStart(nXUpCoastThisStart, nYUpCoastThisStart);
 
-            // Calculate the co-ordinates of a possible new landwards cell for the parallel profile
+            // Calculate the coordinates of a possible new landwards cell for the parallel profile
             int
                 nXParNew = nXUpCoastThisStart + nXOffset,
                 nYParNew = nYUpCoastThisStart + nYOffset;
@@ -264,7 +263,7 @@ int CSimulation::nDoUnconsErosionOnPolygon(int const nCoast, int const nPoly, in
          //             LogStream << "[" << VPtiParProfile[m].nGetX() << "][" << VPtiParProfile[m].nGetY() << "] ";
          //          LogStream << endl;
 
-         // Get the distance between the start and end of the parallel profile, in external CRS units. Note that the parallel profile co-ordinates are in reverse sequence
+         // Get the distance between the start and end of the parallel profile, in external CRS units. Note that the parallel profile coordinates are in reverse sequence
          CGeom2DPoint PtStart = PtGridCentroidToExt(&VPtiParProfile.back());
          CGeom2DPoint PtEnd = PtGridCentroidToExt(&VPtiParProfile[0]);
 
@@ -299,9 +298,8 @@ int CSimulation::nDoUnconsErosionOnPolygon(int const nCoast, int const nPoly, in
          vector<bool> bVProfileValid(nParProfLen, true);
          for (int m = 0; m < nParProfLen; m++)
          {
-            int
-                nX = VPtiParProfile[nParProfLen - m - 1].nGetX(),
-                nY = VPtiParProfile[nParProfLen - m - 1].nGetY();
+            int nX = VPtiParProfile[nParProfLen - m - 1].nGetX();
+            int nY = VPtiParProfile[nParProfLen - m - 1].nGetY();
 
             // Safety check
             if (! bIsWithinValidGrid(nX, nY))
@@ -323,7 +321,7 @@ int CSimulation::nDoUnconsErosionOnPolygon(int const nCoast, int const nPoly, in
          // Get the total difference in elevation (present profile - Dean profile)
          double dParProfTotDiff = dSubtractProfiles(&dVParProfileNow, &VdParProfileDeanElev, &bVProfileValid);
 
-         // DEBUG STUFF -----------------------------------------------------
+         // // DEBUG CODE -----------------------------------------------------
          //          LogStream << m_ulIter<< ": eroding polygon " << nPoly << " at coast point " << nCoastPoint << ", parallel profile with nInlandOffset = " << nInlandOffset << ", from [" << VPtiParProfile.back().nGetX() << "][" << VPtiParProfile.back().nGetY() << "] = {" << dGridCentroidXToExtCRSX(VPtiParProfile.back().nGetX()) << ", " <<  dGridCentroidYToExtCRSY(VPtiParProfile.back().nGetY()) << "} to [" << VPtiParProfile[0].nGetX() << "][" << VPtiParProfile[0].nGetY() << "] = {" << dGridCentroidXToExtCRSX(VPtiParProfile[0].nGetX()) << ", " <<  dGridCentroidYToExtCRSY(VPtiParProfile[0].nGetY()) << "}, nParProfLen = " << nParProfLen << " dParProfileLen = " << dParProfileLen << " dParProfCoastElev = " << dParProfCoastElev << " dParProfEndElev = " << dParProfEndElev << " dParProfA = " << dParProfA << endl;
 
          //          LogStream << "Profile now:" << endl;
@@ -357,7 +355,7 @@ int CSimulation::nDoUnconsErosionOnPolygon(int const nCoast, int const nPoly, in
          //          LogStream << endl << endl;
          //
          //          LogStream << "dParProfTotDiff = " << dParProfTotDiff << " dAllTargetPerProfile = " << dAllTargetPerProfile << endl;
-         // DEBUG STUFF -----------------------------------------------------
+         // // DEBUG CODE -----------------------------------------------------
 
          // So will we be able to erode as much as is needed?
          if (dParProfTotDiff > dAllTargetPerProfile)
@@ -556,7 +554,7 @@ int CSimulation::nDoParallelProfileUnconsErosion(int const nPoly, int const nCoa
 
                   //                   LogStream << m_ulIter << ": in polygon " << nPoly << ", actual beach erosion = " << dTmpTot << " at [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " <<  dGridCentroidYToExtCRSY(nY) << "} nCoastPoint = " << nCoastPoint << " nDistSeawardFromNewCoast = " << nDistSeawardFromNewCoast << endl;
 
-                  // // DEBUG CODE ==================================
+                  // // DEBUG CODE ==================================================================================================
                   // if (nTexture == TEXTURE_SAND)
                   // {
                   //    LogStream << m_ulIter << ": $$$$$$$$$ BEACH 2 Dean profile lower than existing profile, SAND depth eroded on [" << nX << "][" << nY << "] in Poly " << nPoly << " is " << dRemoved * m_dCellArea << endl;
@@ -565,10 +563,10 @@ int CSimulation::nDoParallelProfileUnconsErosion(int const nPoly, int const nCoa
                   // {
                   //    LogStream << m_ulIter << ": $$$$$$$$$ BEACH 2 Dean profile lower than existing profile, COARSE depth eroded on [" << nX << "][" << nY << "] in Poly " << nPoly << " is " << dRemoved * m_dCellArea << endl;
                   // }
-                  // // DEBUG CODE ==================================
+                  // // DEBUG CODE ==================================================================================================
 
                   // Store the this-polygon depth of sediment eroded during Dean profile deposition of beach unconsolidated sediment
-                  CGeomCoastPolygon* pPolygon = m_VCoast[nCoast].pGetPolygon(nPoly);
+                  CGeomCoastPolygon* pPolygon = m_VCoast[nCoast].pGetPolygonDownCoastSeq(nPoly);
                   if (nTexture == TEXTURE_SAND)
                      pPolygon->AddBeachSandErodedDeanProfile(dRemoved);
                   else
@@ -734,7 +732,7 @@ void CSimulation::ErodeCellBeachSedimentSupplyLimited(int const nX, int const nY
 //===============================================================================================================================
 int CSimulation::nDoUnconsDepositionOnPolygon(int const nCoast, int const nPoly, int const nTexture, double dTargetToDepositOnPoly, double& dDepositedOnPoly)
 {
-   CGeomCoastPolygon* pPolygon = m_VCoast[nCoast].pGetPolygon(nPoly);
+   CGeomCoastPolygon* pPolygon = m_VCoast[nCoast].pGetPolygonDownCoastSeq(nPoly);
 
    // // DEBUG CODE #####################
    // if (m_ulIter == 5)
@@ -754,7 +752,7 @@ int CSimulation::nDoUnconsDepositionOnPolygon(int const nCoast, int const nPoly,
    if (dTargetToDepositOnPoly < SEDIMENT_ELEV_TOLERANCE)
       return RTN_OK;
 
-   // Get the grid cell co-ordinates of this polygon's up-coast and down-coast profiles
+   // Get the grid cell coordinates of this polygon's up-coast and down-coast profiles
    int nUpCoastProfile = pPolygon->nGetUpCoastProfile();
    int nDownCoastProfile = pPolygon->nGetDownCoastProfile();
 
@@ -978,7 +976,7 @@ int CSimulation::nDoUnconsDepositionOnPolygon(int const nCoast, int const nPoly,
             }
          }
 
-         //          // DEBUG STUFF -----------------------------------------------------
+         //          // DEBUG CODE -----------------------------------------------------
          //          LogStream << endl << "\tFor polygon " << nPoly << " doing DOWN-COAST deposition, nSeawardOffset = " << nSeawardOffset << ", parallel profile from [" << PtiVParProfile[0].nGetX() << "][" << PtiVParProfile[0].nGetY() << "] to [" << PtiVParProfile.back().nGetX() << "][" << PtiVParProfile.back().nGetY() << "], nUpCoastDeanLen = " << nUpCoastDeanLen << " dUpCoastDeanLen = " << dUpCoastDeanLen << " nParProfLen = " << nParProfLen << " dParProfDeanLen = " << dParProfDeanLen << " dInc = " << dInc << " dParProfStartElev = " << dParProfStartElev << " dParProfEndElev = " << dParProfEndElev << " dParProfA = " << dParProfA << endl;
          //
          //          LogStream << "\tExisting profile for deposition = ";
@@ -1022,7 +1020,7 @@ int CSimulation::nDoUnconsDepositionOnPolygon(int const nCoast, int const nPoly,
          //             LogStream << dDiff << " ";
          //          }
          //          LogStream << endl;
-         //          // END DEBUG STUFF -----------------------------------------------------
+         //          // END DEBUG CODE -----------------------------------------------------
 
          // So will we be able to deposit as much as is needed?
          if (dParProfTotDiff >= dTargetToDepositOnProfile)
@@ -1234,9 +1232,9 @@ int CSimulation::nDoUnconsDepositionOnPolygon(int const nCoast, int const nPoly,
                      // Update this-timestep totals
                      m_ulThisIterNumActualBeachErosionCells++;
 
-                     // // DEBUG CODE ==================================
+                     // // DEBUG CODE ==================================================================================================
                      // LogStream << m_ulIter << ": $$$$$$$$$ BEACH 1 Dean profile lower than existing profile, SAND depth eroded on [" << nX << "][" << nY << "] in Poly " << nPoly << " is " << dSandRemoved * m_dCellArea << endl;
-                     // // DEBUG CODE ==================================
+                     // // DEBUG CODE ==================================================================================================
 
                      // Store the this-polygon depth of sand sediment eroded during Dean profile deposition of beach unconsolidated sediment
                      pPolygon->AddBeachSandErodedDeanProfile(dSandRemoved);
@@ -1257,9 +1255,9 @@ int CSimulation::nDoUnconsDepositionOnPolygon(int const nCoast, int const nPoly,
                      // Update this-timestep totals
                      m_ulThisIterNumActualBeachErosionCells++;
 
-                     // // DEBUG CODE ==================================
+                     // // DEBUG CODE ==================================================================================================
                      // LogStream << m_ulIter << ": $$$$$$$$$ BEACH 1 Dean profile lower than existing profile, COARSE depth eroded on [" << nX << "][" << nY << "] in Poly " << nPoly << " is " << dCoarseRemoved * m_dCellArea << endl;
-                     // // DEBUG CODE ==================================
+                     // // DEBUG CODE ==================================================================================================
 
                      // Store the this-polygon depth of coarse sediment eroded during Dean profile deposition of beach unconsolidated sediment
                      pPolygon->AddBeachCoarseErodedDeanProfile(dCoarseRemoved);
@@ -1461,7 +1459,7 @@ int CSimulation::nDoUnconsDepositionOnPolygon(int const nCoast, int const nPoly,
                }
             }
 
-            //             // DEBUG STUFF -----------------------------------------------------
+            //             // DEBUG CODE -----------------------------------------------------
             //             LogStream << endl << "\tFor polygon " << nPoly << " doing UP-COAST deposition, nSeawardOffset = " << nSeawardOffset << ", parallel profile from [" << PtiVParProfile[0].nGetX() << "][" << PtiVParProfile[0].nGetY() << "] to [" << PtiVParProfile.back().nGetX() << "][" << PtiVParProfile.back().nGetY() << "], nDownCoastDeanLen = " << nDownCoastDeanLen << " dDownCoastDeanLen = " << dDownCoastDeanLen << " nParProfLen = " << nParProfLen << " dParProfDeanLen = " << dParProfDeanLen << " dInc = " << dInc << " dParProfStartElev = " << dParProfStartElev << " dParProfEndElev = " << dParProfEndElev << " dParProfA = " << dParProfA << endl;
             //
             //             LogStream << "\tExisting profile for deposition = ";
@@ -1505,7 +1503,7 @@ int CSimulation::nDoUnconsDepositionOnPolygon(int const nCoast, int const nPoly,
             //                LogStream << dDiff << " ";
             //             }
             //             LogStream << endl;
-            //             // END DEBUG STUFF -----------------------------------------------------
+            //             // END DEBUG CODE -----------------------------------------------------
 
             // So will we be able to deposit as much as is needed?
             if (dParProfTotDiff >= dTargetToDepositOnProfile)
@@ -1711,9 +1709,9 @@ int CSimulation::nDoUnconsDepositionOnPolygon(int const nCoast, int const nPoly,
                         // Update this-timestep totals
                         m_ulThisIterNumActualBeachErosionCells++;
 
-                        // // DEBUG CODE ==============================
+                        // // DEBUG CODE ==============================================================================================
                         // LogStream << m_ulIter << ": $$$$$$$$$ BEACH 3 Dean profile lower than existing profile, SAND depth eroded on [" << nX << "][" << nY << "] in Poly " << nPoly << " is " << dSandRemoved * m_dCellArea << endl;
-                        // // DEBUG CODE ==============================
+                        // // DEBUG CODE ==============================================================================================
 
                         // Store the this-polygon depth of sand sediment eroded during Dean profile deposition of beach unconsolidated sediment
                         pPolygon->AddBeachSandErodedDeanProfile(dSandRemoved);
@@ -1735,9 +1733,9 @@ int CSimulation::nDoUnconsDepositionOnPolygon(int const nCoast, int const nPoly,
                         // Update this-timestep totals
                         m_ulThisIterNumActualBeachErosionCells++;
 
-                        // // DEBUG CODE ==============================
+                        // // DEBUG CODE ==============================================================================================
                         // LogStream << m_ulIter << ": $$$$$$$$$ BEACH 3 Dean profile lower than existing profile, COARSE depth eroded on [" << nX << "][" << nY << "] in Poly " << nPoly << " is " << dCoarseRemoved * m_dCellArea << endl;
-                        // // DEBUG CODE ==============================
+                        // // DEBUG CODE ==============================================================================================
 
                         // Store the this-polygon depth of coarse sediment eroded during Dean profile deposition of beach unconsolidated sediment
                         pPolygon->AddBeachCoarseErodedDeanProfile(dCoarseRemoved);

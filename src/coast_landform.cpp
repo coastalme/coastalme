@@ -63,7 +63,7 @@ int CACoastLandform::nGetLandFormCategory(void) const
    return m_nCategory;
 }
 
-//! Get the grid co-ordinates of the cell on which this coast landform sits
+//! Get the grid coordinates of the cell on which this coast landform sits
 CGeom2DIPoint* CACoastLandform::pPtiGetCellMarkedAsLF(void) const
 {
    return pCoast->pPtiGetCellMarkedAsCoastline(m_nPointOnCoast);
