@@ -2399,7 +2399,7 @@ void CSimulation::CalcD50AndFillWaveCalcHoles(void)
    {
       for (int nPoly = 0; nPoly < m_VCoast[nCoast].nGetNumPolygons(); nPoly++)
       {
-         CGeomCoastPolygon* pPolygon = m_VCoast[nCoast].pGetPolygonDownCoastSeq(nPoly);
+         CGeomCoastPolygon* pPolygon = m_VCoast[nCoast].pGetPolygonWithDownCoastSeq(nPoly);
          int nID = pPolygon->nGetGlobalID();
 
          if (VnPolygonD50Count[nID] > 0)

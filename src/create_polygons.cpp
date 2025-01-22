@@ -308,14 +308,14 @@ int CSimulation::nCreateAllPolygons(void)
    // for (int nCoast = 0; nCoast < static_cast<int>(m_VCoast.size()); nCoast++)
    // {
       // CRUDE
-      // CGeomCoastPolygon* pPolygon24 = m_VCoast[nCoast].pGetPolygonDownCoastSeq(24);
+      // CGeomCoastPolygon* pPolygon24 = m_VCoast[nCoast].pGetPolygonWithDownCoastSeq(24);
 //m_VCoast[nCoast].
 
       // int nNumThisCoastPoly = m_VCoast[nCoast].nGetNumPolygons();
       // for (int n = 0; n < nNumThisCoastPoly; n++)
       // {
       //
-      //    CGeomCoastPolygon* pPolygon = m_VCoast[nCoast].pGetPolygonDownCoastSeq(n);
+      //    CGeomCoastPolygon* pPolygon = m_VCoast[nCoast].pGetPolygonWithDownCoastSeq(n);
       //    LogStream << m_ulIter << ": pPolygon[" << n << "] = " << pPolygon << endl;
       //
       // }
@@ -482,7 +482,7 @@ void CSimulation::MarkPolygonCells(void)
    //    // Do this for every coastal polygon
    //    for (int nPoly = 0; nPoly < m_VCoast[nCoast].nGetNumPolygons(); nPoly++)
    //    {
-   //       CGeomCoastPolygon* pPolygon = m_VCoast[nCoast].pGetPolygonDownCoastSeq(nPoly);
+   //       CGeomCoastPolygon* pPolygon = m_VCoast[nCoast].pGetPolygonWithDownCoastSeq(nPoly);
    //
    //       int nPolyID = pPolygon->nGetCoastID();
    //       VnID.push_back(nPolyID);
@@ -553,7 +553,7 @@ void CSimulation::MarkPolygonCells(void)
          double dSedimentInputSand = 0;
          double dSedimentInputCoarse = 0;
 
-         CGeomCoastPolygon* pPolygon = m_VCoast[nCoast].pGetPolygonDownCoastSeq(nPoly);
+         CGeomCoastPolygon* pPolygon = m_VCoast[nCoast].pGetPolygonWithDownCoastSeq(nPoly);
          int nPolyID = pPolygon->nGetCoastID();    // TODO 085
 
          // LogStream << m_ulIter << ": in MarkPolygonCells() nPoly = " << nPoly << " nPolyID = " << nPolyID << endl;
@@ -796,7 +796,7 @@ int CSimulation::nDoPolygonSharedBoundaries(void)
       // Do this for every coastal polygon, in down-coast sequence
       for (int nn = 0; nn < nNumPolygons; nn++)
       {
-         CGeomCoastPolygon* pThisPolygon = m_VCoast[nCoast].pGetPolygonDownCoastSeq(nn);
+         CGeomCoastPolygon* pThisPolygon = m_VCoast[nCoast].pGetPolygonWithDownCoastSeq(nn);
          int nThisPolygon = pThisPolygon->nGetCoastID();
 
          vector<int> nVUpCoastAdjacentPolygon;
@@ -920,7 +920,7 @@ int CSimulation::nDoPolygonSharedBoundaries(void)
                   int nUpCoastCoincPolygon;
                   for (int mm = nn-1; mm >= 0; mm--)
                   {
-                     CGeomCoastPolygon const* pCoincPoly = m_VCoast[nCoast].pGetPolygonDownCoastSeq(mm);
+                     CGeomCoastPolygon const* pCoincPoly = m_VCoast[nCoast].pGetPolygonWithDownCoastSeq(mm);
                      int nCoincPolyDownCoastProfile = pCoincPoly->nGetDownCoastProfile();
 
                      if (nCoincPolyDownCoastProfile == nUpCoastCoincProfile)

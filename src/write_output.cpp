@@ -1656,7 +1656,7 @@ void CSimulation::WritePolygonPotentialErosion(int const nCoast)
 //
 //    for (int nPoly = 0; nPoly < m_VCoast[nCoast].nGetNumPolygons(); nPoly++)
 //    {
-//       CGeomCoastPolygon const* pPolygon = m_VCoast[nCoast].pGetPolygonDownCoastSeq(nPoly);
+//       CGeomCoastPolygon const* pPolygon = m_VCoast[nCoast].pGetPolygonWithID(nPoly);
 //
 //       LogStream << strIntRight(m_pVCoastPolygonDownCoastSeq[nPoly]->nGetGlobalID(), 11) << "|" << strIntRight(nCoast, 11) << "|" << strIntRight(m_pVCoastPolygonDownCoastSeq[nPoly]->nGetCoastID(), 11) << "|" << strDblRight((pPolygon->dGetBeachErosionUnconsFine() + pPolygon->dGetBeachErosionUnconsSand() + pPolygon->dGetBeachErosionUnconsCoarse()) * m_dCellArea, 0, 14) << "|" << strDblRight(pPolygon->dGetBeachErosionUnconsFine() * m_dCellArea, 0, 14) << "|" << strDblRight(pPolygon->dGetBeachErosionUnconsSand() * m_dCellArea, 0, 14) << "|" << strDblRight(pPolygon->dGetBeachErosionUnconsCoarse() * m_dCellArea, 0, 14) << "|" << endl;
 //
@@ -1718,7 +1718,7 @@ void CSimulation::WritePolygonSortedSequence(int const nCoast, vector<vector<int
    
    for (int nPoly = 0; nPoly < static_cast<int>(pnVVPolyAndAdjacent.size()); nPoly++)
    {
-      const CGeomCoastPolygon* pPoly = m_VCoast[nCoast].pGetPolygonDownCoastSeq(pnVVPolyAndAdjacent[nPoly][0]);
+      const CGeomCoastPolygon* pPoly = m_VCoast[nCoast].pGetPolygonWithID(pnVVPolyAndAdjacent[nPoly][0]);
       vector<int> VCirc = pPoly->VnGetCircularities();
 
       LogStream << strIntRight(m_pVCoastPolygonDownCoastSeq[pnVVPolyAndAdjacent[nPoly][0]]->nGetGlobalID(), 11) << "|" << strIntRight(nCoast, 11) << "|" << strIntRight(pnVVPolyAndAdjacent[nPoly][0], 11) << "|";

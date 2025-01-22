@@ -268,8 +268,8 @@ public:
    int nGetPolygonNode(int const) const;
    CGeomCoastPolygon* pPolyCreatePolygon(int const, int const, int const, CGeom2DIPoint const*, CGeom2DIPoint const*, int const, int const, vector<CGeom2DPoint> const*, int const, int const);
    int nGetNumPolygons(void) const;
-   CGeomCoastPolygon* pGetPolygonDownCoastSeq(int const) const;
-   CGeomCoastPolygon* pGetPolygonIDSeq(int const) const;
+   CGeomCoastPolygon* pGetPolygonWithDownCoastSeq(int const) const;
+   CGeomCoastPolygon* pGetPolygonWithID(int const) const;
 
    // void AppendPolygonLength(const double);
    // double dGetPolygonLength(int const) const;

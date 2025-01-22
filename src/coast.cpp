@@ -729,17 +729,17 @@ int CRWCoast::nGetNumPolygons(void) const
 }
 
 //! Returns a pointer to a coast polygon, specified in down-coast sequence
-CGeomCoastPolygon* CRWCoast::pGetPolygonDownCoastSeq(int const nPoly) const
+CGeomCoastPolygon* CRWCoast::pGetPolygonWithDownCoastSeq(int const nPoly) const
 {
    // TODO 055 No check to see if nPoint < m_VnPolygon.size()
-   return pGetSim()->pGetPolygonDownCoastSeq(nPoly);
+   return pGetSim()->pGetPolygonWithDownCoastSeq(nPoly);
 }
 
 //! Returns a pointer to a coast polygon, specified in down-coast sequence
-CGeomCoastPolygon* CRWCoast::pGetPolygonIDSeq(int const nPoly) const
+CGeomCoastPolygon* CRWCoast::pGetPolygonWithID(int const nPoly) const
 {
    // TODO 055 No check to see if nPoint < m_pVCoastPolygonIDSeq.size()
-   return pGetSim()->pGetPolygonIDSeq(nPoly);
+   return pGetSim()->pGetPolygonWithID(nPoly);
 }
 
 // //! Appends to coast polygon length

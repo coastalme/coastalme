@@ -80,8 +80,11 @@ CoastalME CHANGELOG
 
 1.3.0    Rewrite of CShore output interpolation to fix CShore bug
          Rewrite of polygon point-in-polygon routine
-         Partial rewrite of profile creation
-         Partial rewrite of polygon creation
+         Partial rewrite of profile creation (ID now in creation sequence)
+         Partial rewrite of polygon creation (ID now taken from upcoast profile)
+         Changes to shore platform routines resulting from above
+         Changes to cliff collapse routines resukting from above
+         Changes to sedimet transport routines resulting from above
          Sediment input events at a point now working correctly
          Sediment input events on a line now mostly working
          Extra compile-time checks

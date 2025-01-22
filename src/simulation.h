@@ -1627,15 +1627,10 @@ private:
    int nDoPolygonSharedBoundaries(void);
    void DoAllPotentialBeachErosion(void);
    int nDoAllActualBeachErosionAndDeposition(void);
-   // int nEstimateBeachErosionOnPolygon(int const, int const, double const);
-   // int nEstimateErosionOnPolygon(int const, int const, double const, double&, double&, double&);
-   // int nEstimateUnconsErosionOnParallelProfile(/*int const, int const,*/ int const, int const, /* int const, */ int const, vector<CGeom2DIPoint> const*, vector<double> const*, double&, double&, double&, double&, double&);
-   int nDoParallelProfileUnconsErosion(int const, int const, int const,  int const, int const, int const, int const, int const, vector<CGeom2DIPoint> const*, vector<double> const*, double&, double&, double&);
-   // void EstimateUnconsErosionOnCell(int const, int const, int const, double const, double&, double&, double&);
+   int nDoParallelProfileUnconsErosion(CGeomCoastPolygon*, int const,  int const, int const, int const, int const, int const, vector<CGeom2DIPoint> const*, vector<double> const*, double&, double&, double&);
    void ErodeCellBeachSedimentSupplyLimited(int const, int const, int const, int const, double const, double&);
-   // int nEstimateMovementUnconsToAdjacentPolygons(int const, int const);
-   int nDoUnconsErosionOnPolygon(int const, int const, int const, double const, double&);
-   int nDoUnconsDepositionOnPolygon(int const, int const, int const, double, double&);
+   int nDoUnconsErosionOnPolygon(int const, CGeomCoastPolygon*, int const, double const, double&);
+   int nDoUnconsDepositionOnPolygon(int const, CGeomCoastPolygon*, int const, double, double&);
    void CalcDepthOfClosure(void);
    int nInterpolateAllDeepWaterWaveValues(void);
    int nSetAllCoastpointDeepWaterWaveValues(void);
@@ -1800,10 +1795,10 @@ public:
    int nGetCoastPolygonSize(void) const;
 
    //! Returns a pointer to a coast polygon, in down-coast sequence
-   CGeomCoastPolygon* pGetPolygonDownCoastSeq(int const) const;
+   CGeomCoastPolygon* pGetPolygonWithDownCoastSeq(int const) const;
 
    //! Returns a pointer to a coast polygon, in polygon ID sequence
-   CGeomCoastPolygon* pGetPolygonIDSeq(int const) const;
+   CGeomCoastPolygon* pGetPolygonWithID(int const) const;
 
    //! Appends a pointer to a coast polygon to the coast polygon vector
    void AppendPolygon(CGeomCoastPolygon*);

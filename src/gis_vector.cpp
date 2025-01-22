@@ -1312,7 +1312,7 @@ bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const *strPlot
                // Create a feature object, one per polygon
                OGRFeature* pOGRFeature = OGRFeature::CreateFeature(pOGRLayer->GetLayerDefn());
 
-               CGeomCoastPolygon* pPolygon = m_VCoast[i].pGetPolygonDownCoastSeq(j);
+               CGeomCoastPolygon* pPolygon = m_VCoast[i].pGetPolygonWithID(j);
 
                // Set the feature's attributes
                pOGRFeature->SetField(strFieldValue1.c_str(), j);
