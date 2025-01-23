@@ -1359,20 +1359,21 @@ void CSimulation::WritePolygonShareTable(int const nCoast)
    LogStream << strCentre("Global ID", 11) << "|" << strCentre("", 11) << "|" << strCentre("Coast ID", 11) << "|" << strCentre("Volume", 14) << "|" << strCentre("", 14) << "| " << strCentre("", 14) << endl;
    LogStream << "-----------|-----------|-----------|--------------|--------------|--------------------------------------------" << endl;
 
-   for (unsigned int n = 0; n < m_pVCoastPolygonDownCoastSeq.size(); n++)
+   for (int n = 0; n < nGetCoastPolygonSize(); n++)
    {
-      LogStream << strIntRight(m_pVCoastPolygonDownCoastSeq[n]->nGetGlobalID(), 11) << "|" << strIntRight(nCoast, 11) << "|" << strIntRight(m_pVCoastPolygonDownCoastSeq[n]->nGetCoastID(), 11) << "|" << strDblRight(m_pVCoastPolygonDownCoastSeq[n]->dGetSeawaterVolume(), 0, 14) << "|" << strDblRight(m_pVCoastPolygonDownCoastSeq[n]->dGetAvgUnconsD50(), 0, 14) << "| ";
+      CGeomCoastPolygon const* pPolygon = pGetPolygonWithDownCoastSeq(n);
+      LogStream << strIntRight(pPolygon->nGetGlobalID(), 11) << "|" << strIntRight(nCoast, 11) << "|" << strIntRight(pPolygon->nGetCoastID(), 11) << "|" << strDblRight(pPolygon->dGetSeawaterVolume(), 0, 14) << "|" << strDblRight(pPolygon->dGetAvgUnconsD50(), 0, 14) << "| ";
 
-      for (int m = 0; m < m_pVCoastPolygonDownCoastSeq[n]->nGetNumUpCoastAdjacentPolygons(); m++)
+      for (int m = 0; m < pPolygon->nGetNumUpCoastAdjacentPolygons(); m++)
       {
-         if (! m_pVCoastPolygonDownCoastSeq[n]->bDownCoastThisIter())
-            LogStream << "(UP  \t" << m_pVCoastPolygonDownCoastSeq[n]->nGetUpCoastAdjacentPolygon(m) << "\t" << m_pVCoastPolygonDownCoastSeq[n]->dGetUpCoastAdjacentPolygonBoundaryShare(m) << ")\t";
+         if (! pPolygon->bDownCoastThisIter())
+            LogStream << "(UP  \t" << pPolygon->nGetUpCoastAdjacentPolygon(m) << "\t" << pPolygon->dGetUpCoastAdjacentPolygonBoundaryShare(m) << ")\t";
       }
 
-      for (int m = 0; m < m_pVCoastPolygonDownCoastSeq[n]->nGetNumDownCoastAdjacentPolygons(); m++)
+      for (int m = 0; m < pPolygon->nGetNumDownCoastAdjacentPolygons(); m++)
       {
-         if (m_pVCoastPolygonDownCoastSeq[n]->bDownCoastThisIter())
-            LogStream << "(DOWN\t" << m_pVCoastPolygonDownCoastSeq[n]->nGetDownCoastAdjacentPolygon(m) << "\t" << m_pVCoastPolygonDownCoastSeq[n]->dGetDownCoastAdjacentPolygonBoundaryShare(m) << ")\t";
+         if (pPolygon->bDownCoastThisIter())
+            LogStream << "(DOWN\t" << pPolygon->nGetDownCoastAdjacentPolygon(m) << "\t" << pPolygon->dGetDownCoastAdjacentPolygonBoundaryShare(m) << ")\t";
       }
       LogStream << endl;
    }

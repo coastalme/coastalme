@@ -171,7 +171,6 @@ int CSimulation::nCreateAllPolygons(void)
                CGeomCoastPolygon* pPolygon = m_VCoast[nCoast].pPolyCreatePolygon(m_nGlobalPolygonID, nPolygon, nNodePoint, &PtiNode, &PtiAntiNode, nThisProfile, nNextProfile, &PtVBoundary, nThisProfileEnd+1, nNextProfileEnd+1);
 
                // And store this pointer for simulation-wide access, m_pVCoastPolygonDownCoastSeq is in along-coast sequence
-               // m_pVCoastPolygonDownCoastSeq[nPolygon] = pPolygon;
                m_pVCoastPolygonDownCoastSeq[++nPolygonInCoastSeq] = pPolygon;
 
                // Save the profile-end vertices (but omit the last one if the profiles meet at a point)
