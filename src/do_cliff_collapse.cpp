@@ -208,7 +208,7 @@ int CSimulation::nDoCliffCollapse(int const nCoast, CRWCliff* pCliff, double& dF
       return RTN_ERR_CLIFF_NOT_IN_POLYGON;
    }
 
-   CGeomCoastPolygon* pPolygon = m_VCoast[nCoast].pGetPolygonWithID(nPoly);
+   CGeomCoastPolygon* pPolygon = m_VCoast[nCoast].pGetPolygonByID(nPoly);
        
    // Get the elevation of the base of the notch from the cliff object
    double dNotchElev = pCliff->dGetNotchBaseElev() - m_dNotchBaseBelowSWL;
@@ -458,7 +458,7 @@ int CSimulation::nDoCliffCollapseDeposition(int const nCoast, CRWCliff const* pC
       return RTN_ERR_CLIFF_NOT_IN_POLYGON;
    }
 
-   CGeomCoastPolygon* pPolygon = m_VCoast[nCoast].pGetPolygonWithID(nPoly);
+   CGeomCoastPolygon* pPolygon = m_VCoast[nCoast].pGetPolygonByID(nPoly);
        
    // OK, now set up the planview sequence talus deposition. First we deposit to create a Dean profile starting from the cliff collapse cell. Then we deposit along two profiles which start from the coast cells on either side of the cliff collapse cell, and then on two profiles starting on the next two "outside" coast cells, etc. However, we do have a "preferred" talus width
    int nTalusWidth = nConvertMetresToNumCells(m_dCliffDepositionPlanviewWidth);

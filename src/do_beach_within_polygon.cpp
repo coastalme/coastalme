@@ -58,6 +58,14 @@ int CSimulation::nDoUnconsErosionOnPolygon(int const nCoast, CGeomCoastPolygon* 
    int nDownCoastProfile = pPolygon->nGetDownCoastProfile();
    CGeomProfile const* pDownCoastProfile = m_VCoast[nCoast].pGetProfile(nDownCoastProfile);
 
+
+   // // DEBUG CODE =====================
+   // int nNumUpCoastCell = pUpCoastProfile->nGetNumCellsInProfile();
+   // int nNumDownCoastCell = pDownCoastProfile->nGetNumCellsInProfile();
+   // LogStream << "pUpCoastProfile->nGetNumCellsInProfile() = " << nNumUpCoastCell << " pDownCoastProfile->nGetNumCellsInProfile() = " << nNumDownCoastCell << endl;
+   // // DEBUG CODE =====================
+
+
    // We will use only part of the up-coast boundary profile, seaward as far as the depth of closure. First find the seaward end point of this up-coast part-profile. Note that this does not change as the landwards offset changes
    int nIndex = pUpCoastProfile->nGetCellGivenDepth(m_pRasterGrid, m_dDepthOfClosure);
    if (nIndex == INT_NODATA)
@@ -65,21 +73,30 @@ int CSimulation::nDoUnconsErosionOnPolygon(int const nCoast, CGeomCoastPolygon* 
       if (m_nLogFileDetail >= LOG_FILE_HIGH_DETAIL)
          LogStream << m_ulIter << ": " << ERR << "while eroding unconsolidated " + strTexture + " sediment on polygon " << pPolygon->nGetCoastID() << ", could not find the seaward end point of the up-coast profile (" << nUpCoastProfile << ") for depth of closure = " << m_dDepthOfClosure << endl;
 
-      return RTN_ERR_NO_SEAWARD_END_OF_PROFILE_2;
+      // return RTN_ERR_NO_SEAWARD_END_OF_PROFILE_2;
+
+      // ####################
+      nIndex = pUpCoastProfile->nGetProfileSize();
    }
 
    // The part-profile length is one greater than nIndex, since pPtiGetCellGivenDepth() returns the index of the cell at the depth of closure
-   int nUpCoastPartProfileLen = nIndex + 1;
+   // int nUpCoastPartProfileLen = nIndex + 1;
+   int nUpCoastPartProfileLen = nIndex;
 
    //    assert(bIsWithinValidGrid(&PtiUpCoastPartProfileSeawardEnd));
 
    // Store the cell coordinates of the boundary part-profile in reverse (sea to coast) order so we can append to the coastward end as we move inland (i.e. as nInlandOffset increases)
    vector<CGeom2DIPoint> PtiVUpCoastPartProfileCell;
-   for (int n = 0; n < nUpCoastPartProfileLen; n++)
-      PtiVUpCoastPartProfileCell.push_back(*pUpCoastProfile->pPtiGetCellInProfile(nUpCoastPartProfileLen - n - 1));
+   // for (int n = 0; n < nUpCoastPartProfileLen; n++)
+   //    PtiVUpCoastPartProfileCell.push_back(*pUpCoastProfile->pPtiGetCellInProfile(nUpCoastPartProfileLen - n - 1));
+   for (int n = nUpCoastPartProfileLen-1; n >= 0; n--)
+   {
+      CGeom2DIPoint Pti = *pUpCoastProfile->pPtiGetCellInProfile(n);
+      PtiVUpCoastPartProfileCell.push_back(Pti);
+   }
 
-   int nUpCoastProfileCoastPoint = pUpCoastProfile->nGetNumCoastPoint();
-   int nDownCoastProfileCoastPoint = pDownCoastProfile->nGetNumCoastPoint();
+   int nUpCoastProfileCoastPoint = pUpCoastProfile->nGetCoastPoint();
+   int nDownCoastProfileCoastPoint = pDownCoastProfile->nGetCoastPoint();
    int nXUpCoastProfileExistingCoastPoint = m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(nUpCoastProfileCoastPoint)->nGetX();
    int nYUpCoastProfileExistingCoastPoint = m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(nUpCoastProfileCoastPoint)->nGetY();
    int nCoastSegLen;
@@ -198,11 +215,10 @@ int CSimulation::nDoUnconsErosionOnPolygon(int const nCoast, CGeomCoastPolygon* 
             CGeom2DIPoint PtiUpCoastTmp = *pUpCoastProfile->pPtiGetCellInProfile(nInlandOffset);
 
             // Then get the offset between this PtiUpCoastTmp cell and the existing up-coast part-profile start point, and use the reverse of this offset to get the coordinates of the cell that extends the existing up-coast part-profile landwards
-            int
-                nXUpCoastStartOffset = PtiUpCoastTmp.nGetX() - nXUpCoastProfileExistingCoastPoint,
-                nYUpCoastStartOffset = PtiUpCoastTmp.nGetY() - nYUpCoastProfileExistingCoastPoint,
-                nXUpCoastThisStart = nCoastX - nXUpCoastStartOffset,
-                nYUpCoastThisStart = nCoastY - nYUpCoastStartOffset;
+            int nXUpCoastStartOffset = PtiUpCoastTmp.nGetX() - nXUpCoastProfileExistingCoastPoint;
+            int nYUpCoastStartOffset = PtiUpCoastTmp.nGetY() - nYUpCoastProfileExistingCoastPoint;
+            int nXUpCoastThisStart = nCoastX - nXUpCoastStartOffset;
+            int nYUpCoastThisStart = nCoastY - nYUpCoastStartOffset;
 
             // Is the new landwards point within the raster grid?
             if (! bIsWithinValidGrid(nXUpCoastThisStart, nYUpCoastThisStart))
@@ -777,8 +793,8 @@ int CSimulation::nDoUnconsDepositionOnPolygon(int const nCoast, CGeomCoastPolygo
 
 //   double dUpCoastDeanLen = dGetDistanceBetween(&PtUpCoastProfileStart, &PtUpCoastProfileEnd);
 
-   int nUpCoastProfileCoastPoint = pUpCoastProfile->nGetNumCoastPoint();
-   int nDownCoastProfileCoastPoint = pDownCoastProfile->nGetNumCoastPoint();
+   int nUpCoastProfileCoastPoint = pUpCoastProfile->nGetCoastPoint();
+   int nDownCoastProfileCoastPoint = pDownCoastProfile->nGetCoastPoint();
    int nXUpCoastProfileExistingCoastPoint = m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(nUpCoastProfileCoastPoint)->nGetX();
    int nYUpCoastProfileExistingCoastPoint = m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(nUpCoastProfileCoastPoint)->nGetY();
    int nCoastSegLen;

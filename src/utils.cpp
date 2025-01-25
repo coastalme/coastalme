@@ -2809,7 +2809,7 @@ int CSimulation::nGetCoastPolygonSize(void) const
 //===============================================================================================================================
 //! Returns a pointer to a coast polygon, specified in down-coast sequence
 //===============================================================================================================================
-CGeomCoastPolygon* CSimulation::pGetPolygonWithDownCoastSeq(int const nPoly) const
+CGeomCoastPolygon* CSimulation::pGetPolygonByDownCoastSeq(int const nPoly) const
 {
    // TODO 055 No check to see if nPoly < m_pVCoastPolygonDownCoastSeq.size()
    return m_pVCoastPolygonDownCoastSeq[nPoly];
@@ -2842,7 +2842,7 @@ void CSimulation::CreatePolygonIndexIDSeq(void)
 //===============================================================================================================================
 //! Returns a pointer to a coast polygon, specified in ID sequence
 //===============================================================================================================================
-CGeomCoastPolygon* CSimulation::pGetPolygonWithID(int const nPoly) const
+CGeomCoastPolygon* CSimulation::pGetPolygonByID(int const nPoly) const
 {
    // TODO 055 No check to see if nPoly < m_pVCoastPolygonIDSeq.size()
    return m_pVCoastPolygonIDSeq[nPoly];

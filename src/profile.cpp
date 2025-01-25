@@ -34,7 +34,7 @@ using std::find;
 #include "profile.h"
 
 //! Constructor with initialization list, requires one parameter (the coast point at which the profile starts)
-CGeomProfile::CGeomProfile(int const nCoast,int const nCoastPoint, int const nCoastID, int const nGlobalID, CGeom2DIPoint const* pPtiStart)
+CGeomProfile::CGeomProfile(int const nCoast,int const nCoastPoint, int const nCoastID, int const nGlobalID, CGeom2DIPoint const* pPtiStart, CGeom2DIPoint const* pPtiEnd)
     : m_bStartOfCoast(false),
       m_bEndOfCoast(false),
       m_bCShoreProblem(false),
@@ -44,13 +44,14 @@ CGeomProfile::CGeomProfile(int const nCoast,int const nCoastPoint, int const nCo
       m_bTruncated(false),
       m_bHitAnotherProfile(false),
       m_nCoast(nCoast),
-      m_nNumCoastPoint(nCoastPoint),
+      m_nCoastPoint(nCoastPoint),
       m_nCoastID(nCoastID),
       m_nGlobalID(nGlobalID),
       m_dDeepWaterWaveHeight(0),
       m_dDeepWaterWaveAngle(0),
       m_dDeepWaterWavePeriod(0),
       PtiStart(*pPtiStart),
+      PtiEnd(*pPtiEnd),
       m_pUpCoastAdjacentProfile(static_cast<CGeomProfile*>(0)),
       m_pDownCoastAdjacentProfile(static_cast<CGeomProfile*>(0))
 {
@@ -80,9 +81,9 @@ int CGeomProfile::nGetGlobalID(void) const
 }
 
 //! Returns the coast point at which the profile starts
-int CGeomProfile::nGetNumCoastPoint(void) const
+int CGeomProfile::nGetCoastPoint(void) const
 {
-   return m_nNumCoastPoint;
+   return m_nCoastPoint;
 }
 
 //! Returns a pointer to the location of the cell (grid CRS) on which the profile starts
@@ -523,10 +524,11 @@ int CGeomProfile::nGetCellGivenDepth(CGeomRasterGrid const* pGrid, double const 
       }
    }
 
-   if (nIndex == INT_NODATA)
-   {
-      nIndex = static_cast<int>(m_VCellInProfile.size()) - 1;
-   }
+   // ####################
+   // if (nIndex == INT_NODATA)
+   // {
+   //    nIndex = static_cast<int>(m_VCellInProfile.size()) - 1;
+   // }
 
    return nIndex;
 }

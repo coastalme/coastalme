@@ -64,7 +64,7 @@ private:
    int m_nCoast;
 
    //! The coastline point at which this profile hits the coast (not necessarily coincident wih the profile start cell)
-   int m_nNumCoastPoint;
+   int m_nCoastPoint;
 
    //! The this-coast ID of the profile
    int m_nCoastID;
@@ -106,14 +106,14 @@ private:
 protected:
 
 public:
-   explicit CGeomProfile(int const, int const, int const, int const, CGeom2DIPoint const*);
+   explicit CGeomProfile(int const, int const, int const, int const, CGeom2DIPoint const*, CGeom2DIPoint const*);
    ~CGeomProfile(void) override;
 
    void DeleteProfile(void);
 
    int nGetCoastID(void) const;
    int nGetGlobalID(void) const;
-   int nGetNumCoastPoint(void) const;
+   int nGetCoastPoint(void) const;
 
    CGeom2DIPoint* pPtiGetStartPoint(void);
    void SetEndPoint(CGeom2DIPoint const*);

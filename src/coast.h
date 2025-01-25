@@ -132,7 +132,7 @@ private:
    vector<CACoastLandform*> m_pVLandform;
 
    //! Pointers to coast-normal profile objects, one for each point on the coastline (is null for most coastline points)
-   vector<CGeomProfile*> m_VNormalProfileAlongCoastSequence;
+   vector<CGeomProfile*> m_VNormalProfileDownAllCoastSeq;
 
    // These do not have the same length as m_LCoastlineExtCRS
 
@@ -140,7 +140,7 @@ private:
    vector<CGeomProfile> m_VProfile;
 
    //! Pointers to coastline-normal objects, in along-coastline sequence
-   vector<CGeomProfile*> m_VpProfileCoastSequence;
+   vector<CGeomProfile*> m_VpProfileDownCoastSeq;
 
    //! Lines which comprise the edge of a shadow zone, ext CRS
    vector<CGeomLine> m_LShadowBoundary;
@@ -205,10 +205,12 @@ public:
 
    void AppendProfile(CGeomProfile*);
    CGeomProfile* pGetProfile(int const);
+   CGeomProfile* pGetLastProfile(void);
 //    void ReplaceProfile(int const, vector<CGeom2DPoint> const*);
    int nGetNumProfiles(void) const;
-   void ClearProfile(int const);
-   void CreateProfileAlongCoastIndex(void);
+   void DeleteAllProfiles(void);
+   void CreateProfileDownCoastIndex(void);
+   void InsertProfilesInProfileCoastPointIndex(void);
 
    CGeomProfile* pGetDownCoastProfile(CGeomProfile const* pProfile);
    CGeomProfile* pGetDownCoastProfileNotIncLastProfile(CGeomProfile const* pProfile);
@@ -268,8 +270,8 @@ public:
    int nGetPolygonNode(int const) const;
    CGeomCoastPolygon* pPolyCreatePolygon(int const, int const, int const, CGeom2DIPoint const*, CGeom2DIPoint const*, int const, int const, vector<CGeom2DPoint> const*, int const, int const);
    int nGetNumPolygons(void) const;
-   CGeomCoastPolygon* pGetPolygonWithDownCoastSeq(int const) const;
-   CGeomCoastPolygon* pGetPolygonWithID(int const) const;
+   CGeomCoastPolygon* pGetPolygonByDownCoastSeq(int const) const;
+   CGeomCoastPolygon* pGetPolygonByID(int const) const;
 
    // void AppendPolygonLength(const double);
    // double dGetPolygonLength(int const) const;

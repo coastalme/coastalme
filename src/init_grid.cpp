@@ -48,12 +48,7 @@ int CSimulation::nInitGridAndCalcStillWaterLevel(void)
 {
    // Clear all vector coastlines, profiles, and polygons
    for (int nCoast = 0; nCoast < static_cast<int>(m_VCoast.size()); nCoast++)
-   {
-      for (int nProfile = 0; nProfile < m_VCoast[nCoast].nGetNumProfiles(); nProfile++)
-      {
-         m_VCoast[nCoast].ClearProfile(nProfile);
-      }
-   }
+      m_VCoast[nCoast].DeleteAllProfiles();
    m_VCoast.clear();
    // m_VFloodWaveSetup.clear();
    m_VFloodWaveSetupSurge.clear();

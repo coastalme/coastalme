@@ -58,70 +58,7 @@ bool bCurvaturePairCompareDescending(const pair<int, double>& prLeft, const pair
 }
 
 //===============================================================================================================================
-//! Create all coastline-normal profiles, check them, modify the profiles if they intersect, then mark valid profiles on the raster grid
-//===============================================================================================================================
-int CSimulation::nCreateAndCheckAllProfiles(void)
-{
-   // Create all coastline-normal profiles, in coastline-concave-curvature sequence i.e. the first profiles are created 'around' the most concave bits of coast. An index is also created which allows profiles to be accessed in along-coast sequence. Also create 'special' profiles at the start and end of the coast, and put these onto the raster griid now
-   int nRet = nCreateAllProfiles();
-   if (nRet != RTN_OK)
-      return nRet;
-
-   // Check to see which coastline-normal profiles intersect. Then modify intersecting profiles so that the sections of each profile seaward of the point of intersection are 'shared' i.e. are multi-lines. This creates the boundaries of the triangular polygons
-   ModifyAllIntersectingProfiles();
-
-   // Again check the normal profiles for insufficient length: is the water depth at the end point less than the depth of closure? We do this again because some profiles may have been shortened as a result of intersection. Do once for every coastline object
-   for (unsigned int nCoast = 0; nCoast < m_VCoast.size(); nCoast++)
-   {
-      for (int n = 0; n < m_VCoast[nCoast].nGetNumProfiles(); n++)
-      {
-         CGeomProfile* pProfile = m_VCoast[nCoast].pGetProfileDownCoastSeq(n);
-         int nProfile = pProfile->nGetCoastID();
-
-         if (pProfile->bProfileOK())
-         {
-            int nSize = pProfile->nGetProfileSize();
-
-            // Safety check
-            if (nSize == 0)
-            {
-               pProfile->SetTooShort(true);
-               LogStream << "Profile " << nProfile << " is too short, size = " << nSize << endl;
-               continue;
-            }
-
-            CGeom2DPoint const* pPtEnd = pProfile->pPtGetPointInProfile(nSize - 1);
-            CGeom2DIPoint PtiEnd = PtiExtCRSToGridRound(pPtEnd);
-            int nXEnd = PtiEnd.nGetX();
-            int nYEnd = PtiEnd.nGetY();
-
-            // Safety check: the point may be outside the grid in the +VE direction, so keep it within the grid
-            nXEnd = tMin(nXEnd, m_nXGridSize - 1);
-            nYEnd = tMin(nYEnd, m_nYGridSize - 1);
-
-            pProfile->SetEndPoint(&PtiEnd);
-
-            if (m_pRasterGrid->m_Cell[nXEnd][nYEnd].dGetSeaDepth() < m_dDepthOfClosure)
-            {
-               if (m_nLogFileDetail >= LOG_FILE_MIDDLE_DETAIL)
-                  LogStream << m_ulIter << ": coast " << nCoast << ", profile " << nProfile << " is invalid, is too short for depth of closure " << m_dDepthOfClosure << " at end point [" << nXEnd << "][" << nYEnd << "] = {" << pPtEnd->dGetX() << ", " << pPtEnd->dGetY() << "}, flagging as too short" << endl;
-
-               pProfile->SetTooShort(true);
-            }
-         }
-      }
-   }
-
-   // Put all valid coastline-normal profiles (apart from the profiles at the start and end of the coast, since they have already been done) onto the raster grid. But if the profile is not long enough, or crosses a coastline or hits dry land, then mark the profile as invalid
-   nRet = nMarkAllProfilesOnGrid();
-   if (nRet != RTN_OK)
-      return nRet;
-
-   return RTN_OK;
-}
-
-//===============================================================================================================================
-//! Create coastline-normal profiles for all coastlines at locations of greatest concave curvature of the vector coastline. Then create grid-edge coastline-normal profiles
+//! Create coastline-normal profiles for all coastlines. The first profiles are created 'around' the most concave bits of coast. Also create 'special' profiles at the start and end of the coast, and put these onto the raster grid
 //===============================================================================================================================
 int CSimulation::nCreateAllProfiles(void)
 {
@@ -129,7 +66,7 @@ int CSimulation::nCreateAllProfiles(void)
       LogStream << m_ulIter << ": Creating profiles" << endl;
 
    int nProfileGlobalID = -1;
-   
+
    for (unsigned int nCoast = 0; nCoast < m_VCoast.size(); nCoast++)
    {
       int nProfile = 0;
@@ -178,7 +115,7 @@ int CSimulation::nCreateAllProfiles(void)
             bVCoastPointDone[m] = true;
       }
 
-      // Now locate the start points for all coastline-ormal profiles (except the grid-edge ones), at points of maximum smoothed convexity. Then create the profiles
+      // Now locate the start points for all coastline-normal profiles (except the grid-edge ones), at points of maximum smoothed convexity. Then create the profiles
       LocateAndCreateProfiles(nCoast, nProfile, nProfileGlobalID, m_nCoastNormalAvgSpacing, &bVCoastPointDone, &prVCurvature);
 
       // Did we fail to create any normal profiles? If so, quit
@@ -205,6 +142,9 @@ int CSimulation::nCreateAllProfiles(void)
       if (nRet != RTN_OK)
          return nRet;
 
+      // Insert pointers to profiles at coastline points in the profile-all-coastpoint index
+      m_VCoast[nCoast].InsertProfilesInProfileCoastPointIndex();
+
       // // DEBUG CODE ===================================================================================================
       // LogStream << endl << "===========================================================================================" << endl;
       // LogStream << "PROFILES BEFORE ADDING BEFORE- AND AFTER-PROFILE NUMBERS" << endl;
@@ -213,7 +153,7 @@ int CSimulation::nCreateAllProfiles(void)
       // {
       //    CGeomProfile* pProfile = m_VCoast[nCoast].pGetProfile(nn);
       //
-      //    LogStream << nn << " nCoastID = " << pProfile->nGetCoastID() << " nGlobalID = " << pProfile->nGetCoastID() << " nGetNumCoastPoint = " << pProfile->nGetNumCoastPoint() << " pGetUpCoastAdjacentProfile = " << pProfile->pGetUpCoastAdjacentProfile() << " pGetDownCoastAdjacentProfile = " << pProfile->pGetDownCoastAdjacentProfile() << endl;
+      //    LogStream << nn << " nCoastID = " << pProfile->nGetCoastID() << " nGlobalID = " << pProfile->nGetCoastID() << " nGetCoastPoint = " << pProfile->nGetCoastPoint() << " pGetUpCoastAdjacentProfile = " << pProfile->pGetUpCoastAdjacentProfile() << " pGetDownCoastAdjacentProfile = " << pProfile->pGetDownCoastAdjacentProfile() << endl;
       // }
       // LogStream << "===================================================================================================" << endl << endl;
       // // DEBUG CODE ===================================================================================================
@@ -274,13 +214,21 @@ int CSimulation::nCreateAllProfiles(void)
       }
 
       // And create an index to this coast's profiles in along-coastline sequence
-      m_VCoast[nCoast].CreateProfileAlongCoastIndex();
+      m_VCoast[nCoast].CreateProfileDownCoastIndex();
 
       // // DEBUG CODE =======================================================================================================================
       // for (int n = 0; n < m_VCoast[nCoast].nGetNumProfiles(); n++)
       // {
       //    CGeomProfile* pProfile = m_VCoast[nCoast].pGetProfileDownCoastSeq(n);
-      //    LogStream << n << "\t" << pProfile->nGetCoastID() << "\t" << pProfile->nGetGlobalID() << endl;
+      //    CGeomProfile* pUpCoastProfile = pProfile->pGetUpCoastAdjacentProfile();
+      //    CGeomProfile* pDownCoastProfile = pProfile->pGetDownCoastAdjacentProfile();
+      //    int nUpCoastProfile = INT_NODATA;
+      //    int nDownCoastProfile = INT_NODATA;
+      //    if (pUpCoastProfile != 0)
+      //       nUpCoastProfile = pUpCoastProfile->nGetCoastID();
+      //    if (pDownCoastProfile != 0)
+      //       nDownCoastProfile = pDownCoastProfile->nGetCoastID();
+      //    LogStream << n << "\t nCoastID = " << pProfile->nGetCoastID() << "\tnGlobalID = " << pProfile->nGetGlobalID() << "\t up-coast profile = " << nUpCoastProfile << "\t down-coast profile = " << nDownCoastProfile << endl;
       // }
       //    LogStream << endl;
       // // DEBUG CODE =======================================================================================================================
@@ -352,7 +300,7 @@ void CSimulation::LocateAndCreateProfiles(int const nCoast, int& nProfile, int& 
          CGeom2DIPoint PtiThis = *m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(nNormalPoint);
 
          // Create a profile here
-         int nRet = nCreateProfile(nCoast, nNormalPoint, nProfile, nProfileGlobalID, bIntervention, &PtiThis);
+         int nRet = nCreateProfile(nCoast, nCoastSize, nNormalPoint, nProfile, nProfileGlobalID, bIntervention, &PtiThis);
 
          // // DEBUG CODE =================
          // LogStream << "After nCreateProfile() ===========" << endl;
@@ -387,7 +335,7 @@ void CSimulation::LocateAndCreateProfiles(int const nCoast, int& nProfile, int& 
          // {
          //    CGeomProfile* pProfile = m_VCoast[nCoast].pGetProfile(nn);
          //
-         //    LogStream << nn << " nCoastID = " << pProfile->nGetCoastID() << " nGlobalID = " << pProfile->nGetCoastID() << " nGetNumCoastPoint = " << pProfile->nGetNumCoastPoint() << " pGetUpCoastAdjacentProfile = " << pProfile->pGetUpCoastAdjacentProfile() << " pGetDownCoastAdjacentProfile = " << pProfile->pGetDownCoastAdjacentProfile() << endl;
+         //    LogStream << nn << " nCoastID = " << pProfile->nGetCoastID() << " nGlobalID = " << pProfile->nGetCoastID() << " nGetCoastPoint = " << pProfile->nGetCoastPoint() << " pGetUpCoastAdjacentProfile = " << pProfile->pGetUpCoastAdjacentProfile() << " pGetDownCoastAdjacentProfile = " << pProfile->pGetDownCoastAdjacentProfile() << endl;
          // }
          // LogStream << "===================================================================================================" << endl << endl;
          // // DEBUG CODE ===================================================================================================
@@ -449,11 +397,9 @@ void CSimulation::LocateAndCreateProfiles(int const nCoast, int& nProfile, int& 
 //===============================================================================================================================
 //! Creates a single coastline-normal profile (which may be an intervention profile)
 //===============================================================================================================================
-int CSimulation::nCreateProfile(int const nCoast, int const nProfileStartPoint, int &nProfile, int& nProfileGlobalID, bool const bIntervention, CGeom2DIPoint const* pPtiStart)
+int CSimulation::nCreateProfile(int const nCoast, int const nCoastSize, int const nProfileStartPoint, int const nProfile, int& pnProfileGlobalID, bool const bIntervention, CGeom2DIPoint const* pPtiStart)
 {
    // OK, we have flagged the start point of this new coastline-normal profile, so create it. Make the start of the profile the centroid of the actual cell that is marked as coast (not the cell under the smoothed vector coast, they may well be different)
-   int nCoastSize = m_VCoast[nCoast].nGetCoastlineSize();
-
    CGeom2DPoint PtStart;         // In external CRS
    PtStart.SetX(dGridCentroidXToExtCRSX(pPtiStart->nGetX()));
    PtStart.SetY(dGridCentroidYToExtCRSY(pPtiStart->nGetY()));
@@ -489,7 +435,7 @@ int CSimulation::nCreateProfile(int const nCoast, int const nProfileStartPoint, 
    }
 
    // No problems, so create the new profile
-   CGeomProfile* pProfile = new CGeomProfile(nCoast, nProfileStartPoint, nProfile, ++nProfileGlobalID, pPtiStart);
+   CGeomProfile* pProfile = new CGeomProfile(nCoast, nProfileStartPoint, nProfile, ++pnProfileGlobalID, pPtiStart, &PtiEnd);
 
    // And create the profile's coastline-normal vector. Only two points (start and end points, both external CRS) are stored
    vector<CGeom2DPoint> VNormal;
@@ -503,9 +449,8 @@ int CSimulation::nCreateProfile(int const nCoast, int const nProfileStartPoint, 
    pProfile->AppendLineSegment();
    pProfile->AppendCoincidentProfileToLineSegments(make_pair(nProfile, 0));
 
-   // Save the profile, note that several fieldss in the profile are still blank
+   // Save the profile, note that several fields in the profile are still blank
    m_VCoast[nCoast].AppendProfile(pProfile);
-   m_VCoast[nCoast].SetProfileAtCoastPoint(nProfileStartPoint, pProfile);
 
    // // DEBUG CODE =================
    // LogStream << "in nCreateProfile() ===========" << endl;
@@ -637,12 +582,13 @@ int CSimulation::nLocateAndCreateGridEdgeProfile(bool const bCoastStart, int con
 
    int nProfileStartPoint;
    CGeomProfile* pProfile;
+   CGeom2DIPoint PtiDummy(INT_NODATA, INT_NODATA);
    if (bCoastStart)
    {
       nProfileStartPoint = 0;
 
       // Create the new start-of-coast profile
-      pProfile = new CGeomProfile(nCoast, nProfileStartPoint, nProfile, ++nProfileGlobalID, &PtiProfileStart);
+      pProfile = new CGeomProfile(nCoast, nProfileStartPoint, nProfile, ++nProfileGlobalID, &PtiProfileStart, &PtiDummy);
 
       // Mark this as a start-of-coast profile
       pProfile->SetStartOfCoast(true);
@@ -652,7 +598,7 @@ int CSimulation::nLocateAndCreateGridEdgeProfile(bool const bCoastStart, int con
       nProfileStartPoint = nCoastSize-1;
 
       // Create the new end-of-coast profile
-      pProfile = new CGeomProfile(nCoast, nProfileStartPoint, nProfile, ++nProfileGlobalID, &PtiProfileStart);
+      pProfile = new CGeomProfile(nCoast, nProfileStartPoint, nProfile, ++nProfileGlobalID, &PtiProfileStart, &PtiDummy);
 
       // Mark this as an end-of-coast profile
       pProfile->SetEndOfCoast(true);
@@ -1129,6 +1075,115 @@ void CSimulation::ModifyAllIntersectingProfiles(void)
 }
 
 //===============================================================================================================================
+//! Check all coastline-normal profiles and modify the profiles if they intersect, then mark valid profiles on the raster grid
+//===============================================================================================================================
+int CSimulation::nCheckAllProfiles(void)
+{
+   // Check to see which coastline-normal profiles intersect. Then modify intersecting profiles so that the sections of each profile seaward of the point of intersection are 'shared' i.e. are multi-lines. This creates the boundaries of the triangular polygons
+   ModifyAllIntersectingProfiles();
+
+   // Again check the normal profiles for insufficient length: is the water depth at the end point less than the depth of closure? We do this again because some profiles may have been shortened as a result of intersection. Do once for every coastline object
+   for (unsigned int nCoast = 0; nCoast < m_VCoast.size(); nCoast++)
+   {
+      for (int n = 0; n < m_VCoast[nCoast].nGetNumProfiles(); n++)
+      {
+         CGeomProfile* pProfile = m_VCoast[nCoast].pGetProfileDownCoastSeq(n);
+         int nProfile = pProfile->nGetCoastID();
+
+         if (pProfile->bProfileOK())
+         {
+            int nSize = pProfile->nGetProfileSize();
+
+            // Safety check
+            if (nSize == 0)
+            {
+               // pProfile->SetTooShort(true);
+               m_VCoast[nCoast].pGetProfile(nProfile)->SetTooShort(true);
+               LogStream << "Profile " << nProfile << " is too short, size = " << nSize << endl;
+               continue;
+            }
+
+            CGeom2DPoint const* pPtEnd = pProfile->pPtGetPointInProfile(nSize - 1);
+            CGeom2DIPoint PtiEnd = PtiExtCRSToGridRound(pPtEnd);
+            int nXEnd = PtiEnd.nGetX();
+            int nYEnd = PtiEnd.nGetY();
+
+            // Safety check: the point may be outside the grid in the +VE direction, so keep it within the grid
+            nXEnd = tMin(nXEnd, m_nXGridSize - 1);
+            nYEnd = tMin(nYEnd, m_nYGridSize - 1);
+
+            // pProfile->SetEndPoint(&PtiEnd);
+            m_VCoast[nCoast].pGetProfile(nProfile)->SetEndPoint(&PtiEnd);
+
+            if (m_pRasterGrid->m_Cell[nXEnd][nYEnd].dGetSeaDepth() < m_dDepthOfClosure)
+            {
+               if (m_nLogFileDetail >= LOG_FILE_MIDDLE_DETAIL)
+                  LogStream << m_ulIter << ": coast " << nCoast << ", profile " << nProfile << " is invalid, is too short for depth of closure " << m_dDepthOfClosure << " at end point [" << nXEnd << "][" << nYEnd << "] = {" << pPtEnd->dGetX() << ", " << pPtEnd->dGetY() << "}, flagging as too short" << endl;
+
+               // pProfile->SetTooShort(true);
+               m_VCoast[nCoast].pGetProfile(nProfile)->SetTooShort(true);
+            }
+         }
+      }
+
+      // For this coast, put all valid coastline-normal profiles (apart from the profiles at the start and end of the coast, since they have already been done) onto the raster grid. But if the profile is not long enough, or crosses a coastline or hits dry land, then mark the profile as invalid
+      int nValidProfiles = 0;
+      MarkProfilesOnGrid(nCoast, nValidProfiles);
+
+      if (nValidProfiles == 0)
+      {
+         // Problem! No valid profiles, so quit
+         cerr << m_ulIter << ": " << ERR << "no coastline-normal profiles created" << endl;
+         return RTN_ERR_NO_PROFILES_2;
+      }
+
+      // DEBUG CODE ===========================================================================================================
+      string strOutFile = m_strOutPath;
+      strOutFile += "00_profile_raster_";
+      strOutFile += std::to_string(m_ulIter);
+      strOutFile += ".tif";
+
+      GDALDriver* pDriver = GetGDALDriverManager()->GetDriverByName("gtiff");
+      GDALDataset* pDataSet = pDriver->Create(strOutFile.c_str(), m_nXGridSize, m_nYGridSize, 1, GDT_Float64, m_papszGDALRasterOptions);
+      pDataSet->SetProjection(m_strGDALBasementDEMProjection.c_str());
+      pDataSet->SetGeoTransform(m_dGeoTransform);
+
+      int nn = 0;
+      double* pdRaster = new double[m_nXGridSize * m_nYGridSize];
+      for (int nY = 0; nY < m_nYGridSize; nY++)
+      {
+         for (int nX = 0; nX < m_nXGridSize; nX++)
+         {
+            if (m_pRasterGrid->m_Cell[nX][nY].bIsCoastline())
+               pdRaster[nn] = -1;
+            else
+            {
+
+   //         pdRaster[nn] = m_pRasterGrid->m_Cell[nX][nY].nGetPolygonID();
+               pdRaster[nn] = m_pRasterGrid->m_Cell[nX][nY].nGetProfileID();
+            }
+
+            nn++;
+         }
+      }
+
+      GDALRasterBand* pBand = pDataSet->GetRasterBand(1);
+      pBand->SetNoDataValue(m_dMissingValue);
+      int nRet1 = pBand->RasterIO(GF_Write, 0, 0, m_nXGridSize, m_nYGridSize, pdRaster, m_nXGridSize, m_nYGridSize, GDT_Float64, 0, 0, NULL);
+
+      if (nRet1 == CE_Failure)
+         return RTN_ERR_GRIDCREATE;
+
+      GDALClose(pDataSet);
+      delete[] pdRaster;
+      // DEBUG CODE ===========================================================================================================
+
+   }
+
+   return RTN_OK;
+}
+
+//===============================================================================================================================
 //! Checks all line segments of a pair of coastline-normal profiles for intersection. If the lines intersect, returns true with numbers of the line segments at which intersection occurs in nProfile1LineSegment and nProfile1LineSegment, the intersection point in dXIntersect and dYIntersect, and the 'average' seaward endpoint of the two intersecting profiles at dXAvgEnd and dYAvgEnd
 //===============================================================================================================================
 bool CSimulation::bCheckForIntersection(CGeomProfile* const pVProfile1, CGeomProfile* const pVProfile2, int&nProfile1LineSegment, int& nProfile2LineSegment, double& dXIntersect, double& dYIntersect, double& dXAvgEnd, double& dYAvgEnd)
@@ -1200,155 +1255,114 @@ bool CSimulation::bCheckForIntersection(CGeomProfile* const pVProfile1, CGeomPro
 }
 
 //===============================================================================================================================
-//! Marks all coastline-normal profiles (apart from the two 'special' ones at the start and end of the coast) onto the raster grid, i.e. rasterizes multi-line vector objects onto the raster grid. Note that this doesn't work if the vector has already been interpolated to fit on the grid i.e. if distances between vector points are just one cell apart
+//! For this coastline, marks all coastline-normal profiles (apart from the two 'special' ones at the start and end of the coast) onto the raster grid, i.e. rasterizes multi-line vector objects onto the raster grid. Note that this doesn't work if the vector has already been interpolated to fit on the grid i.e. if distances between vector points are just one cell apart
 //===============================================================================================================================
-int CSimulation::nMarkAllProfilesOnGrid(void)
+void CSimulation::MarkProfilesOnGrid(int const nCoast, int& nValidProfiles)
 {
-   int nValidProfiles = 0;
-
-   // Do once for every coastline
-   for (int nCoast = 0; nCoast < static_cast<int>(m_VCoast.size()); nCoast++)
+   // How many profiles on this coast?
+   int nProfiles = m_VCoast[nCoast].nGetNumProfiles();
+   if (nProfiles == 0)
    {
-      // How many profiles on this coast?
-      int nProfiles = m_VCoast[nCoast].nGetNumProfiles();
-      if (nProfiles == 0)
+      // This can happen if the coastline is very short, so just give a warning and carry on with the next coastline
+      if (m_nLogFileDetail >= LOG_FILE_MIDDLE_DETAIL)
+         LogStream << WARN << m_ulIter << ": coast " << nCoast << " has no profiles" << endl;
+
+      return;
+   }
+
+   // Now do this loop for every profile in the list, apart from the last two (i.e. the profiles at the start and end of the coast) since these are put onto the grid elsewhere
+   for (int n = 1; n < nProfiles - 1; n++)
+   {
+      CGeomProfile* pProfile = m_VCoast[nCoast].pGetProfileDownCoastSeq(n);
+      int nProfile = pProfile->nGetCoastID();
+
+      // If this profile has a problem, then forget about it
+      if (! pProfile->bProfileOK())
       {
-         // This can happen if the coastline is very short, so just give a warning and carry on with the next coastline
-         if (m_nLogFileDetail >= LOG_FILE_MIDDLE_DETAIL)
-            LogStream << WARN << m_ulIter << ": coast " << nCoast << " has no profiles" << endl;
+         LogStream << " Problem with profile " << nProfile << endl;
          continue;
       }
 
-      // Now do this loop for every profile in the list, apart from the last two (i.e. the profiles at the start and end of the coast) since these are put onto the grid elsewhere
-      for (int n = 1; n < nProfiles - 1; n++)
+      int nPoints = pProfile->nGetProfileSize();
+      if (nPoints < 2)
       {
-         CGeomProfile* const pProfile = m_VCoast[nCoast].pGetProfileDownCoastSeq(n);
-         int nProfile = pProfile->nGetCoastID();
+         // Need at least two points in the profile, so this profile is invalid: mark it
+         m_VCoast[nCoast].pGetProfile(nProfile)->SetTooShort(true);
 
-         // If this profile has a problem, then forget about it
-         if (! pProfile->bProfileOK())
-         {
-            LogStream << " Problem with profile " << nProfile << endl;
-            continue;
-         }
+         if (m_nLogFileDetail >= LOG_FILE_MIDDLE_DETAIL)
+            LogStream << m_ulIter << ": coast " << nCoast << ", profile " << nProfile << " is invalid, has only " << nPoints << " points" << endl;
 
-         int nPoints = pProfile->nGetProfileSize();
-         if (nPoints < 2)
-         {
-            // Need at least two points in the profile, so this profile is invalid: mark it
-            pProfile->SetTooShort(true);
-
-            if (m_nLogFileDetail >= LOG_FILE_MIDDLE_DETAIL)
-               LogStream << m_ulIter << ": coast " << nCoast << ", profile " << nProfile << " is invalid, has only " << nPoints << " points" << endl;
-
-            continue;
-         }
-
-         // OK, go for it: set up temporary vectors to hold the x-y coords (in grid CRS) of the cells which we will mark
-         vector<CGeom2DIPoint> VCellsToMark;
-         vector<bool> bVShared;
-         bool bTooShort = false;
-         bool bTruncated = false;
-         bool bHitCoast = false;
-         bool bHitLand = false;
-         bool bHitAnotherProfile = false;
-
-         CGeom2DIPoint PtiStart = *pProfile->pPtiGetStartPoint();
-         CGeom2DIPoint PtiEnd = *pProfile->pPtiGetEndPoint();
-         CreateRasterizedProfile(nCoast, pProfile, &PtiStart, &PtiEnd, &VCellsToMark, &bVShared, bTooShort, bTruncated, bHitCoast, bHitLand, bHitAnotherProfile);
-
-         if ((bTruncated && (! ACCEPT_SHORT_PROFILES)) || bTooShort || bHitCoast || bHitLand || bHitAnotherProfile)
-            continue;
-
-         // This profile is fine
-         nValidProfiles++;
-
-         for (unsigned int k = 0; k < VCellsToMark.size(); k++)
-         {
-            // So mark each cell in the raster grid
-            m_pRasterGrid->m_Cell[VCellsToMark[k].nGetX()][VCellsToMark[k].nGetY()].SetProfileID(nProfile);
-
-            // Store the raster grid coordinates in the profile object
-            pProfile->AppendCellInProfile(VCellsToMark[k].nGetX(), VCellsToMark[k].nGetY());
-
-            // And also store the external coordinates in the profile object
-            pProfile->AppendCellInProfileExtCRS(dGridCentroidXToExtCRSX(VCellsToMark[k].nGetX()), dGridCentroidYToExtCRSY(VCellsToMark[k].nGetY()));
-
-            // Mark the shared (i.e. multi-line) parts of the profile (if any)
-            //             if (bVShared[k])
-            //             {
-            //                pProfile->AppendPointShared(true);
-            // //                  LogStream << m_ulIter << ": profile " << j << " point " << k << " marked as shared" << endl;
-            //             }
-            //             else
-            //             {
-            //                pProfile->AppendPointShared(false);
-            // //                  LogStream << m_ulIter << ": profile " << nProfile << " point " << k << " marked as NOT shared" << endl;
-            //             }
-         }
-
-         // Get the deep water wave height and orientation values at the end of the profile
-         double dDeepWaterWaveHeight = m_pRasterGrid->m_Cell[VCellsToMark.back().nGetX()][VCellsToMark.back().nGetY()].dGetCellDeepWaterWaveHeight();
-         double dDeepWaterWaveAngle = m_pRasterGrid->m_Cell[VCellsToMark.back().nGetX()][VCellsToMark.back().nGetY()].dGetCellDeepWaterWaveAngle();
-         double dDeepWaterWavePeriod = m_pRasterGrid->m_Cell[VCellsToMark.back().nGetX()][VCellsToMark.back().nGetY()].dGetCellDeepWaterWavePeriod();
-
-         // And store them for this profile
-         // m_VCoast[nCoast].pGetProfile(nProfile)->SetProfileDeepWaterWaveHeight(dDeepWaterWaveHeight);
-         pProfile->SetProfileDeepWaterWaveHeight(dDeepWaterWaveHeight);
-         pProfile->SetProfileDeepWaterWaveAngle(dDeepWaterWaveAngle);
-         pProfile->SetProfileDeepWaterWavePeriod(dDeepWaterWavePeriod);
+         continue;
       }
-   }
 
-   if (nValidProfiles == 0)
-   {
-      // Problem! No valid profiles, so quit
-      cerr << m_ulIter << ": " << ERR << "no coastline-normal profiles created" << endl;
-      return RTN_ERR_NO_PROFILES_2;
-   }
+      // OK, go for it: set up temporary vectors to hold the x-y coords (in grid CRS) of the cells which we will mark
+      vector<CGeom2DIPoint> VCellsToMark;
+      vector<bool> bVShared;
+      bool bTooShort = false;
+      bool bTruncated = false;
+      bool bHitCoast = false;
+      bool bHitLand = false;
+      bool bHitAnotherProfile = false;
 
-   // DEBUG CODE ===========================================================================================================
-   string strOutFile = m_strOutPath;
-   strOutFile += "00_profile_raster_";
-   strOutFile += std::to_string(m_ulIter);
-   strOutFile += ".tif";
+      CGeom2DIPoint PtiStart = *pProfile->pPtiGetStartPoint();
+      CGeom2DIPoint PtiEnd = *pProfile->pPtiGetEndPoint();
+      CreateRasterizedProfile(nCoast, pProfile, &PtiStart, &PtiEnd, &VCellsToMark, &bVShared, bTooShort, bTruncated, bHitCoast, bHitLand, bHitAnotherProfile);
 
-   GDALDriver* pDriver = GetGDALDriverManager()->GetDriverByName("gtiff");
-   GDALDataset* pDataSet = pDriver->Create(strOutFile.c_str(), m_nXGridSize, m_nYGridSize, 1, GDT_Float64, m_papszGDALRasterOptions);
-   pDataSet->SetProjection(m_strGDALBasementDEMProjection.c_str());
-   pDataSet->SetGeoTransform(m_dGeoTransform);
+      if ((bTruncated && (! ACCEPT_SHORT_PROFILES)) || bTooShort || bHitCoast || bHitLand || bHitAnotherProfile)
+         continue;
 
-   int nn = 0;
-   double* pdRaster = new double[m_nXGridSize * m_nYGridSize];
-   for (int nY = 0; nY < m_nYGridSize; nY++)
-   {
-      for (int nX = 0; nX < m_nXGridSize; nX++)
+      // This profile is fine
+      nValidProfiles++;
+
+      for (unsigned int k = 0; k < VCellsToMark.size(); k++)
       {
-         if (m_pRasterGrid->m_Cell[nX][nY].bIsCoastline())
-            pdRaster[nn] = -1;
-         else
-         {
+         // So mark each cell in the raster grid
+         m_pRasterGrid->m_Cell[VCellsToMark[k].nGetX()][VCellsToMark[k].nGetY()].SetProfileID(nProfile);
 
-//         pdRaster[nn] = m_pRasterGrid->m_Cell[nX][nY].nGetPolygonID();
-            pdRaster[nn] = m_pRasterGrid->m_Cell[nX][nY].nGetProfileID();
-         }
+         // Store the raster grid coordinates in the profile object
+         m_VCoast[nCoast].pGetProfile(nProfile)->AppendCellInProfile(VCellsToMark[k].nGetX(), VCellsToMark[k].nGetY());
 
-         nn++;
+         // And also store the external coordinates in the profile object
+         m_VCoast[nCoast].pGetProfile(nProfile)->AppendCellInProfileExtCRS(dGridCentroidXToExtCRSX(VCellsToMark[k].nGetX()), dGridCentroidYToExtCRSY(VCellsToMark[k].nGetY()));
+
+         // Mark the shared (i.e. multi-line) parts of the profile (if any)
+         //             if (bVShared[k])
+         //             {
+         //                m_VCoast[nCoast].pGetProfile(nProfile)->AppendPointShared(true);
+         // //                  LogStream << m_ulIter << ": profile " << j << " point " << k << " marked as shared" << endl;
+         //             }
+         //             else
+         //             {
+         //                m_VCoast[nCoast].pGetProfile(nProfile)->AppendPointShared(false);
+         // //                  LogStream << m_ulIter << ": profile " << nProfile << " point " << k << " marked as NOT shared" << endl;
+         //             }
+
       }
+
+      // Get the deep water wave height and orientation values at the end of the profile
+      double dDeepWaterWaveHeight = m_pRasterGrid->m_Cell[VCellsToMark.back().nGetX()][VCellsToMark.back().nGetY()].dGetCellDeepWaterWaveHeight();
+      double dDeepWaterWaveAngle = m_pRasterGrid->m_Cell[VCellsToMark.back().nGetX()][VCellsToMark.back().nGetY()].dGetCellDeepWaterWaveAngle();
+      double dDeepWaterWavePeriod = m_pRasterGrid->m_Cell[VCellsToMark.back().nGetX()][VCellsToMark.back().nGetY()].dGetCellDeepWaterWavePeriod();
+
+      // And store them for this profile
+      // m_VCoast[nCoast].pGetProfile(nProfile)->SetProfileDeepWaterWaveHeight(dDeepWaterWaveHeight);
+      m_VCoast[nCoast].pGetProfile(nProfile)->SetProfileDeepWaterWaveHeight(dDeepWaterWaveHeight);
+      m_VCoast[nCoast].pGetProfile(nProfile)->SetProfileDeepWaterWaveAngle(dDeepWaterWaveAngle);
+      m_VCoast[nCoast].pGetProfile(nProfile)->SetProfileDeepWaterWavePeriod(dDeepWaterWavePeriod);
    }
 
-   GDALRasterBand* pBand = pDataSet->GetRasterBand(1);
-   pBand->SetNoDataValue(m_dMissingValue);
-   int nRet = pBand->RasterIO(GF_Write, 0, 0, m_nXGridSize, m_nYGridSize, pdRaster, m_nXGridSize, m_nYGridSize, GDT_Float64, 0, 0, NULL);
-
-   if (nRet == CE_Failure)
-      return RTN_ERR_GRIDCREATE;
-
-   GDALClose(pDataSet);
-   delete[] pdRaster;
-   // DEBUG CODE ===========================================================================================================
-
-   return RTN_OK;
+   // // DEBUG CODE ===============
+   // LogStream << m_ulIter << ": in MarkProfilesOnGrid()" << endl;
+   // for (int nCoast1 = 0; nCoast1 < static_cast<int>(m_VCoast.size()); nCoast1++)
+   // {
+   //    for (int nProfile = 0; nProfile < m_VCoast[nCoast1].nGetNumProfiles(); nProfile++)
+   //    {
+   //       CGeomProfile* pProfile = m_VCoast[nCoast1].pGetProfile(nProfile);
+   //       int nCell = pProfile->nGetNumCellsInProfile();
+   //       LogStream << "Profile " << nProfile << " nGetNumCellsInProfile() = " << nCell << endl;
+   //    }
+   // }
+   // // DEBUG CODE =====================
 }
 
 //===============================================================================================================================
@@ -1415,7 +1429,7 @@ void CSimulation::CreateRasterizedProfile(int const nCoast, CGeomProfile* pProfi
          int nY = nRound(dY);
 
          // Do some checking of this interpolated point, but only if this is not a grid-edge profile (these profiles are always valid)
-         if ((!pProfile->bStartOfCoast()) && (!pProfile->bEndOfCoast()))
+         if ((! pProfile->bStartOfCoast()) && (! pProfile->bEndOfCoast()))
          {
             // Is the interpolated point within the valid raster grid?
             if (! bIsWithinValidGrid(nX, nY))

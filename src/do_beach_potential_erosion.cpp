@@ -63,7 +63,7 @@ void CSimulation::DoAllPotentialBeachErosion(void)
       vector<pair<int, double>> prVPolygonLength;
       for (int nPoly = 0; nPoly < nNumPolygons; nPoly++)
       {
-         CGeomCoastPolygon const* pPolygon = m_VCoast[nCoast].pGetPolygonWithID(nPoly);
+         CGeomCoastPolygon const* pPolygon = m_VCoast[nCoast].pGetPolygonByID(nPoly);
          double dSeawardLength = pPolygon->dGetLength();
          prVPolygonLength.push_back(make_pair(nPoly, dSeawardLength));
       }
@@ -76,13 +76,13 @@ void CSimulation::DoAllPotentialBeachErosion(void)
       {
          int nThisPoly = prVPolygonLength[n].first;
 
-         CGeomCoastPolygon* pPolygon = m_VCoast[nCoast].pGetPolygonWithID(nThisPoly);
+         CGeomCoastPolygon* pPolygon = m_VCoast[nCoast].pGetPolygonByID(nThisPoly);
 
          // Calculate the average breaking wave height and angle along this polygon's segment of coastline
          int nStartNormal = pPolygon->nGetUpCoastProfile();
          int nEndNormal = pPolygon->nGetDownCoastProfile();
-         int nCoastStartPoint = m_VCoast[nCoast].pGetProfile(nStartNormal)->nGetNumCoastPoint();
-         int nCoastEndPoint = m_VCoast[nCoast].pGetProfile(nEndNormal)->nGetNumCoastPoint();
+         int nCoastStartPoint = m_VCoast[nCoast].pGetProfile(nStartNormal)->nGetCoastPoint();
+         int nCoastEndPoint = m_VCoast[nCoast].pGetProfile(nEndNormal)->nGetCoastPoint();
          int nCoastPoints = 0;
          int nActiveZonePoints = 0;
 

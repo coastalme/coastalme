@@ -196,7 +196,7 @@ CSimulation::CSimulation (void)
    m_nCoastMin =
    // m_nNThisIterCliffCollapse =
    // m_nNTotCliffCollapse =
-   m_nGlobalPolygonID =
+   m_nNumPolygonGlobal =
    m_nUnconsSedimentHandlingAtGridEdges =
    m_nBeachErosionDepositionEquation =
    m_nWavePropagationModel =
@@ -973,10 +973,39 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
       if (nRet != RTN_OK)
          return nRet;
 
-      // Create the coastline-normal profiles
-      nRet = nCreateAndCheckAllProfiles();
+      // Create all coastline-normal profiles, in coastline-concave-curvature sequence
+      nRet = nCreateAllProfiles();
       if (nRet != RTN_OK)
          return nRet;
+
+      // // DEBUG CODE ===============
+      // for (int nCoast = 0; nCoast < static_cast<int>(m_VCoast.size()); nCoast++)
+      // {
+      //    for (int nProfile = 0; nProfile < m_VCoast[nCoast].nGetNumProfiles(); nProfile++)
+      //    {
+      //       CGeomProfile* pProfile = m_VCoast[nCoast].pGetProfile(nProfile);
+      //       int nCell = pProfile->nGetNumCellsInProfile();
+      //       LogStream << "Profile " << nProfile << " nGetNumCellsInProfile() = " << nCell << endl;
+      //    }
+      // }
+      // // DEBUG CODE =====================
+
+      // Check the coastline-normal profiles for intersection
+      nRet = nCheckAllProfiles();
+      if (nRet != RTN_OK)
+         return nRet;
+
+      // // DEBUG CODE ===============
+      // for (int nCoast = 0; nCoast < static_cast<int>(m_VCoast.size()); nCoast++)
+      // {
+      //    for (int nProfile = 0; nProfile < m_VCoast[nCoast].nGetNumProfiles(); nProfile++)
+      //    {
+      //       CGeomProfile* pProfile = m_VCoast[nCoast].pGetProfile(nProfile);
+      //       int nCell = pProfile->nGetNumCellsInProfile();
+      //       LogStream << "Profile " << nProfile << " nGetNumCellsInProfile() = " << nCell << endl;
+      //    }
+      // }
+      // // DEBUG CODE =====================
 
       // Tell the user how the simulation is progressing
       AnnounceProgress();
@@ -1050,7 +1079,32 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
       nRet = nSetAllCoastpointDeepWaterWaveValues();
       if (nRet != RTN_OK)
          return nRet;
-      
+
+      // // DEBUG CODE ===============
+      // for (int nCoast = 0; nCoast < static_cast<int>(m_VCoast.size()); nCoast++)
+      // {
+      //    LogStream << "====================" << endl;
+      //
+      //    for (int nProfile = 0; nProfile < m_VCoast[nCoast].nGetNumProfiles(); nProfile++)
+      //    {
+      //       CGeomProfile* pProfile = m_VCoast[nCoast].pGetProfile(nProfile);
+      //       int nCell = pProfile->nGetNumCellsInProfile();
+      //       LogStream << "Profile " << pProfile->nGetCoastID() << " nGetNumCellsInProfile() = " << nCell << endl;
+      //    }
+      //
+      //    LogStream << endl;
+      //
+      //    for (int nProfile = 0; nProfile < m_VCoast[nCoast].nGetNumProfiles(); nProfile++)
+      //    {
+      //       CGeomProfile* pProfile = m_VCoast[nCoast].pGetProfileDownCoastSeq(nProfile);
+      //       int nCell = pProfile->nGetNumCellsInProfile();
+      //       LogStream << "Profile " << pProfile->nGetCoastID() << " nGetNumCellsInProfile() = " << nCell << endl;
+      //    }
+      //
+      //    LogStream << "====================" << endl;
+      // }
+      // // DEBUG CODE =====================
+
       // Change the wave properties in all shallow water sea cells: propagate waves and define the active zone, also locate wave shadow zones
       nRet = nDoAllPropagateWaves();
       if (nRet != RTN_OK)

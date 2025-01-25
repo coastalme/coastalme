@@ -1361,7 +1361,8 @@ void CSimulation::WritePolygonShareTable(int const nCoast)
 
    for (int n = 0; n < nGetCoastPolygonSize(); n++)
    {
-      CGeomCoastPolygon const* pPolygon = pGetPolygonWithDownCoastSeq(n);
+      CGeomCoastPolygon const* pPolygon = pGetPolygonByDownCoastSeq(n);
+
       LogStream << strIntRight(pPolygon->nGetGlobalID(), 11) << "|" << strIntRight(nCoast, 11) << "|" << strIntRight(pPolygon->nGetCoastID(), 11) << "|" << strDblRight(pPolygon->dGetSeawaterVolume(), 0, 14) << "|" << strDblRight(pPolygon->dGetAvgUnconsD50(), 0, 14) << "| ";
 
       for (int m = 0; m < pPolygon->nGetNumUpCoastAdjacentPolygons(); m++)
@@ -1412,17 +1413,19 @@ void CSimulation::WritePolygonPreExistingSedimentTable(int const nCoast)
    
    for (unsigned int n = 0; n < m_pVCoastPolygonDownCoastSeq.size(); n++)
    {
+      CGeomCoastPolygon const* pPolygon = pGetPolygonByDownCoastSeq(n);
+
       // Add to this-iteration all-polygon totals of consolidated sediment within polygons
-      m_dTotalFineConsInPolygons += m_pVCoastPolygonDownCoastSeq[n]->dGetPreExistingConsFine();
-      m_dTotalSandConsInPolygons += m_pVCoastPolygonDownCoastSeq[n]->dGetPreExistingConsSand();
-      m_dTotalCoarseConsInPolygons += m_pVCoastPolygonDownCoastSeq[n]->dGetPreExistingConsCoarse();
+      m_dTotalFineConsInPolygons += pPolygon->dGetPreExistingConsFine();
+      m_dTotalSandConsInPolygons += pPolygon->dGetPreExistingConsSand();
+      m_dTotalCoarseConsInPolygons += pPolygon->dGetPreExistingConsCoarse();
 
       // Now consider unconsolidated sediment
-      double dThisFine = m_pVCoastPolygonDownCoastSeq[n]->dGetPreExistingUnconsFine() + m_pVCoastPolygonDownCoastSeq[n]->dGetSedimentInputUnconsFine();
-      double dThisSand = m_pVCoastPolygonDownCoastSeq[n]->dGetPreExistingUnconsSand() + m_pVCoastPolygonDownCoastSeq[n]->dGetSedimentInputUnconsSand();
-      double dThisCoarse = m_pVCoastPolygonDownCoastSeq[n]->dGetPreExistingUnconsCoarse() + m_pVCoastPolygonDownCoastSeq[n]->dGetSedimentInputUnconsCoarse();
+      double dThisFine = pPolygon->dGetPreExistingUnconsFine() + pPolygon->dGetSedimentInputUnconsFine();
+      double dThisSand = pPolygon->dGetPreExistingUnconsSand() + pPolygon->dGetSedimentInputUnconsSand();
+      double dThisCoarse = pPolygon->dGetPreExistingUnconsCoarse() + pPolygon->dGetSedimentInputUnconsCoarse();
 
-      LogStream << strIntRight(m_pVCoastPolygonDownCoastSeq[n]->nGetGlobalID(), 11) << "|" << strIntRight(nCoast, 11) << "|" << strIntRight(m_pVCoastPolygonDownCoastSeq[n]->nGetCoastID(), 11) << "|" << strDblRight((dThisFine + dThisSand + dThisCoarse) * m_dCellArea, 0, 14) << "|" << strDblRight(dThisFine * m_dCellArea, 0, 14) << "|" <<  strDblRight(dThisSand * m_dCellArea, 0, 14) << "|" << strDblRight(dThisCoarse * m_dCellArea, 0, 14) << "|" << endl;
+      LogStream << strIntRight(pPolygon->nGetGlobalID(), 11) << "|" << strIntRight(nCoast, 11) << "|" << strIntRight(pPolygon->nGetCoastID(), 11) << "|" << strDblRight((dThisFine + dThisSand + dThisCoarse) * m_dCellArea, 0, 14) << "|" << strDblRight(dThisFine * m_dCellArea, 0, 14) << "|" <<  strDblRight(dThisSand * m_dCellArea, 0, 14) << "|" << strDblRight(dThisCoarse * m_dCellArea, 0, 14) << "|" << endl;
 
       dTmpFineTot += (dThisFine * m_dCellArea);
       dTmpSandTot += (dThisSand * m_dCellArea);
@@ -1459,11 +1462,13 @@ void CSimulation::WritePolygonSedimentInputEventTable(int const nCoast)
 
    for (unsigned int n = 0; n < m_pVCoastPolygonDownCoastSeq.size(); n++)
    {
-      double dThisFine = m_pVCoastPolygonDownCoastSeq[n]->dGetSedimentInputUnconsFine();
-      double dThisSand = m_pVCoastPolygonDownCoastSeq[n]->dGetSedimentInputUnconsSand();
-      double dThisCoarse = m_pVCoastPolygonDownCoastSeq[n]->dGetSedimentInputUnconsCoarse();
+      CGeomCoastPolygon const* pPolygon = pGetPolygonByDownCoastSeq(n);
 
-      LogStream << strIntRight(m_pVCoastPolygonDownCoastSeq[n]->nGetGlobalID(), 11) << "|" << strIntRight(nCoast, 11) << "|" << strIntRight(m_pVCoastPolygonDownCoastSeq[n]->nGetCoastID(), 11) << "|" << strDblRight((dThisFine + dThisSand + dThisCoarse) * m_dCellArea, 0, 14) << "|" << strDblRight(dThisFine * m_dCellArea, 0, 14) << "|" <<  strDblRight(dThisSand * m_dCellArea, 0, 14) << "|" << strDblRight(dThisCoarse * m_dCellArea, 0, 14) << "|" << endl;
+      double dThisFine = pPolygon->dGetSedimentInputUnconsFine();
+      double dThisSand = pPolygon->dGetSedimentInputUnconsSand();
+      double dThisCoarse = pPolygon->dGetSedimentInputUnconsCoarse();
+
+      LogStream << strIntRight(pPolygon->nGetGlobalID(), 11) << "|" << strIntRight(nCoast, 11) << "|" << strIntRight(pPolygon->nGetCoastID(), 11) << "|" << strDblRight((dThisFine + dThisSand + dThisCoarse) * m_dCellArea, 0, 14) << "|" << strDblRight(dThisFine * m_dCellArea, 0, 14) << "|" <<  strDblRight(dThisSand * m_dCellArea, 0, 14) << "|" << strDblRight(dThisCoarse * m_dCellArea, 0, 14) << "|" << endl;
 
       dTmpFineTot += (dThisFine * m_dCellArea);
       dTmpSandTot += (dThisSand * m_dCellArea);
@@ -1495,11 +1500,13 @@ void CSimulation::WritePolygonShorePlatformErosion(int const nCoast)
    
    for (unsigned int n = 0; n < m_pVCoastPolygonDownCoastSeq.size(); n++)
    {
-      LogStream << strIntRight(m_pVCoastPolygonDownCoastSeq[n]->nGetGlobalID(), 11) << "|" << strIntRight(nCoast, 11) << "|" << strIntRight(m_pVCoastPolygonDownCoastSeq[n]->nGetCoastID(), 11) << "|" << strDblRight((m_pVCoastPolygonDownCoastSeq[n]->dGetPlatformErosionUnconsSand() + m_pVCoastPolygonDownCoastSeq[n]->dGetPlatformErosionUnconsCoarse()) * m_dCellArea, 0, 14) << "|" << strDblRight(0, 0, 14) << "|" <<  strDblRight(m_pVCoastPolygonDownCoastSeq[n]->dGetPlatformErosionUnconsSand() * m_dCellArea, 0, 14) << "|" << strDblRight(m_pVCoastPolygonDownCoastSeq[n]->dGetPlatformErosionUnconsCoarse() * m_dCellArea, 0, 14) << "|" << endl;
+      CGeomCoastPolygon const* pPolygon = pGetPolygonByDownCoastSeq(n);
+
+      LogStream << strIntRight(pPolygon->nGetGlobalID(), 11) << "|" << strIntRight(nCoast, 11) << "|" << strIntRight(pPolygon->nGetCoastID(), 11) << "|" << strDblRight((pPolygon->dGetPlatformErosionUnconsSand() + pPolygon->dGetPlatformErosionUnconsCoarse()) * m_dCellArea, 0, 14) << "|" << strDblRight(0, 0, 14) << "|" <<  strDblRight(pPolygon->dGetPlatformErosionUnconsSand() * m_dCellArea, 0, 14) << "|" << strDblRight(pPolygon->dGetPlatformErosionUnconsCoarse() * m_dCellArea, 0, 14) << "|" << endl;
       
-      dTmpTot += (m_pVCoastPolygonDownCoastSeq[n]->dGetPlatformErosionUnconsSand() + m_pVCoastPolygonDownCoastSeq[n]->dGetPlatformErosionUnconsCoarse()) * m_dCellArea;
-      dTmpSandTot += (m_pVCoastPolygonDownCoastSeq[n]->dGetPlatformErosionUnconsSand() * m_dCellArea);
-      dTmpCoarseTot += (m_pVCoastPolygonDownCoastSeq[n]->dGetPlatformErosionUnconsCoarse() * m_dCellArea);
+      dTmpTot += (pPolygon->dGetPlatformErosionUnconsSand() + pPolygon->dGetPlatformErosionUnconsCoarse()) * m_dCellArea;
+      dTmpSandTot += (pPolygon->dGetPlatformErosionUnconsSand() * m_dCellArea);
+      dTmpCoarseTot += (pPolygon->dGetPlatformErosionUnconsCoarse() * m_dCellArea);
    }
    
    LogStream << "-----------|-----------|-----------|--------------|--------------|--------------|--------------|" << endl;
@@ -1536,32 +1543,34 @@ void CSimulation::WritePolygonCliffCollapseErosion(int const nCoast)
    
    for (unsigned int n = 0; n < m_pVCoastPolygonDownCoastSeq.size(); n++)
    {
-      LogStream << strIntRight(m_pVCoastPolygonDownCoastSeq[n]->nGetGlobalID(), 11) << "|" << strIntRight(nCoast, 11) << "|" << strIntRight(m_pVCoastPolygonDownCoastSeq[n]->nGetCoastID(), 11)
+      CGeomCoastPolygon const* pPolygon = pGetPolygonByDownCoastSeq(n);
+
+      LogStream << strIntRight(pPolygon->nGetGlobalID(), 11) << "|" << strIntRight(nCoast, 11) << "|" << strIntRight(pPolygon->nGetCoastID(), 11)
          // All
-         << "|" << strDblRight((m_pVCoastPolygonDownCoastSeq[n]->dGetCliffCollapseErosionFine() + m_pVCoastPolygonDownCoastSeq[n]->dGetCliffCollapseErosionSand() + m_pVCoastPolygonDownCoastSeq[n]->dGetCliffCollapseErosionCoarse()) * m_dCellArea, 0, 14) << " " << strDblRight((m_pVCoastPolygonDownCoastSeq[n]->dGetCliffCollapseSandErodedDeanProfile() + m_pVCoastPolygonDownCoastSeq[n]->dGetCliffCollapseCoarseErodedDeanProfile()) * m_dCellArea, 0, 14) << "|" << strDblRight((m_pVCoastPolygonDownCoastSeq[n]->dGetCliffCollapseToSuspensionFine() + m_pVCoastPolygonDownCoastSeq[n]->dGetCliffCollapseUnconsSandDeposition() + m_pVCoastPolygonDownCoastSeq[n]->dGetCliffCollapseUnconsCoarseDeposition()) * m_dCellArea, 0, 14) << "|"
+         << "|" << strDblRight((pPolygon->dGetCliffCollapseErosionFine() + pPolygon->dGetCliffCollapseErosionSand() + pPolygon->dGetCliffCollapseErosionCoarse()) * m_dCellArea, 0, 14) << " " << strDblRight((pPolygon->dGetCliffCollapseSandErodedDeanProfile() + pPolygon->dGetCliffCollapseCoarseErodedDeanProfile()) * m_dCellArea, 0, 14) << "|" << strDblRight((pPolygon->dGetCliffCollapseToSuspensionFine() + pPolygon->dGetCliffCollapseUnconsSandDeposition() + pPolygon->dGetCliffCollapseUnconsCoarseDeposition()) * m_dCellArea, 0, 14) << "|"
          // Fine
-         << strDblRight(m_pVCoastPolygonDownCoastSeq[n]->dGetCliffCollapseErosionFine(), 0, 14) << "|" << strDblRight(m_pVCoastPolygonDownCoastSeq[n]->dGetCliffCollapseToSuspensionFine(), 0, 14) << "|"
+         << strDblRight(pPolygon->dGetCliffCollapseErosionFine(), 0, 14) << "|" << strDblRight(pPolygon->dGetCliffCollapseToSuspensionFine(), 0, 14) << "|"
          // Sand
-         << strDblRight(m_pVCoastPolygonDownCoastSeq[n]->dGetCliffCollapseErosionSand(), 0, 14) << " " << strDblRight(m_pVCoastPolygonDownCoastSeq[n]->dGetCliffCollapseSandErodedDeanProfile() * m_dCellArea, 0, 14) << "|" <<  strDblRight(m_pVCoastPolygonDownCoastSeq[n]->dGetCliffCollapseUnconsSandDeposition() * m_dCellArea, 0, 14) << "|"
+         << strDblRight(pPolygon->dGetCliffCollapseErosionSand(), 0, 14) << " " << strDblRight(pPolygon->dGetCliffCollapseSandErodedDeanProfile() * m_dCellArea, 0, 14) << "|" <<  strDblRight(pPolygon->dGetCliffCollapseUnconsSandDeposition() * m_dCellArea, 0, 14) << "|"
          // Coarse
-         << strDblRight(m_pVCoastPolygonDownCoastSeq[n]->dGetCliffCollapseErosionCoarse(), 0, 14) << " " << strDblRight(m_pVCoastPolygonDownCoastSeq[n]->dGetCliffCollapseCoarseErodedDeanProfile() * m_dCellArea, 0, 14)<< "|" << strDblRight(m_pVCoastPolygonDownCoastSeq[n]->dGetCliffCollapseUnconsCoarseDeposition() * m_dCellArea, 0, 14) << "|" << endl;
+         << strDblRight(pPolygon->dGetCliffCollapseErosionCoarse(), 0, 14) << " " << strDblRight(pPolygon->dGetCliffCollapseCoarseErodedDeanProfile() * m_dCellArea, 0, 14)<< "|" << strDblRight(pPolygon->dGetCliffCollapseUnconsCoarseDeposition() * m_dCellArea, 0, 14) << "|" << endl;
       
-      dTmpErosionTot += ((m_pVCoastPolygonDownCoastSeq[n]->dGetCliffCollapseErosionFine() + m_pVCoastPolygonDownCoastSeq[n]->dGetCliffCollapseErosionSand() + m_pVCoastPolygonDownCoastSeq[n]->dGetCliffCollapseErosionCoarse()) * m_dCellArea);
+      dTmpErosionTot += ((pPolygon->dGetCliffCollapseErosionFine() + pPolygon->dGetCliffCollapseErosionSand() + pPolygon->dGetCliffCollapseErosionCoarse()) * m_dCellArea);
 
-      dTmpErosionDDPDTot += ((m_pVCoastPolygonDownCoastSeq[n]->dGetCliffCollapseSandErodedDeanProfile() + m_pVCoastPolygonDownCoastSeq[n]->dGetCliffCollapseCoarseErodedDeanProfile()) * m_dCellArea);
+      dTmpErosionDDPDTot += ((pPolygon->dGetCliffCollapseSandErodedDeanProfile() + pPolygon->dGetCliffCollapseCoarseErodedDeanProfile()) * m_dCellArea);
 
-      dTmpDepositTot += ((m_pVCoastPolygonDownCoastSeq[n]->dGetCliffCollapseToSuspensionFine() + m_pVCoastPolygonDownCoastSeq[n]->dGetCliffCollapseUnconsSandDeposition() + m_pVCoastPolygonDownCoastSeq[n]->dGetCliffCollapseUnconsCoarseDeposition()) * m_dCellArea);
+      dTmpDepositTot += ((pPolygon->dGetCliffCollapseToSuspensionFine() + pPolygon->dGetCliffCollapseUnconsSandDeposition() + pPolygon->dGetCliffCollapseUnconsCoarseDeposition()) * m_dCellArea);
 
-      dTmpErosionFineTot += (m_pVCoastPolygonDownCoastSeq[n]->dGetCliffCollapseErosionFine() * m_dCellArea);
-      dTmpSuspensionFineTot += (m_pVCoastPolygonDownCoastSeq[n]->dGetCliffCollapseToSuspensionFine() * m_dCellArea);
+      dTmpErosionFineTot += (pPolygon->dGetCliffCollapseErosionFine() * m_dCellArea);
+      dTmpSuspensionFineTot += (pPolygon->dGetCliffCollapseToSuspensionFine() * m_dCellArea);
 
-      dTmpErosionSandTot += ((m_pVCoastPolygonDownCoastSeq[n]->dGetCliffCollapseErosionSand()) * m_dCellArea);
-      dTmpErosionSandDDPDTot += ((m_pVCoastPolygonDownCoastSeq[n]->dGetCliffCollapseSandErodedDeanProfile()) * m_dCellArea);
-      dTmpDepositSandTot += (m_pVCoastPolygonDownCoastSeq[n]->dGetCliffCollapseUnconsSandDeposition() * m_dCellArea);
+      dTmpErosionSandTot += ((pPolygon->dGetCliffCollapseErosionSand()) * m_dCellArea);
+      dTmpErosionSandDDPDTot += ((pPolygon->dGetCliffCollapseSandErodedDeanProfile()) * m_dCellArea);
+      dTmpDepositSandTot += (pPolygon->dGetCliffCollapseUnconsSandDeposition() * m_dCellArea);
 
-      dTmpErosionCoarseTot += ((m_pVCoastPolygonDownCoastSeq[n]->dGetCliffCollapseErosionCoarse()) * m_dCellArea);
-      dTmpErosionCoarseDDPDTot += ((m_pVCoastPolygonDownCoastSeq[n]->dGetCliffCollapseCoarseErodedDeanProfile()) * m_dCellArea);
-      dTmpDepositCoarseTot += m_pVCoastPolygonDownCoastSeq[n]->dGetCliffCollapseUnconsCoarseDeposition() * m_dCellArea;
+      dTmpErosionCoarseTot += ((pPolygon->dGetCliffCollapseErosionCoarse()) * m_dCellArea);
+      dTmpErosionCoarseDDPDTot += ((pPolygon->dGetCliffCollapseCoarseErodedDeanProfile()) * m_dCellArea);
+      dTmpDepositCoarseTot += pPolygon->dGetCliffCollapseUnconsCoarseDeposition() * m_dCellArea;
    }
    
    LogStream << "-----------|-----------|-----------|--------------|--------------|--------------|--------------|--------------|--------------|--------------|--------------|--------------|--------------|--------------|" << endl;
@@ -1591,11 +1600,13 @@ void CSimulation::WritePolygonSedimentBeforeMovement(int const nCoast)
    
    for (unsigned int n = 0; n < m_pVCoastPolygonDownCoastSeq.size(); n++)
    {
-      double dFine = m_pVCoastPolygonDownCoastSeq[n]->dGetPreExistingUnconsFine();
-      double dSand = m_pVCoastPolygonDownCoastSeq[n]->dGetPreExistingUnconsSand();
-      double dCoarse = m_pVCoastPolygonDownCoastSeq[n]->dGetPreExistingUnconsCoarse();
+      CGeomCoastPolygon const* pPolygon = pGetPolygonByDownCoastSeq(n);
+
+      double dFine = pPolygon->dGetPreExistingUnconsFine();
+      double dSand = pPolygon->dGetPreExistingUnconsSand();
+      double dCoarse = pPolygon->dGetPreExistingUnconsCoarse();
       
-      LogStream << strIntRight(m_pVCoastPolygonDownCoastSeq[n]->nGetGlobalID(), 11) << "|" << strIntRight(nCoast, 11) << "|" << strIntRight(m_pVCoastPolygonDownCoastSeq[n]->nGetCoastID(), 11) << "|" << strDblRight((dFine + dSand + dCoarse) * m_dCellArea, 0, 14) << "|" << strDblRight(dFine * m_dCellArea, 0, 14) << "|" <<  strDblRight(dSand * m_dCellArea, 0, 14) << "|" << strDblRight(dCoarse * m_dCellArea, 0, 14) << "|" << endl;
+      LogStream << strIntRight(pPolygon->nGetGlobalID(), 11) << "|" << strIntRight(nCoast, 11) << "|" << strIntRight(pPolygon->nGetCoastID(), 11) << "|" << strDblRight((dFine + dSand + dCoarse) * m_dCellArea, 0, 14) << "|" << strDblRight(dFine * m_dCellArea, 0, 14) << "|" <<  strDblRight(dSand * m_dCellArea, 0, 14) << "|" << strDblRight(dCoarse * m_dCellArea, 0, 14) << "|" << endl;
       
       dTmpTot += (dFine + dSand + dCoarse) * m_dCellArea;
       dTmpFineTot += (dFine * m_dCellArea);
@@ -1628,9 +1639,11 @@ void CSimulation::WritePolygonPotentialErosion(int const nCoast)
    double dTmpTot = 0;
    for (unsigned int n = 0; n < m_pVCoastPolygonDownCoastSeq.size(); n++)
    {
-      LogStream << strIntRight(m_pVCoastPolygonDownCoastSeq[n]->nGetGlobalID(), 11) << "|" << strIntRight(nCoast, 11) << "|" << strIntRight(m_pVCoastPolygonDownCoastSeq[n]->nGetCoastID(), 11) << "|" << strDblRight(m_pVCoastPolygonDownCoastSeq[n]->dGetPotentialErosion() * m_dCellArea, 0, 14) << "|" << endl;
+      CGeomCoastPolygon const* pPolygon = pGetPolygonByDownCoastSeq(n);
+
+      LogStream << strIntRight(pPolygon->nGetGlobalID(), 11) << "|" << strIntRight(nCoast, 11) << "|" << strIntRight(pPolygon->nGetCoastID(), 11) << "|" << strDblRight(pPolygon->dGetPotentialErosion() * m_dCellArea, 0, 14) << "|" << endl;
       
-      dTmpTot += (m_pVCoastPolygonDownCoastSeq[n]->dGetPotentialErosion() * m_dCellArea);
+      dTmpTot += (pPolygon->dGetPotentialErosion() * m_dCellArea);
    }      
    LogStream << "-----------|-----------|-----------|--------------|" << endl;
    LogStream << "TOTAL                              |" << strDblRight(dTmpTot, 0, 14) << "|" << endl;
@@ -1657,7 +1670,7 @@ void CSimulation::WritePolygonPotentialErosion(int const nCoast)
 //
 //    for (int nPoly = 0; nPoly < m_VCoast[nCoast].nGetNumPolygons(); nPoly++)
 //    {
-//       CGeomCoastPolygon const* pPolygon = m_VCoast[nCoast].pGetPolygonWithID(nPoly);
+//       CGeomCoastPolygon const* pPolygon = m_VCoast[nCoast].pGetPolygonByID(nPoly);
 //
 //       LogStream << strIntRight(m_pVCoastPolygonDownCoastSeq[nPoly]->nGetGlobalID(), 11) << "|" << strIntRight(nCoast, 11) << "|" << strIntRight(m_pVCoastPolygonDownCoastSeq[nPoly]->nGetCoastID(), 11) << "|" << strDblRight((pPolygon->dGetBeachErosionUnconsFine() + pPolygon->dGetBeachErosionUnconsSand() + pPolygon->dGetBeachErosionUnconsCoarse()) * m_dCellArea, 0, 14) << "|" << strDblRight(pPolygon->dGetBeachErosionUnconsFine() * m_dCellArea, 0, 14) << "|" << strDblRight(pPolygon->dGetBeachErosionUnconsSand() * m_dCellArea, 0, 14) << "|" << strDblRight(pPolygon->dGetBeachErosionUnconsCoarse() * m_dCellArea, 0, 14) << "|" << endl;
 //
@@ -1672,36 +1685,37 @@ void CSimulation::WritePolygonPotentialErosion(int const nCoast)
 //    LogStream << "-----------|-----------|-----------|--------------|--------------|--------------|--------------|" << endl << endl;
 // }
 
-// //===============================================================================================================================
-// //! Writes to the log file a table showing the unsorted sequence of polygon processing
-// //===============================================================================================================================
-// void CSimulation::WritePolygonUnsortedSequence(int const nCoast, vector<vector<int> >& pnVVPolyAndAdjacent)
-// {
-//    LogStream << m_ulIter << ": unsorted sequence of polygon processing" << endl;
-//    LogStream << strCentre("Coast", 14) << "|" << strCentre("From Poly", 14) << "|" << strCentre("Direction", 14) << "|" << strCentre("To Poly", 14) << "|" << endl;
-//    LogStream << "--------------|--------------|--------------|--------------|" << endl;
-//
-//    for (int n = 0; n < static_cast<int>(pnVVPolyAndAdjacent.size()); n++)
-//    {
-//       LogStream << strIntRight(nCoast, 14) << "|";
-//
-//       for (int m = 0; m < static_cast<int>(pnVVPolyAndAdjacent[n].size()); m++)
-//       {
-//
-//          if (m == 1)
-//          {
-//             if (pnVVPolyAndAdjacent[n][m] == true)
-//                LogStream << strCentre("DOWN ", 14) << "|";
-//             else
-//                LogStream << strCentre("UP   ", 14) << "|";
-//          }
-//          else
-//             LogStream << strIntRight(pnVVPolyAndAdjacent[n][m], 14) << "|";
-//       }
-//       LogStream << endl;
-//    }
-//    LogStream << "--------------|--------------|--------------|--------------|" << endl << endl;
-// }
+//===============================================================================================================================
+//! Writes to the log file a table showing the unsorted sequence of polygon processing
+//===============================================================================================================================
+void CSimulation::WritePolygonUnsortedSequence(int const nCoast, vector<vector<int> >& pnVVPolyAndAdjacent)
+{
+   LogStream << m_ulIter << ": unsorted sequence of polygon processing" << endl;
+   LogStream << "--------------|--------------|--------------|--------------|" << endl;
+   LogStream << strCentre("Coast", 14) << "|" << strCentre("From Poly", 14) << "|" << strCentre("Direction", 14) << "|" << strCentre("To Poly", 14) << "|" << endl;
+   LogStream << "--------------|--------------|--------------|--------------|" << endl;
+
+   for (int n = 0; n < static_cast<int>(pnVVPolyAndAdjacent.size()); n++)
+   {
+      LogStream << strIntRight(nCoast, 14) << "|";
+
+      for (int m = 0; m < static_cast<int>(pnVVPolyAndAdjacent[n].size()); m++)
+      {
+
+         if (m == 1)
+         {
+            if (pnVVPolyAndAdjacent[n][m] == true)
+               LogStream << strCentre("DOWN ", 14) << "|";
+            else
+               LogStream << strCentre("UP   ", 14) << "|";
+         }
+         else
+            LogStream << strIntRight(pnVVPolyAndAdjacent[n][m], 14) << "|";
+      }
+      LogStream << endl;
+   }
+   LogStream << "--------------|--------------|--------------|--------------|" << endl << endl;
+}
 
 //===============================================================================================================================
 //! Writes to the log file a table showing the sorted sequence of polygon processing, and any circularities
@@ -1719,7 +1733,7 @@ void CSimulation::WritePolygonSortedSequence(int const nCoast, vector<vector<int
    
    for (int nPoly = 0; nPoly < static_cast<int>(pnVVPolyAndAdjacent.size()); nPoly++)
    {
-      const CGeomCoastPolygon* pPoly = m_VCoast[nCoast].pGetPolygonWithID(pnVVPolyAndAdjacent[nPoly][0]);
+      const CGeomCoastPolygon* pPoly = m_VCoast[nCoast].pGetPolygonByID(pnVVPolyAndAdjacent[nPoly][0]);
       vector<int> VCirc = pPoly->VnGetCircularities();
 
       LogStream << strIntRight(m_pVCoastPolygonDownCoastSeq[pnVVPolyAndAdjacent[nPoly][0]]->nGetGlobalID(), 11) << "|" << strIntRight(nCoast, 11) << "|" << strIntRight(pnVVPolyAndAdjacent[nPoly][0], 11) << "|";

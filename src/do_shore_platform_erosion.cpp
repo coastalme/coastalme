@@ -167,7 +167,7 @@ int CSimulation::nCalcPotentialPlatformErosionOnProfile(int const nCoast, int co
 
    // Get the length of the profile (in cells) and the index of the coast point at which this profile starts
    int const nProfSize = pProfile->nGetNumCellsInProfile();
-   int const nCoastPoint = pProfile->nGetNumCoastPoint();
+   int const nCoastPoint = pProfile->nGetCoastPoint();
 
    // Get the breaking depth for this profile from the coastline point
    double dDepthOfBreaking = m_VCoast[nCoast].dGetDepthOfBreaking(nCoastPoint);
@@ -396,7 +396,7 @@ int CSimulation::nCalcPotentialPlatformErosionBetweenProfiles(int const nCoast, 
       return RTN_OK;
 
    int const nProfSize = pProfile->nGetNumCellsInProfile();
-   int const nCoastProfileStart = pProfile->nGetNumCoastPoint();
+   int const nCoastProfileStart = pProfile->nGetCoastPoint();
    int const nProfileStartX = pProfile->pPtiVGetCellsInProfile()->at(0).nGetX();
    int const nProfileStartY = pProfile->pPtiVGetCellsInProfile()->at(0).nGetY();
    int const nCoastMax = m_VCoast[nCoast].nGetCoastlineSize();
