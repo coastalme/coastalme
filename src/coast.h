@@ -220,7 +220,7 @@ public:
    void SetProfileAtCoastPoint(int const, CGeomProfile* const);
    bool bIsProfileAtCoastPoint(int const) const;
    CGeomProfile* pGetProfileAtCoastPoint(int const) const;
-   CGeomProfile* pGetProfileDownCoastSeq(int const) const;
+   CGeomProfile* pGetProfileWithDownCoastSeq(int const) const;
 
    void SetCoastDeepWaterWaveHeight(int const, double const);
    // double dGetCoastDeepWaterWaveHeight(int const) const;
@@ -268,10 +268,9 @@ public:
 
    void SetPolygonNode(int const, int const);
    int nGetPolygonNode(int const) const;
-   CGeomCoastPolygon* pPolyCreatePolygon(int const, int const, int const, CGeom2DIPoint const*, CGeom2DIPoint const*, int const, int const, vector<CGeom2DPoint> const*, int const, int const);
+   CGeomCoastPolygon* pPolyCreatePolygon(int const, int const, int const, CGeom2DIPoint const*, CGeom2DIPoint const*, int const, int const, vector<CGeom2DPoint> const*, int const, int const, bool const, bool const);
    int nGetNumPolygons(void) const;
-   CGeomCoastPolygon* pGetPolygonByDownCoastSeq(int const) const;
-   CGeomCoastPolygon* pGetPolygonByID(int const) const;
+   CGeomCoastPolygon* pGetPolygon(int const) const;
 
    // void AppendPolygonLength(const double);
    // double dGetPolygonLength(int const) const;

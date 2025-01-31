@@ -444,10 +444,10 @@ void CRWCoast::CreateProfileDownCoastIndex(void)
 }
 
 //! Returns a pointer to a coastline-normal profile in along-coast sequence
-CGeomProfile* CRWCoast::pGetProfileDownCoastSeq(int const n) const
+CGeomProfile* CRWCoast::pGetProfileWithDownCoastSeq(int const nProf) const
 {
    // Note no check whether n < size()
-   return m_VpProfileDownCoastSeq[n];
+   return m_VpProfileDownCoastSeq[nProf];
 }
 
 //! Returns a pointer to the profile which is adjacent to and down-coast from the given profile pointer. It returns NULL if there is no valid down-coast profile
@@ -734,9 +734,9 @@ int CRWCoast::nGetPolygonNode(int const nPoint) const
 }
 
 //! Creates a coast polygon and returns a pointer to it
-CGeomCoastPolygon* CRWCoast::pPolyCreatePolygon(int const nGlobalID, int const nCoastID, int const nCoastPoint, CGeom2DIPoint const* pPtiNode, CGeom2DIPoint const* pPtiAntiNode, int const nProfileUpCoast, int const nProfileDownCoast, vector<CGeom2DPoint> const* pVIn, int const nNumPointsUpCoastProfile, int const nNumPointsDownCoastProfile)
+CGeomCoastPolygon* CRWCoast::pPolyCreatePolygon(int const nGlobalID, int const nCoastID, int const nCoastPoint, CGeom2DIPoint const* pPtiNode, CGeom2DIPoint const* pPtiAntiNode, int const nProfileUpCoast, int const nProfileDownCoast, vector<CGeom2DPoint> const* pVIn, int const nNumPointsUpCoastProfile, int const nNumPointsDownCoastProfile, bool const bStartCoast, bool const bEndCoast)
 {
-   CGeomCoastPolygon* pPolygon = new CGeomCoastPolygon(nGlobalID, nCoastID, nCoastPoint, nProfileUpCoast, nProfileDownCoast, pVIn, nNumPointsUpCoastProfile, nNumPointsDownCoastProfile, pPtiNode, pPtiAntiNode);
+   CGeomCoastPolygon* pPolygon = new CGeomCoastPolygon(nGlobalID, nCoastID, nCoastPoint, nProfileUpCoast, nProfileDownCoast, pVIn, nNumPointsUpCoastProfile, nNumPointsDownCoastProfile, pPtiNode, pPtiAntiNode, bStartCoast, bEndCoast);
 
    // pGetSim()->AppendPolygon(pPolygon);
 
@@ -749,18 +749,11 @@ int CRWCoast::nGetNumPolygons(void) const
    return pGetSim()->nGetCoastPolygonSize();
 }
 
-//! Returns a pointer to a coast polygon, specified in down-coast sequence
-CGeomCoastPolygon* CRWCoast::pGetPolygonByDownCoastSeq(int const nPoly) const
+//! Returns a pointer to a coast polygon, specified by down-coast sequence
+CGeomCoastPolygon* CRWCoast::pGetPolygon(int const nPoly) const
 {
    // TODO 055 No check to see if nPoint < m_VnPolygon.size()
-   return pGetSim()->pGetPolygonByDownCoastSeq(nPoly);
-}
-
-//! Returns a pointer to a coast polygon, specified in down-coast sequence
-CGeomCoastPolygon* CRWCoast::pGetPolygonByID(int const nPoly) const
-{
-   // TODO 055 No check to see if nPoint < m_pVCoastPolygonIDSeq.size()
-   return pGetSim()->pGetPolygonByID(nPoly);
+   return pGetSim()->pGetPolygon(nPoly);
 }
 
 // //! Appends to coast polygon length

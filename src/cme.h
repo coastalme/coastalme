@@ -152,7 +152,7 @@ Enjoy!
    TODO 016 Check mass balance for recirculating unconsolidated sediment option
    TODO 023 Only calculate shore platform erosion if cell is in a polygon
    TODO 024 Should we calculate platform erosion on a profile that has hit dry land?
-   TODO 044 Implement estuaries. Before we can do this, we will need to deal with multiple coastlines TODO 085 *** UPDATE ISSUES
+   TODO 044 Implement estuaries. Before we can do this, we will need to deal with multiple coastlines TODO 085 *** NOT YET IN ISSUES
    TODO 051 Implement other ways of calculating depth of closure, see TODO 045
    TODO 056 Check this please Andres
    TODO 059 Implement dune landform class
@@ -167,6 +167,9 @@ Enjoy!
    TODO 078 At present, we don't allow cliff collapse onto interventions. Is this realistic? Should it be different for different types on intervention?
    Why do we get patches of sediment in the sea?
    TODO 085 Complete support for multiple coastlines. This is partly in place, but some things remain to be done
+   TODO 086 Try alternatives to GDALGridCreate(), e.g. https://github.com/delfrrr/delaunator-cpp?tab=readme-ov-file *** NOT YET IN ISSUES
+   TODO 087 Is there a problem if profile is not long enough for user-input depth of closure? *** NOT YET IN ISSUES
+   TODO 088 In (almost) all whole-grid loops, immediately continue if cell is hinterland (but not when calculating cliff collapse) *** NOT YET IN ISSUES
 
    OUTPUT
    TODO 065 Get GPKG output working: GDAL 3.9.1 does not yet implement this correctly. Currently is OK for vector output (but is very slow), not yet working for raster output
@@ -183,7 +186,7 @@ Enjoy!
    TODO 074 Output history of what landforms are on a particular cell or cells. User inputs cell(s), how?
    TODO 082 Also show m_dStartIterUnconsFineAllCells etc. in log file
 
-   085 is max
+   088 is max
 
    COMPLETED
    TODO 003 Make coastline curvature moving window size a user input DONE in 1.1.22
@@ -699,7 +702,7 @@ double const CLIFF_COLLAPSE_HEIGHT_INCREMENT = 0.1;      // Increment the fracti
 
 double const DBL_NODATA = -9999;
 
-string const PROGRAM_NAME = "Coastal Modelling Environment (CoastalME) version 1.3.0 (25 Jan 2025)";
+string const PROGRAM_NAME = "Coastal Modelling Environment (CoastalME) version 1.3.0 (31 Jan 2025)";
 string const PROGRAM_NAME_SHORT = "CME";
 string const CME_INI = "cme.ini";
 

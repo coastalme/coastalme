@@ -30,12 +30,12 @@ using std::cerr;
 #include "coast_polygon.h"
 
 //! Constructor with 10 parameters and initialization list
-CGeomCoastPolygon::CGeomCoastPolygon(int const nGlobalID, int const nCoastID, int const nNode, int const nProfileUpCoast, int const nProfileDownCoast, vector<CGeom2DPoint> const* pVIn, int const nLastPointUpCoast, const int nLastPointDownCoast, CGeom2DIPoint const* PtiNode, CGeom2DIPoint const* PtiAntinode)
+CGeomCoastPolygon::CGeomCoastPolygon(int const nGlobalID, int const nCoastID, int const nNode, int const nProfileUpCoast, int const nProfileDownCoast, vector<CGeom2DPoint> const* pVIn, int const nLastPointUpCoast, const int nLastPointDownCoast, CGeom2DIPoint const* PtiNode, CGeom2DIPoint const* PtiAntinode, bool const bStartCoast, bool const bEndCoast)
 :
 //    m_bIsPointedSeaward(true),
    m_bUnconsSedimentMovementDownCoastThisIter(false),
-   m_bCoastEndPolygon(false),
-   m_bCoastStartPolygon(false),
+   m_bCoastEndPolygon(bEndCoast),
+   m_bCoastStartPolygon(bStartCoast),
    m_nGlobalID(nGlobalID),
    m_nCoastID(nCoastID),
    m_nCoastNode(nNode),
@@ -141,7 +141,7 @@ int CGeomCoastPolygon::nGetGlobalID(void) const
    return m_nGlobalID;
 }
 
-//! Get the coast ID
+//! Get the coast ID, this is the same as the down-coast sequence
 int CGeomCoastPolygon::nGetCoastID(void) const
 {
    return m_nCoastID;

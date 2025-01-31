@@ -200,7 +200,7 @@ bool CGeomProfile::bHitAnotherProfile(void) const
    return m_bHitAnotherProfile;
 }
 
-//! Returns true if this is a problem-free profile, and is not a start-o-coast or an end-of-coast profile
+//! Returns true if this is a problem-free profile, and is not a start-of-coast or an end-of-coast profile
 bool CGeomProfile::bProfileOK(void) const
 {
    // All profiles without problems, but not start- or end-of-coast profiles
@@ -210,7 +210,8 @@ bool CGeomProfile::bProfileOK(void) const
        (! m_bHitCoast) &&
        (! m_bTooShort) &&
        (! m_bTruncated) &&
-       (! m_bHitAnotherProfile))
+       (! m_bHitAnotherProfile) &&
+       (! m_bCShoreProblem))
       return true;
 
    return false;

@@ -75,7 +75,7 @@ int CSimulation::nDoUnconsErosionOnPolygon(int const nCoast, CGeomCoastPolygon* 
 
       // return RTN_ERR_NO_SEAWARD_END_OF_PROFILE_2;
 
-      // ####################
+      // Should we just be continuing here? TODO 087
       nIndex = pUpCoastProfile->nGetProfileSize();
    }
 
@@ -167,8 +167,8 @@ int CSimulation::nDoUnconsErosionOnPolygon(int const nCoast, CGeomCoastPolygon* 
       // Safety check
       if (! bIsWithinValidGrid(nParProfEndX, nParProfEndY))
       {
-         if (m_nLogFileDetail >= LOG_FILE_ALL)
-            LogStream << WARN << "while eroding unconsolidated " + strTexture + " sediment for coast " << nCoast << " polygon " << pPolygon->nGetCoastID() << ", hit edge of grid at [" << nParProfEndX << "][" << nParProfEndY << "] for parallel profile from coast point " << nCoastPoint << " at [" << nCoastX << "][" << nCoastY << "]. Constraining this parallel profile at its seaward end" << endl;
+         // if (m_nLogFileDetail >= LOG_FILE_ALL)
+         //    LogStream << WARN << "while eroding unconsolidated " + strTexture + " sediment for coast " << nCoast << " polygon " << pPolygon->nGetCoastID() << ", hit edge of grid at [" << nParProfEndX << "][" << nParProfEndY << "] for parallel profile from coast point " << nCoastPoint << " at [" << nCoastX << "][" << nCoastY << "]. Constraining this parallel profile at its seaward end" << endl;
 
          KeepWithinValidGrid(nCoastX, nCoastY, nParProfEndX, nParProfEndY);
          VPtiParProfile[0].SetX(nParProfEndX);
@@ -746,10 +746,10 @@ void CSimulation::ErodeCellBeachSedimentSupplyLimited(int const nX, int const nY
 int CSimulation::nDoUnconsDepositionOnPolygon(int const nCoast, CGeomCoastPolygon* pPolygon, int const nTexture, double dTargetToDepositOnPoly, double& dDepositedOnPoly)
 {
    // // DEBUG CODE #####################
-   // if (m_ulIter == 5)
+   // if (m_ulIter == 1)
    // {
+   //    int nPoly = pPolygon->nGetCoastID();
    //    LogStream << m_ulIter << ": entered nDoUnconsDepositionOnPolygon() nCoast = " << nCoast << " nPoly = " << nPoly << " dTargetToDepositOnPoly = " << dTargetToDepositOnPoly * m_dCellArea << " dDepositedOnPoly = " << dDepositedOnPoly * m_dCellArea << endl;
-   //
    // }
    // // DEBUG CODE #####################
 
@@ -778,6 +778,7 @@ int CSimulation::nDoUnconsDepositionOnPolygon(int const nCoast, CGeomCoastPolygo
    {
       LogStream << m_ulIter << ": " << ERR << "while depositing " + strTexture + " unconsolidated sediment for coast " << nCoast << " polygon " << pPolygon->nGetCoastID() << ", could not find the seaward end point of the up-coast profile (" << nUpCoastProfile << ") for depth of closure = " << m_dDepthOfClosure << endl;
 
+      // TODO 087
       return RTN_ERR_NO_SEAWARD_END_OF_PROFILE_3;
    }
 
@@ -891,7 +892,7 @@ int CSimulation::nDoUnconsDepositionOnPolygon(int const nCoast, CGeomCoastPolygo
          {
             // We've reached the seaward end of the up-coast profile, need to quit
             // if (m_nLogFileDetail >= LOG_FILE_MIDDLE_DETAIL)
-            //    LogStream << m_ulIter << ": " << WARN << "reached seaward end of up-coast profile during DOWN-COAST deposition of unconsolidated sediment for coast " << nCoast << " polygon " << nPoly << " (nCoastPoint = " << nCoastPoint << " nSeawardOffset = " << nSeawardOffset << ")" << endl;
+            //    LogStream << m_ulIter << ": " << WARN << "reached seaward end of up-coast profile during DOWN-COAST deposition of unconsolidated sediment for coast " << nCoast << " polygon " << pPolygon->nGetCoastID() << " (nCoastPoint = " << nCoastPoint << " nSeawardOffset = " << nSeawardOffset << ")" << endl;
 
             break;
          }
@@ -906,9 +907,8 @@ int CSimulation::nDoUnconsDepositionOnPolygon(int const nCoast, CGeomCoastPolygo
          }
 
          // Get the existing elevation of the seaward end of the parallel profile
-         int
-             nSeaEndX = PtiVParProfile.back().nGetX(),
-             nSeaEndY = PtiVParProfile.back().nGetY();
+         int nSeaEndX = PtiVParProfile.back().nGetX();
+         int nSeaEndY = PtiVParProfile.back().nGetY();
 
          // Safety check
          if (! bIsWithinValidGrid(nSeaEndX, nSeaEndY))
@@ -958,9 +958,8 @@ int CSimulation::nDoUnconsDepositionOnPolygon(int const nCoast, CGeomCoastPolygo
          for (int m = 0; m < nParProfLen; m++)
          {
             CGeom2DIPoint PtiTmp = PtiVParProfile[m];
-            int
-                nX = PtiTmp.nGetX(),
-                nY = PtiTmp.nGetY();
+            int nX = PtiTmp.nGetX();
+            int nY = PtiTmp.nGetY();
 
             // Safety check
             if (! bIsWithinValidGrid(nX, nY))
@@ -979,9 +978,8 @@ int CSimulation::nDoUnconsDepositionOnPolygon(int const nCoast, CGeomCoastPolygo
             // Don't do cells twice
             if (! m_pRasterGrid->m_Cell[nX][nY].bBeachErosionOrDepositionThisIter())
             {
-               double
-                   dTmpElev = m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElev(),
-                   dDiff = VdParProfileDeanElev[m] - dTmpElev;
+               double dTmpElev = m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElev();
+               double dDiff = VdParProfileDeanElev[m] - dTmpElev;
 
                dParProfTotDiff += dDiff;
             }
@@ -1036,7 +1034,7 @@ int CSimulation::nDoUnconsDepositionOnPolygon(int const nCoast, CGeomCoastPolygo
          // So will we be able to deposit as much as is needed?
          if (dParProfTotDiff >= dTargetToDepositOnProfile)
          {
-            // LogStream << "        DOWN-COAST nPoly = " << nPoly << " nCoastPoint = " << nCoastPoint << " nSeawardOffset = " << nSeawardOffset << " dParProfTotDiff = " << dParProfTotDiff << " dTargetToDepositOnProfile = " << dTargetToDepositOnProfile << " WILL BE ABLE TO DEPOSIT ENOUGH" << endl;
+            LogStream << "        DOWN-COAST nPoly = " << pPolygon->nGetCoastID() << " nCoastPoint = " << nCoastPoint << " nSeawardOffset = " << nSeawardOffset << " dParProfTotDiff = " << dParProfTotDiff << " dTargetToDepositOnProfile = " << dTargetToDepositOnProfile << " WILL BE ABLE TO DEPOSIT ENOUGH" << endl;
 
             break;
          }
@@ -1302,6 +1300,8 @@ int CSimulation::nDoUnconsDepositionOnPolygon(int const nCoast, CGeomCoastPolygo
       if (nIndex1 == INT_NODATA)
       {
          LogStream << m_ulIter << ": " << ERR << "while depositing beach for coast " << nCoast << " polygon " << pPolygon->nGetCoastID() << ", could not find the seaward end point of the down-coast profile (" << nUpCoastProfile << ") for depth of closure = " << m_dDepthOfClosure << endl;
+
+         // TODO 087
          return RTN_ERR_NO_SEAWARD_END_OF_PROFILE_4;
       }
 
@@ -1773,7 +1773,7 @@ int CSimulation::nDoUnconsDepositionOnPolygon(int const nCoast, CGeomCoastPolygo
       // Check mass balance for sand deposited
       if (m_nLogFileDetail >= LOG_FILE_MIDDLE_DETAIL)
          if (! bFPIsEqual(pPolygon->dGetToDoBeachDepositionUnconsSand(), dDepositedOnPoly, MASS_BALANCE_TOLERANCE))
-         LogStream << m_ulIter << ": NOT equal SAND dGetToDoBeachDepositionUnconsSand() = " << pPolygon->dGetToDoBeachDepositionUnconsSand() << " dDepositedOnPoly = " << dDepositedOnPoly << endl;
+         LogStream << m_ulIter << ": polygon " << pPolygon->nGetCoastID() << " NOT equal SAND dGetToDoBeachDepositionUnconsSand() = " << pPolygon->dGetToDoBeachDepositionUnconsSand() << " dDepositedOnPoly = " << dDepositedOnPoly << endl;
 
       pPolygon->SetZeroToDoDepositionUnconsSand();
 
@@ -1785,7 +1785,7 @@ int CSimulation::nDoUnconsDepositionOnPolygon(int const nCoast, CGeomCoastPolygo
       // Check mass balance for coarse deposited
       if (m_nLogFileDetail >= LOG_FILE_MIDDLE_DETAIL)
          if (! bFPIsEqual(pPolygon->dGetToDoBeachDepositionUnconsCoarse(), dDepositedOnPoly, MASS_BALANCE_TOLERANCE))
-         LogStream << m_ulIter << ": NOT equal COARSE dGetToDoBeachDepositionUnconsCoarse() = " << pPolygon->dGetToDoBeachDepositionUnconsCoarse() << " dDepositedOnPoly = " << dDepositedOnPoly << endl;
+         LogStream << m_ulIter << ": polygon " << pPolygon->nGetCoastID() << " NOT equal COARSE dGetToDoBeachDepositionUnconsCoarse() = " << pPolygon->dGetToDoBeachDepositionUnconsCoarse() << " dDepositedOnPoly = " << dDepositedOnPoly << endl;
 
       pPolygon->SetZeroToDoDepositionUnconsCoarse();
    }

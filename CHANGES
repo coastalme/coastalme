@@ -83,8 +83,8 @@ CoastalME CHANGELOG
          Partial rewrite of profile creation (ID now in creation sequence)
          Partial rewrite of polygon creation (ID now taken from upcoast profile)
          Changes to shore platform routines resulting from above
-         Changes to cliff collapse routines resukting from above
-         Changes to sedimet transport routines resulting from above
+         Changes to cliff collapse routines resulting from above
+         Changes to sediment transport routines resulting from above
          Sediment input events at a point now working correctly
          Sediment input events on a line now mostly working
          Extra compile-time checks

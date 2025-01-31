@@ -116,7 +116,7 @@ int CSimulation::nSetAllCoastpointDeepWaterWaveValues(void)
             dNextProfileDeepWaterWaveAngle = pNextProfile->dGetProfileDeepWaterWaveAngle();
             dNextProfileDeepWaterWavePeriod = pNextProfile->dGetProfileDeepWaterWavePeriod();
 
-            // LogStream << m_ulIter << ": coast point = " << nPoint << " is start of profile " << pProfile->nGetGlobalID() << ", next profile is " << pNextProfile->nGetGlobalID() << ", which starts at coast piint " << pNextProfile->nGetCoastPoint() << ", dThisDeepWaterWaveHeight = " << dThisDeepWaterWaveHeight << ", dThisDeepWaterWaveAngle = " << dThisDeepWaterWaveAngle << " nDistToNextProfile = " << nDistToNextProfile << endl;
+            // LogStream << m_ulIter << ": coast point = " << nPoint << " is start of profile " << pProfile->nGetCoastID() << ", next profile is " << pNextProfile->nGetCoastID() << ", which starts at coast piint " << pNextProfile->nGetCoastPoint() << ", dThisDeepWaterWaveHeight = " << dThisDeepWaterWaveHeight << ", dThisDeepWaterWaveAngle = " << dThisDeepWaterWaveAngle << " nDistToNextProfile = " << nDistToNextProfile << endl;
          }
 
          else
@@ -172,7 +172,7 @@ int CSimulation::nDoAllPropagateWaves(void)
          vector<double> VdHeightX;
          vector<double> VdHeightY;
 
-         CGeomProfile* pProfile = m_VCoast[nCoast].pGetProfileDownCoastSeq(nn);
+         CGeomProfile* pProfile = m_VCoast[nCoast].pGetProfileWithDownCoastSeq(nn);
 
          // // DEBUG CODE ======================================================================================================================
          // int nProfileCells = pProfile->nGetNumCellsInProfile();
@@ -1868,7 +1868,7 @@ void CSimulation::ModifyBreakingWavePropertiesWithinShadowZoneToCoastline(int co
 //===============================================================================================================================
 void CSimulation::InterpolateWavePropertiesBetweenProfiles(int const nCoast, int const nCount)
 {
-   CGeomProfile* pProfile = m_VCoast[nCoast].pGetProfileDownCoastSeq(nCount);
+   CGeomProfile* pProfile = m_VCoast[nCoast].pGetProfileWithDownCoastSeq(nCount);
 
    // Only do this for profiles without problems, including the start-of-coast profile (but not the end-of-coast profile)
    // if (!pProfile->bOKIncStartOfCoast())
@@ -2404,8 +2404,8 @@ void CSimulation::CalcD50AndFillWaveCalcHoles(void)
    {
       for (int nPoly = 0; nPoly < m_VCoast[nCoast].nGetNumPolygons(); nPoly++)
       {
-         CGeomCoastPolygon* pPolygon = m_VCoast[nCoast].pGetPolygonByDownCoastSeq(nPoly);
-         int nID = pPolygon->nGetGlobalID();
+         CGeomCoastPolygon* pPolygon = m_VCoast[nCoast].pGetPolygon(nPoly);
+         int nID = pPolygon->nGetCoastID();
 
          if (VnPolygonD50Count[nID] > 0)
             VdPolygonD50[nID] /= VnPolygonD50Count[nID];

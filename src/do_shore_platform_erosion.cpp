@@ -110,7 +110,7 @@ int CSimulation::nDoAllShorePlatFormErosion(void)
       // Calculate potential platform erosion between the coastline-normal profiles. Do this in down-coast sequence
       for (int nn = 0; nn < nNumProfiles - 1; nn++)
       {
-         CGeomProfile* pProfile = m_VCoast[nCoast].pGetProfileDownCoastSeq(nn);
+         CGeomProfile* pProfile = m_VCoast[nCoast].pGetProfileWithDownCoastSeq(nn);
 
          // Calculate potential erosion for sea cells between this profile and the next profile (or up to the edge of the grid) on these cells
          int nRet = nCalcPotentialPlatformErosionBetweenProfiles(nCoast, pProfile, DIRECTION_DOWNCOAST);
@@ -159,7 +159,7 @@ int CSimulation::nDoAllShorePlatFormErosion(void)
 //===============================================================================================================================
 int CSimulation::nCalcPotentialPlatformErosionOnProfile(int const nCoast, int const n)
 {
-   CGeomProfile *const pProfile = m_VCoast[nCoast].pGetProfileDownCoastSeq(n);
+   CGeomProfile *const pProfile = m_VCoast[nCoast].pGetProfileWithDownCoastSeq(n);
 
    // Only work on this profile if it is problem-free TODO 024 Or if it has just hit dry land?
    if (! pProfile->bOKIncStartAndEndOfCoast())               //  || (pProfile->nGetProblemCode() == PROFILE_DRYLAND))
@@ -963,8 +963,8 @@ void CSimulation::DoActualPlatformErosionOnCell(int const nX, int const nY)
       if (nPolyID != INT_NODATA)
       {
          // Add this to the polygon's total of unconsolidated sand/coarse sediment, to be deposited or moved later. These values are +ve (deposition)
-         m_pVCoastPolygonDownCoastSeq[nPolyID]->AddPlatformErosionUnconsSand(dSandEroded);
-         m_pVCoastPolygonDownCoastSeq[nPolyID]->AddPlatformErosionUnconsCoarse(dCoarseEroded);
+         m_pVCoastPolygon[nPolyID]->AddPlatformErosionUnconsSand(dSandEroded);
+         m_pVCoastPolygon[nPolyID]->AddPlatformErosionUnconsCoarse(dCoarseEroded);
       }
       else
       {

@@ -45,14 +45,19 @@ using std::stable_sort;
 //===============================================================================================================================
 bool bPolygonAndAdjCompare(const vector<int>& nVLeft, const vector<int>& nVRight)
 {
+   // Each row (vector) of this vector-of-vectors is:
+   // 0: This-polygon ID in down-coast seq
+   // 1: This-polygon down-coast (true) or up-coast(false) sediment movement
+   // 2 and subsequent: down-coast seqs of down-coast (if sediment movement is down-coast)  or up-coast (if sediment movement is up-coast) adjacent polygons
+   //
    // For safety, check that the LHS polygon has at least one adjacent polygon (it should have, apart from the bad situation where just one big polygon is created)
    if ((nVLeft.size() >= 3) && (nVRight.size() >= 3))
    {
-      // Polygons at the grid edge are processed last, so put LHS grid-edge polygons on the RHS
+      // Polygons with off-edge sediment movement (i.e. at the grid edge) are processed last, so put LHS grid-edge polygons on the RHS
       if (nVLeft[2] == INT_NODATA)
          return false;
 
-      // Polygons at the grid edge are processed last, so keep RHS grid-edge polygons where they are
+      // Polygons with off-edge sediment movement (i.e. at the grid edge) are processed last, so keep RHS grid-edge polygons where they are
       if (nVRight[2] == INT_NODATA)
          return true;
 
@@ -106,15 +111,18 @@ int CSimulation::nDoAllActualBeachErosionAndDeposition(void)
          WritePolygonPotentialErosion(nCoast);
       }
       
-      // Now route actually-eroded sand/coarse sediment to adjacent polygons, or off-grid. sort first
+      // Now route actually-eroded sand/coarse sediment to adjacent polygons, or off-grid. Sort polygons first
+      // Each row (vector) of this vector-of-vectors is:
+      // 0: This-polygon ID, in down-coast seq
+      // 1: This-polygon down-coast (true) or up-coast (false) sediment movement
+      // 2 and subsequent: down-coast seqs of down-coast (if sediment movement is down-coast)  or up-coast (if sediment movement is up-coast) adjacent polygons
       vector<vector<int> > nVVPolyAndAdjacent;
       for (int nn = 0; nn < m_VCoast[nCoast].nGetNumPolygons(); nn++)
       {
-         // CGeomCoastPolygon const* pPolygon = m_VCoast[nCoast].pGetPolygonByID(nPoly);
-         CGeomCoastPolygon const* pPolygon = m_VCoast[nCoast].pGetPolygonByDownCoastSeq(nn);
+         CGeomCoastPolygon const* pPolygon = m_VCoast[nCoast].pGetPolygon(nn);
          vector<int> nVPolyAndAdj;
 
-         // The first nVPolyAndAdj array item is the polygon coast ID TODO will be nn ???
+         // The first nVPolyAndAdj array item is the polygon's down-coast sequence
          nVPolyAndAdj.push_back(pPolygon->nGetCoastID());
 
          if (pPolygon->bDownCoastThisIter())
@@ -122,9 +130,10 @@ int CSimulation::nDoAllActualBeachErosionAndDeposition(void)
             // Sediment is leaving this polygon in a down-coast direction: so set this as the second nVPolyAndAdj array item
             nVPolyAndAdj.push_back(true);
 
-            // Set subsequent nVPolyAndAdj array items to be the IDs of adjacent polygons
+            // Third and susequent nVPolyAndAdj array items are the down-coast seqs of adjacent down-coast polygons
             for (int nAdj = 0; nAdj < pPolygon->nGetNumDownCoastAdjacentPolygons(); nAdj++)
             {
+               // Save the coast ID of each down-coast adjacent polygon
                int nAdjPolyID = pPolygon->nGetDownCoastAdjacentPolygon(nAdj);
                nVPolyAndAdj.push_back(nAdjPolyID);
             }
@@ -134,14 +143,16 @@ int CSimulation::nDoAllActualBeachErosionAndDeposition(void)
             // Sediment is leaving this polygon in an up-coast direction: so set this as the second nVPolyAndAdj array item
             nVPolyAndAdj.push_back(false);
 
-            // Set subsequent nVPolyAndAdj array items to be the IDs of adjacent polygons
+            // Third and susequent nVPolyAndAdj array items are the Coast IDs of adjacent up-coast polygons
             for (int nAdj = 0; nAdj < pPolygon->nGetNumUpCoastAdjacentPolygons(); nAdj++)
             {
+               // Save the coast ID of each up-coast adjacent polygon
                int nAdjPolyID = pPolygon->nGetUpCoastAdjacentPolygon(nAdj);
                nVPolyAndAdj.push_back(nAdjPolyID);
             }
          }
 
+         // Save this 'row'
          nVVPolyAndAdjacent.push_back(nVPolyAndAdj);
       }
 
@@ -152,26 +163,26 @@ int CSimulation::nDoAllActualBeachErosionAndDeposition(void)
       stable_sort(nVVPolyAndAdjacent.begin(), nVVPolyAndAdjacent.end(), bPolygonAndAdjCompare);
       
       // And check for circularities i.e. where poly X -> poly Y -> poly X. Note that we only look for two-way circularities. i.e. we ignore poly A -> poly B -> Poly C -> poly A patterns. These are probably pretty rare, however
-      vector<int> VnSourcePolygons;
-      for (int nPoly = 0; nPoly < static_cast<int>(nVVPolyAndAdjacent.size()); nPoly++)
+      vector<int> VnSourcePolyDownCoastSeq;
+      for (int n = 0; n < static_cast<int>(nVVPolyAndAdjacent.size()); n++)
       {
-         for (int m = 0; m < static_cast<int>(nVVPolyAndAdjacent[nPoly].size()); m++)
+         for (int m = 0; m < static_cast<int>(nVVPolyAndAdjacent[n].size()); m++)
          {
             if (m == 0) 
-               VnSourcePolygons.push_back(nVVPolyAndAdjacent[nPoly][m]);
+               VnSourcePolyDownCoastSeq.push_back(nVVPolyAndAdjacent[n][m]);    // This-polygon down-coast seq
             
             else if (m > 1)
             {
                // Check for circularities
-               vector<int>::iterator it = find(VnSourcePolygons.begin(), VnSourcePolygons.end(), nVVPolyAndAdjacent[nPoly][m]);
-               if (it != VnSourcePolygons.end())
+               vector<int>::iterator it = find(VnSourcePolyDownCoastSeq.begin(), VnSourcePolyDownCoastSeq.end(), nVVPolyAndAdjacent[n][m]);
+               if (it != VnSourcePolyDownCoastSeq.end())
                {
                   // Uh-oh: this polygon is in the list of previously-processed source polygons. So store the numbers of the polygons with circularity
-                  CGeomCoastPolygon* pPoly = m_VCoast[nCoast].pGetPolygonByID(nVVPolyAndAdjacent[nPoly][0]);
+                  CGeomCoastPolygon* pPoly = m_VCoast[nCoast].pGetPolygon(nVVPolyAndAdjacent[n][0]);
                   pPoly->AddCircularity(*it);
                   
-                  pPoly = m_VCoast[nCoast].pGetPolygonByID(*it);
-                  pPoly->AddCircularity(nVVPolyAndAdjacent[nPoly][0]);                     
+                  pPoly = m_VCoast[nCoast].pGetPolygon(*it);
+                  pPoly->AddCircularity(nVVPolyAndAdjacent[n][0]);
                }
             }            
          }
@@ -185,8 +196,8 @@ int CSimulation::nDoAllActualBeachErosionAndDeposition(void)
       // Now process all polygons and do the actual (supply-limited) unconsolidated sediment movement
       for (int n = 0; n < nNumPolygons; n++)
       {
-         int nPoly = nVVPolyAndAdjacent[n][0];
-         CGeomCoastPolygon* pPolygon = m_VCoast[nCoast].pGetPolygonByID(nPoly);
+         int nPolygon = nVVPolyAndAdjacent[n][0];
+         CGeomCoastPolygon* pPolygon = m_VCoast[nCoast].pGetPolygon(nPolygon);
 
          // // DEBUG CODE =====================
          // int nUpCoastProfile = pPolygon->nGetUpCoastProfile();
@@ -228,7 +239,7 @@ int CSimulation::nDoAllActualBeachErosionAndDeposition(void)
             {
                // We had some coarse unconsolidated sediment which we were unable to deoosit on the last polygon (which could have been the last polygon of the previous iteration). So add it to the total to be deposited here
                if (m_nLogFileDetail >= LOG_FILE_HIGH_DETAIL)
-                  LogStream << m_ulIter << ": nPoly = " << nPoly << " dCoarseDepositionTarget was = " << dCoarseDepositionTarget * m_dCellArea << " adding m_dDepositionCoarseDiff = " << m_dDepositionCoarseDiff * m_dCellArea;
+                  LogStream << m_ulIter << ": nPoly = " << nPolygon << " dCoarseDepositionTarget was = " << dCoarseDepositionTarget * m_dCellArea << " adding m_dDepositionCoarseDiff = " << m_dDepositionCoarseDiff * m_dCellArea;
 
                dCoarseDepositionTarget += m_dDepositionCoarseDiff;
                m_dDepositionCoarseDiff = 0;
@@ -260,7 +271,7 @@ int CSimulation::nDoAllActualBeachErosionAndDeposition(void)
             {
                // We had some sand unconsolidated sediment which we were unable to deoosit on the last polygon (which could have been the last polygon of the previous iteration). So add it to the total to be deposited here
                if (m_nLogFileDetail >= LOG_FILE_HIGH_DETAIL)
-                  LogStream << m_ulIter << ": nPoly = " << nPoly << " dSandDepositionTarget was = " << dSandDepositionTarget * m_dCellArea << " adding m_dDepositionSandDiff = " << m_dDepositionSandDiff * m_dCellArea;
+                  LogStream << m_ulIter << ": nPolygon = " << nPolygon << " dSandDepositionTarget was = " << dSandDepositionTarget * m_dCellArea << " adding m_dDepositionSandDiff = " << m_dDepositionSandDiff * m_dCellArea;
 
                dSandDepositionTarget += m_dDepositionSandDiff;
                m_dDepositionSandDiff = 0;
@@ -420,21 +431,21 @@ int CSimulation::nDoAllActualBeachErosionAndDeposition(void)
 
                      if (nAdjPoly == INT_NODATA)
                      {
-                        // This polygon is at the grid edge
-                        if (nPoly == 0)
+                        // Sediment is leaving the grid
+                        if (pPolygon->bIsCoastStartPolygon())
                         {
-                           // This is the polygon at the up-coast end of the coastline: uncons sediment movement is down-coast but there is no adjacent polygon!
+                           // Error: uncons sediment movement is down-coast and off-edge, but this polygon is at the up-coast end of the coastline
                            if (m_nLogFileDetail >= LOG_FILE_MIDDLE_DETAIL)
-                              LogStream << m_ulIter << ": " << ERR << "when adjusting sediment export. Polygon " << nPoly << " is at the up-coast end of the coastline, actual sediment movement is DOWN-COAST. But there is no adjacent coast-end polygon, so this will result in mass balance problems." << endl;
+                              LogStream << m_ulIter << ": " << ERR << "in sediment export. Unconsolidated sediment movement is DOWN-COAST, and sediment is leaving the grid, but polygon " << nPolygon << " is at the up-coast end of the coastline. This will result in mass balance problems." << endl;
                         }
-                        else if (nPoly == nNumPolygons-1)
+                        else if (pPolygon->bIsCoastEndPolygon())
                         {
                            // This is the polygon at the down-coast end of the coastline, and uncons sediment movement is down-coast. Decide what to do based on the user setting m_nUnconsSedimentHandlingAtGridEdges
                            if (m_nUnconsSedimentHandlingAtGridEdges == GRID_EDGE_CLOSED)
                            {
                               // Closed grid edges: no uncons sediment moves off-grid, nothing is removed from this polygon, so cannot adjust sediment export
                               if (m_nLogFileDetail >= LOG_FILE_MIDDLE_DETAIL)
-                                 LogStream << m_ulIter << ": when adjusting sediment export, polygon " << nPoly << " is at the down-coast end of the coastline, and actual sediment movement is DOWN-COAST. Since grid edges are closed, no sand or coarse unconsolidated sediment goes off-grid so cannot adjust sediment export. This will result in mass balance problems." << endl;
+                                 LogStream << m_ulIter << ": when adjusting sediment export, polygon " << nPolygon << " is at the down-coast end of the coastline, and actual sediment movement is DOWN-COAST. Since grid edges are closed, no sand or coarse unconsolidated sediment goes off-grid so cannot adjust sediment export. This will result in mass balance problems." << endl;
                            }
 
                            else if (m_nUnconsSedimentHandlingAtGridEdges == GRID_EDGE_OPEN)
@@ -455,7 +466,7 @@ int CSimulation::nDoAllActualBeachErosionAndDeposition(void)
                            {
                               // Re-circulating grid edges, so adjust the sediment exported to the polygon at the up-coast end of this coastline
                               int nOtherEndPoly = 0;
-                              CGeomCoastPolygon* pOtherEndPoly = m_VCoast[nCoast].pGetPolygonByID(nOtherEndPoly);
+                              CGeomCoastPolygon* pOtherEndPoly = m_VCoast[nCoast].pGetPolygon(nOtherEndPoly);
                               
                               if (dSandEroded > 0)
                               {
@@ -474,7 +485,7 @@ int CSimulation::nDoAllActualBeachErosionAndDeposition(void)
                      else
                      {
                         // This polygon is not at the grid edge
-                        CGeomCoastPolygon* pAdjPolygon = m_VCoast[nCoast].pGetPolygonByID(nAdjPoly);
+                        CGeomCoastPolygon* pAdjPolygon = m_VCoast[nCoast].pGetPolygon(nAdjPoly);
                         double dBoundaryShare = pPolygon->dGetDownCoastAdjacentPolygonBoundaryShare(nn);
 
                         if (dSandEroded > 0)
@@ -518,21 +529,22 @@ int CSimulation::nDoAllActualBeachErosionAndDeposition(void)
 
                      if (nAdjPoly == INT_NODATA)
                      {
-                        // This polygon is at the grid edge
-                        if (nPoly == nNumPolygons-1)
+                        // Sediment is leaving the grid
+                        if (pPolygon->bIsCoastEndPolygon())
                         {
-                           // This is the polygon at the down-coast end of the coastline: uncons sediment movement is up-coast but there is no adjacent polygon!
+                           // Error: uncons sediment movement is down-coast and off-edge, but this polygon is at the up-coast end of the coastline
                            if (m_nLogFileDetail >= LOG_FILE_MIDDLE_DETAIL)
-                              LogStream << m_ulIter << ": " << ERR << "when adjusting sediment export. Polygon " << nPoly << " is at the down-coast end of the coastline, actual sediment movement is UP-COAST. But there is no adjacent coast-end polygon!" << endl;
+                              LogStream << m_ulIter << ": " << ERR << "in sediment export. Unconsolidated sediment movement is UP-COAST, and sediment is leaving the grid, but polygon " << nPolygon << " is at the down-coast end of the coastline. This will result in mass balance problems." << endl;
+
                         }
-                        else if (nPoly == 0)
+                        else if (pPolygon->bIsCoastStartPolygon())
                         {
                            // This is the polygon at the up-coast end of the coastline, and uncons sediment movement is up-coast. Decide what to do based on the user setting m_nUnconsSedimentHandlingAtGridEdges
                            if (m_nUnconsSedimentHandlingAtGridEdges == GRID_EDGE_CLOSED)
                            {
                               // Closed grid edges: no uncons sediment moves off-grid, nothing is removed from this polygon, so cannot adjust sediment export
                               if (m_nLogFileDetail >= LOG_FILE_MIDDLE_DETAIL)
-                                 LogStream << m_ulIter << ": when adjusting sediment export, polygon " << nPoly << " is at the up-coast end of the coastline, and actual sediment movement is UP-COAST. Since grid edges are closed, no sand or coarse unconsolidated sediment goes off-grid so cannot adjust sediment export" << endl;
+                                 LogStream << m_ulIter << ": when adjusting sediment export, polygon " << nPolygon << " is at the up-coast end of the coastline, and actual sediment movement is UP-COAST. Since grid edges are closed, no sand or coarse unconsolidated sediment goes off-grid so cannot adjust sediment export" << endl;
                            }
 
                            else if (m_nUnconsSedimentHandlingAtGridEdges == GRID_EDGE_OPEN)
@@ -546,7 +558,7 @@ int CSimulation::nDoAllActualBeachErosionAndDeposition(void)
                            {
                               // Re-circulating grid edges, so adjust the sediment exported to the polygon at the up-coast end of this coastline TODO 016 Check whether this causes mass balance problems, depending on the sequence of polygon processing
                               int nOtherEndPoly = 0;
-                              CGeomCoastPolygon* pOtherEndPoly = m_VCoast[nCoast].pGetPolygonByID(nOtherEndPoly);
+                              CGeomCoastPolygon* pOtherEndPoly = m_VCoast[nCoast].pGetPolygon(nOtherEndPoly);
 
                               if (dSandEroded > 0)
                               {
@@ -565,7 +577,7 @@ int CSimulation::nDoAllActualBeachErosionAndDeposition(void)
                      else
                      {
                         // This polygon is not at the grid edge
-                        CGeomCoastPolygon* pAdjPolygon = m_VCoast[nCoast].pGetPolygonByID(nAdjPoly);
+                        CGeomCoastPolygon* pAdjPolygon = m_VCoast[nCoast].pGetPolygon(nAdjPoly);
                         double dBoundaryShare = pPolygon->dGetUpCoastAdjacentPolygonBoundaryShare(nn);
 
                         if (dSandEroded > 0)
@@ -622,7 +634,7 @@ int CSimulation::nDoAllActualBeachErosionAndDeposition(void)
          //
          //    for (int nn = 0; nn < nPolygons; nn++)
          //    {
-         //       CGeomCoastPolygon* pThisPolygon = m_VCoast[nCoast].pGetPolygonByID(nn);
+         //       CGeomCoastPolygon* pThisPolygon = m_VCoast[nCoast].pGetPolygon(nn);
          //       dToDoTot += pThisPolygon->dGetToDoBeachDepositionUnconsSand();
          //    }
          //
@@ -642,8 +654,8 @@ int CSimulation::nDoAllActualBeachErosionAndDeposition(void)
 //      for (int nn = 0; nn < nPolygons; nn++)
       for (int nn = nPolygons-1; nn >= 0; nn--)
       {
-         int nThisPoly = nVVPolyAndAdjacent[nn][0];
-         CGeomCoastPolygon* pThisPolygon = m_VCoast[nCoast].pGetPolygonByID(nThisPoly);
+         int nThisPoly = nVVPolyAndAdjacent[nn][1];
+         CGeomCoastPolygon* pThisPolygon = m_VCoast[nCoast].pGetPolygon(nThisPoly);
 
          double dSandToDepositOnPoly = pThisPolygon->dGetToDoBeachDepositionUnconsSand();
          if (dSandToDepositOnPoly > 0)
@@ -696,7 +708,7 @@ void CSimulation::AllPolygonsUpdateStoredUncons(int const nCoast)
 
    for (int nPoly = 0; nPoly < nNumPolygons; nPoly++)
    {
-      CGeomCoastPolygon* pPolygon = m_VCoast[nCoast].pGetPolygonByID(nPoly);
+      CGeomCoastPolygon* pPolygon = m_VCoast[nCoast].pGetPolygon(nPoly);
 
       // Only include unconsolidated fine sediment from sediment input events, don't include any unconsolidated fine sediment from platform erosion and cliff collapse since these have gone to suspension
       double dFine = pPolygon->dGetSedimentInputUnconsFine();

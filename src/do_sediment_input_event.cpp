@@ -123,7 +123,7 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
             if (nThisPoly != INT_NODATA)
             {
                // Add to this polygon's fine sediment input total
-               m_pVCoastPolygonDownCoastSeq[nThisPoly]->SetSedimentInputUnconsFine(dFineDepth);
+               m_pVCoastPolygon[nThisPoly]->SetSedimentInputUnconsFine(dFineDepth);
             }
 
             // Add to the this-iteration total of fine sediment input
@@ -148,7 +148,7 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
             if (nThisPoly != INT_NODATA)
             {
                // Add to this polygon's sand sediment input total
-               m_pVCoastPolygonDownCoastSeq[nThisPoly]->SetSedimentInputUnconsSand(dSandDepth);
+               m_pVCoastPolygon[nThisPoly]->SetSedimentInputUnconsSand(dSandDepth);
             }
 
             // Add to the this-iteration total of sand sediment input
@@ -173,7 +173,7 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
             if (nThisPoly != INT_NODATA)
             {
                // Add to this polygon's coarse sediment input total
-               m_pVCoastPolygonDownCoastSeq[nThisPoly]->SetSedimentInputUnconsCoarse(dCoarseDepth);
+               m_pVCoastPolygon[nThisPoly]->SetSedimentInputUnconsCoarse(dCoarseDepth);
             }
 
             // Add to the this-iteration total of coarse sediment input
@@ -518,7 +518,7 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
          if (nThisPoly != INT_NODATA)
          {
             // Add to this polygon's fine sediment input total
-            m_pVCoastPolygonDownCoastSeq[nThisPoly]->SetSedimentInputUnconsFine(dFineDepth);
+            m_pVCoastPolygon[nThisPoly]->SetSedimentInputUnconsFine(dFineDepth);
          }
 
          // Add to the this-iteration total of fine sediment input
@@ -543,7 +543,7 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
          if (nThisPoly != INT_NODATA)
          {
             // Add to this polygon's sand sediment input total
-            m_pVCoastPolygonDownCoastSeq[nThisPoly]->SetSedimentInputUnconsSand(dSandDepth);
+            m_pVCoastPolygon[nThisPoly]->SetSedimentInputUnconsSand(dSandDepth);
          }
 
          // Add to the this-iteration total of sand sediment input
@@ -568,7 +568,7 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
          if (nThisPoly != INT_NODATA)
          {
             // Add to this polygon's coarse sediment input total
-            m_pVCoastPolygonDownCoastSeq[nThisPoly]->SetSedimentInputUnconsCoarse(dCoarseDepth);
+            m_pVCoastPolygon[nThisPoly]->SetSedimentInputUnconsCoarse(dCoarseDepth);
          }
 
          // Add to the this-iteration total of coarse sediment input

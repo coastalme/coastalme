@@ -1494,10 +1494,7 @@ private:
    vector<CRWCoast> m_VFloodWaveSetupSurgeRunup;
 
    //! Pointers to coast polygon objects, in down-coast sequence TODO 085 Will need to use global polygon ID here to support multiple coastlines
-   vector<CGeomCoastPolygon*> m_pVCoastPolygonDownCoastSeq;
-
-   //! Pointers to coast polygon objects, in natural (i.e. polygon numbering) sequence TODO 085 Will need to use global polygon ID here to support multiple coastlines
-   vector<CGeomCoastPolygon*> m_pVCoastPolygonIDSeq;
+   vector<CGeomCoastPolygon*> m_pVCoastPolygon;
 
    //! Edge cells
    vector<CGeom2DIPoint> m_VEdgeCell;
@@ -1577,7 +1574,7 @@ private:
    int nCreateProfile(int const, int const, int const, int const, int&, bool const, CGeom2DIPoint const*);
    int nLocateAndCreateGridEdgeProfile(bool const, int const, int&, int&);
    void MarkProfilesOnGrid(int const, int&);
-   void ModifyAllIntersectingProfiles(void);
+   void CheckForIntersectingProfiles(void);
    static bool bCheckForIntersection(CGeomProfile* const, CGeomProfile* const, int&, int&, double&, double&, double&, double&);
    void MergeProfilesAtFinalLineSegments(int const, CGeomProfile*, CGeomProfile*, int const, int const, double const, double const, double const, double const);
    void TruncateOneProfileRetainOtherProfile(int const, CGeomProfile*, CGeomProfile*, double const, double const, int const, int const, bool const);
@@ -1639,7 +1636,7 @@ private:
    bool bIsInterventionCell(int const, int const) const;
    bool bSurroundedByDriftCells(int const, int const);
    bool bElevAboveDeanElev(int const, int const, double const, CRWCellLandform const*);
-   void CreatePolygonIndexIDSeq(void);
+   // void CreatePolygonIndexIDSeq(int const);
 
    // GIS utility routines
    int nMarkBoundingBoxEdgeCells(void);
@@ -1795,10 +1792,7 @@ public:
    int nGetCoastPolygonSize(void) const;
 
    //! Returns a pointer to a coast polygon, in down-coast sequence
-   CGeomCoastPolygon* pGetPolygonByDownCoastSeq(int const) const;
-
-   //! Returns a pointer to a coast polygon, in polygon ID sequence
-   CGeomCoastPolygon* pGetPolygonByID(int const) const;
+   CGeomCoastPolygon* pGetPolygon(int const) const;
 
    //! Appends a pointer to a coast polygon to the coast polygon vector
    void AppendPolygon(CGeomCoastPolygon*);

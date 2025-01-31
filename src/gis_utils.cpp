@@ -1596,7 +1596,7 @@ void CSimulation::GetRasterOutputMinMax(int const nDataItem, double&dMin, double
                if (nPoly == INT_NODATA)
                   dTmp = m_dMissingValue;
                else
-                  dTmp = m_pVCoastPolygonDownCoastSeq[nPoly]->dGetBeachDepositionAndSuspensionAllUncons();
+                  dTmp = m_pVCoastPolygon[nPoly]->dGetBeachDepositionAndSuspensionAllUncons();
                break;
          }
 

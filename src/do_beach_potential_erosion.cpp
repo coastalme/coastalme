@@ -63,7 +63,7 @@ void CSimulation::DoAllPotentialBeachErosion(void)
       vector<pair<int, double>> prVPolygonLength;
       for (int nPoly = 0; nPoly < nNumPolygons; nPoly++)
       {
-         CGeomCoastPolygon const* pPolygon = m_VCoast[nCoast].pGetPolygonByID(nPoly);
+         CGeomCoastPolygon const* pPolygon = m_VCoast[nCoast].pGetPolygon(nPoly);
          double dSeawardLength = pPolygon->dGetLength();
          prVPolygonLength.push_back(make_pair(nPoly, dSeawardLength));
       }
@@ -76,7 +76,7 @@ void CSimulation::DoAllPotentialBeachErosion(void)
       {
          int nThisPoly = prVPolygonLength[n].first;
 
-         CGeomCoastPolygon* pPolygon = m_VCoast[nCoast].pGetPolygonByID(nThisPoly);
+         CGeomCoastPolygon* pPolygon = m_VCoast[nCoast].pGetPolygon(nThisPoly);
 
          // Calculate the average breaking wave height and angle along this polygon's segment of coastline
          int nStartNormal = pPolygon->nGetUpCoastProfile();

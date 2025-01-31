@@ -2803,49 +2803,22 @@ bool CSimulation::bIsInterventionCell(int const nX, int const nY) const
 //===============================================================================================================================
 int CSimulation::nGetCoastPolygonSize(void) const
 {
-   return static_cast<int>(m_pVCoastPolygonDownCoastSeq.size());
+   return static_cast<int>(m_pVCoastPolygon.size());
 }
 
 //===============================================================================================================================
-//! Returns a pointer to a coast polygon, specified in down-coast sequence
+//! Returns a pointer to a coast polygon, in down-coast sequence
 //===============================================================================================================================
-CGeomCoastPolygon* CSimulation::pGetPolygonByDownCoastSeq(int const nPoly) const
+CGeomCoastPolygon* CSimulation::pGetPolygon(int const nPoly) const
 {
-   // TODO 055 No check to see if nPoly < m_pVCoastPolygonDownCoastSeq.size()
-   return m_pVCoastPolygonDownCoastSeq[nPoly];
+   // TODO 055 No check to see if nPoly < m_pVCoastPolygon.size()
+   return m_pVCoastPolygon[nPoly];
 }
 
 //===============================================================================================================================
-//! Appends a pointer to a coast polygon to the down-coast coast polygon vector
+//! Appends a pointer to a coast polygon, to the down-coast coast polygon vector
 //===============================================================================================================================
 void CSimulation::AppendPolygon(CGeomCoastPolygon* pPolygon)
 {
-   m_pVCoastPolygonDownCoastSeq.push_back(pPolygon);
+   m_pVCoastPolygon.push_back(pPolygon);
 }
-
-//===============================================================================================================================
-//! Create an index to polygons in polygon ID sequence
-//===============================================================================================================================
-void CSimulation::CreatePolygonIndexIDSeq(void)
-{
-   int nNumPolygons = static_cast<int>(m_pVCoastPolygonDownCoastSeq.size());
-   m_pVCoastPolygonIDSeq.resize(nNumPolygons);
-
-   for (int n = 0; n < nNumPolygons; n++)
-   {
-      CGeomCoastPolygon* pPolygon = m_pVCoastPolygonDownCoastSeq[n];
-      int nPolygon = pPolygon->nGetCoastID();
-      m_pVCoastPolygonIDSeq[nPolygon] = pPolygon;
-   }
-}
-
-//===============================================================================================================================
-//! Returns a pointer to a coast polygon, specified in ID sequence
-//===============================================================================================================================
-CGeomCoastPolygon* CSimulation::pGetPolygonByID(int const nPoly) const
-{
-   // TODO 055 No check to see if nPoly < m_pVCoastPolygonIDSeq.size()
-   return m_pVCoastPolygonIDSeq[nPoly];
-}
-
-

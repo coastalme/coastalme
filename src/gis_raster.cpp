@@ -1502,7 +1502,7 @@ bool CSimulation::bWriteRasterGISFile(int const nDataItem, string const *strPlot
                else
                {
                   // Get total volume (all sediment size classes) of change in sediment for this polygon for this timestep (-ve erosion, +ve deposition)
-                  dTmp = m_pVCoastPolygonDownCoastSeq[nPoly]->dGetBeachDepositionAndSuspensionAllUncons() * m_dCellArea;
+                  dTmp = m_pVCoastPolygon[nPoly]->dGetBeachDepositionAndSuspensionAllUncons() * m_dCellArea;
 
                   // Calculate the rate in m^3 / sec
                   dTmp /= (m_dTimeStep * 3600);
@@ -1573,7 +1573,7 @@ bool CSimulation::bWriteRasterGISFile(int const nDataItem, string const *strPlot
                   dTmp = m_nMissingValue;
                else
                {
-                  if (m_pVCoastPolygonDownCoastSeq[nPoly]->bDownCoastThisIter())
+                  if (m_pVCoastPolygon[nPoly]->bDownCoastThisIter())
                      dTmp = 1;
                   else
                      dTmp = 0;
@@ -1904,7 +1904,7 @@ int CSimulation::nInterpolateWavesToPolygonCells(vector<double> const* pVdX, vec
    // Do first for X, then for Y
    for (int nDirection = 0; nDirection < 2; nDirection++)
    {
-      // Use the GDALGridCreate() linear interpolation algorithm: this computes a Delaunay triangulation of the point cloud, finding in which triangle of the triangulation the point is, and by doing linear interpolation from its barycentric coordinates within the triangle. If the point is not in any triangle, depending on the radius, the algorithm will use the value of the nearest point or the nodata value. Only available in GDAL 2.1 and later
+      // Use the GDALGridCreate() linear interpolation algorithm: this computes a Delaunay triangulation of the point cloud, finding in which triangle of the triangulation the point is, and by doing linear interpolation from its barycentric coordinates within the triangle. If the point is not in any triangle, depending on the radius, the algorithm will use the value of the nearest point or the nodata value. Only available in GDAL 2.1 and later TODO 086
       GDALGridLinearOptions* pOptions = new GDALGridLinearOptions();
       pOptions->dfNoDataValue = m_dMissingValue;                     // Set the no-data marker to fill empty points
       pOptions->dfRadius = -1;                                       // Set the search radius to infinite
@@ -1916,7 +1916,7 @@ int CSimulation::nInterpolateWavesToPolygonCells(vector<double> const* pVdX, vec
       // pOptions->dfNoDataValue = m_dMissingValue; // Set the no-data marker to fill empty points
       // pOptions->dfRadius = -1;                   // Set the search radius to infinite
 
-      // Call GDALGridCreate()
+      // Call GDALGridCreate() TODO 086
       int nRet;
       if (nDirection == 0)
       {
@@ -2242,7 +2242,7 @@ int CSimulation::nInterpolateAllDeepWaterWaveValues(void)
    // Interpolate deep water height and orientation from multiple user-supplied values
    unsigned int nUserPoints = static_cast<unsigned int>(m_VdDeepWaterWaveStationX.size());
 
-   // Call GDALGridCreate() with the GGA_InverseDistanceToAPower interpolation algorithm. It has following parameters: radius1 is the first radius (X axis if rotation angle is 0) of the search ellipse, set this to zero (the default) to use the whole point array; radius2 is the second radius (Y axis if rotation angle is 0) of the search ellipse, again set this parameter to zero (the default) to use the whole point array; angle is the angle of the search ellipse rotation in degrees (counter clockwise, default 0.0); nodata is the NODATA marker to fill empty points (default 0.0)
+   // Call GDALGridCreate() with the GGA_InverseDistanceToAPower interpolation algorithm. It has following parameters: radius1 is the first radius (X axis if rotation angle is 0) of the search ellipse, set this to zero (the default) to use the whole point array; radius2 is the second radius (Y axis if rotation angle is 0) of the search ellipse, again set this parameter to zero (the default) to use the whole point array; angle is the angle of the search ellipse rotation in degrees (counter clockwise, default 0.0); nodata is the NODATA marker to fill empty points (default 0.0) TODO 086
    GDALGridInverseDistanceToAPowerOptions* pOptions = new GDALGridInverseDistanceToAPowerOptions();
    pOptions->dfAngle = 0;
    pOptions->dfAnisotropyAngle = 0;
@@ -2258,7 +2258,7 @@ int CSimulation::nInterpolateAllDeepWaterWaveValues(void)
    // CPLSetConfigOption("CPL_DEBUG", "ON");
    // CPLSetConfigOption("GDAL_NUM_THREADS", "1");
 
-   // OK, now create a gridded version of wave height: first create the GDAL context
+   // OK, now create a gridded version of wave height: first create the GDAL context TODO 086
    //    GDALGridContext* pContext = GDALGridContextCreate(GGA_InverseDistanceToAPower, pOptions, nUserPoints, &m_VdDeepWaterWaveStationX[0], &m_VdDeepWaterWaveStationY[0], &m_VdThisIterDeepWaterWaveStationHeight[0], true);
    GDALGridContext* pContext = GDALGridContextCreate(GGA_InverseDistanceToAPower, pOptions, nUserPoints, m_VdDeepWaterWaveStationX.data(), m_VdDeepWaterWaveStationY.data(), m_VdThisIterDeepWaterWaveStationHeight.data(), true);
 
@@ -2291,7 +2291,7 @@ int CSimulation::nInterpolateAllDeepWaterWaveValues(void)
       return RTN_ERR_GRIDCREATE;
    }
 
-   // Now process the context
+   // Now process the context TODO 086
    double *dAngleOut = new double[m_ulNumCells];
    nRet = GDALGridContextProcess(pContext, 0, m_nXGridSize - 1, 0, m_nYGridSize - 1, m_nXGridSize, m_nYGridSize, GDT_Float64, dAngleOut, NULL, NULL);
    if (nRet == CE_Failure)
@@ -2314,7 +2314,7 @@ int CSimulation::nInterpolateAllDeepWaterWaveValues(void)
       return RTN_ERR_GRIDCREATE;
    }
 
-   // Now process the context
+   // Now process the context TODO 086
    double *dPeriopdOut = new double[m_ulNumCells];
    nRet = GDALGridContextProcess(pContext, 0, m_nXGridSize - 1, 0, m_nYGridSize - 1, m_nXGridSize, m_nYGridSize, GDT_Float64, dPeriopdOut, NULL, NULL);
    if (nRet == CE_Failure)

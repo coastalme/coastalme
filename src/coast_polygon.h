@@ -198,7 +198,7 @@ private:
 protected:
 
 public:
-   CGeomCoastPolygon(int const, int const, int const, int const, int const, vector<CGeom2DPoint> const*, int const, int const, CGeom2DIPoint const*, CGeom2DIPoint const*);
+   CGeomCoastPolygon(int const, int const, int const, int const, int const, vector<CGeom2DPoint> const*, int const, int const, CGeom2DIPoint const*, CGeom2DIPoint const*, bool const, bool const);
    ~CGeomCoastPolygon(void) override;
 
    void SetDownCoastThisIter(bool const);
@@ -210,7 +210,6 @@ public:
    bool bIsCoastStartPolygon(void) const;
 
    int nGetGlobalID(void) const;
-
    int nGetCoastID(void) const;
 
 //    void SetCoastNode(int const);

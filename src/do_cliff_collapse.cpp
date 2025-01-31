@@ -162,12 +162,12 @@ int CSimulation::nDoAllWaveEnergyToCoastLandforms(void)
                //
                //    double dTmpAllPolySandErosion = 0;
                //    double dTmpAllPolySandDeposition = 0;
-               //    for (unsigned int n = 0; n < m_pVCoastPolygonDownCoastSeq.size(); n++)
+               //    for (unsigned int n = 0; n < m_pVCoastPolygon.size(); n++)
                //    {
-               //       double dTmpSandErosion = m_pVCoastPolygonDownCoastSeq[n]->dGetCliffCollapseErosionSand() * m_dCellArea ;
-               //       double dTmpSandDeposition = m_pVCoastPolygonDownCoastSeq[n]->dGetCliffCollapseUnconsSandDeposition() * m_dCellArea ;
+               //       double dTmpSandErosion = m_pVCoastPolygon[n]->dGetCliffCollapseErosionSand() * m_dCellArea ;
+               //       double dTmpSandDeposition = m_pVCoastPolygon[n]->dGetCliffCollapseUnconsSandDeposition() * m_dCellArea ;
                //
-               //       LogStream << m_ulIter << ": polygon = " << m_pVCoastPolygonDownCoastSeq[n]->nGetGlobalID() << " sand erosion = " << dTmpSandErosion << " sand deposition = " << dTmpSandDeposition << endl;
+               //       LogStream << m_ulIter << ": polygon = " << m_pVCoastPolygon[n]->nGetCoastID() << " sand erosion = " << dTmpSandErosion << " sand deposition = " << dTmpSandDeposition << endl;
                //
                //       dTmpAllPolySandErosion += dTmpSandErosion;
                //       dTmpAllPolySandDeposition += dTmpSandDeposition;
@@ -208,7 +208,7 @@ int CSimulation::nDoCliffCollapse(int const nCoast, CRWCliff* pCliff, double& dF
       return RTN_ERR_CLIFF_NOT_IN_POLYGON;
    }
 
-   CGeomCoastPolygon* pPolygon = m_VCoast[nCoast].pGetPolygonByID(nPoly);
+   CGeomCoastPolygon* pPolygon = m_VCoast[nCoast].pGetPolygon(nPoly);
        
    // Get the elevation of the base of the notch from the cliff object
    double dNotchElev = pCliff->dGetNotchBaseElev() - m_dNotchBaseBelowSWL;
@@ -458,7 +458,7 @@ int CSimulation::nDoCliffCollapseDeposition(int const nCoast, CRWCliff const* pC
       return RTN_ERR_CLIFF_NOT_IN_POLYGON;
    }
 
-   CGeomCoastPolygon* pPolygon = m_VCoast[nCoast].pGetPolygonByID(nPoly);
+   CGeomCoastPolygon* pPolygon = m_VCoast[nCoast].pGetPolygon(nPoly);
        
    // OK, now set up the planview sequence talus deposition. First we deposit to create a Dean profile starting from the cliff collapse cell. Then we deposit along two profiles which start from the coast cells on either side of the cliff collapse cell, and then on two profiles starting on the next two "outside" coast cells, etc. However, we do have a "preferred" talus width
    int nTalusWidth = nConvertMetresToNumCells(m_dCliffDepositionPlanviewWidth);

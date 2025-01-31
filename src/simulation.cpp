@@ -996,13 +996,16 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
          return nRet;
 
       // // DEBUG CODE ===============
-      // for (int nCoast = 0; nCoast < static_cast<int>(m_VCoast.size()); nCoast++)
+      // if (m_ulIter == 109)
       // {
-      //    for (int nProfile = 0; nProfile < m_VCoast[nCoast].nGetNumProfiles(); nProfile++)
+      //    for (int nCoast = 0; nCoast < static_cast<int>(m_VCoast.size()); nCoast++)
       //    {
-      //       CGeomProfile* pProfile = m_VCoast[nCoast].pGetProfile(nProfile);
-      //       int nCell = pProfile->nGetNumCellsInProfile();
-      //       LogStream << "Profile " << nProfile << " nGetNumCellsInProfile() = " << nCell << endl;
+      //       for (int nProfile = 0; nProfile < m_VCoast[nCoast].nGetNumProfiles(); nProfile++)
+      //       {
+      //          CGeomProfile* pProfile = m_VCoast[nCoast].pGetProfile(nProfile);
+      //          int nCell = pProfile->nGetNumCellsInProfile();
+      //          LogStream << "Profile " << nProfile << " nGetNumCellsInProfile() = " << nCell << endl;
+      //       }
       //    }
       // }
       // // DEBUG CODE =====================
@@ -1096,7 +1099,7 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
       //
       //    for (int nProfile = 0; nProfile < m_VCoast[nCoast].nGetNumProfiles(); nProfile++)
       //    {
-      //       CGeomProfile* pProfile = m_VCoast[nCoast].pGetProfileDownCoastSeq(nProfile);
+      //       CGeomProfile* pProfile = m_VCoast[nCoast].pGetProfileWithDownCoastSeq(nProfile);
       //       int nCell = pProfile->nGetNumCellsInProfile();
       //       LogStream << "Profile " << pProfile->nGetCoastID() << " nGetNumCellsInProfile() = " << nCell << endl;
       //    }
