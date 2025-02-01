@@ -438,7 +438,7 @@ void CRWCoast::CreateProfileDownCoastIndex(void)
 {
    for (int n = 0; n < static_cast<int>(m_VNormalProfileDownAllCoastSeq.size()); n++)
    {
-      if (m_VNormalProfileDownAllCoastSeq[n] != static_cast<CGeomProfile*>(0))
+      if (m_VNormalProfileDownAllCoastSeq[n] != NULL)
          m_VpProfileDownCoastSeq.push_back(m_VNormalProfileDownAllCoastSeq[n]);
    }
 }
@@ -461,8 +461,8 @@ CGeomProfile* CRWCoast::pGetDownCoastProfileNotIncLastProfile(CGeomProfile const
 {
    CGeomProfile* pDownCoastProfile = pProfile->pGetDownCoastAdjacentProfile();
 
-   if ((pDownCoastProfile != static_cast<CGeomProfile*>(0)) && (pDownCoastProfile->bEndOfCoast()))
-      return static_cast<CGeomProfile*>(0);
+   if ((pDownCoastProfile != NULL) && (pDownCoastProfile->bEndOfCoast()))
+      return NULL;
 
    return pDownCoastProfile;
 }
@@ -471,7 +471,6 @@ CGeomProfile* CRWCoast::pGetDownCoastProfileNotIncLastProfile(CGeomProfile const
 CGeomProfile* CRWCoast::pGetUpCoastProfile(CGeomProfile const* pProfile)
 {
    return pProfile->pGetUpCoastAdjacentProfile();
-
 }
 
 //! Sets the deep water wave height for this coast point
@@ -667,7 +666,7 @@ double CRWCoast::dGetWaveEnergyAtBreaking(int const nCoastPoint) const
 //! Creates a vector which holds, for each coastline point, a null pointer to a coastline-normal profile object
 void CRWCoast::CreateProfilesAtCoastPoints(void)
 {
-   m_VNormalProfileDownAllCoastSeq.resize(m_LCoastlineExtCRS.nGetSize(), static_cast<CGeomProfile*>(0));
+   m_VNormalProfileDownAllCoastSeq.resize(m_LCoastlineExtCRS.nGetSize(), NULL);
 }
 
 //! Inserts profiles at coastline points in the profile-coastline-point index
@@ -692,7 +691,7 @@ void CRWCoast::SetProfileAtCoastPoint(int const nCoastPoint, CGeomProfile* const
 //! Returns true if there is a coastline-normal profile at this coast point, false otherwise
 bool CRWCoast::bIsProfileAtCoastPoint(int const nCoastPoint) const
 {
-   if (m_VNormalProfileDownAllCoastSeq.at(nCoastPoint) == static_cast<CGeomProfile*>(0))
+   if (m_VNormalProfileDownAllCoastSeq.at(nCoastPoint) == NULL)
        return false;
 
    return true;

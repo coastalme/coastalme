@@ -80,8 +80,7 @@ int CSimulation::nDoUnconsErosionOnPolygon(int const nCoast, CGeomCoastPolygon* 
    }
 
    // The part-profile length is one greater than nIndex, since pPtiGetCellGivenDepth() returns the index of the cell at the depth of closure
-   // int nUpCoastPartProfileLen = nIndex + 1;
-   int nUpCoastPartProfileLen = nIndex;
+   int nUpCoastPartProfileLen = nIndex + 1;
 
    //    assert(bIsWithinValidGrid(&PtiUpCoastPartProfileSeawardEnd));
 
@@ -1034,7 +1033,7 @@ int CSimulation::nDoUnconsDepositionOnPolygon(int const nCoast, CGeomCoastPolygo
          // So will we be able to deposit as much as is needed?
          if (dParProfTotDiff >= dTargetToDepositOnProfile)
          {
-            LogStream << "        DOWN-COAST nPoly = " << pPolygon->nGetCoastID() << " nCoastPoint = " << nCoastPoint << " nSeawardOffset = " << nSeawardOffset << " dParProfTotDiff = " << dParProfTotDiff << " dTargetToDepositOnProfile = " << dTargetToDepositOnProfile << " WILL BE ABLE TO DEPOSIT ENOUGH" << endl;
+            // LogStream << "        DOWN-COAST nPoly = " << pPolygon->nGetCoastID() << " nCoastPoint = " << nCoastPoint << " nSeawardOffset = " << nSeawardOffset << " dParProfTotDiff = " << dParProfTotDiff << " dTargetToDepositOnProfile = " << dTargetToDepositOnProfile << " WILL BE ABLE TO DEPOSIT ENOUGH" << endl;
 
             break;
          }

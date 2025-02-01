@@ -101,7 +101,7 @@ int CSimulation::nSetAllCoastpointDeepWaterWaveValues(void)
 
             // Find the next profile
             CGeomProfile const* pNextProfile = pProfile->pGetDownCoastAdjacentProfile();
-            if (pNextProfile == static_cast<CGeomProfile*>(0))
+            if (pNextProfile == NULL)
             {
                // We are at the end of the coast
                break;
@@ -347,69 +347,69 @@ int CSimulation::nDoAllPropagateWaves(void)
    if (nRet != RTN_OK)
       return nRet;
 
-   // DEBUG CODE ===========================================================================================================
-   string strOutFile = m_strOutPath;
-   strOutFile += "sea_wave_height_CHECKPOINT_1_";
-   strOutFile += std::to_string(m_ulIter);
-   strOutFile += ".tif";
+   // // DEBUG CODE ===========================================================================================================
+   // string strOutFile = m_strOutPath;
+   // strOutFile += "sea_wave_height_CHECKPOINT_1_";
+   // strOutFile += std::to_string(m_ulIter);
+   // strOutFile += ".tif";
+   //
+   // GDALDriver* pDriver = GetGDALDriverManager()->GetDriverByName("gtiff");
+   // GDALDataset* pDataSet = pDriver->Create(strOutFile.c_str(), m_nXGridSize, m_nYGridSize, 1, GDT_Float64, m_papszGDALRasterOptions);
+   // pDataSet->SetProjection(m_strGDALBasementDEMProjection.c_str());
+   // pDataSet->SetGeoTransform(m_dGeoTransform);
+   //
+   // int nn = 0;
+   // double* pdRaster = new double[m_nXGridSize * m_nYGridSize];
+   // for (int nY = 0; nY < m_nYGridSize; nY++)
+   // {
+   //    for (int nX = 0; nX < m_nXGridSize; nX++)
+   //    {
+   //       pdRaster[nn++] = m_pRasterGrid->m_Cell[nX][nY].dGetWaveHeight();
+   //    }
+   // }
+   //
+   // GDALRasterBand* pBand = pDataSet->GetRasterBand(1);
+   // pBand->SetNoDataValue(m_dMissingValue);
+   // nRet = pBand->RasterIO(GF_Write, 0, 0, m_nXGridSize, m_nYGridSize, pdRaster, m_nXGridSize, m_nYGridSize, GDT_Float64, 0, 0, NULL);
+   //
+   // if (nRet == CE_Failure)
+   //    return RTN_ERR_GRIDCREATE;
+   //
+   // GDALClose(pDataSet);
+   // delete[] pdRaster;
+   // // DEBUG CODE ===========================================================================================================
 
-   GDALDriver* pDriver = GetGDALDriverManager()->GetDriverByName("gtiff");
-   GDALDataset* pDataSet = pDriver->Create(strOutFile.c_str(), m_nXGridSize, m_nYGridSize, 1, GDT_Float64, m_papszGDALRasterOptions);
-   pDataSet->SetProjection(m_strGDALBasementDEMProjection.c_str());
-   pDataSet->SetGeoTransform(m_dGeoTransform);
-
-   int nn = 0;
-   double* pdRaster = new double[m_nXGridSize * m_nYGridSize];
-   for (int nY = 0; nY < m_nYGridSize; nY++)
-   {
-      for (int nX = 0; nX < m_nXGridSize; nX++)
-      {
-         pdRaster[nn++] = m_pRasterGrid->m_Cell[nX][nY].dGetWaveHeight();
-      }
-   }
-
-   GDALRasterBand* pBand = pDataSet->GetRasterBand(1);
-   pBand->SetNoDataValue(m_dMissingValue);
-   nRet = pBand->RasterIO(GF_Write, 0, 0, m_nXGridSize, m_nYGridSize, pdRaster, m_nXGridSize, m_nYGridSize, GDT_Float64, 0, 0, NULL);
-
-   if (nRet == CE_Failure)
-      return RTN_ERR_GRIDCREATE;
-
-   GDALClose(pDataSet);
-   delete[] pdRaster;
-   // DEBUG CODE ===========================================================================================================
-
-   // DEBUG CODE ===========================================================================================================
-   strOutFile = m_strOutPath;
-   strOutFile += "sea_wave_angle_CHECKPOINT_1_";
-   strOutFile += std::to_string(m_ulIter);
-   strOutFile += ".tif";
-
-   pDriver = GetGDALDriverManager()->GetDriverByName("gtiff");
-   pDataSet = pDriver->Create(strOutFile.c_str(), m_nXGridSize, m_nYGridSize, 1, GDT_Float64, m_papszGDALRasterOptions);
-   pDataSet->SetProjection(m_strGDALBasementDEMProjection.c_str());
-   pDataSet->SetGeoTransform(m_dGeoTransform);
-
-   nn = 0;
-   pdRaster = new double[m_nXGridSize * m_nYGridSize];
-   for (int nY = 0; nY < m_nYGridSize; nY++)
-   {
-      for (int nX = 0; nX < m_nXGridSize; nX++)
-      {
-         pdRaster[nn++] = m_pRasterGrid->m_Cell[nX][nY].dGetWaveAngle();
-      }
-   }
-
-   pBand = pDataSet->GetRasterBand(1);
-   pBand->SetNoDataValue(m_dMissingValue);
-   nRet = pBand->RasterIO(GF_Write, 0, 0, m_nXGridSize, m_nYGridSize, pdRaster, m_nXGridSize, m_nYGridSize, GDT_Float64, 0, 0, NULL);
-
-   if (nRet == CE_Failure)
-      return RTN_ERR_GRIDCREATE;
-
-   GDALClose(pDataSet);
-   delete[] pdRaster;
-   // DEBUG CODE ===========================================================================================================
+   // // DEBUG CODE ===========================================================================================================
+   // strOutFile = m_strOutPath;
+   // strOutFile += "sea_wave_angle_CHECKPOINT_1_";
+   // strOutFile += std::to_string(m_ulIter);
+   // strOutFile += ".tif";
+   //
+   // pDriver = GetGDALDriverManager()->GetDriverByName("gtiff");
+   // pDataSet = pDriver->Create(strOutFile.c_str(), m_nXGridSize, m_nYGridSize, 1, GDT_Float64, m_papszGDALRasterOptions);
+   // pDataSet->SetProjection(m_strGDALBasementDEMProjection.c_str());
+   // pDataSet->SetGeoTransform(m_dGeoTransform);
+   //
+   // nn = 0;
+   // pdRaster = new double[m_nXGridSize * m_nYGridSize];
+   // for (int nY = 0; nY < m_nYGridSize; nY++)
+   // {
+   //    for (int nX = 0; nX < m_nXGridSize; nX++)
+   //    {
+   //       pdRaster[nn++] = m_pRasterGrid->m_Cell[nX][nY].dGetWaveAngle();
+   //    }
+   // }
+   //
+   // pBand = pDataSet->GetRasterBand(1);
+   // pBand->SetNoDataValue(m_dMissingValue);
+   // nRet = pBand->RasterIO(GF_Write, 0, 0, m_nXGridSize, m_nYGridSize, pdRaster, m_nXGridSize, m_nYGridSize, GDT_Float64, 0, 0, NULL);
+   //
+   // if (nRet == CE_Failure)
+   //    return RTN_ERR_GRIDCREATE;
+   //
+   // GDALClose(pDataSet);
+   // delete[] pdRaster;
+   // // DEBUG CODE ===========================================================================================================
 
    // Find any shadow zones and then modify waves in and adjacent to them
    nRet = nDoAllShadowZones();
@@ -419,69 +419,69 @@ int CSimulation::nDoAllPropagateWaves(void)
    // Calculate the D50 for each polygon. Also fill in any artefactual 'holes' in active zone and wave property patterns
    CalcD50AndFillWaveCalcHoles();
 
-   // DEBUG CODE ===========================================================================================================
-   strOutFile = m_strOutPath;
-   strOutFile += "sea_wave_height_CHECKPOINT_2_";
-   strOutFile += std::to_string(m_ulIter);
-   strOutFile += ".tif";
+   // // DEBUG CODE ===========================================================================================================
+   // strOutFile = m_strOutPath;
+   // strOutFile += "sea_wave_height_CHECKPOINT_2_";
+   // strOutFile += std::to_string(m_ulIter);
+   // strOutFile += ".tif";
+   //
+   // pDriver = GetGDALDriverManager()->GetDriverByName("gtiff");
+   // pDataSet = pDriver->Create(strOutFile.c_str(), m_nXGridSize, m_nYGridSize, 1, GDT_Float64, m_papszGDALRasterOptions);
+   // pDataSet->SetProjection(m_strGDALBasementDEMProjection.c_str());
+   // pDataSet->SetGeoTransform(m_dGeoTransform);
+   //
+   // nn = 0;
+   // pdRaster = new double[m_nXGridSize * m_nYGridSize];
+   // for (int nY = 0; nY < m_nYGridSize; nY++)
+   // {
+   //    for (int nX = 0; nX < m_nXGridSize; nX++)
+   //    {
+   //       pdRaster[nn++] = m_pRasterGrid->m_Cell[nX][nY].dGetWaveHeight();
+   //    }
+   // }
+   //
+   // pBand = pDataSet->GetRasterBand(1);
+   // pBand->SetNoDataValue(m_dMissingValue);
+   // nRet = pBand->RasterIO(GF_Write, 0, 0, m_nXGridSize, m_nYGridSize, pdRaster, m_nXGridSize, m_nYGridSize, GDT_Float64, 0, 0, NULL);
+   //
+   // if (nRet == CE_Failure)
+   //    return RTN_ERR_GRIDCREATE;
+   //
+   // GDALClose(pDataSet);
+   // delete[] pdRaster;
+   // // DEBUG CODE ===========================================================================================================
 
-   pDriver = GetGDALDriverManager()->GetDriverByName("gtiff");
-   pDataSet = pDriver->Create(strOutFile.c_str(), m_nXGridSize, m_nYGridSize, 1, GDT_Float64, m_papszGDALRasterOptions);
-   pDataSet->SetProjection(m_strGDALBasementDEMProjection.c_str());
-   pDataSet->SetGeoTransform(m_dGeoTransform);
-
-   nn = 0;
-   pdRaster = new double[m_nXGridSize * m_nYGridSize];
-   for (int nY = 0; nY < m_nYGridSize; nY++)
-   {
-      for (int nX = 0; nX < m_nXGridSize; nX++)
-      {
-         pdRaster[nn++] = m_pRasterGrid->m_Cell[nX][nY].dGetWaveHeight();
-      }
-   }
-
-   pBand = pDataSet->GetRasterBand(1);
-   pBand->SetNoDataValue(m_dMissingValue);
-   nRet = pBand->RasterIO(GF_Write, 0, 0, m_nXGridSize, m_nYGridSize, pdRaster, m_nXGridSize, m_nYGridSize, GDT_Float64, 0, 0, NULL);
-
-   if (nRet == CE_Failure)
-      return RTN_ERR_GRIDCREATE;
-
-   GDALClose(pDataSet);
-   delete[] pdRaster;
-   // DEBUG CODE ===========================================================================================================
-
-   // DEBUG CODE ===========================================================================================================
-   strOutFile = m_strOutPath;
-   strOutFile += "sea_wave_angle_CHECKPOINT_2_";
-   strOutFile += std::to_string(m_ulIter);
-   strOutFile += ".tif";
-
-   pDriver = GetGDALDriverManager()->GetDriverByName("gtiff");
-   pDataSet = pDriver->Create(strOutFile.c_str(), m_nXGridSize, m_nYGridSize, 1, GDT_Float64, m_papszGDALRasterOptions);
-   pDataSet->SetProjection(m_strGDALBasementDEMProjection.c_str());
-   pDataSet->SetGeoTransform(m_dGeoTransform);
-
-   nn = 0;
-   pdRaster = new double[m_nXGridSize * m_nYGridSize];
-   for (int nY = 0; nY < m_nYGridSize; nY++)
-   {
-      for (int nX = 0; nX < m_nXGridSize; nX++)
-      {
-         pdRaster[nn++] = m_pRasterGrid->m_Cell[nX][nY].dGetWaveAngle();
-      }
-   }
-
-   pBand = pDataSet->GetRasterBand(1);
-   pBand->SetNoDataValue(m_dMissingValue);
-   nRet = pBand->RasterIO(GF_Write, 0, 0, m_nXGridSize, m_nYGridSize, pdRaster, m_nXGridSize, m_nYGridSize, GDT_Float64, 0, 0, NULL);
-
-   if (nRet == CE_Failure)
-      return RTN_ERR_GRIDCREATE;
-
-   GDALClose(pDataSet);
-   delete[] pdRaster;
-   // DEBUG CODE ===========================================================================================================
+   // // DEBUG CODE ===========================================================================================================
+   // strOutFile = m_strOutPath;
+   // strOutFile += "sea_wave_angle_CHECKPOINT_2_";
+   // strOutFile += std::to_string(m_ulIter);
+   // strOutFile += ".tif";
+   //
+   // pDriver = GetGDALDriverManager()->GetDriverByName("gtiff");
+   // pDataSet = pDriver->Create(strOutFile.c_str(), m_nXGridSize, m_nYGridSize, 1, GDT_Float64, m_papszGDALRasterOptions);
+   // pDataSet->SetProjection(m_strGDALBasementDEMProjection.c_str());
+   // pDataSet->SetGeoTransform(m_dGeoTransform);
+   //
+   // nn = 0;
+   // pdRaster = new double[m_nXGridSize * m_nYGridSize];
+   // for (int nY = 0; nY < m_nYGridSize; nY++)
+   // {
+   //    for (int nX = 0; nX < m_nXGridSize; nX++)
+   //    {
+   //       pdRaster[nn++] = m_pRasterGrid->m_Cell[nX][nY].dGetWaveAngle();
+   //    }
+   // }
+   //
+   // pBand = pDataSet->GetRasterBand(1);
+   // pBand->SetNoDataValue(m_dMissingValue);
+   // nRet = pBand->RasterIO(GF_Write, 0, 0, m_nXGridSize, m_nYGridSize, pdRaster, m_nXGridSize, m_nYGridSize, GDT_Float64, 0, 0, NULL);
+   //
+   // if (nRet == CE_Failure)
+   //    return RTN_ERR_GRIDCREATE;
+   //
+   // GDALClose(pDataSet);
+   // delete[] pdRaster;
+   // // DEBUG CODE ===========================================================================================================
 
    // Modify the wave breaking properties (wave height, wave dir, breaking depth, breaking distance) for coastline points within the shadow zone
    for (int nCoast = 0; nCoast < static_cast<int>(m_VCoast.size()); nCoast++)
@@ -492,69 +492,69 @@ int CSimulation::nDoAllPropagateWaves(void)
          ModifyBreakingWavePropertiesWithinShadowZoneToCoastline(nCoast, nProfile);
    }
 
-   // DEBUG CODE ===========================================================================================================
-   strOutFile = m_strOutPath;
-   strOutFile += "sea_wave_height_CHECKPOINT_3_";
-   strOutFile += std::to_string(m_ulIter);
-   strOutFile += ".tif";
+   // // DEBUG CODE ===========================================================================================================
+   // strOutFile = m_strOutPath;
+   // strOutFile += "sea_wave_height_CHECKPOINT_3_";
+   // strOutFile += std::to_string(m_ulIter);
+   // strOutFile += ".tif";
+   //
+   // pDriver = GetGDALDriverManager()->GetDriverByName("gtiff");
+   // pDataSet = pDriver->Create(strOutFile.c_str(), m_nXGridSize, m_nYGridSize, 1, GDT_Float64, m_papszGDALRasterOptions);
+   // pDataSet->SetProjection(m_strGDALBasementDEMProjection.c_str());
+   // pDataSet->SetGeoTransform(m_dGeoTransform);
+   //
+   // nn = 0;
+   // pdRaster = new double[m_nXGridSize * m_nYGridSize];
+   // for (int nY = 0; nY < m_nYGridSize; nY++)
+   // {
+   //    for (int nX = 0; nX < m_nXGridSize; nX++)
+   //    {
+   //       pdRaster[nn++] = m_pRasterGrid->m_Cell[nX][nY].dGetWaveHeight();
+   //    }
+   // }
+   //
+   // pBand = pDataSet->GetRasterBand(1);
+   // pBand->SetNoDataValue(m_dMissingValue);
+   // nRet = pBand->RasterIO(GF_Write, 0, 0, m_nXGridSize, m_nYGridSize, pdRaster, m_nXGridSize, m_nYGridSize, GDT_Float64, 0, 0, NULL);
+   //
+   // if (nRet == CE_Failure)
+   //    return RTN_ERR_GRIDCREATE;
+   //
+   // GDALClose(pDataSet);
+   // delete[] pdRaster;
+   // // DEBUG CODE ===========================================================================================================
 
-   pDriver = GetGDALDriverManager()->GetDriverByName("gtiff");
-   pDataSet = pDriver->Create(strOutFile.c_str(), m_nXGridSize, m_nYGridSize, 1, GDT_Float64, m_papszGDALRasterOptions);
-   pDataSet->SetProjection(m_strGDALBasementDEMProjection.c_str());
-   pDataSet->SetGeoTransform(m_dGeoTransform);
-
-   nn = 0;
-   pdRaster = new double[m_nXGridSize * m_nYGridSize];
-   for (int nY = 0; nY < m_nYGridSize; nY++)
-   {
-      for (int nX = 0; nX < m_nXGridSize; nX++)
-      {
-         pdRaster[nn++] = m_pRasterGrid->m_Cell[nX][nY].dGetWaveHeight();
-      }
-   }
-
-   pBand = pDataSet->GetRasterBand(1);
-   pBand->SetNoDataValue(m_dMissingValue);
-   nRet = pBand->RasterIO(GF_Write, 0, 0, m_nXGridSize, m_nYGridSize, pdRaster, m_nXGridSize, m_nYGridSize, GDT_Float64, 0, 0, NULL);
-
-   if (nRet == CE_Failure)
-      return RTN_ERR_GRIDCREATE;
-
-   GDALClose(pDataSet);
-   delete[] pdRaster;
-   // DEBUG CODE ===========================================================================================================
-
-   // DEBUG CODE ===========================================================================================================
-   strOutFile = m_strOutPath;
-   strOutFile += "sea_wave_angle_CHECKPOINT_3_";
-   strOutFile += std::to_string(m_ulIter);
-   strOutFile += ".tif";
-
-   pDriver = GetGDALDriverManager()->GetDriverByName("gtiff");
-   pDataSet = pDriver->Create(strOutFile.c_str(), m_nXGridSize, m_nYGridSize, 1, GDT_Float64, m_papszGDALRasterOptions);
-   pDataSet->SetProjection(m_strGDALBasementDEMProjection.c_str());
-   pDataSet->SetGeoTransform(m_dGeoTransform);
-
-   nn = 0;
-   pdRaster = new double[m_nXGridSize * m_nYGridSize];
-   for (int nY = 0; nY < m_nYGridSize; nY++)
-   {
-      for (int nX = 0; nX < m_nXGridSize; nX++)
-      {
-         pdRaster[nn++] = m_pRasterGrid->m_Cell[nX][nY].dGetWaveAngle();
-      }
-   }
-
-   pBand = pDataSet->GetRasterBand(1);
-   pBand->SetNoDataValue(m_dMissingValue);
-   nRet = pBand->RasterIO(GF_Write, 0, 0, m_nXGridSize, m_nYGridSize, pdRaster, m_nXGridSize, m_nYGridSize, GDT_Float64, 0, 0, NULL);
-
-   if (nRet == CE_Failure)
-      return RTN_ERR_GRIDCREATE;
-
-   GDALClose(pDataSet);
-   delete[] pdRaster;
-   // DEBUG CODE ===========================================================================================================
+   // // DEBUG CODE ===========================================================================================================
+   // strOutFile = m_strOutPath;
+   // strOutFile += "sea_wave_angle_CHECKPOINT_3_";
+   // strOutFile += std::to_string(m_ulIter);
+   // strOutFile += ".tif";
+   //
+   // pDriver = GetGDALDriverManager()->GetDriverByName("gtiff");
+   // pDataSet = pDriver->Create(strOutFile.c_str(), m_nXGridSize, m_nYGridSize, 1, GDT_Float64, m_papszGDALRasterOptions);
+   // pDataSet->SetProjection(m_strGDALBasementDEMProjection.c_str());
+   // pDataSet->SetGeoTransform(m_dGeoTransform);
+   //
+   // nn = 0;
+   // pdRaster = new double[m_nXGridSize * m_nYGridSize];
+   // for (int nY = 0; nY < m_nYGridSize; nY++)
+   // {
+   //    for (int nX = 0; nX < m_nXGridSize; nX++)
+   //    {
+   //       pdRaster[nn++] = m_pRasterGrid->m_Cell[nX][nY].dGetWaveAngle();
+   //    }
+   // }
+   //
+   // pBand = pDataSet->GetRasterBand(1);
+   // pBand->SetNoDataValue(m_dMissingValue);
+   // nRet = pBand->RasterIO(GF_Write, 0, 0, m_nXGridSize, m_nYGridSize, pdRaster, m_nXGridSize, m_nYGridSize, GDT_Float64, 0, 0, NULL);
+   //
+   // if (nRet == CE_Failure)
+   //    return RTN_ERR_GRIDCREATE;
+   //
+   // GDALClose(pDataSet);
+   // delete[] pdRaster;
+   // // DEBUG CODE ===========================================================================================================
 
    // Interpolate these wave properties for all remaining coastline points. Do this in along-coastline sequence
    for (int nCoast = 0; nCoast < static_cast<int>(m_VCoast.size()); nCoast++)
@@ -1697,7 +1697,7 @@ void CSimulation::InterpolateCShoreOutput(vector<double> const* pVdProfileDistXY
       bTooShort = true;
       nTooShort = nProfileSize - nOutSize;
 
-      LogStream << m_ulIter << ": PROFILE IS TOO SHORT" << endl;
+      // LogStream << m_ulIter << ": CShore PROFILE IS TOO SHORT" << endl;
    }
 
    // // DEBUG CODE ========================================================================================================
@@ -1941,13 +1941,13 @@ void CSimulation::InterpolateWavePropertiesBetweenProfiles(int const nCoast, int
       m_VCoast[nCoast].SetRunUp(n, dRunUp);
    }
 
-   int const nNextProfile = pNextProfile->nGetCoastID();
+   // int const nNextProfile = pNextProfile->nGetCoastID();
 
    // If both this profile and the next profile are not in the active zone, then do no more
    if ((bFPIsEqual(dThisBreakingWaveHeight, DBL_NODATA, TOLERANCE)) && (bFPIsEqual(dNextBreakingWaveHeight, DBL_NODATA, TOLERANCE)))
    {
-      if (m_nLogFileDetail >= LOG_FILE_HIGH_DETAIL)
-         LogStream << m_ulIter << ": both profile " << pProfile->nGetCoastID() << " at coast point " << nThisCoastPoint << ", and profile " << nNextProfile << " at coast point " << nNextCoastPoint << ", are not in the active zone" << endl;
+      // if (m_nLogFileDetail >= LOG_FILE_HIGH_DETAIL)
+      //    LogStream << m_ulIter << ": both profile " << pProfile->nGetCoastID() << " at coast point " << nThisCoastPoint << ", and profile " << nNextProfile << " at coast point " << nNextCoastPoint << ", are not in the active zone" << endl;
       
       // Set the breaking wave height, breaking wave angle, and depth of breaking to DBL_NODATA
       for (int n = nThisCoastPoint; n < nNextCoastPoint; n++)

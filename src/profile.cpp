@@ -52,8 +52,8 @@ CGeomProfile::CGeomProfile(int const nCoast,int const nCoastPoint, int const nCo
       m_dDeepWaterWavePeriod(0),
       PtiStart(*pPtiStart),
       PtiEnd(*pPtiEnd),
-      m_pUpCoastAdjacentProfile(static_cast<CGeomProfile*>(0)),
-      m_pDownCoastAdjacentProfile(static_cast<CGeomProfile*>(0))
+      m_pUpCoastAdjacentProfile(NULL),
+      m_pDownCoastAdjacentProfile(NULL)
 {
 }
 
@@ -438,7 +438,6 @@ void CGeomProfile::SetDownCoastAdjacentProfile(CGeomProfile* pProfile)
 
 CGeomProfile* CGeomProfile::pGetDownCoastAdjacentProfile(void) const
 {
-   // TODO 055 No check to see if n < size()
    return m_pDownCoastAdjacentProfile;
 }
 

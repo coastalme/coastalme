@@ -77,29 +77,28 @@ int CSimulation::nCreateAllPolygons(void)
             // Now get a pointer to the next (down-coast) profile
             CGeomProfile* pNextProfile = pThisProfile->pGetDownCoastAdjacentProfile();
 
-            // Is this down-coast adjacent profile valid?
             bool bNextProfileIsOK = false;
             do
             {
-               if (pNextProfile == static_cast<CGeomProfile*>(0))
-               {
-                  LogStream << m_ulIter << ": nThisProfile = " << nThisProfile << " invalid down-coast adjacent profile, trying next down-coast adjacent profile" << endl;
+               // if (pNextProfile == NULL)       // TODO THIS GIVES CPPCHECK ERROR
+               // {
+               //    LogStream << m_ulIter << ": nThisProfile = " << nThisProfile << " invalid down-coast adjacent profile, trying next down-coast adjacent profile" << endl;
+               //
+               //    // Try the next-after-next profile
+               //    CGeomProfile* pNextNextProfile = pNextProfile->pGetDownCoastAdjacentProfile();
+               //    pNextProfile = pNextNextProfile;
+               //    continue;
+               // }
 
-                  // Try the next-after-next profile
-                  CGeomProfile* pNextNextProfile = pNextProfile->pGetDownCoastAdjacentProfile();
-                  pNextProfile = pNextNextProfile;
-                  continue;
-               }
-
-               // The down-coast profile is valid, so get its ID
+               // Get the ID of the next (down-coast) profile
                nNextProfile = pNextProfile->nGetCoastID();
 
-               /// Is the next profile OK?
+               // Is the next profile OK?
                bNextProfileIsOK = pNextProfile->bOKIncStartAndEndOfCoast();
                if (! bNextProfileIsOK)
                {
                   // Nope, the next profile is not OK
-                  LogStream << m_ulIter << ": down-coast adjacent profile = " << nNextProfile << " is not OK" << endl;
+                  // LogStream << m_ulIter << ": down-coast adjacent profile = " << nNextProfile << " is not OK" << endl;
 
                   // So try the following profile
                   CGeomProfile* pNextNextProfile = pNextProfile->pGetDownCoastAdjacentProfile();
@@ -108,8 +107,7 @@ int CSimulation::nCreateAllPolygons(void)
 
             } while (! bNextProfileIsOK);
 
-            LogStream << "Profile " << pNextProfile->nGetCoastID() << " is OK" << endl;;
-
+            // LogStream << "Profile " << pNextProfile->nGetCoastID() << " is OK" << endl;
 
             // Get the coast point at which this next profile starts
             int nNextProfileCoastPoint = pNextProfile->nGetCoastPoint();
@@ -1029,37 +1027,37 @@ int CSimulation::nDoPolygonSharedBoundaries(void)
       }
    }
 
-   // DEBUG CODE =================================================================================
-   for (int nCoast = 0; nCoast < static_cast<int>(m_VCoast.size()); nCoast++)
-   {
-      int nNumPoly = m_VCoast[nCoast].nGetNumPolygons();
-      for (int nPoly = 0; nPoly < nNumPoly; nPoly++)
-      {
-         CGeomCoastPolygon* pPolygon = m_VCoast[nCoast].pGetPolygon(nPoly);
-
-         int nNumUpCoastPolygons = pPolygon->nGetNumUpCoastAdjacentPolygons();
-         LogStream << "Polygon " << nPoly << " up-coast polygon(s) = ";
-         for (int nAdj = 0; nAdj < nNumUpCoastPolygons; nAdj++)
-         {
-            int nAdjPoly = pPolygon->nGetUpCoastAdjacentPolygon(nAdj);
-            LogStream << nAdjPoly;
-            if (nAdjPoly > nNumPoly-1)
-               LogStream << "***";
-         }
-
-         int nNumDownCoastPolygons = pPolygon->nGetNumDownCoastAdjacentPolygons();
-         LogStream << " down-coast polygon(s) = ";
-         for (int nAdj = 0; nAdj < nNumDownCoastPolygons; nAdj++)
-         {
-            int nAdjPoly = pPolygon->nGetDownCoastAdjacentPolygon(nAdj);
-            LogStream << nAdjPoly;
-            if (nAdjPoly > nNumPoly-1)
-               LogStream << "***";
-         }
-         LogStream << endl;
-      }
-   }
-   // DEBUG CODE =================================================================================
+   // // DEBUG CODE =================================================================================
+   // for (int nCoast = 0; nCoast < static_cast<int>(m_VCoast.size()); nCoast++)
+   // {
+   //    int nNumPoly = m_VCoast[nCoast].nGetNumPolygons();
+   //    for (int nPoly = 0; nPoly < nNumPoly; nPoly++)
+   //    {
+   //       CGeomCoastPolygon const* pPolygon = m_VCoast[nCoast].pGetPolygon(nPoly);
+   //
+   //       int nNumUpCoastPolygons = pPolygon->nGetNumUpCoastAdjacentPolygons();
+   //       LogStream << "Polygon " << nPoly << " up-coast polygon(s) = ";
+   //       for (int nAdj = 0; nAdj < nNumUpCoastPolygons; nAdj++)
+   //       {
+   //          int nAdjPoly = pPolygon->nGetUpCoastAdjacentPolygon(nAdj);
+   //          LogStream << nAdjPoly;
+   //          if (nAdjPoly > nNumPoly-1)
+   //             LogStream << "***";
+   //       }
+   //
+   //       int nNumDownCoastPolygons = pPolygon->nGetNumDownCoastAdjacentPolygons();
+   //       LogStream << " down-coast polygon(s) = ";
+   //       for (int nAdj = 0; nAdj < nNumDownCoastPolygons; nAdj++)
+   //       {
+   //          int nAdjPoly = pPolygon->nGetDownCoastAdjacentPolygon(nAdj);
+   //          LogStream << nAdjPoly;
+   //          if (nAdjPoly > nNumPoly-1)
+   //             LogStream << "***";
+   //       }
+   //       LogStream << endl;
+   //    }
+   // }
+   // // DEBUG CODE =================================================================================
 
    return RTN_OK;
 }

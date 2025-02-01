@@ -2016,13 +2016,19 @@ int CSimulation::nInterpolateWavesToPolygonCells(vector<double> const* pVdX, vec
                // Write this value to the array
                if (nDirection == 0)
                {
-                  pdRaster[n++] = VdOutX[m++];
-   //                LogStream << "nDirection = " << nDirection << " [" << nX << "][" << nY << "] = " << VpdOutX[n] << endl;
+                  if (m < static_cast<int>(VdOutX.size()))
+                  {
+                     pdRaster[n++] = VdOutX[m++];
+                     // LogStream << "nDirection = " << nDirection << " [" << nX << "][" << nY << "] = " << VpdOutX[n] << endl;
+                  }
                }
                else
                {
-                  pdRaster[n++] = VdOutY[m++];
-   //                LogStream << "nDirection = " << nDirection << " [" << nX << "][" << nY << "] = " << VpdOutY[n] << endl;
+                  if (m < static_cast<int>(VdOutY.size()))
+                  {
+                     pdRaster[n++] = VdOutY[m++];
+                     // LogStream << "nDirection = " << nDirection << " [" << nX << "][" << nY << "] = " << VpdOutY[n] << endl;
+                  }
                }
             }
          }

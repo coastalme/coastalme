@@ -67,6 +67,8 @@ int CSimulation::nCreateAllProfiles(void)
 
    int nProfileGlobalID = -1;
 
+   // TODO 089 When choosing locations for profiles, do coast first then interventions
+
    for (unsigned int nCoast = 0; nCoast < m_VCoast.size(); nCoast++)
    {
       int nProfile = 0;
@@ -190,7 +192,7 @@ int CSimulation::nCreateAllProfiles(void)
 
             if (nCoastPoint == 0)
             {
-               pThisProfile->SetUpCoastAdjacentProfile(static_cast<CGeomProfile*>(0));
+               pThisProfile->SetUpCoastAdjacentProfile(NULL);
 
                // LogStream << "nCoastPoint = " << nCoastPoint << " ThisProfile = " << nThisProfile << " ThisProfile UpCoast = " << pThisProfile->pGetUpCoastAdjacentProfile() << " ThisProfile DownCoast = " << pThisProfile->pGetDownCoastAdjacentProfile() << endl;
 
@@ -204,7 +206,7 @@ int CSimulation::nCreateAllProfiles(void)
             pThisProfile->SetUpCoastAdjacentProfile(pLastProfile);
 
             if (nCoastPoint == nCoastSize-1)
-               pThisProfile->SetDownCoastAdjacentProfile(static_cast<CGeomProfile*>(0));
+               pThisProfile->SetDownCoastAdjacentProfile(NULL);
 
             // LogStream << "nCoastPoint = " << nCoastPoint << " LastProfile = " << nLastProfile << " LastProfile UpCoast = " << pLastProfile->pGetUpCoastAdjacentProfile() << " LastProfile DownCoast = " << pLastProfile->pGetDownCoastAdjacentProfile() << " ThisProfile = " << nThisProfile << " ThisProfile UpCoast = " << pThisProfile->pGetUpCoastAdjacentProfile() << " ThisProfile DownCoast = " << pThisProfile->pGetDownCoastAdjacentProfile() << endl;
 
@@ -962,7 +964,7 @@ void CSimulation::CheckForIntersectingProfiles(void)
                   CGeomProfile* pSecondProfile = m_VCoast[nCoast].pGetProfileAtCoastPoint(nSecondCoastPoint);
                   int nSecondProfile = pSecondProfile->nGetCoastID();
 
-                  LogStream << m_ulIter << ": " << (nDirection == DIRECTION_DOWNCOAST ? "down" : "up") << "-coast search, nCoastPoint = " << nCoastPoint << " nSecondCoastPoint = " << nSecondCoastPoint << " (profiles " << pFirstProfile->nGetCoastID() << " and " << pSecondProfile->nGetCoastID() << ")" << endl;
+                  // LogStream << m_ulIter << ": " << (nDirection == DIRECTION_DOWNCOAST ? "down" : "up") << "-coast search, nCoastPoint = " << nCoastPoint << " nSecondCoastPoint = " << nSecondCoastPoint << " (profiles " << pFirstProfile->nGetCoastID() << " and " << pSecondProfile->nGetCoastID() << ")" << endl;
 
                   // Only check these profiles for intersection if both are problem-free
                   if (! (pFirstProfile->bProfileOK()) || (! pSecondProfile->bProfileOK()))
