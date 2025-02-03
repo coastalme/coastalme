@@ -168,9 +168,7 @@ Enjoy!
    Why do we get patches of sediment in the sea?
    TODO 085 Complete support for multiple coastlines. This is partly in place, but some things remain to be done
    TODO 086 Try alternatives to GDALGridCreate(), e.g. https://github.com/delfrrr/delaunator-cpp?tab=readme-ov-file *** NOT YET IN ISSUES
-   TODO 087 Is there a problem if profile is not long enough for user-input depth of closure? *** NOT YET IN ISSUES
    TODO 088 In (almost) all whole-grid loops, immediately continue if cell is hinterland (but not when calculating cliff collapse) *** NOT YET IN ISSUES
-   TODO 089 When choosing locations for profiles, do coast first then interventions *** NOT YET IN ISSUES
 
    OUTPUT
    TODO 065 Get GPKG output working: GDAL 3.9.1 does not yet implement this correctly. Currently is OK for vector output (but is very slow), not yet working for raster output
@@ -187,7 +185,7 @@ Enjoy!
    TODO 074 Output history of what landforms are on a particular cell or cells. User inputs cell(s), how?
    TODO 082 Also show m_dStartIterUnconsFineAllCells etc. in log file
 
-   089 is max
+   088 is max
 
    COMPLETED
    TODO 003 Make coastline curvature moving window size a user input DONE in 1.1.22
@@ -207,7 +205,8 @@ Enjoy!
    TODO 050 Update for recent versions of Windows DONE 1.2.3, 2 Dec 2024
    TODO 037 Need more info on nFindIndex() DONE 1.2.3, 2 Dec 2024
    Improve coast normals DONE 1.2.3, 20 Dec 2024
-   TODO 057 Check this please Manuel DONE 1.2.4, 4 Han 2025 *** TO ISSUES
+   TODO 057 Check this please Manuel DONE 1.2.4, 4 Jan 2025 *** TO ISSUES
+   TODO 087 Is there a problem if profile is not long enough for user-input depth of closure? DONE 1.3.0 2 Feb 2025 *** TO ISSUES
 
 */
 
@@ -703,7 +702,7 @@ double const CLIFF_COLLAPSE_HEIGHT_INCREMENT = 0.1;      // Increment the fracti
 
 double const DBL_NODATA = -9999;
 
-string const PROGRAM_NAME = "Coastal Modelling Environment (CoastalME) version 1.3.0 (01 Feb 2025)";
+string const PROGRAM_NAME = "Coastal Modelling Environment (CoastalME) version 1.3.0 (03 Feb 2025)";
 string const PROGRAM_NAME_SHORT = "CME";
 string const CME_INI = "cme.ini";
 

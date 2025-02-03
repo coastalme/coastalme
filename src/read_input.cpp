@@ -2959,10 +2959,8 @@ bool CSimulation::bReadRunDataFile(void)
          if (! strErr.empty())
          {
             // Error in input to run details file
-            cerr << endl
-                 << ERR << strErr << ".\nPlease edit " << m_strDataPathName << " and change this line:" << endl
-                 << "'" << strRec << "'" << endl
-                 << endl;
+            cerr << endl << ERR << strErr << ".\nPlease edit " << m_strDataPathName << " and change this line:" << endl;
+            cerr << "'" << strRec << "'" << endl << endl;
             InStream.close();
             return false;
          }

@@ -60,6 +60,9 @@ private:
    //! Has this profile hit another profile?
    bool m_bHitAnotherProfile;
 
+   //! Is this an intervention profile?
+   bool m_bIntervention;
+
    //! The coast from which this profile projects
    int m_nCoast;
 
@@ -106,7 +109,7 @@ private:
 protected:
 
 public:
-   explicit CGeomProfile(int const, int const, int const, int const, CGeom2DIPoint const*, CGeom2DIPoint const*);
+   explicit CGeomProfile(int const, int const, int const, int const, CGeom2DIPoint const*, CGeom2DIPoint const*, bool const);
    ~CGeomProfile(void) override;
 
    void DeleteProfile(void);
@@ -188,6 +191,7 @@ public:
    void SetProfileDeepWaterWavePeriod(double const);
    double dGetProfileDeepWaterWavePeriod(void) const;
 
+   bool bIsIntervention(void) const;
 };
 #endif //PROFILE_H
 

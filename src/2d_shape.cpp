@@ -98,7 +98,7 @@ CGeom2DPoint* CA2DShape::pPtBack(void)
 
 // int CA2DShape::nLookUp(CGeom2DPoint* Pt)
 // {
-//    auto it = std::find(m_VPoints.begin(), m_VPoints.end(), *Pt);
+//    auto it = find(m_VPoints.begin(), m_VPoints.end(), *Pt);
 //    if (it != m_VPoints.end())
 //       return it - m_VPoints.begin();
 //    else

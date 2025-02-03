@@ -58,14 +58,6 @@ int CSimulation::nDoUnconsErosionOnPolygon(int const nCoast, CGeomCoastPolygon* 
    int nDownCoastProfile = pPolygon->nGetDownCoastProfile();
    CGeomProfile const* pDownCoastProfile = m_VCoast[nCoast].pGetProfile(nDownCoastProfile);
 
-
-   // // DEBUG CODE =====================
-   // int nNumUpCoastCell = pUpCoastProfile->nGetNumCellsInProfile();
-   // int nNumDownCoastCell = pDownCoastProfile->nGetNumCellsInProfile();
-   // LogStream << "pUpCoastProfile->nGetNumCellsInProfile() = " << nNumUpCoastCell << " pDownCoastProfile->nGetNumCellsInProfile() = " << nNumDownCoastCell << endl;
-   // // DEBUG CODE =====================
-
-
    // We will use only part of the up-coast boundary profile, seaward as far as the depth of closure. First find the seaward end point of this up-coast part-profile. Note that this does not change as the landwards offset changes
    int nIndex = pUpCoastProfile->nGetCellGivenDepth(m_pRasterGrid, m_dDepthOfClosure);
    if (nIndex == INT_NODATA)
@@ -73,10 +65,7 @@ int CSimulation::nDoUnconsErosionOnPolygon(int const nCoast, CGeomCoastPolygon* 
       if (m_nLogFileDetail >= LOG_FILE_HIGH_DETAIL)
          LogStream << m_ulIter << ": " << ERR << "while eroding unconsolidated " + strTexture + " sediment on polygon " << pPolygon->nGetCoastID() << ", could not find the seaward end point of the up-coast profile (" << nUpCoastProfile << ") for depth of closure = " << m_dDepthOfClosure << endl;
 
-      // return RTN_ERR_NO_SEAWARD_END_OF_PROFILE_2;
-
-      // Should we just be continuing here? TODO 087
-      nIndex = pUpCoastProfile->nGetProfileSize();
+      return RTN_ERR_NO_SEAWARD_END_OF_PROFILE_2;
    }
 
    // The part-profile length is one greater than nIndex, since pPtiGetCellGivenDepth() returns the index of the cell at the depth of closure

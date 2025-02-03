@@ -109,7 +109,7 @@ void CA2DIShape::AppendIfNotAlready(int const nX, int const nY)
 
 // int CA2DIShape::nLookUp(CGeom2DIPoint* Pti)
 // {
-//    auto it = std::find(m_VPoints.begin(), m_VPoints.end(), *Pti);
+//    auto it = find(m_VPoints.begin(), m_VPoints.end(), *Pti);
 //    if (it != m_VPoints.end())
 //       return it - m_VPoints.begin();
 //    else

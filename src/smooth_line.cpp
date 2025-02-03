@@ -458,7 +458,7 @@ void LUDecomp(Matrix A, int const N, int const np, int nIndexArray[], int *nDCod
 {
    if (N >= np)
    {
-      cerr << ERR << "in LUDecomp" << endl;
+      // cerr << ERR << "in LUDecomp" << endl;
       return;
    }
 

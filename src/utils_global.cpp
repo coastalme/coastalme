@@ -30,6 +30,11 @@ using std::sprintf;
 
 #include <sstream>
 using std::stringstream;
+using std::istringstream;
+
+#include <ios>
+using std::fixed;
+using std::right;
 
 #include <iomanip>
 using std::setw;
@@ -65,7 +70,7 @@ int nRound(double const d)
 //===============================================================================================================================
 bool bIsStringValidDouble(string& str)
 {
-   std::istringstream iStr(str);
+   istringstream iStr(str);
    double dDummy;
 
    if (!(iStr >> dDummy))
@@ -109,7 +114,7 @@ ostream& operator<< (ostream& ostr, const FillToWidth& args)
 string strDbl(double const dX, int const nDigits)
 {
    stringstream ss;
-   ss << std::fixed;
+   ss << fixed;
    ss.precision(nDigits);      // Set the number of places after decimal
    ss << dX;
    return ss.str();
@@ -121,7 +126,7 @@ string strDbl(double const dX, int const nDigits)
 string strDblRight(double const dX, int const nDigits, int const nWidth, bool const bShowDash)
 {
    stringstream ss;
-   ss << std::fixed << std::right;
+   ss << fixed << right;
    ss.fill(' ');
    ss.width(nWidth-1);
    
@@ -148,7 +153,7 @@ string strDblRight(double const dX, int const nDigits, int const nWidth, bool co
 string strIntRight(int const nX, int const nWidth)
 {
    stringstream ss;
-   ss << std::fixed << std::right;
+   ss << fixed << right;
    ss.fill(' ');              // Fill space around displayed number
    ss.width(nWidth-1);        // Set width around displayed number
    ss << nX;
@@ -257,7 +262,7 @@ string strLeft(const char* pchIn, int const nWidth)
 string strRightPerCent(double const d1, double const d2, int const nWidth, int const nDigits, bool const bShowDash)
 {
    stringstream ss;
-   ss << std::fixed << std::right;
+   ss << fixed << right;
 
    // Are either of the inputs zero?
    if ((bFPIsEqual(d1, 0.0, TOLERANCE)) || (bFPIsEqual(d2, 0.0, TOLERANCE)))
@@ -276,7 +281,7 @@ string strRightPerCent(double const d1, double const d2, int const nWidth, int c
       double dResult = 100 * d1 / d2;
 
       stringstream ssResult;
-      ssResult << std::fixed << std::right;
+      ssResult << fixed << right;
       ssResult.precision(nDigits);
       ssResult << "(" << dResult << "%)";
 

@@ -221,6 +221,7 @@ public:
    bool bIsProfileAtCoastPoint(int const) const;
    CGeomProfile* pGetProfileAtCoastPoint(int const) const;
    CGeomProfile* pGetProfileWithDownCoastSeq(int const) const;
+   CGeomProfile* pGetProfileWithUpCoastSeq(int const) const;
 
    void SetCoastDeepWaterWaveHeight(int const, double const);
    // double dGetCoastDeepWaterWaveHeight(int const) const;

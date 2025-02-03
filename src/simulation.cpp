@@ -24,6 +24,9 @@ You should have received a copy of the GNU General Public License along with thi
 ==============================================================================================================================*/
 #include <assert.h>
 
+#include <ios>
+using std::fixed;
+
 #include <iostream>
 using std::cerr;
 using std::cout;
@@ -935,7 +938,7 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
       if (m_nLogFileDetail >= LOG_FILE_MIDDLE_DETAIL)
          LogStream << "TIMESTEP " << m_ulIter << " " << string(154, '=') << endl;
       
-      LogStream << std::fixed << setprecision(3);
+      LogStream << fixed << setprecision(3);
       
       // Check to see if there is a new intervention in place: if so, update it on the RasterGrid array
       nRet = nUpdateIntervention();
@@ -1129,7 +1132,7 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
       //       // DEBUG CODE ===========================================================================================================
       //       string strOutFile = m_strOutPath;
       //       strOutFile += "sea_wave_height_CHECKPOINT_";
-      //       strOutFile += std::to_string(m_ulIter);
+      //       strOutFile += to_string(m_ulIter);
       //       strOutFile += ".tif";
       //
       //       GDALDriver* pDriver = GetGDALDriverManager()->GetDriverByName("gtiff");
@@ -1161,7 +1164,7 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
       //       // DEBUG CODE ===========================================================================================================
       //       strOutFile = m_strOutPath;
       //       strOutFile += "sea_wave_angle_CHECKPOINT_";
-      //       strOutFile += std::to_string(m_ulIter);
+      //       strOutFile += to_string(m_ulIter);
       //       strOutFile += ".tif";
       //
       //       pDriver = GetGDALDriverManager()->GetDriverByName("gtiff");
@@ -1271,7 +1274,7 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
       //       // DEBUG CODE ===========================================================================================================
       //       string strOutFile = m_strOutPath;
       //       strOutFile += "sea_wave_height_CHECKPOINT_";
-      //       strOutFile += std::to_string(m_ulIter);
+      //       strOutFile += to_string(m_ulIter);
       //       strOutFile += ".tif";
       //
       //       GDALDriver* pDriver = GetGDALDriverManager()->GetDriverByName("gtiff");
@@ -1303,7 +1306,7 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
       //       // DEBUG CODE ===========================================================================================================
       //       strOutFile = m_strOutPath;
       //       strOutFile += "sea_wave_angle_CHECKPOINT_";
-      //       strOutFile += std::to_string(m_ulIter);
+      //       strOutFile += to_string(m_ulIter);
       //       strOutFile += ".tif";
       //
       //       pDriver = GetGDALDriverManager()->GetDriverByName("gtiff");

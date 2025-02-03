@@ -34,7 +34,7 @@ using std::find;
 #include "profile.h"
 
 //! Constructor with initialization list, requires one parameter (the coast point at which the profile starts)
-CGeomProfile::CGeomProfile(int const nCoast,int const nCoastPoint, int const nCoastID, int const nGlobalID, CGeom2DIPoint const* pPtiStart, CGeom2DIPoint const* pPtiEnd)
+CGeomProfile::CGeomProfile(int const nCoast,int const nCoastPoint, int const nCoastID, int const nGlobalID, CGeom2DIPoint const* pPtiStart, CGeom2DIPoint const* pPtiEnd, bool const bIntervention)
     : m_bStartOfCoast(false),
       m_bEndOfCoast(false),
       m_bCShoreProblem(false),
@@ -43,6 +43,7 @@ CGeomProfile::CGeomProfile(int const nCoast,int const nCoastPoint, int const nCo
       m_bTooShort(false),
       m_bTruncated(false),
       m_bHitAnotherProfile(false),
+      m_bIntervention(bIntervention),
       m_nCoast(nCoast),
       m_nCoastPoint(nCoastPoint),
       m_nCoastID(nCoastID),
@@ -567,4 +568,10 @@ void CGeomProfile::SetProfileDeepWaterWavePeriod(double const dWavePeriod)
 double CGeomProfile::dGetProfileDeepWaterWavePeriod(void) const
 {
    return m_dDeepWaterWavePeriod;
+}
+
+//! Returns true if this is an intervention profile
+bool CGeomProfile::bIsIntervention(void) const
+{
+   return m_bIntervention;
 }

@@ -443,11 +443,19 @@ void CRWCoast::CreateProfileDownCoastIndex(void)
    }
 }
 
-//! Returns a pointer to a coastline-normal profile in along-coast sequence
+//! Returns a pointer to a coastline-normal profile in down-coast sequence
 CGeomProfile* CRWCoast::pGetProfileWithDownCoastSeq(int const nProf) const
 {
    // Note no check whether n < size()
    return m_VpProfileDownCoastSeq[nProf];
+}
+
+//! Returns a pointer to a coastline-normal profile in up-coast sequence
+CGeomProfile* CRWCoast::pGetProfileWithUpCoastSeq(int const nProf) const
+{
+   // Note no check whether n < size()
+   int nSize = static_cast<int>(m_VpProfileDownCoastSeq.size());
+   return m_VpProfileDownCoastSeq[nSize - (nProf + 1)];
 }
 
 //! Returns a pointer to the profile which is adjacent to and down-coast from the given profile pointer. It returns NULL if there is no valid down-coast profile
