@@ -1194,6 +1194,7 @@ bool CSimulation::bReadRunDataFile(void)
                   m_bCoastSave =
                   m_bWaveAngleAndHeightSave =
                   m_bNormalsSave =
+                  m_bInvalidNormalsSave =       // DEBUG CODE
                   m_bAvgWaveAngleAndHeightSave =
                   m_bWaveEnergySinceCollapseSave =
                   m_bMeanWaveEnergySave =
@@ -2931,22 +2932,12 @@ bool CSimulation::bReadRunDataFile(void)
             break;
 
          case 85:
-            // Erode shore platform in alternate direction each timestep?
-            strRH = strToLower(&strRH);
-
-            m_bErodeShorePlatformAlternateDirection = false;
-            if (strRH.find("y") != string::npos)
-               m_bErodeShorePlatformAlternateDirection = true;
-            break;
-
-         case 86:
             // Size of moving window for coastline curvature calculation (must be odd)
             if (! bIsStringValidInt(strRH))
             {
                strErr = "line " + to_string(nLine) + ": invalid integer for size of moving window for coastline curvature calculation '" + strRH + "' in " + m_strDataPathName;
                break;
             }
-
             m_nCoastCurvatureMovingWindowSize = stoi(strRH);
 
             if ((m_nCoastCurvatureMovingWindowSize <= 0) || ! (m_nCoastCurvatureMovingWindowSize % 2))

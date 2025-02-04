@@ -135,13 +135,14 @@ public:
    void SetHitCoast(bool const);
    bool bHitCoast(void) const;
    void SetTooShort(bool const);
-   // bool bTooShort(void) const;
+   bool bTooShort(void) const;
    void SetTruncated(bool const);
-   // bool bTruncated(void) const;
+   bool bTruncated(void) const;
    void SetHitAnotherProfile(bool const);
    bool bHitAnotherProfile(void) const;
 
    bool bProfileOK(void) const;
+   bool bProfileOKIncTruncHit(void) const;
    bool bOKIncStartAndEndOfCoast(void) const;
    // bool bOKIncStartOfCoast(void) const;
 

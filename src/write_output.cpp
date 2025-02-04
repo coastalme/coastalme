@@ -569,7 +569,6 @@ void CSimulation::WriteStartRunDetails(void)
    if (m_bOutputErosionPotentialData)
       OutStream << " (see " << m_strOutPath << EROSION_POTENTIAL_LOOKUP_FILE << ")";
    OutStream << endl;
-   OutStream << " Erode coast in alternate directions?                      \t: " << (m_bErodeShorePlatformAlternateDirection ? "Y" : "N") << endl;
    OutStream << " Size of moving window for calculating coastline curvature \t: " << m_nCoastCurvatureMovingWindowSize << endl;
 
    OutStream << endl

@@ -332,9 +332,6 @@ private:
    //! Omit the east edge of the grid from coast-end searches?
    bool m_bOmitSearchEastEdge;
 
-   //! Erode the shore platform in alternate directions each iteration?
-   bool m_bErodeShorePlatformAlternateDirection;
-
    //! Simulate shore platform erosion?
    bool m_bDoShorePlatformErosion;
 
@@ -1584,7 +1581,7 @@ private:
    static void CalcDeanProfile(vector<double>*, double const, double const, double const, bool const, int const, double const);
    static double dSubtractProfiles(vector<double> const*, vector<double> const*, vector<bool> const*);
    void RasterizeCliffCollapseProfile(vector<CGeom2DPoint> const*, vector<CGeom2DIPoint>*) const;
-   int nCalcPotentialPlatformErosionOnProfile(int const, int const);
+   int nCalcPotentialPlatformErosionOnProfile(int const, CGeomProfile*);
    int nCalcPotentialPlatformErosionBetweenProfiles(int const, CGeomProfile*, int const);
    void ConstructParallelProfile(int const, int const, int const, int const, int const, vector<CGeom2DIPoint>* const, vector<CGeom2DIPoint>*, vector<CGeom2DPoint>*);
    double dCalcBeachProtectionFactor(int const, int const, double const);

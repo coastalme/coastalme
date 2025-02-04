@@ -163,7 +163,9 @@ int CSimulation::nDoAllPropagateWaves(void)
       int nCoastSize = m_VCoast[nCoast].nGetCoastlineSize();
       int nNumProfiles = m_VCoast[nCoast].nGetNumProfiles();
 
-      // Calculate wave properties at every point along each valid profile, and for the cells under the profiles. Do this in a down-coast sequence
+      static bool bDownCoast = true;
+
+      // Calculate wave properties at every point along each valid profile, and for the cells under the profiles. Do this alternately in up-coast and down-coast sequence
       for (int nn = 0; nn < nNumProfiles; nn++)
       {
          vector<bool> VbBreaking;
@@ -172,12 +174,12 @@ int CSimulation::nDoAllPropagateWaves(void)
          vector<double> VdHeightX;
          vector<double> VdHeightY;
 
-         CGeomProfile* pProfile = m_VCoast[nCoast].pGetProfileWithDownCoastSeq(nn);
+         CGeomProfile* pProfile;
 
-         // // DEBUG CODE ======================================================================================================================
-         // int nProfileCells = pProfile->nGetNumCellsInProfile();
-         // LogStream << m_ulIter << ": coast " << nCoast << " profile " << pProfile->nGetCoastID() << " number of cells in profile = " << nProfileCells << endl;
-         // // DEBUG CODE ======================================================================================================================
+         if (bDownCoast)
+            pProfile = m_VCoast[nCoast].pGetProfileWithDownCoastSeq(nn);
+         else
+            pProfile = m_VCoast[nCoast].pGetProfileWithUpCoastSeq(nn);
 
          int nRet = nCalcWavePropertiesOnProfile(nCoast, nCoastSize, pProfile, &VdX, &VdY, &VdHeightX, &VdHeightY, &VbBreaking);
          if (nRet != RTN_OK)
@@ -214,6 +216,8 @@ int CSimulation::nDoAllPropagateWaves(void)
          VdHeightYAll.insert(VdHeightYAll.end(), VdHeightY.begin(), VdHeightY.end());
          VbBreakingAll.insert(VbBreakingAll.end(), VbBreaking.begin(), VbBreaking.end());
       }
+
+      bDownCoast = ! bDownCoast;
    }
 
    // OK, do we have some profiles other than start of coast or end of coast profiles in the all-profile vectors? We need to check this, because GDALGridCreate() in nInterpolateWavePropertiesToWithinPolygonCells() does not work if we give it only a start-of-coast or an end-of-coast profile to work with TODO 006 Is this still true?

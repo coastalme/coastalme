@@ -171,11 +171,11 @@ void CGeomProfile::SetTooShort(bool const bFlag)
    m_bTooShort = bFlag;
 }
 
-// //! Returns the switch which indicates whether this profile is too short to be useful
-// bool CGeomProfile::bTooShort(void) const
-// {
-//    return m_bTooShort;
-// }
+//! Returns the switch which indicates whether this profile is too short to be useful
+bool CGeomProfile::bTooShort(void) const
+{
+   return m_bTooShort;
+}
 
 //! Sets a switch which indicates whether this profile is truncated
 void CGeomProfile::SetTruncated(bool const bFlag)
@@ -183,11 +183,11 @@ void CGeomProfile::SetTruncated(bool const bFlag)
    m_bTruncated = bFlag;
 }
 
-// //! Returns the switch which indicates whether this profile is truncated
-// bool CGeomProfile::bTruncated(void) const
-// {
-//    return m_bTruncated;
-// }
+//! Returns the switch which indicates whether this profile is truncated
+bool CGeomProfile::bTruncated(void) const
+{
+   return m_bTruncated;
+}
 
 //! Sets a switch which indicates whether this profile hits another profile
 void CGeomProfile::SetHitAnotherProfile(bool const bFlag)
@@ -218,7 +218,22 @@ bool CGeomProfile::bProfileOK(void) const
    return false;
 }
 
-//! Returns true if this is a problem-free profile (however it could still be a start-of-coast or an end-of-coast profile)
+//! Returns true if this is a problem-free profile, and is not a start-of-coast or an end-of-coast profile. But it can be truncated or hit another profile
+bool CGeomProfile::bProfileOKIncTruncHit(void) const
+{
+   // All profiles without problems, but not start- or end-of-coast profiles
+   if ((! m_bStartOfCoast) &&
+       (! m_bEndOfCoast) &&
+       (! m_bHitLand) &&
+       (! m_bHitCoast) &&
+       (! m_bTooShort) &&
+       (! m_bCShoreProblem))
+      return true;
+
+   return false;
+}
+
+//! Returns true if this is a problem-free profile (however it could be a start-of-coast or an end-of-coast profile)
 bool CGeomProfile::bOKIncStartAndEndOfCoast(void) const
 {
    // All profiles without problems, including start- and end-of-coast profiles

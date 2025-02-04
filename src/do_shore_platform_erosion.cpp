@@ -92,7 +92,7 @@ int CSimulation::nDoAllShorePlatFormErosion(void)
    // TODO 023 Only do potential erosion if cell is in a polygon
 
    // Set direction
-   static bool bForward = true;
+   static bool bDownCoast = true;
 
    // Do this for each coast
    for (int nCoast = 0; nCoast < static_cast<int>(m_VCoast.size()); nCoast++)
@@ -102,7 +102,13 @@ int CSimulation::nDoAllShorePlatFormErosion(void)
       // Calculate potential platform erosion along each coastline-normal profile, do in down-coast sequence
       for (int nn = 0; nn < nNumProfiles; nn++)
       {
-         int const nRet = nCalcPotentialPlatformErosionOnProfile(nCoast, nn);
+         CGeomProfile* pProfile;
+         if (bDownCoast)
+            pProfile = m_VCoast[nCoast].pGetProfileWithDownCoastSeq(nn);
+         else
+            pProfile = m_VCoast[nCoast].pGetProfileWithUpCoastSeq(nn);
+
+         int const nRet = nCalcPotentialPlatformErosionOnProfile(nCoast, pProfile);
          if (nRet != RTN_OK)
             return nRet;
       }
@@ -123,9 +129,8 @@ int CSimulation::nDoAllShorePlatFormErosion(void)
       }
    }
 
-   // If desired, swap direction for next timestep
-   if (m_bErodeShorePlatformAlternateDirection)
-      bForward = ! bForward;
+   // Swap direction for next timestep
+   bDownCoast = ! bDownCoast;
 
    // Fills in 'holes' in the potential platform erosion i.e. orphan cells which get omitted because of rounding problems
    FillPotentialPlatformErosionHoles();
@@ -157,10 +162,8 @@ int CSimulation::nDoAllShorePlatFormErosion(void)
 //===============================================================================================================================
 //! Calculates potential (i.e. unconstrained by available sediment) erosional lowering of the shore platform for a single coastline-normal profile, due to wave action. This routine uses a behavioural rule to modify the original surface elevation profile geometry, in which erosion rate/slope = f(d/Db) based on Walkden & Hall (2005). Originally coded in Matlab by Andres Payo
 //===============================================================================================================================
-int CSimulation::nCalcPotentialPlatformErosionOnProfile(int const nCoast, int const n)
+int CSimulation::nCalcPotentialPlatformErosionOnProfile(int const nCoast, CGeomProfile* pProfile)
 {
-   CGeomProfile *const pProfile = m_VCoast[nCoast].pGetProfileWithDownCoastSeq(n);
-
    // Only work on this profile if it is problem-free TODO 024 Or if it has just hit dry land?
    if (! pProfile->bOKIncStartAndEndOfCoast())               //  || (pProfile->nGetProblemCode() == PROFILE_DRYLAND))
       return RTN_OK;
@@ -439,8 +442,8 @@ int CSimulation::nCalcPotentialPlatformErosionBetweenProfiles(int const nCoast, 
       if (bFPIsEqual(dDepthOfBreaking, DBL_NODATA, TOLERANCE))
       {
          // This parallel profile is not in the active zone, so no platform erosion here. Move on to the next point along the coastline in this direction
-         if (m_nLogFileDetail == LOG_FILE_ALL)
-            LogStream << m_ulIter << ": not in active zone at coastline " << nCoast << " coast point " << nThisPointOnCoast << " when constructing parallel profile for potential platform erosion. Working from profile " << pProfile->nGetCoastID() << ", " << (nDirection == DIRECTION_DOWNCOAST ? "down" : "up") << "-coast, dist from profile = " << nDistFromProfile << endl;
+         // if (m_nLogFileDetail == LOG_FILE_ALL)
+            // LogStream << m_ulIter << ": not in active zone at coastline " << nCoast << " coast point " << nThisPointOnCoast << " when constructing parallel profile for potential platform erosion. Working from profile " << pProfile->nGetCoastID() << ", " << (nDirection == DIRECTION_DOWNCOAST ? "down" : "up") << "-coast, dist from profile = " << nDistFromProfile << endl;
 
          continue;
       }
