@@ -1577,7 +1577,7 @@ private:
    void TruncateOneProfileRetainOtherProfile(int const, CGeomProfile*, CGeomProfile*, double const, double const, int const, int const, bool const);
    int nInsertPointIntoProfilesIfNeededThenUpdate(int const, CGeomProfile*, double const, double const, int const, CGeomProfile*, int const, bool const);
    void TruncateProfileAndAppendNew(int const, CGeomProfile*, int const, vector<CGeom2DPoint> const*, vector<vector<pair<int, int>>> const*);
-   void CreateRasterizedProfile(int const, CGeomProfile*, CGeom2DIPoint const*, CGeom2DIPoint const*, vector<CGeom2DIPoint>*, vector<bool>*, bool&, bool&, bool&, bool&, bool&);
+   void CreateRasterizedProfile(int const, CGeomProfile*, CGeom2DIPoint const*, CGeom2DIPoint const*, vector<CGeom2DIPoint>*, vector<bool>*, bool&, bool&, bool&, bool& /*, bool&*/);     // TODO 015
    static void CalcDeanProfile(vector<double>*, double const, double const, double const, bool const, int const, double const);
    static double dSubtractProfiles(vector<double> const*, vector<double> const*, vector<bool> const*);
    void RasterizeCliffCollapseProfile(vector<CGeom2DPoint> const*, vector<CGeom2DIPoint>*) const;

@@ -383,7 +383,7 @@ void CSimulation::LocateAndCreateProfiles(int const nCoast, int& nProfile, int& 
          // We need to mark points on either side of this profile so that we don't get profiles which are too close together. This is straightforward for non-intervention profiles, but best-placed profiles on narrow intervention structures may need to be quite close. So guess in a value for number of points to mark on interventions TODO 011
          double dNumToMark = nProfileHalfAvgSpacing;
          if (bIntervention)
-            dNumToMark = 2;
+            dNumToMark = 3;
 
          // Mark points on either side of the profile
          for (int m = 1; m < dNumToMark; m++)
@@ -924,8 +924,7 @@ CGeom2DPoint CSimulation::PtChooseEndPoint(int const nHand, CGeom2DPoint const *
 //===============================================================================================================================
 void CSimulation::CheckForIntersectingProfiles(void)
 {
-   int nMaxDistMultiplier = 7;      // Arbitrary
-   int nMaxDist = static_cast<int>(m_dCoastNormalAvgSpacing) * nMaxDistMultiplier;
+   int nMaxDist = static_cast<int>(m_dCoastNormalAvgSpacing) * PROFILE_CHECK_ALONG_COAST_MULTIPLIER;
 
    // Do once for every coastline object
    int nCoastLines = static_cast<int>(m_VCoast.size());
@@ -1344,13 +1343,13 @@ void CSimulation::MarkProfilesOnGrid(int const nCoast, int& nValidProfiles)
       bool bTruncated = false;
       bool bHitCoast = false;
       bool bHitLand = false;
-      bool bHitAnotherProfile = false;
+      // bool bHitAnotherProfile = false;       // TODO 015
 
       CGeom2DIPoint PtiStart = *pProfile->pPtiGetStartPoint();
       CGeom2DIPoint PtiEnd = *pProfile->pPtiGetEndPoint();
-      CreateRasterizedProfile(nCoast, pProfile, &PtiStart, &PtiEnd, &VCellsToMark, &bVShared, bTooShort, bTruncated, bHitCoast, bHitLand, bHitAnotherProfile);
+      CreateRasterizedProfile(nCoast, pProfile, &PtiStart, &PtiEnd, &VCellsToMark, &bVShared, bTooShort, bTruncated, bHitCoast, bHitLand /*, bHitAnotherProfile*/);     // TODO 015
 
-      if ((bTruncated && (! ACCEPT_SHORT_PROFILES)) || bTooShort || bHitCoast || bHitLand || bHitAnotherProfile)
+      if ((bTruncated && (! ACCEPT_SHORT_PROFILES)) || bTooShort || bHitCoast || bHitLand /*|| bHitAnotherProfile*/)
          continue;
 
       // This profile is fine
@@ -1398,12 +1397,11 @@ void CSimulation::MarkProfilesOnGrid(int const nCoast, int& nValidProfiles)
 //===============================================================================================================================
 //! Given a pointer to a coastline-normal profile, returns an output vector of cells which are 'under' every line segment of the profile. If there is a problem with the profile (e.g. a rasterized cell is dry land or coast, or the profile has to be truncated) then we pass this back as an error code
 //===============================================================================================================================
-void CSimulation::CreateRasterizedProfile(int const nCoast, CGeomProfile* pProfile, CGeom2DIPoint const* pPtiStart, CGeom2DIPoint const* pPtiEnd, vector<CGeom2DIPoint>* pVIPointsOut, vector<bool>* pbVShared, bool& bTooShort, bool& bTruncated, bool& bHitCoast, bool& bHitLand, bool& bHitAnotherProfile)
+void CSimulation::CreateRasterizedProfile(int const nCoast, CGeomProfile* pProfile, CGeom2DIPoint const* pPtiStart, CGeom2DIPoint const* pPtiEnd, vector<CGeom2DIPoint>* pVIPointsOut, vector<bool>* pbVShared, bool& bTooShort, bool& bTruncated, bool& bHitCoast, bool& bHitLand /*, bool& bHitAnotherProfile*/)      // TODO 015
 {
    int nProfile = pProfile->nGetCoastID();
    int nSeg = 0;
    int nNumSegments = pProfile->nGetNumLineSegments();
-   // int nNumProfiles = m_VCoast[nCoast].nGetNumProfiles();      // TODO 015 This is a bodge, needed if we hit a profile which belongs to a different coast object
 
    pVIPointsOut->clear();
 
@@ -1432,14 +1430,10 @@ void CSimulation::CreateRasterizedProfile(int const nCoast, CGeomProfile* pProfi
       // The start point of the normal, must convert from the external CRS to grid CRS. If this is the first line segment of the profile, then the start point is the centroid of a coastline cell
       int nXStart = pPtiStart->nGetX();
       int nYStart = pPtiStart->nGetY();
-      // double dXStart = dExtCRSXToGridX(PtVSegment[0].dGetX());
-      // double dYStart = dExtCRSYToGridY(PtVSegment[0].dGetY());
 
       // The end point of the normal, again convert from the external CRS to grid CRS. Note too that it could be off the grid
       int nXEnd = pPtiEnd->nGetX();
       int nYEnd = pPtiEnd->nGetY();
-      // double dXEnd = dExtCRSXToGridX(PtVSegment[1].dGetX());
-      // double dYEnd = dExtCRSYToGridY(PtVSegment[1].dGetY());
           
       // Safety check
       if ((nXStart == nXEnd) && (nYStart == nYEnd))
@@ -1485,9 +1479,7 @@ void CSimulation::CreateRasterizedProfile(int const nCoast, CGeomProfile* pProfi
             }
 
             // If this is the first line segment of the profile, then once we are clear of the coastline (say, when m > 1), check if this profile hits land at this interpolated point. NOTE Get problems here since if the coastline vector has been heavily smoothed, this can result is 'false positives' profiles marked as invalid which are not actually invalid, because the profile hits land when m = 0 or m = 1. This results in some cells being flagged as profile cells which are actually inland
-            int nDistFromCoast = 3;
-            // if (((nSeg == 0) && (m > nDistFromCoast)) || (nSeg > 0))
-            if (m > nDistFromCoast)
+            if (m > PROFILE_CHECK_DIST_FROM_COAST)
             {
                if (m_pRasterGrid->m_Cell[nX][nY].bIsCoastline())
                {
@@ -1543,7 +1535,7 @@ void CSimulation::CreateRasterizedProfile(int const nCoast, CGeomProfile* pProfi
                   //                   LogStream << "VVVV Profile " << nProfile << " touches profile " << nHitProfile << endl;
                   VnOtherProfileOK.push_back(nHitProfile);
 
-                  // TODO 015 Bodge in case we hit a profile which belongs to a different coast
+                  // TODO 015 Will need this if hit a profile which belongs to a different coast
                   // if (nHitProfile > nNumProfiles - 1)
                   // {
                   //    bHitAnotherProfile = true;
@@ -1601,7 +1593,7 @@ void CSimulation::CreateRasterizedProfile(int const nCoast, CGeomProfile* pProfi
                   //                   LogStream << "VVVV Profile " << nProfile << " touches profile " << nHitProfile << " diagonally" << endl;
                   VnOtherProfileOK.push_back(nHitProfile);
 
-                  // TODO 015 Bodge in case we hit a profile which belongs to a different coast
+                  // TODO 015 Will need this if we hit a profile which belongs to a different coast
                   // if (nHitProfile > nNumProfiles - 1)
                   // {
                   //    bHitAnotherProfile = true;

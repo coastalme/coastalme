@@ -985,21 +985,21 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
       if (nRet != RTN_OK)
          return nRet;
 
-      // DEBUG CODE =================
-      for (int nCoast = 0; nCoast < static_cast<int>(m_VCoast.size()); nCoast++)
-      {
-         for (int nCoastPoint = 0; nCoastPoint < m_VCoast[nCoast].nGetCoastlineSize(); nCoastPoint++)
-         {
-            if (m_VCoast[nCoast].bIsProfileAtCoastPoint(nCoastPoint))
-            {
-               CGeomProfile* pProfile = m_VCoast[nCoast].pGetProfileAtCoastPoint(nCoastPoint);
-               int nProfile = pProfile->nGetCoastID();
-
-               LogStream << m_ulIter << ": profile " << nProfile << " bStartOfCoast = " << pProfile->bStartOfCoast() << " bEndOfCoast = " << pProfile->bEndOfCoast() << " bCShoreProblem = " << pProfile->bCShoreProblem() << " bHitLand = " << pProfile->bHitLand() << " bHitCoast = " << pProfile->bHitCoast() << " bTooShort = " << pProfile->bTooShort() << " bTruncated = " << pProfile->bTruncated() << " bHitAnotherProfile = " << pProfile->bHitAnotherProfile() << endl;
-            }
-         }
-      }
-      // DEBUG CODE =================
+      // // DEBUG CODE =================
+      // for (int nCoast = 0; nCoast < static_cast<int>(m_VCoast.size()); nCoast++)
+      // {
+      //    for (int nCoastPoint = 0; nCoastPoint < m_VCoast[nCoast].nGetCoastlineSize(); nCoastPoint++)
+      //    {
+      //       if (m_VCoast[nCoast].bIsProfileAtCoastPoint(nCoastPoint))
+      //       {
+      //          CGeomProfile const* pProfile = m_VCoast[nCoast].pGetProfileAtCoastPoint(nCoastPoint);
+      //          int nProfile = pProfile->nGetCoastID();
+      //
+      //          LogStream << m_ulIter << ": profile " << nProfile << " bStartOfCoast = " << pProfile->bStartOfCoast() << " bEndOfCoast = " << pProfile->bEndOfCoast() << " bCShoreProblem = " << pProfile->bCShoreProblem() << " bHitLand = " << pProfile->bHitLand() << " bHitCoast = " << pProfile->bHitCoast() << " bTooShort = " << pProfile->bTooShort() << " bTruncated = " << pProfile->bTruncated() << " bHitAnotherProfile = " << pProfile->bHitAnotherProfile() << endl;
+      //       }
+      //    }
+      // }
+      // // DEBUG CODE =================
 
       // Tell the user how the simulation is progressing
       AnnounceProgress();
