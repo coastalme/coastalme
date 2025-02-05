@@ -98,7 +98,7 @@ CGeom2DPoint* CA2DShape::pPtBack(void)
 
 // int CA2DShape::nLookUp(CGeom2DPoint* Pt)
 // {
-//    auto it = std::find(m_VPoints.begin(), m_VPoints.end(), *Pt);
+//    auto it = find(m_VPoints.begin(), m_VPoints.end(), *Pt);
 //    if (it != m_VPoints.end())
 //       return it - m_VPoints.begin();
 //    else
@@ -130,37 +130,35 @@ vector<CGeom2DPoint>* CA2DShape::pPtVGetPoints(void)
    return &m_VPoints;
 }
 
-//! Computes the centroid of this 2D polygon (which may be outside, if this is a concave polygon). From http://stackoverflow.com/questions/2792443/finding-the-centroid-of-a-polygon
-CGeom2DPoint CA2DShape::PtGetCentroid(void)
-{
-   int nVertexCount = static_cast<int>(m_VPoints.size());
-   double
-      dSignedArea = 0,
-      dCentroidX = 0,
-      dCentroidY = 0;
-
-   // For all vertices
-   for (int i = 0; i < nVertexCount; ++i)
-   {
-      double
-         dXThis = m_VPoints[i].dGetX(),
-         dYThis = m_VPoints[i].dGetY(),
-         dXNext = m_VPoints[(i+1) % nVertexCount].dGetX(),
-         dYNext = m_VPoints[(i+1) % nVertexCount].dGetY();
-
-      double dA = (dXThis * dYNext) - (dXNext * dYThis);
-      dSignedArea += dA;
-
-      dCentroidX += (dXThis + dXNext) * dA;
-      dCentroidY += (dYThis + dYNext) * dA;
-   }
-
-   dSignedArea *= 0.5;
-   dCentroidX /= (6 * dSignedArea);
-   dCentroidY /= (6 * dSignedArea);
-
-   return (CGeom2DPoint(dCentroidX, dCentroidY));
-}
+// //! Computes the centroid of this 2D polygon (which may be outside, if this is a concave polygon). From http://stackoverflow.com/questions/2792443/finding-the-centroid-of-a-polygon
+// CGeom2DPoint CA2DShape::PtGetCentroid(void)
+// {
+//    int nVertexCount = static_cast<int>(m_VPoints.size());
+//    double dSignedArea = 0;
+//    double dCentroidX = 0;
+//    double dCentroidY = 0;
+//
+//    // For all vertices
+//    for (int i = 0; i < nVertexCount; ++i)
+//    {
+//       double dXThis = m_VPoints[i].dGetX();
+//       double dYThis = m_VPoints[i].dGetY();
+//       double dXNext = m_VPoints[(i+1) % nVertexCount].dGetX();
+//       double dYNext = m_VPoints[(i+1) % nVertexCount].dGetY();
+//
+//       double dA = (dXThis * dYNext) - (dXNext * dYThis);
+//       dSignedArea += dA;
+//
+//       dCentroidX += (dXThis + dXNext) * dA;
+//       dCentroidY += (dYThis + dYNext) * dA;
+//    }
+//
+//    dSignedArea *= 0.5;
+//    dCentroidX /= (6 * dSignedArea);
+//    dCentroidY /= (6 * dSignedArea);
+//
+//    return (CGeom2DPoint(dCentroidX, dCentroidY));
+// }
 
 //! Reverses the sequence of points in the vector which represents this 2D polygon
 void CA2DShape::Reverse(void)

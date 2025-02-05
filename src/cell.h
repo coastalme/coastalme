@@ -211,6 +211,8 @@ private:
    //! Number of layer-top elevations (inc. that of the basement, which is m_VdAllHorizonTopElev[0]); size 1 greater than size of m_VLayerAboveBasement
    vector<double> m_VdAllHorizonTopElev;
 
+protected:
+
 public:
     static CGeomRasterGrid *m_pGrid;
 
@@ -237,8 +239,8 @@ public:
     void SetAsFloodLine(bool const);
     bool bIsFloodLine(void) const;
 
-    void SetProfile(int const);
-    int nGetProfile(void) const;
+    void SetProfileID(int const);
+    int nGetProfileID(void) const;
     bool bIsProfile(void) const;
 
     void SetShadowZoneBoundary(void);

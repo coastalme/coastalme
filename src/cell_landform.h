@@ -71,6 +71,8 @@ private:
    }
    m_uLFData;
 
+protected:
+
 public:
    CRWCellLandform();
    ~CRWCellLandform(void);

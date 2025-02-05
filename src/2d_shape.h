@@ -32,36 +32,38 @@ using std::reverse;
 
 class CA2DShape
 {
+private:
+
 protected:
-   //! The points which comprise the 2D shape
+   //! The points which comprise the float-coordinate 2D shape
    vector<CGeom2DPoint> m_VPoints;
 
-public:
    CA2DShape(void);
    virtual ~CA2DShape(void);
 
-   CGeom2DPoint& operator[] (int const);
-
    void Clear(void);
-   void Resize(int const);
-   int nGetSize(void) const;
 
-   //    void InsertAtFront(double const, double const);
-   void Append(CGeom2DPoint const*);
-   void Append(double const, double const);
-   void AppendIfNotAlready(double const, double const);
-
-   CGeom2DPoint* pPtBack(void);
+//    void InsertAtFront(double const, double const);
 //    void SetPoints(const vector<CGeom2DPoint>*);
 //    int nLookUp(CGeom2DPoint*);
 //    double dGetLength(void) const;
-   vector<CGeom2DPoint>* pPtVGetPoints(void);
-
-   CGeom2DPoint PtGetCentroid(void);
-
-   void Reverse(void);
+//    CGeom2DPoint PtGetCentroid(void);
 
    virtual void Display() = 0;
+
+public:
+   void Reverse(void);
+
+   int nGetSize(void) const;
+   void Resize(int const);
+
+   void Append(CGeom2DPoint const*);
+   void Append(double const, double const);
+   void AppendIfNotAlready(double const, double const);
+   CGeom2DPoint* pPtBack(void);
+
+   CGeom2DPoint& operator[] (int const);
+   vector<CGeom2DPoint>* pPtVGetPoints(void);
 };
 #endif // C2DSHAPE_H
 

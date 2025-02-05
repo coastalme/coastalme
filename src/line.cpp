@@ -89,7 +89,7 @@ CGeom2DPoint* CGeomLine::pPtGetAt(int const n)
 
 // bool CGeomLine::bIsPresent(CGeom2DPoint* Pt)
 // {
-//    if (std::find(m_VPoints.begin(), m_VPoints.end(), *Pt) != m_VPoints.end())
+//    if (find(m_VPoints.begin(), m_VPoints.end(), *Pt) != m_VPoints.end())
 //       return true;
 //
 //    return false;

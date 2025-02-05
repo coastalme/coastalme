@@ -61,7 +61,7 @@ int CSimulation::nUpdateGrid(void)
          if (dTopElev < m_dThisIterTopElevMin)
             m_dThisIterTopElevMin = dTopElev;
 
-         // // DEBUG CODE ====================
+         // // DEBUG CODE ====================================================================================
          // if ((nX == 110) && (nY == 294))
          // {
          //    LogStream << m_ulIter << ": in nUpdateGrid() [" << nX << "][" << nY << "] landform category = " << m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->nGetLFCategory() << " landform subcategory = " << m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->nGetLFSubCategory() << endl;
@@ -69,7 +69,7 @@ int CSimulation::nUpdateGrid(void)
          //    // if (m_ulIter == 21)
          //    //    LogStream << endl;
          // }
-         // // DEBUG CODE ====================
+         // // DEBUG CODE ====================================================================================
       }
    }
 

@@ -60,6 +60,9 @@ private:
    //! The standard deviaton of the coast's smoothed curvature
    double m_dCurvatureSmoothSTD;
 
+   //! A pointer to the CSimulation object
+   CSimulation* m_pSim;
+
    //! Smoothed line of points (external CRS) giving the plan view of the vector coast
    CGeomLine m_LCoastlineExtCRS;
 
@@ -74,11 +77,8 @@ private:
 
    // The following have the same length as m_LCoastlineExtCRS (which may be different each timestep)
 
-   //! Unsmoothed integer x-y co-ordinates (grid CRS) of the cell marked as coastline for each point on the vector coastline. Note that where there is a cost-normal profile, this is the same as point zero in the profile co-ordinates
+   //! Unsmoothed integer x-y coordinates (grid CRS) of the cell marked as coastline for each point on the vector coastline. Note that where there is a cost-normal profile, this is the same as point zero in the profile coordinates
    CGeomILine m_ILCellsMarkedAsCoastline;
-
-   //! At each point on m_LCoastlineExtCRS: INT_NODATA if no profile there, otherwise the profile number
-   vector<int> m_VnProfileNumber;
 
    //! Distance of breaking (in cells), at each point on m_LCoastlineExtCRS
    vector<int> m_VnBreakingDistance;
@@ -122,28 +122,25 @@ private:
    //! The depth of breaking on a normal drawn from each point on m_LCoastlineExtCRS
    vector<double> m_VdDepthOfBreaking;
 
-   //! As in the COVE model, is the orientation alongshore energy/sediment movement; a +ve flux is in direction of increasing indices along coast. At each point on m_LCoastlineExtCRS
+   //! As in the COVE model, this is the orientation alongshore energy/sediment movement; a +ve flux is in direction of increasing indices along coast. At each point on m_LCoastlineExtCRS
    vector<double> m_VdFluxOrientation;
 
    //! Wave energy at each point on m_LCoastlineExtCRS
    vector<double> m_VdWaveEnergyAtBreaking;
 
-   //! Pointer to a coastal landform object, at each point on m_LCoastlineExtCRS
-   vector<CACoastLandform*> m_pVLandforms;
+   //! Pointer to a coastal landform object, at each point on the coastline
+   vector<CACoastLandform*> m_pVLandform;
+
+   //! Pointers to coast-normal profile objects, one for each point on the coastline (is null for most coastline points)
+   vector<CGeomProfile*> m_VNormalProfileDownAllCoastSeq;
 
    // These do not have the same length as m_LCoastlineExtCRS
 
-   //! Coast profile objects, in the sequence in which they were created (i.e. first intervention profiles, then natural cape profiles in sequence of concave coastline curvature)
+   //! Coast-normal profile objects, in sequence of creation (which is the same as nGetCoastID() sequence)
    vector<CGeomProfile> m_VProfile;
 
-   //! Indices of coast profiles sorted into along-coastline sequence, size = number of profiles
-   vector<int> m_VnProfileCoastIndex;
-
-   //! Pointer to coast polygons, size = number of polygons
-   vector<CGeomCoastPolygon*> m_pVPolygon;
-
-   //! Lengths of coast polygons, size = number of polygons
-   vector<double> m_VdPolygonLength;
+   //! Pointers to coastline-normal objects, in along-coastline sequence
+   vector<CGeomProfile*> m_VpProfileDownCoastSeq;
 
    //! Lines which comprise the edge of a shadow zone, ext CRS
    vector<CGeomLine> m_LShadowBoundary;
@@ -151,9 +148,13 @@ private:
    //! Lines which comprise the edge of a downdrift zone, ext CRS
    vector<CGeomLine> m_LShadowDowndriftBoundary;
 
+protected:
+
 public:
-   CRWCoast(void);
+   explicit CRWCoast(CSimulation*);
    ~CRWCoast(void);
+
+   CSimulation* pGetSim(void) const;
 
    void SetSeaHandedness(int const);
    int nGetSeaHandedness(void) const;
@@ -165,7 +166,6 @@ public:
    int nGetEndEdge(void) const;
 
    void SetCoastlineExtCRS(CGeomLine const*);
-   // void AppendPointToCoastlineExtCRS(double const, double const);
    CGeomLine* pLGetCoastlineExtCRS(void);
 // CGeomLine* pLGetFloodWaveSetupExtCRS(void);
 // void SetFloodWaveSetupPointExtCRS(CGeomLine const*);
@@ -203,17 +203,25 @@ public:
    void SetSmoothCurvatureSTD(double const);
    double dGetSmoothCurvatureSTD(void) const;
 
+   void AppendProfile(CGeomProfile*);
    CGeomProfile* pGetProfile(int const);
-   void AppendProfile(int const, int const);
+   CGeomProfile* pGetLastProfile(void);
 //    void ReplaceProfile(int const, vector<CGeom2DPoint> const*);
    int nGetNumProfiles(void) const;
-   bool bIsProfileStartPoint(int const) const;
-   int nGetProfileNumber(int const) const;
+   void DeleteAllProfiles(void);
+   void CreateProfileDownCoastIndex(void);
+   void InsertProfilesInProfileCoastPointIndex(void);
 
-   void CreateAlongCoastProfileIndex(void);
-   int nGetProfileFromAlongCoastProfileIndex(int const) const;
-   int nGetDownCoastProfileNumber(int const nProfile) const;
-//    int nGetAlongCoastlineIndexOfProfile(int const);
+   CGeomProfile* pGetDownCoastProfile(CGeomProfile const* pProfile);
+   CGeomProfile* pGetDownCoastProfileNotIncLastProfile(CGeomProfile const* pProfile);
+   CGeomProfile* pGetUpCoastProfile(CGeomProfile const* pProfile);
+
+   void CreateProfilesAtCoastPoints(void);
+   void SetProfileAtCoastPoint(int const, CGeomProfile* const);
+   bool bIsProfileAtCoastPoint(int const) const;
+   CGeomProfile* pGetProfileAtCoastPoint(int const) const;
+   CGeomProfile* pGetProfileWithDownCoastSeq(int const) const;
+   CGeomProfile* pGetProfileWithUpCoastSeq(int const) const;
 
    void SetCoastDeepWaterWaveHeight(int const, double const);
    // double dGetCoastDeepWaterWaveHeight(int const) const;
@@ -261,12 +269,12 @@ public:
 
    void SetPolygonNode(int const, int const);
    int nGetPolygonNode(int const) const;
-   void CreatePolygon(int const, int const, int const, CGeom2DIPoint const*, CGeom2DIPoint const*, int const, int const, vector<CGeom2DPoint> const*, int const, int const, int const);
+   CGeomCoastPolygon* pPolyCreatePolygon(int const, int const, int const, CGeom2DIPoint const*, CGeom2DIPoint const*, int const, int const, vector<CGeom2DPoint> const*, int const, int const, bool const, bool const);
    int nGetNumPolygons(void) const;
    CGeomCoastPolygon* pGetPolygon(int const) const;
 
-   void AppendPolygonLength(const double);
-   double dGetPolygonLength(int const) const;
+   // void AppendPolygonLength(const double);
+   // double dGetPolygonLength(int const) const;
 
    int nGetNumShadowBoundaries(void) const;
    void AppendShadowBoundary(CGeomLine const*);

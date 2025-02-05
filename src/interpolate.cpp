@@ -20,6 +20,7 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 ===============================================================================================================================*/
+#include <assert.h>
 #include <cfloat>
 #include <iostream>
 #include <iomanip>
@@ -123,12 +124,15 @@ int nFindIndex(vector<double> const* pVdX, double const dValueIn)
 }
 
 //===============================================================================================================================
-//! Returns a linarly interpolated vector of doubles, to make CShore profile output compatible with CME. The array pVdY has been output by CShore and so always has length CSHOREARRAYOUTSIZE, whereas all other arrays have sizes which depend on CME at runtime
+//! Returns a linearly interpolated vector of doubles, to make CShore profile output compatible with CME. The array pVdY has been output by CShore and so always has length CSHOREARRAYOUTSIZE, whereas all other arrays have sizes which depend on CME at runtime
 //===============================================================================================================================
 vector<double> VdInterpolateCShoreProfileOutput(vector<double> const* pVdX, vector<double> const* pVdY, vector<double> const* pVdXNew)
 {
    int nXSize = static_cast<int>(pVdX->size());
    int nXNewSize = static_cast<int>(pVdXNew->size());
+
+   // assert(nXSize > 0);
+   // assert(nXNewSize > 0);
 
    double dX;
    double dY;
@@ -172,7 +176,8 @@ vector<double> VdInterpolateCShoreProfileOutput(vector<double> const* pVdX, vect
       double dM = dY / dX;
       double dB = pVdY->at(idx) - pVdX->at(idx) * dM;
 
-      VdYNew[i] = (pVdXNew->at(i) * dM) + dB;
+      // VdYNew[i] = (pVdXNew->at(i) * dM) + dB;
+      VdYNew[nXNewSize-1 - i] = (pVdXNew->at(i) * dM) + dB;
    }
 
    return VdYNew;

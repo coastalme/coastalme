@@ -43,6 +43,9 @@ using std::difftime;
 using std::localtime;
 using std::time;
 
+#include <ios>
+using std::fixed;
+
 #include <iostream>
 using std::cerr;
 using std::cout;
@@ -1423,14 +1426,14 @@ void CSimulation::CalcTime(double const dRunLength)
       double dPerTimestep = dDuration / static_cast<double>(m_ulTotTimestep);
 
       // And write CPU time per timestep to OutStream and LogStream
-      OutStream << std::fixed << setprecision(4) << " (" << dPerTimestep << " per timestep)" << endl;
-      LogStream << std::fixed << setprecision(4) << " (" << dPerTimestep << " per timestep)" << endl;
+      OutStream << fixed << setprecision(4) << " (" << dPerTimestep << " per timestep)" << endl;
+      LogStream << fixed << setprecision(4) << " (" << dPerTimestep << " per timestep)" << endl;
 
       // Calculate ratio of CPU time to time simulated
       OutStream << resetiosflags(ios::floatfield);
-      OutStream << std::fixed << setprecision(0) << "In terms of CPU time, this is ";
+      OutStream << fixed << setprecision(0) << "In terms of CPU time, this is ";
       LogStream << resetiosflags(ios::floatfield);
-      LogStream << std::fixed << setprecision(0) << "In terms of CPU time, this is ";
+      LogStream << fixed << setprecision(0) << "In terms of CPU time, this is ";
       if (dDuration > dRunLength)
       {
          OutStream << dDuration / dRunLength << " x slower than reality" << endl;
@@ -1455,13 +1458,13 @@ void CSimulation::CalcTime(double const dRunLength)
 
    // And write run time per timestep to OutStream and LogStream
    OutStream << resetiosflags(ios::floatfield);
-   OutStream << " (" << std::fixed << setprecision(4) << dPerTimestep << " per timestep)" << endl;
+   OutStream << " (" << fixed << setprecision(4) << dPerTimestep << " per timestep)" << endl;
    LogStream << resetiosflags(ios::floatfield);
-   LogStream << " (" << std::fixed << setprecision(4) << dPerTimestep << " per timestep)" << endl;
+   LogStream << " (" << fixed << setprecision(4) << dPerTimestep << " per timestep)" << endl;
 
    // Calculate ratio of run time to time simulated
-   OutStream << std::fixed << setprecision(0) << "In terms of run time, this is ";
-   LogStream << std::fixed << setprecision(0) << "In terms of run time, this is ";
+   OutStream << fixed << setprecision(0) << "In terms of run time, this is ";
+   LogStream << fixed << setprecision(0) << "In terms of run time, this is ";
    if (dDuration > dRunLength)
    {
       OutStream << dDuration / dRunLength << " x slower than reality" << endl;
@@ -1620,7 +1623,7 @@ void CSimulation::AnnounceProgress(void)
 
       // Tell the user about progress (note need to make several separate calls to cout here, or MS VC++ compiler appears to get confused)
       cout << SIMULATING << strDispSimTime(m_dSimElapsed);
-      cout << std::fixed << setprecision(3) << setw(9) << 100 * m_dSimElapsed / m_dSimDuration;
+      cout << fixed << setprecision(3) << setw(9) << 100 * m_dSimElapsed / m_dSimDuration;
       cout << "%   (elapsed " << strDispTime(sdElapsed, false, false) << " remaining ";
 
       cout << strDispTime(sdToGo, false, false) << ")  ";
@@ -2070,9 +2073,12 @@ string CSimulation::strGetErrorText(int const nErr)
    case RTN_ERR_CLIFF_NOT_IN_POLYGON:
       strErr = "cliff not in polygon";
       break;
+   case RTN_ERR_UNKNOWN:
+      strErr = "unknown error";
+      break;
    default:
       // should never get here
-      strErr = "unknown error";
+      strErr = "totally unknown error";
    }
 
    return strErr;
@@ -2232,7 +2238,7 @@ string CSimulation::strTrimRight(string const *strIn)
    string strTmp(*strIn);
 
    // Remove any stray carriage returns (can happen if file was edited in Windows)
-   strTmp.erase(std::remove(strTmp.begin(), strTmp.end(), '\r'), strTmp.end());
+   strTmp.erase(remove(strTmp.begin(), strTmp.end(), '\r'), strTmp.end());
 
    // Trim trailing spaces
    size_t nEndpos = strTmp.find_last_not_of(" \t");
@@ -2250,7 +2256,7 @@ string CSimulation::strTrim(string const *strIn)
    string strTmp = *strIn;
 
    // Remove any stray carriage returns (can happen if file was edited in Windows)
-   strTmp.erase(std::remove(strTmp.begin(), strTmp.end(), '\r'), strTmp.end());
+   strTmp.erase(remove(strTmp.begin(), strTmp.end(), '\r'), strTmp.end());
 
    // Trim trailing spaces
    size_t nPos = strTmp.find_last_not_of(" \t");
@@ -2310,7 +2316,7 @@ string CSimulation::strRemoveSubstr(string* pStrIn, string const* pStrSub)
 //===============================================================================================================================
 //! From http://stackoverflow.com/questions/236129/split-a-string-in-c They implement (approximately) Python's split() function. This first version puts the results into a pre-constructed string vector. It ignores empty items
 //===============================================================================================================================
-vector<string> *CSimulation::VstrSplit(string const *s, char const delim, vector<string> *elems)
+vector<string> *CSimulation::VstrSplit(string const* s, char const delim, vector<string>* elems)
 {
    stringstream ss(*s);
    string item;
@@ -2460,7 +2466,7 @@ double CSimulation::dSubtractProfiles(vector<double> const* pdVFirstProfile, vec
       }
    }
 
-   //    // DEBUG STUFF -----------------------------------------------------
+   //    // DEBUG CODE -----------------------------------------------------
    //    LogStream << endl;
    //    LogStream << "First profile = ";
    //    for (int n = 0; n < static_cast<int>(pdVFirstProfile->size()); n++)
@@ -2480,7 +2486,7 @@ double CSimulation::dSubtractProfiles(vector<double> const* pdVFirstProfile, vec
    //       LogStream << pdVFirstProfile->at(n) - pdVSecondProfile->at(n) << " ";
    //    }
    //    LogStream << endl;
-   //    // DEBUG STUFF -----------------------------------------------------
+   //    // DEBUG CODE -----------------------------------------------------
 
    return dTotElevDiff;
 }
@@ -2750,8 +2756,8 @@ unsigned long CSimulation::ulConvertToTimestep(string const* pstrIn) const
       tmSimEvent.tm_mon = nMonth - 1;
       tmSimEvent.tm_year = nYear - 1900;
 
-      time_t tStart = std::mktime(&tmSimStart);
-      time_t tEvent = std::mktime(&tmSimEvent);
+      time_t tStart = mktime(&tmSimStart);
+      time_t tEvent = mktime(&tmSimEvent);
 
       if (tStart == (time_t)(-1))
       {
@@ -2793,4 +2799,29 @@ bool CSimulation::bIsInterventionCell(int const nX, int const nY) const
       return true;
 
    return false;
+}
+
+//===============================================================================================================================
+//! Returns the size of the coast polygon vector
+//===============================================================================================================================
+int CSimulation::nGetCoastPolygonSize(void) const
+{
+   return static_cast<int>(m_pVCoastPolygon.size());
+}
+
+//===============================================================================================================================
+//! Returns a pointer to a coast polygon, in down-coast sequence
+//===============================================================================================================================
+CGeomCoastPolygon* CSimulation::pGetPolygon(int const nPoly) const
+{
+   // TODO 055 No check to see if nPoly < m_pVCoastPolygon.size()
+   return m_pVCoastPolygon[nPoly];
+}
+
+//===============================================================================================================================
+//! Appends a pointer to a coast polygon, to the down-coast coast polygon vector
+//===============================================================================================================================
+void CSimulation::AppendPolygon(CGeomCoastPolygon* pPolygon)
+{
+   m_pVCoastPolygon.push_back(pPolygon);
 }

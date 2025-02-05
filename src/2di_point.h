@@ -1,8 +1,8 @@
 /*!
  *
  * \class CGeom2DIPoint
- * \brief Geometry class used to represent 2D point objects with integer co-ordinates
- * \details The CGeom2DIPoint geometry class is used to represent 2D points where the x and y co-ordinates can only be integer values, e.g. points for which the x and y co-ordinates are in the raster-grid CRS (co-ordinate reference system)
+ * \brief Geometry class used to represent 2D point objects with integer coordinates
+ * \details The CGeom2DIPoint geometry class is used to represent 2D points where the x and y coordinates are integer values (e.g. for the raster grid coordinate reference system)
  * \author David Favis-Mortlock
  * \author Andres Payo
  * \date 2025
@@ -29,11 +29,13 @@ You should have received a copy of the GNU General Public License along with thi
 class CGeom2DIPoint
 {
 private:
-   //! The integer x co-ordinate
+   //! The integer x coordinate
    int nX;
    
-   //! The integer y co-ordinate
+   //! The integer y coordinate
    int nY;
+
+protected:
 
 public:
    CGeom2DIPoint(void);

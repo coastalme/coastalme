@@ -34,20 +34,25 @@ using std::vector;
 
 class CA2DIShape
 {
+private:
+
 protected:
-   //! The integer points which comprise the 2D shape
+   //! The integer points which comprise the integer-coordinate 2D shape
    vector<CGeom2DIPoint> m_VPoints;
 
-public:
    CA2DIShape(void);
    virtual ~CA2DIShape(void);
 
+   void Clear(void);
+
+   virtual void Display() = 0;
+
+public:
    CGeom2DIPoint& operator[] (int const);
 
    CGeom2DIPoint& Back(void);
    vector<CGeom2DIPoint>* pPtiVGetPoints(void);
 
-   void Clear(void);
    void Resize(const int);
    int nGetSize(void) const;
 
@@ -58,7 +63,6 @@ public:
 
 //    void SetPoints(const vector<CGeom2DIPoint>*);
 //    int nLookUp(CGeom2DIPoint*);
-   virtual void Display() = 0;
 };
 #endif // C2DISHAPE_H
 

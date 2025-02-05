@@ -4,7 +4,7 @@
  * \brief Various GIS-related functions, requires GDAL
  * \details TODO 001 A more detailed description of these routines.
 
- Note re. co-ordinate systems used
+ Note re. coordinate systems used
 
  1. In the raster CRS, cell[0][0] is at the top left (NW) corner of the grid. Raster grid co-oordinate [0][0] is actually the top left (NW) corner of this cell.
 
@@ -57,7 +57,7 @@ using std::ios;
 #include "raster_grid.h"
 
 //===============================================================================================================================
-//! Given the integer X-axis ordinate of a cell in the raster-grid CRS, returns the external CRS X-axis ordinate of the cell's centroid
+//! Given the integer X-axis ordinate of a cell in the raster grid CRS, returns the external CRS X-axis ordinate of the cell's centroid
 //===============================================================================================================================
 double CSimulation::dGridCentroidXToExtCRSX(int const nGridX) const
 {
@@ -66,7 +66,7 @@ double CSimulation::dGridCentroidXToExtCRSX(int const nGridX) const
 }
 
 //===============================================================================================================================
-//! Given the integer Y-axis ordinate of a cell in the raster-grid CRS, returns the external CRS Y-axis ordinate of the cell's centroid
+//! Given the integer Y-axis ordinate of a cell in the raster grid CRS, returns the external CRS Y-axis ordinate of the cell's centroid
 //===============================================================================================================================
 double CSimulation::dGridCentroidYToExtCRSY(int const nGridY) const
 {
@@ -75,7 +75,7 @@ double CSimulation::dGridCentroidYToExtCRSY(int const nGridY) const
 }
 
 //===============================================================================================================================
-//! Transforms a pointer to a CGeom2DIPoint in the raster-grid CRS (assumed to be the centroid of a cell) to the equivalent CGeom2DPoint in the external CRS
+//! Transforms a pointer to a CGeom2DIPoint in the raster grid CRS (assumed to be the centroid of a cell) to the equivalent CGeom2DPoint in the external CRS
 //===============================================================================================================================
 CGeom2DPoint CSimulation::PtGridCentroidToExt(CGeom2DIPoint const* pPtiIn) const
 {
@@ -87,7 +87,7 @@ CGeom2DPoint CSimulation::PtGridCentroidToExt(CGeom2DIPoint const* pPtiIn) const
 }
 
 //===============================================================================================================================
-//! Given a real-valued X-axis ordinate in the raster-grid CRS (i.e. not the centroid of a cell), returns the external CRS X-axis ordinate
+//! Given a real-valued X-axis ordinate in the raster grid CRS (i.e. not the centroid of a cell), returns the external CRS X-axis ordinate
 //===============================================================================================================================
 double CSimulation::dGridXToExtCRSX(double const dGridX) const
 {
@@ -96,7 +96,7 @@ double CSimulation::dGridXToExtCRSX(double const dGridX) const
 }
 
 //===============================================================================================================================
-//! Given a real-valued Y-axis ordinate in the raster-grid CRS (i.e. not the centroid of a cell), returns the external CRS Y-axis ordinate
+//! Given a real-valued Y-axis ordinate in the raster grid CRS (i.e. not the centroid of a cell), returns the external CRS Y-axis ordinate
 //===============================================================================================================================
 double CSimulation::dGridYToExtCRSY(double const dGridY) const
 {
@@ -105,7 +105,7 @@ double CSimulation::dGridYToExtCRSY(double const dGridY) const
 }
 
 //===============================================================================================================================
-//! Transforms an X-axis ordinate in the external CRS to the equivalent X-axis ordinate in the raster-grid CRS (the result is not rounded, and so may not be integer, and may be outside the grid in the +ve direction)
+//! Transforms an X-axis ordinate in the external CRS to the equivalent X-axis ordinate in the raster grid CRS (the result is not rounded, and so may not be integer, and may be outside the grid in the +ve direction)
 //===============================================================================================================================
 double CSimulation::dExtCRSXToGridX(double const dExtCRSX) const
 {
@@ -114,7 +114,7 @@ double CSimulation::dExtCRSXToGridX(double const dExtCRSX) const
 }
 
 //===============================================================================================================================
-//! Transforms a Y-axis ordinate in the external CRS to the equivalent Y-axis ordinate in the raster-grid CRS (the result is not rounded, and so may not be integer, and may be outside the grid in the +ve direction)
+//! Transforms a Y-axis ordinate in the external CRS to the equivalent Y-axis ordinate in the raster grid CRS (the result is not rounded, and so may not be integer, and may be outside the grid in the +ve direction)
 //===============================================================================================================================
 double CSimulation::dExtCRSYToGridY(double const dExtCRSY) const
 {
@@ -123,7 +123,7 @@ double CSimulation::dExtCRSYToGridY(double const dExtCRSY) const
 }
 
 //===============================================================================================================================
-//! Transforms a pointer to a CGeom2DPoint in the external CRS to the equivalent CGeom2DIPoint in the raster-grid CRS (both values rounded). The result may be outside the grid in the +ve direction
+//! Transforms a pointer to a CGeom2DPoint in the external CRS to the equivalent CGeom2DIPoint in the raster grid CRS (both values rounded). The result may be outside the grid in the +ve direction
 //===============================================================================================================================
 CGeom2DIPoint CSimulation::PtiExtCRSToGridRound(CGeom2DPoint const* pPtIn) const
 {
@@ -197,7 +197,7 @@ bool CSimulation::bIsWithinValidGrid(CGeom2DIPoint const *Pti) const
 }
 
 //===============================================================================================================================
-//! Constrains the second supplied point (both are CGeom2DIPoints, in the grid CRS) to be an a valid cell within the raster grid
+//! Constrains the second supplied point (both are CGeom2DIPoints, in the grid CRS) to be a valid cell within the raster grid
 //===============================================================================================================================
 void CSimulation::KeepWithinValidGrid(CGeom2DIPoint const *Pti0, CGeom2DIPoint *Pti1) const
 {
@@ -226,7 +226,7 @@ void CSimulation::KeepWithinValidGrid(int nX0, int nY0, int &nX1, int &nY1) cons
 
    if (nDiffX == 0)
    {
-      // The two points have the same x co-ordinates, so we just need to constrain the y co-ord
+      // The two points have the same x coordinates, so we just need to constrain the y co-ord
       if (nY1 < nY0)
       {
          nY1 = -1;
@@ -252,7 +252,7 @@ void CSimulation::KeepWithinValidGrid(int nX0, int nY0, int &nX1, int &nY1) cons
    }
    else if (nDiffY == 0)
    {
-      // The two points have the same y co-ordinates, so we just need to constrain the x co-ord
+      // The two points have the same y coordinates, so we just need to constrain the x co-ord
       if (nX1 < nX0)
       {
          nX1 = -1;
@@ -278,7 +278,7 @@ void CSimulation::KeepWithinValidGrid(int nX0, int nY0, int &nX1, int &nY1) cons
    }
    else
    {
-      // The two points have different x co-ordinates and different y co-ordinates, so we have to work harder. First find which of the co-ordinates is the greatest distance outside the grid, and constrain that co-ord for efficiency (since this will reduce the number of times round the loop). Note that both may be inside the grid, if the incorrect co-ord is in the invalid margin, in which case arbitrarily contrain the x co-ord
+      // The two points have different x coordinates and different y coordinates, so we have to work harder. First find which of the coordinates is the greatest distance outside the grid, and constrain that co-ord for efficiency (since this will reduce the number of times round the loop). Note that both may be inside the grid, if the incorrect co-ord is in the invalid margin, in which case arbitrarily contrain the x co-ord
       int nXDistanceOutside = 0;
       int nYDistanceOutside = 0;
 

@@ -24,6 +24,9 @@ You should have received a copy of the GNU General Public License along with thi
 ==============================================================================================================================*/
 #include <assert.h>
 
+#include <ios>
+using std::fixed;
+
 #include <iostream>
 using std::cerr;
 using std::cout;
@@ -144,7 +147,6 @@ CSimulation::CSimulation (void)
    m_bOmitSearchSouthEdge =
    m_bOmitSearchWestEdge =
    m_bOmitSearchEastEdge =
-   m_bErodeShorePlatformAlternateDirection =
    m_bDoShorePlatformErosion =
    m_bDoCliffCollapse =
    m_bDoBeachSedimentTransport =
@@ -196,7 +198,7 @@ CSimulation::CSimulation (void)
    m_nCoastMin =
    // m_nNThisIterCliffCollapse =
    // m_nNTotCliffCollapse =
-   m_nGlobalPolygonID =
+   m_nNumPolygonGlobal =
    m_nUnconsSedimentHandlingAtGridEdges =
    m_nBeachErosionDepositionEquation =
    m_nWavePropagationModel =
@@ -663,7 +665,7 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
       CalcSavitzkyGolayCoeffs();
 
    // Create the raster grid object
-   m_pRasterGrid = new CGeomRasterGrid (this);
+   m_pRasterGrid = new CGeomRasterGrid(this);
 
    // Read in the basement layer (must have this file), create the raster grid, then read in the basement DEM data to the array
    AnnounceReadBasementDEM();
@@ -694,12 +696,12 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
    if (nRet != RTN_OK)
       return nRet;
 
-   //    // DEBUG CODE =================================================
+   //    // DEBUG CODE =================================================================================================================
    //    for (int n = 0; n < m_VEdgeCell.size(); n++)
    //    {
    //       LogStream << "[" << m_VEdgeCell[n].nGetX() << "][" << m_VEdgeCell[n].nGetY() << "] = {" << dGridCentroidXToExtCRSX(m_VEdgeCell[n].nGetX()) << ", " << dGridCentroidYToExtCRSY(m_VEdgeCell[n].nGetY()) << "} " << m_VEdgeCellEdge[n] << endl;
    //    }
-   //    // DEBUG CODE =================================================
+   //    // DEBUG CODE =================================================================================================================
 
    // If we are using the default cell spacing, then now that we know the size of the raster cells, we can set the size of profile spacing in m
    if (bFPIsEqual(m_dCoastNormalAvgSpacing, 0.0, TOLERANCE))
@@ -921,9 +923,9 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
 
    while (true)
    {
-      //       // DEBUG CODE =========================================
+      //       // DEBUG CODE =========================================================================================================
       //       LogStream << ulGetRand0() << " " << ulGetRand1() << endl;
-      //       // DEBUG CODE =========================================
+      //       // DEBUG CODE =========================================================================================================
 
       // Check that we haven't gone on too long: if not then update timestep number etc.
       if (bTimeToQuit())
@@ -935,7 +937,7 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
       if (m_nLogFileDetail >= LOG_FILE_MIDDLE_DETAIL)
          LogStream << "TIMESTEP " << m_ulIter << " " << string(154, '=') << endl;
       
-      LogStream << std::fixed << setprecision(3);
+      LogStream << fixed << setprecision(3);
       
       // Check to see if there is a new intervention in place: if so, update it on the RasterGrid array
       nRet = nUpdateIntervention();
@@ -973,36 +975,63 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
       if (nRet != RTN_OK)
          return nRet;
 
-      // Create the coastline-normal profiles
-      nRet = nCreateAllProfilesAndCheckValidity();
+      // Create all coastline-normal profiles, in coastline-concave-curvature sequence
+      nRet = nCreateAllProfiles();
       if (nRet != RTN_OK)
          return nRet;
 
+      // Check the coastline-normal profiles for intersection
+      nRet = nCheckAllProfiles();
+      if (nRet != RTN_OK)
+         return nRet;
+
+      // // DEBUG CODE =================
+      // for (int nCoast = 0; nCoast < static_cast<int>(m_VCoast.size()); nCoast++)
+      // {
+      //    for (int nCoastPoint = 0; nCoastPoint < m_VCoast[nCoast].nGetCoastlineSize(); nCoastPoint++)
+      //    {
+      //       if (m_VCoast[nCoast].bIsProfileAtCoastPoint(nCoastPoint))
+      //       {
+      //          CGeomProfile const* pProfile = m_VCoast[nCoast].pGetProfileAtCoastPoint(nCoastPoint);
+      //          int nProfile = pProfile->nGetCoastID();
+      //
+      //          LogStream << m_ulIter << ": profile " << nProfile << " bStartOfCoast = " << pProfile->bStartOfCoast() << " bEndOfCoast = " << pProfile->bEndOfCoast() << " bCShoreProblem = " << pProfile->bCShoreProblem() << " bHitLand = " << pProfile->bHitLand() << " bHitCoast = " << pProfile->bHitCoast() << " bTooShort = " << pProfile->bTooShort() << " bTruncated = " << pProfile->bTruncated() << " bHitAnotherProfile = " << pProfile->bHitAnotherProfile() << endl;
+      //       }
+      //    }
+      // }
+      // // DEBUG CODE =================
+
       // Tell the user how the simulation is progressing
       AnnounceProgress();
-      
+
       // Create the coast polygons
       nRet = nCreateAllPolygons();
       if (nRet != RTN_OK)
          return nRet;
 
-      //       // DEBUG CODE =========================================
-      //       int nNODATA = 0;
-      //       int nPoly0 = 0;
-      //       for (int nX = 0; nX < m_nXGridSize; nX++)
-      //       {
-      //          for (int nY = 0; nY < m_nYGridSize; nY++)
-      //          {
-      //             int nTmp = m_pRasterGrid->m_Cell[nX][nY].nGetPolygonID();
-      //             if (nTmp == INT_NODATA)
-      //                nNODATA++;
-      //             if (nTmp == 0)
-      //                nPoly0++;
-      //          }
-      //       }
-      //       LogStream << "Before marking polygon cells, N cells with NODATA polygon ID = " << nNODATA << endl;
-      //       LogStream << "Before marking polygon cells, N cells with zero polygon ID = " << nPoly0 << endl;
-      //       // DEBUG CODE =========================================
+      // // DEBUG CODE =========================================================================================================
+      // int nNODATA = 0;
+      // int nPoly0 = 0;
+      // int nPoly24 = 0;
+      // for (int nX = 0; nX < m_nXGridSize; nX++)
+      // {
+      //    for (int nY = 0; nY < m_nYGridSize; nY++)
+      //    {
+      //       int nTmp = m_pRasterGrid->m_Cell[nX][nY].nGetPolygonID();
+      //       if (nTmp == INT_NODATA)
+      //          nNODATA++;
+      //
+      //       if (nTmp == 0)
+      //          nPoly0++;
+      //
+      //       if (nTmp == 24)
+      //          nPoly24++;
+      //    }
+      // }
+      // LogStream << "Before marking polygon cells, N cells with NODATA polygon ID = " << nNODATA << endl;
+      // // LogStream << "Before marking polygon cells, N cells with zero polygon ID = " << nPoly0 << endl;
+      // LogStream << "Before marking polygon cells, N cells with 24 polygon ID = " << nPoly24 << endl;
+      // // DEBUG CODE =========================================================================================================
 
       // Mark cells of the raster grid that are within each polygon, and do some polygon initialization
       MarkPolygonCells();
@@ -1015,31 +1044,61 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
       // Tell the user how the simulation is progressing
       AnnounceProgress();
 
-      //       // DEBUG CODE =========================================
-      //       nNODATA = 0;
-      //       nPoly0 = 0;
-      //       for (int nX = 0; nX < m_nXGridSize; nX++)
-      //       {
-      //          for (int nY = 0; nY < m_nYGridSize; nY++)
-      //          {
-      //             int nTmp = m_pRasterGrid->m_Cell[nX][nY].nGetPolygonID();
-      //             if (nTmp == INT_NODATA)
-      //                nNODATA++;
-      //             if (nTmp == 0)
-      //                nPoly0++;
-      //          }
-      //       }
-      //       LogStream << "After marking polygon cells, N cells with NODATA polygon ID = " << nNODATA << endl;
-      //       LogStream << "After marking polygon cells, N cells with zero polygon ID = " << nPoly0 << endl;
-      //       // DEBUG CODE =========================================
-
+      // // DEBUG CODE =========================================================================================================
+      // nNODATA = 0;
+      // nPoly0 = 0;
+      // nPoly24 = 0;
+      // for (int nX = 0; nX < m_nXGridSize; nX++)
+      // {
+      //    for (int nY = 0; nY < m_nYGridSize; nY++)
+      //    {
+      //       int nTmp = m_pRasterGrid->m_Cell[nX][nY].nGetPolygonID();
+      //       if (nTmp == INT_NODATA)
+      //          nNODATA++;
+      //
+      //       if (nTmp == 0)
+      //          nPoly0++;
+      //
+      //       if (nTmp == 24)
+      //          nPoly24++;
+      //    }
+      // }
+      // LogStream << "After marking polygon cells, N cells with NODATA polygon ID = " << nNODATA << endl;
+      // // LogStream << "After marking polygon cells, N cells with zero polygon ID = " << nPoly0 << endl;
+      // LogStream << "After marking polygon cells, N cells with 24 polygon ID = " << nPoly24 << endl;
+      // // DEBUG CODE =========================================================================================================
       // PropagateWind();
 
       // Give every coast point a value for deep water wave height and direction
       nRet = nSetAllCoastpointDeepWaterWaveValues();
       if (nRet != RTN_OK)
          return nRet;
-      
+
+      // // DEBUG CODE ===============
+      // for (int nCoast = 0; nCoast < static_cast<int>(m_VCoast.size()); nCoast++)
+      // {
+      //    LogStream << "====================" << endl;
+      //
+      //    for (int nProfile = 0; nProfile < m_VCoast[nCoast].nGetNumProfiles(); nProfile++)
+      //    {
+      //       CGeomProfile* pProfile = m_VCoast[nCoast].pGetProfile(nProfile);
+      //       int nCell = pProfile->nGetNumCellsInProfile();
+      //       LogStream << "Profile " << pProfile->nGetCoastID() << " nGetNumCellsInProfile() = " << nCell << endl;
+      //    }
+      //
+      //    LogStream << endl;
+      //
+      //    for (int nProfile = 0; nProfile < m_VCoast[nCoast].nGetNumProfiles(); nProfile++)
+      //    {
+      //       CGeomProfile* pProfile = m_VCoast[nCoast].pGetProfileWithDownCoastSeq(nProfile);
+      //       int nCell = pProfile->nGetNumCellsInProfile();
+      //       LogStream << "Profile " << pProfile->nGetCoastID() << " nGetNumCellsInProfile() = " << nCell << endl;
+      //    }
+      //
+      //    LogStream << "====================" << endl;
+      // }
+      // // DEBUG CODE =====================
+
       // Change the wave properties in all shallow water sea cells: propagate waves and define the active zone, also locate wave shadow zones
       nRet = nDoAllPropagateWaves();
       if (nRet != RTN_OK)
@@ -1058,10 +1117,10 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
       // Tell the user how the simulation is progressing
       AnnounceProgress();
 
-      //       // DEBUG CODE ===========================================
+      //       // DEBUG CODE ===========================================================================================================
       //       string strOutFile = m_strOutPath;
       //       strOutFile += "sea_wave_height_CHECKPOINT_";
-      //       strOutFile += std::to_string(m_ulIter);
+      //       strOutFile += to_string(m_ulIter);
       //       strOutFile += ".tif";
       //
       //       GDALDriver* pDriver = GetGDALDriverManager()->GetDriverByName("gtiff");
@@ -1088,12 +1147,12 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
       //
       //       GDALClose(pDataSet);
       //       delete[] pdRaster;
-      //       // DEBUG CODE ===========================================
+      //       // DEBUG CODE ===========================================================================================================
       //
-      //       // DEBUG CODE ===========================================
+      //       // DEBUG CODE ===========================================================================================================
       //       strOutFile = m_strOutPath;
       //       strOutFile += "sea_wave_angle_CHECKPOINT_";
-      //       strOutFile += std::to_string(m_ulIter);
+      //       strOutFile += to_string(m_ulIter);
       //       strOutFile += ".tif";
       //
       //       pDriver = GetGDALDriverManager()->GetDriverByName("gtiff");
@@ -1120,7 +1179,7 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
       //
       //       GDALClose(pDataSet);
       //       delete[] pdRaster;
-      //       // DEBUG CODE ===========================================
+      //       // DEBUG CODE ===========================================================================================================
 
       // Save the not-deposited values, to be shown in the logfile after we've finished beach sediment movement
       m_dUnconsSandNotDepositedLastIter = m_dDepositionSandDiff;
@@ -1200,10 +1259,10 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
       // Tell the user how the simulation is progressing
       AnnounceProgress();
 
-      //       // DEBUG CODE ===========================================
+      //       // DEBUG CODE ===========================================================================================================
       //       string strOutFile = m_strOutPath;
       //       strOutFile += "sea_wave_height_CHECKPOINT_";
-      //       strOutFile += std::to_string(m_ulIter);
+      //       strOutFile += to_string(m_ulIter);
       //       strOutFile += ".tif";
       //
       //       GDALDriver* pDriver = GetGDALDriverManager()->GetDriverByName("gtiff");
@@ -1230,12 +1289,12 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
       //
       //       GDALClose(pDataSet);
       //       delete[] pdRaster;
-      //       // DEBUG CODE ===========================================
+      //       // DEBUG CODE ===========================================================================================================
       //
-      //       // DEBUG CODE ===========================================
+      //       // DEBUG CODE ===========================================================================================================
       //       strOutFile = m_strOutPath;
       //       strOutFile += "sea_wave_angle_CHECKPOINT_";
-      //       strOutFile += std::to_string(m_ulIter);
+      //       strOutFile += to_string(m_ulIter);
       //       strOutFile += ".tif";
       //
       //       pDriver = GetGDALDriverManager()->GetDriverByName("gtiff");
@@ -1262,7 +1321,7 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
       //
       //       GDALClose(pDataSet);
       //       delete[] pdRaster;
-      //       // DEBUG CODE ===========================================
+      //       // DEBUG CODE ===========================================================================================================
 
       // Do some end-of-timestep updates to the raster grid, also update per-timestep and running totals
       nRet = nUpdateGrid();

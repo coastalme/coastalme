@@ -1,7 +1,7 @@
 /*!
 \file 2d_point.cpp
-\brief Geometry class used to represent 2D point objects with floating-point co-ordinates
-\details The CGeom2DPoint class is used to represent 2D points where the x and y co-ordinates are floating-point values, e.g. points for which the x and y co-ordinates are in the external CRS (co-ordinate reference system)
+\brief Geometry class used to represent 2D point objects with floating-point coordinates
+\details The CGeom2DPoint class is used to represent 2D points where the x and y coordinates are floating-point values
 \author David Favis-Mortlock
 \author Andres Payo
 \date 2025
@@ -20,39 +20,39 @@ You should have received a copy of the GNU General Public License along with thi
 #include "cme.h"
 #include "2d_point.h"
 
-//! Constructor with no parameters (the X and Y co-ordinates of the CGeom2DPoint object are set to zero)
+//! Constructor with no parameters (the X and Y coordinates of the CGeom2DPoint object are set to zero)
 CGeom2DPoint::CGeom2DPoint(void)
 :  dX(0),
    dY(0)
 {
 }
 
-//! Constructor with two double parameters, for the X and Y co-ordinates of the CGeom2DPoint object
+//! Constructor with two double parameters, for the X and Y coordinates of the CGeom2DPoint object
 CGeom2DPoint::CGeom2DPoint(double const dNewX, double const dNewY)
 :  dX(dNewX),
    dY(dNewY)
 {
 }
 
-//! Returns the CGeom2DPoint object's double X co-ordinate
+//! Returns the CGeom2DPoint object's double X coordinate
 double CGeom2DPoint::dGetX(void) const
 {
    return dX;
 }
 
-//! Returns the CGeom2DPoint object's double Y co-ordinate
+//! Returns the CGeom2DPoint object's double Y coordinate
 double CGeom2DPoint::dGetY(void) const
 {
    return dY;
 }
 
-//! The double parameter sets a value for the CGeom2DIPoint object's X co-ordinate
+//! The double parameter sets a value for the CGeom2DIPoint object's X coordinate
 void CGeom2DPoint::SetX(double const dNewX)
 {
    dX = dNewX;
 }
 
-//! The double parameter sets a value for the CGeom2DIPoint object's Y co-ordinate
+//! The double parameter sets a value for the CGeom2DIPoint object's Y coordinate
 void CGeom2DPoint::SetY(double const dNewY)
 {
    dY = dNewY;
@@ -78,7 +78,7 @@ void CGeom2DPoint::operator= (CGeom2DPoint const* pPt)
    dY = pPt->dGetY();
 }
 
-//! Compares two CGeom2DPoint objects for equality
+//! Compares two CGeom2DPoint pointed-to objects for equality
 bool CGeom2DPoint::operator== (CGeom2DPoint const* pPt) const
 {
    if ((bFPIsEqual(pPt->dGetX(), dX, TOLERANCE)) && (bFPIsEqual(pPt->dGetY(), dY, TOLERANCE)))
@@ -88,15 +88,15 @@ bool CGeom2DPoint::operator== (CGeom2DPoint const* pPt) const
 }
 
 //! Compares two CGeom2DPoint objects for equality
-bool CGeom2DPoint::operator== (CGeom2DPoint pPt) const
+bool CGeom2DPoint::operator== (CGeom2DPoint Pt) const
 {
-   if ((bFPIsEqual(pPt.dGetX(), dX, TOLERANCE)) && (bFPIsEqual(pPt.dGetY(), dY, TOLERANCE)))
+   if ((bFPIsEqual(Pt.dGetX(), dX, TOLERANCE)) && (bFPIsEqual(Pt.dGetY(), dY, TOLERANCE)))
       return true;
 
    return false;
 }
 
-//! Compares two CGeom2DPoint objects for inequality
+//! Compares two CGeom2DPoint pointed-to objects for inequality
 bool CGeom2DPoint::operator!= (CGeom2DPoint const* pPt) const
 {
    if ((! bFPIsEqual(pPt->dGetX(), dX, TOLERANCE)) || (! bFPIsEqual(pPt->dGetY(), dY, TOLERANCE)))
@@ -104,3 +104,13 @@ bool CGeom2DPoint::operator!= (CGeom2DPoint const* pPt) const
 
    return false;
 }
+
+//! Compares two CGeom2DPoint objects for inequality
+bool CGeom2DPoint::operator!= (CGeom2DPoint Pt) const
+{
+   if ((! bFPIsEqual(Pt.dGetX(), dX, TOLERANCE)) || (! bFPIsEqual(Pt.dGetY(), dY, TOLERANCE)))
+      return true;
+
+   return false;
+}
+

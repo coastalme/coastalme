@@ -44,6 +44,8 @@ private:
    //! This cell's consolidated sediment object
    CRWCellSediment m_ConsolidatedSediment;
 
+protected:
+
 public:
    CRWCellLayer(void);
 
