@@ -5,6 +5,7 @@ var classCGeom2DPoint =
     [ "dGetX", "d5/d4e/classCGeom2DPoint.html#a250f937d03cfdf6e0244b74ad2bf96a4", null ],
     [ "dGetY", "d5/d4e/classCGeom2DPoint.html#a216921dc2c592d9468e6430fee7c7719", null ],
     [ "operator!=", "d5/d4e/classCGeom2DPoint.html#ab67a1d0553772d0bfdd4aaa925a4d52e", null ],
+    [ "operator!=", "d5/d4e/classCGeom2DPoint.html#a8ac9e5c85c6a387e88c4d2c0070be48d", null ],
     [ "operator=", "d5/d4e/classCGeom2DPoint.html#a1ea4b15a793cd85256c8f801c6d28caf", null ],
     [ "operator==", "d5/d4e/classCGeom2DPoint.html#ac238ee088b928bbcfdad91e0c0905849", null ],
     [ "operator==", "d5/d4e/classCGeom2DPoint.html#a3de57cf810783c31f7731a39187eb783", null ],

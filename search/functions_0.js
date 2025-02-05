@@ -67,8 +67,9 @@ var searchData=
   ['appendlayers_64',['AppendLayers',['../d1/dd9/classCGeomCell.html#a556db5cb0e1b09d8e3f799f9e66138c0',1,'CGeomCell']]],
   ['appendlinesegment_65',['AppendLineSegment',['../d0/d89/classCGeomMultiLine.html#a3f99a9c2ac66b75c432941ec88fc8538',1,'CGeomMultiLine::AppendLineSegment(void)'],['../d0/d89/classCGeomMultiLine.html#afdbe517c9f47370fe67557d46eb309c1',1,'CGeomMultiLine::AppendLineSegment(vector&lt; pair&lt; int, int &gt; &gt; *)']]],
   ['appendpointinprofile_66',['AppendPointInProfile',['../da/dae/classCGeomProfile.html#a19aac71e045a17e2c6d98f020f2319fa',1,'CGeomProfile::AppendPointInProfile(double const, double const)'],['../da/dae/classCGeomProfile.html#a2f6e2d73bb6e8182b5ee5f21ff022f79',1,'CGeomProfile::AppendPointInProfile(CGeom2DPoint const *)']]],
-  ['appendpolygonlength_67',['AppendPolygonLength',['../d1/dbe/classCRWCoast.html#af47d353bb8ae8ddc289c9a80f9abc76e',1,'CRWCoast']]],
-  ['appendprofile_68',['AppendProfile',['../d1/dbe/classCRWCoast.html#ab3a3fcb71d7e344a1be5e77be8eec4ed',1,'CRWCoast']]],
+  ['appendpolygon_67',['AppendPolygon',['../d1/d98/classCSimulation.html#afb96ad0745af2cba5ebb50ec12e2831b',1,'CSimulation']]],
+  ['appendprofile_68',['AppendProfile',['../d1/dbe/classCRWCoast.html#a52d4892ab1ec17743c0629d72360b79e',1,'CRWCoast']]],
   ['appendshadowboundary_69',['AppendShadowBoundary',['../d1/dbe/classCRWCoast.html#a05e4e1d133a98f98a3f24e9702876d1a',1,'CRWCoast']]],
-  ['appendshadowdowndriftboundary_70',['AppendShadowDowndriftBoundary',['../d1/dbe/classCRWCoast.html#abebe946e16816646e095992342948444',1,'CRWCoast']]]
+  ['appendshadowdowndriftboundary_70',['AppendShadowDowndriftBoundary',['../d1/dbe/classCRWCoast.html#abebe946e16816646e095992342948444',1,'CRWCoast']]],
+  ['appendvertex_71',['AppendVertex',['../df/d45/classCGeomCoastPolygon.html#ac3bc44b934d49de03631ea8ae2bdec0a',1,'CGeomCoastPolygon']]]
 ];

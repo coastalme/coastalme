@@ -26,7 +26,7 @@ var classCRWCellLandform =
     [ "m_nDummy", "dc/d4a/classCRWCellLandform.html#ab6d324f5f1bac68c3d7c7037f9f981da", null ],
     [ "m_nPointOnCoast", "dc/d4a/classCRWCellLandform.html#a92a443076ef58fed6e98ac283f8d768d", null ],
     [ "m_nSubCategory", "dc/d4a/classCRWCellLandform.html#a639bc1bde200abf222dfd2422bd66894", null ],
-    [ "m_sBeachData", "dc/d4a/classCRWCellLandform.html#a154e818424d09cbd4d43325a04dc8b33", null ],
-    [ "m_sCliffData", "dc/d4a/classCRWCellLandform.html#a263c631764f94c16fbb58ce4cda6050f", null ],
-    [ "m_uLFData", "dc/d4a/classCRWCellLandform.html#a291bc5328b77843d5099f4656a9aa7f4", null ]
+    [ "m_sBeachData", "dc/d4a/classCRWCellLandform.html#a6f1a35a7a19e27ea5206a9010f46662d", null ],
+    [ "m_sCliffData", "dc/d4a/classCRWCellLandform.html#a5a2d4dca3a1b48a48b7cbcd741a0374f", null ],
+    [ "m_uLFData", "dc/d4a/classCRWCellLandform.html#a9820039620dc7d87162e894663c4be5e", null ]
 ];

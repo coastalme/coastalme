@@ -11,7 +11,6 @@ var classCA2DShape =
     [ "operator[]", "d9/d0e/classCA2DShape.html#af4420f608a68e28650424c8cab9ee51a", null ],
     [ "pPtBack", "d9/d0e/classCA2DShape.html#a7f8d2942affd69f8de65e36f9c6acd3c", null ],
     [ "pPtVGetPoints", "d9/d0e/classCA2DShape.html#a20acae762de7cf6769eb938621f6a842", null ],
-    [ "PtGetCentroid", "d9/d0e/classCA2DShape.html#ac72351d5502907edbf335a7611a2b7ca", null ],
     [ "Resize", "d9/d0e/classCA2DShape.html#ac764ca3a47555ac461c8c21b25d8984d", null ],
     [ "Reverse", "d9/d0e/classCA2DShape.html#a54eb0a2ab77aa22b8d1af5f8f1f40383", null ],
     [ "m_VPoints", "d9/d0e/classCA2DShape.html#a070febdc96942442edb3553f2c4b87c9", null ]

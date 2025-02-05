@@ -1,5 +1,6 @@
 var annotated_dup =
 [
+    [ "bad_alloc", "d5/d15/classbad__alloc.html", null ],
     [ "CA2DIShape", "d2/d0f/classCA2DIShape.html", "d2/d0f/classCA2DIShape" ],
     [ "CA2DShape", "d9/d0e/classCA2DShape.html", "d9/d0e/classCA2DShape" ],
     [ "CACoastLandform", "d2/de0/classCACoastLandform.html", "d2/de0/classCACoastLandform" ],
@@ -20,5 +21,17 @@ var annotated_dup =
     [ "CRWDrift", "d0/d02/classCRWDrift.html", "d0/d02/classCRWDrift" ],
     [ "CRWIntervention", "d4/d51/classCRWIntervention.html", "d4/d51/classCRWIntervention" ],
     [ "CSedInputEvent", "db/d5f/classCSedInputEvent.html", "db/d5f/classCSedInputEvent" ],
-    [ "CSimulation", "d1/d98/classCSimulation.html", "d1/d98/classCSimulation" ]
+    [ "CSimulation", "d1/d98/classCSimulation.html", "d1/d98/classCSimulation" ],
+    [ "deque", "dd/d58/classdeque.html", "dd/d58/classdeque" ],
+    [ "ifstream", "d0/d68/classifstream.html", null ],
+    [ "ios", "df/d02/classios.html", null ],
+    [ "istringstream", "dc/d35/classistringstream.html", null ],
+    [ "ofstream", "d9/d93/classofstream.html", null ],
+    [ "ostream", "d0/d43/classostream.html", null ],
+    [ "ostringstream", "d8/d79/classostringstream.html", null ],
+    [ "pair", "d2/d11/classpair.html", "d2/d11/classpair" ],
+    [ "stack", "d1/dc2/classstack.html", "d1/dc2/classstack" ],
+    [ "string", "d5/d92/classstring.html", "d5/d92/classstring" ],
+    [ "stringstream", "d9/d61/classstringstream.html", null ],
+    [ "vector", "d7/dfc/classvector.html", "d7/dfc/classvector" ]
 ];

@@ -62,16 +62,17 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"d1/d98/classCSimulation.html#a486c6790eadb7d7cadc4921047f8a3ae",
-"d1/d98/classCSimulation.html#aa18683054054c1372d666281470402ac",
-"d1/d98/classCSimulation.html#af6c5eb586b6d62d702232509a228ffe9",
-"d1/dd9/classCGeomCell.html#a8d604925949441db745c4c172ddcb9cb",
-"d6/d0d/classCGeom2DIPoint.html#a81b2b628d74de8e5d951a462683d70e5",
-"d6/d2a/cme_8h.html#a5a0ff38ce2c62de1ae6936f8d70481cf",
-"d6/d2a/cme_8h.html#abb6251fa80196378e8f4c7d61924b4fd",
-"d9/d0e/classCA2DShape.html#ac220b8554a95ebe15b345ef2bd04177b",
-"df/d45/classCGeomCoastPolygon.html#a69422222d594f1a56d2f5f078c970905"
+"d1/d98/classCSimulation.html#a46f08f37407a47d10b107f77d86c13c9",
+"d1/d98/classCSimulation.html#aa01cba56311299ba9391bcb653107dc4",
+"d1/d98/classCSimulation.html#af4c1d4172cbc1ef26d5cae02ffe03409",
+"d1/dd9/classCGeomCell.html#a7439ac61cb4a3008282789ed0d0a80d4",
+"d5/dc6/classCRWCellSediment.html#abd0789fede8cae32f5ccbc39243dc0ca",
+"d6/d2a/cme_8h.html#a50d73bb4d1e1f8a3eb7eeef53ae66aff",
+"d6/d2a/cme_8h.html#aaea4c41befc9ff6d31a08618b09cad1b",
+"d7/dd3/classCGeomLine.html#a50710655d850e6703ef164d865c6d973",
+"df/d02/classios.html",
+"globals_h.html"
 ];
 
-var SYNCONMSG = 'click to disable panel synchronisation';
-var SYNCOFFMSG = 'click to enable panel synchronisation';
+var SYNCONMSG = 'click to disable panel synchronization';
+var SYNCOFFMSG = 'click to enable panel synchronization';

@@ -1,5 +1,6 @@
 var utils__global_8cpp =
 [
+    [ "istringstream", "dc/d35/classistringstream.html", null ],
     [ "bIsStringValidDouble", "d2/dfd/utils__global_8cpp.html#af4a882def7109de491a8c1da04a3f5bd", null ],
     [ "bIsStringValidInt", "d2/dfd/utils__global_8cpp.html#a1432a707917cd3a9582796679f4d583f", null ],
     [ "dRound", "d2/dfd/utils__global_8cpp.html#a129796f62c254914a851a7d95786b8a4", null ],
