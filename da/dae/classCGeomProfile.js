@@ -23,7 +23,6 @@ var classCGeomProfile =
     [ "bStartOfCoast", "da/dae/classCGeomProfile.html#ac591314b290b032ffc8a70d22df64ec0", null ],
     [ "bTooShort", "da/dae/classCGeomProfile.html#a941b6b75476754b07bff5128b52d8ad4", null ],
     [ "bTruncated", "da/dae/classCGeomProfile.html#ad4e6c686a0ca0e8b57f2b6809760a62c", null ],
-    [ "DeleteProfile", "da/dae/classCGeomProfile.html#aa29dac2f70eba121a15263bb3d8d036b", null ],
     [ "dGetProfileDeepWaterWaveAngle", "da/dae/classCGeomProfile.html#a1efc4d74a49196572e58433ab05b5d86", null ],
     [ "dGetProfileDeepWaterWaveHeight", "da/dae/classCGeomProfile.html#a25efa8fb09d83f8e50b82e90eb6c9a59", null ],
     [ "dGetProfileDeepWaterWavePeriod", "da/dae/classCGeomProfile.html#af21ee378022208ccdfdfa56178c3ee1b", null ],

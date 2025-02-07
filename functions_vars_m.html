@@ -587,6 +587,9 @@ $(function(){initNavTree('functions_vars_m.html',''); initResizable(true); });
 <li>m_pUpCoastAdjacentProfile&#160;:&#160;<a class="el" href="da/dae/classCGeomProfile.html#a101a87dfb558cbd93ca91afbab37434f">CGeomProfile</a></li>
 <li>m_pVCoastPolygon&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#afdf9931c6687dab00b0f48c0709d6c8a">CSimulation</a></li>
 <li>m_pVLandform&#160;:&#160;<a class="el" href="d1/dbe/classCRWCoast.html#a654225dc720e4fbdc7bbca895c853b55">CRWCoast</a></li>
+<li>m_pVNormalProfileDownAllCoastpointSeq&#160;:&#160;<a class="el" href="d1/dbe/classCRWCoast.html#acbf64508627de72083d39107e6edeb9c">CRWCoast</a></li>
+<li>m_pVProfile&#160;:&#160;<a class="el" href="d1/dbe/classCRWCoast.html#a08134ec9ca5df9707509209665808b25">CRWCoast</a></li>
+<li>m_pVProfileDownCoastSeq&#160;:&#160;<a class="el" href="d1/dbe/classCRWCoast.html#a7a7edba3707d96ec237f0019c2c13930">CRWCoast</a></li>
 <li>m_pVSedInputEvent&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#a9ffa94c34ecdbcbc6d38ed8df49bd632">CSimulation</a></li>
 <li>m_sBeachData&#160;:&#160;<a class="el" href="dc/d4a/classCRWCellLandform.html#a6f1a35a7a19e27ea5206a9010f46662d">CRWCellLandform</a></li>
 <li>m_sCliffData&#160;:&#160;<a class="el" href="dc/d4a/classCRWCellLandform.html#a5a2d4dca3a1b48a48b7cbcd741a0374f">CRWCellLandform</a></li>
@@ -721,15 +724,12 @@ $(function(){initNavTree('functions_vars_m.html',''); initResizable(true); });
 <li>m_VnDeepWaterWaveStationID&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#a90b4069add3cc1669ed9450a0c9f7183">CSimulation</a></li>
 <li>m_VnDownCoastAdjacentPolygon&#160;:&#160;<a class="el" href="df/d45/classCGeomCoastPolygon.html#a38f6102b38e5ae2f89a96cd3f18c36ae">CGeomCoastPolygon</a></li>
 <li>m_VnFloodLocationID&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#a937fad7cdf9eb943dcb3132886008e18">CSimulation</a></li>
-<li>m_VNormalProfileDownAllCoastSeq&#160;:&#160;<a class="el" href="d1/dbe/classCRWCoast.html#ae5510b107c8d8c2263c3af4ecfa77b07">CRWCoast</a></li>
 <li>m_VnPolygonNode&#160;:&#160;<a class="el" href="d1/dbe/classCRWCoast.html#adbb2f05dbed0a2e6b38be4a8353bf3ce">CRWCoast</a></li>
 <li>m_VnProfileToSave&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#a7f8eda88f7912d7903b85ea600a5dcbf">CSimulation</a></li>
 <li>m_VnSavGolIndexCoast&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#aea417c5a8cf4f930020b8dcd9f9025fd">CSimulation</a></li>
 <li>m_VnSedimentInputLocationID&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#a34a682c1aef9f1c40fa7268e98edf67c">CSimulation</a></li>
 <li>m_VnUpCoastAdjacentPolygon&#160;:&#160;<a class="el" href="df/d45/classCGeomCoastPolygon.html#a2b408d4a845c11cb15dc31e6e00d696a">CGeomCoastPolygon</a></li>
 <li>m_VPoints&#160;:&#160;<a class="el" href="d2/d0f/classCA2DIShape.html#a1e983c96d533dee13b3af812a048929e">CA2DIShape</a>, <a class="el" href="d9/d0e/classCA2DShape.html#a070febdc96942442edb3553f2c4b87c9">CA2DShape</a></li>
-<li>m_VpProfileDownCoastSeq&#160;:&#160;<a class="el" href="d1/dbe/classCRWCoast.html#ac462de5e9487911e64257c12811300c1">CRWCoast</a></li>
-<li>m_VProfile&#160;:&#160;<a class="el" href="d1/dbe/classCRWCoast.html#a5b48e3a9fa6fe890543dd0a538c2549e">CRWCoast</a></li>
 <li>m_VPtiVertices&#160;:&#160;<a class="el" href="df/d45/classCGeomCoastPolygon.html#a35336fb75886558fa4f3d5aabc374a8f">CGeomCoastPolygon</a></li>
 <li>m_VstrGDALICCDataType&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#a1371292a39da806c7ec52137017ceafa">CSimulation</a></li>
 <li>m_VstrGDALICCDriverCode&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#a230c10cc6f8496e7cb23854a4ea08427">CSimulation</a></li>
@@ -768,7 +768,7 @@ $(function(){initNavTree('functions_vars_m.html',''); initResizable(true); });
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Thu Feb 6 2025 19:40:53 for CoastalME (Coastal Modelling Environment) by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+    <li class="footer">Generated on Fri Feb 7 2025 14:30:34 for CoastalME (Coastal Modelling Environment) by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
   </ul>
 </div>
 </body>

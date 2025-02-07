@@ -9,7 +9,6 @@ var classCRWCoast =
     [ "bIsProfileAtCoastPoint", "d1/dbe/classCRWCoast.html#a1e83659c8a1074ea4e72fd61c57cf5d9", null ],
     [ "CreateProfileDownCoastIndex", "d1/dbe/classCRWCoast.html#ae364645be86243762280582a4832046f", null ],
     [ "CreateProfilesAtCoastPoints", "d1/dbe/classCRWCoast.html#ae7255c88ba024128496001a5345c46e7", null ],
-    [ "DeleteAllProfiles", "d1/dbe/classCRWCoast.html#a3ff96b60640ce48719d170e74c0af4a4", null ],
     [ "dGetBreakingWaveAngle", "d1/dbe/classCRWCoast.html#a0585ad3097756ea40f7d4000606b0140", null ],
     [ "dGetBreakingWaveHeight", "d1/dbe/classCRWCoast.html#a3c45d9c4784f4954e4409a7b8358f125", null ],
     [ "dGetCoastDeepWaterWaveAngle", "d1/dbe/classCRWCoast.html#afdc867ef98841a2f3008f7655b2a1b0f", null ],
@@ -97,6 +96,9 @@ var classCRWCoast =
     [ "m_nStartEdge", "d1/dbe/classCRWCoast.html#a6195de7c9c1f7694311d274aedee42a1", null ],
     [ "m_pSim", "d1/dbe/classCRWCoast.html#a754e7508ec754f15393025af64ac73b0", null ],
     [ "m_pVLandform", "d1/dbe/classCRWCoast.html#a654225dc720e4fbdc7bbca895c853b55", null ],
+    [ "m_pVNormalProfileDownAllCoastpointSeq", "d1/dbe/classCRWCoast.html#acbf64508627de72083d39107e6edeb9c", null ],
+    [ "m_pVProfile", "d1/dbe/classCRWCoast.html#a08134ec9ca5df9707509209665808b25", null ],
+    [ "m_pVProfileDownCoastSeq", "d1/dbe/classCRWCoast.html#a7a7edba3707d96ec237f0019c2c13930", null ],
     [ "m_VdBreakingWaveAngle", "d1/dbe/classCRWCoast.html#a942887abc3bc4eac8d2a57838cedf1fb", null ],
     [ "m_VdBreakingWaveHeight", "d1/dbe/classCRWCoast.html#a14e1b6f2d899f49f09d9e69ef8187fee", null ],
     [ "m_VdCoastWaveHeight", "d1/dbe/classCRWCoast.html#aae68deb9b50c723a07f0e2f44fbf4fc3", null ],
@@ -111,8 +113,5 @@ var classCRWCoast =
     [ "m_VdWaveEnergyAtBreaking", "d1/dbe/classCRWCoast.html#a606baa1d99a446b3ba0fbdfca47e6b67", null ],
     [ "m_VdWaveSetupSurge", "d1/dbe/classCRWCoast.html#a20eae2650cb3bd9358d9057a706e9b4b", null ],
     [ "m_VnBreakingDistance", "d1/dbe/classCRWCoast.html#a3b72dd919efd446c02cee0cc4fadcebf", null ],
-    [ "m_VNormalProfileDownAllCoastSeq", "d1/dbe/classCRWCoast.html#ae5510b107c8d8c2263c3af4ecfa77b07", null ],
-    [ "m_VnPolygonNode", "d1/dbe/classCRWCoast.html#adbb2f05dbed0a2e6b38be4a8353bf3ce", null ],
-    [ "m_VpProfileDownCoastSeq", "d1/dbe/classCRWCoast.html#ac462de5e9487911e64257c12811300c1", null ],
-    [ "m_VProfile", "d1/dbe/classCRWCoast.html#a5b48e3a9fa6fe890543dd0a538c2549e", null ]
+    [ "m_VnPolygonNode", "d1/dbe/classCRWCoast.html#adbb2f05dbed0a2e6b38be4a8353bf3ce", null ]
 ];

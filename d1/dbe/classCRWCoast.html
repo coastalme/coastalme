@@ -207,9 +207,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a84cd86d415ab742280dabeff3e1bacba" id="r_a84cd86d415ab742280dabeff3e1bacba"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a84cd86d415ab742280dabeff3e1bacba">nGetNumProfiles</a> (void) const</td></tr>
 <tr class="memdesc:a84cd86d415ab742280dabeff3e1bacba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the number of profiles on this coast.  <br /></td></tr>
 <tr class="separator:a84cd86d415ab742280dabeff3e1bacba"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3ff96b60640ce48719d170e74c0af4a4" id="r_a3ff96b60640ce48719d170e74c0af4a4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3ff96b60640ce48719d170e74c0af4a4">DeleteAllProfiles</a> (void)</td></tr>
-<tr class="memdesc:a3ff96b60640ce48719d170e74c0af4a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deletes all profile objects.  <br /></td></tr>
-<tr class="separator:a3ff96b60640ce48719d170e74c0af4a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae364645be86243762280582a4832046f" id="r_ae364645be86243762280582a4832046f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae364645be86243762280582a4832046f">CreateProfileDownCoastIndex</a> (void)</td></tr>
 <tr class="memdesc:ae364645be86243762280582a4832046f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates an index to profiles in down-coastline sequence.  <br /></td></tr>
 <tr class="separator:ae364645be86243762280582a4832046f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -444,15 +441,15 @@ Private Attributes</h2></td></tr>
 <tr class="memitem:a654225dc720e4fbdc7bbca895c853b55" id="r_a654225dc720e4fbdc7bbca895c853b55"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d7/dfc/classvector.html">vector</a>&lt; <a class="el" href="../../d2/de0/classCACoastLandform.html">CACoastLandform</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a654225dc720e4fbdc7bbca895c853b55">m_pVLandform</a></td></tr>
 <tr class="memdesc:a654225dc720e4fbdc7bbca895c853b55"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to a coastal landform object, at each point on the coastline.  <br /></td></tr>
 <tr class="separator:a654225dc720e4fbdc7bbca895c853b55"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae5510b107c8d8c2263c3af4ecfa77b07" id="r_ae5510b107c8d8c2263c3af4ecfa77b07"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d7/dfc/classvector.html">vector</a>&lt; <a class="el" href="../../da/dae/classCGeomProfile.html">CGeomProfile</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae5510b107c8d8c2263c3af4ecfa77b07">m_VNormalProfileDownAllCoastSeq</a></td></tr>
-<tr class="memdesc:ae5510b107c8d8c2263c3af4ecfa77b07"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointers to coast-normal profile objects, one for each point on the coastline (is null for most coastline points)  <br /></td></tr>
-<tr class="separator:ae5510b107c8d8c2263c3af4ecfa77b07"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5b48e3a9fa6fe890543dd0a538c2549e" id="r_a5b48e3a9fa6fe890543dd0a538c2549e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d7/dfc/classvector.html">vector</a>&lt; <a class="el" href="../../da/dae/classCGeomProfile.html">CGeomProfile</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5b48e3a9fa6fe890543dd0a538c2549e">m_VProfile</a></td></tr>
-<tr class="memdesc:a5b48e3a9fa6fe890543dd0a538c2549e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Coast-normal profile objects, in sequence of creation (which is the same as nGetCoastID() sequence)  <br /></td></tr>
-<tr class="separator:a5b48e3a9fa6fe890543dd0a538c2549e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac462de5e9487911e64257c12811300c1" id="r_ac462de5e9487911e64257c12811300c1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d7/dfc/classvector.html">vector</a>&lt; <a class="el" href="../../da/dae/classCGeomProfile.html">CGeomProfile</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac462de5e9487911e64257c12811300c1">m_VpProfileDownCoastSeq</a></td></tr>
-<tr class="memdesc:ac462de5e9487911e64257c12811300c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointers to coastline-normal objects, in along-coastline sequence.  <br /></td></tr>
-<tr class="separator:ac462de5e9487911e64257c12811300c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acbf64508627de72083d39107e6edeb9c" id="r_acbf64508627de72083d39107e6edeb9c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d7/dfc/classvector.html">vector</a>&lt; <a class="el" href="../../da/dae/classCGeomProfile.html">CGeomProfile</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acbf64508627de72083d39107e6edeb9c">m_pVNormalProfileDownAllCoastpointSeq</a></td></tr>
+<tr class="memdesc:acbf64508627de72083d39107e6edeb9c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointers to coast-normal profile objects, one for each point on the coastline (is null for most coastline points)  <br /></td></tr>
+<tr class="separator:acbf64508627de72083d39107e6edeb9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a08134ec9ca5df9707509209665808b25" id="r_a08134ec9ca5df9707509209665808b25"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d7/dfc/classvector.html">vector</a>&lt; <a class="el" href="../../da/dae/classCGeomProfile.html">CGeomProfile</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a08134ec9ca5df9707509209665808b25">m_pVProfile</a></td></tr>
+<tr class="memdesc:a08134ec9ca5df9707509209665808b25"><td class="mdescLeft">&#160;</td><td class="mdescRight">Coast-normal profile objects, in sequence of creation (which is the same as nGetCoastID() sequence)  <br /></td></tr>
+<tr class="separator:a08134ec9ca5df9707509209665808b25"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7a7edba3707d96ec237f0019c2c13930" id="r_a7a7edba3707d96ec237f0019c2c13930"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d7/dfc/classvector.html">vector</a>&lt; <a class="el" href="../../da/dae/classCGeomProfile.html">CGeomProfile</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7a7edba3707d96ec237f0019c2c13930">m_pVProfileDownCoastSeq</a></td></tr>
+<tr class="memdesc:a7a7edba3707d96ec237f0019c2c13930"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointers to coastline-normal objects, in along-coastline sequence.  <br /></td></tr>
+<tr class="separator:a7a7edba3707d96ec237f0019c2c13930"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a70b49aa9579776b0e94b0882422c352c" id="r_a70b49aa9579776b0e94b0882422c352c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d7/dfc/classvector.html">vector</a>&lt; <a class="el" href="../../d7/dd3/classCGeomLine.html">CGeomLine</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a70b49aa9579776b0e94b0882422c352c">m_LShadowBoundary</a></td></tr>
 <tr class="memdesc:a70b49aa9579776b0e94b0882422c352c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Lines which comprise the edge of a shadow zone, ext CRS.  <br /></td></tr>
 <tr class="separator:a70b49aa9579776b0e94b0882422c352c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -538,7 +535,7 @@ Andres Payo</dd></dl>
 
 <p>Appends a coastal landform to this coast. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00715">715</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00710">710</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
 
 </div>
 </div>
@@ -559,7 +556,7 @@ Andres Payo</dd></dl>
 
 <p>Appenda a coastline-normal profile. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00411">411</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00414">414</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
 
 </div>
 </div>
@@ -580,7 +577,7 @@ Andres Payo</dd></dl>
 
 <p>Appends a shadow boundary to this coast. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00786">786</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00779">779</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
 
 </div>
 </div>
@@ -601,7 +598,7 @@ Andres Payo</dd></dl>
 
 <p>Appends a shadow zone downdrift boundary. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00805">805</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00798">798</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
 
 </div>
 </div>
@@ -622,7 +619,7 @@ Andres Payo</dd></dl>
 
 <p>Returns true if there is a coastline-normal profile at this coast point, false otherwise. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00700">700</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00695">695</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
 
 </div>
 </div>
@@ -643,7 +640,7 @@ Andres Payo</dd></dl>
 
 <p>Creates an index to profiles in down-coastline sequence. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00437">437</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00432">432</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
 
 </div>
 </div>
@@ -664,28 +661,7 @@ Andres Payo</dd></dl>
 
 <p>Creates a vector which holds, for each coastline point, a null pointer to a coastline-normal profile object. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00675">675</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
-
-</div>
-</div>
-<a id="a3ff96b60640ce48719d170e74c0af4a4" name="a3ff96b60640ce48719d170e74c0af4a4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3ff96b60640ce48719d170e74c0af4a4">&#9670;&#160;</a></span>DeleteAllProfiles()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void CRWCoast::DeleteAllProfiles </td>
-          <td>(</td>
-          <td class="paramtype">void</td>          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Deletes all profile objects. </p>
-
-<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00429">429</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00670">670</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
 
 </div>
 </div>
@@ -706,7 +682,7 @@ Andres Payo</dd></dl>
 
 <p>Gets the breaking wave angle for this coast point. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00610">610</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00605">605</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
 
 </div>
 </div>
@@ -727,7 +703,7 @@ Andres Payo</dd></dl>
 
 <p>Gets the breaking wave height for this coast point. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00532">532</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00527">527</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
 
 </div>
 </div>
@@ -748,7 +724,7 @@ Andres Payo</dd></dl>
 
 <p>Gets the deep water wave angle for this coast point. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00506">506</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00501">501</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
 
 </div>
 </div>
@@ -769,7 +745,7 @@ Andres Payo</dd></dl>
 
 <p>Gets the deep water wave period for this coast point. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00519">519</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00514">514</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
 
 </div>
 </div>
@@ -790,7 +766,7 @@ Andres Payo</dd></dl>
 
 <p>Gets the coast wave height for this coast point. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00596">596</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00591">591</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
 
 </div>
 </div>
@@ -811,7 +787,7 @@ Andres Payo</dd></dl>
 
 <p>Gets the depth of breaking for this coast point. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00624">624</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00619">619</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
 
 </div>
 </div>
@@ -832,7 +808,7 @@ Andres Payo</dd></dl>
 
 <p>Returns the detailed curvature for a coast point. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00309">309</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00312">312</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
 
 </div>
 </div>
@@ -853,7 +829,7 @@ Andres Payo</dd></dl>
 
 <p>Gets the flux orientation for this coast point. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00652">652</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00647">647</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
 
 </div>
 </div>
@@ -878,7 +854,7 @@ Andres Payo</dd></dl>
 
 <p>Sets the wave level for this coast point. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00573">573</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00568">568</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
 
 </div>
 </div>
@@ -899,7 +875,7 @@ Andres Payo</dd></dl>
 
 <p>Gets the wave runup for this coast point. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00567">567</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00562">562</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
 
 </div>
 </div>
@@ -920,7 +896,7 @@ Andres Payo</dd></dl>
 
 <p>Returns the smoothed curvature for a coast point. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00329">329</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00332">332</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
 
 </div>
 </div>
@@ -941,7 +917,7 @@ Andres Payo</dd></dl>
 
 <p>Gets the mean of the coast's smoothed curvature. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00379">379</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00382">382</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
 
 </div>
 </div>
@@ -962,7 +938,7 @@ Andres Payo</dd></dl>
 
 <p>Gets the standard deviation of the coast's smoothed curvature. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00391">391</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00394">394</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
 
 </div>
 </div>
@@ -983,7 +959,7 @@ Andres Payo</dd></dl>
 
 <p>Gets the wave energy at breaking for this coast point. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00667">667</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00662">662</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
 
 </div>
 </div>
@@ -1004,7 +980,7 @@ Andres Payo</dd></dl>
 
 <p>Gets the wave setup surge for this coast point. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00545">545</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00540">540</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
 
 </div>
 </div>
@@ -1025,7 +1001,7 @@ Andres Payo</dd></dl>
 
 <p>Inserts profiles at coastline points in the profile-coastline-point index. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00681">681</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00676">676</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
 
 </div>
 </div>
@@ -1046,7 +1022,7 @@ Andres Payo</dd></dl>
 
 <p>Gets the breaking distance for this coast point. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00638">638</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00633">633</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
 
 </div>
 </div>
@@ -1067,7 +1043,7 @@ Andres Payo</dd></dl>
 
 <p>Gets the size of the coastline. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00182">182</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00185">185</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
 
 </div>
 </div>
@@ -1088,7 +1064,7 @@ Andres Payo</dd></dl>
 
 <p>Returns the coastline number given a cell, or INT_NODATA if neither this cell or any of its neighbouring cells are 'under' a coastline. If it is a neighbouring cell that is under the coastline, then it also changes the cell that is supplied as an input parameter. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00239">239</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00242">242</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
 
 </div>
 </div>
@@ -1109,7 +1085,7 @@ Andres Payo</dd></dl>
 
 <p>Gets the coast's end edge. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00093">93</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00096">96</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
 
 </div>
 </div>
@@ -1130,7 +1106,7 @@ Andres Payo</dd></dl>
 
 <p>Returns the number of coast polygons. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00754">754</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00747">747</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
 
 </div>
 </div>
@@ -1151,7 +1127,7 @@ Andres Payo</dd></dl>
 
 <p>Returns the number of profiles on this coast. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00423">423</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00426">426</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
 
 </div>
 </div>
@@ -1172,7 +1148,7 @@ Andres Payo</dd></dl>
 
 <p>Returns the number of shadow boundaries on this coast. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00780">780</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00773">773</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
 
 </div>
 </div>
@@ -1193,7 +1169,7 @@ Andres Payo</dd></dl>
 
 <p>Returns the number of shadow zone downdrift boundaries on this coast. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00799">799</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00792">792</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
 
 </div>
 </div>
@@ -1214,7 +1190,7 @@ Andres Payo</dd></dl>
 
 <p>Gets a coast polygon node. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00737">737</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00732">732</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
 
 </div>
 </div>
@@ -1235,7 +1211,7 @@ Andres Payo</dd></dl>
 
 <p>Gers the handedness of the coast. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00069">69</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00072">72</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
 
 </div>
 </div>
@@ -1256,7 +1232,7 @@ Andres Payo</dd></dl>
 
 <p>Gets the coast's start edge. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00081">81</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00084">84</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
 
 </div>
 </div>
@@ -1277,7 +1253,7 @@ Andres Payo</dd></dl>
 
 <p>Returns the coastal landform for a given coast point, or NULL if there is no coast landform here. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00721">721</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00716">716</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
 
 </div>
 </div>
@@ -1298,7 +1274,7 @@ Andres Payo</dd></dl>
 
 <p>Returns a pointer to the profile which is adjacent to and down-coast from the given profile pointer. It returns NULL if there is no valid down-coast profile. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00462">462</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00457">457</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
 
 </div>
 </div>
@@ -1319,7 +1295,7 @@ Andres Payo</dd></dl>
 
 <p>Returns a pointer to the profile which is adjacent to and down-coast from the specified profile; however this profile must not be the last (coast-end) profile. It returns NULL if there is no valid down-coast profile. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00468">468</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00463">463</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
 
 </div>
 </div>
@@ -1340,7 +1316,7 @@ Andres Payo</dd></dl>
 
 <p>Returns a pointer to the last profile, in polygon-ID number sequence. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00404">404</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00407">407</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
 
 </div>
 </div>
@@ -1361,7 +1337,7 @@ Andres Payo</dd></dl>
 
 <p>Returns a pointer to a coast polygon, specified by down-coast sequence. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00760">760</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00753">753</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
 
 </div>
 </div>
@@ -1382,7 +1358,7 @@ Andres Payo</dd></dl>
 
 <p>Returns a pointer to a profile, in polygon-ID number sequence. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00397">397</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00400">400</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
 
 </div>
 </div>
@@ -1403,7 +1379,7 @@ Andres Payo</dd></dl>
 
 <p>Returns a pointer to the coastline-normal profile at this coast point. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00709">709</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00704">704</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
 
 </div>
 </div>
@@ -1424,7 +1400,7 @@ Andres Payo</dd></dl>
 
 <p>Returns a pointer to a coastline-normal profile in down-coast sequence. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00447">447</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00442">442</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
 
 </div>
 </div>
@@ -1445,7 +1421,7 @@ Andres Payo</dd></dl>
 
 <p>Returns a pointer to a coastline-normal profile in up-coast sequence. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00454">454</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00449">449</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
 
 </div>
 </div>
@@ -1466,7 +1442,7 @@ Andres Payo</dd></dl>
 
 <p>Returns a pointer to a shadow boundary. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00792">792</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00785">785</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
 
 </div>
 </div>
@@ -1487,7 +1463,7 @@ Andres Payo</dd></dl>
 
 <p>Returns a pointer to a shadow zone downdrift boundary. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00811">811</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00804">804</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
 
 </div>
 </div>
@@ -1508,9 +1484,9 @@ Andres Payo</dd></dl>
 
 <p>Returns a pointer to the simulation object. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00057">57</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00060">60</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00754">nGetNumPolygons()</a>, and <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00760">pGetPolygon()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00747">nGetNumPolygons()</a>, and <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00753">pGetPolygon()</a>.</p>
 
 </div>
 </div>
@@ -1531,7 +1507,7 @@ Andres Payo</dd></dl>
 
 <p>Returns a pointer to the profile which is adjacent to and up-coast from the specified profile. It returns NULL if there is no valid up-coast profile. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00479">479</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00474">474</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
 
 </div>
 </div>
@@ -1552,7 +1528,7 @@ Andres Payo</dd></dl>
 
 <p>Returns the coastline (external CRS) </p>
 
-<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00146">146</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00149">149</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
 
 </div>
 </div>
@@ -1627,7 +1603,7 @@ Andres Payo</dd></dl>
 
 <p>Creates a coast polygon and returns a pointer to it. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00744">744</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00739">739</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
 
 </div>
 </div>
@@ -1648,7 +1624,7 @@ Andres Payo</dd></dl>
 
 <p>Returns a given coast point in external CRS. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00152">152</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00155">155</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
 
 </div>
 </div>
@@ -1669,7 +1645,7 @@ Andres Payo</dd></dl>
 
 <p>Returns the coordinates (grid CRS) of the cells marked as coastline. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00209">209</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00212">212</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
 
 </div>
 </div>
@@ -1690,7 +1666,7 @@ Andres Payo</dd></dl>
 
 <p>Returns a pointer to a vector of detailed curvature for all coast points. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00323">323</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00326">326</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
 
 </div>
 </div>
@@ -1711,7 +1687,7 @@ Andres Payo</dd></dl>
 
 <p>Returns a pointer to a vector of smoothed curvature for all coast points. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00343">343</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00346">346</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
 
 </div>
 </div>
@@ -1736,7 +1712,7 @@ Andres Payo</dd></dl>
 
 <p>Sets the breaking distance for this coast point. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00631">631</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00626">626</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
 
 </div>
 </div>
@@ -1761,7 +1737,7 @@ Andres Payo</dd></dl>
 
 <p>Sets the breaking wave angle for this coast point. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00603">603</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00598">598</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
 
 </div>
 </div>
@@ -1786,7 +1762,7 @@ Andres Payo</dd></dl>
 
 <p>Sets the breaking wave height for this coast point. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00525">525</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00520">520</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
 
 </div>
 </div>
@@ -1811,7 +1787,7 @@ Andres Payo</dd></dl>
 
 <p>Sets the deep water wave angle for this coast point. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00499">499</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00494">494</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
 
 </div>
 </div>
@@ -1836,7 +1812,7 @@ Andres Payo</dd></dl>
 
 <p>Sets the deep water wave height for this coast point. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00485">485</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00480">480</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
 
 </div>
 </div>
@@ -1861,7 +1837,7 @@ Andres Payo</dd></dl>
 
 <p>Sets the deep water wave period for this coast point. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00513">513</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00508">508</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
 
 </div>
 </div>
@@ -1882,7 +1858,7 @@ Andres Payo</dd></dl>
 
 <p>Given the vector line of a coast, this initializes coastline values (curvature, breaking wave height, wave angle, and flux orientation etc.) </p>
 
-<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00099">99</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00102">102</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
 
 </div>
 </div>
@@ -1903,7 +1879,7 @@ Andres Payo</dd></dl>
 
 <p>Sets the coordinates (grid CRS) of the cells marked as coastline. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00193">193</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00196">196</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
 
 </div>
 </div>
@@ -1928,7 +1904,7 @@ Andres Payo</dd></dl>
 
 <p>Sets the coast wave height for this coast point. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00589">589</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00584">584</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
 
 </div>
 </div>
@@ -1953,7 +1929,7 @@ Andres Payo</dd></dl>
 
 <p>Sets the depth of breaking for this coast point. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00617">617</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00612">612</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
 
 </div>
 </div>
@@ -1978,7 +1954,7 @@ Andres Payo</dd></dl>
 
 <p>Sets the detailed curvature for a coast point. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00316">316</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00319">319</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
 
 </div>
 </div>
@@ -1999,7 +1975,7 @@ Andres Payo</dd></dl>
 
 <p>Sets the mean of the coast's detailed curvature. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00349">349</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00352">352</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
 
 </div>
 </div>
@@ -2020,7 +1996,7 @@ Andres Payo</dd></dl>
 
 <p>Sets the standard deviation of the coast's detailed curvature. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00361">361</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00364">364</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
 
 </div>
 </div>
@@ -2041,7 +2017,7 @@ Andres Payo</dd></dl>
 
 <p>Sets the coast's end edge. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00087">87</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00090">90</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
 
 </div>
 </div>
@@ -2066,7 +2042,7 @@ Andres Payo</dd></dl>
 
 <p>Sets the flux orientation for this coast point. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00645">645</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00640">640</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
 
 </div>
 </div>
@@ -2091,7 +2067,7 @@ Andres Payo</dd></dl>
 
 <p>Sets a coast polygon node. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00730">730</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00725">725</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
 
 </div>
 </div>
@@ -2116,7 +2092,7 @@ Andres Payo</dd></dl>
 
 <p>Sets a pointer to a coast-normal profile at a given coastline point. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00693">693</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00688">688</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
 
 </div>
 </div>
@@ -2141,7 +2117,7 @@ Andres Payo</dd></dl>
 
 <p>Sets the wave runup for this coast point. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00561">561</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00556">556</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
 
 </div>
 </div>
@@ -2162,7 +2138,7 @@ Andres Payo</dd></dl>
 
 <p>Sets the handedness of the coast. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00063">63</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00066">66</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
 
 </div>
 </div>
@@ -2187,7 +2163,7 @@ Andres Payo</dd></dl>
 
 <p>Sets the smoothed curvature for a coast point. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00336">336</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00339">339</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
 
 </div>
 </div>
@@ -2208,7 +2184,7 @@ Andres Payo</dd></dl>
 
 <p>Sets the mean of the coast's smoothed curvature. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00373">373</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00376">376</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
 
 </div>
 </div>
@@ -2229,7 +2205,7 @@ Andres Payo</dd></dl>
 
 <p>Sets the standard deviation of the coast's smoothed curvature. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00385">385</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00388">388</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
 
 </div>
 </div>
@@ -2250,7 +2226,7 @@ Andres Payo</dd></dl>
 
 <p>Sets the coast's start edge. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00075">75</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00078">78</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
 
 </div>
 </div>
@@ -2275,7 +2251,7 @@ Andres Payo</dd></dl>
 
 <p>Sets the wave energy at breaking for this coast point. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00659">659</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00654">654</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
 
 </div>
 </div>
@@ -2300,7 +2276,7 @@ Andres Payo</dd></dl>
 
 <p>Sets the wave setup surge for this coast point. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00539">539</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00534">534</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
 
 </div>
 </div>
@@ -2329,7 +2305,7 @@ Andres Payo</dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../de/d65/coast_8h_source.html#l00052">52</a> of file <a class="el" href="../../de/d65/coast_8h_source.html">coast.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00037">CRWCoast()</a>, and <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00349">SetDetailedCurvatureMean()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00037">CRWCoast()</a>, and <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00352">SetDetailedCurvatureMean()</a>.</p>
 
 </div>
 </div>
@@ -2357,7 +2333,7 @@ Andres Payo</dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../de/d65/coast_8h_source.html#l00055">55</a> of file <a class="el" href="../../de/d65/coast_8h_source.html">coast.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00037">CRWCoast()</a>, and <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00361">SetDetailedCurvatureSTD()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00037">CRWCoast()</a>, and <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00364">SetDetailedCurvatureSTD()</a>.</p>
 
 </div>
 </div>
@@ -2385,7 +2361,7 @@ Andres Payo</dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../de/d65/coast_8h_source.html#l00058">58</a> of file <a class="el" href="../../de/d65/coast_8h_source.html">coast.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00037">CRWCoast()</a>, <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00379">dGetSmoothCurvatureMean()</a>, and <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00373">SetSmoothCurvatureMean()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00037">CRWCoast()</a>, <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00382">dGetSmoothCurvatureMean()</a>, and <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00376">SetSmoothCurvatureMean()</a>.</p>
 
 </div>
 </div>
@@ -2413,7 +2389,7 @@ Andres Payo</dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../de/d65/coast_8h_source.html#l00061">61</a> of file <a class="el" href="../../de/d65/coast_8h_source.html">coast.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00037">CRWCoast()</a>, <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00391">dGetSmoothCurvatureSTD()</a>, and <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00385">SetSmoothCurvatureSTD()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00037">CRWCoast()</a>, <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00394">dGetSmoothCurvatureSTD()</a>, and <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00388">SetSmoothCurvatureSTD()</a>.</p>
 
 </div>
 </div>
@@ -2441,7 +2417,7 @@ Andres Payo</dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../de/d65/coast_8h_source.html#l00081">81</a> of file <a class="el" href="../../de/d65/coast_8h_source.html">coast.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00239">nGetCoastPointGivenCell()</a>, <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00209">pPtiGetCellMarkedAsCoastline()</a>, and <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00193">SetCoastlineGridCRS()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00242">nGetCoastPointGivenCell()</a>, <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00212">pPtiGetCellMarkedAsCoastline()</a>, and <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00196">SetCoastlineGridCRS()</a>.</p>
 
 </div>
 </div>
@@ -2469,7 +2445,7 @@ Andres Payo</dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../de/d65/coast_8h_source.html#l00067">67</a> of file <a class="el" href="../../de/d65/coast_8h_source.html">coast.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00675">CreateProfilesAtCoastPoints()</a>, <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00182">nGetCoastlineSize()</a>, <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00146">pLGetCoastlineExtCRS()</a>, <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00152">pPtGetCoastlinePointExtCRS()</a>, and <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00099">SetCoastlineExtCRS()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00670">CreateProfilesAtCoastPoints()</a>, <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00185">nGetCoastlineSize()</a>, <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00149">pLGetCoastlineExtCRS()</a>, <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00155">pPtGetCoastlinePointExtCRS()</a>, and <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00102">SetCoastlineExtCRS()</a>.</p>
 
 </div>
 </div>
@@ -2575,7 +2551,7 @@ Andres Payo</dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../de/d65/coast_8h_source.html#l00146">146</a> of file <a class="el" href="../../de/d65/coast_8h_source.html">coast.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00786">AppendShadowBoundary()</a>, <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00780">nGetNumShadowBoundaries()</a>, and <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00792">pGetShadowBoundary()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00779">AppendShadowBoundary()</a>, <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00773">nGetNumShadowBoundaries()</a>, and <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00785">pGetShadowBoundary()</a>.</p>
 
 </div>
 </div>
@@ -2603,7 +2579,7 @@ Andres Payo</dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../de/d65/coast_8h_source.html#l00149">149</a> of file <a class="el" href="../../de/d65/coast_8h_source.html">coast.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00805">AppendShadowDowndriftBoundary()</a>, <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00799">nGetNumShadowDowndriftBoundaries()</a>, and <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00811">pGetShadowDowndriftBoundary()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00798">AppendShadowDowndriftBoundary()</a>, <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00792">nGetNumShadowDowndriftBoundaries()</a>, and <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00804">pGetShadowDowndriftBoundary()</a>.</p>
 
 </div>
 </div>
@@ -2631,7 +2607,7 @@ Andres Payo</dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../de/d65/coast_8h_source.html#l00049">49</a> of file <a class="el" href="../../de/d65/coast_8h_source.html">coast.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00037">CRWCoast()</a>, <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00093">nGetEndEdge()</a>, and <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00087">SetEndEdge()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00037">CRWCoast()</a>, <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00096">nGetEndEdge()</a>, and <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00090">SetEndEdge()</a>.</p>
 
 </div>
 </div>
@@ -2659,7 +2635,7 @@ Andres Payo</dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../de/d65/coast_8h_source.html#l00043">43</a> of file <a class="el" href="../../de/d65/coast_8h_source.html">coast.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00037">CRWCoast()</a>, <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00069">nGetSeaHandedness()</a>, and <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00063">SetSeaHandedness()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00037">CRWCoast()</a>, <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00072">nGetSeaHandedness()</a>, and <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00066">SetSeaHandedness()</a>.</p>
 
 </div>
 </div>
@@ -2687,7 +2663,7 @@ Andres Payo</dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../de/d65/coast_8h_source.html#l00046">46</a> of file <a class="el" href="../../de/d65/coast_8h_source.html">coast.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00037">CRWCoast()</a>, <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00081">nGetStartEdge()</a>, and <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00075">SetStartEdge()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00037">CRWCoast()</a>, <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00084">nGetStartEdge()</a>, and <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00078">SetStartEdge()</a>.</p>
 
 </div>
 </div>
@@ -2715,7 +2691,7 @@ Andres Payo</dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../de/d65/coast_8h_source.html#l00064">64</a> of file <a class="el" href="../../de/d65/coast_8h_source.html">coast.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00037">CRWCoast()</a>, and <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00057">pGetSim()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00037">CRWCoast()</a>, and <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00060">pGetSim()</a>.</p>
 
 </div>
 </div>
@@ -2743,7 +2719,91 @@ Andres Payo</dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../de/d65/coast_8h_source.html#l00132">132</a> of file <a class="el" href="../../de/d65/coast_8h_source.html">coast.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00715">AppendCoastLandform()</a>, <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00721">pGetCoastLandform()</a>, and <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00050">~CRWCoast()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00710">AppendCoastLandform()</a>, <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00716">pGetCoastLandform()</a>, and <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00050">~CRWCoast()</a>.</p>
+
+</div>
+</div>
+<a id="acbf64508627de72083d39107e6edeb9c" name="acbf64508627de72083d39107e6edeb9c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acbf64508627de72083d39107e6edeb9c">&#9670;&#160;</a></span>m_pVNormalProfileDownAllCoastpointSeq</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d7/dfc/classvector.html">vector</a>&lt;<a class="el" href="../../da/dae/classCGeomProfile.html">CGeomProfile</a>*&gt; CRWCoast::m_pVNormalProfileDownAllCoastpointSeq</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Pointers to coast-normal profile objects, one for each point on the coastline (is null for most coastline points) </p>
+
+<p class="definition">Definition at line <a class="el" href="../../de/d65/coast_8h_source.html#l00135">135</a> of file <a class="el" href="../../de/d65/coast_8h_source.html">coast.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00695">bIsProfileAtCoastPoint()</a>, <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00432">CreateProfileDownCoastIndex()</a>, <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00670">CreateProfilesAtCoastPoints()</a>, <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00676">InsertProfilesInProfileCoastPointIndex()</a>, <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00704">pGetProfileAtCoastPoint()</a>, and <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00688">SetProfileAtCoastPoint()</a>.</p>
+
+</div>
+</div>
+<a id="a08134ec9ca5df9707509209665808b25" name="a08134ec9ca5df9707509209665808b25"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a08134ec9ca5df9707509209665808b25">&#9670;&#160;</a></span>m_pVProfile</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d7/dfc/classvector.html">vector</a>&lt;<a class="el" href="../../da/dae/classCGeomProfile.html">CGeomProfile</a>*&gt; CRWCoast::m_pVProfile</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Coast-normal profile objects, in sequence of creation (which is the same as nGetCoastID() sequence) </p>
+
+<p class="definition">Definition at line <a class="el" href="../../de/d65/coast_8h_source.html#l00140">140</a> of file <a class="el" href="../../de/d65/coast_8h_source.html">coast.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00414">AppendProfile()</a>, <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00676">InsertProfilesInProfileCoastPointIndex()</a>, <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00426">nGetNumProfiles()</a>, <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00407">pGetLastProfile()</a>, <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00400">pGetProfile()</a>, and <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00050">~CRWCoast()</a>.</p>
+
+</div>
+</div>
+<a id="a7a7edba3707d96ec237f0019c2c13930" name="a7a7edba3707d96ec237f0019c2c13930"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7a7edba3707d96ec237f0019c2c13930">&#9670;&#160;</a></span>m_pVProfileDownCoastSeq</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d7/dfc/classvector.html">vector</a>&lt;<a class="el" href="../../da/dae/classCGeomProfile.html">CGeomProfile</a>*&gt; CRWCoast::m_pVProfileDownCoastSeq</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Pointers to coastline-normal objects, in along-coastline sequence. </p>
+
+<p class="definition">Definition at line <a class="el" href="../../de/d65/coast_8h_source.html#l00143">143</a> of file <a class="el" href="../../de/d65/coast_8h_source.html">coast.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00432">CreateProfileDownCoastIndex()</a>, <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00442">pGetProfileWithDownCoastSeq()</a>, and <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00449">pGetProfileWithUpCoastSeq()</a>.</p>
 
 </div>
 </div>
@@ -2771,7 +2831,7 @@ Andres Payo</dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../de/d65/coast_8h_source.html#l00120">120</a> of file <a class="el" href="../../de/d65/coast_8h_source.html">coast.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00610">dGetBreakingWaveAngle()</a>, <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00603">SetBreakingWaveAngle()</a>, and <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00099">SetCoastlineExtCRS()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00605">dGetBreakingWaveAngle()</a>, <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00598">SetBreakingWaveAngle()</a>, and <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00102">SetCoastlineExtCRS()</a>.</p>
 
 </div>
 </div>
@@ -2799,7 +2859,7 @@ Andres Payo</dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../de/d65/coast_8h_source.html#l00105">105</a> of file <a class="el" href="../../de/d65/coast_8h_source.html">coast.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00532">dGetBreakingWaveHeight()</a>, <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00525">SetBreakingWaveHeight()</a>, and <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00099">SetCoastlineExtCRS()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00527">dGetBreakingWaveHeight()</a>, <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00520">SetBreakingWaveHeight()</a>, and <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00102">SetCoastlineExtCRS()</a>.</p>
 
 </div>
 </div>
@@ -2827,7 +2887,7 @@ Andres Payo</dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../de/d65/coast_8h_source.html#l00117">117</a> of file <a class="el" href="../../de/d65/coast_8h_source.html">coast.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00596">dGetCoastWaveHeight()</a>, <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00099">SetCoastlineExtCRS()</a>, and <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00589">SetCoastWaveHeight()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00591">dGetCoastWaveHeight()</a>, <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00102">SetCoastlineExtCRS()</a>, and <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00584">SetCoastWaveHeight()</a>.</p>
 
 </div>
 </div>
@@ -2855,7 +2915,7 @@ Andres Payo</dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../de/d65/coast_8h_source.html#l00090">90</a> of file <a class="el" href="../../de/d65/coast_8h_source.html">coast.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00309">dGetDetailedCurvature()</a>, <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00323">pVGetDetailedCurvature()</a>, <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00099">SetCoastlineExtCRS()</a>, and <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00316">SetDetailedCurvature()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00312">dGetDetailedCurvature()</a>, <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00326">pVGetDetailedCurvature()</a>, <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00102">SetCoastlineExtCRS()</a>, and <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00319">SetDetailedCurvature()</a>.</p>
 
 </div>
 </div>
@@ -2883,7 +2943,7 @@ Andres Payo</dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../de/d65/coast_8h_source.html#l00093">93</a> of file <a class="el" href="../../de/d65/coast_8h_source.html">coast.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00329">dGetSmoothCurvature()</a>, <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00343">pVGetSmoothCurvature()</a>, <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00099">SetCoastlineExtCRS()</a>, and <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00336">SetSmoothCurvature()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00332">dGetSmoothCurvature()</a>, <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00346">pVGetSmoothCurvature()</a>, <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00102">SetCoastlineExtCRS()</a>, and <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00339">SetSmoothCurvature()</a>.</p>
 
 </div>
 </div>
@@ -2911,7 +2971,7 @@ Andres Payo</dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../de/d65/coast_8h_source.html#l00099">99</a> of file <a class="el" href="../../de/d65/coast_8h_source.html">coast.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00506">dGetCoastDeepWaterWaveAngle()</a>, <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00499">SetCoastDeepWaterWaveAngle()</a>, and <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00099">SetCoastlineExtCRS()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00501">dGetCoastDeepWaterWaveAngle()</a>, <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00494">SetCoastDeepWaterWaveAngle()</a>, and <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00102">SetCoastlineExtCRS()</a>.</p>
 
 </div>
 </div>
@@ -2939,7 +2999,7 @@ Andres Payo</dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../de/d65/coast_8h_source.html#l00096">96</a> of file <a class="el" href="../../de/d65/coast_8h_source.html">coast.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00485">SetCoastDeepWaterWaveHeight()</a>, and <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00099">SetCoastlineExtCRS()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00480">SetCoastDeepWaterWaveHeight()</a>, and <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00102">SetCoastlineExtCRS()</a>.</p>
 
 </div>
 </div>
@@ -2967,7 +3027,7 @@ Andres Payo</dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../de/d65/coast_8h_source.html#l00102">102</a> of file <a class="el" href="../../de/d65/coast_8h_source.html">coast.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00519">dGetCoastDeepWaterWavePeriod()</a>, <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00513">SetCoastDeepWaterWavePeriod()</a>, and <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00099">SetCoastlineExtCRS()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00514">dGetCoastDeepWaterWavePeriod()</a>, <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00508">SetCoastDeepWaterWavePeriod()</a>, and <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00102">SetCoastlineExtCRS()</a>.</p>
 
 </div>
 </div>
@@ -2995,7 +3055,7 @@ Andres Payo</dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../de/d65/coast_8h_source.html#l00123">123</a> of file <a class="el" href="../../de/d65/coast_8h_source.html">coast.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00624">dGetDepthOfBreaking()</a>, <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00099">SetCoastlineExtCRS()</a>, and <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00617">SetDepthOfBreaking()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00619">dGetDepthOfBreaking()</a>, <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00102">SetCoastlineExtCRS()</a>, and <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00612">SetDepthOfBreaking()</a>.</p>
 
 </div>
 </div>
@@ -3023,7 +3083,7 @@ Andres Payo</dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../de/d65/coast_8h_source.html#l00126">126</a> of file <a class="el" href="../../de/d65/coast_8h_source.html">coast.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00652">dGetFluxOrientation()</a>, <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00099">SetCoastlineExtCRS()</a>, and <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00645">SetFluxOrientation()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00647">dGetFluxOrientation()</a>, <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00102">SetCoastlineExtCRS()</a>, and <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00640">SetFluxOrientation()</a>.</p>
 
 </div>
 </div>
@@ -3051,7 +3111,7 @@ Andres Payo</dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../de/d65/coast_8h_source.html#l00114">114</a> of file <a class="el" href="../../de/d65/coast_8h_source.html">coast.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00573">dGetLevel()</a>, <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00567">dGetRunUp()</a>, <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00099">SetCoastlineExtCRS()</a>, and <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00561">SetRunUp()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00568">dGetLevel()</a>, <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00562">dGetRunUp()</a>, <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00102">SetCoastlineExtCRS()</a>, and <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00556">SetRunUp()</a>.</p>
 
 </div>
 </div>
@@ -3079,7 +3139,7 @@ Andres Payo</dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../de/d65/coast_8h_source.html#l00129">129</a> of file <a class="el" href="../../de/d65/coast_8h_source.html">coast.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00667">dGetWaveEnergyAtBreaking()</a>, <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00099">SetCoastlineExtCRS()</a>, and <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00659">SetWaveEnergyAtBreaking()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00662">dGetWaveEnergyAtBreaking()</a>, <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00102">SetCoastlineExtCRS()</a>, and <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00654">SetWaveEnergyAtBreaking()</a>.</p>
 
 </div>
 </div>
@@ -3107,7 +3167,7 @@ Andres Payo</dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../de/d65/coast_8h_source.html#l00108">108</a> of file <a class="el" href="../../de/d65/coast_8h_source.html">coast.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00573">dGetLevel()</a>, <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00545">dGetWaveSetupSurge()</a>, <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00099">SetCoastlineExtCRS()</a>, and <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00539">SetWaveSetupSurge()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00568">dGetLevel()</a>, <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00540">dGetWaveSetupSurge()</a>, <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00102">SetCoastlineExtCRS()</a>, and <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00534">SetWaveSetupSurge()</a>.</p>
 
 </div>
 </div>
@@ -3135,35 +3195,7 @@ Andres Payo</dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../de/d65/coast_8h_source.html#l00084">84</a> of file <a class="el" href="../../de/d65/coast_8h_source.html">coast.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00638">nGetBreakingDistance()</a>, <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00631">SetBreakingDistance()</a>, and <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00099">SetCoastlineExtCRS()</a>.</p>
-
-</div>
-</div>
-<a id="ae5510b107c8d8c2263c3af4ecfa77b07" name="ae5510b107c8d8c2263c3af4ecfa77b07"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae5510b107c8d8c2263c3af4ecfa77b07">&#9670;&#160;</a></span>m_VNormalProfileDownAllCoastSeq</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="../../d7/dfc/classvector.html">vector</a>&lt;<a class="el" href="../../da/dae/classCGeomProfile.html">CGeomProfile</a>*&gt; CRWCoast::m_VNormalProfileDownAllCoastSeq</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Pointers to coast-normal profile objects, one for each point on the coastline (is null for most coastline points) </p>
-
-<p class="definition">Definition at line <a class="el" href="../../de/d65/coast_8h_source.html#l00135">135</a> of file <a class="el" href="../../de/d65/coast_8h_source.html">coast.h</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00700">bIsProfileAtCoastPoint()</a>, <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00437">CreateProfileDownCoastIndex()</a>, <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00675">CreateProfilesAtCoastPoints()</a>, <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00681">InsertProfilesInProfileCoastPointIndex()</a>, <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00709">pGetProfileAtCoastPoint()</a>, and <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00693">SetProfileAtCoastPoint()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00633">nGetBreakingDistance()</a>, <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00626">SetBreakingDistance()</a>, and <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00102">SetCoastlineExtCRS()</a>.</p>
 
 </div>
 </div>
@@ -3191,63 +3223,7 @@ Andres Payo</dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../de/d65/coast_8h_source.html#l00087">87</a> of file <a class="el" href="../../de/d65/coast_8h_source.html">coast.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00737">nGetPolygonNode()</a>, <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00099">SetCoastlineExtCRS()</a>, and <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00730">SetPolygonNode()</a>.</p>
-
-</div>
-</div>
-<a id="ac462de5e9487911e64257c12811300c1" name="ac462de5e9487911e64257c12811300c1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac462de5e9487911e64257c12811300c1">&#9670;&#160;</a></span>m_VpProfileDownCoastSeq</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="../../d7/dfc/classvector.html">vector</a>&lt;<a class="el" href="../../da/dae/classCGeomProfile.html">CGeomProfile</a>*&gt; CRWCoast::m_VpProfileDownCoastSeq</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Pointers to coastline-normal objects, in along-coastline sequence. </p>
-
-<p class="definition">Definition at line <a class="el" href="../../de/d65/coast_8h_source.html#l00143">143</a> of file <a class="el" href="../../de/d65/coast_8h_source.html">coast.h</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00437">CreateProfileDownCoastIndex()</a>, <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00447">pGetProfileWithDownCoastSeq()</a>, and <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00454">pGetProfileWithUpCoastSeq()</a>.</p>
-
-</div>
-</div>
-<a id="a5b48e3a9fa6fe890543dd0a538c2549e" name="a5b48e3a9fa6fe890543dd0a538c2549e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5b48e3a9fa6fe890543dd0a538c2549e">&#9670;&#160;</a></span>m_VProfile</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="../../d7/dfc/classvector.html">vector</a>&lt;<a class="el" href="../../da/dae/classCGeomProfile.html">CGeomProfile</a>&gt; CRWCoast::m_VProfile</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Coast-normal profile objects, in sequence of creation (which is the same as nGetCoastID() sequence) </p>
-
-<p class="definition">Definition at line <a class="el" href="../../de/d65/coast_8h_source.html#l00140">140</a> of file <a class="el" href="../../de/d65/coast_8h_source.html">coast.h</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00411">AppendProfile()</a>, <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00429">DeleteAllProfiles()</a>, <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00681">InsertProfilesInProfileCoastPointIndex()</a>, <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00423">nGetNumProfiles()</a>, <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00404">pGetLastProfile()</a>, and <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00397">pGetProfile()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00732">nGetPolygonNode()</a>, <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00102">SetCoastlineExtCRS()</a>, and <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00725">SetPolygonNode()</a>.</p>
 
 </div>
 </div>
@@ -3261,7 +3237,7 @@ Andres Payo</dd></dl>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../d1/dbe/classCRWCoast.html">CRWCoast</a></li>
-    <li class="footer">Generated on Thu Feb 6 2025 19:40:53 for CoastalME (Coastal Modelling Environment) by <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+    <li class="footer">Generated on Fri Feb 7 2025 14:30:34 for CoastalME (Coastal Modelling Environment) by <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
   </ul>
 </div>
 </body>
