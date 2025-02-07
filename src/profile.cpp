@@ -63,12 +63,6 @@ CGeomProfile::~CGeomProfile(void)
 {
 }
 
-//! Deletes the profile object
-void CGeomProfile::DeleteProfile(void)
-{
-   delete this;
-}
-
 //! Returns the profile's coast ID
 int CGeomProfile::nGetCoastID(void) const
 {

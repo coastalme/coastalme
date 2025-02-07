@@ -1709,7 +1709,7 @@ private:
    static double dGetTimeMultiplier(string const*);
    static bool bParseDate(string const*, int&, int&, int&);
    static bool bParseTime(string const*, int&, int&, int&);
-   void DoTimestepTotals(void);
+   void DoEndOfTimestepTotals(void);
    static string strGetBuild(void);
    static string strGetComputerName(void);
    void DoCPUClockReset(void);
@@ -1758,6 +1758,7 @@ private:
    void WritePolygonSortedSequence(int const, vector<vector<int> >&);
    void WritePolygonEstimatedMovement(int const, vector<vector<int> >&);
    void WritePolygonActualMovement(int const, vector<vector<int> > const&);
+   void DoEndOfRunDeletes(void);
 
    // Random number stuff
    static unsigned long ulGetTausworthe(unsigned long const, unsigned long const, unsigned long const, unsigned long const, unsigned long const);

@@ -42,19 +42,20 @@ using std::endl;
 #include "raster_grid.h"
 
 //===============================================================================================================================
-//! At the beginning of each timestep: initialize the raster grid; clear all coastlines, profiles, and polygons; and initialize some per-timestep accounting variables
+//! At the beginning of each timestep: clear vector coasts, profiles, and polygons, initialize the raster grid, and initialize some per-timestep accounting variables
 //===============================================================================================================================
 int CSimulation::nInitGridAndCalcStillWaterLevel(void)
 {
    // Clear all vector coastlines, profiles, and polygons
-   for (int nCoast = 0; nCoast < static_cast<int>(m_VCoast.size()); nCoast++)
-      m_VCoast[nCoast].DeleteAllProfiles();
+   for (int i = 0; i < static_cast<int>(m_pVCoastPolygon.size()); i++)
+      delete m_pVCoastPolygon[i];
+
+   m_pVCoastPolygon.clear();
    m_VCoast.clear();
+
    // m_VFloodWaveSetup.clear();
    m_VFloodWaveSetupSurge.clear();
    m_VFloodWaveSetupSurgeRunup.clear();
-   m_pVCoastPolygon.clear();
-   m_pVCoastPolygon.clear();
 
    // Do some every-timestep initialization
    m_nXMinBoundingBox = INT_MAX;
