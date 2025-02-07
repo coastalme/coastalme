@@ -2835,6 +2835,9 @@ void CSimulation::AppendPolygon(CGeomCoastPolygon* pPolygon)
 void CSimulation::DoEndOfRunDeletes(void)
 {
    // Clear all vector coastlines, profiles, and polygons
+   for (int i = 0; i < static_cast<int>(m_pVCoastPolygon.size()); i++)
+      delete m_pVCoastPolygon[i];
+
    m_pVCoastPolygon.clear();
    m_VCoast.clear();
 
