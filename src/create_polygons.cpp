@@ -54,6 +54,9 @@ int CSimulation::nCreateAllPolygons(void)
       int nNextProfile = -1;
       int nPolygon = -1;
 
+      for (int i = 0; i < static_cast<int>(m_pVCoastPolygon.size()); i++)
+         delete m_pVCoastPolygon[i];
+
       m_pVCoastPolygon.clear();
 
       // Do this for every point on the coastline (except the last point)

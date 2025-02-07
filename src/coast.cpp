@@ -49,6 +49,8 @@ CRWCoast::CRWCoast(CSimulation* pSimIn)
 //! Destructor
 CRWCoast::~CRWCoast(void)
 {
+   // m_VProfile.clear();
+
    for (unsigned int i = 0; i < m_pVLandform.size(); i++)
       delete m_pVLandform[i];
 }
@@ -425,21 +427,13 @@ int CRWCoast::nGetNumProfiles(void) const
    return static_cast<int>(m_VProfile.size());
 }
 
-//! Deletes all profile objects
-void CRWCoast::DeleteAllProfiles(void)
-{
-   m_VProfile.clear();
-   // for (int n = 0; n < static_cast<int>(m_VProfile.size()); n++)
-   //    delete m_VProfile[n];
-}
-
 //! Creates an index to profiles in down-coastline sequence
 void CRWCoast::CreateProfileDownCoastIndex(void)
 {
-   for (int n = 0; n < static_cast<int>(m_VNormalProfileDownAllCoastSeq.size()); n++)
+   for (int n = 0; n < static_cast<int>(m_VNormalProfileDownAllCoastpointSeq.size()); n++)
    {
-      if (m_VNormalProfileDownAllCoastSeq[n] != NULL)
-         m_VpProfileDownCoastSeq.push_back(m_VNormalProfileDownAllCoastSeq[n]);
+      if (m_VNormalProfileDownAllCoastpointSeq[n] != NULL)
+         m_VpProfileDownCoastSeq.push_back(m_VNormalProfileDownAllCoastpointSeq[n]);
    }
 }
 
@@ -674,7 +668,7 @@ double CRWCoast::dGetWaveEnergyAtBreaking(int const nCoastPoint) const
 //! Creates a vector which holds, for each coastline point, a null pointer to a coastline-normal profile object
 void CRWCoast::CreateProfilesAtCoastPoints(void)
 {
-   m_VNormalProfileDownAllCoastSeq.resize(m_LCoastlineExtCRS.nGetSize(), NULL);
+   m_VNormalProfileDownAllCoastpointSeq.resize(m_LCoastlineExtCRS.nGetSize(), NULL);
 }
 
 //! Inserts profiles at coastline points in the profile-coastline-point index
@@ -684,22 +678,22 @@ void CRWCoast::InsertProfilesInProfileCoastPointIndex(void)
    {
       int nCoastPoint = m_VProfile[n].nGetCoastPoint();
 
-      // Note no check to see whether nCoastPoint < m_VNormalProfileDownAllCoastSeq.size()
-      m_VNormalProfileDownAllCoastSeq.at(nCoastPoint) = &m_VProfile[n];
+      // Note no check to see whether nCoastPoint < m_VNormalProfileDownAllCoastpointSeq.size()
+      m_VNormalProfileDownAllCoastpointSeq.at(nCoastPoint) = &m_VProfile[n];
    }
 }
 
 //! Sets a pointer to a coast-normal profile at a given coastline point
 void CRWCoast::SetProfileAtCoastPoint(int const nCoastPoint, CGeomProfile* const pProfile)
 {
-   // Note no check to see whether nCoastPoint < m_VNormalProfileDownAllCoastSeq.size()
-   m_VNormalProfileDownAllCoastSeq.at(nCoastPoint) = pProfile;
+   // Note no check to see whether nCoastPoint < m_VNormalProfileDownAllCoastpointSeq.size()
+   m_VNormalProfileDownAllCoastpointSeq.at(nCoastPoint) = pProfile;
 }
 
 //! Returns true if there is a coastline-normal profile at this coast point, false otherwise
 bool CRWCoast::bIsProfileAtCoastPoint(int const nCoastPoint) const
 {
-   if (m_VNormalProfileDownAllCoastSeq.at(nCoastPoint) == NULL)
+   if (m_VNormalProfileDownAllCoastpointSeq.at(nCoastPoint) == NULL)
        return false;
 
    return true;
@@ -708,7 +702,7 @@ bool CRWCoast::bIsProfileAtCoastPoint(int const nCoastPoint) const
 //! Returns a pointer to the coastline-normal profile at this coast point
 CGeomProfile* CRWCoast::pGetProfileAtCoastPoint(int const nCoastPoint) const
 {
-   return m_VNormalProfileDownAllCoastSeq[nCoastPoint];
+   return m_VNormalProfileDownAllCoastpointSeq[nCoastPoint];
 }
 
 //! Appends a coastal landform to this coast
@@ -744,8 +738,6 @@ int CRWCoast::nGetPolygonNode(int const nPoint) const
 CGeomCoastPolygon* CRWCoast::pPolyCreatePolygon(int const nGlobalID, int const nCoastID, int const nCoastPoint, CGeom2DIPoint const* pPtiNode, CGeom2DIPoint const* pPtiAntiNode, int const nProfileUpCoast, int const nProfileDownCoast, vector<CGeom2DPoint> const* pVIn, int const nNumPointsUpCoastProfile, int const nNumPointsDownCoastProfile, bool const bStartCoast, bool const bEndCoast)
 {
    CGeomCoastPolygon* pPolygon = new CGeomCoastPolygon(nGlobalID, nCoastID, nCoastPoint, nProfileUpCoast, nProfileDownCoast, pVIn, nNumPointsUpCoastProfile, nNumPointsDownCoastProfile, pPtiNode, pPtiAntiNode, bStartCoast, bEndCoast);
-
-   // pGetSim()->AppendPolygon(pPolygon);
 
    return pPolygon;
 }

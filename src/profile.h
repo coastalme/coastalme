@@ -112,8 +112,6 @@ public:
    explicit CGeomProfile(int const, int const, int const, int const, CGeom2DIPoint const*, CGeom2DIPoint const*, bool const);
    ~CGeomProfile(void) override;
 
-   void DeleteProfile(void);
-
    int nGetCoastID(void) const;
    int nGetGlobalID(void) const;
    int nGetCoastPoint(void) const;

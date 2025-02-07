@@ -86,16 +86,20 @@ using std::inner_product;
 //===============================================================================================================================
 int CSimulation::nHandleCommandLineParams(int nArg, char const* pcArgv[])
 {
+   if ((! isatty(fileno(stdout))) || (! isatty(fileno(stderr))))
+      // Running with stdout or stderr not a tty, so either redirected or running as a background job. Ignore all parameters
+      return RTN_OK;
+
+   // Process the parameters following the name of the executable
    for (int i = 1; i < nArg; i++)
    {
       string strArg = pcArgv[i];
+      strArg = strTrim(&strArg);
+
 #ifdef _WIN32
       // Swap any forward slashes to backslashes
       strArg = pstrChangeToBackslash(&strArg);
 #endif
-
-      // change to lower case
-      // strArg = strToLower(&strArg);
 
       if (strArg.find("--gdal") != string::npos)
       {
@@ -114,7 +118,6 @@ int CSimulation::nHandleCommandLineParams(int nArg, char const* pcArgv[])
          }
          return (RTN_HELP_ONLY);
       }
-
 
       else
       {
@@ -1610,7 +1613,7 @@ string CSimulation::strGetBuild(void)
 //===============================================================================================================================
 void CSimulation::AnnounceProgress(void)
 {
-   if (isatty(1))
+   if (isatty(fileno(stdout)))
    {
       // Stdout is connected to a tty, so not running as a background job
       static double sdElapsed = 0;
@@ -2825,3 +2828,18 @@ void CSimulation::AppendPolygon(CGeomCoastPolygon* pPolygon)
 {
    m_pVCoastPolygon.push_back(pPolygon);
 }
+
+//===============================================================================================================================
+//! Do end-of-run memory clearance
+//===============================================================================================================================
+void CSimulation::DoEndOfRunDeletes(void)
+{
+   // Clear all vector coastlines, profiles, and polygons
+   m_pVCoastPolygon.clear();
+   m_VCoast.clear();
+
+   // m_VFloodWaveSetup.clear();
+   m_VFloodWaveSetupSurge.clear();
+   m_VFloodWaveSetupSurgeRunup.clear();
+}
+

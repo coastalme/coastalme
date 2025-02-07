@@ -1382,7 +1382,8 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
       AnnounceProgress();
 
       // Update grand totals
-      DoTimestepTotals();
+      DoEndOfTimestepTotals();
+
    } // ================================================ End of main loop ======================================================
 
    // =================================================== post-loop tidying =====================================================
@@ -1393,6 +1394,9 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
    nRet = nWriteEndRunDetails();
    if (nRet != RTN_OK)
       return (nRet);
+
+   // Do end-of-run memory clerance
+   DoEndOfRunDeletes();
 
    return RTN_OK;
 }

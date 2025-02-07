@@ -1508,7 +1508,7 @@ void CSimulation::CreateRasterizedProfile(int const nCoast, CGeomProfile* pProfi
 
                if (! m_pRasterGrid->m_Cell[nX][nY].bIsInContiguousSea())
                {
-                  // We've hit dry land so set a switch and mark the profile
+                  // We've hit dry land (or an intervention) so set a switch and mark the profile
                   bHitLand = true;
                   pProfile->SetHitLand(true);
 

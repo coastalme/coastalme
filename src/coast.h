@@ -132,7 +132,7 @@ private:
    vector<CACoastLandform*> m_pVLandform;
 
    //! Pointers to coast-normal profile objects, one for each point on the coastline (is null for most coastline points)
-   vector<CGeomProfile*> m_VNormalProfileDownAllCoastSeq;
+   vector<CGeomProfile*> m_VNormalProfileDownAllCoastpointSeq;
 
    // These do not have the same length as m_LCoastlineExtCRS
 
@@ -208,7 +208,6 @@ public:
    CGeomProfile* pGetLastProfile(void);
 //    void ReplaceProfile(int const, vector<CGeom2DPoint> const*);
    int nGetNumProfiles(void) const;
-   void DeleteAllProfiles(void);
    void CreateProfileDownCoastIndex(void);
    void InsertProfilesInProfileCoastPointIndex(void);
 

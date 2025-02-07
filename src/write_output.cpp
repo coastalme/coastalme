@@ -1911,7 +1911,7 @@ void CSimulation::WritePolygonActualMovement(int const nCoast, vector<vector<int
 //===============================================================================================================================
 //! Update and print totals at the end of each timestep
 //===============================================================================================================================
-void CSimulation::DoTimestepTotals(void)
+void CSimulation::DoEndOfTimestepTotals(void)
 {
    if (m_nLogFileDetail >= LOG_FILE_MIDDLE_DETAIL)
    {
