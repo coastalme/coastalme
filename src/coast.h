@@ -132,15 +132,15 @@ private:
    vector<CACoastLandform*> m_pVLandform;
 
    //! Pointers to coast-normal profile objects, one for each point on the coastline (is null for most coastline points)
-   vector<CGeomProfile*> m_VNormalProfileDownAllCoastpointSeq;
+   vector<CGeomProfile*> m_pVNormalProfileDownAllCoastpointSeq;
 
    // These do not have the same length as m_LCoastlineExtCRS
 
    //! Coast-normal profile objects, in sequence of creation (which is the same as nGetCoastID() sequence)
-   vector<CGeomProfile> m_VProfile;
+   vector<CGeomProfile*> m_pVProfile;
 
    //! Pointers to coastline-normal objects, in along-coastline sequence
-   vector<CGeomProfile*> m_VpProfileDownCoastSeq;
+   vector<CGeomProfile*> m_pVProfileDownCoastSeq;
 
    //! Lines which comprise the edge of a shadow zone, ext CRS
    vector<CGeomLine> m_LShadowBoundary;
