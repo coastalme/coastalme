@@ -122,12 +122,15 @@ int CSimulation::nDoAllActualBeachErosionAndDeposition(void)
          CGeomCoastPolygon const* pPolygon = m_VCoast[nCoast].pGetPolygon(nn);
          vector<int> nVPolyAndAdj;
 
-         // The first nVPolyAndAdj array item is the polygon's down-coast sequence
+         // The first nVPolyAndAdj array item is the polygon number
+         nVPolyAndAdj.push_back(nn);
+
+         // The second nVPolyAndAdj array item is the polygon's down-coast sequence
          nVPolyAndAdj.push_back(pPolygon->nGetCoastID());
 
          if (pPolygon->bDownCoastThisIter())
          {
-            // Sediment is leaving this polygon in a down-coast direction: so set this as the second nVPolyAndAdj array item
+            // Sediment is leaving this polygon in a down-coast direction: so set this as the third nVPolyAndAdj array item
             nVPolyAndAdj.push_back(true);
 
             // Third and susequent nVPolyAndAdj array items are the down-coast seqs of adjacent down-coast polygons
@@ -140,7 +143,7 @@ int CSimulation::nDoAllActualBeachErosionAndDeposition(void)
          }
          else
          {
-            // Sediment is leaving this polygon in an up-coast direction: so set this as the second nVPolyAndAdj array item
+            // Sediment is leaving this polygon in an up-coast direction: so set this as the third nVPolyAndAdj array item
             nVPolyAndAdj.push_back(false);
 
             // Third and susequent nVPolyAndAdj array items are the Coast IDs of adjacent up-coast polygons

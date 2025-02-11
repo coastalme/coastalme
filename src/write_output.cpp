@@ -1693,7 +1693,7 @@ void CSimulation::WritePolygonPotentialErosion(int const nCoast)
 //===============================================================================================================================
 void CSimulation::WritePolygonUnsortedSequence(int const nCoast, vector<vector<int> >& pnVVPolyAndAdjacent)
 {
-   LogStream << m_ulIter << ": unsorted sequence of polygon processing" << endl;
+   LogStream << m_ulIter << ": Unsorted sequence of polygon processing" << endl;
    LogStream << "-----------|-----------|-----------|--------------|--------------|" << endl;
    LogStream << strCentre("From", 11) << "|" << strCentre("Coast", 11) << "|" << strCentre("From", 11) << "|" << strCentre("Direction", 14) << "|" << strCentre("To", 14) << "|" << endl;
    LogStream << strCentre("Polygon", 11) << "|" << strCentre("", 11) << "|" << strCentre("Polygon", 11) << "|" << strCentre("", 14) << "|" << strCentre("Polygon", 14) << "|" << endl;
