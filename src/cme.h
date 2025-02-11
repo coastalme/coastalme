@@ -118,7 +118,6 @@ Enjoy!
    TODO 049 Handle other command line parameters e.g. path to .ini file, path to datafile
    TODO 035 Also handle other EPSG for vector spatial reference systems
    TODO 054 Choose more files to omit from "usual" raster output
-   TODO 081 Choose more files to omit from "usual" vector output
    TODO 069 Enable ability to represent intervention structures which have their foundation embedded in consolidated sediment. In other words, with the elevation of the base of the intervention structure *below* the top of all consolidated sediment layers. Will need some sanity checking of elevations
    TODO 071 If the user input file format is changed, write a Python script to convert from the old file format to the new
    TODO 083 Get all three kinds of sediment input events working correctly
@@ -164,8 +163,7 @@ Enjoy!
    TODO 076 When doing parallel profiles, start from the profile which is closest to a right angle with the coast
    TODO 077 As traverse between the bounding profiles creating parallel profiles, gradually change the parallel profile orientation based on distance weighting of two bounding profiles
    TODO 078 At present, we don't allow cliff collapse onto interventions. Is this realistic? Should it be different for different types on intervention?
-   Why do we get patches of sediment in the sea?
-   TODO 044 Complete support for multiple coastlines. This is partly in place, but some things remain to be done
+   TODO 089 Why do we get patches of sediment in the sea?
    TODO 086 Try alternatives to GDALGridCreate(), e.g. https://github.com/delfrrr/delaunator-cpp?tab=readme-ov-file
    TODO 088 In (almost) all whole-grid loops, immediately continue if cell is hinterland (but not when calculating cliff collapse)
 
@@ -184,7 +182,7 @@ Enjoy!
    TODO 074 Output history of what landforms are on a particular cell or cells. User inputs cell(s), how?
    TODO 082 Also show m_dStartIterUnconsFineAllCells etc. in log file
 
-   088 is max
+   089 is max
 
    COMPLETED
    TODO 003 Make coastline curvature moving window size a user input DONE in 1.1.22
@@ -205,7 +203,7 @@ Enjoy!
    TODO 037 Need more info on nFindIndex() DONE 1.2.3, 2 Dec 2024
    Improve coast normals DONE 1.2.3, 20 Dec 2024
    TODO 057 Check this please Manuel DONE 1.2.4, 4 Jan 2025
-   TODO 087 Is there a problem if profile is not long enough for user-input depth of closure? DONE 1.3.0 2 Feb 2025 *** TO ISSUES
+   TODO 087 Is there a problem if profile is not long enough for user-input depth of closure? DONE 1.3.0 2 Feb 2025
 
 */
 
