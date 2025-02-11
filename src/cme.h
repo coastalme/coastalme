@@ -128,7 +128,6 @@ Enjoy!
    TODO 004 Improve error handling of situation where we have a valid shadow zone but cannot find a neighbouring cell which is 'under' the coastline
    TODO 006 Check GDALGridCreate() with only start-of-coast or an end-of-coast profiles
    TODO 009 Decide what to do when we have eroded down to basement
-   TODO 015 Improve situation where profile hits another profile which belongs to a different coast object. Will certainly need this for estuaries TODO 085 *** NOT YET IN ISSUES
    TODO 017 Extra safety check needed, make sure that each point is within valid grid
    TODO 018 Improve situation where new landwards point on parallel profile is not within the raster grid
    TODO 019 Improve situation where Dean profile has a near-zero elevation difference
@@ -140,7 +139,7 @@ Enjoy!
    TODO 053 Improve handling of situation where landward elevation of profile is -ve
    TODO 055 Maybe add a safety check here?
    TODO 080 Do we get -ve breaking wave heights here?
-   TODO 084 Improve handling of situation where consecutive profile are same distance from shoreline *** NOT YET IN ISSUES
+   TODO 084 Improve handling of situation where consecutive profile points are same distance from shoreline
 
    THEORY/EFFICIENCY
    TODO 002 Do we really need D50 for drift landform class? What do we need for drift?
@@ -152,7 +151,7 @@ Enjoy!
    TODO 016 Check mass balance for recirculating unconsolidated sediment option
    TODO 023 Only calculate shore platform erosion if cell is in a polygon
    TODO 024 Should we calculate platform erosion on a profile that has hit dry land?
-   TODO 044 Implement estuaries. Before we can do this, we will need to deal with multiple coastlines TODO 085 *** NOT YET IN ISSUES
+   TODO 044 Implement estuaries. Before we can do this, we will need to deal with multiple coastlines. Will need to get working where profile hits another profile which belongs to a different coast object.
    TODO 051 Implement other ways of calculating depth of closure, see TODO 045
    TODO 056 Check this please Andres
    TODO 059 Implement dune landform class
@@ -166,9 +165,9 @@ Enjoy!
    TODO 077 As traverse between the bounding profiles creating parallel profiles, gradually change the parallel profile orientation based on distance weighting of two bounding profiles
    TODO 078 At present, we don't allow cliff collapse onto interventions. Is this realistic? Should it be different for different types on intervention?
    Why do we get patches of sediment in the sea?
-   TODO 085 Complete support for multiple coastlines. This is partly in place, but some things remain to be done
-   TODO 086 Try alternatives to GDALGridCreate(), e.g. https://github.com/delfrrr/delaunator-cpp?tab=readme-ov-file *** NOT YET IN ISSUES
-   TODO 088 In (almost) all whole-grid loops, immediately continue if cell is hinterland (but not when calculating cliff collapse) *** NOT YET IN ISSUES
+   TODO 044 Complete support for multiple coastlines. This is partly in place, but some things remain to be done
+   TODO 086 Try alternatives to GDALGridCreate(), e.g. https://github.com/delfrrr/delaunator-cpp?tab=readme-ov-file
+   TODO 088 In (almost) all whole-grid loops, immediately continue if cell is hinterland (but not when calculating cliff collapse)
 
    OUTPUT
    TODO 065 Get GPKG output working: GDAL 3.9.1 does not yet implement this correctly. Currently is OK for vector output (but is very slow), not yet working for raster output
@@ -205,7 +204,7 @@ Enjoy!
    TODO 050 Update for recent versions of Windows DONE 1.2.3, 2 Dec 2024
    TODO 037 Need more info on nFindIndex() DONE 1.2.3, 2 Dec 2024
    Improve coast normals DONE 1.2.3, 20 Dec 2024
-   TODO 057 Check this please Manuel DONE 1.2.4, 4 Jan 2025 *** TO ISSUES
+   TODO 057 Check this please Manuel DONE 1.2.4, 4 Jan 2025
    TODO 087 Is there a problem if profile is not long enough for user-input depth of closure? DONE 1.3.0 2 Feb 2025 *** TO ISSUES
 
 */

@@ -2164,8 +2164,8 @@ void CSimulation::CalcCoastTangents(int const nCoast)
 //===============================================================================================================================
 void CSimulation::CalcD50AndFillWaveCalcHoles(void)
 {
-   vector<int> VnPolygonD50Count(m_nNumPolygonGlobal + 1, 0);      // TODO 085
-   vector<double> VdPolygonD50(m_nNumPolygonGlobal + 1, 0);        // TODO 085
+   vector<int> VnPolygonD50Count(m_nNumPolygonGlobal + 1, 0);      // TODO 044
+   vector<double> VdPolygonD50(m_nNumPolygonGlobal + 1, 0);        // TODO 044
 
    for (int nX = 0; nX < m_nXGridSize; nX++)
    {
@@ -2403,7 +2403,7 @@ void CSimulation::CalcD50AndFillWaveCalcHoles(void)
       }
    }
 
-   // Calculate the average d50 for every polygon TODO 085
+   // Calculate the average d50 for every polygon TODO 044
    for (int nCoast = 0; nCoast < static_cast<int>(m_VCoast.size()); nCoast++)
    {
       for (int nPoly = 0; nPoly < m_VCoast[nCoast].nGetNumPolygons(); nPoly++)

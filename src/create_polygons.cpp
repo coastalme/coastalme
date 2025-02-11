@@ -44,7 +44,7 @@ using std::remove;
 //===============================================================================================================================
 int CSimulation::nCreateAllPolygons(void)
 {
-   // Global polygon count TODO 085
+   // Global polygon count TODO 044
    m_nNumPolygonGlobal = 0;
 
    // Do this for each coast
@@ -206,7 +206,7 @@ int CSimulation::nCreateAllPolygons(void)
             if (pNextProfile->bEndOfCoast())
                bEndCoast = true;
 
-            // Create the coast polygon object and get a pointer to it. TODO 085 the first parameter (global ID) will need to change when considering multiple coasts
+            // Create the coast polygon object and get a pointer to it. TODO 044 the first parameter (global ID) will need to change when considering multiple coasts
             CGeomCoastPolygon* pPolygon = m_VCoast[nCoast].pPolyCreatePolygon(nThisProfile, nPolygon, nNodePoint, &PtiNode, &PtiAntiNode, nThisProfile, nNextProfile, &PtVBoundary, nThisProfileEnd+1, nNextProfileEnd+1, bStartCoast, bEndCoast);
 
             // And store this pointer for simulation-wide access, in along-coast sequence
@@ -567,7 +567,7 @@ void CSimulation::MarkPolygonCells(void)
          double dSedimentInputCoarse = 0;
 
          CGeomCoastPolygon* pPolygon = m_VCoast[nCoast].pGetPolygon(nPoly);
-         int nPolyID = pPolygon->nGetCoastID();    // TODO 085
+         int nPolyID = pPolygon->nGetCoastID();    // TODO 044
 
          // LogStream << m_ulIter << ": in MarkPolygonCells() nPoly = " << nPoly << " nPolyID = " << nPolyID << endl;
 
