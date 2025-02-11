@@ -1,6 +1,6 @@
 # TO DO LIST
 
-083 is max (also using github permalinks to code lines)
+089 is max (also using github permalinks to code lines)
 
 ## Table of contents
 - [Documentation]{#documentation)
@@ -9,7 +9,6 @@
 - [Theory/Efficiency](#theory-efficiency)
 - [Output](#output)
 - [Completed](#completed)
-
 
 ## Documentation
 -  TODO 001 [Add more information about all classes]
@@ -25,11 +24,8 @@
 - TODO 030 [Do we also need to be able to input landform sub-categories?] [code](https://github.com/coastalme/coastalme/blob/730a0be2274de02125681ab3e14424dbbfadbaeb/src/gis_raster.cpp#L750)
 - TODO 027 [Sort out GDAL problem with raster reference units](https://github.com/coastalme/coastalme/blob/730a0be2274de02125681ab3e14424dbbfadbaeb/src/gis_raster.cpp#L537)
 - TODO 022 [Get intervention update working](https://github.com/coastalme/coastalme/blob/730a0be2274de02125681ab3e14424dbbfadbaeb/src/do_intervention.cpp#L32)
-- TODO 041 [Read in SWL per-timestep](https://github.com/coastalme/coastalme/blob/730a0be2274de02125681ab3e14424dbbfadbaeb/src/read_input.cpp#L1977)
 - TODO 042 [Should we have a smallest valid input for KLS in the CERC equation?] [code](https://github.com/coastalme/coastalme/blob/730a0be2274de02125681ab3e14424dbbfadbaeb/src/read_input.cpp#L2378-L2380)
 - TODO 045 [Method of getting depth of closure value needs to be a user input] [code](https://github.com/coastalme/coastalme/blob/730a0be2274de02125681ab3e14424dbbfadbaeb/src/simulation.h#L771)
-- TODO 047 [Where is the GDAL description for the deep water wave stations vector file?](https://github.com/coastalme/coastalme/blob/730a0be2274de02125681ab3e14424dbbfadbaeb/src/simulation.h#L1198)
-- TODO 048 [Where is the GDAL description for the flood input locations point or vector file?](https://github.com/coastalme/coastalme/blob/730a0be2274de02125681ab3e14424dbbfadbaeb/src/simulation.h#L1220)
 - TODO 049 [Handle other command line parameters e.g. path to .ini file, path to datafile](https://github.com/coastalme/coastalme/blob/730a0be2274de02125681ab3e14424dbbfadbaeb/src/utils.cpp#L125)
 - TODO 035 [Also handle other EPSG for vector spatial reference systems](https://github.com/coastalme/coastalme/blob/730a0be2274de02125681ab3e14424dbbfadbaeb/src/gis_vector.cpp#L492)
 - TODO 054 [Choose more files to omit from "usual" raster output]
@@ -38,10 +34,10 @@
 - TODO 083 [Get all three kinds of sedimebt input events working correctly]
 
 ##   Error handling
+-  TODO 038 [Do better error handling if insufficient memory]
 -  TODO 004 [Improve error handling of situation where we have a valid shadow zone but cannot find a neighbouring cell which is 'under' the coastline](https://github.com/coastalme/coastalme/blob/730a0be2274de02125681ab3e14424dbbfadbaeb/src/calc_shadow_zones.cpp#L490)
 -  TODO 006 [Check GDALGridCreate() with only start-of-coast or an end-of-coast profiles](https://github.com/coastalme/coastalme/blob/730a0be2274de02125681ab3e14424dbbfadbaeb/src/calc_waves.cpp#L214)
 -  TODO 009 [Decide what to do when we have eroded down to basement](https://github.com/coastalme/coastalme/blob/730a0be2274de02125681ab3e14424dbbfadbaeb/src/calc_waves.cpp#L214)
--  TODO 015 [Improve situation where profile hits another profile which belongs to a different coast object (will certainly need this for estuaries)](https://github.com/coastalme/coastalme/blob/730a0be2274de02125681ab3e14424dbbfadbaeb/src/create_profiles.cpp#L1478) [2](https://github.com/coastalme/coastalme/blob/730a0be2274de02125681ab3e14424dbbfadbaeb/src/create_profiles.cpp#L1537)
 -  TODO 017 [Extra safety check needed, make sure that each point is within valid grid](https://github.com/coastalme/coastalme/blob/730a0be2274de02125681ab3e14424dbbfadbaeb/src/do_beach_within_polygon.cpp#L146)
 -  TODO 018 [Improve situation where new landwards point on parallel profile is not within the raster grid](https://github.com/coastalme/coastalme/blob/730a0be2274de02125681ab3e14424dbbfadbaeb/src/do_beach_within_polygon.cpp#L222) [2](https://github.com/coastalme/coastalme/blob/730a0be2274de02125681ab3e14424dbbfadbaeb/src/do_beach_within_polygon.cpp#L394)
 -  TODO 019 [Improve situation where Dean profile has a near-zero elevation difference](https://github.com/coastalme/coastalme/blob/730a0be2274de02125681ab3e14424dbbfadbaeb/src/do_beach_within_polygon.cpp#L286) [2](https://github.com/coastalme/coastalme/blob/730a0be2274de02125681ab3e14424dbbfadbaeb/src/do_beach_within_polygon.cpp#L394)
@@ -53,8 +49,8 @@
 -  TODO 038 [Do better error handling if insufficient memory](https://github.com/coastalme/coastalme/blob/730a0be2274de02125681ab3e14424dbbfadbaeb/src/gis_raster.cpp#L71)
 -  TODO 053 [Improve handling of situation where landward elevation of profile is -ve](https://github.com/coastalme/coastalme/blob/730a0be2274de02125681ab3e14424dbbfadbaeb/src/calc_waves.cpp#L1581)
 -  TODO 055 [Maybe add a safety check?]
--  TODO 072 [CShore crashes occasionally, is it because of -ve Z values here? Check]
 -  TODO 080 [Do we get -ve breaking wave heights here?]
+-  TODO 084 [Improve handling of situation where consecutive profile points are same distance from shoreline]
 
 ##   Theory/Efficiency
 -  TODO 002 [Do we really need D50 for drift landform class? What do we need for drift?](https://github.com/coastalme/coastalme/blob/730a0be2274de02125681ab3e14424dbbfadbaeb/src/assign_landforms.cpp#L346)
@@ -66,12 +62,10 @@
 -  TODO 016 [Check mass balance for recirculating unconsolidated sediment option](https://github.com/coastalme/coastalme/blob/730a0be2274de02125681ab3e14424dbbfadbaeb/src/do_beach_sediment_movement.cpp#L539)
 -  TODO 023 [Only calculate shore platform erosion if cell is in a polygon](https://github.com/coastalme/coastalme/blob/730a0be2274de02125681ab3e14424dbbfadbaeb/src/do_shore_platform_erosion.cpp#L51)
 -  TODO 024 [Should we calculate platform erosion on a profile that has hit dry land?](https://github.com/coastalme/coastalme/blob/730a0be2274de02125681ab3e14424dbbfadbaeb/src/do_shore_platform_erosion.cpp#L124)
+-  TODO 044 [Implement estuaries. Before we can do this, we will need to deal with multiple coastlines. Will need to get working where profile hits another profile which belongs to a different coast object.](https://github.com/coastalme/coastalme/blob/730a0be2274de02125681ab3e14424dbbfadbaeb/src/create_profiles.cpp#L1478) [2](https://github.com/coastalme/coastalme/blob/730a0be2274de02125681ab3e14424dbbfadbaeb/src/create_profiles.cpp#L1537)
 -  TODO 037 [Need more info on nFindIndex](https://github.com/coastalme/coastalme/blob/730a0be2274de02125681ab3e14424dbbfadbaeb/src/interpolate.cpp#L103-L121)
--  TODO 044 [Estuaries :-)](https://github.com/coastalme/coastalme/blob/730a0be2274de02125681ab3e14424dbbfadbaeb/src/simulation.cpp#L933)
--  TODO 050 Update for recent versions of Windows
 -  TODO 051 [Implement other ways of calculating depth of closure, see TODO 045](https://github.com/coastalme/coastalme/blob/730a0be2274de02125681ab3e14424dbbfadbaeb/src/utils.cpp#L2482-L2493)
 -  TODO 056 [Check this please Andres]
--  TODO 057 [Check this please Manuel]
 -  TODO 059 [Implement dune landform class]
 -  TODO 060 [Remove 'magic numbers' from code here]
 -  TODO 061 [Is this safety check to depth of breaking a reasonable thing to do?]
@@ -82,12 +76,14 @@
 -  TODO 076 [When doing parallel profiles, start from the profile which is closest to a right angle with the coast]
 -  TODO 077 [As traverse between the bounding profiles creating parallel profiles, gradually change the parallel profile orientation based on distance weighting of two bounding profiles]
 -  TODO 078 [At present, we don't allow cliff collapse onto interventions. Is this realistic? Should it change with different types on intervention?]
--  [Why do we get patches of sediment in the sea?]
+-  TODO 089 [Why do we get patches of sediment in the sea?]
+   TODO 086 [Try alternatives to GDALGridCreate(), e.g. https://github.com/delfrrr/delaunator-cpp]
+   TODO 088 [In (almost) all whole-grid loops, immediately continue if cell is hinterland (but not when calculating cliff collapse)]
 
 ##  Output
 -  TODO 065 [Get GPKG output working] 
--  TODO 063 Add NetCDF support, see https://trac.osgeo.org/gdal/wiki/NetCDF
--  TODO 064 Add support for grids that are not oriented N-S and W-E, but are still rectangular (will need to add a transformation in the reading and writing process, the first to bring it to the local base and the second to save it in global coordinates)
+-  TODO 063 [Add NetCDF support, see https://trac.osgeo.org/gdal/wiki/NetCDF]
+-  TODO 064 [Add support for grids that are not oriented N-S and W-E, but are still rectangular (will need to add a transformation in the reading and writing process, the first to bring it to the local base and the second to save it in global coordinates)]
 -  TODO 031 [Get raster slice output working with multiple slices](https://github.com/coastalme/coastalme/blob/730a0be2274de02125681ab3e14424dbbfadbaeb/src/gis_raster.cpp#L1122-L1125)
 -  TODO 032 [Improve output scaling for DBL_NODATA situation](https://github.com/coastalme/coastalme/blob/730a0be2274de02125681ab3e14424dbbfadbaeb/src/gis_raster.cpp#L1617)
 -  TODO 033 [Also test and configure (e.g. by passing open() options) other vector output file formats](https://github.com/coastalme/coastalme/blob/730a0be2274de02125681ab3e14424dbbfadbaeb/src/gis_utils.cpp#L893)
@@ -101,21 +97,22 @@
 
 ## Completed
 -  TODO 003 [Make coastline curvature moving window size a user input DONE in 1.1.22]
--  TODO 046 [Why is cliff collapse eroded during deposition (three size classes) no longer calculated? DONE in 1.1.22]
+-  TODO 046 [Why is cliff collapse eroded during deposition (three size classes) no longer calculated? DONE IN 1.1.22]
 -  TODO 058 [Dave to check this DONE in 1.1.22]
--  TODO 039 [Rewrite reading of multiple random number seeds DONE in 1.2.1, 8 Nov 2025](https://github.com/coastalme/coastalme/blob/730a0be2274de02125681ab3e14424dbbfadbaeb/src/read_input.cpp#L535)
--  TODO 041 [Read in SWL per-timestep DONE]
+-  TODO 039 [Rewrite reading of multiple random number seeds DONE in 1.2.1, 8 Nov 2024]
+-  TODO 041 [Read in SWL per-timestep]
 -  BUG 002 [Useless output e.g. clay layers even if no clay input DONE in 1.1.21]
--  BUG 003 [Use mean SWL for elevations of Dean profiles DONE in 1.2.1, 27 Nov 2025]
--  BUG 004 [Don't smooth intervention coastline DONE 1.2.1, 27 Nov 2025]
--  TODO 073 [If output dir does not exist, then create it (ask user first) DONE 1.2.2, 28 Nov 2025]
--  TODO 047 [Where is the GDAL description for the deep water wave stations vector file? DONE 1.2.3, 2 Dec 2025]
--  TODO 048 [Where is the GDAL description for the flood input locations point or vector file? DONE 1.2.3, 2 Dec 2025]
--  TODO 027 [Sort out GDAL problem with raster reference units DONE 1.2.3, 2 Dec 2025]
--  TODO 038 [Do better error handling if insufficient memory DONE 1.2.3, 2 Dec 2025]
--  TODO 079 [Do sanity checking on wave and tide input DONE 1.2.3, 2 Dec 2025]
--  TODO 072 [CShore crashes occasionally, is it because of -ve Z values here? DONE 1.2.3, 2 Dec 2025]
--  TODO 050 [Update for recent versions of Windows DONE 1.2.3, 2 Dec 2025]
--  TODO 037 [Need more info on nFindIndex() DONE 1.2.3, 2 Dec 2025]
--  [Improve coast normals DONE 1.2.3, 20 Dec 2025]
-   
+-  BUG 003 [Use mean SWL for elevations of Dean profiles DONE in 1.2.1, 27 Nov 2024]
+-  BUG 004 [Don't smooth intervention coastline DONE 1.2.1, 27 Nov 2024]
+-  TODO 073 [If output dir does not exist, then create it (ask user first) DONE 1.2.2, 28 Nov 2024]
+-  TODO 047 [Where is the GDAL description for the deep water wave stations vector file? DONE 1.2.3, 2 Dec 2024]
+-  TODO 048 [Where is the GDAL description for the flood input locations point or vector file? DONE 1.2.3, 2 Dec 2024]
+-  TODO 027 [Sort out GDAL problem with raster reference units DONE 1.2.3, 2 Dec 2024]
+-  TODO 079 [Do sanity checking on wave and tide input DONE 1.2.3, 2 Dec 2024]
+-  TODO 072 [CShore crashes occasionally, is it because of -ve Z values here? DONE 1.2.3, 2 Dec 2024]
+-  TODO 050 [Update for recent versions of Windows DONE 1.2.3, 2 Dec 2024]
+-  TODO 037 [Need more info on nFindIndex() DONE 1.2.3, 2 Dec 2024]
+-  [Improve coast normals DONE 1.2.3, 20 Dec 2024]
+-  TODO 057 [Check this please Manuel DONE 1.2.4, 4 Jan 2025]
+-  TODO 087 [Is there a problem if profile is not long enough for user-input depth of closure? DONE 1.3.0 2 Feb 2025]
+
