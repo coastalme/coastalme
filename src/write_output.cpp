@@ -1762,7 +1762,7 @@ void CSimulation::WritePolygonSortedSequence(int const nCoast, vector<vector<int
       const CGeomCoastPolygon* pPoly = m_VCoast[nCoast].pGetPolygon(pnVVPolyAndAdjacent[nPoly][1]);
       vector<int> VCirc = pPoly->VnGetCircularities();
 
-      LogStream << strIntRight(m_pVCoastPolygon[pnVVPolyAndAdjacent[nPoly][0]]->nGetGlobalID(), 11) << "|" << strIntRight(nCoast, 11) << "|" << strIntRight(pnVVPolyAndAdjacent[nPoly][1], 11) << "|";
+      LogStream << strIntRight(m_pVCoastPolygon[pnVVPolyAndAdjacent[nPoly][1]]->nGetGlobalID(), 11) << "|" << strIntRight(nCoast, 11) << "|" << strIntRight(pnVVPolyAndAdjacent[nPoly][1], 11) << "|";
       
       // Up-coast or down-coast sediment movement?
       string strTmp = "";
@@ -1843,7 +1843,7 @@ void CSimulation::WritePolygonActualMovement(int const nCoast, vector<vector<int
       
    for (unsigned int n = 0; n < m_pVCoastPolygon.size(); n++)
    {
-      int nPoly = pnVVPolyAndAdjacent[n][0];
+      int nPoly = pnVVPolyAndAdjacent[n][1];
 
       double dAllErosionNotDDPD = -m_pVCoastPolygon[nPoly]->dGeBeachErosionAllUncons() - (m_pVCoastPolygon[nPoly]->dGetBeachSandErodedDeanProfile() + m_pVCoastPolygon[nPoly]->dGetBeachCoarseErodedDeanProfile());
       double dSandErosionNotDDPD = -m_pVCoastPolygon[nPoly]->dGetBeachErosionUnconsSand() - m_pVCoastPolygon[nPoly]->dGetBeachSandErodedDeanProfile();
