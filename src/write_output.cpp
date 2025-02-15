@@ -1296,7 +1296,7 @@ int CSimulation::nWriteEndRunDetails(void)
              << endl;
 
    // Write to log file
-   LogStream << "END OF RUN ================================================================================================" << endl
+   LogStream << "END OF RUN TOTALS =================================================================================================================================================" << endl
              << endl;
 
    LogStream << "ALL-PROCESS TOTALS (all size classes)" << endl;

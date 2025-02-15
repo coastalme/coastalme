@@ -72,4 +72,14 @@ cp in/test_suite/Manuel_C003_0001/cme.ini .
 ./cme
 echo ===============================================================================
 
+rm -f out/test_suite/GMD2017/CliffFineBays/*
+cp in/test_suite/GMD2017/CliffFineBays/cme.ini .
+./cme
+echo ===============================================================================
+
+rm -f out/test_suite/GMD2017/Groyne/*
+cp in/test_suite/GMD2017/Groyne/cme.ini .
+./cme
+echo ===============================================================================
+
 mv cme.ini.OLD cme.ini

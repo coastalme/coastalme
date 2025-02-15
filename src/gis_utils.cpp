@@ -698,7 +698,7 @@ bool CSimulation::bCheckRasterGISOutputFormat(void)
    //    cout << papszMetadata[i] << endl;
    // cout << endl;
 
-   // For GDAL2, need to test if this is a raster driver
+   // Need to test if this is a raster driver
    if (! CSLFetchBoolean(papszMetadata, GDAL_DCAP_RASTER, FALSE))
    {
       // This is not a raster driver

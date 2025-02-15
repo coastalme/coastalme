@@ -632,7 +632,6 @@ subroutine CShoreWrapper(In_ILINE, In_IPROFL, In_IPERM, In_IOVER, In_IWCINT, In_
       end do
    end do
    
-   
    return   
 end subroutine CShoreWrapper
 #endif   

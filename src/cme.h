@@ -164,7 +164,7 @@ Enjoy!
    TODO 077 As traverse between the bounding profiles creating parallel profiles, gradually change the parallel profile orientation based on distance weighting of two bounding profiles
    TODO 078 At present, we don't allow cliff collapse onto interventions. Is this realistic? Should it be different for different types on intervention?
    TODO 089 Why do we get patches of sediment in the sea?
-   TODO 086 Try alternatives to GDALGridCreate(), e.g. https://github.com/delfrrr/delaunator-cpp?tab=readme-ov-file
+   TODO 086 Try alternatives to GDALGridCreate(), e.g. https://gts.sourceforge.net/index.html, https://doc.cgal.org/latest/Triangulation_2/index.html#Chapter_2D_Triangulations
    TODO 088 In (almost) all whole-grid loops, immediately continue if cell is hinterland (but not when calculating cliff collapse)
 
    OUTPUT
@@ -667,7 +667,7 @@ int const UNCONS_SEDIMENT_EQUATION_KAMPHUIS = 1;
 
 int const CLIFF_COLLAPSE_LENGTH_INCREMENT = 10;          // Increment the planview length of the cliff talus Dean profile, if we have not been able to deposit enough
 
-int const PROFILE_CHECK_ALONG_COAST_MULTIPLIER = 100;     // Used in checking shoreline-normal profiles for intersection
+int const PROFILE_CHECK_ALONG_COAST_MULTIPLIER = 500;    // Used in checking shoreline-normal profiles for intersection
 int const PROFILE_CHECK_DIST_FROM_COAST = 3;             // Ditto
 
 unsigned long const MASK = 0xfffffffful;
@@ -702,7 +702,7 @@ double const CLIFF_COLLAPSE_HEIGHT_INCREMENT = 0.1;      // Increment the fracti
 
 double const DBL_NODATA = -9999;
 
-string const PROGRAM_NAME = "Coastal Modelling Environment (CoastalME) version 1.3.2 (11 Feb 2025)";
+string const PROGRAM_NAME = "Coastal Modelling Environment (CoastalME) version 1.3.3 (15 Feb 2025)";
 string const PROGRAM_NAME_SHORT = "CME";
 string const CME_INI = "cme.ini";
 

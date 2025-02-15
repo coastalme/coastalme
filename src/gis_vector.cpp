@@ -911,7 +911,7 @@ bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const *strPlot
                      pOGRFeature->SetField(strFieldValue4.c_str(), 1);
                   if (pProfile->bHitCoast())
                      pOGRFeature->SetField(strFieldValue5.c_str(), 1);
-                  if (pProfile->bHitAnotherProfile())
+                  if (pProfile->bHitAnotherProfileBadly())
                      pOGRFeature->SetField(strFieldValue6.c_str(), 1);
                   if (pProfile->bCShoreProblem())
                      pOGRFeature->SetField(strFieldValue7.c_str(), 1);

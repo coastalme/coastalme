@@ -221,7 +221,7 @@ bool CGeomMultiLine::bFindProfileInCoincidentProfiles(int const nProfile)
    return false;
 }
 
-//! Finds the number of the most coastward line segment for which the two profiles are coincident, or -1 if they are not coincident. If they are conicidet, also finds the line segment of the other profile
+//! Finds the number of the most coastward line segment for which the two profiles are coincident, or -1 if they are not coincident. If they are coincident, also finds the line segment of the other profile
 void CGeomMultiLine::GetMostCoastwardSharedLineSegment(int const nOtherProfile, int& nThisLineSegment, int& nOtherLineSegment)
 {
    nThisLineSegment =

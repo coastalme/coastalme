@@ -58,7 +58,7 @@ private:
    bool m_bTruncated;
 
    //! Has this profile hit another profile?
-   bool m_bHitAnotherProfile;
+   bool m_bHitAnotherProfileBadly;
 
    //! Is this an intervention profile?
    bool m_bIntervention;
@@ -136,11 +136,11 @@ public:
    bool bTooShort(void) const;
    void SetTruncated(bool const);
    bool bTruncated(void) const;
-   void SetHitAnotherProfile(bool const);
-   bool bHitAnotherProfile(void) const;
+   void SetHitAnotherProfileBadly(bool const);
+   bool bHitAnotherProfileBadly(void) const;
 
    bool bProfileOK(void) const;
-   bool bProfileOKIncTruncHit(void) const;
+   bool bProfileOKIncTruncated(void) const;
    bool bOKIncStartAndEndOfCoast(void) const;
    // bool bOKIncStartOfCoast(void) const;
 

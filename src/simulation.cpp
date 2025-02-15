@@ -620,12 +620,26 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
    // Check if output dir exists
    if ((! is_directory(m_strOutPath.c_str())) || (! exists(m_strOutPath.c_str())))
    {
-      // It does not exist, does the user wish to create it?
-      char ch;
-      cerr << endl << "Output folder '" << m_strOutPath << "' does not exist. Create it? (Y/N) ";
-      cin.get(ch);
+      // Output dir does not exist
+      bool bCreateDir = false;
+      if ((isatty(fileno(stdout))) && (isatty(fileno(stderr))))
+      {
+         // Running with stdout and stderr as a tty, so ask the user if they wish to create it
+         char ch;
+         cerr << endl << "Output folder '" << m_strOutPath << "' does not exist. Create it? (Y/N) ";
+         cerr.flush();
+         cin.get(ch);
 
-      if ((ch == 'y') || (ch == 'Y'))
+         if ((ch == 'y') || (ch == 'Y'))
+            bCreateDir = true;
+      }
+      else
+      {
+         // Running with stdout or stderr not a tty, so create output dir rather than abort
+         bCreateDir = true;
+      }
+
+      if (bCreateDir)
       {
          // Yes, so create the directory
          create_directories(m_strOutPath.c_str());
@@ -995,7 +1009,7 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
       //          CGeomProfile const* pProfile = m_VCoast[nCoast].pGetProfileAtCoastPoint(nCoastPoint);
       //          int nProfile = pProfile->nGetCoastID();
       //
-      //          LogStream << m_ulIter << ": profile " << nProfile << " bStartOfCoast = " << pProfile->bStartOfCoast() << " bEndOfCoast = " << pProfile->bEndOfCoast() << " bCShoreProblem = " << pProfile->bCShoreProblem() << " bHitLand = " << pProfile->bHitLand() << " bHitCoast = " << pProfile->bHitCoast() << " bTooShort = " << pProfile->bTooShort() << " bTruncated = " << pProfile->bTruncated() << " bHitAnotherProfile = " << pProfile->bHitAnotherProfile() << endl;
+      //          LogStream << m_ulIter << ": profile " << nProfile << " bStartOfCoast = " << pProfile->bStartOfCoast() << " bEndOfCoast = " << pProfile->bEndOfCoast() << " bCShoreProblem = " << pProfile->bCShoreProblem() << " bHitLand = " << pProfile->bHitLand() << " bHitCoast = " << pProfile->bHitCoast() << " bTooShort = " << pProfile->bTooShort() << " bTruncated = " << pProfile->bTruncated() << " bHitAnotherProfileBadly = " << pProfile->bHitAnotherProfileBadly() << endl;
       //       }
       //    }
       // }

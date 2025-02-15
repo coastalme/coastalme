@@ -182,7 +182,7 @@ int CSimulation::nCalcPotentialPlatformErosionOnProfile(int const nCoast, CGeomP
    {
       // Safety check, altho' this shouldn't happen
       if (m_nLogFileDetail >= LOG_FILE_HIGH_DETAIL)
-         LogStream << m_ulIter << ": depth of breaking is zero on coast " << nCoast << " at profile " << pProfile->nGetCoastID() << ", continuing however." << endl;
+         LogStream << m_ulIter << ": depth of breaking is zero for profile " << pProfile->nGetCoastID() << " of coast " << nCoast << endl;
       
       return RTN_OK;   
    }
