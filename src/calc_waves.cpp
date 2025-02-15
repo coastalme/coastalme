@@ -185,9 +185,18 @@ int CSimulation::nDoAllPropagateWaves(void)
          if (nRet != RTN_OK)
          {
             if (nRet == RTN_ERR_CSHORE_ERROR)
+            {
+               // Abandon calculations on this profile, and flag the profile
+               pProfile->SetCShoreProblem(true);
+
+               // Move on to next profile
                continue;
+            }
             else
+            {
+               // A serious CShore error, so abort the run
                return nRet;
+            }
          }
 
          // Are the waves off-shore? If so, do nothing more with this profile. The wave values for cells have already been given the off-shore value
@@ -223,7 +232,7 @@ int CSimulation::nDoAllPropagateWaves(void)
    // OK, do we have some profiles other than start of coast or end of coast profiles in the all-profile vectors? We need to check this, because GDALGridCreate() in nInterpolateWavePropertiesToWithinPolygonCells() does not work if we give it only a start-of-coast or an end-of-coast profile to work with TODO 006 Is this still true?
    if (! bSomeNonStartOrEndOfCoastProfiles)
    {
-      LogStream << m_ulIter << ": waves are on-shore only for start and/or end of coast profiles" << endl;
+      LogStream << m_ulIter << ": waves are on-shore only, for start and/or end of coast profiles" << endl;
 
       return RTN_OK;
    }
@@ -873,7 +882,7 @@ int CSimulation::nCalcWavePropertiesOnProfile(int const nCoast, int const nCoast
          switch (nRet)
          {
             case -1:
-               strErr = to_string(m_ulIter) + ": CShore ERROR: negative depth at the first node ";
+               strErr = to_string(m_ulIter) + ": CShore WARNING 1: negative depth at the first node ";
                break;
 
             case 2:
@@ -897,16 +906,12 @@ int CSimulation::nCalcWavePropertiesOnProfile(int const nCoast, int const nCoast
                break;
          }
 
-         strErr += "(coast " + to_string(nCoast) + " profile " + to_string(nProfile) + ")\n";
-         
-         if (nRet < -1)
-         {
-            // This is serious, so give up for this profile
-            cerr << strErr;
-            return RTN_ERR_CSHORE_ERROR;
-         }
+         strErr += "(coast " + to_string(nCoast) + " profile " + to_string(pProfile->nGetCoastID()) + " profile length " + to_string(nOutSize) + ")\n";
 
-         // Not too serious, so carry on
+         // OK, give up for this profile
+         // LogStream << strErr;
+         //
+         // return RTN_ERR_CSHORE_ERROR;
       }
 
       // Fetch the CShore results by reading files written by CShore
@@ -1044,7 +1049,7 @@ int CSimulation::nCalcWavePropertiesOnProfile(int const nCoast, int const nCoast
          switch (nRet)
          {
             case -1:
-               strErr = to_string(m_ulIter) + ": CShore ERROR: negative depth at the first node ";
+               strErr = to_string(m_ulIter) + ": CShore WARNING 1: negative depth at the first node ";
                break;
 
             case 2:
@@ -1070,19 +1075,15 @@ int CSimulation::nCalcWavePropertiesOnProfile(int const nCoast, int const nCoast
 
          strErr += "(coast " + to_string(nCoast) + " profile " + to_string(pProfile->nGetCoastID()) + " profile length " + to_string(nOutSize) + ")\n";
          
-         if (nRet < -1)
-         {
-            // This is serious, so give up for this profile
-            cerr << strErr;
-            return RTN_ERR_CSHORE_ERROR;
-         }
-
-         // Not too serious, so carry on
+         // OK, give up for this profile
+         // LogStream << strErr;
+         //
+         // return RTN_ERR_CSHORE_ERROR;
       }
 
       // LogStream << m_ulIter << ": interpolating profile " << nProfile << endl;
 
-      // Now interpolate the CShore output, and convert from the CShore convention (cross-shore distance has its origin at the seaward end) to the CoastalME convention (origin at the shoreline)
+      // All OK, so interpolate the CShore output, and convert from the CShore convention (cross-shore distance has its origin at the seaward end) to the CoastalME convention (origin at the shoreline)
       InterpolateCShoreOutput(&VdProfileDistXY, nOutSize, nProfileSize, &VdXYDistFromCShoreOut, &VdFreeSurfaceStdOut, &VdWaveSetupSurgeOut, &VdSinWaveAngleRadiansOut, &VdFractionBreakingWavesOut, &VdFreeSurfaceStd, &VdWaveSetupSurge, &VdSinWaveAngleRadians, &VdFractionBreakingWaves);
 #endif
 

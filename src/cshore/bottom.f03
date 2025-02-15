@@ -124,6 +124,9 @@ subroutine BOTTOM
       JDUM = JMAX(L)
       
       do 141 J = 1, JMAX(L)
+         ! DFM error reporting
+         if (J > SIZE(XB)) write (*,*) "J = ", J, " JMAX(L) = ", JMAX(L)
+
          XB(J) = DX * DBLE(J-1)
 141   end do
 

@@ -31,7 +31,7 @@
 - TODO 054 [Choose more files to omit from "usual" raster output]
 - TODO 069 [Enable ability to represent intervention structures which have their foundation embedded in consolidated sediment. In other words, with the elevation of the base of the intervention structure *below* the top of all consolidated sediment layers. Will need some sanity checking of elevations]
 - TODO 071 [If the user input file format is changed, write a Python script to convert from the old file format to the new]
-- TODO 083 [Get all three kinds of sedimebt input events working correctly]
+- TODO 083 [Get all three kinds of sediment input events working correctly]
 
 ##   Error handling
 -  TODO 038 [Do better error handling if insufficient memory]
@@ -77,7 +77,7 @@
 -  TODO 077 [As traverse between the bounding profiles creating parallel profiles, gradually change the parallel profile orientation based on distance weighting of two bounding profiles]
 -  TODO 078 [At present, we don't allow cliff collapse onto interventions. Is this realistic? Should it change with different types on intervention?]
 -  TODO 089 [Why do we get patches of sediment in the sea?]
-   TODO 086 [Try alternatives to GDALGridCreate(), e.g. https://github.com/delfrrr/delaunator-cpp]
+   TODO 086 [Try alternatives to GDALGridCreate(), e.g. https://gts.sourceforge.net/index.html, https://doc.cgal.org/latest/Triangulation_2/index.html#Chapter_2D_Triangulations]
    TODO 088 [In (almost) all whole-grid loops, immediately continue if cell is hinterland (but not when calculating cliff collapse)]
 
 ##  Output

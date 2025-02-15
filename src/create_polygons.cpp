@@ -125,6 +125,11 @@ int CSimulation::nCreateAllPolygons(void)
             // Get the grid CRS coordinates of the coast node
             CGeom2DIPoint PtiNode = *m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(nNodePoint);
 
+            // // DEBUG CODE ===================
+            // if ((m_ulIter == 18) && (nThisProfile == 29))
+            //    std::cerr << endl;
+            // // DEBUG CODE ===================
+
             // Get some defaults (assuming for now that this polygon is not approximately triangular i.e. both normals do not meet)
             int nNextProfileEnd = pNextProfile->nGetProfileSize()-1;
             int nThisProfileEnd = pThisProfile->nGetProfileSize()-1;
@@ -148,14 +153,20 @@ int CSimulation::nCreateAllPolygons(void)
             {
                // Yes they do meet
                bMeetsAtAPoint = true;
+               int nTmpThisProfileEnd;
+               int nTmpNextProfileEnd;
 
                // Find the most coastward point at which this normal and the previous normal touch. If they do not touch, the polygon requires a 'joining line'
-               pThisProfile->GetMostCoastwardSharedLineSegment(nNextProfile, nThisProfileEnd, nNextProfileEnd);
-               if (nThisProfileEnd == -1)
+               pThisProfile->GetMostCoastwardSharedLineSegment(nNextProfile, nTmpThisProfileEnd, nTmpNextProfileEnd);
+               if (nTmpThisProfileEnd == -1)
                {
                   LogStream << m_ulIter << ": " << ERR << "profile " << nNextProfile << " should be coincident with profile " << nThisProfile << " but was not found" << endl;
                   return RTN_ERR_BAD_MULTILINE;
                }
+
+               // Safety check: make sure that nThisProfileEnd is no bigger than pThisProfile->nGetProfileSize()-1, and the same for nNextProfileEnd
+               nThisProfileEnd = tMin(nThisProfileEnd, nTmpThisProfileEnd);
+               nNextProfileEnd = tMin(nNextProfileEnd, nTmpNextProfileEnd);
 
                PtCoastwardTip = *pThisProfile->pPtGetPointInProfile(nThisProfileEnd);
             }

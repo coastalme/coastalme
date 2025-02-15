@@ -103,7 +103,7 @@ int CSimulation::nReadRasterBasementDEM(void)
       return RTN_ERR_DEMFILE;
    }
 
-   // CoastalME can only handle rasters that are oriented N-S and W-E. (If you need to work with a raster that is oriented differently,m then rotate it before running CoastalME). So here we check whether row rotation (m_dGeoTransform[2]) and column rotation (m_dGeoTransform[4]) are both zero. See https://gdal.org/tutorials/geotransforms_tut.html
+   // CoastalME can only handle rasters that are oriented N-S and W-E. (If you need to work with a raster that is oriented differently, then you must rotate it before running CoastalME). So here we check whether row rotation (m_dGeoTransform[2]) and column rotation (m_dGeoTransform[4]) are both zero. See https://gdal.org/tutorials/geotransforms_tut.html
    if ((! bFPIsEqual(m_dGeoTransform[2], 0.0, TOLERANCE)) || (! bFPIsEqual(m_dGeoTransform[4], 0.0, TOLERANCE)))
    {
       // Error: not oriented NS and W-E

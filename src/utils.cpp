@@ -87,7 +87,7 @@ using std::inner_product;
 int CSimulation::nHandleCommandLineParams(int nArg, char const* pcArgv[])
 {
    if ((! isatty(fileno(stdout))) || (! isatty(fileno(stderr))))
-      // Running with stdout or stderr not a tty, so either redirected or running as a background job. Ignore all parameters
+      // Running with stdout or stderr not a tty, so either redirected or running as a background job. Ignore all command line parameters
       return RTN_OK;
 
    // Process the parameters following the name of the executable
