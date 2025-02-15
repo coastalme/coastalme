@@ -61,7 +61,7 @@ var searchData=
   ['m_5fbhavefinesediment_58',['m_bHaveFineSediment',['../d1/d98/classCSimulation.html#aa351e7d81237af817abadd8a8f1005c4',1,'CSimulation']]],
   ['m_5fbhavesandsediment_59',['m_bHaveSandSediment',['../d1/d98/classCSimulation.html#a61c405b24432434fd1e52b18fa61fc85',1,'CSimulation']]],
   ['m_5fbhavewavestationdata_60',['m_bHaveWaveStationData',['../d1/d98/classCSimulation.html#a6f9031bd5d455f968fa2daa790582fe0',1,'CSimulation']]],
-  ['m_5fbhitanotherprofile_61',['m_bHitAnotherProfile',['../da/dae/classCGeomProfile.html#a5a38d619faa057c6242fce1457c0843b',1,'CGeomProfile']]],
+  ['m_5fbhitanotherprofilebadly_61',['m_bHitAnotherProfileBadly',['../da/dae/classCGeomProfile.html#a701101e340174a34a5e976058884e7ed',1,'CGeomProfile']]],
   ['m_5fbhitcoast_62',['m_bHitCoast',['../da/dae/classCGeomProfile.html#a129d2298a158b946b8a35c9f3877d5e9',1,'CGeomProfile']]],
   ['m_5fbhitland_63',['m_bHitLand',['../da/dae/classCGeomProfile.html#afc9a7dce1dcef41b77272db154556795',1,'CGeomProfile']]],
   ['m_5fbincontiguousflood_64',['m_bInContiguousFlood',['../d1/dd9/classCGeomCell.html#a91844267cd6df94b215ee56939d1b40f',1,'CGeomCell']]],

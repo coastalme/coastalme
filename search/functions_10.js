@@ -53,7 +53,7 @@ var searchData=
   ['setfloodbysetupsurge_50',['SetFloodBySetupSurge',['../d1/dd9/classCGeomCell.html#abd36d8ed4f1a2636193ebefbe3201029',1,'CGeomCell']]],
   ['setfloodbysetupsurgerunup_51',['SetFloodBySetupSurgeRunup',['../d1/dd9/classCGeomCell.html#a94f1ed66a4b8f2447fcf4a3bb6bd3846',1,'CGeomCell']]],
   ['setfluxorientation_52',['SetFluxOrientation',['../d1/dbe/classCRWCoast.html#a3e1b04a95faf57458a51bba506b7d221',1,'CRWCoast']]],
-  ['sethitanotherprofile_53',['SetHitAnotherProfile',['../da/dae/classCGeomProfile.html#a6d4286ac64e3fe9aef428c93fdcd4230',1,'CGeomProfile']]],
+  ['sethitanotherprofilebadly_53',['SetHitAnotherProfileBadly',['../da/dae/classCGeomProfile.html#ab9ef0cd61b195d619f939419020e2fc5',1,'CGeomProfile']]],
   ['sethitcoast_54',['SetHitCoast',['../da/dae/classCGeomProfile.html#a45410879aaf7f8f9abc073fc54363d03',1,'CGeomProfile']]],
   ['sethitland_55',['SetHitLand',['../da/dae/classCGeomProfile.html#ad5381cb54ceb34b7a566f2757b76ebcb',1,'CGeomProfile']]],
   ['setinactivezone_56',['SetInActiveZone',['../d1/dd9/classCGeomCell.html#a28847f89cc0d216f7f668d0d997837e1',1,'CGeomCell']]],
