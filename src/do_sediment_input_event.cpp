@@ -4,8 +4,7 @@
  * \brief Deposits sediment onto the grid
  * \details TODO 001 A more detailed description of these routines.
  * \author David Favis-Mortlock
- * \author Andres Payo
- *
+ * \author Andres Payo *
  * \date 2025
  * \copyright GNU General Public License
  *

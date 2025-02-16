@@ -5,7 +5,6 @@
  * \details TODO 001 A more detailed description of this routine.
  * \author David Favis-Mortlock
  * \author Andres Payo
-
  * \date 2025
  * \copyright GNU General Public License
  *

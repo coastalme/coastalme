@@ -5,10 +5,8 @@
  * \details TODO 001 This is a more detailed description of the CRWCliff class.
  * \author David Favis-Mortlock
  * \author Andres Payo
-
  * \date 2025
  * \copyright GNU General Public License
- *
  * \file cliff.h
  * \brief Contains CRWCliff definitions
  *

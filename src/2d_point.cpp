@@ -1,12 +1,14 @@
 /*!
-\file 2d_point.cpp
-\brief Geometry class used to represent 2D point objects with floating-point coordinates
-\details The CGeom2DPoint class is used to represent 2D points where the x and y coordinates are floating-point values
-\author David Favis-Mortlock
-\author Andres Payo
-\date 2025
-\copyright GNU General Public License
-*/
+ *
+ * \file 2d_point.cpp
+ * \brief Geometry class used to represent 2D point objects with floating-point coordinates
+ * \details The CGeom2DPoint class is used to represent 2D points where the x and y coordinates are floating-point values
+ * \author David Favis-Mortlock
+ * \author Andres Payo
+ * \date 2025
+ * \copyright GNU General Public License
+ *
+ */
 
 /*===============================================================================================================================
 This file is part of CoastalME, the Coastal Modelling Environment.

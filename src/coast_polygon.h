@@ -4,10 +4,8 @@
  * \details TODO 001 This is a more detailed description of the CRWCoast class.
  * \author David Favis-Mortlock
  * \author Andres Payo
-
  * \date 2025
- * \copyright GNU General Public License
- *
+ * \copyright GNU General Public License *
  * \file coast_polygon.h
  * \brief Contains CGeomCoastPolygon definitions
  *

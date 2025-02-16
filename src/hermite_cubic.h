@@ -5,8 +5,7 @@
  * \author John Burkardt
  * \author Modified by David Favis-Mortlock and Andres Payo
  * \date 2025
- * \copyright GNU Lesser General Public License
- *
+ * \copyright GNU Lesser General Public License *
  * \file hermite_cubic.h
  * \brief Contains definitions of hermite-cubic routines
  *

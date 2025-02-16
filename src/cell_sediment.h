@@ -5,10 +5,8 @@
  * \details TODO 001 This is a more detailed description of the CRWCellSediment class.
  * \author David Favis-Mortlock
  * \author Andres Payo
-
  * \date 2025
- * \copyright GNU General Public License
- *
+ * \copyright GNU General Public License *
  * \file cell_sediment.h
  * \brief Contains CRWCellSediment definitions
  *

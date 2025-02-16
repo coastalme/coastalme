@@ -1,12 +1,14 @@
 /*!
-\file 2d_shape.cpp
-\brief Abstract class, used as a base class for 2D objects (line, area, etc.)
-\details Abstract class, used as a base class for 2D objects (line, area, etc.)
-\author David Favis-Mortlock
-\author Andres Payo
-\date 2025
-\copyright GNU General Public License
-*/
+ *
+ * \file 2d_shape.cpp
+ * \brief Abstract class, used as a base class for 2D objects (line, area, etc.)
+ * \details Abstract class, used as a base class for 2D objects (line, area, etc.)
+ * \author David Favis-Mortlock
+ * \author Andres Payo
+ * \date 2025
+ * \copyright GNU General Public License
+ *
+ */
 
 /*===============================================================================================================================
 This file is part of CoastalME, the Coastal Modelling Environment.

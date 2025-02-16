@@ -1,11 +1,10 @@
 /*!
  *
  * \file calc_waves.cpp
- * \brief Simulates wave propagation
+ * \brief Simulates wave propagation using CShore or the COVE approach
  * \details TODO 001 A more detailed description of these routines.
  * \author David Favis-Mortlock
  * \author Andres Payo
-
  * \date 2025
  * \copyright GNU General Public License
  *
