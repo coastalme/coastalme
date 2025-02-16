@@ -1,15 +1,16 @@
 /*!
-\class CA2DShape
-\brief Abstract class, used as a base class for 2D objects (line, area, etc.)
-\details Abstract class, used as a base class for 2D objects (line, area, etc.)
-\author David Favis-Mortlock
-\author Andres Payo
-\date 2025
-\copyright GNU General Public License
-
-\file 2d_shape.h
-\brief Contains CA2DShape definitions
-*/
+ *
+ * \class CA2DShape
+ * \brief Abstract class, used as a base class for 2D objects (line, area, etc.)
+ * \details Abstract class, used as a base class for 2D objects (line, area, etc.)
+ * \author David Favis-Mortlock
+ * \author Andres Payo
+ * \date 2025
+ * \copyright GNU General Public License
+ * \file 2d_shape.h
+ * \brief Contains CA2DShape definitions
+ *
+ */
 
 #ifndef C2DSHAPE_H
 #define C2DSHAPE_H

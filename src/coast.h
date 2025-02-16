@@ -1,13 +1,12 @@
 /*!
+ *
  * \class CRWCoast
  * \brief Real-world class used to represent coastline objects
  * \details TODO 001 This is a more detailed description of the CRWCoast class.
  * \author David Favis-Mortlock
  * \author Andres Payo
-
  * \date 2025
- * \copyright GNU General Public License
- *
+ * \copyright GNU General Public License *
  * \file coast.h
  * \brief Contains CRWCoast definitions
  *

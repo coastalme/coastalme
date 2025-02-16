@@ -2,9 +2,7 @@
  *
  * \file gis_utils.cpp
  * \brief Various GIS-related functions, requires GDAL
- * \details TODO 001 A more detailed description of these routines.
-
- Note re. coordinate systems used
+ * \details Note re. coordinate systems used
 
  1. In the raster CRS, cell[0][0] is at the top left (NW) corner of the grid. Raster grid co-oordinate [0][0] is actually the top left (NW) corner of this cell.
 
@@ -21,7 +19,6 @@
 
  * \author David Favis-Mortlock
  * \author Andres Payo
-
  * \date 2025
  * \copyright GNU General Public License
  *

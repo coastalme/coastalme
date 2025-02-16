@@ -1,11 +1,10 @@
 /*!
  *
  * \file gis_vector.cpp
- * \brief These functions use GDAL to read and write vector GIS files in several formats. This version will build with GDAL version 2
+ * \brief These functions use GDAL to read and write vector GIS files in several formats. This version will build with GDAL version 2 and upwards
  * \details TODO 001 A more detailed description of these routines.
  * \author David Favis-Mortlock
  * \author Andres Payo
-
  * \date 2025
  * \copyright GNU General Public License
  *

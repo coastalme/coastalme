@@ -6,8 +6,7 @@
  * \author David Favis-Mortlock
  * \author Andres Payo
  * \date 2025
- * \copyright GNU General Public License
- *
+ * \copyright GNU General Public License *
  * \file sediment_input_event.h
  * \brief Contains CSedInputEvent definitions
  *
