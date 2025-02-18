@@ -213,7 +213,7 @@ void CSimulation::FloodFillSea(int const nXStart, int const nYStart)
       }
    }
 
-   // DEBUG CODE ===========================================================================================================
+   // // DEBUG CODE ===========================================================================================================
    // string strOutFile = m_strOutPath + "is_contiguos_sea_";
    // strOutFile += to_string(m_ulIter);
    // strOutFile += ".tif";
@@ -274,7 +274,7 @@ void CSimulation::FloodFillSea(int const nXStart, int const nYStart)
 
    // GDALClose(pDataSet);
    // delete[] pdRaster;
-   // DEBUG CODE ===========================================================================================================
+   // // DEBUG CODE ===========================================================================================================
 
    //    LogStream << m_ulIter << ": flood fill of sea from [" << nXStart << "][" << nYStart << "] = {" << dGridCentroidXToExtCRSX(nXStart) << ", " << dGridCentroidYToExtCRSY(nYStart) << "} with SWL = " << m_dThisIterSWL << ", " << m_ulThisIterNumSeaCells << " of " << m_ulNumCells << " cells now marked as sea (" <<  fixed << setprecision(3) << 100.0 * m_ulThisIterNumSeaCells / m_ulNumCells << " %)" << endl;
 

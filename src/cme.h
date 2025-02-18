@@ -158,13 +158,17 @@ Enjoy!
    TODO 061 Is this safety check to depth of breaking a reasonable thing to do?
    TODO 066 Should this be for all layers? Check
    TODO 067 Suspended fine sediment never decreases i.e. no suspended fine sediment ever leaves the grid. Is this OK?
-   TODO 070 Change CShore to use allocatable arrays (https://fortran-lang.org/en/learn/best_practices/allocatable_arrays/) so that the number of points in the CShore output profiles can either be a user input, or determined by e.g. the physical length of the profile
+   TODO 070 Change CShore to use allocatable arrays (https://fortran-lang.org/en/learn/best_practices/allocatable_arrays/) so that the number of points in the CShore output profiles can either be a user input, or determined by e.g. the physical length of the profile. At present, max is NN = 1000 in cshore_wrapper.f03
    TODO 075 What if bedrock sticks above Dean profile?
    TODO 076 When doing parallel profiles, start from the profile which is closest to a right angle with the coast
    TODO 077 As traverse between the bounding profiles creating parallel profiles, gradually change the parallel profile orientation based on distance weighting of two bounding profiles
    TODO 078 At present, we don't allow cliff collapse onto interventions. Is this realistic? Should it be different for different types on intervention?
    TODO 089 Why do we get patches of sediment in the sea?
-   TODO 086
+   TODO 086 Try these as a more efficient replacement for GDALGridCreate():
+            https://github.com/delfrrr/delaunator-cpp
+            https://www.cs.cmu.edu/~quake/triangle.html
+            https://github.com/greenm01/poly2tri
+            https://gts.sourceforge.net/index.html
    TODO 088 In (almost) all whole-grid loops, immediately continue if cell is hinterland (but not when calculating cliff collapse)
 
    OUTPUT
@@ -702,7 +706,7 @@ double const CLIFF_COLLAPSE_HEIGHT_INCREMENT = 0.1;      // Increment the fracti
 
 double const DBL_NODATA = -9999;
 
-string const PROGRAM_NAME = "Coastal Modelling Environment (CoastalME) version 1.3.3 (16 Feb 2025)";
+string const PROGRAM_NAME = "Coastal Modelling Environment (CoastalME) version 1.3.3 (18 Feb 2025)";
 string const PROGRAM_NAME_SHORT = "CME";
 string const CME_INI = "cme.ini";
 

@@ -2059,7 +2059,7 @@ int CSimulation::nInsertPointIntoProfilesIfNeededThenUpdate(int const nCoast, CG
 //===============================================================================================================================
 void CSimulation::TruncateProfileAndAppendNew(int const nCoast, CGeomProfile* pProfileToRetain, int const nMainProfileIntersectLineSeg, vector<CGeom2DPoint> const* pPtVProfileLastPart, vector<vector<pair<int, int>>> const* pprVLineSegLastPart)
 {
-   // DEBUG CODE ****************************************************************
+   // // DEBUG CODE ****************************************************************
    // Get the index numbers of all coincident profiles for the 'main' profile for the line segment in which intersection occurred
    //    vector<pair<int, int> > prVCoincidentProfilesCHECK1 = *m_VCoast[nCoast].pGetProfile(nMainProfile)->pprVGetPairedCoincidentProfilesForLineSegment(nMainProfileIntersectLineSeg);
    //    int nNumCoincidentCHECK1 = prVCoincidentProfilesCHECK1.size();
@@ -2106,7 +2106,7 @@ void CSimulation::TruncateProfileAndAppendNew(int const nCoast, CGeomProfile* pP
    //       LogStream << "} ";
    //    }
    //    LogStream << endl;
-   // DEBUG CODE ******************************************************************
+   // // DEBUG CODE ******************************************************************
 
    // Get the index numbers of all coincident profiles for the 'main' profile for the line segment in which intersection occurs
    vector<pair<int, int>> prVCoincidentProfiles = *pProfileToRetain->pprVGetPairedCoincidentProfilesForLineSegment(nMainProfileIntersectLineSeg);
@@ -2177,7 +2177,7 @@ void CSimulation::TruncateProfileAndAppendNew(int const nCoast, CGeomProfile* pP
       //       assert(pThisProfile->nGetProfileSize() > 1);
    }
 
-   // DEBUG CODE ****************************************************************
+   // // DEBUG CODE ****************************************************************
    // Get the index numbers of all coincident profiles for the 'main' to-truncate profile for the line segment in which intersection occurred
    //    vector<pair<int, int> > prVToTruncateCoincidentProfilesCHECK2 = *m_VCoast[nCoast].pGetProfile(nMainProfile)->pprVGetPairedCoincidentProfilesForLineSegment(nMainProfileIntersectLineSeg);
    //    int nNumToTruncateCoincidentCHECK2 = prVToTruncateCoincidentProfilesCHECK2.size();
@@ -2208,5 +2208,5 @@ void CSimulation::TruncateProfileAndAppendNew(int const nCoast, CGeomProfile* pP
    //             LogStream << m_ulIter << ": IDENTICAL POINTS before changes, in profile {" << nThisProfile << "} points = " << nPoint << " and " << nPoint+1 << endl;
    //       }
    //    }
-   // DEBUG CODE ******************************************************************
+   // // DEBUG CODE ******************************************************************
 }
