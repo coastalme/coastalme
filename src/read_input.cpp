@@ -1193,7 +1193,7 @@ bool CSimulation::bReadRunDataFile(void)
                   m_bCoastSave =
                   m_bWaveAngleAndHeightSave =
                   m_bNormalsSave =
-                  // m_bInvalidNormalsSave =       // DEBUG CODE
+                  m_bInvalidNormalsSave =       // DEBUG CODE
                   m_bAvgWaveAngleAndHeightSave =
                   m_bWaveEnergySinceCollapseSave =
                   m_bMeanWaveEnergySave =
