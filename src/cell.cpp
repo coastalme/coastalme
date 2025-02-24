@@ -837,6 +837,14 @@ void CGeomCell::InitCell(void)
 
    // Initialize this-iteration sediment input event values
    int nThisLayer = this->nGetTopNonZeroLayerAboveBasement();
+
+   // Safety check
+   if ((nThisLayer == NO_NONZERO_THICKNESS_LAYERS) || (nThisLayer == INT_NODATA))
+   {
+      // Uh-oh, problem. So just return TODO 021
+      return;
+   }
+
    m_VLayerAboveBasement[nThisLayer].pGetUnconsolidatedSediment()->InitThisIterSedimentInputAll();
 }
 

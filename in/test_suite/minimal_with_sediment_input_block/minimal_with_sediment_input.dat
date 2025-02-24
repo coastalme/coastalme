@@ -143,7 +143,7 @@ Gravitational acceleration (m2/s)                                               
 
 ; TEMPORARY ONLY, CHANGE DYNAMICALLY LATER
 Spacing of coastline normals (m)                                        [0 = default minimum]: 0
-Random factor for spacing of normals                              [0 to 1, 0 = deterministic]: 0.1
+Random factor for spacing of normals                              [0 to 1, 0 = deterministic]: 0.5
 Length of coastline normals (m)                                                              : 120
 
 Start depth for wave calcs (ratio to deep water wave height)                                 : 30         ; was 10 30 15
