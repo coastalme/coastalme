@@ -724,14 +724,14 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
       // The user specified a profile spacing, is this too small?
       m_nCoastNormalAvgSpacing = nRound (m_dCoastNormalAvgSpacing / m_dCellSide);
 
-      // if (m_nCoastNormalAvgSpacing < MIN_PROFILE_SPACING)
-      // {
-      //    cerr << ERR << "profile spacing was specified as " << m_dCoastNormalAvgSpacing << " m, which is " << m_nCoastNormalAvgSpacing << " cells. Polygon creation works poorly if profile spacing is less than " << MIN_PROFILE_SPACING << " cells, i.e. " << MIN_PROFILE_SPACING *m_dCellSide << " m" << endl;
-      //
-      //    LogStream << ERR << "profile spacing was specified as " << m_dCoastNormalAvgSpacing << " m, which is " << m_nCoastNormalAvgSpacing << " cells. Polygon creation works poorly if profile spacing is less than " << MIN_PROFILE_SPACING << " cells, i.e. " << MIN_PROFILE_SPACING *m_dCellSide << " m" << endl;
-      //
-      //    return RTN_ERR_PROFILESPACING;
-      // }
+      if (m_nCoastNormalAvgSpacing < MIN_PROFILE_SPACING)
+      {
+         cerr << ERR << "profile spacing was specified as " << m_dCoastNormalAvgSpacing << " m, which is " << m_nCoastNormalAvgSpacing << " cells. Polygon creation works poorly if profile spacing is less than " << MIN_PROFILE_SPACING << " cells, i.e. " << MIN_PROFILE_SPACING *m_dCellSide << " m" << endl;
+
+         LogStream << ERR << "profile spacing was specified as " << m_dCoastNormalAvgSpacing << " m, which is " << m_nCoastNormalAvgSpacing << " cells. Polygon creation works poorly if profile spacing is less than " << MIN_PROFILE_SPACING << " cells, i.e. " << MIN_PROFILE_SPACING *m_dCellSide << " m" << endl;
+
+         return RTN_ERR_PROFILESPACING;
+      }
    }
 
    // We have at least one filename for the first layer, so add the correct number of layers. Note the the number of layers does not change during the simulation: however layers can decrease in thickness until they have zero thickness

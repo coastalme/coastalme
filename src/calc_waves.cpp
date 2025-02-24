@@ -1115,6 +1115,10 @@ int CSimulation::nCalcWavePropertiesOnProfile(int const nCoast, int const nCoast
          int nX = pProfile->pPtiGetCellInProfile(nProfilePoint)->nGetX();
          int nY = pProfile->pPtiGetCellInProfile(nProfilePoint)->nGetY();
 
+         // Safety check
+         if (nProfilePoint > VdFreeSurfaceStd.size() - 1)
+            continue;
+
          // Safety check: deal with NaN values
          if (isnan(VdFreeSurfaceStd[nProfilePoint]))
             VdFreeSurfaceStd[nProfilePoint] = 0;
@@ -1512,7 +1516,7 @@ int CSimulation::nGetThisProfileElevationsForCShore(int const nCoast, CGeomProfi
       // Get the number of the highest layer with non-zero thickness
       int const nTopLayer = m_pRasterGrid->m_Cell[nX][nY].nGetTopNonZeroLayerAboveBasement();
 
-      // Safety check
+      // Safety checks
       if (nTopLayer == INT_NODATA)
          return RTN_ERR_NO_TOP_LAYER;
 

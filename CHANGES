@@ -109,3 +109,7 @@ CoastalME CHANGELOG
          Increased max size (NN) of input arrays in CShore_wrapper
          Code tidying
 
+1.3.4    More safety checks
+         Reinstated random component to profile spacing
+         Code tidying
+

@@ -93,7 +93,7 @@ int CSimulation::nCreateAllProfiles(void)
          prVCurvature.push_back(make_pair(nCoastPoint, dCurvature));
       }
 
-      // Sort this pair vector in descending order, so that the most concave smoothed-curvature points are first
+      // Sort this pair vector in descending order, so that the most convex curvature points are first
       sort(prVCurvature.begin(), prVCurvature.end(), bCurvaturePairCompareDescending);
 
       // // DEBUG CODE =======================================================================================================================
@@ -115,7 +115,7 @@ int CSimulation::nCreateAllProfiles(void)
             bVCoastPointDone[m] = true;
       }
 
-      // Now locate the start points for all coastline-normal profiles (except the grid-edge ones), at points of maximum smoothed convexity. Then create the profiles
+      // Now locate the start points for all coastline-normal profiles (except the grid-edge ones), at points of maximum convexity. Then create the profiles
       LocateAndCreateProfiles(nCoast, nProfile, nProfileGlobalID, m_nCoastNormalAvgSpacing, &bVCoastPointDone, &prVCurvature);
 
       // Did we fail to create any normal profiles? If so, quit
@@ -384,6 +384,20 @@ void CSimulation::LocateAndCreateProfiles(int const nCoast, int& nProfile, int& 
          double dNumToMark = nProfileHalfAvgSpacing;
          if (bIntervention)
             dNumToMark = nProfileHalfAvgSpacing / 4;     // TODO 011
+
+         // If we have a random factor for profile spacing, then modify the profile spacing
+         if (m_dCoastNormalRandSpacingFactor > 0)
+         {
+            double dTmp = dGetRand0Gaussian() * m_dCoastNormalRandSpacingFactor * dNumToMark;
+            dNumToMark += dTmp;
+
+            // Make sure number to mark is not too small TODO 011
+            dNumToMark = tMax(dNumToMark, nProfileHalfAvgSpacing / 4.0);
+
+            // TODO 014 Assume that the above is the profile spacing on straight bits of coast. Try gradually increasing the profile spacing with increasing concavity, and decreasing the profile spacing with increasing convexity. Could use a Michaelis-Menten S-curve relationship for this i.e.
+//          double fReN = pow(NowCell[nX][nY].dGetReynolds(m_dNu), m_dDepN);
+//          double fC1 = m_dC1Laminar - ((m_dC1Diff * fReN) / (fReN + m_dReMidN));
+         }
 
          // Mark points on either side of the profile
          for (int m = 1; m < dNumToMark; m++)
@@ -1517,7 +1531,7 @@ void CSimulation::CreateRasterizedProfile(int const nCoast, CGeomProfile* pProfi
                   bHitLand = true;
                   pProfile->SetHitLand(true);
 
-                  // LogStream << m_ulIter << ": profile " << nProfile << " HIT LAND at [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "}, elevation = " << m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElev() << ", SWL = " << m_dThisIterSWL << endl;
+                  LogStream << m_ulIter << ": profile " << nProfile << " HIT LAND at [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "}, elevation = " << m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElev() << ", SWL = " << m_dThisIterSWL << endl;
                   //
                   // LogStream << "On [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "}, sea depth = " << m_pRasterGrid->m_Cell[nX][nY].dGetSeaDepth() << ", bIsInContiguousSea = " << (m_pRasterGrid->m_Cell[nX][nY].bIsInContiguousSea() ? "true" : "false") << ", landform = " << (m_pRasterGrid->m_Cell[nX][nY].bIsInContiguousSea() ? "sea" : "not sea") << endl;
                   //
