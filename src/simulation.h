@@ -42,6 +42,10 @@ using std::pair;
 #include <stack>
 using std::stack;
 
+#include <random>
+using std::default_random_engine;
+using std::normal_distribution;
+
 #include <gdal_priv.h>
 
 #include "line.h"
@@ -1254,12 +1258,6 @@ private:
    //! The name of the flood loction events shape file
    string m_strFloodLocationShapefile;
 
-   //! Used by random number generator
-   struct RandState
-   {
-      unsigned long s1, s2, s3;
-   } m_ulRState[NRNG];
-
    //! System start-simulation time
    time_t m_tSysStartTime;
 
@@ -1502,6 +1500,12 @@ private:
 
    //! Sediment input events
    vector<CSedInputEvent*> m_pVSedInputEvent;
+
+   //! The c++11 random number generators
+   default_random_engine m_Rand[NRNG];
+
+   //! c++11 unit normal distribution (mean = 0, stdev = 1)
+   normal_distribution<double> m_dUnitNormalDist{0.0, 1.0};
 
 private:
    // Input and output routines
@@ -1757,24 +1761,6 @@ private:
    void WritePolygonEstimatedMovement(int const, vector<vector<int> >&);
    void WritePolygonActualMovement(int const, vector<vector<int> > const&);
    void DoEndOfRunDeletes(void);
-
-   // Random number stuff
-   static unsigned long ulGetTausworthe(unsigned long const, unsigned long const, unsigned long const, unsigned long const, unsigned long const);
-   void InitRand0(unsigned long const);
-   void InitRand1(unsigned long const);
-   unsigned long ulGetRand0(void);
-   unsigned long ulGetRand1(void);
-   static unsigned long ulGetLCG(unsigned long const); // Used by all generators
-   double dGetRand0d1(void);
-   //    int nGetRand0To(int const);
-   int nGetRand1To(int const);
-   //    double dGetRand0GaussPos(double const, double const);
-   double dGetRand0Gaussian(void);
-   //    double dGetCGaussianPDF(double const);
-   void Rand1Shuffle(int *, int);
-#ifdef RANDCHECK
-   void CheckRand(void) const;
-#endif
 
 protected:
 

@@ -706,7 +706,7 @@ double const CLIFF_COLLAPSE_HEIGHT_INCREMENT = 0.1;      // Increment the fracti
 
 double const DBL_NODATA = -9999;
 
-string const PROGRAM_NAME = "Coastal Modelling Environment (CoastalME) version 1.3.4 (24 Feb 2025)";
+string const PROGRAM_NAME = "Coastal Modelling Environment (CoastalME) version 1.3.4 (11 Mar 2025)";
 string const PROGRAM_NAME_SHORT = "CME";
 string const CME_INI = "cme.ini";
 
@@ -1222,6 +1222,5 @@ string strRightPerCent(double const, double const, int const, int const, bool co
 
 //================================================= debugging stuff =============================================================
 //#define CLOCKCHECK          // Uncomment to check CPU clock rollover settings
-//#define RANDCHECK           // Uncomment to check randomness of random number generator
 
 #endif // CME_H

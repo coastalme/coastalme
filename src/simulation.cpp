@@ -46,6 +46,9 @@ using std::filesystem::is_directory;
 using std::filesystem::exists;
 using std::filesystem::create_directories;
 
+#include <random>
+using std::random_device;
+
 #include "cme.h"
 #include "simulation.h"
 #include "raster_grid.h"
@@ -414,13 +417,6 @@ CSimulation::CSimulation (void)
    m_ldGTotSandSedimentInput =
    m_ldGTotCoarseSedimentInput = 0;
 
-   for (int i = 0; i < 2; i++)
-   {
-      m_ulRState[i].s1 =
-      m_ulRState[i].s2 =
-      m_ulRState[i].s3 = 0;
-   }
-
    m_tSysStartTime =
    m_tSysEndTime = 0;
 
@@ -588,11 +584,6 @@ double CSimulation::dGetD50Coarse (void) const
 //===============================================================================================================================
 int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
 {
-#ifdef RANDCHECK
-   CheckRand();
-   return RTN_OK;
-#endif
-
    // ================================================== initialization section ================================================
    // Hello, World!
    AnnounceStart();
@@ -670,8 +661,8 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
       return (RTN_ERR_TSFILE);
 
    // Initialize the random number generators
-   InitRand0 (m_ulRandSeed[0]);
-   InitRand1 (m_ulRandSeed[1]);
+   for (int n = 0; n < NRNG; n++)
+      m_Rand[n].seed(m_ulRandSeed[n]);
 
    // If we are doing Savitzky-Golay smoothing of the vector coastline(s), calculate the filter coefficients
    if (m_nCoastSmooth == SMOOTH_SAVITZKY_GOLAY)
@@ -748,44 +739,44 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
    {
       // Read in the initial fine unconsolidated sediment depth file(s)
       AnnounceReadInitialFineUnconsSedGIS (nLayer);
-      nRet = nReadRasterGISFile (FINE_UNCONS_RASTER, nLayer);
+      nRet = nReadRasterGISFile(FINE_UNCONS_RASTER, nLayer);
       if (nRet != RTN_OK)
          return (nRet);
 
       // Read in the initial sand unconsolidated sediment depth file
       AnnounceReadInitialSandUnconsSedGIS (nLayer);
-      nRet = nReadRasterGISFile (SAND_UNCONS_RASTER, nLayer);
+      nRet = nReadRasterGISFile(SAND_UNCONS_RASTER, nLayer);
       if (nRet != RTN_OK)
          return (nRet);
 
       // Read in the initial coarse unconsolidated sediment depth file
       AnnounceReadInitialCoarseUnconsSedGIS (nLayer);
-      nRet = nReadRasterGISFile (COARSE_UNCONS_RASTER, nLayer);
+      nRet = nReadRasterGISFile(COARSE_UNCONS_RASTER, nLayer);
       if (nRet != RTN_OK)
          return (nRet);
 
       // Read in the initial fine consolidated sediment depth file
       AnnounceReadInitialFineConsSedGIS (nLayer);
-      nRet = nReadRasterGISFile (FINE_CONS_RASTER, nLayer);
+      nRet = nReadRasterGISFile(FINE_CONS_RASTER, nLayer);
       if (nRet != RTN_OK)
          return (nRet);
 
       // Read in the initial sand consolidated sediment depth file
       AnnounceReadInitialSandConsSedGIS (nLayer);
-      nRet = nReadRasterGISFile (SAND_CONS_RASTER, nLayer);
+      nRet = nReadRasterGISFile(SAND_CONS_RASTER, nLayer);
       if (nRet != RTN_OK)
          return (nRet);
 
       // Read in the initial coarse consolidated sediment depth file
       AnnounceReadInitialCoarseConsSedGIS (nLayer);
-      nRet = nReadRasterGISFile (COARSE_CONS_RASTER, nLayer);
+      nRet = nReadRasterGISFile(COARSE_CONS_RASTER, nLayer);
       if (nRet != RTN_OK)
          return (nRet);
    }
 
    // Read in the initial suspended sediment depth file
    AnnounceReadInitialSuspSedGIS();
-   nRet = nReadRasterGISFile (SUSP_SED_RASTER, 0);
+   nRet = nReadRasterGISFile(SUSP_SED_RASTER, 0);
    if (nRet != RTN_OK)
       return (nRet);
 
@@ -793,7 +784,7 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
    if (! m_strInitialLandformFile.empty())
    {
       AnnounceReadLGIS();
-      nRet = nReadRasterGISFile (LANDFORM_RASTER, 0);
+      nRet = nReadRasterGISFile(LANDFORM_RASTER, 0);
       if (nRet != RTN_OK)
          return (nRet);
    }
@@ -802,12 +793,12 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
    if (! m_strInterventionClassFile.empty())
    {
       AnnounceReadICGIS();
-      nRet = nReadRasterGISFile (INTERVENTION_CLASS_RASTER, 0);
+      nRet = nReadRasterGISFile(INTERVENTION_CLASS_RASTER, 0);
       if (nRet != RTN_OK)
          return (nRet);
 
       AnnounceReadIHGIS();
-      nRet = nReadRasterGISFile (INTERVENTION_HEIGHT_RASTER, 0);
+      nRet = nReadRasterGISFile(INTERVENTION_HEIGHT_RASTER, 0);
       if (nRet != RTN_OK)
          return (nRet);
    }
@@ -936,10 +927,6 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
 
    while (true)
    {
-      //       // DEBUG CODE =========================================================================================================
-      //       LogStream << ulGetRand0() << " " << ulGetRand1() << endl;
-      //       // DEBUG CODE =========================================================================================================
-
       // Check that we haven't gone on too long: if not then update timestep number etc.
       if (bTimeToQuit())
          break;

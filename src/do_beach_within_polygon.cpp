@@ -21,13 +21,18 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 ==============================================================================================================================*/
-// #include <assert.h>
+#include <assert.h>
 
 #include <cmath>
+
 #include <cfloat>
+
 #include <iostream>
 using std::cout;
 using std::endl;
+
+#include <algorithm>
+using std::shuffle;
 
 #include "cme.h"
 #include "simulation.h"
@@ -109,7 +114,7 @@ int CSimulation::nDoUnconsErosionOnPolygon(int const nCoast, CGeomCoastPolygon* 
    double dAllTargetPerProfile = dErosionTargetOnPolygon / nCoastSegLen;
 
    // Shuffle the coast points, this is necessary so that leaving the loop does not create sequence-related artefacts
-   Rand1Shuffle(&(nVCoastPoint.at(0)), nCoastSegLen);
+   shuffle(nVCoastPoint.begin(), nVCoastPoint.begin() + nCoastSegLen, m_Rand[1]);
 
    // Traverse the polygon's existing coastline in a DOWN-COAST (i.e. increasing coastpoint indices) sequence, at each coast point fitting a Dean profile which is parallel to the up-coast polygon boundary
    for (int n = 0; n < nCoastSegLen; n++)
@@ -808,7 +813,7 @@ int CSimulation::nDoUnconsDepositionOnPolygon(int const nCoast, CGeomCoastPolygo
    double dStillToDepositOnProfile;    //  = dTargetToDepositOnProfile;
 
    // Shuffle the coast points, this is necessary so that leaving the loop does not create sequence-related artefacts
-   Rand1Shuffle(&(nVCoastPoint.at(0)), nCoastSegLen);
+   shuffle(nVCoastPoint.begin(), nVCoastPoint.begin() + nCoastSegLen, m_Rand[1]);
             
 //    // Get the volume of sediment which is to be deposited on the polygon and on each parallel profile. Note that if dSandToMoveOnPoly is -ve, then don't do any sand deposition. Similarly if dCoarseToMoveOnPoly is -ve then don't do any coarse deposition
 //    double
@@ -1325,7 +1330,7 @@ int CSimulation::nDoUnconsDepositionOnPolygon(int const nCoast, CGeomCoastPolygo
       }
 
       // Shuffle the coast points, this is necessary so that leaving the loop does not create sequence-related artefacts
-      Rand1Shuffle(&(nVCoastPoint.at(0)), nCoastSegLen);
+      shuffle(nVCoastPoint.begin(), nVCoastPoint.begin() + nCoastSegLen, m_Rand[1]);
 
       // Recalc the targets for deposition per profile
       dTargetToDepositOnProfile = dStillToDepositOnPoly / nCoastSegLen;

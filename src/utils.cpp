@@ -353,17 +353,6 @@ int CSimulation::nDoTimeUnits(string const *strIn)
 //===============================================================================================================================
 bool CSimulation::bOpenLogFile(void)
 {
-   // Open in binary mode if just checking random numbers
-#ifdef RANDCHECK
-   if (m_nLogFileDetail == 0)
-   {
-      LogStream.open("/dev/null", ios::out | ios::binary | ios::trunc);
-      cout << "Warning: log file is not writting" << endl;
-   }
-   else
-      LogStream.open(m_strLogFile.c_str(), ios::out | ios::binary | ios::trunc);
-
-#else
    if (m_nLogFileDetail == 0)
    {
       LogStream.open("/dev/null", ios::out | ios::trunc);
@@ -371,7 +360,6 @@ bool CSimulation::bOpenLogFile(void)
    }
    else
       LogStream.open(m_strLogFile.c_str(), ios::out | ios::trunc);
-#endif
 
    if (!LogStream)
    {
@@ -1641,56 +1629,6 @@ void CSimulation::AnnounceProgress(void)
       cout.flush();
    }
 }
-
-//===============================================================================================================================
-//! Calculates the Tausworthe value for the random number generator
-//===============================================================================================================================
-unsigned long CSimulation::ulGetTausworthe(unsigned long const ulS, unsigned long const ulA, unsigned long const ulB, unsigned long const ulC, unsigned long const ulD)
-{
-   return (((ulS & ulC) << ulD) & MASK) ^ ((((ulS << ulA) & MASK) ^ ulS) >> ulB);
-}
-
-//===============================================================================================================================
-//! Uses ulGetRand0() to return a double precision floating point number uniformly distributed in the range [0, 1) i.e. includes 0.0 but excludes 1.0. Based on a routine in taus.c from gsl-1.2
-//===============================================================================================================================
-double CSimulation::dGetRand0d1(void)
-{
-   return (static_cast<double>(ulGetRand0()) / 4294967296.0);
-}
-
-// int CSimulation::nGetRand0To(int const nBound)
-// {
-//    // Uses ulGetRand0() to return a random integer uniformly distributed in the range [0, nBound) i.e. includes 0 but excludes nBound
-//    int nRtn;
-//    unsigned long ulScale = 4294967295ul / nBound;                 // nBound must be > 1
-//    do
-//    {
-//       nRtn = ulGetRand0() / ulScale;
-//    }
-//    while (nRtn >= nBound);
-//    return (nRtn);
-// }
-
-//===============================================================================================================================
-//! Returns an integer to return a double precision floating point number uniformly distributed in the range [0, nBound) i.e. includes 0 but excludes nBound. Based on a routine in taus.c from gsl-1.2
-//===============================================================================================================================
-int CSimulation::nGetRand1To(int const nBound)
-{
-   int nRtn;
-   unsigned long ulScale = 4294967295ul / nBound; // nBound must be > 1
-   do
-   {
-      nRtn = static_cast<int>(ulGetRand1() / ulScale);
-   } while (nRtn >= nBound);
-
-   return (nRtn);
-}
-
-// double CSimulation::dGetRand0GaussPos(double const dMean, double const dStd)
-// {
-//    // Uses ulGetRand0()
-//    return (tMax((dGetRand0Gaussian() * dStd) + dMean, 0.0));
-// }
 
 //===============================================================================================================================
 //! This calculates and displays process statistics

@@ -36,6 +36,7 @@ You should have received a copy of the GNU General Public License along with thi
 
 ===============================================================================================================================*/
 #include <assert.h>
+
 #include <iostream>
 using std::cerr;
 using std::cout;
@@ -43,9 +44,11 @@ using std::endl;
 using std::ios;
 
 #include <cmath>
+
 #include <cfloat>
 
 #include <gdal_priv.h>
+
 #include <ogrsf_frmts.h>
 
 #include "cme.h"

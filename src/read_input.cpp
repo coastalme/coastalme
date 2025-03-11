@@ -22,6 +22,7 @@ You should have received a copy of the GNU General Public License along with thi
 
 ==============================================================================================================================*/
 #include <stdlib.h> // for strtod()
+
 #include <fstream>
 using std::ifstream;
 
@@ -36,6 +37,9 @@ using std::to_string;
 
 #include <algorithm>
 using std::find;
+
+#include <random>
+using std::random_device;
 
 #include "cme.h"
 #include "simulation.h"
@@ -532,8 +536,9 @@ bool CSimulation::bReadRunDataFile(void)
             // Random number seed(s)
             if (strRH.empty())
             {
-               // User didn't specify a random number seed, so choose one based on system time
-               m_ulRandSeed[0] = time(NULL);
+               // User didn't specify a random number seed, so seed with a real random value, if available
+               random_device rdev;
+               m_ulRandSeed[0] = rdev();
 
                // Only one seed specified, so make all seeds the same
                for (int n = 1; n < NRNG; n++)

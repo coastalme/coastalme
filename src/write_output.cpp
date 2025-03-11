@@ -187,7 +187,6 @@ void CSimulation::WriteStartRunDetails(void)
    }
    OutStream << endl;
 
-   OutStream << "*First random numbers generated                            \t: " << ulGetRand0() << '\t' << ulGetRand1() << endl;
    OutStream << " Raster GIS output format                                  \t: " << m_strGDALRasterOutputDriverLongname << endl;
    OutStream << " Raster output values scaled (if needed)                   \t: " << (m_bScaleRasterOutput ? "Y" : "N") << endl;
    OutStream << " Raster world files created (if needed)                    \t: " << (m_bWorldFile ? "Y" : "N") << endl;
@@ -1330,11 +1329,6 @@ int CSimulation::nWriteEndRunDetails(void)
       LogStream << endl;
    }
    
-#if !defined RANDCHECK
-   // Calculate length of run, write in file (note that m_dSimDuration is in hours)
-   CalcTime(m_dSimDuration * 3600);
-#endif
-
    // Calculate statistics re. memory usage etc.
    CalcProcessStats();
    OutStream << endl

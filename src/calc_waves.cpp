@@ -1073,10 +1073,9 @@ int CSimulation::nCalcWavePropertiesOnProfile(int const nCoast, int const nCoast
          }
 
          strErr += "(coast " + to_string(nCoast) + " profile " + to_string(pProfile->nGetCoastID()) + " profile length " + to_string(nOutSize) + ")\n";
-         
+         LogStream << strErr;
+
          // OK, give up for this profile
-         // LogStream << strErr;
-         //
          // return RTN_ERR_CSHORE_ERROR;
       }
 
@@ -1116,7 +1115,7 @@ int CSimulation::nCalcWavePropertiesOnProfile(int const nCoast, int const nCoast
          int nY = pProfile->pPtiGetCellInProfile(nProfilePoint)->nGetY();
 
          // Safety check
-         if (nProfilePoint > VdFreeSurfaceStd.size() - 1)
+         if (nProfilePoint > static_cast<int>(VdFreeSurfaceStd.size()) - 1)
             continue;
 
          // Safety check: deal with NaN values
