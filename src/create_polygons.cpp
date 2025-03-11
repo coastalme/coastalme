@@ -939,7 +939,12 @@ int CSimulation::nDoPolygonSharedBoundaries(void)
                CGeom2DPoint PtStart = *pProfile->pPtGetPointInProfile(nPoint);
                CGeom2DPoint PtEnd = *pProfile->pPtGetPointInProfile(nPoint+1);
 
-               // Calculate the length of this segment of the normal profile. Note that it should not be zero, since we checked for duplicate points when creating profiles
+               // Safety check
+               if (PtStart == PtEnd)
+                  // Should never get here, since we checked for duplicate points when creating profiles
+                  continue;
+
+               // Calculate the length of this segment of the normal profile
                double dDistBetween = dGetDistanceBetween(&PtStart, &PtEnd);
 
                // Find out which polygon is adjacent to each line segment of the polygon's up-coast profile boundary. The basic approach used is to count the number of coincident profiles in each line segment, and (because we are going up-coast) subtract this number from 'this' polygon's number. However, some of these coincident profiles may be invalid, so we must count only the valid co-incident profiles

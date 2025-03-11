@@ -44,6 +44,9 @@ using std::sort;
 using std::make_pair;
 using std::pair;
 
+#include <random>
+using std::normal_distribution;
+
 #include "cme.h"
 #include "simulation.h"
 #include "coast.h"
@@ -388,7 +391,10 @@ void CSimulation::LocateAndCreateProfiles(int const nCoast, int& nProfile, int& 
          // If we have a random factor for profile spacing, then modify the profile spacing
          if (m_dCoastNormalRandSpacingFactor > 0)
          {
-            double dTmp = dGetRand0Gaussian() * m_dCoastNormalRandSpacingFactor * dNumToMark;
+            // Draw a sample from the unit normal distribution using random number generator 0
+            double dRand = m_dUnitNormalDist(m_Rand[0]);
+
+            double dTmp = dRand * m_dCoastNormalRandSpacingFactor * dNumToMark;
             dNumToMark += dTmp;
 
             // Make sure number to mark is not too small TODO 011
@@ -1093,8 +1099,9 @@ void CSimulation::CheckForIntersectingProfiles(void)
 
                            else
                            {
-                              // Both profiles have the same number of line segments, so choose randomly
-                              if (dGetRand0d1() >= 0.5)
+                              // Both profiles have the same number of line segments, so choose randomly. Draw a sample from the unit normal distribution using random number generator 1
+                              double dRand = m_dUnitNormalDist(m_Rand[0]);
+                              if (dRand >= 0.0)
                                  TruncateOneProfileRetainOtherProfile(nCoast, pFirstProfile, pSecondProfile, dIntersectX, dIntersectY, nProf1LineSeg, nProf2LineSeg, false);
                               else
                                  TruncateOneProfileRetainOtherProfile(nCoast, pSecondProfile, pFirstProfile, dIntersectX, dIntersectY, nProf2LineSeg, nProf1LineSeg, false);
@@ -1525,7 +1532,7 @@ void CSimulation::CreateRasterizedProfile(int const nCoast, CGeomProfile* pProfi
                   return;
                }
 
-               if (! m_pRasterGrid->m_Cell[nX][nY].bIsInContiguousSea())
+               if (! m_pRasterGrid->m_Cell[nX][nY].bIsInContiguousSea())      // TODO check if is intervention?
                {
                   // We've hit dry land (or an intervention) so set a switch and mark the profile
                   bHitLand = true;

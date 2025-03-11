@@ -33,6 +33,7 @@ using std::ios;
 using std::stringstream;
 
 #include <gdal_priv.h>
+
 #include <ogrsf_frmts.h>
 
 #include "cme.h"

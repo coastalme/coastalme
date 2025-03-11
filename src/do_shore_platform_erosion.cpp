@@ -22,6 +22,7 @@ You should have received a copy of the GNU General Public License along with thi
 
 ==============================================================================================================================*/
 #include <assert.h>
+
 #include <cmath>
 
 #include <iostream>
@@ -32,6 +33,12 @@ using std::ios;
 
 #include <iomanip>
 using std::setiosflags;
+
+#include <array>
+using std::array;
+
+#include <algorithm>
+using std::shuffle;
 
 #include "cme.h"
 #include "hermite_cubic.h"
@@ -863,8 +870,8 @@ void CSimulation::DoActualPlatformErosionOnCell(int const nX, int const nY)
       if (nPolyID == INT_NODATA)
       {
          // Can get occasional problems with polygon rasterization near the coastline, so also search the eight adjacent cells
-         int nDirection[] = {NORTH, NORTH_EAST, EAST, SOUTH_EAST, SOUTH, SOUTH_WEST, WEST, NORTH_WEST};
-         Rand1Shuffle(nDirection, 8);
+         array<int, 8> nDirection = {NORTH, NORTH_EAST, EAST, SOUTH_EAST, SOUTH, SOUTH_WEST, WEST, NORTH_WEST};
+         shuffle(nDirection.begin(), nDirection.end(), m_Rand[0]);
 
          for (int n = 0; n < 8; n++)
          {

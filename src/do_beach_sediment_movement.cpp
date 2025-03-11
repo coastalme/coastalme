@@ -24,7 +24,9 @@ You should have received a copy of the GNU General Public License along with thi
 #include <assert.h>
 
 #include <cmath>
+
 #include <cfloat>
+
 #include <iostream>
 using std::cout;
 using std::endl;

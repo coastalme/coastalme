@@ -111,5 +111,8 @@ CoastalME CHANGELOG
 
 1.3.4    More safety checks
          Reinstated random component to profile spacing
+         Changed to c++11 random number generation
          Code tidying
+
+
 
