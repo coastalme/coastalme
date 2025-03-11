@@ -1,5 +1,6 @@
 var annotated_dup =
 [
+    [ "array", "d2/d41/classarray.html", "d2/d41/classarray" ],
     [ "bad_alloc", "d5/d15/classbad__alloc.html", null ],
     [ "CA2DIShape", "d2/d0f/classCA2DIShape.html", "d2/d0f/classCA2DIShape" ],
     [ "CA2DShape", "d9/d0e/classCA2DShape.html", "d9/d0e/classCA2DShape" ],

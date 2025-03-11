@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['bad_5falloc_0',['bad_alloc',['../d5/d15/classbad__alloc.html',1,'']]]
+  ['array_0',['array',['../d2/d41/classarray.html',1,'']]]
 ];
