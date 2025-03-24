@@ -1,5 +1,6 @@
 var cme_8h =
 [
+    [ "string", "d5/d92/classstring.html", "d5/d92/classstring" ],
     [ "ostream", "d0/d43/classostream.html", null ],
     [ "ostringstream", "d8/d79/classostringstream.html", null ],
     [ "bFPIsEqual", "d6/d2a/cme_8h.html#a61afa8560a3b39c80657661a1d8f76ab", null ],
@@ -136,6 +137,7 @@ var cme_8h =
     [ "NORTH_WEST", "d6/d2a/cme_8h.html#a8203a0b525538b7ade9e5409ebc59981", null ],
     [ "NOTE", "d6/d2a/cme_8h.html#ac884db28b8c2466574a728216906319e", null ],
     [ "NULL_HANDED", "d6/d2a/cme_8h.html#a601c7b6ec625c675fabc5f59b44f1871", null ],
+    [ "NUMBER_OF_RNGS", "d6/d2a/cme_8h.html#a8685684b0d68b7675157ab4c637969a0", null ],
     [ "OUTEXT", "d6/d2a/cme_8h.html#a4b80f97f210a9324fcbeb1678c9ad1da", null ],
     [ "PATH_SEPARATOR", "d6/d2a/cme_8h.html#a4c5b3c9579465666765bc7784a4c3a37", null ],
     [ "PER_ITER_HEAD", "d6/d2a/cme_8h.html#a21af5c85af96436cfeea93ef4cca8d22", null ],
@@ -498,6 +500,7 @@ var cme_8h =
     [ "SAND_CONS_RASTER", "d6/d2a/cme_8h.html#a2172da7520364105ea080054fe7127af", null ],
     [ "SAND_UNCONS_RASTER", "d6/d2a/cme_8h.html#ab1ebe7d63321af5461a1f4591030db3d", null ],
     [ "SAVE_CSHORE_OUTPUT", "d6/d2a/cme_8h.html#aaa9e0f47a8f6eeecd6754881d7e59016", null ],
+    [ "SAVEMAX", "d6/d2a/cme_8h.html#a85c01ae87ffab98fdd1ec6fd3d0eff7b", null ],
     [ "SAVGOL_POLYNOMIAL_MAX_ORDER", "d6/d2a/cme_8h.html#a0ea931436632ddd96f15f55fdcaee2b1", null ],
     [ "SCAPE_DIR", "d6/d2a/cme_8h.html#a2fdb687c4d2a0c2190dbc4732464b4f1", null ],
     [ "SCAPE_SHAPE_FUNCTION_FILE", "d6/d2a/cme_8h.html#af3358685f4d3937035a9985785b46551", null ],

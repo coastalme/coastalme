@@ -37,6 +37,7 @@ var classCGeomProfile =
     [ "pPtGetPointInProfile", "da/dae/classCGeomProfile.html#aaa8ddb9c775927bdb7940f7826f90a74", null ],
     [ "pPtiGetCellInProfile", "da/dae/classCGeomProfile.html#a6d13079f744085f2d132405e0120ca54", null ],
     [ "pPtiGetEndPoint", "da/dae/classCGeomProfile.html#aa6179cf07ded38813693a9c783149c62", null ],
+    [ "pPtiGetLastCellInProfile", "da/dae/classCGeomProfile.html#adc534e6e95863ee62fb91d61ef0a9894", null ],
     [ "pPtiGetStartPoint", "da/dae/classCGeomProfile.html#abe0557d3f6bd86e02facefb28b9fab41", null ],
     [ "pPtiVGetCellsInProfile", "da/dae/classCGeomProfile.html#ada96aa991d179ac71f4523de7a4be560", null ],
     [ "PtVGetThisPointAndAllAfter", "da/dae/classCGeomProfile.html#a72b3263ad5f64527b4c21307139b3c5f", null ],
