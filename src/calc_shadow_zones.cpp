@@ -40,6 +40,7 @@ using std::accumulate;
 #include "cme.h"
 #include "coast.h"
 #include "simulation.h"
+#include "raster_grid.h"
 
 //===============================================================================================================================
 //! Determines whether the wave orientation at this point on a coast is onshore or offshore, and up-coast or down-coast

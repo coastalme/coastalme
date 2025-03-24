@@ -485,6 +485,13 @@ CGeom2DIPoint* CGeomProfile::pPtiGetCellInProfile(int const n)
    return &m_VCellInProfile[n];
 }
 
+//! Returns the last cell in the profile
+CGeom2DIPoint* CGeomProfile::pPtiGetLastCellInProfile(void)
+{
+   // In grid CRS
+   return &m_VCellInProfile.back();
+}
+
 //! Returns the number of cells in the profile
 int CGeomProfile::nGetNumCellsInProfile(void) const
 {

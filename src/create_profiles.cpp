@@ -392,7 +392,7 @@ void CSimulation::LocateAndCreateProfiles(int const nCoast, int& nProfile, int& 
          if (m_dCoastNormalRandSpacingFactor > 0)
          {
             // Draw a sample from the unit normal distribution using random number generator 0
-            double dRand = m_dUnitNormalDist(m_Rand[0]);
+            double dRand = m_dGetFromUnitNormalDist(m_Rand[0]);
 
             double dTmp = dRand * m_dCoastNormalRandSpacingFactor * dNumToMark;
             dNumToMark += dTmp;
@@ -1100,7 +1100,7 @@ void CSimulation::CheckForIntersectingProfiles(void)
                            else
                            {
                               // Both profiles have the same number of line segments, so choose randomly. Draw a sample from the unit normal distribution using random number generator 1
-                              double dRand = m_dUnitNormalDist(m_Rand[0]);
+                              double dRand = m_dGetFromUnitNormalDist(m_Rand[0]);
                               if (dRand >= 0.0)
                                  TruncateOneProfileRetainOtherProfile(nCoast, pFirstProfile, pSecondProfile, dIntersectX, dIntersectY, nProf1LineSeg, nProf2LineSeg, false);
                               else
@@ -1383,7 +1383,11 @@ void CSimulation::MarkProfilesOnGrid(int const nCoast, int& nValidProfiles)
 
       for (unsigned int k = 0; k < VCellsToMark.size(); k++)
       {
-         // So mark each cell in the raster grid
+         // Ignore duplicate points
+         if ((k > 0) && (VCellsToMark[k] == m_VCoast[nCoast].pGetProfile(nProfile)->pPtiGetLastCellInProfile()))
+            continue;
+
+         // Mark each cell in the raster grid
          m_pRasterGrid->m_Cell[VCellsToMark[k].nGetX()][VCellsToMark[k].nGetY()].SetProfileID(nProfile);
 
          // Store the raster grid coordinates in the profile object

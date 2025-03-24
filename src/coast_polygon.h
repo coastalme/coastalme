@@ -25,6 +25,7 @@ You should have received a copy of the GNU General Public License along with thi
 
 ===============================================================================================================================*/
 #include "2d_shape.h"
+#include "2di_point.h"
 
 class CGeomCoastPolygon : public CA2DShape
 {

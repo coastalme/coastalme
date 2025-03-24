@@ -31,6 +31,7 @@ using std::end;
 using std::find;
 
 #include "cme.h"
+#include "simulation.h"
 #include "cell.h"
 #include "coast.h"
 #include "sediment_input_event.h"

@@ -152,6 +152,7 @@ public:
 //    void ShowProfile(void) const;
    int nGetProfileSize(void) const;
    CGeom2DPoint* pPtGetPointInProfile(int const);
+   CGeom2DIPoint* pPtiGetLastCellInProfile(void);
    vector<CGeom2DPoint> PtVGetThisPointAndAllAfter(int const);
    // void RemoveLineSegment(int const);
    bool bIsPointInProfile(double const, double const);

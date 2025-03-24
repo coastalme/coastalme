@@ -29,6 +29,8 @@ You should have received a copy of the GNU General Public License along with thi
 #include "2di_point.h"
 #include "coast.h"
 
+class CRWCoast;      // Forward declaration
+
 class CACoastLandform
 {
 private:

@@ -21,7 +21,7 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 ==============================================================================================================================*/
-#include <stdlib.h> // for strtod()
+#include <stdlib.h>
 
 #include <fstream>
 using std::ifstream;
@@ -541,7 +541,7 @@ bool CSimulation::bReadRunDataFile(void)
                m_ulRandSeed[0] = rdev();
 
                // Only one seed specified, so make all seeds the same
-               for (int n = 1; n < NRNG; n++)
+               for (int n = 1; n < NUMBER_OF_RNGS; n++)
                   m_ulRandSeed[n] = m_ulRandSeed[n - 1];
             }
             else
@@ -554,7 +554,7 @@ bool CSimulation::bReadRunDataFile(void)
                   m_ulRandSeed[0] = atol(strRH.c_str());
 
                   // Only one seed specified, so make all seeds the same
-                  for (int n = 1; n < NRNG; n++)
+                  for (int n = 1; n < NUMBER_OF_RNGS; n++)
                      m_ulRandSeed[n] = m_ulRandSeed[n - 1];
                }
                else
@@ -567,7 +567,7 @@ bool CSimulation::bReadRunDataFile(void)
                      strTmp = strRH.substr(0, nPos);
                      m_ulRandSeed[n++] = atol(strTmp.c_str());
 
-                     if (n == NRNG)
+                     if (n == NUMBER_OF_RNGS)
                         // All random number seeds read
                         break;
 
@@ -582,9 +582,9 @@ bool CSimulation::bReadRunDataFile(void)
                   while (true);
 
                   // If we haven't filled all random number seeds, make all the remainder the same as the last one read
-                  if (n < NRNG-1)
+                  if (n < NUMBER_OF_RNGS-1)
                   {
-                     for (int m = n; m < NRNG; m++)
+                     for (int m = n; m < NUMBER_OF_RNGS; m++)
                         m_ulRandSeed[m] = m_ulRandSeed[n];
                   }
                }

@@ -246,7 +246,7 @@ CSimulation::CSimulation (void)
    m_ulThisIterNumPotentialPlatformErosionCells =
    m_ulThisIterNumActualPlatformErosionCells = 0;
 
-   for (int i = 0; i < NRNG; i++)
+   for (int i = 0; i < NUMBER_OF_RNGS; i++)
       m_ulRandSeed[i] = 0;
 
    for (int i = 0; i < SAVEMAX; i++)
@@ -661,7 +661,7 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
       return (RTN_ERR_TSFILE);
 
    // Initialize the random number generators
-   for (int n = 0; n < NRNG; n++)
+   for (int n = 0; n < NUMBER_OF_RNGS; n++)
       m_Rand[n].seed(m_ulRandSeed[n]);
 
    // If we are doing Savitzky-Golay smoothing of the vector coastline(s), calculate the filter coefficients
