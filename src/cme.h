@@ -226,11 +226,12 @@ You should have received a copy of the GNU General Public License along with thi
 ===============================================================================================================================*/
 #include <climits>
 
+#include <string>
+using std::string;
+
 #include <sstream>
 using std::ostream;
 using std::ostringstream;
-
-#include "simulation.h"
 
 //===================================================== platform-specific stuff =================================================
 #ifdef _WIN32
@@ -348,6 +349,8 @@ bool const SAVE_CSHORE_OUTPUT = true;                          // #ifdef CSHORE_
 bool const USE_DEEP_WATER_FOR_SHADOW_LINE = true;              // Use deep water wave orientation in determining shadow line orientation?
 
 // Not likely that user will need to change these
+int const NUMBER_OF_RNGS = 2;                                  // Number of random number generators
+int const SAVEMAX = 100000;                                    // Maximum number of saves of spatial output
 int const BUF_SIZE = 2048;                                     // Max length (inc. terminating NULL) of any C-type string
 int const CAPE_POINT_MIN_SPACING = 10;                         // In cells: for shadow zone stuff, cape points must not be closer than this
 int const CLOCK_CHECK_ITERATION = 5000;                        // If have done this many timesteps then reset the CPU time running total
@@ -706,7 +709,7 @@ double const CLIFF_COLLAPSE_HEIGHT_INCREMENT = 0.1;      // Increment the fracti
 
 double const DBL_NODATA = -9999;
 
-string const PROGRAM_NAME = "Coastal Modelling Environment (CoastalME) version 1.3.4 (11 Mar 2025)";
+string const PROGRAM_NAME = "Coastal Modelling Environment (CoastalME) version 1.3.5 (28 Mar 2025)";
 string const PROGRAM_NAME_SHORT = "CME";
 string const CME_INI = "cme.ini";
 

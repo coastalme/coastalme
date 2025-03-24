@@ -30,8 +30,9 @@ You should have received a copy of the GNU General Public License along with thi
 #include "cell.h"
 #include "coast_landform.h"
 #include "coast_polygon.h"
+#include "i_line.h"
 
-class CGeomProfile;
+class CGeomProfile;        // Forward declarations
 class CACoastLandform;
 class CGeomCoastPolygon;
 

@@ -25,6 +25,7 @@ You should have received a copy of the GNU General Public License along with thi
 using std::bad_alloc;
 
 #include "cme.h"
+#include "simulation.h"
 #include "raster_grid.h"
 
 CGeomRasterGrid* CGeomCell::m_pGrid = NULL;          // Initialise m_pGrid, the static member of CGeomCell

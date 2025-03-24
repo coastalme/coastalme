@@ -182,7 +182,7 @@ void CSimulation::WriteStartRunDetails(void)
    OutStream << " GIS Save Numbers sequential (S) or iteration number (I)   \t: " << (m_bGISSaveDigitsSequential ? "S" : "I") << endl;
    OutStream << " Random number seeds                                       \t: ";
    {
-      for (int i = 0; i < NRNG; i++)
+      for (int i = 0; i < NUMBER_OF_RNGS; i++)
          OutStream << m_ulRandSeed[i] << '\t';
    }
    OutStream << endl;

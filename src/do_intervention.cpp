@@ -22,6 +22,7 @@ You should have received a copy of the GNU General Public License along with thi
 
 ==============================================================================================================================*/
 #include "cme.h"
+#include "simulation.h"
 
 //===============================================================================================================================
 //! Check to see if we have a new intervention in place (not yet implemented)

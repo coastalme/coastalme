@@ -21,8 +21,13 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 ===============================================================================================================================*/
+#include <vector>
+using std::vector;
+
 #include <assert.h>
+
 #include "cme.h"
+#include "simulation.h"
 #include "cell.h"
 
 //! Constructor with initialization list

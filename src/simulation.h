@@ -50,11 +50,9 @@ using std::normal_distribution;
 
 #include "line.h"
 #include "i_line.h"
+#include "cme.h"
 
 #include "inc/cshore.h"
-
-int const NRNG = 2;
-int const SAVEMAX = 100000;
 
 class CGeomRasterGrid; // Forward declarations
 class CRWCoast;
@@ -555,8 +553,8 @@ private:
    //! The target number of iterations
    unsigned long m_ulTotTimestep;
 
-   //! A seed for each of the NRNG random number generators
-   unsigned long m_ulRandSeed[NRNG];
+   //! A seed for each of the random number generators
+   unsigned long m_ulRandSeed[NUMBER_OF_RNGS];
 
    //! The number of cells in the grid
    unsigned long m_ulNumCells;
@@ -1502,10 +1500,10 @@ private:
    vector<CSedInputEvent*> m_pVSedInputEvent;
 
    //! The c++11 random number generators
-   default_random_engine m_Rand[NRNG];
+   default_random_engine m_Rand[NUMBER_OF_RNGS];
 
    //! c++11 unit normal distribution (mean = 0, stdev = 1)
-   normal_distribution<double> m_dUnitNormalDist{0.0, 1.0};
+   normal_distribution<double> m_dGetFromUnitNormalDist{0.0, 1.0};
 
 private:
    // Input and output routines

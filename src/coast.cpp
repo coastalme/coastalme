@@ -28,7 +28,9 @@ You should have received a copy of the GNU General Public License along with thi
 using std::sort;
 
 #include "cme.h"
+#include "simulation.h"
 #include "coast.h"
+#include "raster_grid.h"
 #include "line.h"
 #include "i_line.h"
 
