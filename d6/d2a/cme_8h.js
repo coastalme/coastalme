@@ -464,7 +464,6 @@ var cme_8h =
     [ "RTN_ERR_OPEN_DEEP_WATER_WAVE_DATA", "d6/d2a/cme_8h.html#a73557144d56b423372cb6c5935ee0683", null ],
     [ "RTN_ERR_OUTFILE", "d6/d2a/cme_8h.html#acd78f2ec2fd08b573ac83a930061ffcb", null ],
     [ "RTN_ERR_PROFILE_END_INSUFFICIENT_DEPTH", "d6/d2a/cme_8h.html#a826c2bcca39c6c900b6d87757b2ab393", null ],
-    [ "RTN_ERR_PROFILE_ENDPOINT_AT_GRID_EDGE", "d6/d2a/cme_8h.html#ae1cad0f965cf1d2f30e2a73157666727", null ],
     [ "RTN_ERR_PROFILE_ENDPOINT_IS_INLAND", "d6/d2a/cme_8h.html#a9e2e05614e11bb2eeecad6383fbe17bd", null ],
     [ "RTN_ERR_PROFILESPACING", "d6/d2a/cme_8h.html#a63f6debb865be4b72e0f1911e34cadb1", null ],
     [ "RTN_ERR_PROFILEWRITE", "d6/d2a/cme_8h.html#a4e05770953eb8435518bd59326d55975", null ],
