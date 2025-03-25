@@ -784,6 +784,8 @@ int CSimulation::nGetCoastNormalEndPoint(int const nCoast, int const nStartCoast
    pPtiEnd->SetXY(nRound(dExtCRSXToGridX(pPtEnd->dGetX())), nRound(dExtCRSYToGridY(pPtEnd->dGetY())));
    if (! bIsWithinValidGrid(pPtiEnd))
    {
+      // LogStream << m_ulIter << ": profile endpoint is outside grid [" << pPtiEnd->nGetX() << "][" << pPtiEnd->nGetY() << "] = {" << pPtEnd->dGetX() << ", " << pPtEnd->dGetY() << "}. The profile starts at coastline point " << nStartCoastPoint << " = {" << pPtStart->dGetX() << ", " << pPtStart->dGetY() << "}" << endl;
+
       // The end point is off the grid, so constrain it to be within the valid grid
       CGeom2DIPoint PtiStart(nRound(dExtCRSXToGridX(pPtStart->dGetX())), nRound(dExtCRSYToGridY(pPtStart->dGetY())));
       KeepWithinValidGrid(&PtiStart, pPtiEnd);
@@ -791,9 +793,9 @@ int CSimulation::nGetCoastNormalEndPoint(int const nCoast, int const nStartCoast
       pPtEnd->SetX(dGridCentroidXToExtCRSX(pPtiEnd->nGetX()));
       pPtEnd->SetY(dGridCentroidYToExtCRSY(pPtiEnd->nGetY()));
 
-      // LogStream << m_ulIter << ": changed endpoint for profile, is now [" << pPtiEnd->nGetX() << "][" << pPtiEnd->nGetY() << "] = {" << pPtEnd->dGetX() << ", " << pPtEnd->dGetY() << "}. The profile starts at coastline point " << nStartCoastPoint << " = {" << pPtStart->dGetX() << ", " << pPtStart->dGetY() << "}" << endl;
+      // LogStream << m_ulIter << ": profile endpoint is now within the grid [" << pPtiEnd->nGetX() << "][" << pPtiEnd->nGetY() << "] = {" << pPtEnd->dGetX() << ", " << pPtEnd->dGetY() << "}. The profile starts at coastline point " << nStartCoastPoint << " = {" << pPtStart->dGetX() << ", " << pPtStart->dGetY() << "}" << endl;
       
-      return RTN_ERR_PROFILE_ENDPOINT_AT_GRID_EDGE;
+      // return RTN_ERR_PROFILE_ENDPOINT_AT_GRID_EDGE;
    }
 
    return RTN_OK;
