@@ -118,5 +118,8 @@ CoastalME CHANGELOG
          Reinstated check for duplicate points during profile creation
          Code tidying
 
-1.3.6
+1.3.6    Code tidying
+
+1.3.7    Fixed bug, occasional profile end outside grid
+         Code tidying
 
