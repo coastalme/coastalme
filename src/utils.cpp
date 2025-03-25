@@ -1905,9 +1905,9 @@ string CSimulation::strGetErrorText(int const nErr)
    case RTN_ERR_NO_SOLUTION_FOR_ENDPOINT:
       strErr = "no solution when finding end point for coastline-normal line";
       break;
-   case RTN_ERR_PROFILE_ENDPOINT_AT_GRID_EDGE:
-      strErr = "end point for coastline-normal line is at the grid edge";
-      break;
+   // case RTN_ERR_PROFILE_ENDPOINT_AT_GRID_EDGE:
+   //    strErr = "end point for coastline-normal line is at the grid edge";
+   //    break;
    case RTN_ERR_PROFILE_ENDPOINT_IS_INLAND:
       strErr = "end point for coastline-normal line is not in the contiguous sea";
       break;

@@ -105,31 +105,31 @@ double CSimulation::dGridYToExtCRSY(double const dGridY) const
 }
 
 //===============================================================================================================================
-//! Transforms an X-axis ordinate in the external CRS to the equivalent X-axis ordinate in the raster grid CRS (the result is not rounded, and so may not be integer, and may be outside the grid in the +ve direction)
+//! Transforms an X-axis ordinate in the external CRS to the equivalent X-axis ordinate in the raster grid CRS (the result is not rounded, and so may not be integer, and may be outside the grid)
 //===============================================================================================================================
 double CSimulation::dExtCRSXToGridX(double const dExtCRSX) const
 {
    // TODO 064
-   return tMax(((dExtCRSX - m_dGeoTransform[0]) / m_dGeoTransform[1]) - 1, 0.0);
+   return ((dExtCRSX - m_dGeoTransform[0]) / m_dGeoTransform[1]) - 1;
 }
 
 //===============================================================================================================================
-//! Transforms a Y-axis ordinate in the external CRS to the equivalent Y-axis ordinate in the raster grid CRS (the result is not rounded, and so may not be integer, and may be outside the grid in the +ve direction)
+//! Transforms a Y-axis ordinate in the external CRS to the equivalent Y-axis ordinate in the raster grid CRS (the result is not rounded, and so may not be integer, and may be outside the grid)
 //===============================================================================================================================
 double CSimulation::dExtCRSYToGridY(double const dExtCRSY) const
 {
    // TODO 064
-   return tMax(((dExtCRSY - m_dGeoTransform[3]) / m_dGeoTransform[5]) - 1, 0.0);
+   return ((dExtCRSY - m_dGeoTransform[3]) / m_dGeoTransform[5]) - 1;
 }
 
 //===============================================================================================================================
-//! Transforms a pointer to a CGeom2DPoint in the external CRS to the equivalent CGeom2DIPoint in the raster grid CRS (both values rounded). The result may be outside the grid in the +ve direction
+//! Transforms a pointer to a CGeom2DPoint in the external CRS to the equivalent CGeom2DIPoint in the raster grid CRS (both values rounded). The result may be outside the grid
 //===============================================================================================================================
 CGeom2DIPoint CSimulation::PtiExtCRSToGridRound(CGeom2DPoint const* pPtIn) const
 {
    // TODO 064
-   int nX = tMax(nRound(((pPtIn->dGetX() - m_dGeoTransform[0]) / m_dGeoTransform[1]) - 1), 0);
-   int nY = tMax(nRound(((pPtIn->dGetY() - m_dGeoTransform[3]) / m_dGeoTransform[5]) - 1), 0);
+   int nX = nRound(((pPtIn->dGetX() - m_dGeoTransform[0]) / m_dGeoTransform[1]) - 1);
+   int nY = nRound(((pPtIn->dGetY() - m_dGeoTransform[3]) / m_dGeoTransform[5]) - 1);
 
    return CGeom2DIPoint(nX, nY);
 }
@@ -169,7 +169,13 @@ double CSimulation::dTriangleAreax2(CGeom2DPoint const* pPtA, CGeom2DPoint const
 //===============================================================================================================================
 bool CSimulation::bIsWithinValidGrid(int const nX, int const nY) const
 {
-   if ((nX < 0) || (nX >= m_nXGridSize) || (nY < 0) || (nY >= m_nYGridSize) || m_pRasterGrid->m_Cell[nX][nY].bBasementElevIsMissingValue())
+   if ((nX < 0) || (nX >= m_nXGridSize))
+      return false;
+
+   if ((nY < 0) || (nY >= m_nYGridSize))
+      return false;
+
+   if (m_pRasterGrid->m_Cell[nX][nY].bBasementElevIsMissingValue())
       return false;
 
    return true;
@@ -181,19 +187,9 @@ bool CSimulation::bIsWithinValidGrid(int const nX, int const nY) const
 bool CSimulation::bIsWithinValidGrid(CGeom2DIPoint const *Pti) const
 {
    int nX = Pti->nGetX();
-
-   if ((nX < 0) || (nX >= m_nXGridSize))
-      return false;
-
    int nY = Pti->nGetY();
 
-   if ((nY < 0) || (nY >= m_nYGridSize))
-      return false;
-
-   if (m_pRasterGrid->m_Cell[nX][nY].bBasementElevIsMissingValue())
-      return false;
-
-   return true;
+   return this->bIsWithinValidGrid(nX, nY);
 }
 
 //===============================================================================================================================

@@ -602,7 +602,7 @@ int const RTN_ERR_VECTOR_FILE_WRITE = 21;
 int const RTN_ERR_TIMESERIES_FILE_WRITE = 22;
 int const RTN_ERR_LINETOGRID = 23;
 int const RTN_ERR_PROFILESPACING = 24;
-int const RTN_ERR_PROFILE_ENDPOINT_AT_GRID_EDGE = 25;
+// int const RTN_ERR_PROFILE_ENDPOINT_AT_GRID_EDGE = 25;
 int const RTN_ERR_PROFILE_ENDPOINT_IS_INLAND = 26;
 int const RTN_ERR_NO_SOLUTION_FOR_ENDPOINT = 27;
 int const RTN_ERR_PROFILE_END_INSUFFICIENT_DEPTH = 28;
@@ -709,7 +709,7 @@ double const CLIFF_COLLAPSE_HEIGHT_INCREMENT = 0.1;      // Increment the fracti
 
 double const DBL_NODATA = -9999;
 
-string const PROGRAM_NAME = "Coastal Modelling Environment (CoastalME) version 1.3.6 (28 Mar 2025)";
+string const PROGRAM_NAME = "Coastal Modelling Environment (CoastalME) version 1.3.6 (25 Mar 2025)";
 string const PROGRAM_NAME_SHORT = "CME";
 string const CME_INI = "cme.ini";
 
