@@ -75,7 +75,7 @@
 -  TODO 075 [What if bedrock protrudes above Dean profile?]
 -  TODO 076 [When doing parallel profiles, start from the profile which is closest to a right angle with the coast]
 -  TODO 077 [As traverse between the bounding profiles creating parallel profiles, gradually change the parallel profile orientation based on distance weighting of two bounding profiles]
--  TODO 078 [At present, we don't allow cliff collapse onto interventions. Is this realistic? Should it change with different types on intervention?]
+-  TODO 078 [At present, we don't allow cliff collapse onto interventions. Is this realistic? Should it change with different types of intervention?]
 -  TODO 089 [Why do we get patches of sediment in the sea?]
    TODO 086 [Try alternatives to GDALGridCreate(), e.g. https://gts.sourceforge.net/index.html, https://doc.cgal.org/latest/Triangulation_2/index.html#Chapter_2D_Triangulations]
    TODO 088 [In (almost) all whole-grid loops, immediately continue if cell is hinterland (but not when calculating cliff collapse)]

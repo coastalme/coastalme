@@ -123,3 +123,7 @@ CoastalME CHANGELOG
 1.3.7    Fixed bug, occasional profile end outside grid
          Code tidying
 
+1.3.8    Mostly fixed crossover bug in profile drawing
+         Code tidying
+
+
