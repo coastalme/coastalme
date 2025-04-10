@@ -9,7 +9,6 @@ The testing version (use at your own risk!) is 1.3.8 (10 Apr 2025).
 
 By <a href="https://www.bgs.ac.uk/people/payo-garcia-andres/">Andres Payo</a> and <a href="https://en.wikipedia.org/wiki/David_Favis-Mortlock">David Favis-Mortlock</a> and [others](COMMITERS.md).
 
-
 ## Table of contents
 
 - [About](#about)
