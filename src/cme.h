@@ -371,7 +371,7 @@ int const MAX_SEAWARD_OFFSET_FOR_CLIFF_TALUS = 20;             // In cells: maxi
 int const MIN_INLAND_OFFSET_FOR_BEACH_EROSION_ESTIMATION = 5;  // Used in estimation of beach erosion
 int const MIN_PARALLEL_PROFILE_SIZE = 3;                       // In cells: min size for valid unconsolidated sediment parallel profile
 int const MIN_PROFILE_SIZE = 3;                                // In cells: min size for valid unconsolidated sediment profile
-int const MIN_PROFILE_SPACING = 15;                            // In cells: profile creation does not work well if profiles are too closely spaced
+int const MIN_PROFILE_SPACING = 20;                            // In cells: profile creation does not work well if profiles are too closely spaced
 int const SAVGOL_POLYNOMIAL_MAX_ORDER = 6;                     // Maximum order of Savitsky-Golay smoothing polynomial
 
 // Log file detail level
@@ -673,9 +673,7 @@ int const UNCONS_SEDIMENT_EQUATION_CERC = 0;
 int const UNCONS_SEDIMENT_EQUATION_KAMPHUIS = 1;
 
 int const CLIFF_COLLAPSE_LENGTH_INCREMENT = 10;          // Increment the planview length of the cliff talus Dean profile, if we have not been able to deposit enough
-
-int const PROFILE_CHECK_ALONG_COAST_MULTIPLIER = 500;    // Used in checking shoreline-normal profiles for intersection
-int const PROFILE_CHECK_DIST_FROM_COAST = 3;             // Ditto
+int const PROFILE_CHECK_DIST_FROM_COAST = 3;             // Used in checking shoreline-normal profiles for intersection
 
 unsigned long const MASK = 0xfffffffful;
 unsigned long const SEDIMENT_INPUT_EVENT_ERROR = -1;
@@ -709,7 +707,7 @@ double const CLIFF_COLLAPSE_HEIGHT_INCREMENT = 0.1;      // Increment the fracti
 
 double const DBL_NODATA = -9999;
 
-string const PROGRAM_NAME = "Coastal Modelling Environment (CoastalME) version 1.3.6 (25 Mar 2025)";
+string const PROGRAM_NAME = "Coastal Modelling Environment (CoastalME) version 1.3.7 (10 Apr 2025)";
 string const PROGRAM_NAME_SHORT = "CME";
 string const CME_INI = "cme.ini";
 
