@@ -149,7 +149,6 @@ var cme_8h =
     [ "PERFORMHEAD", "d6/d2a/cme_8h.html#a1b109ee1c5a3d9cac42b5bf433495d8a", null ],
     [ "PI", "d6/d2a/cme_8h.html#a5d502a06fdd71825be49e07c95496b16", null ],
     [ "PRESS_KEY", "d6/d2a/cme_8h.html#a301e80bfcdc21b0b7939c4a487018d15", null ],
-    [ "PROFILE_CHECK_ALONG_COAST_MULTIPLIER", "d6/d2a/cme_8h.html#a9d15714b5aa8120d66fc3c981775bec9", null ],
     [ "PROFILE_CHECK_DIST_FROM_COAST", "d6/d2a/cme_8h.html#a8f6a3504fb8861c1f92c19af69ea2250", null ],
     [ "PROGRAM_NAME", "d6/d2a/cme_8h.html#a9136af1e87b27520ba2fda67c3a184e1", null ],
     [ "PROGRAM_NAME_SHORT", "d6/d2a/cme_8h.html#ad37e22683ddc3d03276375197ad72255", null ],

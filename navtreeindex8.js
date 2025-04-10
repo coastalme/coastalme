@@ -1,6 +1,5 @@
 var NAVTREEINDEX8 =
 {
-"d8/db0/cshore_2cshore_8h.html":[4,0,0,0,0],
 "d8/db0/cshore_2cshore_8h.html#a35b5138685d79a9bcdd373699d48e390":[4,0,0,0,0,0],
 "d8/db0/cshore_2cshore_8h.html#a567f70b9e4f37a2ffe9edac6ad5a498e":[4,0,0,0,0,1],
 "d8/db0/cshore_2cshore_8h_source.html":[4,0,0,0,0],
@@ -249,5 +248,6 @@ var NAVTREEINDEX8 =
 "df/d45/classCGeomCoastPolygon.html#a0bb71766112920d4ac411703bb3ea853":[3,0,8,24],
 "df/d45/classCGeomCoastPolygon.html#a0cc4af693e32ce039a5156d95258b365":[3,0,8,0],
 "df/d45/classCGeomCoastPolygon.html#a0d609980b369215577825c3b9f25f723":[3,0,8,33],
-"df/d45/classCGeomCoastPolygon.html#a0fd90dff4fa857f2012826e2fb1977c5":[3,0,8,11]
+"df/d45/classCGeomCoastPolygon.html#a0fd90dff4fa857f2012826e2fb1977c5":[3,0,8,11],
+"df/d45/classCGeomCoastPolygon.html#a15231e28c47f977b296c530c8cdcda7a":[3,0,8,136]
 };

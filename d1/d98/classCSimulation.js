@@ -219,7 +219,7 @@ var classCSimulation =
     [ "strTrim", "d1/d98/classCSimulation.html#a4b95b6ccb768c0509e44b2c00f86f30b", null ],
     [ "strTrimLeft", "d1/d98/classCSimulation.html#a3cad0cf92ab1638308109198088dc04d", null ],
     [ "strTrimRight", "d1/d98/classCSimulation.html#a6b340d0d8d8148fc00a8109ce6bda15e", null ],
-    [ "TruncateOneProfileRetainOtherProfile", "d1/d98/classCSimulation.html#abeb88eba5d9068dccd264f49c72797e0", null ],
+    [ "TruncateOneProfileRetainOtherProfile", "d1/d98/classCSimulation.html#add4b97b29fde8394685fa5802467731d", null ],
     [ "TruncateProfileAndAppendNew", "d1/d98/classCSimulation.html#a9d247d1e2cdf21052d912096a0a5be25", null ],
     [ "ulConvertToTimestep", "d1/d98/classCSimulation.html#a506638311c349a08967f9e4ca3325334", null ],
     [ "VstrSplit", "d1/d98/classCSimulation.html#a85309b53990bb9833ddc6f6eaf5dc7e6", null ],
