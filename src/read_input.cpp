@@ -676,7 +676,7 @@ bool CSimulation::bReadRunDataFile(void)
                   m_bBeachProtectionSave =
                   m_bBasementElevSave =
                   m_bRasterCoastlineSave =
-                  m_bRasterNormalSave =
+                  m_bRasterNormalProfileSave =
                   m_bActiveZoneSave =
                   m_bCliffCollapseSave =
                   m_bTotCliffCollapseSave =
@@ -734,6 +734,10 @@ bool CSimulation::bReadRunDataFile(void)
                   m_bShadowZoneCodesSave =
                   m_bPolygonUnconsSedUpOrDownDriftSave =
                   m_bPolygonUnconsSedGainOrLossSave = true;
+
+                  // TEST
+                  m_bRasterNormalProfileSave = true;
+                  m_bRasterCoastlineSave = true;
                }
                else
                {
@@ -920,7 +924,7 @@ bool CSimulation::bReadRunDataFile(void)
 
                   if (strRH.find(RASTER_COAST_NORMAL_CODE) != string::npos)
                   {
-                     m_bRasterNormalSave = true;
+                     m_bRasterNormalProfileSave = true;
                      strRH = strRemoveSubstr(&strRH, &RASTER_COAST_NORMAL_CODE);
                   }
 
@@ -2795,11 +2799,11 @@ bool CSimulation::bReadRunDataFile(void)
 
          case 76:
             // Spacing of coastline normals (m)
-            m_dCoastNormalAvgSpacing = strtod(strRH.c_str(), NULL);
+            m_dCoastNormalSpacing = strtod(strRH.c_str(), NULL);
 
-            if (bFPIsEqual(m_dCoastNormalAvgSpacing, 0.0, TOLERANCE))
-               m_nCoastNormalAvgSpacing = MIN_PROFILE_SPACING;       // In cells, we will set m_dCoastNormalAvgSpacing later when we know m_dCellSide
-            else if (m_dCoastNormalAvgSpacing < 0)
+            if (bFPIsEqual(m_dCoastNormalSpacing, 0.0, TOLERANCE))
+               m_nCoastNormalSpacing = DEFAULT_PROFILE_SPACING;         // In cells, we will set m_dCoastNormalSpacing later when we know m_dCellSide
+            else if (m_dCoastNormalSpacing < 0)
                strErr = "line " + to_string(nLine) + ": spacing of coastline normals must be > 0";
             break;
 

@@ -538,7 +538,8 @@ void CSimulation::WriteStartRunDetails(void)
       OutStream << " m_bFloodSWLSetupSurgeRunupLine                            \t: " << (m_bFloodSWLSetupSurgeRunupLine ? "Y" : "N") << endl;
    }
    OutStream << " Gravitational acceleration                                \t: " << resetiosflags(ios::floatfield) << fixed << m_dG << " m^2/s" << endl;
-   OutStream << " Minimum spacing of coastline normals                      \t: " << resetiosflags(ios::floatfield) << fixed << m_dCoastNormalAvgSpacing << " m" << endl;
+   OutStream << " Usual spacing of coastline normals                        \t: " << resetiosflags(ios::floatfield) << fixed << m_dCoastNormalSpacing << " m" << endl;
+   OutStream << "*Usual spacing of coastline normals on interventions       \t: " << resetiosflags(ios::floatfield) << fixed << m_dCoastNormalInterventionSpacing << " m" << endl;
    OutStream << " Random factor for spacing of normals                      \t: " << resetiosflags(ios::floatfield) << fixed << m_dCoastNormalRandSpacingFactor << endl;
    OutStream << " Length of coastline normals                               \t: " << m_dCoastNormalLength << " m" << endl;
    OutStream << endl;
@@ -1687,11 +1688,11 @@ void CSimulation::WritePolygonPotentialErosion(int const nCoast)
 void CSimulation::WritePolygonUnsortedSequence(int const nCoast, vector<vector<int> >& pnVVPolyAndAdjacent)
 {
    LogStream << m_ulIter << ": Unsorted sequence of polygon processing" << endl;
-   LogStream << "-----------|-----------|-----------|--------------|--------------|" << endl;
+   LogStream << "-----------|-----------|-----------|--------------|--------------|--------------|--------------|--------------|--------------|" << endl;
    LogStream << strCentre("From", 11) << "|" << strCentre("Coast", 11) << "|" << strCentre("From", 11) << "|" << strCentre("Direction", 14) << "|" << strCentre("To", 14) << "|" << endl;
    LogStream << strCentre("Polygon", 11) << "|" << strCentre("", 11) << "|" << strCentre("Polygon", 11) << "|" << strCentre("", 14) << "|" << strCentre("Polygon", 14) << "|" << endl;
    LogStream << strCentre("Global ID", 11) << "|" << strCentre("", 11) << "|" << strCentre("Coast ID", 11) << "|" << strCentre("", 14) << "|" << strCentre("Coast ID", 14) << "|" << endl;
-   LogStream << "-----------|-----------|-----------|--------------|--------------|" << endl;
+   LogStream << "-----------|-----------|-----------|--------------|--------------|--------------|--------------|--------------|--------------|" << endl;
 
    for (int n = 0; n < static_cast<int>(pnVVPolyAndAdjacent.size()); n++)
    {
@@ -1733,7 +1734,7 @@ void CSimulation::WritePolygonUnsortedSequence(int const nCoast, vector<vector<i
       }
       LogStream << endl;
    }
-   LogStream << "-----------|-----------|-----------|--------------|--------------|" << endl << endl;
+   LogStream << "-----------|-----------|-----------|--------------|--------------|--------------|--------------|--------------|--------------|" << endl << endl;
 }
 
 //===============================================================================================================================

@@ -142,7 +142,7 @@ Sediment input details file                                      [required if ha
 Gravitational acceleration (m2/s)                                                            : 9.81
 
 ; TEMPORARY ONLY, CHANGE DYNAMICALLY LATER
-Spacing of coastline normals (m)                                        [0 = default minimum]: 0
+Typical spacing of coastline normals (m)                                        [0 = default]: 0
 Random factor for spacing of normals                              [0 to 1, 0 = deterministic]: 0.1
 Length of coastline normals (m)                                                              : 140
 

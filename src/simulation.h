@@ -191,11 +191,11 @@ private:
    //! Save coarse consolidated sediment raster GIS files?
    bool m_bCoarseConsSedSave;
 
-   //! Save raster coastline GIS files?
+   //! Save rasterized coastline GIS files?
    bool m_bRasterCoastlineSave;
 
-   //! Save raster coastline-normal GIS files?
-   bool m_bRasterNormalSave;
+   //! Save rasterized coastline-normal profiles GIS files?
+   bool m_bRasterNormalProfileSave;
 
    //! Save active zone raster GIS files?
    bool m_bActiveZoneSave;
@@ -446,8 +446,11 @@ private:
    //! The size of the window used for running-mean coast-normal profile smoothing (must be odd)
    int m_nProfileSmoothWindow;
 
-   //! Average spacing between cost normals, measured in cells
-   int m_nCoastNormalAvgSpacing;
+   //! Average spacing between coastline normals, measured in cells
+   int m_nCoastNormalSpacing;
+
+   //! Average spacing between coastline normals on interventions, measured in cells
+   int m_nCoastNormalInterventionSpacing;
 
    //! Coast curvature interval is a length, measured in coastline points
    int m_nCoastCurvatureInterval;
@@ -769,10 +772,13 @@ private:
    //! Depth of closure (in m) TODO 007 can be calculated using Hallermeier, R.J. (1978) or Birkemeier (1985) TODO 045 This needs to be a user decision
    double m_dDepthOfClosure;
 
-   //! Average spacing of the cost-normal profiles, in m
-   double m_dCoastNormalAvgSpacing;
+   //! Average spacing of the coastline-normal profiles, in m
+   double m_dCoastNormalSpacing;
 
-   //! Length of the cost-normal profiles, in m
+   //! Average spacing of the coastline-normal profiles on interventions, in m
+   double m_dCoastNormalInterventionSpacing;
+
+   //! Length of the coastline-normal profiles, in m
    double m_dCoastNormalLength;
 
    //! Total sea depth (m) for this iteration
@@ -847,7 +853,7 @@ private:
    //! Total potential platform erosion between profiles
    double m_dTotPotentialPlatformErosionBetweenProfiles;
 
-   //! Maximum slope on costline-normal profiles
+   //! Maximum slope on coastline-normal profiles
    double m_dProfileMaxSlope;
 
    //! Maximum elevation of beach above SWL (m)
@@ -1567,7 +1573,7 @@ private:
    void DoCoastCurvature(int const, int const);
    int nCheckAllProfiles(void);
    int nCreateAllProfiles(void);
-   void LocateAndCreateProfiles(int const, int&, int&, int const, vector<bool>*, vector<pair<int, double>> const*);
+   void LocateAndCreateProfiles(int const, int&, int&, vector<bool>*, vector<pair<int, double>> const*);
    int nCreateProfile(int const, int const, int const, int const, int&, bool const, CGeom2DIPoint const*);
    int nLocateAndCreateGridEdgeProfile(bool const, int const, int&, int&);
    void MarkProfilesOnGrid(int const, int&);
@@ -1577,7 +1583,7 @@ private:
    void TruncateOneProfileRetainOtherProfile(int const, CGeomProfile*, CGeomProfile*, double, double, int, int, bool const);
    int nInsertPointIntoProfilesIfNeededThenUpdate(int const, CGeomProfile*, double const, double const, int const, CGeomProfile*, int const, bool const);
    void TruncateProfileAndAppendNew(int const, CGeomProfile*, int const, vector<CGeom2DPoint> const*, vector<vector<pair<int, int>>> const*);
-   void CreateRasterizedProfile(int const, CGeomProfile*, CGeom2DIPoint const*, CGeom2DIPoint const*, vector<CGeom2DIPoint>*, vector<bool>*, bool&, bool&, bool&, bool& /*, bool&*/);     // TODO 044
+   void CreateRasterizedProfile(int const, CGeomProfile*, vector<CGeom2DIPoint>*, vector<bool>*, bool&, bool&, bool&, bool&, bool&, bool&);     // TODO 044
    static void CalcDeanProfile(vector<double>*, double const, double const, double const, bool const, int const, double const);
    static double dSubtractProfiles(vector<double> const*, vector<double> const*, vector<bool> const*);
    void RasterizeCliffCollapseProfile(vector<CGeom2DPoint> const*, vector<CGeom2DIPoint>*) const;

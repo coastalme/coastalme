@@ -1124,7 +1124,7 @@ bool CSimulation::bWriteRasterGISFile(int const nDataItem, string const *strPlot
          strFilePathName.append(RASTER_COAST_NAME);
          break;
 
-      case (RASTER_PLOT_NORMAL):
+      case (RASTER_PLOT_NORMAL_PROFILE):
          bIsInteger = true;
          strFilePathName.append(RASTER_COAST_NORMAL_NAME);
          break;
@@ -1546,8 +1546,9 @@ bool CSimulation::bWriteRasterGISFile(int const nDataItem, string const *strPlot
                dTmp = (m_pRasterGrid->m_Cell[nX][nY].bIsCoastline() ? 1 : 0);
                break;
 
-            case (RASTER_PLOT_NORMAL):
-               dTmp = (m_pRasterGrid->m_Cell[nX][nY].bIsProfile() ? 1 : 0);
+            case (RASTER_PLOT_NORMAL_PROFILE):
+               // dTmp = (m_pRasterGrid->m_Cell[nX][nY].bIsProfile() ? 1 : 0);
+               dTmp = m_pRasterGrid->m_Cell[nX][nY].nGetProfileID();
                break;
 
             case (RASTER_PLOT_ACTIVE_ZONE):
@@ -1687,7 +1688,7 @@ bool CSimulation::bWriteRasterGISFile(int const nDataItem, string const *strPlot
       case (RASTER_PLOT_LANDFORM):
       case (RASTER_PLOT_INTERVENTION_CLASS):
       case (RASTER_PLOT_COAST):
-      case (RASTER_PLOT_NORMAL):
+      case (RASTER_PLOT_NORMAL_PROFILE):
       case (RASTER_PLOT_ACTIVE_ZONE):
       case (RASTER_PLOT_POLYGON):
       case (RASTER_PLOT_SHADOW_ZONE):
@@ -1772,10 +1773,10 @@ bool CSimulation::bWriteRasterGISFile(int const nDataItem, string const *strPlot
          papszCategoryNames = CSLAddString(papszCategoryNames, "Coastline");
          break;
 
-      case (RASTER_PLOT_NORMAL):
-         papszCategoryNames = CSLAddString(papszCategoryNames, "Not coastline-normal profile");
-         papszCategoryNames = CSLAddString(papszCategoryNames, "Coastline-normal profile");
-         break;
+      // case (RASTER_PLOT_NORMAL_PROFILE):
+      //    papszCategoryNames = CSLAddString(papszCategoryNames, "Not coastline-normal profile");
+      //    papszCategoryNames = CSLAddString(papszCategoryNames, "Coastline-normal profile");
+      //    break;
 
       case (RASTER_PLOT_ACTIVE_ZONE):
          papszCategoryNames = CSLAddString(papszCategoryNames, "Not in active zone");

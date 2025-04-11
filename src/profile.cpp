@@ -38,10 +38,11 @@ CGeomProfile::CGeomProfile(int const nCoast,int const nCoastPoint, int const nCo
       m_bEndOfCoast(false),
       m_bCShoreProblem(false),
       m_bHitLand(false),
+      m_bHitIntervention(false),
       m_bHitCoast(false),
       m_bTooShort(false),
       m_bTruncated(false),
-      m_bHitAnotherProfileBadly(false),
+      m_bHitAnotherProfile(false),
       m_bIntervention(bIntervention),
       m_nCoast(nCoast),
       m_nCoastPoint(nCoastPoint),
@@ -146,6 +147,18 @@ bool CGeomProfile::bHitLand(void) const
    return m_bHitLand;
 }
 
+//! Sets a switch which indicates whether this profile has hit an intervention
+void CGeomProfile::SetHitIntervention(bool const bFlag)
+{
+   m_bHitIntervention = bFlag;
+}
+
+//! Returns the switch which indicates whether this profile has hit an intervention
+bool CGeomProfile::bHitIntervention(void) const
+{
+   return m_bHitIntervention;
+}
+
 //! Sets a switch which indicates whether this profile has hit a coast
 void CGeomProfile::SetHitCoast(bool const bFlag)
 {
@@ -183,15 +196,15 @@ bool CGeomProfile::bTruncated(void) const
 }
 
 //! Sets a switch which indicates whether this profile hits another profile badly
-void CGeomProfile::SetHitAnotherProfileBadly(bool const bFlag)
+void CGeomProfile::SetHitAnotherProfile(bool const bFlag)
 {
-   m_bHitAnotherProfileBadly = bFlag;
+   m_bHitAnotherProfile = bFlag;
 }
 
 //! Returns the switch which indicates whether this profile hits another profile badly
-bool CGeomProfile::bHitAnotherProfileBadly(void) const
+bool CGeomProfile::bHitAnotherProfile(void) const
 {
-   return m_bHitAnotherProfileBadly;
+   return m_bHitAnotherProfile;
 }
 
 //! Returns true if this is a problem-free profile, and is not a start-of-coast or an end-of-coast profile
@@ -201,10 +214,11 @@ bool CGeomProfile::bProfileOK(void) const
    if ((! m_bStartOfCoast) &&
        (! m_bEndOfCoast) &&
        (! m_bHitLand) &&
+       (! m_bHitIntervention) &&
        (! m_bHitCoast) &&
        (! m_bTooShort) &&
        (! m_bTruncated) &&
-       (! m_bHitAnotherProfileBadly) &&
+       (! m_bHitAnotherProfile) &&
        (! m_bCShoreProblem))
       return true;
 
@@ -218,9 +232,10 @@ bool CGeomProfile::bProfileOKIncTruncated(void) const
    if ((! m_bStartOfCoast) &&
        (! m_bEndOfCoast) &&
        (! m_bHitLand) &&
+       (! m_bHitIntervention) &&
        (! m_bHitCoast) &&
        (! m_bTooShort) &&
-       (! m_bHitAnotherProfileBadly) &&
+       (! m_bHitAnotherProfile) &&
        (! m_bCShoreProblem))
       return true;
 
@@ -232,10 +247,11 @@ bool CGeomProfile::bOKIncStartAndEndOfCoast(void) const
 {
    // All profiles without problems, including start- and end-of-coast profiles
    if ((! m_bHitLand) &&
+       (! m_bHitIntervention) &&
        (! m_bHitCoast) &&
        (! m_bTooShort) &&
        (! m_bTruncated) &&
-       (! m_bHitAnotherProfileBadly) &&
+       (! m_bHitAnotherProfile) &&
        (! m_bCShoreProblem))
       return true;
 
@@ -248,10 +264,11 @@ bool CGeomProfile::bOKIncStartAndEndOfCoast(void) const
 //    // All profiles without problems, including start-of-coast profile (but not end-of-coast profile)
 //    if ((! m_bEndOfCoast) &&
 //        (! m_bHitLand) &&
+//        (! m_bHitIntervention) &&
 //        (! m_bHitCoast) &&
 //        (! m_bTooShort) &&
 //        (! m_bTruncated) &&
-//        (! m_bHitAnotherProfileBadly))
+//        (! m_bHitAnotherProfile))
 //       return true;
 //
 //    return false;

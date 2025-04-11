@@ -46,6 +46,9 @@ private:
    //! Has this profile hit land?
    bool m_bHitLand;
 
+   //! Has this profile hit an intervention?
+   bool m_bHitIntervention;
+
    //! Has this profile hit a coastline?
    bool m_bHitCoast;
 
@@ -56,7 +59,7 @@ private:
    bool m_bTruncated;
 
    //! Has this profile hit another profile?
-   bool m_bHitAnotherProfileBadly;
+   bool m_bHitAnotherProfile;
 
    //! Is this an intervention profile?
    bool m_bIntervention;
@@ -128,14 +131,16 @@ public:
 
    void SetHitLand(bool const);
    bool bHitLand(void) const;
+   void SetHitIntervention(bool const);
+   bool bHitIntervention(void) const;
    void SetHitCoast(bool const);
    bool bHitCoast(void) const;
    void SetTooShort(bool const);
    bool bTooShort(void) const;
    void SetTruncated(bool const);
    bool bTruncated(void) const;
-   void SetHitAnotherProfileBadly(bool const);
-   bool bHitAnotherProfileBadly(void) const;
+   void SetHitAnotherProfile(bool const);
+   bool bHitAnotherProfile(void) const;
 
    bool bProfileOK(void) const;
    bool bProfileOKIncTruncated(void) const;

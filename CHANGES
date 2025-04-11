@@ -126,6 +126,9 @@ CoastalME CHANGELOG
 1.3.8    Mostly fixed crossover bug in profile drawing
          Code tidying
 
+1.3.9    More on profile crossover problem
+         Fixed profile spacing problem on Groyne test case
+         Code tidying
 
 
 

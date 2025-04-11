@@ -165,9 +165,13 @@ int CGeomMultiLine::nGetCoincidentProfileForLineSegment(int const nSegment, int 
    return m_prVVLineSegment[nSegment][nCoinc].first;
 }
 
-//! Returns the count of coincident profiles in a specified line segment
+//! Returns the count of coincident profiles in a specified line segment, or -1 if the line segment does not exist
 int CGeomMultiLine::nGetNumCoincidentProfilesInLineSegment(int const nSegment)
 {
+   // Safety check
+   if (nSegment > static_cast<int>(m_prVVLineSegment.size())-1)
+      return -1;
+
    return static_cast<int>(m_prVVLineSegment[nSegment].size());
 }
 
