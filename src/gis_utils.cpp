@@ -1053,9 +1053,9 @@ bool CSimulation::bSaveAllRasterGISFiles(void)
          return false;
    }
 
-   if (m_bRasterNormalSave)
+   if (m_bRasterNormalProfileSave)
    {
-      if (! bWriteRasterGISFile(RASTER_PLOT_NORMAL, &RASTER_PLOT_NORMAL_TITLE))
+      if (! bWriteRasterGISFile(RASTER_PLOT_NORMAL_PROFILE, &RASTER_PLOT_NORMAL_PROFILE_TITLE))
          return false;
    }
 
@@ -1361,7 +1361,7 @@ void CSimulation::GetRasterOutputMinMax(int const nDataItem, double&dMin, double
        (nDataItem == RASTER_PLOT_INUNDATION_MASK) ||
        (nDataItem == RASTER_PLOT_BEACH_MASK) ||
        (nDataItem == RASTER_PLOT_COAST) ||
-       (nDataItem == RASTER_PLOT_NORMAL) ||
+       // (nDataItem == RASTER_PLOT_NORMAL_PROFILE) ||
        (nDataItem == RASTER_PLOT_ACTIVE_ZONE) ||
        (nDataItem == RASTER_PLOT_POLYGON_UPDRIFT_OR_DOWNDRIFT) ||
        (nDataItem == RASTER_PLOT_SETUP_SURGE_FLOOD_MASK) ||

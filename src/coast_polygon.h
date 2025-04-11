@@ -182,7 +182,7 @@ private:
    //! The ID(s) of the down-coast adjacent polygon(s)
    vector<int> m_VnDownCoastAdjacentPolygon;
 
-   //! If this polygon has a circular unconsolidated-sediment-movement relationship with one or more other polygons, the cost-only numbers of these polygons
+   //! If this polygon has a circular unconsolidated-sediment-movement relationship with one or more other polygons, the coast-only numbers of these polygons
    vector<int> m_VnCircularityWith;
 
    //! The boundary share(s) (0 to 1) with adjacent up-coast polygon(s)

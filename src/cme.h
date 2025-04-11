@@ -343,7 +343,7 @@ char const SPACE = ' ';
 char const TILDE = '~';
 
 // TESTING options
-bool const ACCEPT_SHORT_PROFILES = true;
+bool const ACCEPT_TRUNCATED_PROFILES = true;
 bool const CREATE_SHADOW_ZONE_IF_HITS_GRID_EDGE = true;        // If shadow line tracing hits grid edge, create shadow zone?
 bool const SAVE_CSHORE_OUTPUT = true;                          // #ifdef CSHORE_FILE_INOUT || CSHORE_BOTH, append all CShore output files to a whole-run master
 bool const USE_DEEP_WATER_FOR_SHADOW_LINE = true;              // Use deep water wave orientation in determining shadow line orientation?
@@ -371,7 +371,7 @@ int const MAX_SEAWARD_OFFSET_FOR_CLIFF_TALUS = 20;             // In cells: maxi
 int const MIN_INLAND_OFFSET_FOR_BEACH_EROSION_ESTIMATION = 5;  // Used in estimation of beach erosion
 int const MIN_PARALLEL_PROFILE_SIZE = 3;                       // In cells: min size for valid unconsolidated sediment parallel profile
 int const MIN_PROFILE_SIZE = 3;                                // In cells: min size for valid unconsolidated sediment profile
-int const MIN_PROFILE_SPACING = 20;                            // In cells: profile creation does not work well if profiles are too closely spaced
+int const DEFAULT_PROFILE_SPACING = 10;                        // In cells: profile creation does not work well if profiles are too closely spaced
 int const SAVGOL_POLYNOMIAL_MAX_ORDER = 6;                     // Maximum order of Savitsky-Golay smoothing polynomial
 
 // Log file detail level
@@ -519,7 +519,7 @@ int const RASTER_PLOT_INTERVENTION_HEIGHT                  = 26;
 int const RASTER_PLOT_INUNDATION_MASK                      = 27;
 int const RASTER_PLOT_LANDFORM                             = 28;
 int const RASTER_PLOT_LOCAL_SLOPE_OF_CONSOLIDATED_SEDIMENT = 29;
-int const RASTER_PLOT_NORMAL                               = 30;
+int const RASTER_PLOT_NORMAL_PROFILE                       = 30;
 int const RASTER_PLOT_OVERALL_TOP_ELEVATION                = 31;
 int const RASTER_PLOT_POLYGON                              = 32;
 int const RASTER_PLOT_POLYGON_GAIN_OR_LOSS                 = 33;
@@ -704,10 +704,11 @@ double const STRAIGHT_COAST_MAX_SMOOTH_CURVATURE = -1;
 double const MIN_LENGTH_OF_SHADOW_ZONE_LINE = 10;        // Used in shadow line tracing
 double const MAX_LAND_LENGTH_OF_SHADOW_ZONE_LINE = 5;    // Used in shadow line tracing
 double const CLIFF_COLLAPSE_HEIGHT_INCREMENT = 0.1;      // Increment the fractional height of the cliff talus Dean profile, if we have not been able to deposit enough
+double const INTERVENTION_PROFILE_SPACING_FACTOR = 0.5;  // Profile spacing on interventions works better if it is smaller than profile spacing on coastline
 
 double const DBL_NODATA = -9999;
 
-string const PROGRAM_NAME = "Coastal Modelling Environment (CoastalME) version 1.3.8 (10 Apr 2025)";
+string const PROGRAM_NAME = "Coastal Modelling Environment (CoastalME) version 1.3.8 (11 Apr 2025)";
 string const PROGRAM_NAME_SHORT = "CME";
 string const CME_INI = "cme.ini";
 
@@ -970,7 +971,7 @@ string const RASTER_PLOT_INTERVENTION_HEIGHT_TITLE = "Intervention height";
 string const RASTER_PLOT_INUNDATION_MASK_TITLE = "Inundated area mask";
 string const RASTER_PLOT_LANDFORM_TITLE = "Landform class";
 string const RASTER_PLOT_LOCAL_SLOPE_OF_CONSOLIDATED_SEDIMENT_TITLE = "Local slope of consolidated sediment";
-string const RASTER_PLOT_NORMAL_TITLE = "Rasterized normals to coastline";
+string const RASTER_PLOT_NORMAL_PROFILE_TITLE = "Rasterized normal profiles";
 string const RASTER_PLOT_OVERALL_TOP_ELEVATION_TITLE = "Elevation of sediment top plus intervention, or sea surface";
 string const RASTER_PLOT_POLYGON_GAIN_OR_LOSS_TITLE = "Polygon gain or loss of unconsolidated sediment";
 string const RASTER_PLOT_POLYGON_TITLE = "Rasterized polygon boundaries";

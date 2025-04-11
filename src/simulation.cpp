@@ -103,7 +103,7 @@ CSimulation::CSimulation (void)
    m_bSandConsSedSave =
    m_bCoarseConsSedSave =
    m_bRasterCoastlineSave =
-   m_bRasterNormalSave =
+   m_bRasterNormalProfileSave =
    m_bActiveZoneSave =
    m_bCliffCollapseSave =
    m_bTotCliffCollapseSave =
@@ -188,7 +188,8 @@ CSimulation::CSimulation (void)
    m_nCoastSmoothWindow =
    m_nSavGolCoastPoly =
    m_nProfileSmoothWindow =
-   m_nCoastNormalAvgSpacing =
+   m_nCoastNormalSpacing =
+   m_nCoastNormalInterventionSpacing =
    m_nCoastCurvatureInterval =
    m_nGISMaxSaveDigits =
    m_nGISSave =
@@ -302,7 +303,8 @@ CSimulation::CSimulation (void)
    m_dG =
    m_dInmersedToBulkVolumetric =
    m_dDepthOfClosure =
-   m_dCoastNormalAvgSpacing =
+   m_dCoastNormalSpacing =
+   m_dCoastNormalInterventionSpacing =
    m_dCoastNormalLength =
    m_dThisIterTotSeaDepth =
    m_dThisIterPotentialSedLostBeachErosion =
@@ -708,22 +710,26 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
    //    // DEBUG CODE =================================================================================================================
 
    // If we are using the default cell spacing, then now that we know the size of the raster cells, we can set the size of profile spacing in m
-   if (bFPIsEqual(m_dCoastNormalAvgSpacing, 0.0, TOLERANCE))
-      m_dCoastNormalAvgSpacing = MIN_PROFILE_SPACING * m_dCellSide;
+   if (bFPIsEqual(m_dCoastNormalSpacing, 0.0, TOLERANCE))
+      m_dCoastNormalSpacing = DEFAULT_PROFILE_SPACING * m_dCellSide;
    else
    {
       // The user specified a profile spacing, is this too small?
-      m_nCoastNormalAvgSpacing = nRound (m_dCoastNormalAvgSpacing / m_dCellSide);
+      m_nCoastNormalSpacing = nRound(m_dCoastNormalSpacing / m_dCellSide);
 
-      if (m_nCoastNormalAvgSpacing < MIN_PROFILE_SPACING)
+      if (m_nCoastNormalSpacing < DEFAULT_PROFILE_SPACING)
       {
-         cerr << ERR << "profile spacing was specified as " << m_dCoastNormalAvgSpacing << " m, which is " << m_nCoastNormalAvgSpacing << " cells. Polygon creation works poorly if profile spacing is less than " << MIN_PROFILE_SPACING << " cells, i.e. " << MIN_PROFILE_SPACING *m_dCellSide << " m" << endl;
+         cerr << ERR << "profile spacing was specified as " << m_dCoastNormalSpacing << " m, which is " << m_nCoastNormalSpacing << " cells. Polygon creation works poorly if profile spacing is less than " << DEFAULT_PROFILE_SPACING << " cells, i.e. " << DEFAULT_PROFILE_SPACING *m_dCellSide << " m" << endl;
 
-         LogStream << ERR << "profile spacing was specified as " << m_dCoastNormalAvgSpacing << " m, which is " << m_nCoastNormalAvgSpacing << " cells. Polygon creation works poorly if profile spacing is less than " << MIN_PROFILE_SPACING << " cells, i.e. " << MIN_PROFILE_SPACING *m_dCellSide << " m" << endl;
+         LogStream << ERR << "profile spacing was specified as " << m_dCoastNormalSpacing << " m, which is " << m_nCoastNormalSpacing << " cells. Polygon creation works poorly if profile spacing is less than " << DEFAULT_PROFILE_SPACING << " cells, i.e. " << DEFAULT_PROFILE_SPACING *m_dCellSide << " m" << endl;
 
          return RTN_ERR_PROFILESPACING;
       }
    }
+
+   // Set the profile spacing on interventions
+   m_dCoastNormalInterventionSpacing = m_dCoastNormalSpacing * INTERVENTION_PROFILE_SPACING_FACTOR;
+   m_nCoastNormalInterventionSpacing = nRound(m_dCoastNormalInterventionSpacing / m_dCellSide);
 
    // We have at least one filename for the first layer, so add the correct number of layers. Note the the number of layers does not change during the simulation: however layers can decrease in thickness until they have zero thickness
    AnnounceAddLayers();
@@ -896,8 +902,8 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
    // Misc initialization calcs
    m_nCoastMax = COAST_LENGTH_MAX * tMax(m_nXGridSize, m_nYGridSize);           // Arbitrary but probably OK
    m_nCoastMin = tMin(m_nXGridSize, m_nYGridSize);                              // In some cases the following rule doesn't work TODO 007 Info needed
-   // nRound(COAST_LENGTH_MIN_X_PROF_SPACE * m_dCoastNormalAvgSpacing / m_dCellSide);           // TODO 007 Info needed
-   m_nCoastCurvatureInterval = tMax(nRound(m_dCoastNormalAvgSpacing / (m_dCellSide * 2)), 2);   // TODO 007 Info needed
+   // nRound(COAST_LENGTH_MIN_X_PROF_SPACE * m_dCoastNormalSpacing / m_dCellSide);           // TODO 007 Info needed
+   m_nCoastCurvatureInterval = tMax(nRound(m_dCoastNormalSpacing / (m_dCellSide * 2)), 2);   // TODO 007 Info needed
 
    // For beach erosion/deposition, conversion from immersed weight to bulk volumetric (sand and voids) transport rate (Leo Van Rijn) TODO 007 need full reference
    m_dInmersedToBulkVolumetric = 1 / ((m_dBeachSedimentDensity - m_dSeaWaterDensity) * (1 - m_dBeachSedimentPorosity) * m_dG);
@@ -995,7 +1001,7 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
       //          CGeomProfile const* pProfile = m_VCoast[nCoast].pGetProfileAtCoastPoint(nCoastPoint);
       //          int nProfile = pProfile->nGetCoastID();
       //
-      //          LogStream << m_ulIter << ": profile " << nProfile << " bStartOfCoast = " << pProfile->bStartOfCoast() << " bEndOfCoast = " << pProfile->bEndOfCoast() << " bCShoreProblem = " << pProfile->bCShoreProblem() << " bHitLand = " << pProfile->bHitLand() << " bHitCoast = " << pProfile->bHitCoast() << " bTooShort = " << pProfile->bTooShort() << " bTruncated = " << pProfile->bTruncated() << " bHitAnotherProfileBadly = " << pProfile->bHitAnotherProfileBadly() << endl;
+      //          LogStream << m_ulIter << ": profile " << nProfile << " bStartOfCoast = " << pProfile->bStartOfCoast() << " bEndOfCoast = " << pProfile->bEndOfCoast() << " bCShoreProblem = " << pProfile->bCShoreProblem() << " bHitLand = " << pProfile->bHitLand() << " bHitCoast = " << pProfile->bHitCoast() << " bTooShort = " << pProfile->bTooShort() << " bTruncated = " << pProfile->bTruncated() << " bHitAnotherProfile = " << pProfile->bHitAnotherProfile() << endl;
       //       }
       //    }
       // }

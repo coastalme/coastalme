@@ -845,7 +845,7 @@ string CSimulation::strListRasterFiles(void) const
       strTmp.append(", ");
    }
 
-   if (m_bRasterNormalSave)
+   if (m_bRasterNormalProfileSave)
    {
       strTmp.append(RASTER_COAST_NORMAL_CODE);
       strTmp.append(", ");

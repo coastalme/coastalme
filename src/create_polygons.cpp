@@ -870,6 +870,11 @@ int CSimulation::nDoPolygonSharedBoundaries(void)
 
                // Find out which polygon is adjacent to each line segment of the polygon's down-coast profile boundary. The basic approach used is to count the number of coincident profiles in each line segment, and (because we are going down-coast) add this number to 'this' polygon's number. However, some of these coincident profiles may be invalid, so we must count only the valid co-incident profiles
                int nNumCoinc = pProfile->nGetNumCoincidentProfilesInLineSegment(nPoint);
+
+               // Safety check
+               if (nNumCoinc < 0)
+                  continue;
+
                int nNumValidCoinc = 0;
 
                for (int nCoinc = 0; nCoinc < nNumCoinc; nCoinc++)
@@ -949,6 +954,11 @@ int CSimulation::nDoPolygonSharedBoundaries(void)
 
                // Find out which polygon is adjacent to each line segment of the polygon's up-coast profile boundary. The basic approach used is to count the number of coincident profiles in each line segment, and (because we are going up-coast) subtract this number from 'this' polygon's number. However, some of these coincident profiles may be invalid, so we must count only the valid co-incident profiles
                int nNumCoinc = pProfile->nGetNumCoincidentProfilesInLineSegment(nPoint);
+
+               // Safety check
+               if (nNumCoinc < 0)
+                  continue;
+
                int nNumValidCoinc = 0;
 
                for (int nCoinc = 0; nCoinc < nNumCoinc; nCoinc++)

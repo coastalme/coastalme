@@ -839,9 +839,10 @@ bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const *strPlot
          string strFieldValue2 = "StartCoast";
          string strFieldValue3 = "EndCoast";
          string strFieldValue4 = "HitLand";
-         string strFieldValue5 = "HitCoast";
-         string strFieldValue6 = "HitNormal";
-         string strFieldValue7 = "CShore";
+         string strFieldValue5 = "HitIntervention";
+         string strFieldValue6 = "HitCoast";
+         string strFieldValue7 = "HitNormal";
+         string strFieldValue8 = "CShore";
 
          OGRFieldDefn OGRField2(strFieldValue2.c_str(), OFTInteger);
          OGRFieldDefn OGRField3(strFieldValue3.c_str(), OFTInteger);
@@ -849,6 +850,7 @@ bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const *strPlot
          OGRFieldDefn OGRField5(strFieldValue5.c_str(), OFTInteger);
          OGRFieldDefn OGRField6(strFieldValue6.c_str(), OFTInteger);
          OGRFieldDefn OGRField7(strFieldValue7.c_str(), OFTInteger);
+         OGRFieldDefn OGRField8(strFieldValue7.c_str(), OFTInteger);
 
          if (pOGRLayer->CreateField(&OGRField2) != OGRERR_NONE)
          {
@@ -880,6 +882,11 @@ bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const *strPlot
             cerr << ERR << "cannot create " << strType << " attribute field 7 '" << strFieldValue7 << "' in " << strFilePathName << endl << CPLGetLastErrorMsg() << endl;
             return false;
          }
+         if (pOGRLayer->CreateField(&OGRField8) != OGRERR_NONE)
+         {
+            cerr << ERR << "cannot create " << strType << " attribute field 8 '" << strFieldValue8 << "' in " << strFilePathName << endl << CPLGetLastErrorMsg() << endl;
+            return false;
+         }
 
          // OK, now create features
          OGRLineString OGRls;
@@ -903,18 +910,21 @@ bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const *strPlot
                   pOGRFeature->SetField(strFieldValue5.c_str(), 0);
                   pOGRFeature->SetField(strFieldValue6.c_str(), 0);
                   pOGRFeature->SetField(strFieldValue7.c_str(), 0);
+                  pOGRFeature->SetField(strFieldValue8.c_str(), 0);
                   if (pProfile->bStartOfCoast())
                      pOGRFeature->SetField(strFieldValue2.c_str(), 1);
                   if (pProfile->bEndOfCoast())
                      pOGRFeature->SetField(strFieldValue3.c_str(), 1);
                   if (pProfile->bHitLand())
                      pOGRFeature->SetField(strFieldValue4.c_str(), 1);
-                  if (pProfile->bHitCoast())
+                  if (pProfile->bHitIntervention())
                      pOGRFeature->SetField(strFieldValue5.c_str(), 1);
-                  if (pProfile->bHitAnotherProfileBadly())
+                  if (pProfile->bHitCoast())
                      pOGRFeature->SetField(strFieldValue6.c_str(), 1);
-                  if (pProfile->bCShoreProblem())
+                  if (pProfile->bHitAnotherProfile())
                      pOGRFeature->SetField(strFieldValue7.c_str(), 1);
+                  if (pProfile->bCShoreProblem())
+                     pOGRFeature->SetField(strFieldValue8.c_str(), 1);
 
                   // Now attach a geometry to the feature object
                   for (int k = 0; k < pProfile->nGetProfileSize(); k++)
