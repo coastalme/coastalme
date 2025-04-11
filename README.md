@@ -3,7 +3,7 @@
 </p>
 
 # CoastalME
-The [latest release](https://github.com/coastalme/coastalme/releases) is version 1.2.0 (18 Nov 2025).
+The [latest release](https://github.com/coastalme/coastalme/releases) is version 1.2.0 (18 Nov 2024).
 
 The testing version (use at your own risk!) is 1.3.9 (11 Apr 2025).
 
