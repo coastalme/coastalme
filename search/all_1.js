@@ -1,7 +1,7 @@
 var searchData=
 [
   ['about_0',['ABOUT',['../d6/d2a/cme_8h.html#a39f81231311ec6524a5b7ebb8e06028f',1,'cme.h']]],
-  ['accept_5fshort_5fprofiles_1',['ACCEPT_SHORT_PROFILES',['../d6/d2a/cme_8h.html#aaae1b0853fa02c400768fec78c168432',1,'cme.h']]],
+  ['accept_5ftruncated_5fprofiles_1',['ACCEPT_TRUNCATED_PROFILES',['../d6/d2a/cme_8h.html#a3199710e1049a0b077b1cb4276d262d1',1,'cme.h']]],
   ['active_5fzone_5ffilename_2',['ACTIVE_ZONE_FILENAME',['../d6/d2a/cme_8h.html#a0c6f0cea7d2434985d8acdee1b81a302',1,'cme.h']]],
   ['add_5flayers_3',['ADD_LAYERS',['../d6/d2a/cme_8h.html#aec383f606683a3e30330855fddb58361',1,'cme.h']]],
   ['addbeachcoarseerodeddeanprofile_4',['AddBeachCoarseErodedDeanProfile',['../df/d45/classCGeomCoastPolygon.html#a302681ffb3b0fde018a3c21bbf65d728',1,'CGeomCoastPolygon']]],
