@@ -27,7 +27,7 @@ Content of log file                       [0 = no log file, 1 = least detail, 4 
 Simulation start date and time                                          [hh-mm-ss dd/mm/yyyy]: 00-00-00 01/01/1999
 Duration of simulation                                           [hours, days, months, years]: 30 days
 Timestep (hours or days)                                                                     : 6 hours
-Save times                                                       [hours, days, months, years]: 6 12 24 42 100 200 300 462 500 600 1000 1200 1400 hours
+Save times                                                       [hours, days, months, years]: 6 12 24 60 66 100 200 300 462 500 600 1000 1200 1400 hours
 
 Random number seed(s)                            [if omitted, will use system time as a seed]: 280764
 

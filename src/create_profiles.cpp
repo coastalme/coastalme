@@ -994,14 +994,22 @@ void CSimulation::CheckForIntersectingProfiles(void)
          // OK we have found a first profile. Now go along the coast in alternate directions: first down-coast (in the direction of increasing coast point numbers) then up-coast
          for (int nDirection = DIRECTION_DOWNCOAST; nDirection <= DIRECTION_UPCOAST; nDirection++)
          {
-            // In this direction, look at profiles which are increasingly close to the first profile
+            // TEST
             int nStartPoint;
             if (nDirection == DIRECTION_DOWNCOAST)
-               nStartPoint = 0;
+               nStartPoint = nCoastPoint + 1;
             else
-               nStartPoint = nCoastSize - 1;
+               nStartPoint = nCoastPoint - 1;
 
-            for (int nSecondCoastPoint = nStartPoint; (nDirection == DIRECTION_DOWNCOAST) ? nSecondCoastPoint < nCoastPoint : nSecondCoastPoint > nCoastPoint; (nDirection == DIRECTION_DOWNCOAST) ? nSecondCoastPoint++ : nSecondCoastPoint--)
+            for (int nSecondCoastPoint = nStartPoint; (nDirection == DIRECTION_DOWNCOAST) ? nSecondCoastPoint < nCoastSize : nSecondCoastPoint >= 0; (nDirection == DIRECTION_DOWNCOAST) ? nSecondCoastPoint++ : nSecondCoastPoint--)
+            // // In this direction, look at profiles which are increasingly close to the first profile
+            // int nStartPoint;
+            // if (nDirection == DIRECTION_DOWNCOAST)
+            //    nStartPoint = 0;
+            // else
+            //    nStartPoint = nCoastSize - 1;
+            //
+            // for (int nSecondCoastPoint = nStartPoint; (nDirection == DIRECTION_DOWNCOAST) ? nSecondCoastPoint < nCoastPoint : nSecondCoastPoint > nCoastPoint; (nDirection == DIRECTION_DOWNCOAST) ? nSecondCoastPoint++ : nSecondCoastPoint--)
             {
                if (m_VCoast[nCoast].bIsProfileAtCoastPoint(nSecondCoastPoint))
                {
@@ -1609,7 +1617,7 @@ void CSimulation::CreateRasterizedProfile(int const nCoast, CGeomProfile* pProfi
                // We've hit a raster cell which is already marked as 'under' a normal profile. Get the number of the profile which marked this cell
                int nHitProfile = m_pRasterGrid->m_Cell[nX][nY].nGetProfileID();
                
-               LogStream << m_ulIter << ": profile " << nProfile << " HIT ANOTHER PROFILE (" << nHitProfile << ") at [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "}, elevation = " << m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElev() << ", SWL = " << m_dThisIterSWL << endl;
+               // LogStream << m_ulIter << ": profile " << nProfile << " HIT ANOTHER PROFILE (" << nHitProfile << ") at [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "}, elevation = " << m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElev() << ", SWL = " << m_dThisIterSWL << endl;
 
                // Is this the number of a coincident profile of this profile?
                if (! pProfile->bFindProfileInCoincidentProfilesOfLastLineSegment(nHitProfile))
