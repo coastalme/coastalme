@@ -790,8 +790,8 @@ int CSimulation::nCalcWavePropertiesOnProfile(int const nCoast, int const nCoast
    vector<bool> VbWaveIsBreaking(nProfileSize, 0);
 
    vector<double> VdWaveHeight(nProfileSize, 0);
-   vector<double> VdWaveSetupSurge(nProfileSize, 0);           // TODO 007 What is this for?
-   // vector<double> VdStormSurge(nProfileSize, 0);            // TODO 007 What is this for?
+   vector<double> VdWaveSetupSurge(nProfileSize, 0);
+   // vector<double> VdStormSurge(nProfileSize, 0);
    vector<double> VdWaveSetupRunUp(nProfileSize, 0);
    vector<double> VdWaveDirection(nProfileSize, 0);
 
@@ -848,10 +848,10 @@ int CSimulation::nCalcWavePropertiesOnProfile(int const nCoast, int const nCoast
       int nITide = 0;               // 0 for no tidal effect on currents, 1 for longshore and cross-shore tidal currents
       int nILab = 0;                // 0 for field data set, 1 for laboratory data set
       int nNWave = 1;               // Number of waves at x = 0 starting from time = 0
-      int nNSurge = 1;              // Number of water levels at x = 0 from time = 0    // TODO 007 What is this for?
+      int nNSurge = 1;              // Number of water levels at x = 0 from time = 0
       double dDX = VdProfileDistXY.back() / (static_cast<double>(VdProfileDistXY.size() - 1));
       double dWaveInitTime = 0;     // CShore wave start time
-      double dSurgeInitTime = 0;    // CShore surge start time                   // TODO 007 What is this for?
+      double dSurgeInitTime = 0;    // CShore surge start time
 
 #if defined CSHORE_FILE_INOUT || CSHORE_BOTH
       // Move to the CShore folder
@@ -930,7 +930,7 @@ int CSimulation::nCalcWavePropertiesOnProfile(int const nCoast, int const nCoast
       if (nRet != RTN_OK)
          return nRet;
 
-      // TODO 007 Read surge outputs
+      // Read surge outputs
       // VdTSurg = {dSurgeInitTime, dCShoreTimeStep},                           // Ditto
       // VdSWLin = {dSurgeLevel, dSurgeLevel},                                  // Ditto
 
@@ -979,9 +979,9 @@ int CSimulation::nCalcWavePropertiesOnProfile(int const nCoast, int const nCoast
       vector<double> VdFPInp = VdProfileFrictionFactor;                                     // Set the value for wave friction at every point of the normal profile
       vector<double> VdXYDistFromCShoreOut(CSHOREARRAYOUTSIZE, 0);                          // Output from CShore
       vector<double> VdFreeSurfaceStdOut(CSHOREARRAYOUTSIZE, 0);                            // Ditto
-      vector<double> VdWaveSetupSurgeOut(CSHOREARRAYOUTSIZE, 0);                            // TODO 007 Info needed
-      // vector<double> VdStormSurgeOut(CSHOREARRAYOUTSIZE, 0);                             // TODO 007 Info needed
-      vector<double> VdWaveSetupRunUpOut(CSHOREARRAYOUTSIZE, 0);                            // TODO 007 Info needed
+      vector<double> VdWaveSetupSurgeOut(CSHOREARRAYOUTSIZE, 0);                            // Ditto
+      // vector<double> VdStormSurgeOut(CSHOREARRAYOUTSIZE, 0);                             // Ditto
+      vector<double> VdWaveSetupRunUpOut(CSHOREARRAYOUTSIZE, 0);                            // Ditto
       vector<double> VdSinWaveAngleRadiansOut(CSHOREARRAYOUTSIZE, 0);                       // Ditto
       vector<double> VdFractionBreakingWavesOut(CSHOREARRAYOUTSIZE, 0);                     // Ditto
 
@@ -998,7 +998,7 @@ int CSimulation::nCalcWavePropertiesOnProfile(int const nCoast, int const nCoast
                     &nITide,                          /* In_ITIDE */
                     &nILab,                           /* In_ILAB */
                     &nNWave,                          /* In_NWAVE */
-                    &nNSurge,                         /* In_NSURG */                   // TODO 007 Info needed
+                    &nNSurge,                         /* In_NSURG */
                     &dDX,                             /* In_DX */
                     &m_dBreakingWaveHeightDepthRatio, /* In_GAMMA */
                     &VdInitTime[0],                   /* In_TWAVE */
@@ -1015,7 +1015,7 @@ int CSimulation::nCalcWavePropertiesOnProfile(int const nCoast, int const nCoast
                     &nOutSize,                        /* Out_nOutSize */
                     &VdXYDistFromCShoreOut[0],        /* Out_XYDist */
                     &VdFreeSurfaceStdOut[0],          /* Out_FreeSurfaceStd */
-                    &VdWaveSetupSurgeOut[0],          /* Out_WaveSetupSurge */         // TODO 007 Info needed
+                    &VdWaveSetupSurgeOut[0],          /* Out_WaveSetupSurge */
                     &VdSinWaveAngleRadiansOut[0],     /* Out_SinWaveAngleRadians */
                     &VdFractionBreakingWavesOut[0]);  /* Out_FractionBreakingWaves */
       
@@ -1031,8 +1031,8 @@ int CSimulation::nCalcWavePropertiesOnProfile(int const nCoast, int const nCoast
          // VdFreeSurfaceStdOut[1] = VdFreeSurfaceStdOut[0];
          // VdSinWaveAngleRadiansOut[1] = VdSinWaveAngleRadiansOut[0];
          // VdFractionBreakingWavesOut[1] = VdFractionBreakingWavesOut[0];
-         // VdWaveSetupSurgeOut[1] = VdWaveSetupSurgeOut[0];                              // TODO 007 Info needed
-         // // VdStormSurgeOut[1] = VdStormSurgeOut[0];                                   // TODO 007 Info needed
+         // VdWaveSetupSurgeOut[1] = VdWaveSetupSurgeOut[0];
+         // // VdStormSurgeOut[1] = VdStormSurgeOut[0];
          // // VdWaveSetupRunUpOut[1] = VdWaveSetupRunUpOut[0];
          //
          // // And increase the expected number of rows
@@ -1305,7 +1305,6 @@ int CSimulation::nCalcWavePropertiesOnProfile(int const nCoast, int const nCoast
    }
    nValidPointsWaveHeight -= 1;
 
-   // TODO 007 What is this for?
    for (int nPoint = 0; nPoint < static_cast<int>(VdWaveSetupSurge.size()); nPoint++)
    {
       if (tAbs(VdWaveSetupSurge[nPoint]) < 1)    // limiting the absolute value of setup + surge if cshore run fails
@@ -1357,7 +1356,7 @@ int CSimulation::nCalcWavePropertiesOnProfile(int const nCoast, int const nCoast
       dRunUp = 0;
    }
 
-   double dWaveSetupSurge = 0;               // TODO 007 Info needed
+   double dWaveSetupSurge = 0;
 
    // Safety checks
    if ((nValidPointsWaveSetup >= 0) && (! bFPIsEqual(VdWaveSetupSurge[nValidPointsWaveSetup], DBL_NODATA, TOLERANCE)))
@@ -1373,7 +1372,7 @@ int CSimulation::nCalcWavePropertiesOnProfile(int const nCoast, int const nCoast
    // Update wave attributes along the coastline object. Wave height at the coast is always calculated (i.e. whether or not waves are breaking)
    // cout << "Wave Height at the coast is " << VdWaveHeight[nProfileSize - 1] << endl;
    m_VCoast[nCoast].SetCoastWaveHeight(nCoastPoint, dWaveHeight);
-   m_VCoast[nCoast].SetWaveSetupSurge(nCoastPoint, dWaveSetupSurge);       // TODO 007 Info needed
+   m_VCoast[nCoast].SetWaveSetupSurge(nCoastPoint, dWaveSetupSurge);
    m_VCoast[nCoast].SetRunUp(nCoastPoint, dRunUp);
 
    if (nProfileBreakingDist > 0)

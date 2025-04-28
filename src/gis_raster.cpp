@@ -1043,19 +1043,19 @@ bool CSimulation::bWriteRasterGISFile(int const nDataItem, string const *strPlot
          strFilePathName.append(RASTER_TOTAL_CLIFF_COLLAPSE_EROSION_COARSE_NAME);
          break;
 
-      case (RASTER_PLOT_CLIFF_COLLAPSE_DEPOSIT_SAND):
+      case (RASTER_PLOT_CLIFF_COLLAPSE_DEPOSITION_SAND):
          strFilePathName.append(RASTER_CLIFF_COLLAPSE_DEPOSITION_SAND_NAME);
          break;
 
-      case (RASTER_PLOT_CLIFF_COLLAPSE_DEPOSIT_COARSE):
+      case (RASTER_PLOT_CLIFF_COLLAPSE_DEPOSITION_COARSE):
          strFilePathName.append(RASTER_CLIFF_COLLAPSE_DEPOSITION_COARSE_NAME);
          break;
 
-      case (RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_DEPOSIT_SAND):
+      case (RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_DEPOSITION_SAND):
          strFilePathName.append(RASTER_TOTAL_CLIFF_COLLAPSE_DEPOSITION_SAND_NAME);
          break;
 
-      case (RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_DEPOSIT_COARSE):
+      case (RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_DEPOSITION_COARSE):
          strFilePathName.append(RASTER_TOTAL_CLIFF_COLLAPSE_DEPOSITION_COARSE_NAME);
          break;
 
@@ -1452,19 +1452,19 @@ bool CSimulation::bWriteRasterGISFile(int const nDataItem, string const *strPlot
                dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetTotCliffCollapseCoarse();
                break;
 
-            case (RASTER_PLOT_CLIFF_COLLAPSE_DEPOSIT_SAND):
+            case (RASTER_PLOT_CLIFF_COLLAPSE_DEPOSITION_SAND):
                dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetThisIterCliffCollapseSandTalusDeposition();
                break;
 
-            case (RASTER_PLOT_CLIFF_COLLAPSE_DEPOSIT_COARSE):
+            case (RASTER_PLOT_CLIFF_COLLAPSE_DEPOSITION_COARSE):
                dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetThisIterCliffCollapseCoarseTalusDeposition();
                break;
 
-            case (RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_DEPOSIT_SAND):
+            case (RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_DEPOSITION_SAND):
                dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetTotSandTalusDeposition();
                break;
 
-            case (RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_DEPOSIT_COARSE):
+            case (RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_DEPOSITION_COARSE):
                dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetTotCoarseTalusDeposition();
                break;
 
@@ -1655,10 +1655,10 @@ bool CSimulation::bWriteRasterGISFile(int const nDataItem, string const *strPlot
       case (RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_EROSION_FINE):
       case (RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_EROSION_SAND):
       case (RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_EROSION_COARSE):
-      case (RASTER_PLOT_CLIFF_COLLAPSE_DEPOSIT_SAND):
-      case (RASTER_PLOT_CLIFF_COLLAPSE_DEPOSIT_COARSE):
-      case (RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_DEPOSIT_SAND):
-      case (RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_DEPOSIT_COARSE):
+      case (RASTER_PLOT_CLIFF_COLLAPSE_DEPOSITION_SAND):
+      case (RASTER_PLOT_CLIFF_COLLAPSE_DEPOSITION_COARSE):
+      case (RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_DEPOSITION_SAND):
+      case (RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_DEPOSITION_COARSE):
       case (RASTER_PLOT_INTERVENTION_HEIGHT):
       case (RASTER_PLOT_DEEP_WATER_WAVE_HEIGHT):
       case (RASTER_PLOT_SEDIMENT_INPUT):

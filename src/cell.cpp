@@ -33,16 +33,16 @@ using std::vector;
 //! Constructor with initialization list
 CGeomCell::CGeomCell()
     : m_bInContiguousSea(false),
-      m_bInContiguousFlood(false),        // TODO 007 What is this?
+      m_bInContiguousFlood(false),
       m_bIsInActiveZone(false),
       m_bCoastline(false),
       m_bFloodLine(false),
       m_bWaveFlood(false),
-      // m_bCheckCell(false),             // TODO 007 What is this?
-      m_bCheckFloodCell(false),           // TODO 007 What is this?
+      // m_bCheckCell(false),
+      m_bCheckFloodCell(false),
       m_bShadowBoundary(false),
       m_bPossibleCoastStartCell(false),
-      m_bPossibleFloodStartCell(false),   // TODO 007 What is this?
+      m_bPossibleFloodStartCell(false),
       m_nBoundingBoxEdge(NO_DIRECTION),
       m_nPolygonID(INT_NODATA),
       m_nCoastlineNormal(INT_NODATA),
@@ -310,11 +310,11 @@ bool CGeomCell::bIsinAnyShadowZone(void) const
    return false;
 }
 
-// Set this cell as flooded by swl + surge + setup + runup
-// void CGeomCell::SetWaveFlood(void)
-// {
-//    m_bWaveFlood = true;
-// }
+//! Set this cell as flooded by swl + surge + setup + runup
+void CGeomCell::SetWaveFlood(void)
+{
+   m_bWaveFlood = true;
+}
 
 // void CGeomCell::SetWaveSetup(int const dWaveSetup)
 // {
@@ -803,16 +803,16 @@ void CGeomCell::SetSeaDepth(void)
 void CGeomCell::InitCell(void)
 {
    m_bInContiguousSea =
-   m_bInContiguousFlood =           // TODO 007 What is this?
+   m_bInContiguousFlood =
    m_bCoastline =
    m_bFloodLine =
    m_bIsInActiveZone =
    // m_bEstimated =
    m_bShadowBoundary =
-   m_bPossibleCoastStartCell =      // TODO 007 What is this?
+   m_bPossibleCoastStartCell =
    m_bPossibleFloodStartCell =
    m_bWaveFlood =
-   // m_bCheckCell =                // TODO 007 What is this?
+   // m_bCheckCell =
    m_bCheckFloodCell = false;
 
    m_nPolygonID =
@@ -828,9 +828,7 @@ void CGeomCell::InitCell(void)
    m_dCliffCollapseSandThisIter =
    m_dCliffCollapseCoarseThisIter =
    m_dTalusSandDepositionThisIter =
-   m_dTotTalusSandDeposition = 
    m_dTalusCoarseDepositionThisIter = 
-   m_dTotTalusCoarseDeposition = 
    m_dPotentialBeachErosionThisIter =
    m_dActualBeachErosionThisIter =
    m_dBeachDepositionThisIter =

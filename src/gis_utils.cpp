@@ -1114,13 +1114,13 @@ bool CSimulation::bSaveAllRasterGISFiles(void)
       {
          if (m_bHaveSandSediment)
          {
-            if (! bWriteRasterGISFile(RASTER_PLOT_CLIFF_COLLAPSE_DEPOSIT_SAND, &RASTER_PLOT_CLIFF_COLLAPSE_DEPOSIT_SAND_TITLE))
+            if (! bWriteRasterGISFile(RASTER_PLOT_CLIFF_COLLAPSE_DEPOSITION_SAND, &RASTER_PLOT_CLIFF_COLLAPSE_DEPOSITION_SAND_TITLE))
                return false;
          }
 
          if (m_bHaveCoarseSediment)
          {
-            if (! bWriteRasterGISFile(RASTER_PLOT_CLIFF_COLLAPSE_DEPOSIT_COARSE, &RASTER_PLOT_CLIFF_COLLAPSE_DEPOSIT_COARSE_TITLE))
+            if (! bWriteRasterGISFile(RASTER_PLOT_CLIFF_COLLAPSE_DEPOSITION_COARSE, &RASTER_PLOT_CLIFF_COLLAPSE_DEPOSITION_COARSE_TITLE))
                return false;
          }
       }
@@ -1129,13 +1129,13 @@ bool CSimulation::bSaveAllRasterGISFiles(void)
       {
          if (m_bHaveSandSediment)
          {
-            if (! bWriteRasterGISFile(RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_DEPOSIT_SAND, &RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_DEPOSIT_SAND_TITLE))
+            if (! bWriteRasterGISFile(RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_DEPOSITION_SAND, &RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_DEPOSITION_SAND_TITLE))
                return false;
          }
 
          if (m_bHaveCoarseSediment)
          {
-            if (! bWriteRasterGISFile(RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_DEPOSIT_COARSE, &RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_DEPOSIT_COARSE_TITLE))
+            if (! bWriteRasterGISFile(RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_DEPOSITION_COARSE, &RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_DEPOSITION_COARSE_TITLE))
                return false;
          }
       }
@@ -1555,19 +1555,19 @@ void CSimulation::GetRasterOutputMinMax(int const nDataItem, double&dMin, double
                dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetTotCliffCollapseCoarse();
                break;
                
-            case (RASTER_PLOT_CLIFF_COLLAPSE_DEPOSIT_SAND):
+            case (RASTER_PLOT_CLIFF_COLLAPSE_DEPOSITION_SAND):
                dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetThisIterCliffCollapseSandTalusDeposition();
                break;
 
-            case (RASTER_PLOT_CLIFF_COLLAPSE_DEPOSIT_COARSE):
+            case (RASTER_PLOT_CLIFF_COLLAPSE_DEPOSITION_COARSE):
                dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetThisIterCliffCollapseCoarseTalusDeposition();
                break;
 
-            case (RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_DEPOSIT_SAND):
+            case (RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_DEPOSITION_SAND):
                dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetTotSandTalusDeposition();
                break;
 
-            case (RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_DEPOSIT_COARSE):
+            case (RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_DEPOSITION_COARSE):
                dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetTotCoarseTalusDeposition();
                break;
 
