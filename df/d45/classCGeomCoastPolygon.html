@@ -141,7 +141,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a765ccfcf69a2d02959dd156d32af579e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the global ID.  <br /></td></tr>
 <tr class="separator:a765ccfcf69a2d02959dd156d32af579e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae97ed135e92d392e9b72f83feee59b2b" id="r_ae97ed135e92d392e9b72f83feee59b2b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae97ed135e92d392e9b72f83feee59b2b">nGetCoastID</a> (void) const</td></tr>
-<tr class="memdesc:ae97ed135e92d392e9b72f83feee59b2b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the coast ID, this is the same as the down-coast sequence.  <br /></td></tr>
+<tr class="memdesc:ae97ed135e92d392e9b72f83feee59b2b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the coast ID, this is the same as the down-coast sequence of polygons.  <br /></td></tr>
 <tr class="separator:ae97ed135e92d392e9b72f83feee59b2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa4ec073404fad6e28ca1d5ffc5a80de4" id="r_aa4ec073404fad6e28ca1d5ffc5a80de4"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa4ec073404fad6e28ca1d5ffc5a80de4">nGetNodeCoastPoint</a> (void) const</td></tr>
 <tr class="memdesc:aa4ec073404fad6e28ca1d5ffc5a80de4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the coast node point.  <br /></td></tr>
@@ -474,7 +474,7 @@ Public Member Functions</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
 <tr class="memitem:aad7342a6b464ac5dcf45b82f9b812462" id="r_aad7342a6b464ac5dcf45b82f9b812462"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aad7342a6b464ac5dcf45b82f9b812462">m_bUnconsSedimentMovementDownCoastThisIter</a></td></tr>
-<tr class="memdesc:aad7342a6b464ac5dcf45b82f9b812462"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is the movement of unconsolidated sediment on this polygon down-coast during this iteration?  <br /></td></tr>
+<tr class="memdesc:aad7342a6b464ac5dcf45b82f9b812462"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is the movement of unconsolidated sediment on this polygon down-coast (i.e. along the coast in the direction of increasing coastline point numbers) during this iteration?  <br /></td></tr>
 <tr class="separator:aad7342a6b464ac5dcf45b82f9b812462"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a55ffb36bbf69438d5d09ea0ff07d59cd" id="r_a55ffb36bbf69438d5d09ea0ff07d59cd"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a55ffb36bbf69438d5d09ea0ff07d59cd">m_bCoastEndPolygon</a></td></tr>
 <tr class="memdesc:a55ffb36bbf69438d5d09ea0ff07d59cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is this polygon at the end of the coastline?  <br /></td></tr>
@@ -830,7 +830,7 @@ Andres Payo </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../df/d30/coast__polygon_8cpp_source.html#l00500">500</a> of file <a class="el" href="../../df/d30/coast__polygon_8cpp_source.html">coast_polygon.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d2/d22/do__beach__sediment__movement_8cpp_source.html#l00098">CSimulation::nDoAllActualBeachErosionAndDeposition()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d2/d22/do__beach__sediment__movement_8cpp_source.html#l00130">CSimulation::nDoAllActualBeachErosionAndDeposition()</a>.</p>
 
 </div>
 </div>
@@ -1140,7 +1140,7 @@ Andres Payo </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../df/d30/coast__polygon_8cpp_source.html#l00377">377</a> of file <a class="el" href="../../df/d30/coast__polygon_8cpp_source.html">coast_polygon.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d2/d22/do__beach__sediment__movement_8cpp_source.html#l00098">CSimulation::nDoAllActualBeachErosionAndDeposition()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d2/d22/do__beach__sediment__movement_8cpp_source.html#l00130">CSimulation::nDoAllActualBeachErosionAndDeposition()</a>.</p>
 
 </div>
 </div>
@@ -1163,7 +1163,7 @@ Andres Payo </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../df/d30/coast__polygon_8cpp_source.html#l00359">359</a> of file <a class="el" href="../../df/d30/coast__polygon_8cpp_source.html">coast_polygon.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d2/d22/do__beach__sediment__movement_8cpp_source.html#l00098">CSimulation::nDoAllActualBeachErosionAndDeposition()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d2/d22/do__beach__sediment__movement_8cpp_source.html#l00130">CSimulation::nDoAllActualBeachErosionAndDeposition()</a>.</p>
 
 </div>
 </div>
@@ -1230,7 +1230,7 @@ Andres Payo </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../df/d30/coast__polygon_8cpp_source.html#l00108">108</a> of file <a class="el" href="../../df/d30/coast__polygon_8cpp_source.html">coast_polygon.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d2/d22/do__beach__sediment__movement_8cpp_source.html#l00098">CSimulation::nDoAllActualBeachErosionAndDeposition()</a>, and <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01350">CSimulation::WritePolygonShareTable()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d2/d22/do__beach__sediment__movement_8cpp_source.html#l00130">CSimulation::nDoAllActualBeachErosionAndDeposition()</a>.</p>
 
 </div>
 </div>
@@ -1253,7 +1253,7 @@ Andres Payo </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../df/d30/coast__polygon_8cpp_source.html#l00120">120</a> of file <a class="el" href="../../df/d30/coast__polygon_8cpp_source.html">coast_polygon.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d2/d22/do__beach__sediment__movement_8cpp_source.html#l00098">CSimulation::nDoAllActualBeachErosionAndDeposition()</a>, and <a class="el" href="../../d6/d91/create__polygons_8cpp_source.html#l00805">CSimulation::nDoPolygonSharedBoundaries()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d2/d22/do__beach__sediment__movement_8cpp_source.html#l00130">CSimulation::nDoAllActualBeachErosionAndDeposition()</a>, and <a class="el" href="../../d6/d91/create__polygons_8cpp_source.html#l00805">CSimulation::nDoPolygonSharedBoundaries()</a>.</p>
 
 </div>
 </div>
@@ -1276,7 +1276,7 @@ Andres Payo </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../df/d30/coast__polygon_8cpp_source.html#l00132">132</a> of file <a class="el" href="../../df/d30/coast__polygon_8cpp_source.html">coast_polygon.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d2/d22/do__beach__sediment__movement_8cpp_source.html#l00098">CSimulation::nDoAllActualBeachErosionAndDeposition()</a>, and <a class="el" href="../../d6/d91/create__polygons_8cpp_source.html#l00805">CSimulation::nDoPolygonSharedBoundaries()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d2/d22/do__beach__sediment__movement_8cpp_source.html#l00130">CSimulation::nDoAllActualBeachErosionAndDeposition()</a>, and <a class="el" href="../../d6/d91/create__polygons_8cpp_source.html#l00805">CSimulation::nDoPolygonSharedBoundaries()</a>.</p>
 
 </div>
 </div>
@@ -1320,7 +1320,7 @@ Andres Payo </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../df/d30/coast__polygon_8cpp_source.html#l00489">489</a> of file <a class="el" href="../../df/d30/coast__polygon_8cpp_source.html">coast_polygon.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d6/d45/do__beach__potential__erosion_8cpp_source.html#l00057">CSimulation::DoAllPotentialBeachErosion()</a>, and <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01350">CSimulation::WritePolygonShareTable()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d6/d45/do__beach__potential__erosion_8cpp_source.html#l00057">CSimulation::DoAllPotentialBeachErosion()</a>, and <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01350">CSimulation::WritePolygonInfoTable()</a>.</p>
 
 </div>
 </div>
@@ -1517,7 +1517,7 @@ Andres Payo </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../df/d30/coast__polygon_8cpp_source.html#l00602">602</a> of file <a class="el" href="../../df/d30/coast__polygon_8cpp_source.html">coast_polygon.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01517">CSimulation::WritePolygonCliffCollapseErosion()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01504">CSimulation::WritePolygonCliffCollapseErosion()</a>.</p>
 
 </div>
 </div>
@@ -1540,7 +1540,7 @@ Andres Payo </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../df/d30/coast__polygon_8cpp_source.html#l00554">554</a> of file <a class="el" href="../../df/d30/coast__polygon_8cpp_source.html">coast_polygon.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01517">CSimulation::WritePolygonCliffCollapseErosion()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01504">CSimulation::WritePolygonCliffCollapseErosion()</a>.</p>
 
 </div>
 </div>
@@ -1563,7 +1563,7 @@ Andres Payo </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../df/d30/coast__polygon_8cpp_source.html#l00530">530</a> of file <a class="el" href="../../df/d30/coast__polygon_8cpp_source.html">coast_polygon.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01517">CSimulation::WritePolygonCliffCollapseErosion()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01504">CSimulation::WritePolygonCliffCollapseErosion()</a>.</p>
 
 </div>
 </div>
@@ -1586,7 +1586,7 @@ Andres Payo </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../df/d30/coast__polygon_8cpp_source.html#l00542">542</a> of file <a class="el" href="../../df/d30/coast__polygon_8cpp_source.html">coast_polygon.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01517">CSimulation::WritePolygonCliffCollapseErosion()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01504">CSimulation::WritePolygonCliffCollapseErosion()</a>.</p>
 
 </div>
 </div>
@@ -1626,7 +1626,7 @@ Andres Payo </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../df/d30/coast__polygon_8cpp_source.html#l00590">590</a> of file <a class="el" href="../../df/d30/coast__polygon_8cpp_source.html">coast_polygon.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01517">CSimulation::WritePolygonCliffCollapseErosion()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01504">CSimulation::WritePolygonCliffCollapseErosion()</a>.</p>
 
 </div>
 </div>
@@ -1649,7 +1649,7 @@ Andres Payo </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../df/d30/coast__polygon_8cpp_source.html#l00518">518</a> of file <a class="el" href="../../df/d30/coast__polygon_8cpp_source.html">coast_polygon.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01517">CSimulation::WritePolygonCliffCollapseErosion()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01504">CSimulation::WritePolygonCliffCollapseErosion()</a>.</p>
 
 </div>
 </div>
@@ -1672,7 +1672,7 @@ Andres Payo </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../df/d30/coast__polygon_8cpp_source.html#l00578">578</a> of file <a class="el" href="../../df/d30/coast__polygon_8cpp_source.html">coast_polygon.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d2/d22/do__beach__sediment__movement_8cpp_source.html#l00711">CSimulation::AllPolygonsUpdateStoredUncons()</a>, and <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01517">CSimulation::WritePolygonCliffCollapseErosion()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d2/d22/do__beach__sediment__movement_8cpp_source.html#l00744">CSimulation::AllPolygonsUpdateStoredUncons()</a>, and <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01504">CSimulation::WritePolygonCliffCollapseErosion()</a>.</p>
 
 </div>
 </div>
@@ -1695,7 +1695,7 @@ Andres Payo </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../df/d30/coast__polygon_8cpp_source.html#l00566">566</a> of file <a class="el" href="../../df/d30/coast__polygon_8cpp_source.html">coast_polygon.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d2/d22/do__beach__sediment__movement_8cpp_source.html#l00711">CSimulation::AllPolygonsUpdateStoredUncons()</a>, and <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01517">CSimulation::WritePolygonCliffCollapseErosion()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d2/d22/do__beach__sediment__movement_8cpp_source.html#l00744">CSimulation::AllPolygonsUpdateStoredUncons()</a>, and <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01504">CSimulation::WritePolygonCliffCollapseErosion()</a>.</p>
 
 </div>
 </div>
@@ -1718,7 +1718,7 @@ Andres Payo </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../df/d30/coast__polygon_8cpp_source.html#l00476">476</a> of file <a class="el" href="../../df/d30/coast__polygon_8cpp_source.html">coast_polygon.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d2/d22/do__beach__sediment__movement_8cpp_source.html#l00098">CSimulation::nDoAllActualBeachErosionAndDeposition()</a>, and <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01350">CSimulation::WritePolygonShareTable()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d2/d22/do__beach__sediment__movement_8cpp_source.html#l00130">CSimulation::nDoAllActualBeachErosionAndDeposition()</a>.</p>
 
 </div>
 </div>
@@ -1785,7 +1785,7 @@ Andres Payo </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../df/d30/coast__polygon_8cpp_source.html#l00638">638</a> of file <a class="el" href="../../df/d30/coast__polygon_8cpp_source.html">coast_polygon.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d2/d22/do__beach__sediment__movement_8cpp_source.html#l00711">CSimulation::AllPolygonsUpdateStoredUncons()</a>, and <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01484">CSimulation::WritePolygonShorePlatformErosion()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d2/d22/do__beach__sediment__movement_8cpp_source.html#l00744">CSimulation::AllPolygonsUpdateStoredUncons()</a>, and <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01471">CSimulation::WritePolygonShorePlatformErosion()</a>.</p>
 
 </div>
 </div>
@@ -1808,7 +1808,7 @@ Andres Payo </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../df/d30/coast__polygon_8cpp_source.html#l00626">626</a> of file <a class="el" href="../../df/d30/coast__polygon_8cpp_source.html">coast_polygon.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d2/d22/do__beach__sediment__movement_8cpp_source.html#l00711">CSimulation::AllPolygonsUpdateStoredUncons()</a>, and <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01484">CSimulation::WritePolygonShorePlatformErosion()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d2/d22/do__beach__sediment__movement_8cpp_source.html#l00744">CSimulation::AllPolygonsUpdateStoredUncons()</a>, and <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01471">CSimulation::WritePolygonShorePlatformErosion()</a>.</p>
 
 </div>
 </div>
@@ -1831,7 +1831,7 @@ Andres Payo </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../df/d30/coast__polygon_8cpp_source.html#l00263">263</a> of file <a class="el" href="../../df/d30/coast__polygon_8cpp_source.html">coast_polygon.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d2/d22/do__beach__sediment__movement_8cpp_source.html#l00098">CSimulation::nDoAllActualBeachErosionAndDeposition()</a>, and <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01622">CSimulation::WritePolygonPotentialErosion()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d2/d22/do__beach__sediment__movement_8cpp_source.html#l00130">CSimulation::nDoAllActualBeachErosionAndDeposition()</a>, and <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01609">CSimulation::WritePolygonPotentialErosion()</a>.</p>
 
 </div>
 </div>
@@ -1854,7 +1854,7 @@ Andres Payo </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../df/d30/coast__polygon_8cpp_source.html#l00710">710</a> of file <a class="el" href="../../df/d30/coast__polygon_8cpp_source.html">coast_polygon.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01385">CSimulation::WritePolygonPreExistingSedimentTable()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01372">CSimulation::WritePolygonPreExistingSedimentTable()</a>.</p>
 
 </div>
 </div>
@@ -1877,7 +1877,7 @@ Andres Payo </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../df/d30/coast__polygon_8cpp_source.html#l00686">686</a> of file <a class="el" href="../../df/d30/coast__polygon_8cpp_source.html">coast_polygon.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01385">CSimulation::WritePolygonPreExistingSedimentTable()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01372">CSimulation::WritePolygonPreExistingSedimentTable()</a>.</p>
 
 </div>
 </div>
@@ -1900,7 +1900,7 @@ Andres Payo </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../df/d30/coast__polygon_8cpp_source.html#l00698">698</a> of file <a class="el" href="../../df/d30/coast__polygon_8cpp_source.html">coast_polygon.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01385">CSimulation::WritePolygonPreExistingSedimentTable()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01372">CSimulation::WritePolygonPreExistingSedimentTable()</a>.</p>
 
 </div>
 </div>
@@ -1923,7 +1923,7 @@ Andres Payo </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../df/d30/coast__polygon_8cpp_source.html#l00674">674</a> of file <a class="el" href="../../df/d30/coast__polygon_8cpp_source.html">coast_polygon.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d2/d22/do__beach__sediment__movement_8cpp_source.html#l00711">CSimulation::AllPolygonsUpdateStoredUncons()</a>, <a class="el" href="../../d2/d22/do__beach__sediment__movement_8cpp_source.html#l00098">CSimulation::nDoAllActualBeachErosionAndDeposition()</a>, <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01385">CSimulation::WritePolygonPreExistingSedimentTable()</a>, and <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01584">CSimulation::WritePolygonSedimentBeforeMovement()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d2/d22/do__beach__sediment__movement_8cpp_source.html#l00744">CSimulation::AllPolygonsUpdateStoredUncons()</a>, <a class="el" href="../../d2/d22/do__beach__sediment__movement_8cpp_source.html#l00130">CSimulation::nDoAllActualBeachErosionAndDeposition()</a>, <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01372">CSimulation::WritePolygonPreExistingSedimentTable()</a>, and <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01571">CSimulation::WritePolygonSedimentBeforeMovement()</a>.</p>
 
 </div>
 </div>
@@ -1946,7 +1946,7 @@ Andres Payo </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../df/d30/coast__polygon_8cpp_source.html#l00650">650</a> of file <a class="el" href="../../df/d30/coast__polygon_8cpp_source.html">coast_polygon.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d2/d22/do__beach__sediment__movement_8cpp_source.html#l00098">CSimulation::nDoAllActualBeachErosionAndDeposition()</a>, <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01385">CSimulation::WritePolygonPreExistingSedimentTable()</a>, and <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01584">CSimulation::WritePolygonSedimentBeforeMovement()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d2/d22/do__beach__sediment__movement_8cpp_source.html#l00130">CSimulation::nDoAllActualBeachErosionAndDeposition()</a>, <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01372">CSimulation::WritePolygonPreExistingSedimentTable()</a>, and <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01571">CSimulation::WritePolygonSedimentBeforeMovement()</a>.</p>
 
 </div>
 </div>
@@ -1969,7 +1969,7 @@ Andres Payo </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../df/d30/coast__polygon_8cpp_source.html#l00662">662</a> of file <a class="el" href="../../df/d30/coast__polygon_8cpp_source.html">coast_polygon.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d2/d22/do__beach__sediment__movement_8cpp_source.html#l00711">CSimulation::AllPolygonsUpdateStoredUncons()</a>, <a class="el" href="../../d2/d22/do__beach__sediment__movement_8cpp_source.html#l00098">CSimulation::nDoAllActualBeachErosionAndDeposition()</a>, <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01385">CSimulation::WritePolygonPreExistingSedimentTable()</a>, and <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01584">CSimulation::WritePolygonSedimentBeforeMovement()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d2/d22/do__beach__sediment__movement_8cpp_source.html#l00744">CSimulation::AllPolygonsUpdateStoredUncons()</a>, <a class="el" href="../../d2/d22/do__beach__sediment__movement_8cpp_source.html#l00130">CSimulation::nDoAllActualBeachErosionAndDeposition()</a>, <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01372">CSimulation::WritePolygonPreExistingSedimentTable()</a>, and <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01571">CSimulation::WritePolygonSedimentBeforeMovement()</a>.</p>
 
 </div>
 </div>
@@ -1992,7 +1992,7 @@ Andres Payo </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../df/d30/coast__polygon_8cpp_source.html#l00251">251</a> of file <a class="el" href="../../df/d30/coast__polygon_8cpp_source.html">coast_polygon.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01350">CSimulation::WritePolygonShareTable()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01350">CSimulation::WritePolygonInfoTable()</a>.</p>
 
 </div>
 </div>
@@ -2015,7 +2015,7 @@ Andres Payo </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../df/d30/coast__polygon_8cpp_source.html#l00746">746</a> of file <a class="el" href="../../df/d30/coast__polygon_8cpp_source.html">coast_polygon.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d2/d22/do__beach__sediment__movement_8cpp_source.html#l00711">CSimulation::AllPolygonsUpdateStoredUncons()</a>, <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01385">CSimulation::WritePolygonPreExistingSedimentTable()</a>, and <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01446">CSimulation::WritePolygonSedimentInputEventTable()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d2/d22/do__beach__sediment__movement_8cpp_source.html#l00744">CSimulation::AllPolygonsUpdateStoredUncons()</a>, <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01372">CSimulation::WritePolygonPreExistingSedimentTable()</a>, and <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01433">CSimulation::WritePolygonSedimentInputEventTable()</a>.</p>
 
 </div>
 </div>
@@ -2038,7 +2038,7 @@ Andres Payo </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../df/d30/coast__polygon_8cpp_source.html#l00722">722</a> of file <a class="el" href="../../df/d30/coast__polygon_8cpp_source.html">coast_polygon.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d2/d22/do__beach__sediment__movement_8cpp_source.html#l00711">CSimulation::AllPolygonsUpdateStoredUncons()</a>, <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01385">CSimulation::WritePolygonPreExistingSedimentTable()</a>, and <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01446">CSimulation::WritePolygonSedimentInputEventTable()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d2/d22/do__beach__sediment__movement_8cpp_source.html#l00744">CSimulation::AllPolygonsUpdateStoredUncons()</a>, <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01372">CSimulation::WritePolygonPreExistingSedimentTable()</a>, and <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01433">CSimulation::WritePolygonSedimentInputEventTable()</a>.</p>
 
 </div>
 </div>
@@ -2061,7 +2061,7 @@ Andres Payo </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../df/d30/coast__polygon_8cpp_source.html#l00734">734</a> of file <a class="el" href="../../df/d30/coast__polygon_8cpp_source.html">coast_polygon.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d2/d22/do__beach__sediment__movement_8cpp_source.html#l00711">CSimulation::AllPolygonsUpdateStoredUncons()</a>, <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01385">CSimulation::WritePolygonPreExistingSedimentTable()</a>, and <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01446">CSimulation::WritePolygonSedimentInputEventTable()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d2/d22/do__beach__sediment__movement_8cpp_source.html#l00744">CSimulation::AllPolygonsUpdateStoredUncons()</a>, <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01372">CSimulation::WritePolygonPreExistingSedimentTable()</a>, and <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01433">CSimulation::WritePolygonSedimentInputEventTable()</a>.</p>
 
 </div>
 </div>
@@ -2107,7 +2107,7 @@ Andres Payo </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../df/d30/coast__polygon_8cpp_source.html#l00383">383</a> of file <a class="el" href="../../df/d30/coast__polygon_8cpp_source.html">coast_polygon.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d2/d22/do__beach__sediment__movement_8cpp_source.html#l00098">CSimulation::nDoAllActualBeachErosionAndDeposition()</a>, and <a class="el" href="../../df/dda/do__beach__within__polygon_8cpp_source.html#l00738">CSimulation::nDoUnconsDepositionOnPolygon()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d2/d22/do__beach__sediment__movement_8cpp_source.html#l00130">CSimulation::nDoAllActualBeachErosionAndDeposition()</a>, and <a class="el" href="../../df/dda/do__beach__within__polygon_8cpp_source.html#l00738">CSimulation::nDoUnconsDepositionOnPolygon()</a>.</p>
 
 </div>
 </div>
@@ -2130,7 +2130,7 @@ Andres Payo </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../df/d30/coast__polygon_8cpp_source.html#l00365">365</a> of file <a class="el" href="../../df/d30/coast__polygon_8cpp_source.html">coast_polygon.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d2/d22/do__beach__sediment__movement_8cpp_source.html#l00098">CSimulation::nDoAllActualBeachErosionAndDeposition()</a>, and <a class="el" href="../../df/dda/do__beach__within__polygon_8cpp_source.html#l00738">CSimulation::nDoUnconsDepositionOnPolygon()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d2/d22/do__beach__sediment__movement_8cpp_source.html#l00130">CSimulation::nDoAllActualBeachErosionAndDeposition()</a>, and <a class="el" href="../../df/dda/do__beach__within__polygon_8cpp_source.html#l00738">CSimulation::nDoUnconsDepositionOnPolygon()</a>.</p>
 
 </div>
 </div>
@@ -2153,7 +2153,7 @@ Andres Payo </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../df/d30/coast__polygon_8cpp_source.html#l00463">463</a> of file <a class="el" href="../../df/d30/coast__polygon_8cpp_source.html">coast_polygon.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d2/d22/do__beach__sediment__movement_8cpp_source.html#l00098">CSimulation::nDoAllActualBeachErosionAndDeposition()</a>, and <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01350">CSimulation::WritePolygonShareTable()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d2/d22/do__beach__sediment__movement_8cpp_source.html#l00130">CSimulation::nDoAllActualBeachErosionAndDeposition()</a>.</p>
 
 </div>
 </div>
@@ -2226,11 +2226,11 @@ Andres Payo </dd></dl>
       </table>
 </div><div class="memdoc">
 
-<p>Get the coast ID, this is the same as the down-coast sequence. </p>
+<p>Get the coast ID, this is the same as the down-coast sequence of polygons. </p>
 
 <p class="definition">Definition at line <a class="el" href="../../df/d30/coast__polygon_8cpp_source.html#l00144">144</a> of file <a class="el" href="../../df/d30/coast__polygon_8cpp_source.html">coast_polygon.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d2/d24/calc__waves_8cpp_source.html#l02167">CSimulation::CalcD50AndFillWaveCalcHoles()</a>, <a class="el" href="../../d6/d91/create__polygons_8cpp_source.html#l00496">CSimulation::MarkPolygonCells()</a>, <a class="el" href="../../d2/d22/do__beach__sediment__movement_8cpp_source.html#l00098">CSimulation::nDoAllActualBeachErosionAndDeposition()</a>, <a class="el" href="../../df/dda/do__beach__within__polygon_8cpp_source.html#l00477">CSimulation::nDoParallelProfileUnconsErosion()</a>, <a class="el" href="../../d6/d91/create__polygons_8cpp_source.html#l00805">CSimulation::nDoPolygonSharedBoundaries()</a>, <a class="el" href="../../df/dda/do__beach__within__polygon_8cpp_source.html#l00738">CSimulation::nDoUnconsDepositionOnPolygon()</a>, <a class="el" href="../../df/dda/do__beach__within__polygon_8cpp_source.html#l00044">CSimulation::nDoUnconsErosionOnPolygon()</a>, <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01517">CSimulation::WritePolygonCliffCollapseErosion()</a>, <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01622">CSimulation::WritePolygonPotentialErosion()</a>, <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01385">CSimulation::WritePolygonPreExistingSedimentTable()</a>, <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01584">CSimulation::WritePolygonSedimentBeforeMovement()</a>, <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01446">CSimulation::WritePolygonSedimentInputEventTable()</a>, <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01350">CSimulation::WritePolygonShareTable()</a>, <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01484">CSimulation::WritePolygonShorePlatformErosion()</a>, <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01743">CSimulation::WritePolygonSortedSequence()</a>, and <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01688">CSimulation::WritePolygonUnsortedSequence()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d2/d24/calc__waves_8cpp_source.html#l02167">CSimulation::CalcD50AndFillWaveCalcHoles()</a>, <a class="el" href="../../d6/d91/create__polygons_8cpp_source.html#l00496">CSimulation::MarkPolygonCells()</a>, <a class="el" href="../../d2/d22/do__beach__sediment__movement_8cpp_source.html#l00130">CSimulation::nDoAllActualBeachErosionAndDeposition()</a>, <a class="el" href="../../df/dda/do__beach__within__polygon_8cpp_source.html#l00477">CSimulation::nDoParallelProfileUnconsErosion()</a>, <a class="el" href="../../d6/d91/create__polygons_8cpp_source.html#l00805">CSimulation::nDoPolygonSharedBoundaries()</a>, <a class="el" href="../../df/dda/do__beach__within__polygon_8cpp_source.html#l00738">CSimulation::nDoUnconsDepositionOnPolygon()</a>, <a class="el" href="../../df/dda/do__beach__within__polygon_8cpp_source.html#l00044">CSimulation::nDoUnconsErosionOnPolygon()</a>, <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01504">CSimulation::WritePolygonCliffCollapseErosion()</a>, <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01350">CSimulation::WritePolygonInfoTable()</a>, <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01609">CSimulation::WritePolygonPotentialErosion()</a>, <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01372">CSimulation::WritePolygonPreExistingSedimentTable()</a>, <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01571">CSimulation::WritePolygonSedimentBeforeMovement()</a>, <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01433">CSimulation::WritePolygonSedimentInputEventTable()</a>, <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01471">CSimulation::WritePolygonShorePlatformErosion()</a>, <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01730">CSimulation::WritePolygonSortedSequence()</a>, and <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01675">CSimulation::WritePolygonUnsortedSequence()</a>.</p>
 
 </div>
 </div>
@@ -2253,7 +2253,7 @@ Andres Payo </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../df/d30/coast__polygon_8cpp_source.html#l00444">444</a> of file <a class="el" href="../../df/d30/coast__polygon_8cpp_source.html">coast_polygon.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d2/d22/do__beach__sediment__movement_8cpp_source.html#l00098">CSimulation::nDoAllActualBeachErosionAndDeposition()</a>, and <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01350">CSimulation::WritePolygonShareTable()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d2/d22/do__beach__sediment__movement_8cpp_source.html#l00130">CSimulation::nDoAllActualBeachErosionAndDeposition()</a>.</p>
 
 </div>
 </div>
@@ -2276,7 +2276,7 @@ Andres Payo </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../df/d30/coast__polygon_8cpp_source.html#l00204">204</a> of file <a class="el" href="../../df/d30/coast__polygon_8cpp_source.html">coast_polygon.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d6/d45/do__beach__potential__erosion_8cpp_source.html#l00057">CSimulation::DoAllPotentialBeachErosion()</a>, <a class="el" href="../../d6/d91/create__polygons_8cpp_source.html#l00805">CSimulation::nDoPolygonSharedBoundaries()</a>, <a class="el" href="../../df/dda/do__beach__within__polygon_8cpp_source.html#l00738">CSimulation::nDoUnconsDepositionOnPolygon()</a>, and <a class="el" href="../../df/dda/do__beach__within__polygon_8cpp_source.html#l00044">CSimulation::nDoUnconsErosionOnPolygon()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d6/d45/do__beach__potential__erosion_8cpp_source.html#l00057">CSimulation::DoAllPotentialBeachErosion()</a>, <a class="el" href="../../d6/d91/create__polygons_8cpp_source.html#l00805">CSimulation::nDoPolygonSharedBoundaries()</a>, <a class="el" href="../../df/dda/do__beach__within__polygon_8cpp_source.html#l00738">CSimulation::nDoUnconsDepositionOnPolygon()</a>, <a class="el" href="../../df/dda/do__beach__within__polygon_8cpp_source.html#l00044">CSimulation::nDoUnconsErosionOnPolygon()</a>, and <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01350">CSimulation::WritePolygonInfoTable()</a>.</p>
 
 </div>
 </div>
@@ -2299,7 +2299,7 @@ Andres Payo </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../df/d30/coast__polygon_8cpp_source.html#l00138">138</a> of file <a class="el" href="../../df/d30/coast__polygon_8cpp_source.html">coast_polygon.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d2/d22/do__beach__sediment__movement_8cpp_source.html#l00098">CSimulation::nDoAllActualBeachErosionAndDeposition()</a>, <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01517">CSimulation::WritePolygonCliffCollapseErosion()</a>, <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01622">CSimulation::WritePolygonPotentialErosion()</a>, <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01385">CSimulation::WritePolygonPreExistingSedimentTable()</a>, <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01584">CSimulation::WritePolygonSedimentBeforeMovement()</a>, <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01446">CSimulation::WritePolygonSedimentInputEventTable()</a>, <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01350">CSimulation::WritePolygonShareTable()</a>, <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01484">CSimulation::WritePolygonShorePlatformErosion()</a>, and <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01688">CSimulation::WritePolygonUnsortedSequence()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d2/d22/do__beach__sediment__movement_8cpp_source.html#l00130">CSimulation::nDoAllActualBeachErosionAndDeposition()</a>, <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01504">CSimulation::WritePolygonCliffCollapseErosion()</a>, <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01350">CSimulation::WritePolygonInfoTable()</a>, <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01609">CSimulation::WritePolygonPotentialErosion()</a>, <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01372">CSimulation::WritePolygonPreExistingSedimentTable()</a>, <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01571">CSimulation::WritePolygonSedimentBeforeMovement()</a>, <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01433">CSimulation::WritePolygonSedimentInputEventTable()</a>, <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01471">CSimulation::WritePolygonShorePlatformErosion()</a>, and <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01675">CSimulation::WritePolygonUnsortedSequence()</a>.</p>
 
 </div>
 </div>
@@ -2345,7 +2345,7 @@ Andres Payo </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../df/d30/coast__polygon_8cpp_source.html#l00451">451</a> of file <a class="el" href="../../df/d30/coast__polygon_8cpp_source.html">coast_polygon.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d2/d22/do__beach__sediment__movement_8cpp_source.html#l00098">CSimulation::nDoAllActualBeachErosionAndDeposition()</a>, and <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01350">CSimulation::WritePolygonShareTable()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d2/d22/do__beach__sediment__movement_8cpp_source.html#l00130">CSimulation::nDoAllActualBeachErosionAndDeposition()</a>.</p>
 
 </div>
 </div>
@@ -2414,7 +2414,7 @@ Andres Payo </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../df/d30/coast__polygon_8cpp_source.html#l00432">432</a> of file <a class="el" href="../../df/d30/coast__polygon_8cpp_source.html">coast_polygon.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d2/d22/do__beach__sediment__movement_8cpp_source.html#l00098">CSimulation::nDoAllActualBeachErosionAndDeposition()</a>, and <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01350">CSimulation::WritePolygonShareTable()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d2/d22/do__beach__sediment__movement_8cpp_source.html#l00130">CSimulation::nDoAllActualBeachErosionAndDeposition()</a>.</p>
 
 </div>
 </div>
@@ -2458,7 +2458,7 @@ Andres Payo </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../df/d30/coast__polygon_8cpp_source.html#l00425">425</a> of file <a class="el" href="../../df/d30/coast__polygon_8cpp_source.html">coast_polygon.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d2/d22/do__beach__sediment__movement_8cpp_source.html#l00098">CSimulation::nDoAllActualBeachErosionAndDeposition()</a>, and <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01350">CSimulation::WritePolygonShareTable()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d2/d22/do__beach__sediment__movement_8cpp_source.html#l00130">CSimulation::nDoAllActualBeachErosionAndDeposition()</a>.</p>
 
 </div>
 </div>
@@ -2481,7 +2481,7 @@ Andres Payo </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../df/d30/coast__polygon_8cpp_source.html#l00198">198</a> of file <a class="el" href="../../df/d30/coast__polygon_8cpp_source.html">coast_polygon.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d6/d45/do__beach__potential__erosion_8cpp_source.html#l00057">CSimulation::DoAllPotentialBeachErosion()</a>, <a class="el" href="../../d6/d91/create__polygons_8cpp_source.html#l00805">CSimulation::nDoPolygonSharedBoundaries()</a>, <a class="el" href="../../df/dda/do__beach__within__polygon_8cpp_source.html#l00738">CSimulation::nDoUnconsDepositionOnPolygon()</a>, and <a class="el" href="../../df/dda/do__beach__within__polygon_8cpp_source.html#l00044">CSimulation::nDoUnconsErosionOnPolygon()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d6/d45/do__beach__potential__erosion_8cpp_source.html#l00057">CSimulation::DoAllPotentialBeachErosion()</a>, <a class="el" href="../../d6/d91/create__polygons_8cpp_source.html#l00805">CSimulation::nDoPolygonSharedBoundaries()</a>, <a class="el" href="../../df/dda/do__beach__within__polygon_8cpp_source.html#l00738">CSimulation::nDoUnconsDepositionOnPolygon()</a>, <a class="el" href="../../df/dda/do__beach__within__polygon_8cpp_source.html#l00044">CSimulation::nDoUnconsErosionOnPolygon()</a>, and <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01350">CSimulation::WritePolygonInfoTable()</a>.</p>
 
 </div>
 </div>
@@ -2684,7 +2684,7 @@ Andres Payo </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../df/d30/coast__polygon_8cpp_source.html#l00293">293</a> of file <a class="el" href="../../df/d30/coast__polygon_8cpp_source.html">coast_polygon.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d2/d22/do__beach__sediment__movement_8cpp_source.html#l00098">CSimulation::nDoAllActualBeachErosionAndDeposition()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d2/d22/do__beach__sediment__movement_8cpp_source.html#l00130">CSimulation::nDoAllActualBeachErosionAndDeposition()</a>.</p>
 
 </div>
 </div>
@@ -2707,7 +2707,7 @@ Andres Payo </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../df/d30/coast__polygon_8cpp_source.html#l00269">269</a> of file <a class="el" href="../../df/d30/coast__polygon_8cpp_source.html">coast_polygon.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d2/d22/do__beach__sediment__movement_8cpp_source.html#l00098">CSimulation::nDoAllActualBeachErosionAndDeposition()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d2/d22/do__beach__sediment__movement_8cpp_source.html#l00130">CSimulation::nDoAllActualBeachErosionAndDeposition()</a>.</p>
 
 </div>
 </div>
@@ -2730,7 +2730,7 @@ Andres Payo </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../df/d30/coast__polygon_8cpp_source.html#l00281">281</a> of file <a class="el" href="../../df/d30/coast__polygon_8cpp_source.html">coast_polygon.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d2/d22/do__beach__sediment__movement_8cpp_source.html#l00098">CSimulation::nDoAllActualBeachErosionAndDeposition()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d2/d22/do__beach__sediment__movement_8cpp_source.html#l00130">CSimulation::nDoAllActualBeachErosionAndDeposition()</a>.</p>
 
 </div>
 </div>
@@ -2979,7 +2979,7 @@ Andres Payo </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../df/d30/coast__polygon_8cpp_source.html#l00668">668</a> of file <a class="el" href="../../df/d30/coast__polygon_8cpp_source.html">coast_polygon.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d2/d22/do__beach__sediment__movement_8cpp_source.html#l00711">CSimulation::AllPolygonsUpdateStoredUncons()</a>, and <a class="el" href="../../d6/d91/create__polygons_8cpp_source.html#l00496">CSimulation::MarkPolygonCells()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d2/d22/do__beach__sediment__movement_8cpp_source.html#l00744">CSimulation::AllPolygonsUpdateStoredUncons()</a>, and <a class="el" href="../../d6/d91/create__polygons_8cpp_source.html#l00496">CSimulation::MarkPolygonCells()</a>.</p>
 
 </div>
 </div>
@@ -3002,7 +3002,7 @@ Andres Payo </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../df/d30/coast__polygon_8cpp_source.html#l00644">644</a> of file <a class="el" href="../../df/d30/coast__polygon_8cpp_source.html">coast_polygon.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d2/d22/do__beach__sediment__movement_8cpp_source.html#l00711">CSimulation::AllPolygonsUpdateStoredUncons()</a>, and <a class="el" href="../../d6/d91/create__polygons_8cpp_source.html#l00496">CSimulation::MarkPolygonCells()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d2/d22/do__beach__sediment__movement_8cpp_source.html#l00744">CSimulation::AllPolygonsUpdateStoredUncons()</a>, and <a class="el" href="../../d6/d91/create__polygons_8cpp_source.html#l00496">CSimulation::MarkPolygonCells()</a>.</p>
 
 </div>
 </div>
@@ -3025,7 +3025,7 @@ Andres Payo </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../df/d30/coast__polygon_8cpp_source.html#l00656">656</a> of file <a class="el" href="../../df/d30/coast__polygon_8cpp_source.html">coast_polygon.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d2/d22/do__beach__sediment__movement_8cpp_source.html#l00711">CSimulation::AllPolygonsUpdateStoredUncons()</a>, and <a class="el" href="../../d6/d91/create__polygons_8cpp_source.html#l00496">CSimulation::MarkPolygonCells()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d2/d22/do__beach__sediment__movement_8cpp_source.html#l00744">CSimulation::AllPolygonsUpdateStoredUncons()</a>, and <a class="el" href="../../d6/d91/create__polygons_8cpp_source.html#l00496">CSimulation::MarkPolygonCells()</a>.</p>
 
 </div>
 </div>
@@ -3232,7 +3232,7 @@ Andres Payo </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../df/d30/coast__polygon_8cpp_source.html#l00506">506</a> of file <a class="el" href="../../df/d30/coast__polygon_8cpp_source.html">coast_polygon.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01743">CSimulation::WritePolygonSortedSequence()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01730">CSimulation::WritePolygonSortedSequence()</a>.</p>
 
 </div>
 </div>
@@ -3313,7 +3313,7 @@ Andres Payo </dd></dl>
 </table>
 </div><div class="memdoc">
 
-<p>Is the movement of unconsolidated sediment on this polygon down-coast during this iteration? </p>
+<p>Is the movement of unconsolidated sediment on this polygon down-coast (i.e. along the coast in the direction of increasing coastline point numbers) during this iteration? </p>
 
 <p class="definition">Definition at line <a class="el" href="../../d6/db2/coast__polygon_8h_source.html#l00034">34</a> of file <a class="el" href="../../d6/db2/coast__polygon_8h_source.html">coast_polygon.h</a>.</p>
 
@@ -4731,7 +4731,7 @@ Andres Payo </dd></dl>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../df/d45/classCGeomCoastPolygon.html">CGeomCoastPolygon</a></li>
-    <li class="footer">Generated on Mon Apr 28 2025 15:49:20 for CoastalME (Coastal Modelling Environment) by <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+    <li class="footer">Generated on Wed Apr 30 2025 21:14:01 for CoastalME (Coastal Modelling Environment) by <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
   </ul>
 </div>
 </body>

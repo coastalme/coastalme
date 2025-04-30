@@ -208,7 +208,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a84cd86d415ab742280dabeff3e1bacba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the number of profiles on this coast.  <br /></td></tr>
 <tr class="separator:a84cd86d415ab742280dabeff3e1bacba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae364645be86243762280582a4832046f" id="r_ae364645be86243762280582a4832046f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae364645be86243762280582a4832046f">CreateProfileDownCoastIndex</a> (void)</td></tr>
-<tr class="memdesc:ae364645be86243762280582a4832046f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates an index to profiles in down-coastline sequence.  <br /></td></tr>
+<tr class="memdesc:ae364645be86243762280582a4832046f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates an index to profiles in down-coast (i.e. along the coast in the direction of increasing coastline point numbers) sequence.  <br /></td></tr>
 <tr class="separator:ae364645be86243762280582a4832046f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abc2666a35b6cadc72bc2e3f73af336b2" id="r_abc2666a35b6cadc72bc2e3f73af336b2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abc2666a35b6cadc72bc2e3f73af336b2">InsertProfilesInProfileCoastPointIndex</a> (void)</td></tr>
 <tr class="memdesc:abc2666a35b6cadc72bc2e3f73af336b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inserts profiles at coastline points in the profile-coastline-point index.  <br /></td></tr>
@@ -235,7 +235,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:ae35d68cd28fcbe1983dff61891dd8dd3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a pointer to the coastline-normal profile at this coast point.  <br /></td></tr>
 <tr class="separator:ae35d68cd28fcbe1983dff61891dd8dd3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae15656f5322cc102ce1dd6c120959b57" id="r_ae15656f5322cc102ce1dd6c120959b57"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../da/dae/classCGeomProfile.html">CGeomProfile</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae15656f5322cc102ce1dd6c120959b57">pGetProfileWithDownCoastSeq</a> (int const) const</td></tr>
-<tr class="memdesc:ae15656f5322cc102ce1dd6c120959b57"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a pointer to a coastline-normal profile in down-coast sequence.  <br /></td></tr>
+<tr class="memdesc:ae15656f5322cc102ce1dd6c120959b57"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a pointer to a coastline-normal profile in down-coast (i.e. along the coast in the direction of increasing coastline point numbers) sequence.  <br /></td></tr>
 <tr class="separator:ae15656f5322cc102ce1dd6c120959b57"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a97cbad458921512653c04f9437eaf064" id="r_a97cbad458921512653c04f9437eaf064"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../da/dae/classCGeomProfile.html">CGeomProfile</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a97cbad458921512653c04f9437eaf064">pGetProfileWithUpCoastSeq</a> (int const) const</td></tr>
 <tr class="memdesc:a97cbad458921512653c04f9437eaf064"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a pointer to a coastline-normal profile in up-coast sequence.  <br /></td></tr>
@@ -331,7 +331,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:af527777859e36678a880b37760ad8359"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the number of coast polygons.  <br /></td></tr>
 <tr class="separator:af527777859e36678a880b37760ad8359"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3fb8fc06ca53d58cf6ee263dfc80f00e" id="r_a3fb8fc06ca53d58cf6ee263dfc80f00e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../df/d45/classCGeomCoastPolygon.html">CGeomCoastPolygon</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3fb8fc06ca53d58cf6ee263dfc80f00e">pGetPolygon</a> (int const) const</td></tr>
-<tr class="memdesc:a3fb8fc06ca53d58cf6ee263dfc80f00e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a pointer to a coast polygon, specified by down-coast sequence.  <br /></td></tr>
+<tr class="memdesc:a3fb8fc06ca53d58cf6ee263dfc80f00e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a pointer to a coast polygon, specified by down-coast (i.e. along the coast in the direction of increasing coastline point numbers) sequence.  <br /></td></tr>
 <tr class="separator:a3fb8fc06ca53d58cf6ee263dfc80f00e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6a8485d0dc82dd03f7a13648cd7c18cd" id="r_a6a8485d0dc82dd03f7a13648cd7c18cd"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6a8485d0dc82dd03f7a13648cd7c18cd">nGetNumShadowBoundaries</a> (void) const</td></tr>
 <tr class="memdesc:a6a8485d0dc82dd03f7a13648cd7c18cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the number of shadow boundaries on this coast.  <br /></td></tr>
@@ -638,7 +638,7 @@ Andres Payo </dd></dl>
       </table>
 </div><div class="memdoc">
 
-<p>Creates an index to profiles in down-coastline sequence. </p>
+<p>Creates an index to profiles in down-coast (i.e. along the coast in the direction of increasing coastline point numbers) sequence. </p>
 
 <p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00433">433</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
 
@@ -1335,7 +1335,7 @@ Andres Payo </dd></dl>
       </table>
 </div><div class="memdoc">
 
-<p>Returns a pointer to a coast polygon, specified by down-coast sequence. </p>
+<p>Returns a pointer to a coast polygon, specified by down-coast (i.e. along the coast in the direction of increasing coastline point numbers) sequence. </p>
 
 <p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00754">754</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
 
@@ -1398,7 +1398,7 @@ Andres Payo </dd></dl>
       </table>
 </div><div class="memdoc">
 
-<p>Returns a pointer to a coastline-normal profile in down-coast sequence. </p>
+<p>Returns a pointer to a coastline-normal profile in down-coast (i.e. along the coast in the direction of increasing coastline point numbers) sequence. </p>
 
 <p class="definition">Definition at line <a class="el" href="../../dc/d25/coast_8cpp_source.html#l00443">443</a> of file <a class="el" href="../../dc/d25/coast_8cpp_source.html">coast.cpp</a>.</p>
 
@@ -3237,7 +3237,7 @@ Andres Payo </dd></dl>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../d1/dbe/classCRWCoast.html">CRWCoast</a></li>
-    <li class="footer">Generated on Mon Apr 28 2025 15:49:20 for CoastalME (Coastal Modelling Environment) by <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+    <li class="footer">Generated on Wed Apr 30 2025 21:14:01 for CoastalME (Coastal Modelling Environment) by <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
   </ul>
 </div>
 </body>

@@ -1,5 +1,6 @@
 var NAVTREEINDEX8 =
 {
+"d7/dfc/classvector.html#a2396209900e8f592db1f0b2467f7d899":[3,0,34,4],
 "d8/d79/classostringstream.html":[3,0,29],
 "d8/d98/classdeque_1_1const__reverse__iterator.html":[3,0,23,1],
 "d8/db0/cshore_2cshore_8h.html":[4,0,0,0,0],
@@ -248,6 +249,5 @@ var NAVTREEINDEX8 =
 "df/d02/classios.html":[3,0,25],
 "df/d30/coast__polygon_8cpp.html":[4,0,0,31],
 "df/d30/coast__polygon_8cpp_source.html":[4,0,0,31],
-"df/d45/classCGeomCoastPolygon.html":[3,0,8],
-"df/d45/classCGeomCoastPolygon.html#a07e9ea4d7d48c310476893d6f45a9dec":[3,0,8,12]
+"df/d45/classCGeomCoastPolygon.html":[3,0,8]
 };
