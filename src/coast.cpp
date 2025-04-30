@@ -429,7 +429,7 @@ int CRWCoast::nGetNumProfiles(void) const
    return static_cast<int>(m_pVProfile.size());
 }
 
-//! Creates an index to profiles in down-coastline sequence
+//! Creates an index to profiles in down-coast (i.e. along the coast in the direction of increasing coastline point numbers) sequence
 void CRWCoast::CreateProfileDownCoastIndex(void)
 {
    for (int n = 0; n < static_cast<int>(m_pVNormalProfileDownAllCoastpointSeq.size()); n++)
@@ -439,7 +439,7 @@ void CRWCoast::CreateProfileDownCoastIndex(void)
    }
 }
 
-//! Returns a pointer to a coastline-normal profile in down-coast sequence
+//! Returns a pointer to a coastline-normal profile in down-coast (i.e. along the coast in the direction of increasing coastline point numbers) sequence
 CGeomProfile* CRWCoast::pGetProfileWithDownCoastSeq(int const nProf) const
 {
    // Note no check whether n < size()
@@ -750,7 +750,7 @@ int CRWCoast::nGetNumPolygons(void) const
    return pGetSim()->nGetCoastPolygonSize();
 }
 
-//! Returns a pointer to a coast polygon, specified by down-coast sequence
+//! Returns a pointer to a coast polygon, specified by down-coast (i.e. along the coast in the direction of increasing coastline point numbers) sequence
 CGeomCoastPolygon* CRWCoast::pGetPolygon(int const nPoly) const
 {
    // TODO 055 No check to see if nPoint < m_VnPolygon.size()

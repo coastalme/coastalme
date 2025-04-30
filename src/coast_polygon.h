@@ -30,7 +30,7 @@ You should have received a copy of the GNU General Public License along with thi
 class CGeomCoastPolygon : public CA2DShape
 {
 private:
-   //! Is the movement of unconsolidated sediment on this polygon down-coast during this iteration?
+   //! Is the movement of unconsolidated sediment on this polygon down-coast (i.e. along the coast in the direction of increasing coastline point numbers) during this iteration?
    bool m_bUnconsSedimentMovementDownCoastThisIter;
 
    // Does the polygon meet at a point at its seaward end? (is it roughly triangular?)

@@ -43,7 +43,7 @@ using std::accumulate;
 #include "raster_grid.h"
 
 //===============================================================================================================================
-//! Determines whether the wave orientation at this point on a coast is onshore or offshore, and up-coast or down-coast
+//! Determines whether the wave orientation at this point on a coast is onshore or offshore, and up-coast (i.e. along the coast in the direction of decreasing coastline point numbers) or down-coast (i.e. along the coast in the direction of increasing coastline point numbers)
 //===============================================================================================================================
 bool CSimulation::bOnOrOffShoreAndUpOrDownCoast(double const dCoastAngle, double const dWaveAngle, int const nSeaHand, bool &bDownCoast)
 {
@@ -54,12 +54,12 @@ bool CSimulation::bOnOrOffShoreAndUpOrDownCoast(double const dCoastAngle, double
 
    if (nSeaHand == RIGHT_HANDED)
    {
-      // The sea is on the RHS travelling down-coast
+      // The sea is on the RHS when travelling down-coast (i.e. along the coast in the direction of increasing coastline point numbers)
       bOnShore = dWaveToCoastAngle > 180 ? true : false;
    }
    else
    {
-      // The sea is on the LHS travelling down-coast
+      // The sea is on the LHS when travelling down-coast (i.e. along the coast in the direction of increasing coastline point numbers)
       bOnShore = dWaveToCoastAngle > 180 ? false : true;
    }
 

@@ -42,7 +42,7 @@ private:
    //! Switch to indicate if this is a sea cell, contiguous with other sea cells
    bool m_bInContiguousSea;
 
-   //! TODO 007 What is this?
+   //! Switch to indicate that this cell is in the contiguous runup flood area
    bool m_bInContiguousFlood;
 
    //! Switch to indicate that this cell is in the active zone
@@ -51,10 +51,10 @@ private:
    //! Switch to indicate that this cell is 'under' a coastline
    bool m_bCoastline;
 
-   //! TODO 007 What is this used for? Switch to indicate that this cell is 'under' a flood line
+   //! Switch to indicate that this cell is 'under' a runup flood line
    bool m_bFloodLine;
 
-   //! TODO 007 What is this used for? Switch to indicate that this cell is 'under' a wave flood line
+   //! Switch to indicate that this cell is 'under' a runup wave flood line
    bool m_bWaveFlood;
 
    // //! TODO 007 What is this used for?
@@ -225,13 +225,13 @@ public:
     void SetInContiguousSea(void);
     bool bIsInContiguousSea(void) const;
 
-    void SetInContiguousFlood(void);               // TODO 007 Do we need this?
-    void UnSetInContiguousFlood(void);             // TODO 007 Do we need this?
-    void SetFloodBySetupSurge(void);               // TODO 007 Do we need this?
-    bool bIsFloodBySetupSurge(void) const;         // TODO 007 Do we need this?
-    void SetFloodBySetupSurgeRunup(void);          // TODO 007 Do we need this?
-    bool bIsFloodBySetupSurgeRunup(void) const;    // TODO 007 Do we need this?
-    bool bIsInContiguousFlood(void) const;         // TODO 007 Do we need this?
+    void SetInContiguousFlood(void);
+    void UnSetInContiguousFlood(void);
+    void SetFloodBySetupSurge(void);
+    bool bIsFloodBySetupSurge(void) const;
+    void SetFloodBySetupSurgeRunup(void);
+    bool bIsFloodBySetupSurgeRunup(void) const;
+    bool bIsInContiguousSeaArea(void) const;
 
     void SetInActiveZone(bool const);
     bool bIsInActiveZone(void) const;
@@ -257,7 +257,7 @@ public:
     bool bIsPossibleCoastStartCell(void) const;
 
     void SetPossibleFloodStartCell(void);
-    // bool bIsPossibleFloodStartCell(void) const;
+    bool bIsPossibleFloodStartCell(void) const;
 
     void SetPolygonID(int const);
     int nGetPolygonID(void) const;

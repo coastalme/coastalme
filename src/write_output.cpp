@@ -1345,38 +1345,25 @@ int CSimulation::nWriteEndRunDetails(void)
 }
 
 //===============================================================================================================================
-//! Writes to the log file a table showing polygon to polygon shares of unconsolidated sediment transport, etc.
+//! Writes to the log file a table showing polygon info
 //===============================================================================================================================
-void CSimulation::WritePolygonShareTable(int const nCoast)
+void CSimulation::WritePolygonInfoTable(int const nCoast)
 {
-   LogStream << endl << m_ulIter << ": Polygon-to-adjacent polygon shares (non-dimensional), per-polygon seawater volume (m^3), per-polygon D50 values (mm: a blank D50 value means that there is no unconsolidated sediment on that polygon)." << endl;
+   LogStream << endl << m_ulIter << ": Per-polygon profile info, seawater volume (m^3), and D50 values (mm: a blank D50 value means that there is no unconsolidated sediment on that polygon)." << endl;
    
-   LogStream << "-----------|-----------|-----------|--------------|--------------|--------------------------------------------" << endl;
-   LogStream << strCentre("Polygon", 11) << "|" << strCentre("Coast", 11) << "|" << strCentre("Polygon", 11) << "|" << strCentre("Seawater", 14) << "|" << strCentre("Uncons d50", 14) << "| " << strCentre("(Dir'n Adj Share)...", 14) << endl;
-   LogStream << strCentre("Global ID", 11) << "|" << strCentre("", 11) << "|" << strCentre("Coast ID", 11) << "|" << strCentre("Volume", 14) << "|" << strCentre("", 14) << "| " << strCentre("", 14) << endl;
-   LogStream << "-----------|-----------|-----------|--------------|--------------|--------------------------------------------" << endl;
+   LogStream << "-----------|-----------|-----------|-----------|-----------|--------------|--------------|" << endl;
+   LogStream << strCentre("Polygon", 11) << "|" << strCentre("Coast", 11) << "|" << strCentre("Polygon", 11) << "|" << strCentre("Up-coast", 11) << "|" << strCentre("Down-coast", 11) << "|" << strCentre("Seawater", 14) << "|" << strCentre("Uncons d50", 14) << "|" << endl;
+   LogStream << strCentre("Global ID", 11) << "|" << strCentre("", 11) << "|" << strCentre("Coast ID", 11) << "|" << strCentre("Profile", 11) << "|" << strCentre("Profile", 11) << "|" << strCentre("Volume", 14) << "|" << strCentre("", 14) << "|" << endl;
+   LogStream << "-----------|-----------|-----------|-----------|-----------|--------------|--------------|" << endl;
 
    for (int n = 0; n < nGetCoastPolygonSize(); n++)
    {
       CGeomCoastPolygon const* pPolygon = pGetPolygon(n);
 
-      LogStream << strIntRight(pPolygon->nGetGlobalID(), 11) << "|" << strIntRight(nCoast, 11) << "|" << strIntRight(pPolygon->nGetCoastID(), 11) << "|" << strDblRight(pPolygon->dGetSeawaterVolume(), 0, 14) << "|" << strDblRight(pPolygon->dGetAvgUnconsD50(), 0, 14) << "| ";
-
-      for (int m = 0; m < pPolygon->nGetNumUpCoastAdjacentPolygons(); m++)
-      {
-         if (! pPolygon->bDownCoastThisIter())
-            LogStream << "(UP  \t" << pPolygon->nGetUpCoastAdjacentPolygon(m) << "\t" << pPolygon->dGetUpCoastAdjacentPolygonBoundaryShare(m) << ")\t";
-      }
-
-      for (int m = 0; m < pPolygon->nGetNumDownCoastAdjacentPolygons(); m++)
-      {
-         if (pPolygon->bDownCoastThisIter())
-            LogStream << "(DOWN\t" << pPolygon->nGetDownCoastAdjacentPolygon(m) << "\t" << pPolygon->dGetDownCoastAdjacentPolygonBoundaryShare(m) << ")\t";
-      }
-      LogStream << endl;
+      LogStream << strIntRight(pPolygon->nGetGlobalID(), 11) << "|" << strIntRight(nCoast, 11) << "|" << strIntRight(pPolygon->nGetCoastID(), 11) << "|" << strIntRight(pPolygon->nGetUpCoastProfile(), 11) << "|" << strIntRight(pPolygon->nGetDownCoastProfile(), 11) << "|" << strDblRight(pPolygon->dGetSeawaterVolume(), 0, 14) << "|" << strDblRight(pPolygon->dGetAvgUnconsD50(), 0, 14) << "| " << endl;
    }
    
-   LogStream << "-----------|-----------|-----------|--------------|--------------|--------------------------------------------" << endl << endl;
+   LogStream << "-----------|-----------|-----------|-----------|-----------|--------------|--------------|" << endl << endl;
 }
 
 //===============================================================================================================================
@@ -1687,12 +1674,12 @@ void CSimulation::WritePolygonPotentialErosion(int const nCoast)
 //===============================================================================================================================
 void CSimulation::WritePolygonUnsortedSequence(int const nCoast, vector<vector<int> >& pnVVPolyAndAdjacent)
 {
-   LogStream << m_ulIter << ": Unsorted sequence of polygon processing" << endl;
-   LogStream << "-----------|-----------|-----------|--------------|--------------|--------------|--------------|--------------|--------------|" << endl;
-   LogStream << strCentre("From", 11) << "|" << strCentre("Coast", 11) << "|" << strCentre("From", 11) << "|" << strCentre("Direction", 14) << "|" << strCentre("To", 14) << "|" << endl;
-   LogStream << strCentre("Polygon", 11) << "|" << strCentre("", 11) << "|" << strCentre("Polygon", 11) << "|" << strCentre("", 14) << "|" << strCentre("Polygon", 14) << "|" << endl;
-   LogStream << strCentre("Global ID", 11) << "|" << strCentre("", 11) << "|" << strCentre("Coast ID", 11) << "|" << strCentre("", 14) << "|" << strCentre("Coast ID", 14) << "|" << endl;
-   LogStream << "-----------|-----------|-----------|--------------|--------------|--------------|--------------|--------------|--------------|" << endl;
+   LogStream << m_ulIter << ": Unsorted sequence of polygon processing (-9999 = leaves grid)" << endl;
+   LogStream << "-----------|-----------|-----------|-----------|-----------|" << endl;
+   LogStream << strCentre("From", 11) << "|" << strCentre("Coast", 11) << "|" << strCentre("From", 11) << "|" << strCentre("Direction", 11) << "|" << strCentre("To", 11) << "|" << endl;
+   LogStream << strCentre("Polygon", 11) << "|" << strCentre("", 11) << "|" << strCentre("Polygon", 11) << "|" << strCentre("", 11) << "|" << strCentre("Polygon", 11) << "|" << endl;
+   LogStream << strCentre("Global ID", 11) << "|" << strCentre("", 11) << "|" << strCentre("Coast ID", 11) << "|" << strCentre("", 11) << "|" << strCentre("Coast ID", 11) << "|" << endl;
+   LogStream << "-----------|-----------|-----------|-----------|-----------|" << endl;
 
    for (int n = 0; n < static_cast<int>(pnVVPolyAndAdjacent.size()); n++)
    {
@@ -1716,9 +1703,9 @@ void CSimulation::WritePolygonUnsortedSequence(int const nCoast, vector<vector<i
          if (m == 2)
          {
             if (pnVVPolyAndAdjacent[n][m] == true)
-               LogStream << strCentre("DOWN ", 14) << "|";
+               LogStream << strCentre("DOWN ", 11) << "|";
             else
-               LogStream << strCentre("UP   ", 14) << "|";
+               LogStream << strCentre("UP   ", 11) << "|";
 
             continue;
          }
@@ -1730,11 +1717,11 @@ void CSimulation::WritePolygonUnsortedSequence(int const nCoast, vector<vector<i
             CGeomCoastPolygon const* pAdjPolygon = m_VCoast[nCoast].pGetPolygon(nAdjDownCoast);
             nCoastID = pAdjPolygon->nGetCoastID();
          }
-         LogStream << strIntRight(nCoastID, 14) << "|";
+         LogStream << strIntRight(nCoastID, 11) << "|";
       }
       LogStream << endl;
    }
-   LogStream << "-----------|-----------|-----------|--------------|--------------|--------------|--------------|--------------|--------------|" << endl << endl;
+   LogStream << "-----------|-----------|-----------|-----------|-----------|" << endl << endl;
 }
 
 //===============================================================================================================================
@@ -1745,11 +1732,11 @@ void CSimulation::WritePolygonSortedSequence(int const nCoast, vector<vector<int
    // Show sorted order of polygon processing, and any circularities
    LogStream << m_ulIter << ": Sorted sequence of polygon processing (" << INT_NODATA << " = leaves grid), and any X -> Y -> X circularities" << endl;
 
-   LogStream << "-----------|-----------|-----------|--------------|--------------|--------------|" << endl;
-   LogStream << strCentre("From", 11) << "|" << strCentre("Coast", 11) << "|" << strCentre("From", 11) << "|" << strCentre("Direction", 14) << "|" << strCentre("To", 14) << "|" << strCentre("Circular", 14) << "|" << endl;
-   LogStream << strCentre("Polygon", 11) << "|" << strCentre("", 11) << "|" << strCentre("Polygon", 11) << "|" << strCentre("", 14) << "|" << strCentre("Polygon", 14) << "|" << strCentre("-ity?", 14) << "|" << endl;
-   LogStream << strCentre("Global ID", 11) << "|" << strCentre("", 11) << "|" << strCentre("Coast ID", 11) << "|" << strCentre("", 14) << "|" << strCentre("Coast ID", 14) << "|" << strCentre("", 14) << "|" << endl;
-   LogStream << "-----------|-----------|-----------|--------------|--------------|--------------|" << endl;
+   LogStream << "-----------|-----------|-----------|-----------|-----------|--------------|" << endl;
+   LogStream << strCentre("From", 11) << "|" << strCentre("Coast", 11) << "|" << strCentre("From", 11) << "|" << strCentre("Direction", 11) << "|" << strCentre("To", 11) << "|" << strCentre("Circular", 14) << "|" << endl;
+   LogStream << strCentre("Polygon", 11) << "|" << strCentre("", 11) << "|" << strCentre("Polygon", 11) << "|" << strCentre("", 11) << "|" << strCentre("Polygon", 11) << "|" << strCentre("-ity?", 14) << "|" << endl;
+   LogStream << strCentre("Global ID", 11) << "|" << strCentre("", 11) << "|" << strCentre("Coast ID", 11) << "|" << strCentre("", 11) << "|" << strCentre("Coast ID", 11) << "|" << strCentre("", 14) << "|" << endl;
+   LogStream << "-----------|-----------|-----------|-----------|-----------|--------------|" << endl;
    
    for (int nPoly = 0; nPoly < static_cast<int>(pnVVPolyAndAdjacent.size()); nPoly++)
    {
@@ -1765,9 +1752,9 @@ void CSimulation::WritePolygonSortedSequence(int const nCoast, vector<vector<int
          if (m == 2)
          {
             if (pnVVPolyAndAdjacent[nPoly][m] == true)
-               LogStream << strCentre("DOWN ", 14) << "|";
+               LogStream << strCentre("DOWN ", 11) << "|";
             else
-               LogStream << strCentre("UP   ", 14) << "|";
+               LogStream << strCentre("UP   ", 11) << "|";
 
             continue;
          }
@@ -1785,7 +1772,7 @@ void CSimulation::WritePolygonSortedSequence(int const nCoast, vector<vector<int
          if (m < (static_cast<int>(pnVVPolyAndAdjacent[nPoly].size()) - 1))
             strTmp += ", ";
       }
-      LogStream << strRight(strTmp, 14) << "|";
+      LogStream << strRight(strTmp, 11) << "|";
       
       strTmp = "";
       
@@ -1803,7 +1790,7 @@ void CSimulation::WritePolygonSortedSequence(int const nCoast, vector<vector<int
       }
       LogStream << strCentre(strTmp, 14) << "|" << endl;
    }
-   LogStream << "-----------|-----------|-----------|--------------|--------------|--------------|" << endl << endl;
+   LogStream << "-----------|-----------|-----------|-----------|-----------|--------------|" << endl << endl;
 }
 
 //===============================================================================================================================

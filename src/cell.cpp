@@ -122,44 +122,44 @@ bool CGeomCell::bIsInContiguousSea(void) const
    return m_bInContiguousSea;
 }
 
-//! TODO 007 What do this do? Does it duplicate SetInContiguousSea()?
+//! Set this cell as in the contiguous runup flood area
 void CGeomCell::SetInContiguousFlood(void)
 {
    m_bInContiguousFlood = true;
 }
 
-//! TODO 007 What does this do? Is it just the inverse of SetInContiguousSea()?
+//! Set this cell as not in the contiguous runup flood area
 void CGeomCell::UnSetInContiguousFlood(void)
 {
    m_bInContiguousFlood = false;
 }
 
-//! TODO 007 What does this do? Set this cell as flood by setup surger
+//! Set this cell as flooded by setup surge
 void CGeomCell::SetFloodBySetupSurge(void)
 {
    m_bFloodBySetupSurge = true;
 }
 
-//! TODO 007 What does this do? Is this cell flood by setup surge?
+//! Is this cell flooded by setup surge?
 bool CGeomCell::bIsFloodBySetupSurge(void) const
 {
    return m_bFloodBySetupSurge;
 }
 
-//! TODO 007 What does this do? Set this cell as flood by setup surge runup
+//! Set this cell as flooded by setup surge runup
 void CGeomCell::SetFloodBySetupSurgeRunup(void)
 {
    m_bFloodBySetupSurgeRunup = true;
 }
 
-//! TODO 007 What does this do? Is this cell flood by setup surge runup?
+//! Is this cell flooded by setup surge runup?
 bool CGeomCell::bIsFloodBySetupSurgeRunup(void) const
 {
    return m_bFloodBySetupSurgeRunup;
 }
 
-//! TODO 007 What does this do? Does it just duplicate bIsInContiguousSea()?
-bool CGeomCell::bIsInContiguousFlood(void) const
+//! Is this cell in the contiguous sea area?
+bool CGeomCell::bIsInContiguousSeaArea(void) const
 {
    return m_bInContiguousFlood;
 }
@@ -200,17 +200,17 @@ bool CGeomCell::bIsPossibleCoastStartCell(void) const
    return m_bPossibleCoastStartCell;
 }
 
-//! TODO 007 What is this for? Sets a flag to show that this cell has been flagged as a possible start-point for a coastline
+//! Sets a flag to show that this cell has been flagged as a possible start-point for runup flooding
 void CGeomCell::SetPossibleFloodStartCell(void)
 {
    m_bPossibleFloodStartCell = true;
 }
 
-// //! TODO 007 What is this for? Returns a flag which shows whether this cell has been flagged as a possible start- or end-point for a coastline
-// bool CGeomCell::bIsPossibleFloodStartCell(void) const
-// {
-//    return m_bPossibleFloodStartCell;
-// }
+//! Returns a flag which shows whether this cell has been flagged as a possible start point for runup flooding
+bool CGeomCell::bIsPossibleFloodStartCell(void) const
+{
+   return m_bPossibleFloodStartCell;
+}
 
 //! Returns true if this cell has had potential erosion this timestep
 bool CGeomCell::bPotentialPlatformErosion(void) const

@@ -130,8 +130,13 @@ CoastalME CHANGELOG
          Fixed profile spacing problem on Groyne test case
          Code tidying
 
-1.3.10  Cliff collapse improvements
-        Code tidying
-        
-        
+1.3.10   Improvements to cliff collapse routines
+         Reinstate some runup routines
+         Code tidying
+
+1.3.11   Reinstate some runup routines
+         Fix bug re. unconsolidated sediment routing
+         Improve logfile output
+         Code tidying
+
 

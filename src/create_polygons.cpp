@@ -70,10 +70,10 @@ int CSimulation::nCreateAllPolygons(void)
 
          if (pThisProfile->bOKIncStartAndEndOfCoast())
          {
-            // This profile is OK, so we will start a polygon here and extend it down-coast
+            // This profile is OK, so we will start a polygon here and extend it down-coast (i.e. along the coast in the direction of increasing coastline point numbers)
             int nThisProfile = pThisProfile->nGetCoastID();
 
-            // This will be the coast ID number, and also the along-coast sequence, of the polygon
+            // This will be the coast ID number of the polygon, and also the polygon's along-coast sequence
             nPolygon++;
 
             // Now get a pointer to the next (down-coast) profile
@@ -827,7 +827,7 @@ int CSimulation::nDoPolygonSharedBoundaries(void)
       // }
       // // DEBUG CODE =================
 
-      // Do this for every coastal polygon, in down-coast sequence
+      // Do this for every coastal polygon, in along-coast sequence
       for (int nn = 0; nn < nNumPolygons; nn++)
       {
          CGeomCoastPolygon* pThisPolygon = m_VCoast[nCoast].pGetPolygon(nn);

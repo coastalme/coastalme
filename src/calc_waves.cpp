@@ -77,7 +77,7 @@ int CSimulation::nSetAllCoastpointDeepWaterWaveValues(void)
 
       for (int nPoint = 0; nPoint < m_VCoast[nCoast].nGetCoastlineSize(); nPoint++)
       {
-         // We are going down-coast
+         // We are going down-coast (i.e. along the coast in the direction of increasing coastline point numbers)
          if (m_VCoast[nCoast].bIsProfileAtCoastPoint(nPoint))
          {
             // OK, a coastline-normal profile begins at this coastline point, so set the deep water wave values at this coastline point to be the values at the seaward end of the coastline normal
@@ -1330,7 +1330,7 @@ int CSimulation::nCalcWavePropertiesOnProfile(int const nCoast, int const nCoast
    double dRunUp = 0;
    if (m_nRunUpEquation == 0)
    {
-      // Compute the run-up using NIELSEN & HANSLOW (1991) & DHI (2004) // TODO 007
+      // Compute the run-up using Nielsen & Hanslow (1991) & DHI (2004)
       dRunUp = 0.36 * pow(9.81, 0.5) * dtanBeta * pow(dWaveHeight, 0.5) * dDeepWaterWavePeriod;
    }
    else if (m_nRunUpEquation == 1)

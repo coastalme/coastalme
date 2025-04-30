@@ -161,23 +161,6 @@ int CSimulation::nCreateAllProfiles(void)
       // LogStream << "===================================================================================================" << endl << endl;
       // // DEBUG CODE ===================================================================================================
 
-      // // DEBUG CODE ===================================================================================================
-      // int nProf = 0;
-      // for (int n = 0; n < nCoastSize; n++)
-      // {
-      //    if (m_VCoast[nCoast].bIsProfileAtCoastPoint(n))
-      //    {
-      //       CGeomProfile* pProfile = m_VCoast[nCoast].pGetProfileAtCoastPoint(n);
-      //
-      //       LogStream << "profile " << pProfile->nGetCoastID() << " at coast point " << n << " adjacent up-coast profile = " << pProfile->pGetUpCoastAdjacentProfile() << " adjacent down-coast profile = " << pProfile->pGetDownCoastAdjacentProfile() << endl;
-      //
-      //       nProf++;
-      //    }
-      // }
-      // LogStream << endl;
-      // LogStream << "nProf = " << nProf << endl;
-      // // DEBUG CODE ===================================================================================================
-
       // int nLastProfile;
       // int nThisProfile;
       CGeomProfile* pLastProfile;
@@ -231,7 +214,7 @@ int CSimulation::nCreateAllProfiles(void)
       //       nUpCoastProfile = pUpCoastProfile->nGetCoastID();
       //    if (pDownCoastProfile != 0)
       //       nDownCoastProfile = pDownCoastProfile->nGetCoastID();
-      //    LogStream << n << "\t nCoastID = " << pProfile->nGetCoastID() << "\tnGlobalID = " << pProfile->nGetGlobalID() << "\t up-coast profile = " << nUpCoastProfile << "\t down-coast profile = " << nDownCoastProfile << endl;
+      //    LogStream << "nCoastID = " << pProfile->nGetCoastID() << "\tnGlobalID = " << pProfile->nGetGlobalID() << "\t up-coast profile = " << nUpCoastProfile << "\t down-coast profile = " << nDownCoastProfile << endl;
       // }
       //    LogStream << endl;
       // // DEBUG CODE =======================================================================================================================
@@ -700,7 +683,7 @@ int CSimulation::nLocateAndCreateGridEdgeProfile(bool const bCoastStart, int con
    m_VCoast[nCoast].SetProfileAtCoastPoint(nProfileStartPoint, pProfile);
 
    if (m_nLogFileDetail >= LOG_FILE_ALL)
-      LogStream << m_ulIter << ": coast " << nCoast << " profile " << nProfile << " created at coast " << (bCoastStart ? "start" : "end") << " point " << (bCoastStart ? 0 : nCoastSize - 1) << ", from [" << PtiProfileStart.nGetX() << "][" << PtiProfileStart.nGetY() << "] = {" << dGridCentroidXToExtCRSX(PtiProfileStart.nGetX()) << ", " << dGridCentroidYToExtCRSY(PtiProfileStart.nGetY()) << "} to [" << VPtiNormalPoints.back().nGetX() << "][" << VPtiNormalPoints.back().nGetY() << "] = {" << dGridCentroidXToExtCRSX(VPtiNormalPoints.back().nGetX()) << ", " << dGridCentroidYToExtCRSY(VPtiNormalPoints.back().nGetY()) << "}" << endl;
+      LogStream << m_ulIter << ": coast " << nCoast << " profile " << nProfile << " (nCoastID = " << pProfile->nGetCoastID() << " nGlobalID = " << pProfile->nGetGlobalID() << ") created at coast " << (bCoastStart ? "start" : "end") << " point " << (bCoastStart ? 0 : nCoastSize - 1) << ", from [" << PtiProfileStart.nGetX() << "][" << PtiProfileStart.nGetY() << "] = {" << dGridCentroidXToExtCRSX(PtiProfileStart.nGetX()) << ", " << dGridCentroidYToExtCRSY(PtiProfileStart.nGetY()) << "} to [" << VPtiNormalPoints.back().nGetX() << "][" << VPtiNormalPoints.back().nGetY() << "] = {" << dGridCentroidXToExtCRSX(VPtiNormalPoints.back().nGetX()) << ", " << dGridCentroidYToExtCRSY(VPtiNormalPoints.back().nGetY()) << "}" << endl;
 
    return RTN_OK;
 }
