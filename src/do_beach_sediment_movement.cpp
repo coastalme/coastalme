@@ -42,51 +42,83 @@ using std::stable_sort;
 #include "coast.h"
 
 //===============================================================================================================================
-//! Function used to sort polygons before doing the polygon-to-polygon source-target pattern. For both LH and RH arguments, the first value is the polygon coast ID, the second value is the down- or up-coast direction, and subsequent numbers are adjacent polygon coastIDs in that direction. If the first argument must be ordered before the second, return true
+//! Function used to sort polygons before doing the polygon-to-polygon source-target pattern. For both LH and RH arguments, the first element is the polygon global, the second element is the polygo coast ID, the third element is the down- or up-coast direction, and fourth and subsequent elements are adjacent polygon coast IDs in that direction. If the first argument must be ordered before the second (i.e. the original sequence is to be retained), return true. If the second argument must be ordered before the first (i.e. the arguments must be swapped), return false
 //===============================================================================================================================
 bool bPolygonAndAdjCompare(const vector<int>& nVLeft, const vector<int>& nVRight)
 {
-   // Each row (vector) of this vector-of-vectors is:      // Each row (vector) of this vector-of-vectors is:
+   // Each row (vector) of this vector-of-vectors is:
    // 0: This-polygon global ID
    // 1: This-polygon coast ID (in down-coast seq when sorted)
    // 2: This-polygon down-coast (true) or up-coast (false) sediment movement
-   // 3 and subsequent: down-coast seqs of down-coast (if sediment movement is down-coast)  or up-coast (if sediment movement is up-coast) adjacent polygons
-   //
+   // 3 and subsequent: down-coast seqs of down-coast adjacent polygons (if sediment movement is down-coast) or up-coast adjacent polygons (if sediment movement is up-coast)
+
+   bool bDownCoast = nVLeft[2];
+
    // For safety, check that the LHS polygon has at least one adjacent polygon (it should have, apart from the bad situation where just one big polygon is created)
    if ((nVLeft.size() >= 4) && (nVRight.size() >= 4))
    {
-      // Polygons with off-edge sediment movement (i.e. at the grid edge) are processed last, so put LHS grid-edge polygons on the RHS
-      if (nVLeft[3] == INT_NODATA)
-         return false;
+      // Sort out polygon-to-polygon dependencies. We need to put 'target' polygons after 'source' polygons, so that the source is processed before the target. So is the RHS polygon among the adjacent polygons of the LHS polygon?
 
-      // Polygons with off-edge sediment movement (i.e. at the grid edge) are processed last, so keep RHS grid-edge polygons where they are
-      if (nVRight[3] == INT_NODATA)
-         return true;
-
-      // Now sort out polygon-to-polygon dependencies. We need to put 'target' polygons after 'source' polygons, so that the source is processed before the target. So does the LHS polygon have the RHS polygon as one of its adjacent polygons?
+      bool bFound = false;
       for (unsigned int n = 3; n < nVLeft.size(); n++)
       {
-         if (nVRight[1] == nVLeft[n])
-            // It does, so keep the existing sequence
+         if (nVLeft[n] == nVRight[1])
+            bFound = true;
+      }
+
+      if (bFound)
+      {
+         // Yes, the RHS polygon is among the adjacent polygons of the LHS polygon, so uncons sediment movement is from the LHS polygon to the RHS polygon i.e. downcoast
+         if (bDownCoast)
+            // Keep the existing sequence
+            return true;
+         else
+            // Swap them
+            return false;
+      }
+
+      // Is the LHS polygon among the adjacent polygons of the RHS polygon?
+      bFound = false;
+      for (unsigned int n = 3; n < nVRight.size(); n++)
+      {
+         if (nVRight[n] == nVLeft[1])
+            bFound = true;
+      }
+
+      if (bFound)
+      {
+         // Yes, the LHS polygon is among the adjacent polygons of the RHS polygon, so uncons sediment movement is from the RHS polygon to the LHS polygon i.e. upcoast
+         if (bDownCoast)
+            // Swap them
+            return false;
+         else
+            // Keep the existing sequence
             return true;
       }
 
-      // Does the RHS polygon have the LHS polygon as one of its adjacent polygons?
-      for (unsigned int n = 3; n < nVRight.size(); n++)
-      {
-         if (nVLeft[1] == nVRight[n])
-            // It does, so swap them
-            return false;
-      }
    }
 
-   bool bDownCoast = nVLeft[2];
-   if (bDownCoast)
-      // Sediment going down-coast
-      return nVLeft < nVRight;
+   // Neither polygon has the other polygon amongst its list of adjacent polygons
+   if (nVLeft[1] < nVRight[1])
+   {
+      // The LHS polygon has a lower coast ID than the RHS polygon, this if fine if uncons sediment movement is down-coast
+      if (bDownCoast)
+         // Keep the existing sequence
+         return true;
+      else
+         // Swap them
+         return false;
+   }
    else
-      // Sediment going up-coast
-      return nVLeft > nVRight;
+   {
+      // The LHS polygon has a higher coast ID than the RHS polygon, this if fine if uncons sediment movement is up-coast
+      if (bDownCoast)
+         // Swap them
+         return false;
+      else
+         // Keep the existing sequence
+         return true;
+   }
 
    // Default return value, should never get here
    return true;
@@ -120,10 +152,11 @@ int CSimulation::nDoAllActualBeachErosionAndDeposition(void)
       // 2: This-polygon down-coast (true) or up-coast (false) sediment movement
       // 3 and subsequent: down-coast seqs of down-coast (if sediment movement is down-coast)  or up-coast (if sediment movement is up-coast) adjacent polygons
       vector<vector<int> > nVVPolyAndAdjacent;
+      vector<int> nVPolyAndAdj;
       for (int nn = 0; nn < m_VCoast[nCoast].nGetNumPolygons(); nn++)
       {
          CGeomCoastPolygon const* pPolygon = m_VCoast[nCoast].pGetPolygon(nn);
-         vector<int> nVPolyAndAdj;
+         nVPolyAndAdj.clear();
 
          // The first [0] nVPolyAndAdj array item is the polygon's global ID
          nVPolyAndAdj.push_back(pPolygon->nGetGlobalID());
@@ -166,7 +199,7 @@ int CSimulation::nDoAllActualBeachErosionAndDeposition(void)
          WritePolygonUnsortedSequence(nCoast, nVVPolyAndAdjacent);
 
       // OK, now sort the array using bPolygonAndAdjCompare(), so that 'target' polygons are processed after 'source' polygons
-      stable_sort(nVVPolyAndAdjacent.begin(), nVVPolyAndAdjacent.end(), bPolygonAndAdjCompare);
+      sort(nVVPolyAndAdjacent.begin(), nVVPolyAndAdjacent.end(), bPolygonAndAdjCompare);
       
       // And check for circularities i.e. where poly X -> poly Y -> poly X. Note that we only look for two-way circularities. i.e. we ignore poly A -> poly B -> Poly C -> poly A patterns. These are probably pretty rare, however
       vector<int> VnSourcePolyDownCoastSeq;

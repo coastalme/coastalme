@@ -1115,7 +1115,7 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
       {
          for (int nCoast = 0; nCoast < nValidCoast; nCoast++)
          {
-            WritePolygonShareTable(nCoast);
+            WritePolygonInfoTable(nCoast);
             WritePolygonPreExistingSedimentTable(nCoast);
          }
       }

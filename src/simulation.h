@@ -1752,7 +1752,7 @@ private:
    static void AppendEnsureNoGap(vector<CGeom2DIPoint>*, CGeom2DIPoint const*);
    // static bool bIsNumeric(string const*);
    unsigned long ulConvertToTimestep(string const*) const;
-   void WritePolygonShareTable(int const);
+   void WritePolygonInfoTable(int const);
    void WritePolygonPreExistingSedimentTable(int const);
    void WritePolygonSedimentInputEventTable(int const);
    void WritePolygonShorePlatformErosion(int const);
