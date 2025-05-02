@@ -595,7 +595,7 @@ int CSimulation::nDoAllShadowZones(void)
          // Flood fill the shadow zone: start by finding the centroid
          if (VnShadowBoundaryEndCoastPoint[nZone] > VnShadowBoundaryStartCoastPoint[nZone])
          {
-            // The shadow boundary endpoint is downcoast from the shadow boundary start point
+            // The shadow boundary endpoint is down-coast from the shadow boundary start point
             int
                 nStart = tMax(VnShadowBoundaryStartCoastPoint[nZone], 0),
                 nEnd = tMin(VnShadowBoundaryEndCoastPoint[nZone], m_VCoast[nCoast].nGetCoastlineSize());
@@ -609,7 +609,7 @@ int CSimulation::nDoAllShadowZones(void)
          }
          else
          {
-            // The shadow boundary endpoint is upcoast from the shadow boundary start point
+            // The shadow boundary endpoint is up-coast from the shadow boundary start point
             int
                 nStart = tMin(VnShadowBoundaryEndCoastPoint[nZone], m_VCoast[nCoast].nGetCoastlineSize() - 1),
                 nEnd = tMax(VnShadowBoundaryStartCoastPoint[nZone], 0);

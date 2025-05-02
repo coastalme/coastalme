@@ -98,13 +98,13 @@ CGeomCoastPolygon::~CGeomCoastPolygon(void)
 //    return m_bIsPointedSeaward;
 // }
 
-//! Set a flag to say whether sediment movement on this polygon is downcoast this iteration
+//! Set a flag to say whether sediment movement on this polygon is down-coast this iteration
 void CGeomCoastPolygon::SetDownCoastThisIter(bool const bFlag)
 {
    m_bUnconsSedimentMovementDownCoastThisIter = bFlag;
 }
 
-//! Is sediment movement on this polygon downcoast this iteration?
+//! Is sediment movement on this polygon down-coast this iteration?
 bool CGeomCoastPolygon::bDownCoastThisIter(void) const
 {
    return m_bUnconsSedimentMovementDownCoastThisIter;
