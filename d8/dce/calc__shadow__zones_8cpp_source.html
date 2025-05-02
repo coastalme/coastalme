@@ -689,7 +689,7 @@ $(function(){initNavTree('d8/dce/calc__shadow__zones_8cpp_source.html','../../')
 <div class="line"><a id="l00595" name="l00595"></a><span class="lineno">  595</span>         <span class="comment">// Flood fill the shadow zone: start by finding the centroid</span></div>
 <div class="line"><a id="l00596" name="l00596"></a><span class="lineno">  596</span>         <span class="keywordflow">if</span> (VnShadowBoundaryEndCoastPoint[nZone] &gt; VnShadowBoundaryStartCoastPoint[nZone])</div>
 <div class="line"><a id="l00597" name="l00597"></a><span class="lineno">  597</span>         {</div>
-<div class="line"><a id="l00598" name="l00598"></a><span class="lineno">  598</span>            <span class="comment">// The shadow boundary endpoint is downcoast from the shadow boundary start point</span></div>
+<div class="line"><a id="l00598" name="l00598"></a><span class="lineno">  598</span>            <span class="comment">// The shadow boundary endpoint is down-coast from the shadow boundary start point</span></div>
 <div class="line"><a id="l00599" name="l00599"></a><span class="lineno">  599</span>            <span class="keywordtype">int</span></div>
 <div class="line"><a id="l00600" name="l00600"></a><span class="lineno">  600</span>                nStart = <a class="code hl_function" href="../../d6/d2a/cme_8h.html#a7e895b460cef877dec4d12ead0c74f15">tMax</a>(VnShadowBoundaryStartCoastPoint[nZone], 0),</div>
 <div class="line"><a id="l00601" name="l00601"></a><span class="lineno">  601</span>                nEnd = <a class="code hl_function" href="../../d6/d2a/cme_8h.html#a068017859403c0629d89f8d348f6c224">tMin</a>(VnShadowBoundaryEndCoastPoint[nZone], <a class="code hl_variable" href="../../d1/d98/classCSimulation.html#a25ada8139c82ca7beab3f279cff83184">m_VCoast</a>[nCoast].nGetCoastlineSize());</div>
@@ -703,7 +703,7 @@ $(function(){initNavTree('d8/dce/calc__shadow__zones_8cpp_source.html','../../')
 <div class="line"><a id="l00609" name="l00609"></a><span class="lineno">  609</span>         }</div>
 <div class="line"><a id="l00610" name="l00610"></a><span class="lineno">  610</span>         <span class="keywordflow">else</span></div>
 <div class="line"><a id="l00611" name="l00611"></a><span class="lineno">  611</span>         {</div>
-<div class="line"><a id="l00612" name="l00612"></a><span class="lineno">  612</span>            <span class="comment">// The shadow boundary endpoint is upcoast from the shadow boundary start point</span></div>
+<div class="line"><a id="l00612" name="l00612"></a><span class="lineno">  612</span>            <span class="comment">// The shadow boundary endpoint is up-coast from the shadow boundary start point</span></div>
 <div class="line"><a id="l00613" name="l00613"></a><span class="lineno">  613</span>            <span class="keywordtype">int</span></div>
 <div class="line"><a id="l00614" name="l00614"></a><span class="lineno">  614</span>                nStart = <a class="code hl_function" href="../../d6/d2a/cme_8h.html#a068017859403c0629d89f8d348f6c224">tMin</a>(VnShadowBoundaryEndCoastPoint[nZone], <a class="code hl_variable" href="../../d1/d98/classCSimulation.html#a25ada8139c82ca7beab3f279cff83184">m_VCoast</a>[nCoast].nGetCoastlineSize() - 1),</div>
 <div class="line"><a id="l00615" name="l00615"></a><span class="lineno">  615</span>                nEnd = <a class="code hl_function" href="../../d6/d2a/cme_8h.html#a7e895b460cef877dec4d12ead0c74f15">tMax</a>(VnShadowBoundaryStartCoastPoint[nZone], 0);</div>
@@ -1492,7 +1492,7 @@ $(function(){initNavTree('d8/dce/calc__shadow__zones_8cpp_source.html','../../')
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="../../d8/dce/calc__shadow__zones_8cpp.html">calc_shadow_zones.cpp</a></li>
-    <li class="footer">Generated on Wed Apr 30 2025 21:14:41 for CoastalME (Coastal Modelling Environment) by <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+    <li class="footer">Generated on Fri May 2 2025 21:01:42 for CoastalME (Coastal Modelling Environment) by <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
   </ul>
 </div>
 </body>
