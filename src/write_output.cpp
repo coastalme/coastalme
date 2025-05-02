@@ -1737,13 +1737,13 @@ void CSimulation::WritePolygonSortedSequence(int const nCoast, vector<vector<int
    LogStream << strCentre("Polygon", 11) << "|" << strCentre("", 11) << "|" << strCentre("Polygon", 11) << "|" << strCentre("", 11) << "|" << strCentre("Polygon", 11) << "|" << strCentre("-ity?", 14) << "|" << endl;
    LogStream << strCentre("Global ID", 11) << "|" << strCentre("", 11) << "|" << strCentre("Coast ID", 11) << "|" << strCentre("", 11) << "|" << strCentre("Coast ID", 11) << "|" << strCentre("", 14) << "|" << endl;
    LogStream << "-----------|-----------|-----------|-----------|-----------|--------------|" << endl;
-   
+
    for (int nPoly = 0; nPoly < static_cast<int>(pnVVPolyAndAdjacent.size()); nPoly++)
    {
       const CGeomCoastPolygon* pPoly = m_VCoast[nCoast].pGetPolygon(pnVVPolyAndAdjacent[nPoly][1]);
       vector<int> VCirc = pPoly->VnGetCircularities();
 
-      LogStream << strIntRight(m_pVCoastPolygon[pnVVPolyAndAdjacent[nPoly][1]]->nGetGlobalID(), 11) << "|" << strIntRight(nCoast, 11) << "|" << strIntRight(pnVVPolyAndAdjacent[nPoly][1], 11) << "|";
+      LogStream << strIntRight(pPoly->nGetGlobalID(), 11) << "|" << strIntRight(nCoast, 11) << "|" << strIntRight(pPoly->nGetCoastID(), 11) << "|";
       
       // Up-coast or down-coast sediment movement?
       string strTmp = "";
@@ -1760,17 +1760,17 @@ void CSimulation::WritePolygonSortedSequence(int const nCoast, vector<vector<int
          }
 
          // These are the "To" polygons
-         int nAdjPolyDownCoastSeq = pnVVPolyAndAdjacent[nPoly][m];
+         int nAdjPoly = pnVVPolyAndAdjacent[nPoly][m];
          int nAdjacentPolyID = INT_NODATA;
-         if (nAdjPolyDownCoastSeq != INT_NODATA)
+         if (nAdjPoly != INT_NODATA)
          {
-            CGeomCoastPolygon const* pAdjPolygon = m_VCoast[nCoast].pGetPolygon(nAdjPolyDownCoastSeq);
+            CGeomCoastPolygon const* pAdjPolygon = m_VCoast[nCoast].pGetPolygon(nAdjPoly);
             nAdjacentPolyID = pAdjPolygon->nGetCoastID();
          }
          strTmp += to_string(nAdjacentPolyID);
 
          if (m < (static_cast<int>(pnVVPolyAndAdjacent[nPoly].size()) - 1))
-            strTmp += ", ";
+            strTmp += " ";
       }
       LogStream << strRight(strTmp, 11) << "|";
       
@@ -1782,10 +1782,11 @@ void CSimulation::WritePolygonSortedSequence(int const nCoast, vector<vector<int
          // There is at least one circularity                     
          for (unsigned int i = 0; i < VCirc.size(); i++)
          {
+
             strTmp += to_string(VCirc[i]);
             
             if (i < (VCirc.size()-1))
-               strTmp += ", ";
+               strTmp += " ";
          }
       }
       LogStream << strCentre(strTmp, 14) << "|" << endl;
