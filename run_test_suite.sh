@@ -62,9 +62,9 @@ cp in/test_suite/minimal_cons_with_sediment_input_line/cme.ini .
 ./cme
 echo ===============================================================================
 
-# rm -f out/test_suite/minimal_cons_with_sediment_input_block/*
-# cp in/test_suite/minimal_cons_with_sediment_input_block/cme.ini .
-# ./cme
+rm -f out/test_suite/minimal_cons_with_sediment_input_block/*
+cp in/test_suite/minimal_cons_with_sediment_input_block/cme.ini .
+./cme
 # echo ===============================================================================
 
 rm -f out/test_suite/Happisburgh/*
