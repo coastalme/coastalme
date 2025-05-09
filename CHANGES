@@ -146,5 +146,7 @@ CoastalME CHANGELOG
 1.3.13   Bug fix re. polygon sorting
          code tidying
 
+1.3.14   Extra safety check in shadow zone routines
+         Code tidying
 
 

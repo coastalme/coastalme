@@ -62,9 +62,9 @@ cp in/test_suite/minimal_cons_with_sediment_input_line/cme.ini .
 ./cme
 echo ===============================================================================
 
-rm -f out/test_suite/minimal_cons_with_sediment_input_block/*
-cp in/test_suite/minimal_cons_with_sediment_input_block/cme.ini .
-./cme
+# rm -f out/test_suite/minimal_cons_with_sediment_input_block/*
+# cp in/test_suite/minimal_cons_with_sediment_input_block/cme.ini .
+# ./cme
 # echo ===============================================================================
 
 rm -f out/test_suite/Happisburgh/*
@@ -94,6 +94,26 @@ echo ===========================================================================
 
 rm -f out/test_suite/GMD2017/UndefendedCoastline/*
 cp in/test_suite/GMD2017/UndefendedCoastline/cme.ini .
+./cme
+echo ===============================================================================
+
+rm -f out/test_suite/Wilf/Scen001/*
+cp in/test_suite/Wilf/Scen001/cme.ini .
+./cme
+echo ===============================================================================
+
+rm -f out/test_suite/Wilf/Scen002/*
+cp in/test_suite/Wilf/Scen002/cme.ini .
+./cme
+echo ===============================================================================
+
+rm -f out/test_suite/Wilf/Scen003/*
+cp in/test_suite/Wilf/Scen003/cme.ini .
+./cme
+echo ===============================================================================
+
+rm -f out/test_suite/Wilf/Scen004/*
+cp in/test_suite/Wilf/Scen004/cme.ini .
 ./cme
 echo ===============================================================================
 

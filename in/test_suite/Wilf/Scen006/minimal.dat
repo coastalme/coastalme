@@ -2,7 +2,7 @@
 ;
 ; Data file for CoastalME
 ;
-; Copyright (C) 2023 David Favis-Mortlock and Andres Payo
+; Copyright (C) 2025 David Favis-Mortlock and Andres Payo
 ;
 ;=====================================================================================================================
 ;
@@ -55,14 +55,14 @@ Maximum elevation of beach above SWL                                            
 ; Initial raster GIS layers --------------------------------------------------------------------------------------------
 Number of layers                                                                             : 1
 ; BASEMENT DEM MUST BE PRESENT
-Basement DEM file                                                             [path and name]: in/Exploration/ScenF/basement.tif
+Basement DEM file                                                             [path and name]: in/test_suite/Wilf/Scen006/basement.tif
    ; LAYER 0 THICKNESS FILES, LAYER 0 IS LOWEST
    ; *** MUST HAVE AT LEAST ONE THICKNESS FILE FOR THE FIRST LAYER
    Initial unconsolidated fine sediment file                                  [path and name]:
    Initial unconsolidated sand sediment file                                  [path and name]:
    Initial unconsolidated coarse sediment file                                [path and name]:
    Initial consolidated fine sediment file                                    [path and name]:
-   Initial consolidated sand sediment file                                    [path and name]: in/Exploration/ScenF/cape.tif 
+   Initial consolidated sand sediment file                                    [path and name]: in/test_suite/Wilf/Scen006/cape.tif
    Initial consolidated coarse sediment file                                  [path and name]:
 
 ; OPTIONAL THICKNESS FILE
@@ -70,8 +70,8 @@ Initial suspended sediment file                                               [p
 
 ; OTHER OPTIONAL RASTER FILES
 Initial landform file                                                         [path and name]:
-Intervention class file                                                       [path and name]: ;in/Exploration/ScenE/intervention_class.tif
-Intervention height file                                                      [path and name]: ;in/Exploration/ScenE/intervention_height.tif
+Intervention class file                                                       [path and name]:
+Intervention height file                                                      [path and name]:
 
 ; Hydrology data -------------------------------------------------------------------------------------------------------
 Wave propagation model                                                 [0 = COVE, 1 = CShore]: 1
@@ -145,7 +145,6 @@ Gravitational acceleration (m2/s)                                               
 Spacing of coastline normals (m)                                        [0 = default minimum]: 20
 Random factor for spacing of normals                              [0 to 1, 0 = deterministic]: 0         ; *** 0.1
 Length of coastline normals (m)                                                              : 130
-Maximum number of 'cape' normals                                                             : 6
 
 Start depth for wave calcs (ratio to deep water wave height)                                 : 30         ; was 10 30 15
 
@@ -155,6 +154,6 @@ Profile number(s) to save                                                       
 Timesteps to save profile(s)                                                                 : 1 6 12 24 36 48 60 72 84 96 108 120 144 156 168 180 192 204 216 228 240 252 264 276 288 300
 Save parallel profiles?                                                                      : n
 Output erosion potential look-up values                                                      : y
-Erode coast in alternate direction each timestep?                                            : n
+Size of moving window for calculating coastline curvature (must be odd)                      : 11
 ; END OF FILE ----------------------------------------------------------------------------------------------------------
 
