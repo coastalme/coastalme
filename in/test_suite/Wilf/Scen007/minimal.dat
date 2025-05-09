@@ -2,7 +2,7 @@
 ;
 ; Data file for CoastalME
 ;
-; Copyright (C) 2023 David Favis-Mortlock and Andres Payo
+; Copyright (C) 2025 David Favis-Mortlock and Andres Payo
 ;
 ;=====================================================================================================================
 ;
@@ -55,14 +55,14 @@ Maximum elevation of beach above SWL                                            
 ; Initial raster GIS layers --------------------------------------------------------------------------------------------
 Number of layers                                                                             : 1
 ; BASEMENT DEM MUST BE PRESENT
-Basement DEM file                                                             [path and name]: in/Exploration/ScenG/basement.tif
+Basement DEM file                                                             [path and name]: in/test_suite/Wilf/Scen007/basement.tif
    ; LAYER 0 THICKNESS FILES, LAYER 0 IS LOWEST
    ; *** MUST HAVE AT LEAST ONE THICKNESS FILE FOR THE FIRST LAYER
    Initial unconsolidated fine sediment file                                  [path and name]:
    Initial unconsolidated sand sediment file                                  [path and name]:
    Initial unconsolidated coarse sediment file                                [path and name]:
    Initial consolidated fine sediment file                                    [path and name]:
-   Initial consolidated sand sediment file                                    [path and name]: in/Exploration/ScenG/cape.tif 
+   Initial consolidated sand sediment file                                    [path and name]: in/test_suite/Wilf/Scen007/cape.tif
    Initial consolidated coarse sediment file                                  [path and name]:
 
 ; OPTIONAL THICKNESS FILE
@@ -81,12 +81,12 @@ Density of sea water (kg/m3)                                                    
 Initial still water level (m), or per-timestep SWL file                                      : 28
 Final still water level (m)                                     [blank = same as initial SWL]:
 
-Deep water wave height (m)                                         [value or point shapefile]: in/Exploration/ScenG/w_station.shp
-Deep water wave height time series         [omit if deep water wave height is a single value]: in/Exploration/ScenG/waves.dat
+Deep water wave height (m)                                         [value or point shapefile]: in/test_suite/Wilf/Scen007/w_station.shp
+Deep water wave height time series         [omit if deep water wave height is a single value]: in/test_suite/Wilf/Scen007/waves.dat
 Deep water wave orientation (degrees)         [omit if deep water wave height from shapefile]: 
 Wave period (sec)                             [omit if deep water wave height from shapefile]:
 
-Tide data file                                                                 [may be blank]: in/Exploration/ScenG/tides.dat
+Tide data file                                                                 [may be blank]: in/test_suite/Wilf/Scen007/tides.dat
 
 Breaking wave height to water depth ratio (non dimensional)                                  : 0.6
 
@@ -145,7 +145,6 @@ Gravitational acceleration (m2/s)                                               
 Spacing of coastline normals (m)                                        [0 = default minimum]: 0
 Random factor for spacing of normals                              [0 to 1, 0 = deterministic]: 0         ; *** 0.1
 Length of coastline normals (m)                                                              : 180
-Maximum number of 'cape' normals                                                             : 20 
 
 Start depth for wave calcs (ratio to deep water wave height)                                 : 30         ; was 10 30 15
 
@@ -155,6 +154,6 @@ Profile number(s) to save                                                       
 Timesteps to save profile(s)                                                                 : 1 6 12 24 36 48 60 72 84 96 108 120 144 156 168 180 192 204 216 228 240 252 264 276 288 300
 Save parallel profiles?                                                                      : n
 Output erosion potential look-up values                                                      : y
-Erode coast in alternate direction each timestep?                                            : n
+Size of moving window for calculating coastline curvature (must be odd)                      : 11
 ; END OF FILE ----------------------------------------------------------------------------------------------------------
 

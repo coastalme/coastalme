@@ -2,7 +2,7 @@
 ;
 ; Data file for CoastalME
 ;
-; Copyright (C) 2023 David Favis-Mortlock and Andres Payo
+; Copyright (C) 2025 David Favis-Mortlock and Andres Payo
 ;
 ;==============================================================================================================================================================
 ;
@@ -53,23 +53,23 @@ Maximum elevation of beach above SWL (m)	                                     [m
 ; Initial raster GIS layers -----------------------------------------------------------------------------------------------------------------------------------
 Number of layers                                                                             : 1
 ; BASEMENT DEM MUST BE PRESENT
-Basement DEM file                                                             [path and name]: /home/wilfc/CoastalME/in/test_suite/Happisburgh/HappisburghBasement.asc
+Basement DEM file                                                             [path and name]: in/test_suite/Wilf/Scen009/HappisburghBasement.asc
    ; LAYER 0 THICKNESS FILES, LAYER 0 IS LOWEST
    ; *** MUST HAVE AT LEAST ONE THICKNESS FILE FOR THE FIRST LAYER
-   Initial unconsolidated fine sediment file                                  [path and name]: /home/wilfc/CoastalME/in/test_suite/Happisburgh/1_U_F.asc
-   Initial unconsolidated sand sediment file                                  [path and name]: /home/wilfc/CoastalME/in/test_suite/Happisburgh/1_U_S.asc
-   Initial unconsolidated coarse sediment file                                [path and name]: /home/wilfc/CoastalME/in/test_suite/Happisburgh/1_U_G.asc
-   Initial consolidated fine sediment file                                    [path and name]: /home/wilfc/CoastalME/in/test_suite/Happisburgh/1_C_F.asc
-   Initial consolidated sand sediment file                                    [path and name]: /home/wilfc/CoastalME/in/test_suite/Happisburgh/1_C_S.asc
-   Initial consolidated coarse sediment file                                  [path and name]: /home/wilfc/CoastalME/in/test_suite/Happisburgh/1_C_G.asc
+   Initial unconsolidated fine sediment file                                  [path and name]: in/test_suite/Wilf/Scen009/1_U_F.asc
+   Initial unconsolidated sand sediment file                                  [path and name]: in/test_suite/Wilf/Scen009/1_U_S.asc
+   Initial unconsolidated coarse sediment file                                [path and name]: in/test_suite/Wilf/Scen009/1_U_G.asc
+   Initial consolidated fine sediment file                                    [path and name]: in/test_suite/Wilf/Scen009/1_C_F.asc
+   Initial consolidated sand sediment file                                    [path and name]: in/test_suite/Wilf/Scen009/1_C_S.asc
+   Initial consolidated coarse sediment file                                  [path and name]: in/test_suite/Wilf/Scen009/1_C_G.asc
 
 ; OPTIONAL THICKNESS FILE
 Initial suspended sediment file                                               [path and name]:
 
 ; OTHER OPTIONAL RASTER FILES
 Initial landform file                                                         [path and name]:
-Intervention class file                                                       [path and name]:; in/test_suite/Happisburgh/DefenceType.asc
-Intervention height file                                                      [path and name]:; in/test_suite/Happisburgh/DefenceElev.asc
+Intervention class file                                                       [path and name]:; in/test_suite/Wilf/Scen009/DefenceType.asc
+Intervention height file                                                      [path and name]:; in/test_suite/Wilf/Scen009/DefenceElev.asc
 
 ; Hydrology data ----------------------------------------------------------------------------------------------------------------------------------------------
 Wave propagation model                                                 [0 = COVE, 1 = CShore]: 1
@@ -77,11 +77,11 @@ Density of sea water (kg/m3)                                                    
 
 Initial still water level (m), or per-timestep SWL file                                      : 40.0      ; 41.76
 Final still water level (m)                                     [blank = same as initial SWL]:
-Deep water wave height (m)                                    [real value or point shapefile]: /home/wilfc/CoastalME/in/test_suite/Happisburgh/S002DeepWaterWavesOneStations.shp
-Deep water wave height time series (m)                            [empty if real value above]: /home/wilfc/CoastalME/in/test_suite/Happisburgh/cme_1_hours_POLWAM_MyPoint_23.dat
+Deep water wave height (m)                                    [real value or point shapefile]: in/test_suite/Wilf/Scen009/S002DeepWaterWavesOneStations.shp
+Deep water wave height time series (m)                            [empty if real value above]: in/test_suite/Wilf/Scen009/cme_1_hours_POLWAM_MyPoint_23.dat
 Deep water wave orientation (degrees)                      [empty if time wave height series]:           ; 245       ; 225 315 270 355 200 265 310 190 340
 Wave period (sec)                                          [empty if time wave height series]:           ; 5
-Tide data is the change (m) from still water level for each timestep                         : /home/wilfc/CoastalME/in/test_suite/Happisburgh/jsmeTide.dat    ; Either empty or a file
+Tide data is the change (m) from still water level for each timestep                         : in/test_suite/Wilf/Scen009/jsmeTide.dat    ; Either empty or a file
 Breaking wave height to water depth ratio (non dimensional)                                  : 0.80
 
 ; Sediment data -----------------------------------------------------------------------------------------------------------------------------------------------
@@ -139,7 +139,6 @@ Gravitational acceleration (m2/s)                                               
 Spacing of coastline normals (m)                                        [0 = default minimum]: 500
 Random factor for spacing of normals                              [0 to 1, 0 = deterministic]: 0
 Length of coastline normals (m)                                                              : 600       ; was 600
-Maximum number of 'cape' normals                                                             : 2
 
 Start depth for wave calcs (ratio to deep water wave height)                                 : 30        ; was 10 30 15
 
@@ -149,6 +148,5 @@ Profile number(s) to save                                                       
 Timesteps to save profile(s)                                                                 : 1
 Save parallel profiles?                                                                      : n
 Output erosion potential look-up values                                                      : y
-Erode coast in alternate direction each timestep?                                            : n
 Size of moving window for calculating coastline curvature (must be odd)                      : 31
 ; END OF FILE -------------------------------------------------------------------------------------------------------------------------------------------------
