@@ -2,7 +2,7 @@
 ;
 ; Data file for CoastalME
 ;
-; Copyright (C) 2023 David Favis-Mortlock and Andres Payo
+; Copyright (C) 2025 David Favis-Mortlock and Andres Payo
 ;
 ;=====================================================================================================================
 ;
@@ -56,14 +56,14 @@ Maximum elevation of beach above SWL (m)                                       [
 ; Initial raster GIS layers --------------------------------------------------------------------------------------------
 Number of layers                                                                             : 1
 ; BASEMENT DEM MUST BE PRESENT
-Basement DEM file                                                             [path and name]: /home/wilfc/CoastalME/in/Exploration/Scen014/basement.asc
+Basement DEM file                                                             [path and name]: in/test_suite/Wilf/Scen014/basement.asc
 ; LAYER 0 THICKNESS FILES, LAYER 0 IS LOWEST
 ; *** MUST HAVE AT LEAST ONE THICKNESS FILE FOR THE FIRST LAYER
 Initial unconsolidated fine sediment file                                     [path and name]:
 Initial unconsolidated sand sediment file                                     [path and name]:
 Initial unconsolidated coarse sediment file                                   [path and name]:
 Initial consolidated fine sediment file                                       [path and name]: 
-Initial consolidated sand sediment file                                       [path and name]: /home/wilfc/CoastalME/in/Exploration/Scen014/gb.asc  
+Initial consolidated sand sediment file                                       [path and name]: in/test_suite/Wilf/Scen014/gb.asc
 Initial consolidated coarse sediment file                                     [path and name]: 
 
 ; OPTIONAL THICKNESS FILE
@@ -71,8 +71,8 @@ Initial suspended sediment file                                               [p
 
 ; OTHER OPTIONAL RASTER FILES
 Initial landform file                                                         [path and name]:
-Intervention class file                                                       [path and name]: ;/home/wilfc/CoastalME/in/Exploration/Scen014/intervention_class.asc 
-Intervention height file                                                      [path and name]: ;/home/wilfc/CoastalME/in/Exploration/Scen014/intervention_height.asc
+Intervention class file                                                       [path and name]:
+Intervention height file                                                      [path and name]:
 
 ; Hydrology data -------------------------------------------------------------------------------------------------------
 Wave propagation model                                                 [0 = COVE, 1 = CShore]: 1
@@ -82,13 +82,13 @@ Density of sea water (kg/m3)                                                    
 Initial still water level (m), or per-timestep SWL file                                      : 15 
 Final still water level (m)                                     [blank = same as initial SWL]: 
 
-Deep water wave height (m)                                         [value or point shapefile]: /home/wilfc/CoastalME/in/Exploration/Scen014/w_station.shp
-Deep water wave height time series         [omit if deep water wave height is a single value]: /home/wilfc/CoastalME/in/Exploration/Scen014/waves.dat
+Deep water wave height (m)                                         [value or point shapefile]: in/test_suite/Wilf/Scen014/w_station.shp
+Deep water wave height time series         [omit if deep water wave height is a single value]: in/test_suite/Wilf/Scen014/waves.dat
 ;  Deep water wave orientation in input CRS: this is the oceanographic convention i.e. direction TOWARDS which the waves move (in degrees clockwise from north)
 Deep water wave orientation (degrees)         [omit if deep water wave height from shapefile]: ;300
 Wave period (sec)                             [omit if deep water wave height from shapefile]: ;6
 
-Tide data file                                                                 [may be blank]: /home/wilfc/CoastalME/in/Exploration/Scen014/tides_s.dat
+Tide data file                                                                 [may be blank]: in/test_suite/Wilf/Scen014/tides_s.dat
 
 Breaking wave height to water depth ratio (non dimensional)                                  : 0.78
 
@@ -147,7 +147,6 @@ Gravitational acceleration (m2/s)                                               
 Spacing of coastline normals (m)                                        [0 = default minimum]: 0 
 Random factor for spacing of normals                              [0 to 1, 0 = deterministic]: 0        ; *** 0.1
 Length of coastline normals (m)                                                              : 100
-Maximum number of 'cape' normals                                                             : 6 
 
 Start depth for wave calcs (ratio to deep water wave height)                                 : 10         ; was 10 30 15
 
@@ -157,6 +156,5 @@ Profile number(s) to save                                                       
 Timesteps to save profile(s)                                                                 : 1 240 480 720 960 1200 1440 1680 1920 2160 2400 2640 2880 3120 3360 3600 3840 4080 4320 4560 4800 5040 5280 5520 5760 6000 6240 120 240 360 480 600 720 840 960
 Save parallel profiles?                                                                      : n
 Output erosion potential look-up values                                                      : y
-Erode coast in alternate direction each timestep?                                            : n
 Size of moving window for calculating coastline curvature (must be odd)                      : 11 
 ; END OF FILE ----------------------------------------------------------------------------------------------------------
