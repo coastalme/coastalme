@@ -907,10 +907,11 @@ int CSimulation::nDoPolygonSharedBoundaries(void)
             // Calculate the down-coast boundary share
             for (unsigned int n = 0; n < dVDownCoastBoundaryShare.size(); n++)
             {
-               dVDownCoastBoundaryShare[n] /= dDownCoastTotBoundaryLen;
-
-               // // Safety check
-               // dVDownCoastBoundaryShare[n] = tMin(dVDownCoastBoundaryShare[n], 1.0);
+               // Safety check
+               if (bFPIsEqual(dDownCoastTotBoundaryLen, 0.0, TOLERANCE))
+                  dVDownCoastBoundaryShare[n] = 0.0;
+               else
+                  dVDownCoastBoundaryShare[n] /= dDownCoastTotBoundaryLen;
             }
 
             // Store in the polygon
@@ -991,10 +992,11 @@ int CSimulation::nDoPolygonSharedBoundaries(void)
             // Calculate the up-coast boundary share
             for (unsigned int n = 0; n < dVUpCoastBoundaryShare.size(); n++)
             {
-               dVUpCoastBoundaryShare[n] /= dUpCoastTotBoundaryLen;
-
-               // // Safety check
-               // dVUpCoastBoundaryShare[n] = tMin(dVUpCoastBoundaryShare[n], 1.0);
+               // Safety check
+               if (bFPIsEqual(dUpCoastTotBoundaryLen, 0.0, TOLERANCE))
+                  dVUpCoastBoundaryShare[n] = 0.0;
+               else
+                  dVUpCoastBoundaryShare[n] /= dUpCoastTotBoundaryLen;
             }
 
             // Store in the polygon

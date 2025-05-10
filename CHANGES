@@ -149,4 +149,8 @@ CoastalME CHANGELOG
 1.3.14   Extra safety check in shadow zone routines
          Code tidying
 
+1.3.15   Extra safety check re. zero-length polygon shares
+         Code tidying
+
+
 
