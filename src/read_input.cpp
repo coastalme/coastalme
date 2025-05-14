@@ -1783,7 +1783,8 @@ bool CSimulation::bReadRunDataFile(void)
                      // Initial fine consolidated sediment depth GIS file (can be blank)
                      if (! strRH.empty())
                      {
-                        // Set switch
+                        // Set switches
+                        m_bHaveConsolidatedSediment = true;
                         m_bHaveFineSediment = true;
 #ifdef _WIN32
                         // For Windows, make sure has backslashes, not Unix-style slashes
@@ -1808,7 +1809,8 @@ bool CSimulation::bReadRunDataFile(void)
                      // Initial sand consolidated sediment depth GIS file (can be blank)
                      if (! strRH.empty())
                      {
-                        // Set switch
+                        // Set switches
+                        m_bHaveConsolidatedSediment = true;
                         m_bHaveSandSediment = true;
 #ifdef _WIN32
                         // For Windows, make sure has backslashes, not Unix-style slashes
@@ -1833,7 +1835,8 @@ bool CSimulation::bReadRunDataFile(void)
                      // Initial coarse consolidated sediment depth GIS file (can be blank)
                      if (! strRH.empty())
                      {
-                        // Set switch
+                        // Set switches
+                        m_bHaveConsolidatedSediment = true;
                         m_bHaveCoarseSediment = true;
 #ifdef _WIN32
                         // For Windows, make sure has backslashes, not Unix-style slashes
@@ -2010,20 +2013,20 @@ bool CSimulation::bReadRunDataFile(void)
             break;
 
          case 34:
-            // Initial still water level (m), first check that this is a valid double TODO 041 Make this a per-timestep SWL file
+            // Initial mean still water level (m), first check that this is a valid double TODO 041 Make this a per-timestep SWL file
             if (! bIsStringValidDouble(strRH))
             {
                strErr = "line " + to_string(nLine) + ": invalid floating point number for initial SWL '" + strRH + "' in " + m_strDataPathName;
                break;
             }
 
-            m_dOrigSWL = strtod(strRH.c_str(), NULL);
+            m_dInitialMeanSWL = strtod(strRH.c_str(), NULL);
             break;
 
          case 35:
-            // Final still water level (m) [blank = same as initial SWL]
+            // Final mean still water level (m) [blank = same as initial MSWL]
             if (strRH.empty())
-               m_dFinalSWL = m_dOrigSWL;
+               m_dFinalMeanSWL = m_dInitialMeanSWL;
             else
             {
                // Check that this is a valid double
@@ -2033,7 +2036,7 @@ bool CSimulation::bReadRunDataFile(void)
                   break;
                }
 
-               m_dFinalSWL = strtod(strRH.c_str(), NULL);
+               m_dFinalMeanSWL = strtod(strRH.c_str(), NULL);
             }
             break;
 
@@ -2458,15 +2461,19 @@ bool CSimulation::bReadRunDataFile(void)
          // ------------------------------------------------ Cliff collapse data -----------------------------------------------
          case 58:
             // Simulate cliff collapse?
-            strRH = strToLower(&strRH);
+            if (m_bHaveConsolidatedSediment)
+            {
+               // Only consider cliff collapse if we have some consolidated sedimemt
+               strRH = strToLower(&strRH);
 
-            if (strRH.find("y") != string::npos)
-               m_bDoCliffCollapse = true;
+               if (strRH.find("y") != string::npos)
+                  m_bDoCliffCollapse = true;
+            }
             break;
 
          case 59:
             // Cliff resistance to erosion
-            if (m_bDoCliffCollapse)
+            if (m_bHaveConsolidatedSediment && m_bDoCliffCollapse)
             {
                // First check that this is a valid double
                if (! bIsStringValidDouble(strRH))
@@ -2484,7 +2491,7 @@ bool CSimulation::bReadRunDataFile(void)
 
          case 60:
             // Notch overhang at collapse (m)
-            if (m_bDoCliffCollapse)
+            if (m_bHaveConsolidatedSediment && m_bDoCliffCollapse)
             {
                // First check that this is a valid double
                if (! bIsStringValidDouble(strRH))
@@ -2502,7 +2509,7 @@ bool CSimulation::bReadRunDataFile(void)
 
          case 61:
             // Notch base below still water level (m)
-            if (m_bDoCliffCollapse)
+            if (m_bHaveConsolidatedSediment && m_bDoCliffCollapse)
             {
                m_dNotchBaseBelowSWL = strtod(strRH.c_str(), NULL);
                if (m_dNotchBaseBelowSWL < 0)
@@ -2512,7 +2519,7 @@ bool CSimulation::bReadRunDataFile(void)
 
          case 62:
             // Scale parameter A for cliff deposition (m^(1/3)) [0 = auto]
-            if (m_bDoCliffCollapse)
+            if (m_bHaveConsolidatedSediment && m_bDoCliffCollapse)
             {
                // First check that this is a valid double
                if (! bIsStringValidDouble(strRH))
@@ -2530,7 +2537,7 @@ bool CSimulation::bReadRunDataFile(void)
 
          case 63:
             // Approximate planview width of cliff collapse talus (in m)
-            if (m_bDoCliffCollapse)
+            if (m_bHaveConsolidatedSediment && m_bDoCliffCollapse)
             {
                // First check that this is a valid double
                if (! bIsStringValidDouble(strRH))
@@ -2549,7 +2556,7 @@ bool CSimulation::bReadRunDataFile(void)
 
          case 64:
             // Planview length of cliff deposition talus (m)
-            if (m_bDoCliffCollapse)
+            if (m_bHaveConsolidatedSediment && m_bDoCliffCollapse)
             {
                // First check that this is a valid double
                if (! bIsStringValidDouble(strRH))
@@ -2567,7 +2574,7 @@ bool CSimulation::bReadRunDataFile(void)
 
          case 65:
             // Height of landward end of talus, as a fraction of cliff elevation
-            if (m_bDoCliffCollapse)
+            if (m_bHaveConsolidatedSediment && m_bDoCliffCollapse)
             {
                // First check that this is a valid double
                if (! bIsStringValidDouble(strRH))

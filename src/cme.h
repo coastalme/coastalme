@@ -371,7 +371,7 @@ int const MAX_SEAWARD_OFFSET_FOR_CLIFF_TALUS = 20;             // In cells: maxi
 int const MIN_INLAND_OFFSET_FOR_BEACH_EROSION_ESTIMATION = 5;  // Used in estimation of beach erosion
 int const MIN_PARALLEL_PROFILE_SIZE = 3;                       // In cells: min size for valid unconsolidated sediment parallel profile
 int const MIN_PROFILE_SIZE = 3;                                // In cells: min size for valid unconsolidated sediment profile
-int const DEFAULT_PROFILE_SPACING = 10;                        // In cells: profile creation does not work well if profiles are too closely spaced
+int const DEFAULT_PROFILE_SPACING = 15;                        // In cells: profile creation does not work well if profiles are too closely spaced
 int const SAVGOL_POLYNOMIAL_MAX_ORDER = 6;                     // Maximum order of Savitsky-Golay smoothing polynomial
 
 // Log file detail level
@@ -708,7 +708,7 @@ double const INTERVENTION_PROFILE_SPACING_FACTOR = 0.5;  // Profile spacing on i
 
 double const DBL_NODATA = -9999;
 
-string const PROGRAM_NAME = "Coastal Modelling Environment (CoastalME) version 1.3.15 (10 May 2025)";
+string const PROGRAM_NAME = "Coastal Modelling Environment (CoastalME) version 1.3.16 (14 May 2025)";
 string const PROGRAM_NAME_SHORT = "CME";
 string const CME_INI = "cme.ini";
 

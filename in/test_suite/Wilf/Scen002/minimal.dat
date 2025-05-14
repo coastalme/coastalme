@@ -78,15 +78,15 @@ Wave propagation model                                                 [0 = COVE
 
 Density of sea water (kg/m3)                                                                 : 1029
 
-Initial still water level (m), or per-timestep SWL file                                      : 29
-Final still water level (m)                                     [blank = same as initial SWL]:
+Initial mean still water level (m), or per-timestep SWL file                                 : 29
+Final mean still water level (m)                               [blank = same as initial MSWL]:
 
 Deep water wave height (m)                                         [value or point shapefile]: 3
 Deep water wave height time series         [omit if deep water wave height is a single value]:
 Deep water wave orientation (degrees)         [omit if deep water wave height from shapefile]: 315
 Wave period (sec)                             [omit if deep water wave height from shapefile]: 10
 
-Tide data file                                                                 [may be blank]:
+Tide data file                                                                 [may be blank]: in/test_suite/Wilf/Scen002/tides.dat
 
 Breaking wave height to water depth ratio (non dimensional)                                  : 0.6
 

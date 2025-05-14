@@ -24,9 +24,9 @@ Main output/log file names                                          [omit path a
 Content of log file                                               [0 = least detail, 4 = all]: 4
 
 Simulation start date and time                                          [hh-mm-ss dd/mm/yyyy]: 00-00-00 01/01/1999
-Duration of simulation                                           [hours, days, months, years]: 9 hours                  ; was 3 days
-Timestep (hours or days)                                                                     : 1 hours
-Save times (after simulation start)                             [hours, days, months, years ]: 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 30 60 90 120 150 180 210 230 260 290 310 340 360 hours; 1 2 3 4 5 6 7 8 9 10 12 13 14 15 16 17 years
+Duration of simulation                                           [hours, days, months, years]: 365 days
+Timestep (hours or days)                                                                     : 6 hours
+Save times                                                       [hours, days, months, years]: 6 12 24 60 120 240 480 720 1440 2160 2880 4320 5760 7200 8200 hours
 
 Random number seed(s)                                                                        : 280764
 
@@ -75,8 +75,8 @@ Intervention height file                                                      [p
 Wave propagation model                                                 [0 = COVE, 1 = CShore]: 1
 Density of sea water (kg/m3)                                                                 : 1029
 
-Initial still water level (m), or per-timestep SWL file                                      : 40.0      ; 41.76
-Final still water level (m)                                     [blank = same as initial SWL]:
+Initial mean still water level (m), or per-timestep SWL file                                 : 40.0      ; 41.76
+Final mean still water level (m)                               [blank = same as initial MSWL]:
 Deep water wave height (m)                                    [real value or point shapefile]: in/test_suite/Happisburgh/S002DeepWaterWavesOneStations.shp
 Deep water wave height time series (m)                            [empty if real value above]: in/test_suite/Happisburgh/cme_1_hours_POLWAM_MyPoint_23.dat
 Deep water wave orientation (degrees)                      [empty if time wave height series]:           ; 245       ; 225 315 270 355 200 265 310 190 340

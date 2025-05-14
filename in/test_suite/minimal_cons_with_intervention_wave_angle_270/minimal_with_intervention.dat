@@ -25,9 +25,9 @@ Main output/log file names                                          [omit path a
 Content of log file                       [0 = no log file, 1 = least detail, 4 = everything]: 4
 
 Simulation start date and time                                          [hh-mm-ss dd/mm/yyyy]: 00-00-00 01/01/1999
-Duration of simulation                                           [hours, days, months, years]: 30 days
+Duration of simulation                                           [hours, days, months, years]: 365 days
 Timestep (hours or days)                                                                     : 6 hours
-Save times                                                       [hours, days, months, years]: 6 12 30 60 200 270 300 400 500 600  hours
+Save times                                                       [hours, days, months, years]: 6 12 24 60 120 240 480 720 1440 2160 2880 4320 5760 7200 8200 hours
 
 Random number seed(s)                            [if omitted, will use system time as a seed]: 280764
 
@@ -78,15 +78,15 @@ Wave propagation model                                                 [0 = COVE
 
 Density of sea water (kg/m3)                                                                 : 1029
 
-Initial still water level (m), or per-timestep SWL file                                      : 26
-Final still water level (m)                                     [blank = same as initial SWL]:
+Initial mean still water level (m), or per-timestep SWL file                                 : 26
+Final mean still water level (m)                               [blank = same as initial MSWL]:
 
 Deep water wave height (m)                                         [value or point shapefile]: 3
 Deep water wave height time series         [omit if deep water wave height is a single value]:
 Deep water wave orientation (degrees)         [omit if deep water wave height from shapefile]: 270   ; 349 193 225 270 355 200 265 310 190 340
 Wave period (sec)                             [omit if deep water wave height from shapefile]: 10
 
-Tide data file                                                                 [may be blank]:
+Tide data file                                                                 [may be blank]: in/test_suite/minimal_cons_with_intervention_wave_angle_270/tides.dat
 
 Breaking wave height to water depth ratio (non-dimensional)                                  : 0.8
 

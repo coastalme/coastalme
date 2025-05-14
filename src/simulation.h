@@ -419,6 +419,9 @@ private:
    //! Are the GIS save digits (which are part of each GIS file name) sequential, or are they the iteration number?
    bool m_bGISSaveDigitsSequential;
 
+   //! Does this simulation consider consolidated sediment, or is it an unconsolidated sediment only simulation?>
+   bool m_bHaveConsolidatedSediment;
+
    //! Options for GDAL when handling raster files
    char** m_papszGDALRasterOptions;
 
@@ -656,10 +659,10 @@ private:
    double m_dSeaWaterDensity;
 
    //! The start-of-simulation still water level (m)
-   double m_dOrigSWL;
+   double m_dInitialMeanSWL;
 
-   //! The end-of-simulation still water (m), is same as m_dOrigSWL unless SWL changes
-   double m_dFinalSWL;
+   //! The end-of-simulation still water (m), is same as m_dInitialMeanSWL unless SWL changes
+   double m_dFinalMeanSWL;
 
    //! If long-term SWL changes, the increment per timestep
    double m_dDeltaSWLPerTimestep;

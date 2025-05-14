@@ -1773,10 +1773,10 @@ bool CSimulation::bWriteRasterGISFile(int const nDataItem, string const *strPlot
          papszCategoryNames = CSLAddString(papszCategoryNames, "Coastline");
          break;
 
-      // case (RASTER_PLOT_NORMAL_PROFILE):
-      //    papszCategoryNames = CSLAddString(papszCategoryNames, "Not coastline-normal profile");
-      //    papszCategoryNames = CSLAddString(papszCategoryNames, "Coastline-normal profile");
-      //    break;
+      case (RASTER_PLOT_NORMAL_PROFILE):
+         papszCategoryNames = CSLAddString(papszCategoryNames, "Not coastline-normal profile");
+         papszCategoryNames = CSLAddString(papszCategoryNames, "Coastline-normal profile");
+         break;
 
       case (RASTER_PLOT_ACTIVE_ZONE):
          papszCategoryNames = CSLAddString(papszCategoryNames, "Not in active zone");

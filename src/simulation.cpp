@@ -176,7 +176,8 @@ CSimulation::CSimulation (void)
    m_bFloodSWLSetupLine =
    m_bFloodSWLSetupSurgeLine =
    m_bFloodSWLSetupSurgeRunupLine =
-   m_bGISSaveDigitsSequential = false;
+   m_bGISSaveDigitsSequential =
+   m_bHaveConsolidatedSediment = false;
 
    m_bGDALCanCreate = true;
 
@@ -274,8 +275,8 @@ CSimulation::CSimulation (void)
    m_dSeaWaterDensity =
    m_dThisIterSWL =
    m_dThisIterMeanSWL =
-   m_dOrigSWL =
-   m_dFinalSWL =
+   m_dInitialMeanSWL =
+   m_dFinalMeanSWL =
    m_dDeltaSWLPerTimestep =
    m_dBreakingWaveHeight =
    m_dC_0 =
@@ -918,12 +919,12 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
    m_dCoarseErodibilityNormalized = m_dCoarseErodibility / dTmp;
 
    // Intialise SWL
-   m_dThisIterSWL = m_dOrigSWL;
+   m_dThisIterSWL = m_dInitialMeanSWL;
 
    // If SWL changes during the simulation, calculate the per-timestep increment (could be -ve)
-   if (! bFPIsEqual(m_dFinalSWL, m_dOrigSWL, TOLERANCE))
+   if (! bFPIsEqual(m_dFinalMeanSWL, m_dInitialMeanSWL, TOLERANCE))
    {
-      m_dDeltaSWLPerTimestep = (m_dTimeStep * (m_dFinalSWL - m_dOrigSWL)) / m_dSimDuration;
+      m_dDeltaSWLPerTimestep = (m_dTimeStep * (m_dFinalMeanSWL - m_dInitialMeanSWL)) / m_dSimDuration;
       m_dAccumulatedSeaLevelChange -= m_dDeltaSWLPerTimestep;
    }
 
@@ -1213,7 +1214,7 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
             WritePolygonShorePlatformErosion(nCoast);
       }
 
-      if (m_bDoCliffCollapse)
+      if (m_bHaveConsolidatedSediment && m_bDoCliffCollapse)
       {
          // Do all cliff collapses for this timestep (if any)
          nRet = nDoAllWaveEnergyToCoastLandforms();
@@ -1222,7 +1223,7 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
       }
 
       // Output cliff collapse table to log file
-      if (m_nLogFileDetail >= LOG_FILE_MIDDLE_DETAIL)
+      if (m_bHaveConsolidatedSediment && m_bDoCliffCollapse && (m_nLogFileDetail >= LOG_FILE_MIDDLE_DETAIL))
       {
          for (int nCoast = 0; nCoast < nValidCoast; nCoast++)
             WritePolygonCliffCollapseErosion(nCoast);

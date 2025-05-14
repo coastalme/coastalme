@@ -66,6 +66,60 @@ int CSimulation::nDoAllWaveEnergyToCoastLandforms(void)
          // And save the accumulated value
          pCoastLandform->IncTotAccumWaveEnergy(dWaveEnergy);
 
+         // Now, check the notch elevation
+         int nX = m_VCoast[i].pPtiGetCellMarkedAsCoastline(j)->nGetX();
+         int nY = m_VCoast[i].pPtiGetCellMarkedAsCoastline(j)->nGetY();
+         int nCat = pCoastLandform->nGetLandFormCategory();
+         double dTopElev = m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElev();
+         double dNotchElev = 0;
+
+         if ((nCat == LF_CAT_CLIFF) || (nCat == LF_SUBCAT_CLIFF_ON_COASTLINE) || (nCat == LF_SUBCAT_CLIFF_INLAND))
+         {
+            CRWCliff* pCliff = reinterpret_cast<CRWCliff*>(pCoastLandform);
+            dNotchElev = pCliff->dGetNotchBaseElev();
+
+            // Is the notch elevation above the top surface of the sediment?
+            if (dNotchElev > dTopElev)
+            {
+               // It is, so reduce the notch elvation, to be the same as the sediment top surface
+               pCliff->SetNotchBaseElev(dTopElev);
+               // LogStream << m_ulIter << ": [" << nX << "][" << nY << "] dNotchElev = " << dNotchElev << " *** CHANGED" << endl;
+            }
+         }
+
+         // // DEBUG CODE ==============
+         // if ((j > 20) && (j <= 30))
+         // {
+         //    string strCat;
+         //    if (nCat == LF_CAT_HINTERLAND)
+         //       strCat = "hinterland";
+         //    else if (nCat == LF_CAT_SEA)
+         //       strCat = "sea";
+         //    else if (nCat == LF_CAT_CLIFF)
+         //       strCat = "cliff";
+         //    else if (nCat == LF_CAT_DRIFT)
+         //       strCat = "drift";
+         //    else if (nCat == LF_CAT_INTERVENTION)
+         //       strCat = "intervention";
+         //    else if (nCat == LF_SUBCAT_CLIFF_ON_COASTLINE)
+         //       strCat = "cliff on coastline";
+         //    else if (nCat == LF_SUBCAT_CLIFF_INLAND)
+         //       strCat = "cliff inland";
+         //    else if (nCat == LF_SUBCAT_DRIFT_MIXED)
+         //       strCat = "drift mixed";
+         //    else if (nCat == LF_SUBCAT_DRIFT_TALUS)
+         //       strCat = "drift talus";
+         //    else if (nCat == LF_SUBCAT_DRIFT_BEACH)
+         //       strCat = "drift beach";
+         //    else
+         //       strCat = "unknown";
+         //
+         //    // LogStream << m_ulIter << ": [" << nX << "][" << nY << "] '" << strCat << "' dWaveEnergy = " << dWaveEnergy << " dGetTotAccumWaveEnergy() = " << pCoastLandform->dGetTotAccumWaveEnergy() << endl;
+         //
+         //    LogStream << m_ulIter << ": [" << nX << "][" << nY << "] '" << strCat << "' dNotchElev = " << dNotchElev << " dTopElev = " << dTopElev << " m_dInitialMeanSWL = " << m_dInitialMeanSWL << " m_dThisIterMeanSWL = " << m_dThisIterMeanSWL << " m_dThisIterSWL = " << m_dThisIterSWL << endl;
+         // }
+         // // DEBUG CODE =============
+
          // Now simulate how the coastal landform responds to this wave energy
          int nCategory = pCoastLandform->nGetLandFormCategory();
          if (nCategory == LF_CAT_CLIFF)
