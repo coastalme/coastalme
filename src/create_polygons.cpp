@@ -898,6 +898,11 @@ int CSimulation::nDoPolygonSharedBoundaries(void)
                if (nAdj >= nNumPolygons)
                   nAdj = INT_NODATA;
 
+               // Safety check: is this adjacent polygon already present in the list of down-coast adjacent polygons?
+               if (pThisPolygon->bDownCoastIsAlreadyPresent(nAdj))
+                  continue;
+
+               // Not already present
                nVDownCoastAdjacentPolygon.push_back(nAdj);
 
                dDownCoastTotBoundaryLen += dDistBetween;
@@ -909,9 +914,13 @@ int CSimulation::nDoPolygonSharedBoundaries(void)
             {
                // Safety check
                if (bFPIsEqual(dDownCoastTotBoundaryLen, 0.0, TOLERANCE))
-                  dVDownCoastBoundaryShare[n] = 0.0;
-               else
-                  dVDownCoastBoundaryShare[n] /= dDownCoastTotBoundaryLen;
+               {
+                  nVDownCoastAdjacentPolygon.pop_back();
+                  dVDownCoastBoundaryShare.pop_back();
+                  continue;
+               }
+
+               dVDownCoastBoundaryShare[n] /= dDownCoastTotBoundaryLen;
             }
 
             // Store in the polygon
@@ -983,6 +992,11 @@ int CSimulation::nDoPolygonSharedBoundaries(void)
                if (nAdj < 0)
                   nAdj = INT_NODATA;
 
+               // Safety check: is this adjacent polygon already present in the list of up-coast adjacent polygons?
+               if (pThisPolygon->bUpCoastIsAlreadyPresent(nAdj))
+                  continue;
+
+               // Not already present
                nVUpCoastAdjacentPolygon.push_back(nAdj);
 
                dUpCoastTotBoundaryLen += dDistBetween;
@@ -994,9 +1008,13 @@ int CSimulation::nDoPolygonSharedBoundaries(void)
             {
                // Safety check
                if (bFPIsEqual(dUpCoastTotBoundaryLen, 0.0, TOLERANCE))
-                  dVUpCoastBoundaryShare[n] = 0.0;
-               else
-                  dVUpCoastBoundaryShare[n] /= dUpCoastTotBoundaryLen;
+               {
+                  nVUpCoastAdjacentPolygon.pop_back();
+                  dVUpCoastBoundaryShare.pop_back();
+                  continue;
+               }
+
+               dVUpCoastBoundaryShare[n] /= dUpCoastTotBoundaryLen;
             }
 
             // Store in the polygon

@@ -396,13 +396,13 @@ void CSimulation::LocateAndCreateProfiles(int const nCoast, int& nProfile, int& 
             // Make sure number to mark is not too small or too big TODO 011
             if (bIntervention)
             {
-               dNumToMark = tMin(dNumToMark, m_nCoastNormalInterventionSpacing * 0.5);
-               dNumToMark = tMax(dNumToMark, m_nCoastNormalInterventionSpacing * 1.5);
+               dNumToMark = tMin(dNumToMark, m_nCoastNormalInterventionSpacing * 0.75);
+               dNumToMark = tMax(dNumToMark, m_nCoastNormalInterventionSpacing * 1.25);
             }
             else
             {
-               dNumToMark = tMin(dNumToMark, m_nCoastNormalSpacing * 0.5);
-               dNumToMark = tMax(dNumToMark, m_nCoastNormalSpacing * 1.5);
+               dNumToMark = tMin(dNumToMark, m_nCoastNormalSpacing * 0.75);
+               dNumToMark = tMax(dNumToMark, m_nCoastNormalSpacing * 1.25);
             }
 
             // TODO 014 Assume that the above is the profile spacing on straight bits of coast. Try gradually increasing the profile spacing with increasing concavity, and decreasing the profile spacing with increasing convexity. Could use a Michaelis-Menten S-curve relationship for this i.e.

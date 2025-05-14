@@ -447,9 +447,9 @@ void CSimulation::WriteStartRunDetails(void)
    else if (m_nWavePropagationModel == WAVE_MODEL_CSHORE)
       OutStream << "CShore (output arrays have " << CSHOREARRAYOUTSIZE << " points)";
    OutStream << endl;
-   OutStream << " Density of sea water                                     \t: " << resetiosflags(ios::floatfield) << fixed << setprecision(0) << m_dSeaWaterDensity << " kg/m^3" << endl;
-   OutStream << " Initial still water level                                 \t: " << resetiosflags(ios::floatfield) << fixed << setprecision(1) << m_dOrigSWL << " m" << endl;
-   OutStream << " Final still water level                                   \t: " << resetiosflags(ios::floatfield) << fixed << setprecision(1) << m_dFinalSWL << " m" << endl;
+   OutStream << " Density of sea water                                      \t: " << resetiosflags(ios::floatfield) << fixed << setprecision(0) << m_dSeaWaterDensity << " kg/m^3" << endl;
+   OutStream << " Initial still water level                                 \t: " << resetiosflags(ios::floatfield) << fixed << setprecision(1) << m_dInitialMeanSWL << " m" << endl;
+   OutStream << " Final still water level                                   \t: " << resetiosflags(ios::floatfield) << fixed << setprecision(1) << m_dFinalMeanSWL << " m" << endl;
    if (m_bSingleDeepWaterWaveValues)
    {
       OutStream << " Deep water wave height                                    \t: " << m_dAllCellsDeepWaterWaveHeight << " m" << endl;
@@ -512,23 +512,26 @@ void CSimulation::WriteStartRunDetails(void)
       OutStream << endl;
       OutStream << " Sediment input file                                       \t: " << m_strSedimentInputEventFile << endl;
    }
-   OutStream << " Do cliff collapse?                                        \t: " << (m_bDoCliffCollapse ? "Y" : "N") << endl;
-   OutStream << resetiosflags(ios::floatfield);
-   OutStream << scientific << setprecision(2);
-   OutStream << " Cliff resistance to erosion                               \t: " << m_dCliffErosionResistance << endl;
-   OutStream << resetiosflags(ios::floatfield);
-   OutStream << fixed << setprecision(1);
-   OutStream << " Notch overhang to initiate collapse                       \t: " << m_dNotchDepthAtCollapse << " m" << endl;
-   OutStream << " Notch base below SWL                                      \t: " << m_dNotchBaseBelowSWL << " m" << endl;
-   OutStream << " Scale parameter A for cliff deposition                    \t: ";
-   if (bFPIsEqual(m_dCliffDepositionA, 0.0, TOLERANCE))
-      OutStream << "auto";
-   else
-      OutStream << m_dCliffDepositionA << "  m^(1/3)";
-   OutStream << endl;
-   OutStream << " Planview width of cliff deposition talus                  \t: " << resetiosflags(ios::floatfield) << fixed << m_dCliffDepositionPlanviewWidth << " m" << endl;
-   OutStream << " Planview length of cliff deposition talus                 \t: " << m_dCliffTalusMinDepositionLength << " m" << endl;
-   OutStream << " Min height of land-end talus (fraction of cliff elevation)\t: " << m_dMinCliffTalusHeightFrac << endl;
+   if (m_bHaveConsolidatedSediment)
+   {
+      OutStream << " Do cliff collapse?                                        \t: " << (m_bDoCliffCollapse ? "Y" : "N") << endl;
+      OutStream << resetiosflags(ios::floatfield);
+      OutStream << scientific << setprecision(2);
+      OutStream << " Cliff resistance to erosion                               \t: " << m_dCliffErosionResistance << endl;
+      OutStream << resetiosflags(ios::floatfield);
+      OutStream << fixed << setprecision(1);
+      OutStream << " Notch overhang to initiate collapse                       \t: " << m_dNotchDepthAtCollapse << " m" << endl;
+      OutStream << " Notch base below SWL                                      \t: " << m_dNotchBaseBelowSWL << " m" << endl;
+      OutStream << " Scale parameter A for cliff deposition                    \t: ";
+      if (bFPIsEqual(m_dCliffDepositionA, 0.0, TOLERANCE))
+         OutStream << "auto";
+      else
+         OutStream << m_dCliffDepositionA << "  m^(1/3)";
+      OutStream << endl;
+      OutStream << " Planview width of cliff deposition talus                  \t: " << resetiosflags(ios::floatfield) << fixed << m_dCliffDepositionPlanviewWidth << " m" << endl;
+      OutStream << " Planview length of cliff deposition talus                 \t: " << m_dCliffTalusMinDepositionLength << " m" << endl;
+      OutStream << " Min height of land-end talus (fraction of cliff elevation)\t: " << m_dMinCliffTalusHeightFrac << endl;
+   }
    OutStream << " Do riverine flooding?                                     \t: " << (m_bRiverineFlooding ? "Y" : "N") << endl;
    if (m_bRiverineFlooding)
    {
@@ -1732,11 +1735,11 @@ void CSimulation::WritePolygonSortedSequence(int const nCoast, vector<vector<int
    // Show sorted order of polygon processing, and any circularities
    LogStream << m_ulIter << ": Sorted sequence of polygon processing (" << INT_NODATA << " = leaves grid), and any X -> Y -> X circularities" << endl;
 
-   LogStream << "-----------|-----------|-----------|-----------|-----------|--------------|" << endl;
-   LogStream << strCentre("From", 11) << "|" << strCentre("Coast", 11) << "|" << strCentre("From", 11) << "|" << strCentre("Direction", 11) << "|" << strCentre("To", 11) << "|" << strCentre("Circular", 14) << "|" << endl;
-   LogStream << strCentre("Polygon", 11) << "|" << strCentre("", 11) << "|" << strCentre("Polygon", 11) << "|" << strCentre("", 11) << "|" << strCentre("Polygon", 11) << "|" << strCentre("-ity?", 14) << "|" << endl;
-   LogStream << strCentre("Global ID", 11) << "|" << strCentre("", 11) << "|" << strCentre("Coast ID", 11) << "|" << strCentre("", 11) << "|" << strCentre("Coast ID", 11) << "|" << strCentre("", 14) << "|" << endl;
-   LogStream << "-----------|-----------|-----------|-----------|-----------|--------------|" << endl;
+   LogStream << "-----------|-----------|-----------|-----------|----------------------|----------------------|" << endl;
+   LogStream << strCentre("From", 11) << "|" << strCentre("Coast", 11) << "|" << strCentre("From", 11) << "|" << strCentre("Direction", 11) << "|" << strCentre("To", 22) << "|" << strCentre("Circularity", 22) << "|" << endl;
+   LogStream << strCentre("Polygon", 11) << "|" << strCentre("", 11) << "|" << strCentre("Polygon", 11) << "|" << strCentre("", 11) << "|" << strCentre("Polygon", 22) << "|" << strCentre("", 22) << "|" << endl;
+   LogStream << strCentre("Global ID", 11) << "|" << strCentre("", 11) << "|" << strCentre("Coast ID", 11) << "|" << strCentre("", 11) << "|" << strCentre("Coast ID", 22) << "|" << strCentre("", 22) << "|" << endl;
+   LogStream << "-----------|-----------|-----------|-----------|----------------------|----------------------|" << endl;
 
    for (int nPoly = 0; nPoly < static_cast<int>(pnVVPolyAndAdjacent.size()); nPoly++)
    {
@@ -1746,37 +1749,33 @@ void CSimulation::WritePolygonSortedSequence(int const nCoast, vector<vector<int
       LogStream << strIntRight(pPoly->nGetGlobalID(), 11) << "|" << strIntRight(nCoast, 11) << "|" << strIntRight(pPoly->nGetCoastID(), 11) << "|";
       
       // Up-coast or down-coast sediment movement?
-      string strTmp = "";
-      for (int m = 2; m < static_cast<int>(pnVVPolyAndAdjacent[nPoly].size()); m++)
+      if (pnVVPolyAndAdjacent[nPoly][2] == true)
+         LogStream << strCentre("DOWN ", 11) << "|";
+      else
+         LogStream << strCentre("UP   ", 11) << "|";
+
+      // Now the 'To' polygons: first copy the list of adjacent polygons
+      vector<int> nVTmp;
+      for (int m = 3; m < static_cast<int>(pnVVPolyAndAdjacent[nPoly].size()); m++)
+         nVTmp.push_back(pnVVPolyAndAdjacent[nPoly][m]);
+
+      // Now sort the copy
+      sort(nVTmp.begin(), nVTmp.end());
+
+      // And write it out
+      string strTmp;
+      for (int m = 0; m < static_cast<int>(nVTmp.size()); m++)
       {
-         if (m == 2)
-         {
-            if (pnVVPolyAndAdjacent[nPoly][m] == true)
-               LogStream << strCentre("DOWN ", 11) << "|";
-            else
-               LogStream << strCentre("UP   ", 11) << "|";
+         strTmp += to_string(nVTmp[m]);
 
-            continue;
-         }
-
-         // These are the "To" polygons
-         int nAdjPoly = pnVVPolyAndAdjacent[nPoly][m];
-         int nAdjacentPolyID = INT_NODATA;
-         if (nAdjPoly != INT_NODATA)
-         {
-            CGeomCoastPolygon const* pAdjPolygon = m_VCoast[nCoast].pGetPolygon(nAdjPoly);
-            nAdjacentPolyID = pAdjPolygon->nGetCoastID();
-         }
-         strTmp += to_string(nAdjacentPolyID);
-
-         if (m < (static_cast<int>(pnVVPolyAndAdjacent[nPoly].size()) - 1))
+         if (m < static_cast<int>(nVTmp.size()) - 1)
             strTmp += " ";
       }
-      LogStream << strRight(strTmp, 11) << "|";
-      
+
+      LogStream << strRight(strTmp, 22) << "|";
+
+      // Now show any circularities
       strTmp = "";
-      
-      // Now check for circularities                  
       if (! VCirc.empty())
       {                     
          // There is at least one circularity                     
@@ -1789,9 +1788,9 @@ void CSimulation::WritePolygonSortedSequence(int const nCoast, vector<vector<int
                strTmp += " ";
          }
       }
-      LogStream << strCentre(strTmp, 14) << "|" << endl;
+      LogStream << strCentre(strTmp, 22) << "|" << endl;
    }
-   LogStream << "-----------|-----------|-----------|-----------|-----------|--------------|" << endl << endl;
+   LogStream << "-----------|-----------|-----------|-----------|----------------------|----------------------|" << endl << endl;
 }
 
 //===============================================================================================================================

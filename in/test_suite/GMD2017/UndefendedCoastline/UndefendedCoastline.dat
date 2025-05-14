@@ -75,8 +75,8 @@ Intervention height file                                                      [p
 Wave propagation model                                                 [0 = COVE, 1 = CShore]: 1
 Density of sea water (kg/m3)                                                                 : 1029
 
-Initial still water level (m), or per-timestep SWL file                                      : 60
-Final still water level (m)                                     [blank = same as initial SWL]:
+Initial mean still water level (m), or per-timestep SWL file                                 : 60
+Final mean still water level (m)                               [blank = same as initial MSWL]:
 Deep water wave height (m)                                    [real value or point shapefile]: 3
 Deep water wave height time series (m)                            [empty if real value above]:
 Deep water wave orientation (degrees)                      [empty if time wave height series]: 225

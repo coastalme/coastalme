@@ -453,6 +453,30 @@ int CGeomCoastPolygon::nGetNumDownCoastAdjacentPolygons(void) const
    return static_cast<int>(m_VnDownCoastAdjacentPolygon.size());
 }
 
+//! Searches the list of down-coast adjacent polygons for a given polygon number
+bool CGeomCoastPolygon::bDownCoastIsAlreadyPresent(int const nPoly)
+{
+   auto it = find(m_VnDownCoastAdjacentPolygon.begin(), m_VnDownCoastAdjacentPolygon.end(), nPoly);
+   if (it == m_VnDownCoastAdjacentPolygon.end())
+      // Not found
+      return false;
+   else
+      // Found
+      return true;
+}
+
+//! Searches the list of up-coast adjacent polygons for a given polygon number
+bool CGeomCoastPolygon::bUpCoastIsAlreadyPresent(int const nPoly)
+{
+   auto it = find(m_VnUpCoastAdjacentPolygon.begin(), m_VnUpCoastAdjacentPolygon.end(), nPoly);
+   if (it == m_VnUpCoastAdjacentPolygon.end())
+      // Not found
+      return false;
+   else
+      // Found
+      return true;
+}
+
 //! Sets the boundary shares for all up-coast adjacent polygons
 void CGeomCoastPolygon::SetUpCoastAdjacentPolygonBoundaryShares(vector<double> const* pdVShares)
 {

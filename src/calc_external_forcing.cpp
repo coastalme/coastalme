@@ -48,10 +48,10 @@ int CSimulation::nCalcExternalForcing(void)
          snTideDataCount = 0;
 
       // This-iteration SWL includes both tidal change and long-term SWL change
-      m_dThisIterSWL = m_dOrigSWL + m_VdTideData[snTideDataCount] + m_dAccumulatedSeaLevelChange;
+      m_dThisIterSWL = m_dInitialMeanSWL + m_VdTideData[snTideDataCount] + m_dAccumulatedSeaLevelChange;
 
       // This-iteration mean SWL includes only long-term SWL change
-      m_dThisIterMeanSWL = m_dOrigSWL + m_dAccumulatedSeaLevelChange;
+      m_dThisIterMeanSWL = m_dInitialMeanSWL + m_dAccumulatedSeaLevelChange;
 
       // cout << m_dThisIterSWL << endl;
       snTideDataCount++;

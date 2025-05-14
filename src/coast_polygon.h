@@ -286,6 +286,9 @@ public:
    void SetDownCoastAdjacentPolygonBoundaryShares(vector<double> const*);
    double dGetDownCoastAdjacentPolygonBoundaryShare(int const) const;
 
+   bool bDownCoastIsAlreadyPresent(int const);
+   bool bUpCoastIsAlreadyPresent(int const);
+
    // int nGetPointInPolygonSearchStartPoint(void) const;
 
    void SetAvgUnconsD50(double const);
