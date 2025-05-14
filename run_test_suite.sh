@@ -96,7 +96,7 @@ rm -f out/test_suite/GMD2017/UndefendedCoastline/*
 cp in/test_suite/GMD2017/UndefendedCoastline/cme.ini .
 ./cme
 echo ===============================================================================
-#
+
 rm -f out/test_suite/Wilf/Scen001/*
 # cp in/test_suite/Wilf/Scen001/cme.ini .
 # ./cme

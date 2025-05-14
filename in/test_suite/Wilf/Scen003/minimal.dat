@@ -86,7 +86,7 @@ Deep water wave height time series         [omit if deep water wave height is a 
 Deep water wave orientation (degrees)         [omit if deep water wave height from shapefile]: 315
 Wave period (sec)                             [omit if deep water wave height from shapefile]: 10
 
-Tide data file                                                                 [may be blank]:
+Tide data file                                                                 [may be blank]: in/test_suite/Wilf/Scen003/tides.dat
 
 Breaking wave height to water depth ratio (non dimensional)                                  : 0.6
 

@@ -83,7 +83,7 @@ int CSimulation::nDoAllWaveEnergyToCoastLandforms(void)
             {
                // It is, so reduce the notch elvation, to be the same as the sediment top surface
                pCliff->SetNotchBaseElev(dTopElev);
-               LogStream << m_ulIter << ": [" << nX << "][" << nY << "] dNotchElev = " << dNotchElev << " *** CHANGED" << endl;
+               // LogStream << m_ulIter << ": [" << nX << "][" << nY << "] dNotchElev = " << dNotchElev << " *** CHANGED" << endl;
             }
          }
 
