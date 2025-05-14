@@ -1,5 +1,6 @@
 var NAVTREEINDEX8 =
 {
+"d7/dfc/classvector.html":[3,0,34],
 "d7/dfc/classvector.html#a2396209900e8f592db1f0b2467f7d899":[3,0,34,4],
 "d8/d79/classostringstream.html":[3,0,29],
 "d8/d98/classdeque_1_1const__reverse__iterator.html":[3,0,23,1],
@@ -248,6 +249,5 @@ var NAVTREEINDEX8 =
 "de/dc3/coast__landform_8cpp_source.html":[4,0,0,29],
 "df/d02/classios.html":[3,0,25],
 "df/d30/coast__polygon_8cpp.html":[4,0,0,31],
-"df/d30/coast__polygon_8cpp_source.html":[4,0,0,31],
-"df/d45/classCGeomCoastPolygon.html":[3,0,8]
+"df/d30/coast__polygon_8cpp_source.html":[4,0,0,31]
 };
