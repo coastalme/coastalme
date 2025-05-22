@@ -4,7 +4,12 @@
 #
 #########################################################################################
 # Set CMake required version
-cmake_minimum_required (VERSION 3.5.0 FATAL_ERROR)
+cmake_minimum_required (VERSION 3.12 FATAL_ERROR)
+
+# This is needed if we want to use relative paths for e.g. the install dir. Such as ${CMAKE_SOURCE_DIR}/.. This was deprecated in CMake 3.31
+if (${CMAKE_VERSION} VERSION_GREATER "3.31")
+   cmake_policy(SET CMP0177 OLD)
+endif ()
 
 # Create a .json file for use with clang-tidy
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)

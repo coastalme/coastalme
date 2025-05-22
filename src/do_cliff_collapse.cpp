@@ -81,7 +81,7 @@ int CSimulation::nDoAllWaveEnergyToCoastLandforms(void)
             // Is the notch elevation above the top surface of the sediment?
             if (dNotchElev > dTopElev)
             {
-               // It is, so reduce the notch elvation, to be the same as the sediment top surface
+               // It is, so reduce the notch elevation, to be the same as the sediment top surface
                pCliff->SetNotchBaseElev(dTopElev);
                // LogStream << m_ulIter << ": [" << nX << "][" << nY << "] dNotchElev = " << dNotchElev << " *** CHANGED" << endl;
             }
@@ -269,6 +269,11 @@ int CSimulation::nDoCliffCollapse(int const nCoast, CRWCliff* pCliff, double& dF
 
    // Get the index of the layer containing the notch (layer 0 being just above basement)
    int nNotchLayer = m_pRasterGrid->m_Cell[nX][nY].nGetLayerAtElev(dNotchElev);
+
+   // Safety check
+   if (nNotchLayer < 0)
+      return RTN_ERR_CLIFFNOTCH;
+
    if (nNotchLayer == ELEV_ABOVE_SEDIMENT_TOP)
    {
       if (m_nLogFileDetail >= LOG_FILE_HIGH_DETAIL)
