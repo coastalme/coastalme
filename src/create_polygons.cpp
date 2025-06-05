@@ -236,6 +236,9 @@ int CSimulation::nCreateAllPolygons(void)
             // LogStream << endl;
             // // DEBUG CODE =================================================================================
 
+            // TEST
+            assert(nPolygon < m_VCoast[nCoast].nGetNumPolygons());
+
             // Now rasterize the polygon boundaries: first, the coastline. This is necessary so that sand/coarse sediment derived from platform erosion of the coast cells is correctly added to the containing polygon's unconsolidated sediment
             for (int i = nCoastPoint; i <= nNextProfileCoastPoint; i++)
             {
@@ -481,6 +484,9 @@ void CSimulation::RasterizePolygonJoiningLine(CGeom2DIPoint const* pPt1, CGeom2D
       if (! bIsWithinValidGrid(nX, nY))
          KeepWithinValidGrid(nXStart, nYStart, nX, nY);
 
+      // TEST
+      assert(nPoly < m_VCoast[0].nGetNumPolygons());
+
       // Mark this point on the raster grid
       m_pRasterGrid->m_Cell[nX][nY].SetPolygonID(nPoly);
 
@@ -662,6 +668,9 @@ void CSimulation::MarkPolygonCells(void)
             while ((nX < m_nXGridSize) && (m_pRasterGrid->m_Cell[nX][nY].nGetPolygonID() == INT_NODATA))
             // while ((nX < m_nXGridSize) && (m_pRasterGrid->m_Cell[nX][nY].nGetPolygonID() != (nUpCoastBoundary || nDownCoastBoundary)))
             {
+                // TEST
+               assert(nPolyID < m_VCoast[nCoast].nGetNumPolygons());
+
                // Mark the cell as being in this polygon
                m_pRasterGrid->m_Cell[nX][nY].SetPolygonID(nPolyID);
 
