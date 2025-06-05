@@ -2959,6 +2959,15 @@ bool CSimulation::bReadRunDataFile(void)
                strErr = "line " + to_string(nLine) + ": size of moving window for coastline curvature calculation (must be > 0 and odd)";
 
             break;
+
+         case 86:
+            // Output per-timestep results in CSV format?
+            strRH = strToLower(&strRH);
+
+            m_bCSVPerTimestepResults = false;
+            if (strRH.find("y") != string::npos)
+               m_bCSVPerTimestepResults = true;
+            break;
          }
 
          // Did an error occur?

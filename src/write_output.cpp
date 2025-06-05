@@ -580,22 +580,49 @@ void CSimulation::WriteStartRunDetails(void)
    OutStream << fixed << setprecision(3);
 
    // Write per-timestep headers to .out file
-   OutStream << PER_ITER_HEAD << endl;
-   OutStream << "Sea depth in metres. All erosion and deposition values in millimetres" << endl;
-   OutStream << "GISn = GIS files saved as <filename>n." << endl;
-   OutStream << endl;
+   if (m_bCSVPerTimestepResults)
+   {
+      // CSV format header
+      OutStream << "# CSV FORMAT PER-ITERATION RESULTS" << endl;
+      OutStream << "# Sea depth in metres. All erosion and deposition values in millimetres" << endl;
+      OutStream << "# GISn = GIS files saved as <filename>n." << endl;
+      OutStream << PER_ITER_CSV_HEAD << endl;
+   }
+   else
+   {
+      // Fixed-width format headers
+      OutStream << PER_ITER_HEAD << endl;
+      OutStream << "Sea depth in metres. All erosion and deposition values in millimetres" << endl;
+      OutStream << "GISn = GIS files saved as <filename>n." << endl;
+      OutStream << endl;
 
-   OutStream << PER_ITER_HEAD1 << endl;
-   OutStream << PER_ITER_HEAD2 << endl;
-   OutStream << PER_ITER_HEAD3 << endl;
-   OutStream << PER_ITER_HEAD4 << endl;
-   OutStream << PER_ITER_HEAD5 << endl;
+      OutStream << PER_ITER_HEAD1 << endl;
+      OutStream << PER_ITER_HEAD2 << endl;
+      OutStream << PER_ITER_HEAD3 << endl;
+      OutStream << PER_ITER_HEAD4 << endl;
+      OutStream << PER_ITER_HEAD5 << endl;
+   }
 }
 
 //===============================================================================================================================
 //! Write the results for this timestep to the .out file
 //===============================================================================================================================
 bool CSimulation::bWritePerTimestepResults(void)
+{
+   if (m_bCSVPerTimestepResults)
+   {
+      return bWritePerTimestepResultsCSV();
+   }
+   else
+   {
+      return bWritePerTimestepResultsFixedWidth();
+   }
+}
+
+//===============================================================================================================================
+//! Write the results for this timestep to the .out file in fixed-width format
+//===============================================================================================================================
+bool CSimulation::bWritePerTimestepResultsFixedWidth(void)
 {
    OutStream << resetiosflags(ios::floatfield);
    OutStream << fixed << setprecision(0);
@@ -813,6 +840,179 @@ bool CSimulation::bWritePerTimestepResults(void)
    // Finally, set 'markers' for events that have occurred this timestep
    if (m_bSaveGISThisIter)
       OutStream << " GIS" << m_nGISSave;
+
+   OutStream << endl;
+
+   // Did a text file write error occur?
+   if (OutStream.fail())
+      return false;
+
+   return true;
+}
+
+//===============================================================================================================================
+//! Write the results for this timestep to the .out file in CSV format
+//===============================================================================================================================
+bool CSimulation::bWritePerTimestepResultsCSV(void)
+{
+   // Output timestep and simulated time info
+   OutStream << m_ulIter << ",";
+   OutStream << m_dSimElapsed << ","; // In hours  
+   OutStream << m_dSimElapsed / (24 * 365.25) << ","; // In years
+
+   // Output average sea depth (m) per sea cell
+   double dAvgSeaDepth = m_dThisIterTotSeaDepth / static_cast<double>(m_ulThisIterNumSeaCells);
+   OutStream << dAvgSeaDepth << ",";
+
+   // Platform erosion data
+   OutStream << 100 * static_cast<double>(m_ulThisIterNumPotentialPlatformErosionCells) / static_cast<double>(m_ulThisIterNumSeaCells) << ",";
+   OutStream << 1000 * m_dThisIterPotentialPlatformErosion / static_cast<double>(m_ulThisIterNumSeaCells) << ",";
+   
+   if (m_ulThisIterNumPotentialPlatformErosionCells > 0)
+      OutStream << 1000 * m_dThisIterPotentialPlatformErosion / static_cast<double>(m_ulThisIterNumPotentialPlatformErosionCells) << ",";
+   else
+      OutStream << ",";
+
+   OutStream << 100 * static_cast<double>(m_ulThisIterNumActualPlatformErosionCells) / static_cast<double>(m_ulThisIterNumSeaCells) << ",";
+   
+   double dThisIterActualPlatformErosion = m_dThisIterActualPlatformErosionFineCons + m_dThisIterActualPlatformErosionSandCons + m_dThisIterActualPlatformErosionCoarseCons;
+   OutStream << 1000 * dThisIterActualPlatformErosion / static_cast<double>(m_ulThisIterNumSeaCells) << ",";
+
+   if (m_ulThisIterNumActualPlatformErosionCells > 0)
+      OutStream << 1000 * dThisIterActualPlatformErosion / static_cast<double>(m_ulThisIterNumActualPlatformErosionCells) << ",";
+   else
+      OutStream << ",";
+
+   // Platform erosion by sediment type
+   if (m_dThisIterActualPlatformErosionFineCons > 0)
+      OutStream << 1000 * m_dThisIterActualPlatformErosionFineCons / static_cast<double>(m_ulThisIterNumSeaCells) << ",";
+   else
+      OutStream << ",";
+
+   if (m_dThisIterActualPlatformErosionSandCons > 0)
+      OutStream << 1000 * m_dThisIterActualPlatformErosionSandCons / static_cast<double>(m_ulThisIterNumSeaCells) << ",";
+   else
+      OutStream << ",";
+
+   if (m_dThisIterActualPlatformErosionCoarseCons > 0)
+      OutStream << 1000 * m_dThisIterActualPlatformErosionCoarseCons / static_cast<double>(m_ulThisIterNumSeaCells) << ",";
+   else
+      OutStream << ",";
+
+   // Beach erosion data
+   OutStream << 100 * static_cast<double>(m_ulThisIterNumPotentialBeachErosionCells) / static_cast<double>(m_ulThisIterNumSeaCells) << ",";
+
+   double dTmp = 1000 * m_dThisIterPotentialBeachErosion / static_cast<double>(m_ulThisIterNumSeaCells);
+   OutStream << dTmp << ",";
+
+   if (m_ulThisIterNumPotentialBeachErosionCells > 0)
+   {
+      dTmp = 1000 * m_dThisIterPotentialBeachErosion / static_cast<double>(m_ulThisIterNumPotentialBeachErosionCells);
+      OutStream << dTmp << ",";
+   }
+   else
+      OutStream << ",";
+
+   OutStream << 100 * static_cast<double>(m_ulThisIterNumActualBeachErosionCells) / static_cast<double>(m_ulThisIterNumSeaCells) << ",";
+
+   double dThisIterActualBeachErosion = m_dThisIterBeachErosionFine + m_dThisIterBeachErosionSand + m_dThisIterBeachErosionCoarse;
+   OutStream << 1000 * dThisIterActualBeachErosion / static_cast<double>(m_ulThisIterNumSeaCells) << ",";
+
+   if (m_ulThisIterNumActualBeachErosionCells > 0)
+      OutStream << 1000 * dThisIterActualBeachErosion / static_cast<double>(m_ulThisIterNumActualBeachErosionCells) << ",";
+   else
+      OutStream << ",";
+
+   // Beach erosion by sediment type
+   if (m_dThisIterBeachErosionFine > 0)
+      OutStream << 1000 * m_dThisIterBeachErosionFine / static_cast<double>(m_ulThisIterNumSeaCells) << ",";
+   else
+      OutStream << ",";
+
+   if (m_dThisIterBeachErosionSand > 0)
+      OutStream << 1000 * m_dThisIterBeachErosionSand / static_cast<double>(m_ulThisIterNumSeaCells) << ",";
+   else
+      OutStream << ",";
+
+   if (m_dThisIterBeachErosionCoarse > 0)
+      OutStream << 1000 * m_dThisIterBeachErosionCoarse / static_cast<double>(m_ulThisIterNumSeaCells) << ",";
+   else
+      OutStream << ",";
+
+   // Beach deposition data
+   OutStream << 100 * static_cast<double>(m_ulThisIterNumBeachDepositionCells) / static_cast<double>(m_ulThisIterNumSeaCells) << ",";
+
+   double dThisIterBeachDeposition = m_dThisIterBeachDepositionSand + m_dThisIterBeachDepositionCoarse;
+   OutStream << 1000 * dThisIterBeachDeposition / static_cast<double>(m_ulThisIterNumSeaCells) << ",";
+
+   if (m_ulThisIterNumBeachDepositionCells > 0)
+      OutStream << 1000 * dThisIterBeachDeposition / static_cast<double>(m_ulThisIterNumBeachDepositionCells) << ",";
+   else
+      OutStream << ",";
+
+   // Beach deposition by sediment type
+   if (m_dThisIterBeachDepositionSand > 0)
+      OutStream << 1000 * m_dThisIterBeachDepositionSand / static_cast<double>(m_ulThisIterNumSeaCells) << ",";
+   else
+      OutStream << ",";
+
+   if (m_dThisIterBeachDepositionCoarse > 0)
+      OutStream << 1000 * m_dThisIterBeachDepositionCoarse / static_cast<double>(m_ulThisIterNumSeaCells) << ",";
+   else
+      OutStream << ",";
+
+   // Sediment input data
+   if (m_dThisiterUnconsFineInput > 0)
+      OutStream << m_dThisiterUnconsFineInput << ",";
+   else
+      OutStream << ",";
+
+   if (m_dThisiterUnconsSandInput > 0)
+      OutStream << m_dThisiterUnconsSandInput << ",";
+   else
+      OutStream << ",";
+
+   if (m_dThisiterUnconsCoarseInput > 0)
+      OutStream << m_dThisiterUnconsCoarseInput << ",";
+   else
+      OutStream << ",";
+
+   // Cliff collapse erosion data
+   if ((m_dThisIterCliffCollapseErosionFineUncons + m_dThisIterCliffCollapseErosionFineCons) > 0)
+      OutStream << 1000 * (m_dThisIterCliffCollapseErosionFineUncons + m_dThisIterCliffCollapseErosionFineCons) / static_cast<double>(m_ulThisIterNumCoastCells) << ",";
+   else
+      OutStream << ",";
+
+   if ((m_dThisIterCliffCollapseErosionSandUncons + m_dThisIterCliffCollapseErosionSandCons) > 0)
+      OutStream << 1000 * (m_dThisIterCliffCollapseErosionSandUncons + m_dThisIterCliffCollapseErosionSandCons) / static_cast<double>(m_ulThisIterNumCoastCells) << ",";
+   else
+      OutStream << ",";
+
+   if ((m_dThisIterCliffCollapseErosionCoarseUncons + m_dThisIterCliffCollapseErosionCoarseCons) > 0)
+      OutStream << 1000 * (m_dThisIterCliffCollapseErosionCoarseUncons + m_dThisIterCliffCollapseErosionCoarseCons) / static_cast<double>(m_ulThisIterNumCoastCells) << ",";
+   else
+      OutStream << ",";
+
+   // Cliff collapse deposition data
+   if (m_dThisIterUnconsSandCliffDeposition > 0)
+      OutStream << 1000 * m_dThisIterUnconsSandCliffDeposition / static_cast<double>(m_ulThisIterNumSeaCells) << ",";
+   else
+      OutStream << ",";
+
+   if (m_dThisIterUnconsCoarseCliffDeposition > 0)
+      OutStream << 1000 * m_dThisIterUnconsCoarseCliffDeposition / static_cast<double>(m_ulThisIterNumSeaCells) << ",";
+   else
+      OutStream << ",";
+
+   // Suspended sediment data
+   if (m_dThisIterFineSedimentToSuspension > 0)
+      OutStream << 1000 * m_dThisIterFineSedimentToSuspension / static_cast<double>(m_ulThisIterNumSeaCells) << ",";
+   else
+      OutStream << ",";
+
+   // GIS events (no comma after last column)
+   if (m_bSaveGISThisIter)
+      OutStream << "GIS" << m_nGISSave;
 
    OutStream << endl;
 

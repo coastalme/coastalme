@@ -180,6 +180,7 @@ CSimulation::CSimulation (void)
    m_bHaveConsolidatedSediment = false;
 
    m_bGDALCanCreate = true;
+   m_bCSVPerTimestepResults = true;  // Default to CSV output format
 
    m_papszGDALRasterOptions =
    m_papszGDALVectorOptions = NULL;

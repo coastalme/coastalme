@@ -320,6 +320,9 @@ private:
    //! Output erosion potential data?
    bool m_bOutputErosionPotentialData;
 
+   //! Output per-timestep results in CSV format instead of fixed-width?
+   bool m_bCSVPerTimestepResults;
+
    //! Omit the north edge of the grid from coast-end searches?
    bool m_bOmitSearchNorthEdge;
 
@@ -1523,6 +1526,8 @@ private:
    bool bSetUpTSFiles(void);
    void WriteStartRunDetails(void);
    bool bWritePerTimestepResults(void);
+   bool bWritePerTimestepResultsFixedWidth(void);
+   bool bWritePerTimestepResultsCSV(void);
    bool bWriteTSFiles(void);
    int nWriteEndRunDetails(void);
    int nReadShapeFunctionFile(void);

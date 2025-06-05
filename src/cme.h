@@ -795,6 +795,10 @@ string const PER_ITER_HEAD5 =
 
 string const PER_ITER_HEAD =
     "PER-ITERATION RESULTS =========================================================================================================================================================================";
+
+string const PER_ITER_CSV_HEAD = 
+    "Timestep,Hours,Years,AvgSeaDepth_m,PotPlatformErosion_PctSeaArea,PotPlatformErosion_AllAvg_mm,PotPlatformErosion_ErodAvg_mm,ActPlatformErosion_PctSeaArea,ActPlatformErosion_AllAvg_mm,ActPlatformErosion_ErodAvg_mm,ActPlatformErosion_Fine_mm,ActPlatformErosion_Sand_mm,ActPlatformErosion_Coarse_mm,PotBeachErosion_PctSeaArea,PotBeachErosion_AllAvg_mm,PotBeachErosion_ErodAvg_mm,ActBeachErosion_PctSeaArea,ActBeachErosion_AllAvg_mm,ActBeachErosion_ErodAvg_mm,ActBeachErosion_Fine_mm,ActBeachErosion_Sand_mm,ActBeachErosion_Coarse_mm,BeachDeposition_PctSeaArea,BeachDeposition_AllAvg_mm,BeachDeposition_DepAvg_mm,BeachDeposition_Sand_mm,BeachDeposition_Coarse_mm,SedimentInput_Fine,SedimentInput_Sand,SedimentInput_Coarse,CliffCollapse_Fine_mm,CliffCollapse_Sand_mm,CliffCollapse_Coarse_mm,CliffDeposition_Sand_mm,CliffDeposition_Coarse_mm,SuspendedSediment_mm,GISEvents";
+
 string const ENDHYDROLOGYHEAD =
     "END OF SIMULATION: HYDROLOGY ==================================================================================================================================================================";
 string const ENDSEDIMENTHEAD =
