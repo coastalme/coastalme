@@ -969,13 +969,11 @@ void CSimulation::DoActualPlatformErosionOnCell(int const nX, int const nY)
          }
       }
 
-      if (nPolyID != INT_NODATA)
-      {
-         // Add this to the polygon's total of unconsolidated sand/coarse sediment, to be deposited or moved later. These values are +ve (deposition)
-         m_pVCoastPolygon[nPolyID]->AddPlatformErosionUnconsSand(dSandEroded);
-         m_pVCoastPolygon[nPolyID]->AddPlatformErosionUnconsCoarse(dCoarseEroded);
-      }
-      else
+      // TEST
+      assert(nPolyID < m_VCoast[0].nGetNumPolygons());
+
+      // Safety check
+      if (nPolyID == INT_NODATA)
       {
          // Uh-oh, we have a problem
          if (m_nLogFileDetail >= LOG_FILE_MIDDLE_DETAIL)
@@ -984,7 +982,13 @@ void CSimulation::DoActualPlatformErosionOnCell(int const nX, int const nY)
          // m_dDepositionSandDiff and m_dDepositionCoarseDiff are both +ve
          m_dDepositionSandDiff += dSandEroded;
          m_dDepositionCoarseDiff += dCoarseEroded;
+
+         return;
       }
+
+      // All OK, so add this to the polygon's total of unconsolidated sand/coarse sediment, to be deposited or moved later. These values are +ve (deposition)
+      m_pVCoastPolygon[nPolyID]->AddPlatformErosionUnconsSand(dSandEroded);
+      m_pVCoastPolygon[nPolyID]->AddPlatformErosionUnconsCoarse(dCoarseEroded);
    }
 }
 
