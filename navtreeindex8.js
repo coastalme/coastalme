@@ -1,5 +1,9 @@
 var NAVTREEINDEX8 =
 {
+"d7/dd3/classCGeomLine.html#aa82ca672ab0572c44e0d163e79587aac":[3,0,10,4],
+"d7/dd3/classCGeomLine.html#aa9751625358274178c91304f18352967":[3,0,10,3],
+"d7/dd3/classCGeomLine.html#aea3b01266aeaa7c544568548246eb18f":[3,0,10,0],
+"d7/dd3/classCGeomLine.html#af79f8e1b3fdbb8866cc669083d3a5f6b":[3,0,10,1],
 "d7/dfc/classvector.html":[3,0,34],
 "d7/dfc/classvector.html#a2396209900e8f592db1f0b2467f7d899":[3,0,34,4],
 "d8/d79/classostringstream.html":[3,0,29],
@@ -245,9 +249,5 @@ var NAVTREEINDEX8 =
 "de/d65/coast_8h.html":[4,0,0,28],
 "de/d65/coast_8h_source.html":[4,0,0,28],
 "de/d81/classdeque_1_1iterator.html":[3,0,23,2],
-"de/dc3/coast__landform_8cpp.html":[4,0,0,29],
-"de/dc3/coast__landform_8cpp_source.html":[4,0,0,29],
-"df/d02/classios.html":[3,0,25],
-"df/d30/coast__polygon_8cpp.html":[4,0,0,31],
-"df/d30/coast__polygon_8cpp_source.html":[4,0,0,31]
+"de/dc3/coast__landform_8cpp.html":[4,0,0,29]
 };
