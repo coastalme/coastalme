@@ -25,6 +25,10 @@ You should have received a copy of the GNU General Public License along with thi
 #include <iostream>
 using std::endl;
 
+#ifdef _OPENMP
+#include <omp.h>
+#endif
+
 #include "cme.h"
 #include "simulation.h"
 #include "raster_grid.h"
@@ -38,6 +42,14 @@ int CSimulation::nUpdateGrid(void)
    // Go through all cells in the raster grid and calculate some this-timestep totals
    m_dThisIterTopElevMax = -DBL_MAX;
    m_dThisIterTopElevMin = DBL_MAX;
+   
+   // Use OpenMP parallel reduction for thread-safe accumulation and min/max calculations
+#ifdef _OPENMP
+   #pragma omp parallel for collapse(2) \
+           reduction(+:m_ulThisIterNumCoastCells,m_dThisIterTotSeaDepth) \
+           reduction(max:m_dThisIterTopElevMax) \
+           reduction(min:m_dThisIterTopElevMin)
+#endif
    for (int nX = 0; nX < m_nXGridSize; nX++)
    {
       for (int nY = 0; nY < m_nYGridSize; nY++)
@@ -69,6 +81,11 @@ int CSimulation::nUpdateGrid(void)
 
    // Now go through all cells again and sort out suspended sediment load
    double dSuspPerSeaCell = m_dThisIterFineSedimentToSuspension / static_cast<double>(m_ulThisIterNumSeaCells);
+   
+   // Parallelize the sediment distribution loop
+#ifdef _OPENMP
+   #pragma omp parallel for collapse(2)
+#endif
    for (int nX = 0; nX < m_nXGridSize; nX++)
    {
       for (int nY = 0; nY < m_nYGridSize; nY++)

@@ -28,6 +28,10 @@ using std::cout;
 using std::cerr;
 using std::endl;
 
+#ifdef _OPENMP
+#include <omp.h>
+#endif
+
 #include "cme.h"
 #include "simulation.h"
 #include "coast.h"
@@ -353,6 +357,12 @@ int CSimulation::nLandformToGrid(int const nCoast, int const nPoint)
 int CSimulation::nAssignLandformsForAllCells(void)
 {
    // Go through all cells in the RasterGrid array
+   // Note: This loop contains calls to bSurroundedByDriftCells() which accesses neighboring cells,
+   // so we need to be careful about thread safety. Since the reads are from neighboring cells
+   // and writes are to the current cell, this should be thread-safe.
+#ifdef _OPENMP
+   #pragma omp parallel for collapse(2)
+#endif
    for (int nX = 0; nX < m_nXGridSize; nX++)
    {
       for (int nY = 0; nY < m_nYGridSize; nY++)

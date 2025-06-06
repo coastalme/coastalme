@@ -1,8 +1,8 @@
 #!/bin/sh
 
 # Change this to change build type
-buildtype=Debug
-#buildtype=Release
+#buildtype=Debug
+buildtype=Release
 #buildtype=Prerelease
 #buildtype=RelWithDebInfo        # Not yet implemented in CMakeLists.txt
 #buildtype=MinSizeRel            # Not yet implemented in CMakeLists.txt
@@ -29,11 +29,11 @@ cd ..
 echo ""
 echo "================================================================="
 echo ""
-echo "CoastalME: starting CMake for Linux (using gcc, $buildtype build, $cshorelibrary CShore library, CShore input/output method=$cshoreinout)"
+echo "CoastalME: starting CMake for macOS (using gcc-15 with OpenMP, $buildtype build, $cshorelibrary CShore library, CShore input/output method=$cshoreinout)"
 echo ""
 
 rm -f CMakeCache.txt
-cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=$buildtype -DCSHORE_LIBRARY=$cshorelibrary -DCSHORE_INOUT=$cshoreinout .
+CC=/opt/homebrew/bin/gcc-15 CXX=/opt/homebrew/bin/g++-15 cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=$buildtype -DCSHORE_LIBRARY=$cshorelibrary -DCSHORE_INOUT=$cshoreinout -DCMAKE_C_COMPILER=/opt/homebrew/bin/gcc-15 -DCMAKE_CXX_COMPILER=/opt/homebrew/bin/g++-15 .
 #cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=$buildtype -DCSHORE_LIBRARY=$cshorelibrary -DCSHORE_INOUT=$cshoreinout -DCMAKE_VERBOSE_MAKEFILE=ON .
 #cmake -DCMAKE_BUILD_TYPE=$buildtype -DCSHORE_LIBRARY=$cshorelibrary -DCSHORE_INOUT=$cshoreinout . -G"CodeBlocks - Unix Makefiles"
 
@@ -41,7 +41,7 @@ echo ""
 echo "================================================================="
 echo ""
 
-echo "Finished CMake for Linux (using gcc, $buildtype build, $cshorelibrary CShore library, CShore input/output method=$cshoreinout)"
+echo "Finished CMake for macOS (using gcc-15 with OpenMP, $buildtype build, $cshorelibrary CShore library, CShore input/output method=$cshoreinout)"
 echo ""
 echo "================================================================="
 

@@ -33,6 +33,10 @@ using std::endl;
 #include <gdal_priv.h>
 #include <gdal_alg.h>
 
+#ifdef _OPENMP
+#include <omp.h>
+#endif
+
 #include "cme.h"
 #include "line.h"
 #include "cell.h"
@@ -120,6 +124,12 @@ int CSimulation::nInitGridAndCalcStillWaterLevel(void)
    m_dStartIterConsCoarseAllCells = 0;
 
    // And go through all cells in the RasterGrid array
+   // Use OpenMP parallel loop with reduction clauses for thread-safe accumulation
+#ifdef _OPENMP
+   #pragma omp parallel for collapse(2) reduction(+:nZeroThickness) \
+           reduction(+:m_dStartIterConsFineAllCells,m_dStartIterConsSandAllCells,m_dStartIterConsCoarseAllCells) \
+           reduction(+:m_dStartIterSuspFineAllCells,m_dStartIterUnconsFineAllCells,m_dStartIterUnconsSandAllCells,m_dStartIterUnconsCoarseAllCells)
+#endif
    for (int nX = 0; nX < m_nXGridSize; nX++)
    {
       for (int nY = 0; nY < m_nYGridSize; nY++)
@@ -135,8 +145,15 @@ int CSimulation::nInitGridAndCalcStillWaterLevel(void)
             {
                nZeroThickness++;
 
+               // Note: Logging from parallel regions can cause race conditions, but this is for debugging only
+               // In production, consider collecting problematic cells and logging after the parallel region
                if (m_nLogFileDetail >= LOG_FILE_MIDDLE_DETAIL)
+               {
+#ifdef _OPENMP
+                  #pragma omp critical(logging)
+#endif
                   LogStream << m_ulIter << ": " << WARN << "total sediment thickness is " << dSedThickness << " at [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "}" << endl;
+               }
             }
 
             // For the first timestep only, calculate the elevation of all this cell's layers. During the rest of the simulation, each cell's elevation is re-calculated just after any change occurs on that cell
