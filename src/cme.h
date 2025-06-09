@@ -505,7 +505,7 @@ int const MAX_NUM_PREV_ORIENTATION_VALUES =
 int const MAX_NUM_SHADOW_ZONES =
     10; // Consider at most this number of shadow zones
 int const MAX_SEAWARD_OFFSET_FOR_CLIFF_TALUS =
-    0; // In cells: maximum distance that the Dean profile for cliff collapse
+    2; // In cells: maximum distance that the Dean profile for cliff collapse
        // talus can be offset from the coast
 int const MIN_INLAND_OFFSET_FOR_BEACH_EROSION_ESTIMATION =
     5; // Used in estimation of beach erosion
@@ -876,7 +876,7 @@ double const INTERVENTION_PROFILE_SPACING_FACTOR =
 double const DBL_NODATA = -9999;
 
 string const PROGRAM_NAME =
-    "Coastal Modelling Environment (CoastalME) version 1.3.18 (04 Jun 2025)";
+    "Coastal Modelling Environment (CoastalME) version 1.3.17 (22 May 2025)";
 string const PROGRAM_NAME_SHORT = "CME";
 string const CME_INI = "cme.ini";
 

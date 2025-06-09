@@ -1541,6 +1541,7 @@ private:
    void WriteLookUpData(void) const;
 
    // GIS input and output stuff
+   void InitializeGDALPerformance(void);
    int nReadRasterBasementDEM(void);
    int nReadRasterGISFile(int const, int const);
    int nReadVectorGISFile(int const);

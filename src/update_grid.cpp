@@ -43,6 +43,10 @@ int CSimulation::nUpdateGrid(void)
    m_dThisIterTopElevMax = -DBL_MAX;
    m_dThisIterTopElevMin = DBL_MAX;
    
+   // Initialize reduction variables to zero
+   m_ulThisIterNumCoastCells = 0;
+   m_dThisIterTotSeaDepth = 0;
+   
    // Use OpenMP parallel reduction for thread-safe accumulation and min/max calculations
 #ifdef _OPENMP
    #pragma omp parallel for collapse(2) \

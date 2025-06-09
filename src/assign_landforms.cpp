@@ -356,10 +356,11 @@ int CSimulation::nLandformToGrid(int const nCoast, int const nPoint)
 //===============================================================================================================================
 int CSimulation::nAssignLandformsForAllCells(void)
 {
-   // Go through all cells in the RasterGrid array
-   // Note: This loop contains calls to bSurroundedByDriftCells() which accesses neighboring cells,
-   // so we need to be careful about thread safety. Since the reads are from neighboring cells
-   // and writes are to the current cell, this should be thread-safe.
+   // First pass: collect information about cells that need to be changed
+   // This avoids race conditions from reading neighbor cells while writing to current cells
+   vector<vector<int>> vCellUpdates(m_nXGridSize, vector<int>(m_nYGridSize, -1));
+   
+   // Read-only phase: determine what changes need to be made
 #ifdef _OPENMP
    #pragma omp parallel for collapse(2)
 #endif
@@ -370,70 +371,97 @@ int CSimulation::nAssignLandformsForAllCells(void)
          // Get this cell's landform category
          CRWCellLandform* pLandform = m_pRasterGrid->m_Cell[nX][nY].pGetLandform();
          int nCat = pLandform->nGetLFCategory();
-
+         
+         // Store what action to take (to avoid writing during read phase)
+         int nAction = -1; // -1 = no change, others defined below
+         
          if (m_pRasterGrid->m_Cell[nX][nY].bBasementElevIsMissingValue())
          {
-            // Set to unknown landform
-            pLandform->SetLFCategory(LF_NONE);
-            continue;
+            nAction = 0; // Set to unknown landform
          }
-
-         if ((nCat == LF_CAT_SEDIMENT_INPUT) || (nCat == LF_CAT_SEDIMENT_INPUT_SUBMERGED) || (nCat == LF_CAT_SEDIMENT_INPUT_NOT_SUBMERGED))
+         else if ((nCat == LF_CAT_SEDIMENT_INPUT) || (nCat == LF_CAT_SEDIMENT_INPUT_SUBMERGED) || (nCat == LF_CAT_SEDIMENT_INPUT_NOT_SUBMERGED))
          {
             if (m_pRasterGrid->m_Cell[nX][nY].bIsInundated())
             {
-               pLandform->SetLFCategory(LF_CAT_SEDIMENT_INPUT_SUBMERGED);
-               m_pRasterGrid->m_Cell[nX][nY].SetInContiguousSea();
+               nAction = 1; // Set to submerged sediment input
             }
             else
             {
-               pLandform->SetLFCategory(LF_CAT_SEDIMENT_INPUT_NOT_SUBMERGED);
+               nAction = 2; // Set to not submerged sediment input
             }
-            continue;
          }
-
-         if (nCat == LF_CAT_SEA)
+         else if (nCat == LF_CAT_SEA)
          {
             // This is a sea cell. Is it surrounded by drift cells, or drift and cliff?
             if (bSurroundedByDriftCells(nX, nY))
             {
-               // It is. We can can get 'holes' in the beach (due to rounding issues), so set this cell's landform to beach
-               pLandform->SetLFSubCategory(LF_SUBCAT_DRIFT_BEACH);
-               continue;
+               nAction = 3; // Set to beach
             }
             else if (m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElev() > m_dThisIterSWL)
             {
-               // This is an island
-               pLandform->SetLFCategory(LF_CAT_ISLAND);
-               continue;
+               nAction = 4; // Set to island
             }
-            else
-            {
-               // Keep it as sea
-               continue;
-            }
+            // else keep as sea (no action needed)
          }
-
-         // Ok, this cell is either coast or inland
-         if (! m_pRasterGrid->m_Cell[nX][nY].bIsCoastline())
+         else if (! m_pRasterGrid->m_Cell[nX][nY].bIsCoastline())
          {
             // Is not coastline
             if (nCat == LF_CAT_CLIFF)
             {
-               // This was a cliff during the last timestep, but it is no longer on the coastline. So classify it as a former cliff
-               pLandform->SetLFSubCategory(LF_SUBCAT_CLIFF_INLAND);
-
-//                LogStream << m_ulIter << ": FORMER CLIFF CREATED from cliff landform [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "}" << endl;
-
-               continue;
+               nAction = 5; // Set to former cliff
             }
-
-            if ((nCat == LF_CAT_DRIFT) || (nCat == LF_CAT_INTERVENTION) || (nCat == LF_CAT_SEDIMENT_INPUT) || (nCat == LF_CAT_SEDIMENT_INPUT_SUBMERGED) || (nCat == LF_CAT_SEDIMENT_INPUT_NOT_SUBMERGED))
-               // Do nothing
-               continue;
-
-            // It must be hinterland
-            pLandform->SetLFCategory(LF_CAT_HINTERLAND);
+            else if ((nCat != LF_CAT_DRIFT) && (nCat != LF_CAT_INTERVENTION) && 
+                     (nCat != LF_CAT_SEDIMENT_INPUT) && (nCat != LF_CAT_SEDIMENT_INPUT_SUBMERGED) && 
+                     (nCat != LF_CAT_SEDIMENT_INPUT_NOT_SUBMERGED))
+            {
+               nAction = 6; // Set to hinterland
+            }
+         }
+         
+         vCellUpdates[nX][nY] = nAction;
+      }
+   }
+   
+   // Write phase: apply the changes
+   for (int nX = 0; nX < m_nXGridSize; nX++)
+   {
+      for (int nY = 0; nY < m_nYGridSize; nY++)
+      {
+         int nAction = vCellUpdates[nX][nY];
+         if (nAction == -1) continue; // No change
+         
+         CRWCellLandform* pLandform = m_pRasterGrid->m_Cell[nX][nY].pGetLandform();
+         
+         switch (nAction)
+         {
+            case 0: // Set to unknown landform
+               pLandform->SetLFCategory(LF_NONE);
+               break;
+               
+            case 1: // Set to submerged sediment input
+               pLandform->SetLFCategory(LF_CAT_SEDIMENT_INPUT_SUBMERGED);
+               m_pRasterGrid->m_Cell[nX][nY].SetInContiguousSea();
+               break;
+               
+            case 2: // Set to not submerged sediment input
+               pLandform->SetLFCategory(LF_CAT_SEDIMENT_INPUT_NOT_SUBMERGED);
+               break;
+               
+            case 3: // Set to beach
+               pLandform->SetLFSubCategory(LF_SUBCAT_DRIFT_BEACH);
+               break;
+               
+            case 4: // Set to island
+               pLandform->SetLFCategory(LF_CAT_ISLAND);
+               break;
+               
+            case 5: // Set to former cliff
+               pLandform->SetLFSubCategory(LF_SUBCAT_CLIFF_INLAND);
+               break;
+               
+            case 6: // Set to hinterland
+               pLandform->SetLFCategory(LF_CAT_HINTERLAND);
+               break;
          }
       }
    }
