@@ -263,6 +263,10 @@ int CSimulation::nDoCliffCollapse(int const nCoast, CRWCliff* pCliff, double& dF
    }
 
    CGeomCoastPolygon* pPolygon = m_VCoast[nCoast].pGetPolygon(nPoly);
+
+   // DEBUG CODE =========
+   double dCliffTopElev = m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElev();
+   // DEBUG CODE =========
        
    // Get the elevation of the base of the notch from the cliff object
    double dNotchElev = pCliff->dGetNotchBaseElev() - m_dNotchBaseBelowSWL;
@@ -457,6 +461,10 @@ int CSimulation::nDoCliffCollapse(int const nCoast, CRWCliff* pCliff, double& dF
    
    // Get the post-collapse cliff elevation
    dPostCollapseCliffElev = m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElev();
+
+   // DEBUG CODE ============
+   assert(dCliffTopElev > dPostCollapseCliffElev);
+   // DEBUG CODE ============
 
    // And update the cell's sea depth
    m_pRasterGrid->m_Cell[nX][nY].SetSeaDepth();
