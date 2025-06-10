@@ -111,6 +111,7 @@ var classCSimulation =
     [ "FloodFillLand", "d1/d98/classCSimulation.html#a2c2088373f746cadf0923b3999e0e5ab", null ],
     [ "FloodFillSea", "d1/d98/classCSimulation.html#aee31663234645fb4092e412db61c140f", null ],
     [ "GetRasterOutputMinMax", "d1/d98/classCSimulation.html#a0e2776f69ae5184b99845d8232c68808", null ],
+    [ "InitializeGDALPerformance", "d1/d98/classCSimulation.html#a38b6222457659711a3c8d0d95ef8ec2b", null ],
     [ "InterpolateCShoreOutput", "d1/d98/classCSimulation.html#a0b66eca85c13a2a263db7be1e270055a", null ],
     [ "InterpolateWaveHeightToCoastPoints", "d1/d98/classCSimulation.html#af4c1d4172cbc1ef26d5cae02ffe03409", null ],
     [ "InterpolateWavePropertiesBetweenProfiles", "d1/d98/classCSimulation.html#a5c5b3c6af9aaf01e7bf236e88d397e2d", null ],
