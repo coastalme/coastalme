@@ -882,9 +882,30 @@ bool CSimulation::bSaveAllRasterGISFiles(void)
 
    // Set for next save
    if (m_bSaveRegular)
+   {
       m_dRegularSaveTime += m_dRegularSaveInterval;
+   }
    else
-      m_nThisSave = tMin(++m_nThisSave, m_nUSave);
+   {
+      if (m_nThisSave < m_nUSave - 1)
+      {
+         // Still have user-defined save times remaining
+         m_nThisSave++;
+      }
+      else
+      {
+         // Finished user-defined times, switch to regular interval using last value as interval
+         double dLastInterval;
+         if (m_nUSave > 1)
+            dLastInterval = m_dUSaveTime[m_nUSave-1] - m_dUSaveTime[m_nUSave-2];
+         else
+            dLastInterval = m_dUSaveTime[m_nUSave-1];
+         
+         m_dRegularSaveTime = m_dSimElapsed + dLastInterval;
+         m_dRegularSaveInterval = dLastInterval;
+         m_bSaveRegular = true;
+      }
+   }
 
    if (m_bSedimentTopSurfSave)
       if (! bWriteRasterGISFile(RASTER_PLOT_SEDIMENT_TOP_ELEVATION_ELEV, &RASTER_PLOT_SEDIMENT_TOP_ELEVATION_ELEV_TITLE))

@@ -27,8 +27,8 @@ if (UNIX)
    endif ()
 
    if (APPLE)
-      set (LINUX TRUE)
-      message ("Creating OSX-Unix Makefile for CoastalME")
+      set (MACOS TRUE)
+      message ("Creating macOS-Unix Makefile for CoastalME")
    endif ()
 endif ()
 
@@ -71,6 +71,8 @@ set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17")
 # Set the CoastalME CPU flag TODO Need to change this for different CPU architectures
 if (APPLE)
    set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DCPU -Dxarm64")
+elseif (LINUX)
+   set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DCPU -Dx86")
 else()
    set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DCPU -Dx86")
 endif()
@@ -123,7 +125,9 @@ if (CMAKE_COMPILER_IS_GNUCC)
    endif()
 
    # Finally set some gcc-specific linker flags, for all build types
-   set (CMAKE_EXE_LINKER_FLAGS "-Wl,--as-needed -Wl,--no-undefined")
+   if (LINUX)
+      set (CMAKE_EXE_LINKER_FLAGS "-Wl,--as-needed -Wl,--no-undefined")
+   endif()
 endif ()
 
 if (MSVC)
@@ -172,6 +176,120 @@ endif ()
 #########################################################################################
 # Next, find libraries
 message ("Finding libraries")
+
+#########################################################################################
+# Find OpenMP for parallelization
+# First try to find OpenMP using the standard CMake module
+find_package(OpenMP)
+
+if (OpenMP_CXX_FOUND)
+   message (STATUS "OpenMP found via find_package: ${OpenMP_CXX_VERSION}")
+   set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
+   set (LIBS ${LIBS} OpenMP::OpenMP_CXX)
+   message (STATUS "OpenMP enabled for parallel grid operations")
+else()
+   # Standard detection failed, try manual detection based on compiler
+   message (STATUS "Standard OpenMP detection failed, attempting manual detection...")
+   
+   if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+      # Test if GCC supports OpenMP
+      message (STATUS "Testing GCC OpenMP support...")
+      include(CheckCXXSourceCompiles)
+      set(CMAKE_REQUIRED_FLAGS "-fopenmp")
+      set(CMAKE_REQUIRED_LIBRARIES "-fopenmp")
+      check_cxx_source_compiles("
+         #include <omp.h>
+         int main() {
+            #pragma omp parallel
+            {
+               int tid = omp_get_thread_num();
+            }
+            return 0;
+         }"
+         OPENMP_TEST_COMPILE
+      )
+      
+      if (OPENMP_TEST_COMPILE)
+         message (STATUS "GCC OpenMP support confirmed - adding -fopenmp flags")
+         set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp")
+         set (CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fopenmp")
+         set (OPENMP_ENABLED TRUE)
+      else()
+         message (STATUS "GCC does not support OpenMP")
+         set (OPENMP_ENABLED FALSE)
+      endif()
+      
+   elseif (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+      # Test Clang OpenMP support (may need libomp)
+      message (STATUS "Testing Clang OpenMP support...")
+      include(CheckCXXSourceCompiles)
+      
+      # Try with -fopenmp first
+      set(CMAKE_REQUIRED_FLAGS "-fopenmp")
+      set(CMAKE_REQUIRED_LIBRARIES "-fopenmp")
+      check_cxx_source_compiles("
+         #include <omp.h>
+         int main() {
+            #pragma omp parallel
+            {
+               int tid = omp_get_thread_num();
+            }
+            return 0;
+         }"
+         CLANG_OPENMP_FOPENMP
+      )
+      
+      if (CLANG_OPENMP_FOPENMP)
+         message (STATUS "Clang OpenMP support confirmed with -fopenmp")
+         set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp")
+         set (CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fopenmp")
+         set (OPENMP_ENABLED TRUE)
+      else()
+         # Try with -fopenmp=libomp (for Homebrew clang)
+         set(CMAKE_REQUIRED_FLAGS "-fopenmp=libomp")
+         set(CMAKE_REQUIRED_LIBRARIES "-fopenmp=libomp")
+         check_cxx_source_compiles("
+            #include <omp.h>
+            int main() {
+               #pragma omp parallel
+               {
+                  int tid = omp_get_thread_num();
+               }
+               return 0;
+            }"
+            CLANG_OPENMP_LIBOMP
+         )
+         
+         if (CLANG_OPENMP_LIBOMP)
+            message (STATUS "Clang OpenMP support confirmed with -fopenmp=libomp")
+            set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp=libomp")
+            set (CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fopenmp=libomp")
+            set (OPENMP_ENABLED TRUE)
+         else()
+            message (STATUS "Clang does not support OpenMP")
+            set (OPENMP_ENABLED FALSE)
+         endif()
+      endif()
+      
+   else()
+      message (STATUS "Unknown compiler - attempting generic OpenMP detection")
+      set (OPENMP_ENABLED FALSE)
+   endif()
+   
+   # Reset CMAKE_REQUIRED variables
+   unset(CMAKE_REQUIRED_FLAGS)
+   unset(CMAKE_REQUIRED_LIBRARIES)
+   
+   if (NOT OPENMP_ENABLED)
+      message (WARNING "OpenMP not found - grid operations will run sequentially")
+      message (STATUS "To enable OpenMP on macOS:")
+      message (STATUS "  1. Install GCC: brew install gcc")
+      message (STATUS "  2. Use GCC for compilation: CC=gcc-15 CXX=g++-15 cmake ...")
+      message (STATUS "  3. Or install libomp for Clang: brew install libomp")
+   else()
+      message (STATUS "OpenMP enabled for parallel grid operations")
+   endif()
+endif()
 
 #########################################################################################
 # CoastalME cannot be built without GDAL, which is linked dynamically
@@ -322,45 +440,45 @@ if (UNIX)
       if (CSHORE_INOUT_LC STREQUAL "file")
          if ((CMAKE_BUILD_TYPE_LC STREQUAL "debug") OR (CMAKE_BUILD_TYPE_LC STREQUAL "valgrind"))
             if (CSHORE_LIBRARY_LC STREQUAL "shared")
-               execute_process (COMMAND ln -s -f "${CMAKE_SOURCE_DIR}/lib/libcshore.so.DEBUG.LINUX.FILEINOUT" "${CMAKE_SOURCE_DIR}/lib/libcshore.so")
+               execute_process (COMMAND ln -s -f "${CMAKE_SOURCE_DIR}/lib/libcshore.so.DEBUG.MACOS.FILEINOUT" "${CMAKE_SOURCE_DIR}/lib/libcshore.so")
             else ()
-               execute_process (COMMAND ln -s -f "${CMAKE_SOURCE_DIR}/lib/libcshore.a.DEBUG.LINUX.FILEINOUT" "${CMAKE_SOURCE_DIR}/lib/libcshore.a")
+               execute_process (COMMAND ln -s -f "${CMAKE_SOURCE_DIR}/lib/libcshore.a.DEBUG.MACOS.FILEINOUT" "${CMAKE_SOURCE_DIR}/lib/libcshore.a")
             endif ()
          else ()
             if (CSHORE_LIBRARY_LC STREQUAL "shared")
-               execute_process (COMMAND ln -s -f "${CMAKE_SOURCE_DIR}/lib/libcshore.so.RELEASE.LINUX.FILEINOUT" "${CMAKE_SOURCE_DIR}/lib/libcshore.so")
+               execute_process (COMMAND ln -s -f "${CMAKE_SOURCE_DIR}/lib/libcshore.so.RELEASE.MACOS.FILEINOUT" "${CMAKE_SOURCE_DIR}/lib/libcshore.so")
             else ()
-               execute_process (COMMAND ln -s -f "${CMAKE_SOURCE_DIR}/lib/libcshore.a.RELEASE.LINUX.FILEINOUT" "${CMAKE_SOURCE_DIR}/lib/libcshore.a")
+               execute_process (COMMAND ln -s -f "${CMAKE_SOURCE_DIR}/lib/libcshore.a.RELEASE.MACOS.FILEINOUT" "${CMAKE_SOURCE_DIR}/lib/libcshore.a")
             endif ()
          endif ()
 
       elseif (CSHORE_INOUT_LC STREQUAL "arg")
          if ((CMAKE_BUILD_TYPE_LC STREQUAL "debug") OR (CMAKE_BUILD_TYPE_LC STREQUAL "valgrind"))
             if (CSHORE_LIBRARY_LC STREQUAL "shared")
-               execute_process (COMMAND ln -s -f "${CMAKE_SOURCE_DIR}/lib/libcshore.so.DEBUG.LINUX.ARGINOUT" "${CMAKE_SOURCE_DIR}/lib/libcshore.so")
+               execute_process (COMMAND ln -s -f "${CMAKE_SOURCE_DIR}/lib/libcshore.so.DEBUG.MACOS.ARGINOUT" "${CMAKE_SOURCE_DIR}/lib/libcshore.so")
             else ()
-               execute_process (COMMAND ln -s -f "${CMAKE_SOURCE_DIR}/lib/libcshore.a.DEBUG.LINUX.ARGINOUT" "${CMAKE_SOURCE_DIR}/lib/libcshore.a")
+               execute_process (COMMAND ln -s -f "${CMAKE_SOURCE_DIR}/lib/libcshore.a.DEBUG.MACOS.ARGINOUT" "${CMAKE_SOURCE_DIR}/lib/libcshore.a")
             endif ()
          else ()
             if (CSHORE_LIBRARY_LC STREQUAL "shared")
-               execute_process (COMMAND ln -s -f "${CMAKE_SOURCE_DIR}/lib/libcshore.so.RELEASE.LINUX.ARGINOUT" "${CMAKE_SOURCE_DIR}/lib/libcshore.so")
+               execute_process (COMMAND ln -s -f "${CMAKE_SOURCE_DIR}/lib/libcshore.so.RELEASE.MACOS.ARGINOUT" "${CMAKE_SOURCE_DIR}/lib/libcshore.so")
             else ()
-               execute_process (COMMAND ln -s -f "${CMAKE_SOURCE_DIR}/lib/libcshore.a.RELEASE.LINUX.ARGINOUT" "${CMAKE_SOURCE_DIR}/lib/libcshore.a")
+               execute_process (COMMAND ln -s -f "${CMAKE_SOURCE_DIR}/lib/libcshore.a.RELEASE.MACOS.ARGINOUT" "${CMAKE_SOURCE_DIR}/lib/libcshore.a")
             endif ()
          endif ()
 
       elseif (CSHORE_INOUT_LC STREQUAL "both")
          if ((CMAKE_BUILD_TYPE_LC STREQUAL "debug") OR (CMAKE_BUILD_TYPE_LC STREQUAL "valgrind"))
             if (CSHORE_LIBRARY_LC STREQUAL "shared")
-               execute_process (COMMAND ln -s -f "${CMAKE_SOURCE_DIR}/lib/libcshore.so.DEBUG.LINUX.ARGINBOTHOUT" "${CMAKE_SOURCE_DIR}/lib/libcshore.so")
+               execute_process (COMMAND ln -s -f "${CMAKE_SOURCE_DIR}/lib/libcshore.so.DEBUG.MACOS.ARGINBOTHOUT" "${CMAKE_SOURCE_DIR}/lib/libcshore.so")
             else ()
-               execute_process (COMMAND ln -s -f "${CMAKE_SOURCE_DIR}/lib/libcshore.a.DEBUG.LINUX.ARGINBOTHOUT" "${CMAKE_SOURCE_DIR}/lib/libcshore.a")
+               execute_process (COMMAND ln -s -f "${CMAKE_SOURCE_DIR}/lib/libcshore.a.DEBUG.MACOS.ARGINBOTHOUT" "${CMAKE_SOURCE_DIR}/lib/libcshore.a")
             endif ()
          else ()
             if (CSHORE_LIBRARY_LC STREQUAL "shared")
-               execute_process (COMMAND ln -s -f "${CMAKE_SOURCE_DIR}/lib/libcshore.so.RELEASE.LINUX.ARGINBOTHOUT" "${CMAKE_SOURCE_DIR}/lib/libcshore.so")
+               execute_process (COMMAND ln -s -f "${CMAKE_SOURCE_DIR}/lib/libcshore.so.RELEASE.MACOS.ARGINBOTHOUT" "${CMAKE_SOURCE_DIR}/lib/libcshore.so")
             else ()
-               execute_process (COMMAND ln -s -f "${CMAKE_SOURCE_DIR}/lib/libcshore.a.RELEASE.LINUX.ARGINBOTHOUT" "${CMAKE_SOURCE_DIR}/lib/libcshore.a")
+               execute_process (COMMAND ln -s -f "${CMAKE_SOURCE_DIR}/lib/libcshore.a.RELEASE.MACOS.ARGINBOTHOUT" "${CMAKE_SOURCE_DIR}/lib/libcshore.a")
             endif ()
          endif ()
       endif ()
@@ -399,9 +517,17 @@ else ()
    # And get the absolute path (without the file name)
    get_filename_component(CSHORELIB_ABS_PATH ${CSHORELIB_DIR} DIRECTORY)
 
-   # And set the installed executable's RPATH/RUNPATH to point to the CShore library: first as a relative path (two versions of this, $ORIGIN and $$ORIGIN, dunno why), next as as absolute path, and finally a fallback to a system library folder
-   #set (CMAKE_INSTALL_RPATH "${CSHORELIB_DIR}:$ORIGIN/src/lib/:$$ORIGIN/src/lib/")
-   set (CMAKE_INSTALL_RPATH "$ORIGIN/${CSHORELIB_REL_PATH}:$$ORIGIN/${CSHORELIB_REL_PATH}:${CSHORELIB_ABS_PATH}:/usr/local/lib")
+   # Get GDAL library directory
+   get_filename_component(GDAL_LIB_DIR ${GDAL_LIBRARIES} DIRECTORY)
+
+   # Set platform-specific RPATH configuration
+   if (APPLE)
+      # macOS uses @loader_path instead of $ORIGIN
+      set (CMAKE_INSTALL_RPATH "@loader_path/${CSHORELIB_REL_PATH}:${CSHORELIB_ABS_PATH}:${GDAL_LIB_DIR}:/opt/homebrew/lib:/usr/local/lib")
+   else ()
+      # Linux and other Unix systems use $ORIGIN
+      set (CMAKE_INSTALL_RPATH "$ORIGIN/${CSHORELIB_REL_PATH}:$$ORIGIN/${CSHORELIB_REL_PATH}:${CSHORELIB_ABS_PATH}:${GDAL_LIB_DIR}:/usr/local/lib")
+   endif ()
 endif ()
 
 #########################################################################################
