@@ -84,6 +84,9 @@ private:
    //! If this cell is within a polygon, this is the ID of the polygon
    int m_nPolygonID;
 
+   //! If this cell is within a polygon, this is the ID of the polygon's coast
+   int m_nPolygonCoastID;
+
    //! If this cell is 'under' a coastline normal, this is the number of the normal
    int m_nCoastlineNormal;
 

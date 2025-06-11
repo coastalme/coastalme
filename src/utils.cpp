@@ -32,6 +32,10 @@ You should have received a copy of the GNU General Public License along with thi
 #include <unistd.h>        // For isatty()
 #endif
 
+#ifdef _OPENMP
+#include <omp.h>
+#endif
+
 #include <cmath>
 using std::floor;
 

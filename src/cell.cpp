@@ -45,6 +45,7 @@ CGeomCell::CGeomCell()
       m_bPossibleFloodStartCell(false),
       m_nBoundingBoxEdge(NO_DIRECTION),
       m_nPolygonID(INT_NODATA),
+      m_nPolygonCoastID(INT_NODATA),
       m_nCoastlineNormal(INT_NODATA),
       m_nShadowZoneNumber(0),
       m_nDownDriftZoneNumber(0),

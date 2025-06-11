@@ -37,6 +37,7 @@ using std::to_string;
 
 #include <algorithm>
 using std::find;
+using std::sort;
 
 #include <random>
 using std::random_device;
@@ -450,86 +451,123 @@ bool CSimulation::bReadRunDataFile(void)
             break;
 
          case 6:
-            // Save interval(s)
+         {
+            // Save interval(s) - can handle multiple groups with different units
+            // e.g., "6 12 24 48 hours, 1 2 6 months, 1 years"
             strRH = strToLower(&strRH);
 
-            // First get the multiplier
-            dMult = dGetTimeMultiplier(&strRH);
-            if (static_cast<int>(dMult) == TIME_UNKNOWN)
+            // Split by commas to handle multiple unit groups
+            string strOriginal = strRH;
+            size_t nCommaPos = 0;
+            
+            m_bSaveRegular = false;  // Start with assumption of multiple values
+            
+            do
             {
-               strErr = "line " + to_string(nLine) + ": units for save intervals";
-               break;
-            }
-
-            // Search for a space from the right-hand end of the string
-            nPos = strRH.rfind(SPACE);
-            if (nPos == string::npos)
-            {
-               strErr = "line " + to_string(nLine) + ": format of save times/intervals";
-               break;
-            }
-
-            // Cut off rh bit of string
-            strRH.resize(nPos);
-
-            // Remove trailing spaces
-            strRH = strTrimRight(&strRH);
-
-            // Now find out whether we're dealing with a single regular save interval or a vector of save times: again check for a space
-            nPos = strRH.find(SPACE);
-            if (nPos != string::npos)
-            {
-               // There's another space, so we must have more than one number
-               m_bSaveRegular = false;
-
-               strRH += SPACE;
-
-               do
+               string strGroup;
+               size_t nNextComma = strOriginal.find(',', nCommaPos);
+               
+               if (nNextComma != string::npos)
                {
-                  // Put the number into the array
-                  if (m_nUSave > static_cast<int>(SAVEMAX) - 1)
-                  {
-                     strErr = "line " + to_string(nLine) + ": too many save intervals";
-                     break;
-                  }
-                  m_dUSaveTime[m_nUSave++] = strtod(strRH.substr(0, nPos).c_str(), NULL) * dMult; // convert to hours
-
-                  // Trim off the number and remove leading whitespace
-                  strRH.erase(0, nPos);
-                  strRH = strTrimLeft(&strRH);
-
-                  // Now look for another space
-                  nPos = strRH.find(SPACE);
+                  strGroup = strOriginal.substr(nCommaPos, nNextComma - nCommaPos);
+                  nCommaPos = nNextComma + 1;
                }
-               while (strRH.size() > 1);
-
-               // Check that we have at least 2 numbers
-               if (m_nUSave < 1)
+               else
                {
-                  strErr = "line " + to_string(nLine) + ": must have at least two save times";
+                  strGroup = strOriginal.substr(nCommaPos);
+                  nCommaPos = string::npos;
+               }
+               
+               // Trim whitespace from group
+               strGroup = strTrimLeft(&strGroup);
+               strGroup = strTrimRight(&strGroup);
+               
+               if (strGroup.empty())
+                  continue;
+               
+               // Get the multiplier for this group
+               dMult = dGetTimeMultiplier(&strGroup);
+               if (static_cast<int>(dMult) == TIME_UNKNOWN)
+               {
+                  strErr = "line " + to_string(nLine) + ": units for save intervals in group '" + strGroup + "'";
                   break;
                }
 
+               // Remove the unit text from the end
+               size_t nLastSpace = strGroup.rfind(SPACE);
+               if (nLastSpace == string::npos)
+               {
+                  strErr = "line " + to_string(nLine) + ": format of save times/intervals in group '" + strGroup + "'";
+                  break;
+               }
+               
+               string strNumbers = strGroup.substr(0, nLastSpace);
+               strNumbers = strTrimRight(&strNumbers);
+               
+               // Parse numbers in this group
+               size_t nSpacePos = 0;
+               strNumbers += SPACE;  // Add trailing space to help parsing
+               
+               do
+               {
+                  size_t nNextSpace = strNumbers.find(SPACE, nSpacePos);
+                  if (nNextSpace == string::npos)
+                     break;
+                     
+                  string strNumber = strNumbers.substr(nSpacePos, nNextSpace - nSpacePos);
+                  if (!strNumber.empty())
+                  {
+                     if (m_nUSave > static_cast<int>(SAVEMAX) - 1)
+                     {
+                        strErr = "line " + to_string(nLine) + ": too many save intervals";
+                        break;
+                     }
+                     
+                     double dValue = strtod(strNumber.c_str(), NULL) * dMult;
+                     m_dUSaveTime[m_nUSave++] = dValue;
+                  }
+                  
+                  nSpacePos = nNextSpace + 1;
+               }
+               while (nSpacePos < strNumbers.length());
+               
+               if (!strErr.empty())
+                  break;
+            }
+            while (nCommaPos != string::npos);
+            
+            if (!strErr.empty())
+               break;
+            
+            // Check if we only have one value (making it a regular interval)
+            if (m_nUSave == 1)
+            {
+               m_bSaveRegular = true;
+               m_dRegularSaveInterval = m_dUSaveTime[0];
+               if (m_dRegularSaveInterval < m_dTimeStep)
+                  strErr = "line " + to_string(nLine) + ": save interval cannot be less than timestep";
+               else
+                  m_dRegularSaveTime = m_dRegularSaveInterval;
+            }
+            else if (m_nUSave > 1)
+            {
+               // Multiple values - sort them and validate
+               sort(m_dUSaveTime, m_dUSaveTime + m_nUSave);
+               
                if (m_dUSaveTime[0] < m_dTimeStep)
                {
                   strErr = "line " + to_string(nLine) + ": first save time cannot be less than timestep";
                   break;
                }
-
-               // Put a dummy save interval as the last entry in the array: this is needed to stop problems at end of run
+               
+               // Put a dummy save interval as the last entry in the array
                m_dUSaveTime[m_nUSave] = m_dSimDuration + 1;
             }
             else
             {
-               // There isn't a space, so we have only one number
-               m_bSaveRegular = true;
-               m_dRegularSaveInterval = strtod(strRH.c_str(), NULL) * dMult;        // Convert to hours
-               if (m_dRegularSaveInterval < m_dTimeStep)
-                  strErr = "line " + to_string(nLine) + ": save interval cannot be less than timestep";
-               else
-                  // Set up for first save
-                  m_dRegularSaveTime = m_dRegularSaveInterval;
+               strErr = "line " + to_string(nLine) + ": no save times specified";
             }
+         }
             break;
 
          case 7:
