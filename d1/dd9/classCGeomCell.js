@@ -186,6 +186,7 @@ var classCGeomCell =
     [ "m_nBoundingBoxEdge", "d1/dd9/classCGeomCell.html#a0e013c5576c2fb6f4cd6d4fbc8e7a6ff", null ],
     [ "m_nCoastlineNormal", "d1/dd9/classCGeomCell.html#a401dd63f3b041bad31be22e5a8a4d252", null ],
     [ "m_nDownDriftZoneNumber", "d1/dd9/classCGeomCell.html#ac652cb224ea97cb312926e0c7173efc3", null ],
+    [ "m_nPolygonCoastID", "d1/dd9/classCGeomCell.html#a57575d266723af823adc5c18bfa879b1", null ],
     [ "m_nPolygonID", "d1/dd9/classCGeomCell.html#aad1917bafcded7d307cc78a850b213f3", null ],
     [ "m_nShadowZoneNumber", "d1/dd9/classCGeomCell.html#abd904b6fe7fe0d59e6d5837d0a8a30c6", null ],
     [ "m_pGrid", "d1/dd9/classCGeomCell.html#a75d3180045cab7fe18488b06d29c0685", null ],

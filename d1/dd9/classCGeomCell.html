@@ -556,6 +556,9 @@ Private Attributes</h2></td></tr>
 <tr class="memitem:aad1917bafcded7d307cc78a850b213f3" id="r_aad1917bafcded7d307cc78a850b213f3"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aad1917bafcded7d307cc78a850b213f3">m_nPolygonID</a></td></tr>
 <tr class="memdesc:aad1917bafcded7d307cc78a850b213f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">If this cell is within a polygon, this is the ID of the polygon.  <br /></td></tr>
 <tr class="separator:aad1917bafcded7d307cc78a850b213f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a57575d266723af823adc5c18bfa879b1" id="r_a57575d266723af823adc5c18bfa879b1"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a57575d266723af823adc5c18bfa879b1">m_nPolygonCoastID</a></td></tr>
+<tr class="memdesc:a57575d266723af823adc5c18bfa879b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">If this cell is within a polygon, this is the ID of the polygon's coast.  <br /></td></tr>
+<tr class="separator:a57575d266723af823adc5c18bfa879b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a401dd63f3b041bad31be22e5a8a4d252" id="r_a401dd63f3b041bad31be22e5a8a4d252"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a401dd63f3b041bad31be22e5a8a4d252">m_nCoastlineNormal</a></td></tr>
 <tr class="memdesc:a401dd63f3b041bad31be22e5a8a4d252"><td class="mdescLeft">&#160;</td><td class="mdescRight">If this cell is 'under' a coastline normal, this is the number of the normal.  <br /></td></tr>
 <tr class="separator:a401dd63f3b041bad31be22e5a8a4d252"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -739,7 +742,7 @@ Andres Payo </dd></dl>
 
 <p>Destructor. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00091">91</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00092">92</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -761,7 +764,7 @@ Andres Payo </dd></dl>
 
 <p>Increments the depth of this-timestep coarse-sized talus from cliff collapse on this cell, also increments the total. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l01007">1007</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l01008">1008</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -782,7 +785,7 @@ Andres Payo </dd></dl>
 
 <p>Increments the depth of this-timestep sand-sized talus from cliff collapse on this cell, also increments the total. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l01000">1000</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l01001">1001</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -803,7 +806,7 @@ Andres Payo </dd></dl>
 
 <p>Adds to this cell's suspended sediment depth equivalent, it also increments the running total of suspended sediment depth equivalent. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00452">452</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00453">453</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -824,7 +827,7 @@ Andres Payo </dd></dl>
 
 <p>Appends sediment layers. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00692">692</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00693">693</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -845,7 +848,7 @@ Andres Payo </dd></dl>
 
 <p>Returns true if this cells's basement data is NODATA, is needed for irregularly-shaped DEMs. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00423">423</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00424">424</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -866,7 +869,7 @@ Andres Payo </dd></dl>
 
 <p>Returns true only if this cell has had no deposition or erosion this timestep. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l01107">1107</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l01108">1108</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -887,7 +890,7 @@ Andres Payo </dd></dl>
 
 <p>Is this an edge bounding-box cell? </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00108">108</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00109">109</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -925,7 +928,7 @@ Andres Payo </dd></dl>
 
 <p>Returns true if this cell is checked, false otherwise (flood switch) </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00375">375</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00376">376</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -946,7 +949,7 @@ Andres Payo </dd></dl>
 
 <p>Returns true if the cell is 'under' a coastline. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00233">233</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00234">234</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -967,7 +970,7 @@ Andres Payo </dd></dl>
 
 <p>Returns true if the top elevation of this cell (sediment plus any intervention) is less than this iteration's total water level. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00345">345</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00346">346</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -988,7 +991,7 @@ Andres Payo </dd></dl>
 
 <p>Is this cell flooded by setup surge? </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00144">144</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00145">145</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -1009,7 +1012,7 @@ Andres Payo </dd></dl>
 
 <p>Is this cell flooded by setup surge runup? </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00156">156</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00157">157</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -1030,7 +1033,7 @@ Andres Payo </dd></dl>
 
 <p>Returns true if the cell is flood line. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00245">245</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00246">246</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -1051,7 +1054,7 @@ Andres Payo </dd></dl>
 
 <p>Returns a flag which shows whether this cell is in the active zone. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00174">174</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00175">175</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -1072,7 +1075,7 @@ Andres Payo </dd></dl>
 
 <p>Returns true if this cell is in any shadow zone, false otherwise. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00305">305</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00306">306</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -1093,7 +1096,7 @@ Andres Payo </dd></dl>
 
 <p>Is this a sea cell? </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00120">120</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00121">121</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -1114,7 +1117,7 @@ Andres Payo </dd></dl>
 
 <p>Is this cell in the contiguous sea area? </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00162">162</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00163">163</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -1135,7 +1138,7 @@ Andres Payo </dd></dl>
 
 <p>Returns true if this cell is in the shadow zone with number given by the parameter, false otherwise. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00296">296</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00297">297</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -1156,7 +1159,7 @@ Andres Payo </dd></dl>
 
 <p>Returns true if the elevation of the sediment top surface for this cell (plus any intervention) is less than the grid's this-timestep still water elevation. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00552">552</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00553">553</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -1177,7 +1180,7 @@ Andres Payo </dd></dl>
 
 <p>Returns a flag which shows whether this cell has been flagged as a possible start- or end-point for a coastline. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00198">198</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00199">199</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -1198,7 +1201,7 @@ Andres Payo </dd></dl>
 
 <p>Returns a flag which shows whether this cell has been flagged as a possible start point for runup flooding. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00210">210</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00211">211</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -1219,7 +1222,7 @@ Andres Payo </dd></dl>
 
 <p>Returns true if this cell is 'under' a coastline normal. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00263">263</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00264">264</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -1240,7 +1243,7 @@ Andres Payo </dd></dl>
 
 <p>Returns a flag which shows whether this cell is a shadow zone boundary. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00186">186</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00187">187</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -1261,7 +1264,7 @@ Andres Payo </dd></dl>
 
 <p>Returns true if this cell has had potential erosion this timestep. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00216">216</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00217">217</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -1282,7 +1285,7 @@ Andres Payo </dd></dl>
 
 <p>For this cell, calculates the elevation of the top of every layer, and the d50 for the topmost unconsolidated sediment layer. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00699">699</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00700">700</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -1303,7 +1306,7 @@ Andres Payo </dd></dl>
 
 <p>For this cell, calculates the elevation of the top of a given layer. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00747">747</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00748">748</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -1324,7 +1327,7 @@ Andres Payo </dd></dl>
 
 <p>Get actual (supply-constrained) beach erosion. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l01064">1064</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l01065">1065</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -1345,7 +1348,7 @@ Andres Payo </dd></dl>
 
 <p>Get actual (constrained) shore platform erosion. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00785">785</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00786">786</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -1366,7 +1369,7 @@ Andres Payo </dd></dl>
 
 <p>Returns this cell's basement elevation. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00417">417</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00418">418</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -1387,7 +1390,7 @@ Andres Payo </dd></dl>
 
 <p>Get beach deposition. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l01089">1089</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l01090">1090</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -1408,7 +1411,7 @@ Andres Payo </dd></dl>
 
 <p>Returns this cell's beach protection factor. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00946">946</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00947">947</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -1429,7 +1432,7 @@ Andres Payo </dd></dl>
 
 <p>Returns the deep water wave orientation on this cell. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00914">914</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00915">915</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -1450,7 +1453,7 @@ Andres Payo </dd></dl>
 
 <p>Returns the deep water wave height on this cell. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00902">902</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00903">903</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -1471,7 +1474,7 @@ Andres Payo </dd></dl>
 
 <p>Returns the deep water wave period on this cell. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00926">926</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00927">927</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -1492,7 +1495,7 @@ Andres Payo </dd></dl>
 
 <p>Returns the elevation of the top of the consolidated sediment only, for a given layer (layer 0 being the one just above basement) </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00497">497</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00498">498</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -1513,7 +1516,7 @@ Andres Payo </dd></dl>
 
 <p>Returns the intervention height. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l01158">1158</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l01159">1159</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -1534,7 +1537,7 @@ Andres Payo </dd></dl>
 
 <p>Returns the elevation of the top of the intervention, assuming it rests on the sediment-top surface. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l01164">1164</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l01165">1165</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -1555,7 +1558,7 @@ Andres Payo </dd></dl>
 
 <p>Returns the local slope of the consolidated sediment only. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00405">405</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00406">406</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -1576,7 +1579,7 @@ Andres Payo </dd></dl>
 
 <p>Returns the highest elevation of the cell, which is either the sediment top elevation plus intervention height, or the sea surface elevation. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00546">546</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00547">547</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -1597,7 +1600,7 @@ Andres Payo </dd></dl>
 
 <p>Get potential (unconstrained) beach erosion. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l01045">1045</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l01046">1046</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -1618,7 +1621,7 @@ Andres Payo </dd></dl>
 
 <p>Get potential (unconstrained) shore platform erosion. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00766">766</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00767">767</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -1639,7 +1642,7 @@ Andres Payo </dd></dl>
 
 <p>Returns the depth of seawater on this cell. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00432">432</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00433">433</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="../../db/dfa/profile_8cpp_source.html#l00540">CGeomProfile::nGetCellGivenDepth()</a>.</p>
 
@@ -1662,7 +1665,7 @@ Andres Payo </dd></dl>
 
 <p>Returns the true elevation of the sediment's top surface for this cell (if there is a cliff notch, ignore the missing volume) plus the height of any intervention. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00540">540</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00541">541</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -1683,7 +1686,7 @@ Andres Payo </dd></dl>
 
 <p>Returns the true elevation of the sediment's top surface for this cell (if there is a cliff notch, ignore the missing volume) </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00534">534</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00535">535</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -1704,7 +1707,7 @@ Andres Payo </dd></dl>
 
 <p>Returns the suspended sediment depth equivalent on this cell. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00460">460</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00461">461</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -1725,7 +1728,7 @@ Andres Payo </dd></dl>
 
 <p>Retuns the depth of this-timestep coarse talus deposition from cliff collapse on this cell. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l01020">1020</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l01021">1021</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -1746,7 +1749,7 @@ Andres Payo </dd></dl>
 
 <p>Returns the depth of this-timestep coarse-sized sediment cliff collapse on this cell. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00976">976</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00977">977</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -1767,7 +1770,7 @@ Andres Payo </dd></dl>
 
 <p>Returns the depth of this-timestep fine-sized sediment cliff collapse on this cell. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00964">964</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00965">965</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -1788,7 +1791,7 @@ Andres Payo </dd></dl>
 
 <p>Returns the depth of this-timestep sand-sized sediment cliff collapse on this cell. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00970">970</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00971">971</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -1809,7 +1812,7 @@ Andres Payo </dd></dl>
 
 <p>Returns the depth of this-timestep sand talus deposition from cliff collapse on this cell. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l01014">1014</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l01015">1015</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -1830,7 +1833,7 @@ Andres Payo </dd></dl>
 
 <p>Returns the sea surface elevation at current iteration. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00558">558</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00559">559</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -1851,7 +1854,7 @@ Andres Payo </dd></dl>
 
 <p>Returns the total water level at current iteration. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00564">564</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00565">565</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -1872,7 +1875,7 @@ Andres Payo </dd></dl>
 
 <p>Get total actual (supply-constrained) beach erosion. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l01070">1070</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l01071">1071</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -1893,7 +1896,7 @@ Andres Payo </dd></dl>
 
 <p>Get total actual (constrained) shore platform erosion. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00791">791</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00792">792</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -1914,7 +1917,7 @@ Andres Payo </dd></dl>
 
 <p>Returns the total thickness of all sediment (all size classes) on this cell. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00686">686</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00687">687</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -1935,7 +1938,7 @@ Andres Payo </dd></dl>
 
 <p>Get beach erosion. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l01095">1095</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l01096">1096</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -1956,7 +1959,7 @@ Andres Payo </dd></dl>
 
 <p>Returns the running total depth of coarse-sized sediment eroded by cliff collapse on this cell. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00994">994</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00995">995</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -1977,7 +1980,7 @@ Andres Payo </dd></dl>
 
 <p>Returns the running total depth of fine-sized sediment eroded by cliff collapse on this cell. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00982">982</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00983">983</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -1998,7 +2001,7 @@ Andres Payo </dd></dl>
 
 <p>Returns the running total depth of sand-sized sediment eroded by cliff collapse on this cell. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00988">988</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00989">989</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -2019,7 +2022,7 @@ Andres Payo </dd></dl>
 
 <p>Returns the total depth of coarse talus deposition from cliff collapse on this cell. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l01032">1032</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l01033">1033</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -2040,7 +2043,7 @@ Andres Payo </dd></dl>
 
 <p>Returns the total thickness of coarse consolidated sediment on this cell, minus the depth-equivalent of any cliff notch. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00640">640</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00641">641</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -2061,7 +2064,7 @@ Andres Payo </dd></dl>
 
 <p>Returns the total thickness of fine consolidated sediment on this cell, minus the depth-equivalent of any cliff notch. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00588">588</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00589">589</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -2082,7 +2085,7 @@ Andres Payo </dd></dl>
 
 <p>Returns the total thickness of sand-sized consolidated sediment on this cell, minus the depth-equivalent of any cliff notch. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00614">614</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00615">615</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -2103,9 +2106,9 @@ Andres Payo </dd></dl>
 
 <p>Returns the total thickness of consolidated sediment (all size classes) on this cell. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00666">666</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00667">667</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00686">dGetTotAllSedThickness()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00687">dGetTotAllSedThickness()</a>.</p>
 
 </div>
 </div>
@@ -2126,7 +2129,7 @@ Andres Payo </dd></dl>
 
 <p>Get total potential (supply-unconstrained) beach erosion. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l01051">1051</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l01052">1052</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -2147,7 +2150,7 @@ Andres Payo </dd></dl>
 
 <p>Get total potential (unconstrained) shore platform erosion. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00772">772</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00773">773</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -2168,7 +2171,7 @@ Andres Payo </dd></dl>
 
 <p>Returns the total depth of sand talus deposition from cliff collapse on this cell. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l01026">1026</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l01027">1027</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -2189,7 +2192,7 @@ Andres Payo </dd></dl>
 
 <p>Returns the total depth of seawater on this cell. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00438">438</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00439">439</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -2210,7 +2213,7 @@ Andres Payo </dd></dl>
 
 <p>Returns the total suspended sediment depth equivalent on this cell. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00466">466</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00467">467</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -2231,7 +2234,7 @@ Andres Payo </dd></dl>
 
 <p>Returns the total thickness of coarse unconsolidated sediment on this cell. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00656">656</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00657">657</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -2252,7 +2255,7 @@ Andres Payo </dd></dl>
 
 <p>Returns the total thickness of fine unconsolidated sediment on this cell. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00604">604</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00605">605</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -2273,7 +2276,7 @@ Andres Payo </dd></dl>
 
 <p>Returns the total thickness of sand-sized unconsolidated sediment on this cell. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00630">630</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00631">631</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -2294,9 +2297,9 @@ Andres Payo </dd></dl>
 
 <p>Returns the total thickness of unconsolidated sediment (all size classes) on this cell. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00676">676</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00677">677</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00686">dGetTotAllSedThickness()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00687">dGetTotAllSedThickness()</a>.</p>
 
 </div>
 </div>
@@ -2317,7 +2320,7 @@ Andres Payo </dd></dl>
 
 <p>Returns the total wave orientation on this cell. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00890">890</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00891">891</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -2338,7 +2341,7 @@ Andres Payo </dd></dl>
 
 <p>Returns the total wave height on this cell. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00871">871</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00872">872</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -2359,7 +2362,7 @@ Andres Payo </dd></dl>
 
 <p>Returns the D50 of unconsolidated sediment on this cell. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l01116">1116</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l01117">1117</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -2380,7 +2383,7 @@ Andres Payo </dd></dl>
 
 <p>Returns the wave orientation on this cell. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00884">884</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00885">885</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -2401,7 +2404,7 @@ Andres Payo </dd></dl>
 
 <p>Returns the wave height on this cell. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00865">865</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00866">866</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -2422,7 +2425,7 @@ Andres Payo </dd></dl>
 
 <p>Increment this-timestep beach deposition, also increment total beach deposition. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l01082">1082</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l01083">1083</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -2452,7 +2455,7 @@ Andres Payo </dd></dl>
 
 <p>Increments the fine, sand, and coarse depths of this-timestep cliff collapse on this cell, also increments the totals. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00952">952</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00953">953</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -2473,7 +2476,7 @@ Andres Payo </dd></dl>
 
 <p>Initialise values for this cell. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00803">803</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00804">804</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -2494,7 +2497,7 @@ Andres Payo </dd></dl>
 
 <p>Returns the number of the bounding-box edge, or NO_DIRECTION if it is not. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00102">102</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00103">103</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -2515,7 +2518,7 @@ Andres Payo </dd></dl>
 
 <p>Gets the down drift zone number. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00387">387</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00388">388</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -2536,7 +2539,7 @@ Andres Payo </dd></dl>
 
 <p>Gets the intervention class. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l01136">1136</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l01137">1137</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -2559,7 +2562,7 @@ Andres Payo </dd></dl>
 <p>Returns ELEV_IN_BASEMENT if in basement, ELEV_ABOVE_SEDIMENT_TOP if higher than or equal to sediment top, or layer number (0 to n), <br  />
 </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00731">731</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00732">732</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -2580,7 +2583,7 @@ Andres Payo </dd></dl>
 
 <p>Returns the global ID number of the polygon which 'contains' this cell (returns INT_NODATA if the cell is not 'in' a polygon) </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00278">278</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00279">279</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -2601,7 +2604,7 @@ Andres Payo </dd></dl>
 
 <p>If this cell is 'under' a coastline-normal profile, returns the number of the profile. Otherwise it returns INT_NODATA. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00257">257</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00258">258</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -2622,7 +2625,7 @@ Andres Payo </dd></dl>
 
 <p>Gets the number of the shadow zone that this cell is in. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00290">290</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00291">291</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -2643,7 +2646,7 @@ Andres Payo </dd></dl>
 
 <p>Returns the index of the topmost sediment layer (layer 0 being the one just above basement), which could have zero thickness. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00488">488</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00489">489</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -2664,9 +2667,9 @@ Andres Payo </dd></dl>
 
 <p>Returns the index of the topmost sediment layer (layer 0 being the one just above basement) with non-zero thickness. If there is no such layer, it returns NO_NONZERO_THICKNESS_LAYERS. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00472">472</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00473">473</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00803">InitCell()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00804">InitCell()</a>.</p>
 
 </div>
 </div>
@@ -2687,7 +2690,7 @@ Andres Payo </dd></dl>
 
 <p>Returns a pointer to this cell's <a class="el" href="../../dc/d4a/classCRWCellLandform.html" title="Real-world class used to represent the landform of a cell.">CRWCellLandform</a> object. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00393">393</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00394">394</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -2708,7 +2711,7 @@ Andres Payo </dd></dl>
 
 <p>Return a reference to the Nth sediment layer (layer 0 being just above basement) </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00514">514</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00515">515</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -2729,7 +2732,7 @@ Andres Payo </dd></dl>
 
 <p>Set this-timestep actual (supply-constrained) beach erosion and increment total actual beach erosion. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l01057">1057</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l01058">1058</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -2750,7 +2753,7 @@ Andres Payo </dd></dl>
 
 <p>Set this-timestep actual (constrained) shore platform erosion and increment total actual shore platform erosion. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00778">778</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00779">779</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -2771,7 +2774,7 @@ Andres Payo </dd></dl>
 
 <p>Marks this cell as 'under' a coastline. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00227">227</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00228">228</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -2792,7 +2795,7 @@ Andres Payo </dd></dl>
 
 <p>Marks this cell is flood line. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00239">239</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00240">240</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -2813,7 +2816,7 @@ Andres Payo </dd></dl>
 
 <p>Sets this cell's basement elevation. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00411">411</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00412">412</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -2832,7 +2835,7 @@ Andres Payo </dd></dl>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00940">940</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00941">941</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -2853,7 +2856,7 @@ Andres Payo </dd></dl>
 
 <p>Set the edge number if this cell is an edge bounding-box cell. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00096">96</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00097">97</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -2874,7 +2877,7 @@ Andres Payo </dd></dl>
 
 <p>Sets the deep water wave orientation on this cell. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00908">908</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00909">909</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -2895,7 +2898,7 @@ Andres Payo </dd></dl>
 
 <p>Sets the deep water wave height on this cell. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00896">896</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00897">897</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -2916,7 +2919,7 @@ Andres Payo </dd></dl>
 
 <p>Sets the deep water wave Period on this cell. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00920">920</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00921">921</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -2954,7 +2957,7 @@ Andres Payo </dd></dl>
 
 <p>Set this cell as checked (flood switch) </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00363">363</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00364">364</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -2975,7 +2978,7 @@ Andres Payo </dd></dl>
 
 <p>Sets the down drift zone number. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00381">381</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00382">382</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -2996,7 +2999,7 @@ Andres Payo </dd></dl>
 
 <p>Set this cell as flooded by setup surge. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00138">138</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00139">139</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -3017,7 +3020,7 @@ Andres Payo </dd></dl>
 
 <p>Set this cell as flooded by setup surge runup. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00150">150</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00151">151</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -3038,7 +3041,7 @@ Andres Payo </dd></dl>
 
 <p>Sets a flag to show whether this cell is in the active zone. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00168">168</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00169">169</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -3059,7 +3062,7 @@ Andres Payo </dd></dl>
 
 <p>Set this cell as in the contiguous runup flood area. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00126">126</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00127">127</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -3080,7 +3083,7 @@ Andres Payo </dd></dl>
 
 <p>Set this cell as a sea cell. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00114">114</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00115">115</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -3101,7 +3104,7 @@ Andres Payo </dd></dl>
 
 <p>Sets the landform category and subcategory for an intervention. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l01122">1122</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l01123">1123</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -3122,7 +3125,7 @@ Andres Payo </dd></dl>
 
 <p>Sets the intervention height. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l01152">1152</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l01153">1153</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -3143,7 +3146,7 @@ Andres Payo </dd></dl>
 
 <p>Sets the local slope of the consolidated sediment only. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00399">399</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00400">400</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -3164,7 +3167,7 @@ Andres Payo </dd></dl>
 
 <p>Sets the global ID number of the polygon which 'contains' this cell. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00272">272</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00273">273</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -3185,7 +3188,7 @@ Andres Payo </dd></dl>
 
 <p>Sets a flag to show that this cell has been flagged as a possible start- or end-point for a coastline. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00192">192</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00193">193</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -3206,7 +3209,7 @@ Andres Payo </dd></dl>
 
 <p>Sets a flag to show that this cell has been flagged as a possible start-point for runup flooding. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00204">204</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00205">205</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -3227,7 +3230,7 @@ Andres Payo </dd></dl>
 
 <p>Set potential (unconstrained) beach erosion and increment total beach potential erosion. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l01038">1038</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l01039">1039</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -3248,7 +3251,7 @@ Andres Payo </dd></dl>
 
 <p>Set potential (unconstrained) shore platform erosion and increment total shore platform potential erosion. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00759">759</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00760">760</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -3269,7 +3272,7 @@ Andres Payo </dd></dl>
 
 <p>Marks this cell as 'under' a coastline-normal profile. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00251">251</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00252">252</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -3290,7 +3293,7 @@ Andres Payo </dd></dl>
 
 <p>Returns the depth of seawater on this cell if the sediment top is &lt; SWL, or zero. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00797">797</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00798">798</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -3311,7 +3314,7 @@ Andres Payo </dd></dl>
 
 <p>Sets a flag to show that this cell is a shadow zone boundary. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00180">180</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00181">181</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -3332,7 +3335,7 @@ Andres Payo </dd></dl>
 
 <p>Set the number of the shadow zone that this cell is in. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00284">284</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00285">285</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -3353,7 +3356,7 @@ Andres Payo </dd></dl>
 
 <p>Sets this cell's suspended sediment depth equivalent, it also increments the running total of suspended sediment depth equivalent. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00444">444</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00445">445</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -3374,7 +3377,7 @@ Andres Payo </dd></dl>
 
 <p>Sets the wave orientation on this cell, also increments the total wave orientation. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00877">877</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00878">878</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -3395,7 +3398,7 @@ Andres Payo </dd></dl>
 
 <p>Set this cell as flooded by swl + surge + setup + runup. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00314">314</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00315">315</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -3416,7 +3419,7 @@ Andres Payo </dd></dl>
 
 <p>Sets the wave height on this cell, also increments the total wave height. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00855">855</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00856">856</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -3437,7 +3440,7 @@ Andres Payo </dd></dl>
 
 <p>Sets wave height to the deep water wave height value, and sets wave orientation to the deep water wave orientation value. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00932">932</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00933">933</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -3458,7 +3461,7 @@ Andres Payo </dd></dl>
 
 <p>Set the cell as not checked (flood switch) </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00369">369</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00370">370</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -3479,7 +3482,7 @@ Andres Payo </dd></dl>
 
 <p>Set this cell as not in the contiguous runup flood area. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00132">132</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00133">133</a> of file <a class="el" href="../../d6/d68/cell_8cpp_source.html">cell.cpp</a>.</p>
 
 </div>
 </div>
@@ -3535,7 +3538,7 @@ Andres Payo </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../d0/ddd/cell_8h_source.html#l00064">64</a> of file <a class="el" href="../../d0/ddd/cell_8h_source.html">cell.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00375">bIsCellFloodCheck()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00034">CGeomCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00803">InitCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00363">SetCheckFloodCell()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00369">UnSetCheckFloodCell()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00376">bIsCellFloodCheck()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00034">CGeomCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00804">InitCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00364">SetCheckFloodCell()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00370">UnSetCheckFloodCell()</a>.</p>
 
 </div>
 </div>
@@ -3563,7 +3566,7 @@ Andres Payo </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../d0/ddd/cell_8h_source.html#l00052">52</a> of file <a class="el" href="../../d0/ddd/cell_8h_source.html">cell.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00233">bIsCoastline()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00034">CGeomCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00803">InitCell()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00227">SetAsCoastline()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00234">bIsCoastline()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00034">CGeomCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00804">InitCell()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00228">SetAsCoastline()</a>.</p>
 
 </div>
 </div>
@@ -3591,7 +3594,7 @@ Andres Payo </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../d0/ddd/cell_8h_source.html#l00076">76</a> of file <a class="el" href="../../d0/ddd/cell_8h_source.html">cell.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00144">bIsFloodBySetupSurge()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00138">SetFloodBySetupSurge()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00145">bIsFloodBySetupSurge()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00139">SetFloodBySetupSurge()</a>.</p>
 
 </div>
 </div>
@@ -3619,7 +3622,7 @@ Andres Payo </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../d0/ddd/cell_8h_source.html#l00079">79</a> of file <a class="el" href="../../d0/ddd/cell_8h_source.html">cell.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00156">bIsFloodBySetupSurgeRunup()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00150">SetFloodBySetupSurgeRunup()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00157">bIsFloodBySetupSurgeRunup()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00151">SetFloodBySetupSurgeRunup()</a>.</p>
 
 </div>
 </div>
@@ -3647,7 +3650,7 @@ Andres Payo </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../d0/ddd/cell_8h_source.html#l00055">55</a> of file <a class="el" href="../../d0/ddd/cell_8h_source.html">cell.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00245">bIsFloodLine()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00034">CGeomCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00803">InitCell()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00239">SetAsFloodLine()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00246">bIsFloodLine()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00034">CGeomCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00804">InitCell()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00240">SetAsFloodLine()</a>.</p>
 
 </div>
 </div>
@@ -3675,7 +3678,7 @@ Andres Payo </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../d0/ddd/cell_8h_source.html#l00046">46</a> of file <a class="el" href="../../d0/ddd/cell_8h_source.html">cell.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00162">bIsInContiguousSeaArea()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00034">CGeomCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00803">InitCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00126">SetInContiguousFlood()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00132">UnSetInContiguousFlood()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00163">bIsInContiguousSeaArea()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00034">CGeomCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00804">InitCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00127">SetInContiguousFlood()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00133">UnSetInContiguousFlood()</a>.</p>
 
 </div>
 </div>
@@ -3703,7 +3706,7 @@ Andres Payo </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../d0/ddd/cell_8h_source.html#l00043">43</a> of file <a class="el" href="../../d0/ddd/cell_8h_source.html">cell.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00120">bIsInContiguousSea()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00034">CGeomCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00803">InitCell()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00114">SetInContiguousSea()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00121">bIsInContiguousSea()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00034">CGeomCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00804">InitCell()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00115">SetInContiguousSea()</a>.</p>
 
 </div>
 </div>
@@ -3731,7 +3734,7 @@ Andres Payo </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../d0/ddd/cell_8h_source.html#l00049">49</a> of file <a class="el" href="../../d0/ddd/cell_8h_source.html">cell.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00174">bIsInActiveZone()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00034">CGeomCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00803">InitCell()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00168">SetInActiveZone()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00175">bIsInActiveZone()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00034">CGeomCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00804">InitCell()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00169">SetInActiveZone()</a>.</p>
 
 </div>
 </div>
@@ -3759,7 +3762,7 @@ Andres Payo </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../d0/ddd/cell_8h_source.html#l00070">70</a> of file <a class="el" href="../../d0/ddd/cell_8h_source.html">cell.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00198">bIsPossibleCoastStartCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00034">CGeomCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00803">InitCell()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00192">SetPossibleCoastStartCell()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00199">bIsPossibleCoastStartCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00034">CGeomCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00804">InitCell()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00193">SetPossibleCoastStartCell()</a>.</p>
 
 </div>
 </div>
@@ -3787,7 +3790,7 @@ Andres Payo </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../d0/ddd/cell_8h_source.html#l00073">73</a> of file <a class="el" href="../../d0/ddd/cell_8h_source.html">cell.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00210">bIsPossibleFloodStartCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00034">CGeomCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00803">InitCell()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00204">SetPossibleFloodStartCell()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00211">bIsPossibleFloodStartCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00034">CGeomCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00804">InitCell()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00205">SetPossibleFloodStartCell()</a>.</p>
 
 </div>
 </div>
@@ -3815,7 +3818,7 @@ Andres Payo </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../d0/ddd/cell_8h_source.html#l00067">67</a> of file <a class="el" href="../../d0/ddd/cell_8h_source.html">cell.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00186">bIsShadowZoneBoundary()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00034">CGeomCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00803">InitCell()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00180">SetShadowZoneBoundary()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00187">bIsShadowZoneBoundary()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00034">CGeomCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00804">InitCell()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00181">SetShadowZoneBoundary()</a>.</p>
 
 </div>
 </div>
@@ -3843,7 +3846,7 @@ Andres Payo </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../d0/ddd/cell_8h_source.html#l00058">58</a> of file <a class="el" href="../../d0/ddd/cell_8h_source.html">cell.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00034">CGeomCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00803">InitCell()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00314">SetWaveFlood()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00034">CGeomCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00804">InitCell()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00315">SetWaveFlood()</a>.</p>
 
 </div>
 </div>
@@ -3869,9 +3872,9 @@ Andres Payo </dd></dl>
 
 <p>Depth of unconsolidated beach sediment actually eroded this timestep. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d0/ddd/cell_8h_source.html#l00190">190</a> of file <a class="el" href="../../d0/ddd/cell_8h_source.html">cell.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d0/ddd/cell_8h_source.html#l00193">193</a> of file <a class="el" href="../../d0/ddd/cell_8h_source.html">cell.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l01107">bBeachErosionOrDepositionThisIter()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00034">CGeomCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l01064">dGetActualBeachErosion()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00803">InitCell()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l01057">SetActualBeachErosion()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l01108">bBeachErosionOrDepositionThisIter()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00034">CGeomCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l01065">dGetActualBeachErosion()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00804">InitCell()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l01058">SetActualBeachErosion()</a>.</p>
 
 </div>
 </div>
@@ -3897,9 +3900,9 @@ Andres Payo </dd></dl>
 
 <p>Depth of sediment actually eroded from the shore platform this timestep. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d0/ddd/cell_8h_source.html#l00148">148</a> of file <a class="el" href="../../d0/ddd/cell_8h_source.html">cell.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d0/ddd/cell_8h_source.html#l00151">151</a> of file <a class="el" href="../../d0/ddd/cell_8h_source.html">cell.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00034">CGeomCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00785">dGetActualPlatformErosion()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00803">InitCell()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00778">SetActualPlatformErosion()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00034">CGeomCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00786">dGetActualPlatformErosion()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00804">InitCell()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00779">SetActualPlatformErosion()</a>.</p>
 
 </div>
 </div>
@@ -3925,9 +3928,9 @@ Andres Payo </dd></dl>
 
 <p>Elevation of basement surface (m) </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d0/ddd/cell_8h_source.html#l00100">100</a> of file <a class="el" href="../../d0/ddd/cell_8h_source.html">cell.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d0/ddd/cell_8h_source.html#l00103">103</a> of file <a class="el" href="../../d0/ddd/cell_8h_source.html">cell.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00423">bBasementElevIsMissingValue()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00699">CalcAllLayerElevsAndD50()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00034">CGeomCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00747">dCalcLayerElev()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00417">dGetBasementElev()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00497">dGetConsSedTopForLayerAboveBasement()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00411">SetBasementElev()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00424">bBasementElevIsMissingValue()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00700">CalcAllLayerElevsAndD50()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00034">CGeomCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00748">dCalcLayerElev()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00418">dGetBasementElev()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00498">dGetConsSedTopForLayerAboveBasement()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00412">SetBasementElev()</a>.</p>
 
 </div>
 </div>
@@ -3953,9 +3956,9 @@ Andres Payo </dd></dl>
 
 <p>Depth of unconsolidated beach sediment deposited this timestep. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d0/ddd/cell_8h_source.html#l00196">196</a> of file <a class="el" href="../../d0/ddd/cell_8h_source.html">cell.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d0/ddd/cell_8h_source.html#l00199">199</a> of file <a class="el" href="../../d0/ddd/cell_8h_source.html">cell.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l01107">bBeachErosionOrDepositionThisIter()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00034">CGeomCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l01089">dGetBeachDeposition()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l01082">IncrBeachDeposition()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00803">InitCell()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l01108">bBeachErosionOrDepositionThisIter()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00034">CGeomCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l01090">dGetBeachDeposition()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l01083">IncrBeachDeposition()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00804">InitCell()</a>.</p>
 
 </div>
 </div>
@@ -3981,9 +3984,9 @@ Andres Payo </dd></dl>
 
 <p>Only meaningful if in zone of platform erosion. 0 is fully protected; 1 = no protection. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d0/ddd/cell_8h_source.html#l00133">133</a> of file <a class="el" href="../../d0/ddd/cell_8h_source.html">cell.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d0/ddd/cell_8h_source.html#l00136">136</a> of file <a class="el" href="../../d0/ddd/cell_8h_source.html">cell.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00034">CGeomCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00946">dGetBeachProtectionFactor()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00803">InitCell()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00940">SetBeachProtectionFactor()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00034">CGeomCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00947">dGetBeachProtectionFactor()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00804">InitCell()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00941">SetBeachProtectionFactor()</a>.</p>
 
 </div>
 </div>
@@ -4009,9 +4012,9 @@ Andres Payo </dd></dl>
 
 <p>Depth of coarse sediment (consolidated and unconsolidated) removed via cliff collapse this timestep. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d0/ddd/cell_8h_source.html#l00160">160</a> of file <a class="el" href="../../d0/ddd/cell_8h_source.html">cell.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d0/ddd/cell_8h_source.html#l00163">163</a> of file <a class="el" href="../../d0/ddd/cell_8h_source.html">cell.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00034">CGeomCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00976">dGetThisIterCliffCollapseErosionCoarse()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00952">IncrCliffCollapseErosion()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00803">InitCell()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00034">CGeomCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00977">dGetThisIterCliffCollapseErosionCoarse()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00953">IncrCliffCollapseErosion()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00804">InitCell()</a>.</p>
 
 </div>
 </div>
@@ -4037,9 +4040,9 @@ Andres Payo </dd></dl>
 
 <p>Depth of fine sediment (consolidated and unconsolidated) removed via cliff collapse this timestep. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d0/ddd/cell_8h_source.html#l00154">154</a> of file <a class="el" href="../../d0/ddd/cell_8h_source.html">cell.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d0/ddd/cell_8h_source.html#l00157">157</a> of file <a class="el" href="../../d0/ddd/cell_8h_source.html">cell.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00034">CGeomCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00964">dGetThisIterCliffCollapseErosionFine()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00952">IncrCliffCollapseErosion()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00803">InitCell()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00034">CGeomCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00965">dGetThisIterCliffCollapseErosionFine()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00953">IncrCliffCollapseErosion()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00804">InitCell()</a>.</p>
 
 </div>
 </div>
@@ -4065,9 +4068,9 @@ Andres Payo </dd></dl>
 
 <p>Depth of sand sediment (consolidated and unconsolidated) removed via cliff collapse this timestep. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d0/ddd/cell_8h_source.html#l00157">157</a> of file <a class="el" href="../../d0/ddd/cell_8h_source.html">cell.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d0/ddd/cell_8h_source.html#l00160">160</a> of file <a class="el" href="../../d0/ddd/cell_8h_source.html">cell.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00034">CGeomCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00970">dGetThisIterCliffCollapseErosionSand()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00952">IncrCliffCollapseErosion()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00803">InitCell()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00034">CGeomCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00971">dGetThisIterCliffCollapseErosionSand()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00953">IncrCliffCollapseErosion()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00804">InitCell()</a>.</p>
 
 </div>
 </div>
@@ -4093,9 +4096,9 @@ Andres Payo </dd></dl>
 
 <p>Wave orientation if this is a deep water cell. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d0/ddd/cell_8h_source.html#l00127">127</a> of file <a class="el" href="../../d0/ddd/cell_8h_source.html">cell.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d0/ddd/cell_8h_source.html#l00130">130</a> of file <a class="el" href="../../d0/ddd/cell_8h_source.html">cell.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00034">CGeomCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00914">dGetCellDeepWaterWaveAngle()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00908">SetCellDeepWaterWaveAngle()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00932">SetWaveValuesToDeepWaterWaveValues()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00034">CGeomCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00915">dGetCellDeepWaterWaveAngle()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00909">SetCellDeepWaterWaveAngle()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00933">SetWaveValuesToDeepWaterWaveValues()</a>.</p>
 
 </div>
 </div>
@@ -4121,9 +4124,9 @@ Andres Payo </dd></dl>
 
 <p>Wave height if this is a deep water cell. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d0/ddd/cell_8h_source.html#l00124">124</a> of file <a class="el" href="../../d0/ddd/cell_8h_source.html">cell.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d0/ddd/cell_8h_source.html#l00127">127</a> of file <a class="el" href="../../d0/ddd/cell_8h_source.html">cell.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00034">CGeomCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00902">dGetCellDeepWaterWaveHeight()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00896">SetCellDeepWaterWaveHeight()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00932">SetWaveValuesToDeepWaterWaveValues()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00034">CGeomCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00903">dGetCellDeepWaterWaveHeight()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00897">SetCellDeepWaterWaveHeight()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00933">SetWaveValuesToDeepWaterWaveValues()</a>.</p>
 
 </div>
 </div>
@@ -4149,9 +4152,9 @@ Andres Payo </dd></dl>
 
 <p>Wave period if this is a deep water cell. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d0/ddd/cell_8h_source.html#l00130">130</a> of file <a class="el" href="../../d0/ddd/cell_8h_source.html">cell.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d0/ddd/cell_8h_source.html#l00133">133</a> of file <a class="el" href="../../d0/ddd/cell_8h_source.html">cell.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00926">dGetCellDeepWaterWavePeriod()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00920">SetCellDeepWaterWavePeriod()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00932">SetWaveValuesToDeepWaterWaveValues()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00927">dGetCellDeepWaterWavePeriod()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00921">SetCellDeepWaterWavePeriod()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00933">SetWaveValuesToDeepWaterWaveValues()</a>.</p>
 
 </div>
 </div>
@@ -4177,9 +4180,9 @@ Andres Payo </dd></dl>
 
 <p>Height of intervention structure. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d0/ddd/cell_8h_source.html#l00205">205</a> of file <a class="el" href="../../d0/ddd/cell_8h_source.html">cell.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d0/ddd/cell_8h_source.html#l00208">208</a> of file <a class="el" href="../../d0/ddd/cell_8h_source.html">cell.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00345">bIsElevLessThanWaterLevel()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00552">bIsInundated()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00034">CGeomCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l01158">dGetInterventionHeight()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l01164">dGetInterventionTopElev()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00546">dGetOverallTopElev()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00540">dGetSedimentPlusInterventionTopElev()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l01152">SetInterventionHeight()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00797">SetSeaDepth()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00346">bIsElevLessThanWaterLevel()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00553">bIsInundated()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00034">CGeomCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l01159">dGetInterventionHeight()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l01165">dGetInterventionTopElev()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00547">dGetOverallTopElev()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00541">dGetSedimentPlusInterventionTopElev()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l01153">SetInterventionHeight()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00798">SetSeaDepth()</a>.</p>
 
 </div>
 </div>
@@ -4205,9 +4208,9 @@ Andres Payo </dd></dl>
 
 <p>Used in erosion calculations, stored here for display purposes. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d0/ddd/cell_8h_source.html#l00097">97</a> of file <a class="el" href="../../d0/ddd/cell_8h_source.html">cell.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d0/ddd/cell_8h_source.html#l00100">100</a> of file <a class="el" href="../../d0/ddd/cell_8h_source.html">cell.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00034">CGeomCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00405">dGetLocalConsSlope()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00803">InitCell()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00399">SetLocalConsSlope()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00034">CGeomCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00406">dGetLocalConsSlope()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00804">InitCell()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00400">SetLocalConsSlope()</a>.</p>
 
 </div>
 </div>
@@ -4233,9 +4236,9 @@ Andres Payo </dd></dl>
 
 <p>Depth of unconsolidated beach sediment that could be eroded this timestep, if no supply-limitation. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d0/ddd/cell_8h_source.html#l00184">184</a> of file <a class="el" href="../../d0/ddd/cell_8h_source.html">cell.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d0/ddd/cell_8h_source.html#l00187">187</a> of file <a class="el" href="../../d0/ddd/cell_8h_source.html">cell.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00034">CGeomCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l01045">dGetPotentialBeachErosion()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00803">InitCell()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l01038">SetPotentialBeachErosion()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00034">CGeomCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l01046">dGetPotentialBeachErosion()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00804">InitCell()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l01039">SetPotentialBeachErosion()</a>.</p>
 
 </div>
 </div>
@@ -4261,9 +4264,9 @@ Andres Payo </dd></dl>
 
 <p>Depth of sediment on the shore platform that could be eroded this timestep, if no supply-limitation. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d0/ddd/cell_8h_source.html#l00142">142</a> of file <a class="el" href="../../d0/ddd/cell_8h_source.html">cell.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d0/ddd/cell_8h_source.html#l00145">145</a> of file <a class="el" href="../../d0/ddd/cell_8h_source.html">cell.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00216">bPotentialPlatformErosion()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00034">CGeomCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00766">dGetPotentialPlatformErosion()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00803">InitCell()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00759">SetPotentialPlatformErosion()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00217">bPotentialPlatformErosion()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00034">CGeomCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00767">dGetPotentialPlatformErosion()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00804">InitCell()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00760">SetPotentialPlatformErosion()</a>.</p>
 
 </div>
 </div>
@@ -4289,9 +4292,9 @@ Andres Payo </dd></dl>
 
 <p>Depth of still water (m), is zero if not inundated. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d0/ddd/cell_8h_source.html#l00103">103</a> of file <a class="el" href="../../d0/ddd/cell_8h_source.html">cell.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d0/ddd/cell_8h_source.html#l00106">106</a> of file <a class="el" href="../../d0/ddd/cell_8h_source.html">cell.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00034">CGeomCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00546">dGetOverallTopElev()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00432">dGetSeaDepth()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00803">InitCell()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00797">SetSeaDepth()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00034">CGeomCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00547">dGetOverallTopElev()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00433">dGetSeaDepth()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00804">InitCell()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00798">SetSeaDepth()</a>.</p>
 
 </div>
 </div>
@@ -4317,9 +4320,9 @@ Andres Payo </dd></dl>
 
 <p>Suspended sediment as depth equivalent (m) </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d0/ddd/cell_8h_source.html#l00136">136</a> of file <a class="el" href="../../d0/ddd/cell_8h_source.html">cell.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d0/ddd/cell_8h_source.html#l00139">139</a> of file <a class="el" href="../../d0/ddd/cell_8h_source.html">cell.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00452">AddSuspendedSediment()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00034">CGeomCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00460">dGetSuspendedSediment()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00444">SetSuspendedSediment()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00453">AddSuspendedSediment()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00034">CGeomCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00461">dGetSuspendedSediment()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00445">SetSuspendedSediment()</a>.</p>
 
 </div>
 </div>
@@ -4345,9 +4348,9 @@ Andres Payo </dd></dl>
 
 <p>Depth of unconsolidated coarse sediment deposited as a result of cliff collapse this timestep. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d0/ddd/cell_8h_source.html#l00178">178</a> of file <a class="el" href="../../d0/ddd/cell_8h_source.html">cell.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d0/ddd/cell_8h_source.html#l00181">181</a> of file <a class="el" href="../../d0/ddd/cell_8h_source.html">cell.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l01007">AddCoarseTalusDeposition()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00034">CGeomCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l01020">dGetThisIterCliffCollapseCoarseTalusDeposition()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00803">InitCell()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l01008">AddCoarseTalusDeposition()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00034">CGeomCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l01021">dGetThisIterCliffCollapseCoarseTalusDeposition()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00804">InitCell()</a>.</p>
 
 </div>
 </div>
@@ -4373,9 +4376,9 @@ Andres Payo </dd></dl>
 
 <p>Depth of unconsolidated sand sediment deposited as a result of cliff collapse this timestep. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d0/ddd/cell_8h_source.html#l00172">172</a> of file <a class="el" href="../../d0/ddd/cell_8h_source.html">cell.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d0/ddd/cell_8h_source.html#l00175">175</a> of file <a class="el" href="../../d0/ddd/cell_8h_source.html">cell.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l01000">AddSandTalusDeposition()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00034">CGeomCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l01014">dGetThisIterCliffCollapseSandTalusDeposition()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00803">InitCell()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l01001">AddSandTalusDeposition()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00034">CGeomCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l01015">dGetThisIterCliffCollapseSandTalusDeposition()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00804">InitCell()</a>.</p>
 
 </div>
 </div>
@@ -4401,9 +4404,9 @@ Andres Payo </dd></dl>
 
 <p>Total depth of unconsolidated beach sediment actually eroded. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d0/ddd/cell_8h_source.html#l00193">193</a> of file <a class="el" href="../../d0/ddd/cell_8h_source.html">cell.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d0/ddd/cell_8h_source.html#l00196">196</a> of file <a class="el" href="../../d0/ddd/cell_8h_source.html">cell.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00034">CGeomCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l01070">dGetTotActualBeachErosion()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l01057">SetActualBeachErosion()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00034">CGeomCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l01071">dGetTotActualBeachErosion()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l01058">SetActualBeachErosion()</a>.</p>
 
 </div>
 </div>
@@ -4429,9 +4432,9 @@ Andres Payo </dd></dl>
 
 <p>Total depth of sediment actually eroded from the shore platform. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d0/ddd/cell_8h_source.html#l00151">151</a> of file <a class="el" href="../../d0/ddd/cell_8h_source.html">cell.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d0/ddd/cell_8h_source.html#l00154">154</a> of file <a class="el" href="../../d0/ddd/cell_8h_source.html">cell.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00034">CGeomCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00791">dGetTotActualPlatformErosion()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00778">SetActualPlatformErosion()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00034">CGeomCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00792">dGetTotActualPlatformErosion()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00779">SetActualPlatformErosion()</a>.</p>
 
 </div>
 </div>
@@ -4457,9 +4460,9 @@ Andres Payo </dd></dl>
 
 <p>Total depth of unconsolidated beach sediment deposited. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d0/ddd/cell_8h_source.html#l00199">199</a> of file <a class="el" href="../../d0/ddd/cell_8h_source.html">cell.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d0/ddd/cell_8h_source.html#l00202">202</a> of file <a class="el" href="../../d0/ddd/cell_8h_source.html">cell.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00034">CGeomCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l01095">dGetTotBeachDeposition()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l01082">IncrBeachDeposition()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00034">CGeomCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l01096">dGetTotBeachDeposition()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l01083">IncrBeachDeposition()</a>.</p>
 
 </div>
 </div>
@@ -4485,9 +4488,9 @@ Andres Payo </dd></dl>
 
 <p>Total depth of coarse sediment (consolidated and unconsolidated) removed via cliff collapse. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d0/ddd/cell_8h_source.html#l00169">169</a> of file <a class="el" href="../../d0/ddd/cell_8h_source.html">cell.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d0/ddd/cell_8h_source.html#l00172">172</a> of file <a class="el" href="../../d0/ddd/cell_8h_source.html">cell.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00034">CGeomCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00994">dGetTotCliffCollapseCoarse()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00952">IncrCliffCollapseErosion()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00034">CGeomCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00995">dGetTotCliffCollapseCoarse()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00953">IncrCliffCollapseErosion()</a>.</p>
 
 </div>
 </div>
@@ -4513,9 +4516,9 @@ Andres Payo </dd></dl>
 
 <p>Total depth of fine sediment (consolidated and unconsolidated) removed via cliff collapse. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d0/ddd/cell_8h_source.html#l00163">163</a> of file <a class="el" href="../../d0/ddd/cell_8h_source.html">cell.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d0/ddd/cell_8h_source.html#l00166">166</a> of file <a class="el" href="../../d0/ddd/cell_8h_source.html">cell.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00034">CGeomCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00982">dGetTotCliffCollapseFine()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00952">IncrCliffCollapseErosion()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00034">CGeomCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00983">dGetTotCliffCollapseFine()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00953">IncrCliffCollapseErosion()</a>.</p>
 
 </div>
 </div>
@@ -4541,9 +4544,9 @@ Andres Payo </dd></dl>
 
 <p>Total depth of unconsolidated beach sediment eroded; if no supply-limitation. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d0/ddd/cell_8h_source.html#l00187">187</a> of file <a class="el" href="../../d0/ddd/cell_8h_source.html">cell.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d0/ddd/cell_8h_source.html#l00190">190</a> of file <a class="el" href="../../d0/ddd/cell_8h_source.html">cell.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00034">CGeomCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l01051">dGetTotPotentialBeachErosion()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l01038">SetPotentialBeachErosion()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00034">CGeomCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l01052">dGetTotPotentialBeachErosion()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l01039">SetPotentialBeachErosion()</a>.</p>
 
 </div>
 </div>
@@ -4569,9 +4572,9 @@ Andres Payo </dd></dl>
 
 <p>Total depth of sediment eroded from the shore platform, if no supply-limitation. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d0/ddd/cell_8h_source.html#l00145">145</a> of file <a class="el" href="../../d0/ddd/cell_8h_source.html">cell.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d0/ddd/cell_8h_source.html#l00148">148</a> of file <a class="el" href="../../d0/ddd/cell_8h_source.html">cell.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00034">CGeomCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00772">dGetTotPotentialPlatformErosion()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00759">SetPotentialPlatformErosion()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00034">CGeomCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00773">dGetTotPotentialPlatformErosion()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00760">SetPotentialPlatformErosion()</a>.</p>
 
 </div>
 </div>
@@ -4597,9 +4600,9 @@ Andres Payo </dd></dl>
 
 <p>Total depth of sand sediment (consolidated and unconsolidated) removed via cliff collapse. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d0/ddd/cell_8h_source.html#l00166">166</a> of file <a class="el" href="../../d0/ddd/cell_8h_source.html">cell.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d0/ddd/cell_8h_source.html#l00169">169</a> of file <a class="el" href="../../d0/ddd/cell_8h_source.html">cell.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00034">CGeomCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00988">dGetTotCliffCollapseSand()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00952">IncrCliffCollapseErosion()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00034">CGeomCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00989">dGetTotCliffCollapseSand()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00953">IncrCliffCollapseErosion()</a>.</p>
 
 </div>
 </div>
@@ -4625,9 +4628,9 @@ Andres Payo </dd></dl>
 
 <p>Total depth of still water (m) since beginning of simulation (used to calc average) </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d0/ddd/cell_8h_source.html#l00106">106</a> of file <a class="el" href="../../d0/ddd/cell_8h_source.html">cell.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d0/ddd/cell_8h_source.html#l00109">109</a> of file <a class="el" href="../../d0/ddd/cell_8h_source.html">cell.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00034">CGeomCell()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00438">dGetTotSeaDepth()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00034">CGeomCell()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00439">dGetTotSeaDepth()</a>.</p>
 
 </div>
 </div>
@@ -4653,9 +4656,9 @@ Andres Payo </dd></dl>
 
 <p>Total depth of suspended sediment (m) since simulation start (used to calc average) </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d0/ddd/cell_8h_source.html#l00139">139</a> of file <a class="el" href="../../d0/ddd/cell_8h_source.html">cell.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d0/ddd/cell_8h_source.html#l00142">142</a> of file <a class="el" href="../../d0/ddd/cell_8h_source.html">cell.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00452">AddSuspendedSediment()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00034">CGeomCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00466">dGetTotSuspendedSediment()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00444">SetSuspendedSediment()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00453">AddSuspendedSediment()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00034">CGeomCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00467">dGetTotSuspendedSediment()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00445">SetSuspendedSediment()</a>.</p>
 
 </div>
 </div>
@@ -4681,9 +4684,9 @@ Andres Payo </dd></dl>
 
 <p>Total depth of unconsolidated coarse sediment deposited as a result of cliff collapse. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d0/ddd/cell_8h_source.html#l00181">181</a> of file <a class="el" href="../../d0/ddd/cell_8h_source.html">cell.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d0/ddd/cell_8h_source.html#l00184">184</a> of file <a class="el" href="../../d0/ddd/cell_8h_source.html">cell.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l01007">AddCoarseTalusDeposition()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00034">CGeomCell()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l01032">dGetTotCoarseTalusDeposition()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l01008">AddCoarseTalusDeposition()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00034">CGeomCell()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l01033">dGetTotCoarseTalusDeposition()</a>.</p>
 
 </div>
 </div>
@@ -4709,9 +4712,9 @@ Andres Payo </dd></dl>
 
 <p>Total depth of unconsolidated sand sediment deposited as a result of cliff collapse. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d0/ddd/cell_8h_source.html#l00175">175</a> of file <a class="el" href="../../d0/ddd/cell_8h_source.html">cell.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d0/ddd/cell_8h_source.html#l00178">178</a> of file <a class="el" href="../../d0/ddd/cell_8h_source.html">cell.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l01000">AddSandTalusDeposition()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00034">CGeomCell()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l01026">dGetTotSandTalusDeposition()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l01001">AddSandTalusDeposition()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00034">CGeomCell()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l01027">dGetTotSandTalusDeposition()</a>.</p>
 
 </div>
 </div>
@@ -4737,9 +4740,9 @@ Andres Payo </dd></dl>
 
 <p>Total wave orientation (used to calc average) </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d0/ddd/cell_8h_source.html#l00121">121</a> of file <a class="el" href="../../d0/ddd/cell_8h_source.html">cell.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d0/ddd/cell_8h_source.html#l00124">124</a> of file <a class="el" href="../../d0/ddd/cell_8h_source.html">cell.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00034">CGeomCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00890">dGetTotWaveAngle()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00877">SetWaveAngle()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00034">CGeomCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00891">dGetTotWaveAngle()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00878">SetWaveAngle()</a>.</p>
 
 </div>
 </div>
@@ -4765,9 +4768,9 @@ Andres Payo </dd></dl>
 
 <p>Total wave height (m) (used to calc average) </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d0/ddd/cell_8h_source.html#l00112">112</a> of file <a class="el" href="../../d0/ddd/cell_8h_source.html">cell.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d0/ddd/cell_8h_source.html#l00115">115</a> of file <a class="el" href="../../d0/ddd/cell_8h_source.html">cell.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00034">CGeomCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00871">dGetTotWaveHeight()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00855">SetWaveHeight()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00034">CGeomCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00872">dGetTotWaveHeight()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00856">SetWaveHeight()</a>.</p>
 
 </div>
 </div>
@@ -4793,9 +4796,9 @@ Andres Payo </dd></dl>
 
 <p>d50 of unconsolidated sediment on top layer with unconsolidated sediment depth &gt; 0 </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d0/ddd/cell_8h_source.html#l00202">202</a> of file <a class="el" href="../../d0/ddd/cell_8h_source.html">cell.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d0/ddd/cell_8h_source.html#l00205">205</a> of file <a class="el" href="../../d0/ddd/cell_8h_source.html">cell.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00699">CalcAllLayerElevsAndD50()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00034">CGeomCell()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l01116">dGetUnconsD50()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00700">CalcAllLayerElevsAndD50()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00034">CGeomCell()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l01117">dGetUnconsD50()</a>.</p>
 
 </div>
 </div>
@@ -4821,9 +4824,9 @@ Andres Payo </dd></dl>
 
 <p>Wave orientation. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d0/ddd/cell_8h_source.html#l00115">115</a> of file <a class="el" href="../../d0/ddd/cell_8h_source.html">cell.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d0/ddd/cell_8h_source.html#l00118">118</a> of file <a class="el" href="../../d0/ddd/cell_8h_source.html">cell.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00034">CGeomCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00884">dGetWaveAngle()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00803">InitCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00877">SetWaveAngle()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00932">SetWaveValuesToDeepWaterWaveValues()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00034">CGeomCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00885">dGetWaveAngle()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00804">InitCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00878">SetWaveAngle()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00933">SetWaveValuesToDeepWaterWaveValues()</a>.</p>
 
 </div>
 </div>
@@ -4849,9 +4852,9 @@ Andres Payo </dd></dl>
 
 <p>Wave height (m) </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d0/ddd/cell_8h_source.html#l00109">109</a> of file <a class="el" href="../../d0/ddd/cell_8h_source.html">cell.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d0/ddd/cell_8h_source.html#l00112">112</a> of file <a class="el" href="../../d0/ddd/cell_8h_source.html">cell.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00034">CGeomCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00865">dGetWaveHeight()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00803">InitCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00855">SetWaveHeight()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00932">SetWaveValuesToDeepWaterWaveValues()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00034">CGeomCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00866">dGetWaveHeight()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00804">InitCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00856">SetWaveHeight()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00933">SetWaveValuesToDeepWaterWaveValues()</a>.</p>
 
 </div>
 </div>
@@ -4877,9 +4880,9 @@ Andres Payo </dd></dl>
 
 <p>Wave period (s) </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d0/ddd/cell_8h_source.html#l00118">118</a> of file <a class="el" href="../../d0/ddd/cell_8h_source.html">cell.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d0/ddd/cell_8h_source.html#l00121">121</a> of file <a class="el" href="../../d0/ddd/cell_8h_source.html">cell.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00932">SetWaveValuesToDeepWaterWaveValues()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00933">SetWaveValuesToDeepWaterWaveValues()</a>.</p>
 
 </div>
 </div>
@@ -4905,9 +4908,9 @@ Andres Payo </dd></dl>
 
 <p>This cell's landform data. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d0/ddd/cell_8h_source.html#l00208">208</a> of file <a class="el" href="../../d0/ddd/cell_8h_source.html">cell.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d0/ddd/cell_8h_source.html#l00211">211</a> of file <a class="el" href="../../d0/ddd/cell_8h_source.html">cell.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00034">CGeomCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l01136">nGetInterventionClass()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00393">pGetLandform()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l01122">SetInterventionClass()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00034">CGeomCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l01137">nGetInterventionClass()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00394">pGetLandform()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l01123">SetInterventionClass()</a>.</p>
 
 </div>
 </div>
@@ -4935,7 +4938,7 @@ Andres Payo </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../d0/ddd/cell_8h_source.html#l00082">82</a> of file <a class="el" href="../../d0/ddd/cell_8h_source.html">cell.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00108">bIsBoundingBoxEdge()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00034">CGeomCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00102">nGetBoundingBoxEdge()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00096">SetBoundingBoxEdge()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00109">bIsBoundingBoxEdge()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00034">CGeomCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00103">nGetBoundingBoxEdge()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00097">SetBoundingBoxEdge()</a>.</p>
 
 </div>
 </div>
@@ -4961,9 +4964,9 @@ Andres Payo </dd></dl>
 
 <p>If this cell is 'under' a coastline normal, this is the number of the normal. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d0/ddd/cell_8h_source.html#l00088">88</a> of file <a class="el" href="../../d0/ddd/cell_8h_source.html">cell.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d0/ddd/cell_8h_source.html#l00091">91</a> of file <a class="el" href="../../d0/ddd/cell_8h_source.html">cell.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00263">bIsProfile()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00034">CGeomCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00803">InitCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00257">nGetProfileID()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00251">SetProfileID()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00264">bIsProfile()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00034">CGeomCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00804">InitCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00258">nGetProfileID()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00252">SetProfileID()</a>.</p>
 
 </div>
 </div>
@@ -4989,9 +4992,37 @@ Andres Payo </dd></dl>
 
 <p>If this cell is within a downdrift zone, this is the number of the downdrift zone. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d0/ddd/cell_8h_source.html#l00094">94</a> of file <a class="el" href="../../d0/ddd/cell_8h_source.html">cell.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d0/ddd/cell_8h_source.html#l00097">97</a> of file <a class="el" href="../../d0/ddd/cell_8h_source.html">cell.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00034">CGeomCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00803">InitCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00387">nGetDownDriftZoneNumber()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00381">SetDownDriftZoneNumber()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00034">CGeomCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00804">InitCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00388">nGetDownDriftZoneNumber()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00382">SetDownDriftZoneNumber()</a>.</p>
+
+</div>
+</div>
+<a id="a57575d266723af823adc5c18bfa879b1" name="a57575d266723af823adc5c18bfa879b1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a57575d266723af823adc5c18bfa879b1">&#9670;&#160;</a></span>m_nPolygonCoastID</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int CGeomCell::m_nPolygonCoastID</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>If this cell is within a polygon, this is the ID of the polygon's coast. </p>
+
+<p class="definition">Definition at line <a class="el" href="../../d0/ddd/cell_8h_source.html#l00088">88</a> of file <a class="el" href="../../d0/ddd/cell_8h_source.html">cell.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00034">CGeomCell()</a>.</p>
 
 </div>
 </div>
@@ -5019,7 +5050,7 @@ Andres Payo </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../d0/ddd/cell_8h_source.html#l00085">85</a> of file <a class="el" href="../../d0/ddd/cell_8h_source.html">cell.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00034">CGeomCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00803">InitCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00278">nGetPolygonID()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00272">SetPolygonID()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00034">CGeomCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00804">InitCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00279">nGetPolygonID()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00273">SetPolygonID()</a>.</p>
 
 </div>
 </div>
@@ -5045,9 +5076,9 @@ Andres Payo </dd></dl>
 
 <p>If this cell is within a shadow zone, this is the number of the shadow zone. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d0/ddd/cell_8h_source.html#l00091">91</a> of file <a class="el" href="../../d0/ddd/cell_8h_source.html">cell.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d0/ddd/cell_8h_source.html#l00094">94</a> of file <a class="el" href="../../d0/ddd/cell_8h_source.html">cell.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00305">bIsinAnyShadowZone()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00296">bIsinThisShadowZone()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00034">CGeomCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00803">InitCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00290">nGetShadowZoneNumber()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00284">SetShadowZoneNumber()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00306">bIsinAnyShadowZone()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00297">bIsinThisShadowZone()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00034">CGeomCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00804">InitCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00291">nGetShadowZoneNumber()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00285">SetShadowZoneNumber()</a>.</p>
 
 </div>
 </div>
@@ -5071,9 +5102,9 @@ Andres Payo </dd></dl>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../d0/ddd/cell_8h_source.html#l00220">220</a> of file <a class="el" href="../../d0/ddd/cell_8h_source.html">cell.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d0/ddd/cell_8h_source.html#l00223">223</a> of file <a class="el" href="../../d0/ddd/cell_8h_source.html">cell.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00423">bBasementElevIsMissingValue()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00345">bIsElevLessThanWaterLevel()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00552">bIsInundated()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00699">CalcAllLayerElevsAndD50()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00558">dGetThisIterSWL()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00564">dGetThisIterTotWaterLevel()</a>, <a class="el" href="../../df/de0/raster__grid_8cpp_source.html#l00067">CGeomRasterGrid::nCreateGrid()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00797">SetSeaDepth()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00424">bBasementElevIsMissingValue()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00346">bIsElevLessThanWaterLevel()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00553">bIsInundated()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00700">CalcAllLayerElevsAndD50()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00559">dGetThisIterSWL()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00565">dGetThisIterTotWaterLevel()</a>, <a class="el" href="../../df/de0/raster__grid_8cpp_source.html#l00067">CGeomRasterGrid::nCreateGrid()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00798">SetSeaDepth()</a>.</p>
 
 </div>
 </div>
@@ -5099,9 +5130,9 @@ Andres Payo </dd></dl>
 
 <p>Number of layer-top elevations (inc. that of the basement, which is m_VdAllHorizonTopElev[0]); size 1 greater than size of m_VLayerAboveBasement. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d0/ddd/cell_8h_source.html#l00215">215</a> of file <a class="el" href="../../d0/ddd/cell_8h_source.html">cell.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d0/ddd/cell_8h_source.html#l00218">218</a> of file <a class="el" href="../../d0/ddd/cell_8h_source.html">cell.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00345">bIsElevLessThanWaterLevel()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00552">bIsInundated()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00699">CalcAllLayerElevsAndD50()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l01164">dGetInterventionTopElev()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00546">dGetOverallTopElev()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00540">dGetSedimentPlusInterventionTopElev()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00534">dGetSedimentTopElev()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00731">nGetLayerAtElev()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00797">SetSeaDepth()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00346">bIsElevLessThanWaterLevel()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00553">bIsInundated()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00700">CalcAllLayerElevsAndD50()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l01165">dGetInterventionTopElev()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00547">dGetOverallTopElev()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00541">dGetSedimentPlusInterventionTopElev()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00535">dGetSedimentTopElev()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00732">nGetLayerAtElev()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00798">SetSeaDepth()</a>.</p>
 
 </div>
 </div>
@@ -5127,9 +5158,9 @@ Andres Payo </dd></dl>
 
 <p>Number of layers NOT including the basement. Layer 0 is the lowest. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d0/ddd/cell_8h_source.html#l00212">212</a> of file <a class="el" href="../../d0/ddd/cell_8h_source.html">cell.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d0/ddd/cell_8h_source.html#l00215">215</a> of file <a class="el" href="../../d0/ddd/cell_8h_source.html">cell.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00692">AppendLayers()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00699">CalcAllLayerElevsAndD50()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00747">dCalcLayerElev()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00497">dGetConsSedTopForLayerAboveBasement()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00640">dGetTotConsCoarseThickConsiderNotch()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00588">dGetTotConsFineThickConsiderNotch()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00614">dGetTotConsSandThickConsiderNotch()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00666">dGetTotConsThickness()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00656">dGetTotUnconsCoarse()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00604">dGetTotUnconsFine()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00630">dGetTotUnconsSand()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00676">dGetTotUnconsThickness()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00803">InitCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00731">nGetLayerAtElev()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00488">nGetTopLayerAboveBasement()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00472">nGetTopNonZeroLayerAboveBasement()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00514">pGetLayerAboveBasement()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00693">AppendLayers()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00700">CalcAllLayerElevsAndD50()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00748">dCalcLayerElev()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00498">dGetConsSedTopForLayerAboveBasement()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00641">dGetTotConsCoarseThickConsiderNotch()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00589">dGetTotConsFineThickConsiderNotch()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00615">dGetTotConsSandThickConsiderNotch()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00667">dGetTotConsThickness()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00657">dGetTotUnconsCoarse()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00605">dGetTotUnconsFine()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00631">dGetTotUnconsSand()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00677">dGetTotUnconsThickness()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00804">InitCell()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00732">nGetLayerAtElev()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00489">nGetTopLayerAboveBasement()</a>, <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00473">nGetTopNonZeroLayerAboveBasement()</a>, and <a class="el" href="../../d6/d68/cell_8cpp_source.html#l00515">pGetLayerAboveBasement()</a>.</p>
 
 </div>
 </div>
@@ -5144,7 +5175,7 @@ Andres Payo </dd></dl>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../d1/dd9/classCGeomCell.html">CGeomCell</a></li>
-    <li class="footer">Generated on Tue Jun 10 2025 10:50:27 for CoastalME (Coastal Modelling Environment) by <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+    <li class="footer">Generated on Wed Jun 11 2025 13:30:59 for CoastalME (Coastal Modelling Environment) by <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
   </ul>
 </div>
 </body>
