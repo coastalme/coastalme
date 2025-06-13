@@ -1,26 +1,26 @@
 /*!
- *
- * \file utils_global.cpp
- * \brief Globally-available utility routines
- * \details TODO 001 A more detailed description of these routines.
- * \author David Favis-Mortlock
- * \author Andres Payo
- * \date 2025
- * \copyright GNU General Public License
- *
- */
 
-/*==============================================================================================================================
+   \file utils_global.cpp
+   \brief Globally-available utility routines
+   \details TODO 001 A more detailed description of these routines.
+   \author David Favis-Mortlock
+   \author Andres Payo
+   \date 2025
+   \copyright GNU General Public License
 
-This file is part of CoastalME, the Coastal Modelling Environment.
+*/
 
-CoastalME is free software; you can redistribute it and/or modify it under the terms of the GNU General Public  License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
+/* ==============================================================================================================================
 
-This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+   This file is part of CoastalME, the Coastal Modelling Environment.
 
-You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+   CoastalME is free software; you can redistribute it and/or modify it under the terms of the GNU General Public  License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
 
-==============================================================================================================================*/
+   This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+   You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+
+   ==============================================================================================================================*/
 #include <cmath>
 
 #include <cfloat>
@@ -86,6 +86,7 @@ bool bIsStringValidInt(string& str)
 {
    // Trim leading whitespace
    size_t nPos = str.find_first_not_of(" \t");
+
    if (nPos != string::npos)
       str = str.substr(nPos);
 
@@ -129,20 +130,22 @@ string strDblRight(double const dX, int const nDigits, int const nWidth, bool co
    ss << fixed << right;
    ss.fill(' ');
    ss.width(nWidth-1);
-   
+
    if (bFPIsEqual(dX, 0.0, TOLERANCE))
    {
       if (bShowDash)
          ss << "-";
+
       else
          ss << SPACE;
    }
+
    else
    {
       ss.precision(nDigits);  // Set number of places after decimal
       ss << dX;
    }
-   
+
    ss << " ";                 // Add a final space
    return ss.str();
 }
@@ -169,15 +172,15 @@ string strCentre(const char* pchIn, int const nWidth)
    string strIn(pchIn);
    stringstream ss, spaces;
    int nPadding = nWidth - static_cast<int>(strIn.size());
-   
+
    for (int i = 0; i < nPadding / 2; ++i)
       spaces << " ";
 
    ss << spaces.str() << strIn << spaces.str();
-   
+
    if (nPadding > 0 && nPadding % 2 != 0)       // If odd number, add one space
       ss << " ";
-   
+
    return ss.str();
 }
 
@@ -207,8 +210,10 @@ string strRight(const string& strIn, int const nWidth)
 {
    stringstream ss, spaces;
    int nPadding = nWidth - static_cast<int>(strIn.size()) - 1;
+
    for (int i = 0; i < nPadding; ++i)
       spaces << " ";
+
    ss << spaces.str() << strIn;
    ss << " ";
    return ss.str();
@@ -222,8 +227,10 @@ string strRight(const char* pchIn, int const nWidth)
    string strIn(pchIn);
    stringstream ss, spaces;
    int nPadding = nWidth - static_cast<int>(strIn.size()) - 1;
+
    for (int i = 0; i < nPadding; ++i)
       spaces << " ";
+
    ss << spaces.str() << strIn;
    ss << " ";
    return ss.str();
@@ -236,8 +243,10 @@ string strLeft(const string& strIn, int const nWidth)
 {
    stringstream ss, spaces;
    int nPadding = nWidth - static_cast<int>(strIn.size());
+
    for (int i = 0; i < nPadding; ++i)
       spaces << " ";
+
    ss << strIn << spaces.str();
    return ss.str();
 }
@@ -250,8 +259,10 @@ string strLeft(const char* pchIn, int const nWidth)
    string strIn(pchIn);
    stringstream ss, spaces;
    int nPadding = nWidth - static_cast<int>(strIn.size());
+
    for (int i = 0; i < nPadding; ++i)
       spaces << " ";
+
    ss << strIn << spaces.str();
    return ss.str();
 }
@@ -272,9 +283,11 @@ string strRightPerCent(double const d1, double const d2, int const nWidth, int c
 
       if (bShowDash)
          ss << "-";
+
       else
          ss << SPACE;
    }
+
    else
    {
       // Non-zero, so calculate the percentage

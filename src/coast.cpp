@@ -1,26 +1,26 @@
 /*!
- *
- * \file coast.cpp
- * \brief CRWCoast routines
- * \details TODO 001 A more detailed description of these routines.
- * \author David Favis-Mortlock
- * \author Andres Payo
- * \date 2025
- * \copyright GNU General Public License
- *
- */
 
-/*===============================================================================================================================
+   \file coast.cpp
+   \brief CRWCoast routines
+   \details TODO 001 A more detailed description of these routines.
+   \author David Favis-Mortlock
+   \author Andres Payo
+   \date 2025
+   \copyright GNU General Public License
 
-This file is part of CoastalME, the Coastal Modelling Environment.
+*/
 
-CoastalME is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
+/* ===============================================================================================================================
 
-This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+   This file is part of CoastalME, the Coastal Modelling Environment.
 
-You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+   CoastalME is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
 
-===============================================================================================================================*/
+   This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+   You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+
+   ===============================================================================================================================*/
 #include <assert.h>
 
 #include <vector>
@@ -36,14 +36,14 @@ using std::sort;
 
 //! Constructor with initialization list
 CRWCoast::CRWCoast(CSimulation* pSimIn)
-    : m_nSeaHandedness(NULL_HANDED),
-      m_nStartEdge(INT_NODATA),
-      m_nEndEdge(INT_NODATA),
-      m_dCurvatureDetailedMean(0),
-      m_dCurvatureDetailedSTD(0),
-      m_dCurvatureSmoothMean(0),
-      m_dCurvatureSmoothSTD(0),
-      m_pSim(pSimIn)
+   : m_nSeaHandedness(NULL_HANDED),
+     m_nStartEdge(INT_NODATA),
+     m_nEndEdge(INT_NODATA),
+     m_dCurvatureDetailedMean(0),
+     m_dCurvatureDetailedSTD(0),
+     m_dCurvatureSmoothMean(0),
+     m_dCurvatureSmoothSTD(0),
+     m_pSim(pSimIn)
 {
 }
 
@@ -147,13 +147,13 @@ void CRWCoast::SetCoastlineExtCRS(CGeomLine const* pLCoast)
 // }
 
 //! Returns the coastline (external CRS)
-CGeomLine *CRWCoast::pLGetCoastlineExtCRS(void)
+CGeomLine* CRWCoast::pLGetCoastlineExtCRS(void)
 {
    return &m_LCoastlineExtCRS;
 }
 
 //! Returns a given coast point in external CRS
-CGeom2DPoint *CRWCoast::pPtGetCoastlinePointExtCRS(int const n)
+CGeom2DPoint* CRWCoast::pPtGetCoastlinePointExtCRS(int const n)
 {
    // Point is in external CRS TODO 055 No check to see that n is < m_LCoastlineExtCRS.Size()
    return &m_LCoastlineExtCRS[n];
@@ -265,30 +265,37 @@ int CRWCoast::nGetCoastPointGivenCell(CGeom2DIPoint* pPtiCell)
             nXAdj = nX;
             nYAdj = nY - 1;
             break;
+
          case 1:
             nXAdj = nX + 1;
             nYAdj = nY - 1;
             break;
+
          case 2:
             nXAdj = nX + 1;
             nYAdj = nY;
             break;
+
          case 3:
             nXAdj = nX + 1;
             nYAdj = nY + 1;
             break;
+
          case 4:
             nXAdj = nX;
             nYAdj = nY + 1;
             break;
+
          case 5:
             nXAdj = nX - 1;
             nYAdj = nY + 1;
             break;
+
          case 6:
             nXAdj = nX - 1;
             nYAdj = nY;
             break;
+
          case 7:
             nXAdj = nX - 1;
             nYAdj = nY - 1;
@@ -296,6 +303,7 @@ int CRWCoast::nGetCoastPointGivenCell(CGeom2DIPoint* pPtiCell)
       }
 
       CGeom2DIPoint PtiTmp(nXAdj, nYAdj);
+
       for (int nCoastPoint = 0; nCoastPoint < m_ILCellsMarkedAsCoastline.nGetSize(); nCoastPoint++)
       {
          if (m_ILCellsMarkedAsCoastline[nCoastPoint] == &PtiTmp)
@@ -573,9 +581,11 @@ double CRWCoast::dGetLevel(int const nCoastPoint, int const level) const
       case 0: // WAVESETUPSURGE:
          return m_VdWaveSetupSurge[nCoastPoint];
          break;
+
       case 1: // WAVESETUPSURGE + RUNUP:
          return m_VdWaveSetupSurge[nCoastPoint] + m_VdRunUp[nCoastPoint];
          break;
+
       default:
          return 0;
    }
@@ -696,7 +706,7 @@ void CRWCoast::SetProfileAtCoastPoint(int const nCoastPoint, CGeomProfile* const
 bool CRWCoast::bIsProfileAtCoastPoint(int const nCoastPoint) const
 {
    if (m_pVNormalProfileDownAllCoastpointSeq.at(nCoastPoint) == NULL)
-       return false;
+      return false;
 
    return true;
 }
@@ -714,7 +724,7 @@ void CRWCoast::AppendCoastLandform(CACoastLandform* pCoastLandform)
 }
 
 //! Returns the coastal landform for a given coast point, or NULL if there is no coast landform here
-CACoastLandform *CRWCoast::pGetCoastLandform(int const nCoastPoint)
+CACoastLandform* CRWCoast::pGetCoastLandform(int const nCoastPoint)
 {
    if (nCoastPoint < static_cast<int>(m_pVLandform.size()))
       return m_pVLandform[nCoastPoint];
@@ -783,7 +793,7 @@ void CRWCoast::AppendShadowBoundary(CGeomLine const* pLBoundary)
 }
 
 //! Returns a pointer to a shadow boundary
-CGeomLine *CRWCoast::pGetShadowBoundary(int const n)
+CGeomLine* CRWCoast::pGetShadowBoundary(int const n)
 {
    // TODO 055 No check to see if n < m_LShadowBoundary.size()
    return &m_LShadowBoundary[n];

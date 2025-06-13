@@ -1,26 +1,26 @@
 /*!
- *
- * \file multi_line.cpp
- * \brief CGeomMultiLine routines
- * \details TODO 001 A more detailed description of these routines.
- * \author David Favis-Mortlock
- * \author Andres Payo
- * \date 2025
- * \copyright GNU General Public License
- *
- */
 
-/*===============================================================================================================================
+   \file multi_line.cpp
+   \brief CGeomMultiLine routines
+   \details TODO 001 A more detailed description of these routines.
+   \author David Favis-Mortlock
+   \author Andres Payo
+   \date 2025
+   \copyright GNU General Public License
 
-This file is part of CoastalME, the Coastal Modelling Environment.
+*/
 
-CoastalME is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
+/* ===============================================================================================================================
 
-This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+   This file is part of CoastalME, the Coastal Modelling Environment.
 
-You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+   CoastalME is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
 
-===============================================================================================================================*/
+   This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+   You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+
+   ===============================================================================================================================*/
 #include <assert.h>
 
 #include "cme.h"
@@ -91,6 +91,7 @@ void CGeomMultiLine::InsertLineSegment(int const nSegment)
 
    // Store the profile numbers that are in this existing vector of pairs, these are the profiles that will be affected by this insertion
    vector<int> nVProfsAffected;
+
    for (unsigned int i = 0; i < prVPrev.size(); i++)
       nVProfsAffected.push_back(prVPrev[i].first);
 
@@ -117,6 +118,7 @@ void CGeomMultiLine::InsertLineSegment(int const nSegment)
 vector<vector<pair<int, int> > > CGeomMultiLine::prVVGetAllLineSegAfter(int const nSegment)
 {
    vector<vector<pair<int, int> > > prVTmp;
+
    for (unsigned int n = nSegment; n < m_prVVLineSegment.size(); n++)
       prVTmp.push_back(m_prVVLineSegment[n]);
 
@@ -209,6 +211,7 @@ bool CGeomMultiLine::bFindProfileInCoincidentProfilesOfLastLineSegment(int const
 bool CGeomMultiLine::bFindProfileInCoincidentProfiles(int const nProfile)
 {
    int nSegSize = static_cast<int>(m_prVVLineSegment.size());
+
    if (nSegSize == 0)
       return false;
 
@@ -217,7 +220,7 @@ bool CGeomMultiLine::bFindProfileInCoincidentProfiles(int const nProfile)
       for (unsigned int j = 0; j < m_prVVLineSegment[i].size(); j++)
       {
          if (m_prVVLineSegment[i][j].first == nProfile)
-         return true;
+            return true;
       }
    }
 
@@ -231,6 +234,7 @@ void CGeomMultiLine::GetMostCoastwardSharedLineSegment(int const nOtherProfile, 
    nOtherLineSegment = -1;
 
    long unsigned int nSegSize = m_prVVLineSegment.size();
+
    if (nSegSize == 0)
       return;
 

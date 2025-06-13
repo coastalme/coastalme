@@ -1,26 +1,26 @@
 /*!
- *
- * \file coast_polygon.cpp
- * \brief CGeomCoastPolygon routines
- * \details TODO 001 A more detailed description of these routines.
- * \author David Favis-Mortlock
- * \author Andres Payo
- * \date 2025
- * \copyright GNU General Public License
- *
- */
 
-/*===============================================================================================================================
+   \file coast_polygon.cpp
+   \brief CGeomCoastPolygon routines
+   \details TODO 001 A more detailed description of these routines.
+   \author David Favis-Mortlock
+   \author Andres Payo
+   \date 2025
+   \copyright GNU General Public License
 
-This file is part of CoastalME, the Coastal Modelling Environment.
+*/
 
-CoastalME is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
+/* ===============================================================================================================================
 
-This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+   This file is part of CoastalME, the Coastal Modelling Environment.
 
-You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+   CoastalME is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
 
-===============================================================================================================================*/
+   This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+   You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+
+   ===============================================================================================================================*/
 #include <assert.h>
 #include <iostream>
 using std::cerr;
@@ -30,7 +30,7 @@ using std::cerr;
 
 //! Constructor with 10 parameters and initialization list
 CGeomCoastPolygon::CGeomCoastPolygon(int const nGlobalID, int const nCoastID, int const nNode, int const nProfileUpCoast, int const nProfileDownCoast, vector<CGeom2DPoint> const* pVIn, int const nLastPointUpCoast, const int nLastPointDownCoast, CGeom2DIPoint const* PtiNode, CGeom2DIPoint const* PtiAntinode, bool const bStartCoast, bool const bEndCoast)
-:
+   :
 //    m_bIsPointedSeaward(true),
    m_bUnconsSedimentMovementDownCoastThisIter(false),
    m_bCoastEndPolygon(bEndCoast),
@@ -43,7 +43,7 @@ CGeomCoastPolygon::CGeomCoastPolygon(int const nGlobalID, int const nCoastID, in
    m_nProfileUpCoastNumPointsUsed(nLastPointUpCoast),
    m_nProfileDownCoastNumPointsUsed(nLastPointDownCoast),
    m_nNumCells(0),
-   m_dAvgUnconsD50(0),   
+   m_dAvgUnconsD50(0),
    m_dSeawaterVolume(0),
    m_dPotentialBeachErosionAllUncons(0),
    m_dBeachErosionUnconsFine(0),
@@ -457,9 +457,11 @@ int CGeomCoastPolygon::nGetNumDownCoastAdjacentPolygons(void) const
 bool CGeomCoastPolygon::bDownCoastIsAlreadyPresent(int const nPoly)
 {
    auto it = find(m_VnDownCoastAdjacentPolygon.begin(), m_VnDownCoastAdjacentPolygon.end(), nPoly);
+
    if (it == m_VnDownCoastAdjacentPolygon.end())
       // Not found
       return false;
+
    else
       // Found
       return true;
@@ -469,9 +471,11 @@ bool CGeomCoastPolygon::bDownCoastIsAlreadyPresent(int const nPoly)
 bool CGeomCoastPolygon::bUpCoastIsAlreadyPresent(int const nPoly)
 {
    auto it = find(m_VnUpCoastAdjacentPolygon.begin(), m_VnUpCoastAdjacentPolygon.end(), nPoly);
+
    if (it == m_VnUpCoastAdjacentPolygon.end())
       // Not found
       return false;
+
    else
       // Found
       return true;
@@ -541,7 +545,7 @@ void CGeomCoastPolygon::AddCliffCollapseToSuspensionFine(double const dDepth)
 //! Get the this-iteration total of unconsolidated fine sediment from cliff collapse which goes to suspension on this polygon
 double CGeomCoastPolygon::dGetCliffCollapseToSuspensionFine(void) const
 {
-  return m_dCliffCollapseTalusFineToSuspension;
+   return m_dCliffCollapseTalusFineToSuspension;
 }
 
 //! Add to the this-iteration total of unconsolidated fine sediment eroded from cliff collapse on this polygon
@@ -594,7 +598,7 @@ double CGeomCoastPolygon::dGetCliffCollapseUnconsSandDeposition(void) const
 
 //! Add to the this-iteration total of unconsolidated coarse sediment deposited from cliff collapse on this polygon
 void CGeomCoastPolygon::AddCliffCollapseUnconsCoarseDeposition(double const dDepth)
-{  
+{
    m_dCliffCollapseTalusCoarse += dDepth;
 }
 
@@ -802,5 +806,6 @@ CGeom2DIPoint CGeomCoastPolygon::PtiGetFillStartPoint(void)
       dXTot += m_VPtiVertices[n].nGetX();
       dYTot += m_VPtiVertices[n].nGetY();
    }
+
    return CGeom2DIPoint(nRound(dXTot / nVertices), nRound(dYTot / nVertices));
 }

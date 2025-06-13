@@ -1,25 +1,25 @@
 /*!
- *
- * \file 2d_shape.cpp
- * \brief Abstract class, used as a base class for 2D objects (line, area, etc.)
- * \details Abstract class, used as a base class for 2D objects (line, area, etc.)
- * \author David Favis-Mortlock
- * \author Andres Payo
- * \date 2025
- * \copyright GNU General Public License
- *
- */
 
-/*===============================================================================================================================
-This file is part of CoastalME, the Coastal Modelling Environment.
+   \file 2d_shape.cpp
+   \brief Abstract class, used as a base class for 2D objects (line, area, etc.)
+   \details Abstract class, used as a base class for 2D objects (line, area, etc.)
+   \author David Favis-Mortlock
+   \author Andres Payo
+   \date 2025
+   \copyright GNU General Public License
 
-CoastalME is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
+*/
 
-This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+/* ===============================================================================================================================
+   This file is part of CoastalME, the Coastal Modelling Environment.
 
-You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+   CoastalME is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
 
-===============================================================================================================================*/
+   This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+   You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+
+   ===============================================================================================================================*/
 #include "cme.h"
 #include "2d_shape.h"
 
@@ -87,7 +87,7 @@ void CA2DShape::AppendIfNotAlready(double const dX, double const dY)
       m_VPoints.push_back(PtIn);
 }
 
-//! Returns the last element of this 2D shape 
+//! Returns the last element of this 2D shape
 CGeom2DPoint* CA2DShape::pPtBack(void)
 {
    return &m_VPoints.back();
@@ -126,7 +126,7 @@ CGeom2DPoint* CA2DShape::pPtBack(void)
 //    return dLength;
 // }
 
-//! Returns the address of the vector which represents this 2D shape 
+//! Returns the address of the vector which represents this 2D shape
 vector<CGeom2DPoint>* CA2DShape::pPtVGetPoints(void)
 {
    return &m_VPoints;
