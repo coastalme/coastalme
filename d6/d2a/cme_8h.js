@@ -126,7 +126,7 @@ var cme_8h =
     [ "MAX_NUM_PREV_ORIENTATION_VALUES", "d6/d2a/cme_8h.html#a44a80b23b966b8f1aa8a620bceb50b2b", null ],
     [ "MAX_NUM_SHADOW_ZONES", "d6/d2a/cme_8h.html#a66f889d696916c3053683b0d0092e8a8", null ],
     [ "MAX_SEAWARD_OFFSET_FOR_CLIFF_TALUS", "d6/d2a/cme_8h.html#a345c00500ce26313ccfe7c13845306bf", null ],
-    [ "MIN_INLAND_OFFSET_FOR_BEACH_EROSION_ESTIMATION", "d6/d2a/cme_8h.html#a1576b77f6c26327e1cbf8cbf2288cf33", null ],
+    [ "MIN_INLAND_OFFSET_UNCONS_EROSION", "d6/d2a/cme_8h.html#a5cf6853f01a0616fb3f0ba435023a8ab", null ],
     [ "MIN_LENGTH_OF_SHADOW_ZONE_LINE", "d6/d2a/cme_8h.html#a93ac0c692cfeb8082f10c7b5064a4c6a", null ],
     [ "MIN_PARALLEL_PROFILE_SIZE", "d6/d2a/cme_8h.html#abb6251fa80196378e8f4c7d61924b4fd", null ],
     [ "MIN_PROFILE_SIZE", "d6/d2a/cme_8h.html#ab914b8b16e588f33de01d23cd74ffa7c", null ],

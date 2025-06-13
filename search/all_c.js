@@ -684,7 +684,7 @@ var searchData=
   ['max_5fnum_5fshadow_5fzones_681',['MAX_NUM_SHADOW_ZONES',['../d6/d2a/cme_8h.html#a66f889d696916c3053683b0d0092e8a8',1,'cme.h']]],
   ['max_5fseaward_5foffset_5ffor_5fcliff_5ftalus_682',['MAX_SEAWARD_OFFSET_FOR_CLIFF_TALUS',['../d6/d2a/cme_8h.html#a345c00500ce26313ccfe7c13845306bf',1,'cme.h']]],
   ['mergeprofilesatfinallinesegments_683',['MergeProfilesAtFinalLineSegments',['../d1/d98/classCSimulation.html#a545c6a6a1c33942a35ef3ee15c26896f',1,'CSimulation']]],
-  ['min_5finland_5foffset_5ffor_5fbeach_5ferosion_5festimation_684',['MIN_INLAND_OFFSET_FOR_BEACH_EROSION_ESTIMATION',['../d6/d2a/cme_8h.html#a1576b77f6c26327e1cbf8cbf2288cf33',1,'cme.h']]],
+  ['min_5finland_5foffset_5funcons_5ferosion_684',['MIN_INLAND_OFFSET_UNCONS_EROSION',['../d6/d2a/cme_8h.html#a5cf6853f01a0616fb3f0ba435023a8ab',1,'cme.h']]],
   ['min_5flength_5fof_5fshadow_5fzone_5fline_685',['MIN_LENGTH_OF_SHADOW_ZONE_LINE',['../d6/d2a/cme_8h.html#a93ac0c692cfeb8082f10c7b5064a4c6a',1,'cme.h']]],
   ['min_5fparallel_5fprofile_5fsize_686',['MIN_PARALLEL_PROFILE_SIZE',['../d6/d2a/cme_8h.html#abb6251fa80196378e8f4c7d61924b4fd',1,'cme.h']]],
   ['min_5fprofile_5fsize_687',['MIN_PROFILE_SIZE',['../d6/d2a/cme_8h.html#ab914b8b16e588f33de01d23cd74ffa7c',1,'cme.h']]],

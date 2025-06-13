@@ -128,18 +128,23 @@ Installing CoastalME</h1>
 <h2><a class="anchor" id="install_step1"></a>
 Obtaining the source code</h2>
 <p>CoastalME builds easily using Linux. If you wish to run CoastalME on Windows, then we currently recommend using the Windows Subsystem Linux (WSL) software to do this.</p>
-<p>Create a local copy of the github repository, for example by downloading a zipfile, then unpacking it or cloning. We suggest unpacking it to something like "/home/YOUR NAME/Projects/CoastalME/", this is then your CoastalME folder. </p><pre class="fragment">  git clone https://github.com/coastalme/coastalme
-</pre><h2><a class="anchor" id="install_step2"></a>
+<p>Create a local copy of the github repository, for example by downloading a zipfile, then unpacking it or cloning. We suggest unpacking it to something like "/home/YOUR NAME/Projects/CoastalME/", this is then your CoastalME folder.</p>
+<p>git clone <a href="https://github.com/coastalme/coastalme">https://github.com/coastalme/coastalme</a></p>
+<h2><a class="anchor" id="install_step2"></a>
 Building CoastalME</h2>
 <p>In a terminal window (i.e. at a command-line prompt) move to the CoastalME folder.</p>
-<p>Then move to the the src folder </p><pre class="fragment">  cd CoastalME/src
-</pre><p>and run run_cmake.sh </p><pre class="fragment">  ./run_cmake.sh
-</pre><p>If you get a "Permission denied" message: </p><pre class="fragment">  -bash: ./run_cmake.sh: Permission denied
-</pre><p>you will have to grant executable permission using </p><pre class="fragment">  chmod a+x run_cmake.sh, chmod a+x cshore/make_cshore.sh and then
-</pre><p> ./run_cmake.sh</p>
+<p>Then move to the the src folder</p>
+<p>cd CoastalME/src</p>
+<p>and run run_cmake.sh</p>
+<p>./run_cmake.sh</p>
+<p>If you get a "Permission denied" message:</p>
+<p>-bash: ./run_cmake.sh: Permission denied</p>
+<p>you will have to grant executable permission using</p>
+<p>chmod a+x run_cmake.sh, chmod a+x cshore/make_cshore.sh and then ./run_cmake.sh</p>
 <p>This will build CShore, look for GDAL, and write the CMake files. If you see error messages about missing software (for example, telling you that CMake cannot be found or is too old, or GDAL cannot be found or is too old) then you need to install or update the software that is causing the problem.</p>
-<p>Next, run </p><pre class="fragment">  make install
-</pre><p>This will create an executable file called cme in the CoastalME folder.</p>
+<p>Next, run</p>
+<p>make install</p>
+<p>This will create an executable file called cme in the CoastalME folder.</p>
 <h1><a class="anchor" id="run_sec"></a>
 Running CoastalME</h1>
 <h2><a class="anchor" id="run_step1"></a>
@@ -147,14 +152,14 @@ Specifying the input file</h2>
 <p>Edit cme.ini to tell CoastalME which input file to read (for example, in/test_suite/minimal_wave_angle_230/minimal.dat).</p>
 <h2><a class="anchor" id="run_step2"></a>
 Running CoastalME</h2>
-<p>Leave the src folder, and run cme </p><pre class="fragment">  cd ..
-  ./cme
-</pre><p>Output will appear in the "Path for output" folder.</p>
+<p>Leave the src folder, and run cme</p>
+<p>cd .. ./cme</p>
+<p>Output will appear in the "Path for output" folder.</p>
 <h2><a class="anchor" id="run_step3"></a>
 Running CoastalME's test suite</h2>
-<p>To check that your installation is running correctly, you can run a suite of pre-defined tests by running the following commands: </p><pre class="fragment">  chmod a+x run_test_suite.sh
-  ./run_test_suite.sh
-</pre><p>The <code>chmod</code> comand ensures that you have permission to execute the run_test_suite.sh file.</p>
+<p>To check that your installation is running correctly, you can run a suite of pre-defined tests by running the following commands:</p>
+<p>chmod a+x run_test_suite.sh ./run_test_suite.sh</p>
+<p>The <code>chmod</code> comand ensures that you have permission to execute the run_test_suite.sh file.</p>
 <h2><a class="anchor" id="run_step4"></a>
 Managing CoastalME's output</h2>
 <p>Once you have CoastalME (CME) up and running, you can reduce the quantity of output (it can be overwhelming!) in several ways.</p>
@@ -168,7 +173,7 @@ Managing CoastalME's output</h2>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Wed Jun 11 2025 13:31:47 for CoastalME (Coastal Modelling Environment) by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+    <li class="footer">Generated on Fri Jun 13 2025 08:58:55 for CoastalME (Coastal Modelling Environment) by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
   </ul>
 </div>
 </body>
