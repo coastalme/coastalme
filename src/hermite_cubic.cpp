@@ -1,26 +1,26 @@
 /*!
- *
- * \file hermite_cubic.cpp
- * \brief Some routines from the hermite_cubic library
- * \details TODO 001 A more detailed description of these routines.
- * \author John Burkardt
- * \author Modified by David Favis-Mortlock and Andres Payo
- * \date 2025
- * \copyright GNU Lesser General Public License
- *
- */
 
-/*===============================================================================================================================
+   \file hermite_cubic.cpp
+   \brief Some routines from the hermite_cubic library
+   \details TODO 001 A more detailed description of these routines.
+   \author John Burkardt
+   \author Modified by David Favis-Mortlock and Andres Payo
+   \date 2025
+   \copyright GNU Lesser General Public License
 
-This file is part of CoastalME, the Coastal Modelling Environment.
+*/
 
-CoastalME is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
+/* ===============================================================================================================================
 
-This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+   This file is part of CoastalME, the Coastal Modelling Environment.
 
-You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+   CoastalME is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
 
-===============================================================================================================================*/
+   This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+   You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+
+   ===============================================================================================================================*/
 #include <iostream>
 using std::cout;
 using std::cerr;
@@ -113,24 +113,28 @@ void r8vec_bracket3(int const n, double const* t, double const tval, int* left)
       {
          return;
       }
+
       else if ( *left == 1 )
       {
          *left = 0;
          return;
       }
+
       else if ( t[*left-1] <= tval )
       {
          *left = *left - 1;
          return;
       }
+
       else if ( tval <= t[1] )
       {
          *left = 0;
          return;
       }
-   //
-   //  ...Binary search for TVAL in (T[I],T[I+1]), for I = 1 to *LEFT-2.
-   //
+
+      //
+      //  ...Binary search for TVAL in (T[I],T[I+1]), for I = 1 to *LEFT-2.
+      //
       low = 1;
       high = *left - 2;
 
@@ -148,12 +152,14 @@ void r8vec_bracket3(int const n, double const* t, double const tval, int* left)
          {
             low = mid;
          }
+
          else
          {
             high = mid - 1;
          }
       }
    }
+
    //
    //  CASE 2: T[*LEFT+1] < TVAL:
    //  Search for TVAL in (T[I],T[I+1]) for intervals I = *LEFT+1 to N-2.
@@ -164,16 +170,19 @@ void r8vec_bracket3(int const n, double const* t, double const tval, int* left)
       {
          return;
       }
+
       else if ( *left == n - 3 )
       {
          *left = *left + 1;
          return;
       }
+
       else if ( tval <= t[*left+2] )
       {
          *left = *left + 1;
          return;
       }
+
       else if ( t[n-2] <= tval )
       {
          *left = n - 2;
@@ -198,6 +207,7 @@ void r8vec_bracket3(int const n, double const* t, double const tval, int* left)
          {
             low = mid;
          }
+
          else
          {
             high = mid - 1;
@@ -262,29 +272,30 @@ void r8vec_bracket3(int const n, double const* t, double const tval, int* left)
 //! This is part of a C++ library from http://people.sc.fsu.edu/~jburkardt/cpp_src/hermite_cubic/hermite_cubic.html. It demonstrates the use of cubic polynomials in the Hermite form: hermite_cubic_spline_value() evaluates a Hermite cubic spline//===============================================================================================================================
 void hermite_cubic_value(double const x1, double const f1, double const d1, double const x2, double const f2, double const d2, int const n, double const* x, double* f, double* d, double* s, double* t)
 {
-  double c2;
-  double c3;
-  double df;
-  double h;
-  int i;
+   double c2;
+   double c3;
+   double df;
+   double h;
+   int i;
 
-  h = x2 - x1;
-  df = (f2 - f1) / h;
+   h = x2 - x1;
+   df = (f2 - f1) / h;
 
-  c2 = - ( 2.0 * d1 - 3.0 * df + d2 ) / h;
-  c3 =   (       d1 - 2.0 * df + d2 ) / h / h;
+   c2 = - ( 2.0 * d1 - 3.0 * df + d2 ) / h;
+   c3 =   (       d1 - 2.0 * df + d2 ) / h / h;
 
-  for (i = 0; i < n; i++)
-  {
-    f[i] =       f1 + ( x[i] - x1 ) * ( d1
-                    + ( x[i] - x1 ) * ( c2
-                    + ( x[i] - x1 ) *   c3 ) );
-    d[i] =       d1 + ( x[i] - x1 ) * ( 2.0 * c2
-                    + ( x[i] - x1 ) * 3.0 * c3 );
-    s[i] = 2.0 * c2 + ( x[i] - x1 ) * 6.0 * c3;
-    t[i] = 6.0 * c3;
-  }
-  return;
+   for (i = 0; i < n; i++)
+   {
+      f[i] =       f1 + ( x[i] - x1 ) * ( d1
+                                          + ( x[i] - x1 ) * ( c2
+                                                + ( x[i] - x1 ) *   c3 ) );
+      d[i] =       d1 + ( x[i] - x1 ) * ( 2.0 * c2
+                                          + ( x[i] - x1 ) * 3.0 * c3 );
+      s[i] = 2.0 * c2 + ( x[i] - x1 ) * 6.0 * c3;
+      t[i] = 6.0 * c3;
+   }
+
+   return;
 }
 
 //===============================================================================================================================
@@ -342,14 +353,15 @@ void hermite_cubic_value(double const x1, double const f1, double const d1, doub
 //===============================================================================================================================
 void hermite_cubic_spline_value(int const nn, double* const xn, double* const fn, double* const dn, int const n, double* const x, double* f, double* d, double* s, double* t)
 {
-  int left = n / 2;
+   int left = n / 2;
 
-  for (int i = 0; i < n; i++)
-  {
-    r8vec_bracket3(nn, xn, x[i], &left);
+   for (int i = 0; i < n; i++)
+   {
+      r8vec_bracket3(nn, xn, x[i], &left);
 
-    hermite_cubic_value(xn[left], fn[left], dn[left], xn[left+1], fn[left+1], dn[left+1], 1, x+i, f+i, d+i, s+i, t+i);
-  }
-  return;
+      hermite_cubic_value(xn[left], fn[left], dn[left], xn[left+1], fn[left+1], dn[left+1], 1, x+i, f+i, d+i, s+i, t+i);
+   }
+
+   return;
 }
 

@@ -1,26 +1,26 @@
 /*!
- *
- * \file init_grid.cpp
- * \brief Initialises the raster grid and calculates sea depth on each cell
- * \details TODO 001 A more detailed description of this routine.
- * \author David Favis-Mortlock
- * \author Andres Payo
- * \date 2025
- * \copyright GNU General Public License
- *
- */
 
-/*==============================================================================================================================
+   \file init_grid.cpp
+   \brief Initialises the raster grid and calculates sea depth on each cell
+   \details TODO 001 A more detailed description of this routine.
+   \author David Favis-Mortlock
+   \author Andres Payo
+   \date 2025
+   \copyright GNU General Public License
 
-This file is part of CoastalME, the Coastal Modelling Environment.
+*/
 
-CoastalME is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
+/* ==============================================================================================================================
 
-This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+   This file is part of CoastalME, the Coastal Modelling Environment.
 
-You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+   CoastalME is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
 
-==============================================================================================================================*/
+   This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+   You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+
+   ==============================================================================================================================*/
 #include <assert.h>
 
 #include <string>
@@ -34,7 +34,7 @@ using std::endl;
 #include <gdal_alg.h>
 
 #ifdef _OPENMP
-#include <omp.h>
+   #include <omp.h>
 #endif
 
 #include "cme.h"
@@ -110,10 +110,10 @@ int CSimulation::nInitGridAndCalcStillWaterLevel(void)
    }
 
    // Re-calculate the depth of closure, in case deep water wave properties have changed
-   CalcDepthOfClosure();   
+   CalcDepthOfClosure();
 
    int nZeroThickness = 0;
-   
+
    m_dStartIterSuspFineAllCells =
    m_dStartIterSuspFineInPolygons =
    m_dStartIterUnconsFineAllCells =
@@ -127,9 +127,10 @@ int CSimulation::nInitGridAndCalcStillWaterLevel(void)
    // Use OpenMP parallel loop with reduction clauses for thread-safe accumulation
 #ifdef _OPENMP
    #pragma omp parallel for collapse(2) reduction(+:nZeroThickness) \
-           reduction(+:m_dStartIterConsFineAllCells,m_dStartIterConsSandAllCells,m_dStartIterConsCoarseAllCells) \
-           reduction(+:m_dStartIterSuspFineAllCells,m_dStartIterUnconsFineAllCells,m_dStartIterUnconsSandAllCells,m_dStartIterUnconsCoarseAllCells)
+   reduction(+:m_dStartIterConsFineAllCells,m_dStartIterConsSandAllCells,m_dStartIterConsCoarseAllCells) \
+   reduction(+:m_dStartIterSuspFineAllCells,m_dStartIterUnconsFineAllCells,m_dStartIterUnconsSandAllCells,m_dStartIterUnconsCoarseAllCells)
 #endif
+
    for (int nX = 0; nX < m_nXGridSize; nX++)
    {
       for (int nY = 0; nY < m_nYGridSize; nY++)
@@ -141,6 +142,7 @@ int CSimulation::nInitGridAndCalcStillWaterLevel(void)
          {
             // For the first timestep only, check to see that all cells have some sediment on them
             double dSedThickness = m_pRasterGrid->m_Cell[nX][nY].dGetTotAllSedThickness();
+
             if (dSedThickness <= 0)
             {
                nZeroThickness++;
@@ -159,12 +161,12 @@ int CSimulation::nInitGridAndCalcStillWaterLevel(void)
             // For the first timestep only, calculate the elevation of all this cell's layers. During the rest of the simulation, each cell's elevation is re-calculated just after any change occurs on that cell
             m_pRasterGrid->m_Cell[nX][nY].CalcAllLayerElevsAndD50();
          }
-         
+
          // Note that these totals include sediment which is both within and outside the polygons (because we have not yet defined polygons for this iteration, duh!)
          m_dStartIterConsFineAllCells += m_pRasterGrid->m_Cell[nX][nY].dGetTotConsFineThickConsiderNotch();
          m_dStartIterConsSandAllCells += m_pRasterGrid->m_Cell[nX][nY].dGetTotConsSandThickConsiderNotch();
          m_dStartIterConsCoarseAllCells += m_pRasterGrid->m_Cell[nX][nY].dGetTotConsCoarseThickConsiderNotch();
-         
+
          m_dStartIterSuspFineAllCells += m_pRasterGrid->m_Cell[nX][nY].dGetSuspendedSediment();
          m_dStartIterUnconsFineAllCells += m_pRasterGrid->m_Cell[nX][nY].dGetTotUnconsFine();
          m_dStartIterUnconsSandAllCells += m_pRasterGrid->m_Cell[nX][nY].dGetTotUnconsSand();
@@ -184,11 +186,12 @@ int CSimulation::nInitGridAndCalcStillWaterLevel(void)
    {
       // Each cell's value for deep water wave height and deep water wave orientation is interpolated from multiple user-supplied values
       int nRet = nInterpolateAllDeepWaterWaveValues();
+
       if (nRet != RTN_OK)
          return nRet;
 
-      /*for (int n = 0; n < m_VlDeepWaterWaveValuesAtTimestep.size(); n++)
-      {
+      /* for (int n = 0; n < m_VlDeepWaterWaveValuesAtTimestep.size(); n++)
+         {
          if (m_ulIter == m_VlDeepWaterWaveValuesAtTimestep[n])
          {
             // OK, this timestep we are doing the calculation
@@ -202,7 +205,7 @@ int CSimulation::nInitGridAndCalcStillWaterLevel(void)
             if (nRet != RTN_OK)
                return nRet;
          }
-      }*/
+         }*/
    }
 
    if (nZeroThickness > 0)
@@ -329,6 +332,6 @@ int CSimulation::nInitGridAndCalcStillWaterLevel(void)
    //    GDALClose(pDataSet);
    //    delete[] pdRaster;
    //    // DEBUG CODE ===========================================================================================================
-   
+
    return RTN_OK;
 }

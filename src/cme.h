@@ -1,133 +1,133 @@
 /*!
-\mainpage
-\section intro_sec Introduction
+   \mainpage
+   \section intro_sec Introduction
 
-<b>CoastalME</b> (Coastal Modelling Environment) simulates the long-term
-behaviour of a coast. This initial version considers only simple soft cliff
-cross-shore effects. However, development of CoastalME is ongoing. Watch this
-space!\n\n
+   <b>CoastalME</b> (Coastal Modelling Environment) simulates the long-term
+   behaviour of a coast. This initial version considers only simple soft cliff
+   cross-shore effects. However, development of CoastalME is ongoing. Watch this
+   space!\n\n
 
-CoastalME was devised and constructed by Andres Payo Garcia (British Geological
-Survey: agarcia@bgs.ac.uk) and David Favis-Mortlock (British Geological Survey:
-dfm1@bgs.ac.uk). We are very grateful to the following for support, assistance,
-and inspiration: Tom Ashby, Manuel Cobos Budia, Wilf Chun, Mark Dickson, Jim W.
-Hall, Martin D. Hurst, Matthew Ives, Robert J. Nicholls, Ian Townend, and Mike
-J.A. Walkden.\n\n
+   CoastalME was devised and constructed by Andres Payo Garcia (British Geological
+   Survey: agarcia@bgs.ac.uk) and David Favis-Mortlock (British Geological Survey:
+   dfm1@bgs.ac.uk). We are very grateful to the following for support, assistance,
+   and inspiration: Tom Ashby, Manuel Cobos Budia, Wilf Chun, Mark Dickson, Jim W.
+   Hall, Martin D. Hurst, Matthew Ives, Robert J. Nicholls, Ian Townend, and Mike
+   J.A. Walkden.\n\n
 
-See <a href="https://github.com/coastalme/coastalme"
-target="_blank">https://github.com/coastalme/coastalme</a> for the stable
-release version, and the unstable development version, of the source code.\n
-\n
-From Shingle Street\n
-To Orford Ness\n
-The waves maraud,\n
-The winds oppress,\n
-The earth can’t help\n
-But acquiesce\n
-For this is east\n
-And east means loss,\n
-A lessening shore, receding ground,\n
-Three feet gone last year, four feet this\n
-Where land runs out and nothing’s sound.\n
-Nothing lasts long on Shingle Street.\n
-\n
-By Blake Morrison (2018). See <a
-href="https://www.penguin.co.uk/books/419911/shingle-street-by-morrison-blake/9780701188771"
-target="_blank">https://www.penguin.co.uk/books/419911/shingle-street-by-morrison-blake/9780701188771</a>\n
+   See <a href="https://github.com/coastalme/coastalme"
+   target="_blank">https://github.com/coastalme/coastalme</a> for the stable
+   release version, and the unstable development version, of the source code.\n
+   \n
+   From Shingle Street\n
+   To Orford Ness\n
+   The waves maraud,\n
+   The winds oppress,\n
+   The earth can’t help\n
+   But acquiesce\n
+   For this is east\n
+   And east means loss,\n
+   A lessening shore, receding ground,\n
+   Three feet gone last year, four feet this\n
+   Where land runs out and nothing’s sound.\n
+   Nothing lasts long on Shingle Street.\n
+   \n
+   By Blake Morrison (2018). See <a
+   href="https://www.penguin.co.uk/books/419911/shingle-street-by-morrison-blake/9780701188771"
+   target="_blank">https://www.penguin.co.uk/books/419911/shingle-street-by-morrison-blake/9780701188771</a>\n
 
-\section install_sec Installing CoastalME
+   \section install_sec Installing CoastalME
 
-\subsection install_step1 Obtaining the source code
+   \subsection install_step1 Obtaining the source code
 
-CoastalME builds easily using Linux. If you wish to run CoastalME on Windows,
-then we currently recommend using the Windows Subsystem Linux (WSL) software to
-do this.
+   CoastalME builds easily using Linux. If you wish to run CoastalME on Windows,
+   then we currently recommend using the Windows Subsystem Linux (WSL) software to
+   do this.
 
-Create a local copy of the github repository, for example by downloading a
-zipfile, then unpacking it or cloning. We suggest unpacking it to something like
-"/home/YOUR NAME/Projects/CoastalME/", this is then your CoastalME folder.
+   Create a local copy of the github repository, for example by downloading a
+   zipfile, then unpacking it or cloning. We suggest unpacking it to something like
+   "/home/YOUR NAME/Projects/CoastalME/", this is then your CoastalME folder.
 
-      git clone https://github.com/coastalme/coastalme
+   git clone https://github.com/coastalme/coastalme
 
-\subsection install_step2 Building CoastalME
+   \subsection install_step2 Building CoastalME
 
-In a terminal window (i.e. at a command-line prompt) move to the CoastalME
-folder.
+   In a terminal window (i.e. at a command-line prompt) move to the CoastalME
+   folder.
 
-Then move to the the src folder
+   Then move to the the src folder
 
-      cd CoastalME/src
+   cd CoastalME/src
 
-and run run_cmake.sh
+   and run run_cmake.sh
 
-      ./run_cmake.sh
+   ./run_cmake.sh
 
-If you get a "Permission denied" message:
+   If you get a "Permission denied" message:
 
-      -bash: ./run_cmake.sh: Permission denied
+   -bash: ./run_cmake.sh: Permission denied
 
-you will have to grant executable permission using
+   you will have to grant executable permission using
 
-      chmod a+x run_cmake.sh, chmod a+x cshore/make_cshore.sh and then
-./run_cmake.sh
+   chmod a+x run_cmake.sh, chmod a+x cshore/make_cshore.sh and then
+   ./run_cmake.sh
 
-This will build CShore, look for GDAL, and write the CMake files. If you see
-error messages about missing software (for example, telling you that CMake
-cannot be found or is too old, or GDAL cannot be found or is too old) then you
-need to install or update the software that is causing the problem.
+   This will build CShore, look for GDAL, and write the CMake files. If you see
+   error messages about missing software (for example, telling you that CMake
+   cannot be found or is too old, or GDAL cannot be found or is too old) then you
+   need to install or update the software that is causing the problem.
 
-Next, run
+   Next, run
 
-      make install
+   make install
 
-This will create an executable file called cme in the CoastalME folder.
+   This will create an executable file called cme in the CoastalME folder.
 
-\section run_sec Running CoastalME
+   \section run_sec Running CoastalME
 
-\subsection run_step1 Specifying the input file
+   \subsection run_step1 Specifying the input file
 
-Edit cme.ini to tell CoastalME which input file to read (for example,
-in/test_suite/minimal_wave_angle_230/minimal.dat).
+   Edit cme.ini to tell CoastalME which input file to read (for example,
+   in/test_suite/minimal_wave_angle_230/minimal.dat).
 
-\subsection run_step2 Running CoastalME
+   \subsection run_step2 Running CoastalME
 
-Leave the src folder, and run cme
+   Leave the src folder, and run cme
 
-      cd ..
-      ./cme
+   cd ..
+   ./cme
 
-Output will appear in the "Path for output" folder.
+   Output will appear in the "Path for output" folder.
 
-\subsection run_step3 Running CoastalME's test suite
+   \subsection run_step3 Running CoastalME's test suite
 
-To check that your installation is running correctly, you can run a suite of
-pre-defined tests by running the following commands:
+   To check that your installation is running correctly, you can run a suite of
+   pre-defined tests by running the following commands:
 
-      chmod a+x run_test_suite.sh
-      ./run_test_suite.sh
+   chmod a+x run_test_suite.sh
+   ./run_test_suite.sh
 
-The `chmod` comand ensures that you have permission to execute the
-run_test_suite.sh file.
+   The `chmod` comand ensures that you have permission to execute the
+   run_test_suite.sh file.
 
-\subsection run_step4 Managing CoastalME's output
+   \subsection run_step4 Managing CoastalME's output
 
-Once you have CoastalME (CME) up and running, you can reduce the quantity of
-output (it can be overwhelming!) in several ways.
+   Once you have CoastalME (CME) up and running, you can reduce the quantity of
+   output (it can be overwhelming!) in several ways.
 
-Change "Content of log file" in the CME input file for any of the test suite
-runs (the name of this input file is listed in cme.ini, both are simple text
-files). If you set "Content of log file" to zero, then CME won't output a log
-file; setting it to 4 (all output) is really only useful to developers.
+   Change "Content of log file" in the CME input file for any of the test suite
+   runs (the name of this input file is listed in cme.ini, both are simple text
+   files). If you set "Content of log file" to zero, then CME won't output a log
+   file; setting it to 4 (all output) is really only useful to developers.
 
-Change "GIS vector files to output" and "GIS vector files to output" in the CME
-input file. These are both set to "all" in the test suite files on GitHub.
-Instead of "all" you can list the space-separated codes for only the GIS output
-that you want to see. A list of CME GIS output codes is in codes.txt.
+   Change "GIS vector files to output" and "GIS vector files to output" in the CME
+   input file. These are both set to "all" in the test suite files on GitHub.
+   Instead of "all" you can list the space-separated codes for only the GIS output
+   that you want to see. A list of CME GIS output codes is in codes.txt.
 
-Enjoy!
+   Enjoy!
 
-\file cme.h
-\brief This file contains global definitions for CoastalME
+   \file cme.h
+   \brief This file contains global definitions for CoastalME
 */
 
 /*
@@ -136,7 +136,7 @@ Enjoy!
    ./cme 2> sanitize.txt NOT UNDER DEBUG (i.e. not using gdb)
 
    TODOLIST
-   ***********************************************************************************************************
+ ***********************************************************************************************************
    DOCUMENTATION
    TODO 001 Add more Doxygen information about all classes
    TODO 007 We now have setup and surge info from CShore (thanks to Manuel). But
@@ -248,10 +248,10 @@ Enjoy!
    this realistic? Should it be different for different types on intervention?
    TODO 089 Why do we get patches of sediment in the sea?
    TODO 086 Try these as a more efficient replacement for GDALGridCreate():
-            https://github.com/delfrrr/delaunator-cpp
-            https://www.cs.cmu.edu/~quake/triangle.html
-            https://github.com/greenm01/poly2tri
-            https://gts.sourceforge.net/index.html
+   https://github.com/delfrrr/delaunator-cpp
+   https://www.cs.cmu.edu/~quake/triangle.html
+   https://github.com/greenm01/poly2tri
+   https://gts.sourceforge.net/index.html
    TODO 088 In (almost) all whole-grid loops, immediately continue if cell is
    hinterland (but not when calculating cliff collapse)
 
@@ -314,122 +314,114 @@ Enjoy!
 */
 
 #ifndef CME_H
-#define CME_H
-/*===============================================================================================================================
+# define CME_H
+/* ===============================================================================================================================
 
-This file is part of CoastalME, the Coastal Modelling Environment.
+   This file is part of CoastalME, the Coastal Modelling Environment.
 
-CoastalME is free software; you can redistribute it and/or modify it under the
-terms of the GNU General Public License as published by the Free Software
-Foundation; either version 3 of the License, or (at your option) any later
-version.
+   CoastalME is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
 
-This program is distributed in the hope that it will be useful, but WITHOUT ANY
-WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
-PARTICULAR PURPOSE. See the GNU General Public License for more details.
+   This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License along with
-this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave,
-Cambridge, MA 02139, USA.
+   You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-===============================================================================================================================*/
-#include <climits>
+   ===============================================================================================================================*/
+# include <climits>
 
-#include <string>
+# include <string>
 using std::string;
 
-#include <sstream>
+# include <sstream>
 using std::ostream;
 using std::ostringstream;
 
-//===================================================== platform-specific stuff
-//=================================================
+//===================================================== platform-specific stuff =================================================
 #ifdef _WIN32
-#define access _access
-#define F_OK 0 // Test for file existence
+   #define access _access
+   #define F_OK 0 // Test for file existence
 #endif
 
 #ifdef _MSC_VER
-// MS Visual C++, byte order is IEEE little-endian, 32-bit
-#ifdef _DEBUG
-#include <crtdbg.h> // useful
-#endif
+   // MS Visual C++, byte order is IEEE little-endian, 32-bit
+   #ifdef _DEBUG
+      #include <crtdbg.h> // useful
+   #endif
 
-// clock_t is a signed long: see <time.h>
-long const CLOCK_T_MIN = LONG_MIN;
-double const CLOCK_T_RANGE =
-    static_cast<double>(LONG_MAX) - static_cast<double>(CLOCK_T_MIN);
-#ifdef _M_ALPHA
-string const PLATFORM = "Alpha/MS Visual C++";
-#elif defined _M_IX86
-string const PLATFORM = "Intel x86/MS Visual C++";
-#elif defined _M_MPPC
-string const PLATFORM = "Power PC/MS Visual C++";
-#elif defined _M_MRX000
-string const PLATFORM = "MIPS/MS Visual C++";
-#else
-string const PLATFORM = "Other/MS Visual C++";
-#endif
+   // clock_t is a signed long: see <time.h>
+   long const CLOCK_T_MIN = LONG_MIN;
+   double const CLOCK_T_RANGE =
+   static_cast<double>(LONG_MAX) - static_cast<double>(CLOCK_T_MIN);
+   #ifdef _M_ALPHA
+      string const PLATFORM = "Alpha/MS Visual C++";
+   #elif defined _M_IX86
+      string const PLATFORM = "Intel x86/MS Visual C++";
+   #elif defined _M_MPPC
+      string const PLATFORM = "Power PC/MS Visual C++";
+   #elif defined _M_MRX000
+      string const PLATFORM = "MIPS/MS Visual C++";
+   #else
+      string const PLATFORM = "Other/MS Visual C++";
+   #endif
 #endif
 
 #ifdef __GNUG__
-// GNU C++
-#ifndef CPU
-#error CPU not defined
-#else
-#ifdef x86
-// Intel x86, byte order is little-endian, 32-bit
-string const PLATFORM = "Intel x86/GNU C++";
-// clock_t is an unsigned long: see <time.h>
-unsigned long const CLOCK_T_MIN = 0;
-double const CLOCK_T_RANGE = static_cast<double>(ULONG_MAX);
+   // GNU C++
+   #ifndef CPU
+      #     error CPU not defined
+   #else
+      #ifdef x86
+         // Intel x86, byte order is little-endian, 32-bit
+         string const PLATFORM = "Intel x86/GNU C++";
+         // clock_t is an unsigned long: see <time.h>
+         unsigned long const CLOCK_T_MIN = 0;
+         double const CLOCK_T_RANGE = static_cast<double>(ULONG_MAX);
 
-#elif defined rs6000
-// IBM RS-6000, byte order is big-endian, 32-bit
-string const PLATFORM = "IBM RS-6000/GNU C++";
-// clock_t is a signed long: see <time.h> NEED TO CHECK
-long const CLOCK_T_MIN = LONG_MIN;
-double const CLOCK_T_RANGE =
-    static_cast<double>(LONG_MAX) - static_cast<double>(CLOCK_T_MIN);
-#elif defined ultrasparc
-// Sun UltraSparc, byte order is big-endian, 32-bit
-string const PLATFORM = "Sun UltraSPARC/GNU C++";
-// clock_t is a signed long: see <time.h>
-long const CLOCK_T_MIN = LONG_MIN;
-double const CLOCK_T_RANGE =
-    static_cast<double>(LONG_MAX) - static_cast<double>(CLOCK_T_MIN);
-#else
-// Something else, assume 32-bit
-string const PLATFORM = "Other/GNU C++";
-// clock_t is a signed long: NEED TO CHECK <time.h>
-long const CLOCK_T_MIN = LONG_MIN;
-double const CLOCK_T_RANGE =
-    static_cast<double>(LONG_MAX) - static_cast<double>(CLOCK_T_MIN);
-#endif
-#endif
+      #elif defined rs6000
+         // IBM RS-6000, byte order is big-endian, 32-bit
+         string const PLATFORM = "IBM RS-6000/GNU C++";
+         // clock_t is a signed long: see <time.h> NEED TO CHECK
+         long const CLOCK_T_MIN = LONG_MIN;
+         double const CLOCK_T_RANGE =
+         static_cast<double>(LONG_MAX) - static_cast<double>(CLOCK_T_MIN);
+      #elif defined ultrasparc
+         // Sun UltraSparc, byte order is big-endian, 32-bit
+         string const PLATFORM = "Sun UltraSPARC/GNU C++";
+         // clock_t is a signed long: see <time.h>
+         long const CLOCK_T_MIN = LONG_MIN;
+         double const CLOCK_T_RANGE =
+         static_cast<double>(LONG_MAX) - static_cast<double>(CLOCK_T_MIN);
+      #else
+         // Something else, assume 32-bit
+         string const PLATFORM = "Other/GNU C++";
+         // clock_t is a signed long: NEED TO CHECK <time.h>
+         long const CLOCK_T_MIN = LONG_MIN;
+         double const CLOCK_T_RANGE =
+         static_cast<double>(LONG_MAX) - static_cast<double>(CLOCK_T_MIN);
+      #endif
+   #endif
 #endif
 
 #ifdef __MINGW32__
-// Minimalist GNU for Windows
-//   #define __USE_MINGW_ANSI_STDIO 1        // Fix long doubles output problem,
-//   see
-//   http://stackoverflow.com/questions/7134547/gcc-printf-and-long-double-leads-to-wrong-output-c-type-conversion-messes-u
+   // Minimalist GNU for Windows
+   //   #define __USE_MINGW_ANSI_STDIO 1        // Fix long doubles output problem,
+   //   see
+   //   http://stackoverflow.com/questions/7134547/gcc-printf-and-long-double-leads-to-wrong-output-c-type-conversion-messes-u
 
-#define WEXITSTATUS(x) ((x) & 0xff)
+   #define WEXITSTATUS(x) ((x) & 0xff)
 #endif
 
 #ifdef __HP_aCC
-// HP-UX aCC, byte order is big-endian, can be either 32-bit or 64-bit
-string const PLATFORM = "HP-UX aC++";
-// clock_t is an unsigned long: see <time.h>
-unsigned long const CLOCK_T_MIN = 0;
-#ifdef __ia64
-// However, clock_t is a 32-bit unsigned long and we are using 64-bit unsigned
-// longs here
-double const CLOCK_T_RANGE = 4294967295UL; // crude, improve
-#else
-double const CLOCK_T_RANGE = static_cast<double>(ULONG_MAX);
-#endif
+   // HP-UX aCC, byte order is big-endian, can be either 32-bit or 64-bit
+   string const PLATFORM = "HP-UX aC++";
+   // clock_t is an unsigned long: see <time.h>
+   unsigned long const CLOCK_T_MIN = 0;
+   #ifdef __ia64
+      // However, clock_t is a 32-bit unsigned long and we are using 64-bit unsigned
+      // longs here
+      double const CLOCK_T_RANGE = 4294967295UL;                  // crude, improve
+   #else
+      double const CLOCK_T_RANGE = static_cast<double>(ULONG_MAX);
+   #endif
 #endif
 
 // TODO: Check
@@ -453,7 +445,7 @@ double const CLOCK_T_RANGE = static_cast<double>(ULONG_MAX);
 char const COLON = ':';
 char const COMMA = ',';
 char const DASH = '-';
-char const PATH_SEPARATOR = '/'; // Works for Windows too!
+char const PATH_SEPARATOR = '/';                            // Works for Windows too!
 char const QUOTE1 = ';';
 char const QUOTE2 = '#';
 char const SLASH = '/';
@@ -462,62 +454,35 @@ char const TILDE = '~';
 
 // TESTING options
 bool const ACCEPT_TRUNCATED_PROFILES = true;
-bool const CREATE_SHADOW_ZONE_IF_HITS_GRID_EDGE =
-    true; // If shadow line tracing hits grid edge, create shadow zone?
-bool const SAVE_CSHORE_OUTPUT =
-    true; // #ifdef CSHORE_FILE_INOUT || CSHORE_BOTH, append all CShore output
-          // files to a whole-run master
-bool const USE_DEEP_WATER_FOR_SHADOW_LINE =
-    true; // Use deep water wave orientation in determining shadow line
-          // orientation?
+bool const CREATE_SHADOW_ZONE_IF_HITS_GRID_EDGE = true;     // If shadow line tracing hits grid edge, create shadow zone?
+bool const SAVE_CSHORE_OUTPUT = true;                       // #ifdef CSHORE_FILE_INOUT || CSHORE_BOTH, append all CShore output files to a whole-run master
+bool const USE_DEEP_WATER_FOR_SHADOW_LINE = true;           // Use deep water wave orientation in determining shadow line orientation?
 
 // Not likely that user will need to change these
-int const NUMBER_OF_RNGS = 2; // Number of random number generators
-int const SAVEMAX = 100000;   // Maximum number of saves of spatial output
-int const BUF_SIZE =
-    2048; // Max length (inc. terminating NULL) of any C-type string
-int const CAPE_POINT_MIN_SPACING = 10;  // In cells: for shadow zone stuff, cape
-                                        // points must not be closer than this
-int const CLOCK_CHECK_ITERATION = 5000; // If have done this many timesteps then
-                                        // reset the CPU time running total
-int const COAST_LENGTH_MAX = 10;        // For safety check when tracing coast
-int const COAST_LENGTH_MIN_X_PROF_SPACE =
-    20; // Ignore very short coasts less than this x profile spacing
+int const NUMBER_OF_RNGS = 2;                               // Number of random number generators
+int const SAVEMAX = 100000;                                 // Maximum number of saves of spatial output
+int const BUF_SIZE = 2048;                                  // Max length (inc. terminating NULL) of any C-type string
+int const CAPE_POINT_MIN_SPACING = 10;                      // In cells: for shadow zone stuff, cape points must not be closer than this
+int const CLOCK_CHECK_ITERATION = 5000;                     // If have done this many timesteps then reset the CPU time running total
+int const COAST_LENGTH_MAX = 10;                            // For safety check when tracing coast
+int const COAST_LENGTH_MIN_X_PROF_SPACE = 20;               // Ignore very short coasts less than this x profile spacing
 
-//! The size of the arrays output by CShore. If you change this, then you must
-//! also set the same value on line 12 of cshore_wrapper.f03 (integer, parameter
-//! :: NN = 1000, NL = 1) and recompile CShore. Eventually we should move to
-//! dynamically allocated arrays TODO 070
+//! The size of the arrays output by CShore. If you change this, then you must also set the same value on line 12 of cshore_wrapper.f03 (integer, parameter :: NN = 1000, NL = 1) and recompile CShore. Eventually we should move to dynamically allocated arrays TODO 070
 int const CSHOREARRAYOUTSIZE = 1000;
 
-int const FLOOD_FILL_START_OFFSET =
-    2; // In cells: flood fill starts this distance inside polygon
-int const GRID_MARGIN =
-    10; // Ignore this many along-coast grid-edge points re. shadow zone calcs
-int const INT_NODATA = -9999;           // CME's internal NODATA value for ints
-int const MAX_CLIFF_TALUS_LENGTH = 100; // In cells: maximum length of the Dean
-                                        // profile for cliff collapse talus
-int const MAX_LEN_SHADOW_LINE_TO_IGNORE =
-    200; // In cells: if can't find flood fill start point, continue if short
-         // shadow line
-int const MAX_NUM_PREV_ORIENTATION_VALUES =
-    10; // Max length of deque used in tracing shadow boundary
-int const MAX_NUM_SHADOW_ZONES =
-    10; // Consider at most this number of shadow zones
-int const MAX_SEAWARD_OFFSET_FOR_CLIFF_TALUS =
-    2; // In cells: maximum distance that the Dean profile for cliff collapse
-       // talus can be offset from the coast
-int const MIN_INLAND_OFFSET_FOR_BEACH_EROSION_ESTIMATION =
-    5; // Used in estimation of beach erosion
-int const MIN_PARALLEL_PROFILE_SIZE =
-    3; // In cells: min size for valid unconsolidated sediment parallel profile
-int const MIN_PROFILE_SIZE =
-    3; // In cells: min size for valid unconsolidated sediment profile
-int const DEFAULT_PROFILE_SPACING =
-    15; // In cells: profile creation does not work well if profiles are too
-        // closely spaced
-int const SAVGOL_POLYNOMIAL_MAX_ORDER =
-    6; // Maximum order of Savitsky-Golay smoothing polynomial
+int const FLOOD_FILL_START_OFFSET = 2;                      // In cells: flood fill starts this distance inside polygon
+int const GRID_MARGIN = 10;                                 // Ignore this many along-coast grid-edge points re. shadow zone calcs
+int const INT_NODATA = -9999;                               // CME's internal NODATA value for ints
+int const MAX_CLIFF_TALUS_LENGTH = 100;                     // In cells: maximum length of the Dean  profile for cliff collapse talus
+int const MAX_LEN_SHADOW_LINE_TO_IGNORE = 200;              // In cells: if can't find flood fill start point, continue if short shadow line
+int const MAX_NUM_PREV_ORIENTATION_VALUES = 10;             // Max length of deque used in tracing shadow boundary
+int const MAX_NUM_SHADOW_ZONES = 10;                        // Consider at most this number of shadow zones
+int const MAX_SEAWARD_OFFSET_FOR_CLIFF_TALUS = 2;           // In cells: maximum distance that the Dean profile for cliff collapse talus can be offset from the coast
+int const MIN_INLAND_OFFSET_UNCONS_EROSION = 5;             // Used in estimation of beach erosion
+int const MIN_PARALLEL_PROFILE_SIZE = 3;                    // In cells: min size for valid unconsolidated sediment parallel profile
+int const MIN_PROFILE_SIZE = 3;                             // In cells: min size for valid unconsolidated sediment profile
+int const DEFAULT_PROFILE_SPACING = 15;                     // In cells: profile creation does not work well if profiles are too closely spaced
+int const SAVGOL_POLYNOMIAL_MAX_ORDER = 6;                  // Maximum order of Savitsky-Golay smoothing polynomial
 
 // Log file detail level
 int const NO_LOG_FILE = 0;
@@ -537,13 +502,10 @@ int const SOUTH_WEST = 6;
 int const WEST = 7;
 int const NORTH_WEST = 8;
 
-int const DIRECTION_DOWNCOAST = 0; // Down-coast, i.e. along the coast so that
-                                   // the index of coastline points INCREASES
-int const DIRECTION_UPCOAST = 1;   // Up-coast, i.e. along the coast so that the
-                                   // index of coastline points DECREASES
+int const DIRECTION_DOWNCOAST = 0;                          // Down-coast, i.e. along the coast so that the index of coastline points INCREASES
+int const DIRECTION_UPCOAST = 1;                            // Up-coast, i.e. along the coast so that the index of coastline points DECREASES
 
-// Handedness codes, these show which side the sea is on when travelling
-// down-coast (i.e. in the direction in which coastline point numbers INCREASE)
+// Handedness codes, these show which side the sea is on when travelling down-coast (i.e. in the direction in which coastline point numbers INCREASE)
 int const NULL_HANDED = -1;
 int const RIGHT_HANDED = 0;
 int const LEFT_HANDED = 1;
@@ -568,8 +530,7 @@ int const IO_INTERVENTION_NON_STRUCT = 2;
 // Default landform category and subcategory code
 int const LF_NONE = 0;
 
-// Landform category codes for cells (is easiest if each has a unique numeric
-// value, irrepective of whether it is category or subcategory, 19 is max now)
+// Landform category codes for cells (is easiest if each has a unique numeric value, irrepective of whether it is category or subcategory, 19 is max now)
 int const LF_CAT_HINTERLAND = 1;
 int const LF_CAT_SEA = 2;
 int const LF_CAT_ISLAND = 14;
@@ -578,10 +539,8 @@ int const LF_CAT_SEDIMENT_INPUT_SUBMERGED = 16;
 int const LF_CAT_SEDIMENT_INPUT_NOT_SUBMERGED = 17;
 
 // Landform category codes for cells and coast landform objects
-int const LF_CAT_CLIFF = 3; // Raster output of LF_CAT_CLIFF shows LF_CAT_CLIFF
-                            // subcategories, rather than just LF_CAT_CLIFF
-int const LF_CAT_DRIFT = 4; // Raster output of LF_CAT_DRIFT shows LF_CAT_DRIFT
-                            // subcategories, rather than just LF_CAT_DRIFT
+int const LF_CAT_CLIFF = 3;                                 // Raster output of LF_CAT_CLIFF shows LF_CAT_CLIFF subcategories, rather than just LF_CAT_CLIFF
+int const LF_CAT_DRIFT = 4;                                 // Raster output of LF_CAT_DRIFT shows LF_CAT_DRIFT subcategories, rather than just LF_CAT_DRIFT
 int const LF_CAT_INTERVENTION = 5;
 
 // Landform sub-category codes for cells, LF_CAT_CLIFF
@@ -825,57 +784,57 @@ int const UNCONS_SEDIMENT_EQUATION_CERC = 0;
 int const UNCONS_SEDIMENT_EQUATION_KAMPHUIS = 1;
 
 int const CLIFF_COLLAPSE_LENGTH_INCREMENT =
-    10; // Increment the planview length of the cliff talus Dean profile, if we
-        // have not been able to deposit enough
+10;                                                     // Increment the planview length of the cliff talus Dean profile, if we
+// have not been able to deposit enough
 int const PROFILE_CHECK_DIST_FROM_COAST =
-    3; // Used in checking shoreline-normal profiles for intersection
+3;                                                      // Used in checking shoreline-normal profiles for intersection
 
 unsigned long const MASK = 0xfffffffful;
 unsigned long const SEDIMENT_INPUT_EVENT_ERROR = -1;
 
 double const PI = 3.141592653589793238462643;
 
-double const D50_FINE_DEFAULT = 0.0625; // In mm
-double const D50_SAND_DEFAULT = 0.42;   // In mm
-double const D50_COARSE_DEFAULT = 19.0; // In mm
+double const D50_FINE_DEFAULT = 0.0625;                     // In mm
+double const D50_SAND_DEFAULT = 0.42;                       // In mm
+double const D50_COARSE_DEFAULT = 19.0;                     // In mm
 
 double const BEACH_PROTECTION_HB_RATIO =
-    0.23; // The beach protection factor is this times breaking depth
+0.23;                                                   // The beach protection factor is this times breaking depth
 double const WALKDEN_HALL_PARAM_1 =
-    3.25; // First param in Equation 4 from Walkden & Hall, 2005
+3.25;                                                   // First param in Equation 4 from Walkden & Hall, 2005
 double const WALKDEN_HALL_PARAM_2 =
-    1.50; // Second param in Equation 4 from Walkden & Hall, 2005
+1.50;                                                   // Second param in Equation 4 from Walkden & Hall, 2005
 
 double const DEPTH_OVER_DB_INCREMENT =
-    0.001; // Depth over DB increment for erosion potential look-up function
-double const INVERSE_DEPTH_OVER_DB_INCREMENT = 1000; // Inverse of the above
-double const DEAN_POWER = 2.0 / 3.0;                 // Dean profile exponent
+0.001;                                                  // Depth over DB increment for erosion potential look-up function
+double const INVERSE_DEPTH_OVER_DB_INCREMENT = 1000;        // Inverse of the above
+double const DEAN_POWER = 2.0 / 3.0;                        // Dean profile exponent
 
 // TODO 011 Let the user define these CShore input parameters
-double const CSHORE_FRICTION_FACTOR = 0.015; // Friction factor for CShore model
-double const CSHORE_SURGE_LEVEL = 0.0;       // TODO 007
+double const CSHORE_FRICTION_FACTOR = 0.015;                // Friction factor for CShore model
+double const CSHORE_SURGE_LEVEL = 0.0;                      // TODO 007
 
-double const TOLERANCE = 1e-7; // For bFPIsEqual, if too small (e.g. 1e-10), get
-                               // spurious "rounding" errors
+double const TOLERANCE = 1e-7;                              // For bFPIsEqual, if too small (e.g. 1e-10), get
+// spurious "rounding" errors
 double const SEDIMENT_ELEV_TOLERANCE =
-    1e-10; // For bFPIsEqual, used to compare depth-equivalent sediment amounts
+1e-10;                                                  // For bFPIsEqual, used to compare depth-equivalent sediment amounts
 double const MASS_BALANCE_TOLERANCE =
-    1e-5; // For bFPIsEqual, used to compare for mass balance checks
+1e-5;                                                   // For bFPIsEqual, used to compare for mass balance checks
 double const STRAIGHT_COAST_MAX_DETAILED_CURVATURE = -5;
 double const STRAIGHT_COAST_MAX_SMOOTH_CURVATURE = -1;
-double const MIN_LENGTH_OF_SHADOW_ZONE_LINE = 10; // Used in shadow line tracing
+double const MIN_LENGTH_OF_SHADOW_ZONE_LINE = 10;           // Used in shadow line tracing
 double const MAX_LAND_LENGTH_OF_SHADOW_ZONE_LINE =
-    5; // Used in shadow line tracing
+5;                                                      // Used in shadow line tracing
 double const CLIFF_COLLAPSE_HEIGHT_INCREMENT =
-    0.1; // Increment the fractional height of the cliff talus Dean profile, if
-         // we have not been able to deposit enough
+0.1;                                                    // Increment the fractional height of the cliff talus Dean profile, if
+// we have not been able to deposit enough
 double const INTERVENTION_PROFILE_SPACING_FACTOR =
-    0.5; // Profile spacing on interventions works better if it is smaller than
-         // profile spacing on coastline
+0.5;                                                    // Profile spacing on interventions works better if it is smaller than
+// profile spacing on coastline
 
 double const DBL_NODATA = -9999;
 
-string const PROGRAM_NAME = "Coastal Modelling Environment (CoastalME) version 1.3.19 (11 Jun 2025)";
+string const PROGRAM_NAME = "Coastal Modelling Environment (CoastalME) version 1.3.20 (13 Jun 2025)";
 string const PROGRAM_NAME_SHORT = "CME";
 string const CME_INI = "cme.ini";
 
@@ -894,23 +853,16 @@ string const DISCLAIMER5 = "program; if not, contact the Free Software "
                            "Foundation, Inc., 675 Mass Ave,";
 string const DISCLAIMER6 = "Cambridge, MA 02139, USA.";
 
-string const ABOUT =
-    "simulates the long-term behaviour of a coast. This initial version "
-    "considers only simple soft cliff cross-shore effects";
-string const THANKS =
-    "Many thanks to:\n\tTom Ashby\n\tManuel Cobos Budia\n\tWilf Chun\n\tMark "
-    "Dickson\n\tJim W. Hall\n\tMartin D. Hurst\n\tMatthew Ives\n\tRobert J. "
-    "Nicholls\n\tIan Townend\n\tMike J.A. Walkden";
+string const ABOUT = "simulates the long-term behaviour of a coast. This initial version considers only simple soft cliff cross-shore effects";
+string const THANKS = "Many thanks to:\n\tTom Ashby\n\tManuel Cobos Budia\n\tWilf Chun\n\tMark Dickson\n\tJim W. Hall\n\tMartin D. Hurst\n\tMatthew Ives\n\tRobert J. Nicholls\n\tIan Townend\n\tMike J.A. Walkden";
 string const GDAL_DRIVERS = "GDAL drivers";
 
 string const USAGE = "Usage: cme [OPTION]...";
 string const USAGE1 = "  --gdal             List GDAL drivers";
 string const USAGE2 = "  --about            Information about this program";
 string const USAGE3 = "  --help             Display this text";
-string const USAGE4 =
-    "  --home=DIRECTORY   Specify the location of the .ini file etc.";
-string const USAGE5 =
-    "  --datafile=FILE    Specify the location and name of the main datafile";
+string const USAGE4 = "  --home=DIRECTORY   Specify the location of the .ini file etc.";
+string const USAGE5 = "  --datafile=FILE    Specify the location and name of the main datafile";
 
 string const START_NOTICE = "- Started on ";
 string const INITIALIZING_NOTICE = "- Initializing";
@@ -922,26 +874,17 @@ string const READING_LANDFORM_FILE = "    - Landform class: ";
 string const READING_INTERVENTION_CLASS_FILE = "    - Intervention class: ";
 string const READING_INTERVENTION_HEIGHT_FILE = "    - Intervention height: ";
 string const READING_SUSPENDED_SEDIMENT_FILE = "    - Suspended sediment: ";
-string const READING_UNCONS_FINE_SEDIMENT_FILE =
-    "    - Unconsolidated fine sediment (layer ";
-string const READING_UNCONS_SAND_SEDIMENT_FILE =
-    "    - Unconsolidated sand sediment (layer ";
-string const READING_UNCONS_COARSE_SEDIMENT_FILE =
-    "    - Unconsolidated coarse sediment (layer ";
-string const READING_CONS_FINE_SEDIMENT_FILE =
-    "    - Consolidated fine sediment (layer ";
-string const READING_CONS_SAND_SEDIMENT_FILE =
-    "    - Consolidated sand sediment (layer ";
-string const READING_CONS_COARSE_SEDIMENT_FILE =
-    "    - Consolidated coarse sediment (layer ";
+string const READING_UNCONS_FINE_SEDIMENT_FILE = "    - Unconsolidated fine sediment (layer ";
+string const READING_UNCONS_SAND_SEDIMENT_FILE = "    - Unconsolidated sand sediment (layer ";
+string const READING_UNCONS_COARSE_SEDIMENT_FILE = "    - Unconsolidated coarse sediment (layer ";
+string const READING_CONS_FINE_SEDIMENT_FILE = "    - Consolidated fine sediment (layer ";
+string const READING_CONS_SAND_SEDIMENT_FILE = "    - Consolidated sand sediment (layer ";
+string const READING_CONS_COARSE_SEDIMENT_FILE = "    - Consolidated coarse sediment (layer ";
 string const READING_VECTOR_FILES = "  - Reading vector GIS files";
 string const READING_DEEP_WATER_WAVE_FILE = "    - Deep water wave values: ";
-string const READING_SED_INPUT_EVENT_FILE =
-    "    - Sediment input event values: ";
-string const READING_FLOOD_LOCATION =
-    "    - Characteristic locations for flood: ";
-string const READING_SCAPE_SHAPE_FUNCTION_FILE =
-    "  - Reading SCAPE shape function file";
+string const READING_SED_INPUT_EVENT_FILE = "    - Sediment input event values: ";
+string const READING_FLOOD_LOCATION = "    - Characteristic locations for flood: ";
+string const READING_SCAPE_SHAPE_FUNCTION_FILE = "  - Reading SCAPE shape function file";
 string const READING_TIDE_DATA_FILE = "  - Reading tide data file: ";
 string const ALLOCATE_MEMORY = "  - Allocating memory for raster grid";
 string const ADD_LAYERS = "  - Adding sediment layers to raster grid";
@@ -969,75 +912,42 @@ string const NOTE = "      Note ";
 
 string const MASS_BALANCE_ERROR = "MASS BALANCE ERROR";
 
-string const PER_ITER_HEAD1 =
-    "<-----ELAPSED----><-SEA-><----POTENTIAL---><----------ACTUAL-----------><-"
-    "---POTENTIAL----><------------ACTUAL------------><-----------ACTUAL-------"
-    "----><-SEDIMENT-><--CLIFF COLLAPSE--><SUSP>";
+string const PER_ITER_HEAD1 = "<-----ELAPSED----><-SEA-><----POTENTIAL---><----------ACTUAL-----------><----POTENTIAL----><------------ACTUAL------------><-----------ACTUAL-----------><-SEDIMENT-><--CLIFF COLLAPSE--><SUSP>";
 
-string const PER_ITER_HEAD2 =
-    "       TIME        DEPTH  PLATFORM EROSION        PLATFORM EROSION        "
-    "  BEACH EROSION            BEACH EROSION                BEACH DEPOSITION  "
-    "      INPUT EVENT  EROSION DEPOSITION  SED";
+string const PER_ITER_HEAD2 = "       TIME        DEPTH  PLATFORM EROSION        PLATFORM EROSION          BEACH EROSION            BEACH EROSION                BEACH DEPOSITION        INPUT EVENT  EROSION DEPOSITION  SED";
 
-string const PER_ITER_HEAD3 =
-    "Time  Hours  Years   Avg  % Sea   All  Erod % Sea   All Erod <-sea avg->  "
-    "% Sea   All  Erod  % Sea   All Erodng <-sea avg->  % Sea   All  Deposit "
-    "<-sea->            <-coast avg><--sea->";
+string const PER_ITER_HEAD3 = "Time  Hours  Years   Avg  % Sea   All  Erod % Sea   All Erod <-sea avg->  % Sea   All  Erod  % Sea   All Erodng <-sea avg->  % Sea   All  Deposit <-sea->            <-coast avg><--sea->";
 string const PER_ITER_HEAD4 =
-    "Step                       Area   Sea  Area  Area   Sea Area   F   S   C  "
-    " Area   Sea  Area   Area   Sea   Area   F   S   C   Area   Sea     Area   "
-    "S   C   F   S   C   F   S   C   S   C    F";
-string const PER_ITER_HEAD5 =
-    "                                  Avg   Avg         Avg  Avg              "
-    "              Avg          Avg    Avg                      Avg      Avg";
+"Step                       Area   Sea  Area  Area   Sea Area   F   S   C   Area   Sea  Area   Area   Sea   Area   F   S   C   Area   Sea     Area   S   C   F   S   C   F   S   C   S   C    F";
+string const PER_ITER_HEAD5 = "                                  Avg   Avg         Avg  Avg                            Avg          Avg    Avg                      Avg      Avg";
 
-string const PER_ITER_HEAD =
-    "PER-ITERATION RESULTS "
-    "=========================================================================="
-    "=========================================================================="
-    "=====================";
+string const PER_ITER_HEAD = "PER-ITERATION RESULTS =========================================================================================================================================================================";
 
 string const PER_ITER_CSV_HEAD =
-    "Timestep,Hours,Years,AvgSeaDepth_m,PotPlatformErosion_PctSeaArea,"
-    "PotPlatformErosion_AllAvg_mm,PotPlatformErosion_ErodAvg_mm,"
-    "ActPlatformErosion_PctSeaArea,ActPlatformErosion_AllAvg_mm,"
-    "ActPlatformErosion_ErodAvg_mm,ActPlatformErosion_Fine_mm,"
-    "ActPlatformErosion_Sand_mm,ActPlatformErosion_Coarse_mm,PotBeachErosion_"
-    "PctSeaArea,PotBeachErosion_AllAvg_mm,PotBeachErosion_ErodAvg_mm,"
-    "ActBeachErosion_PctSeaArea,ActBeachErosion_AllAvg_mm,ActBeachErosion_"
-    "ErodAvg_mm,ActBeachErosion_Fine_mm,ActBeachErosion_Sand_mm,"
-    "ActBeachErosion_Coarse_mm,BeachDeposition_PctSeaArea,BeachDeposition_"
-    "AllAvg_mm,BeachDeposition_DepAvg_mm,BeachDeposition_Sand_mm,"
-    "BeachDeposition_Coarse_mm,SedimentInput_Fine,SedimentInput_Sand,"
-    "SedimentInput_Coarse,CliffCollapse_Fine_mm,CliffCollapse_Sand_mm,"
-    "CliffCollapse_Coarse_mm,CliffDeposition_Sand_mm,CliffDeposition_Coarse_mm,"
-    "SuspendedSediment_mm,GISEvents";
+"Timestep,Hours,Years,AvgSeaDepth_m,PotPlatformErosion_PctSeaArea,"
+"PotPlatformErosion_AllAvg_mm,PotPlatformErosion_ErodAvg_mm,"
+"ActPlatformErosion_PctSeaArea,ActPlatformErosion_AllAvg_mm,"
+"ActPlatformErosion_ErodAvg_mm,ActPlatformErosion_Fine_mm,"
+"ActPlatformErosion_Sand_mm,ActPlatformErosion_Coarse_mm,PotBeachErosion_"
+"PctSeaArea,PotBeachErosion_AllAvg_mm,PotBeachErosion_ErodAvg_mm,"
+"ActBeachErosion_PctSeaArea,ActBeachErosion_AllAvg_mm,ActBeachErosion_"
+"ErodAvg_mm,ActBeachErosion_Fine_mm,ActBeachErosion_Sand_mm,"
+"ActBeachErosion_Coarse_mm,BeachDeposition_PctSeaArea,BeachDeposition_"
+"AllAvg_mm,BeachDeposition_DepAvg_mm,BeachDeposition_Sand_mm,"
+"BeachDeposition_Coarse_mm,SedimentInput_Fine,SedimentInput_Sand,"
+"SedimentInput_Coarse,CliffCollapse_Fine_mm,CliffCollapse_Sand_mm,"
+"CliffCollapse_Coarse_mm,CliffDeposition_Sand_mm,CliffDeposition_Coarse_mm,"
+"SuspendedSediment_mm,GISEvents";
 
-string const ENDHYDROLOGYHEAD =
-    "END OF SIMULATION: HYDROLOGY "
-    "=========================================================================="
-    "=========================================================================="
-    "==============";
-string const ENDSEDIMENTHEAD =
-    "END OF SIMULATION: SEDIMENT MOVEMENT "
-    "=========================================================================="
-    "=========================================================================="
-    "======";
-string const PERFORMHEAD =
-    "END OF SIMULATION: PERFORMANCE "
-    "=========================================================================="
-    "=========================================================================="
-    "============";
+string const ENDHYDROLOGYHEAD = "END OF SIMULATION: HYDROLOGY ==================================================================================================================================================================";
+string const ENDSEDIMENTHEAD = "END OF SIMULATION: SEDIMENT MOVEMENT ==========================================================================================================================================================";
+string const PERFORMHEAD = "END OF SIMULATION: PERFORMANCE ================================================================================================================================================================";
 
 string const OUTEXT = ".out";
 string const LOGEXT = ".log";
 string const CSVEXT = ".csv";
 
 string const DEEP_WATER_WAVE_STATION_ID = "id";
-// string const   DEEP_WATER_WAVE_STATIONS_HEIGHT                             =
-// "HEIGHT"; string const   DEEP_WATER_WAVE_STATIONS_ANGLE = "ANGLE"; string
-// const   DEEP_WATER_WAVE_STATIONS_PERIOD                             =
-// "PERIOD";
 string const SEDIMENT_INPUT_EVENT_LOCATION_ID = "id";
 string const FLOOD_LOCATION_ID = "id";
 
@@ -1072,36 +982,24 @@ string const RASTER_BEACH_MASK_CODE = "beach_mask";
 string const RASTER_BEACH_MASK_NAME = "beach_mask";
 string const RASTER_BEACH_PROTECTION_CODE = "beach_protection";
 string const RASTER_BEACH_PROTECTION_NAME = "beach_protection";
-string const RASTER_POTENTIAL_PLATFORM_EROSION_MASK_CODE =
-    "potential_platform_erosion_mask";
-string const RASTER_POTENTIAL_PLATFORM_EROSION_MASK_NAME =
-    "potential_platform_erosion_mask";
-string const RASTER_POTENTIAL_PLATFORM_EROSION_CODE =
-    "potential_platform_erosion";
-string const RASTER_POTENTIAL_PLATFORM_EROSION_NAME =
-    "potential_platform_erosion";
+string const RASTER_POTENTIAL_PLATFORM_EROSION_MASK_CODE = "potential_platform_erosion_mask";
+string const RASTER_POTENTIAL_PLATFORM_EROSION_MASK_NAME = "potential_platform_erosion_mask";
+string const RASTER_POTENTIAL_PLATFORM_EROSION_CODE = "potential_platform_erosion";
+string const RASTER_POTENTIAL_PLATFORM_EROSION_NAME = "potential_platform_erosion";
 string const RASTER_ACTUAL_PLATFORM_EROSION_CODE = "actual_platform_erosion";
 string const RASTER_ACTUAL_PLATFORM_EROSION_NAME = "actual_platform_erosion";
-string const RASTER_TOTAL_POTENTIAL_PLATFORM_EROSION_CODE =
-    "total_potential_platform_erosion";
-string const RASTER_TOTAL_POTENTIAL_PLATFORM_EROSION_NAME =
-    "total_potential_platform_erosion";
-string const RASTER_TOTAL_ACTUAL_PLATFORM_EROSION_CODE =
-    "total_actual_platform_erosion";
-string const RASTER_TOTAL_ACTUAL_PLATFORM_EROSION_NAME =
-    "total_actual_platform_erosion";
+string const RASTER_TOTAL_POTENTIAL_PLATFORM_EROSION_CODE = "total_potential_platform_erosion";
+string const RASTER_TOTAL_POTENTIAL_PLATFORM_EROSION_NAME = "total_potential_platform_erosion";
+string const RASTER_TOTAL_ACTUAL_PLATFORM_EROSION_CODE = "total_actual_platform_erosion";
+string const RASTER_TOTAL_ACTUAL_PLATFORM_EROSION_NAME = "total_actual_platform_erosion";
 string const RASTER_POTENTIAL_BEACH_EROSION_CODE = "potential_beach_erosion";
 string const RASTER_POTENTIAL_BEACH_EROSION_NAME = "potential_beach_erosion";
 string const RASTER_ACTUAL_BEACH_EROSION_CODE = "actual_beach_erosion";
 string const RASTER_ACTUAL_BEACH_EROSION_NAME = "actual_beach_erosion";
-string const RASTER_TOTAL_POTENTIAL_BEACH_EROSION_CODE =
-    "total_potential_beach_erosion";
-string const RASTER_TOTAL_POTENTIAL_BEACH_EROSION_NAME =
-    "total_potential_beach_erosion";
-string const RASTER_TOTAL_ACTUAL_BEACH_EROSION_CODE =
-    "total_actual_beach_erosion";
-string const RASTER_TOTAL_ACTUAL_BEACH_EROSION_NAME =
-    "total_actual_beach_erosion";
+string const RASTER_TOTAL_POTENTIAL_BEACH_EROSION_CODE = "total_potential_beach_erosion";
+string const RASTER_TOTAL_POTENTIAL_BEACH_EROSION_NAME = "total_potential_beach_erosion";
+string const RASTER_TOTAL_ACTUAL_BEACH_EROSION_CODE = "total_actual_beach_erosion";
+string const RASTER_TOTAL_ACTUAL_BEACH_EROSION_NAME = "total_actual_beach_erosion";
 string const RASTER_BEACH_DEPOSITION_CODE = "beach_deposition";
 string const RASTER_BEACH_DEPOSITION_NAME = "beach_deposition";
 string const RASTER_TOTAL_BEACH_DEPOSITION_CODE = "total_beach_deposition";
@@ -1134,46 +1032,26 @@ string const RASTER_COAST_NORMAL_CODE = "rcoast_normal";
 string const RASTER_COAST_NORMAL_NAME = "rcoast_normal";
 string const RASTER_ACTIVE_ZONE_CODE = "active_zone";
 string const RASTER_ACTIVE_ZONE_NAME = "active_zone";
-string const RASTER_CLIFF_COLLAPSE_EROSION_FINE_CODE =
-    "cliff_collapse_erosion_fine";
-string const RASTER_CLIFF_COLLAPSE_EROSION_FINE_NAME =
-    "cliff_collapse_erosion_fine";
-string const RASTER_CLIFF_COLLAPSE_EROSION_SAND_CODE =
-    "cliff_collapse_erosion_sand";
-string const RASTER_CLIFF_COLLAPSE_EROSION_SAND_NAME =
-    "cliff_collapse_erosion_sand";
-string const RASTER_CLIFF_COLLAPSE_EROSION_COARSE_CODE =
-    "cliff_collapse_erosion_coarse";
-string const RASTER_CLIFF_COLLAPSE_EROSION_COARSE_NAME =
-    "cliff_collapse_erosion_coarse";
-string const RASTER_TOTAL_CLIFF_COLLAPSE_EROSION_FINE_CODE =
-    "total_cliff_collapse_erosion_fine";
-string const RASTER_TOTAL_CLIFF_COLLAPSE_EROSION_FINE_NAME =
-    "total_cliff_collapse_erosion_fine";
-string const RASTER_TOTAL_CLIFF_COLLAPSE_EROSION_SAND_CODE =
-    "total_cliff_collapse_erosion_sand";
-string const RASTER_TOTAL_CLIFF_COLLAPSE_EROSION_SAND_NAME =
-    "total_cliff_collapse_erosion_sand";
-string const RASTER_TOTAL_CLIFF_COLLAPSE_EROSION_COARSE_CODE =
-    "total_cliff_collapse_erosion_coarse";
-string const RASTER_TOTAL_CLIFF_COLLAPSE_EROSION_COARSE_NAME =
-    "total_cliff_collapse_erosion_coarse";
-string const RASTER_CLIFF_COLLAPSE_DEPOSITION_SAND_CODE =
-    "cliff_collapse_talus_deposition_sand";
-string const RASTER_CLIFF_COLLAPSE_DEPOSITION_SAND_NAME =
-    "cliff_collapse_talus_deposition_sand";
-string const RASTER_CLIFF_COLLAPSE_DEPOSITION_COARSE_CODE =
-    "cliff_collapse_talus_deposition_coarse";
-string const RASTER_CLIFF_COLLAPSE_DEPOSITION_COARSE_NAME =
-    "cliff_collapse_talus_deposition_coarse";
-string const RASTER_TOTAL_CLIFF_COLLAPSE_DEPOSITION_SAND_CODE =
-    "total_cliff_collapse_talus_deposition_sand";
-string const RASTER_TOTAL_CLIFF_COLLAPSE_DEPOSITION_SAND_NAME =
-    "total_cliff_collapse_talus_deposition_sand";
-string const RASTER_TOTAL_CLIFF_COLLAPSE_DEPOSITION_COARSE_CODE =
-    "total_cliff_collapse_talus_deposition_coarse";
-string const RASTER_TOTAL_CLIFF_COLLAPSE_DEPOSITION_COARSE_NAME =
-    "total_cliff_collapse_talus_deposition_coarse";
+string const RASTER_CLIFF_COLLAPSE_EROSION_FINE_CODE = "cliff_collapse_erosion_fine";
+string const RASTER_CLIFF_COLLAPSE_EROSION_FINE_NAME = "cliff_collapse_erosion_fine";
+string const RASTER_CLIFF_COLLAPSE_EROSION_SAND_CODE = "cliff_collapse_erosion_sand";
+string const RASTER_CLIFF_COLLAPSE_EROSION_SAND_NAME = "cliff_collapse_erosion_sand";
+string const RASTER_CLIFF_COLLAPSE_EROSION_COARSE_CODE = "cliff_collapse_erosion_coarse";
+string const RASTER_CLIFF_COLLAPSE_EROSION_COARSE_NAME = "cliff_collapse_erosion_coarse";
+string const RASTER_TOTAL_CLIFF_COLLAPSE_EROSION_FINE_CODE = "total_cliff_collapse_erosion_fine";
+string const RASTER_TOTAL_CLIFF_COLLAPSE_EROSION_FINE_NAME = "total_cliff_collapse_erosion_fine";
+string const RASTER_TOTAL_CLIFF_COLLAPSE_EROSION_SAND_CODE = "total_cliff_collapse_erosion_sand";
+string const RASTER_TOTAL_CLIFF_COLLAPSE_EROSION_SAND_NAME = "total_cliff_collapse_erosion_sand";
+string const RASTER_TOTAL_CLIFF_COLLAPSE_EROSION_COARSE_CODE = "total_cliff_collapse_erosion_coarse";
+string const RASTER_TOTAL_CLIFF_COLLAPSE_EROSION_COARSE_NAME = "total_cliff_collapse_erosion_coarse";
+string const RASTER_CLIFF_COLLAPSE_DEPOSITION_SAND_CODE = "cliff_collapse_talus_deposition_sand";
+string const RASTER_CLIFF_COLLAPSE_DEPOSITION_SAND_NAME = "cliff_collapse_talus_deposition_sand";
+string const RASTER_CLIFF_COLLAPSE_DEPOSITION_COARSE_CODE = "cliff_collapse_talus_deposition_coarse";
+string const RASTER_CLIFF_COLLAPSE_DEPOSITION_COARSE_NAME = "cliff_collapse_talus_deposition_coarse";
+string const RASTER_TOTAL_CLIFF_COLLAPSE_DEPOSITION_SAND_CODE = "total_cliff_collapse_talus_deposition_sand";
+string const RASTER_TOTAL_CLIFF_COLLAPSE_DEPOSITION_SAND_NAME = "total_cliff_collapse_talus_deposition_sand";
+string const RASTER_TOTAL_CLIFF_COLLAPSE_DEPOSITION_COARSE_CODE = "total_cliff_collapse_talus_deposition_coarse";
+string const RASTER_TOTAL_CLIFF_COLLAPSE_DEPOSITION_COARSE_NAME = "total_cliff_collapse_talus_deposition_coarse";
 string const RASTER_POLYGON_CODE = "polygon_raster";
 string const RASTER_POLYGON_NAME = "polygon_raster";
 string const RASTER_SLICE_CODE = "slice";
@@ -1182,132 +1060,86 @@ string const RASTER_SHADOW_ZONE_CODE = "shadow_zones";
 string const RASTER_SHADOW_ZONE_NAME = "shadow_zones";
 string const RASTER_SHADOW_DOWNDRIFT_ZONE_CODE = "shadow_downdrift_zones";
 string const RASTER_SHADOW_DOWNDRIFT_ZONE_NAME = "shadow_downdrift_zones";
-string const RASTER_DEEP_WATER_WAVE_ORIENTATION_CODE =
-    "deep_water_wave_orientation";
-string const RASTER_DEEP_WATER_WAVE_ORIENTATION_NAME =
-    "deep_water_wave_orientation";
+string const RASTER_DEEP_WATER_WAVE_ORIENTATION_CODE = "deep_water_wave_orientation";
+string const RASTER_DEEP_WATER_WAVE_ORIENTATION_NAME = "deep_water_wave_orientation";
 string const RASTER_DEEP_WATER_WAVE_HEIGHT_CODE = "deep_water_wave_height";
 string const RASTER_DEEP_WATER_WAVE_HEIGHT_NAME = "deep_water_wave_height";
 string const RASTER_DEEP_WATER_WAVE_PERIOD_CODE = "deep_water_wave_period";
 string const RASTER_DEEP_WATER_WAVE_PERIOD_NAME = "deep_water_wave_period";
-string const RASTER_POLYGON_UPDRIFT_OR_DOWNDRIFT_CODE =
-    "polygon_updrift_or_downdrift";
-string const RASTER_POLYGON_UPDRIFT_OR_DOWNDRIFT_NAME =
-    "polygon_updrift_or_downdrift";
+string const RASTER_POLYGON_UPDRIFT_OR_DOWNDRIFT_CODE = "polygon_updrift_or_downdrift";
+string const RASTER_POLYGON_UPDRIFT_OR_DOWNDRIFT_NAME = "polygon_updrift_or_downdrift";
 string const RASTER_POLYGON_GAIN_OR_LOSS_CODE = "polygon_gain_or_loss";
 string const RASTER_POLYGON_GAIN_OR_LOSS_NAME = "polygon_gain_or_loss";
 string const RASTER_SEDIMENT_INPUT_EVENT_CODE = "sediment_input_total";
 string const RASTER_SEDIMENT_INPUT_EVENT_NAME = "sediment_input_total";
 string const RASTER_SETUP_SURGE_FLOOD_MASK_CODE = "flood_setup_surge_mask";
 string const RASTER_SETUP_SURGE_FLOOD_MASK_NAME = "flood_setup_surge_mask";
-string const RASTER_SETUP_SURGE_RUNUP_FLOOD_MASK_CODE =
-    "flood_setup_surge_runup_mask";
-string const RASTER_SETUP_SURGE_RUNUP_FLOOD_MASK_NAME =
-    "flood_setup_surge_runup_mask";
+string const RASTER_SETUP_SURGE_RUNUP_FLOOD_MASK_CODE = "flood_setup_surge_runup_mask";
+string const RASTER_SETUP_SURGE_RUNUP_FLOOD_MASK_NAME = "flood_setup_surge_runup_mask";
 string const RASTER_WAVE_FLOOD_LINE_CODE = "raster_wave_flood_line_code";
 string const RASTER_WAVE_FLOOD_LINE_NAME = "raster_wave_flood_line_code";
 
 // GIS raster output titles
 string const RASTER_PLOT_ACTIVE_ZONE_TITLE = "Active zone";
-string const RASTER_PLOT_ACTUAL_BEACH_EROSION_TITLE =
-    "Actual (constrained) beach erosion depth";
-string const RASTER_PLOT_ACTUAL_PLATFORM_EROSION_TITLE =
-    "Actual (constrained) shore platform erosion depth";
+string const RASTER_PLOT_ACTUAL_BEACH_EROSION_TITLE = "Actual (constrained) beach erosion depth";
+string const RASTER_PLOT_ACTUAL_PLATFORM_EROSION_TITLE = "Actual (constrained) shore platform erosion depth";
 string const RASTER_PLOT_AVG_SEA_DEPTH_TITLE = "Average sea depth";
-string const RASTER_PLOT_AVG_SUSPENDED_SEDIMENT_TITLE =
-    "Average depth of suspended sediment";
+string const RASTER_PLOT_AVG_SUSPENDED_SEDIMENT_TITLE = "Average depth of suspended sediment";
 string const RASTER_PLOT_AVG_WAVE_HEIGHT_TITLE = "Average wave height";
-string const RASTER_PLOT_AVG_WAVE_ORIENTATION_TITLE =
-    "Average wave orientation";
+string const RASTER_PLOT_AVG_WAVE_ORIENTATION_TITLE = "Average wave orientation";
 string const RASTER_PLOT_BASEMENT_ELEVATION_TITLE = "Basement elevation";
 string const RASTER_PLOT_BEACH_DEPOSITION_TITLE = "Beach deposition depth";
 string const RASTER_PLOT_BEACH_MASK_TITLE = "Beach mask";
 string const RASTER_PLOT_BEACH_PROTECTION_TITLE = "Beach protection factor";
-string const RASTER_PLOT_CLIFF_COLLAPSE_DEPOSITION_SAND_TITLE =
-    "Depth of sand talus from cliff collapse";
-string const RASTER_PLOT_CLIFF_COLLAPSE_DEPOSITION_COARSE_TITLE =
-    "Depth of coarse talus from cliff collapse";
-string const RASTER_PLOT_CLIFF_COLLAPSE_EROSION_FINE_TITLE =
-    "Cliff collapse depth of erosion, fine sediment";
-string const RASTER_PLOT_CLIFF_COLLAPSE_EROSION_SAND_TITLE =
-    "Cliff collapse depth of erosion, sand sediment";
-string const RASTER_PLOT_CLIFF_COLLAPSE_EROSION_COARSE_TITLE =
-    "Cliff collapse depth of erosion, coarse sediment";
-string const RASTER_PLOT_COARSE_CONSOLIDATED_SEDIMENT_TITLE =
-    "Consolidated coarse sediment depth";
-string const RASTER_PLOT_COARSE_UNCONSOLIDATED_SEDIMENT_TITLE =
-    "Unconsolidated coarse sediment depth";
+string const RASTER_PLOT_CLIFF_COLLAPSE_DEPOSITION_SAND_TITLE = "Depth of sand talus from cliff collapse";
+string const RASTER_PLOT_CLIFF_COLLAPSE_DEPOSITION_COARSE_TITLE = "Depth of coarse talus from cliff collapse";
+string const RASTER_PLOT_CLIFF_COLLAPSE_EROSION_FINE_TITLE = "Cliff collapse depth of erosion, fine sediment";
+string const RASTER_PLOT_CLIFF_COLLAPSE_EROSION_SAND_TITLE = "Cliff collapse depth of erosion, sand sediment";
+string const RASTER_PLOT_CLIFF_COLLAPSE_EROSION_COARSE_TITLE = "Cliff collapse depth of erosion, coarse sediment";
+string const RASTER_PLOT_COARSE_CONSOLIDATED_SEDIMENT_TITLE = "Consolidated coarse sediment depth";
+string const RASTER_PLOT_COARSE_UNCONSOLIDATED_SEDIMENT_TITLE = "Unconsolidated coarse sediment depth";
 string const RASTER_PLOT_COAST_TITLE = "Rasterized coastline";
-string const RASTER_PLOT_DEEP_WATER_WAVE_HEIGHT_TITLE =
-    "Deep water wave height";
-string const RASTER_PLOT_DEEP_WATER_WAVE_ORIENTATION_TITLE =
-    "Deep water wave orientation";
-string const RASTER_PLOT_DEEP_WATER_WAVE_PERIOD_TITLE =
-    "Deep water wave period";
-string const RASTER_PLOT_FINE_CONSOLIDATED_SEDIMENT_TITLE =
-    "Consolidated fine sediment depth";
-string const RASTER_PLOT_FINE_UNCONSOLIDATED_SEDIMENT_TITLE =
-    "Unconsolidated fine sediment depth";
+string const RASTER_PLOT_DEEP_WATER_WAVE_HEIGHT_TITLE = "Deep water wave height";
+string const RASTER_PLOT_DEEP_WATER_WAVE_ORIENTATION_TITLE = "Deep water wave orientation";
+string const RASTER_PLOT_DEEP_WATER_WAVE_PERIOD_TITLE = "Deep water wave period";
+string const RASTER_PLOT_FINE_CONSOLIDATED_SEDIMENT_TITLE = "Consolidated fine sediment depth";
+string const RASTER_PLOT_FINE_UNCONSOLIDATED_SEDIMENT_TITLE = "Unconsolidated fine sediment depth";
 string const RASTER_PLOT_INTERVENTION_CLASS_TITLE = "Intervention class";
 string const RASTER_PLOT_INTERVENTION_HEIGHT_TITLE = "Intervention height";
 string const RASTER_PLOT_INUNDATION_MASK_TITLE = "Inundated area mask";
 string const RASTER_PLOT_LANDFORM_TITLE = "Landform class";
-string const RASTER_PLOT_LOCAL_SLOPE_OF_CONSOLIDATED_SEDIMENT_TITLE =
-    "Local slope of consolidated sediment";
+string const RASTER_PLOT_LOCAL_SLOPE_OF_CONSOLIDATED_SEDIMENT_TITLE = "Local slope of consolidated sediment";
 string const RASTER_PLOT_NORMAL_PROFILE_TITLE = "Rasterized normal profiles";
-string const RASTER_PLOT_OVERALL_TOP_ELEVATION_TITLE =
-    "Elevation of sediment top plus intervention, or sea surface";
-string const RASTER_PLOT_POLYGON_GAIN_OR_LOSS_TITLE =
-    "Polygon gain or loss of unconsolidated sediment";
+string const RASTER_PLOT_OVERALL_TOP_ELEVATION_TITLE = "Elevation of sediment top plus intervention, or sea surface";
+string const RASTER_PLOT_POLYGON_GAIN_OR_LOSS_TITLE = "Polygon gain or loss of unconsolidated sediment";
 string const RASTER_PLOT_POLYGON_TITLE = "Rasterized polygon boundaries";
-string const RASTER_PLOT_POLYGON_UPDRIFT_OR_DOWNDRIFT_TITLE =
-    "Polygon updrift or downdrift movement of unconsolidated sediment";
-string const RASTER_PLOT_POTENTIAL_BEACH_EROSION_TITLE =
-    "Potential (unconstrained) beach erosion depth";
-string const RASTER_PLOT_POTENTIAL_PLATFORM_EROSION_TITLE =
-    "Potential (unconstrained) shore platform erosion depth";
-string const RASTER_PLOT_SAND_CONSOLIDATED_SEDIMENT_TITLE =
-    "Consolidated sand sediment depth";
-string const RASTER_PLOT_SAND_UNCONSOLIDATED_SEDIMENT_TITLE =
-    "Unconsolidated sand sediment depth";
+string const RASTER_PLOT_POLYGON_UPDRIFT_OR_DOWNDRIFT_TITLE = "Polygon updrift or downdrift movement of unconsolidated sediment";
+string const RASTER_PLOT_POTENTIAL_BEACH_EROSION_TITLE = "Potential (unconstrained) beach erosion depth";
+string const RASTER_PLOT_POTENTIAL_PLATFORM_EROSION_TITLE = "Potential (unconstrained) shore platform erosion depth";
+string const RASTER_PLOT_SAND_CONSOLIDATED_SEDIMENT_TITLE = "Consolidated sand sediment depth";
+string const RASTER_PLOT_SAND_UNCONSOLIDATED_SEDIMENT_TITLE = "Unconsolidated sand sediment depth";
 string const RASTER_PLOT_SEA_DEPTH_TITLE = "Sea depth";
-string const RASTER_PLOT_SEDIMENT_TOP_ELEVATION_ELEV_TITLE =
-    "Elevation of sediment top";
-string const RASTER_PLOT_SHADOW_DOWNDRIFT_ZONE_TITLE =
-    "Downdrift of wave shadow zones";
+string const RASTER_PLOT_SEDIMENT_TOP_ELEVATION_ELEV_TITLE = "Elevation of sediment top";
+string const RASTER_PLOT_SHADOW_DOWNDRIFT_ZONE_TITLE = "Downdrift of wave shadow zones";
 string const RASTER_PLOT_SHADOW_ZONE_TITLE = "Wave shadow zones";
 string const RASTER_PLOT_SLICE_TITLE = "Slice though layers at elevation = ";
 string const RASTER_PLOT_SUSPENDED_SEDIMENT_TITLE = "Suspended sediment depth";
-string const RASTER_PLOT_TOTAL_ACTUAL_BEACH_EROSION_TITLE =
-    "Total actual (constrained) beach erosion depth";
-string const RASTER_PLOT_TOTAL_ACTUAL_PLATFORM_EROSION_TITLE =
-    "Total actual (constrained) shore platform erosion depth";
-string const RASTER_PLOT_TOTAL_BEACH_DEPOSITION_TITLE =
-    "Total beach deposition depth";
-string const RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_DEPOSITION_SAND_TITLE =
-    "Total depth of sand talus from cliff collapse";
-string const RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_DEPOSITION_COARSE_TITLE =
-    "Total depth of coarse talus from cliff collapse";
-string const RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_EROSION_FINE_TITLE =
-    "Total of cliff collapse erosion depth, fine";
-string const RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_EROSION_SAND_TITLE =
-    "Total of cliff collapse erosion depth, sand";
-string const RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_EROSION_COARSE_TITLE =
-    "Total of cliff collapse erosion depth, coarse";
-string const RASTER_PLOT_TOTAL_POTENTIAL_BEACH_EROSION_TITLE =
-    "Total potential (unconstrained) beach erosion depth";
-string const RASTER_PLOT_TOTAL_POTENTIAL_PLATFORM_EROSION_TITLE =
-    "Total potential (unconstrained) shore platform erosion depth";
+string const RASTER_PLOT_TOTAL_ACTUAL_BEACH_EROSION_TITLE = "Total actual (constrained) beach erosion depth";
+string const RASTER_PLOT_TOTAL_ACTUAL_PLATFORM_EROSION_TITLE = "Total actual (constrained) shore platform erosion depth";
+string const RASTER_PLOT_TOTAL_BEACH_DEPOSITION_TITLE = "Total beach deposition depth";
+string const RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_DEPOSITION_SAND_TITLE = "Total depth of sand talus from cliff collapse";
+string const RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_DEPOSITION_COARSE_TITLE = "Total depth of coarse talus from cliff collapse";
+string const RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_EROSION_FINE_TITLE = "Total of cliff collapse erosion depth, fine";
+string const RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_EROSION_SAND_TITLE = "Total of cliff collapse erosion depth, sand";
+string const RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_EROSION_COARSE_TITLE = "Total of cliff collapse erosion depth, coarse";
+string const RASTER_PLOT_TOTAL_POTENTIAL_BEACH_EROSION_TITLE = "Total potential (unconstrained) beach erosion depth";
+string const RASTER_PLOT_TOTAL_POTENTIAL_PLATFORM_EROSION_TITLE = "Total potential (unconstrained) shore platform erosion depth";
 string const RASTER_PLOT_WAVE_HEIGHT_TITLE = "Wave height";
 string const RASTER_PLOT_WAVE_ORIENTATION_TITLE = "Wave orientation";
-string const RASTER_PLOT_POTENTIAL_PLATFORM_EROSION_MASK_TITLE =
-    "Potential (unconstrained) shore platform erosion binary mask";
-string const RASTER_PLOT_SEDIMENT_INPUT_EVENT_TITLE =
-    "Sediment input event(s) since last GIS save";
-string const RASTER_PLOT_SETUP_SURGE_FLOOD_MASK_TITLE =
-    "Mask of setup-surge flood";
-string const RASTER_PLOT_SETUP_SURGE_RUNUP_FLOOD_MASK_TITLE =
-    "Mask of setup-surge-runup flood";
+string const RASTER_PLOT_POTENTIAL_PLATFORM_EROSION_MASK_TITLE = "Potential (unconstrained) shore platform erosion binary mask";
+string const RASTER_PLOT_SEDIMENT_INPUT_EVENT_TITLE = "Sediment input event(s) since last GIS save";
+string const RASTER_PLOT_SETUP_SURGE_FLOOD_MASK_TITLE = "Mask of setup-surge flood";
+string const RASTER_PLOT_SETUP_SURGE_RUNUP_FLOOD_MASK_TITLE = "Mask of setup-surge-runup flood";
 string const RASTER_PLOT_WAVE_FLOOD_LINE_TITLE = "Wave flood line";
 
 // GIS vector output user codes
@@ -1342,10 +1174,8 @@ string const VECTOR_SHADOW_BOUNDARY_CODE = "shadow_boundary";
 string const VECTOR_SHADOW_BOUNDARY_NAME = "shadow_boundary";
 string const VECTOR_DOWNDRIFT_BOUNDARY_CODE = "downdrift_boundary";
 string const VECTOR_DOWNDRIFT_BOUNDARY_NAME = "downdrift_boundary";
-string const VECTOR_DEEP_WATER_WAVE_ANGLE_AND_HEIGHT_CODE =
-    "deep_water_wave_angle";
-string const VECTOR_DEEP_WATER_WAVE_ANGLE_AND_HEIGHT_NAME =
-    "deep_water_wave_angle";
+string const VECTOR_DEEP_WATER_WAVE_ANGLE_AND_HEIGHT_CODE = "deep_water_wave_angle";
+string const VECTOR_DEEP_WATER_WAVE_ANGLE_AND_HEIGHT_NAME = "deep_water_wave_angle";
 string const VECTOR_WAVE_SETUP_CODE = "wave_setup";
 string const VECTOR_WAVE_SETUP_NAME = "wave_setup";
 string const VECTOR_STORM_SURGE_CODE = "storm_surge";
@@ -1362,35 +1192,28 @@ string const VECTOR_FLOOD_SWL_SETUP_SURGE_RUNUP_LINE_CODE = "setup_surge_runup";
 string const VECTOR_FLOOD_SWL_SETUP_SURGE_RUNUP_LINE_NAME = "setup_surge_runup";
 
 // GIS vector output titles
-string const VECTOR_PLOT_AVG_WAVE_ANGLE_AND_HEIGHT_TITLE =
-    "Average wave orientation and height";
+string const VECTOR_PLOT_AVG_WAVE_ANGLE_AND_HEIGHT_TITLE = "Average wave orientation and height";
 string const VECTOR_PLOT_BREAKING_WAVE_HEIGHT_TITLE = "Breaking wave height";
 string const VECTOR_PLOT_CLIFF_NOTCH_SIZE_TITLE = "Cliff notch incision";
 string const VECTOR_PLOT_COAST_CURVATURE_TITLE = "Coastline curvature";
 string const VECTOR_PLOT_COAST_TITLE = "Coastline";
-string const VECTOR_PLOT_DEEP_WATER_WAVE_ANGLE_AND_HEIGHT_TITLE =
-    "Deep water wave orientation and height";
+string const VECTOR_PLOT_DEEP_WATER_WAVE_ANGLE_AND_HEIGHT_TITLE = "Deep water wave orientation and height";
 string const VECTOR_PLOT_DOWNDRIFT_BOUNDARY_TITLE = "Downdrift zone boundary";
-string const VECTOR_PLOT_INVALID_NORMALS_TITLE =
-    "INVALID Coastline-normal profiles";
+string const VECTOR_PLOT_INVALID_NORMALS_TITLE = "INVALID Coastline-normal profiles";
 string const VECTOR_PLOT_MEAN_WAVE_ENERGY_TITLE = "Mean wave energy";
 string const VECTOR_PLOT_NORMALS_TITLE = "Coastline-normal profiles";
 string const VECTOR_PLOT_POLYGON_BOUNDARY_TITLE = "Polygons";
 string const VECTOR_PLOT_POLYGON_NODES_TITLE = "Polygon nodes";
 string const VECTOR_PLOT_SHADOW_BOUNDARY_TITLE = "Shadow zone boundary";
-string const VECTOR_PLOT_WAVE_ANGLE_AND_HEIGHT_TITLE =
-    "Wave orientation and height";
-string const VECTOR_PLOT_WAVE_ENERGY_SINCE_COLLAPSE_TITLE =
-    "Wave energy since collapse";
+string const VECTOR_PLOT_WAVE_ANGLE_AND_HEIGHT_TITLE = "Wave orientation and height";
+string const VECTOR_PLOT_WAVE_ENERGY_SINCE_COLLAPSE_TITLE = "Wave energy since collapse";
 string const VECTOR_PLOT_WAVE_SETUP_TITLE = "Wave setup";
 string const VECTOR_PLOT_STORM_SURGE_TITLE = "Storm surge";
 string const VECTOR_PLOT_RUN_UP_TITLE = "Run up";
 string const VECTOR_PLOT_FLOOD_LINE_TITLE = "Flood ";
 string const VECTOR_PLOT_FLOOD_SWL_SETUP_LINE_TITLE = "SWL-Setup line";
-string const VECTOR_PLOT_FLOOD_SWL_SETUP_SURGE_LINE_TITLE =
-    "SWL-Setup-Surge line";
-string const VECTOR_PLOT_FLOOD_SWL_SETUP_SURGE_RUNUP_LINE_TITLE =
-    "SWL-Setup-Surge-Runup line";
+string const VECTOR_PLOT_FLOOD_SWL_SETUP_SURGE_LINE_TITLE = "SWL-Setup-Surge line";
+string const VECTOR_PLOT_FLOOD_SWL_SETUP_SURGE_RUNUP_LINE_TITLE = "SWL-Setup-Surge-Runup line";
 
 // Time series codes
 string const TIME_SERIES_SEA_AREA_NAME = "sea_area";
@@ -1405,10 +1228,8 @@ string const TIME_SERIES_PLATFORM_EROSION_CODE = "platform_erosion";
 string const TIME_SERIES_CLIFF_COLLAPSE_EROSION_NAME = "cliff_collapse_erosion";
 string const TIME_SERIES_CLIFF_COLLAPSE_EROSION_CODE = "cliff_collapse_erosion";
 
-string const TIME_SERIES_CLIFF_COLLAPSE_DEPOSITION_NAME =
-    "cliff_collapse_deposition";
-string const TIME_SERIES_CLIFF_COLLAPSE_DEPOSITION_CODE =
-    "cliff_collapse_deposition";
+string const TIME_SERIES_CLIFF_COLLAPSE_DEPOSITION_NAME = "cliff_collapse_deposition";
+string const TIME_SERIES_CLIFF_COLLAPSE_DEPOSITION_CODE = "cliff_collapse_deposition";
 
 string const TIME_SERIES_CLIFF_COLLAPSE_NET_NAME = "cliff_collapse_net";
 string const TIME_SERIES_CLIFF_COLLAPSE_NET_CODE = "cliff_collapse_net";
@@ -1428,10 +1249,8 @@ string const TIME_SERIES_SUSPENDED_SEDIMENT_CODE = "suspended";
 string const TIME_SERIES_FLOOD_SETUP_SURGE_NAME = "flood_setup_surge";
 string const TIME_SERIES_FLOOD_SETUP_SURGE_CODE = "flood_setup_surge";
 
-string const TIME_SERIES_FLOOD_SETUP_SURGE_RUNUP_NAME =
-    "flood_setup_surge_runup";
-string const TIME_SERIES_FLOOD_SETUP_SURGE_RUNUP_CODE =
-    "flood_setup_surge_runup";
+string const TIME_SERIES_FLOOD_SETUP_SURGE_RUNUP_NAME = "flood_setup_surge_runup";
+string const TIME_SERIES_FLOOD_SETUP_SURGE_RUNUP_CODE = "flood_setup_surge_runup";
 
 // CShore stuff
 string const WAVE_ENERGY_FLUX = "wave_energy_flux";
@@ -1439,96 +1258,103 @@ string const WAVE_HEIGHT_X_FILENAME = "wave_height_x.csv";
 string const WAVE_HEIGHT_Y_FILENAME = "wave_height_y.csv";
 string const ACTIVE_ZONE_FILENAME = "activezone.csv";
 
-//================================================ Globally-available functions
-//=================================================
-template <class T> T tMax(T a, T b) { return ((a > b) ? a : b); }
-
-template <class T> T tMax(T a, T b, T c) {
-  T max = (a < b) ? b : a;
-  return ((max < c) ? c : max);
+//================================================ Globally-available functions =================================================
+template <class T> T tMax(T a, T b)
+{
+   return ((a > b) ? a : b);
 }
 
-template <class T> T tMin(T a, T b) { return ((a < b) ? a : b); }
-
-template <class T> T tMin(T a, T b, T c) {
-  return (a < b ? (a < c ? a : c) : (b < c ? b : c));
+template <class T> T tMax(T a, T b, T c)
+{
+   T max = (a < b) ? b : a;
+   return ((max < c) ? c : max);
 }
 
-template <class T> T tAbs(T a) {
-  // From a posting dated 18 Nov 93 by rmartin@rcmcon.com (Robert Martin),
-  // archived in cpp_tips
-  return ((a < 0) ? -a : a);
+template <class T> T tMin(T a, T b)
+{
+   return ((a < b) ? a : b);
 }
 
-template <class T> bool bIsBetween(T a, T b, T c) {
-  // Assumes b > c
-  return ((a >= b) && (a <= c));
+template <class T> T tMin(T a, T b, T c)
+{
+   return (a < b ? (a < c ? a : c) : (b < c ? b : c));
 }
 
-template <typename T> string strDblToStr(const T &t) {
-  // From
-  // http://stackoverflow.com/questions/2125880/convert-float-to-stdstring-in-c
-  ostringstream os;
-  os << t;
-  return os.str();
+template <class T> T tAbs(T a)
+{
+   // From a posting dated 18 Nov 93 by rmartin@rcmcon.com (Robert Martin), archived in cpp_tips
+   return ((a < 0) ? -a : a);
 }
 
-/*==============================================================================================================================
-
-For comparison of two floating-point numbers, with a specified accuracy
-
-==============================================================================================================================*/
-template <class T> bool bFPIsEqual(const T d1, const T d2, const T dEpsilon) {
-  // Since the accuracy of floating-point numbers varies with their magnitude,
-  // we must compare them by using an accuracy threshold which is relative to
-  // the magnitude of the two numbers being compared. This is a blend of an
-  // example from Knuth's 'The Art of Computer Programming. Volume 1.
-  // Fundamental Algorithms' and a posting dated 18 Nov 93 by rmartin@rcmcon.com
-  // (Robert Martin), archived in cpp_tips
-
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wfloat-equal"
-  if ((0 == d1) && (tAbs(d2) < dEpsilon))
-    return true;
-
-  else if ((0 == d2) && (tAbs(d1) < dEpsilon))
-    return true;
-
-  else
-    return ((tAbs(d1 - d2) < (dEpsilon * tAbs(d1))) ? true : false);
-#pragma GCC diagnostic pop
+template <class T> bool bIsBetween(T a, T b, T c)
+{
+   // Assumes b > c
+   return ((a >= b) && (a <= c));
 }
 
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
+template <typename T> string strDblToStr(const T& t)
+{
+   // From http://stackoverflow.com/questions/2125880/convert-float-to-stdstring-in-c
+   ostringstream os;
+   os << t;
+   return os.str();
+}
+
+/* ==============================================================================================================================
+
+   For comparison of two floating-point numbers, with a specified accuracy
+
+   ==============================================================================================================================*/
+template <class T> bool bFPIsEqual(const T d1, const T d2, const T dEpsilon)
+{
+// Since the accuracy of floating-point numbers varies with their magnitude, we must compare them by using an accuracy threshold which is relative to the magnitude of the two numbers being compared. This is a blend of an example from Knuth's 'The Art of Computer Programming. Volume 1. Fundamental Algorithms' and a posting dated 18 Nov 93 by rmartin@rcmcon.com (Robert Martin), archived in cpp_tips
+
+# pragma GCC diagnostic push
+# pragma GCC diagnostic ignored "-Wfloat-equal"
+
+   if ((0 == d1) && (tAbs(d2) < dEpsilon))
+      return true;
+
+   else if ((0 == d2) && (tAbs(d1) < dEpsilon))
+      return true;
+
+   else
+      return ((tAbs(d1 - d2) < (dEpsilon * tAbs(d1))) ? true : false);
+
+# pragma GCC diagnostic pop
+}
+
+# ifndef DOXYGEN_SHOULD_SKIP_THIS
 // Definitions are in utilsglobal.cpp
 double dRound(double const);
 int nRound(double const);
 // bool bIsWhole(double const);
-bool bIsStringValidDouble(string &);
-bool bIsStringValidInt(string &);
+bool bIsStringValidDouble(string&);
+bool bIsStringValidInt(string&);
 
-struct FillToWidth {
-  FillToWidth(char f, int w) : chFill(f), nWidth(w) {}
-  char chFill;
-  int nWidth;
+struct FillToWidth
+{
+   FillToWidth(char f, int w) : chFill(f), nWidth(w) {}
+   char chFill;
+   int nWidth;
 };
-ostream &operator<<(ostream &, const FillToWidth &);
+
+ostream& operator<<(ostream&, const FillToWidth&);
 
 string strDbl(double const, int const);
 string strDblRight(double const, int const, int const, bool const = true);
 string strIntRight(int const, int const);
-string strCentre(const char *, int const);
-string strCentre(const string &, int const);
-string strRight(const string &, int const);
-string strRight(const char *, int const);
-string strLeft(const string &, int const);
-string strLeft(const char *, int const);
+string strCentre(const char*, int const);
+string strCentre(const string&, int const);
+string strRight(const string&, int const);
+string strRight(const char*, int const);
+string strLeft(const string&, int const);
+string strLeft(const char*, int const);
 string strRightPerCent(double const, double const, int const, int const,
                        bool const = true);
-#endif
+# endif
 
-//================================================= debugging stuff
-//============================================================= #define
-// CLOCKCHECK          // Uncomment to check CPU clock rollover settings
+//================================================= debugging stuff =============================================================
+//#define CLOCKCHECK          // Uncomment to check CPU clock rollover settings
 
-#endif // CME_H
+#endif                                                      // CME_H

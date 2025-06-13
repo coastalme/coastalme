@@ -1,30 +1,30 @@
 /*!
- *
- * \class CSimulation
- * \brief This class runs CoastalME simulations
- * \details TODO 001 This is a more detailed description of the CSimulation class
- * \author David Favis-Mortlock
- * \author Andres Payo
- * \date 2025
- * \copyright GNU General Public License *
- * \file simulation.h
- * \brief Contains CSimulation definitions
- *
- */
+
+   \class CSimulation
+   \brief This class runs CoastalME simulations
+   \details TODO 001 This is a more detailed description of the CSimulation class
+   \author David Favis-Mortlock
+   \author Andres Payo
+   \date 2025
+   \copyright GNU General Public License
+   \file simulation.h
+   \brief Contains CSimulation definitions
+
+*/
 
 #ifndef SIMULATION_H
 #define SIMULATION_H
-/*===============================================================================================================================
+/* ===============================================================================================================================
 
-This file is part of CoastalME, the Coastal Modelling Environment.
+   This file is part of CoastalME, the Coastal Modelling Environment.
 
-CoastalME is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
+   CoastalME is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
 
-This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+   This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+   You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-===============================================================================================================================*/
+   ===============================================================================================================================*/
 #include <ctime>
 using std::localtime;
 using std::time;
@@ -1536,8 +1536,8 @@ private:
    int nReadTideDataFile(void);
    int nSaveProfile(int const, CGeomProfile const*, int const, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<CGeom2DIPoint>* const, vector<double> const*) const;
    bool bWriteProfileData(int const, CGeomProfile const*, int const, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<CGeom2DIPoint>* const, vector<double> const*) const;
-   int nSaveParProfile(int const, CGeomProfile const*, int const, int const, int const, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<CGeom2DIPoint>*const, vector<double> const*) const;
-   bool bWriteParProfileData(int const, int const, int const, int const, int const, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<CGeom2DIPoint>*const, vector<double> const*) const;
+   int nSaveParProfile(int const, CGeomProfile const*, int const, int const, int const, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<CGeom2DIPoint>* const, vector<double> const*) const;
+   bool bWriteParProfileData(int const, int const, int const, int const, int const, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<CGeom2DIPoint>* const, vector<double> const*) const;
    void WriteLookUpData(void) const;
 
    // GIS input and output stuff
@@ -1610,8 +1610,8 @@ private:
    int nCalcWavePropertiesOnProfile(int const, int const, CGeomProfile*, vector<double>*, vector<double>*, vector<double>*, vector<double>*, vector<bool>*);
    int nGetThisProfileElevationsForCShore(int const, CGeomProfile*, int const, vector<double>*, vector<double>*, vector<double>*);
    int nCreateCShoreInfile(int const, int const, int const, int const, int const, int const, int const, int const, int const, int const, int const, int const, int const, double const, double const, double const, double const, double const, double const, double const, double const, vector<double> const*, vector<double> const*, vector<double> const*);
-   int nReadCShoreOutput(int const, string const*, int const, int const, vector<double> const*, vector<double>*);   
-/*   static */ void InterpolateCShoreOutput(vector<double> const*, int const, int const, vector<double>*, vector<double>*, vector<double>*, vector<double>*, vector<double>*, vector<double>*, vector<double>*, vector<double>*, vector<double>*);
+   int nReadCShoreOutput(int const, string const*, int const, int const, vector<double> const*, vector<double>*);
+   /*   static */ void InterpolateCShoreOutput(vector<double> const*, int const, int const, vector<double>*, vector<double>*, vector<double>*, vector<double>*, vector<double>*, vector<double>*, vector<double>*, vector<double>*, vector<double>*);
    static double dCalcWaveAngleToCoastNormal(double const, double const, int const);
    void CalcCoastTangents(int const);
    void InterpolateWavePropertiesBetweenProfiles(int const, int const);
@@ -1752,7 +1752,7 @@ private:
    static string strTrimRight(string const*);
    static string strToLower(string const*);
    //  static string strToUpper(string const*);
-   static string strRemoveSubstr(string *, string const*);
+   static string strRemoveSubstr(string*, string const*);
    static vector<string>* VstrSplit(string const*, char const, vector<string>*);
    static vector<string> VstrSplit(string const*, char const);
    // static double dCrossProduct(double const, double const, double const, double const, double const, double const);

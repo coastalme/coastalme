@@ -1,26 +1,26 @@
 /*!
- *
- * \file do_beach_potential_erosion.cpp
- * \brief Calculates potential (i.e. not constrained by the availability of unconsolidated sediment) beach erosion of unconsolidated sediment on coastal polygons
- * \details TODO 001 A more detailed description of these routines.
- * \author David Favis-Mortlock
- * \author Andres Payo
- * \date 2025
- * \copyright GNU General Public License
- *
- */
 
-/*==============================================================================================================================
+   \file do_beach_potential_erosion.cpp
+   \brief Calculates potential (i.e. not constrained by the availability of unconsolidated sediment) beach erosion of unconsolidated sediment on coastal polygons
+   \details TODO 001 A more detailed description of these routines.
+   \author David Favis-Mortlock
+   \author Andres Payo
+   \date 2025
+   \copyright GNU General Public License
 
-This file is part of CoastalME, the Coastal Modelling Environment.
+*/
 
-CoastalME is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
+/* ==============================================================================================================================
 
-This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+   This file is part of CoastalME, the Coastal Modelling Environment.
 
-You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+   CoastalME is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
 
-==============================================================================================================================*/
+   This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+   You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+
+   ==============================================================================================================================*/
 #include <assert.h>
 
 #include <cmath>
@@ -63,6 +63,7 @@ void CSimulation::DoAllPotentialBeachErosion(void)
 
       // Create a vector of pairs: the first value of the pair is the profile index, the second is the seaward length of that profile
       vector<pair<int, double>> prVPolygonLength;
+
       for (int nPoly = 0; nPoly < nNumPolygons; nPoly++)
       {
          CGeomCoastPolygon const* pPolygon = m_VCoast[nCoast].pGetPolygon(nPoly);
@@ -102,6 +103,7 @@ void CSimulation::DoAllPotentialBeachErosion(void)
             dAvgFluxOrientation += m_VCoast[nCoast].dGetFluxOrientation(nCoastPoint);
 
             double dThisBreakingWaveHeight = m_VCoast[nCoast].dGetBreakingWaveHeight(nCoastPoint);
+
             if (! bFPIsEqual(dThisBreakingWaveHeight, DBL_NODATA, TOLERANCE))
             {
                // We are in the active zone
@@ -119,7 +121,7 @@ void CSimulation::DoAllPotentialBeachErosion(void)
                dAvgBreakingDist += (m_VCoast[nCoast].nGetBreakingDistance(nCoastPoint) * m_dCellSide);
             }
          }
-         
+
          // Safety check
          if (nCoastPoints == 0)
             nCoastPoints = 1;
@@ -139,19 +141,24 @@ void CSimulation::DoAllPotentialBeachErosion(void)
             // Get the coast handedness, and (based on the average tangent) calculate the direction towards which a coastline-normal profile points
             int nSeaHand = m_VCoast[nCoast].nGetSeaHandedness();
             double dNormalOrientation;
+
             if (nSeaHand == RIGHT_HANDED)
                dNormalOrientation = dKeepWithin360(dAvgFluxOrientation - 90);
+
             else
                dNormalOrientation = dKeepWithin360(dAvgFluxOrientation + 90);
 
             // Determine dThetaBr, the angle between the coastline-normal orientation and the breaking wave orientation (the direction FROM which the waves move). This tells us whether the sediment movement is up-coast (-ve) or down-coast (+ve)
             double dThetaBr = dNormalOrientation - dAvgBreakingWaveAngle;
+
             if (dThetaBr > 270)
                dThetaBr = dAvgBreakingWaveAngle + 360.0 - dNormalOrientation;
+
             else if (dThetaBr < -270)
                dThetaBr = dNormalOrientation + 360.0 - dAvgBreakingWaveAngle;
 
             bool bDownCoast = true;
+
             if (dThetaBr < 0)
                bDownCoast = false;
 
@@ -166,25 +173,27 @@ void CSimulation::DoAllPotentialBeachErosion(void)
 
             // Calculate the immersed weight of sediment transport
             double dImmersedWeightTransport = 0;
+
             if (m_nBeachErosionDepositionEquation == UNCONS_SEDIMENT_EQUATION_CERC)
             {
                /*
-               Use the CERC equation (Komar and Inman, 1970; USACE, 1984), this describes the immersive weight transport of sand (i.e. sand transport in suspension). Depth-integrated alongshore volumetric sediment transport is a function of breaking wave height Hb and angle αb:
+                  Use the CERC equation (Komar and Inman, 1970; USACE, 1984), this describes the immersive weight transport of sand (i.e. sand transport in suspension). Depth-integrated alongshore volumetric sediment transport is a function of breaking wave height Hb and angle αb:
 
                   Qls = Kls * Hb^(5/2) * sin(2 * αb)
 
-               where Kls is a transport coefficient which varies between 0.4 to 0.79
+                  where Kls is a transport coefficient which varies between 0.4 to 0.79
                */
                dImmersedWeightTransport = m_dKLS / (16 * pow(m_dBreakingWaveHeightDepthRatio, 0.5)) * m_dSeaWaterDensity * pow(m_dG, 1.5) * pow(dAvgBreakingWaveHeight, 2.5) * sin((PI / 180) * 2 * dThetaBr);
             }
+
             else if (m_nBeachErosionDepositionEquation == UNCONS_SEDIMENT_EQUATION_KAMPHUIS)
             {
                /*
-               Use the Kamphuis (1990) equation to estimate the immersive weight transport of sand in kg/s:
+                  Use the Kamphuis (1990) equation to estimate the immersive weight transport of sand in kg/s:
 
                   Qls = 2.33 * (Tp^(1.5)) * (tanBeta^(0.75)) * (d50^(-0.25)) * (Hb^2) * (sin(2 * αb)^(0.6))
 
-               where:
+                  where:
 
                   Tp = peak wave period
                   tanBeta = beach slope, defined as the ratio of the water depth at the breaker line and the distance from the still water beach line to the breaker line
@@ -194,6 +203,7 @@ void CSimulation::DoAllPotentialBeachErosion(void)
                if (dAvgBreakingDist > 0)
                {
                   double dD50 = pPolygon->dGetAvgUnconsD50();
+
                   if (dD50 > 0)
                   {
                      double dBeachSlope = dAvgBreakingDepth / dAvgBreakingDist;
@@ -223,6 +233,7 @@ void CSimulation::DoAllPotentialBeachErosion(void)
             pPolygon->AddPotentialErosion(-dSedimentDepth);
             //            LogStream << "\tPotential erosion on polygon " << nThisPoly << " -dSedimentDepth = " << -dSedimentDepth << endl;
          }
+
          //          else
          //             LogStream << m_ulIter << ": polygon = " << nThisPoly << " NOT IN ACTIVE ZONE dAvgFluxOrientation = " << dAvgFluxOrientation << endl;
       }
