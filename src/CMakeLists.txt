@@ -66,17 +66,20 @@ enable_language(CXX)
 # set the flag (note that later on we check the compiler for c++17 capability)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17")
 
-# Set CPU flag
+# find system CPU architecture
 execute_process(
   COMMAND uname -m
   COMMAND tr -d '\n'
   OUTPUT_VARIABLE ARCHITECTURE)
+# Set CPU flag
 if(${ARCHITECTURE} STREQUAL "arm64")
   message("Buiding for arm64")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DCPU -Dxarm64")
-else()
-  message("Buiding for x86")
+elseif(${ARCHITECTURE} STREQUAL "x86_64")
+  message("Buiding for x86 64bit")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DCPU -Dx86")
+else()
+  message(FATAL_ERROR "CoastalME cannot be built on 32bit systems")
 endif()
 
 # Use 64-bit libraries
@@ -85,30 +88,62 @@ set(FIND_LIBRARY_USE_LIB64_PATHS true)
 # Convert build type string to lower case
 string(TOLOWER "${CMAKE_BUILD_TYPE}" CMAKE_BUILD_TYPE_LC)
 
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=native")
+
+# Compiler specific settings
 if(CMAKE_COMPILER_IS_GNUCC)
   message(
     "C++ compiler is ${CMAKE_CXX_COMPILER_ID} g++ ${CMAKE_CXX_COMPILER_VERSION}"
   )
-
+  # GCC compiler defaults
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=native")
 
-  # Debug build using gcc
+  # Build type specific settings
   if(CMAKE_BUILD_TYPE_LC STREQUAL "debug")
     set(CMAKE_CXX_FLAGS
-        "${CMAKE_CXX_FLAGS} -W -Wall -Wextra -Wpointer-arith -Wconversion -Wcast-qual -Wcast-align -Wwrite-strings -Wredundant-decls -Wno-strict-overflow -Wshadow -Wuninitialized -Wnull-dereference -Wformat -Wformat-overflow -Wformat-signedness -Wuseless-cast -Wempty-body -Wfloat-equal"
-    )
+        "${CMAKE_CXX_FLAGS} \
+        -W -Wall -Wextra \
+        -Wpointer-arith -Wcast-qual -Wcast-align \
+        -Wconversion \
+        -Wwrite-strings -Wredundant-decls \
+        -Wshadow -Wuninitialized -Wnull-dereference \
+        -Wformat -Wuseless-cast -Wempty-body -Wfloat-equal \
+        -Wformat-overflow -Wformat-signedness \
+        -Wno-strict-overflow \
+        ")
 
-    # ===============================================================================================================
     # Also use these with debug builds to check for vulnerabilities at compile
-    # time, see
-    # https://best.openssf.org/Compiler-Hardening-Guides/Compiler-Options-Hardening-Guide-for-C-and-C++.html
-    # ===============================================================================================================
     if(CMAKE_CXX_COMPILER_VERSION VERSION_GREATER "13.0")
       set(CMAKE_CXX_FLAGS
-          "${CMAKE_CXX_FLAGS} -Wformat -Wformat=2 -Wimplicit-fallthrough -Werror=format-security -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=3 -D_GLIBCXX_ASSERTIONS -fstrict-flex-arrays=3 -fstack-clash-protection -fstack-protector-strong -Wl,-z,nodlopen -Wl,-z,noexecstack -Wl,-z,relro -Wl,-z,now -Wl,--as-needed -Wl,--no-copy-dt-needed-entries"
-      )
+          "${CMAKE_CXX_FLAGS} \
+          -Wformat=2 \
+          -Wimplicit-fallthrough \
+          -Werror=format-security \
+          -U_FORTIFY_SOURCE \
+          -D_FORTIFY_SOURCE=3 \
+          -D_GLIBCXX_ASSERTIONS \
+          -fstrict-flex-arrays=3 \
+          -fstack-clash-protection \
+          -fstack-protector-strong \
+          -Wduplicated-cond \
+          -Wduplicated-branches\
+          -Wlogical-op \
+          -Wrestrict\
+          -Wnull-dereference \
+          -Wold-style-cast \
+          -Woverloaded-virtual\
+          -Wsuggest-override \
+          -Wmisleading-indentation \
+          ")
       # -Wtrampolines -Wbidi-chars=any -fPIE -pie (for x86_64)
       # -fcf-protection=full
+      if(LINUX)
+        set(CMAKE_CXX_FLAGS
+            "${CMAKE_CXX_FLAGS} \
+                    -Wl,-z,nodlopen -Wl,-z,noexecstack -Wl,-z,relro \
+                    -Wl,-z,now -Wl,--as-needed -Wl,--no-copy-dt-needed-entries \
+                    ")
+      endif()
     endif()
     # ===============================================================================================================
 
@@ -122,8 +157,22 @@ if(CMAKE_COMPILER_IS_GNUCC)
     # ===============================================================================================================
     if(CMAKE_CXX_COMPILER_VERSION VERSION_GREATER "5.0")
       set(CMAKE_CXX_FLAGS
-          "${CMAKE_CXX_FLAGS} -fsanitize=undefined -fsanitize=shift -fsanitize=integer-divide-by-zero -fsanitize=unreachable -fsanitize=null -fsanitize=return -fsanitize=vla-bound -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fsanitize=bounds -fsanitize=alignment -fsanitize=object-size -fsanitize=vptr -fsanitize=address"
-      )
+          "${CMAKE_CXX_FLAGS}\
+          -fsanitize=undefined \
+          -fsanitize=shift \
+          -fsanitize=integer-divide-by-zero \
+          -fsanitize=unreachable \
+          -fsanitize=null \
+          -fsanitize=return \
+          -fsanitize=vla-bound \
+          -fsanitize=float-divide-by-zero \
+          -fsanitize=float-cast-overflow \
+          -fsanitize=bounds \
+          -fsanitize=alignment \
+          -fsanitize=object-size \
+          -fsanitize=vptr \
+          -fsanitize=address \
+          ")
       # Note  -fsanitize-ignorelist=sanitize_ignorelist.txt not yet working for
       # gcc, need this to hide GDAL errors
     endif()
@@ -135,19 +184,28 @@ if(CMAKE_COMPILER_IS_GNUCC)
     # Production build using gcc #
     # ===============================================================================================================
     set(CMAKE_CXX_FLAGS
-        "${CMAKE_CXX_FLAGS} -O3 -Wall -fno-delete-null-pointer-checks -fno-strict-overflow -fno-strict-aliasing -ftrivial-auto-var-init=zero"
-    )
-    # #
+        "${CMAKE_CXX_FLAGS} \
+        -O3 \
+        -Wall \
+        -fno-delete-null-pointer-checks \
+        -fno-strict-overflow \
+        -fno-strict-aliasing \
+        -ftrivial-auto-var-init=zero \
+        -flto=auto \
+        -ffast-math \
+        -funroll-loops \
+        -DNDEBUG \
+        ")
+    #
     # ===============================================================================================================
   endif()
 
-  # Finally set some gcc-specific linker flags, for all build types
+  # Finally set some gcc-specific linkerrflags, for all build types
   if(LINUX)
     set(CMAKE_EXE_LINKER_FLAGS "-Wl,--as-needed -Wl,--no-undefined")
   endif()
-endif()
 
-if(MSVC)
+elseif(MSVC)
   message("Compiler is Visual Studio")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W3")
 endif()

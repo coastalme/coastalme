@@ -1,9 +1,9 @@
 #!/bin/sh
 
 # Change this to change build type
-#buildtype=Debug
+# buildtype=Debug
 buildtype=Release
-#buildtype=Prerelease
+# buildtype=Prerelease
 #buildtype=RelWithDebInfo        # Not yet implemented in CMakeLists.txt
 #buildtype=MinSizeRel            # Not yet implemented in CMakeLists.txt
 #buildtype=gcov
