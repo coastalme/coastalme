@@ -47,14 +47,10 @@ project(CME)
 
 set(CMAKE_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}") # Assume that we are in the
                                                     # src folder
-set(CMAKE_INSTALL_DIR "${CMAKE_SOURCE_DIR}/..")
+set(CMAKE_INSTALL_DIR "${CMAKE_SOURCE_DIR}/..") # Install in folder above
 
-# set (CMAKE_SOURCE_DIR "$ENV{HOME}/coast/CoastalME/src")      # May be changed
-# by the user set (CMAKE_INSTALL_DIR "$ENV{HOME}/coast/CoastalME")         # May
-# be changed by the user
-
-file(GLOB CME_SOURCE_FILES *.cpp)
-set(CME_EXECUTABLE cme)
+file(GLOB CME_SOURCE_FILES *.cpp) # Find all cpp files in src directory
+set(CME_EXECUTABLE cme) # Set executale name
 
 # Set the path for CoastalME's own cmake modules
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules/")
@@ -70,13 +66,16 @@ enable_language(CXX)
 # set the flag (note that later on we check the compiler for c++17 capability)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17")
 
-# Set the CoastalME CPU flag TODO Need to change this for different CPU
-# architectures
-if(APPLE)
+# Set CPU flag
+execute_process(
+  COMMAND uname -m
+  COMMAND tr -d '\n'
+  OUTPUT_VARIABLE ARCHITECTURE)
+if(${ARCHITECTURE} STREQUAL "arm64")
+  message("Buiding for arm64")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DCPU -Dxarm64")
-elseif(LINUX)
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DCPU -Dx86")
 else()
+  message("Buiding for x86")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DCPU -Dx86")
 endif()
 
