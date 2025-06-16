@@ -1,8 +1,8 @@
 #!/bin/sh
 
 # Change this to change build type
-# buildtype=Debug
-buildtype=Release
+buildtype=DEBUG
+# buildtype=Release
 # buildtype=Prerelease
 #buildtype=RelWithDebInfo        # Not yet implemented in CMakeLists.txt
 #buildtype=MinSizeRel            # Not yet implemented in CMakeLists.txt
@@ -22,10 +22,10 @@ cshoreinout=ARG
 echo "Building all versions of the CShore library"
 echo ""
 cd cshore
-./make_cshore_lib.sh
+./make_cshore_lib.sh $cshorelibrary $buildtype $cshoreinout
 cd ..
 
-# Now run CMake for CoastalME
+Now run CMake for CoastalME
 echo ""
 echo "================================================================="
 echo ""

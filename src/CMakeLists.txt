@@ -102,6 +102,9 @@ if(CMAKE_COMPILER_IS_GNUCC)
   if(CMAKE_BUILD_TYPE_LC STREQUAL "debug")
     set(CMAKE_CXX_FLAGS
         "${CMAKE_CXX_FLAGS} \
+        -g -O0 \
+        -fno-omit-frame-pointer \
+        -fno-optimize-sibling-calls \
         -W -Wall -Wextra \
         -Wpointer-arith -Wcast-qual -Wcast-align \
         -Wconversion \
@@ -264,101 +267,108 @@ message("Finding libraries")
 # ##############################################################################
 # Find OpenMP for parallelization First try to find OpenMP using the standard
 # CMake module
-find_package(OpenMP)
-
-if(OpenMP_CXX_FOUND)
-  message(STATUS "OpenMP found via find_package: ${OpenMP_CXX_VERSION}")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
-  set(LIBS ${LIBS} OpenMP::OpenMP_CXX)
-  message(STATUS "OpenMP enabled for parallel grid operations")
+if(CMAKE_BUILD_TYPE_LC STREQUAL "debug")
+  message(STATUS "OpenMP disabled for debug build")
+  set(OPENMP_ENABLED FALSE)
 else()
-  # Standard detection failed, try manual detection based on compiler
-  message(
-    STATUS "Standard OpenMP detection failed, attempting manual detection...")
+  find_package(OpenMP)
 
-  if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-    # Test if GCC supports OpenMP
-    message(STATUS "Testing GCC OpenMP support...")
-    include(CheckCXXSourceCompiles)
-    set(CMAKE_REQUIRED_FLAGS "-fopenmp")
-    set(CMAKE_REQUIRED_LIBRARIES "-fopenmp")
-    check_cxx_source_compiles(
-      "
-         #include <omp.h>
-         int main() {
-            #pragma omp parallel
-            {
-               int tid = omp_get_thread_num();
-            }
-            return 0;
-         }"
-      OPENMP_TEST_COMPILE)
+  if(OpenMP_CXX_FOUND)
+    message(STATUS "OpenMP found via find_package: ${OpenMP_CXX_VERSION}")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
+    set(LIBS ${LIBS} OpenMP::OpenMP_CXX)
+    message(STATUS "OpenMP enabled for parallel grid operations")
+  else()
+    # Standard detection failed, try manual detection based on compiler
+    message(
+      STATUS "Standard OpenMP detection failed, attempting manual detection...")
 
-    if(OPENMP_TEST_COMPILE)
-      message(STATUS "GCC OpenMP support confirmed - adding -fopenmp flags")
-      set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp")
-      set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fopenmp")
-      set(OPENMP_ENABLED TRUE)
+    if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+      # Test if GCC supports OpenMP
+      message(STATUS "Testing GCC OpenMP support...")
+      include(CheckCXXSourceCompiles)
+      set(CMAKE_REQUIRED_FLAGS "-fopenmp")
+      set(CMAKE_REQUIRED_LIBRARIES "-fopenmp")
+      check_cxx_source_compiles(
+        "
+                   #include <omp.h>
+                   int main() {
+                      #pragma omp parallel
+                      {
+                         int tid = omp_get_thread_num();
+                      }
+                      return 0;
+                   }"
+        OPENMP_TEST_COMPILE)
+
+      if(OPENMP_TEST_COMPILE)
+        message(STATUS "GCC OpenMP support confirmed - adding -fopenmp flags")
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp")
+        set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fopenmp")
+        set(OPENMP_ENABLED TRUE)
+      else()
+        message(STATUS "GCC does not support OpenMP")
+        set(OPENMP_ENABLED FALSE)
+      endif()
+
+    elseif(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+      # Test Clang OpenMP support (may need libomp)
+      message(STATUS "Testing Clang OpenMP support...")
+      include(CheckCXXSourceCompiles)
+
+      # Try with -fopenmp first
+      set(CMAKE_REQUIRED_FLAGS "-fopenmp")
+      set(CMAKE_REQUIRED_LIBRARIES "-fopenmp")
+      check_cxx_source_compiles(
+        "
+                   #include <omp.h>
+                   int main() {
+                      #pragma omp parallel
+                      {
+                         int tid = omp_get_thread_num();
+                      }
+                      return 0;
+                   }"
+        CLANG_OPENMP_FOPENMP)
+
+      if(CLANG_OPENMP_FOPENMP)
+        message(STATUS "Clang OpenMP support confirmed with -fopenmp")
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp")
+        set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fopenmp")
+        set(OPENMP_ENABLED TRUE)
+      else()
+        # Try with -fopenmp=libomp (for Homebrew clang)
+        set(CMAKE_REQUIRED_FLAGS "-fopenmp=libomp")
+        set(CMAKE_REQUIRED_LIBRARIES "-fopenmp=libomp")
+        check_cxx_source_compiles(
+          "
+                      #include <omp.h>
+                      int main() {
+                         #pragma omp parallel
+                         {
+                            int tid = omp_get_thread_num();
+                         }
+                         return 0;
+                      }"
+          CLANG_OPENMP_LIBOMP)
+
+        if(CLANG_OPENMP_LIBOMP)
+          message(STATUS "Clang OpenMP support confirmed with -fopenmp=libomp")
+          set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp=libomp")
+          set(CMAKE_EXE_LINKER_FLAGS
+              "${CMAKE_EXE_LINKER_FLAGS} -fopenmp=libomp")
+          set(OPENMP_ENABLED TRUE)
+        else()
+          message(STATUS "Clang does not support OpenMP")
+          set(OPENMP_ENABLED FALSE)
+        endif()
+      endif()
+
     else()
-      message(STATUS "GCC does not support OpenMP")
+      message(STATUS "Unknown compiler - attempting generic OpenMP detection")
       set(OPENMP_ENABLED FALSE)
     endif()
 
-  elseif(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-    # Test Clang OpenMP support (may need libomp)
-    message(STATUS "Testing Clang OpenMP support...")
-    include(CheckCXXSourceCompiles)
-
-    # Try with -fopenmp first
-    set(CMAKE_REQUIRED_FLAGS "-fopenmp")
-    set(CMAKE_REQUIRED_LIBRARIES "-fopenmp")
-    check_cxx_source_compiles(
-      "
-         #include <omp.h>
-         int main() {
-            #pragma omp parallel
-            {
-               int tid = omp_get_thread_num();
-            }
-            return 0;
-         }"
-      CLANG_OPENMP_FOPENMP)
-
-    if(CLANG_OPENMP_FOPENMP)
-      message(STATUS "Clang OpenMP support confirmed with -fopenmp")
-      set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp")
-      set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fopenmp")
-      set(OPENMP_ENABLED TRUE)
-    else()
-      # Try with -fopenmp=libomp (for Homebrew clang)
-      set(CMAKE_REQUIRED_FLAGS "-fopenmp=libomp")
-      set(CMAKE_REQUIRED_LIBRARIES "-fopenmp=libomp")
-      check_cxx_source_compiles(
-        "
-            #include <omp.h>
-            int main() {
-               #pragma omp parallel
-               {
-                  int tid = omp_get_thread_num();
-               }
-               return 0;
-            }"
-        CLANG_OPENMP_LIBOMP)
-
-      if(CLANG_OPENMP_LIBOMP)
-        message(STATUS "Clang OpenMP support confirmed with -fopenmp=libomp")
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp=libomp")
-        set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fopenmp=libomp")
-        set(OPENMP_ENABLED TRUE)
-      else()
-        message(STATUS "Clang does not support OpenMP")
-        set(OPENMP_ENABLED FALSE)
-      endif()
-    endif()
-
-  else()
-    message(STATUS "Unknown compiler - attempting generic OpenMP detection")
-    set(OPENMP_ENABLED FALSE)
   endif()
 
   # Reset CMAKE_REQUIRED variables
@@ -431,306 +441,6 @@ else()
     FATAL_ERROR
       "Invalid value specified for communication with the CShore library: ${CSHORE_INOUT}"
   )
-endif()
-
-if(UNIX)
-  # Put the correct version of the CShore library into
-  # ${CMAKE_SOURCE_DIR}/lib/libcshore.a"
-  if(UNIX
-     AND NOT APPLE
-     AND NOT CYGWIN)
-    if(CSHORE_INOUT_LC STREQUAL "file")
-      if((CMAKE_BUILD_TYPE_LC STREQUAL "debug") OR (CMAKE_BUILD_TYPE_LC STREQUAL
-                                                    "valgrind"))
-        if(CSHORE_LIBRARY_LC STREQUAL "shared")
-          execute_process(
-            COMMAND
-              ln -s -f
-              "${CMAKE_SOURCE_DIR}/lib/libcshore.so.DEBUG.LINUX.FILEINOUT"
-              "${CMAKE_SOURCE_DIR}/lib/libcshore.so")
-        else()
-          execute_process(
-            COMMAND
-              ln -s -f
-              "${CMAKE_SOURCE_DIR}/lib/libcshore.a.DEBUG.LINUX.FILEINOUT"
-              "${CMAKE_SOURCE_DIR}/lib/libcshore.a")
-        endif()
-      else()
-        if(CSHORE_LIBRARY_LC STREQUAL "shared")
-          execute_process(
-            COMMAND
-              ln -s -f
-              "${CMAKE_SOURCE_DIR}/lib/libcshore.so.RELEASE.LINUX.FILEINOUT"
-              "${CMAKE_SOURCE_DIR}/lib/libcshore.so")
-        else()
-          execute_process(
-            COMMAND
-              ln -s -f
-              "${CMAKE_SOURCE_DIR}/lib/libcshore.a.RELEASE.LINUX.FILEINOUT"
-              "${CMAKE_SOURCE_DIR}/lib/libcshore.a")
-        endif()
-      endif()
-
-    elseif(CSHORE_INOUT_LC STREQUAL "arg")
-      if((CMAKE_BUILD_TYPE_LC STREQUAL "debug") OR (CMAKE_BUILD_TYPE_LC STREQUAL
-                                                    "valgrind"))
-        if(CSHORE_LIBRARY_LC STREQUAL "shared")
-          execute_process(
-            COMMAND
-              ln -s -f
-              "${CMAKE_SOURCE_DIR}/lib/libcshore.so.DEBUG.LINUX.ARGINOUT"
-              "${CMAKE_SOURCE_DIR}/lib/libcshore.so")
-        else()
-          execute_process(
-            COMMAND
-              ln -s -f
-              "${CMAKE_SOURCE_DIR}/lib/libcshore.a.DEBUG.LINUX.ARGINOUT"
-              "${CMAKE_SOURCE_DIR}/lib/libcshore.a")
-        endif()
-      else()
-        if(CSHORE_LIBRARY_LC STREQUAL "shared")
-          execute_process(
-            COMMAND
-              ln -s -f
-              "${CMAKE_SOURCE_DIR}/lib/libcshore.so.RELEASE.LINUX.ARGINOUT"
-              "${CMAKE_SOURCE_DIR}/lib/libcshore.so")
-        else()
-          execute_process(
-            COMMAND
-              ln -s -f
-              "${CMAKE_SOURCE_DIR}/lib/libcshore.a.RELEASE.LINUX.ARGINOUT"
-              "${CMAKE_SOURCE_DIR}/lib/libcshore.a")
-        endif()
-      endif()
-
-    elseif(CSHORE_INOUT_LC STREQUAL "both")
-      if((CMAKE_BUILD_TYPE_LC STREQUAL "debug") OR (CMAKE_BUILD_TYPE_LC STREQUAL
-                                                    "valgrind"))
-        if(CSHORE_LIBRARY_LC STREQUAL "shared")
-          execute_process(
-            COMMAND
-              ln -s -f
-              "${CMAKE_SOURCE_DIR}/lib/libcshore.so.DEBUG.LINUX.ARGINBOTHOUT"
-              "${CMAKE_SOURCE_DIR}/lib/libcshore.so")
-        else()
-          execute_process(
-            COMMAND
-              ln -s -f
-              "${CMAKE_SOURCE_DIR}/lib/libcshore.a.DEBUG.LINUX.ARGINBOTHOUT"
-              "${CMAKE_SOURCE_DIR}/lib/libcshore.a")
-        endif()
-      else()
-        if(CSHORE_LIBRARY_LC STREQUAL "shared")
-          execute_process(
-            COMMAND
-              ln -s -f
-              "${CMAKE_SOURCE_DIR}/lib/libcshore.so.RELEASE.LINUX.ARGINBOTHOUT"
-              "${CMAKE_SOURCE_DIR}/lib/libcshore.so")
-        else()
-          execute_process(
-            COMMAND
-              ln -s -f
-              "${CMAKE_SOURCE_DIR}/lib/libcshore.a.RELEASE.LINUX.ARGINBOTHOUT"
-              "${CMAKE_SOURCE_DIR}/lib/libcshore.a")
-        endif()
-      endif()
-    endif()
-  endif()
-
-  if(CYGWIN)
-    if(CSHORE_INOUT_LC STREQUAL "file")
-      if(CMAKE_BUILD_TYPE_LC STREQUAL "debug")
-        if(CSHORE_LIBRARY_LC STREQUAL "shared")
-          execute_process(
-            COMMAND
-              ln -s -f
-              "${CMAKE_SOURCE_DIR}/lib/libcshore.so.DEBUG.CYGWIN.FILEINOUT"
-              "${CMAKE_SOURCE_DIR}/lib/libcshore.so")
-        else()
-          execute_process(
-            COMMAND
-              ln -s -f
-              "${CMAKE_SOURCE_DIR}/lib/libcshore.a.DEBUG.CYGWIN.FILEINOUT"
-              "${CMAKE_SOURCE_DIR}/lib/libcshore.a")
-        endif()
-      else()
-        if(CSHORE_LIBRARY_LC STREQUAL "shared")
-          execute_process(
-            COMMAND
-              ln -s -f
-              "${CMAKE_SOURCE_DIR}/lib/libcshore.so.RELEASE.CYGWIN.FILEINOUT"
-              "${CMAKE_SOURCE_DIR}/lib/libcshore.so")
-        else()
-          execute_process(
-            COMMAND
-              ln -s -f
-              "${CMAKE_SOURCE_DIR}/lib/libcshore.a.RELEASE.CYGWIN.FILEINOUT"
-              "${CMAKE_SOURCE_DIR}/lib/libcshore.a")
-        endif()
-      endif()
-
-    elseif(CSHORE_INOUT_LC STREQUAL "arg")
-      if(CMAKE_BUILD_TYPE_LC STREQUAL "debug")
-        if(CSHORE_LIBRARY_LC STREQUAL "shared")
-          execute_process(
-            COMMAND
-              ln -s -f
-              "${CMAKE_SOURCE_DIR}/lib/libcshore.so.DEBUG.CYGWIN.ARGINOUT"
-              "${CMAKE_SOURCE_DIR}/lib/libcshore.so")
-        else()
-          execute_process(
-            COMMAND
-              ln -s -f
-              "${CMAKE_SOURCE_DIR}/lib/libcshore.a.DEBUG.CYGWIN.ARGINOUT"
-              "${CMAKE_SOURCE_DIR}/lib/libcshore.a")
-        endif()
-      else()
-        if(CSHORE_LIBRARY_LC STREQUAL "shared")
-          execute_process(
-            COMMAND
-              ln -s -f
-              "${CMAKE_SOURCE_DIR}/lib/libcshore.so.RELEASE.CYGWIN.ARGINOUT"
-              "${CMAKE_SOURCE_DIR}/lib/libcshore.so")
-        else()
-          execute_process(
-            COMMAND
-              ln -s -f
-              "${CMAKE_SOURCE_DIR}/lib/libcshore.a.RELEASE.CYGWIN.ARGINOUT"
-              "${CMAKE_SOURCE_DIR}/lib/libcshore.a")
-        endif()
-      endif()
-
-    elseif(CSHORE_INOUT_LC STREQUAL "both")
-      if(CMAKE_BUILD_TYPE_LC STREQUAL "debug")
-        if(CSHORE_LIBRARY_LC STREQUAL "shared")
-          execute_process(
-            COMMAND
-              ln -s -f
-              "${CMAKE_SOURCE_DIR}/lib/libcshore.so.DEBUG.CYGWIN.ARGINBOTHOUT"
-              "${CMAKE_SOURCE_DIR}/lib/libcshore.so")
-        else()
-          execute_process(
-            COMMAND
-              ln -s -f
-              "${CMAKE_SOURCE_DIR}/lib/libcshore.a.DEBUG.CYGWIN.ARGINBOTHOUT"
-              "${CMAKE_SOURCE_DIR}/lib/libcshore.a")
-        endif()
-      else()
-        if(CSHORE_LIBRARY_LC STREQUAL "shared")
-          execute_process(
-            COMMAND
-              ln -s -f
-              "${CMAKE_SOURCE_DIR}/lib/libcshore.so.RELEASE.CYGWIN.ARGINBOTHOUT"
-              "${CMAKE_SOURCE_DIR}/lib/libcshore.so")
-        else()
-          execute_process(
-            COMMAND
-              ln -s -f
-              "${CMAKE_SOURCE_DIR}/lib/libcshore.a.RELEASE.CYGWIN.ARGINBOTHOUT"
-              "${CMAKE_SOURCE_DIR}/lib/libcshore.a")
-        endif()
-      endif()
-    endif()
-  endif()
-
-  if(APPLE)
-    if(CSHORE_INOUT_LC STREQUAL "file")
-      if((CMAKE_BUILD_TYPE_LC STREQUAL "debug") OR (CMAKE_BUILD_TYPE_LC STREQUAL
-                                                    "valgrind"))
-        if(CSHORE_LIBRARY_LC STREQUAL "shared")
-          execute_process(
-            COMMAND
-              ln -s -f
-              "${CMAKE_SOURCE_DIR}/lib/libcshore.so.DEBUG.MACOS.FILEINOUT"
-              "${CMAKE_SOURCE_DIR}/lib/libcshore.so")
-        else()
-          execute_process(
-            COMMAND
-              ln -s -f
-              "${CMAKE_SOURCE_DIR}/lib/libcshore.a.DEBUG.MACOS.FILEINOUT"
-              "${CMAKE_SOURCE_DIR}/lib/libcshore.a")
-        endif()
-      else()
-        if(CSHORE_LIBRARY_LC STREQUAL "shared")
-          execute_process(
-            COMMAND
-              ln -s -f
-              "${CMAKE_SOURCE_DIR}/lib/libcshore.so.RELEASE.MACOS.FILEINOUT"
-              "${CMAKE_SOURCE_DIR}/lib/libcshore.so")
-        else()
-          execute_process(
-            COMMAND
-              ln -s -f
-              "${CMAKE_SOURCE_DIR}/lib/libcshore.a.RELEASE.MACOS.FILEINOUT"
-              "${CMAKE_SOURCE_DIR}/lib/libcshore.a")
-        endif()
-      endif()
-
-    elseif(CSHORE_INOUT_LC STREQUAL "arg")
-      if((CMAKE_BUILD_TYPE_LC STREQUAL "debug") OR (CMAKE_BUILD_TYPE_LC STREQUAL
-                                                    "valgrind"))
-        if(CSHORE_LIBRARY_LC STREQUAL "shared")
-          execute_process(
-            COMMAND
-              ln -s -f
-              "${CMAKE_SOURCE_DIR}/lib/libcshore.so.DEBUG.MACOS.ARGINOUT"
-              "${CMAKE_SOURCE_DIR}/lib/libcshore.so")
-        else()
-          execute_process(
-            COMMAND
-              ln -s -f
-              "${CMAKE_SOURCE_DIR}/lib/libcshore.a.DEBUG.MACOS.ARGINOUT"
-              "${CMAKE_SOURCE_DIR}/lib/libcshore.a")
-        endif()
-      else()
-        if(CSHORE_LIBRARY_LC STREQUAL "shared")
-          execute_process(
-            COMMAND
-              ln -s -f
-              "${CMAKE_SOURCE_DIR}/lib/libcshore.so.RELEASE.MACOS.ARGINOUT"
-              "${CMAKE_SOURCE_DIR}/lib/libcshore.so")
-        else()
-          execute_process(
-            COMMAND
-              ln -s -f
-              "${CMAKE_SOURCE_DIR}/lib/libcshore.a.RELEASE.MACOS.ARGINOUT"
-              "${CMAKE_SOURCE_DIR}/lib/libcshore.a")
-        endif()
-      endif()
-
-    elseif(CSHORE_INOUT_LC STREQUAL "both")
-      if((CMAKE_BUILD_TYPE_LC STREQUAL "debug") OR (CMAKE_BUILD_TYPE_LC STREQUAL
-                                                    "valgrind"))
-        if(CSHORE_LIBRARY_LC STREQUAL "shared")
-          execute_process(
-            COMMAND
-              ln -s -f
-              "${CMAKE_SOURCE_DIR}/lib/libcshore.so.DEBUG.MACOS.ARGINBOTHOUT"
-              "${CMAKE_SOURCE_DIR}/lib/libcshore.so")
-        else()
-          execute_process(
-            COMMAND
-              ln -s -f
-              "${CMAKE_SOURCE_DIR}/lib/libcshore.a.DEBUG.MACOS.ARGINBOTHOUT"
-              "${CMAKE_SOURCE_DIR}/lib/libcshore.a")
-        endif()
-      else()
-        if(CSHORE_LIBRARY_LC STREQUAL "shared")
-          execute_process(
-            COMMAND
-              ln -s -f
-              "${CMAKE_SOURCE_DIR}/lib/libcshore.so.RELEASE.MACOS.ARGINBOTHOUT"
-              "${CMAKE_SOURCE_DIR}/lib/libcshore.so")
-        else()
-          execute_process(
-            COMMAND
-              ln -s -f
-              "${CMAKE_SOURCE_DIR}/lib/libcshore.a.RELEASE.MACOS.ARGINBOTHOUT"
-              "${CMAKE_SOURCE_DIR}/lib/libcshore.a")
-        endif()
-      endif()
-    endif()
-  endif()
 endif()
 
 if(WIN32)

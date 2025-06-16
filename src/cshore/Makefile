@@ -3,11 +3,11 @@
 
 # Are we making a static library, a shared library, or an executable?
 #TO_BUILD := STATICLIB
-TO_BUILD := SHAREDLIB
+# TO_BUILD := SHAREDLIB
 #TO_BUILD := EXE
 
 # Is this a debug or a release build of CShore?
-BUILD_VERSION := DEBUG
+# BUILD_VERSION := DEBUG
 #BUILD_VERSION := RELEASE
 #BUILD_VERSION := VALGRIND
 
@@ -17,7 +17,7 @@ BUILD_VERSION := DEBUG
 # input and output via ASCII files read by CShore executable or by calling program (FILEINOUT)
 #INPUT_AND_OUTPUT := ARGINOUT
 #INPUT_AND_OUTPUT := ARGINBOTHOUT
-INPUT_AND_OUTPUT := FILEINOUT
+# INPUT_AND_OUTPUT := FILEINOUT
 #======================================================================================================================
 
 # Fortran directives
@@ -42,16 +42,16 @@ MOD := CshoreShared.mod
 
 ifeq ($(BUILD_VERSION), DEBUG)
 	FFLAGS := -std=f2008 -g -DDEBUG -O0 -Wall -Wextra -Wno-compare-reals -Wconversion -Wimplicit-interface -Wimplicit-procedure -Wintrinsics-std -Wsurprising -Waliasing -Wshadow -Wuninitialized -Wcast-align -Wnull-dereference -fbacktrace -ffpe-trap=zero,overflow,underflow,invalid,denormal -fcheck=all -ffree-line-length-none -fno-underscoring -cpp -I.
-	CPEXT := .DEBUG.LINUX
+	# CPEXT := .DEBUG.LINUX
 
 else ifeq ($(BUILD_VERSION), RELEASE)
 	FFLAGS := -std=f2008 -O3 -ffree-line-length-none -fno-underscoring -cpp -I.
-	CPEXT := .RELEASE.LINUX
+	# CPEXT := .RELEASE.LINUX
 
 else ifeq ($(BUILD_VERSION), VALGRIND)
 	FFLAGS := -pg -std=f2008 -g -O0 -Wall -Wextra -Wno-compare-reals -Wconversion -Wimplicit-interface -Wimplicit-procedure -Wintrinsics-std -Wsurprising -Waliasing -Wshadow -Wuninitialized -Wcast-align -Wnull-dereference -fbacktrace -ffpe-trap=zero,overflow,underflow,invalid,denormal -fcheck=all -ffree-line-length-none -fno-underscoring -cpp -I.
 	LDFLAGS := -pg
-	CPEXT := .DEBUG.LINUX
+	# CPEXT := .DEBUG.LINUX
 endif
 
 
@@ -77,12 +77,12 @@ endif
 
 $(STATICLIB) : $(OBJS)
 	$(AR) $(ARFLAGS) $(STATICLIB) $(OBJS)
-	cp $(STATICLIB)  ../lib/$(STATICLIB)$(CPEXT).$(INPUT_AND_OUTPUT)
+	cp $(STATICLIB)  ../lib/
 	cp $(HEADER) ../inc/
 
 $(SHAREDLIB) : $(OBJS)
 	$(LD) $(LDFLAGS) -o $(SHAREDLIB) $(OBJS)
-	cp $(SHAREDLIB)  ../lib/$(SHAREDLIB)$(CPEXT).$(INPUT_AND_OUTPUT)
+	cp $(SHAREDLIB)  ../lib/
 	cp $(HEADER) ../inc/
 
 $(EXE) : $(OBJS)
