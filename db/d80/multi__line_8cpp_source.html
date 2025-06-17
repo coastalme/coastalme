@@ -140,28 +140,28 @@ $(function(){initNavTree('db/d80/multi__line_8cpp_source.html','../../'); initRe
 <div class="foldopen" id="foldopen00046" data-start="{" data-end="}">
 <div class="line"><a id="l00046" name="l00046"></a><span class="lineno"><a class="line" href="../../d0/d89/classCGeomMultiLine.html#afdbe517c9f47370fe67557d46eb309c1">   46</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="../../d0/d89/classCGeomMultiLine.html#a3f99a9c2ac66b75c432941ec88fc8538">CGeomMultiLine::AppendLineSegment</a>(vector&lt;pair&lt;int, int&gt; &gt;* pprVIn)</div>
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>{</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>   <a class="code hl_variable" href="../../d0/d89/classCGeomMultiLine.html#ad4d3e975f72da69900b3b469bdfea2ad">m_prVVLineSegment</a>.push_back(*pprVIn);</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>   <a class="code hl_variable" href="../../d0/d89/classCGeomMultiLine.html#ad4d3e975f72da69900b3b469bdfea2ad">m_prVVLineSegment</a>.push_back( * pprVIn);</div>
 <div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>}</div>
 </div>
 <div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span></div>
 <div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span><span class="comment">// void CGeomMultiLine::AppendLineSegmentAndInherit(void)</span></div>
 <div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span><span class="comment">// {</span></div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span><span class="comment">//    vector&lt;pair&lt;int, int&gt; &gt; prVNewLineSeg;</span></div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span><span class="comment">//    m_prVVLineSegment.push_back(prVNewLineSeg);</span></div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span><span class="comment">// vector&lt;pair&lt;int, int&gt; &gt; prVNewLineSeg;</span></div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span><span class="comment">// m_prVVLineSegment.push_back(prVNewLineSeg);</span></div>
 <div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span><span class="comment">//</span></div>
 <div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span><span class="comment">//    // Must inherit any profile numbers stored in earlier (i.e. coastward) line segments</span></div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span><span class="comment">//    int nSize = m_prVVLineSegment.size();</span></div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span><span class="comment">//    if (nSize &gt; 1)</span></div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span><span class="comment">//    {</span></div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span><span class="comment">//       for (int n = 0; n &lt; m_prVVLineSegment[nSize-2].size(); n++)</span></div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span><span class="comment">//       {</span></div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span><span class="comment">//          int</span></div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span><span class="comment">//             nPrevProfile = m_prVVLineSegment[nSize-2][n].first,</span></div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span><span class="comment">//             nPrevLineSeg = m_prVVLineSegment[nSize-2][n].second + 1;</span></div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span><span class="comment">// int nSize = m_prVVLineSegment.size();</span></div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span><span class="comment">// if (nSize &gt; 1)</span></div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span><span class="comment">// {</span></div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span><span class="comment">// for (int n = 0; n &lt; m_prVVLineSegment[nSize-2].size(); n++)</span></div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span><span class="comment">// {</span></div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span><span class="comment">// int</span></div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span><span class="comment">// nPrevProfile = m_prVVLineSegment[nSize-2][n].first,</span></div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span><span class="comment">// nPrevLineSeg = m_prVVLineSegment[nSize-2][n].second + 1;</span></div>
 <div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span><span class="comment">//</span></div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span><span class="comment">//          m_prVVLineSegment[nSize-1].push_back(make_pair(nPrevProfile, nPrevLineSeg));</span></div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span><span class="comment">//       }</span></div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span><span class="comment">//    }</span></div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span><span class="comment">// m_prVVLineSegment[nSize-1].push_back(make_pair(nPrevProfile, nPrevLineSeg));</span></div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span><span class="comment">// }</span></div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span><span class="comment">// }</span></div>
 <div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span><span class="comment">// }</span></div>
 <div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span></div>
 <div class="foldopen" id="foldopen00073" data-start="{" data-end="}">
@@ -181,7 +181,7 @@ $(function(){initNavTree('db/d80/multi__line_8cpp_source.html','../../'); initRe
 <div class="foldopen" id="foldopen00085" data-start="{" data-end="}">
 <div class="line"><a id="l00085" name="l00085"></a><span class="lineno"><a class="line" href="../../d0/d89/classCGeomMultiLine.html#ab995e6f50eee7b4c9ec53b0c223abf1b">   85</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="../../d0/d89/classCGeomMultiLine.html#ab995e6f50eee7b4c9ec53b0c223abf1b">CGeomMultiLine::InsertLineSegment</a>(<span class="keywordtype">int</span> <span class="keyword">const</span> nSegment)</div>
 <div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>{</div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span><span class="comment">//   assert(nSegment &lt; m_prVVLineSegment.size());</span></div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span><span class="comment">// assert(nSegment &lt; m_prVVLineSegment.size());</span></div>
 <div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span> </div>
 <div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>   <span class="comment">// The new vector of pairs is identical to the existing vector of pairs i.e. we inherit profile/line seg details from the previous line seg</span></div>
 <div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>   vector&lt;pair&lt;int, int&gt; &gt; prVPrev = <a class="code hl_variable" href="../../d0/d89/classCGeomMultiLine.html#ad4d3e975f72da69900b3b469bdfea2ad">m_prVVLineSegment</a>[nSegment];</div>
@@ -195,10 +195,10 @@ $(function(){initNavTree('db/d80/multi__line_8cpp_source.html','../../'); initRe
 <div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>   vector&lt;vector&lt;pair&lt;int, int&gt; &gt; &gt;::iterator it;</div>
 <div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>   it = <a class="code hl_variable" href="../../d0/d89/classCGeomMultiLine.html#ad4d3e975f72da69900b3b469bdfea2ad">m_prVVLineSegment</a>.begin();</div>
 <div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span> </div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>   <a class="code hl_variable" href="../../d0/d89/classCGeomMultiLine.html#ad4d3e975f72da69900b3b469bdfea2ad">m_prVVLineSegment</a>.insert(it+nSegment+1, prVPrev);</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>   <a class="code hl_variable" href="../../d0/d89/classCGeomMultiLine.html#ad4d3e975f72da69900b3b469bdfea2ad">m_prVVLineSegment</a>.insert(it + nSegment + 1, prVPrev);</div>
 <div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span> </div>
 <div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>   <span class="comment">// Must now increment the profile&#39;s own line seg numbers, but only for those profile numbers which were affected by the insertion. Do this for the new line seg and every line seg after that</span></div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>   <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> m = nSegment+1; m &lt; <a class="code hl_variable" href="../../d0/d89/classCGeomMultiLine.html#ad4d3e975f72da69900b3b469bdfea2ad">m_prVVLineSegment</a>.size(); m++)</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>   <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> m = nSegment + 1; m &lt; <a class="code hl_variable" href="../../d0/d89/classCGeomMultiLine.html#ad4d3e975f72da69900b3b469bdfea2ad">m_prVVLineSegment</a>.size(); m++)</div>
 <div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>   {</div>
 <div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>      <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> n = 0; n &lt; <a class="code hl_variable" href="../../d0/d89/classCGeomMultiLine.html#ad4d3e975f72da69900b3b469bdfea2ad">m_prVVLineSegment</a>[m].size(); n++)</div>
 <div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>      {</div>
@@ -235,15 +235,15 @@ $(function(){initNavTree('db/d80/multi__line_8cpp_source.html','../../'); initRe
 <div class="line"><a id="l00135" name="l00135"></a><span class="lineno"><a class="line" href="../../d0/d89/classCGeomMultiLine.html#a679d5893191ff6dc5ab6b9acd1f5c770">  135</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="../../d0/d89/classCGeomMultiLine.html#a679d5893191ff6dc5ab6b9acd1f5c770">CGeomMultiLine::AppendCoincidentProfileToLineSegments</a>(pair&lt;int, int&gt; <span class="keyword">const</span> prIn)</div>
 <div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>{</div>
 <div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>   <span class="keywordtype">long</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> nSize = <a class="code hl_variable" href="../../d0/d89/classCGeomMultiLine.html#ad4d3e975f72da69900b3b469bdfea2ad">m_prVVLineSegment</a>.size();</div>
-<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>   <a class="code hl_variable" href="../../d0/d89/classCGeomMultiLine.html#ad4d3e975f72da69900b3b469bdfea2ad">m_prVVLineSegment</a>[nSize-1].push_back(prIn);</div>
-<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span><span class="comment">//   m_prVVLineSegment.back().push_back(prIn);</span></div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>   <a class="code hl_variable" href="../../d0/d89/classCGeomMultiLine.html#ad4d3e975f72da69900b3b469bdfea2ad">m_prVVLineSegment</a>[nSize - 1].push_back(prIn);</div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span><span class="comment">// m_prVVLineSegment.back().push_back(prIn);</span></div>
 <div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>}</div>
 </div>
 <div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span></div>
 <div class="foldopen" id="foldopen00143" data-start="{" data-end="}">
 <div class="line"><a id="l00143" name="l00143"></a><span class="lineno"><a class="line" href="../../d0/d89/classCGeomMultiLine.html#add6b741fa71f3eae355876dcc4232ec8">  143</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="../../d0/d89/classCGeomMultiLine.html#add6b741fa71f3eae355876dcc4232ec8">CGeomMultiLine::AddCoincidentProfileToExistingLineSegment</a>(<span class="keywordtype">int</span> <span class="keyword">const</span> nSegment, <span class="keywordtype">int</span> <span class="keyword">const</span> nProfile, <span class="keywordtype">int</span> <span class="keyword">const</span> nLineSeg)</div>
 <div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>{</div>
-<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span><span class="comment">//   assert(nSegment &lt; m_prVVLineSegment.size());</span></div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span><span class="comment">// assert(nSegment &lt; m_prVVLineSegment.size());</span></div>
 <div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>   <a class="code hl_variable" href="../../d0/d89/classCGeomMultiLine.html#ad4d3e975f72da69900b3b469bdfea2ad">m_prVVLineSegment</a>[nSegment].push_back(make_pair(nProfile, nLineSeg));</div>
 <div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>}</div>
 </div>
@@ -252,7 +252,7 @@ $(function(){initNavTree('db/d80/multi__line_8cpp_source.html','../../'); initRe
 <div class="line"><a id="l00150" name="l00150"></a><span class="lineno"><a class="line" href="../../d0/d89/classCGeomMultiLine.html#ab0146cd34539f41588924571dbfb2054">  150</a></span>vector&lt;pair&lt;int, int&gt; &gt;* <a class="code hl_function" href="../../d0/d89/classCGeomMultiLine.html#ab0146cd34539f41588924571dbfb2054">CGeomMultiLine::pprVGetPairedCoincidentProfilesForLineSegment</a>(<span class="keywordtype">int</span> <span class="keyword">const</span> nSegment)</div>
 <div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>{</div>
 <div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>   <span class="comment">// TODO 055 No check to see if nSegment &lt; size()</span></div>
-<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>   <span class="keywordflow">return</span> &amp;<a class="code hl_variable" href="../../d0/d89/classCGeomMultiLine.html#ad4d3e975f72da69900b3b469bdfea2ad">m_prVVLineSegment</a>[nSegment];</div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>   <span class="keywordflow">return</span> &amp; <a class="code hl_variable" href="../../d0/d89/classCGeomMultiLine.html#ad4d3e975f72da69900b3b469bdfea2ad">m_prVVLineSegment</a>[nSegment];</div>
 <div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>}</div>
 </div>
 <div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span></div>
@@ -275,7 +275,7 @@ $(function(){initNavTree('db/d80/multi__line_8cpp_source.html','../../'); initRe
 <div class="line"><a id="l00171" name="l00171"></a><span class="lineno"><a class="line" href="../../d0/d89/classCGeomMultiLine.html#a3516022bd96ee15709653b3bb7cc0155">  171</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="../../d0/d89/classCGeomMultiLine.html#a3516022bd96ee15709653b3bb7cc0155">CGeomMultiLine::nGetNumCoincidentProfilesInLineSegment</a>(<span class="keywordtype">int</span> <span class="keyword">const</span> nSegment)</div>
 <div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>{</div>
 <div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>   <span class="comment">// Safety check</span></div>
-<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>   <span class="keywordflow">if</span> (nSegment &gt; <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(<a class="code hl_variable" href="../../d0/d89/classCGeomMultiLine.html#ad4d3e975f72da69900b3b469bdfea2ad">m_prVVLineSegment</a>.size())-1)</div>
+<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>   <span class="keywordflow">if</span> (nSegment &gt; <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(<a class="code hl_variable" href="../../d0/d89/classCGeomMultiLine.html#ad4d3e975f72da69900b3b469bdfea2ad">m_prVVLineSegment</a>.size()) - 1)</div>
 <div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>      <span class="keywordflow">return</span> -1;</div>
 <div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span> </div>
 <div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>   <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(<a class="code hl_variable" href="../../d0/d89/classCGeomMultiLine.html#ad4d3e975f72da69900b3b469bdfea2ad">m_prVVLineSegment</a>[nSegment].size());</div>
@@ -288,11 +288,11 @@ $(function(){initNavTree('db/d80/multi__line_8cpp_source.html','../../'); initRe
 <div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>   <span class="keywordtype">long</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> nLineSegSize = <a class="code hl_variable" href="../../d0/d89/classCGeomMultiLine.html#ad4d3e975f72da69900b3b469bdfea2ad">m_prVVLineSegment</a>.size();</div>
 <div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span> </div>
 <div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>   <span class="comment">// Note no check to ensure that nLineSegSize &lt; 0</span></div>
-<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>   <span class="keywordtype">long</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> nCoincidentSize = <a class="code hl_variable" href="../../d0/d89/classCGeomMultiLine.html#ad4d3e975f72da69900b3b469bdfea2ad">m_prVVLineSegment</a>[nLineSegSize-1].size();</div>
+<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>   <span class="keywordtype">long</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> nCoincidentSize = <a class="code hl_variable" href="../../d0/d89/classCGeomMultiLine.html#ad4d3e975f72da69900b3b469bdfea2ad">m_prVVLineSegment</a>[nLineSegSize - 1].size();</div>
 <div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span> </div>
 <div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>   <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; nCoincidentSize; i++)</div>
 <div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>   {</div>
-<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>      <span class="keywordflow">if</span> (<a class="code hl_variable" href="../../d0/d89/classCGeomMultiLine.html#ad4d3e975f72da69900b3b469bdfea2ad">m_prVVLineSegment</a>[nLineSegSize-1][i].first == nProfile)</div>
+<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>      <span class="keywordflow">if</span> (<a class="code hl_variable" href="../../d0/d89/classCGeomMultiLine.html#ad4d3e975f72da69900b3b469bdfea2ad">m_prVVLineSegment</a>[nLineSegSize - 1][i].first == nProfile)</div>
 <div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>         <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
 <div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>   }</div>
 <div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span> </div>
@@ -303,13 +303,13 @@ $(function(){initNavTree('db/d80/multi__line_8cpp_source.html','../../'); initRe
 <div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span><span class="comment">// bool CGeomMultiLine::bFindProfileInCoincidentProfilesOfLineSegment(int const nProfile, int const nSegment)</span></div>
 <div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span><span class="comment">// {</span></div>
 <div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span><span class="comment">//    // Note no check to see if nSegment &lt; m_prVVLineSegment.size()</span></div>
-<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span><span class="comment">//    int nCoincidentSize = m_prVVLineSegment[nSegment].size();</span></div>
+<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span><span class="comment">// int nCoincidentSize = m_prVVLineSegment[nSegment].size();</span></div>
 <div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span><span class="comment">//</span></div>
-<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span><span class="comment">//    for (int i = 0; i &lt; nCoincidentSize; i++)</span></div>
-<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span><span class="comment">//       if (m_prVVLineSegment[nSegment][i].first == nProfile)</span></div>
-<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span><span class="comment">//          return true;</span></div>
+<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span><span class="comment">// for (int i = 0; i &lt; nCoincidentSize; i++)</span></div>
+<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span><span class="comment">// if (m_prVVLineSegment[nSegment][i].first == nProfile)</span></div>
+<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span><span class="comment">// return true;</span></div>
 <div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span><span class="comment">//</span></div>
-<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span><span class="comment">//    return false;</span></div>
+<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span><span class="comment">// return false;</span></div>
 <div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span><span class="comment">// }</span></div>
 <div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span></div>
 <div class="foldopen" id="foldopen00211" data-start="{" data-end="}">
@@ -320,7 +320,7 @@ $(function(){initNavTree('db/d80/multi__line_8cpp_source.html','../../'); initRe
 <div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span>   <span class="keywordflow">if</span> (nSegSize == 0)</div>
 <div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span>      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span> </div>
-<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span>   <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = nSegSize-1; i &gt;= 0; i--)</div>
+<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span>   <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = nSegSize - 1; i &gt;= 0; i--)</div>
 <div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span>   {</div>
 <div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span>      <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> j = 0; j &lt; <a class="code hl_variable" href="../../d0/d89/classCGeomMultiLine.html#ad4d3e975f72da69900b3b469bdfea2ad">m_prVVLineSegment</a>[i].size(); j++)</div>
 <div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span>      {</div>
@@ -385,17 +385,17 @@ $(function(){initNavTree('db/d80/multi__line_8cpp_source.html','../../'); initRe
 <div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span><span class="comment">// //! Returns the number of the last line segment which includes the given profile number as a co-incident profile</span></div>
 <div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span><span class="comment">// int CGeomMultiLine::nFindProfilesLastSeg(int const nProfile) const</span></div>
 <div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span><span class="comment">// {</span></div>
-<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span><span class="comment">//    int nSeg = -1;</span></div>
-<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span><span class="comment">//    for (int i = static_cast&lt;int&gt;(m_prVVLineSegment.size()-1); i &gt;= 0; i--)</span></div>
-<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span><span class="comment">//    {</span></div>
-<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span><span class="comment">//       for (unsigned int j = 0; j &lt; m_prVVLineSegment[i].size(); j++)</span></div>
-<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span><span class="comment">//       {</span></div>
-<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span><span class="comment">//          if (m_prVVLineSegment[i][j].first == nProfile)</span></div>
-<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span><span class="comment">//             nSeg = i;</span></div>
-<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span><span class="comment">//       }</span></div>
-<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span><span class="comment">//    }</span></div>
+<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span><span class="comment">// int nSeg = -1;</span></div>
+<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span><span class="comment">// for (int i = static_cast&lt;int&gt;(m_prVVLineSegment.size()-1); i &gt;= 0; i--)</span></div>
+<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span><span class="comment">// {</span></div>
+<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span><span class="comment">// for (unsigned int j = 0; j &lt; m_prVVLineSegment[i].size(); j++)</span></div>
+<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span><span class="comment">// {</span></div>
+<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span><span class="comment">// if (m_prVVLineSegment[i][j].first == nProfile)</span></div>
+<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span><span class="comment">// nSeg = i;</span></div>
+<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span><span class="comment">// }</span></div>
+<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span><span class="comment">// }</span></div>
 <div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span><span class="comment">//</span></div>
-<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span><span class="comment">//    return nSeg;</span></div>
+<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span><span class="comment">// return nSeg;</span></div>
 <div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span><span class="comment">// }</span></div>
 <div class="ttc" id="aclassCGeomMultiLine_html_a0598f98c4103cde329147da13ded7c61"><div class="ttname"><a href="../../d0/d89/classCGeomMultiLine.html#a0598f98c4103cde329147da13ded7c61">CGeomMultiLine::nGetProfsLineSeg</a></div><div class="ttdeci">int nGetProfsLineSeg(int const, int const) const</div><div class="ttdoc">Returns the profile&#39;s own line segment, given a line segment and the index of the co-incident profile...</div><div class="ttdef"><b>Definition</b> <a href="#l00263">multi_line.cpp:263</a></div></div>
 <div class="ttc" id="aclassCGeomMultiLine_html_a3063e454f1e7ef2b32484cf8c7db0e97"><div class="ttname"><a href="../../d0/d89/classCGeomMultiLine.html#a3063e454f1e7ef2b32484cf8c7db0e97">CGeomMultiLine::bFindProfileInCoincidentProfilesOfLastLineSegment</a></div><div class="ttdeci">bool bFindProfileInCoincidentProfilesOfLastLineSegment(int const)</div><div class="ttdoc">Returns true if the given profile number is amongst the coincident profiles of the CGeomMultiLine obj...</div><div class="ttdef"><b>Definition</b> <a href="#l00181">multi_line.cpp:181</a></div></div>
@@ -425,7 +425,7 @@ $(function(){initNavTree('db/d80/multi__line_8cpp_source.html','../../'); initRe
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="../../db/d80/multi__line_8cpp.html">multi_line.cpp</a></li>
-    <li class="footer">Generated on Tue Jun 17 2025 12:07:49 for CoastalME (Coastal Modelling Environment) by <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+    <li class="footer">Generated on Tue Jun 17 2025 16:19:04 for CoastalME (Coastal Modelling Environment) by <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
   </ul>
 </div>
 </body>

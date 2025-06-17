@@ -153,13 +153,13 @@ $(function(){initNavTree('d6/d91/create__polygons_8cpp_source.html','../../'); i
 <div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>      <span class="comment">// Do this for every point on the coastline (except the last point)</span></div>
 <div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>      <span class="keywordtype">int</span> nCoastSize = <a class="code hl_variable" href="../../d1/d98/classCSimulation.html#a25ada8139c82ca7beab3f279cff83184">m_VCoast</a>[nCoast].nGetCoastlineSize();</div>
 <div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span> </div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>      <span class="keywordflow">for</span> (<span class="keywordtype">int</span> nCoastPoint = 0; nCoastPoint &lt; nCoastSize-1; nCoastPoint++)</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>      <span class="keywordflow">for</span> (<span class="keywordtype">int</span> nCoastPoint = 0; nCoastPoint &lt; nCoastSize - 1; nCoastPoint++)</div>
 <div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>      {</div>
 <div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>         <span class="keywordflow">if</span> (! <a class="code hl_variable" href="../../d1/d98/classCSimulation.html#a25ada8139c82ca7beab3f279cff83184">m_VCoast</a>[nCoast].bIsProfileAtCoastPoint(nCoastPoint))</div>
 <div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>            <span class="keywordflow">continue</span>;</div>
 <div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span> </div>
 <div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>         <span class="comment">// OK, this coast point is the start of a coastline-normal profile</span></div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>         <a class="code hl_class" href="../../da/dae/classCGeomProfile.html">CGeomProfile</a>* pThisProfile = <a class="code hl_variable" href="../../d1/d98/classCSimulation.html#a25ada8139c82ca7beab3f279cff83184">m_VCoast</a>[nCoast].pGetProfileAtCoastPoint(nCoastPoint);</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>         <a class="code hl_class" href="../../da/dae/classCGeomProfile.html">CGeomProfile</a> * pThisProfile = <a class="code hl_variable" href="../../d1/d98/classCSimulation.html#a25ada8139c82ca7beab3f279cff83184">m_VCoast</a>[nCoast].pGetProfileAtCoastPoint(nCoastPoint);</div>
 <div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span> </div>
 <div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>         <span class="keywordflow">if</span> (pThisProfile-&gt;<a class="code hl_function" href="../../da/dae/classCGeomProfile.html#aac223e2610d50ca2c7eadaf8542e9498">bOKIncStartAndEndOfCoast</a>())</div>
 <div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>         {</div>
@@ -170,7 +170,7 @@ $(function(){initNavTree('d6/d91/create__polygons_8cpp_source.html','../../'); i
 <div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>            nPolygon++;</div>
 <div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span> </div>
 <div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>            <span class="comment">// Now get a pointer to the next (down-coast) profile</span></div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>            <a class="code hl_class" href="../../da/dae/classCGeomProfile.html">CGeomProfile</a>* pNextProfile = pThisProfile-&gt;<a class="code hl_function" href="../../da/dae/classCGeomProfile.html#a60a83e788c19cfee1f79e44253e09fca">pGetDownCoastAdjacentProfile</a>();</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>            <a class="code hl_class" href="../../da/dae/classCGeomProfile.html">CGeomProfile</a> * pNextProfile = pThisProfile-&gt;<a class="code hl_function" href="../../da/dae/classCGeomProfile.html#a60a83e788c19cfee1f79e44253e09fca">pGetDownCoastAdjacentProfile</a>();</div>
 <div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span> </div>
 <div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>            <span class="keywordtype">bool</span> bNextProfileIsOK = <span class="keyword">false</span>;</div>
 <div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span> </div>
@@ -178,12 +178,12 @@ $(function(){initNavTree('d6/d91/create__polygons_8cpp_source.html','../../'); i
 <div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>            {</div>
 <div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>               <span class="comment">// if (pNextProfile == NULL)       // TODO THIS GIVES CPPCHECK ERROR</span></div>
 <div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>               <span class="comment">// {</span></div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>               <span class="comment">//    LogStream &lt;&lt; m_ulIter &lt;&lt; &quot;: nThisProfile = &quot; &lt;&lt; nThisProfile &lt;&lt; &quot; invalid down-coast adjacent profile, trying next down-coast adjacent profile&quot; &lt;&lt; endl;</span></div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>               <span class="comment">// LogStream &lt;&lt; m_ulIter &lt;&lt; &quot;: nThisProfile = &quot; &lt;&lt; nThisProfile &lt;&lt; &quot; invalid down-coast adjacent profile, trying next down-coast adjacent profile&quot; &lt;&lt; endl;</span></div>
 <div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>               <span class="comment">//</span></div>
 <div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>               <span class="comment">//    // Try the next-after-next profile</span></div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>               <span class="comment">//    CGeomProfile* pNextNextProfile = pNextProfile-&gt;pGetDownCoastAdjacentProfile();</span></div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>               <span class="comment">//    pNextProfile = pNextNextProfile;</span></div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>               <span class="comment">//    continue;</span></div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>               <span class="comment">// CGeomProfile* pNextNextProfile = pNextProfile-&gt;pGetDownCoastAdjacentProfile();</span></div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>               <span class="comment">// pNextProfile = pNextNextProfile;</span></div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>               <span class="comment">// continue;</span></div>
 <div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>               <span class="comment">// }</span></div>
 <div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span> </div>
 <div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>               <span class="comment">// Get the ID of the next (down-coast) profile</span></div>
@@ -198,7 +198,7 @@ $(function(){initNavTree('d6/d91/create__polygons_8cpp_source.html','../../'); i
 <div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>                  <span class="comment">// LogStream &lt;&lt; m_ulIter &lt;&lt; &quot;: down-coast adjacent profile = &quot; &lt;&lt; nNextProfile &lt;&lt; &quot; is not OK&quot; &lt;&lt; endl;</span></div>
 <div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span> </div>
 <div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>                  <span class="comment">// So try the following profile</span></div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>                  <a class="code hl_class" href="../../da/dae/classCGeomProfile.html">CGeomProfile</a>* pNextNextProfile = pNextProfile-&gt;<a class="code hl_function" href="../../da/dae/classCGeomProfile.html#a60a83e788c19cfee1f79e44253e09fca">pGetDownCoastAdjacentProfile</a>();</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>                  <a class="code hl_class" href="../../da/dae/classCGeomProfile.html">CGeomProfile</a> * pNextNextProfile = pNextProfile-&gt;<a class="code hl_function" href="../../da/dae/classCGeomProfile.html#a60a83e788c19cfee1f79e44253e09fca">pGetDownCoastAdjacentProfile</a>();</div>
 <div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>                  pNextProfile = pNextNextProfile;</div>
 <div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>               }</div>
 <div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span> </div>
@@ -217,29 +217,29 @@ $(function(){initNavTree('d6/d91/create__polygons_8cpp_source.html','../../'); i
 <div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>            <a class="code hl_variable" href="../../d1/d98/classCSimulation.html#a25ada8139c82ca7beab3f279cff83184">m_VCoast</a>[nCoast].SetPolygonNode(nNodePoint, ++nNode);</div>
 <div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span> </div>
 <div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>            <span class="comment">// Get the grid CRS coordinates of the coast node</span></div>
-<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>            <a class="code hl_class" href="../../d6/d0d/classCGeom2DIPoint.html">CGeom2DIPoint</a> PtiNode = *<a class="code hl_variable" href="../../d1/d98/classCSimulation.html#a25ada8139c82ca7beab3f279cff83184">m_VCoast</a>[nCoast].pPtiGetCellMarkedAsCoastline(nNodePoint);</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>            <a class="code hl_class" href="../../d6/d0d/classCGeom2DIPoint.html">CGeom2DIPoint</a> PtiNode = * <a class="code hl_variable" href="../../d1/d98/classCSimulation.html#a25ada8139c82ca7beab3f279cff83184">m_VCoast</a>[nCoast].pPtiGetCellMarkedAsCoastline(nNodePoint);</div>
 <div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span> </div>
 <div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>            <span class="comment">// // DEBUG CODE ===================</span></div>
 <div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>            <span class="comment">// if ((m_ulIter == 18) &amp;&amp; (nThisProfile == 29))</span></div>
-<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>            <span class="comment">//    std::cerr &lt;&lt; endl;</span></div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>            <span class="comment">// std::cerr &lt;&lt; endl;</span></div>
 <div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>            <span class="comment">// // DEBUG CODE ===================</span></div>
 <div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span> </div>
 <div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>            <span class="comment">// Get some defaults (assuming for now that this polygon is not approximately triangular i.e. both normals do not meet)</span></div>
-<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>            <span class="keywordtype">int</span> nNextProfileEnd = pNextProfile-&gt;<a class="code hl_function" href="../../da/dae/classCGeomProfile.html#abaf88697019588a2b0901bd19044aee4">nGetProfileSize</a>()-1;</div>
-<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>            <span class="keywordtype">int</span> nThisProfileEnd = pThisProfile-&gt;<a class="code hl_function" href="../../da/dae/classCGeomProfile.html#abaf88697019588a2b0901bd19044aee4">nGetProfileSize</a>()-1;</div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>            <span class="keywordtype">int</span> nNextProfileEnd = pNextProfile-&gt;<a class="code hl_function" href="../../da/dae/classCGeomProfile.html#abaf88697019588a2b0901bd19044aee4">nGetProfileSize</a>() - 1;</div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>            <span class="keywordtype">int</span> nThisProfileEnd = pThisProfile-&gt;<a class="code hl_function" href="../../da/dae/classCGeomProfile.html#abaf88697019588a2b0901bd19044aee4">nGetProfileSize</a>() - 1;</div>
 <div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>            <span class="keywordtype">bool</span> bMeetsAtAPoint = <span class="keyword">false</span>;</div>
 <div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>            <a class="code hl_class" href="../../d5/d4e/classCGeom2DPoint.html">CGeom2DPoint</a> PtCoastwardTip;</div>
 <div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span> </div>
 <div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span><span class="comment">//                // DEBUG CODE =============================================================================================</span></div>
-<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span><span class="comment">//                CGeom2DPoint PtNextEndTmp = *pNextProfile-&gt;pPtGetPointInProfile(nNextProfileEnd);</span></div>
-<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span><span class="comment">//                double dXTmp = dExtCRSXToGridX(PtNextEndTmp.dGetX());</span></div>
-<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span><span class="comment">//                double dYTmp = dExtCRSYToGridY(PtNextEndTmp.dGetY());</span></div>
-<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span><span class="comment">//                assert(bIsWithinValidGrid(dXTmp, dYTmp));</span></div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span><span class="comment">// CGeom2DPoint PtNextEndTmp = *pNextProfile-&gt;pPtGetPointInProfile(nNextProfileEnd);</span></div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span><span class="comment">// double dXTmp = dExtCRSXToGridX(PtNextEndTmp.dGetX());</span></div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span><span class="comment">// double dYTmp = dExtCRSYToGridY(PtNextEndTmp.dGetY());</span></div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span><span class="comment">// assert(bIsWithinValidGrid(dXTmp, dYTmp));</span></div>
 <div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span><span class="comment">//</span></div>
-<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span><span class="comment">//                CGeom2DPoint PtThisEndTmp = *pThisProfile-&gt;pPtGetPointInProfile(nThisProfileEnd);</span></div>
-<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span><span class="comment">//                dXTmp = dExtCRSXToGridX(PtThisEndTmp.dGetX());</span></div>
-<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span><span class="comment">//                dYTmp = dExtCRSYToGridY(PtThisEndTmp.dGetY());</span></div>
-<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span><span class="comment">//                assert(bIsWithinValidGrid(dXTmp, dYTmp));</span></div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span><span class="comment">// CGeom2DPoint PtThisEndTmp = *pThisProfile-&gt;pPtGetPointInProfile(nThisProfileEnd);</span></div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span><span class="comment">// dXTmp = dExtCRSXToGridX(PtThisEndTmp.dGetX());</span></div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span><span class="comment">// dYTmp = dExtCRSYToGridY(PtThisEndTmp.dGetY());</span></div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span><span class="comment">// assert(bIsWithinValidGrid(dXTmp, dYTmp));</span></div>
 <div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span><span class="comment">//                // DEBUG CODE =============================================================================================</span></div>
 <div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span> </div>
 <div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>            <span class="comment">// Now check to see if the two normals do meet i.e. if they are coincident</span></div>
@@ -263,7 +263,7 @@ $(function(){initNavTree('d6/d91/create__polygons_8cpp_source.html','../../'); i
 <div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>               nThisProfileEnd = <a class="code hl_function" href="../../d6/d2a/cme_8h.html#a068017859403c0629d89f8d348f6c224">tMin</a>(nThisProfileEnd, nTmpThisProfileEnd);</div>
 <div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>               nNextProfileEnd = <a class="code hl_function" href="../../d6/d2a/cme_8h.html#a068017859403c0629d89f8d348f6c224">tMin</a>(nNextProfileEnd, nTmpNextProfileEnd);</div>
 <div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span> </div>
-<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>               PtCoastwardTip = *pThisProfile-&gt;<a class="code hl_function" href="../../da/dae/classCGeomProfile.html#aaa8ddb9c775927bdb7940f7826f90a74">pPtGetPointInProfile</a>(nThisProfileEnd);</div>
+<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>               PtCoastwardTip = * pThisProfile-&gt;<a class="code hl_function" href="../../da/dae/classCGeomProfile.html#aaa8ddb9c775927bdb7940f7826f90a74">pPtGetPointInProfile</a>(nThisProfileEnd);</div>
 <div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>            }</div>
 <div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span> </div>
 <div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>            <span class="comment">// Create the vector in which to store the polygon&#39;s boundary (external CRS). Note that these points are not in sequence</span></div>
@@ -272,38 +272,38 @@ $(function(){initNavTree('d6/d91/create__polygons_8cpp_source.html','../../'); i
 <div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>            <span class="comment">// Start appending points: begin by appending the points in this normal, in reverse order</span></div>
 <div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = nThisProfileEnd; i &gt;= 0; i--)</div>
 <div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>            {</div>
-<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>               <a class="code hl_class" href="../../d5/d4e/classCGeom2DPoint.html">CGeom2DPoint</a> PtThis = *pThisProfile-&gt;<a class="code hl_function" href="../../da/dae/classCGeomProfile.html#aaa8ddb9c775927bdb7940f7826f90a74">pPtGetPointInProfile</a>(i);</div>
+<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>               <a class="code hl_class" href="../../d5/d4e/classCGeom2DPoint.html">CGeom2DPoint</a> PtThis = * pThisProfile-&gt;<a class="code hl_function" href="../../da/dae/classCGeomProfile.html#aaa8ddb9c775927bdb7940f7826f90a74">pPtGetPointInProfile</a>(i);</div>
 <div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>               PtVBoundary.push_back(PtThis);</div>
 <div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>            }</div>
 <div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span> </div>
 <div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>            <span class="comment">// Next add coast points: from the start point of this normal, moving down-coast as far as the down-coast norma</span></div>
 <div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = nCoastPoint; i &lt;= nNextProfileCoastPoint; i++)</div>
 <div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>            {</div>
-<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>               <a class="code hl_class" href="../../d5/d4e/classCGeom2DPoint.html">CGeom2DPoint</a> PtThis = *<a class="code hl_variable" href="../../d1/d98/classCSimulation.html#a25ada8139c82ca7beab3f279cff83184">m_VCoast</a>[nCoast].pPtGetCoastlinePointExtCRS(i);</div>
+<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>               <a class="code hl_class" href="../../d5/d4e/classCGeom2DPoint.html">CGeom2DPoint</a> PtThis = * <a class="code hl_variable" href="../../d1/d98/classCSimulation.html#a25ada8139c82ca7beab3f279cff83184">m_VCoast</a>[nCoast].pPtGetCoastlinePointExtCRS(i);</div>
 <div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>               PtVBoundary.push_back(PtThis);</div>
 <div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>            }</div>
 <div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span> </div>
 <div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>            <span class="comment">// Append the points in the down-coast (next) normal</span></div>
 <div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt;= nNextProfileEnd; i++)</div>
 <div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>            {</div>
-<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>               <a class="code hl_class" href="../../d5/d4e/classCGeom2DPoint.html">CGeom2DPoint</a> PtThis = *pNextProfile-&gt;<a class="code hl_function" href="../../da/dae/classCGeomProfile.html#aaa8ddb9c775927bdb7940f7826f90a74">pPtGetPointInProfile</a>(i);</div>
+<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>               <a class="code hl_class" href="../../d5/d4e/classCGeom2DPoint.html">CGeom2DPoint</a> PtThis = * pNextProfile-&gt;<a class="code hl_function" href="../../da/dae/classCGeomProfile.html#aaa8ddb9c775927bdb7940f7826f90a74">pPtGetPointInProfile</a>(i);</div>
 <div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>               PtVBoundary.push_back(PtThis);</div>
 <div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>            }</div>
 <div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span> </div>
 <div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>            <span class="comment">// Finally, append the end point of this normal</span></div>
-<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>            <a class="code hl_class" href="../../d5/d4e/classCGeom2DPoint.html">CGeom2DPoint</a> PtThis = *pThisProfile-&gt;<a class="code hl_function" href="../../da/dae/classCGeomProfile.html#aaa8ddb9c775927bdb7940f7826f90a74">pPtGetPointInProfile</a>(nThisProfileEnd);</div>
+<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>            <a class="code hl_class" href="../../d5/d4e/classCGeom2DPoint.html">CGeom2DPoint</a> PtThis = * pThisProfile-&gt;<a class="code hl_function" href="../../da/dae/classCGeomProfile.html#aaa8ddb9c775927bdb7940f7826f90a74">pPtGetPointInProfile</a>(nThisProfileEnd);</div>
 <div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>            PtVBoundary.push_back(PtThis);</div>
 <div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span> </div>
 <div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>            <span class="comment">// Now identify the &#39;anti-node&#39;, this is the seaward point &#39;opposite&#39; the polygon&#39;s coastal node</span></div>
 <div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>            <a class="code hl_class" href="../../d6/d0d/classCGeom2DIPoint.html">CGeom2DIPoint</a> PtiAntiNode;</div>
 <div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span> </div>
 <div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>            <span class="keywordflow">if</span> (bMeetsAtAPoint)</div>
-<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>               PtiAntiNode = <a class="code hl_function" href="../../d1/d98/classCSimulation.html#a1cdb36fc97d2f40d471edc2d59734960">PtiExtCRSToGridRound</a>(&amp;PtCoastwardTip);</div>
+<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>               PtiAntiNode = <a class="code hl_function" href="../../d1/d98/classCSimulation.html#a1cdb36fc97d2f40d471edc2d59734960">PtiExtCRSToGridRound</a>( &amp; PtCoastwardTip);</div>
 <div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span> </div>
 <div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>            <span class="keywordflow">else</span></div>
 <div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>            {</div>
 <div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span>               <a class="code hl_class" href="../../d5/d4e/classCGeom2DPoint.html">CGeom2DPoint</a> PtAvg = <a class="code hl_function" href="../../d1/d98/classCSimulation.html#a41d2806566f688547f97c0d573bb1611">PtAverage</a>(pThisProfile-&gt;<a class="code hl_function" href="../../da/dae/classCGeomProfile.html#aaa8ddb9c775927bdb7940f7826f90a74">pPtGetPointInProfile</a>(nThisProfileEnd), pNextProfile-&gt;<a class="code hl_function" href="../../da/dae/classCGeomProfile.html#aaa8ddb9c775927bdb7940f7826f90a74">pPtGetPointInProfile</a>(nNextProfileEnd));</div>
-<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span>               PtiAntiNode = <a class="code hl_function" href="../../d1/d98/classCSimulation.html#a1cdb36fc97d2f40d471edc2d59734960">PtiExtCRSToGridRound</a>(&amp;PtAvg);</div>
+<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span>               PtiAntiNode = <a class="code hl_function" href="../../d1/d98/classCSimulation.html#a1cdb36fc97d2f40d471edc2d59734960">PtiExtCRSToGridRound</a>( &amp; PtAvg);</div>
 <div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span>            }</div>
 <div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span> </div>
 <div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span>            <span class="comment">// Is this a start-of-coast or an end-of-coast polygon?</span></div>
@@ -317,7 +317,7 @@ $(function(){initNavTree('d6/d91/create__polygons_8cpp_source.html','../../'); i
 <div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span>               bEndCoast = <span class="keyword">true</span>;</div>
 <div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span> </div>
 <div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span>            <span class="comment">// Create the coast polygon object and get a pointer to it. TODO 044 the first parameter (global ID) will need to change when considering multiple coasts</span></div>
-<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span>            <a class="code hl_class" href="../../df/d45/classCGeomCoastPolygon.html">CGeomCoastPolygon</a>* pPolygon = <a class="code hl_variable" href="../../d1/d98/classCSimulation.html#a25ada8139c82ca7beab3f279cff83184">m_VCoast</a>[nCoast].pPolyCreatePolygon(nThisProfile, nPolygon, nNodePoint, &amp;PtiNode, &amp;PtiAntiNode, nThisProfile, nNextProfile, &amp;PtVBoundary, nThisProfileEnd+1, nNextProfileEnd+1, bStartCoast, bEndCoast);</div>
+<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span>            <a class="code hl_class" href="../../df/d45/classCGeomCoastPolygon.html">CGeomCoastPolygon</a> * pPolygon = <a class="code hl_variable" href="../../d1/d98/classCSimulation.html#a25ada8139c82ca7beab3f279cff83184">m_VCoast</a>[nCoast].pPolyCreatePolygon(nThisProfile, nPolygon, nNodePoint, &amp; PtiNode, &amp; PtiAntiNode, nThisProfile, nNextProfile, &amp; PtVBoundary, nThisProfileEnd + 1, nNextProfileEnd + 1, bStartCoast, bEndCoast);</div>
 <div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span> </div>
 <div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span>            <span class="comment">// And store this pointer for simulation-wide access, in along-coast sequence</span></div>
 <div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span>            <a class="code hl_variable" href="../../d1/d98/classCSimulation.html#afdf9931c6687dab00b0f48c0709d6c8a">m_pVCoastPolygon</a>.push_back(pPolygon);</div>
@@ -333,7 +333,7 @@ $(function(){initNavTree('d6/d91/create__polygons_8cpp_source.html','../../'); i
 <div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>            <span class="comment">// // DEBUG CODE =================================================================================</span></div>
 <div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span>            <span class="comment">// LogStream &lt;&lt; m_ulIter &lt;&lt; &quot;: vertices for polygon = &quot; &lt;&lt; nPolygon &lt;&lt; &quot; (m_nNumPolygonGlobal = &quot; &lt;&lt; m_nNumPolygonGlobal &lt;&lt; &quot;)&quot; &lt;&lt; endl;</span></div>
 <div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>            <span class="comment">// for (int n = 0; n &lt; pPolygon-&gt;nGetNumVertices(); n++)</span></div>
-<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>            <span class="comment">//    LogStream &lt;&lt; &quot;[&quot; &lt;&lt; pPolygon-&gt;PtiGetVertex(n).nGetX() &lt;&lt; &quot;][&quot; &lt;&lt; pPolygon-&gt;PtiGetVertex(n).nGetY() &lt;&lt; &quot;]\t&quot;;</span></div>
+<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>            <span class="comment">// LogStream &lt;&lt; &quot;[&quot; &lt;&lt; pPolygon-&gt;PtiGetVertex(n).nGetX() &lt;&lt; &quot;][&quot; &lt;&lt; pPolygon-&gt;PtiGetVertex(n).nGetY() &lt;&lt; &quot;]\t&quot;;</span></div>
 <div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span>            <span class="comment">// LogStream &lt;&lt; endl;</span></div>
 <div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>            <span class="comment">// // DEBUG CODE =================================================================================</span></div>
 <div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span> </div>
@@ -343,7 +343,7 @@ $(function(){initNavTree('d6/d91/create__polygons_8cpp_source.html','../../'); i
 <div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>            <span class="comment">// Now rasterize the polygon boundaries: first, the coastline. This is necessary so that sand/coarse sediment derived from platform erosion of the coast cells is correctly added to the containing polygon&#39;s unconsolidated sediment</span></div>
 <div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span>            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = nCoastPoint; i &lt;= nNextProfileCoastPoint; i++)</div>
 <div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span>            {</div>
-<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span>               <a class="code hl_class" href="../../d6/d0d/classCGeom2DIPoint.html">CGeom2DIPoint</a> PtiToMark = *<a class="code hl_variable" href="../../d1/d98/classCSimulation.html#a25ada8139c82ca7beab3f279cff83184">m_VCoast</a>[nCoast].pPtiGetCellMarkedAsCoastline(i);</div>
+<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span>               <a class="code hl_class" href="../../d6/d0d/classCGeom2DIPoint.html">CGeom2DIPoint</a> PtiToMark = * <a class="code hl_variable" href="../../d1/d98/classCSimulation.html#a25ada8139c82ca7beab3f279cff83184">m_VCoast</a>[nCoast].pPtiGetCellMarkedAsCoastline(i);</div>
 <div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span>               <a class="code hl_variable" href="../../d1/d98/classCSimulation.html#a1312f0ac2c93a6cb2bc41c23eb01c293">m_pRasterGrid</a>-&gt;m_Cell[PtiToMark.<a class="code hl_function" href="../../d6/d0d/classCGeom2DIPoint.html#af84c687b2d0be01ab41cbcc0565f4f3f">nGetX</a>()][PtiToMark.<a class="code hl_function" href="../../d6/d0d/classCGeom2DIPoint.html#a4d9c20bcca90dcb9d519b664aba09cbd">nGetY</a>()].SetPolygonID(nPolygon);</div>
 <div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span>            }</div>
 <div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span> </div>
@@ -352,7 +352,7 @@ $(function(){initNavTree('d6/d91/create__polygons_8cpp_source.html','../../'); i
 <div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span> </div>
 <div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; nCellsInProfile; i++)</div>
 <div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span>            {</div>
-<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span>               <a class="code hl_class" href="../../d6/d0d/classCGeom2DIPoint.html">CGeom2DIPoint</a> PtiToMark = *pNextProfile-&gt;<a class="code hl_function" href="../../da/dae/classCGeomProfile.html#a6d13079f744085f2d132405e0120ca54">pPtiGetCellInProfile</a>(i);</div>
+<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span>               <a class="code hl_class" href="../../d6/d0d/classCGeom2DIPoint.html">CGeom2DIPoint</a> PtiToMark = * pNextProfile-&gt;<a class="code hl_function" href="../../da/dae/classCGeomProfile.html#a6d13079f744085f2d132405e0120ca54">pPtiGetCellInProfile</a>(i);</div>
 <div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span>               <a class="code hl_variable" href="../../d1/d98/classCSimulation.html#a1312f0ac2c93a6cb2bc41c23eb01c293">m_pRasterGrid</a>-&gt;m_Cell[PtiToMark.<a class="code hl_function" href="../../d6/d0d/classCGeom2DIPoint.html#af84c687b2d0be01ab41cbcc0565f4f3f">nGetX</a>()][PtiToMark.<a class="code hl_function" href="../../d6/d0d/classCGeom2DIPoint.html#a4d9c20bcca90dcb9d519b664aba09cbd">nGetY</a>()].SetPolygonID(nPolygon);</div>
 <div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span>            }</div>
 <div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span> </div>
@@ -361,25 +361,25 @@ $(function(){initNavTree('d6/d91/create__polygons_8cpp_source.html','../../'); i
 <div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span> </div>
 <div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span>            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; nCellsInProfile; i++)</div>
 <div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span>            {</div>
-<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span>               <a class="code hl_class" href="../../d6/d0d/classCGeom2DIPoint.html">CGeom2DIPoint</a> PtiToMark = *pThisProfile-&gt;<a class="code hl_function" href="../../da/dae/classCGeomProfile.html#a6d13079f744085f2d132405e0120ca54">pPtiGetCellInProfile</a>(i);</div>
+<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span>               <a class="code hl_class" href="../../d6/d0d/classCGeom2DIPoint.html">CGeom2DIPoint</a> PtiToMark = * pThisProfile-&gt;<a class="code hl_function" href="../../da/dae/classCGeomProfile.html#a6d13079f744085f2d132405e0120ca54">pPtiGetCellInProfile</a>(i);</div>
 <div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span>               <a class="code hl_variable" href="../../d1/d98/classCSimulation.html#a1312f0ac2c93a6cb2bc41c23eb01c293">m_pRasterGrid</a>-&gt;m_Cell[PtiToMark.<a class="code hl_function" href="../../d6/d0d/classCGeom2DIPoint.html#af84c687b2d0be01ab41cbcc0565f4f3f">nGetX</a>()][PtiToMark.<a class="code hl_function" href="../../d6/d0d/classCGeom2DIPoint.html#a4d9c20bcca90dcb9d519b664aba09cbd">nGetY</a>()].SetPolygonID(nPolygon);</div>
 <div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span>            }</div>
 <div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span> </div>
 <div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span>            <span class="comment">// If the polygon doesn&#39;t meet at a point at its seaward end, also need to rasterize the &#39;joining line&#39;</span></div>
 <div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span>            <span class="keywordflow">if</span> (! bMeetsAtAPoint)</div>
 <div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span>            {</div>
-<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span>               <a class="code hl_class" href="../../d6/d0d/classCGeom2DIPoint.html">CGeom2DIPoint</a> PtiDownCoastNormalEnd = *pNextProfile-&gt;<a class="code hl_function" href="../../da/dae/classCGeomProfile.html#aa6179cf07ded38813693a9c783149c62">pPtiGetEndPoint</a>();       <span class="comment">// Grid CRS</span></div>
-<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span>               <a class="code hl_class" href="../../d6/d0d/classCGeom2DIPoint.html">CGeom2DIPoint</a> PtiUpCoastNormalEnd = *pThisProfile-&gt;<a class="code hl_function" href="../../da/dae/classCGeomProfile.html#aa6179cf07ded38813693a9c783149c62">pPtiGetEndPoint</a>();         <span class="comment">// Grid CRS</span></div>
+<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span>               <a class="code hl_class" href="../../d6/d0d/classCGeom2DIPoint.html">CGeom2DIPoint</a> PtiDownCoastNormalEnd = * pNextProfile-&gt;<a class="code hl_function" href="../../da/dae/classCGeomProfile.html#aa6179cf07ded38813693a9c783149c62">pPtiGetEndPoint</a>();      <span class="comment">// Grid CRS</span></div>
+<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span>               <a class="code hl_class" href="../../d6/d0d/classCGeom2DIPoint.html">CGeom2DIPoint</a> PtiUpCoastNormalEnd = * pThisProfile-&gt;<a class="code hl_function" href="../../da/dae/classCGeomProfile.html#aa6179cf07ded38813693a9c783149c62">pPtiGetEndPoint</a>();        <span class="comment">// Grid CRS</span></div>
 <div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span> </div>
-<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span>               <a class="code hl_function" href="../../d1/d98/classCSimulation.html#ab743d5627b1b3d7b9dd95e7110f29715">RasterizePolygonJoiningLine</a>(&amp;PtiUpCoastNormalEnd, &amp;PtiDownCoastNormalEnd, nPolygon);</div>
+<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span>               <a class="code hl_function" href="../../d1/d98/classCSimulation.html#ab743d5627b1b3d7b9dd95e7110f29715">RasterizePolygonJoiningLine</a>( &amp; PtiUpCoastNormalEnd, &amp; PtiDownCoastNormalEnd, nPolygon);</div>
 <div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span> </div>
-<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span><span class="comment">//                   pPolygon-&gt;SetNotPointed();</span></div>
+<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span><span class="comment">// pPolygon-&gt;SetNotPointed();</span></div>
 <div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span>            }</div>
 <div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span> </div>
-<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span><span class="comment">//            }</span></div>
+<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span><span class="comment">// }</span></div>
 <div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span> </div>
 <div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span>            nNextProfile = nThisProfile;</div>
-<div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span>            nCoastPoint = nNextProfileCoastPoint-1;</div>
+<div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span>            nCoastPoint = nNextProfileCoastPoint - 1;</div>
 <div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span> </div>
 <div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span>            <a class="code hl_variable" href="../../d1/d98/classCSimulation.html#ad89a4ca2ea821f9853becbbce8af52b7">m_nNumPolygonGlobal</a>++;</div>
 <div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span> </div>
@@ -395,17 +395,17 @@ $(function(){initNavTree('d6/d91/create__polygons_8cpp_source.html','../../'); i
 <div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span>   <span class="comment">// int nNum24 = 0;</span></div>
 <div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span>   <span class="comment">// for (int nY = 0; nY &lt; m_nYGridSize; nY++)</span></div>
 <div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span>   <span class="comment">// {</span></div>
-<div class="line"><a id="l00306" name="l00306"></a><span class="lineno">  306</span>   <span class="comment">//    for (int nX = 0; nX &lt; m_nXGridSize; nX++)</span></div>
-<div class="line"><a id="l00307" name="l00307"></a><span class="lineno">  307</span>   <span class="comment">//    {</span></div>
-<div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span>   <span class="comment">//       if (m_pRasterGrid-&gt;m_Cell[nX][nY].nGetPolygonID() == nUnusedPolygon)</span></div>
-<div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span>   <span class="comment">//          nNumUnusedPolygonCells++;</span></div>
+<div class="line"><a id="l00306" name="l00306"></a><span class="lineno">  306</span>   <span class="comment">// for (int nX = 0; nX &lt; m_nXGridSize; nX++)</span></div>
+<div class="line"><a id="l00307" name="l00307"></a><span class="lineno">  307</span>   <span class="comment">// {</span></div>
+<div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span>   <span class="comment">// if (m_pRasterGrid-&gt;m_Cell[nX][nY].nGetPolygonID() == nUnusedPolygon)</span></div>
+<div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span>   <span class="comment">// nNumUnusedPolygonCells++;</span></div>
 <div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span>   <span class="comment">//</span></div>
-<div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span>   <span class="comment">//       if (m_pRasterGrid-&gt;m_Cell[nX][nY].nGetPolygonID() == 23)</span></div>
-<div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span>   <span class="comment">//          nNum23++;</span></div>
+<div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span>   <span class="comment">// if (m_pRasterGrid-&gt;m_Cell[nX][nY].nGetPolygonID() == 23)</span></div>
+<div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span>   <span class="comment">// nNum23++;</span></div>
 <div class="line"><a id="l00313" name="l00313"></a><span class="lineno">  313</span>   <span class="comment">//</span></div>
-<div class="line"><a id="l00314" name="l00314"></a><span class="lineno">  314</span>   <span class="comment">//       if (m_pRasterGrid-&gt;m_Cell[nX][nY].nGetPolygonID() == 24)</span></div>
-<div class="line"><a id="l00315" name="l00315"></a><span class="lineno">  315</span>   <span class="comment">//          nNum24++;</span></div>
-<div class="line"><a id="l00316" name="l00316"></a><span class="lineno">  316</span>   <span class="comment">//    }</span></div>
+<div class="line"><a id="l00314" name="l00314"></a><span class="lineno">  314</span>   <span class="comment">// if (m_pRasterGrid-&gt;m_Cell[nX][nY].nGetPolygonID() == 24)</span></div>
+<div class="line"><a id="l00315" name="l00315"></a><span class="lineno">  315</span>   <span class="comment">// nNum24++;</span></div>
+<div class="line"><a id="l00316" name="l00316"></a><span class="lineno">  316</span>   <span class="comment">// }</span></div>
 <div class="line"><a id="l00317" name="l00317"></a><span class="lineno">  317</span>   <span class="comment">// }</span></div>
 <div class="line"><a id="l00318" name="l00318"></a><span class="lineno">  318</span>   <span class="comment">//</span></div>
 <div class="line"><a id="l00319" name="l00319"></a><span class="lineno">  319</span>   <span class="comment">// LogStream &lt;&lt; m_ulIter &lt;&lt; &quot;: BEFORE CELL RE-NUMBERING&quot; &lt;&lt; endl;</span></div>
@@ -433,17 +433,17 @@ $(function(){initNavTree('d6/d91/create__polygons_8cpp_source.html','../../'); i
 <div class="line"><a id="l00341" name="l00341"></a><span class="lineno">  341</span>   <span class="comment">// nNum24 = 0;</span></div>
 <div class="line"><a id="l00342" name="l00342"></a><span class="lineno">  342</span>   <span class="comment">// for (int nY = 0; nY &lt; m_nYGridSize; nY++)</span></div>
 <div class="line"><a id="l00343" name="l00343"></a><span class="lineno">  343</span>   <span class="comment">// {</span></div>
-<div class="line"><a id="l00344" name="l00344"></a><span class="lineno">  344</span>   <span class="comment">//    for (int nX = 0; nX &lt; m_nXGridSize; nX++)</span></div>
-<div class="line"><a id="l00345" name="l00345"></a><span class="lineno">  345</span>   <span class="comment">//    {</span></div>
-<div class="line"><a id="l00346" name="l00346"></a><span class="lineno">  346</span>   <span class="comment">//       if (m_pRasterGrid-&gt;m_Cell[nX][nY].nGetPolygonID() == nUnusedPolygon)</span></div>
-<div class="line"><a id="l00347" name="l00347"></a><span class="lineno">  347</span>   <span class="comment">//          nNumUnusedPolygonCells++;</span></div>
+<div class="line"><a id="l00344" name="l00344"></a><span class="lineno">  344</span>   <span class="comment">// for (int nX = 0; nX &lt; m_nXGridSize; nX++)</span></div>
+<div class="line"><a id="l00345" name="l00345"></a><span class="lineno">  345</span>   <span class="comment">// {</span></div>
+<div class="line"><a id="l00346" name="l00346"></a><span class="lineno">  346</span>   <span class="comment">// if (m_pRasterGrid-&gt;m_Cell[nX][nY].nGetPolygonID() == nUnusedPolygon)</span></div>
+<div class="line"><a id="l00347" name="l00347"></a><span class="lineno">  347</span>   <span class="comment">// nNumUnusedPolygonCells++;</span></div>
 <div class="line"><a id="l00348" name="l00348"></a><span class="lineno">  348</span>   <span class="comment">//</span></div>
-<div class="line"><a id="l00349" name="l00349"></a><span class="lineno">  349</span>   <span class="comment">//       if (m_pRasterGrid-&gt;m_Cell[nX][nY].nGetPolygonID() == 23)</span></div>
-<div class="line"><a id="l00350" name="l00350"></a><span class="lineno">  350</span>   <span class="comment">//          nNum23++;</span></div>
+<div class="line"><a id="l00349" name="l00349"></a><span class="lineno">  349</span>   <span class="comment">// if (m_pRasterGrid-&gt;m_Cell[nX][nY].nGetPolygonID() == 23)</span></div>
+<div class="line"><a id="l00350" name="l00350"></a><span class="lineno">  350</span>   <span class="comment">// nNum23++;</span></div>
 <div class="line"><a id="l00351" name="l00351"></a><span class="lineno">  351</span>   <span class="comment">//</span></div>
-<div class="line"><a id="l00352" name="l00352"></a><span class="lineno">  352</span>   <span class="comment">//       if (m_pRasterGrid-&gt;m_Cell[nX][nY].nGetPolygonID() == 24)</span></div>
-<div class="line"><a id="l00353" name="l00353"></a><span class="lineno">  353</span>   <span class="comment">//          nNum24++;</span></div>
-<div class="line"><a id="l00354" name="l00354"></a><span class="lineno">  354</span>   <span class="comment">//    }</span></div>
+<div class="line"><a id="l00352" name="l00352"></a><span class="lineno">  352</span>   <span class="comment">// if (m_pRasterGrid-&gt;m_Cell[nX][nY].nGetPolygonID() == 24)</span></div>
+<div class="line"><a id="l00353" name="l00353"></a><span class="lineno">  353</span>   <span class="comment">// nNum24++;</span></div>
+<div class="line"><a id="l00354" name="l00354"></a><span class="lineno">  354</span>   <span class="comment">// }</span></div>
 <div class="line"><a id="l00355" name="l00355"></a><span class="lineno">  355</span>   <span class="comment">// }</span></div>
 <div class="line"><a id="l00356" name="l00356"></a><span class="lineno">  356</span>   <span class="comment">//</span></div>
 <div class="line"><a id="l00357" name="l00357"></a><span class="lineno">  357</span>   <span class="comment">// LogStream &lt;&lt; m_ulIter &lt;&lt; &quot;: AFTER CELL RE-NUMBERING&quot; &lt;&lt; endl;</span></div>
@@ -461,9 +461,9 @@ $(function(){initNavTree('d6/d91/create__polygons_8cpp_source.html','../../'); i
 <div class="line"><a id="l00369" name="l00369"></a><span class="lineno">  369</span>   <span class="comment">// // And change these cells</span></div>
 <div class="line"><a id="l00370" name="l00370"></a><span class="lineno">  370</span>   <span class="comment">// for (int n = 0; n &lt; nEdgeSize; n++)</span></div>
 <div class="line"><a id="l00371" name="l00371"></a><span class="lineno">  371</span>   <span class="comment">// {</span></div>
-<div class="line"><a id="l00372" name="l00372"></a><span class="lineno">  372</span>   <span class="comment">//    CGeom2DPoint* pPt = pPolygon-&gt;pPtGetBoundaryPoint(n);    // External CRS</span></div>
-<div class="line"><a id="l00373" name="l00373"></a><span class="lineno">  373</span>   <span class="comment">//    CGeom2DIPoint Pti = PtiExtCRSToGridRound(pPt);</span></div>
-<div class="line"><a id="l00374" name="l00374"></a><span class="lineno">  374</span>   <span class="comment">//    m_pRasterGrid-&gt;m_Cell[Pti.nGetX()][Pti.nGetY()].SetPolygonID(nUnusedPolygon);</span></div>
+<div class="line"><a id="l00372" name="l00372"></a><span class="lineno">  372</span>   <span class="comment">// CGeom2DPoint* pPt = pPolygon-&gt;pPtGetBoundaryPoint(n);    // External CRS</span></div>
+<div class="line"><a id="l00373" name="l00373"></a><span class="lineno">  373</span>   <span class="comment">// CGeom2DIPoint Pti = PtiExtCRSToGridRound(pPt);</span></div>
+<div class="line"><a id="l00374" name="l00374"></a><span class="lineno">  374</span>   <span class="comment">// m_pRasterGrid-&gt;m_Cell[Pti.nGetX()][Pti.nGetY()].SetPolygonID(nUnusedPolygon);</span></div>
 <div class="line"><a id="l00375" name="l00375"></a><span class="lineno">  375</span>   <span class="comment">// }</span></div>
 <div class="line"><a id="l00376" name="l00376"></a><span class="lineno">  376</span> </div>
 <div class="line"><a id="l00377" name="l00377"></a><span class="lineno">  377</span>   <span class="comment">// // DEBUG CODE =================================================================================</span></div>
@@ -472,17 +472,17 @@ $(function(){initNavTree('d6/d91/create__polygons_8cpp_source.html','../../'); i
 <div class="line"><a id="l00380" name="l00380"></a><span class="lineno">  380</span>   <span class="comment">// nNum24 = 0;</span></div>
 <div class="line"><a id="l00381" name="l00381"></a><span class="lineno">  381</span>   <span class="comment">// for (int nY = 0; nY &lt; m_nYGridSize; nY++)</span></div>
 <div class="line"><a id="l00382" name="l00382"></a><span class="lineno">  382</span>   <span class="comment">// {</span></div>
-<div class="line"><a id="l00383" name="l00383"></a><span class="lineno">  383</span>   <span class="comment">//    for (int nX = 0; nX &lt; m_nXGridSize; nX++)</span></div>
-<div class="line"><a id="l00384" name="l00384"></a><span class="lineno">  384</span>   <span class="comment">//    {</span></div>
-<div class="line"><a id="l00385" name="l00385"></a><span class="lineno">  385</span>   <span class="comment">//       if (m_pRasterGrid-&gt;m_Cell[nX][nY].nGetPolygonID() == nUnusedPolygon)</span></div>
-<div class="line"><a id="l00386" name="l00386"></a><span class="lineno">  386</span>   <span class="comment">//          nNumUnusedPolygonCells++;</span></div>
+<div class="line"><a id="l00383" name="l00383"></a><span class="lineno">  383</span>   <span class="comment">// for (int nX = 0; nX &lt; m_nXGridSize; nX++)</span></div>
+<div class="line"><a id="l00384" name="l00384"></a><span class="lineno">  384</span>   <span class="comment">// {</span></div>
+<div class="line"><a id="l00385" name="l00385"></a><span class="lineno">  385</span>   <span class="comment">// if (m_pRasterGrid-&gt;m_Cell[nX][nY].nGetPolygonID() == nUnusedPolygon)</span></div>
+<div class="line"><a id="l00386" name="l00386"></a><span class="lineno">  386</span>   <span class="comment">// nNumUnusedPolygonCells++;</span></div>
 <div class="line"><a id="l00387" name="l00387"></a><span class="lineno">  387</span>   <span class="comment">//</span></div>
-<div class="line"><a id="l00388" name="l00388"></a><span class="lineno">  388</span>   <span class="comment">//       if (m_pRasterGrid-&gt;m_Cell[nX][nY].nGetPolygonID() == 23)</span></div>
-<div class="line"><a id="l00389" name="l00389"></a><span class="lineno">  389</span>   <span class="comment">//          nNum23++;</span></div>
+<div class="line"><a id="l00388" name="l00388"></a><span class="lineno">  388</span>   <span class="comment">// if (m_pRasterGrid-&gt;m_Cell[nX][nY].nGetPolygonID() == 23)</span></div>
+<div class="line"><a id="l00389" name="l00389"></a><span class="lineno">  389</span>   <span class="comment">// nNum23++;</span></div>
 <div class="line"><a id="l00390" name="l00390"></a><span class="lineno">  390</span>   <span class="comment">//</span></div>
-<div class="line"><a id="l00391" name="l00391"></a><span class="lineno">  391</span>   <span class="comment">//       if (m_pRasterGrid-&gt;m_Cell[nX][nY].nGetPolygonID() == 24)</span></div>
-<div class="line"><a id="l00392" name="l00392"></a><span class="lineno">  392</span>   <span class="comment">//          nNum24++;</span></div>
-<div class="line"><a id="l00393" name="l00393"></a><span class="lineno">  393</span>   <span class="comment">//    }</span></div>
+<div class="line"><a id="l00391" name="l00391"></a><span class="lineno">  391</span>   <span class="comment">// if (m_pRasterGrid-&gt;m_Cell[nX][nY].nGetPolygonID() == 24)</span></div>
+<div class="line"><a id="l00392" name="l00392"></a><span class="lineno">  392</span>   <span class="comment">// nNum24++;</span></div>
+<div class="line"><a id="l00393" name="l00393"></a><span class="lineno">  393</span>   <span class="comment">// }</span></div>
 <div class="line"><a id="l00394" name="l00394"></a><span class="lineno">  394</span>   <span class="comment">// }</span></div>
 <div class="line"><a id="l00395" name="l00395"></a><span class="lineno">  395</span>   <span class="comment">//</span></div>
 <div class="line"><a id="l00396" name="l00396"></a><span class="lineno">  396</span>   <span class="comment">// LogStream &lt;&lt; m_ulIter &lt;&lt; &quot;: AFTER CELL RE-NUMBERING&quot; &lt;&lt; endl;</span></div>
@@ -494,35 +494,35 @@ $(function(){initNavTree('d6/d91/create__polygons_8cpp_source.html','../../'); i
 <div class="line"><a id="l00402" name="l00402"></a><span class="lineno">  402</span>   <span class="comment">// // DEBUG CODE ===========================================================================================================</span></div>
 <div class="line"><a id="l00403" name="l00403"></a><span class="lineno">  403</span>   <span class="comment">// if (m_ulIter == 109)</span></div>
 <div class="line"><a id="l00404" name="l00404"></a><span class="lineno">  404</span>   <span class="comment">// {</span></div>
-<div class="line"><a id="l00405" name="l00405"></a><span class="lineno">  405</span>   <span class="comment">//    string strOutFile = m_strOutPath;</span></div>
-<div class="line"><a id="l00406" name="l00406"></a><span class="lineno">  406</span>   <span class="comment">//    strOutFile += &quot;00_polygon_raster_&quot;;</span></div>
-<div class="line"><a id="l00407" name="l00407"></a><span class="lineno">  407</span>   <span class="comment">//    strOutFile += to_string(m_ulIter);</span></div>
-<div class="line"><a id="l00408" name="l00408"></a><span class="lineno">  408</span>   <span class="comment">//    strOutFile += &quot;.tif&quot;;</span></div>
+<div class="line"><a id="l00405" name="l00405"></a><span class="lineno">  405</span>   <span class="comment">// string strOutFile = m_strOutPath;</span></div>
+<div class="line"><a id="l00406" name="l00406"></a><span class="lineno">  406</span>   <span class="comment">// strOutFile += &quot;00_polygon_raster_&quot;;</span></div>
+<div class="line"><a id="l00407" name="l00407"></a><span class="lineno">  407</span>   <span class="comment">// strOutFile += to_string(m_ulIter);</span></div>
+<div class="line"><a id="l00408" name="l00408"></a><span class="lineno">  408</span>   <span class="comment">// strOutFile += &quot;.tif&quot;;</span></div>
 <div class="line"><a id="l00409" name="l00409"></a><span class="lineno">  409</span>   <span class="comment">//</span></div>
-<div class="line"><a id="l00410" name="l00410"></a><span class="lineno">  410</span>   <span class="comment">//    GDALDriver* pDriver = GetGDALDriverManager()-&gt;GetDriverByName(&quot;gtiff&quot;);</span></div>
-<div class="line"><a id="l00411" name="l00411"></a><span class="lineno">  411</span>   <span class="comment">//    GDALDataset* pDataSet = pDriver-&gt;Create(strOutFile.c_str(), m_nXGridSize, m_nYGridSize, 1, GDT_Float64, m_papszGDALRasterOptions);</span></div>
-<div class="line"><a id="l00412" name="l00412"></a><span class="lineno">  412</span>   <span class="comment">//    pDataSet-&gt;SetProjection(m_strGDALBasementDEMProjection.c_str());</span></div>
-<div class="line"><a id="l00413" name="l00413"></a><span class="lineno">  413</span>   <span class="comment">//    pDataSet-&gt;SetGeoTransform(m_dGeoTransform);</span></div>
+<div class="line"><a id="l00410" name="l00410"></a><span class="lineno">  410</span>   <span class="comment">// GDALDriver* pDriver = GetGDALDriverManager()-&gt;GetDriverByName(&quot;gtiff&quot;);</span></div>
+<div class="line"><a id="l00411" name="l00411"></a><span class="lineno">  411</span>   <span class="comment">// GDALDataset* pDataSet = pDriver-&gt;Create(strOutFile.c_str(), m_nXGridSize, m_nYGridSize, 1, GDT_Float64, m_papszGDALRasterOptions);</span></div>
+<div class="line"><a id="l00412" name="l00412"></a><span class="lineno">  412</span>   <span class="comment">// pDataSet-&gt;SetProjection(m_strGDALBasementDEMProjection.c_str());</span></div>
+<div class="line"><a id="l00413" name="l00413"></a><span class="lineno">  413</span>   <span class="comment">// pDataSet-&gt;SetGeoTransform(m_dGeoTransform);</span></div>
 <div class="line"><a id="l00414" name="l00414"></a><span class="lineno">  414</span>   <span class="comment">//</span></div>
-<div class="line"><a id="l00415" name="l00415"></a><span class="lineno">  415</span>   <span class="comment">//    int nn = 0;</span></div>
-<div class="line"><a id="l00416" name="l00416"></a><span class="lineno">  416</span>   <span class="comment">//    double* pdRaster = new double[m_nXGridSize * m_nYGridSize];</span></div>
-<div class="line"><a id="l00417" name="l00417"></a><span class="lineno">  417</span>   <span class="comment">//    for (int nY = 0; nY &lt; m_nYGridSize; nY++)</span></div>
-<div class="line"><a id="l00418" name="l00418"></a><span class="lineno">  418</span>   <span class="comment">//    {</span></div>
-<div class="line"><a id="l00419" name="l00419"></a><span class="lineno">  419</span>   <span class="comment">//       for (int nX = 0; nX &lt; m_nXGridSize; nX++)</span></div>
-<div class="line"><a id="l00420" name="l00420"></a><span class="lineno">  420</span>   <span class="comment">//       {</span></div>
-<div class="line"><a id="l00421" name="l00421"></a><span class="lineno">  421</span>   <span class="comment">//          pdRaster[nn++] = m_pRasterGrid-&gt;m_Cell[nX][nY].nGetPolygonID();</span></div>
-<div class="line"><a id="l00422" name="l00422"></a><span class="lineno">  422</span>   <span class="comment">//       }</span></div>
-<div class="line"><a id="l00423" name="l00423"></a><span class="lineno">  423</span>   <span class="comment">//    }</span></div>
+<div class="line"><a id="l00415" name="l00415"></a><span class="lineno">  415</span>   <span class="comment">// int nn = 0;</span></div>
+<div class="line"><a id="l00416" name="l00416"></a><span class="lineno">  416</span>   <span class="comment">// double* pdRaster = new double[m_nXGridSize * m_nYGridSize];</span></div>
+<div class="line"><a id="l00417" name="l00417"></a><span class="lineno">  417</span>   <span class="comment">// for (int nY = 0; nY &lt; m_nYGridSize; nY++)</span></div>
+<div class="line"><a id="l00418" name="l00418"></a><span class="lineno">  418</span>   <span class="comment">// {</span></div>
+<div class="line"><a id="l00419" name="l00419"></a><span class="lineno">  419</span>   <span class="comment">// for (int nX = 0; nX &lt; m_nXGridSize; nX++)</span></div>
+<div class="line"><a id="l00420" name="l00420"></a><span class="lineno">  420</span>   <span class="comment">// {</span></div>
+<div class="line"><a id="l00421" name="l00421"></a><span class="lineno">  421</span>   <span class="comment">// pdRaster[nn++] = m_pRasterGrid-&gt;m_Cell[nX][nY].nGetPolygonID();</span></div>
+<div class="line"><a id="l00422" name="l00422"></a><span class="lineno">  422</span>   <span class="comment">// }</span></div>
+<div class="line"><a id="l00423" name="l00423"></a><span class="lineno">  423</span>   <span class="comment">// }</span></div>
 <div class="line"><a id="l00424" name="l00424"></a><span class="lineno">  424</span>   <span class="comment">//</span></div>
-<div class="line"><a id="l00425" name="l00425"></a><span class="lineno">  425</span>   <span class="comment">//    GDALRasterBand* pBand = pDataSet-&gt;GetRasterBand(1);</span></div>
-<div class="line"><a id="l00426" name="l00426"></a><span class="lineno">  426</span>   <span class="comment">//    pBand-&gt;SetNoDataValue(m_dMissingValue);</span></div>
-<div class="line"><a id="l00427" name="l00427"></a><span class="lineno">  427</span>   <span class="comment">//    int nRet = pBand-&gt;RasterIO(GF_Write, 0, 0, m_nXGridSize, m_nYGridSize, pdRaster, m_nXGridSize, m_nYGridSize, GDT_Float64, 0, 0, NULL);</span></div>
+<div class="line"><a id="l00425" name="l00425"></a><span class="lineno">  425</span>   <span class="comment">// GDALRasterBand* pBand = pDataSet-&gt;GetRasterBand(1);</span></div>
+<div class="line"><a id="l00426" name="l00426"></a><span class="lineno">  426</span>   <span class="comment">// pBand-&gt;SetNoDataValue(m_dMissingValue);</span></div>
+<div class="line"><a id="l00427" name="l00427"></a><span class="lineno">  427</span>   <span class="comment">// int nRet = pBand-&gt;RasterIO(GF_Write, 0, 0, m_nXGridSize, m_nYGridSize, pdRaster, m_nXGridSize, m_nYGridSize, GDT_Float64, 0, 0, NULL);</span></div>
 <div class="line"><a id="l00428" name="l00428"></a><span class="lineno">  428</span>   <span class="comment">//</span></div>
-<div class="line"><a id="l00429" name="l00429"></a><span class="lineno">  429</span>   <span class="comment">//    if (nRet == CE_Failure)</span></div>
-<div class="line"><a id="l00430" name="l00430"></a><span class="lineno">  430</span>   <span class="comment">//       return RTN_ERR_GRIDCREATE;</span></div>
+<div class="line"><a id="l00429" name="l00429"></a><span class="lineno">  429</span>   <span class="comment">// if (nRet == CE_Failure)</span></div>
+<div class="line"><a id="l00430" name="l00430"></a><span class="lineno">  430</span>   <span class="comment">// return RTN_ERR_GRIDCREATE;</span></div>
 <div class="line"><a id="l00431" name="l00431"></a><span class="lineno">  431</span>   <span class="comment">//</span></div>
-<div class="line"><a id="l00432" name="l00432"></a><span class="lineno">  432</span>   <span class="comment">//    GDALClose(pDataSet);</span></div>
-<div class="line"><a id="l00433" name="l00433"></a><span class="lineno">  433</span>   <span class="comment">//    delete[] pdRaster;</span></div>
+<div class="line"><a id="l00432" name="l00432"></a><span class="lineno">  432</span>   <span class="comment">// GDALClose(pDataSet);</span></div>
+<div class="line"><a id="l00433" name="l00433"></a><span class="lineno">  433</span>   <span class="comment">// delete[] pdRaster;</span></div>
 <div class="line"><a id="l00434" name="l00434"></a><span class="lineno">  434</span>   <span class="comment">// }</span></div>
 <div class="line"><a id="l00435" name="l00435"></a><span class="lineno">  435</span>   <span class="comment">// // DEBUG CODE ===========================================================================================================</span></div>
 <div class="line"><a id="l00436" name="l00436"></a><span class="lineno">  436</span> </div>
@@ -531,15 +531,15 @@ $(function(){initNavTree('d6/d91/create__polygons_8cpp_source.html','../../'); i
 <div class="line"><a id="l00439" name="l00439"></a><span class="lineno">  439</span>   <span class="comment">// nNum24 = 0;</span></div>
 <div class="line"><a id="l00440" name="l00440"></a><span class="lineno">  440</span>   <span class="comment">// for (int nY = 0; nY &lt; m_nYGridSize; nY++)</span></div>
 <div class="line"><a id="l00441" name="l00441"></a><span class="lineno">  441</span>   <span class="comment">// {</span></div>
-<div class="line"><a id="l00442" name="l00442"></a><span class="lineno">  442</span>   <span class="comment">//    for (int nX = 0; nX &lt; m_nXGridSize; nX++)</span></div>
-<div class="line"><a id="l00443" name="l00443"></a><span class="lineno">  443</span>   <span class="comment">//    {</span></div>
+<div class="line"><a id="l00442" name="l00442"></a><span class="lineno">  442</span>   <span class="comment">// for (int nX = 0; nX &lt; m_nXGridSize; nX++)</span></div>
+<div class="line"><a id="l00443" name="l00443"></a><span class="lineno">  443</span>   <span class="comment">// {</span></div>
 <div class="line"><a id="l00444" name="l00444"></a><span class="lineno">  444</span>   <span class="comment">//</span></div>
-<div class="line"><a id="l00445" name="l00445"></a><span class="lineno">  445</span>   <span class="comment">//       if (m_pRasterGrid-&gt;m_Cell[nX][nY].nGetPolygonID() == 23)</span></div>
-<div class="line"><a id="l00446" name="l00446"></a><span class="lineno">  446</span>   <span class="comment">//          nNum23++;</span></div>
+<div class="line"><a id="l00445" name="l00445"></a><span class="lineno">  445</span>   <span class="comment">// if (m_pRasterGrid-&gt;m_Cell[nX][nY].nGetPolygonID() == 23)</span></div>
+<div class="line"><a id="l00446" name="l00446"></a><span class="lineno">  446</span>   <span class="comment">// nNum23++;</span></div>
 <div class="line"><a id="l00447" name="l00447"></a><span class="lineno">  447</span>   <span class="comment">//</span></div>
-<div class="line"><a id="l00448" name="l00448"></a><span class="lineno">  448</span>   <span class="comment">//       if (m_pRasterGrid-&gt;m_Cell[nX][nY].nGetPolygonID() == 24)</span></div>
-<div class="line"><a id="l00449" name="l00449"></a><span class="lineno">  449</span>   <span class="comment">//          nNum24++;</span></div>
-<div class="line"><a id="l00450" name="l00450"></a><span class="lineno">  450</span>   <span class="comment">//    }</span></div>
+<div class="line"><a id="l00448" name="l00448"></a><span class="lineno">  448</span>   <span class="comment">// if (m_pRasterGrid-&gt;m_Cell[nX][nY].nGetPolygonID() == 24)</span></div>
+<div class="line"><a id="l00449" name="l00449"></a><span class="lineno">  449</span>   <span class="comment">// nNum24++;</span></div>
+<div class="line"><a id="l00450" name="l00450"></a><span class="lineno">  450</span>   <span class="comment">// }</span></div>
 <div class="line"><a id="l00451" name="l00451"></a><span class="lineno">  451</span>   <span class="comment">// }</span></div>
 <div class="line"><a id="l00452" name="l00452"></a><span class="lineno">  452</span>   <span class="comment">//</span></div>
 <div class="line"><a id="l00453" name="l00453"></a><span class="lineno">  453</span>   <span class="comment">// LogStream &lt;&lt; m_ulIter &lt;&lt; &quot;: AFTER 00_polygon_raster&quot; &lt;&lt; endl;</span></div>
@@ -554,7 +554,7 @@ $(function(){initNavTree('d6/d91/create__polygons_8cpp_source.html','../../'); i
 <div class="line"><a id="l00461" name="l00461"></a><span class="lineno">  461</span><span class="comment">//===============================================================================================================================</span></div>
 <div class="line"><a id="l00463" name="l00463"></a><span class="lineno">  463</span><span class="comment">//===============================================================================================================================</span></div>
 <div class="foldopen" id="foldopen00464" data-start="{" data-end="}">
-<div class="line"><a id="l00464" name="l00464"></a><span class="lineno"><a class="line" href="../../d1/d98/classCSimulation.html#ab743d5627b1b3d7b9dd95e7110f29715">  464</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="../../d1/d98/classCSimulation.html#ab743d5627b1b3d7b9dd95e7110f29715">CSimulation::RasterizePolygonJoiningLine</a>(<a class="code hl_class" href="../../d6/d0d/classCGeom2DIPoint.html">CGeom2DIPoint</a> <span class="keyword">const</span>* pPt1, <a class="code hl_class" href="../../d6/d0d/classCGeom2DIPoint.html">CGeom2DIPoint</a> <span class="keyword">const</span>* pPt2, <span class="keywordtype">int</span> <span class="keyword">const</span> nPoly)</div>
+<div class="line"><a id="l00464" name="l00464"></a><span class="lineno"><a class="line" href="../../d1/d98/classCSimulation.html#ab743d5627b1b3d7b9dd95e7110f29715">  464</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="../../d1/d98/classCSimulation.html#ab743d5627b1b3d7b9dd95e7110f29715">CSimulation::RasterizePolygonJoiningLine</a>(<a class="code hl_class" href="../../d6/d0d/classCGeom2DIPoint.html">CGeom2DIPoint</a> <span class="keyword">const</span> * pPt1, <a class="code hl_class" href="../../d6/d0d/classCGeom2DIPoint.html">CGeom2DIPoint</a> <span class="keyword">const</span> * pPt2, <span class="keywordtype">int</span> <span class="keyword">const</span> nPoly)</div>
 <div class="line"><a id="l00465" name="l00465"></a><span class="lineno">  465</span>{</div>
 <div class="line"><a id="l00466" name="l00466"></a><span class="lineno">  466</span>   <span class="comment">// The start point of the line (grid CRS)</span></div>
 <div class="line"><a id="l00467" name="l00467"></a><span class="lineno">  467</span>   <span class="keywordtype">int</span> nXStart = pPt1-&gt;<a class="code hl_function" href="../../d6/d0d/classCGeom2DIPoint.html#af84c687b2d0be01ab41cbcc0565f4f3f">nGetX</a>();</div>
@@ -615,16 +615,16 @@ $(function(){initNavTree('d6/d91/create__polygons_8cpp_source.html','../../'); i
 <div class="line"><a id="l00521" name="l00521"></a><span class="lineno">  521</span>   <span class="comment">// for (int nCoast = 0; nCoast &lt; static_cast&lt;int&gt;(m_VCoast.size()); nCoast++)</span></div>
 <div class="line"><a id="l00522" name="l00522"></a><span class="lineno">  522</span>   <span class="comment">// {</span></div>
 <div class="line"><a id="l00523" name="l00523"></a><span class="lineno">  523</span>   <span class="comment">//    // Do this for every coastal polygon</span></div>
-<div class="line"><a id="l00524" name="l00524"></a><span class="lineno">  524</span>   <span class="comment">//    for (int nPoly = 0; nPoly &lt; m_VCoast[nCoast].nGetNumPolygons(); nPoly++)</span></div>
-<div class="line"><a id="l00525" name="l00525"></a><span class="lineno">  525</span>   <span class="comment">//    {</span></div>
-<div class="line"><a id="l00526" name="l00526"></a><span class="lineno">  526</span>   <span class="comment">//       CGeomCoastPolygon* pPolygon = m_VCoast[nCoast].pGetPolygon(nPoly);</span></div>
+<div class="line"><a id="l00524" name="l00524"></a><span class="lineno">  524</span>   <span class="comment">// for (int nPoly = 0; nPoly &lt; m_VCoast[nCoast].nGetNumPolygons(); nPoly++)</span></div>
+<div class="line"><a id="l00525" name="l00525"></a><span class="lineno">  525</span>   <span class="comment">// {</span></div>
+<div class="line"><a id="l00526" name="l00526"></a><span class="lineno">  526</span>   <span class="comment">// CGeomCoastPolygon* pPolygon = m_VCoast[nCoast].pGetPolygon(nPoly);</span></div>
 <div class="line"><a id="l00527" name="l00527"></a><span class="lineno">  527</span>   <span class="comment">//</span></div>
-<div class="line"><a id="l00528" name="l00528"></a><span class="lineno">  528</span>   <span class="comment">//       int nPolyID = pPolygon-&gt;nGetCoastID();</span></div>
-<div class="line"><a id="l00529" name="l00529"></a><span class="lineno">  529</span>   <span class="comment">//       VnID.push_back(nPolyID);</span></div>
+<div class="line"><a id="l00528" name="l00528"></a><span class="lineno">  528</span>   <span class="comment">// int nPolyID = pPolygon-&gt;nGetCoastID();</span></div>
+<div class="line"><a id="l00529" name="l00529"></a><span class="lineno">  529</span>   <span class="comment">// VnID.push_back(nPolyID);</span></div>
 <div class="line"><a id="l00530" name="l00530"></a><span class="lineno">  530</span>   <span class="comment">//</span></div>
-<div class="line"><a id="l00531" name="l00531"></a><span class="lineno">  531</span>   <span class="comment">//       CGeom2DIPoint PtiStart = pPolygon-&gt;PtiGetFillStartPoint();</span></div>
-<div class="line"><a id="l00532" name="l00532"></a><span class="lineno">  532</span>   <span class="comment">//       VPtiCentroids.push_back(PtiStart);</span></div>
-<div class="line"><a id="l00533" name="l00533"></a><span class="lineno">  533</span>   <span class="comment">//    }</span></div>
+<div class="line"><a id="l00531" name="l00531"></a><span class="lineno">  531</span>   <span class="comment">// CGeom2DIPoint PtiStart = pPolygon-&gt;PtiGetFillStartPoint();</span></div>
+<div class="line"><a id="l00532" name="l00532"></a><span class="lineno">  532</span>   <span class="comment">// VPtiCentroids.push_back(PtiStart);</span></div>
+<div class="line"><a id="l00533" name="l00533"></a><span class="lineno">  533</span>   <span class="comment">// }</span></div>
 <div class="line"><a id="l00534" name="l00534"></a><span class="lineno">  534</span>   <span class="comment">// }</span></div>
 <div class="line"><a id="l00535" name="l00535"></a><span class="lineno">  535</span>   <span class="comment">//</span></div>
 <div class="line"><a id="l00536" name="l00536"></a><span class="lineno">  536</span>   <span class="comment">// string strOutFile = m_strOutPath;</span></div>
@@ -641,21 +641,21 @@ $(function(){initNavTree('d6/d91/create__polygons_8cpp_source.html','../../'); i
 <div class="line"><a id="l00547" name="l00547"></a><span class="lineno">  547</span>   <span class="comment">// double* pdRaster = new double[m_nXGridSize * m_nYGridSize];</span></div>
 <div class="line"><a id="l00548" name="l00548"></a><span class="lineno">  548</span>   <span class="comment">// for (int nY = 0; nY &lt; m_nYGridSize; nY++)</span></div>
 <div class="line"><a id="l00549" name="l00549"></a><span class="lineno">  549</span>   <span class="comment">// {</span></div>
-<div class="line"><a id="l00550" name="l00550"></a><span class="lineno">  550</span>   <span class="comment">//    for (int nX = 0; nX &lt; m_nXGridSize; nX++)</span></div>
-<div class="line"><a id="l00551" name="l00551"></a><span class="lineno">  551</span>   <span class="comment">//    {</span></div>
-<div class="line"><a id="l00552" name="l00552"></a><span class="lineno">  552</span>   <span class="comment">//       pdRaster[nn] = INT_NODATA;</span></div>
+<div class="line"><a id="l00550" name="l00550"></a><span class="lineno">  550</span>   <span class="comment">// for (int nX = 0; nX &lt; m_nXGridSize; nX++)</span></div>
+<div class="line"><a id="l00551" name="l00551"></a><span class="lineno">  551</span>   <span class="comment">// {</span></div>
+<div class="line"><a id="l00552" name="l00552"></a><span class="lineno">  552</span>   <span class="comment">// pdRaster[nn] = INT_NODATA;</span></div>
 <div class="line"><a id="l00553" name="l00553"></a><span class="lineno">  553</span>   <span class="comment">//</span></div>
-<div class="line"><a id="l00554" name="l00554"></a><span class="lineno">  554</span>   <span class="comment">//       for (int n = 0; n &lt; static_cast&lt;int&gt;(VPtiCentroids.size()); n++)</span></div>
-<div class="line"><a id="l00555" name="l00555"></a><span class="lineno">  555</span>   <span class="comment">//       {</span></div>
-<div class="line"><a id="l00556" name="l00556"></a><span class="lineno">  556</span>   <span class="comment">//          if ((VPtiCentroids[n].nGetX() == nX) &amp;&amp; (VPtiCentroids[n].nGetY() == nY))</span></div>
-<div class="line"><a id="l00557" name="l00557"></a><span class="lineno">  557</span>   <span class="comment">//          {</span></div>
-<div class="line"><a id="l00558" name="l00558"></a><span class="lineno">  558</span>   <span class="comment">//             pdRaster[nn] = VnID[n];</span></div>
-<div class="line"><a id="l00559" name="l00559"></a><span class="lineno">  559</span>   <span class="comment">//             LogStream &lt;&lt; m_ulIter &lt;&lt; &quot;: flood fill start point for polygon &quot; &lt;&lt; VnID[n] &lt;&lt; &quot; is [&quot; &lt;&lt; nX &lt;&lt; &quot;][&quot; &lt;&lt; nY &lt;&lt; &quot;]&quot; &lt;&lt; endl;</span></div>
-<div class="line"><a id="l00560" name="l00560"></a><span class="lineno">  560</span>   <span class="comment">//             break;</span></div>
-<div class="line"><a id="l00561" name="l00561"></a><span class="lineno">  561</span>   <span class="comment">//          }</span></div>
-<div class="line"><a id="l00562" name="l00562"></a><span class="lineno">  562</span>   <span class="comment">//       }</span></div>
-<div class="line"><a id="l00563" name="l00563"></a><span class="lineno">  563</span>   <span class="comment">//       nn++;</span></div>
-<div class="line"><a id="l00564" name="l00564"></a><span class="lineno">  564</span>   <span class="comment">//    }</span></div>
+<div class="line"><a id="l00554" name="l00554"></a><span class="lineno">  554</span>   <span class="comment">// for (int n = 0; n &lt; static_cast&lt;int&gt;(VPtiCentroids.size()); n++)</span></div>
+<div class="line"><a id="l00555" name="l00555"></a><span class="lineno">  555</span>   <span class="comment">// {</span></div>
+<div class="line"><a id="l00556" name="l00556"></a><span class="lineno">  556</span>   <span class="comment">// if ((VPtiCentroids[n].nGetX() == nX) &amp;&amp; (VPtiCentroids[n].nGetY() == nY))</span></div>
+<div class="line"><a id="l00557" name="l00557"></a><span class="lineno">  557</span>   <span class="comment">// {</span></div>
+<div class="line"><a id="l00558" name="l00558"></a><span class="lineno">  558</span>   <span class="comment">// pdRaster[nn] = VnID[n];</span></div>
+<div class="line"><a id="l00559" name="l00559"></a><span class="lineno">  559</span>   <span class="comment">// LogStream &lt;&lt; m_ulIter &lt;&lt; &quot;: flood fill start point for polygon &quot; &lt;&lt; VnID[n] &lt;&lt; &quot; is [&quot; &lt;&lt; nX &lt;&lt; &quot;][&quot; &lt;&lt; nY &lt;&lt; &quot;]&quot; &lt;&lt; endl;</span></div>
+<div class="line"><a id="l00560" name="l00560"></a><span class="lineno">  560</span>   <span class="comment">// break;</span></div>
+<div class="line"><a id="l00561" name="l00561"></a><span class="lineno">  561</span>   <span class="comment">// }</span></div>
+<div class="line"><a id="l00562" name="l00562"></a><span class="lineno">  562</span>   <span class="comment">// }</span></div>
+<div class="line"><a id="l00563" name="l00563"></a><span class="lineno">  563</span>   <span class="comment">// nn++;</span></div>
+<div class="line"><a id="l00564" name="l00564"></a><span class="lineno">  564</span>   <span class="comment">// }</span></div>
 <div class="line"><a id="l00565" name="l00565"></a><span class="lineno">  565</span>   <span class="comment">// }</span></div>
 <div class="line"><a id="l00566" name="l00566"></a><span class="lineno">  566</span>   <span class="comment">//</span></div>
 <div class="line"><a id="l00567" name="l00567"></a><span class="lineno">  567</span>   <span class="comment">// GDALRasterBand* pBand = pDataSet-&gt;GetRasterBand(1);</span></div>
@@ -663,7 +663,7 @@ $(function(){initNavTree('d6/d91/create__polygons_8cpp_source.html','../../'); i
 <div class="line"><a id="l00569" name="l00569"></a><span class="lineno">  569</span>   <span class="comment">// int nRet = pBand-&gt;RasterIO(GF_Write, 0, 0, m_nXGridSize, m_nYGridSize, pdRaster, m_nXGridSize, m_nYGridSize, GDT_Float64, 0, 0, NULL);</span></div>
 <div class="line"><a id="l00570" name="l00570"></a><span class="lineno">  570</span>   <span class="comment">//</span></div>
 <div class="line"><a id="l00571" name="l00571"></a><span class="lineno">  571</span>   <span class="comment">// if (nRet == CE_Failure)</span></div>
-<div class="line"><a id="l00572" name="l00572"></a><span class="lineno">  572</span>   <span class="comment">//    LogStream &lt;&lt; nRet &lt;&lt; endl;</span></div>
+<div class="line"><a id="l00572" name="l00572"></a><span class="lineno">  572</span>   <span class="comment">// LogStream &lt;&lt; nRet &lt;&lt; endl;</span></div>
 <div class="line"><a id="l00573" name="l00573"></a><span class="lineno">  573</span>   <span class="comment">//</span></div>
 <div class="line"><a id="l00574" name="l00574"></a><span class="lineno">  574</span>   <span class="comment">// GDALClose(pDataSet);</span></div>
 <div class="line"><a id="l00575" name="l00575"></a><span class="lineno">  575</span>   <span class="comment">// delete[] pdRaster;</span></div>
@@ -689,7 +689,7 @@ $(function(){initNavTree('d6/d91/create__polygons_8cpp_source.html','../../'); i
 <div class="line"><a id="l00595" name="l00595"></a><span class="lineno">  595</span>         <span class="keywordtype">double</span> dSedimentInputSand = 0;</div>
 <div class="line"><a id="l00596" name="l00596"></a><span class="lineno">  596</span>         <span class="keywordtype">double</span> dSedimentInputCoarse = 0;</div>
 <div class="line"><a id="l00597" name="l00597"></a><span class="lineno">  597</span> </div>
-<div class="line"><a id="l00598" name="l00598"></a><span class="lineno">  598</span>         <a class="code hl_class" href="../../df/d45/classCGeomCoastPolygon.html">CGeomCoastPolygon</a>* pPolygon = <a class="code hl_variable" href="../../d1/d98/classCSimulation.html#a25ada8139c82ca7beab3f279cff83184">m_VCoast</a>[nCoast].pGetPolygon(nPoly);</div>
+<div class="line"><a id="l00598" name="l00598"></a><span class="lineno">  598</span>         <a class="code hl_class" href="../../df/d45/classCGeomCoastPolygon.html">CGeomCoastPolygon</a> * pPolygon = <a class="code hl_variable" href="../../d1/d98/classCSimulation.html#a25ada8139c82ca7beab3f279cff83184">m_VCoast</a>[nCoast].pGetPolygon(nPoly);</div>
 <div class="line"><a id="l00599" name="l00599"></a><span class="lineno">  599</span>         <span class="keywordtype">int</span> nPolyID = pPolygon-&gt;<a class="code hl_function" href="../../df/d45/classCGeomCoastPolygon.html#ae97ed135e92d392e9b72f83feee59b2b">nGetCoastID</a>();    <span class="comment">// TODO 044</span></div>
 <div class="line"><a id="l00600" name="l00600"></a><span class="lineno">  600</span> </div>
 <div class="line"><a id="l00601" name="l00601"></a><span class="lineno">  601</span>         <span class="comment">// LogStream &lt;&lt; m_ulIter &lt;&lt; &quot;: in MarkPolygonCells() nPoly = &quot; &lt;&lt; nPoly &lt;&lt; &quot; nPolyID = &quot; &lt;&lt; nPolyID &lt;&lt; endl;</span></div>
@@ -698,33 +698,33 @@ $(function(){initNavTree('d6/d91/create__polygons_8cpp_source.html','../../'); i
 <div class="line"><a id="l00604" name="l00604"></a><span class="lineno">  604</span>         stack&lt;CGeom2DIPoint&gt; PtiStack;</div>
 <div class="line"><a id="l00605" name="l00605"></a><span class="lineno">  605</span> </div>
 <div class="line"><a id="l00606" name="l00606"></a><span class="lineno">  606</span><span class="comment">//          // Since the polygon&#39;s vector boundary does not coincide exactly with the polygon&#39;s raster boundary, and the point-in-polygon check gives an indeterminate result if the point is exactly on the polygon&#39;s boundary, for safety we must construct a vector &#39;inner buffer&#39; which is smaller than, and inside, the vector boundary TODO *** STILL NEEDED?</span></div>
-<div class="line"><a id="l00607" name="l00607"></a><span class="lineno">  607</span><span class="comment">//          int nHand = m_VCoast[nCoast].nGetSeaHandedness();</span></div>
-<div class="line"><a id="l00608" name="l00608"></a><span class="lineno">  608</span><span class="comment">//          int nSize = pPolygon-&gt;nGetBoundarySize();</span></div>
-<div class="line"><a id="l00609" name="l00609"></a><span class="lineno">  609</span><span class="comment">//          vector&lt;CGeom2DPoint&gt; PtVInnerBuffer;</span></div>
+<div class="line"><a id="l00607" name="l00607"></a><span class="lineno">  607</span><span class="comment">// int nHand = m_VCoast[nCoast].nGetSeaHandedness();</span></div>
+<div class="line"><a id="l00608" name="l00608"></a><span class="lineno">  608</span><span class="comment">// int nSize = pPolygon-&gt;nGetBoundarySize();</span></div>
+<div class="line"><a id="l00609" name="l00609"></a><span class="lineno">  609</span><span class="comment">// vector&lt;CGeom2DPoint&gt; PtVInnerBuffer;</span></div>
 <div class="line"><a id="l00610" name="l00610"></a><span class="lineno">  610</span><span class="comment">//</span></div>
-<div class="line"><a id="l00611" name="l00611"></a><span class="lineno">  611</span><span class="comment">//          for (int i = 0; i &lt; nSize-1; i++)</span></div>
-<div class="line"><a id="l00612" name="l00612"></a><span class="lineno">  612</span><span class="comment">//          {</span></div>
-<div class="line"><a id="l00613" name="l00613"></a><span class="lineno">  613</span><span class="comment">//             int j = i + 1;</span></div>
-<div class="line"><a id="l00614" name="l00614"></a><span class="lineno">  614</span><span class="comment">//             if (i == nSize-2)       // We must ignore the duplicated node point</span></div>
-<div class="line"><a id="l00615" name="l00615"></a><span class="lineno">  615</span><span class="comment">//                j = 0;</span></div>
+<div class="line"><a id="l00611" name="l00611"></a><span class="lineno">  611</span><span class="comment">// for (int i = 0; i &lt; nSize-1; i++)</span></div>
+<div class="line"><a id="l00612" name="l00612"></a><span class="lineno">  612</span><span class="comment">// {</span></div>
+<div class="line"><a id="l00613" name="l00613"></a><span class="lineno">  613</span><span class="comment">// int j = i + 1;</span></div>
+<div class="line"><a id="l00614" name="l00614"></a><span class="lineno">  614</span><span class="comment">// if (i == nSize-2)       // We must ignore the duplicated node point</span></div>
+<div class="line"><a id="l00615" name="l00615"></a><span class="lineno">  615</span><span class="comment">// j = 0;</span></div>
 <div class="line"><a id="l00616" name="l00616"></a><span class="lineno">  616</span><span class="comment">//</span></div>
-<div class="line"><a id="l00617" name="l00617"></a><span class="lineno">  617</span><span class="comment">//             CGeom2DPoint PtThis = *pPolygon-&gt;pPtGetBoundaryPoint(i);</span></div>
-<div class="line"><a id="l00618" name="l00618"></a><span class="lineno">  618</span><span class="comment">//             CGeom2DPoint PtNext = *pPolygon-&gt;pPtGetBoundaryPoint(j);</span></div>
+<div class="line"><a id="l00617" name="l00617"></a><span class="lineno">  617</span><span class="comment">// CGeom2DPoint PtThis = *pPolygon-&gt;pPtGetBoundaryPoint(i);</span></div>
+<div class="line"><a id="l00618" name="l00618"></a><span class="lineno">  618</span><span class="comment">// CGeom2DPoint PtNext = *pPolygon-&gt;pPtGetBoundaryPoint(j);</span></div>
 <div class="line"><a id="l00619" name="l00619"></a><span class="lineno">  619</span><span class="comment">//</span></div>
 <div class="line"><a id="l00620" name="l00620"></a><span class="lineno">  620</span><span class="comment">//             // Safety check</span></div>
-<div class="line"><a id="l00621" name="l00621"></a><span class="lineno">  621</span><span class="comment">//             if (PtThis == PtNext)</span></div>
-<div class="line"><a id="l00622" name="l00622"></a><span class="lineno">  622</span><span class="comment">//                continue;</span></div>
+<div class="line"><a id="l00621" name="l00621"></a><span class="lineno">  621</span><span class="comment">// if (PtThis == PtNext)</span></div>
+<div class="line"><a id="l00622" name="l00622"></a><span class="lineno">  622</span><span class="comment">// continue;</span></div>
 <div class="line"><a id="l00623" name="l00623"></a><span class="lineno">  623</span><span class="comment">//</span></div>
-<div class="line"><a id="l00624" name="l00624"></a><span class="lineno">  624</span><span class="comment">//             CGeom2DPoint PtBuffer = PtGetPerpendicular(&amp;PtThis, &amp;PtNext, m_dCellSide, nHand);</span></div>
+<div class="line"><a id="l00624" name="l00624"></a><span class="lineno">  624</span><span class="comment">// CGeom2DPoint PtBuffer = PtGetPerpendicular(&amp;PtThis, &amp;PtNext, m_dCellSide, nHand);</span></div>
 <div class="line"><a id="l00625" name="l00625"></a><span class="lineno">  625</span><span class="comment">//</span></div>
-<div class="line"><a id="l00626" name="l00626"></a><span class="lineno">  626</span><span class="comment">//             PtVInnerBuffer.push_back(PtBuffer);</span></div>
-<div class="line"><a id="l00627" name="l00627"></a><span class="lineno">  627</span><span class="comment">//          }</span></div>
+<div class="line"><a id="l00626" name="l00626"></a><span class="lineno">  626</span><span class="comment">// PtVInnerBuffer.push_back(PtBuffer);</span></div>
+<div class="line"><a id="l00627" name="l00627"></a><span class="lineno">  627</span><span class="comment">// }</span></div>
 <div class="line"><a id="l00628" name="l00628"></a><span class="lineno">  628</span> </div>
 <div class="line"><a id="l00629" name="l00629"></a><span class="lineno">  629</span>         <span class="comment">// // DEBUG CODE ==============================================================================================</span></div>
 <div class="line"><a id="l00630" name="l00630"></a><span class="lineno">  630</span>         <span class="comment">// LogStream &lt;&lt; endl &lt;&lt; m_ulIter &lt;&lt; &quot;: coast &quot; &lt;&lt; nCoast &lt;&lt; &quot;, polygon &quot; &lt;&lt; nPoly &lt;&lt; endl;</span></div>
 <div class="line"><a id="l00631" name="l00631"></a><span class="lineno">  631</span>         <span class="comment">// LogStream &lt;&lt; &quot;Boundary\t\t\tBuffer&quot; &lt;&lt; endl;</span></div>
 <div class="line"><a id="l00632" name="l00632"></a><span class="lineno">  632</span>         <span class="comment">// for (int i = 0; i &lt; pPolygon-&gt;nGetBoundarySize()-1; i++)</span></div>
-<div class="line"><a id="l00633" name="l00633"></a><span class="lineno">  633</span>         <span class="comment">//    LogStream &lt;&lt; &quot;{&quot; &lt;&lt; pPolygon-&gt;pPtGetBoundaryPoint(i)-&gt;dGetX() &lt;&lt; &quot;, &quot; &lt;&lt; pPolygon-&gt;pPtGetBoundaryPoint(i)-&gt;dGetY() &lt;&lt; &quot;}\t{&quot; &lt;&lt; PtVInnerBuffer[i].dGetX() &lt;&lt; &quot;, &quot; &lt;&lt; PtVInnerBuffer[i].dGetY() &lt;&lt; &quot;}&quot; &lt;&lt; endl;</span></div>
+<div class="line"><a id="l00633" name="l00633"></a><span class="lineno">  633</span>         <span class="comment">// LogStream &lt;&lt; &quot;{&quot; &lt;&lt; pPolygon-&gt;pPtGetBoundaryPoint(i)-&gt;dGetX() &lt;&lt; &quot;, &quot; &lt;&lt; pPolygon-&gt;pPtGetBoundaryPoint(i)-&gt;dGetY() &lt;&lt; &quot;}\t{&quot; &lt;&lt; PtVInnerBuffer[i].dGetX() &lt;&lt; &quot;, &quot; &lt;&lt; PtVInnerBuffer[i].dGetY() &lt;&lt; &quot;}&quot; &lt;&lt; endl;</span></div>
 <div class="line"><a id="l00634" name="l00634"></a><span class="lineno">  634</span>         <span class="comment">// LogStream &lt;&lt; endl;</span></div>
 <div class="line"><a id="l00635" name="l00635"></a><span class="lineno">  635</span>         <span class="comment">// // DEBUG CODE ==============================================================================================</span></div>
 <div class="line"><a id="l00636" name="l00636"></a><span class="lineno">  636</span> </div>
@@ -735,14 +735,14 @@ $(function(){initNavTree('d6/d91/create__polygons_8cpp_source.html','../../'); i
 <div class="line"><a id="l00641" name="l00641"></a><span class="lineno">  641</span>         <span class="comment">// if (! bIsWithinPolygon(&amp;PtStart, &amp;PtVInnerBuffer))</span></div>
 <div class="line"><a id="l00642" name="l00642"></a><span class="lineno">  642</span>         <span class="comment">// {</span></div>
 <div class="line"><a id="l00643" name="l00643"></a><span class="lineno">  643</span>         <span class="comment">//    // No, it is not: the polygon must be a concave polygon. So keep looking for a point which is definitely inside the polygon, using an alternative method</span></div>
-<div class="line"><a id="l00644" name="l00644"></a><span class="lineno">  644</span>         <span class="comment">//    PtStart = PtFindPointInPolygon(&amp;PtVInnerBuffer, pPolygon-&gt;nGetPointInPolygonSearchStartPoint());</span></div>
+<div class="line"><a id="l00644" name="l00644"></a><span class="lineno">  644</span>         <span class="comment">// PtStart = PtFindPointInPolygon(&amp;PtVInnerBuffer, pPolygon-&gt;nGetPointInPolygonSearchStartPoint());</span></div>
 <div class="line"><a id="l00645" name="l00645"></a><span class="lineno">  645</span>         <span class="comment">// }</span></div>
 <div class="line"><a id="l00646" name="l00646"></a><span class="lineno">  646</span>         <span class="comment">//</span></div>
 <div class="line"><a id="l00647" name="l00647"></a><span class="lineno">  647</span>         <span class="comment">// // Safety check (PtFindPointInPolygon() returns CGeom2DPoint(DBL_NODATA, DBL_NODATA) if it cannot find a valid start point)</span></div>
 <div class="line"><a id="l00648" name="l00648"></a><span class="lineno">  648</span>         <span class="comment">// if (bFPIsEqual(PtStart.dGetX(), DBL_NODATA, TOLERANCE))</span></div>
 <div class="line"><a id="l00649" name="l00649"></a><span class="lineno">  649</span>         <span class="comment">// {</span></div>
-<div class="line"><a id="l00650" name="l00650"></a><span class="lineno">  650</span>         <span class="comment">//    LogStream &lt;&lt; m_ulIter &lt;&lt; &quot;: &quot; &lt;&lt; ERR &lt;&lt; &quot;could not find a flood fill start point for coast &quot; &lt;&lt; nCoast &lt;&lt; &quot;, polygon &quot; &lt;&lt; nPoly &lt;&lt; endl;</span></div>
-<div class="line"><a id="l00651" name="l00651"></a><span class="lineno">  651</span>         <span class="comment">//    break;</span></div>
+<div class="line"><a id="l00650" name="l00650"></a><span class="lineno">  650</span>         <span class="comment">// LogStream &lt;&lt; m_ulIter &lt;&lt; &quot;: &quot; &lt;&lt; ERR &lt;&lt; &quot;could not find a flood fill start point for coast &quot; &lt;&lt; nCoast &lt;&lt; &quot;, polygon &quot; &lt;&lt; nPoly &lt;&lt; endl;</span></div>
+<div class="line"><a id="l00651" name="l00651"></a><span class="lineno">  651</span>         <span class="comment">// break;</span></div>
 <div class="line"><a id="l00652" name="l00652"></a><span class="lineno">  652</span>         <span class="comment">// }</span></div>
 <div class="line"><a id="l00653" name="l00653"></a><span class="lineno">  653</span> </div>
 <div class="line"><a id="l00654" name="l00654"></a><span class="lineno">  654</span>         <span class="comment">// We have a flood fill start point which is definitely within the polygon so push this point onto the stack</span></div>
@@ -817,24 +817,24 @@ $(function(){initNavTree('d6/d91/create__polygons_8cpp_source.html','../../'); i
 <div class="line"><a id="l00723" name="l00723"></a><span class="lineno">  723</span>               nCellsInPolygon++;</div>
 <div class="line"><a id="l00724" name="l00724"></a><span class="lineno">  724</span>               dTotDepth += <a class="code hl_variable" href="../../d1/d98/classCSimulation.html#a1312f0ac2c93a6cb2bc41c23eb01c293">m_pRasterGrid</a>-&gt;m_Cell[nX][nY].dGetSeaDepth();</div>
 <div class="line"><a id="l00725" name="l00725"></a><span class="lineno">  725</span> </div>
-<div class="line"><a id="l00726" name="l00726"></a><span class="lineno">  726</span>               <span class="keywordflow">if</span> ((! bSpanAbove) &amp;&amp; (nY &gt; 0) &amp;&amp; (<a class="code hl_variable" href="../../d1/d98/classCSimulation.html#a1312f0ac2c93a6cb2bc41c23eb01c293">m_pRasterGrid</a>-&gt;m_Cell[nX][nY-1].nGetPolygonID() == <a class="code hl_variable" href="../../d6/d2a/cme_8h.html#a01aa8b423260b337ddff2016107b51a0">INT_NODATA</a>))</div>
+<div class="line"><a id="l00726" name="l00726"></a><span class="lineno">  726</span>               <span class="keywordflow">if</span> ((! bSpanAbove) &amp;&amp; (nY &gt; 0) &amp;&amp; (<a class="code hl_variable" href="../../d1/d98/classCSimulation.html#a1312f0ac2c93a6cb2bc41c23eb01c293">m_pRasterGrid</a>-&gt;m_Cell[nX][nY - 1].nGetPolygonID() == <a class="code hl_variable" href="../../d6/d2a/cme_8h.html#a01aa8b423260b337ddff2016107b51a0">INT_NODATA</a>))</div>
 <div class="line"><a id="l00727" name="l00727"></a><span class="lineno">  727</span>               {</div>
-<div class="line"><a id="l00728" name="l00728"></a><span class="lineno">  728</span>                  PtiStack.push(<a class="code hl_class" href="../../d6/d0d/classCGeom2DIPoint.html">CGeom2DIPoint</a>(nX, nY-1));</div>
+<div class="line"><a id="l00728" name="l00728"></a><span class="lineno">  728</span>                  PtiStack.push(<a class="code hl_class" href="../../d6/d0d/classCGeom2DIPoint.html">CGeom2DIPoint</a>(nX, nY - 1));</div>
 <div class="line"><a id="l00729" name="l00729"></a><span class="lineno">  729</span>                  bSpanAbove = <span class="keyword">true</span>;</div>
 <div class="line"><a id="l00730" name="l00730"></a><span class="lineno">  730</span>               }</div>
 <div class="line"><a id="l00731" name="l00731"></a><span class="lineno">  731</span> </div>
-<div class="line"><a id="l00732" name="l00732"></a><span class="lineno">  732</span>               <span class="keywordflow">else</span> <span class="keywordflow">if</span> (bSpanAbove &amp;&amp; (nY &gt; 0) &amp;&amp; (<a class="code hl_variable" href="../../d1/d98/classCSimulation.html#a1312f0ac2c93a6cb2bc41c23eb01c293">m_pRasterGrid</a>-&gt;m_Cell[nX][nY-1].nGetPolygonID() != <a class="code hl_variable" href="../../d6/d2a/cme_8h.html#a01aa8b423260b337ddff2016107b51a0">INT_NODATA</a>))</div>
+<div class="line"><a id="l00732" name="l00732"></a><span class="lineno">  732</span>               <span class="keywordflow">else</span> <span class="keywordflow">if</span> (bSpanAbove &amp;&amp; (nY &gt; 0) &amp;&amp; (<a class="code hl_variable" href="../../d1/d98/classCSimulation.html#a1312f0ac2c93a6cb2bc41c23eb01c293">m_pRasterGrid</a>-&gt;m_Cell[nX][nY - 1].nGetPolygonID() != <a class="code hl_variable" href="../../d6/d2a/cme_8h.html#a01aa8b423260b337ddff2016107b51a0">INT_NODATA</a>))</div>
 <div class="line"><a id="l00733" name="l00733"></a><span class="lineno">  733</span>               {</div>
 <div class="line"><a id="l00734" name="l00734"></a><span class="lineno">  734</span>                  bSpanAbove = <span class="keyword">false</span>;</div>
 <div class="line"><a id="l00735" name="l00735"></a><span class="lineno">  735</span>               }</div>
 <div class="line"><a id="l00736" name="l00736"></a><span class="lineno">  736</span> </div>
-<div class="line"><a id="l00737" name="l00737"></a><span class="lineno">  737</span>               <span class="keywordflow">if</span> ((! bSpanBelow) &amp;&amp; (nY &lt; <a class="code hl_variable" href="../../d1/d98/classCSimulation.html#a3755fdc07c0ac9f2ce6c2237cfef50ce">m_nYGridSize</a>-1) &amp;&amp; (<a class="code hl_variable" href="../../d1/d98/classCSimulation.html#a1312f0ac2c93a6cb2bc41c23eb01c293">m_pRasterGrid</a>-&gt;m_Cell[nX][nY+1].nGetPolygonID() == <a class="code hl_variable" href="../../d6/d2a/cme_8h.html#a01aa8b423260b337ddff2016107b51a0">INT_NODATA</a>))</div>
+<div class="line"><a id="l00737" name="l00737"></a><span class="lineno">  737</span>               <span class="keywordflow">if</span> ((! bSpanBelow) &amp;&amp; (nY &lt; <a class="code hl_variable" href="../../d1/d98/classCSimulation.html#a3755fdc07c0ac9f2ce6c2237cfef50ce">m_nYGridSize</a> - 1) &amp;&amp; (<a class="code hl_variable" href="../../d1/d98/classCSimulation.html#a1312f0ac2c93a6cb2bc41c23eb01c293">m_pRasterGrid</a>-&gt;m_Cell[nX][nY + 1].nGetPolygonID() == <a class="code hl_variable" href="../../d6/d2a/cme_8h.html#a01aa8b423260b337ddff2016107b51a0">INT_NODATA</a>))</div>
 <div class="line"><a id="l00738" name="l00738"></a><span class="lineno">  738</span>               {</div>
-<div class="line"><a id="l00739" name="l00739"></a><span class="lineno">  739</span>                  PtiStack.push(<a class="code hl_class" href="../../d6/d0d/classCGeom2DIPoint.html">CGeom2DIPoint</a>(nX, nY+1));</div>
+<div class="line"><a id="l00739" name="l00739"></a><span class="lineno">  739</span>                  PtiStack.push(<a class="code hl_class" href="../../d6/d0d/classCGeom2DIPoint.html">CGeom2DIPoint</a>(nX, nY + 1));</div>
 <div class="line"><a id="l00740" name="l00740"></a><span class="lineno">  740</span>                  bSpanBelow = <span class="keyword">true</span>;</div>
 <div class="line"><a id="l00741" name="l00741"></a><span class="lineno">  741</span>               }</div>
 <div class="line"><a id="l00742" name="l00742"></a><span class="lineno">  742</span> </div>
-<div class="line"><a id="l00743" name="l00743"></a><span class="lineno">  743</span>               <span class="keywordflow">else</span> <span class="keywordflow">if</span> (bSpanBelow &amp;&amp; (nY &lt; <a class="code hl_variable" href="../../d1/d98/classCSimulation.html#a3755fdc07c0ac9f2ce6c2237cfef50ce">m_nYGridSize</a>-1) &amp;&amp; (<a class="code hl_variable" href="../../d1/d98/classCSimulation.html#a1312f0ac2c93a6cb2bc41c23eb01c293">m_pRasterGrid</a>-&gt;m_Cell[nX][nY+1].nGetPolygonID() != <a class="code hl_variable" href="../../d6/d2a/cme_8h.html#a01aa8b423260b337ddff2016107b51a0">INT_NODATA</a>))</div>
+<div class="line"><a id="l00743" name="l00743"></a><span class="lineno">  743</span>               <span class="keywordflow">else</span> <span class="keywordflow">if</span> (bSpanBelow &amp;&amp; (nY &lt; <a class="code hl_variable" href="../../d1/d98/classCSimulation.html#a3755fdc07c0ac9f2ce6c2237cfef50ce">m_nYGridSize</a> - 1) &amp;&amp; (<a class="code hl_variable" href="../../d1/d98/classCSimulation.html#a1312f0ac2c93a6cb2bc41c23eb01c293">m_pRasterGrid</a>-&gt;m_Cell[nX][nY + 1].nGetPolygonID() != <a class="code hl_variable" href="../../d6/d2a/cme_8h.html#a01aa8b423260b337ddff2016107b51a0">INT_NODATA</a>))</div>
 <div class="line"><a id="l00744" name="l00744"></a><span class="lineno">  744</span>               {</div>
 <div class="line"><a id="l00745" name="l00745"></a><span class="lineno">  745</span>                  bSpanBelow = <span class="keyword">false</span>;</div>
 <div class="line"><a id="l00746" name="l00746"></a><span class="lineno">  746</span>               }</div>
@@ -871,48 +871,48 @@ $(function(){initNavTree('d6/d91/create__polygons_8cpp_source.html','../../'); i
 <div class="line"><a id="l00777" name="l00777"></a><span class="lineno">  777</span>   <span class="comment">// // DEBUG CODE ===========================================================================================================</span></div>
 <div class="line"><a id="l00778" name="l00778"></a><span class="lineno">  778</span>   <span class="comment">// if (m_ulIter == 109)</span></div>
 <div class="line"><a id="l00779" name="l00779"></a><span class="lineno">  779</span>   <span class="comment">// {</span></div>
-<div class="line"><a id="l00780" name="l00780"></a><span class="lineno">  780</span>   <span class="comment">//    string strOutFile = m_strOutPath + &quot;00_polygon_fill_&quot;;</span></div>
-<div class="line"><a id="l00781" name="l00781"></a><span class="lineno">  781</span>   <span class="comment">//    strOutFile += to_string(m_ulIter);</span></div>
-<div class="line"><a id="l00782" name="l00782"></a><span class="lineno">  782</span>   <span class="comment">//    strOutFile += &quot;.tif&quot;;</span></div>
+<div class="line"><a id="l00780" name="l00780"></a><span class="lineno">  780</span>   <span class="comment">// string strOutFile = m_strOutPath + &quot;00_polygon_fill_&quot;;</span></div>
+<div class="line"><a id="l00781" name="l00781"></a><span class="lineno">  781</span>   <span class="comment">// strOutFile += to_string(m_ulIter);</span></div>
+<div class="line"><a id="l00782" name="l00782"></a><span class="lineno">  782</span>   <span class="comment">// strOutFile += &quot;.tif&quot;;</span></div>
 <div class="line"><a id="l00783" name="l00783"></a><span class="lineno">  783</span>   <span class="comment">//</span></div>
-<div class="line"><a id="l00784" name="l00784"></a><span class="lineno">  784</span>   <span class="comment">//    GDALDriver* pDriver = GetGDALDriverManager()-&gt;GetDriverByName(&quot;gtiff&quot;);</span></div>
-<div class="line"><a id="l00785" name="l00785"></a><span class="lineno">  785</span>   <span class="comment">//    GDALDataset* pDataSet = pDriver-&gt;Create(strOutFile.c_str(), m_nXGridSize, m_nYGridSize, 1, GDT_Float64, m_papszGDALRasterOptions);</span></div>
-<div class="line"><a id="l00786" name="l00786"></a><span class="lineno">  786</span>   <span class="comment">//    pDataSet-&gt;SetProjection(m_strGDALBasementDEMProjection.c_str());</span></div>
-<div class="line"><a id="l00787" name="l00787"></a><span class="lineno">  787</span>   <span class="comment">//    pDataSet-&gt;SetGeoTransform(m_dGeoTransform);</span></div>
-<div class="line"><a id="l00788" name="l00788"></a><span class="lineno">  788</span>   <span class="comment">//    double* pdRaster = new double[m_nXGridSize * m_nYGridSize];</span></div>
-<div class="line"><a id="l00789" name="l00789"></a><span class="lineno">  789</span>   <span class="comment">//    int n = 0;</span></div>
+<div class="line"><a id="l00784" name="l00784"></a><span class="lineno">  784</span>   <span class="comment">// GDALDriver* pDriver = GetGDALDriverManager()-&gt;GetDriverByName(&quot;gtiff&quot;);</span></div>
+<div class="line"><a id="l00785" name="l00785"></a><span class="lineno">  785</span>   <span class="comment">// GDALDataset* pDataSet = pDriver-&gt;Create(strOutFile.c_str(), m_nXGridSize, m_nYGridSize, 1, GDT_Float64, m_papszGDALRasterOptions);</span></div>
+<div class="line"><a id="l00786" name="l00786"></a><span class="lineno">  786</span>   <span class="comment">// pDataSet-&gt;SetProjection(m_strGDALBasementDEMProjection.c_str());</span></div>
+<div class="line"><a id="l00787" name="l00787"></a><span class="lineno">  787</span>   <span class="comment">// pDataSet-&gt;SetGeoTransform(m_dGeoTransform);</span></div>
+<div class="line"><a id="l00788" name="l00788"></a><span class="lineno">  788</span>   <span class="comment">// double* pdRaster = new double[m_nXGridSize * m_nYGridSize];</span></div>
+<div class="line"><a id="l00789" name="l00789"></a><span class="lineno">  789</span>   <span class="comment">// int n = 0;</span></div>
 <div class="line"><a id="l00790" name="l00790"></a><span class="lineno">  790</span>   <span class="comment">//</span></div>
-<div class="line"><a id="l00791" name="l00791"></a><span class="lineno">  791</span>   <span class="comment">//    int nNumPoly = m_VCoast[0].nGetNumPolygons();</span></div>
-<div class="line"><a id="l00792" name="l00792"></a><span class="lineno">  792</span>   <span class="comment">//    vector&lt;int&gt; nVPerPoly(nNumPoly, 0);</span></div>
-<div class="line"><a id="l00793" name="l00793"></a><span class="lineno">  793</span>   <span class="comment">//    int nNotInPoly = 0;</span></div>
+<div class="line"><a id="l00791" name="l00791"></a><span class="lineno">  791</span>   <span class="comment">// int nNumPoly = m_VCoast[0].nGetNumPolygons();</span></div>
+<div class="line"><a id="l00792" name="l00792"></a><span class="lineno">  792</span>   <span class="comment">// vector&lt;int&gt; nVPerPoly(nNumPoly, 0);</span></div>
+<div class="line"><a id="l00793" name="l00793"></a><span class="lineno">  793</span>   <span class="comment">// int nNotInPoly = 0;</span></div>
 <div class="line"><a id="l00794" name="l00794"></a><span class="lineno">  794</span>   <span class="comment">//</span></div>
-<div class="line"><a id="l00795" name="l00795"></a><span class="lineno">  795</span>   <span class="comment">//    for (int nY = 0; nY &lt; m_nYGridSize; nY++)</span></div>
-<div class="line"><a id="l00796" name="l00796"></a><span class="lineno">  796</span>   <span class="comment">//    {</span></div>
-<div class="line"><a id="l00797" name="l00797"></a><span class="lineno">  797</span>   <span class="comment">//       for (int nX = 0; nX &lt; m_nXGridSize; nX++)</span></div>
-<div class="line"><a id="l00798" name="l00798"></a><span class="lineno">  798</span>   <span class="comment">//       {</span></div>
-<div class="line"><a id="l00799" name="l00799"></a><span class="lineno">  799</span>   <span class="comment">//          int nID = m_pRasterGrid-&gt;m_Cell[nX][nY].nGetPolygonID();</span></div>
-<div class="line"><a id="l00800" name="l00800"></a><span class="lineno">  800</span>   <span class="comment">//          if (nID == INT_NODATA)</span></div>
-<div class="line"><a id="l00801" name="l00801"></a><span class="lineno">  801</span>   <span class="comment">//             nNotInPoly++;</span></div>
-<div class="line"><a id="l00802" name="l00802"></a><span class="lineno">  802</span>   <span class="comment">//          else</span></div>
-<div class="line"><a id="l00803" name="l00803"></a><span class="lineno">  803</span>   <span class="comment">//             nVPerPoly[nID]++;</span></div>
+<div class="line"><a id="l00795" name="l00795"></a><span class="lineno">  795</span>   <span class="comment">// for (int nY = 0; nY &lt; m_nYGridSize; nY++)</span></div>
+<div class="line"><a id="l00796" name="l00796"></a><span class="lineno">  796</span>   <span class="comment">// {</span></div>
+<div class="line"><a id="l00797" name="l00797"></a><span class="lineno">  797</span>   <span class="comment">// for (int nX = 0; nX &lt; m_nXGridSize; nX++)</span></div>
+<div class="line"><a id="l00798" name="l00798"></a><span class="lineno">  798</span>   <span class="comment">// {</span></div>
+<div class="line"><a id="l00799" name="l00799"></a><span class="lineno">  799</span>   <span class="comment">// int nID = m_pRasterGrid-&gt;m_Cell[nX][nY].nGetPolygonID();</span></div>
+<div class="line"><a id="l00800" name="l00800"></a><span class="lineno">  800</span>   <span class="comment">// if (nID == INT_NODATA)</span></div>
+<div class="line"><a id="l00801" name="l00801"></a><span class="lineno">  801</span>   <span class="comment">// nNotInPoly++;</span></div>
+<div class="line"><a id="l00802" name="l00802"></a><span class="lineno">  802</span>   <span class="comment">// else</span></div>
+<div class="line"><a id="l00803" name="l00803"></a><span class="lineno">  803</span>   <span class="comment">// nVPerPoly[nID]++;</span></div>
 <div class="line"><a id="l00804" name="l00804"></a><span class="lineno">  804</span>   <span class="comment">//</span></div>
-<div class="line"><a id="l00805" name="l00805"></a><span class="lineno">  805</span>   <span class="comment">//          pdRaster[n++] = nID;</span></div>
-<div class="line"><a id="l00806" name="l00806"></a><span class="lineno">  806</span>   <span class="comment">//       }</span></div>
-<div class="line"><a id="l00807" name="l00807"></a><span class="lineno">  807</span>   <span class="comment">//    }</span></div>
+<div class="line"><a id="l00805" name="l00805"></a><span class="lineno">  805</span>   <span class="comment">// pdRaster[n++] = nID;</span></div>
+<div class="line"><a id="l00806" name="l00806"></a><span class="lineno">  806</span>   <span class="comment">// }</span></div>
+<div class="line"><a id="l00807" name="l00807"></a><span class="lineno">  807</span>   <span class="comment">// }</span></div>
 <div class="line"><a id="l00808" name="l00808"></a><span class="lineno">  808</span>   <span class="comment">//</span></div>
-<div class="line"><a id="l00809" name="l00809"></a><span class="lineno">  809</span>   <span class="comment">//    GDALRasterBand* pBand = pDataSet-&gt;GetRasterBand(1);</span></div>
-<div class="line"><a id="l00810" name="l00810"></a><span class="lineno">  810</span>   <span class="comment">//    pBand-&gt;SetNoDataValue(m_dMissingValue);</span></div>
-<div class="line"><a id="l00811" name="l00811"></a><span class="lineno">  811</span>   <span class="comment">//    int nRet = pBand-&gt;RasterIO(GF_Write, 0, 0, m_nXGridSize, m_nYGridSize, pdRaster, m_nXGridSize, m_nYGridSize, GDT_Float64, 0, 0, NULL);</span></div>
-<div class="line"><a id="l00812" name="l00812"></a><span class="lineno">  812</span>   <span class="comment">//    if (nRet == CE_Failure)</span></div>
-<div class="line"><a id="l00813" name="l00813"></a><span class="lineno">  813</span>   <span class="comment">//       return;</span></div>
+<div class="line"><a id="l00809" name="l00809"></a><span class="lineno">  809</span>   <span class="comment">// GDALRasterBand* pBand = pDataSet-&gt;GetRasterBand(1);</span></div>
+<div class="line"><a id="l00810" name="l00810"></a><span class="lineno">  810</span>   <span class="comment">// pBand-&gt;SetNoDataValue(m_dMissingValue);</span></div>
+<div class="line"><a id="l00811" name="l00811"></a><span class="lineno">  811</span>   <span class="comment">// int nRet = pBand-&gt;RasterIO(GF_Write, 0, 0, m_nXGridSize, m_nYGridSize, pdRaster, m_nXGridSize, m_nYGridSize, GDT_Float64, 0, 0, NULL);</span></div>
+<div class="line"><a id="l00812" name="l00812"></a><span class="lineno">  812</span>   <span class="comment">// if (nRet == CE_Failure)</span></div>
+<div class="line"><a id="l00813" name="l00813"></a><span class="lineno">  813</span>   <span class="comment">// return;</span></div>
 <div class="line"><a id="l00814" name="l00814"></a><span class="lineno">  814</span>   <span class="comment">//</span></div>
-<div class="line"><a id="l00815" name="l00815"></a><span class="lineno">  815</span>   <span class="comment">//    GDALClose(pDataSet);</span></div>
-<div class="line"><a id="l00816" name="l00816"></a><span class="lineno">  816</span>   <span class="comment">//    delete[] pdRaster;</span></div>
+<div class="line"><a id="l00815" name="l00815"></a><span class="lineno">  815</span>   <span class="comment">// GDALClose(pDataSet);</span></div>
+<div class="line"><a id="l00816" name="l00816"></a><span class="lineno">  816</span>   <span class="comment">// delete[] pdRaster;</span></div>
 <div class="line"><a id="l00817" name="l00817"></a><span class="lineno">  817</span>   <span class="comment">//</span></div>
-<div class="line"><a id="l00818" name="l00818"></a><span class="lineno">  818</span>   <span class="comment">//    for (int nn = 0; nn &lt; nNumPoly; nn++)</span></div>
-<div class="line"><a id="l00819" name="l00819"></a><span class="lineno">  819</span>   <span class="comment">//       LogStream &lt;&lt; m_ulIter &lt;&lt; &quot;: polygon &quot; &lt;&lt; nn &lt;&lt; &quot; has &quot; &lt;&lt; nVPerPoly[nn] &lt;&lt; &quot; cells&quot; &lt;&lt; endl;</span></div>
-<div class="line"><a id="l00820" name="l00820"></a><span class="lineno">  820</span>   <span class="comment">//    LogStream &lt;&lt; m_ulIter &lt;&lt; &quot; Number of cells not in any polygon = &quot; &lt;&lt; nNotInPoly &lt;&lt; endl;</span></div>
-<div class="line"><a id="l00821" name="l00821"></a><span class="lineno">  821</span>   <span class="comment">//    LogStream &lt;&lt; &quot;==================&quot; &lt;&lt; endl;</span></div>
+<div class="line"><a id="l00818" name="l00818"></a><span class="lineno">  818</span>   <span class="comment">// for (int nn = 0; nn &lt; nNumPoly; nn++)</span></div>
+<div class="line"><a id="l00819" name="l00819"></a><span class="lineno">  819</span>   <span class="comment">// LogStream &lt;&lt; m_ulIter &lt;&lt; &quot;: polygon &quot; &lt;&lt; nn &lt;&lt; &quot; has &quot; &lt;&lt; nVPerPoly[nn] &lt;&lt; &quot; cells&quot; &lt;&lt; endl;</span></div>
+<div class="line"><a id="l00820" name="l00820"></a><span class="lineno">  820</span>   <span class="comment">// LogStream &lt;&lt; m_ulIter &lt;&lt; &quot; Number of cells not in any polygon = &quot; &lt;&lt; nNotInPoly &lt;&lt; endl;</span></div>
+<div class="line"><a id="l00821" name="l00821"></a><span class="lineno">  821</span>   <span class="comment">// LogStream &lt;&lt; &quot;==================&quot; &lt;&lt; endl;</span></div>
 <div class="line"><a id="l00822" name="l00822"></a><span class="lineno">  822</span>   <span class="comment">// }</span></div>
 <div class="line"><a id="l00823" name="l00823"></a><span class="lineno">  823</span>   <span class="comment">// // DEBUG CODE ===========================================================================================================</span></div>
 <div class="line"><a id="l00824" name="l00824"></a><span class="lineno">  824</span>}</div>
@@ -931,25 +931,25 @@ $(function(){initNavTree('d6/d91/create__polygons_8cpp_source.html','../../'); i
 <div class="line"><a id="l00836" name="l00836"></a><span class="lineno">  836</span>      <span class="comment">// // DEBUG CODE =================</span></div>
 <div class="line"><a id="l00837" name="l00837"></a><span class="lineno">  837</span>      <span class="comment">// for (int m = 0; m &lt; m_VCoast[nCoast].nGetNumProfiles(); m++)</span></div>
 <div class="line"><a id="l00838" name="l00838"></a><span class="lineno">  838</span>      <span class="comment">// {</span></div>
-<div class="line"><a id="l00839" name="l00839"></a><span class="lineno">  839</span>      <span class="comment">//    CGeomProfile* pProfile = m_VCoast[nCoast].pGetProfile(m);</span></div>
+<div class="line"><a id="l00839" name="l00839"></a><span class="lineno">  839</span>      <span class="comment">// CGeomProfile* pProfile = m_VCoast[nCoast].pGetProfile(m);</span></div>
 <div class="line"><a id="l00840" name="l00840"></a><span class="lineno">  840</span>      <span class="comment">//</span></div>
-<div class="line"><a id="l00841" name="l00841"></a><span class="lineno">  841</span>      <span class="comment">//    LogStream &lt;&lt; m &lt;&lt; &quot;\t&quot; &lt;&lt; pProfile-&gt;nGetCoastID() &lt;&lt; &quot;\t&quot; &lt;&lt; pProfile-&gt;nGetGlobalID() &lt;&lt; &quot;\t&quot;;</span></div>
+<div class="line"><a id="l00841" name="l00841"></a><span class="lineno">  841</span>      <span class="comment">// LogStream &lt;&lt; m &lt;&lt; &quot;\t&quot; &lt;&lt; pProfile-&gt;nGetCoastID() &lt;&lt; &quot;\t&quot; &lt;&lt; pProfile-&gt;nGetGlobalID() &lt;&lt; &quot;\t&quot;;</span></div>
 <div class="line"><a id="l00842" name="l00842"></a><span class="lineno">  842</span>      <span class="comment">//</span></div>
-<div class="line"><a id="l00843" name="l00843"></a><span class="lineno">  843</span>      <span class="comment">//    int nPointsInProfile = pProfile-&gt;nGetProfileSize();</span></div>
+<div class="line"><a id="l00843" name="l00843"></a><span class="lineno">  843</span>      <span class="comment">// int nPointsInProfile = pProfile-&gt;nGetProfileSize();</span></div>
 <div class="line"><a id="l00844" name="l00844"></a><span class="lineno">  844</span>      <span class="comment">//</span></div>
-<div class="line"><a id="l00845" name="l00845"></a><span class="lineno">  845</span>      <span class="comment">//    for (int nPoint = 0; nPoint &lt; nPointsInProfile; nPoint++)</span></div>
-<div class="line"><a id="l00846" name="l00846"></a><span class="lineno">  846</span>      <span class="comment">//    {</span></div>
-<div class="line"><a id="l00847" name="l00847"></a><span class="lineno">  847</span>      <span class="comment">//       CGeom2DPoint Pt = *pProfile-&gt;pPtGetPointInProfile(nPoint);</span></div>
-<div class="line"><a id="l00848" name="l00848"></a><span class="lineno">  848</span>      <span class="comment">//       LogStream &lt;&lt; &quot;{&quot; &lt;&lt; Pt.dGetX() &lt;&lt; &quot;, &quot; &lt;&lt; Pt.dGetY() &lt;&lt; &quot;}&quot;;</span></div>
-<div class="line"><a id="l00849" name="l00849"></a><span class="lineno">  849</span>      <span class="comment">//    }</span></div>
-<div class="line"><a id="l00850" name="l00850"></a><span class="lineno">  850</span>      <span class="comment">//    LogStream &lt;&lt; endl;</span></div>
+<div class="line"><a id="l00845" name="l00845"></a><span class="lineno">  845</span>      <span class="comment">// for (int nPoint = 0; nPoint &lt; nPointsInProfile; nPoint++)</span></div>
+<div class="line"><a id="l00846" name="l00846"></a><span class="lineno">  846</span>      <span class="comment">// {</span></div>
+<div class="line"><a id="l00847" name="l00847"></a><span class="lineno">  847</span>      <span class="comment">// CGeom2DPoint Pt = *pProfile-&gt;pPtGetPointInProfile(nPoint);</span></div>
+<div class="line"><a id="l00848" name="l00848"></a><span class="lineno">  848</span>      <span class="comment">// LogStream &lt;&lt; &quot;{&quot; &lt;&lt; Pt.dGetX() &lt;&lt; &quot;, &quot; &lt;&lt; Pt.dGetY() &lt;&lt; &quot;}&quot;;</span></div>
+<div class="line"><a id="l00849" name="l00849"></a><span class="lineno">  849</span>      <span class="comment">// }</span></div>
+<div class="line"><a id="l00850" name="l00850"></a><span class="lineno">  850</span>      <span class="comment">// LogStream &lt;&lt; endl;</span></div>
 <div class="line"><a id="l00851" name="l00851"></a><span class="lineno">  851</span>      <span class="comment">// }</span></div>
 <div class="line"><a id="l00852" name="l00852"></a><span class="lineno">  852</span>      <span class="comment">// // DEBUG CODE =================</span></div>
 <div class="line"><a id="l00853" name="l00853"></a><span class="lineno">  853</span> </div>
 <div class="line"><a id="l00854" name="l00854"></a><span class="lineno">  854</span>      <span class="comment">// Do this for every coastal polygon, in along-coast sequence</span></div>
 <div class="line"><a id="l00855" name="l00855"></a><span class="lineno">  855</span>      <span class="keywordflow">for</span> (<span class="keywordtype">int</span> nn = 0; nn &lt; nNumPolygons; nn++)</div>
 <div class="line"><a id="l00856" name="l00856"></a><span class="lineno">  856</span>      {</div>
-<div class="line"><a id="l00857" name="l00857"></a><span class="lineno">  857</span>         <a class="code hl_class" href="../../df/d45/classCGeomCoastPolygon.html">CGeomCoastPolygon</a>* pThisPolygon = <a class="code hl_variable" href="../../d1/d98/classCSimulation.html#a25ada8139c82ca7beab3f279cff83184">m_VCoast</a>[nCoast].pGetPolygon(nn);</div>
+<div class="line"><a id="l00857" name="l00857"></a><span class="lineno">  857</span>         <a class="code hl_class" href="../../df/d45/classCGeomCoastPolygon.html">CGeomCoastPolygon</a> * pThisPolygon = <a class="code hl_variable" href="../../d1/d98/classCSimulation.html#a25ada8139c82ca7beab3f279cff83184">m_VCoast</a>[nCoast].pGetPolygon(nn);</div>
 <div class="line"><a id="l00858" name="l00858"></a><span class="lineno">  858</span>         <span class="keywordtype">int</span> nThisPolygon = pThisPolygon-&gt;<a class="code hl_function" href="../../df/d45/classCGeomCoastPolygon.html#ae97ed135e92d392e9b72f83feee59b2b">nGetCoastID</a>();</div>
 <div class="line"><a id="l00859" name="l00859"></a><span class="lineno">  859</span> </div>
 <div class="line"><a id="l00860" name="l00860"></a><span class="lineno">  860</span>         vector&lt;int&gt; nVUpCoastAdjacentPolygon;</div>
@@ -966,8 +966,8 @@ $(function(){initNavTree('d6/d91/create__polygons_8cpp_source.html','../../'); i
 <div class="line"><a id="l00871" name="l00871"></a><span class="lineno">  871</span>            dVDownCoastBoundaryShare.push_back(1);</div>
 <div class="line"><a id="l00872" name="l00872"></a><span class="lineno">  872</span> </div>
 <div class="line"><a id="l00873" name="l00873"></a><span class="lineno">  873</span>            <span class="comment">// Store in the polygon</span></div>
-<div class="line"><a id="l00874" name="l00874"></a><span class="lineno">  874</span>            pThisPolygon-&gt;<a class="code hl_function" href="../../df/d45/classCGeomCoastPolygon.html#ad1df78c11a625b56a193cd5a0ae54192">SetDownCoastAdjacentPolygons</a>(&amp;nVDownCoastAdjacentPolygon);</div>
-<div class="line"><a id="l00875" name="l00875"></a><span class="lineno">  875</span>            pThisPolygon-&gt;<a class="code hl_function" href="../../df/d45/classCGeomCoastPolygon.html#a9d56bad783aec1a119fddde1743c50a9">SetDownCoastAdjacentPolygonBoundaryShares</a>(&amp;dVDownCoastBoundaryShare);</div>
+<div class="line"><a id="l00874" name="l00874"></a><span class="lineno">  874</span>            pThisPolygon-&gt;<a class="code hl_function" href="../../df/d45/classCGeomCoastPolygon.html#ad1df78c11a625b56a193cd5a0ae54192">SetDownCoastAdjacentPolygons</a>( &amp; nVDownCoastAdjacentPolygon);</div>
+<div class="line"><a id="l00875" name="l00875"></a><span class="lineno">  875</span>            pThisPolygon-&gt;<a class="code hl_function" href="../../df/d45/classCGeomCoastPolygon.html#a9d56bad783aec1a119fddde1743c50a9">SetDownCoastAdjacentPolygonBoundaryShares</a>( &amp; dVDownCoastBoundaryShare);</div>
 <div class="line"><a id="l00876" name="l00876"></a><span class="lineno">  876</span>         }</div>
 <div class="line"><a id="l00877" name="l00877"></a><span class="lineno">  877</span> </div>
 <div class="line"><a id="l00878" name="l00878"></a><span class="lineno">  878</span>         <span class="keywordflow">else</span></div>
@@ -978,15 +978,15 @@ $(function(){initNavTree('d6/d91/create__polygons_8cpp_source.html','../../'); i
 <div class="line"><a id="l00883" name="l00883"></a><span class="lineno">  883</span> </div>
 <div class="line"><a id="l00884" name="l00884"></a><span class="lineno">  884</span>            <span class="keywordtype">double</span> dDownCoastTotBoundaryLen = 0;</div>
 <div class="line"><a id="l00885" name="l00885"></a><span class="lineno">  885</span> </div>
-<div class="line"><a id="l00886" name="l00886"></a><span class="lineno">  886</span>            <a class="code hl_class" href="../../da/dae/classCGeomProfile.html">CGeomProfile</a>* pProfile = <a class="code hl_variable" href="../../d1/d98/classCSimulation.html#a25ada8139c82ca7beab3f279cff83184">m_VCoast</a>[nCoast].pGetProfile(nDownCoastProfile);</div>
+<div class="line"><a id="l00886" name="l00886"></a><span class="lineno">  886</span>            <a class="code hl_class" href="../../da/dae/classCGeomProfile.html">CGeomProfile</a> * pProfile = <a class="code hl_variable" href="../../d1/d98/classCSimulation.html#a25ada8139c82ca7beab3f279cff83184">m_VCoast</a>[nCoast].pGetProfile(nDownCoastProfile);</div>
 <div class="line"><a id="l00887" name="l00887"></a><span class="lineno">  887</span> </div>
-<div class="line"><a id="l00888" name="l00888"></a><span class="lineno">  888</span>            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> nPoint = 0; nPoint &lt; nPointsInProfile-1; nPoint++)</div>
+<div class="line"><a id="l00888" name="l00888"></a><span class="lineno">  888</span>            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> nPoint = 0; nPoint &lt; nPointsInProfile - 1; nPoint++)</div>
 <div class="line"><a id="l00889" name="l00889"></a><span class="lineno">  889</span>            {</div>
-<div class="line"><a id="l00890" name="l00890"></a><span class="lineno">  890</span>               <a class="code hl_class" href="../../d5/d4e/classCGeom2DPoint.html">CGeom2DPoint</a> PtStart = *pProfile-&gt;<a class="code hl_function" href="../../da/dae/classCGeomProfile.html#aaa8ddb9c775927bdb7940f7826f90a74">pPtGetPointInProfile</a>(nPoint);</div>
-<div class="line"><a id="l00891" name="l00891"></a><span class="lineno">  891</span>               <a class="code hl_class" href="../../d5/d4e/classCGeom2DPoint.html">CGeom2DPoint</a> PtEnd = *pProfile-&gt;<a class="code hl_function" href="../../da/dae/classCGeomProfile.html#aaa8ddb9c775927bdb7940f7826f90a74">pPtGetPointInProfile</a>(nPoint+1);</div>
+<div class="line"><a id="l00890" name="l00890"></a><span class="lineno">  890</span>               <a class="code hl_class" href="../../d5/d4e/classCGeom2DPoint.html">CGeom2DPoint</a> PtStart = * pProfile-&gt;<a class="code hl_function" href="../../da/dae/classCGeomProfile.html#aaa8ddb9c775927bdb7940f7826f90a74">pPtGetPointInProfile</a>(nPoint);</div>
+<div class="line"><a id="l00891" name="l00891"></a><span class="lineno">  891</span>               <a class="code hl_class" href="../../d5/d4e/classCGeom2DPoint.html">CGeom2DPoint</a> PtEnd = * pProfile-&gt;<a class="code hl_function" href="../../da/dae/classCGeomProfile.html#aaa8ddb9c775927bdb7940f7826f90a74">pPtGetPointInProfile</a>(nPoint + 1);</div>
 <div class="line"><a id="l00892" name="l00892"></a><span class="lineno">  892</span> </div>
 <div class="line"><a id="l00893" name="l00893"></a><span class="lineno">  893</span>               <span class="comment">// Calculate the length of this segment of the normal profile. Note that it should not be zero, since we checked for duplicate points when creating profiles</span></div>
-<div class="line"><a id="l00894" name="l00894"></a><span class="lineno">  894</span>               <span class="keywordtype">double</span> dDistBetween = <a class="code hl_function" href="../../d1/d98/classCSimulation.html#a407e01ecfd7c564c74f4474216ce2e16">dGetDistanceBetween</a>(&amp;PtStart, &amp;PtEnd);</div>
+<div class="line"><a id="l00894" name="l00894"></a><span class="lineno">  894</span>               <span class="keywordtype">double</span> dDistBetween = <a class="code hl_function" href="../../d1/d98/classCSimulation.html#a407e01ecfd7c564c74f4474216ce2e16">dGetDistanceBetween</a>( &amp; PtStart, &amp; PtEnd);</div>
 <div class="line"><a id="l00895" name="l00895"></a><span class="lineno">  895</span> </div>
 <div class="line"><a id="l00896" name="l00896"></a><span class="lineno">  896</span>               <span class="comment">// Find out which polygon is adjacent to each line segment of the polygon&#39;s down-coast profile boundary. The basic approach used is to count the number of coincident profiles in each line segment, and (because we are going down-coast) add this number to &#39;this&#39; polygon&#39;s number. However, some of these coincident profiles may be invalid, so we must count only the valid co-incident profiles</span></div>
 <div class="line"><a id="l00897" name="l00897"></a><span class="lineno">  897</span>               <span class="keywordtype">int</span> nNumCoinc = pProfile-&gt;<a class="code hl_function" href="../../d0/d89/classCGeomMultiLine.html#a3516022bd96ee15709653b3bb7cc0155">nGetNumCoincidentProfilesInLineSegment</a>(nPoint);</div>
@@ -1005,7 +1005,7 @@ $(function(){initNavTree('d6/d91/create__polygons_8cpp_source.html','../../'); i
 <div class="line"><a id="l00910" name="l00910"></a><span class="lineno">  910</span>                  <span class="keywordflow">if</span> (nProf == -1)</div>
 <div class="line"><a id="l00911" name="l00911"></a><span class="lineno">  911</span>                     <span class="keywordflow">continue</span>;</div>
 <div class="line"><a id="l00912" name="l00912"></a><span class="lineno">  912</span> </div>
-<div class="line"><a id="l00913" name="l00913"></a><span class="lineno">  913</span>                  <a class="code hl_class" href="../../da/dae/classCGeomProfile.html">CGeomProfile</a> <span class="keyword">const</span>* pProf = <a class="code hl_variable" href="../../d1/d98/classCSimulation.html#a25ada8139c82ca7beab3f279cff83184">m_VCoast</a>[nCoast].pGetProfile(nProf);</div>
+<div class="line"><a id="l00913" name="l00913"></a><span class="lineno">  913</span>                  <a class="code hl_class" href="../../da/dae/classCGeomProfile.html">CGeomProfile</a> <span class="keyword">const</span> * pProf = <a class="code hl_variable" href="../../d1/d98/classCSimulation.html#a25ada8139c82ca7beab3f279cff83184">m_VCoast</a>[nCoast].pGetProfile(nProf);</div>
 <div class="line"><a id="l00914" name="l00914"></a><span class="lineno">  914</span> </div>
 <div class="line"><a id="l00915" name="l00915"></a><span class="lineno">  915</span>                  <span class="keywordflow">if</span> (pProf-&gt;<a class="code hl_function" href="../../da/dae/classCGeomProfile.html#a8dc4e3ce21668f7149ca11aeb7efadf7">bProfileOK</a>())</div>
 <div class="line"><a id="l00916" name="l00916"></a><span class="lineno">  916</span>                     nNumValidCoinc++;</div>
@@ -1044,8 +1044,8 @@ $(function(){initNavTree('d6/d91/create__polygons_8cpp_source.html','../../'); i
 <div class="line"><a id="l00949" name="l00949"></a><span class="lineno">  949</span>            }</div>
 <div class="line"><a id="l00950" name="l00950"></a><span class="lineno">  950</span> </div>
 <div class="line"><a id="l00951" name="l00951"></a><span class="lineno">  951</span>            <span class="comment">// Store in the polygon</span></div>
-<div class="line"><a id="l00952" name="l00952"></a><span class="lineno">  952</span>            pThisPolygon-&gt;<a class="code hl_function" href="../../df/d45/classCGeomCoastPolygon.html#ad1df78c11a625b56a193cd5a0ae54192">SetDownCoastAdjacentPolygons</a>(&amp;nVDownCoastAdjacentPolygon);</div>
-<div class="line"><a id="l00953" name="l00953"></a><span class="lineno">  953</span>            pThisPolygon-&gt;<a class="code hl_function" href="../../df/d45/classCGeomCoastPolygon.html#a9d56bad783aec1a119fddde1743c50a9">SetDownCoastAdjacentPolygonBoundaryShares</a>(&amp;dVDownCoastBoundaryShare);</div>
+<div class="line"><a id="l00952" name="l00952"></a><span class="lineno">  952</span>            pThisPolygon-&gt;<a class="code hl_function" href="../../df/d45/classCGeomCoastPolygon.html#ad1df78c11a625b56a193cd5a0ae54192">SetDownCoastAdjacentPolygons</a>( &amp; nVDownCoastAdjacentPolygon);</div>
+<div class="line"><a id="l00953" name="l00953"></a><span class="lineno">  953</span>            pThisPolygon-&gt;<a class="code hl_function" href="../../df/d45/classCGeomCoastPolygon.html#a9d56bad783aec1a119fddde1743c50a9">SetDownCoastAdjacentPolygonBoundaryShares</a>( &amp; dVDownCoastBoundaryShare);</div>
 <div class="line"><a id="l00954" name="l00954"></a><span class="lineno">  954</span>         }</div>
 <div class="line"><a id="l00955" name="l00955"></a><span class="lineno">  955</span> </div>
 <div class="line"><a id="l00956" name="l00956"></a><span class="lineno">  956</span>         <span class="comment">// Now deal with up-coast adjacent polygons</span></div>
@@ -1056,8 +1056,8 @@ $(function(){initNavTree('d6/d91/create__polygons_8cpp_source.html','../../'); i
 <div class="line"><a id="l00961" name="l00961"></a><span class="lineno">  961</span>            dVUpCoastBoundaryShare.push_back(1);</div>
 <div class="line"><a id="l00962" name="l00962"></a><span class="lineno">  962</span> </div>
 <div class="line"><a id="l00963" name="l00963"></a><span class="lineno">  963</span>            <span class="comment">// Store in the polygon</span></div>
-<div class="line"><a id="l00964" name="l00964"></a><span class="lineno">  964</span>            pThisPolygon-&gt;<a class="code hl_function" href="../../df/d45/classCGeomCoastPolygon.html#adbd8b304081b250addc82262b474ed08">SetUpCoastAdjacentPolygons</a>(&amp;nVUpCoastAdjacentPolygon);</div>
-<div class="line"><a id="l00965" name="l00965"></a><span class="lineno">  965</span>            pThisPolygon-&gt;<a class="code hl_function" href="../../df/d45/classCGeomCoastPolygon.html#ad68047ef4a4f8e908858e960a0be4b05">SetUpCoastAdjacentPolygonBoundaryShares</a>(&amp;dVUpCoastBoundaryShare);</div>
+<div class="line"><a id="l00964" name="l00964"></a><span class="lineno">  964</span>            pThisPolygon-&gt;<a class="code hl_function" href="../../df/d45/classCGeomCoastPolygon.html#adbd8b304081b250addc82262b474ed08">SetUpCoastAdjacentPolygons</a>( &amp; nVUpCoastAdjacentPolygon);</div>
+<div class="line"><a id="l00965" name="l00965"></a><span class="lineno">  965</span>            pThisPolygon-&gt;<a class="code hl_function" href="../../df/d45/classCGeomCoastPolygon.html#ad68047ef4a4f8e908858e960a0be4b05">SetUpCoastAdjacentPolygonBoundaryShares</a>( &amp; dVUpCoastBoundaryShare);</div>
 <div class="line"><a id="l00966" name="l00966"></a><span class="lineno">  966</span>         }</div>
 <div class="line"><a id="l00967" name="l00967"></a><span class="lineno">  967</span> </div>
 <div class="line"><a id="l00968" name="l00968"></a><span class="lineno">  968</span>         <span class="keywordflow">else</span></div>
@@ -1068,12 +1068,12 @@ $(function(){initNavTree('d6/d91/create__polygons_8cpp_source.html','../../'); i
 <div class="line"><a id="l00973" name="l00973"></a><span class="lineno">  973</span> </div>
 <div class="line"><a id="l00974" name="l00974"></a><span class="lineno">  974</span>            <span class="keywordtype">double</span> dUpCoastTotBoundaryLen = 0;</div>
 <div class="line"><a id="l00975" name="l00975"></a><span class="lineno">  975</span> </div>
-<div class="line"><a id="l00976" name="l00976"></a><span class="lineno">  976</span>            <a class="code hl_class" href="../../da/dae/classCGeomProfile.html">CGeomProfile</a>* pProfile = <a class="code hl_variable" href="../../d1/d98/classCSimulation.html#a25ada8139c82ca7beab3f279cff83184">m_VCoast</a>[nCoast].pGetProfile(nUpCoastProfile);</div>
+<div class="line"><a id="l00976" name="l00976"></a><span class="lineno">  976</span>            <a class="code hl_class" href="../../da/dae/classCGeomProfile.html">CGeomProfile</a> * pProfile = <a class="code hl_variable" href="../../d1/d98/classCSimulation.html#a25ada8139c82ca7beab3f279cff83184">m_VCoast</a>[nCoast].pGetProfile(nUpCoastProfile);</div>
 <div class="line"><a id="l00977" name="l00977"></a><span class="lineno">  977</span> </div>
-<div class="line"><a id="l00978" name="l00978"></a><span class="lineno">  978</span>            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> nPoint = 0; nPoint &lt; nPointsInProfile-1; nPoint++)</div>
+<div class="line"><a id="l00978" name="l00978"></a><span class="lineno">  978</span>            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> nPoint = 0; nPoint &lt; nPointsInProfile - 1; nPoint++)</div>
 <div class="line"><a id="l00979" name="l00979"></a><span class="lineno">  979</span>            {</div>
-<div class="line"><a id="l00980" name="l00980"></a><span class="lineno">  980</span>               <a class="code hl_class" href="../../d5/d4e/classCGeom2DPoint.html">CGeom2DPoint</a> PtStart = *pProfile-&gt;<a class="code hl_function" href="../../da/dae/classCGeomProfile.html#aaa8ddb9c775927bdb7940f7826f90a74">pPtGetPointInProfile</a>(nPoint);</div>
-<div class="line"><a id="l00981" name="l00981"></a><span class="lineno">  981</span>               <a class="code hl_class" href="../../d5/d4e/classCGeom2DPoint.html">CGeom2DPoint</a> PtEnd = *pProfile-&gt;<a class="code hl_function" href="../../da/dae/classCGeomProfile.html#aaa8ddb9c775927bdb7940f7826f90a74">pPtGetPointInProfile</a>(nPoint+1);</div>
+<div class="line"><a id="l00980" name="l00980"></a><span class="lineno">  980</span>               <a class="code hl_class" href="../../d5/d4e/classCGeom2DPoint.html">CGeom2DPoint</a> PtStart = * pProfile-&gt;<a class="code hl_function" href="../../da/dae/classCGeomProfile.html#aaa8ddb9c775927bdb7940f7826f90a74">pPtGetPointInProfile</a>(nPoint);</div>
+<div class="line"><a id="l00981" name="l00981"></a><span class="lineno">  981</span>               <a class="code hl_class" href="../../d5/d4e/classCGeom2DPoint.html">CGeom2DPoint</a> PtEnd = * pProfile-&gt;<a class="code hl_function" href="../../da/dae/classCGeomProfile.html#aaa8ddb9c775927bdb7940f7826f90a74">pPtGetPointInProfile</a>(nPoint + 1);</div>
 <div class="line"><a id="l00982" name="l00982"></a><span class="lineno">  982</span> </div>
 <div class="line"><a id="l00983" name="l00983"></a><span class="lineno">  983</span>               <span class="comment">// Safety check</span></div>
 <div class="line"><a id="l00984" name="l00984"></a><span class="lineno">  984</span>               <span class="keywordflow">if</span> (PtStart == PtEnd)</div>
@@ -1081,7 +1081,7 @@ $(function(){initNavTree('d6/d91/create__polygons_8cpp_source.html','../../'); i
 <div class="line"><a id="l00986" name="l00986"></a><span class="lineno">  986</span>                  <span class="keywordflow">continue</span>;</div>
 <div class="line"><a id="l00987" name="l00987"></a><span class="lineno">  987</span> </div>
 <div class="line"><a id="l00988" name="l00988"></a><span class="lineno">  988</span>               <span class="comment">// Calculate the length of this segment of the normal profile</span></div>
-<div class="line"><a id="l00989" name="l00989"></a><span class="lineno">  989</span>               <span class="keywordtype">double</span> dDistBetween = <a class="code hl_function" href="../../d1/d98/classCSimulation.html#a407e01ecfd7c564c74f4474216ce2e16">dGetDistanceBetween</a>(&amp;PtStart, &amp;PtEnd);</div>
+<div class="line"><a id="l00989" name="l00989"></a><span class="lineno">  989</span>               <span class="keywordtype">double</span> dDistBetween = <a class="code hl_function" href="../../d1/d98/classCSimulation.html#a407e01ecfd7c564c74f4474216ce2e16">dGetDistanceBetween</a>( &amp; PtStart, &amp; PtEnd);</div>
 <div class="line"><a id="l00990" name="l00990"></a><span class="lineno">  990</span> </div>
 <div class="line"><a id="l00991" name="l00991"></a><span class="lineno">  991</span>               <span class="comment">// Find out which polygon is adjacent to each line segment of the polygon&#39;s up-coast profile boundary. The basic approach used is to count the number of coincident profiles in each line segment, and (because we are going up-coast) subtract this number from &#39;this&#39; polygon&#39;s number. However, some of these coincident profiles may be invalid, so we must count only the valid co-incident profiles</span></div>
 <div class="line"><a id="l00992" name="l00992"></a><span class="lineno">  992</span>               <span class="keywordtype">int</span> nNumCoinc = pProfile-&gt;<a class="code hl_function" href="../../d0/d89/classCGeomMultiLine.html#a3516022bd96ee15709653b3bb7cc0155">nGetNumCoincidentProfilesInLineSegment</a>(nPoint);</div>
@@ -1100,7 +1100,7 @@ $(function(){initNavTree('d6/d91/create__polygons_8cpp_source.html','../../'); i
 <div class="line"><a id="l01005" name="l01005"></a><span class="lineno"> 1005</span>                  <span class="keywordflow">if</span> (nProf == -1)</div>
 <div class="line"><a id="l01006" name="l01006"></a><span class="lineno"> 1006</span>                     <span class="keywordflow">continue</span>;</div>
 <div class="line"><a id="l01007" name="l01007"></a><span class="lineno"> 1007</span> </div>
-<div class="line"><a id="l01008" name="l01008"></a><span class="lineno"> 1008</span>                  <a class="code hl_class" href="../../da/dae/classCGeomProfile.html">CGeomProfile</a> <span class="keyword">const</span>* pProf = <a class="code hl_variable" href="../../d1/d98/classCSimulation.html#a25ada8139c82ca7beab3f279cff83184">m_VCoast</a>[nCoast].pGetProfile(nProf);</div>
+<div class="line"><a id="l01008" name="l01008"></a><span class="lineno"> 1008</span>                  <a class="code hl_class" href="../../da/dae/classCGeomProfile.html">CGeomProfile</a> <span class="keyword">const</span> * pProf = <a class="code hl_variable" href="../../d1/d98/classCSimulation.html#a25ada8139c82ca7beab3f279cff83184">m_VCoast</a>[nCoast].pGetProfile(nProf);</div>
 <div class="line"><a id="l01009" name="l01009"></a><span class="lineno"> 1009</span> </div>
 <div class="line"><a id="l01010" name="l01010"></a><span class="lineno"> 1010</span>                  <span class="keywordflow">if</span> (pProf-&gt;<a class="code hl_function" href="../../da/dae/classCGeomProfile.html#a8dc4e3ce21668f7149ca11aeb7efadf7">bProfileOK</a>())</div>
 <div class="line"><a id="l01011" name="l01011"></a><span class="lineno"> 1011</span>                     nNumValidCoinc++;</div>
@@ -1139,8 +1139,8 @@ $(function(){initNavTree('d6/d91/create__polygons_8cpp_source.html','../../'); i
 <div class="line"><a id="l01044" name="l01044"></a><span class="lineno"> 1044</span>            }</div>
 <div class="line"><a id="l01045" name="l01045"></a><span class="lineno"> 1045</span> </div>
 <div class="line"><a id="l01046" name="l01046"></a><span class="lineno"> 1046</span>            <span class="comment">// Store in the polygon</span></div>
-<div class="line"><a id="l01047" name="l01047"></a><span class="lineno"> 1047</span>            pThisPolygon-&gt;<a class="code hl_function" href="../../df/d45/classCGeomCoastPolygon.html#adbd8b304081b250addc82262b474ed08">SetUpCoastAdjacentPolygons</a>(&amp;nVUpCoastAdjacentPolygon);</div>
-<div class="line"><a id="l01048" name="l01048"></a><span class="lineno"> 1048</span>            pThisPolygon-&gt;<a class="code hl_function" href="../../df/d45/classCGeomCoastPolygon.html#ad68047ef4a4f8e908858e960a0be4b05">SetUpCoastAdjacentPolygonBoundaryShares</a>(&amp;dVUpCoastBoundaryShare);</div>
+<div class="line"><a id="l01047" name="l01047"></a><span class="lineno"> 1047</span>            pThisPolygon-&gt;<a class="code hl_function" href="../../df/d45/classCGeomCoastPolygon.html#adbd8b304081b250addc82262b474ed08">SetUpCoastAdjacentPolygons</a>( &amp; nVUpCoastAdjacentPolygon);</div>
+<div class="line"><a id="l01048" name="l01048"></a><span class="lineno"> 1048</span>            pThisPolygon-&gt;<a class="code hl_function" href="../../df/d45/classCGeomCoastPolygon.html#ad68047ef4a4f8e908858e960a0be4b05">SetUpCoastAdjacentPolygonBoundaryShares</a>( &amp; dVUpCoastBoundaryShare);</div>
 <div class="line"><a id="l01049" name="l01049"></a><span class="lineno"> 1049</span>         }</div>
 <div class="line"><a id="l01050" name="l01050"></a><span class="lineno"> 1050</span> </div>
 <div class="line"><a id="l01051" name="l01051"></a><span class="lineno"> 1051</span>         <span class="comment">// Finally, calculate the distance between the coast node and the antinode of the polygon</span></div>
@@ -1153,7 +1153,7 @@ $(function(){initNavTree('d6/d91/create__polygons_8cpp_source.html','../../'); i
 <div class="line"><a id="l01058" name="l01058"></a><span class="lineno"> 1058</span>         <span class="comment">// assert(dVUpCoastBoundaryShare.size() == nVUpCoastAdjacentPolygon.size());</span></div>
 <div class="line"><a id="l01059" name="l01059"></a><span class="lineno"> 1059</span>         <span class="comment">// assert(dVDownCoastBoundaryShare.size() == nVDownCoastAdjacentPolygon.size());</span></div>
 <div class="line"><a id="l01060" name="l01060"></a><span class="lineno"> 1060</span>         <span class="comment">//</span></div>
-<div class="line"><a id="l01061" name="l01061"></a><span class="lineno"> 1061</span>         <span class="comment">//             LogStream &lt;&lt; m_ulIter &lt;&lt; &quot;: polygon = &quot; &lt;&lt; nPoly &lt;&lt; (pPolygon-&gt;bIsPointed() ? &quot; IS TRIANGULAR&quot; : &quot;&quot;) &lt;&lt; endl;</span></div>
+<div class="line"><a id="l01061" name="l01061"></a><span class="lineno"> 1061</span>         <span class="comment">// LogStream &lt;&lt; m_ulIter &lt;&lt; &quot;: polygon = &quot; &lt;&lt; nPoly &lt;&lt; (pPolygon-&gt;bIsPointed() ? &quot; IS TRIANGULAR&quot; : &quot;&quot;) &lt;&lt; endl;</span></div>
 <div class="line"><a id="l01062" name="l01062"></a><span class="lineno"> 1062</span>         <span class="comment">// LogStream &lt;&lt; m_ulIter &lt;&lt; &quot;: coast &quot; &lt;&lt; nCoast &lt;&lt; &quot; polygon &quot; &lt;&lt; nThisPolygon &lt;&lt; endl;</span></div>
 <div class="line"><a id="l01063" name="l01063"></a><span class="lineno"> 1063</span>         <span class="comment">//</span></div>
 <div class="line"><a id="l01064" name="l01064"></a><span class="lineno"> 1064</span>         <span class="comment">// int nUpCoastProfile = pThisPolygon-&gt;nGetUpCoastProfile();</span></div>
@@ -1169,20 +1169,20 @@ $(function(){initNavTree('d6/d91/create__polygons_8cpp_source.html','../../'); i
 <div class="line"><a id="l01074" name="l01074"></a><span class="lineno"> 1074</span>         <span class="comment">//</span></div>
 <div class="line"><a id="l01075" name="l01075"></a><span class="lineno"> 1075</span>         <span class="comment">// LogStream &lt;&lt; &quot;\tThere are &quot; &lt;&lt; nVUpCoastAdjacentPolygon.size() &lt;&lt; &quot; UP-COAST adjacent polygon(s) = &quot;;</span></div>
 <div class="line"><a id="l01076" name="l01076"></a><span class="lineno"> 1076</span>         <span class="comment">// for (unsigned int n = 0; n &lt; nVUpCoastAdjacentPolygon.size(); n++)</span></div>
-<div class="line"><a id="l01077" name="l01077"></a><span class="lineno"> 1077</span>         <span class="comment">//    LogStream &lt;&lt; nVUpCoastAdjacentPolygon[n] &lt;&lt; &quot; &quot;;</span></div>
+<div class="line"><a id="l01077" name="l01077"></a><span class="lineno"> 1077</span>         <span class="comment">// LogStream &lt;&lt; nVUpCoastAdjacentPolygon[n] &lt;&lt; &quot; &quot;;</span></div>
 <div class="line"><a id="l01078" name="l01078"></a><span class="lineno"> 1078</span>         <span class="comment">// LogStream &lt;&lt; endl;</span></div>
 <div class="line"><a id="l01079" name="l01079"></a><span class="lineno"> 1079</span>         <span class="comment">//</span></div>
 <div class="line"><a id="l01080" name="l01080"></a><span class="lineno"> 1080</span>         <span class="comment">// LogStream &lt;&lt; &quot;\tThere are &quot; &lt;&lt; nVDownCoastAdjacentPolygon.size() &lt;&lt; &quot; DOWN-COAST adjacent polygon(s) = &quot;;</span></div>
 <div class="line"><a id="l01081" name="l01081"></a><span class="lineno"> 1081</span>         <span class="comment">// for (unsigned int n = 0; n &lt; nVDownCoastAdjacentPolygon.size(); n++)</span></div>
-<div class="line"><a id="l01082" name="l01082"></a><span class="lineno"> 1082</span>         <span class="comment">//    LogStream &lt;&lt; nVDownCoastAdjacentPolygon[n] &lt;&lt; &quot; &quot;;</span></div>
+<div class="line"><a id="l01082" name="l01082"></a><span class="lineno"> 1082</span>         <span class="comment">// LogStream &lt;&lt; nVDownCoastAdjacentPolygon[n] &lt;&lt; &quot; &quot;;</span></div>
 <div class="line"><a id="l01083" name="l01083"></a><span class="lineno"> 1083</span>         <span class="comment">// LogStream &lt;&lt; endl;</span></div>
 <div class="line"><a id="l01084" name="l01084"></a><span class="lineno"> 1084</span>         <span class="comment">//</span></div>
 <div class="line"><a id="l01085" name="l01085"></a><span class="lineno"> 1085</span>         <span class="comment">// double dUpCoastTotBoundaryLen = 0;</span></div>
 <div class="line"><a id="l01086" name="l01086"></a><span class="lineno"> 1086</span>         <span class="comment">// LogStream &lt;&lt; &quot;\tUP-COAST boundary share(s) = &quot;;</span></div>
 <div class="line"><a id="l01087" name="l01087"></a><span class="lineno"> 1087</span>         <span class="comment">// for (unsigned int n = 0; n &lt; dVUpCoastBoundaryShare.size(); n++)</span></div>
 <div class="line"><a id="l01088" name="l01088"></a><span class="lineno"> 1088</span>         <span class="comment">// {</span></div>
-<div class="line"><a id="l01089" name="l01089"></a><span class="lineno"> 1089</span>         <span class="comment">//    dUpCoastTotBoundaryLen += dVUpCoastBoundaryShare[n];</span></div>
-<div class="line"><a id="l01090" name="l01090"></a><span class="lineno"> 1090</span>         <span class="comment">//    LogStream &lt;&lt; dVUpCoastBoundaryShare[n] &lt;&lt; &quot; &quot;;</span></div>
+<div class="line"><a id="l01089" name="l01089"></a><span class="lineno"> 1089</span>         <span class="comment">// dUpCoastTotBoundaryLen += dVUpCoastBoundaryShare[n];</span></div>
+<div class="line"><a id="l01090" name="l01090"></a><span class="lineno"> 1090</span>         <span class="comment">// LogStream &lt;&lt; dVUpCoastBoundaryShare[n] &lt;&lt; &quot; &quot;;</span></div>
 <div class="line"><a id="l01091" name="l01091"></a><span class="lineno"> 1091</span>         <span class="comment">// }</span></div>
 <div class="line"><a id="l01092" name="l01092"></a><span class="lineno"> 1092</span>         <span class="comment">// LogStream &lt;&lt; endl;</span></div>
 <div class="line"><a id="l01093" name="l01093"></a><span class="lineno"> 1093</span>         <span class="comment">// LogStream &lt;&lt; &quot;\tTotal UP-COAST boundary length = &quot; &lt;&lt; dUpCoastTotBoundaryLen &lt;&lt; endl;</span></div>
@@ -1191,8 +1191,8 @@ $(function(){initNavTree('d6/d91/create__polygons_8cpp_source.html','../../'); i
 <div class="line"><a id="l01096" name="l01096"></a><span class="lineno"> 1096</span>         <span class="comment">// LogStream &lt;&lt; &quot;\tDOWN-COAST boundary share(s) = &quot;;</span></div>
 <div class="line"><a id="l01097" name="l01097"></a><span class="lineno"> 1097</span>         <span class="comment">// for (unsigned int n = 0; n &lt; dVDownCoastBoundaryShare.size(); n++)</span></div>
 <div class="line"><a id="l01098" name="l01098"></a><span class="lineno"> 1098</span>         <span class="comment">// {</span></div>
-<div class="line"><a id="l01099" name="l01099"></a><span class="lineno"> 1099</span>         <span class="comment">//    dDownCoastTotBoundaryLen += dVDownCoastBoundaryShare[n];</span></div>
-<div class="line"><a id="l01100" name="l01100"></a><span class="lineno"> 1100</span>         <span class="comment">//    LogStream &lt;&lt; dVDownCoastBoundaryShare[n] &lt;&lt; &quot; &quot;;</span></div>
+<div class="line"><a id="l01099" name="l01099"></a><span class="lineno"> 1099</span>         <span class="comment">// dDownCoastTotBoundaryLen += dVDownCoastBoundaryShare[n];</span></div>
+<div class="line"><a id="l01100" name="l01100"></a><span class="lineno"> 1100</span>         <span class="comment">// LogStream &lt;&lt; dVDownCoastBoundaryShare[n] &lt;&lt; &quot; &quot;;</span></div>
 <div class="line"><a id="l01101" name="l01101"></a><span class="lineno"> 1101</span>         <span class="comment">// }</span></div>
 <div class="line"><a id="l01102" name="l01102"></a><span class="lineno"> 1102</span>         <span class="comment">// LogStream &lt;&lt; endl;</span></div>
 <div class="line"><a id="l01103" name="l01103"></a><span class="lineno"> 1103</span>         <span class="comment">// LogStream &lt;&lt; &quot;\tTotal DOWN-COAST boundary length = &quot; &lt;&lt; dDownCoastTotBoundaryLen &lt;&lt; endl;</span></div>
@@ -1203,32 +1203,32 @@ $(function(){initNavTree('d6/d91/create__polygons_8cpp_source.html','../../'); i
 <div class="line"><a id="l01108" name="l01108"></a><span class="lineno"> 1108</span>   <span class="comment">// // DEBUG CODE =================================================================================</span></div>
 <div class="line"><a id="l01109" name="l01109"></a><span class="lineno"> 1109</span>   <span class="comment">// for (int nCoast = 0; nCoast &lt; static_cast&lt;int&gt;(m_VCoast.size()); nCoast++)</span></div>
 <div class="line"><a id="l01110" name="l01110"></a><span class="lineno"> 1110</span>   <span class="comment">// {</span></div>
-<div class="line"><a id="l01111" name="l01111"></a><span class="lineno"> 1111</span>   <span class="comment">//    int nNumPoly = m_VCoast[nCoast].nGetNumPolygons();</span></div>
-<div class="line"><a id="l01112" name="l01112"></a><span class="lineno"> 1112</span>   <span class="comment">//    for (int nPoly = 0; nPoly &lt; nNumPoly; nPoly++)</span></div>
-<div class="line"><a id="l01113" name="l01113"></a><span class="lineno"> 1113</span>   <span class="comment">//    {</span></div>
-<div class="line"><a id="l01114" name="l01114"></a><span class="lineno"> 1114</span>   <span class="comment">//       CGeomCoastPolygon const* pPolygon = m_VCoast[nCoast].pGetPolygon(nPoly);</span></div>
+<div class="line"><a id="l01111" name="l01111"></a><span class="lineno"> 1111</span>   <span class="comment">// int nNumPoly = m_VCoast[nCoast].nGetNumPolygons();</span></div>
+<div class="line"><a id="l01112" name="l01112"></a><span class="lineno"> 1112</span>   <span class="comment">// for (int nPoly = 0; nPoly &lt; nNumPoly; nPoly++)</span></div>
+<div class="line"><a id="l01113" name="l01113"></a><span class="lineno"> 1113</span>   <span class="comment">// {</span></div>
+<div class="line"><a id="l01114" name="l01114"></a><span class="lineno"> 1114</span>   <span class="comment">// CGeomCoastPolygon const* pPolygon = m_VCoast[nCoast].pGetPolygon(nPoly);</span></div>
 <div class="line"><a id="l01115" name="l01115"></a><span class="lineno"> 1115</span>   <span class="comment">//</span></div>
-<div class="line"><a id="l01116" name="l01116"></a><span class="lineno"> 1116</span>   <span class="comment">//       int nNumUpCoastPolygons = pPolygon-&gt;nGetNumUpCoastAdjacentPolygons();</span></div>
-<div class="line"><a id="l01117" name="l01117"></a><span class="lineno"> 1117</span>   <span class="comment">//       LogStream &lt;&lt; &quot;Polygon &quot; &lt;&lt; nPoly &lt;&lt; &quot; up-coast polygon(s) = &quot;;</span></div>
-<div class="line"><a id="l01118" name="l01118"></a><span class="lineno"> 1118</span>   <span class="comment">//       for (int nAdj = 0; nAdj &lt; nNumUpCoastPolygons; nAdj++)</span></div>
-<div class="line"><a id="l01119" name="l01119"></a><span class="lineno"> 1119</span>   <span class="comment">//       {</span></div>
-<div class="line"><a id="l01120" name="l01120"></a><span class="lineno"> 1120</span>   <span class="comment">//          int nAdjPoly = pPolygon-&gt;nGetUpCoastAdjacentPolygon(nAdj);</span></div>
-<div class="line"><a id="l01121" name="l01121"></a><span class="lineno"> 1121</span>   <span class="comment">//          LogStream &lt;&lt; nAdjPoly;</span></div>
-<div class="line"><a id="l01122" name="l01122"></a><span class="lineno"> 1122</span>   <span class="comment">//          if (nAdjPoly &gt; nNumPoly-1)</span></div>
-<div class="line"><a id="l01123" name="l01123"></a><span class="lineno"> 1123</span>   <span class="comment">//             LogStream &lt;&lt; &quot;***&quot;;</span></div>
-<div class="line"><a id="l01124" name="l01124"></a><span class="lineno"> 1124</span>   <span class="comment">//       }</span></div>
+<div class="line"><a id="l01116" name="l01116"></a><span class="lineno"> 1116</span>   <span class="comment">// int nNumUpCoastPolygons = pPolygon-&gt;nGetNumUpCoastAdjacentPolygons();</span></div>
+<div class="line"><a id="l01117" name="l01117"></a><span class="lineno"> 1117</span>   <span class="comment">// LogStream &lt;&lt; &quot;Polygon &quot; &lt;&lt; nPoly &lt;&lt; &quot; up-coast polygon(s) = &quot;;</span></div>
+<div class="line"><a id="l01118" name="l01118"></a><span class="lineno"> 1118</span>   <span class="comment">// for (int nAdj = 0; nAdj &lt; nNumUpCoastPolygons; nAdj++)</span></div>
+<div class="line"><a id="l01119" name="l01119"></a><span class="lineno"> 1119</span>   <span class="comment">// {</span></div>
+<div class="line"><a id="l01120" name="l01120"></a><span class="lineno"> 1120</span>   <span class="comment">// int nAdjPoly = pPolygon-&gt;nGetUpCoastAdjacentPolygon(nAdj);</span></div>
+<div class="line"><a id="l01121" name="l01121"></a><span class="lineno"> 1121</span>   <span class="comment">// LogStream &lt;&lt; nAdjPoly;</span></div>
+<div class="line"><a id="l01122" name="l01122"></a><span class="lineno"> 1122</span>   <span class="comment">// if (nAdjPoly &gt; nNumPoly-1)</span></div>
+<div class="line"><a id="l01123" name="l01123"></a><span class="lineno"> 1123</span>   <span class="comment">// LogStream &lt;&lt; &quot;***&quot;;</span></div>
+<div class="line"><a id="l01124" name="l01124"></a><span class="lineno"> 1124</span>   <span class="comment">// }</span></div>
 <div class="line"><a id="l01125" name="l01125"></a><span class="lineno"> 1125</span>   <span class="comment">//</span></div>
-<div class="line"><a id="l01126" name="l01126"></a><span class="lineno"> 1126</span>   <span class="comment">//       int nNumDownCoastPolygons = pPolygon-&gt;nGetNumDownCoastAdjacentPolygons();</span></div>
-<div class="line"><a id="l01127" name="l01127"></a><span class="lineno"> 1127</span>   <span class="comment">//       LogStream &lt;&lt; &quot; down-coast polygon(s) = &quot;;</span></div>
-<div class="line"><a id="l01128" name="l01128"></a><span class="lineno"> 1128</span>   <span class="comment">//       for (int nAdj = 0; nAdj &lt; nNumDownCoastPolygons; nAdj++)</span></div>
-<div class="line"><a id="l01129" name="l01129"></a><span class="lineno"> 1129</span>   <span class="comment">//       {</span></div>
-<div class="line"><a id="l01130" name="l01130"></a><span class="lineno"> 1130</span>   <span class="comment">//          int nAdjPoly = pPolygon-&gt;nGetDownCoastAdjacentPolygon(nAdj);</span></div>
-<div class="line"><a id="l01131" name="l01131"></a><span class="lineno"> 1131</span>   <span class="comment">//          LogStream &lt;&lt; nAdjPoly;</span></div>
-<div class="line"><a id="l01132" name="l01132"></a><span class="lineno"> 1132</span>   <span class="comment">//          if (nAdjPoly &gt; nNumPoly-1)</span></div>
-<div class="line"><a id="l01133" name="l01133"></a><span class="lineno"> 1133</span>   <span class="comment">//             LogStream &lt;&lt; &quot;***&quot;;</span></div>
-<div class="line"><a id="l01134" name="l01134"></a><span class="lineno"> 1134</span>   <span class="comment">//       }</span></div>
-<div class="line"><a id="l01135" name="l01135"></a><span class="lineno"> 1135</span>   <span class="comment">//       LogStream &lt;&lt; endl;</span></div>
-<div class="line"><a id="l01136" name="l01136"></a><span class="lineno"> 1136</span>   <span class="comment">//    }</span></div>
+<div class="line"><a id="l01126" name="l01126"></a><span class="lineno"> 1126</span>   <span class="comment">// int nNumDownCoastPolygons = pPolygon-&gt;nGetNumDownCoastAdjacentPolygons();</span></div>
+<div class="line"><a id="l01127" name="l01127"></a><span class="lineno"> 1127</span>   <span class="comment">// LogStream &lt;&lt; &quot; down-coast polygon(s) = &quot;;</span></div>
+<div class="line"><a id="l01128" name="l01128"></a><span class="lineno"> 1128</span>   <span class="comment">// for (int nAdj = 0; nAdj &lt; nNumDownCoastPolygons; nAdj++)</span></div>
+<div class="line"><a id="l01129" name="l01129"></a><span class="lineno"> 1129</span>   <span class="comment">// {</span></div>
+<div class="line"><a id="l01130" name="l01130"></a><span class="lineno"> 1130</span>   <span class="comment">// int nAdjPoly = pPolygon-&gt;nGetDownCoastAdjacentPolygon(nAdj);</span></div>
+<div class="line"><a id="l01131" name="l01131"></a><span class="lineno"> 1131</span>   <span class="comment">// LogStream &lt;&lt; nAdjPoly;</span></div>
+<div class="line"><a id="l01132" name="l01132"></a><span class="lineno"> 1132</span>   <span class="comment">// if (nAdjPoly &gt; nNumPoly-1)</span></div>
+<div class="line"><a id="l01133" name="l01133"></a><span class="lineno"> 1133</span>   <span class="comment">// LogStream &lt;&lt; &quot;***&quot;;</span></div>
+<div class="line"><a id="l01134" name="l01134"></a><span class="lineno"> 1134</span>   <span class="comment">// }</span></div>
+<div class="line"><a id="l01135" name="l01135"></a><span class="lineno"> 1135</span>   <span class="comment">// LogStream &lt;&lt; endl;</span></div>
+<div class="line"><a id="l01136" name="l01136"></a><span class="lineno"> 1136</span>   <span class="comment">// }</span></div>
 <div class="line"><a id="l01137" name="l01137"></a><span class="lineno"> 1137</span>   <span class="comment">// }</span></div>
 <div class="line"><a id="l01138" name="l01138"></a><span class="lineno"> 1138</span>   <span class="comment">// // DEBUG CODE =================================================================================</span></div>
 <div class="line"><a id="l01139" name="l01139"></a><span class="lineno"> 1139</span> </div>
@@ -1239,12 +1239,12 @@ $(function(){initNavTree('d6/d91/create__polygons_8cpp_source.html','../../'); i
 <div class="line"><a id="l01143" name="l01143"></a><span class="lineno"> 1143</span><span class="comment">//===============================================================================================================================</span></div>
 <div class="line"><a id="l01145" name="l01145"></a><span class="lineno"> 1145</span><span class="comment">//===============================================================================================================================</span></div>
 <div class="foldopen" id="foldopen01146" data-start="{" data-end="}">
-<div class="line"><a id="l01146" name="l01146"></a><span class="lineno"><a class="line" href="../../d1/d98/classCSimulation.html#af26b975e1c0f041d6fdaaf83065ef2c8"> 1146</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="../../d1/d98/classCSimulation.html#af26b975e1c0f041d6fdaaf83065ef2c8">CSimulation::bIsWithinPolygon</a>(<a class="code hl_class" href="../../d5/d4e/classCGeom2DPoint.html">CGeom2DPoint</a> <span class="keyword">const</span>* pPtStart, vector&lt;CGeom2DPoint&gt; <span class="keyword">const</span>* pPtPoints)</div>
+<div class="line"><a id="l01146" name="l01146"></a><span class="lineno"><a class="line" href="../../d1/d98/classCSimulation.html#af26b975e1c0f041d6fdaaf83065ef2c8"> 1146</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="../../d1/d98/classCSimulation.html#af26b975e1c0f041d6fdaaf83065ef2c8">CSimulation::bIsWithinPolygon</a>(<a class="code hl_class" href="../../d5/d4e/classCGeom2DPoint.html">CGeom2DPoint</a> <span class="keyword">const</span> * pPtStart, vector&lt;CGeom2DPoint&gt; <span class="keyword">const</span> * pPtPoints)</div>
 <div class="line"><a id="l01147" name="l01147"></a><span class="lineno"> 1147</span>{</div>
 <div class="line"><a id="l01148" name="l01148"></a><span class="lineno"> 1148</span>   <span class="keywordtype">bool</span> bOddNodes = <span class="keyword">false</span>;</div>
 <div class="line"><a id="l01149" name="l01149"></a><span class="lineno"> 1149</span> </div>
 <div class="line"><a id="l01150" name="l01150"></a><span class="lineno"> 1150</span>   <span class="keywordtype">int</span> nPolyCorners = <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(pPtPoints-&gt;size());</div>
-<div class="line"><a id="l01151" name="l01151"></a><span class="lineno"> 1151</span>   <span class="keywordtype">int</span> j = nPolyCorners-1;</div>
+<div class="line"><a id="l01151" name="l01151"></a><span class="lineno"> 1151</span>   <span class="keywordtype">int</span> j = nPolyCorners - 1;</div>
 <div class="line"><a id="l01152" name="l01152"></a><span class="lineno"> 1152</span> </div>
 <div class="line"><a id="l01153" name="l01153"></a><span class="lineno"> 1153</span>   <span class="keywordtype">double</span> dX = pPtStart-&gt;<a class="code hl_function" href="../../d5/d4e/classCGeom2DPoint.html#a250f937d03cfdf6e0244b74ad2bf96a4">dGetX</a>();</div>
 <div class="line"><a id="l01154" name="l01154"></a><span class="lineno"> 1154</span>   <span class="keywordtype">double</span> dY = pPtStart-&gt;<a class="code hl_function" href="../../d5/d4e/classCGeom2DPoint.html#a216921dc2c592d9468e6430fee7c7719">dGetY</a>();</div>
@@ -1274,7 +1274,7 @@ $(function(){initNavTree('d6/d91/create__polygons_8cpp_source.html','../../'); i
 <div class="line"><a id="l01177" name="l01177"></a><span class="lineno"> 1177</span><span class="comment">//===============================================================================================================================</span></div>
 <div class="line"><a id="l01179" name="l01179"></a><span class="lineno"> 1179</span><span class="comment">//===============================================================================================================================</span></div>
 <div class="foldopen" id="foldopen01180" data-start="{" data-end="}">
-<div class="line"><a id="l01180" name="l01180"></a><span class="lineno"><a class="line" href="../../d1/d98/classCSimulation.html#ab071e8422c990d7dff462e3eab8df941"> 1180</a></span><a class="code hl_class" href="../../d5/d4e/classCGeom2DPoint.html">CGeom2DPoint</a> <a class="code hl_function" href="../../d1/d98/classCSimulation.html#ab071e8422c990d7dff462e3eab8df941">CSimulation::PtFindPointInPolygon</a>(vector&lt;CGeom2DPoint&gt; <span class="keyword">const</span>* pPtPoints, <span class="keywordtype">int</span> <span class="keyword">const</span> nStartPoint)</div>
+<div class="line"><a id="l01180" name="l01180"></a><span class="lineno"><a class="line" href="../../d1/d98/classCSimulation.html#ab071e8422c990d7dff462e3eab8df941"> 1180</a></span><a class="code hl_class" href="../../d5/d4e/classCGeom2DPoint.html">CGeom2DPoint</a> <a class="code hl_function" href="../../d1/d98/classCSimulation.html#ab071e8422c990d7dff462e3eab8df941">CSimulation::PtFindPointInPolygon</a>(vector&lt;CGeom2DPoint&gt; <span class="keyword">const</span> * pPtPoints, <span class="keywordtype">int</span> <span class="keyword">const</span> nStartPoint)</div>
 <div class="line"><a id="l01181" name="l01181"></a><span class="lineno"> 1181</span>{</div>
 <div class="line"><a id="l01182" name="l01182"></a><span class="lineno"> 1182</span>   <span class="keywordtype">int</span> nPolySize = <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(pPtPoints-&gt;size());</div>
 <div class="line"><a id="l01183" name="l01183"></a><span class="lineno"> 1183</span>   <span class="keywordtype">int</span> nOffSet = 0;</div>
@@ -1289,7 +1289,7 @@ $(function(){initNavTree('d6/d91/create__polygons_8cpp_source.html','../../'); i
 <div class="line"><a id="l01192" name="l01192"></a><span class="lineno"> 1192</span>      {</div>
 <div class="line"><a id="l01193" name="l01193"></a><span class="lineno"> 1193</span>         <span class="keywordtype">int</span> nIndex = n + nStartPoint + nOffSet;</div>
 <div class="line"><a id="l01194" name="l01194"></a><span class="lineno"> 1194</span> </div>
-<div class="line"><a id="l01195" name="l01195"></a><span class="lineno"> 1195</span>         <span class="keywordflow">if</span> (nIndex &gt; nPolySize-1)</div>
+<div class="line"><a id="l01195" name="l01195"></a><span class="lineno"> 1195</span>         <span class="keywordflow">if</span> (nIndex &gt; nPolySize - 1)</div>
 <div class="line"><a id="l01196" name="l01196"></a><span class="lineno"> 1196</span>            nIndex -= nPolySize;</div>
 <div class="line"><a id="l01197" name="l01197"></a><span class="lineno"> 1197</span> </div>
 <div class="line"><a id="l01198" name="l01198"></a><span class="lineno"> 1198</span>         <span class="comment">// Safety check</span></div>
@@ -1307,8 +1307,8 @@ $(function(){initNavTree('d6/d91/create__polygons_8cpp_source.html','../../'); i
 <div class="line"><a id="l01210" name="l01210"></a><span class="lineno"> 1210</span>         <span class="keywordflow">return</span> <a class="code hl_class" href="../../d5/d4e/classCGeom2DPoint.html">CGeom2DPoint</a>(<a class="code hl_variable" href="../../d6/d2a/cme_8h.html#ac003bdff958dca839f5d274f15786e07">DBL_NODATA</a>, <a class="code hl_variable" href="../../d6/d2a/cme_8h.html#ac003bdff958dca839f5d274f15786e07">DBL_NODATA</a>);</div>
 <div class="line"><a id="l01211" name="l01211"></a><span class="lineno"> 1211</span> </div>
 <div class="line"><a id="l01212" name="l01212"></a><span class="lineno"> 1212</span>      <span class="comment">// Check if the halfway point between the first and the third point is inside the polygon</span></div>
-<div class="line"><a id="l01213" name="l01213"></a><span class="lineno"> 1213</span>      PtStart = <a class="code hl_function" href="../../d1/d98/classCSimulation.html#a41d2806566f688547f97c0d573bb1611">PtAverage</a>(&amp;nVTestPoints[0], &amp;nVTestPoints[2]);</div>
-<div class="line"><a id="l01214" name="l01214"></a><span class="lineno"> 1214</span>   } <span class="keywordflow">while</span> (! <a class="code hl_function" href="../../d1/d98/classCSimulation.html#af26b975e1c0f041d6fdaaf83065ef2c8">bIsWithinPolygon</a>(&amp;PtStart, pPtPoints));</div>
+<div class="line"><a id="l01213" name="l01213"></a><span class="lineno"> 1213</span>      PtStart = <a class="code hl_function" href="../../d1/d98/classCSimulation.html#a41d2806566f688547f97c0d573bb1611">PtAverage</a>( &amp; nVTestPoints[0], &amp; nVTestPoints[2]);</div>
+<div class="line"><a id="l01214" name="l01214"></a><span class="lineno"> 1214</span>   } <span class="keywordflow">while</span> (! <a class="code hl_function" href="../../d1/d98/classCSimulation.html#af26b975e1c0f041d6fdaaf83065ef2c8">bIsWithinPolygon</a>( &amp; PtStart, pPtPoints));</div>
 <div class="line"><a id="l01215" name="l01215"></a><span class="lineno"> 1215</span> </div>
 <div class="line"><a id="l01216" name="l01216"></a><span class="lineno"> 1216</span>   <span class="keywordflow">return</span> PtStart;</div>
 <div class="line"><a id="l01217" name="l01217"></a><span class="lineno"> 1217</span>}</div>
@@ -1389,17 +1389,17 @@ $(function(){initNavTree('d6/d91/create__polygons_8cpp_source.html','../../'); i
 <div class="ttc" id="aclassCSimulation_html_af26b975e1c0f041d6fdaaf83065ef2c8"><div class="ttname"><a href="../../d1/d98/classCSimulation.html#af26b975e1c0f041d6fdaaf83065ef2c8">CSimulation::bIsWithinPolygon</a></div><div class="ttdeci">static bool bIsWithinPolygon(CGeom2DPoint const *, vector&lt; CGeom2DPoint &gt; const *)</div><div class="ttdoc">Determines whether a point is within a polygon: however if the point is exactly on the edge of the po...</div><div class="ttdef"><b>Definition</b> <a href="#l01146">create_polygons.cpp:1146</a></div></div>
 <div class="ttc" id="aclassCSimulation_html_afdf9931c6687dab00b0f48c0709d6c8a"><div class="ttname"><a href="../../d1/d98/classCSimulation.html#afdf9931c6687dab00b0f48c0709d6c8a">CSimulation::m_pVCoastPolygon</a></div><div class="ttdeci">vector&lt; CGeomCoastPolygon * &gt; m_pVCoastPolygon</div><div class="ttdoc">Pointers to coast polygon objects, in down-coast sequence TODO 044 Will need to use global polygon ID...</div><div class="ttdef"><b>Definition</b> <a href="../../dd/d6a/simulation_8h_source.html#l01500">simulation.h:1500</a></div></div>
 <div class="ttc" id="acme_8h_html"><div class="ttname"><a href="../../d6/d2a/cme_8h.html">cme.h</a></div><div class="ttdoc">This file contains global definitions for CoastalME.</div></div>
-<div class="ttc" id="acme_8h_html_a01522c1e8423c6586193dd5ca0c76171"><div class="ttname"><a href="../../d6/d2a/cme_8h.html#a01522c1e8423c6586193dd5ca0c76171">NO_NONZERO_THICKNESS_LAYERS</a></div><div class="ttdeci">int const NO_NONZERO_THICKNESS_LAYERS</div><div class="ttdef"><b>Definition</b> <a href="../../d6/d2a/cme_8h_source.html#l00766">cme.h:766</a></div></div>
-<div class="ttc" id="acme_8h_html_a01aa8b423260b337ddff2016107b51a0"><div class="ttname"><a href="../../d6/d2a/cme_8h.html#a01aa8b423260b337ddff2016107b51a0">INT_NODATA</a></div><div class="ttdeci">int const INT_NODATA</div><div class="ttdef"><b>Definition</b> <a href="../../d6/d2a/cme_8h_source.html#l00475">cme.h:475</a></div></div>
-<div class="ttc" id="acme_8h_html_a068017859403c0629d89f8d348f6c224"><div class="ttname"><a href="../../d6/d2a/cme_8h.html#a068017859403c0629d89f8d348f6c224">tMin</a></div><div class="ttdeci">T tMin(T a, T b)</div><div class="ttdef"><b>Definition</b> <a href="../../d6/d2a/cme_8h_source.html#l01273">cme.h:1273</a></div></div>
-<div class="ttc" id="acme_8h_html_a08b1623863ee3bd4300a8892de323722"><div class="ttname"><a href="../../d6/d2a/cme_8h.html#a08b1623863ee3bd4300a8892de323722">TOLERANCE</a></div><div class="ttdeci">double const TOLERANCE</div><div class="ttdef"><b>Definition</b> <a href="../../d6/d2a/cme_8h_source.html#l00817">cme.h:817</a></div></div>
-<div class="ttc" id="acme_8h_html_a292fc90846543ca4814daa9f759feb05"><div class="ttname"><a href="../../d6/d2a/cme_8h.html#a292fc90846543ca4814daa9f759feb05">ERR</a></div><div class="ttdeci">string const ERR</div><div class="ttdef"><b>Definition</b> <a href="../../d6/d2a/cme_8h_source.html#l00909">cme.h:909</a></div></div>
-<div class="ttc" id="acme_8h_html_a61afa8560a3b39c80657661a1d8f76ab"><div class="ttname"><a href="../../d6/d2a/cme_8h.html#a61afa8560a3b39c80657661a1d8f76ab">bFPIsEqual</a></div><div class="ttdeci">bool bFPIsEqual(const T d1, const T d2, const T dEpsilon)</div><div class="ttdef"><b>Definition</b> <a href="../../d6/d2a/cme_8h_source.html#l01308">cme.h:1308</a></div></div>
-<div class="ttc" id="acme_8h_html_a7e895b460cef877dec4d12ead0c74f15"><div class="ttname"><a href="../../d6/d2a/cme_8h.html#a7e895b460cef877dec4d12ead0c74f15">tMax</a></div><div class="ttdeci">T tMax(T a, T b)</div><div class="ttdef"><b>Definition</b> <a href="../../d6/d2a/cme_8h_source.html#l01262">cme.h:1262</a></div></div>
-<div class="ttc" id="acme_8h_html_aa2941c3f10e5c29aa29a01fb6f7e91a6"><div class="ttname"><a href="../../d6/d2a/cme_8h.html#aa2941c3f10e5c29aa29a01fb6f7e91a6">RTN_ERR_BAD_MULTILINE</a></div><div class="ttdeci">int const RTN_ERR_BAD_MULTILINE</div><div class="ttdef"><b>Definition</b> <a href="../../d6/d2a/cme_8h_source.html#l00739">cme.h:739</a></div></div>
-<div class="ttc" id="acme_8h_html_aa768cb14b5c6123ee95e6e4ebd9fe331"><div class="ttname"><a href="../../d6/d2a/cme_8h.html#aa768cb14b5c6123ee95e6e4ebd9fe331">RTN_OK</a></div><div class="ttdeci">int const RTN_OK</div><div class="ttdef"><b>Definition</b> <a href="../../d6/d2a/cme_8h_source.html#l00691">cme.h:691</a></div></div>
-<div class="ttc" id="acme_8h_html_ac003bdff958dca839f5d274f15786e07"><div class="ttname"><a href="../../d6/d2a/cme_8h.html#ac003bdff958dca839f5d274f15786e07">DBL_NODATA</a></div><div class="ttdeci">double const DBL_NODATA</div><div class="ttdef"><b>Definition</b> <a href="../../d6/d2a/cme_8h_source.html#l00835">cme.h:835</a></div></div>
-<div class="ttc" id="acme_8h_html_ae3b6dc50cfc97050529faa5e0bd66136"><div class="ttname"><a href="../../d6/d2a/cme_8h.html#ae3b6dc50cfc97050529faa5e0bd66136">tAbs</a></div><div class="ttdeci">T tAbs(T a)</div><div class="ttdef"><b>Definition</b> <a href="../../d6/d2a/cme_8h_source.html#l01283">cme.h:1283</a></div></div>
+<div class="ttc" id="acme_8h_html_a01522c1e8423c6586193dd5ca0c76171"><div class="ttname"><a href="../../d6/d2a/cme_8h.html#a01522c1e8423c6586193dd5ca0c76171">NO_NONZERO_THICKNESS_LAYERS</a></div><div class="ttdeci">int const NO_NONZERO_THICKNESS_LAYERS</div><div class="ttdef"><b>Definition</b> <a href="../../d6/d2a/cme_8h_source.html#l00764">cme.h:764</a></div></div>
+<div class="ttc" id="acme_8h_html_a01aa8b423260b337ddff2016107b51a0"><div class="ttname"><a href="../../d6/d2a/cme_8h.html#a01aa8b423260b337ddff2016107b51a0">INT_NODATA</a></div><div class="ttdeci">int const INT_NODATA</div><div class="ttdef"><b>Definition</b> <a href="../../d6/d2a/cme_8h_source.html#l00474">cme.h:474</a></div></div>
+<div class="ttc" id="acme_8h_html_a068017859403c0629d89f8d348f6c224"><div class="ttname"><a href="../../d6/d2a/cme_8h.html#a068017859403c0629d89f8d348f6c224">tMin</a></div><div class="ttdeci">T tMin(T a, T b)</div><div class="ttdef"><b>Definition</b> <a href="../../d6/d2a/cme_8h_source.html#l01238">cme.h:1238</a></div></div>
+<div class="ttc" id="acme_8h_html_a08b1623863ee3bd4300a8892de323722"><div class="ttname"><a href="../../d6/d2a/cme_8h.html#a08b1623863ee3bd4300a8892de323722">TOLERANCE</a></div><div class="ttdeci">double const TOLERANCE</div><div class="ttdef"><b>Definition</b> <a href="../../d6/d2a/cme_8h_source.html#l00808">cme.h:808</a></div></div>
+<div class="ttc" id="acme_8h_html_a292fc90846543ca4814daa9f759feb05"><div class="ttname"><a href="../../d6/d2a/cme_8h.html#a292fc90846543ca4814daa9f759feb05">ERR</a></div><div class="ttdeci">string const ERR</div><div class="ttdef"><b>Definition</b> <a href="../../d6/d2a/cme_8h_source.html#l00887">cme.h:887</a></div></div>
+<div class="ttc" id="acme_8h_html_a61afa8560a3b39c80657661a1d8f76ab"><div class="ttname"><a href="../../d6/d2a/cme_8h.html#a61afa8560a3b39c80657661a1d8f76ab">bFPIsEqual</a></div><div class="ttdeci">bool bFPIsEqual(const T d1, const T d2, const T dEpsilon)</div><div class="ttdef"><b>Definition</b> <a href="../../d6/d2a/cme_8h_source.html#l01271">cme.h:1271</a></div></div>
+<div class="ttc" id="acme_8h_html_a7e895b460cef877dec4d12ead0c74f15"><div class="ttname"><a href="../../d6/d2a/cme_8h.html#a7e895b460cef877dec4d12ead0c74f15">tMax</a></div><div class="ttdeci">T tMax(T a, T b)</div><div class="ttdef"><b>Definition</b> <a href="../../d6/d2a/cme_8h_source.html#l01227">cme.h:1227</a></div></div>
+<div class="ttc" id="acme_8h_html_aa2941c3f10e5c29aa29a01fb6f7e91a6"><div class="ttname"><a href="../../d6/d2a/cme_8h.html#aa2941c3f10e5c29aa29a01fb6f7e91a6">RTN_ERR_BAD_MULTILINE</a></div><div class="ttdeci">int const RTN_ERR_BAD_MULTILINE</div><div class="ttdef"><b>Definition</b> <a href="../../d6/d2a/cme_8h_source.html#l00737">cme.h:737</a></div></div>
+<div class="ttc" id="acme_8h_html_aa768cb14b5c6123ee95e6e4ebd9fe331"><div class="ttname"><a href="../../d6/d2a/cme_8h.html#aa768cb14b5c6123ee95e6e4ebd9fe331">RTN_OK</a></div><div class="ttdeci">int const RTN_OK</div><div class="ttdef"><b>Definition</b> <a href="../../d6/d2a/cme_8h_source.html#l00689">cme.h:689</a></div></div>
+<div class="ttc" id="acme_8h_html_ac003bdff958dca839f5d274f15786e07"><div class="ttname"><a href="../../d6/d2a/cme_8h.html#ac003bdff958dca839f5d274f15786e07">DBL_NODATA</a></div><div class="ttdeci">double const DBL_NODATA</div><div class="ttdef"><b>Definition</b> <a href="../../d6/d2a/cme_8h_source.html#l00819">cme.h:819</a></div></div>
+<div class="ttc" id="acme_8h_html_ae3b6dc50cfc97050529faa5e0bd66136"><div class="ttname"><a href="../../d6/d2a/cme_8h.html#ae3b6dc50cfc97050529faa5e0bd66136">tAbs</a></div><div class="ttdeci">T tAbs(T a)</div><div class="ttdef"><b>Definition</b> <a href="../../d6/d2a/cme_8h_source.html#l01248">cme.h:1248</a></div></div>
 <div class="ttc" id="acoast_8h_html"><div class="ttname"><a href="../../de/d65/coast_8h.html">coast.h</a></div><div class="ttdoc">Contains CRWCoast definitions.</div></div>
 <div class="ttc" id="asimulation_8h_html"><div class="ttname"><a href="../../dd/d6a/simulation_8h.html">simulation.h</a></div><div class="ttdoc">Contains CSimulation definitions.</div></div>
 <div class="ttc" id="autils__global_8cpp_html_a20842d0a19d0ca952c91f3e1eb175fee"><div class="ttname"><a href="../../d2/dfd/utils__global_8cpp.html#a20842d0a19d0ca952c91f3e1eb175fee">nRound</a></div><div class="ttdeci">int nRound(double const d)</div><div class="ttdoc">Version of the above that returns an int.</div><div class="ttdef"><b>Definition</b> <a href="../../d2/dfd/utils__global_8cpp_source.html#l00056">utils_global.cpp:56</a></div></div>
@@ -1409,7 +1409,7 @@ $(function(){initNavTree('d6/d91/create__polygons_8cpp_source.html','../../'); i
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="../../d6/d91/create__polygons_8cpp.html">create_polygons.cpp</a></li>
-    <li class="footer">Generated on Tue Jun 17 2025 12:07:49 for CoastalME (Coastal Modelling Environment) by <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+    <li class="footer">Generated on Tue Jun 17 2025 16:19:04 for CoastalME (Coastal Modelling Environment) by <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
   </ul>
 </div>
 </body>
