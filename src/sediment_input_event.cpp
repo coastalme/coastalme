@@ -88,6 +88,5 @@ double CSedInputEvent::dGetWidth(void) const
 
 // double CSedInputEvent::dGetThick(void)
 // {
-//    return m_dThick;
+// return m_dThick;
 // }
-

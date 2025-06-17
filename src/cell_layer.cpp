@@ -32,15 +32,15 @@ CRWCellLayer::CRWCellLayer(void)
 }
 
 //! Returns a pointer to the cell's unconsolidated sediment object
-CRWCellSediment* CRWCellLayer::pGetUnconsolidatedSediment(void)
+CRWCellSediment * CRWCellLayer::pGetUnconsolidatedSediment(void)
 {
-   return &m_UnconsolidatedSediment;
+   return & m_UnconsolidatedSediment;
 }
 
 //! Returns a pointer to the cell's consolidated sediment object
-CRWCellSediment* CRWCellLayer::pGetConsolidatedSediment(void)
+CRWCellSediment * CRWCellLayer::pGetConsolidatedSediment(void)
 {
-   return &m_ConsolidatedSediment;
+   return & m_ConsolidatedSediment;
 }
 
 //! Returns the thickness of this cell's fine unconsolidated sediment
@@ -100,42 +100,41 @@ double CRWCellLayer::dGetTotalThickness(void) const
 // //! Returns the thickness of unconsolidated sediment lost due to notch incision (total for all size classes)
 // double CRWCellLayer::dGetNotchUnconsolidatedLost(void) const
 // {
-//    return (m_UnconsolidatedSediment.dGetNotchFineLost() + m_UnconsolidatedSediment.dGetNotchSandLost() + m_UnconsolidatedSediment.dGetNotchCoarseLost());
+// return (m_UnconsolidatedSediment.dGetNotchFineLost() + m_UnconsolidatedSediment.dGetNotchSandLost() + m_UnconsolidatedSediment.dGetNotchCoarseLost());
 // }
 
 // //! Returns the thickness of consolidated sediment lost due to notch incision (total for all size classes)
 // double CRWCellLayer::dGetNotchConsolidatedLost(void) const
 // {
-//    return (m_ConsolidatedSediment.dGetNotchFineLost() + m_ConsolidatedSediment.dGetNotchSandLost() + m_ConsolidatedSediment.dGetNotchCoarseLost());
+// return (m_ConsolidatedSediment.dGetNotchFineLost() + m_ConsolidatedSediment.dGetNotchSandLost() + m_ConsolidatedSediment.dGetNotchCoarseLost());
 // }
 
 // double CRWCellLayer::dGetVolSedFraction(void) const
 // {
-//    return m_VdolSedFraction;
+// return m_VdolSedFraction;
 // }
 
 // void CRWCellLayer::SetVolSedFraction(double const dNewVolSedFraction)
 // {
-//    m_VdolSedFraction = dNewVolSedFraction;
+// m_VdolSedFraction = dNewVolSedFraction;
 // }
 //
 // double CRWCellLayer::dGetMechResistance(void) const
 // {
-//    return m_dMechResistance;
+// return m_dMechResistance;
 // }
 
 // void CRWCellLayer::SetMechResistance(double const dNewMechResistance)
 // {
-//    m_dMechResistance = dNewMechResistance;
+// m_dMechResistance = dNewMechResistance;
 // }
 
 // double CRWCellLayer::dGetConsolidationStatus(void) const
 // {
-//    return m_dConsolidationStatus;
+// return m_dConsolidationStatus;
 // }
 
 // void CRWCellLayer::SetConsolidationStatus(double const dNewConsolidationStatus)
 // {
-//    m_dConsolidationStatus = dNewConsolidationStatus;
+// m_dConsolidationStatus = dNewConsolidationStatus;
 // }
-

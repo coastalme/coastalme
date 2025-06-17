@@ -69,13 +69,13 @@ void CSimulation::CalcSavitzkyGolayCoeffs(void)
    // Now calculate the Savitzky-Golay filter coefficients
    m_VdSavGolFCRWCoast.resize(m_nCoastSmoothWindow + 1, 0);
 
-   CalcSavitzkyGolay(&(m_VdSavGolFCRWCoast.at(0)), m_nCoastSmoothWindow, nHalfWindow, nHalfWindow, 0, m_nSavGolCoastPoly);
+   CalcSavitzkyGolay( & (m_VdSavGolFCRWCoast.at(0)), m_nCoastSmoothWindow, nHalfWindow, nHalfWindow, 0, m_nSavGolCoastPoly);
 }
 
 //===============================================================================================================================
 //! Does smoothing of a CGeomLine coastline vector (is in external CRS coordinates) using a Savitzky-Golay filter. Derived from a C original by Jean-Pierre Moreau (jpmoreau@wanadoo.fr, http://jean-pierre.moreau.pagesperso-orange.fr/index.html), to whom we are much indebted
 //===============================================================================================================================
-CGeomLine CSimulation::LSmoothCoastSavitzkyGolay(CGeomLine* pLineIn, int const nStartEdge, int const nEndEdge) const
+CGeomLine CSimulation::LSmoothCoastSavitzkyGolay(CGeomLine * pLineIn, int const nStartEdge, int const nEndEdge) const
 {
    // Note that m_nCoastSmoothWindow must be odd (have already checked this)
    int nHalfWindow = m_nCoastSmoothWindow / 2;
@@ -90,7 +90,7 @@ CGeomLine CSimulation::LSmoothCoastSavitzkyGolay(CGeomLine* pLineIn, int const n
    {
       // Don't smooth intervention cells
       CGeom2DPoint PtThis(pLineIn->dGetXAt(i), pLineIn->dGetYAt(i));
-      CGeom2DIPoint PtiThis = PtiExtCRSToGridRound(&PtThis);
+      CGeom2DIPoint PtiThis = PtiExtCRSToGridRound( & PtThis);
       int nXThis = PtiThis.nGetX();
       int nYThis = PtiThis.nGetY();
 
@@ -131,16 +131,16 @@ CGeomLine CSimulation::LSmoothCoastSavitzkyGolay(CGeomLine* pLineIn, int const n
             case SOUTH:
                // Don't apply the filter in the Y direction
                LTemp[i] = CGeom2DPoint(dWindowTotX / nTmpWindow, pLineIn->dGetYAt(i));
-               //                LTemp.SetXAt(i, dWindowTotX / static_cast<double>(nTmpWindow));
-               //                LTemp.SetYAt(i, pLineIn->dGetYAt(i));
+               // LTemp.SetXAt(i, dWindowTotX / static_cast<double>(nTmpWindow));
+               // LTemp.SetYAt(i, pLineIn->dGetYAt(i));
                break;
 
             case EAST:
             case WEST:
                // Don't apply the filter in the X direction
                LTemp[i] = CGeom2DPoint(pLineIn->dGetXAt(i), dWindowTotY / nTmpWindow);
-               //                LTemp.SetXAt(i, pLineIn->dGetXAt(i));
-               //                LTemp.SetYAt(i, dWindowTotY / static_cast<double>(nTmpWindow));
+               // LTemp.SetXAt(i, pLineIn->dGetXAt(i));
+               // LTemp.SetYAt(i, dWindowTotY / static_cast<double>(nTmpWindow));
                break;
          }
       }
@@ -169,16 +169,16 @@ CGeomLine CSimulation::LSmoothCoastSavitzkyGolay(CGeomLine* pLineIn, int const n
             case SOUTH:
                // Don't apply the filter in the Y direction
                LTemp[i] = CGeom2DPoint(dWindowTotX / nTmpWindow, pLineIn->dGetYAt(i));
-               //                LTemp.SetXAt(i, dWindowTotX / static_cast<double>(nTmpWindow));
-               //                LTemp.SetYAt(i, pLineIn->dGetYAt(i));
+               // LTemp.SetXAt(i, dWindowTotX / static_cast<double>(nTmpWindow));
+               // LTemp.SetYAt(i, pLineIn->dGetYAt(i));
                break;
 
             case EAST:
             case WEST:
                // Don't apply the filter in the X direction
                LTemp[i] = CGeom2DPoint(pLineIn->dGetXAt(i), dWindowTotY / nTmpWindow);
-               //                LTemp.SetXAt(i, pLineIn->dGetXAt(i));
-               //                LTemp.SetYAt(i, dWindowTotY / static_cast<double>(nTmpWindow));
+               // LTemp.SetXAt(i, pLineIn->dGetXAt(i));
+               // LTemp.SetYAt(i, dWindowTotY / static_cast<double>(nTmpWindow));
                break;
          }
       }
@@ -194,13 +194,13 @@ CGeomLine CSimulation::LSmoothCoastSavitzkyGolay(CGeomLine* pLineIn, int const n
             {
                double dX = LTemp.dGetXAt(i);
                dX += m_VdSavGolFCRWCoast[j + 1] * pLineIn->dGetXAt(k);
-               //                LTemp.SetXAt(i, dX);
+               // LTemp.SetXAt(i, dX);
 
                double dY = LTemp.dGetYAt(i);
                dY += m_VdSavGolFCRWCoast[j + 1] * pLineIn->dGetYAt(k);
 
                LTemp[i] = CGeom2DPoint(dX, dY);
-               //                LTemp.SetYAt(i, dY);
+               // LTemp.SetYAt(i, dY);
             }
          }
       }
@@ -213,7 +213,7 @@ CGeomLine CSimulation::LSmoothCoastSavitzkyGolay(CGeomLine* pLineIn, int const n
 //===============================================================================================================================
 //! Does running-mean smoothing of a CGeomLine coastline vector (is in external CRS coordinates)
 //===============================================================================================================================
-CGeomLine CSimulation::LSmoothCoastRunningMean(CGeomLine* pLineIn) const
+CGeomLine CSimulation::LSmoothCoastRunningMean(CGeomLine * pLineIn) const
 {
    // Note that m_nCoastSmoothWindow must be odd (have already checked this)
    int nHalfWindow = m_nCoastSmoothWindow / 2;
@@ -222,16 +222,16 @@ CGeomLine CSimulation::LSmoothCoastRunningMean(CGeomLine* pLineIn) const
    // Make a copy of the unsmoothed CGeomLine
    int nSize = pLineIn->nGetSize();
    CGeomLine LTemp;
-   LTemp = *pLineIn;
+   LTemp = * pLineIn;
 
    // Apply the running mean smoothing filter, with a variable window size at both ends of the line
    for (int i = 0; i < nSize; i++)
    {
       // Don't smooth intervention cells
       CGeom2DPoint PtThis(pLineIn->dGetXAt(i), pLineIn->dGetYAt(i));
-      CGeom2DIPoint PtiThis = PtiExtCRSToGridRound(&PtThis);
-      int nXThis = tMin(PtiThis.nGetX(), m_nXGridSize-1);
-      int nYThis = tMin(PtiThis.nGetY(), m_nYGridSize-1);
+      CGeom2DIPoint PtiThis = PtiExtCRSToGridRound( & PtThis);
+      int nXThis = tMin(PtiThis.nGetX(), m_nXGridSize - 1);
+      int nYThis = tMin(PtiThis.nGetY(), m_nYGridSize - 1);
 
       // Safety checks
       nXThis = tMax(nXThis, 0);
@@ -285,57 +285,57 @@ CGeomLine CSimulation::LSmoothCoastRunningMean(CGeomLine* pLineIn) const
       // if (bNearStartEdge)
       // {
       //    // We are near the start edge
-      //    switch (nStartEdge)
-      //    {
-      //    case NORTH:
+      // switch (nStartEdge)
+      // {
+      // case NORTH:
       //       // Don't apply the filter in the y direction
-      //       LTemp.SetXAt(i, dWindowTotX / static_cast<double>(nTmpWindow));
-      //       break;
-      //    case SOUTH:
+      // LTemp.SetXAt(i, dWindowTotX / static_cast<double>(nTmpWindow));
+      // break;
+      // case SOUTH:
       //       // Don't apply the filter in the y direction
-      //       LTemp.SetXAt(i, dWindowTotX / static_cast<double>(nTmpWindow));
-      //       break;
+      // LTemp.SetXAt(i, dWindowTotX / static_cast<double>(nTmpWindow));
+      // break;
 
-      //    case EAST:
+      // case EAST:
       //       // Don't apply the filter in the x direction
-      //       LTemp.SetYAt(i, dWindowTotY / static_cast<double>(nTmpWindow));
-      //       break;
-      //    case WEST:
+      // LTemp.SetYAt(i, dWindowTotY / static_cast<double>(nTmpWindow));
+      // break;
+      // case WEST:
       //       // Don't apply the filter in the x direction
-      //       LTemp.SetYAt(i, dWindowTotY / static_cast<double>(nTmpWindow));
-      //       break;
-      //    }
+      // LTemp.SetYAt(i, dWindowTotY / static_cast<double>(nTmpWindow));
+      // break;
+      // }
       // }
       // else if (bNearEndEdge)
       // {
       //    // We are near the end edge
-      //    switch (nEndEdge)
-      //    {
-      //    case NORTH:
+      // switch (nEndEdge)
+      // {
+      // case NORTH:
       //       // Don't apply the filter in the y direction
-      //       LTemp.SetXAt(i, dWindowTotX / static_cast<double>(nTmpWindow));
-      //       break;
-      //    case SOUTH:
+      // LTemp.SetXAt(i, dWindowTotX / static_cast<double>(nTmpWindow));
+      // break;
+      // case SOUTH:
       //       // Don't apply the filter in the y direction
-      //       LTemp.SetXAt(i, dWindowTotX / static_cast<double>(nTmpWindow));
-      //       break;
+      // LTemp.SetXAt(i, dWindowTotX / static_cast<double>(nTmpWindow));
+      // break;
 
-      //    case EAST:
+      // case EAST:
       //       // Don't apply the filter in the x direction
-      //       LTemp.SetYAt(i, dWindowTotY / static_cast<double>(nTmpWindow));
-      //       break;
-      //    case WEST:
+      // LTemp.SetYAt(i, dWindowTotY / static_cast<double>(nTmpWindow));
+      // break;
+      // case WEST:
       //       // Don't apply the filter in the x direction
-      //       LTemp.SetYAt(i, dWindowTotY / static_cast<double>(nTmpWindow));
-      //       break;
-      //    }
+      // LTemp.SetYAt(i, dWindowTotY / static_cast<double>(nTmpWindow));
+      // break;
+      // }
       // }
       // else
       // {
       //    // Not near any edge, apply both x and y filters
       LTemp[i] = CGeom2DPoint(dWindowTotX / nTmpWindow, dWindowTotY / nTmpWindow);
-      //          LTemp.SetXAt(i, dWindowTotX / static_cast<double>(nTmpWindow));
-      //          LTemp.SetYAt(i, dWindowTotY / static_cast<double>(nTmpWindow));
+      // LTemp.SetXAt(i, dWindowTotX / static_cast<double>(nTmpWindow));
+      // LTemp.SetYAt(i, dWindowTotY / static_cast<double>(nTmpWindow));
       // }
    }
 
@@ -350,7 +350,7 @@ vector<double> CSimulation::dVSmoothProfileSlope(vector<double>* pdVSlope) const
 {
    // Make a copy of the unsmoothed profile slope vector
    int const nSize = static_cast<int>(pdVSlope->size());
-   vector<double> dVSmoothed = *pdVSlope;
+   vector<double> dVSmoothed = * pdVSlope;
 
    // Note that m_nProfileSmoothWindow must be odd (have already checked this)
    int const nHalfWindow = m_nProfileSmoothWindow / 2;
@@ -375,7 +375,7 @@ vector<double> CSimulation::dVSmoothProfileSlope(vector<double>* pdVSlope) const
 
       dVSmoothed[i] = dWindowTot / static_cast<double>(nTmpWindow);
 
-      //  If necessary, constrain the slope as in SCAPE
+      // If necessary, constrain the slope as in SCAPE
       if (dVSmoothed[i] >= 0)
          dVSmoothed[i] = tMin(dVSmoothed[i], m_dProfileMaxSlope);
 
@@ -439,7 +439,7 @@ void CSimulation::CalcSavitzkyGolay(double dFilterCoeffsArray[], int const nWind
 
    // Solve them using LU decomposition
    int nDCode = 0, nICode = 0;
-   LUDecomp(dMatrix, nSmoothPolyOrder + 1, SAVGOL_POLYNOMIAL_MAX_ORDER + 1, nIndexArray, &nDCode, &nICode);
+   LUDecomp(dMatrix, nSmoothPolyOrder + 1, SAVGOL_POLYNOMIAL_MAX_ORDER + 1, nIndexArray, & nDCode, & nICode);
 
    // Right-hand side vector is unit vector, depending on which derivative we want
    dSolutionArray[nDerivOrder + 1] = 1;
@@ -448,9 +448,9 @@ void CSimulation::CalcSavitzkyGolay(double dFilterCoeffsArray[], int const nWind
    LULinearSolve(dMatrix, nSmoothPolyOrder + 1, nIndexArray, dSolutionArray);
 
    // Zero the output array (it may be bigger than the number of coefficients). Again include index 0 for tidiness
-   //   for (int n = 0; n < SAVGOL_POLYNOMIAL_MAX_ORDER+1; n++)
-   //   for (int n = 0; n <= nWindowSize; n++)
-   //      dFilterCoeffsArray[n] = 0;
+   // for (int n = 0; n < SAVGOL_POLYNOMIAL_MAX_ORDER+1; n++)
+   // for (int n = 0; n <= nWindowSize; n++)
+   // dFilterCoeffsArray[n] = 0;
 
    for (int n = -nLeft; n <= nRight; n++)
    {
@@ -486,8 +486,8 @@ void LUDecomp(Matrix A, int const N, int const np, int nIndexArray[], int* nDCod
    double* VV = new double[np];
    int I, IMAX = 0, J, K;
 
-   *nDCode = 1;
-   *nICode = 0;
+   * nDCode = 1;
+   * nICode = 0;
 
    for (I = 1; I <= N; I++)
    {
@@ -499,7 +499,7 @@ void LUDecomp(Matrix A, int const N, int const np, int nIndexArray[], int* nDCod
 
       if (AMAX < TINY)
       {
-         *nICode = 1;
+         * nICode = 1;
          delete[] VV;
          return;
       }
@@ -547,7 +547,7 @@ void LUDecomp(Matrix A, int const N, int const np, int nIndexArray[], int* nDCod
             A[J][K] = DUM;
          }
 
-         *nDCode = -(*nDCode);
+         * nDCode = -( * nDCode);
          VV[IMAX] = VV[J];
       }
 

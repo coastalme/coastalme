@@ -44,7 +44,7 @@ using std::stable_sort;
 //===============================================================================================================================
 //! Function used to sort polygons before doing the polygon-to-polygon source-target pattern. For both LHS and RHS arguments, the first element is the polygon global ID, the second element is the polygn coast ID, the third element is the down- or up-coast direction, and fourth and subsequent elements are adjacent polygon coast IDs in that direction. If the first argument is to be ordered before the second (i.e. the original sequence is to be retained), return true. If the second argument must be ordered before the first (i.e. the arguments must be swapped), return false
 //===============================================================================================================================
-bool bPolygonAndAdjCompare(const vector<int>& nVLeft, const vector<int>& nVRight)
+bool bPolygonAndAdjCompare(const vector<int> & nVLeft, const vector<int> & nVRight)
 {
    // Each row (vector) of this vector-of-vectors is:
    // 0: This-polygon global ID (not used)
@@ -261,7 +261,7 @@ int CSimulation::nDoAllActualBeachErosionAndDeposition(void)
 
       for (int nn = 0; nn < m_VCoast[nCoast].nGetNumPolygons(); nn++)
       {
-         CGeomCoastPolygon const* pPolygon = m_VCoast[nCoast].pGetPolygon(nn);
+         CGeomCoastPolygon const * pPolygon = m_VCoast[nCoast].pGetPolygon(nn);
          nVPolyAndAdj.clear();
 
          // The first [0] nVPolyAndAdj array item is the polygon's global ID
@@ -326,7 +326,7 @@ int CSimulation::nDoAllActualBeachErosionAndDeposition(void)
             if (it != VnSourcePolygons.end())
             {
                // Uh-oh: this adjacent polygon is in the list of previously-processed source polygons. So store the coast ID numbers of the polygons with circularity in both polygons
-               CGeomCoastPolygon* pPoly = m_VCoast[nCoast].pGetPolygon(nThisPoly);
+               CGeomCoastPolygon * pPoly = m_VCoast[nCoast].pGetPolygon(nThisPoly);
                pPoly->AddCircularity(nToFind);
 
                pPoly = m_VCoast[nCoast].pGetPolygon(nToFind);
@@ -344,7 +344,7 @@ int CSimulation::nDoAllActualBeachErosionAndDeposition(void)
       for (int nPoly = 0; nPoly < nNumPolygons; nPoly++)
       {
          int nPolygon = nVVPolyAndAdjacent[nPoly][1];
-         CGeomCoastPolygon* pPolygon = m_VCoast[nCoast].pGetPolygon(nPolygon);
+         CGeomCoastPolygon * pPolygon = m_VCoast[nCoast].pGetPolygon(nPolygon);
 
          // // DEBUG CODE =====================
          // int nUpCoastProfile = pPolygon->nGetUpCoastProfile();
@@ -356,23 +356,22 @@ int CSimulation::nDoAllActualBeachErosionAndDeposition(void)
          // LogStream << "pUpCoastProfile->nGetNumCellsInProfile() = " << nNumUpCoastCell << " pDownCoastProfile->nGetNumCellsInProfile() = " << nNumDownCoastCell << endl;
          // // DEBUG CODE =====================
 
-
          // // DEBUG CODE ============================================================================================================================================
          // // Get total depths of sand consolidated and unconsolidated for every cell
          // if (m_ulIter == 5)
          // {
-         //    double dTmpSandUncons = 0;
-         //    for (int nX1 = 0; nX1 < m_nXGridSize; nX1++)
-         //    {
-         //       for (int nY1 = 0; nY1 < m_nYGridSize; nY1++)
-         //       {
-         //          dTmpSandUncons += m_pRasterGrid->m_Cell[nX1][nY1].dGetTotUnconsSand();
-         //       }
-         //    }
+         // double dTmpSandUncons = 0;
+         // for (int nX1 = 0; nX1 < m_nXGridSize; nX1++)
+         // {
+         // for (int nY1 = 0; nY1 < m_nYGridSize; nY1++)
+         // {
+         // dTmpSandUncons += m_pRasterGrid->m_Cell[nX1][nY1].dGetTotUnconsSand();
+         // }
+         // }
          //
-         //    LogStream << endl;
-         //    LogStream << "*****************************" << endl;
-         //    LogStream << m_ulIter << ": before beach movement on nPoly = " << nPoly << " TOTAL UNCONSOLIDATED SAND ON ALL CELLS = " << dTmpSandUncons * m_dCellArea << endl;
+         // LogStream << endl;
+         // LogStream << "*****************************" << endl;
+         // LogStream << m_ulIter << ": before beach movement on nPoly = " << nPoly << " TOTAL UNCONSOLIDATED SAND ON ALL CELLS = " << dTmpSandUncons * m_dCellArea << endl;
          // }
          // // DEBUG CODE ============================================================================================================================================
 
@@ -386,7 +385,7 @@ int CSimulation::nDoAllActualBeachErosionAndDeposition(void)
             {
                // We had some coarse unconsolidated sediment which we were unable to deoosit on the last polygon (which could have been the last polygon of the previous iteration). So add it to the total to be deposited here
                if (m_nLogFileDetail >= LOG_FILE_HIGH_DETAIL)
-                  LogStream << m_ulIter << ": nPoly = " << nPolygon << " dCoarseDepositionTarget was = " << dCoarseDepositionTarget* m_dCellArea << " adding m_dDepositionCoarseDiff = " << m_dDepositionCoarseDiff* m_dCellArea;
+                  LogStream << m_ulIter << ": nPoly = " << nPolygon << " dCoarseDepositionTarget was = " << dCoarseDepositionTarget * m_dCellArea << " adding m_dDepositionCoarseDiff = " << m_dDepositionCoarseDiff * m_dCellArea;
 
                dCoarseDepositionTarget += m_dDepositionCoarseDiff;
                m_dDepositionCoarseDiff = 0;
@@ -420,7 +419,7 @@ int CSimulation::nDoAllActualBeachErosionAndDeposition(void)
             {
                // We had some sand unconsolidated sediment which we were unable to deoosit on the last polygon (which could have been the last polygon of the previous iteration). So add it to the total to be deposited here
                if (m_nLogFileDetail >= LOG_FILE_HIGH_DETAIL)
-                  LogStream << m_ulIter << ": nPolygon = " << nPolygon << " dSandDepositionTarget was = " << dSandDepositionTarget* m_dCellArea << " adding m_dDepositionSandDiff = " << m_dDepositionSandDiff* m_dCellArea;
+                  LogStream << m_ulIter << ": nPolygon = " << nPolygon << " dSandDepositionTarget was = " << dSandDepositionTarget * m_dCellArea << " adding m_dDepositionSandDiff = " << m_dDepositionSandDiff * m_dCellArea;
 
                dSandDepositionTarget += m_dDepositionSandDiff;
                m_dDepositionSandDiff = 0;
@@ -446,18 +445,18 @@ int CSimulation::nDoAllActualBeachErosionAndDeposition(void)
             // // DEBUG CODE #####################
             // if (m_ulIter == 5)
             // {
-            //    LogStream << m_ulIter << ": after sand deposition on nPoly = " << nPoly << " dSandDepositionTarget = " << dSandDepositionTarget * m_dCellArea << " dSandDeposited = " << dSandDeposited * m_dCellArea << " dSandNotDeposited = " << dSandNotDeposited * m_dCellArea << " m_dDepositionSandDiff = " << m_dDepositionSandDiff * m_dCellArea << endl;
+            // LogStream << m_ulIter << ": after sand deposition on nPoly = " << nPoly << " dSandDepositionTarget = " << dSandDepositionTarget * m_dCellArea << " dSandDeposited = " << dSandDeposited * m_dCellArea << " dSandNotDeposited = " << dSandNotDeposited * m_dCellArea << " m_dDepositionSandDiff = " << m_dDepositionSandDiff * m_dCellArea << endl;
             //
-            //    double dTmpSandUncons = 0;
-            //    for (int nX1 = 0; nX1 < m_nXGridSize; nX1++)
-            //    {
-            //       for (int nY1 = 0; nY1 < m_nYGridSize; nY1++)
-            //       {
-            //          dTmpSandUncons += m_pRasterGrid->m_Cell[nX1][nY1].dGetTotUnconsSand();
-            //       }
-            //    }
+            // double dTmpSandUncons = 0;
+            // for (int nX1 = 0; nX1 < m_nXGridSize; nX1++)
+            // {
+            // for (int nY1 = 0; nY1 < m_nYGridSize; nY1++)
+            // {
+            // dTmpSandUncons += m_pRasterGrid->m_Cell[nX1][nY1].dGetTotUnconsSand();
+            // }
+            // }
             //
-            //    LogStream << m_ulIter << ": after sand deposition on nPoly = " << nPoly << " TOTAL UNCONSOLIDATED SAND ON ALL CELLS = " << dTmpSandUncons * m_dCellArea << endl;
+            // LogStream << m_ulIter << ": after sand deposition on nPoly = " << nPoly << " TOTAL UNCONSOLIDATED SAND ON ALL CELLS = " << dTmpSandUncons * m_dCellArea << endl;
             // }
             // // DEBUG CODE #####################
          }
@@ -528,18 +527,18 @@ int CSimulation::nDoAllActualBeachErosionAndDeposition(void)
                // // DEBUG CODE #####################
                // if (m_ulIter == 5)
                // {
-               //    LogStream << m_ulIter << ": nPoly = " << nPoly << " dSandErosionTarget = " << dSandErosionTarget * m_dCellArea << " m_dDepositionSandDiff = " << m_dDepositionSandDiff * m_dCellArea << " dSandEroded = " << dSandEroded * m_dCellArea << " m_dThisIterBeachErosionSand = " << m_dThisIterBeachErosionSand * m_dCellArea << endl;
+               // LogStream << m_ulIter << ": nPoly = " << nPoly << " dSandErosionTarget = " << dSandErosionTarget * m_dCellArea << " m_dDepositionSandDiff = " << m_dDepositionSandDiff * m_dCellArea << " dSandEroded = " << dSandEroded * m_dCellArea << " m_dThisIterBeachErosionSand = " << m_dThisIterBeachErosionSand * m_dCellArea << endl;
                //
-               //    double dTmpSandUncons = 0;
-               //    for (int nX1 = 0; nX1 < m_nXGridSize; nX1++)
-               //    {
-               //       for (int nY1 = 0; nY1 < m_nYGridSize; nY1++)
-               //       {
-               //          dTmpSandUncons += m_pRasterGrid->m_Cell[nX1][nY1].dGetTotUnconsSand();
-               //       }
-               //    }
+               // double dTmpSandUncons = 0;
+               // for (int nX1 = 0; nX1 < m_nXGridSize; nX1++)
+               // {
+               // for (int nY1 = 0; nY1 < m_nYGridSize; nY1++)
+               // {
+               // dTmpSandUncons += m_pRasterGrid->m_Cell[nX1][nY1].dGetTotUnconsSand();
+               // }
+               // }
                //
-               //    LogStream << m_ulIter << ": after sand erosion on nPoly = " << nPoly << " TOTAL UNCONSOLIDATED SAND ON ALL CELLS = " << dTmpSandUncons * m_dCellArea << endl;
+               // LogStream << m_ulIter << ": after sand erosion on nPoly = " << nPoly << " TOTAL UNCONSOLIDATED SAND ON ALL CELLS = " << dTmpSandUncons * m_dCellArea << endl;
                // }
                // // DEBUG CODE #####################
             }
@@ -585,7 +584,7 @@ int CSimulation::nDoAllActualBeachErosionAndDeposition(void)
                      int nAdjPoly = pPolygon->nGetDownCoastAdjacentPolygon(nn);
 
                      // if (m_nLogFileDetail >= LOG_FILE_MIDDLE_DETAIL)
-                     //    LogStream << m_ulIter << ": polygon " << nPoly << " moves sediment down-coast to polygon " << nAdjPoly << endl;
+                     // LogStream << m_ulIter << ": polygon " << nPoly << " moves sediment down-coast to polygon " << nAdjPoly << endl;
 
                      if (nAdjPoly == INT_NODATA)
                      {
@@ -616,7 +615,7 @@ int CSimulation::nDoAllActualBeachErosionAndDeposition(void)
                               // // DEBUG CODE ##################
                               // if (m_ulIter == 5)
                               // {
-                              //    LogStream << m_ulIter << ": nPoly = " << nPoly << " LOST FROM GRID = " << dSandEroded * m_dCellArea << endl;
+                              // LogStream << m_ulIter << ": nPoly = " << nPoly << " LOST FROM GRID = " << dSandEroded * m_dCellArea << endl;
                               // }
                               // // DEBUG CODE ##################
                            }
@@ -625,7 +624,7 @@ int CSimulation::nDoAllActualBeachErosionAndDeposition(void)
                            {
                               // Re-circulating grid edges, so adjust the sediment exported to the polygon at the up-coast end of this coastline
                               int nOtherEndPoly = 0;
-                              CGeomCoastPolygon* pOtherEndPoly = m_VCoast[nCoast].pGetPolygon(nOtherEndPoly);
+                              CGeomCoastPolygon * pOtherEndPoly = m_VCoast[nCoast].pGetPolygon(nOtherEndPoly);
 
                               if (dSandEroded > 0)
                               {
@@ -645,37 +644,37 @@ int CSimulation::nDoAllActualBeachErosionAndDeposition(void)
                      else
                      {
                         // This polygon is not at the grid edge
-                        CGeomCoastPolygon* pAdjPolygon = m_VCoast[nCoast].pGetPolygon(nAdjPoly);
+                        CGeomCoastPolygon * pAdjPolygon = m_VCoast[nCoast].pGetPolygon(nAdjPoly);
                         double dBoundaryShare = pPolygon->dGetDownCoastAdjacentPolygonBoundaryShare(nn);
 
                         if (dSandEroded > 0)
                         {
                            // if (m_ulIter == 5)
-                           //    LogStream << m_ulIter << ": B polygon not at grid edge nPoly = " << nPoly << " nAdjPoly = " << nAdjPoly << ", dGetToDoBeachDepositionUnconsSand() on nAdjPoly is = " << pAdjPolygon->dGetToDoBeachDepositionUnconsSand() * m_dCellArea << endl;
+                           // LogStream << m_ulIter << ": B polygon not at grid edge nPoly = " << nPoly << " nAdjPoly = " << nAdjPoly << ", dGetToDoBeachDepositionUnconsSand() on nAdjPoly is = " << pAdjPolygon->dGetToDoBeachDepositionUnconsSand() * m_dCellArea << endl;
 
                            // Add to the still-to-do total of unconsolidated sand to be deposited on the adjacent polygon
                            pAdjPolygon->AddToDoBeachDepositionUnconsSand(dSandEroded * dBoundaryShare);
 
                            // if (m_ulIter == 5)
-                           //    LogStream << m_ulIter << ": B after nAdjPoly = " << nAdjPoly << " AddToDoBeachDepositionUnconsSand(" << dSandEroded * dBoundaryShare * m_dCellArea << ") dGetToDoBeachDepositionUnconsSand() now = " << pAdjPolygon->dGetToDoBeachDepositionUnconsSand() * m_dCellArea << endl;
+                           // LogStream << m_ulIter << ": B after nAdjPoly = " << nAdjPoly << " AddToDoBeachDepositionUnconsSand(" << dSandEroded * dBoundaryShare * m_dCellArea << ") dGetToDoBeachDepositionUnconsSand() now = " << pAdjPolygon->dGetToDoBeachDepositionUnconsSand() * m_dCellArea << endl;
                         }
 
                         if (dCoarseEroded > 0)
                         {
                            // if (m_nLogFileDetail >= LOG_FILE_ALL)
-                           //    LogStream << m_ulIter << ": polygon = " << nPoly << " adjacent polygon = " << nAdjPoly << ", beach deposition 1 of uncons coarse was = " << pAdjPolygon->dGetToDoBeachDepositionUnconsCoarse() * m_dCellArea;
+                           // LogStream << m_ulIter << ": polygon = " << nPoly << " adjacent polygon = " << nAdjPoly << ", beach deposition 1 of uncons coarse was = " << pAdjPolygon->dGetToDoBeachDepositionUnconsCoarse() * m_dCellArea;
 
                            // Add to the still-to-do total of unconsolidated coarse sediment to be deposited on the adjacent polygon
                            pAdjPolygon->AddToDoBeachDepositionUnconsCoarse(dCoarseEroded * dBoundaryShare);
 
                            // if (m_nLogFileDetail >= LOG_FILE_ALL)
-                           //    LogStream << " after AddToDoBeachDepositionUnconsCoarse(" << dCoarseEroded * dBoundaryShare << ") beach deposition 1 of uncons coarse now = " << pAdjPolygon->dGetToDoBeachDepositionUnconsCoarse() * m_dCellArea << endl;
+                           // LogStream << " after AddToDoBeachDepositionUnconsCoarse(" << dCoarseEroded * dBoundaryShare << ") beach deposition 1 of uncons coarse now = " << pAdjPolygon->dGetToDoBeachDepositionUnconsCoarse() * m_dCellArea << endl;
                         }
                      }
                   }
 
                   // if (m_nLogFileDetail >= LOG_FILE_ALL)
-                  //    LogStream << m_ulIter << ": 1 uncons sand eroded = " << dSandEroded * m_dCellArea << " 1 uncons coarse eroded = " << dCoarseEroded * m_dCellArea << endl;
+                  // LogStream << m_ulIter << ": 1 uncons sand eroded = " << dSandEroded * m_dCellArea << " 1 uncons coarse eroded = " << dCoarseEroded * m_dCellArea << endl;
                }
 
                else
@@ -687,7 +686,7 @@ int CSimulation::nDoAllActualBeachErosionAndDeposition(void)
                   {
                      int nAdjPoly = pPolygon->nGetUpCoastAdjacentPolygon(nn);
                      // if (m_nLogFileDetail >= LOG_FILE_ALL)
-                     //    LogStream << m_ulIter << ": polygon " << nPoly << " moves sediment up-coast to polygon " << nAdjPoly << endl;
+                     // LogStream << m_ulIter << ": polygon " << nPoly << " moves sediment up-coast to polygon " << nAdjPoly << endl;
 
                      if (nAdjPoly == INT_NODATA)
                      {
@@ -721,7 +720,7 @@ int CSimulation::nDoAllActualBeachErosionAndDeposition(void)
                            {
                               // Re-circulating grid edges, so adjust the sediment exported to the polygon at the up-coast end of this coastline TODO 016 Check whether this causes mass balance problems, depending on the sequence of polygon processing
                               int nOtherEndPoly = 0;
-                              CGeomCoastPolygon* pOtherEndPoly = m_VCoast[nCoast].pGetPolygon(nOtherEndPoly);
+                              CGeomCoastPolygon * pOtherEndPoly = m_VCoast[nCoast].pGetPolygon(nOtherEndPoly);
 
                               if (dSandEroded > 0)
                               {
@@ -741,31 +740,31 @@ int CSimulation::nDoAllActualBeachErosionAndDeposition(void)
                      else
                      {
                         // This polygon is not at the grid edge
-                        CGeomCoastPolygon* pAdjPolygon = m_VCoast[nCoast].pGetPolygon(nAdjPoly);
+                        CGeomCoastPolygon * pAdjPolygon = m_VCoast[nCoast].pGetPolygon(nAdjPoly);
                         double dBoundaryShare = pPolygon->dGetUpCoastAdjacentPolygonBoundaryShare(nn);
 
                         if (dSandEroded > 0)
                         {
                            // if (m_ulIter == 5)
-                           //    LogStream << m_ulIter << ": A polygon not at grid edge nPoly = " << nPoly << " nAdjPoly = " << nAdjPoly << ", dGetToDoBeachDepositionUnconsSand() on nAdjPoly is = " << pAdjPolygon->dGetToDoBeachDepositionUnconsSand() * m_dCellArea << endl;
+                           // LogStream << m_ulIter << ": A polygon not at grid edge nPoly = " << nPoly << " nAdjPoly = " << nAdjPoly << ", dGetToDoBeachDepositionUnconsSand() on nAdjPoly is = " << pAdjPolygon->dGetToDoBeachDepositionUnconsSand() * m_dCellArea << endl;
 
                            // Add to the still-to-do total of unconsolidated sand to be deposited on the the adjacent polygon
                            pAdjPolygon->AddToDoBeachDepositionUnconsSand(dSandEroded * dBoundaryShare);
 
                            // if (m_ulIter == 5)
-                           //    LogStream << m_ulIter << ": A after nAdjPoly = " << nAdjPoly << " AddToDoBeachDepositionUnconsSand(" << dSandEroded * dBoundaryShare * m_dCellArea << ") dGetToDoBeachDepositionUnconsSand() now = " << pAdjPolygon->dGetToDoBeachDepositionUnconsSand() * m_dCellArea << endl;
+                           // LogStream << m_ulIter << ": A after nAdjPoly = " << nAdjPoly << " AddToDoBeachDepositionUnconsSand(" << dSandEroded * dBoundaryShare * m_dCellArea << ") dGetToDoBeachDepositionUnconsSand() now = " << pAdjPolygon->dGetToDoBeachDepositionUnconsSand() * m_dCellArea << endl;
                         }
 
                         if (dCoarseEroded > 0)
                         {
                            // if (m_ulIter == 5)
-                           //    LogStream << m_ulIter << ": polygon not at grid edge nPoly = " << nPoly << " nAdjPoly = " << nAdjPoly << ", beach deposition of uncons coarse was = " << pAdjPolygon->dGetToDoBeachDepositionUnconsCoarse() * m_dCellArea << endl;
+                           // LogStream << m_ulIter << ": polygon not at grid edge nPoly = " << nPoly << " nAdjPoly = " << nAdjPoly << ", beach deposition of uncons coarse was = " << pAdjPolygon->dGetToDoBeachDepositionUnconsCoarse() * m_dCellArea << endl;
 
                            // Add to the still-to-do total of unconsolidated coarse sediment to be deposited on the adjacent polygon
                            pAdjPolygon->AddToDoBeachDepositionUnconsCoarse(+dCoarseEroded * dBoundaryShare);
 
                            // if (m_ulIter == 5)
-                           //    LogStream << " After AddToDoBeachDepositionUnconsCoarse(" << dCoarseEroded * dBoundaryShare << ") uncons coarse now = " << pAdjPolygon->dGetToDoBeachDepositionUnconsCoarse() * m_dCellArea << endl;
+                           // LogStream << " After AddToDoBeachDepositionUnconsCoarse(" << dCoarseEroded * dBoundaryShare << ") uncons coarse now = " << pAdjPolygon->dGetToDoBeachDepositionUnconsCoarse() * m_dCellArea << endl;
                         }
                      }
                   }
@@ -773,7 +772,7 @@ int CSimulation::nDoAllActualBeachErosionAndDeposition(void)
             }
 
             // if (m_nLogFileDetail >= LOG_FILE_ALL)
-            //    LogStream << m_ulIter << ": sand eroded on poly = " << dSandEroded * m_dCellArea << " coarse eroded on poly = " << dCoarseEroded * m_dCellArea << endl;
+            // LogStream << m_ulIter << ": sand eroded on poly = " << dSandEroded * m_dCellArea << " coarse eroded on poly = " << dCoarseEroded * m_dCellArea << endl;
 
          }     // if (dPotentialErosion > 0)
 
@@ -781,33 +780,33 @@ int CSimulation::nDoAllActualBeachErosionAndDeposition(void)
          // // Get total depths of unconsolidated sand for every cell
          // if (m_ulIter == 5)
          // {
-         //    double dTmpSandUncons = 0;
-         //    for (int nX1 = 0; nX1 < m_nXGridSize; nX1++)
-         //    {
-         //       for (int nY1 = 0; nY1 < m_nYGridSize; nY1++)
-         //       {
-         //          dTmpSandUncons += m_pRasterGrid->m_Cell[nX1][nY1].dGetTotUnconsSand();
-         //       }
-         //    }
+         // double dTmpSandUncons = 0;
+         // for (int nX1 = 0; nX1 < m_nXGridSize; nX1++)
+         // {
+         // for (int nY1 = 0; nY1 < m_nYGridSize; nY1++)
+         // {
+         // dTmpSandUncons += m_pRasterGrid->m_Cell[nX1][nY1].dGetTotUnconsSand();
+         // }
+         // }
          //
-         //    LogStream << endl;
-         //    LogStream << m_ulIter << ": TOTAL UNCONSOLIDATED SAND ON ALL CELLS after beach movement on nPoly = " << nPoly << " dTmpSandUncons = " << dTmpSandUncons * m_dCellArea << " (dTmpSandUncons - m_dStartIterUnconsSandAllCells) =  " << (dTmpSandUncons - m_dStartIterUnconsSandAllCells) * m_dCellArea << endl;
+         // LogStream << endl;
+         // LogStream << m_ulIter << ": TOTAL UNCONSOLIDATED SAND ON ALL CELLS after beach movement on nPoly = " << nPoly << " dTmpSandUncons = " << dTmpSandUncons * m_dCellArea << " (dTmpSandUncons - m_dStartIterUnconsSandAllCells) =  " << (dTmpSandUncons - m_dStartIterUnconsSandAllCells) * m_dCellArea << endl;
          //
          //    // Now get the total in all still-to-do fields of all polygons
-         //    double dToDoTot = 0;
+         // double dToDoTot = 0;
          //
-         //    for (int nn = 0; nn < nPolygons; nn++)
-         //    {
-         //       CGeomCoastPolygon* pThisPolygon = m_VCoast[nCoast].pGetPolygon(nn);
-         //       dToDoTot += pThisPolygon->dGetToDoBeachDepositionUnconsSand();
-         //    }
+         // for (int nn = 0; nn < nPolygons; nn++)
+         // {
+         // CGeomCoastPolygon* pThisPolygon = m_VCoast[nCoast].pGetPolygon(nn);
+         // dToDoTot += pThisPolygon->dGetToDoBeachDepositionUnconsSand();
+         // }
          //
-         //    LogStream << endl  << m_ulIter << ": dToDoTot = " << dToDoTot * m_dCellArea << endl;
-         //    LogStream  << m_ulIter << ": dTmpSandUncons + dToDoTot = " << (dTmpSandUncons + dToDoTot) * m_dCellArea << endl << endl;
+         // LogStream << endl  << m_ulIter << ": dToDoTot = " << dToDoTot * m_dCellArea << endl;
+         // LogStream  << m_ulIter << ": dTmpSandUncons + dToDoTot = " << (dTmpSandUncons + dToDoTot) * m_dCellArea << endl << endl;
          //
-         //    LogStream << m_ulIter << ": m_dThisIterLeftGridUnconsSand = " << m_dThisIterLeftGridUnconsSand * m_dCellArea << endl;
+         // LogStream << m_ulIter << ": m_dThisIterLeftGridUnconsSand = " << m_dThisIterLeftGridUnconsSand * m_dCellArea << endl;
          //
-         //    LogStream << "*****************************" << endl;
+         // LogStream << "*****************************" << endl;
          // }
          // // DEBUG CODE ============================================================================================================================================
 
@@ -816,11 +815,11 @@ int CSimulation::nDoAllActualBeachErosionAndDeposition(void)
       // OK we have processed all polygons, But if there are adjacent-polygon circularities (i.e. Polygon A -> Polygon B -> Polygon A) then we may have some still-to-do deposition on at least one polygon. So look through all polygons and check their still-to-do lists
       int nPolygons = m_VCoast[nCoast].nGetNumPolygons();
 
-//      for (int nn = 0; nn < nPolygons; nn++)
-      for (int nn = nPolygons-1; nn >= 0; nn--)
+// for (int nn = 0; nn < nPolygons; nn++)
+      for (int nn = nPolygons - 1; nn >= 0; nn--)
       {
          int nThisPoly = nVVPolyAndAdjacent[nn][1];
-         CGeomCoastPolygon* pThisPolygon = m_VCoast[nCoast].pGetPolygon(nThisPoly);
+         CGeomCoastPolygon * pThisPolygon = m_VCoast[nCoast].pGetPolygon(nThisPoly);
 
          double dSandToDepositOnPoly = pThisPolygon->dGetToDoBeachDepositionUnconsSand();
 
@@ -839,7 +838,7 @@ int CSimulation::nDoAllActualBeachErosionAndDeposition(void)
                m_dDepositionSandDiff += dSandNotDeposited;
 
             if (m_nLogFileDetail >= LOG_FILE_MIDDLE_DETAIL)
-               LogStream << m_ulIter << ": re-processing nThisPoly = " << nThisPoly << " dSandDeposited = " << dSandDeposited* m_dCellArea << " dSandNotDeposited = " << dSandNotDeposited* m_dCellArea << " m_dDepositionSandDiff = " << m_dDepositionSandDiff* m_dCellArea << endl;
+               LogStream << m_ulIter << ": re-processing nThisPoly = " << nThisPoly << " dSandDeposited = " << dSandDeposited * m_dCellArea << " dSandNotDeposited = " << dSandNotDeposited * m_dCellArea << " m_dDepositionSandDiff = " << m_dDepositionSandDiff * m_dCellArea << endl;
          }
 
          double dCoarseToDepositOnPoly = pThisPolygon->dGetToDoBeachDepositionUnconsCoarse();
@@ -859,7 +858,7 @@ int CSimulation::nDoAllActualBeachErosionAndDeposition(void)
                m_dDepositionCoarseDiff += dCoarseNotDeposited;
 
             if (m_nLogFileDetail >= LOG_FILE_MIDDLE_DETAIL)
-               LogStream << m_ulIter << ": re-processing nThisPoly = " << nThisPoly << " dCoarseDeposited = " << dCoarseDeposited* m_dCellArea << " dCoarseNotDeposited = " << dCoarseNotDeposited* m_dCellArea << " m_dDepositionCoarseDiff = " << m_dDepositionCoarseDiff* m_dCellArea << endl;
+               LogStream << m_ulIter << ": re-processing nThisPoly = " << nThisPoly << " dCoarseDeposited = " << dCoarseDeposited * m_dCellArea << " dCoarseNotDeposited = " << dCoarseNotDeposited * m_dCellArea << " m_dDepositionCoarseDiff = " << m_dDepositionCoarseDiff * m_dCellArea << endl;
          }
       }
 
@@ -879,7 +878,7 @@ void CSimulation::AllPolygonsUpdateStoredUncons(int const nCoast)
 
    for (int nPoly = 0; nPoly < nNumPolygons; nPoly++)
    {
-      CGeomCoastPolygon* pPolygon = m_VCoast[nCoast].pGetPolygon(nPoly);
+      CGeomCoastPolygon * pPolygon = m_VCoast[nCoast].pGetPolygon(nPoly);
 
       // Only include unconsolidated fine sediment from sediment input events, don't include any unconsolidated fine sediment from platform erosion and cliff collapse since these have gone to suspension
       double dFine = pPolygon->dGetSedimentInputUnconsFine();

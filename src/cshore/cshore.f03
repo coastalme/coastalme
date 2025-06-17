@@ -844,6 +844,10 @@ subroutine CShore(NRET)
             endif
             do 410 I =ISTART,IFIN
                SIGT = CP(I)*SIGSTA(I)
+
+               ! DFM safety check
+               if (SIGT == 0.D0) SIGT = 1.0D-6
+
                USTD(I) = SIGT*CTHETA(I)
                UMEAN(I)= -USTD(I)*SIGSTA(I)*GRAV*H(I)/CP(I)/CP(I)
                

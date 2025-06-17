@@ -45,10 +45,10 @@ void CSimulation::DoCoastCurvature(int const nCoast, int const nHandedness)
    int nCoastSize = m_VCoast[nCoast].nGetCoastlineSize();
 
    // Start with detailed curvature, do every point on the coastline, apart from the first and last points
-   for (int nThisCoastPoint = 1; nThisCoastPoint < (nCoastSize-1); nThisCoastPoint++)
+   for (int nThisCoastPoint = 1; nThisCoastPoint < (nCoastSize - 1); nThisCoastPoint++)
    {
       // Calculate the signed curvature based on this point, and the points before and after
-      double dCurvature = dCalcCurvature(nHandedness, m_VCoast[nCoast].pPtGetCoastlinePointExtCRS(nThisCoastPoint-1), m_VCoast[nCoast].pPtGetCoastlinePointExtCRS(nThisCoastPoint), m_VCoast[nCoast].pPtGetCoastlinePointExtCRS(nThisCoastPoint+1));
+      double dCurvature = dCalcCurvature(nHandedness, m_VCoast[nCoast].pPtGetCoastlinePointExtCRS(nThisCoastPoint - 1), m_VCoast[nCoast].pPtGetCoastlinePointExtCRS(nThisCoastPoint), m_VCoast[nCoast].pPtGetCoastlinePointExtCRS(nThisCoastPoint + 1));
 
       // Set the detailed curvature
       m_VCoast[nCoast].SetDetailedCurvature(nThisCoastPoint, dCurvature);
@@ -58,8 +58,8 @@ void CSimulation::DoCoastCurvature(int const nCoast, int const nHandedness)
    double dTemp = m_VCoast[nCoast].dGetDetailedCurvature(1);
    m_VCoast[nCoast].SetDetailedCurvature(0, dTemp);
 
-   dTemp = m_VCoast[nCoast].dGetDetailedCurvature(nCoastSize-2);
-   m_VCoast[nCoast].SetDetailedCurvature(nCoastSize-1, dTemp);
+   dTemp = m_VCoast[nCoast].dGetDetailedCurvature(nCoastSize - 2);
+   m_VCoast[nCoast].SetDetailedCurvature(nCoastSize - 1, dTemp);
 
    // Now create the smoothed curvature
    int const nHalfWindow = m_nCoastCurvatureMovingWindowSize / 2;
@@ -73,7 +73,7 @@ void CSimulation::DoCoastCurvature(int const nCoast, int const nHandedness)
       for (int j = -nHalfWindow; j < m_nCoastCurvatureMovingWindowSize - nHalfWindow; j++)
       {
          // For points at both ends of the coastline, use a smaller window
-         int const k = i+j;
+         int const k = i + j;
 
          if ((k < 0) || (k >= nCoastSize))
             continue;
@@ -136,27 +136,27 @@ void CSimulation::DoCoastCurvature(int const nCoast, int const nHandedness)
       m_VCoast[nCoast].SetSmoothCurvature(nMaxConvexCoastPoint, STRAIGHT_COAST_MAX_SMOOTH_CURVATURE);
    }
 
-//    LogStream << "-----------------" << endl;
-//    for (int kk = 0; kk < m_VCoast.back().nGetCoastlineSize(); kk++)
-//       LogStream << kk << " [" << m_VCoast.back().pPtiGetCellMarkedAsCoastline(kk)->nGetX() << "][" << m_VCoast.back().pPtiGetCellMarkedAsCoastline(kk)->nGetY() << "] = {" << dGridCentroidXToExtCRSX(m_VCoast.back().pPtiGetCellMarkedAsCoastline(kk)->nGetX()) << ", " << dGridCentroidYToExtCRSY(m_VCoast.back().pPtiGetCellMarkedAsCoastline(kk)->nGetY()) << "}" << endl;
-//    LogStream << "-----------------" << endl;
+// LogStream << "-----------------" << endl;
+// for (int kk = 0; kk < m_VCoast.back().nGetCoastlineSize(); kk++)
+// LogStream << kk << " [" << m_VCoast.back().pPtiGetCellMarkedAsCoastline(kk)->nGetX() << "][" << m_VCoast.back().pPtiGetCellMarkedAsCoastline(kk)->nGetY() << "] = {" << dGridCentroidXToExtCRSX(m_VCoast.back().pPtiGetCellMarkedAsCoastline(kk)->nGetX()) << ", " << dGridCentroidYToExtCRSY(m_VCoast.back().pPtiGetCellMarkedAsCoastline(kk)->nGetY()) << "}" << endl;
+// LogStream << "-----------------" << endl;
 
    // CGeom2DIPoint PtiMax = *m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(nMaxConvexDetailedCoastPoint);
 
    // if (m_nLogFileDetail >= LOG_FILE_ALL)
-   //    LogStream << m_ulIter << ": Max detailed convexity (" << m_VCoast[nCoast].dGetDetailedCurvature(nMaxConvexDetailedCoastPoint) << ") at raster coastline point " << nMaxConvexDetailedCoastPoint << " [" << PtiMax.nGetX() << "][" << PtiMax.nGetY() << "] = {" << dGridCentroidXToExtCRSX(PtiMax.nGetX()) << ", " << dGridCentroidYToExtCRSY(PtiMax.nGetY()) << "}"  << endl;
+   // LogStream << m_ulIter << ": Max detailed convexity (" << m_VCoast[nCoast].dGetDetailedCurvature(nMaxConvexDetailedCoastPoint) << ") at raster coastline point " << nMaxConvexDetailedCoastPoint << " [" << PtiMax.nGetX() << "][" << PtiMax.nGetY() << "] = {" << dGridCentroidXToExtCRSX(PtiMax.nGetX()) << ", " << dGridCentroidYToExtCRSY(PtiMax.nGetY()) << "}"  << endl;
 
    // CGeom2DIPoint PtiMaxSmooth = *m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(nMaxConvexSmoothedCoastPoint);
    // CGeom2DPoint PtMaxSmooth = *m_VCoast[nCoast].pPtGetCoastlinePointExtCRS(nMaxConvexSmoothedCoastPoint);
 
    // if (m_nLogFileDetail >= LOG_FILE_ALL)
-   //    LogStream << m_ulIter << ": Max smoothed convexity (" << m_VCoast[nCoast].dGetSmoothCurvature(nMaxConvexSmoothedCoastPoint) << ") near vector coastline point " << nMaxConvexSmoothedCoastPoint << ", at [" << PtiMaxSmooth.nGetX() << "][" << PtiMaxSmooth.nGetY() << "] = {" << PtMaxSmooth.dGetX() << ", " << PtMaxSmooth.dGetY() << "}" << endl;
+   // LogStream << m_ulIter << ": Max smoothed convexity (" << m_VCoast[nCoast].dGetSmoothCurvature(nMaxConvexSmoothedCoastPoint) << ") near vector coastline point " << nMaxConvexSmoothedCoastPoint << ", at [" << PtiMaxSmooth.nGetX() << "][" << PtiMaxSmooth.nGetY() << "] = {" << PtMaxSmooth.dGetX() << ", " << PtMaxSmooth.dGetY() << "}" << endl;
 }
 
 //===============================================================================================================================
 //! Calculates signed Menger curvature (https://en.wikipedia.org/wiki/Menger_curvature#Definition) from three points on a line. Returns +ve values for concave, -ve for convex, and zero if the points are co-linear. Curvature is multiplied by 1000 to give easier-to-read numbers
 //===============================================================================================================================
-double CSimulation::dCalcCurvature(int const nHandedness, CGeom2DPoint const* pPtBefore, CGeom2DPoint const* pPtThis, CGeom2DPoint const* pPtAfter)
+double CSimulation::dCalcCurvature(int const nHandedness, CGeom2DPoint const * pPtBefore, CGeom2DPoint const * pPtThis, CGeom2DPoint const * pPtAfter)
 {
    double dAreax4 = 2 * dTriangleAreax2(pPtBefore, pPtThis, pPtAfter);
    double dDist1 = dGetDistanceBetween(pPtBefore, pPtThis);
@@ -180,4 +180,3 @@ double CSimulation::dCalcCurvature(int const nHandedness, CGeom2DPoint const* pP
 
    return (dCurvature * nShape * 1000);
 }
-

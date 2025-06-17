@@ -33,7 +33,7 @@ using namespace std;
 //! From https://cplusplus.com/forum/general/216928/
 //! Returns interpolated value at x from parallel arrays (VdXdata, VdYdata). Assumes that VdXdata has at least two elements, is sorted and is strictly monotonically increasing. The boolean argument extrapolate determines behaviour beyond ends of array (if needed). For this version, both lots of data are doubles
 //===============================================================================================================================
-double dGetInterpolatedValue(vector<double> const* pVdXdata, vector<double> const* pVdYdata, double dX, bool bExtrapolate)
+double dGetInterpolatedValue(vector<double> const * pVdXdata, vector<double> const * pVdYdata, double dX, bool bExtrapolate)
 {
    int size = static_cast<int>(pVdXdata->size());
 
@@ -46,14 +46,14 @@ double dGetInterpolatedValue(vector<double> const* pVdXdata, vector<double> cons
 
    else
    {
-      while (dX > pVdXdata->at(i+1))
+      while (dX > pVdXdata->at(i + 1))
          i++;
    }
 
    double dXL = pVdXdata->at(i);
    double dYL = pVdYdata->at(i);
-   double dXR = pVdXdata->at(i+1);
-   double dYR = pVdYdata->at(i+1);              // Points on either side (unless beyond ends)
+   double dXR = pVdXdata->at(i + 1);
+   double dYR = pVdYdata->at(i + 1);            // Points on either side (unless beyond ends)
 
    if (! bExtrapolate)                          // If beyond ends of array and not extrapolating
    {
@@ -73,7 +73,7 @@ double dGetInterpolatedValue(vector<double> const* pVdXdata, vector<double> cons
 //! From https://cplusplus.com/forum/general/216928/
 //! Returns interpolated value at x from parallel arrays (VdXdata, VdYdata). Assumes that VdXdata has at least two elements, is sorted and is strictly monotonically increasing. The boolean argument extrapolate determines behaviour beyond ends of array (if needed). For this version, one lot of data is integer and the other is double
 //===============================================================================================================================
-double dGetInterpolatedValue(vector<int> const* pVnXdata, vector<double> const* pVdYdata, int nX, bool bExtrapolate )
+double dGetInterpolatedValue(vector<int> const * pVnXdata, vector<double> const * pVdYdata, int nX, bool bExtrapolate )
 {
    unsigned int nSize = static_cast<unsigned int>(pVnXdata->size());
 
@@ -86,15 +86,15 @@ double dGetInterpolatedValue(vector<int> const* pVnXdata, vector<double> const* 
 
    else
    {
-      while (nX > pVnXdata->at(i+1))
+      while (nX > pVnXdata->at(i + 1))
          i++;
    }
 
    int nXL = pVnXdata->at(i);
-   int nXR = pVnXdata->at(i+1);
+   int nXR = pVnXdata->at(i + 1);
 
    double dYL = pVdYdata->at(i);
-   double dYR = pVdYdata->at(i+1);                  // Points on either side (unless beyond ends)
+   double dYR = pVdYdata->at(i + 1);                // Points on either side (unless beyond ends)
 
    if (! bExtrapolate)                          // If beyond ends of array and not extrapolating
    {
@@ -113,7 +113,7 @@ double dGetInterpolatedValue(vector<int> const* pVnXdata, vector<double> const* 
 //===============================================================================================================================
 //! This is used by VdInterpolateCShoreProfileOutput, it returns the index of the value in pVdX which is less than or equal to the absolute difference between dValueIn and the pVdX value
 //===============================================================================================================================
-int nFindIndex(vector<double> const* pVdX, double const dValueIn)
+int nFindIndex(vector<double> const * pVdX, double const dValueIn)
 {
    double dLastValue = DBL_MAX;
    int nIndexFound = 0;
@@ -135,7 +135,7 @@ int nFindIndex(vector<double> const* pVdX, double const dValueIn)
 //===============================================================================================================================
 //! Returns a linearly interpolated vector of doubles, to make CShore profile output compatible with CME. The array pVdY has been output by CShore and so always has length CSHOREARRAYOUTSIZE, whereas all other arrays have sizes which depend on CME at runtime
 //===============================================================================================================================
-vector<double> VdInterpolateCShoreProfileOutput(vector<double> const* pVdX, vector<double> const* pVdY, vector<double> const* pVdXNew)
+vector<double> VdInterpolateCShoreProfileOutput(vector<double> const* pVdX, vector<double> const * pVdY, vector<double> const * pVdXNew)
 {
    int nXSize = static_cast<int>(pVdX->size());
    int nXNewSize = static_cast<int>(pVdXNew->size());
@@ -155,29 +155,29 @@ vector<double> VdInterpolateCShoreProfileOutput(vector<double> const* pVdX, vect
       {
          if (idx > 0)
          {
-            dX = pVdX->at(idx) - pVdX->at(idx-1);
-            dY = pVdY->at(idx) - pVdY->at(idx-1);
+            dX = pVdX->at(idx) - pVdX->at(idx - 1);
+            dY = pVdY->at(idx) - pVdY->at(idx - 1);
          }
 
          else
          {
-            dX = pVdX->at(idx+1) - pVdX->at(idx);
-            dY = pVdY->at(idx+1) - pVdY->at(idx);
+            dX = pVdX->at(idx + 1) - pVdX->at(idx);
+            dY = pVdY->at(idx + 1) - pVdY->at(idx);
          }
       }
 
       else
       {
-         if (idx < nXSize-1)
+         if (idx < nXSize - 1)
          {
-            dX = pVdX->at(idx+1) - pVdX->at(idx);
-            dY = pVdY->at(idx+1) - pVdY->at(idx);
+            dX = pVdX->at(idx + 1) - pVdX->at(idx);
+            dY = pVdY->at(idx + 1) - pVdY->at(idx);
          }
 
          else
          {
-            dX = pVdX->at(idx) - pVdX->at(idx-1);
-            dY = pVdY->at(idx) - pVdY->at(idx-1);
+            dX = pVdX->at(idx) - pVdX->at(idx - 1);
+            dY = pVdY->at(idx) - pVdY->at(idx - 1);
          }
       }
 
@@ -189,9 +189,8 @@ vector<double> VdInterpolateCShoreProfileOutput(vector<double> const* pVdX, vect
       double dB = pVdY->at(idx) - pVdX->at(idx) * dM;
 
       // VdYNew[i] = (pVdXNew->at(i) * dM) + dB;
-      VdYNew[nXNewSize-1 - i] = (pVdXNew->at(i) * dM) + dB;
+      VdYNew[nXNewSize - 1 - i] = (pVdXNew->at(i) * dM) + dB;
    }
 
    return VdYNew;
 }
-

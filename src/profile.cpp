@@ -33,7 +33,7 @@ using std::find;
 #include "profile.h"
 
 //! Constructor with initialization list, requires one parameter (the coast point at which the profile starts)
-CGeomProfile::CGeomProfile(int const nCoast, int const nCoastPoint, int const nCoastID, int const nGlobalID, CGeom2DIPoint const* pPtiStart, CGeom2DIPoint const* pPtiEnd, bool const bIntervention)
+CGeomProfile::CGeomProfile(int const nCoast, int const nCoastPoint, int const nCoastID, int const nGlobalID, CGeom2DIPoint const * pPtiStart, CGeom2DIPoint const * pPtiEnd, bool const bIntervention)
    : m_bStartOfCoast(false),
      m_bEndOfCoast(false),
      m_bCShoreProblem(false),
@@ -51,8 +51,8 @@ CGeomProfile::CGeomProfile(int const nCoast, int const nCoastPoint, int const nC
      m_dDeepWaterWaveHeight(0),
      m_dDeepWaterWaveAngle(0),
      m_dDeepWaterWavePeriod(0),
-     PtiStart(*pPtiStart),
-     PtiEnd(*pPtiEnd),
+     PtiStart( * pPtiStart),
+     PtiEnd( * pPtiEnd),
      m_pUpCoastAdjacentProfile(NULL),
      m_pDownCoastAdjacentProfile(NULL)
 {
@@ -82,21 +82,21 @@ int CGeomProfile::nGetCoastPoint(void) const
 }
 
 //! Returns a pointer to the location of the cell (grid CRS) on which the profile starts
-CGeom2DIPoint* CGeomProfile::pPtiGetStartPoint(void)
+CGeom2DIPoint * CGeomProfile::pPtiGetStartPoint(void)
 {
-   return &PtiStart;
+   return & PtiStart;
 }
 
 //! Sets the the location of the cell (grid CRS) on which the profile ends
-void CGeomProfile::SetEndPoint(CGeom2DIPoint const* pPtiEnd)
+void CGeomProfile::SetEndPoint(CGeom2DIPoint const * pPtiEnd)
 {
-   PtiEnd = *pPtiEnd;
+   PtiEnd = * pPtiEnd;
 }
 
 //! Returns a pointer to the location of the cell (grid CRS) on which the profile ends
-CGeom2DIPoint* CGeomProfile::pPtiGetEndPoint(void)
+CGeom2DIPoint * CGeomProfile::pPtiGetEndPoint(void)
 {
-   return &PtiEnd;
+   return & PtiEnd;
 }
 
 //! Sets a switch to indicate whether this is a start-of-coast profile
@@ -262,22 +262,22 @@ bool CGeomProfile::bOKIncStartAndEndOfCoast(void) const
 // bool CGeomProfile::bOKIncStartOfCoast(void) const
 // {
 //    // All profiles without problems, including start-of-coast profile (but not end-of-coast profile)
-//    if ((! m_bEndOfCoast) &&
-//        (! m_bHitLand) &&
-//        (! m_bHitIntervention) &&
-//        (! m_bHitCoast) &&
-//        (! m_bTooShort) &&
-//        (! m_bTruncated) &&
-//        (! m_bHitAnotherProfile))
-//       return true;
+// if ((! m_bEndOfCoast) &&
+// (! m_bHitLand) &&
+// (! m_bHitIntervention) &&
+// (! m_bHitCoast) &&
+// (! m_bTooShort) &&
+// (! m_bTruncated) &&
+// (! m_bHitAnotherProfile))
+// return true;
 //
-//    return false;
+// return false;
 // }
 
 //! Sets all points in the profile
-void CGeomProfile::SetPointsInProfile(vector<CGeom2DPoint> const* VNewPoints)
+void CGeomProfile::SetPointsInProfile(vector<CGeom2DPoint> const * VNewPoints)
 {
-   m_VPoints = *VNewPoints;
+   m_VPoints = * VNewPoints;
 }
 
 //! Sets a single point in the profile
@@ -294,9 +294,9 @@ void CGeomProfile::AppendPointInProfile(double const dNewX, double const dNewY)
 }
 
 //! Appends a point to the profile (overloaded version)
-void CGeomProfile::AppendPointInProfile(CGeom2DPoint const* pPt)
+void CGeomProfile::AppendPointInProfile(CGeom2DPoint const * pPt)
 {
-   m_VPoints.push_back(*pPt);
+   m_VPoints.push_back( * pPt);
 }
 
 //! Inserts an intersection into the profile
@@ -326,16 +326,16 @@ void CGeomProfile::TruncateProfile(int const nSize)
 
 // void CGeomProfile::TruncateAndSetPointInProfile(int const nPoint, double const dNewX, double const dNewY)
 // {
-//    m_VPoints.resize(nPoint+1);
-//    m_VPoints[nPoint] = CGeom2DPoint(dNewX, dNewY);
+// m_VPoints.resize(nPoint+1);
+// m_VPoints[nPoint] = CGeom2DPoint(dNewX, dNewY);
 // }
 
 // void CGeomProfile::ShowProfile(void) const
 // {
-//    for (int n = 0; n < m_VPoints.size(); n++)
-//    {
-//       cout << n << " [" << m_VPoints[n].dGetX() << "][" << m_VPoints[n].dGetY() << "]" << endl;
-//    }
+// for (int n = 0; n < m_VPoints.size(); n++)
+// {
+// cout << n << " [" << m_VPoints[n].dGetX() << "][" << m_VPoints[n].dGetY() << "]" << endl;
+// }
 // }
 
 //! Returns the number of points in the profile
@@ -346,9 +346,9 @@ int CGeomProfile::nGetProfileSize(void) const
 }
 
 //! Returns a single point in the profile
-CGeom2DPoint* CGeomProfile::pPtGetPointInProfile(int const n)
+CGeom2DPoint * CGeomProfile::pPtGetPointInProfile(int const n)
 {
-   return &m_VPoints[n];
+   return & m_VPoints[n];
 }
 
 //! Returns a given point from the profile, and all points after this
@@ -360,15 +360,15 @@ vector<CGeom2DPoint> CGeomProfile::PtVGetThisPointAndAllAfter(int const nStart)
 //! Removes a line segment from the profile
 // void CGeomProfile::RemoveLineSegment(int const nPoint)
 // {
-//    m_VPoints.erase(m_VPoints.begin() + nPoint);
-//    CGeomMultiLine::RemoveLineSegment(nPoint);
+// m_VPoints.erase(m_VPoints.begin() + nPoint);
+// CGeomMultiLine::RemoveLineSegment(nPoint);
 // }
 
 //! Queries the profile: is the given point a profile point?
 bool CGeomProfile::bIsPointInProfile(double const dX, double const dY)
 {
    CGeom2DPoint Pt(dX, dY);
-   auto it = find(m_VPoints.begin(), m_VPoints.end(), &Pt);
+   auto it = find(m_VPoints.begin(), m_VPoints.end(), & Pt);
 
    if (it != m_VPoints.end())
       return true;
@@ -381,7 +381,7 @@ bool CGeomProfile::bIsPointInProfile(double const dX, double const dY)
 bool CGeomProfile::bIsPointInProfile(double const dX, double const dY, int& nPoint)
 {
    CGeom2DPoint Pt(dX, dY);
-   auto it = find(m_VPoints.begin(), m_VPoints.end(), &Pt);
+   auto it = find(m_VPoints.begin(), m_VPoints.end(), & Pt);
 
    if (it != m_VPoints.end())
    {
@@ -396,87 +396,87 @@ bool CGeomProfile::bIsPointInProfile(double const dX, double const dY, int& nPoi
 
 // int CGeomProfile::nFindInsertionLineSeg(double const dInsertX, double const dInsertY)
 // {
-//    for (int n = 0; n < m_VPoints.back(); n++)
-//    {
-//       double
-//          dThisX = m_VPoints[n].dGetX(),
-//          dThisY = m_VPoints[n].dGetY(),
-//          dNextX = m_VPoints[n+1].dGetX(),
-//          dNextY = m_VPoints[n+1].dGetY();
+// for (int n = 0; n < m_VPoints.back(); n++)
+// {
+// double
+// dThisX = m_VPoints[n].dGetX(),
+// dThisY = m_VPoints[n].dGetY(),
+// dNextX = m_VPoints[n+1].dGetX(),
+// dNextY = m_VPoints[n+1].dGetY();
 //
-//       bool
-//          bBetweenX = false,
-//          bBetweenY = false;
+// bool
+// bBetweenX = false,
+// bBetweenY = false;
 //
-//       if (dNextX >= dThisX)
-//       {
+// if (dNextX >= dThisX)
+// {
 //          // Ascending
-//          if ((dInsertX >= dThisX) && (dInsertX <= dNextX))
-//             bBetweenX = true;
-//       }
-//       else
-//       {
+// if ((dInsertX >= dThisX) && (dInsertX <= dNextX))
+// bBetweenX = true;
+// }
+// else
+// {
 //          // Descending
-//          if ((dInsertX >= dNextX) && (dInsertX <= dThisX))
-//             bBetweenX = true;
-//       }
+// if ((dInsertX >= dNextX) && (dInsertX <= dThisX))
+// bBetweenX = true;
+// }
 //
-//       if (dNextY >= dThisY)
-//       {
+// if (dNextY >= dThisY)
+// {
 //          // Ascending
-//          if ((dInsertY >= dThisY) && (dInsertY <= dNextY))
-//             bBetweenY = true;
-//       }
-//       else
-//       {
+// if ((dInsertY >= dThisY) && (dInsertY <= dNextY))
+// bBetweenY = true;
+// }
+// else
+// {
 //          // Descending
-//          if ((dInsertY >= dNextY) && (dInsertY <= dThisY))
-//             bBetweenY = true;
-//       }
+// if ((dInsertY >= dNextY) && (dInsertY <= dThisY))
+// bBetweenY = true;
+// }
 //
-//       if (bBetweenX && bBetweenY)
-//          return n;
-//    }
+// if (bBetweenX && bBetweenY)
+// return n;
+// }
 //
-//    return -1;
+// return -1;
 // }
 
 // void CGeomProfile::AppendPointShared(bool const bShared)
 // {
-//    m_bVShared.push_back(bShared);
+// m_bVShared.push_back(bShared);
 // }
 
 // bool CGeomProfile::bPointShared(int const n) const
 // {
 //    // TODO 055 No check to see if n < size()
-//    return m_bVShared[n];
+// return m_bVShared[n];
 // }
 
-void CGeomProfile::SetUpCoastAdjacentProfile(CGeomProfile* pProfile)
+void CGeomProfile::SetUpCoastAdjacentProfile(CGeomProfile * pProfile)
 {
    m_pUpCoastAdjacentProfile = pProfile;
 }
 
-CGeomProfile* CGeomProfile::pGetUpCoastAdjacentProfile(void) const
+CGeomProfile * CGeomProfile::pGetUpCoastAdjacentProfile(void) const
 {
    return m_pUpCoastAdjacentProfile;
 }
 
-void CGeomProfile::SetDownCoastAdjacentProfile(CGeomProfile* pProfile)
+void CGeomProfile::SetDownCoastAdjacentProfile(CGeomProfile * pProfile)
 {
    m_pDownCoastAdjacentProfile = pProfile;
 }
 
-CGeomProfile* CGeomProfile::pGetDownCoastAdjacentProfile(void) const
+CGeomProfile * CGeomProfile::pGetDownCoastAdjacentProfile(void) const
 {
    return m_pDownCoastAdjacentProfile;
 }
 
 //! Appends a cell to the profile
-void CGeomProfile::AppendCellInProfile(CGeom2DIPoint const* pPti)
+void CGeomProfile::AppendCellInProfile(CGeom2DIPoint const * pPti)
 {
    // In grid CRS
-   m_VCellInProfile.push_back(*pPti);
+   m_VCellInProfile.push_back( * pPti);
 }
 
 //! Appends a cell to the profile (overloaded version)
@@ -489,28 +489,28 @@ void CGeomProfile::AppendCellInProfile(int const nX, int const nY)
 // void CGeomProfile::SetCellsInProfile(vector<CGeom2DIPoint>* VNewPoints)
 // {
 //    // In grid CRS
-//    m_VCellInProfile = *VNewPoints;
+// m_VCellInProfile = *VNewPoints;
 // }
 
 //! Returns all cells in the profile
 vector<CGeom2DIPoint>* CGeomProfile::pPtiVGetCellsInProfile(void)
 {
    // In grid CRS
-   return &m_VCellInProfile;
+   return & m_VCellInProfile;
 }
 
 //! Returns a single cell in the profile
-CGeom2DIPoint* CGeomProfile::pPtiGetCellInProfile(int const n)
+CGeom2DIPoint * CGeomProfile::pPtiGetCellInProfile(int const n)
 {
    // In grid CRS TODO 055 No check to see if n < size()
-   return &m_VCellInProfile[n];
+   return & m_VCellInProfile[n];
 }
 
 //! Returns the last cell in the profile
-CGeom2DIPoint* CGeomProfile::pPtiGetLastCellInProfile(void)
+CGeom2DIPoint * CGeomProfile::pPtiGetLastCellInProfile(void)
 {
    // In grid CRS
-   return &m_VCellInProfile.back();
+   return & m_VCellInProfile.back();
 }
 
 //! Returns the number of cells in the profile
@@ -523,7 +523,7 @@ int CGeomProfile::nGetNumCellsInProfile(void) const
 // vector<CGeom2DPoint>* CGeomProfile::PtVGetCellsInProfileExtCRS(void)
 // {
 //    // In external CRS
-//    return &m_VCellInProfileExtCRS;
+// return &m_VCellInProfileExtCRS;
 // }
 
 //! Appends a cell (specified in the external coordinate system) to the profile
@@ -534,14 +534,14 @@ void CGeomProfile::AppendCellInProfileExtCRS(double const dX, double const dY)
 }
 
 //! Appends a cell (specified in the external coordinate system) to the profile (overloaded version)
-void CGeomProfile::AppendCellInProfileExtCRS(CGeom2DPoint const* pPt)
+void CGeomProfile::AppendCellInProfileExtCRS(CGeom2DPoint const * pPt)
 {
    // In external CRS
-   m_VCellInProfileExtCRS.push_back(*pPt);
+   m_VCellInProfileExtCRS.push_back( * pPt);
 }
 
 //! Returns the index of the cell on this profile which has a sea depth which is just less than a given depth. If every cell on the profile has a sea depth which is less than the given depth it returns INT_NODATA
-int CGeomProfile::nGetCellGivenDepth(CGeomRasterGrid const* pGrid, double const dDepthIn)
+int CGeomProfile::nGetCellGivenDepth(CGeomRasterGrid const * pGrid, double const dDepthIn)
 {
    int nIndex = INT_NODATA; // If not found, i.e. if every profile cell has sea depth less than dDepthIn
 
@@ -566,7 +566,7 @@ int CGeomProfile::nGetCellGivenDepth(CGeomRasterGrid const* pGrid, double const 
    // ####################
    // if (nIndex == INT_NODATA)
    // {
-   //    nIndex = static_cast<int>(m_VCellInProfile.size()) - 1;
+   // nIndex = static_cast<int>(m_VCellInProfile.size()) - 1;
    // }
 
    return nIndex;

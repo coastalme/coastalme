@@ -532,7 +532,7 @@ double CSimulation::dGetThisIterTotWaterLevel (void) const
 // //===============================================================================================================================
 // double CSimulation::dGetMaxBeachElevAboveSWL (void) const
 // {
-//    return m_dMaxBeachElevAboveSWL;
+// return m_dMaxBeachElevAboveSWL;
 // }
 
 //===============================================================================================================================
@@ -540,7 +540,7 @@ double CSimulation::dGetThisIterTotWaterLevel (void) const
 //===============================================================================================================================
 // double CSimulation::dGetCellSide(void) const
 // {
-//    return m_dCellSide;
+// return m_dCellSide;
 // }
 
 //===============================================================================================================================
@@ -586,7 +586,7 @@ double CSimulation::dGetD50Coarse (void) const
 //===============================================================================================================================
 //! The nDoSimulation member function of CSimulation sets up and runs the simulation
 //===============================================================================================================================
-int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
+int CSimulation::nDoSimulation(int nArg, char const * pcArgv[])
 {
    // ================================================== initialization section ================================================
    // Hello, World!
@@ -712,10 +712,10 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
       return nRet;
 
    //    // DEBUG CODE =================================================================================================================
-   //    for (int n = 0; n < m_VEdgeCell.size(); n++)
-   //    {
-   //       LogStream << "[" << m_VEdgeCell[n].nGetX() << "][" << m_VEdgeCell[n].nGetY() << "] = {" << dGridCentroidXToExtCRSX(m_VEdgeCell[n].nGetX()) << ", " << dGridCentroidYToExtCRSY(m_VEdgeCell[n].nGetY()) << "} " << m_VEdgeCellEdge[n] << endl;
-   //    }
+   // for (int n = 0; n < m_VEdgeCell.size(); n++)
+   // {
+   // LogStream << "[" << m_VEdgeCell[n].nGetX() << "][" << m_VEdgeCell[n].nGetY() << "] = {" << dGridCentroidXToExtCRSX(m_VEdgeCell[n].nGetX()) << ", " << dGridCentroidYToExtCRSY(m_VEdgeCell[n].nGetY()) << "} " << m_VEdgeCellEdge[n] << endl;
+   // }
    //    // DEBUG CODE =================================================================================================================
 
    // If we are using the default cell spacing, then now that we know the size of the raster cells, we can set the size of profile spacing in m
@@ -729,9 +729,9 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
 
       if (m_nCoastNormalSpacing < DEFAULT_PROFILE_SPACING)
       {
-         cerr << ERR << "profile spacing was specified as " << m_dCoastNormalSpacing << " m, which is " << m_nCoastNormalSpacing << " cells. Polygon creation works poorly if profile spacing is less than " << DEFAULT_PROFILE_SPACING << " cells, i.e. " << DEFAULT_PROFILE_SPACING* m_dCellSide << " m" << endl;
+         cerr << ERR << "profile spacing was specified as " << m_dCoastNormalSpacing << " m, which is " << m_nCoastNormalSpacing << " cells. Polygon creation works poorly if profile spacing is less than " << DEFAULT_PROFILE_SPACING << " cells, i.e. " << DEFAULT_PROFILE_SPACING * m_dCellSide << " m" << endl;
 
-         LogStream << ERR << "profile spacing was specified as " << m_dCoastNormalSpacing << " m, which is " << m_nCoastNormalSpacing << " cells. Polygon creation works poorly if profile spacing is less than " << DEFAULT_PROFILE_SPACING << " cells, i.e. " << DEFAULT_PROFILE_SPACING* m_dCellSide << " m" << endl;
+         LogStream << ERR << "profile spacing was specified as " << m_dCoastNormalSpacing << " m, which is " << m_nCoastNormalSpacing << " cells. Polygon creation works poorly if profile spacing is less than " << DEFAULT_PROFILE_SPACING << " cells, i.e. " << DEFAULT_PROFILE_SPACING * m_dCellSide << " m" << endl;
 
          return RTN_ERR_PROFILESPACING;
       }
@@ -1029,16 +1029,16 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
       // // DEBUG CODE =================
       // for (int nCoast = 0; nCoast < static_cast<int>(m_VCoast.size()); nCoast++)
       // {
-      //    for (int nCoastPoint = 0; nCoastPoint < m_VCoast[nCoast].nGetCoastlineSize(); nCoastPoint++)
-      //    {
-      //       if (m_VCoast[nCoast].bIsProfileAtCoastPoint(nCoastPoint))
-      //       {
-      //          CGeomProfile const* pProfile = m_VCoast[nCoast].pGetProfileAtCoastPoint(nCoastPoint);
-      //          int nProfile = pProfile->nGetCoastID();
+      // for (int nCoastPoint = 0; nCoastPoint < m_VCoast[nCoast].nGetCoastlineSize(); nCoastPoint++)
+      // {
+      // if (m_VCoast[nCoast].bIsProfileAtCoastPoint(nCoastPoint))
+      // {
+      // CGeomProfile const* pProfile = m_VCoast[nCoast].pGetProfileAtCoastPoint(nCoastPoint);
+      // int nProfile = pProfile->nGetCoastID();
       //
-      //          LogStream << m_ulIter << ": profile " << nProfile << " bStartOfCoast = " << pProfile->bStartOfCoast() << " bEndOfCoast = " << pProfile->bEndOfCoast() << " bCShoreProblem = " << pProfile->bCShoreProblem() << " bHitLand = " << pProfile->bHitLand() << " bHitCoast = " << pProfile->bHitCoast() << " bTooShort = " << pProfile->bTooShort() << " bTruncated = " << pProfile->bTruncated() << " bHitAnotherProfile = " << pProfile->bHitAnotherProfile() << endl;
-      //       }
-      //    }
+      // LogStream << m_ulIter << ": profile " << nProfile << " bStartOfCoast = " << pProfile->bStartOfCoast() << " bEndOfCoast = " << pProfile->bEndOfCoast() << " bCShoreProblem = " << pProfile->bCShoreProblem() << " bHitLand = " << pProfile->bHitLand() << " bHitCoast = " << pProfile->bHitCoast() << " bTooShort = " << pProfile->bTooShort() << " bTruncated = " << pProfile->bTruncated() << " bHitAnotherProfile = " << pProfile->bHitAnotherProfile() << endl;
+      // }
+      // }
       // }
       // // DEBUG CODE =================
 
@@ -1057,18 +1057,18 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
       // int nPoly24 = 0;
       // for (int nX = 0; nX < m_nXGridSize; nX++)
       // {
-      //    for (int nY = 0; nY < m_nYGridSize; nY++)
-      //    {
-      //       int nTmp = m_pRasterGrid->m_Cell[nX][nY].nGetPolygonID();
-      //       if (nTmp == INT_NODATA)
-      //          nNODATA++;
+      // for (int nY = 0; nY < m_nYGridSize; nY++)
+      // {
+      // int nTmp = m_pRasterGrid->m_Cell[nX][nY].nGetPolygonID();
+      // if (nTmp == INT_NODATA)
+      // nNODATA++;
       //
-      //       if (nTmp == 0)
-      //          nPoly0++;
+      // if (nTmp == 0)
+      // nPoly0++;
       //
-      //       if (nTmp == 24)
-      //          nPoly24++;
-      //    }
+      // if (nTmp == 24)
+      // nPoly24++;
+      // }
       // }
       // LogStream << "Before marking polygon cells, N cells with NODATA polygon ID = " << nNODATA << endl;
       // // LogStream << "Before marking polygon cells, N cells with zero polygon ID = " << nPoly0 << endl;
@@ -1093,18 +1093,18 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
       // nPoly24 = 0;
       // for (int nX = 0; nX < m_nXGridSize; nX++)
       // {
-      //    for (int nY = 0; nY < m_nYGridSize; nY++)
-      //    {
-      //       int nTmp = m_pRasterGrid->m_Cell[nX][nY].nGetPolygonID();
-      //       if (nTmp == INT_NODATA)
-      //          nNODATA++;
+      // for (int nY = 0; nY < m_nYGridSize; nY++)
+      // {
+      // int nTmp = m_pRasterGrid->m_Cell[nX][nY].nGetPolygonID();
+      // if (nTmp == INT_NODATA)
+      // nNODATA++;
       //
-      //       if (nTmp == 0)
-      //          nPoly0++;
+      // if (nTmp == 0)
+      // nPoly0++;
       //
-      //       if (nTmp == 24)
-      //          nPoly24++;
-      //    }
+      // if (nTmp == 24)
+      // nPoly24++;
+      // }
       // }
       // LogStream << "After marking polygon cells, N cells with NODATA polygon ID = " << nNODATA << endl;
       // // LogStream << "After marking polygon cells, N cells with zero polygon ID = " << nPoly0 << endl;
@@ -1121,25 +1121,25 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
       // // DEBUG CODE ===============
       // for (int nCoast = 0; nCoast < static_cast<int>(m_VCoast.size()); nCoast++)
       // {
-      //    LogStream << "====================" << endl;
+      // LogStream << "====================" << endl;
       //
-      //    for (int nProfile = 0; nProfile < m_VCoast[nCoast].nGetNumProfiles(); nProfile++)
-      //    {
-      //       CGeomProfile* pProfile = m_VCoast[nCoast].pGetProfile(nProfile);
-      //       int nCell = pProfile->nGetNumCellsInProfile();
-      //       LogStream << "Profile " << pProfile->nGetCoastID() << " nGetNumCellsInProfile() = " << nCell << endl;
-      //    }
+      // for (int nProfile = 0; nProfile < m_VCoast[nCoast].nGetNumProfiles(); nProfile++)
+      // {
+      // CGeomProfile* pProfile = m_VCoast[nCoast].pGetProfile(nProfile);
+      // int nCell = pProfile->nGetNumCellsInProfile();
+      // LogStream << "Profile " << pProfile->nGetCoastID() << " nGetNumCellsInProfile() = " << nCell << endl;
+      // }
       //
-      //    LogStream << endl;
+      // LogStream << endl;
       //
-      //    for (int nProfile = 0; nProfile < m_VCoast[nCoast].nGetNumProfiles(); nProfile++)
-      //    {
-      //       CGeomProfile* pProfile = m_VCoast[nCoast].pGetProfileWithDownCoastSeq(nProfile);
-      //       int nCell = pProfile->nGetNumCellsInProfile();
-      //       LogStream << "Profile " << pProfile->nGetCoastID() << " nGetNumCellsInProfile() = " << nCell << endl;
-      //    }
+      // for (int nProfile = 0; nProfile < m_VCoast[nCoast].nGetNumProfiles(); nProfile++)
+      // {
+      // CGeomProfile* pProfile = m_VCoast[nCoast].pGetProfileWithDownCoastSeq(nProfile);
+      // int nCell = pProfile->nGetNumCellsInProfile();
+      // LogStream << "Profile " << pProfile->nGetCoastID() << " nGetNumCellsInProfile() = " << nCell << endl;
+      // }
       //
-      //    LogStream << "====================" << endl;
+      // LogStream << "====================" << endl;
       // }
       // // DEBUG CODE =====================
 
@@ -1163,67 +1163,67 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
       AnnounceProgress();
 
       //       // DEBUG CODE ===========================================================================================================
-      //       string strOutFile = m_strOutPath;
-      //       strOutFile += "sea_wave_height_CHECKPOINT_";
-      //       strOutFile += to_string(m_ulIter);
-      //       strOutFile += ".tif";
+      // string strOutFile = m_strOutPath;
+      // strOutFile += "sea_wave_height_CHECKPOINT_";
+      // strOutFile += to_string(m_ulIter);
+      // strOutFile += ".tif";
       //
-      //       GDALDriver* pDriver = GetGDALDriverManager()->GetDriverByName("gtiff");
-      //       GDALDataset* pDataSet = pDriver->Create(strOutFile.c_str(), m_nXGridSize, m_nYGridSize, 1, GDT_Float64, m_papszGDALRasterOptions);
-      //       pDataSet->SetProjection(m_strGDALBasementDEMProjection.c_str());
-      //       pDataSet->SetGeoTransform(m_dGeoTransform);
+      // GDALDriver* pDriver = GetGDALDriverManager()->GetDriverByName("gtiff");
+      // GDALDataset* pDataSet = pDriver->Create(strOutFile.c_str(), m_nXGridSize, m_nYGridSize, 1, GDT_Float64, m_papszGDALRasterOptions);
+      // pDataSet->SetProjection(m_strGDALBasementDEMProjection.c_str());
+      // pDataSet->SetGeoTransform(m_dGeoTransform);
       //
-      //       int nn = 0;
-      //       double* pdRaster = new double[m_nXGridSize * m_nYGridSize];
-      //       for (int nY = 0; nY < m_nYGridSize; nY++)
-      //       {
-      //          for (int nX = 0; nX < m_nXGridSize; nX++)
-      //          {
-      //             pdRaster[nn++] = m_pRasterGrid->m_Cell[nX][nY].dGetWaveHeight();
-      //          }
-      //       }
+      // int nn = 0;
+      // double* pdRaster = new double[m_nXGridSize * m_nYGridSize];
+      // for (int nY = 0; nY < m_nYGridSize; nY++)
+      // {
+      // for (int nX = 0; nX < m_nXGridSize; nX++)
+      // {
+      // pdRaster[nn++] = m_pRasterGrid->m_Cell[nX][nY].dGetWaveHeight();
+      // }
+      // }
       //
-      //       GDALRasterBand* pBand = pDataSet->GetRasterBand(1);
-      //       pBand->SetNoDataValue(m_dMissingValue);
-      //       int nRet = pBand->RasterIO(GF_Write, 0, 0, m_nXGridSize, m_nYGridSize, pdRaster, m_nXGridSize, m_nYGridSize, GDT_Float64, 0, 0, NULL);
+      // GDALRasterBand* pBand = pDataSet->GetRasterBand(1);
+      // pBand->SetNoDataValue(m_dMissingValue);
+      // int nRet = pBand->RasterIO(GF_Write, 0, 0, m_nXGridSize, m_nYGridSize, pdRaster, m_nXGridSize, m_nYGridSize, GDT_Float64, 0, 0, NULL);
       //
-      //       if (nRet == CE_Failure)
-      //          return RTN_ERR_GRIDCREATE;
+      // if (nRet == CE_Failure)
+      // return RTN_ERR_GRIDCREATE;
       //
-      //       GDALClose(pDataSet);
-      //       delete[] pdRaster;
+      // GDALClose(pDataSet);
+      // delete[] pdRaster;
       //       // DEBUG CODE ===========================================================================================================
       //
       //       // DEBUG CODE ===========================================================================================================
-      //       strOutFile = m_strOutPath;
-      //       strOutFile += "sea_wave_angle_CHECKPOINT_";
-      //       strOutFile += to_string(m_ulIter);
-      //       strOutFile += ".tif";
+      // strOutFile = m_strOutPath;
+      // strOutFile += "sea_wave_angle_CHECKPOINT_";
+      // strOutFile += to_string(m_ulIter);
+      // strOutFile += ".tif";
       //
-      //       pDriver = GetGDALDriverManager()->GetDriverByName("gtiff");
-      //       pDataSet = pDriver->Create(strOutFile.c_str(), m_nXGridSize, m_nYGridSize, 1, GDT_Float64, m_papszGDALRasterOptions);
-      //       pDataSet->SetProjection(m_strGDALBasementDEMProjection.c_str());
-      //       pDataSet->SetGeoTransform(m_dGeoTransform);
+      // pDriver = GetGDALDriverManager()->GetDriverByName("gtiff");
+      // pDataSet = pDriver->Create(strOutFile.c_str(), m_nXGridSize, m_nYGridSize, 1, GDT_Float64, m_papszGDALRasterOptions);
+      // pDataSet->SetProjection(m_strGDALBasementDEMProjection.c_str());
+      // pDataSet->SetGeoTransform(m_dGeoTransform);
       //
-      //       nn = 0;
-      //       pdRaster = new double[m_nXGridSize * m_nYGridSize];
-      //       for (int nY = 0; nY < m_nYGridSize; nY++)
-      //       {
-      //          for (int nX = 0; nX < m_nXGridSize; nX++)
-      //          {
-      //             pdRaster[nn++] = m_pRasterGrid->m_Cell[nX][nY].dGetWaveAngle();
-      //          }
-      //       }
+      // nn = 0;
+      // pdRaster = new double[m_nXGridSize * m_nYGridSize];
+      // for (int nY = 0; nY < m_nYGridSize; nY++)
+      // {
+      // for (int nX = 0; nX < m_nXGridSize; nX++)
+      // {
+      // pdRaster[nn++] = m_pRasterGrid->m_Cell[nX][nY].dGetWaveAngle();
+      // }
+      // }
       //
-      //       pBand = pDataSet->GetRasterBand(1);
-      //       pBand->SetNoDataValue(m_dMissingValue);
-      //       nRet = pBand->RasterIO(GF_Write, 0, 0, m_nXGridSize, m_nYGridSize, pdRaster, m_nXGridSize, m_nYGridSize, GDT_Float64, 0, 0, NULL);
+      // pBand = pDataSet->GetRasterBand(1);
+      // pBand->SetNoDataValue(m_dMissingValue);
+      // nRet = pBand->RasterIO(GF_Write, 0, 0, m_nXGridSize, m_nYGridSize, pdRaster, m_nXGridSize, m_nYGridSize, GDT_Float64, 0, 0, NULL);
       //
-      //       if (nRet == CE_Failure)
-      //          return RTN_ERR_GRIDCREATE;
+      // if (nRet == CE_Failure)
+      // return RTN_ERR_GRIDCREATE;
       //
-      //       GDALClose(pDataSet);
-      //       delete[] pdRaster;
+      // GDALClose(pDataSet);
+      // delete[] pdRaster;
       //       // DEBUG CODE ===========================================================================================================
 
       // Save the not-deposited values, to be shown in the logfile after we've finished beach sediment movement
@@ -1233,8 +1233,8 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
       if (m_nLogFileDetail >= LOG_FILE_MIDDLE_DETAIL)
          if (m_dDepositionSandDiff > MASS_BALANCE_TOLERANCE)
          {
-            LogStream << m_ulIter << ": AT ITERATION START m_dDepositionSandDiff = " << m_dDepositionSandDiff* m_dCellArea << " m_dUnconsSandNotDepositedLastIter = " << m_dUnconsSandNotDepositedLastIter << endl;
-            LogStream << m_ulIter << ": AT ITERATION START m_dDepositionCoarseDiff = " << m_dDepositionCoarseDiff* m_dCellArea << " m_dUnconsCoarseNotDepositedLastIter = " << m_dUnconsCoarseNotDepositedLastIter << endl;
+            LogStream << m_ulIter << ": AT ITERATION START m_dDepositionSandDiff = " << m_dDepositionSandDiff * m_dCellArea << " m_dUnconsSandNotDepositedLastIter = " << m_dUnconsSandNotDepositedLastIter << endl;
+            LogStream << m_ulIter << ": AT ITERATION START m_dDepositionCoarseDiff = " << m_dDepositionCoarseDiff * m_dCellArea << " m_dUnconsCoarseNotDepositedLastIter = " << m_dUnconsCoarseNotDepositedLastIter << endl;
          }
 
       if (m_bDoShorePlatformErosion)
@@ -1301,75 +1301,75 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
       }
 
 //       // Add the fine sediment that was eroded this timestep (from the shore platform, from cliff collapse, from erosion of existing fine sediment during cliff collapse talus deposition, and from beach erosion; minus the fine sediment from beach erosion that went off-grid) to the suspended sediment load
-//       double dFineThisIter = m_dThisIterActualPlatformErosionFineCons + m_dThisIterCliffCollapseErosionFineUncons + m_dThisIterCliffCollapseErosionFineCons + m_dThisIterCliffCollapseFineErodedDuringDeposition + m_dThisIterBeachErosionFine - m_dThisIterLeftGridUnconsFine;
+// double dFineThisIter = m_dThisIterActualPlatformErosionFineCons + m_dThisIterCliffCollapseErosionFineUncons + m_dThisIterCliffCollapseErosionFineCons + m_dThisIterCliffCollapseFineErodedDuringDeposition + m_dThisIterBeachErosionFine - m_dThisIterLeftGridUnconsFine;
 //
-//       m_dThisIterFineSedimentToSuspension += dFineThisIter;
+// m_dThisIterFineSedimentToSuspension += dFineThisIter;
 
       // Tell the user how the simulation is progressing
       AnnounceProgress();
 
       //       // DEBUG CODE ===========================================================================================================
-      //       string strOutFile = m_strOutPath;
-      //       strOutFile += "sea_wave_height_CHECKPOINT_";
-      //       strOutFile += to_string(m_ulIter);
-      //       strOutFile += ".tif";
+      // string strOutFile = m_strOutPath;
+      // strOutFile += "sea_wave_height_CHECKPOINT_";
+      // strOutFile += to_string(m_ulIter);
+      // strOutFile += ".tif";
       //
-      //       GDALDriver* pDriver = GetGDALDriverManager()->GetDriverByName("gtiff");
-      //       GDALDataset* pDataSet = pDriver->Create(strOutFile.c_str(), m_nXGridSize, m_nYGridSize, 1, GDT_Float64, m_papszGDALRasterOptions);
-      //       pDataSet->SetProjection(m_strGDALBasementDEMProjection.c_str());
-      //       pDataSet->SetGeoTransform(m_dGeoTransform);
+      // GDALDriver* pDriver = GetGDALDriverManager()->GetDriverByName("gtiff");
+      // GDALDataset* pDataSet = pDriver->Create(strOutFile.c_str(), m_nXGridSize, m_nYGridSize, 1, GDT_Float64, m_papszGDALRasterOptions);
+      // pDataSet->SetProjection(m_strGDALBasementDEMProjection.c_str());
+      // pDataSet->SetGeoTransform(m_dGeoTransform);
       //
-      //       int nn = 0;
-      //       double* pdRaster = new double[m_nXGridSize * m_nYGridSize];
-      //       for (int nY = 0; nY < m_nYGridSize; nY++)
-      //       {
-      //          for (int nX = 0; nX < m_nXGridSize; nX++)
-      //          {
-      //             pdRaster[nn++] = m_pRasterGrid->m_Cell[nX][nY].dGetWaveHeight();
-      //          }
-      //       }
+      // int nn = 0;
+      // double* pdRaster = new double[m_nXGridSize * m_nYGridSize];
+      // for (int nY = 0; nY < m_nYGridSize; nY++)
+      // {
+      // for (int nX = 0; nX < m_nXGridSize; nX++)
+      // {
+      // pdRaster[nn++] = m_pRasterGrid->m_Cell[nX][nY].dGetWaveHeight();
+      // }
+      // }
       //
-      //       GDALRasterBand* pBand = pDataSet->GetRasterBand(1);
-      //       pBand->SetNoDataValue(m_dMissingValue);
-      //       int nRet = pBand->RasterIO(GF_Write, 0, 0, m_nXGridSize, m_nYGridSize, pdRaster, m_nXGridSize, m_nYGridSize, GDT_Float64, 0, 0, NULL);
+      // GDALRasterBand* pBand = pDataSet->GetRasterBand(1);
+      // pBand->SetNoDataValue(m_dMissingValue);
+      // int nRet = pBand->RasterIO(GF_Write, 0, 0, m_nXGridSize, m_nYGridSize, pdRaster, m_nXGridSize, m_nYGridSize, GDT_Float64, 0, 0, NULL);
       //
-      //       if (nRet == CE_Failure)
-      //          return RTN_ERR_GRIDCREATE;
+      // if (nRet == CE_Failure)
+      // return RTN_ERR_GRIDCREATE;
       //
-      //       GDALClose(pDataSet);
-      //       delete[] pdRaster;
+      // GDALClose(pDataSet);
+      // delete[] pdRaster;
       //       // DEBUG CODE ===========================================================================================================
       //
       //       // DEBUG CODE ===========================================================================================================
-      //       strOutFile = m_strOutPath;
-      //       strOutFile += "sea_wave_angle_CHECKPOINT_";
-      //       strOutFile += to_string(m_ulIter);
-      //       strOutFile += ".tif";
+      // strOutFile = m_strOutPath;
+      // strOutFile += "sea_wave_angle_CHECKPOINT_";
+      // strOutFile += to_string(m_ulIter);
+      // strOutFile += ".tif";
       //
-      //       pDriver = GetGDALDriverManager()->GetDriverByName("gtiff");
-      //       pDataSet = pDriver->Create(strOutFile.c_str(), m_nXGridSize, m_nYGridSize, 1, GDT_Float64, m_papszGDALRasterOptions);
-      //       pDataSet->SetProjection(m_strGDALBasementDEMProjection.c_str());
-      //       pDataSet->SetGeoTransform(m_dGeoTransform);
+      // pDriver = GetGDALDriverManager()->GetDriverByName("gtiff");
+      // pDataSet = pDriver->Create(strOutFile.c_str(), m_nXGridSize, m_nYGridSize, 1, GDT_Float64, m_papszGDALRasterOptions);
+      // pDataSet->SetProjection(m_strGDALBasementDEMProjection.c_str());
+      // pDataSet->SetGeoTransform(m_dGeoTransform);
       //
-      //       nn = 0;
-      //       pdRaster = new double[m_nXGridSize * m_nYGridSize];
-      //       for (int nY = 0; nY < m_nYGridSize; nY++)
-      //       {
-      //          for (int nX = 0; nX < m_nXGridSize; nX++)
-      //          {
-      //             pdRaster[nn++] = m_pRasterGrid->m_Cell[nX][nY].dGetWaveAngle();
-      //          }
-      //       }
+      // nn = 0;
+      // pdRaster = new double[m_nXGridSize * m_nYGridSize];
+      // for (int nY = 0; nY < m_nYGridSize; nY++)
+      // {
+      // for (int nX = 0; nX < m_nXGridSize; nX++)
+      // {
+      // pdRaster[nn++] = m_pRasterGrid->m_Cell[nX][nY].dGetWaveAngle();
+      // }
+      // }
       //
-      //       pBand = pDataSet->GetRasterBand(1);
-      //       pBand->SetNoDataValue(m_dMissingValue);
-      //       nRet = pBand->RasterIO(GF_Write, 0, 0, m_nXGridSize, m_nYGridSize, pdRaster, m_nXGridSize, m_nYGridSize, GDT_Float64, 0, 0, NULL);
+      // pBand = pDataSet->GetRasterBand(1);
+      // pBand->SetNoDataValue(m_dMissingValue);
+      // nRet = pBand->RasterIO(GF_Write, 0, 0, m_nXGridSize, m_nYGridSize, pdRaster, m_nXGridSize, m_nYGridSize, GDT_Float64, 0, 0, NULL);
       //
-      //       if (nRet == CE_Failure)
-      //          return RTN_ERR_GRIDCREATE;
+      // if (nRet == CE_Failure)
+      // return RTN_ERR_GRIDCREATE;
       //
-      //       GDALClose(pDataSet);
-      //       delete[] pdRaster;
+      // GDALClose(pDataSet);
+      // delete[] pdRaster;
       //       // DEBUG CODE ===========================================================================================================
 
       // Do some end-of-timestep updates to the raster grid, also update per-timestep and running totals

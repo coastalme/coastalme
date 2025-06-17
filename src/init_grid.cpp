@@ -215,122 +215,122 @@ int CSimulation::nInitGridAndCalcStillWaterLevel(void)
    }
 
    //    // DEBUG CODE ===========================================================================================================
-   //    string strOutFile = m_strOutPath;
-   //    strOutFile += "init_deep_water_wave_height_";
-   //    strOutFile += to_string(m_ulIter);
-   //    strOutFile += ".tif";
-   //    GDALDriver* pDriver = GetGDALDriverManager()->GetDriverByName("gtiff");
-   //    GDALDataset* pDataSet = pDriver->Create(strOutFile.c_str(), m_nXGridSize, m_nYGridSize, 1, GDT_Float64, m_papszGDALRasterOptions);
-   //    pDataSet->SetProjection(m_strGDALBasementDEMProjection.c_str());
-   //    pDataSet->SetGeoTransform(m_dGeoTransform);
-   //    double* pdRaster = new double[m_ulNumCells];
-   //    int nn = 0;
-   //    for (int nY = 0; nY < m_nYGridSize; nY++)
-   //    {
-   //       for (int nX = 0; nX < m_nXGridSize; nX++)
-   //       {
+   // string strOutFile = m_strOutPath;
+   // strOutFile += "init_deep_water_wave_height_";
+   // strOutFile += to_string(m_ulIter);
+   // strOutFile += ".tif";
+   // GDALDriver* pDriver = GetGDALDriverManager()->GetDriverByName("gtiff");
+   // GDALDataset* pDataSet = pDriver->Create(strOutFile.c_str(), m_nXGridSize, m_nYGridSize, 1, GDT_Float64, m_papszGDALRasterOptions);
+   // pDataSet->SetProjection(m_strGDALBasementDEMProjection.c_str());
+   // pDataSet->SetGeoTransform(m_dGeoTransform);
+   // double* pdRaster = new double[m_ulNumCells];
+   // int nn = 0;
+   // for (int nY = 0; nY < m_nYGridSize; nY++)
+   // {
+   // for (int nX = 0; nX < m_nXGridSize; nX++)
+   // {
    //          // Write this value to the array
-   //          pdRaster[nn] = m_pRasterGrid->m_Cell[nX][nY].dGetCellDeepWaterWaveHeight();
-   //          nn++;
-   //       }
-   //    }
+   // pdRaster[nn] = m_pRasterGrid->m_Cell[nX][nY].dGetCellDeepWaterWaveHeight();
+   // nn++;
+   // }
+   // }
    //
-   //    GDALRasterBand* pBand = pDataSet->GetRasterBand(1);
-   //    pBand->SetNoDataValue(m_nMissingValue);
-   //    int nRet = pBand->RasterIO(GF_Write, 0, 0, m_nXGridSize, m_nYGridSize, pdRaster, m_nXGridSize, m_nYGridSize, GDT_Float64, 0, 0, NULL);
+   // GDALRasterBand* pBand = pDataSet->GetRasterBand(1);
+   // pBand->SetNoDataValue(m_nMissingValue);
+   // int nRet = pBand->RasterIO(GF_Write, 0, 0, m_nXGridSize, m_nYGridSize, pdRaster, m_nXGridSize, m_nYGridSize, GDT_Float64, 0, 0, NULL);
    //
-   //    if (nRet == CE_Failure)
-   //       return RTN_ERR_GRIDCREATE;
+   // if (nRet == CE_Failure)
+   // return RTN_ERR_GRIDCREATE;
    //
-   //    GDALClose(pDataSet);
+   // GDALClose(pDataSet);
    //    // DEBUG CODE ===========================================================================================================
 
    //    // DEBUG CODE ===========================================================================================================
-   //    strOutFile = m_strOutPath;
-   //    strOutFile += "init_deep_water_wave_angle_";
-   //    strOutFile += to_string(m_ulIter);
-   //    strOutFile += ".tif";
-   //    pDataSet = pDriver->Create(strOutFile.c_str(), m_nXGridSize, m_nYGridSize, 1, GDT_Float64, m_papszGDALRasterOptions);
-   //    pDataSet->SetProjection(m_strGDALBasementDEMProjection.c_str());
-   //    pDataSet->SetGeoTransform(m_dGeoTransform);
-   //    nn = 0;
-   //    for (int nY = 0; nY < m_nYGridSize; nY++)
-   //    {
-   //       for (int nX = 0; nX < m_nXGridSize; nX++)
-   //       {
+   // strOutFile = m_strOutPath;
+   // strOutFile += "init_deep_water_wave_angle_";
+   // strOutFile += to_string(m_ulIter);
+   // strOutFile += ".tif";
+   // pDataSet = pDriver->Create(strOutFile.c_str(), m_nXGridSize, m_nYGridSize, 1, GDT_Float64, m_papszGDALRasterOptions);
+   // pDataSet->SetProjection(m_strGDALBasementDEMProjection.c_str());
+   // pDataSet->SetGeoTransform(m_dGeoTransform);
+   // nn = 0;
+   // for (int nY = 0; nY < m_nYGridSize; nY++)
+   // {
+   // for (int nX = 0; nX < m_nXGridSize; nX++)
+   // {
    //          // Write this value to the array
-   //          pdRaster[nn] = m_pRasterGrid->m_Cell[nX][nY].dGetCellDeepWaterWaveAngle();
-   //          nn++;
-   //       }
-   //    }
+   // pdRaster[nn] = m_pRasterGrid->m_Cell[nX][nY].dGetCellDeepWaterWaveAngle();
+   // nn++;
+   // }
+   // }
    //
-   //    pBand = pDataSet->GetRasterBand(1);
-   //    pBand->SetNoDataValue(m_nMissingValue);
-   //    nRet = pBand->RasterIO(GF_Write, 0, 0, m_nXGridSize, m_nYGridSize, pdRaster, m_nXGridSize, m_nYGridSize, GDT_Float64, 0, 0, NULL);
+   // pBand = pDataSet->GetRasterBand(1);
+   // pBand->SetNoDataValue(m_nMissingValue);
+   // nRet = pBand->RasterIO(GF_Write, 0, 0, m_nXGridSize, m_nYGridSize, pdRaster, m_nXGridSize, m_nYGridSize, GDT_Float64, 0, 0, NULL);
    //
-   //    if (nRet == CE_Failure)
-   //       return RTN_ERR_GRIDCREATE;
+   // if (nRet == CE_Failure)
+   // return RTN_ERR_GRIDCREATE;
    //
-   //    GDALClose(pDataSet);
+   // GDALClose(pDataSet);
    //    // DEBUG CODE ===========================================================================================================
 
    //    // DEBUG CODE ===========================================================================================================
-   //    strOutFile = m_strOutPath;
-   //    strOutFile += "init_water_wave_angle_";
-   //    strOutFile += to_string(m_ulIter);
-   //    strOutFile += ".tif";
-   //    pDataSet = pDriver->Create(strOutFile.c_str(), m_nXGridSize, m_nYGridSize, 1, GDT_Float64, m_papszGDALRasterOptions);
-   //    pDataSet->SetProjection(m_strGDALBasementDEMProjection.c_str());
-   //    pDataSet->SetGeoTransform(m_dGeoTransform);
-   //    nn = 0;
-   //    for (int nY = 0; nY < m_nYGridSize; nY++)
-   //    {
-   //       for (int nX = 0; nX < m_nXGridSize; nX++)
-   //       {
+   // strOutFile = m_strOutPath;
+   // strOutFile += "init_water_wave_angle_";
+   // strOutFile += to_string(m_ulIter);
+   // strOutFile += ".tif";
+   // pDataSet = pDriver->Create(strOutFile.c_str(), m_nXGridSize, m_nYGridSize, 1, GDT_Float64, m_papszGDALRasterOptions);
+   // pDataSet->SetProjection(m_strGDALBasementDEMProjection.c_str());
+   // pDataSet->SetGeoTransform(m_dGeoTransform);
+   // nn = 0;
+   // for (int nY = 0; nY < m_nYGridSize; nY++)
+   // {
+   // for (int nX = 0; nX < m_nXGridSize; nX++)
+   // {
    //          // Write this value to the array
-   //          pdRaster[nn] = m_pRasterGrid->m_Cell[nX][nY].dGetWaveAngle();
-   //          nn++;
-   //       }
-   //    }
+   // pdRaster[nn] = m_pRasterGrid->m_Cell[nX][nY].dGetWaveAngle();
+   // nn++;
+   // }
+   // }
    //
-   //    pBand = pDataSet->GetRasterBand(1);
-   //    pBand->SetNoDataValue(m_nMissingValue);
-   //    nRet = pBand->RasterIO(GF_Write, 0, 0, m_nXGridSize, m_nYGridSize, pdRaster, m_nXGridSize, m_nYGridSize, GDT_Float64, 0, 0, NULL);
+   // pBand = pDataSet->GetRasterBand(1);
+   // pBand->SetNoDataValue(m_nMissingValue);
+   // nRet = pBand->RasterIO(GF_Write, 0, 0, m_nXGridSize, m_nYGridSize, pdRaster, m_nXGridSize, m_nYGridSize, GDT_Float64, 0, 0, NULL);
    //
-   //    if (nRet == CE_Failure)
-   //       return RTN_ERR_GRIDCREATE;
+   // if (nRet == CE_Failure)
+   // return RTN_ERR_GRIDCREATE;
    //
-   //    GDALClose(pDataSet);
+   // GDALClose(pDataSet);
    //    // DEBUG CODE ===========================================================================================================
 
    //    // DEBUG CODE ===========================================================================================================
-   //    strOutFile = m_strOutPath;
-   //    strOutFile += "init_water_wave_height_";
-   //    strOutFile += to_string(m_ulIter);
-   //    strOutFile += ".tif";
-   //    pDataSet = pDriver->Create(strOutFile.c_str(), m_nXGridSize, m_nYGridSize, 1, GDT_Float64, m_papszGDALRasterOptions);
-   //    pDataSet->SetProjection(m_strGDALBasementDEMProjection.c_str());
-   //    pDataSet->SetGeoTransform(m_dGeoTransform);
-   //    nn = 0;
-   //    for (int nY = 0; nY < m_nYGridSize; nY++)
-   //    {
-   //       for (int nX = 0; nX < m_nXGridSize; nX++)
-   //       {
+   // strOutFile = m_strOutPath;
+   // strOutFile += "init_water_wave_height_";
+   // strOutFile += to_string(m_ulIter);
+   // strOutFile += ".tif";
+   // pDataSet = pDriver->Create(strOutFile.c_str(), m_nXGridSize, m_nYGridSize, 1, GDT_Float64, m_papszGDALRasterOptions);
+   // pDataSet->SetProjection(m_strGDALBasementDEMProjection.c_str());
+   // pDataSet->SetGeoTransform(m_dGeoTransform);
+   // nn = 0;
+   // for (int nY = 0; nY < m_nYGridSize; nY++)
+   // {
+   // for (int nX = 0; nX < m_nXGridSize; nX++)
+   // {
    //          // Write this value to the array
-   //          pdRaster[nn] = m_pRasterGrid->m_Cell[nX][nY].dGetWaveHeight();
-   //          nn++;
-   //       }
-   //    }
+   // pdRaster[nn] = m_pRasterGrid->m_Cell[nX][nY].dGetWaveHeight();
+   // nn++;
+   // }
+   // }
    //
-   //    pBand = pDataSet->GetRasterBand(1);
-   //    pBand->SetNoDataValue(m_nMissingValue);
-   //    nRet = pBand->RasterIO(GF_Write, 0, 0, m_nXGridSize, m_nYGridSize, pdRaster, m_nXGridSize, m_nYGridSize, GDT_Float64, 0, 0, NULL);
+   // pBand = pDataSet->GetRasterBand(1);
+   // pBand->SetNoDataValue(m_nMissingValue);
+   // nRet = pBand->RasterIO(GF_Write, 0, 0, m_nXGridSize, m_nYGridSize, pdRaster, m_nXGridSize, m_nYGridSize, GDT_Float64, 0, 0, NULL);
    //
-   //    if (nRet == CE_Failure)
-   //       return RTN_ERR_GRIDCREATE;
+   // if (nRet == CE_Failure)
+   // return RTN_ERR_GRIDCREATE;
    //
-   //    GDALClose(pDataSet);
-   //    delete[] pdRaster;
+   // GDALClose(pDataSet);
+   // delete[] pdRaster;
    //    // DEBUG CODE ===========================================================================================================
 
    return RTN_OK;

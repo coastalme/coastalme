@@ -36,14 +36,14 @@ CA2DIShape::~CA2DIShape(void)
 }
 
 //! Returns one integer point from the vector which represents this 2D shape
-CGeom2DIPoint& CA2DIShape::operator[] (int const n)
+CGeom2DIPoint & CA2DIShape::operator[] (int const n)
 {
    // TODO 055 Maybe add a safety check?
    return m_VPoints[n];
 }
 
 //! Returns the last integer point from the vector which represents this 2D shape
-CGeom2DIPoint& CA2DIShape::Back(void)
+CGeom2DIPoint & CA2DIShape::Back(void)
 {
    return m_VPoints.back();
 }
@@ -51,7 +51,7 @@ CGeom2DIPoint& CA2DIShape::Back(void)
 //! Returns the address of the vector which represents this 2D shape
 vector<CGeom2DIPoint>* CA2DIShape::pPtiVGetPoints(void)
 {
-   return &m_VPoints;
+   return & m_VPoints;
 }
 
 //! Clears the vector which represents this 2D shape
@@ -74,13 +74,13 @@ int CA2DIShape::nGetSize(void) const
 
 // void CA2DIShape::InsertAtFront(int const nX, int const nY)
 // {
-//    m_VPoints.insert(m_VPoints.begin(), CGeom2DIPoint(nX, nY));
+// m_VPoints.insert(m_VPoints.begin(), CGeom2DIPoint(nX, nY));
 // }
 
 //! Appends a new integer point to the vector which represents this 2D shape
-void CA2DIShape::Append(CGeom2DIPoint const* pPtiNew)
+void CA2DIShape::Append(CGeom2DIPoint const * pPtiNew)
 {
-   m_VPoints.push_back(*pPtiNew);
+   m_VPoints.push_back( * pPtiNew);
 }
 
 //! Appends a new integer point to the vector which represents this 2D shape
@@ -97,20 +97,20 @@ void CA2DIShape::AppendIfNotAlready(int const nX, int const nY)
    if (m_VPoints.empty())
       m_VPoints.push_back(PtiIn);
 
-   else if (m_VPoints.back() != &PtiIn)
+   else if (m_VPoints.back() != & PtiIn)
       m_VPoints.push_back(PtiIn);
 }
 
 // void CA2DIShape::SetPoints(const vector<CGeom2DIPoint>* VNewPoints)
 // {
-//    m_VPoints = *VNewPoints;
+// m_VPoints = *VNewPoints;
 // }
 
 // int CA2DIShape::nLookUp(CGeom2DIPoint* Pti)
 // {
-//    auto it = find(m_VPoints.begin(), m_VPoints.end(), *Pti);
-//    if (it != m_VPoints.end())
-//       return it - m_VPoints.begin();
-//    else
-//       return -1;
+// auto it = find(m_VPoints.begin(), m_VPoints.end(), *Pti);
+// if (it != m_VPoints.end())
+// return it - m_VPoints.begin();
+// else
+// return -1;
 // }

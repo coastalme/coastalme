@@ -1,3 +1,3 @@
 #!/bin/bash
 
-astyle --options=~/.astylerc *.cpp,*.h
+python3 -m astyle --options=.astylerc *.cpp,*.h

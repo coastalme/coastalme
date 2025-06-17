@@ -46,21 +46,20 @@ protected:
    virtual void Display() = 0;
 
 public:
-   CGeom2DIPoint& operator[] (int const);
+   CGeom2DIPoint & operator[] (int const);
 
-   CGeom2DIPoint& Back(void);
+   CGeom2DIPoint & Back(void);
    vector<CGeom2DIPoint>* pPtiVGetPoints(void);
 
    void Resize(const int);
    int nGetSize(void) const;
 
-//    void InsertAtFront(int const, int const);
-   void Append(CGeom2DIPoint const*);
+// void InsertAtFront(int const, int const);
+   void Append(CGeom2DIPoint const * );
    void Append(int const, int const);
    void AppendIfNotAlready(int const, int const);
 
-//    void SetPoints(const vector<CGeom2DIPoint>*);
-//    int nLookUp(CGeom2DIPoint*);
+// void SetPoints(const vector<CGeom2DIPoint>*);
+// int nLookUp(CGeom2DIPoint*);
 };
 #endif // C2DISHAPE_H
-

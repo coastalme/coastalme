@@ -29,9 +29,9 @@ using std::cerr;
 #include "coast_polygon.h"
 
 //! Constructor with 10 parameters and initialization list
-CGeomCoastPolygon::CGeomCoastPolygon(int const nGlobalID, int const nCoastID, int const nNode, int const nProfileUpCoast, int const nProfileDownCoast, vector<CGeom2DPoint> const* pVIn, int const nLastPointUpCoast, const int nLastPointDownCoast, CGeom2DIPoint const* PtiNode, CGeom2DIPoint const* PtiAntinode, bool const bStartCoast, bool const bEndCoast)
+CGeomCoastPolygon::CGeomCoastPolygon(int const nGlobalID, int const nCoastID, int const nNode, int const nProfileUpCoast, int const nProfileDownCoast, vector<CGeom2DPoint> const * pVIn, int const nLastPointUpCoast, const int nLastPointDownCoast, CGeom2DIPoint const * PtiNode, CGeom2DIPoint const * PtiAntinode, bool const bStartCoast, bool const bEndCoast)
    :
-//    m_bIsPointedSeaward(true),
+// m_bIsPointedSeaward(true),
    m_bUnconsSedimentMovementDownCoastThisIter(false),
    m_bCoastEndPolygon(bEndCoast),
    m_bCoastStartPolygon(bStartCoast),
@@ -77,10 +77,10 @@ CGeomCoastPolygon::CGeomCoastPolygon(int const nGlobalID, int const nCoastID, in
    m_dSedimentInputSand(0),
    m_dSedimentInputCoarse(0),
    m_dLength(0),
-   m_PtiNode(*PtiNode),
-   m_PtiAntinode(*PtiAntinode)
+   m_PtiNode( * PtiNode),
+   m_PtiAntinode( * PtiAntinode)
 {
-   m_VPoints = *pVIn;
+   m_VPoints = * pVIn;
 }
 
 //! Destructor
@@ -90,12 +90,12 @@ CGeomCoastPolygon::~CGeomCoastPolygon(void)
 
 // void CGeomCoastPolygon::SetNotPointed(void)
 // {
-//    m_bIsPointedSeaward = false;
+// m_bIsPointedSeaward = false;
 // }
 //
 // bool CGeomCoastPolygon::bIsPointed(void) const
 // {
-//    return m_bIsPointedSeaward;
+// return m_bIsPointedSeaward;
 // }
 
 //! Set a flag to say whether sediment movement on this polygon is down-coast this iteration
@@ -148,7 +148,7 @@ int CGeomCoastPolygon::nGetCoastID(void) const
 
 // void CGeomCoastPolygon::SetCoastNode(int const nNode)
 // {
-//    m_nCoastNode = nNode;
+// m_nCoastNode = nNode;
 // }
 
 //! Get the coast node point
@@ -158,16 +158,16 @@ int CGeomCoastPolygon::nGetNodeCoastPoint(void) const
 }
 
 //! Get the grid coordinates of the cell on which the node sits
-CGeom2DIPoint* CGeomCoastPolygon::pPtiGetNode(void)
+CGeom2DIPoint * CGeomCoastPolygon::pPtiGetNode(void)
 {
-   return &m_PtiNode;
+   return & m_PtiNode;
 
 }
 
 //! Get the anti-node (raster grid CRS) which is at other (seaward) end of the polygon from the node
-CGeom2DIPoint* CGeomCoastPolygon::pPtiGetAntiNode(void)
+CGeom2DIPoint * CGeomCoastPolygon::pPtiGetAntiNode(void)
 {
-   return &m_PtiAntinode;
+   return & m_PtiAntinode;
 }
 
 //! Sets the polygon's length
@@ -191,7 +191,7 @@ void CGeomCoastPolygon::SetNumCellsInPolygon(int const nCells)
 // //! Get the number of cells in the polygon
 // int CGeomCoastPolygon::nGetNumCellsinPolygon(void) const
 // {
-//    return m_nNumCells;
+// return m_nNumCells;
 // }
 
 //! Return the number of the up-coast profile
@@ -208,19 +208,19 @@ int CGeomCoastPolygon::nGetDownCoastProfile(void) const
 
 // void CGeomCoastPolygon::SetBoundary(vector<CGeom2DPoint> const* pVIn)
 // {
-//    m_VPoints = *pVIn;
+// m_VPoints = *pVIn;
 // }
 
 // vector<CGeom2DPoint>* CGeomCoastPolygon::pPtVGetBoundary(void)
 // {
-//    return &m_VPoints;
+// return &m_VPoints;
 // }
 
 //! Get the coordinates (external CRS) of a specified point on the polygon's boundary
-CGeom2DPoint* CGeomCoastPolygon::pPtGetBoundaryPoint(int const nPoint)
+CGeom2DPoint * CGeomCoastPolygon::pPtGetBoundaryPoint(int const nPoint)
 {
    // TODO 055 No check to see if nPoint < m_VPoints.size()
-   return &m_VPoints[nPoint];
+   return & m_VPoints[nPoint];
 }
 
 //! Get the number of points in the polygon's boundary
@@ -316,7 +316,7 @@ void CGeomCoastPolygon::AddToSuspensionUnconsFine(double const dDepth)
 // //! Re-initializes this timestep's to-suspension movement of unconsolidated fine sediment on this polygon
 // void CGeomCoastPolygon::SetZeroSuspensionUnconsFine(void)
 // {
-//    m_dSuspensionUnconsFine = 0;
+// m_dSuspensionUnconsFine = 0;
 // }
 
 //! Returns this timestep's to-suspension movement of fine unconsolidated sediment on this polygon, as a +ve depth in m
@@ -416,15 +416,15 @@ double CGeomCoastPolygon::dGetBeachDepositionAndSuspensionAllUncons(void) const
 }
 
 //! Sets all up-coast adjacent polygons
-void CGeomCoastPolygon::SetUpCoastAdjacentPolygons(vector<int> const* pnVPolygons)
+void CGeomCoastPolygon::SetUpCoastAdjacentPolygons(vector<int> const * pnVPolygons)
 {
-   m_VnUpCoastAdjacentPolygon = *pnVPolygons;
+   m_VnUpCoastAdjacentPolygon = * pnVPolygons;
 }
 
 //! Gets a single up-coast adjacent polygon
 int CGeomCoastPolygon::nGetUpCoastAdjacentPolygon(int const nIndex) const
 {
-//    assert(nIndex < m_VnUpCoastAdjacentPolygon.size());
+// assert(nIndex < m_VnUpCoastAdjacentPolygon.size());
    return m_VnUpCoastAdjacentPolygon[nIndex];
 }
 
@@ -435,15 +435,15 @@ int CGeomCoastPolygon::nGetNumUpCoastAdjacentPolygons(void) const
 }
 
 //! Sets all down-coast adjacent polygons
-void CGeomCoastPolygon::SetDownCoastAdjacentPolygons(vector<int> const* pnVPolygons)
+void CGeomCoastPolygon::SetDownCoastAdjacentPolygons(vector<int> const * pnVPolygons)
 {
-   m_VnDownCoastAdjacentPolygon = *pnVPolygons;
+   m_VnDownCoastAdjacentPolygon = * pnVPolygons;
 }
 
 //! Gets a single down-coast adjacent polygon
 int CGeomCoastPolygon::nGetDownCoastAdjacentPolygon(int const nIndex) const
 {
-//    assert(nIndex < m_VnDownCoastAdjacentPolygon.size());
+// assert(nIndex < m_VnDownCoastAdjacentPolygon.size());
    return m_VnDownCoastAdjacentPolygon[nIndex];
 }
 
@@ -482,9 +482,9 @@ bool CGeomCoastPolygon::bUpCoastIsAlreadyPresent(int const nPoly)
 }
 
 //! Sets the boundary shares for all up-coast adjacent polygons
-void CGeomCoastPolygon::SetUpCoastAdjacentPolygonBoundaryShares(vector<double> const* pdVShares)
+void CGeomCoastPolygon::SetUpCoastAdjacentPolygonBoundaryShares(vector<double> const * pdVShares)
 {
-   m_VdUpCoastAdjacentPolygonBoundaryShare = *pdVShares;
+   m_VdUpCoastAdjacentPolygonBoundaryShare = * pdVShares;
 }
 
 //! Gets the boundary shares for all up-coast adjacent polygons
@@ -495,9 +495,9 @@ double CGeomCoastPolygon::dGetUpCoastAdjacentPolygonBoundaryShare(int const nInd
 }
 
 //! Sets the boundary shares for all down-coast adjacent polygons
-void CGeomCoastPolygon::SetDownCoastAdjacentPolygonBoundaryShares(vector<double> const* pdVShares)
+void CGeomCoastPolygon::SetDownCoastAdjacentPolygonBoundaryShares(vector<double> const * pdVShares)
 {
-   m_VdDownCoastAdjacentPolygonBoundaryShare = *pdVShares;
+   m_VdDownCoastAdjacentPolygonBoundaryShare = * pdVShares;
 }
 
 //! Gets the boundary shares for all down-coast adjacent polygons
@@ -777,9 +777,9 @@ double CGeomCoastPolygon::dGetSedimentInputUnconsCoarse(void) const
 }
 
 //! Appends the point cordinates (grid CRS) for a polygon vertex
-void CGeomCoastPolygon::AppendVertex(CGeom2DIPoint const* pPti)
+void CGeomCoastPolygon::AppendVertex(CGeom2DIPoint const * pPti)
 {
-   m_VPtiVertices.push_back(*pPti);
+   m_VPtiVertices.push_back( * pPti);
 }
 
 //! Returns the number of vertices for this polygon

@@ -34,10 +34,9 @@ class CRWIntervention : public CACoastLandform
 private:
 
 public:
-   CRWIntervention(CRWCoast*, int const, int const);
+   CRWIntervention(CRWCoast *, int const, int const);
    ~CRWIntervention(void) override;
 
    void Display(void) override;
 };
 #endif // INTERVENTION_H
-

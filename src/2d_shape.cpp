@@ -34,7 +34,7 @@ CA2DShape::~CA2DShape(void)
 }
 
 //! Operator to return one point of this 2D shape
-CGeom2DPoint& CA2DShape::operator[] (int const n)
+CGeom2DPoint & CA2DShape::operator[] (int const n)
 {
    // TODO 055 Maybe add a safety check?
    return m_VPoints[n];
@@ -60,13 +60,13 @@ int CA2DShape::nGetSize(void) const
 
 // void CA2DShape::InsertAtFront(double const dX, double const dY)
 // {
-//    m_VPoints.insert(m_VPoints.begin(), CGeom2DPoint(dX, dY));
+// m_VPoints.insert(m_VPoints.begin(), CGeom2DPoint(dX, dY));
 // }
 
 //! Appends a point to this 2D shape
-void CA2DShape::Append(CGeom2DPoint const* pPtNew)
+void CA2DShape::Append(CGeom2DPoint const * pPtNew)
 {
-   m_VPoints.push_back(*pPtNew);
+   m_VPoints.push_back( * pPtNew);
 }
 
 //! Appends a point to this 2D shape
@@ -83,83 +83,83 @@ void CA2DShape::AppendIfNotAlready(double const dX, double const dY)
    if (m_VPoints.empty())
       m_VPoints.push_back(PtIn);
 
-   else if (m_VPoints.back() != &PtIn)
+   else if (m_VPoints.back() != & PtIn)
       m_VPoints.push_back(PtIn);
 }
 
 //! Returns the last element of this 2D shape
-CGeom2DPoint* CA2DShape::pPtBack(void)
+CGeom2DPoint * CA2DShape::pPtBack(void)
 {
-   return &m_VPoints.back();
+   return & m_VPoints.back();
 }
 
 // void CA2DShape::SetPoints(const vector<CGeom2DPoint>* VNewPoints)
 // {
-//    m_VPoints = *VNewPoints;
+// m_VPoints = *VNewPoints;
 // }
 
 // int CA2DShape::nLookUp(CGeom2DPoint* Pt)
 // {
-//    auto it = find(m_VPoints.begin(), m_VPoints.end(), *Pt);
-//    if (it != m_VPoints.end())
-//       return it - m_VPoints.begin();
-//    else
-//       return -1;
+// auto it = find(m_VPoints.begin(), m_VPoints.end(), *Pt);
+// if (it != m_VPoints.end())
+// return it - m_VPoints.begin();
+// else
+// return -1;
 // }
 
 // double CA2DShape::dGetLength(void) const
 // {
-//    int nSize = m_VPoints.size();
+// int nSize = m_VPoints.size();
 //
-//    if (nSize < 2)
-//       return -1;
+// if (nSize < 2)
+// return -1;
 //
-//    double dLength = 0;
-//    for (int n = 1; n < nSize; n++)
-//    {
-//       double dXlen = m_VPoints[n].dGetX() - m_VPoints[n-1].dGetX();
-//       double dYlen = m_VPoints[n].dGetY() - m_VPoints[n-1].dGetY();
+// double dLength = 0;
+// for (int n = 1; n < nSize; n++)
+// {
+// double dXlen = m_VPoints[n].dGetX() - m_VPoints[n-1].dGetX();
+// double dYlen = m_VPoints[n].dGetY() - m_VPoints[n-1].dGetY();
 //
-//       dLength += hypot(dXlen, dYlen);
-//    }
+// dLength += hypot(dXlen, dYlen);
+// }
 //
-//    return dLength;
+// return dLength;
 // }
 
 //! Returns the address of the vector which represents this 2D shape
 vector<CGeom2DPoint>* CA2DShape::pPtVGetPoints(void)
 {
-   return &m_VPoints;
+   return & m_VPoints;
 }
 
 // //! Computes the centroid of this 2D polygon (which may be outside, if this is a concave polygon). From http://stackoverflow.com/questions/2792443/finding-the-centroid-of-a-polygon
 // CGeom2DPoint CA2DShape::PtGetCentroid(void)
 // {
-//    int nVertexCount = static_cast<int>(m_VPoints.size());
-//    double dSignedArea = 0;
-//    double dCentroidX = 0;
-//    double dCentroidY = 0;
+// int nVertexCount = static_cast<int>(m_VPoints.size());
+// double dSignedArea = 0;
+// double dCentroidX = 0;
+// double dCentroidY = 0;
 //
 //    // For all vertices
-//    for (int i = 0; i < nVertexCount; ++i)
-//    {
-//       double dXThis = m_VPoints[i].dGetX();
-//       double dYThis = m_VPoints[i].dGetY();
-//       double dXNext = m_VPoints[(i+1) % nVertexCount].dGetX();
-//       double dYNext = m_VPoints[(i+1) % nVertexCount].dGetY();
+// for (int i = 0; i < nVertexCount; ++i)
+// {
+// double dXThis = m_VPoints[i].dGetX();
+// double dYThis = m_VPoints[i].dGetY();
+// double dXNext = m_VPoints[(i+1) % nVertexCount].dGetX();
+// double dYNext = m_VPoints[(i+1) % nVertexCount].dGetY();
 //
-//       double dA = (dXThis * dYNext) - (dXNext * dYThis);
-//       dSignedArea += dA;
+// double dA = (dXThis * dYNext) - (dXNext * dYThis);
+// dSignedArea += dA;
 //
-//       dCentroidX += (dXThis + dXNext) * dA;
-//       dCentroidY += (dYThis + dYNext) * dA;
-//    }
+// dCentroidX += (dXThis + dXNext) * dA;
+// dCentroidY += (dYThis + dYNext) * dA;
+// }
 //
-//    dSignedArea *= 0.5;
-//    dCentroidX /= (6 * dSignedArea);
-//    dCentroidY /= (6 * dSignedArea);
+// dSignedArea *= 0.5;
+// dCentroidX /= (6 * dSignedArea);
+// dCentroidY /= (6 * dSignedArea);
 //
-//    return (CGeom2DPoint(dCentroidX, dCentroidY));
+// return (CGeom2DPoint(dCentroidX, dCentroidY));
 // }
 
 //! Reverses the sequence of points in the vector which represents this 2D polygon

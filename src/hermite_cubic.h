@@ -24,7 +24,7 @@
    You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
    ===============================================================================================================================*/
-void r8vec_bracket3(int const, double const*, double const, int*);
-void hermite_cubic_value(double const, double const, double const, double const, double const, double const, int const, double const*, double* const, double* const, double* const, double* const);
+void r8vec_bracket3(int const, double const *, double const, int*);
+void hermite_cubic_value(double const, double const, double const, double const, double const, double const, int const, double const *, double* const, double* const, double* const, double* const);
 void hermite_cubic_spline_value(int const, double* const, double* const, double* const, int const, double* const, double*, double*, double*, double*);
 #endif // HERMITE_H

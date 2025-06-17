@@ -29,7 +29,7 @@
 //===============================================================================================================================
 //! CoastalME's main function
 //===============================================================================================================================
-int main(int argc, char const* argv[])
+int main(int argc, char const * argv[])
 {
    // This is to check for first appearance of NaN when debugging (comment out, otherwise)
 #ifdef __APPLE__
@@ -41,7 +41,7 @@ int main(int argc, char const* argv[])
    setlocale(LC_ALL, "en_GB.UTF-8");
 
    // Create a CSimulation object
-   CSimulation* pSimulation = new CSimulation;
+   CSimulation * pSimulation = new CSimulation;
 
    // Run the simulation and then check how it ends
    int nRtn = pSimulation->nDoSimulation(argc, argv);

@@ -367,7 +367,7 @@ using std::ostringstream;
 #ifdef __GNUG__
    // GNU C++
    #ifndef CPU
-      #     error CPU not defined
+      #error CPU not defined
    #else
       #ifdef x86
          // Intel x86, byte order is little-endian, 32-bit
@@ -440,8 +440,7 @@ using std::ostringstream;
 // #define EQUAL(a, b) (STRCASECMP(a, b) == 0)
 // #endif
 
-//===================================================== hard-wired constants
-//====================================================
+//===================================================== hard-wired constants ====================================================
 char const COLON = ':';
 char const COMMA = ',';
 char const DASH = '-';
@@ -554,8 +553,7 @@ int const LF_SUBCAT_DRIFT_BEACH = 10;
 // TODO 059 Implement dune landform class
 int const LF_SUBCAT_DRIFT_DUNES = 11;
 
-// Landform sub-category codes for cells, for LF_CAT_INTERVENTION. See also
-// "Intervention input and output codes"
+// Landform sub-category codes for cells, for LF_CAT_INTERVENTION. See also "Intervention input and output codes"
 int const LF_SUBCAT_INTERVENTION_STRUCT = 12;
 int const LF_SUBCAT_INTERVENTION_NON_STRUCT = 13;
 
@@ -783,11 +781,8 @@ int const WAVE_MODEL_CSHORE = 1;
 int const UNCONS_SEDIMENT_EQUATION_CERC = 0;
 int const UNCONS_SEDIMENT_EQUATION_KAMPHUIS = 1;
 
-int const CLIFF_COLLAPSE_LENGTH_INCREMENT =
-10;                                                     // Increment the planview length of the cliff talus Dean profile, if we
-// have not been able to deposit enough
-int const PROFILE_CHECK_DIST_FROM_COAST =
-3;                                                      // Used in checking shoreline-normal profiles for intersection
+int const CLIFF_COLLAPSE_LENGTH_INCREMENT = 10;             // Increment the planview length of the cliff talus Dean profile, if we have not been able to deposit enough
+int const PROFILE_CHECK_DIST_FROM_COAST = 3;                // Used in checking shoreline-normal profiles for intersection
 
 unsigned long const MASK = 0xfffffffful;
 unsigned long const SEDIMENT_INPUT_EVENT_ERROR = -1;
@@ -798,15 +793,11 @@ double const D50_FINE_DEFAULT = 0.0625;                     // In mm
 double const D50_SAND_DEFAULT = 0.42;                       // In mm
 double const D50_COARSE_DEFAULT = 19.0;                     // In mm
 
-double const BEACH_PROTECTION_HB_RATIO =
-0.23;                                                   // The beach protection factor is this times breaking depth
-double const WALKDEN_HALL_PARAM_1 =
-3.25;                                                   // First param in Equation 4 from Walkden & Hall, 2005
-double const WALKDEN_HALL_PARAM_2 =
-1.50;                                                   // Second param in Equation 4 from Walkden & Hall, 2005
+double const BEACH_PROTECTION_HB_RATIO = 0.23;              // The beach protection factor is this times breaking depth
+double const WALKDEN_HALL_PARAM_1 = 3.25;                   // First param in Equation 4 from Walkden & Hall, 2005
+double const WALKDEN_HALL_PARAM_2 = 1.50;                   // Second param in Equation 4 from Walkden & Hall, 2005
 
-double const DEPTH_OVER_DB_INCREMENT =
-0.001;                                                  // Depth over DB increment for erosion potential look-up function
+double const DEPTH_OVER_DB_INCREMENT = 0.001;               // Depth over DB increment for erosion potential look-up function
 double const INVERSE_DEPTH_OVER_DB_INCREMENT = 1000;        // Inverse of the above
 double const DEAN_POWER = 2.0 / 3.0;                        // Dean profile exponent
 
@@ -816,41 +807,28 @@ double const CSHORE_SURGE_LEVEL = 0.0;                      // TODO 007
 
 double const TOLERANCE = 1e-7;                              // For bFPIsEqual, if too small (e.g. 1e-10), get
 // spurious "rounding" errors
-double const SEDIMENT_ELEV_TOLERANCE =
-1e-10;                                                  // For bFPIsEqual, used to compare depth-equivalent sediment amounts
-double const MASS_BALANCE_TOLERANCE =
-1e-5;                                                   // For bFPIsEqual, used to compare for mass balance checks
+double const SEDIMENT_ELEV_TOLERANCE = 1e-10;               // For bFPIsEqual, used to compare depth-equivalent sediment amounts
+double const MASS_BALANCE_TOLERANCE = 1e-5;                 // For bFPIsEqual, used to compare for mass balance checks
 double const STRAIGHT_COAST_MAX_DETAILED_CURVATURE = -5;
 double const STRAIGHT_COAST_MAX_SMOOTH_CURVATURE = -1;
 double const MIN_LENGTH_OF_SHADOW_ZONE_LINE = 10;           // Used in shadow line tracing
-double const MAX_LAND_LENGTH_OF_SHADOW_ZONE_LINE =
-5;                                                      // Used in shadow line tracing
-double const CLIFF_COLLAPSE_HEIGHT_INCREMENT =
-0.1;                                                    // Increment the fractional height of the cliff talus Dean profile, if
-// we have not been able to deposit enough
-double const INTERVENTION_PROFILE_SPACING_FACTOR =
-0.5;                                                    // Profile spacing on interventions works better if it is smaller than
-// profile spacing on coastline
+double const MAX_LAND_LENGTH_OF_SHADOW_ZONE_LINE = 5;       // Used in shadow line tracing
+double const CLIFF_COLLAPSE_HEIGHT_INCREMENT = 0.1;         // Increment the fractional height of the cliff talus Dean profile, if we have not been able to deposit enough
+double const INTERVENTION_PROFILE_SPACING_FACTOR = 0.5;     // Profile spacing on interventions works better if it is smaller than profile spacing on coastline
 
 double const DBL_NODATA = -9999;
 
-string const PROGRAM_NAME = "Coastal Modelling Environment (CoastalME) version 1.3.20 (13 Jun 2025)";
+string const PROGRAM_NAME = "Coastal Modelling Environment (CoastalME) version 1.3.20 (17 Jun 2025)";
 string const PROGRAM_NAME_SHORT = "CME";
 string const CME_INI = "cme.ini";
 
 string const COPYRIGHT = "(C) 2025 Andres Payo and David Favis-Mortlock";
-string const LINE = "----------------------------------------------------------"
-                    "---------------------";
-string const DISCLAIMER1 = "This program is distributed in the hope that it "
-                           "will be useful, but WITHOUT ANY";
-string const DISCLAIMER2 = "WARRANTY; without even the implied warranty of "
-                           "MERCHANTABILITY or FITNESS FOR A";
-string const DISCLAIMER3 = "PARTICULAR PURPOSE. See the GNU General Public "
-                           "License for more details. You";
-string const DISCLAIMER4 = "should have received a copy of the GNU General "
-                           "Public License along with this";
-string const DISCLAIMER5 = "program; if not, contact the Free Software "
-                           "Foundation, Inc., 675 Mass Ave,";
+string const LINE = "-------------------------------------------------------------------------------";
+string const DISCLAIMER1 = "This program is distributed in the hope that it will be useful, but WITHOUT ANY";
+string const DISCLAIMER2 = "WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A";
+string const DISCLAIMER3 = "PARTICULAR PURPOSE. See the GNU General Public License for more details. You";
+string const DISCLAIMER4 = "should have received a copy of the GNU General Public License along with this";
+string const DISCLAIMER5 = "program; if not, contact the Free Software Foundation, Inc., 675 Mass Ave,";
 string const DISCLAIMER6 = "Cambridge, MA 02139, USA.";
 
 string const ABOUT = "simulates the long-term behaviour of a coast. This initial version considers only simple soft cliff cross-shore effects";
@@ -912,36 +890,23 @@ string const NOTE = "      Note ";
 
 string const MASS_BALANCE_ERROR = "MASS BALANCE ERROR";
 
-string const PER_ITER_HEAD1 = "<-----ELAPSED----><-SEA-><----POTENTIAL---><----------ACTUAL-----------><----POTENTIAL----><------------ACTUAL------------><-----------ACTUAL-----------><-SEDIMENT-><--CLIFF COLLAPSE--><SUSP>";
+string const PER_ITER_HEAD1 = "<-----ELAPSED----><--SEA-><----POTENTIAL---><-----------ACTUAL-----------><-----POTENTIAL-----><------------ACTUAL-------------><-----------ACTUAL------------><--SEDIMENT--><---CLIFF COLLAPSE---><SUSP>";
 
-string const PER_ITER_HEAD2 = "       TIME        DEPTH  PLATFORM EROSION        PLATFORM EROSION          BEACH EROSION            BEACH EROSION                BEACH DEPOSITION        INPUT EVENT  EROSION DEPOSITION  SED";
+string const PER_ITER_HEAD2 = "       TIME         DEPTH  PLATFORM EROSION        PLATFORM EROSION          BEACH EROSION              BEACH EROSION                  BEACH DEPOSITION         INPUT EVENT     EROSION  DEPOSITION  SED";
 
-string const PER_ITER_HEAD3 = "Time  Hours  Years   Avg  % Sea   All  Erod % Sea   All Erod <-sea avg->  % Sea   All  Erod  % Sea   All Erodng <-sea avg->  % Sea   All  Deposit <-sea->            <-coast avg><--sea->";
-string const PER_ITER_HEAD4 =
-"Step                       Area   Sea  Area  Area   Sea Area   F   S   C   Area   Sea  Area   Area   Sea   Area   F   S   C   Area   Sea     Area   S   C   F   S   C   F   S   C   S   C    F";
-string const PER_ITER_HEAD5 = "                                  Avg   Avg         Avg  Avg                            Avg          Avg    Avg                      Avg      Avg";
+string const PER_ITER_HEAD3 = "Time  Hours  Years    Avg  % Sea   All  Erod % Sea   All  Erod <--sea avg->  % Sea   All   Erod  % Sea   All   Erod <--sea avg->  % Sea   All  Depos  <--sea-->                <-coast avg-><--sea-->";
 
-string const PER_ITER_HEAD = "PER-ITERATION RESULTS =========================================================================================================================================================================";
+string const PER_ITER_HEAD4 = "Step                        Area   Sea  Area  Area   Sea  Area   F   S   C    Area   Sea   Area   Area   Sea   Area   F   S   C    Area   Sea   Area    S   C     F   S   C     F   S   C    S   C    F";
 
-string const PER_ITER_CSV_HEAD =
-"Timestep,Hours,Years,AvgSeaDepth_m,PotPlatformErosion_PctSeaArea,"
-"PotPlatformErosion_AllAvg_mm,PotPlatformErosion_ErodAvg_mm,"
-"ActPlatformErosion_PctSeaArea,ActPlatformErosion_AllAvg_mm,"
-"ActPlatformErosion_ErodAvg_mm,ActPlatformErosion_Fine_mm,"
-"ActPlatformErosion_Sand_mm,ActPlatformErosion_Coarse_mm,PotBeachErosion_"
-"PctSeaArea,PotBeachErosion_AllAvg_mm,PotBeachErosion_ErodAvg_mm,"
-"ActBeachErosion_PctSeaArea,ActBeachErosion_AllAvg_mm,ActBeachErosion_"
-"ErodAvg_mm,ActBeachErosion_Fine_mm,ActBeachErosion_Sand_mm,"
-"ActBeachErosion_Coarse_mm,BeachDeposition_PctSeaArea,BeachDeposition_"
-"AllAvg_mm,BeachDeposition_DepAvg_mm,BeachDeposition_Sand_mm,"
-"BeachDeposition_Coarse_mm,SedimentInput_Fine,SedimentInput_Sand,"
-"SedimentInput_Coarse,CliffCollapse_Fine_mm,CliffCollapse_Sand_mm,"
-"CliffCollapse_Coarse_mm,CliffDeposition_Sand_mm,CliffDeposition_Coarse_mm,"
-"SuspendedSediment_mm,GISEvents";
+string const PER_ITER_HEAD5 = "                                   Avg   Avg         Avg   Avg                              Avg          Avg    Avg                       Avg    Avg";
 
-string const ENDHYDROLOGYHEAD = "END OF SIMULATION: HYDROLOGY ==================================================================================================================================================================";
-string const ENDSEDIMENTHEAD = "END OF SIMULATION: SEDIMENT MOVEMENT ==========================================================================================================================================================";
-string const PERFORMHEAD = "END OF SIMULATION: PERFORMANCE ================================================================================================================================================================";
+string const PER_ITER_HEAD = "PER-ITERATION RESULTS =============================================================================================================================================================================================";
+
+string const PER_ITER_CSV_HEAD = "Timestep,Hours, Years, AvgSeaDepth_m, PotPlatformErosion_PctSeaArea, PotPlatformErosion_AllAvg_mm, PotPlatformErosion_ErodAvg_mm, ActPlatformErosion_PctSeaArea, ActPlatformErosion_AllAvg_mm, ActPlatformErosion_ErodAvg_mm, ActPlatformErosion_Fine_mm, ActPlatformErosion_Sand_mm, ActPlatformErosion_Coarse_mm, PotBeachErosion_PctSeaArea, PotBeachErosion_AllAvg_mm, PotBeachErosion_ErodAvg_mm, ActBeachErosion_PctSeaArea, ActBeachErosion_AllAvg_mm, ActBeachErosion_ErodAvg_mm, ActBeachErosion_Fine_mm, ActBeachErosion_Sand_mm, ActBeachErosion_Coarse_mm, BeachDeposition_PctSeaArea, BeachDeposition_AllAvg_mm, BeachDeposition_DepAvg_mm, BeachDeposition_Sand_mm, BeachDeposition_Coarse_mm, SedimentInput_Fine, SedimentInput_Sand, SedimentInput_Coarse, CliffCollapse_Fine_mm, CliffCollapse_Sand_mm, CliffCollapse_Coarse_mm, CliffDeposition_Sand_mm, CliffDeposition_Coarse_mm, SuspendedSediment_mm, GISEvents";
+
+string const ENDHYDROLOGYHEAD = "END OF SIMULATION: HYDROLOGY ======================================================================================================================================================================================";
+string const ENDSEDIMENTHEAD = "END OF SIMULATION: SEDIMENT MOVEMENT ==============================================================================================================================================================================";
+string const PERFORMHEAD = "END OF SIMULATION: PERFORMANCE ====================================================================================================================================================================================";
 
 string const OUTEXT = ".out";
 string const LOGEXT = ".log";
@@ -1292,7 +1257,7 @@ template <class T> bool bIsBetween(T a, T b, T c)
    return ((a >= b) && (a <= c));
 }
 
-template <typename T> string strDblToStr(const T& t)
+template <typename T> string strDblToStr(const T & t)
 {
    // From http://stackoverflow.com/questions/2125880/convert-float-to-stdstring-in-c
    ostringstream os;
@@ -1300,11 +1265,9 @@ template <typename T> string strDblToStr(const T& t)
    return os.str();
 }
 
-/* ==============================================================================================================================
-
-   For comparison of two floating-point numbers, with a specified accuracy
-
-   ==============================================================================================================================*/
+// ==============================================================================================================================
+// For comparison of two floating-point numbers, with a specified accuracy
+// ==============================================================================================================================
 template <class T> bool bFPIsEqual(const T d1, const T d2, const T dEpsilon)
 {
 // Since the accuracy of floating-point numbers varies with their magnitude, we must compare them by using an accuracy threshold which is relative to the magnitude of the two numbers being compared. This is a blend of an example from Knuth's 'The Art of Computer Programming. Volume 1. Fundamental Algorithms' and a posting dated 18 Nov 93 by rmartin@rcmcon.com (Robert Martin), archived in cpp_tips
@@ -1329,8 +1292,8 @@ template <class T> bool bFPIsEqual(const T d1, const T d2, const T dEpsilon)
 double dRound(double const);
 int nRound(double const);
 // bool bIsWhole(double const);
-bool bIsStringValidDouble(string&);
-bool bIsStringValidInt(string&);
+bool bIsStringValidDouble(string & );
+bool bIsStringValidInt(string & );
 
 struct FillToWidth
 {
@@ -1339,16 +1302,16 @@ struct FillToWidth
    int nWidth;
 };
 
-ostream& operator<<(ostream&, const FillToWidth&);
+ostream & operator<<(ostream &, const FillToWidth & );
 
 string strDbl(double const, int const);
 string strDblRight(double const, int const, int const, bool const = true);
 string strIntRight(int const, int const);
 string strCentre(const char*, int const);
-string strCentre(const string&, int const);
-string strRight(const string&, int const);
+string strCentre(const string &, int const);
+string strRight(const string &, int const);
 string strRight(const char*, int const);
-string strLeft(const string&, int const);
+string strLeft(const string &, int const);
 string strLeft(const char*, int const);
 string strRightPerCent(double const, double const, int const, int const,
                        bool const = true);

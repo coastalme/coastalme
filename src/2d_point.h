@@ -42,13 +42,13 @@ public:
    double dGetY(void) const;
    void SetX(double const);
    void SetY(double const);
-//    void SetXY(double const, double const);
-//    void SetXY(CGeom2DPoint const*);
+// void SetXY(double const, double const);
+// void SetXY(CGeom2DPoint const*);
 
-   void operator= (CGeom2DPoint const*);
-   bool operator== (CGeom2DPoint const*) const;
+   void operator= (CGeom2DPoint const * );
+   bool operator== (CGeom2DPoint const * ) const;
    bool operator== (CGeom2DPoint) const;
-   bool operator!= (CGeom2DPoint const*) const;
+   bool operator!= (CGeom2DPoint const * ) const;
    bool operator!= (CGeom2DPoint) const;
 };
 #endif // C2DPOINT_H

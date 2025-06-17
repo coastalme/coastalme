@@ -31,10 +31,10 @@
 class CRWCellLayer
 {
 private:
-//     double
-//       m_VdolSedFraction,
-//       m_dMechResistance,
-//       m_dConsolidationStatus;
+// double
+// m_VdolSedFraction,
+// m_dMechResistance,
+// m_dConsolidationStatus;
 
    //! This cell's unconsolidated sediment object
    CRWCellSediment m_UnconsolidatedSediment;
@@ -47,8 +47,8 @@ protected:
 public:
    CRWCellLayer(void);
 
-   CRWCellSediment* pGetUnconsolidatedSediment(void);
-   CRWCellSediment* pGetConsolidatedSediment(void);
+   CRWCellSediment * pGetUnconsolidatedSediment(void);
+   CRWCellSediment * pGetConsolidatedSediment(void);
 
    double dGetFineUnconsolidatedThickness(void) const;
    double dGetFineConsolidatedThickness(void) const;
@@ -64,12 +64,11 @@ public:
    // double dGetNotchUnconsolidatedLost(void) const;
    // double dGetNotchConsolidatedLost(void) const;
 
-//    double dGetVolSedFraction(void) const;
+// double dGetVolSedFraction(void) const;
    void SetVolSedFraction(double const);
-//    double dGetMechResistance(void) const;
-//    void SetMechResistance(double const);
-//    double dGetConsolidationStatus(void) const;
-//    void SetConsolidationStatus(double const);
+// double dGetMechResistance(void) const;
+// void SetMechResistance(double const);
+// double dGetConsolidationStatus(void) const;
+// void SetConsolidationStatus(double const);
 };
 #endif // CELL_LAYER_H
-
