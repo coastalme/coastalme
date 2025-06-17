@@ -173,5 +173,10 @@ CoastalME CHANGELOG
          Ongoing changes to permit multiple coastlines
          Code tidying following accidental reformatting
 
-
+1.3.21   Extra safety check added to CShore to prevent a zero divide error
+         Modified test suite input files re. CSV option
+         Ongoing changes to permit multiple coastlines
+         Added code contribution guidelines
+         Added Artistic Style code formatter configuration file
+         Further code tidying using Artistic Style
 

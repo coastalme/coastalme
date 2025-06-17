@@ -32,21 +32,20 @@ class CGeomLine : public CA2DShape
 private:
 
 protected:
-//    void SetXAt(int const, double const);
-//    void SetYAt(int const, double const);
-//    bool bIsPresent(CGeom2DPoint*);
+// void SetXAt(int const, double const);
+// void SetYAt(int const, double const);
+// bool bIsPresent(CGeom2DPoint*);
 
    void Display(void) override;
 
 public:
    CGeomLine(void);
-   CGeomLine(CGeom2DPoint const*, CGeom2DPoint const*);
+   CGeomLine(CGeom2DPoint const *, CGeom2DPoint const * );
    explicit CGeomLine(int const);
    ~CGeomLine(void) override;
 
    double dGetXAt(int const);
    double dGetYAt(int const);
-   CGeom2DPoint* pPtGetAt(int const);
+   CGeom2DPoint * pPtGetAt(int const);
 };
 #endif // LINE_H
-

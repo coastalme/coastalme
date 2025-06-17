@@ -44,11 +44,11 @@ protected:
 
    void Clear(void);
 
-//    void InsertAtFront(double const, double const);
-//    void SetPoints(const vector<CGeom2DPoint>*);
-//    int nLookUp(CGeom2DPoint*);
-//    double dGetLength(void) const;
-//    CGeom2DPoint PtGetCentroid(void);
+// void InsertAtFront(double const, double const);
+// void SetPoints(const vector<CGeom2DPoint>*);
+// int nLookUp(CGeom2DPoint*);
+// double dGetLength(void) const;
+// CGeom2DPoint PtGetCentroid(void);
 
    virtual void Display() = 0;
 
@@ -58,13 +58,12 @@ public:
    int nGetSize(void) const;
    void Resize(int const);
 
-   void Append(CGeom2DPoint const*);
+   void Append(CGeom2DPoint const * );
    void Append(double const, double const);
    void AppendIfNotAlready(double const, double const);
-   CGeom2DPoint* pPtBack(void);
+   CGeom2DPoint * pPtBack(void);
 
-   CGeom2DPoint& operator[] (int const);
+   CGeom2DPoint & operator[] (int const);
    vector<CGeom2DPoint>* pPtVGetPoints(void);
 };
 #endif // C2DSHAPE_H
-

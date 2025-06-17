@@ -54,7 +54,7 @@ int CSimulation::nCalcExternalForcing(void)
       static int snTideDataCount = 0;
 
       // Wrap the tide data, i.e. start again with the first record if we do not have enough
-      if (snTideDataCount > nSize-1)
+      if (snTideDataCount > nSize - 1)
          snTideDataCount = 0;
 
       // This-iteration SWL includes both tidal change and long-term SWL change
@@ -72,7 +72,7 @@ int CSimulation::nCalcExternalForcing(void)
    {
       static int snWaveStationDataCount = 0;
 
-      if (snWaveStationDataCount > m_nDeepWaterWaveDataNumTimeSteps-1)
+      if (snWaveStationDataCount > m_nDeepWaterWaveDataNumTimeSteps - 1)
       {
          // Wrap the tide data, i.e. start again with the first record if we do not have enough
          snWaveStationDataCount = 0;
@@ -95,9 +95,9 @@ int CSimulation::nCalcExternalForcing(void)
 
          for (int j = 0; j < nNumberDeepWaterWaveStations; j++)
          {
-            m_VdThisIterDeepWaterWaveStationHeight[j] = m_VdTSDeepWaterWaveStationHeight[(m_VnDeepWaterWaveStationID[j]-1) + nTot];
-            m_VdThisIterDeepWaterWaveStationAngle[j]  = m_VdTSDeepWaterWaveStationAngle[(m_VnDeepWaterWaveStationID[j]-1) + nTot];
-            m_VdThisIterDeepWaterWaveStationPeriod[j] = m_VdTSDeepWaterWaveStationPeriod[(m_VnDeepWaterWaveStationID[j]-1) + nTot];
+            m_VdThisIterDeepWaterWaveStationHeight[j] = m_VdTSDeepWaterWaveStationHeight[(m_VnDeepWaterWaveStationID[j] - 1) + nTot];
+            m_VdThisIterDeepWaterWaveStationAngle[j] = m_VdTSDeepWaterWaveStationAngle[(m_VnDeepWaterWaveStationID[j] - 1) + nTot];
+            m_VdThisIterDeepWaterWaveStationPeriod[j] = m_VdTSDeepWaterWaveStationPeriod[(m_VnDeepWaterWaveStationID[j] - 1) + nTot];
          }
       }
 

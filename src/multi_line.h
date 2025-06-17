@@ -45,7 +45,7 @@ public:
 
    void AppendLineSegment(void);
    void AppendLineSegment(vector<pair<int, int> >*);
-//    void AppendLineSegmentAndInherit(void);
+// void AppendLineSegmentAndInherit(void);
    int nGetNumLineSegments(void) const;
    void TruncateLineSegments(int const);
    void InsertLineSegment(int const);
@@ -58,7 +58,7 @@ public:
    int nGetCoincidentProfileForLineSegment(int const, int const) const;
    int nGetNumCoincidentProfilesInLineSegment(int const);
    bool bFindProfileInCoincidentProfilesOfLastLineSegment(int const);
-//    bool bFindProfileInCoincidentProfilesOfLineSegment(int const, int const);
+// bool bFindProfileInCoincidentProfilesOfLineSegment(int const, int const);
    bool bFindProfileInCoincidentProfiles(int const);
    void GetMostCoastwardSharedLineSegment(int const, int&, int&);
 
@@ -69,4 +69,3 @@ public:
    // int nFindProfilesLastSeg(int const) const;
 };
 #endif // MULTILINE_H
-

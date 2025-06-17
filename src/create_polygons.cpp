@@ -61,13 +61,13 @@ int CSimulation::nCreateAllPolygons(void)
       // Do this for every point on the coastline (except the last point)
       int nCoastSize = m_VCoast[nCoast].nGetCoastlineSize();
 
-      for (int nCoastPoint = 0; nCoastPoint < nCoastSize-1; nCoastPoint++)
+      for (int nCoastPoint = 0; nCoastPoint < nCoastSize - 1; nCoastPoint++)
       {
          if (! m_VCoast[nCoast].bIsProfileAtCoastPoint(nCoastPoint))
             continue;
 
          // OK, this coast point is the start of a coastline-normal profile
-         CGeomProfile* pThisProfile = m_VCoast[nCoast].pGetProfileAtCoastPoint(nCoastPoint);
+         CGeomProfile * pThisProfile = m_VCoast[nCoast].pGetProfileAtCoastPoint(nCoastPoint);
 
          if (pThisProfile->bOKIncStartAndEndOfCoast())
          {
@@ -78,7 +78,7 @@ int CSimulation::nCreateAllPolygons(void)
             nPolygon++;
 
             // Now get a pointer to the next (down-coast) profile
-            CGeomProfile* pNextProfile = pThisProfile->pGetDownCoastAdjacentProfile();
+            CGeomProfile * pNextProfile = pThisProfile->pGetDownCoastAdjacentProfile();
 
             bool bNextProfileIsOK = false;
 
@@ -86,12 +86,12 @@ int CSimulation::nCreateAllPolygons(void)
             {
                // if (pNextProfile == NULL)       // TODO THIS GIVES CPPCHECK ERROR
                // {
-               //    LogStream << m_ulIter << ": nThisProfile = " << nThisProfile << " invalid down-coast adjacent profile, trying next down-coast adjacent profile" << endl;
+               // LogStream << m_ulIter << ": nThisProfile = " << nThisProfile << " invalid down-coast adjacent profile, trying next down-coast adjacent profile" << endl;
                //
                //    // Try the next-after-next profile
-               //    CGeomProfile* pNextNextProfile = pNextProfile->pGetDownCoastAdjacentProfile();
-               //    pNextProfile = pNextNextProfile;
-               //    continue;
+               // CGeomProfile* pNextNextProfile = pNextProfile->pGetDownCoastAdjacentProfile();
+               // pNextProfile = pNextNextProfile;
+               // continue;
                // }
 
                // Get the ID of the next (down-coast) profile
@@ -106,7 +106,7 @@ int CSimulation::nCreateAllPolygons(void)
                   // LogStream << m_ulIter << ": down-coast adjacent profile = " << nNextProfile << " is not OK" << endl;
 
                   // So try the following profile
-                  CGeomProfile* pNextNextProfile = pNextProfile->pGetDownCoastAdjacentProfile();
+                  CGeomProfile * pNextNextProfile = pNextProfile->pGetDownCoastAdjacentProfile();
                   pNextProfile = pNextNextProfile;
                }
 
@@ -125,29 +125,29 @@ int CSimulation::nCreateAllPolygons(void)
             m_VCoast[nCoast].SetPolygonNode(nNodePoint, ++nNode);
 
             // Get the grid CRS coordinates of the coast node
-            CGeom2DIPoint PtiNode = *m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(nNodePoint);
+            CGeom2DIPoint PtiNode = * m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(nNodePoint);
 
             // // DEBUG CODE ===================
             // if ((m_ulIter == 18) && (nThisProfile == 29))
-            //    std::cerr << endl;
+            // std::cerr << endl;
             // // DEBUG CODE ===================
 
             // Get some defaults (assuming for now that this polygon is not approximately triangular i.e. both normals do not meet)
-            int nNextProfileEnd = pNextProfile->nGetProfileSize()-1;
-            int nThisProfileEnd = pThisProfile->nGetProfileSize()-1;
+            int nNextProfileEnd = pNextProfile->nGetProfileSize() - 1;
+            int nThisProfileEnd = pThisProfile->nGetProfileSize() - 1;
             bool bMeetsAtAPoint = false;
             CGeom2DPoint PtCoastwardTip;
 
 //                // DEBUG CODE =============================================================================================
-//                CGeom2DPoint PtNextEndTmp = *pNextProfile->pPtGetPointInProfile(nNextProfileEnd);
-//                double dXTmp = dExtCRSXToGridX(PtNextEndTmp.dGetX());
-//                double dYTmp = dExtCRSYToGridY(PtNextEndTmp.dGetY());
-//                assert(bIsWithinValidGrid(dXTmp, dYTmp));
+// CGeom2DPoint PtNextEndTmp = *pNextProfile->pPtGetPointInProfile(nNextProfileEnd);
+// double dXTmp = dExtCRSXToGridX(PtNextEndTmp.dGetX());
+// double dYTmp = dExtCRSYToGridY(PtNextEndTmp.dGetY());
+// assert(bIsWithinValidGrid(dXTmp, dYTmp));
 //
-//                CGeom2DPoint PtThisEndTmp = *pThisProfile->pPtGetPointInProfile(nThisProfileEnd);
-//                dXTmp = dExtCRSXToGridX(PtThisEndTmp.dGetX());
-//                dYTmp = dExtCRSYToGridY(PtThisEndTmp.dGetY());
-//                assert(bIsWithinValidGrid(dXTmp, dYTmp));
+// CGeom2DPoint PtThisEndTmp = *pThisProfile->pPtGetPointInProfile(nThisProfileEnd);
+// dXTmp = dExtCRSXToGridX(PtThisEndTmp.dGetX());
+// dYTmp = dExtCRSYToGridY(PtThisEndTmp.dGetY());
+// assert(bIsWithinValidGrid(dXTmp, dYTmp));
 //                // DEBUG CODE =============================================================================================
 
             // Now check to see if the two normals do meet i.e. if they are coincident
@@ -171,7 +171,7 @@ int CSimulation::nCreateAllPolygons(void)
                nThisProfileEnd = tMin(nThisProfileEnd, nTmpThisProfileEnd);
                nNextProfileEnd = tMin(nNextProfileEnd, nTmpNextProfileEnd);
 
-               PtCoastwardTip = *pThisProfile->pPtGetPointInProfile(nThisProfileEnd);
+               PtCoastwardTip = * pThisProfile->pPtGetPointInProfile(nThisProfileEnd);
             }
 
             // Create the vector in which to store the polygon's boundary (external CRS). Note that these points are not in sequence
@@ -180,38 +180,38 @@ int CSimulation::nCreateAllPolygons(void)
             // Start appending points: begin by appending the points in this normal, in reverse order
             for (int i = nThisProfileEnd; i >= 0; i--)
             {
-               CGeom2DPoint PtThis = *pThisProfile->pPtGetPointInProfile(i);
+               CGeom2DPoint PtThis = * pThisProfile->pPtGetPointInProfile(i);
                PtVBoundary.push_back(PtThis);
             }
 
             // Next add coast points: from the start point of this normal, moving down-coast as far as the down-coast norma
             for (int i = nCoastPoint; i <= nNextProfileCoastPoint; i++)
             {
-               CGeom2DPoint PtThis = *m_VCoast[nCoast].pPtGetCoastlinePointExtCRS(i);
+               CGeom2DPoint PtThis = * m_VCoast[nCoast].pPtGetCoastlinePointExtCRS(i);
                PtVBoundary.push_back(PtThis);
             }
 
             // Append the points in the down-coast (next) normal
             for (int i = 0; i <= nNextProfileEnd; i++)
             {
-               CGeom2DPoint PtThis = *pNextProfile->pPtGetPointInProfile(i);
+               CGeom2DPoint PtThis = * pNextProfile->pPtGetPointInProfile(i);
                PtVBoundary.push_back(PtThis);
             }
 
             // Finally, append the end point of this normal
-            CGeom2DPoint PtThis = *pThisProfile->pPtGetPointInProfile(nThisProfileEnd);
+            CGeom2DPoint PtThis = * pThisProfile->pPtGetPointInProfile(nThisProfileEnd);
             PtVBoundary.push_back(PtThis);
 
             // Now identify the 'anti-node', this is the seaward point 'opposite' the polygon's coastal node
             CGeom2DIPoint PtiAntiNode;
 
             if (bMeetsAtAPoint)
-               PtiAntiNode = PtiExtCRSToGridRound(&PtCoastwardTip);
+               PtiAntiNode = PtiExtCRSToGridRound( & PtCoastwardTip);
 
             else
             {
                CGeom2DPoint PtAvg = PtAverage(pThisProfile->pPtGetPointInProfile(nThisProfileEnd), pNextProfile->pPtGetPointInProfile(nNextProfileEnd));
-               PtiAntiNode = PtiExtCRSToGridRound(&PtAvg);
+               PtiAntiNode = PtiExtCRSToGridRound( & PtAvg);
             }
 
             // Is this a start-of-coast or an end-of-coast polygon?
@@ -225,7 +225,7 @@ int CSimulation::nCreateAllPolygons(void)
                bEndCoast = true;
 
             // Create the coast polygon object and get a pointer to it. TODO 044 the first parameter (global ID) will need to change when considering multiple coasts
-            CGeomCoastPolygon* pPolygon = m_VCoast[nCoast].pPolyCreatePolygon(nThisProfile, nPolygon, nNodePoint, &PtiNode, &PtiAntiNode, nThisProfile, nNextProfile, &PtVBoundary, nThisProfileEnd+1, nNextProfileEnd+1, bStartCoast, bEndCoast);
+            CGeomCoastPolygon * pPolygon = m_VCoast[nCoast].pPolyCreatePolygon(nThisProfile, nPolygon, nNodePoint, & PtiNode, & PtiAntiNode, nThisProfile, nNextProfile, & PtVBoundary, nThisProfileEnd + 1, nNextProfileEnd + 1, bStartCoast, bEndCoast);
 
             // And store this pointer for simulation-wide access, in along-coast sequence
             m_pVCoastPolygon.push_back(pPolygon);
@@ -241,7 +241,7 @@ int CSimulation::nCreateAllPolygons(void)
             // // DEBUG CODE =================================================================================
             // LogStream << m_ulIter << ": vertices for polygon = " << nPolygon << " (m_nNumPolygonGlobal = " << m_nNumPolygonGlobal << ")" << endl;
             // for (int n = 0; n < pPolygon->nGetNumVertices(); n++)
-            //    LogStream << "[" << pPolygon->PtiGetVertex(n).nGetX() << "][" << pPolygon->PtiGetVertex(n).nGetY() << "]\t";
+            // LogStream << "[" << pPolygon->PtiGetVertex(n).nGetX() << "][" << pPolygon->PtiGetVertex(n).nGetY() << "]\t";
             // LogStream << endl;
             // // DEBUG CODE =================================================================================
 
@@ -251,7 +251,7 @@ int CSimulation::nCreateAllPolygons(void)
             // Now rasterize the polygon boundaries: first, the coastline. This is necessary so that sand/coarse sediment derived from platform erosion of the coast cells is correctly added to the containing polygon's unconsolidated sediment
             for (int i = nCoastPoint; i <= nNextProfileCoastPoint; i++)
             {
-               CGeom2DIPoint PtiToMark = *m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(i);
+               CGeom2DIPoint PtiToMark = * m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(i);
                m_pRasterGrid->m_Cell[PtiToMark.nGetX()][PtiToMark.nGetY()].SetPolygonID(nPolygon);
             }
 
@@ -260,7 +260,7 @@ int CSimulation::nCreateAllPolygons(void)
 
             for (int i = 0; i < nCellsInProfile; i++)
             {
-               CGeom2DIPoint PtiToMark = *pNextProfile->pPtiGetCellInProfile(i);
+               CGeom2DIPoint PtiToMark = * pNextProfile->pPtiGetCellInProfile(i);
                m_pRasterGrid->m_Cell[PtiToMark.nGetX()][PtiToMark.nGetY()].SetPolygonID(nPolygon);
             }
 
@@ -269,25 +269,25 @@ int CSimulation::nCreateAllPolygons(void)
 
             for (int i = 0; i < nCellsInProfile; i++)
             {
-               CGeom2DIPoint PtiToMark = *pThisProfile->pPtiGetCellInProfile(i);
+               CGeom2DIPoint PtiToMark = * pThisProfile->pPtiGetCellInProfile(i);
                m_pRasterGrid->m_Cell[PtiToMark.nGetX()][PtiToMark.nGetY()].SetPolygonID(nPolygon);
             }
 
             // If the polygon doesn't meet at a point at its seaward end, also need to rasterize the 'joining line'
             if (! bMeetsAtAPoint)
             {
-               CGeom2DIPoint PtiDownCoastNormalEnd = *pNextProfile->pPtiGetEndPoint();       // Grid CRS
-               CGeom2DIPoint PtiUpCoastNormalEnd = *pThisProfile->pPtiGetEndPoint();         // Grid CRS
+               CGeom2DIPoint PtiDownCoastNormalEnd = * pNextProfile->pPtiGetEndPoint();      // Grid CRS
+               CGeom2DIPoint PtiUpCoastNormalEnd = * pThisProfile->pPtiGetEndPoint();        // Grid CRS
 
-               RasterizePolygonJoiningLine(&PtiUpCoastNormalEnd, &PtiDownCoastNormalEnd, nPolygon);
+               RasterizePolygonJoiningLine( & PtiUpCoastNormalEnd, & PtiDownCoastNormalEnd, nPolygon);
 
-//                   pPolygon->SetNotPointed();
+// pPolygon->SetNotPointed();
             }
 
-//            }
+// }
 
             nNextProfile = nThisProfile;
-            nCoastPoint = nNextProfileCoastPoint-1;
+            nCoastPoint = nNextProfileCoastPoint - 1;
 
             m_nNumPolygonGlobal++;
 
@@ -303,17 +303,17 @@ int CSimulation::nCreateAllPolygons(void)
    // int nNum24 = 0;
    // for (int nY = 0; nY < m_nYGridSize; nY++)
    // {
-   //    for (int nX = 0; nX < m_nXGridSize; nX++)
-   //    {
-   //       if (m_pRasterGrid->m_Cell[nX][nY].nGetPolygonID() == nUnusedPolygon)
-   //          nNumUnusedPolygonCells++;
+   // for (int nX = 0; nX < m_nXGridSize; nX++)
+   // {
+   // if (m_pRasterGrid->m_Cell[nX][nY].nGetPolygonID() == nUnusedPolygon)
+   // nNumUnusedPolygonCells++;
    //
-   //       if (m_pRasterGrid->m_Cell[nX][nY].nGetPolygonID() == 23)
-   //          nNum23++;
+   // if (m_pRasterGrid->m_Cell[nX][nY].nGetPolygonID() == 23)
+   // nNum23++;
    //
-   //       if (m_pRasterGrid->m_Cell[nX][nY].nGetPolygonID() == 24)
-   //          nNum24++;
-   //    }
+   // if (m_pRasterGrid->m_Cell[nX][nY].nGetPolygonID() == 24)
+   // nNum24++;
+   // }
    // }
    //
    // LogStream << m_ulIter << ": BEFORE CELL RE-NUMBERING" << endl;
@@ -341,17 +341,17 @@ int CSimulation::nCreateAllPolygons(void)
    // nNum24 = 0;
    // for (int nY = 0; nY < m_nYGridSize; nY++)
    // {
-   //    for (int nX = 0; nX < m_nXGridSize; nX++)
-   //    {
-   //       if (m_pRasterGrid->m_Cell[nX][nY].nGetPolygonID() == nUnusedPolygon)
-   //          nNumUnusedPolygonCells++;
+   // for (int nX = 0; nX < m_nXGridSize; nX++)
+   // {
+   // if (m_pRasterGrid->m_Cell[nX][nY].nGetPolygonID() == nUnusedPolygon)
+   // nNumUnusedPolygonCells++;
    //
-   //       if (m_pRasterGrid->m_Cell[nX][nY].nGetPolygonID() == 23)
-   //          nNum23++;
+   // if (m_pRasterGrid->m_Cell[nX][nY].nGetPolygonID() == 23)
+   // nNum23++;
    //
-   //       if (m_pRasterGrid->m_Cell[nX][nY].nGetPolygonID() == 24)
-   //          nNum24++;
-   //    }
+   // if (m_pRasterGrid->m_Cell[nX][nY].nGetPolygonID() == 24)
+   // nNum24++;
+   // }
    // }
    //
    // LogStream << m_ulIter << ": AFTER CELL RE-NUMBERING" << endl;
@@ -369,9 +369,9 @@ int CSimulation::nCreateAllPolygons(void)
    // // And change these cells
    // for (int n = 0; n < nEdgeSize; n++)
    // {
-   //    CGeom2DPoint* pPt = pPolygon->pPtGetBoundaryPoint(n);    // External CRS
-   //    CGeom2DIPoint Pti = PtiExtCRSToGridRound(pPt);
-   //    m_pRasterGrid->m_Cell[Pti.nGetX()][Pti.nGetY()].SetPolygonID(nUnusedPolygon);
+   // CGeom2DPoint* pPt = pPolygon->pPtGetBoundaryPoint(n);    // External CRS
+   // CGeom2DIPoint Pti = PtiExtCRSToGridRound(pPt);
+   // m_pRasterGrid->m_Cell[Pti.nGetX()][Pti.nGetY()].SetPolygonID(nUnusedPolygon);
    // }
 
    // // DEBUG CODE =================================================================================
@@ -380,17 +380,17 @@ int CSimulation::nCreateAllPolygons(void)
    // nNum24 = 0;
    // for (int nY = 0; nY < m_nYGridSize; nY++)
    // {
-   //    for (int nX = 0; nX < m_nXGridSize; nX++)
-   //    {
-   //       if (m_pRasterGrid->m_Cell[nX][nY].nGetPolygonID() == nUnusedPolygon)
-   //          nNumUnusedPolygonCells++;
+   // for (int nX = 0; nX < m_nXGridSize; nX++)
+   // {
+   // if (m_pRasterGrid->m_Cell[nX][nY].nGetPolygonID() == nUnusedPolygon)
+   // nNumUnusedPolygonCells++;
    //
-   //       if (m_pRasterGrid->m_Cell[nX][nY].nGetPolygonID() == 23)
-   //          nNum23++;
+   // if (m_pRasterGrid->m_Cell[nX][nY].nGetPolygonID() == 23)
+   // nNum23++;
    //
-   //       if (m_pRasterGrid->m_Cell[nX][nY].nGetPolygonID() == 24)
-   //          nNum24++;
-   //    }
+   // if (m_pRasterGrid->m_Cell[nX][nY].nGetPolygonID() == 24)
+   // nNum24++;
+   // }
    // }
    //
    // LogStream << m_ulIter << ": AFTER CELL RE-NUMBERING" << endl;
@@ -402,35 +402,35 @@ int CSimulation::nCreateAllPolygons(void)
    // // DEBUG CODE ===========================================================================================================
    // if (m_ulIter == 109)
    // {
-   //    string strOutFile = m_strOutPath;
-   //    strOutFile += "00_polygon_raster_";
-   //    strOutFile += to_string(m_ulIter);
-   //    strOutFile += ".tif";
+   // string strOutFile = m_strOutPath;
+   // strOutFile += "00_polygon_raster_";
+   // strOutFile += to_string(m_ulIter);
+   // strOutFile += ".tif";
    //
-   //    GDALDriver* pDriver = GetGDALDriverManager()->GetDriverByName("gtiff");
-   //    GDALDataset* pDataSet = pDriver->Create(strOutFile.c_str(), m_nXGridSize, m_nYGridSize, 1, GDT_Float64, m_papszGDALRasterOptions);
-   //    pDataSet->SetProjection(m_strGDALBasementDEMProjection.c_str());
-   //    pDataSet->SetGeoTransform(m_dGeoTransform);
+   // GDALDriver* pDriver = GetGDALDriverManager()->GetDriverByName("gtiff");
+   // GDALDataset* pDataSet = pDriver->Create(strOutFile.c_str(), m_nXGridSize, m_nYGridSize, 1, GDT_Float64, m_papszGDALRasterOptions);
+   // pDataSet->SetProjection(m_strGDALBasementDEMProjection.c_str());
+   // pDataSet->SetGeoTransform(m_dGeoTransform);
    //
-   //    int nn = 0;
-   //    double* pdRaster = new double[m_nXGridSize * m_nYGridSize];
-   //    for (int nY = 0; nY < m_nYGridSize; nY++)
-   //    {
-   //       for (int nX = 0; nX < m_nXGridSize; nX++)
-   //       {
-   //          pdRaster[nn++] = m_pRasterGrid->m_Cell[nX][nY].nGetPolygonID();
-   //       }
-   //    }
+   // int nn = 0;
+   // double* pdRaster = new double[m_nXGridSize * m_nYGridSize];
+   // for (int nY = 0; nY < m_nYGridSize; nY++)
+   // {
+   // for (int nX = 0; nX < m_nXGridSize; nX++)
+   // {
+   // pdRaster[nn++] = m_pRasterGrid->m_Cell[nX][nY].nGetPolygonID();
+   // }
+   // }
    //
-   //    GDALRasterBand* pBand = pDataSet->GetRasterBand(1);
-   //    pBand->SetNoDataValue(m_dMissingValue);
-   //    int nRet = pBand->RasterIO(GF_Write, 0, 0, m_nXGridSize, m_nYGridSize, pdRaster, m_nXGridSize, m_nYGridSize, GDT_Float64, 0, 0, NULL);
+   // GDALRasterBand* pBand = pDataSet->GetRasterBand(1);
+   // pBand->SetNoDataValue(m_dMissingValue);
+   // int nRet = pBand->RasterIO(GF_Write, 0, 0, m_nXGridSize, m_nYGridSize, pdRaster, m_nXGridSize, m_nYGridSize, GDT_Float64, 0, 0, NULL);
    //
-   //    if (nRet == CE_Failure)
-   //       return RTN_ERR_GRIDCREATE;
+   // if (nRet == CE_Failure)
+   // return RTN_ERR_GRIDCREATE;
    //
-   //    GDALClose(pDataSet);
-   //    delete[] pdRaster;
+   // GDALClose(pDataSet);
+   // delete[] pdRaster;
    // }
    // // DEBUG CODE ===========================================================================================================
 
@@ -439,15 +439,15 @@ int CSimulation::nCreateAllPolygons(void)
    // nNum24 = 0;
    // for (int nY = 0; nY < m_nYGridSize; nY++)
    // {
-   //    for (int nX = 0; nX < m_nXGridSize; nX++)
-   //    {
+   // for (int nX = 0; nX < m_nXGridSize; nX++)
+   // {
    //
-   //       if (m_pRasterGrid->m_Cell[nX][nY].nGetPolygonID() == 23)
-   //          nNum23++;
+   // if (m_pRasterGrid->m_Cell[nX][nY].nGetPolygonID() == 23)
+   // nNum23++;
    //
-   //       if (m_pRasterGrid->m_Cell[nX][nY].nGetPolygonID() == 24)
-   //          nNum24++;
-   //    }
+   // if (m_pRasterGrid->m_Cell[nX][nY].nGetPolygonID() == 24)
+   // nNum24++;
+   // }
    // }
    //
    // LogStream << m_ulIter << ": AFTER 00_polygon_raster" << endl;
@@ -461,7 +461,7 @@ int CSimulation::nCreateAllPolygons(void)
 //===============================================================================================================================
 //! Puts a polygon 'joining line' (the line which is the seaward boundary of the polygon, if the polygon doesn't meet at a point) onto the raster grid
 //===============================================================================================================================
-void CSimulation::RasterizePolygonJoiningLine(CGeom2DIPoint const* pPt1, CGeom2DIPoint const* pPt2, int const nPoly)
+void CSimulation::RasterizePolygonJoiningLine(CGeom2DIPoint const * pPt1, CGeom2DIPoint const * pPt2, int const nPoly)
 {
    // The start point of the line (grid CRS)
    int nXStart = pPt1->nGetX();
@@ -521,16 +521,16 @@ void CSimulation::MarkPolygonCells(void)
    // for (int nCoast = 0; nCoast < static_cast<int>(m_VCoast.size()); nCoast++)
    // {
    //    // Do this for every coastal polygon
-   //    for (int nPoly = 0; nPoly < m_VCoast[nCoast].nGetNumPolygons(); nPoly++)
-   //    {
-   //       CGeomCoastPolygon* pPolygon = m_VCoast[nCoast].pGetPolygon(nPoly);
+   // for (int nPoly = 0; nPoly < m_VCoast[nCoast].nGetNumPolygons(); nPoly++)
+   // {
+   // CGeomCoastPolygon* pPolygon = m_VCoast[nCoast].pGetPolygon(nPoly);
    //
-   //       int nPolyID = pPolygon->nGetCoastID();
-   //       VnID.push_back(nPolyID);
+   // int nPolyID = pPolygon->nGetCoastID();
+   // VnID.push_back(nPolyID);
    //
-   //       CGeom2DIPoint PtiStart = pPolygon->PtiGetFillStartPoint();
-   //       VPtiCentroids.push_back(PtiStart);
-   //    }
+   // CGeom2DIPoint PtiStart = pPolygon->PtiGetFillStartPoint();
+   // VPtiCentroids.push_back(PtiStart);
+   // }
    // }
    //
    // string strOutFile = m_strOutPath;
@@ -547,21 +547,21 @@ void CSimulation::MarkPolygonCells(void)
    // double* pdRaster = new double[m_nXGridSize * m_nYGridSize];
    // for (int nY = 0; nY < m_nYGridSize; nY++)
    // {
-   //    for (int nX = 0; nX < m_nXGridSize; nX++)
-   //    {
-   //       pdRaster[nn] = INT_NODATA;
+   // for (int nX = 0; nX < m_nXGridSize; nX++)
+   // {
+   // pdRaster[nn] = INT_NODATA;
    //
-   //       for (int n = 0; n < static_cast<int>(VPtiCentroids.size()); n++)
-   //       {
-   //          if ((VPtiCentroids[n].nGetX() == nX) && (VPtiCentroids[n].nGetY() == nY))
-   //          {
-   //             pdRaster[nn] = VnID[n];
-   //             LogStream << m_ulIter << ": flood fill start point for polygon " << VnID[n] << " is [" << nX << "][" << nY << "]" << endl;
-   //             break;
-   //          }
-   //       }
-   //       nn++;
-   //    }
+   // for (int n = 0; n < static_cast<int>(VPtiCentroids.size()); n++)
+   // {
+   // if ((VPtiCentroids[n].nGetX() == nX) && (VPtiCentroids[n].nGetY() == nY))
+   // {
+   // pdRaster[nn] = VnID[n];
+   // LogStream << m_ulIter << ": flood fill start point for polygon " << VnID[n] << " is [" << nX << "][" << nY << "]" << endl;
+   // break;
+   // }
+   // }
+   // nn++;
+   // }
    // }
    //
    // GDALRasterBand* pBand = pDataSet->GetRasterBand(1);
@@ -569,7 +569,7 @@ void CSimulation::MarkPolygonCells(void)
    // int nRet = pBand->RasterIO(GF_Write, 0, 0, m_nXGridSize, m_nYGridSize, pdRaster, m_nXGridSize, m_nYGridSize, GDT_Float64, 0, 0, NULL);
    //
    // if (nRet == CE_Failure)
-   //    LogStream << nRet << endl;
+   // LogStream << nRet << endl;
    //
    // GDALClose(pDataSet);
    // delete[] pdRaster;
@@ -595,7 +595,7 @@ void CSimulation::MarkPolygonCells(void)
          double dSedimentInputSand = 0;
          double dSedimentInputCoarse = 0;
 
-         CGeomCoastPolygon* pPolygon = m_VCoast[nCoast].pGetPolygon(nPoly);
+         CGeomCoastPolygon * pPolygon = m_VCoast[nCoast].pGetPolygon(nPoly);
          int nPolyID = pPolygon->nGetCoastID();    // TODO 044
 
          // LogStream << m_ulIter << ": in MarkPolygonCells() nPoly = " << nPoly << " nPolyID = " << nPolyID << endl;
@@ -604,33 +604,33 @@ void CSimulation::MarkPolygonCells(void)
          stack<CGeom2DIPoint> PtiStack;
 
 //          // Since the polygon's vector boundary does not coincide exactly with the polygon's raster boundary, and the point-in-polygon check gives an indeterminate result if the point is exactly on the polygon's boundary, for safety we must construct a vector 'inner buffer' which is smaller than, and inside, the vector boundary TODO *** STILL NEEDED?
-//          int nHand = m_VCoast[nCoast].nGetSeaHandedness();
-//          int nSize = pPolygon->nGetBoundarySize();
-//          vector<CGeom2DPoint> PtVInnerBuffer;
+// int nHand = m_VCoast[nCoast].nGetSeaHandedness();
+// int nSize = pPolygon->nGetBoundarySize();
+// vector<CGeom2DPoint> PtVInnerBuffer;
 //
-//          for (int i = 0; i < nSize-1; i++)
-//          {
-//             int j = i + 1;
-//             if (i == nSize-2)       // We must ignore the duplicated node point
-//                j = 0;
+// for (int i = 0; i < nSize-1; i++)
+// {
+// int j = i + 1;
+// if (i == nSize-2)       // We must ignore the duplicated node point
+// j = 0;
 //
-//             CGeom2DPoint PtThis = *pPolygon->pPtGetBoundaryPoint(i);
-//             CGeom2DPoint PtNext = *pPolygon->pPtGetBoundaryPoint(j);
+// CGeom2DPoint PtThis = *pPolygon->pPtGetBoundaryPoint(i);
+// CGeom2DPoint PtNext = *pPolygon->pPtGetBoundaryPoint(j);
 //
 //             // Safety check
-//             if (PtThis == PtNext)
-//                continue;
+// if (PtThis == PtNext)
+// continue;
 //
-//             CGeom2DPoint PtBuffer = PtGetPerpendicular(&PtThis, &PtNext, m_dCellSide, nHand);
+// CGeom2DPoint PtBuffer = PtGetPerpendicular(&PtThis, &PtNext, m_dCellSide, nHand);
 //
-//             PtVInnerBuffer.push_back(PtBuffer);
-//          }
+// PtVInnerBuffer.push_back(PtBuffer);
+// }
 
          // // DEBUG CODE ==============================================================================================
          // LogStream << endl << m_ulIter << ": coast " << nCoast << ", polygon " << nPoly << endl;
          // LogStream << "Boundary\t\t\tBuffer" << endl;
          // for (int i = 0; i < pPolygon->nGetBoundarySize()-1; i++)
-         //    LogStream << "{" << pPolygon->pPtGetBoundaryPoint(i)->dGetX() << ", " << pPolygon->pPtGetBoundaryPoint(i)->dGetY() << "}\t{" << PtVInnerBuffer[i].dGetX() << ", " << PtVInnerBuffer[i].dGetY() << "}" << endl;
+         // LogStream << "{" << pPolygon->pPtGetBoundaryPoint(i)->dGetX() << ", " << pPolygon->pPtGetBoundaryPoint(i)->dGetY() << "}\t{" << PtVInnerBuffer[i].dGetX() << ", " << PtVInnerBuffer[i].dGetY() << "}" << endl;
          // LogStream << endl;
          // // DEBUG CODE ==============================================================================================
 
@@ -641,14 +641,14 @@ void CSimulation::MarkPolygonCells(void)
          // if (! bIsWithinPolygon(&PtStart, &PtVInnerBuffer))
          // {
          //    // No, it is not: the polygon must be a concave polygon. So keep looking for a point which is definitely inside the polygon, using an alternative method
-         //    PtStart = PtFindPointInPolygon(&PtVInnerBuffer, pPolygon->nGetPointInPolygonSearchStartPoint());
+         // PtStart = PtFindPointInPolygon(&PtVInnerBuffer, pPolygon->nGetPointInPolygonSearchStartPoint());
          // }
          //
          // // Safety check (PtFindPointInPolygon() returns CGeom2DPoint(DBL_NODATA, DBL_NODATA) if it cannot find a valid start point)
          // if (bFPIsEqual(PtStart.dGetX(), DBL_NODATA, TOLERANCE))
          // {
-         //    LogStream << m_ulIter << ": " << ERR << "could not find a flood fill start point for coast " << nCoast << ", polygon " << nPoly << endl;
-         //    break;
+         // LogStream << m_ulIter << ": " << ERR << "could not find a flood fill start point for coast " << nCoast << ", polygon " << nPoly << endl;
+         // break;
          // }
 
          // We have a flood fill start point which is definitely within the polygon so push this point onto the stack
@@ -723,24 +723,24 @@ void CSimulation::MarkPolygonCells(void)
                nCellsInPolygon++;
                dTotDepth += m_pRasterGrid->m_Cell[nX][nY].dGetSeaDepth();
 
-               if ((! bSpanAbove) && (nY > 0) && (m_pRasterGrid->m_Cell[nX][nY-1].nGetPolygonID() == INT_NODATA))
+               if ((! bSpanAbove) && (nY > 0) && (m_pRasterGrid->m_Cell[nX][nY - 1].nGetPolygonID() == INT_NODATA))
                {
-                  PtiStack.push(CGeom2DIPoint(nX, nY-1));
+                  PtiStack.push(CGeom2DIPoint(nX, nY - 1));
                   bSpanAbove = true;
                }
 
-               else if (bSpanAbove && (nY > 0) && (m_pRasterGrid->m_Cell[nX][nY-1].nGetPolygonID() != INT_NODATA))
+               else if (bSpanAbove && (nY > 0) && (m_pRasterGrid->m_Cell[nX][nY - 1].nGetPolygonID() != INT_NODATA))
                {
                   bSpanAbove = false;
                }
 
-               if ((! bSpanBelow) && (nY < m_nYGridSize-1) && (m_pRasterGrid->m_Cell[nX][nY+1].nGetPolygonID() == INT_NODATA))
+               if ((! bSpanBelow) && (nY < m_nYGridSize - 1) && (m_pRasterGrid->m_Cell[nX][nY + 1].nGetPolygonID() == INT_NODATA))
                {
-                  PtiStack.push(CGeom2DIPoint(nX, nY+1));
+                  PtiStack.push(CGeom2DIPoint(nX, nY + 1));
                   bSpanBelow = true;
                }
 
-               else if (bSpanBelow && (nY < m_nYGridSize-1) && (m_pRasterGrid->m_Cell[nX][nY+1].nGetPolygonID() != INT_NODATA))
+               else if (bSpanBelow && (nY < m_nYGridSize - 1) && (m_pRasterGrid->m_Cell[nX][nY + 1].nGetPolygonID() != INT_NODATA))
                {
                   bSpanBelow = false;
                }
@@ -777,48 +777,48 @@ void CSimulation::MarkPolygonCells(void)
    // // DEBUG CODE ===========================================================================================================
    // if (m_ulIter == 109)
    // {
-   //    string strOutFile = m_strOutPath + "00_polygon_fill_";
-   //    strOutFile += to_string(m_ulIter);
-   //    strOutFile += ".tif";
+   // string strOutFile = m_strOutPath + "00_polygon_fill_";
+   // strOutFile += to_string(m_ulIter);
+   // strOutFile += ".tif";
    //
-   //    GDALDriver* pDriver = GetGDALDriverManager()->GetDriverByName("gtiff");
-   //    GDALDataset* pDataSet = pDriver->Create(strOutFile.c_str(), m_nXGridSize, m_nYGridSize, 1, GDT_Float64, m_papszGDALRasterOptions);
-   //    pDataSet->SetProjection(m_strGDALBasementDEMProjection.c_str());
-   //    pDataSet->SetGeoTransform(m_dGeoTransform);
-   //    double* pdRaster = new double[m_nXGridSize * m_nYGridSize];
-   //    int n = 0;
+   // GDALDriver* pDriver = GetGDALDriverManager()->GetDriverByName("gtiff");
+   // GDALDataset* pDataSet = pDriver->Create(strOutFile.c_str(), m_nXGridSize, m_nYGridSize, 1, GDT_Float64, m_papszGDALRasterOptions);
+   // pDataSet->SetProjection(m_strGDALBasementDEMProjection.c_str());
+   // pDataSet->SetGeoTransform(m_dGeoTransform);
+   // double* pdRaster = new double[m_nXGridSize * m_nYGridSize];
+   // int n = 0;
    //
-   //    int nNumPoly = m_VCoast[0].nGetNumPolygons();
-   //    vector<int> nVPerPoly(nNumPoly, 0);
-   //    int nNotInPoly = 0;
+   // int nNumPoly = m_VCoast[0].nGetNumPolygons();
+   // vector<int> nVPerPoly(nNumPoly, 0);
+   // int nNotInPoly = 0;
    //
-   //    for (int nY = 0; nY < m_nYGridSize; nY++)
-   //    {
-   //       for (int nX = 0; nX < m_nXGridSize; nX++)
-   //       {
-   //          int nID = m_pRasterGrid->m_Cell[nX][nY].nGetPolygonID();
-   //          if (nID == INT_NODATA)
-   //             nNotInPoly++;
-   //          else
-   //             nVPerPoly[nID]++;
+   // for (int nY = 0; nY < m_nYGridSize; nY++)
+   // {
+   // for (int nX = 0; nX < m_nXGridSize; nX++)
+   // {
+   // int nID = m_pRasterGrid->m_Cell[nX][nY].nGetPolygonID();
+   // if (nID == INT_NODATA)
+   // nNotInPoly++;
+   // else
+   // nVPerPoly[nID]++;
    //
-   //          pdRaster[n++] = nID;
-   //       }
-   //    }
+   // pdRaster[n++] = nID;
+   // }
+   // }
    //
-   //    GDALRasterBand* pBand = pDataSet->GetRasterBand(1);
-   //    pBand->SetNoDataValue(m_dMissingValue);
-   //    int nRet = pBand->RasterIO(GF_Write, 0, 0, m_nXGridSize, m_nYGridSize, pdRaster, m_nXGridSize, m_nYGridSize, GDT_Float64, 0, 0, NULL);
-   //    if (nRet == CE_Failure)
-   //       return;
+   // GDALRasterBand* pBand = pDataSet->GetRasterBand(1);
+   // pBand->SetNoDataValue(m_dMissingValue);
+   // int nRet = pBand->RasterIO(GF_Write, 0, 0, m_nXGridSize, m_nYGridSize, pdRaster, m_nXGridSize, m_nYGridSize, GDT_Float64, 0, 0, NULL);
+   // if (nRet == CE_Failure)
+   // return;
    //
-   //    GDALClose(pDataSet);
-   //    delete[] pdRaster;
+   // GDALClose(pDataSet);
+   // delete[] pdRaster;
    //
-   //    for (int nn = 0; nn < nNumPoly; nn++)
-   //       LogStream << m_ulIter << ": polygon " << nn << " has " << nVPerPoly[nn] << " cells" << endl;
-   //    LogStream << m_ulIter << " Number of cells not in any polygon = " << nNotInPoly << endl;
-   //    LogStream << "==================" << endl;
+   // for (int nn = 0; nn < nNumPoly; nn++)
+   // LogStream << m_ulIter << ": polygon " << nn << " has " << nVPerPoly[nn] << " cells" << endl;
+   // LogStream << m_ulIter << " Number of cells not in any polygon = " << nNotInPoly << endl;
+   // LogStream << "==================" << endl;
    // }
    // // DEBUG CODE ===========================================================================================================
 }
@@ -836,25 +836,25 @@ int CSimulation::nDoPolygonSharedBoundaries(void)
       // // DEBUG CODE =================
       // for (int m = 0; m < m_VCoast[nCoast].nGetNumProfiles(); m++)
       // {
-      //    CGeomProfile* pProfile = m_VCoast[nCoast].pGetProfile(m);
+      // CGeomProfile* pProfile = m_VCoast[nCoast].pGetProfile(m);
       //
-      //    LogStream << m << "\t" << pProfile->nGetCoastID() << "\t" << pProfile->nGetGlobalID() << "\t";
+      // LogStream << m << "\t" << pProfile->nGetCoastID() << "\t" << pProfile->nGetGlobalID() << "\t";
       //
-      //    int nPointsInProfile = pProfile->nGetProfileSize();
+      // int nPointsInProfile = pProfile->nGetProfileSize();
       //
-      //    for (int nPoint = 0; nPoint < nPointsInProfile; nPoint++)
-      //    {
-      //       CGeom2DPoint Pt = *pProfile->pPtGetPointInProfile(nPoint);
-      //       LogStream << "{" << Pt.dGetX() << ", " << Pt.dGetY() << "}";
-      //    }
-      //    LogStream << endl;
+      // for (int nPoint = 0; nPoint < nPointsInProfile; nPoint++)
+      // {
+      // CGeom2DPoint Pt = *pProfile->pPtGetPointInProfile(nPoint);
+      // LogStream << "{" << Pt.dGetX() << ", " << Pt.dGetY() << "}";
+      // }
+      // LogStream << endl;
       // }
       // // DEBUG CODE =================
 
       // Do this for every coastal polygon, in along-coast sequence
       for (int nn = 0; nn < nNumPolygons; nn++)
       {
-         CGeomCoastPolygon* pThisPolygon = m_VCoast[nCoast].pGetPolygon(nn);
+         CGeomCoastPolygon * pThisPolygon = m_VCoast[nCoast].pGetPolygon(nn);
          int nThisPolygon = pThisPolygon->nGetCoastID();
 
          vector<int> nVUpCoastAdjacentPolygon;
@@ -871,8 +871,8 @@ int CSimulation::nDoPolygonSharedBoundaries(void)
             dVDownCoastBoundaryShare.push_back(1);
 
             // Store in the polygon
-            pThisPolygon->SetDownCoastAdjacentPolygons(&nVDownCoastAdjacentPolygon);
-            pThisPolygon->SetDownCoastAdjacentPolygonBoundaryShares(&dVDownCoastBoundaryShare);
+            pThisPolygon->SetDownCoastAdjacentPolygons( & nVDownCoastAdjacentPolygon);
+            pThisPolygon->SetDownCoastAdjacentPolygonBoundaryShares( & dVDownCoastBoundaryShare);
          }
 
          else
@@ -883,15 +883,15 @@ int CSimulation::nDoPolygonSharedBoundaries(void)
 
             double dDownCoastTotBoundaryLen = 0;
 
-            CGeomProfile* pProfile = m_VCoast[nCoast].pGetProfile(nDownCoastProfile);
+            CGeomProfile * pProfile = m_VCoast[nCoast].pGetProfile(nDownCoastProfile);
 
-            for (int nPoint = 0; nPoint < nPointsInProfile-1; nPoint++)
+            for (int nPoint = 0; nPoint < nPointsInProfile - 1; nPoint++)
             {
-               CGeom2DPoint PtStart = *pProfile->pPtGetPointInProfile(nPoint);
-               CGeom2DPoint PtEnd = *pProfile->pPtGetPointInProfile(nPoint+1);
+               CGeom2DPoint PtStart = * pProfile->pPtGetPointInProfile(nPoint);
+               CGeom2DPoint PtEnd = * pProfile->pPtGetPointInProfile(nPoint + 1);
 
                // Calculate the length of this segment of the normal profile. Note that it should not be zero, since we checked for duplicate points when creating profiles
-               double dDistBetween = dGetDistanceBetween(&PtStart, &PtEnd);
+               double dDistBetween = dGetDistanceBetween( & PtStart, & PtEnd);
 
                // Find out which polygon is adjacent to each line segment of the polygon's down-coast profile boundary. The basic approach used is to count the number of coincident profiles in each line segment, and (because we are going down-coast) add this number to 'this' polygon's number. However, some of these coincident profiles may be invalid, so we must count only the valid co-incident profiles
                int nNumCoinc = pProfile->nGetNumCoincidentProfilesInLineSegment(nPoint);
@@ -910,7 +910,7 @@ int CSimulation::nDoPolygonSharedBoundaries(void)
                   if (nProf == -1)
                      continue;
 
-                  CGeomProfile const* pProf = m_VCoast[nCoast].pGetProfile(nProf);
+                  CGeomProfile const * pProf = m_VCoast[nCoast].pGetProfile(nProf);
 
                   if (pProf->bProfileOK())
                      nNumValidCoinc++;
@@ -949,8 +949,8 @@ int CSimulation::nDoPolygonSharedBoundaries(void)
             }
 
             // Store in the polygon
-            pThisPolygon->SetDownCoastAdjacentPolygons(&nVDownCoastAdjacentPolygon);
-            pThisPolygon->SetDownCoastAdjacentPolygonBoundaryShares(&dVDownCoastBoundaryShare);
+            pThisPolygon->SetDownCoastAdjacentPolygons( & nVDownCoastAdjacentPolygon);
+            pThisPolygon->SetDownCoastAdjacentPolygonBoundaryShares( & dVDownCoastBoundaryShare);
          }
 
          // Now deal with up-coast adjacent polygons
@@ -961,8 +961,8 @@ int CSimulation::nDoPolygonSharedBoundaries(void)
             dVUpCoastBoundaryShare.push_back(1);
 
             // Store in the polygon
-            pThisPolygon->SetUpCoastAdjacentPolygons(&nVUpCoastAdjacentPolygon);
-            pThisPolygon->SetUpCoastAdjacentPolygonBoundaryShares(&dVUpCoastBoundaryShare);
+            pThisPolygon->SetUpCoastAdjacentPolygons( & nVUpCoastAdjacentPolygon);
+            pThisPolygon->SetUpCoastAdjacentPolygonBoundaryShares( & dVUpCoastBoundaryShare);
          }
 
          else
@@ -973,12 +973,12 @@ int CSimulation::nDoPolygonSharedBoundaries(void)
 
             double dUpCoastTotBoundaryLen = 0;
 
-            CGeomProfile* pProfile = m_VCoast[nCoast].pGetProfile(nUpCoastProfile);
+            CGeomProfile * pProfile = m_VCoast[nCoast].pGetProfile(nUpCoastProfile);
 
-            for (int nPoint = 0; nPoint < nPointsInProfile-1; nPoint++)
+            for (int nPoint = 0; nPoint < nPointsInProfile - 1; nPoint++)
             {
-               CGeom2DPoint PtStart = *pProfile->pPtGetPointInProfile(nPoint);
-               CGeom2DPoint PtEnd = *pProfile->pPtGetPointInProfile(nPoint+1);
+               CGeom2DPoint PtStart = * pProfile->pPtGetPointInProfile(nPoint);
+               CGeom2DPoint PtEnd = * pProfile->pPtGetPointInProfile(nPoint + 1);
 
                // Safety check
                if (PtStart == PtEnd)
@@ -986,7 +986,7 @@ int CSimulation::nDoPolygonSharedBoundaries(void)
                   continue;
 
                // Calculate the length of this segment of the normal profile
-               double dDistBetween = dGetDistanceBetween(&PtStart, &PtEnd);
+               double dDistBetween = dGetDistanceBetween( & PtStart, & PtEnd);
 
                // Find out which polygon is adjacent to each line segment of the polygon's up-coast profile boundary. The basic approach used is to count the number of coincident profiles in each line segment, and (because we are going up-coast) subtract this number from 'this' polygon's number. However, some of these coincident profiles may be invalid, so we must count only the valid co-incident profiles
                int nNumCoinc = pProfile->nGetNumCoincidentProfilesInLineSegment(nPoint);
@@ -1005,7 +1005,7 @@ int CSimulation::nDoPolygonSharedBoundaries(void)
                   if (nProf == -1)
                      continue;
 
-                  CGeomProfile const* pProf = m_VCoast[nCoast].pGetProfile(nProf);
+                  CGeomProfile const * pProf = m_VCoast[nCoast].pGetProfile(nProf);
 
                   if (pProf->bProfileOK())
                      nNumValidCoinc++;
@@ -1044,8 +1044,8 @@ int CSimulation::nDoPolygonSharedBoundaries(void)
             }
 
             // Store in the polygon
-            pThisPolygon->SetUpCoastAdjacentPolygons(&nVUpCoastAdjacentPolygon);
-            pThisPolygon->SetUpCoastAdjacentPolygonBoundaryShares(&dVUpCoastBoundaryShare);
+            pThisPolygon->SetUpCoastAdjacentPolygons( & nVUpCoastAdjacentPolygon);
+            pThisPolygon->SetUpCoastAdjacentPolygonBoundaryShares( & dVUpCoastBoundaryShare);
          }
 
          // Finally, calculate the distance between the coast node and the antinode of the polygon
@@ -1058,7 +1058,7 @@ int CSimulation::nDoPolygonSharedBoundaries(void)
          // assert(dVUpCoastBoundaryShare.size() == nVUpCoastAdjacentPolygon.size());
          // assert(dVDownCoastBoundaryShare.size() == nVDownCoastAdjacentPolygon.size());
          //
-         //             LogStream << m_ulIter << ": polygon = " << nPoly << (pPolygon->bIsPointed() ? " IS TRIANGULAR" : "") << endl;
+         // LogStream << m_ulIter << ": polygon = " << nPoly << (pPolygon->bIsPointed() ? " IS TRIANGULAR" : "") << endl;
          // LogStream << m_ulIter << ": coast " << nCoast << " polygon " << nThisPolygon << endl;
          //
          // int nUpCoastProfile = pThisPolygon->nGetUpCoastProfile();
@@ -1074,20 +1074,20 @@ int CSimulation::nDoPolygonSharedBoundaries(void)
          //
          // LogStream << "\tThere are " << nVUpCoastAdjacentPolygon.size() << " UP-COAST adjacent polygon(s) = ";
          // for (unsigned int n = 0; n < nVUpCoastAdjacentPolygon.size(); n++)
-         //    LogStream << nVUpCoastAdjacentPolygon[n] << " ";
+         // LogStream << nVUpCoastAdjacentPolygon[n] << " ";
          // LogStream << endl;
          //
          // LogStream << "\tThere are " << nVDownCoastAdjacentPolygon.size() << " DOWN-COAST adjacent polygon(s) = ";
          // for (unsigned int n = 0; n < nVDownCoastAdjacentPolygon.size(); n++)
-         //    LogStream << nVDownCoastAdjacentPolygon[n] << " ";
+         // LogStream << nVDownCoastAdjacentPolygon[n] << " ";
          // LogStream << endl;
          //
          // double dUpCoastTotBoundaryLen = 0;
          // LogStream << "\tUP-COAST boundary share(s) = ";
          // for (unsigned int n = 0; n < dVUpCoastBoundaryShare.size(); n++)
          // {
-         //    dUpCoastTotBoundaryLen += dVUpCoastBoundaryShare[n];
-         //    LogStream << dVUpCoastBoundaryShare[n] << " ";
+         // dUpCoastTotBoundaryLen += dVUpCoastBoundaryShare[n];
+         // LogStream << dVUpCoastBoundaryShare[n] << " ";
          // }
          // LogStream << endl;
          // LogStream << "\tTotal UP-COAST boundary length = " << dUpCoastTotBoundaryLen << endl;
@@ -1096,8 +1096,8 @@ int CSimulation::nDoPolygonSharedBoundaries(void)
          // LogStream << "\tDOWN-COAST boundary share(s) = ";
          // for (unsigned int n = 0; n < dVDownCoastBoundaryShare.size(); n++)
          // {
-         //    dDownCoastTotBoundaryLen += dVDownCoastBoundaryShare[n];
-         //    LogStream << dVDownCoastBoundaryShare[n] << " ";
+         // dDownCoastTotBoundaryLen += dVDownCoastBoundaryShare[n];
+         // LogStream << dVDownCoastBoundaryShare[n] << " ";
          // }
          // LogStream << endl;
          // LogStream << "\tTotal DOWN-COAST boundary length = " << dDownCoastTotBoundaryLen << endl;
@@ -1108,32 +1108,32 @@ int CSimulation::nDoPolygonSharedBoundaries(void)
    // // DEBUG CODE =================================================================================
    // for (int nCoast = 0; nCoast < static_cast<int>(m_VCoast.size()); nCoast++)
    // {
-   //    int nNumPoly = m_VCoast[nCoast].nGetNumPolygons();
-   //    for (int nPoly = 0; nPoly < nNumPoly; nPoly++)
-   //    {
-   //       CGeomCoastPolygon const* pPolygon = m_VCoast[nCoast].pGetPolygon(nPoly);
+   // int nNumPoly = m_VCoast[nCoast].nGetNumPolygons();
+   // for (int nPoly = 0; nPoly < nNumPoly; nPoly++)
+   // {
+   // CGeomCoastPolygon const* pPolygon = m_VCoast[nCoast].pGetPolygon(nPoly);
    //
-   //       int nNumUpCoastPolygons = pPolygon->nGetNumUpCoastAdjacentPolygons();
-   //       LogStream << "Polygon " << nPoly << " up-coast polygon(s) = ";
-   //       for (int nAdj = 0; nAdj < nNumUpCoastPolygons; nAdj++)
-   //       {
-   //          int nAdjPoly = pPolygon->nGetUpCoastAdjacentPolygon(nAdj);
-   //          LogStream << nAdjPoly;
-   //          if (nAdjPoly > nNumPoly-1)
-   //             LogStream << "***";
-   //       }
+   // int nNumUpCoastPolygons = pPolygon->nGetNumUpCoastAdjacentPolygons();
+   // LogStream << "Polygon " << nPoly << " up-coast polygon(s) = ";
+   // for (int nAdj = 0; nAdj < nNumUpCoastPolygons; nAdj++)
+   // {
+   // int nAdjPoly = pPolygon->nGetUpCoastAdjacentPolygon(nAdj);
+   // LogStream << nAdjPoly;
+   // if (nAdjPoly > nNumPoly-1)
+   // LogStream << "***";
+   // }
    //
-   //       int nNumDownCoastPolygons = pPolygon->nGetNumDownCoastAdjacentPolygons();
-   //       LogStream << " down-coast polygon(s) = ";
-   //       for (int nAdj = 0; nAdj < nNumDownCoastPolygons; nAdj++)
-   //       {
-   //          int nAdjPoly = pPolygon->nGetDownCoastAdjacentPolygon(nAdj);
-   //          LogStream << nAdjPoly;
-   //          if (nAdjPoly > nNumPoly-1)
-   //             LogStream << "***";
-   //       }
-   //       LogStream << endl;
-   //    }
+   // int nNumDownCoastPolygons = pPolygon->nGetNumDownCoastAdjacentPolygons();
+   // LogStream << " down-coast polygon(s) = ";
+   // for (int nAdj = 0; nAdj < nNumDownCoastPolygons; nAdj++)
+   // {
+   // int nAdjPoly = pPolygon->nGetDownCoastAdjacentPolygon(nAdj);
+   // LogStream << nAdjPoly;
+   // if (nAdjPoly > nNumPoly-1)
+   // LogStream << "***";
+   // }
+   // LogStream << endl;
+   // }
    // }
    // // DEBUG CODE =================================================================================
 
@@ -1143,12 +1143,12 @@ int CSimulation::nDoPolygonSharedBoundaries(void)
 //===============================================================================================================================
 //! Determines whether a point is within a polygon: however if the point is exactly on the edge of the polygon, then the result is indeterminate. Modified from code at http://alienryderflex.com/polygon/, our thanks to Darel Rex Finley (DarelRex@gmail.com)
 //===============================================================================================================================
-bool CSimulation::bIsWithinPolygon(CGeom2DPoint const* pPtStart, vector<CGeom2DPoint> const* pPtPoints)
+bool CSimulation::bIsWithinPolygon(CGeom2DPoint const * pPtStart, vector<CGeom2DPoint> const * pPtPoints)
 {
    bool bOddNodes = false;
 
    int nPolyCorners = static_cast<int>(pPtPoints->size());
-   int j = nPolyCorners-1;
+   int j = nPolyCorners - 1;
 
    double dX = pPtStart->dGetX();
    double dY = pPtStart->dGetY();
@@ -1177,7 +1177,7 @@ bool CSimulation::bIsWithinPolygon(CGeom2DPoint const* pPtStart, vector<CGeom2DP
 //===============================================================================================================================
 //! Finds a point in a polygon: is guaranteed to succeed, as every strictly closed polygon has at least one triangle that is completely contained within the polygon. Derived from an algorithm at http://stackoverflow.com/questions/9797448/get-a-point-inside-the-polygon
 //===============================================================================================================================
-CGeom2DPoint CSimulation::PtFindPointInPolygon(vector<CGeom2DPoint> const* pPtPoints, int const nStartPoint)
+CGeom2DPoint CSimulation::PtFindPointInPolygon(vector<CGeom2DPoint> const * pPtPoints, int const nStartPoint)
 {
    int nPolySize = static_cast<int>(pPtPoints->size());
    int nOffSet = 0;
@@ -1192,7 +1192,7 @@ CGeom2DPoint CSimulation::PtFindPointInPolygon(vector<CGeom2DPoint> const* pPtPo
       {
          int nIndex = n + nStartPoint + nOffSet;
 
-         if (nIndex > nPolySize-1)
+         if (nIndex > nPolySize - 1)
             nIndex -= nPolySize;
 
          // Safety check
@@ -1210,8 +1210,8 @@ CGeom2DPoint CSimulation::PtFindPointInPolygon(vector<CGeom2DPoint> const* pPtPo
          return CGeom2DPoint(DBL_NODATA, DBL_NODATA);
 
       // Check if the halfway point between the first and the third point is inside the polygon
-      PtStart = PtAverage(&nVTestPoints[0], &nVTestPoints[2]);
-   } while (! bIsWithinPolygon(&PtStart, pPtPoints));
+      PtStart = PtAverage( & nVTestPoints[0], & nVTestPoints[2]);
+   } while (! bIsWithinPolygon( & PtStart, pPtPoints));
 
    return PtStart;
 }

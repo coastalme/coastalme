@@ -99,14 +99,14 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
          return RTN_ERR_SEDIMENT_INPUT_EVENT;
 
       // All OK, so get landform
-      CRWCellLandform* pLandform = m_pRasterGrid->m_Cell[nPointGridX][nPointGridY].pGetLandform();
+      CRWCellLandform * pLandform = m_pRasterGrid->m_Cell[nPointGridX][nPointGridY].pGetLandform();
 
       // Is this sediment input event at a pre-specified fixed point, or in a block on a coast, or where a line intersects with a coast?
       if (m_bSedimentInputAtPoint)
       {
          // Sediment input is at a user-specified point
          if (m_nLogFileDetail >= LOG_FILE_MIDDLE_DETAIL)
-            LogStream << m_ulIter << ": Sediment input event " << nEvent+1 << " at point [" << nPointGridX << "][" << nPointGridY << "] = {" << dGridXToExtCRSX(nPointGridX) << ", " << dGridYToExtCRSY(nPointGridY) << "] with location ID " << nLocID;
+            LogStream << m_ulIter << ": Sediment input event " << nEvent + 1 << " at point [" << nPointGridX << "][" << nPointGridY << "] = {" << dGridXToExtCRSX(nPointGridX) << ", " << dGridYToExtCRSY(nPointGridY) << "] with location ID " << nLocID;
 
          int nTopLayer = m_pRasterGrid->m_Cell[nPointGridX][nPointGridY].nGetTopLayerAboveBasement();
 
@@ -199,7 +199,7 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
       {
          // Is in a sediment block, seaward from a coast
          if (m_nLogFileDetail >= LOG_FILE_MIDDLE_DETAIL)
-            LogStream << m_ulIter << ": Sediment input event " << nEvent+1 << " with location ID " << nLocID << " at closest point on coast to [" << nPointGridX << "][" << nPointGridY << "] = {" << dGridXToExtCRSX(nPointGridX) << ", " << dGridYToExtCRSY(nPointGridY) << "]" << endl;
+            LogStream << m_ulIter << ": Sediment input event " << nEvent + 1 << " with location ID " << nLocID << " at closest point on coast to [" << nPointGridX << "][" << nPointGridY << "] = {" << dGridXToExtCRSX(nPointGridX) << ", " << dGridYToExtCRSY(nPointGridY) << "]" << endl;
 
          // Find the closest point on the coastline
          CGeom2DIPoint PtiCoastPoint = PtiFindClosestCoastPoint(nPointGridX, nPointGridY);
@@ -261,7 +261,7 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
                   {
                      CGeom2DIPoint PtiTmp = PtiGetPerpendicular(nCoastXBefore, nCoastYBefore, nCoastXAfter, nCoastYAfter, n, nPerpHand);
 
-                     if (bIsWithinValidGrid(&PtiTmp))
+                     if (bIsWithinValidGrid( & PtiTmp))
                      {
                         VPoints.push_back(PtiTmp);
 
@@ -326,19 +326,19 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
             }
 
             // // DEBUG CODE ===============================================================================================================
-            //       LogStream << endl;
-            //       unsigned int m = 0;
-            //       for (unsigned int n = 0; n < VPoints.size(); n++)
-            //       {
-            //          LogStream << "[" << VPoints[n].nGetX() << ", " << VPoints[n].nGetY() << "] ";
-            //          m++;
-            //          if (m == VnCentrePointsXOffset.size() + 1)
-            //          {
-            //             LogStream << endl;
-            //             m = 0;
-            //          }
-            //       }
-            //       LogStream << endl;
+            // LogStream << endl;
+            // unsigned int m = 0;
+            // for (unsigned int n = 0; n < VPoints.size(); n++)
+            // {
+            // LogStream << "[" << VPoints[n].nGetX() << ", " << VPoints[n].nGetY() << "] ";
+            // m++;
+            // if (m == VnCentrePointsXOffset.size() + 1)
+            // {
+            // LogStream << endl;
+            // m = 0;
+            // }
+            // }
+            // LogStream << endl;
             // // DEBUG CODE ===============================================================================================================
          }
 
@@ -412,19 +412,19 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
       // double* pdRaster = new double[m_nXGridSize * m_nYGridSize];
       // for (int nY = 0; nY < m_nYGridSize; nY++)
       // {
-      //    for (int nX = 0; nX < m_nXGridSize; nX++)
-      //    {
-      //       pdRaster[nn++] = 0;
-      //    }
+      // for (int nX = 0; nX < m_nXGridSize; nX++)
+      // {
+      // pdRaster[nn++] = 0;
+      // }
       // }
       //
       // for (unsigned int n = 0; n < VnLineGridX.size() - 1; n++)
       // {
-      //    int nX = VnLineGridX[n];
-      //    int nY = VnLineGridY[n];
-      //    int m = (nY * m_nXGridSize) + nX;
+      // int nX = VnLineGridX[n];
+      // int nY = VnLineGridY[n];
+      // int m = (nY * m_nXGridSize) + nX;
       //
-      //    pdRaster[m] = 1;
+      // pdRaster[m] = 1;
       // }
       //
       // GDALRasterBand* pBand = pDataSet->GetRasterBand(1);
@@ -432,7 +432,7 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
       // int nRet = pBand->RasterIO(GF_Write, 0, 0, m_nXGridSize, m_nYGridSize, pdRaster, m_nXGridSize, m_nYGridSize, GDT_Float64, 0, 0, NULL);
       //
       // if (nRet == CE_Failure)
-      //    return RTN_ERR_GRIDCREATE;
+      // return RTN_ERR_GRIDCREATE;
       //
       // GDALClose(pDataSet);
       // delete[] pdRaster;
@@ -514,7 +514,7 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
          LogStream << m_ulIter << ": line/coast intersection is at [" << nCoastX << "][" << nCoastY << "] = {" << dGridXToExtCRSX(nCoastX) << ", " << dGridYToExtCRSY(nCoastY) << "}" << endl;
 
       // Get landform and top layer
-      CRWCellLandform* pLandform = m_pRasterGrid->m_Cell[nCoastX][nCoastY].pGetLandform();
+      CRWCellLandform * pLandform = m_pRasterGrid->m_Cell[nCoastX][nCoastY].pGetLandform();
       int nTopLayer = m_pRasterGrid->m_Cell[nCoastX][nCoastY].nGetTopLayerAboveBasement();
 
       // Is some fine unconsolidated sediment being input?

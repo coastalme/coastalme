@@ -25,8 +25,8 @@
 #include <vector>
 using std::vector;
 
-double dGetInterpolatedValue(vector<double> const*, vector<double> const*, double, bool);
-double dGetInterpolatedValue(vector<int> const*, vector<double> const*, int, bool);
-int nFindIndex(vector<double> const*, double const);
-vector<double> VdInterpolateCShoreProfileOutput(vector<double> const*, vector<double> const*, vector<double> const*);
+double dGetInterpolatedValue(vector<double> const *, vector<double> const *, double, bool);
+double dGetInterpolatedValue(vector<int> const *, vector<double> const *, int, bool);
+int nFindIndex(vector<double> const *, double const);
+vector<double> VdInterpolateCShoreProfileOutput(vector<double> const*, vector<double> const *, vector<double> const * );
 #endif // INTERPOLATE_H

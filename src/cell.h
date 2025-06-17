@@ -220,7 +220,7 @@ private:
 protected:
 
 public:
-   static CGeomRasterGrid* m_pGrid;
+   static CGeomRasterGrid * m_pGrid;
 
    CGeomCell();
    ~CGeomCell(void);
@@ -239,7 +239,7 @@ public:
    void SetInActiveZone(bool const);
    bool bIsInActiveZone(void) const;
    bool bPotentialPlatformErosion(void) const;
-   //    bool bActualPlatformErosion(void) const;
+   // bool bActualPlatformErosion(void) const;
    void SetAsCoastline(bool const);
    bool bIsCoastline(void) const;
    void SetAsFloodLine(bool const);
@@ -265,7 +265,7 @@ public:
    void SetPolygonID(int const);
    int nGetPolygonID(void) const;
 
-   CRWCellLandform* pGetLandform(void);
+   CRWCellLandform * pGetLandform(void);
 
    void SetWaveFlood(void);
    bool bIsElevLessThanWaterLevel(void) const;
@@ -326,7 +326,7 @@ public:
    int nGetTopLayerAboveBasement(void) const;
 
    double dGetConsSedTopForLayerAboveBasement(int const) const;
-   CRWCellLayer* pGetLayerAboveBasement(int const);
+   CRWCellLayer * pGetLayerAboveBasement(int const);
    void AppendLayers(int const);
    void CalcAllLayerElevsAndD50(void);
    int nGetLayerAtElev(double const) const;
@@ -372,12 +372,12 @@ public:
    void SetActualBeachErosion(double const);
    double dGetActualBeachErosion(void) const;
    double dGetTotActualBeachErosion(void) const;
-   //    bool bActualBeachErosionThisIter(void) const;
+   // bool bActualBeachErosionThisIter(void) const;
 
    void IncrBeachDeposition(double const);
    double dGetBeachDeposition(void) const;
    double dGetTotBeachDeposition(void) const;
-   //    bool bBeachDepositionThisIter(void) const;
+   // bool bBeachDepositionThisIter(void) const;
 
    bool bBeachErosionOrDepositionThisIter(void) const;
 

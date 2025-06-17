@@ -36,10 +36,10 @@ CGeomLine::CGeomLine(void)
 }
 
 //! Overloaded constructor with two points as parameters
-CGeomLine::CGeomLine(CGeom2DPoint const* pPt1, CGeom2DPoint const* pPt2)
+CGeomLine::CGeomLine(CGeom2DPoint const * pPt1, CGeom2DPoint const * pPt2)
 {
-   m_VPoints.push_back(*pPt1);
-   m_VPoints.push_back(*pPt2);
+   m_VPoints.push_back( * pPt1);
+   m_VPoints.push_back( * pPt2);
 }
 
 //! Overloaded constructor with one parameter, this creates a given number of uninitialized points
@@ -70,29 +70,29 @@ double CGeomLine::dGetYAt(int const n)
 }
 
 //! Returns the point at a given place in the line
-CGeom2DPoint* CGeomLine::pPtGetAt(int const n)
+CGeom2DPoint * CGeomLine::pPtGetAt(int const n)
 {
-   return &m_VPoints[n];
+   return & m_VPoints[n];
 }
 
 // //! Sets the X value at a given place in the line
 // void CGeomLine::SetXAt(int const n, double const x)
 // {
-//    m_VPoints[n].SetX(x);
+// m_VPoints[n].SetX(x);
 // }
 
 // //! Sets the Y value at a given place in the line
 // void CGeomLine::SetYAt(int const n, double const y)
 // {
-//    m_VPoints[n].SetY(y);
+// m_VPoints[n].SetY(y);
 // }
 
 // bool CGeomLine::bIsPresent(CGeom2DPoint* Pt)
 // {
-//    if (find(m_VPoints.begin(), m_VPoints.end(), *Pt) != m_VPoints.end())
-//       return true;
+// if (find(m_VPoints.begin(), m_VPoints.end(), *Pt) != m_VPoints.end())
+// return true;
 //
-//    return false;
+// return false;
 // }
 
 //! Instantiates the pure virtual function in the abstract parent class, so that CGeomLine is not an abstract class

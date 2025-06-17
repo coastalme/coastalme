@@ -26,11 +26,11 @@
 
 //! Constructor
 CRWCellLandform::CRWCellLandform()
-   :  m_nCategory(LF_NONE),
-      m_nSubCategory(LF_NONE),
-      m_nCoast(-1),
-      m_nPointOnCoast(-1),
-      m_dAccumWaveEnergy(0)
+   : m_nCategory(LF_NONE),
+     m_nSubCategory(LF_NONE),
+     m_nCoast(-1),
+     m_nPointOnCoast(-1),
+     m_dAccumWaveEnergy(0)
 {
 }
 
@@ -138,7 +138,5 @@ void CRWCellLandform::SetCliffRemaining(double const dLenIn)
 // //! Get the cliff depth remaining on this cell
 // double CRWCellLandform::dGetCliffRemaining(void) const
 // {
-//    return m_uLFData.m_sCliffData.m_dRemaining;
+// return m_uLFData.m_sCliffData.m_dRemaining;
 // }
-
-

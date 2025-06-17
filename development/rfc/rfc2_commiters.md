@@ -9,8 +9,7 @@ Status: Draft
 Purpose
 -------
 
-CoastalME works with Git, a distributed version control system offering full-scale developer support via GitHub cloud-based hosting system. To formalize Source Version Control (or SVC) commit access, and specify some guidelines for
-SVC committers.
+CoastalME works with Git, a distributed version control system offering full-scale developer support via GitHub cloud-based hosting system. To formalize Source Version Control (or SVC) commit access, and specify some guidelines for SVC committers.
 
 Election to SVC Commit Access
 -----------------------------
@@ -106,6 +105,12 @@ project.
    files or library dependencies are added, then the configure.in,
    Makefile.in, Makefile.vc and related documentations should be kept up
    to date.
+   
+CoastalME coding guidelines
+---------------------------
+- Do not save CoastalME code files (*.cpp, *.h) with a limited line length (e.g. 80 characters). One consequence of doing this is that headers for fixed-width output (e.g. PER_ITER_HEAD1) are split and redistributed over several lines. This makes it much harder to ensure correct alignment of such headers. Instead, allow unlimited line length. If this is not possible, allow a line length of 250 characters or more.
+- As far as is possible, format your new or modified code to be similar to existing code.
+- You will probably find it useful to use a source code formatter to tidy your contribution before submitting it. The Python-based Artistic Style formatter (astyle) does a good job. To install this on a Linux system, run "pip install astyle" or equivalent. (Executable versions of astyle, installed using e.g. apt install astyle, will probably not be up to date.) There should be an astyle configuation file (.astylerc) in your src directory if you have pulled the CoastalME code from github. To run astyle, run tidy_src.sh in the src directory. This will format your .cpp and .h files "in place" i.e. without making a backup. For more about the Artistic Style formatter, see https://astyle.sourceforge.net/astyle.html
 
 Relationship with other upstream projects imported in CoastalME code base
 ------------------------------------------------------------------------
@@ -175,7 +180,7 @@ repository:
    contribute to the code base, please seek more information from the
    project steering committee, or the foundation legal counsel.
 
-Bootstraping
+Bootstrapping
 ------------
 
 The following existing committers will be considered authorized CoastalME

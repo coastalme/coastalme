@@ -28,10 +28,10 @@ using std::bad_alloc;
 #include "simulation.h"
 #include "raster_grid.h"
 
-CGeomRasterGrid* CGeomCell::m_pGrid = NULL;          // Initialise m_pGrid, the static member of CGeomCell
+CGeomRasterGrid * CGeomCell::m_pGrid = NULL;         // Initialise m_pGrid, the static member of CGeomCell
 
 //! Constructor
-CGeomRasterGrid::CGeomRasterGrid(CSimulation* pSimIn)
+CGeomRasterGrid::CGeomRasterGrid(CSimulation * pSimIn)
    : m_dD50Fine(0),
      m_dD50Sand(0),
      m_dD50Coarse(0),
@@ -53,14 +53,14 @@ CGeomRasterGrid::~CGeomRasterGrid(void)
 }
 
 //! Returns a pointer to the simulation object
-CSimulation* CGeomRasterGrid::pGetSim(void)
+CSimulation * CGeomRasterGrid::pGetSim(void)
 {
    return m_pSim;
 }
 
 // CGeomCell* CGeomRasterGrid::pGetCell(int const nX, int const nY)
 // {
-//    return &m_Cell[nX][nY];
+// return &m_Cell[nX][nY];
 // }
 
 //! Creates the 2D CGeomCell array
@@ -79,7 +79,7 @@ int CGeomRasterGrid::nCreateGrid(void)
          m_Cell[nX] = new CGeomCell[nYMax];
    }
 
-   catch (bad_alloc&)
+   catch (bad_alloc & )
    {
       // Uh-oh, not enough memory
       return RTN_ERR_MEMALLOC;
@@ -90,4 +90,3 @@ int CGeomRasterGrid::nCreateGrid(void)
 
    return RTN_OK;
 }
-

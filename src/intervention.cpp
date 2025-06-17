@@ -33,13 +33,13 @@ using std::ios;
 #include "intervention.h"
 
 //! Constructor with three parameters
-CRWIntervention::CRWIntervention(CRWCoast* pCoastIn, int const nCoast, int const nPointOnCoast)
+CRWIntervention::CRWIntervention(CRWCoast * pCoastIn, int const nCoast, int const nPointOnCoast)
 {
    pCoast = pCoastIn;
 
-   m_nCoast        = nCoast;
+   m_nCoast = nCoast;
    m_nPointOnCoast = nPointOnCoast;
-   m_nCategory     = LF_CAT_INTERVENTION;
+   m_nCategory = LF_CAT_INTERVENTION;
 }
 
 //! Destructor

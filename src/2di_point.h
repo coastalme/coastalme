@@ -47,16 +47,16 @@ public:
    void SetX(int const);
    void SetY(int const);
    void SetXY(int const, int const);
-//    void SetXY(CGeom2DIPoint const*);
+// void SetXY(CGeom2DIPoint const*);
 
    void AddXAddY(int const, int const);
    void AddXAddY(double const, double const);
    void DivXDivY(double const, double const);
 
-   void operator= (CGeom2DIPoint const*);
-   bool operator== (CGeom2DIPoint const*) const;
+   void operator= (CGeom2DIPoint const * );
+   bool operator== (CGeom2DIPoint const * ) const;
    bool operator== (CGeom2DIPoint) const;
-   bool operator!= (CGeom2DIPoint const*) const;
+   bool operator!= (CGeom2DIPoint const * ) const;
    bool operator!= (CGeom2DIPoint) const;
 };
 #endif // C2DIPOINT_H

@@ -26,11 +26,11 @@
 
 //! Constructor with initialization list
 CACoastLandform::CACoastLandform(void)
-   :  m_nCoast(0),
-      m_nPointOnCoast(0),
-      m_nCategory(LF_NONE),
-      m_dTotAccumWaveEnergy(0),
-      pCoast(NULL)
+   : m_nCoast(0),
+     m_nPointOnCoast(0),
+     m_nCategory(LF_NONE),
+     m_dTotAccumWaveEnergy(0),
+     pCoast(NULL)
 {
 }
 
@@ -53,7 +53,7 @@ int CACoastLandform::nGetPointOnCoast(void) const
 
 // void CACoastLandform::SetLandFormCategory(int const nCategoryIn)
 // {
-//    m_nCategory = nCategoryIn;
+// m_nCategory = nCategoryIn;
 // }
 
 //! Get the landform category
@@ -63,14 +63,14 @@ int CACoastLandform::nGetLandFormCategory(void) const
 }
 
 //! Get the grid coordinates of the cell on which this coast landform sits
-CGeom2DIPoint* CACoastLandform::pPtiGetCellMarkedAsLF(void) const
+CGeom2DIPoint * CACoastLandform::pPtiGetCellMarkedAsLF(void) const
 {
    return pCoast->pPtiGetCellMarkedAsCoastline(m_nPointOnCoast);
 }
 
 // void CACoastLandform::SetTotAccumWaveEnergy(double const dWaveEnergy)
 // {
-//    m_dTotAccumWaveEnergy = dWaveEnergy;
+// m_dTotAccumWaveEnergy = dWaveEnergy;
 // }
 
 //! Increment total accumulated wave energy

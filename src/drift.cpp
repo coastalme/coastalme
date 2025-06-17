@@ -33,15 +33,15 @@ using std::ios;
 #include "drift.h"
 
 //! Constructor with three parameters and an intialization list
-CRWDrift::CRWDrift(CRWCoast* pCoastIn, int const nCoast, int const nPointOnCoast)
+CRWDrift::CRWDrift(CRWCoast * pCoastIn, int const nCoast, int const nPointOnCoast)
    :
    m_dD50(0)
 {
    pCoast = pCoastIn;
 
-   m_nCoast        = nCoast;
+   m_nCoast = nCoast;
    m_nPointOnCoast = nPointOnCoast;
-   m_nCategory     = LF_CAT_DRIFT;
+   m_nCategory = LF_CAT_DRIFT;
 }
 
 //! Destructor

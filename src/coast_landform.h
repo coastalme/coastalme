@@ -49,7 +49,7 @@ protected:
    double m_dTotAccumWaveEnergy;
 
    //! Pointer to this landform's coast
-   CRWCoast* pCoast;
+   CRWCoast * pCoast;
 
 public:
    CACoastLandform(void);
@@ -57,10 +57,10 @@ public:
 
    int nGetCoast(void) const;
    int nGetPointOnCoast(void) const;
-//    void SetLandFormCategory(int const);
+// void SetLandFormCategory(int const);
    int nGetLandFormCategory(void) const;
-   CGeom2DIPoint* pPtiGetCellMarkedAsLF(void) const;
-//    void SetTotAccumWaveEnergy(double const);
+   CGeom2DIPoint * pPtiGetCellMarkedAsLF(void) const;
+// void SetTotAccumWaveEnergy(double const);
    void IncTotAccumWaveEnergy(double const);
    double dGetTotAccumWaveEnergy(void) const;
 
@@ -68,4 +68,3 @@ public:
    virtual void Display() = 0;
 };
 #endif // COASTLANDFORM_H
-

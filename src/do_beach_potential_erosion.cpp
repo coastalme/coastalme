@@ -45,7 +45,7 @@ using std::pair;
 //===============================================================================================================================
 //! Function used to sort polygon length values. If the first argument must be ordered before the second, return true
 //===============================================================================================================================
-bool bPolygonLengthPairCompare(const pair<int, double>& prLeft, const pair<int, double>& prRight)
+bool bPolygonLengthPairCompare(const pair<int, double> & prLeft, const pair<int, double> & prRight)
 {
    // Sort in ascending order (i.e. most concave first)
    return prLeft.second < prRight.second;
@@ -66,7 +66,7 @@ void CSimulation::DoAllPotentialBeachErosion(void)
 
       for (int nPoly = 0; nPoly < nNumPolygons; nPoly++)
       {
-         CGeomCoastPolygon const* pPolygon = m_VCoast[nCoast].pGetPolygon(nPoly);
+         CGeomCoastPolygon const * pPolygon = m_VCoast[nCoast].pGetPolygon(nPoly);
          double dSeawardLength = pPolygon->dGetLength();
          prVPolygonLength.push_back(make_pair(nPoly, dSeawardLength));
       }
@@ -79,7 +79,7 @@ void CSimulation::DoAllPotentialBeachErosion(void)
       {
          int nThisPoly = prVPolygonLength[n].first;
 
-         CGeomCoastPolygon* pPolygon = m_VCoast[nCoast].pGetPolygon(nThisPoly);
+         CGeomCoastPolygon * pPolygon = m_VCoast[nCoast].pGetPolygon(nThisPoly);
 
          // Calculate the average breaking wave height and angle along this polygon's segment of coastline
          int nStartNormal = pPolygon->nGetUpCoastProfile();
@@ -227,15 +227,15 @@ void CSimulation::DoAllPotentialBeachErosion(void)
             if (dSedimentDepth < SEDIMENT_ELEV_TOLERANCE)
                dSedimentDepth = 0;
 
-            //            LogStream << m_ulIter << ": polygon = " << nThisPoly << " nActiveZonePoints = " << nActiveZonePoints << " dAvgBreakingWaveHeight = " << dAvgBreakingWaveHeight << " dAvgFluxOrientation = " << dAvgFluxOrientation << " dNormalOrientation = " << dNormalOrientation << " dAvgBreakingWaveAngle = " << dAvgBreakingWaveAngle <<  " potential sediment transport this timestep = " << dSedimentDepth << " m " << (bDownCoast ? "DOWN" : "UP") << " coast" << endl;
+            // LogStream << m_ulIter << ": polygon = " << nThisPoly << " nActiveZonePoints = " << nActiveZonePoints << " dAvgBreakingWaveHeight = " << dAvgBreakingWaveHeight << " dAvgFluxOrientation = " << dAvgFluxOrientation << " dNormalOrientation = " << dNormalOrientation << " dAvgBreakingWaveAngle = " << dAvgBreakingWaveAngle <<  " potential sediment transport this timestep = " << dSedimentDepth << " m " << (bDownCoast ? "DOWN" : "UP") << " coast" << endl;
 
             // Store the potential erosion value for this polygon
             pPolygon->AddPotentialErosion(-dSedimentDepth);
-            //            LogStream << "\tPotential erosion on polygon " << nThisPoly << " -dSedimentDepth = " << -dSedimentDepth << endl;
+            // LogStream << "\tPotential erosion on polygon " << nThisPoly << " -dSedimentDepth = " << -dSedimentDepth << endl;
          }
 
-         //          else
-         //             LogStream << m_ulIter << ": polygon = " << nThisPoly << " NOT IN ACTIVE ZONE dAvgFluxOrientation = " << dAvgFluxOrientation << endl;
+         // else
+         // LogStream << m_ulIter << ": polygon = " << nThisPoly << " NOT IN ACTIVE ZONE dAvgFluxOrientation = " << dAvgFluxOrientation << endl;
       }
    }
 }

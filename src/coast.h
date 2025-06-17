@@ -61,7 +61,7 @@ private:
    double m_dCurvatureSmoothSTD;
 
    //! A pointer to the CSimulation object
-   CSimulation* m_pSim;
+   CSimulation * m_pSim;
 
    //! Smoothed line of points (external CRS) giving the plan view of the vector coast
    CGeomLine m_LCoastlineExtCRS;
@@ -151,10 +151,10 @@ private:
 protected:
 
 public:
-   explicit CRWCoast(CSimulation*);
+   explicit CRWCoast(CSimulation * );
    ~CRWCoast(void);
 
-   CSimulation* pGetSim(void) const;
+   CSimulation * pGetSim(void) const;
 
    void SetSeaHandedness(int const);
    int nGetSeaHandedness(void) const;
@@ -165,28 +165,28 @@ public:
    void SetEndEdge(int const);
    int nGetEndEdge(void) const;
 
-   void SetCoastlineExtCRS(CGeomLine const*);
-   CGeomLine* pLGetCoastlineExtCRS(void);
+   void SetCoastlineExtCRS(CGeomLine const * );
+   CGeomLine * pLGetCoastlineExtCRS(void);
 // CGeomLine* pLGetFloodWaveSetupExtCRS(void);
 // void SetFloodWaveSetupPointExtCRS(CGeomLine const*);
 // void SetFloodWaveSetupSurgePointExtCRS(CGeomLine const*);
 // void SetFloodWaveSetupSurgeRunupPointExtCRS(CGeomLine const*);
-   CGeom2DPoint* pPtGetCoastlinePointExtCRS(int const);
+   CGeom2DPoint * pPtGetCoastlinePointExtCRS(int const);
 // CGeom2DPoint* pPtGetFloodWaveSetupPointExtCRS(int const);
 // CGeom2DPoint* pPtGetFloodWaveSetupSurgePointExtCRS(int const);
 // CGeom2DPoint* pPtGetFloodWaveSetupSurgeRunupPointExtCRS(int const);
 
    int nGetCoastlineSize(void) const;
-//    double dGetCoastlineSegmentLength(int const, int const);
-//    double dGetCoastlineLengthSoFar(int const);
-//    void DisplayCoastline(void);
+// double dGetCoastlineSegmentLength(int const, int const);
+// double dGetCoastlineLengthSoFar(int const);
+// void DisplayCoastline(void);
 
-   void SetCoastlineGridCRS(CGeomILine const*);
-//    void AppendCellMarkedAsCoastline(CGeom2DIPoint const*);
-//    void AppendCellMarkedAsCoastline(int const, int const);
-   CGeom2DIPoint* pPtiGetCellMarkedAsCoastline(int const);
-//    int nGetNCellsMarkedAsCoastline(void) const;
-   int nGetCoastPointGivenCell(CGeom2DIPoint*);
+   void SetCoastlineGridCRS(CGeomILine const * );
+// void AppendCellMarkedAsCoastline(CGeom2DIPoint const*);
+// void AppendCellMarkedAsCoastline(int const, int const);
+   CGeom2DIPoint * pPtiGetCellMarkedAsCoastline(int const);
+// int nGetNCellsMarkedAsCoastline(void) const;
+   int nGetCoastPointGivenCell(CGeom2DIPoint * );
 
    double dGetDetailedCurvature(int const) const;
    void SetDetailedCurvature(int const, double const);
@@ -203,24 +203,24 @@ public:
    void SetSmoothCurvatureSTD(double const);
    double dGetSmoothCurvatureSTD(void) const;
 
-   void AppendProfile(CGeomProfile*);
-   CGeomProfile* pGetProfile(int const);
-   CGeomProfile* pGetLastProfile(void);
-//    void ReplaceProfile(int const, vector<CGeom2DPoint> const*);
+   void AppendProfile(CGeomProfile * );
+   CGeomProfile * pGetProfile(int const);
+   CGeomProfile * pGetLastProfile(void);
+// void ReplaceProfile(int const, vector<CGeom2DPoint> const*);
    int nGetNumProfiles(void) const;
    void CreateProfileDownCoastIndex(void);
    void InsertProfilesInProfileCoastPointIndex(void);
 
-   CGeomProfile* pGetDownCoastProfile(CGeomProfile const* pProfile);
-   CGeomProfile* pGetDownCoastProfileNotIncLastProfile(CGeomProfile const* pProfile);
-   CGeomProfile* pGetUpCoastProfile(CGeomProfile const* pProfile);
+   CGeomProfile * pGetDownCoastProfile(CGeomProfile const * pProfile);
+   CGeomProfile * pGetDownCoastProfileNotIncLastProfile(CGeomProfile const * pProfile);
+   CGeomProfile * pGetUpCoastProfile(CGeomProfile const * pProfile);
 
    void CreateProfilesAtCoastPoints(void);
-   void SetProfileAtCoastPoint(int const, CGeomProfile* const);
+   void SetProfileAtCoastPoint(int const, CGeomProfile * const);
    bool bIsProfileAtCoastPoint(int const) const;
-   CGeomProfile* pGetProfileAtCoastPoint(int const) const;
-   CGeomProfile* pGetProfileWithDownCoastSeq(int const) const;
-   CGeomProfile* pGetProfileWithUpCoastSeq(int const) const;
+   CGeomProfile * pGetProfileAtCoastPoint(int const) const;
+   CGeomProfile * pGetProfileWithDownCoastSeq(int const) const;
+   CGeomProfile * pGetProfileWithUpCoastSeq(int const) const;
 
    void SetCoastDeepWaterWaveHeight(int const, double const);
    // double dGetCoastDeepWaterWaveHeight(int const) const;
@@ -263,24 +263,24 @@ public:
    void SetWaveEnergyAtBreaking(int const, double const);
    double dGetWaveEnergyAtBreaking(int const) const;
 
-   void AppendCoastLandform(CACoastLandform*);
-   CACoastLandform* pGetCoastLandform(int const);
+   void AppendCoastLandform(CACoastLandform * );
+   CACoastLandform * pGetCoastLandform(int const);
 
    void SetPolygonNode(int const, int const);
    int nGetPolygonNode(int const) const;
-   CGeomCoastPolygon* pPolyCreatePolygon(int const, int const, int const, CGeom2DIPoint const*, CGeom2DIPoint const*, int const, int const, vector<CGeom2DPoint> const*, int const, int const, bool const, bool const);
+   CGeomCoastPolygon * pPolyCreatePolygon(int const, int const, int const, CGeom2DIPoint const *, CGeom2DIPoint const *, int const, int const, vector<CGeom2DPoint> const *, int const, int const, bool const, bool const);
    int nGetNumPolygons(void) const;
-   CGeomCoastPolygon* pGetPolygon(int const) const;
+   CGeomCoastPolygon * pGetPolygon(int const) const;
 
    // void AppendPolygonLength(const double);
    // double dGetPolygonLength(int const) const;
 
    int nGetNumShadowBoundaries(void) const;
-   void AppendShadowBoundary(CGeomLine const*);
-   CGeomLine* pGetShadowBoundary(int const);
+   void AppendShadowBoundary(CGeomLine const * );
+   CGeomLine * pGetShadowBoundary(int const);
 
    int nGetNumShadowDowndriftBoundaries(void) const;
-   void AppendShadowDowndriftBoundary(CGeomLine const*);
-   CGeomLine* pGetShadowDowndriftBoundary(int const);
+   void AppendShadowDowndriftBoundary(CGeomLine const * );
+   CGeomLine * pGetShadowDowndriftBoundary(int const);
 };
 #endif // COAST_H

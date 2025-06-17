@@ -50,19 +50,19 @@ private:
    double m_dD50Coarse;
 
    //! A pointer to the CSimulation object
-   CSimulation* m_pSim;
+   CSimulation * m_pSim;
 
    //! The 2D array of m_Cell objects. A c-style 2D array seems to be faster than using 2D STL vectors
-   CGeomCell** m_Cell;
+   CGeomCell * * m_Cell;
 
 protected:
 
 public:
-   explicit CGeomRasterGrid(CSimulation*);
+   explicit CGeomRasterGrid(CSimulation * );
    ~CGeomRasterGrid(void);
 
-   CSimulation* pGetSim(void);
-//    CGeomCell* pGetCell(int const, int const);
+   CSimulation * pGetSim(void);
+// CGeomCell* pGetCell(int const, int const);
    int nCreateGrid(void);
 };
 #endif // RASTERGRID_H

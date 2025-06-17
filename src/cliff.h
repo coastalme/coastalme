@@ -47,7 +47,7 @@ private:
 protected:
 
 public:
-   CRWCliff(CRWCoast*, int const, int const, double const, double const, double const, double const);
+   CRWCliff(CRWCoast *, int const, int const, double const, double const, double const, double const);
    ~CRWCliff(void) override;
 
    void SetCliffCollapsed(void);
@@ -65,4 +65,3 @@ public:
    void Display(void) override;
 };
 #endif // CLIFF_H
-

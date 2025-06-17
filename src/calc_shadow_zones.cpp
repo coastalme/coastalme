@@ -45,7 +45,7 @@ using std::accumulate;
 //===============================================================================================================================
 //! Determines whether the wave orientation at this point on a coast is onshore or offshore, and up-coast (i.e. along the coast in the direction of decreasing coastline point numbers) or down-coast (i.e. along the coast in the direction of increasing coastline point numbers)
 //===============================================================================================================================
-bool CSimulation::bOnOrOffShoreAndUpOrDownCoast(double const dCoastAngle, double const dWaveAngle, int const nSeaHand, bool& bDownCoast)
+bool CSimulation::bOnOrOffShoreAndUpOrDownCoast(double const dCoastAngle, double const dWaveAngle, int const nSeaHand, bool & bDownCoast)
 {
    bool bOnShore;
    double dWaveToCoastAngle = fmod((dWaveAngle - dCoastAngle + 360), 360);
@@ -70,7 +70,7 @@ bool CSimulation::bOnOrOffShoreAndUpOrDownCoast(double const dCoastAngle, double
 //===============================================================================================================================
 //! Given a cell and a wave orientation, finds the 'upwave' cell
 //===============================================================================================================================
-CGeom2DIPoint CSimulation::PtiFollowWaveAngle(CGeom2DIPoint const* pPtiLast, double const dWaveAngleIn, double& dCorrection)
+CGeom2DIPoint CSimulation::PtiFollowWaveAngle(CGeom2DIPoint const * pPtiLast, double const dWaveAngleIn, double& dCorrection)
 {
    int nXLast = pPtiLast->nGetX();
    int nYLast = pPtiLast->nGetY();
@@ -195,14 +195,14 @@ int CSimulation::nDoAllShadowZones(void)
                   bDownCoast = false;
                   bool bOnShore = bOnOrOffShoreAndUpOrDownCoast(dFluxOrientation, dWaveAngle, nSeaHand, bDownCoast);
 
-                  //                   CGeom2DPoint PtTmp1 = *m_VCoast[nCoast].pPtGetCoastlinePointExtCRS(nShadowZoneBoundaryEndPoint);
-                  //                   LogStream << m_ulIter << ": going down-coast, coast point (" << nShadowZoneBoundaryEndPoint << ") at {" << PtTmp1.dGetX() << ", " << PtTmp1.dGetY() << "} has " << (bDownCoast ? "down-coast " : "up-coast ") << (bOnShore ? "on-shore" : "off-shore") << " waves, dWaveAngle = " << dWaveAngle << " dFluxOrientation = " << dFluxOrientation << endl;
+                  // CGeom2DPoint PtTmp1 = *m_VCoast[nCoast].pPtGetCoastlinePointExtCRS(nShadowZoneBoundaryEndPoint);
+                  // LogStream << m_ulIter << ": going down-coast, coast point (" << nShadowZoneBoundaryEndPoint << ") at {" << PtTmp1.dGetX() << ", " << PtTmp1.dGetY() << "} has " << (bDownCoast ? "down-coast " : "up-coast ") << (bOnShore ? "on-shore" : "off-shore") << " waves, dWaveAngle = " << dWaveAngle << " dFluxOrientation = " << dFluxOrientation << endl;
 
                   if (bDownCoast && (! bOnShore))
                   {
                      // Waves are down-coast and off-shore
-                     //                      CGeom2DPoint PtTmp1 = *m_VCoast[nCoast].pPtGetCoastlinePointExtCRS(nShadowZoneBoundaryEndPoint);
-                     //                      LogStream << m_ulIter << ": going down-coast, waves have off-shore and down-coast component at coast point (" << nShadowZoneBoundaryEndPoint << ") at {" << PtTmp1.dGetX() << ", " << PtTmp1.dGetY() << "}" << endl;
+                     // CGeom2DPoint PtTmp1 = *m_VCoast[nCoast].pPtGetCoastlinePointExtCRS(nShadowZoneBoundaryEndPoint);
+                     // LogStream << m_ulIter << ": going down-coast, waves have off-shore and down-coast component at coast point (" << nShadowZoneBoundaryEndPoint << ") at {" << PtTmp1.dGetX() << ", " << PtTmp1.dGetY() << "}" << endl;
 
                      // If the previous coast point had waves which were down-coast and on-shore, then this could be the boundary of a shadow zone
                      if (bLastDownCoastAndOnshore)
@@ -213,7 +213,7 @@ int CSimulation::nDoAllShadowZones(void)
                         // CGeom2DPoint PtTmp = *m_VCoast[nCoast].pPtGetCoastlinePointExtCRS(nShadowZoneBoundaryEndPoint);
 
                         // if (m_nLogFileDetail >= LOG_FILE_ALL)
-                        //    LogStream << m_ulIter << ": Coast " << nCoast << " has possible shadow boundary start at {" << PtTmp.dGetX() << ", " << PtTmp.dGetY() << "}. Found while going down-coast, this is coast point " << nShadowZoneBoundaryEndPoint << endl;
+                        // LogStream << m_ulIter << ": Coast " << nCoast << " has possible shadow boundary start at {" << PtTmp.dGetX() << ", " << PtTmp.dGetY() << "}. Found while going down-coast, this is coast point " << nShadowZoneBoundaryEndPoint << endl;
                      }
                   }
 
@@ -261,14 +261,14 @@ int CSimulation::nDoAllShadowZones(void)
                   bDownCoast = false;
                   bool bOnShore = bOnOrOffShoreAndUpOrDownCoast(dFluxOrientation, dWaveAngle, nSeaHand, bDownCoast);
 
-                  //                   CGeom2DPoint PtTmp1 = *m_VCoast[nCoast].pPtGetCoastlinePointExtCRS(nShadowZoneBoundaryEndPoint);
-                  //                   LogStream << m_ulIter << ": going up-coast, coast point (" << nShadowZoneBoundaryEndPoint << ") at {" << PtTmp1.dGetX() << ", " << PtTmp1.dGetY() << "} has " << (bDownCoast ? "down-coast " : "up-coast ") << (bOnShore ? "on-shore" : "off-shore") << " waves, dWaveAngle = " << dWaveAngle << " dFluxOrientation = " << dFluxOrientation << endl;
+                  // CGeom2DPoint PtTmp1 = *m_VCoast[nCoast].pPtGetCoastlinePointExtCRS(nShadowZoneBoundaryEndPoint);
+                  // LogStream << m_ulIter << ": going up-coast, coast point (" << nShadowZoneBoundaryEndPoint << ") at {" << PtTmp1.dGetX() << ", " << PtTmp1.dGetY() << "} has " << (bDownCoast ? "down-coast " : "up-coast ") << (bOnShore ? "on-shore" : "off-shore") << " waves, dWaveAngle = " << dWaveAngle << " dFluxOrientation = " << dFluxOrientation << endl;
 
                   if ((! bDownCoast) && (! bOnShore))
                   {
                      // Waves are up-coast and off-shore
-                     //                      CGeom2DPoint PtTmp1 = *m_VCoast[nCoast].pPtGetCoastlinePointExtCRS(nShadowZoneBoundaryEndPoint);
-                     //                      LogStream << m_ulIter << ": going up-coast, waves have off-shore and down-coast component at coast point (" << nShadowZoneBoundaryEndPoint << ") at {" << PtTmp1.dGetX() << ", " << PtTmp1.dGetY() << "}" << endl;
+                     // CGeom2DPoint PtTmp1 = *m_VCoast[nCoast].pPtGetCoastlinePointExtCRS(nShadowZoneBoundaryEndPoint);
+                     // LogStream << m_ulIter << ": going up-coast, waves have off-shore and down-coast component at coast point (" << nShadowZoneBoundaryEndPoint << ") at {" << PtTmp1.dGetX() << ", " << PtTmp1.dGetY() << "}" << endl;
 
                      // If the previous coast point had waves which were up-coast and on-shore, then this could be the boundary of a shadow zone
                      if (bLastUpCoastAndOnshore)
@@ -279,7 +279,7 @@ int CSimulation::nDoAllShadowZones(void)
                         // CGeom2DPoint PtTmp = *m_VCoast[nCoast].pPtGetCoastlinePointExtCRS(nShadowZoneBoundaryEndPoint);
 
                         // if (m_nLogFileDetail >= LOG_FILE_ALL)
-                        //    LogStream << m_ulIter << ": Coast " << nCoast << " has possible shadow boundary start at {" << PtTmp.dGetX() << ", " << PtTmp.dGetY() << "}. Found while going up-coast, this is coast point " << nShadowZoneBoundaryEndPoint << endl;
+                        // LogStream << m_ulIter << ": Coast " << nCoast << " has possible shadow boundary start at {" << PtTmp.dGetX() << ", " << PtTmp.dGetY() << "}. Found while going up-coast, this is coast point " << nShadowZoneBoundaryEndPoint << endl;
                      }
                   }
 
@@ -314,7 +314,7 @@ int CSimulation::nDoAllShadowZones(void)
       for (int nStartPoint = 0; nStartPoint < static_cast<int>(VnPossibleShadowBoundaryCoastPoint.size()); nStartPoint++)
       {
          // if (m_nLogFileDetail >= LOG_FILE_ALL)
-         //    LogStream << m_ulIter << ": Coast " << nCoast << " processing possible shadow boundary start point " << nStartPoint << " of " << VnPossibleShadowBoundaryCoastPoint.size() << endl;
+         // LogStream << m_ulIter << ": Coast " << nCoast << " processing possible shadow boundary start point " << nStartPoint << " of " << VnPossibleShadowBoundaryCoastPoint.size() << endl;
 
          bool bHitEdge = false;
          bool bHitCoast = false;
@@ -340,8 +340,8 @@ int CSimulation::nDoAllShadowZones(void)
             dPrevWaveAngle = m_VCoast[nCoast].dGetBreakingWaveAngle(nStartPoint);
          }
 
-         CGeom2DIPoint PtiPrev = *m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(VnPossibleShadowBoundaryCoastPoint[nStartPoint]);
-         ILShadowBoundary.Append(&PtiPrev);
+         CGeom2DIPoint PtiPrev = * m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(VnPossibleShadowBoundaryCoastPoint[nStartPoint]);
+         ILShadowBoundary.Append( & PtiPrev);
 
          int nDist = 0;
          double dCorrection = 0;
@@ -349,7 +349,7 @@ int CSimulation::nDoAllShadowZones(void)
 
          while ((! bHitEdge) && (! bHitCoast))
          {
-            //             int nShadowBoundaryCoastPoint = -1;
+            // int nShadowBoundaryCoastPoint = -1;
 
             if (nDist > 0)
             {
@@ -378,13 +378,13 @@ int CSimulation::nDoAllShadowZones(void)
                      // This shadow boundary has not already hit sea, just use the wave orientation from the previous cell
                      dPrevWaveAngle = m_pRasterGrid->m_Cell[nXPrev][nYPrev].dGetWaveAngle();
 
-                     //                      LogStream << m_ulIter << ": not already hit sea, using previous cell's wave orientation for cell [" << nXPrev << "][" << nYPrev << "] = {" << dGridCentroidXToExtCRSX(nXPrev) << ", " << dGridCentroidYToExtCRSY(nYPrev) << "}" << endl;
+                     // LogStream << m_ulIter << ": not already hit sea, using previous cell's wave orientation for cell [" << nXPrev << "][" << nYPrev << "] = {" << dGridCentroidXToExtCRSX(nXPrev) << ", " << dGridCentroidYToExtCRSY(nYPrev) << "}" << endl;
                   }
                }
 
                if (bFPIsEqual(dPrevWaveAngle, DBL_NODATA, TOLERANCE))
                {
-                  //                   LogStream << m_ulIter << ": dPrevWaveAngle == DBL_NODATA for cell [" << nXPrev << "][" << nYPrev << "] = {" << dGridCentroidXToExtCRSX(nXPrev) << ", " << dGridCentroidYToExtCRSY(nYPrev) << "}" << endl;
+                  // LogStream << m_ulIter << ": dPrevWaveAngle == DBL_NODATA for cell [" << nXPrev << "][" << nYPrev << "] = {" << dGridCentroidXToExtCRSX(nXPrev) << ", " << dGridCentroidYToExtCRSY(nYPrev) << "}" << endl;
 
                   if (! m_pRasterGrid->m_Cell[nXPrev][nYPrev].bIsInContiguousSea())
                   {
@@ -407,19 +407,19 @@ int CSimulation::nDoAllShadowZones(void)
             }
 
             // Go upwave along the previous cell's wave orientation to find the new boundary cell
-            CGeom2DIPoint PtiNew = PtiFollowWaveAngle(&PtiPrev, dPrevWaveAngle, dCorrection);
+            CGeom2DIPoint PtiNew = PtiFollowWaveAngle( & PtiPrev, dPrevWaveAngle, dCorrection);
 
             // Get the coordinates of 'this' cell
             int nX = PtiNew.nGetX();
             int nY = PtiNew.nGetY();
 
             // Have we hit the edge of the valid part of the grid?
-            if ((! bIsWithinValidGrid(&PtiNew)) || (m_pRasterGrid->m_Cell[nX][nY].bIsBoundingBoxEdge()))
+            if ((! bIsWithinValidGrid( & PtiNew)) || (m_pRasterGrid->m_Cell[nX][nY].bIsBoundingBoxEdge()))
             {
                // Yes we have
                bHitEdge = true;
 
-               //                LogStream << m_ulIter << ": shadow boundary " << nStartPoint << " hit edge cell at [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "}" << endl;
+               // LogStream << m_ulIter << ": shadow boundary " << nStartPoint << " hit edge cell at [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "}" << endl;
 
                continue;
             }
@@ -450,9 +450,9 @@ int CSimulation::nDoAllShadowZones(void)
             }
 
             // Store the coordinates of every cell which we cross
-            ILShadowBoundary.Append(&PtiNew);
+            ILShadowBoundary.Append( & PtiNew);
 
-            //             LogStream << m_ulIter << ": at [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "}" << endl;
+            // LogStream << m_ulIter << ": at [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "}" << endl;
 
             // Having hit sea, have we now hit we hit a coast point? Note that two diagonal(ish) raster lines can cross each other without any intersection, so must also test an adjacent cell for intersection (does not matter which adjacent cell)
             if (bHitSea)
@@ -484,7 +484,7 @@ int CSimulation::nDoAllShadowZones(void)
          {
             // Shadow line is still inland after crossing MAX_LAND_LENGTH_OF_SHADOW_ZONE_LINE calls
             // if (m_nLogFileDetail >= LOG_FILE_ALL)
-            //    LogStream << m_ulIter << ": Coast " << nCoast << ", possible shadow boundary from start point " << nStartPoint << " is still inland after crossing " << MAX_LAND_LENGTH_OF_SHADOW_ZONE_LINE << " cells, abandoning. It starts at [" << ILShadowBoundary[0].nGetX() << "][" << ILShadowBoundary[0].nGetY() << "] = {" << dGridCentroidXToExtCRSX(ILShadowBoundary[0].nGetX()) << ", " << dGridCentroidYToExtCRSY(ILShadowBoundary[0].nGetY()) << "} and was abandoned at [" << ILShadowBoundary.Back().nGetX() << "][" << ILShadowBoundary.Back().nGetY() << "] = {" << dGridCentroidXToExtCRSX(ILShadowBoundary.Back().nGetX()) << ", " << dGridCentroidYToExtCRSY(ILShadowBoundary.Back().nGetY()) << "}" << endl;
+            // LogStream << m_ulIter << ": Coast " << nCoast << ", possible shadow boundary from start point " << nStartPoint << " is still inland after crossing " << MAX_LAND_LENGTH_OF_SHADOW_ZONE_LINE << " cells, abandoning. It starts at [" << ILShadowBoundary[0].nGetX() << "][" << ILShadowBoundary[0].nGetY() << "] = {" << dGridCentroidXToExtCRSX(ILShadowBoundary[0].nGetX()) << ", " << dGridCentroidYToExtCRSY(ILShadowBoundary[0].nGetY()) << "} and was abandoned at [" << ILShadowBoundary.Back().nGetX() << "][" << ILShadowBoundary.Back().nGetY() << "] = {" << dGridCentroidXToExtCRSX(ILShadowBoundary.Back().nGetX()) << ", " << dGridCentroidYToExtCRSY(ILShadowBoundary.Back().nGetY()) << "}" << endl;
 
             continue;
          }
@@ -492,7 +492,7 @@ int CSimulation::nDoAllShadowZones(void)
          if (bHitCoast)
          {
             // The shadow zone boundary has hit a coast, but is the shadow zone line trivially short?
-            double dShadowLen = dGetDistanceBetween(&ILShadowBoundary[0], &ILShadowBoundary.Back()) * m_dCellSide;
+            double dShadowLen = dGetDistanceBetween( & ILShadowBoundary[0], & ILShadowBoundary.Back()) * m_dCellSide;
 
             if (dShadowLen < MIN_LENGTH_OF_SHADOW_ZONE_LINE)
             {
@@ -504,7 +504,7 @@ int CSimulation::nDoAllShadowZones(void)
             }
 
             // We've found a valid shadow zone. Check the last point in the shadow boundary. Note that occasionally this last cell is not 'above' a cell but is above one of its neighbouring cells is: in which case, replace the last point in the shadow boundary with the coordinates of this neighbouring cell
-            int nShadowBoundaryCoastPoint = m_VCoast[nCoast].nGetCoastPointGivenCell(&ILShadowBoundary.Back());
+            int nShadowBoundaryCoastPoint = m_VCoast[nCoast].nGetCoastPointGivenCell( & ILShadowBoundary.Back());
 
             if (nShadowBoundaryCoastPoint == INT_NODATA)
             {
@@ -514,7 +514,7 @@ int CSimulation::nDoAllShadowZones(void)
 
                // TODO 004 Need to fix this, for the moment just abandon this shadow zone and carry on
                continue;
-               //                return RTN_ERR_NO_CELL_UNDER_COASTLINE;
+               // return RTN_ERR_NO_CELL_UNDER_COASTLINE;
             }
 
             // Now store the shadow zone boundary information
@@ -531,7 +531,7 @@ int CSimulation::nDoAllShadowZones(void)
             if (CREATE_SHADOW_ZONE_IF_HITS_GRID_EDGE)
             {
                // We are creating shadow zones if we hit the grid edge. But is the shadow zone line trivially short?
-               double dShadowLen = dGetDistanceBetween(&ILShadowBoundary[0], &ILShadowBoundary.Back()) * m_dCellSide;
+               double dShadowLen = dGetDistanceBetween( & ILShadowBoundary[0], & ILShadowBoundary.Back()) * m_dCellSide;
 
                if (dShadowLen < MIN_LENGTH_OF_SHADOW_ZONE_LINE)
                {
@@ -544,10 +544,10 @@ int CSimulation::nDoAllShadowZones(void)
 
                // We've found a valid grid-edge shadow zone, but we need a distance (in cells) between the shadow boundary start and the 'virtual' shadow boundary end: this is the off-grid point where the shadow boundary would have intersected the coastline, if the grid were big enough. This is of course unknowable. So as a best guess, we choose the shorter of the two distances between the point where the shadow boundary hits the valid edge of the grid, and the start or end of the coast
                // int nCoastSize = m_VCoast[nCoast].nGetCoastlineSize();
-               CGeom2DIPoint PtiCoastStart = *m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(0);
-               CGeom2DIPoint PtiCoastEnd = *m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(nCoastSize - 1);
+               CGeom2DIPoint PtiCoastStart = * m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(0);
+               CGeom2DIPoint PtiCoastEnd = * m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(nCoastSize - 1);
 
-               int nDistance = nRound(tMin(dGetDistanceBetween(&ILShadowBoundary.Back(), &PtiCoastStart), dGetDistanceBetween(&ILShadowBoundary.Back(), &PtiCoastEnd)));
+               int nDistance = nRound(tMin(dGetDistanceBetween( & ILShadowBoundary.Back(), & PtiCoastStart), dGetDistanceBetween( & ILShadowBoundary.Back(), & PtiCoastEnd)));
 
                // Now store the shadow zone boundary information
                VILShadowBoundary.push_back(ILShadowBoundary);
@@ -599,14 +599,14 @@ int CSimulation::nDoAllShadowZones(void)
             LBoundary.AppendIfNotAlready(dGridCentroidXToExtCRSX(nTmpX), dGridCentroidYToExtCRSY(nTmpY));
             LIBoundary.AppendIfNotAlready(nTmpX, nTmpY);
 
-            //             LogStream << m_ulIter << ": coast " << nCoast << " shadow zone " << nZone << ", which starts at [" << nTmpX << "][" << nTmpY << "] = {" << dGridCentroidXToExtCRSX(nTmpX) << ", " << dGridCentroidYToExtCRSY(nTmpY) << "} has cell [" << nTmpX << "][" << nTmpY << "] marked as shadow zone boundary" << endl;
+            // LogStream << m_ulIter << ": coast " << nCoast << " shadow zone " << nZone << ", which starts at [" << nTmpX << "][" << nTmpY << "] = {" << dGridCentroidXToExtCRSX(nTmpX) << ", " << dGridCentroidYToExtCRSY(nTmpY) << "} has cell [" << nTmpX << "][" << nTmpY << "] marked as shadow zone boundary" << endl;
          }
 
          // Put the ext CRS vector shadow boundary into reverse sequence (i.e. start point is last)
          LBoundary.Reverse();
 
          // Store the reversed ext CRS shadow zone boundary
-         m_VCoast[nCoast].AppendShadowBoundary(&LBoundary);
+         m_VCoast[nCoast].AppendShadowBoundary( & LBoundary);
 
          int nStartX = VILShadowBoundary[nZone][0].nGetX();
          int nStartY = VILShadowBoundary[nZone][0].nGetY();
@@ -628,7 +628,7 @@ int CSimulation::nDoAllShadowZones(void)
             {
                // Append the coastal portion of the shadow zone boundary to the grid CRS vector
                LIBoundary.Append(m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(nn));
-               //                LogStream << "Coast point A " << nn << " [" << m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(nn)->nGetX() << "][" << m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(nn)->nGetY() << "]" << endl;
+               // LogStream << "Coast point A " << nn << " [" << m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(nn)->nGetX() << "][" << m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(nn)->nGetY() << "]" << endl;
             }
          }
 
@@ -642,26 +642,26 @@ int CSimulation::nDoAllShadowZones(void)
             {
                // Append the coastal portion of the shadow zone boundary to the grid CRS vector
                LIBoundary.Append(m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(nn));
-               //                LogStream << "Coast point B " << nn << " [" << m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(nn)->nGetX() << "][" << m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(nn)->nGetY() << "]" << endl;
+               // LogStream << "Coast point B " << nn << " [" << m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(nn)->nGetX() << "][" << m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(nn)->nGetY() << "]" << endl;
             }
          }
 
          //          // DEBUG CODE =======================================================================================================================
-         //          LogStream << "FIRST" << endl;
-         //          for (int k = 0; k < LIBoundary.nGetSize(); k++)
-         //          {
-         //             CGeom2DIPoint PtiTmp = *LIBoundary.pPtiGetAt(k);
-         //             LogStream << k << " [" << PtiTmp.nGetX() << "][" << PtiTmp.nGetY() << "]" << endl;
-         //          }
-         //          LogStream << endl;
+         // LogStream << "FIRST" << endl;
+         // for (int k = 0; k < LIBoundary.nGetSize(); k++)
+         // {
+         // CGeom2DIPoint PtiTmp = *LIBoundary.pPtiGetAt(k);
+         // LogStream << k << " [" << PtiTmp.nGetX() << "][" << PtiTmp.nGetY() << "]" << endl;
+         // }
+         // LogStream << endl;
          //          // DEBUG CODE =======================================================================================================================
 
          // Calculate the centroid
          CGeom2DIPoint PtiCentroid = PtiPolygonCentroid(LIBoundary.pPtiVGetPoints());
 
-         if (bIsWithinValidGrid(&PtiCentroid)) // Safety check
+         if (bIsWithinValidGrid( & PtiCentroid)) // Safety check
          {
-            int nRet = nFloodFillShadowZone(nZone, &PtiCentroid, &PtiStart, &PtiEnd);
+            int nRet = nFloodFillShadowZone(nZone, & PtiCentroid, & PtiStart, & PtiEnd);
 
             if (nRet != RTN_OK)
             {
@@ -693,12 +693,12 @@ int CSimulation::nDoAllShadowZones(void)
 //===============================================================================================================================
 //! Flood fills a shadow zone from the centroid
 //===============================================================================================================================
-int CSimulation::nFloodFillShadowZone(int const nZone, CGeom2DIPoint const* pPtiCentroid, CGeom2DIPoint const* pPtiShadowBoundaryStart, CGeom2DIPoint const* pPtiShadowBoundaryEnd)
+int CSimulation::nFloodFillShadowZone(int const nZone, CGeom2DIPoint const * pPtiCentroid, CGeom2DIPoint const * pPtiShadowBoundaryStart, CGeom2DIPoint const * pPtiShadowBoundaryEnd)
 {
    // Is the centroid a sea cell?
    bool bStartPointOK = true;
    bool bAllPointNotSea = true;
-   CGeom2DIPoint PtiFloodFillStart = *pPtiCentroid;
+   CGeom2DIPoint PtiFloodFillStart = * pPtiCentroid;
 
    if (! m_pRasterGrid->m_Cell[PtiFloodFillStart.nGetX()][PtiFloodFillStart.nGetY()].bIsInContiguousSea())
    {
@@ -712,14 +712,14 @@ int CSimulation::nFloodFillShadowZone(int const nZone, CGeom2DIPoint const* pPti
          PtiFloodFillStart = PtiWeightedAverage(pPtiShadowBoundaryEnd, pPtiCentroid, dWeight);
 
          // Safety check
-         if (PtiFloodFillStart == *pPtiCentroid)
+         if (PtiFloodFillStart == * pPtiCentroid)
          {
             dWeight += 0.05;
             continue;
          }
 
          // Safety check
-         if (! bIsWithinValidGrid(&PtiFloodFillStart))
+         if (! bIsWithinValidGrid( & PtiFloodFillStart))
          {
             if (m_nLogFileDetail >= LOG_FILE_HIGH_DETAIL)
                LogStream << m_ulIter << ": " << ERR << "start point [" << PtiFloodFillStart.nGetX() << "][" << PtiFloodFillStart.nGetY() << "] = {" << dGridCentroidXToExtCRSX(PtiFloodFillStart.nGetX()) << ", " << dGridCentroidYToExtCRSY(PtiFloodFillStart.nGetY()) << "} for flood fill of shadow zone is outside grid" << endl;
@@ -763,7 +763,7 @@ int CSimulation::nFloodFillShadowZone(int const nZone, CGeom2DIPoint const* pPti
    PtiStack.push(PtiFloodFillStart);
 
    // Then do the flood fill: loop until there are no more cell coordinates on the stack
-   while (!PtiStack.empty())
+   while (! PtiStack.empty())
    {
       CGeom2DIPoint Pti = PtiStack.top();
       PtiStack.pop();
@@ -786,26 +786,26 @@ int CSimulation::nFloodFillShadowZone(int const nZone, CGeom2DIPoint const* pPti
          // Mark the cell as being in the shadow zone but not yet processed (a -ve number, with -1 being zone 1)
          m_pRasterGrid->m_Cell[nX][nY].SetShadowZoneNumber(-nZone - 1);
 
-         //          LogStream << m_ulIter << ": [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "} marked as shadow zone" << endl;
+         // LogStream << m_ulIter << ": [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "} marked as shadow zone" << endl;
 
-         if ((! bSpanAbove) && (nY > 0) && m_pRasterGrid->m_Cell[nX][nY].bIsInContiguousSea() && (! m_pRasterGrid->m_Cell[nX][nY-1].bIsinThisShadowZone(-nZone - 1)) && (! m_pRasterGrid->m_Cell[nX][nY-1].bIsShadowZoneBoundary()) && (! m_pRasterGrid->m_Cell[nX][nY-1].bIsCoastline()))
+         if ((! bSpanAbove) && (nY > 0) && m_pRasterGrid->m_Cell[nX][nY].bIsInContiguousSea() && (! m_pRasterGrid->m_Cell[nX][nY - 1].bIsinThisShadowZone(-nZone - 1)) && (! m_pRasterGrid->m_Cell[nX][nY - 1].bIsShadowZoneBoundary()) && (! m_pRasterGrid->m_Cell[nX][nY - 1].bIsCoastline()))
          {
-            PtiStack.push(CGeom2DIPoint(nX, nY-1));
+            PtiStack.push(CGeom2DIPoint(nX, nY - 1));
             bSpanAbove = true;
          }
 
-         else if (bSpanAbove && (nY > 0) && ((! m_pRasterGrid->m_Cell[nX][nY-1].bIsInContiguousSea()) || m_pRasterGrid->m_Cell[nX][nY-1].bIsinThisShadowZone(-nZone - 1) || m_pRasterGrid->m_Cell[nX][nY-1].bIsShadowZoneBoundary() || m_pRasterGrid->m_Cell[nX][nY-1].bIsCoastline()))
+         else if (bSpanAbove && (nY > 0) && ((! m_pRasterGrid->m_Cell[nX][nY - 1].bIsInContiguousSea()) || m_pRasterGrid->m_Cell[nX][nY - 1].bIsinThisShadowZone(-nZone - 1) || m_pRasterGrid->m_Cell[nX][nY - 1].bIsShadowZoneBoundary() || m_pRasterGrid->m_Cell[nX][nY - 1].bIsCoastline()))
          {
             bSpanAbove = false;
          }
 
-         if ((! bSpanBelow) && m_pRasterGrid->m_Cell[nX][nY].bIsInContiguousSea() && (nY < m_nYGridSize-1) && (! m_pRasterGrid->m_Cell[nX][nY+1].bIsinThisShadowZone(-nZone - 1)) && (! m_pRasterGrid->m_Cell[nX][nY+1].bIsShadowZoneBoundary()) && (! m_pRasterGrid->m_Cell[nX][nY+1].bIsCoastline()))
+         if ((! bSpanBelow) && m_pRasterGrid->m_Cell[nX][nY].bIsInContiguousSea() && (nY < m_nYGridSize - 1) && (! m_pRasterGrid->m_Cell[nX][nY + 1].bIsinThisShadowZone(-nZone - 1)) && (! m_pRasterGrid->m_Cell[nX][nY + 1].bIsShadowZoneBoundary()) && (! m_pRasterGrid->m_Cell[nX][nY + 1].bIsCoastline()))
          {
-            PtiStack.push(CGeom2DIPoint(nX, nY+1));
+            PtiStack.push(CGeom2DIPoint(nX, nY + 1));
             bSpanBelow = true;
          }
 
-         else if (bSpanBelow && (nY < m_nYGridSize-1) && ((! m_pRasterGrid->m_Cell[nX][nY+1].bIsInContiguousSea()) || m_pRasterGrid->m_Cell[nX][nY+1].bIsinThisShadowZone(-nZone - 1) || m_pRasterGrid->m_Cell[nX][nY+1].bIsShadowZoneBoundary() || m_pRasterGrid->m_Cell[nX][nY+1].bIsCoastline()))
+         else if (bSpanBelow && (nY < m_nYGridSize - 1) && ((! m_pRasterGrid->m_Cell[nX][nY + 1].bIsInContiguousSea()) || m_pRasterGrid->m_Cell[nX][nY + 1].bIsinThisShadowZone(-nZone - 1) || m_pRasterGrid->m_Cell[nX][nY + 1].bIsShadowZoneBoundary() || m_pRasterGrid->m_Cell[nX][nY + 1].bIsCoastline()))
          {
             bSpanBelow = false;
          }
@@ -918,11 +918,11 @@ void CSimulation::DoShadowZoneAndDownDriftZone(int const nCoast, int const nZone
    else
    {
       // Is on the coastline, so get the location (grid CRS)
-      PtiDownDriftEndPoint = *m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(nDownDriftEndPoint);
+      PtiDownDriftEndPoint = * m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(nDownDriftEndPoint);
    }
 
    // Get the location (grid CRS) of the shadow boundary start point: this is also the start point of the downdrift boundary
-   CGeom2DIPoint const* pPtiDownDriftBoundaryStartPoint = m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(nShadowBoundaryStartPoint);
+   CGeom2DIPoint const * pPtiDownDriftBoundaryStartPoint = m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(nShadowBoundaryStartPoint);
 
    // Now trace the down-drift boundary line: interpolate between cells by a simple DDA line algorithm, see http://en.wikipedia.org/wiki/Digital_differential_analyzer_(graphics_algorithm) Note that Bresenham's algorithm gave occasional gaps
    int nXStart = pPtiDownDriftBoundaryStartPoint->nGetX();
@@ -970,7 +970,7 @@ void CSimulation::DoShadowZoneAndDownDriftZone(int const nCoast, int const nZone
       if ((LDownDriftBoundary.nGetSize() == 0) || (PtThis != LDownDriftBoundary.pPtBack()))
       {
          // Store this coordinate
-         LDownDriftBoundary.Append(&PtThis);
+         LDownDriftBoundary.Append( & PtThis);
 
          // Mark the cell (a +ve number, same as the associated shadow zone number i.e. starting from 1)
          m_pRasterGrid->m_Cell[nX][nY].SetDownDriftZoneNumber(nZone + 1);
@@ -978,7 +978,7 @@ void CSimulation::DoShadowZoneAndDownDriftZone(int const nCoast, int const nZone
          // Increment the boundary length
          nTotDownDriftBoundaryDistance++;
 
-         //          LogStream << "DownDrift boundary [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "}" << endl;
+         // LogStream << "DownDrift boundary [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "}" << endl;
 
          // And increment for next time
          if (dXEnd > dXStart)
@@ -996,7 +996,7 @@ void CSimulation::DoShadowZoneAndDownDriftZone(int const nCoast, int const nZone
    }
 
    // Store the downdrift boundary (external CRS), with the start point first
-   m_VCoast[nCoast].AppendShadowDowndriftBoundary(&LDownDriftBoundary);
+   m_VCoast[nCoast].AppendShadowDowndriftBoundary( & LDownDriftBoundary);
 
    // Compare the lengths of the along-coast and the along-downdrift boundaries. The increment will be 1 for the smaller of the two, will be > 1 for the larger of the two
    int nMaxDistance;
@@ -1026,7 +1026,7 @@ void CSimulation::DoShadowZoneAndDownDriftZone(int const nCoast, int const nZone
       dCoastDistSoFar += dAlongCoastIncrement;
       dDownDriftBoundaryDistSoFar += dDownDriftBoundaryIncrement;
 
-      //       LogStream << "dDownDriftBoundaryDistSoFar = " << dDownDriftBoundaryDistSoFar << " nTotDownDriftBoundaryDistance = " << nTotDownDriftBoundaryDistance << endl;
+      // LogStream << "dDownDriftBoundaryDistSoFar = " << dDownDriftBoundaryDistSoFar << " nTotDownDriftBoundaryDistance = " << nTotDownDriftBoundaryDistance << endl;
 
       if ((dCoastDistSoFar >= nTotAlongCoastDistanceToDownDriftEndpoint) || (dDownDriftBoundaryDistSoFar >= nTotDownDriftBoundaryDistance))
          break;
@@ -1058,12 +1058,12 @@ void CSimulation::DoShadowZoneAndDownDriftZone(int const nCoast, int const nZone
 
       int nAlongDownDriftBoundary = nRound(dDownDriftBoundaryDistSoFar);
 
-      //       LogStream << endl << m_ulIter << ": dCoastDistSoFar = " << dCoastDistSoFar << " (nTotAlongCoastDistanceToDownDriftEndpoint = " << nTotAlongCoastDistanceToDownDriftEndpoint << ") dDownDriftBoundaryDistSoFar = " << dDownDriftBoundaryDistSoFar << " (nTotDownDriftBoundaryDistance = " << nTotDownDriftBoundaryDistance << ")" << endl;
+      // LogStream << endl << m_ulIter << ": dCoastDistSoFar = " << dCoastDistSoFar << " (nTotAlongCoastDistanceToDownDriftEndpoint = " << nTotAlongCoastDistanceToDownDriftEndpoint << ") dDownDriftBoundaryDistSoFar = " << dDownDriftBoundaryDistSoFar << " (nTotDownDriftBoundaryDistance = " << nTotDownDriftBoundaryDistance << ")" << endl;
 
       // nAlongCoast = " << nAlongCoast << ", nShadowBoundaryEndPoint = " << nShadowBoundaryEndPoint << ",  << ", nAlongDownDriftBoundary = " << nAlongDownDriftBoundary << ", << endl;
 
       // Get the two endpoints of the linking line
-      CGeom2DIPoint const* pPtiCoast = m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(nAlongCoast);
+      CGeom2DIPoint const * pPtiCoast = m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(nAlongCoast);
       int nCoastX = pPtiCoast->nGetX();
       int nCoastY = pPtiCoast->nGetY();
 
@@ -1113,7 +1113,7 @@ void CSimulation::DoShadowZoneAndDownDriftZone(int const nCoast, int const nZone
          // Check to see if we just processed this point, can happen due to rounding
          if ((nX == nXLast) && (nY == nYLast))
          {
-            //             LogStream << m_ulIter << ": n = " << n << ", m = " << m << ", dLinkingLineLength = " << dLinkingLineLength << ", dCoastDistSoFar = " << dCoastDistSoFar << " (nTotAlongCoastDistanceToDownDriftEndpoint = " << nTotAlongCoastDistanceToDownDriftEndpoint << "), dDownDriftBoundaryDistSoFar = " << dDownDriftBoundaryDistSoFar << " (nTotDownDriftBoundaryDistance = " << nTotDownDriftBoundaryDistance << ") same as last point at [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "}" << endl;
+            // LogStream << m_ulIter << ": n = " << n << ", m = " << m << ", dLinkingLineLength = " << dLinkingLineLength << ", dCoastDistSoFar = " << dCoastDistSoFar << " (nTotAlongCoastDistanceToDownDriftEndpoint = " << nTotAlongCoastDistanceToDownDriftEndpoint << "), dDownDriftBoundaryDistSoFar = " << dDownDriftBoundaryDistSoFar << " (nTotDownDriftBoundaryDistance = " << nTotDownDriftBoundaryDistance << ") same as last point at [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "}" << endl;
 
             // Set for next time
             nXLast = nX;
@@ -1127,7 +1127,7 @@ void CSimulation::DoShadowZoneAndDownDriftZone(int const nCoast, int const nZone
          // Outside valid grid?
          if (! bIsWithinValidGrid(nX, nY))
          {
-            //             LogStream << m_ulIter << ": n = " << n << ", m = " << m << ", dLinkingLineLength = " << dLinkingLineLength << ", dCoastDistSoFar = " << dCoastDistSoFar << " (nTotAlongCoastDistanceToDownDriftEndpoint = " << nTotAlongCoastDistanceToDownDriftEndpoint << "), dDownDriftBoundaryDistSoFar = " << dDownDriftBoundaryDistSoFar << " (nTotDownDriftBoundaryDistance = " << nTotDownDriftBoundaryDistance << ") outside valid grid at [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "}" << endl;
+            // LogStream << m_ulIter << ": n = " << n << ", m = " << m << ", dLinkingLineLength = " << dLinkingLineLength << ", dCoastDistSoFar = " << dCoastDistSoFar << " (nTotAlongCoastDistanceToDownDriftEndpoint = " << nTotAlongCoastDistanceToDownDriftEndpoint << "), dDownDriftBoundaryDistSoFar = " << dDownDriftBoundaryDistSoFar << " (nTotDownDriftBoundaryDistance = " << nTotDownDriftBoundaryDistance << ") outside valid grid at [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "}" << endl;
 
             // Set for next time
             nXLast = nX;
@@ -1142,7 +1142,7 @@ void CSimulation::DoShadowZoneAndDownDriftZone(int const nCoast, int const nZone
          if (! m_pRasterGrid->m_Cell[nX][nY].bIsInContiguousSea())
          {
             // Not a sea cell
-            //             LogStream << m_ulIter << ": n = " << n << ", m = " << m << ", dLinkingLineLength = " << dLinkingLineLength << ", dCoastDistSoFar = " << dCoastDistSoFar << " (nTotAlongCoastDistanceToDownDriftEndpoint = " << nTotAlongCoastDistanceToDownDriftEndpoint << "), dDownDriftBoundaryDistSoFar = " << dDownDriftBoundaryDistSoFar << " (nTotDownDriftBoundaryDistance = " << nTotDownDriftBoundaryDistance << ") not a sea cell at [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "}" << endl;
+            // LogStream << m_ulIter << ": n = " << n << ", m = " << m << ", dLinkingLineLength = " << dLinkingLineLength << ", dCoastDistSoFar = " << dCoastDistSoFar << " (nTotAlongCoastDistanceToDownDriftEndpoint = " << nTotAlongCoastDistanceToDownDriftEndpoint << "), dDownDriftBoundaryDistSoFar = " << dDownDriftBoundaryDistSoFar << " (nTotDownDriftBoundaryDistance = " << nTotDownDriftBoundaryDistance << ") not a sea cell at [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "}" << endl;
 
             // Set for next time
             nXLast = nX;
@@ -1162,7 +1162,7 @@ void CSimulation::DoShadowZoneAndDownDriftZone(int const nCoast, int const nZone
             if (! m_pRasterGrid->m_Cell[nX][nY].bIsinAnyShadowZone())
             {
                // We have left the shadow zone
-               //                LogStream << "[" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "} LEFT SHADOW ZONE" << endl;
+               // LogStream << "[" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "} LEFT SHADOW ZONE" << endl;
 
                bInShadowZone = false;
 
@@ -1178,10 +1178,10 @@ void CSimulation::DoShadowZoneAndDownDriftZone(int const nCoast, int const nZone
                      CGeom2DIPoint PtiLeft = PtiGetPerpendicular(VnShadowCellX[mm], VnShadowCellY[mm], VnShadowCellX[mm - 1], VnShadowCellY[mm - 1], 1, RIGHT_HANDED);
                      CGeom2DIPoint PtiRight = PtiGetPerpendicular(VnShadowCellX[mm], VnShadowCellY[mm], VnShadowCellX[mm - 1], VnShadowCellY[mm - 1], 1, LEFT_HANDED);
 
-                     if (bIsWithinValidGrid(&PtiLeft))
+                     if (bIsWithinValidGrid( & PtiLeft))
                         ProcessShadowZoneCell(PtiLeft.nGetX(), PtiLeft.nGetY(), nShadowZoneCoastToCapeSeaHand, pPtiCoast, VnShadowCellX.back(), VnShadowCellY.back(), nZone);
 
-                     if (bIsWithinValidGrid(&PtiRight))
+                     if (bIsWithinValidGrid( & PtiRight))
                         ProcessShadowZoneCell(PtiRight.nGetX(), PtiRight.nGetY(), nShadowZoneCoastToCapeSeaHand, pPtiCoast, VnShadowCellX.back(), VnShadowCellY.back(), nZone);
                   }
                }
@@ -1200,7 +1200,7 @@ void CSimulation::DoShadowZoneAndDownDriftZone(int const nCoast, int const nZone
             {
                // In downdrift zone
 
-               //                LogStream << m_ulIter << ": n = " << n << ", m = " << m << ", dLinkingLineLength = " << dLinkingLineLength << ", dCoastDistSoFar = " << dCoastDistSoFar << " (nTotAlongCoastDistanceToDownDriftEndpoint = " << nTotAlongCoastDistanceToDownDriftEndpoint << "), dDownDriftBoundaryDistSoFar = " << dDownDriftBoundaryDistSoFar << " (nTotDownDriftBoundaryDistance = " << nTotDownDriftBoundaryDistance << ") has [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "} in downdrift zone" << endl;
+               // LogStream << m_ulIter << ": n = " << n << ", m = " << m << ", dLinkingLineLength = " << dLinkingLineLength << ", dCoastDistSoFar = " << dCoastDistSoFar << " (nTotAlongCoastDistanceToDownDriftEndpoint = " << nTotAlongCoastDistanceToDownDriftEndpoint << "), dDownDriftBoundaryDistSoFar = " << dDownDriftBoundaryDistSoFar << " (nTotDownDriftBoundaryDistance = " << nTotDownDriftBoundaryDistance << ") has [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "} in downdrift zone" << endl;
 
                // Process this downdrift cell
                ProcessDownDriftCell(nX, nY, (m - nShadowZoneLength), (dLinkingLineLength - nShadowZoneLength), nZone);
@@ -1209,10 +1209,10 @@ void CSimulation::DoShadowZoneAndDownDriftZone(int const nCoast, int const nZone
                CGeom2DIPoint PtiLeft = PtiGetPerpendicular(nX, nY, nXLast, nYLast, 1, RIGHT_HANDED);
                CGeom2DIPoint PtiRight = PtiGetPerpendicular(nX, nY, nXLast, nYLast, 1, LEFT_HANDED);
 
-               if (bIsWithinValidGrid(&PtiLeft))
+               if (bIsWithinValidGrid( & PtiLeft))
                   ProcessDownDriftCell(PtiLeft.nGetX(), PtiLeft.nGetY(), (m - nShadowZoneLength), (dLinkingLineLength - nShadowZoneLength), nZone);
 
-               if (bIsWithinValidGrid(&PtiRight))
+               if (bIsWithinValidGrid( & PtiRight))
                   ProcessDownDriftCell(PtiRight.nGetX(), PtiRight.nGetY(), (m - nShadowZoneLength), (dLinkingLineLength - nShadowZoneLength), nZone);
             }
          }
@@ -1221,7 +1221,7 @@ void CSimulation::DoShadowZoneAndDownDriftZone(int const nCoast, int const nZone
          {
             // We have, so the linking line has only one part: between the coast and the downdrift boundary.
 
-            //             LogStream << m_ulIter << ": n = " << n << ", m = " << m << ", dLinkingLineLength = " << dLinkingLineLength << ", dCoastDistSoFar = " << dCoastDistSoFar << " (nTotAlongCoastDistanceToDownDriftEndpoint = " << nTotAlongCoastDistanceToDownDriftEndpoint << "), dDownDriftBoundaryDistSoFar = " << dDownDriftBoundaryDistSoFar << " (nTotDownDriftBoundaryDistance = " << nTotDownDriftBoundaryDistance << ") has [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "} in downdrift zone" << endl;
+            // LogStream << m_ulIter << ": n = " << n << ", m = " << m << ", dLinkingLineLength = " << dLinkingLineLength << ", dCoastDistSoFar = " << dCoastDistSoFar << " (nTotAlongCoastDistanceToDownDriftEndpoint = " << nTotAlongCoastDistanceToDownDriftEndpoint << "), dDownDriftBoundaryDistSoFar = " << dDownDriftBoundaryDistSoFar << " (nTotDownDriftBoundaryDistance = " << nTotDownDriftBoundaryDistance << ") has [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "} in downdrift zone" << endl;
 
             // Process this downdrift cell
             ProcessDownDriftCell(nX, nY, m, dLinkingLineLength, nZone);
@@ -1232,10 +1232,10 @@ void CSimulation::DoShadowZoneAndDownDriftZone(int const nCoast, int const nZone
                CGeom2DIPoint PtiLeft = PtiGetPerpendicular(nX, nY, nXLast, nYLast, 1, RIGHT_HANDED);
                CGeom2DIPoint PtiRight = PtiGetPerpendicular(nX, nY, nXLast, nYLast, 1, LEFT_HANDED);
 
-               if (bIsWithinValidGrid(&PtiLeft))
+               if (bIsWithinValidGrid( & PtiLeft))
                   ProcessDownDriftCell(PtiLeft.nGetX(), PtiLeft.nGetY(), m, dLinkingLineLength, nZone);
 
-               if (bIsWithinValidGrid(&PtiRight))
+               if (bIsWithinValidGrid( & PtiRight))
                   ProcessDownDriftCell(PtiRight.nGetX(), PtiRight.nGetY(), m, dLinkingLineLength, nZone);
             }
          }
@@ -1260,7 +1260,7 @@ void CSimulation::ProcessDownDriftCell(int const nX, int const nY, int const nTr
    if (bFPIsEqual(dWaveHeight, DBL_NODATA, TOLERANCE))
    {
       // Is not a sea cell
-      //       LogStream << m_ulIter << ": [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "} ignored, not a sea cell" << endl;
+      // LogStream << m_ulIter << ": [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "} ignored, not a sea cell" << endl;
 
       return;
    }
@@ -1270,7 +1270,7 @@ void CSimulation::ProcessDownDriftCell(int const nX, int const nY, int const nTr
    if (nZoneCode == (nZone + 1))
    {
       // This cell is in the associated shadow zone, so don't change it
-      //       LogStream << m_ulIter << ": [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "} ignored, is in associated shadow zone (" << nZone+1 << ")" << endl;
+      // LogStream << m_ulIter << ": [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "} ignored, is in associated shadow zone (" << nZone+1 << ")" << endl;
 
       return;
    }
@@ -1278,7 +1278,7 @@ void CSimulation::ProcessDownDriftCell(int const nX, int const nY, int const nTr
    if (nZoneCode < 0)
    {
       // This cell is in a shadow zone but is not yet processed, so don't change it
-      //       LogStream << m_ulIter << ": [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "} ignored, is an unprocessed cell in shadow zone " << nZoneCode << endl;
+      // LogStream << m_ulIter << ": [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "} ignored, is an unprocessed cell in shadow zone " << nZoneCode << endl;
 
       return;
    }
@@ -1288,7 +1288,7 @@ void CSimulation::ProcessDownDriftCell(int const nX, int const nY, int const nTr
    if (nZoneCode == (nZone + 1))
    {
       // We have already processed this cell for this downdrift zone
-      //       LogStream << m_ulIter << ": [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "} ignored, already done for this down-drift zone " << nZone+1 << endl;
+      // LogStream << m_ulIter << ": [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "} ignored, already done for this down-drift zone " << nZone+1 << endl;
 
       return;
    }
@@ -1303,13 +1303,13 @@ void CSimulation::ProcessDownDriftCell(int const nX, int const nY, int const nTr
    // Set the modified wave height
    m_pRasterGrid->m_Cell[nX][nY].SetWaveHeight(dKp * dWaveHeight);
 
-   //    LogStream << m_ulIter << ": [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "}, nTraversed = " << nTraversed << " dTotalToTraverse = " << dTotalToTraverse << " fraction traversed = " << nTraversed / dTotalToTraverse << endl << "m_pRasterGrid->m_Cell[" << nX << "][" << nY << "].dGetCellDeepWaterWaveHeight() = " << m_pRasterGrid->m_Cell[nX][nY].dGetCellDeepWaterWaveHeight() << " m, original dWaveHeight = " << dWaveHeight << " m, dKp = " << dKp << ", modified wave height = " << dKp * dWaveHeight << " m" << endl << endl;
+   // LogStream << m_ulIter << ": [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "}, nTraversed = " << nTraversed << " dTotalToTraverse = " << dTotalToTraverse << " fraction traversed = " << nTraversed / dTotalToTraverse << endl << "m_pRasterGrid->m_Cell[" << nX << "][" << nY << "].dGetCellDeepWaterWaveHeight() = " << m_pRasterGrid->m_Cell[nX][nY].dGetCellDeepWaterWaveHeight() << " m, original dWaveHeight = " << dWaveHeight << " m, dKp = " << dKp << ", modified wave height = " << dKp * dWaveHeight << " m" << endl << endl;
 }
 
 //===============================================================================================================================
 //! Process a single cell which is in the shadow zone, changing its wave height and orientation
 //===============================================================================================================================
-void CSimulation::ProcessShadowZoneCell(int const nX, int const nY, int const nShadowZoneCoastToCapeSeaHand, CGeom2DIPoint const* pPtiCoast, int const nShadowEndX, int const nShadowEndY, int const nZone)
+void CSimulation::ProcessShadowZoneCell(int const nX, int const nY, int const nShadowZoneCoastToCapeSeaHand, CGeom2DIPoint const * pPtiCoast, int const nShadowEndX, int const nShadowEndY, int const nZone)
 {
    int nZoneCode = m_pRasterGrid->m_Cell[nX][nY].nGetShadowZoneNumber();
 
@@ -1321,7 +1321,7 @@ void CSimulation::ProcessShadowZoneCell(int const nX, int const nY, int const nS
       // Next calculate wave angle here: first calculate dOmega, the signed angle subtended between this end point and the start point, and this end point and the end of the shadow boundary
       CGeom2DIPoint PtiThis(nX, nY);
       CGeom2DIPoint PtiShadowBoundary(nShadowEndX, nShadowEndY);
-      double dOmega = 180 * dAngleSubtended(pPtiCoast, &PtiThis, &PtiShadowBoundary) / PI;
+      double dOmega = 180 * dAngleSubtended(pPtiCoast, & PtiThis, & PtiShadowBoundary) / PI;
 
       // If dOmega is 90 degrees or more in either direction, set both wave angle and wave height to zero
       if (tAbs(dOmega) >= 90)
@@ -1329,7 +1329,7 @@ void CSimulation::ProcessShadowZoneCell(int const nX, int const nY, int const nS
          m_pRasterGrid->m_Cell[nX][nY].SetWaveAngle(0);
          m_pRasterGrid->m_Cell[nX][nY].SetWaveHeight(0);
 
-         //          LogStream << m_ulIter << ": on shadow linking line with coast end [" << pPtiCoast->nGetX() << "][" << pPtiCoast->nGetY() << "] = {" << dGridCentroidXToExtCRSX(pPtiCoast->nGetX()) << ", " << dGridCentroidYToExtCRSY(pPtiCoast->nGetY()) << "} and shadow boundary end [" << PtiShadowBoundary.nGetX() << "][" << PtiShadowBoundary.nGetY() << "] = {" << dGridCentroidXToExtCRSX(PtiShadowBoundary.nGetX()) << ", " << dGridCentroidYToExtCRSY(PtiShadowBoundary.nGetY()) << "}, this point [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "}" << endl << "angle subtended = " << dOmega << " degrees, m_pRasterGrid->m_Cell[" << nX << "][" << nY << "].dGetCellDeepWaterWaveHeight() = " << m_pRasterGrid->m_Cell[nX][nY].dGetCellDeepWaterWaveHeight() << " degrees, wave orientation = 0 degrees, wave height = 0 m" << endl;
+         // LogStream << m_ulIter << ": on shadow linking line with coast end [" << pPtiCoast->nGetX() << "][" << pPtiCoast->nGetY() << "] = {" << dGridCentroidXToExtCRSX(pPtiCoast->nGetX()) << ", " << dGridCentroidYToExtCRSY(pPtiCoast->nGetY()) << "} and shadow boundary end [" << PtiShadowBoundary.nGetX() << "][" << PtiShadowBoundary.nGetY() << "] = {" << dGridCentroidXToExtCRSX(PtiShadowBoundary.nGetX()) << ", " << dGridCentroidYToExtCRSY(PtiShadowBoundary.nGetY()) << "}, this point [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "}" << endl << "angle subtended = " << dOmega << " degrees, m_pRasterGrid->m_Cell[" << nX << "][" << nY << "].dGetCellDeepWaterWaveHeight() = " << m_pRasterGrid->m_Cell[nX][nY].dGetCellDeepWaterWaveHeight() << " degrees, wave orientation = 0 degrees, wave height = 0 m" << endl;
       }
 
       else
@@ -1360,7 +1360,7 @@ void CSimulation::ProcessShadowZoneCell(int const nX, int const nY, int const nS
          // Set the shadow zone wave height
          m_pRasterGrid->m_Cell[nX][nY].SetWaveHeight(dKp * dWaveHeight);
 
-         //          LogStream << m_ulIter << ": on shadow linking line with coast end [" << pPtiCoast->nGetX() << "][" << pPtiCoast->nGetY() << "] = {" << dGridCentroidXToExtCRSX(pPtiCoast->nGetX()) << ", " << dGridCentroidYToExtCRSY(pPtiCoast->nGetY()) << "} and shadow boundary end [" << PtiShadowBoundary.nGetX() << "][" << PtiShadowBoundary.nGetY() << "] = {" << dGridCentroidXToExtCRSX(PtiShadowBoundary.nGetX()) << ", " << dGridCentroidYToExtCRSY(PtiShadowBoundary.nGetY()) << "}, this point [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "}, angle subtended = " << dOmega << " degrees, m_pRasterGrid->m_Cell[" << nX << "][" << nY << "].dGetCellDeepWaterWaveHeight() = " << m_pRasterGrid->m_Cell[nX][nY].dGetCellDeepWaterWaveHeight() << " m, dDeltaShadowWaveAngle = " << dDeltaShadowWaveAngle << " degrees, dWaveAngle = " << dWaveAngle << " degrees, dShadowWaveAngle = " << dShadowWaveAngle << " degrees, dWaveHeight = " << dWaveHeight << " m, dKp = " << dKp << ", shadow zone wave height = " << dKp * dWaveHeight << " m" << endl;
+         // LogStream << m_ulIter << ": on shadow linking line with coast end [" << pPtiCoast->nGetX() << "][" << pPtiCoast->nGetY() << "] = {" << dGridCentroidXToExtCRSX(pPtiCoast->nGetX()) << ", " << dGridCentroidYToExtCRSY(pPtiCoast->nGetY()) << "} and shadow boundary end [" << PtiShadowBoundary.nGetX() << "][" << PtiShadowBoundary.nGetY() << "] = {" << dGridCentroidXToExtCRSX(PtiShadowBoundary.nGetX()) << ", " << dGridCentroidYToExtCRSY(PtiShadowBoundary.nGetY()) << "}, this point [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "}, angle subtended = " << dOmega << " degrees, m_pRasterGrid->m_Cell[" << nX << "][" << nY << "].dGetCellDeepWaterWaveHeight() = " << m_pRasterGrid->m_Cell[nX][nY].dGetCellDeepWaterWaveHeight() << " m, dDeltaShadowWaveAngle = " << dDeltaShadowWaveAngle << " degrees, dWaveAngle = " << dWaveAngle << " degrees, dShadowWaveAngle = " << dShadowWaveAngle << " degrees, dWaveHeight = " << dWaveHeight << " m, dKp = " << dKp << ", shadow zone wave height = " << dKp * dWaveHeight << " m" << endl;
       }
    }
 }

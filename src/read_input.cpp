@@ -64,7 +64,6 @@ bool CSimulation::bReadIniFile(void)
 
    m_strCMEIni.append(CME_INI);
 
-
    // The .ini file is assumed to be in the CoastalME executable's directory
    string strFilePathName(m_strCMEIni);
 
@@ -94,7 +93,7 @@ bool CSimulation::bReadIniFile(void)
       nLine++;
 
       // Trim off leading and trailing whitespace
-      strRec = strTrim(&strRec);
+      strRec = strTrim( & strRec);
 
       // If it is a blank line or a comment then ignore it
       if ((! strRec.empty()) && (strRec[0] != QUOTE1) && (strRec[0] != QUOTE2))
@@ -120,10 +119,10 @@ bool CSimulation::bReadIniFile(void)
          }
 
          // Strip off leading portion (the bit up to and including the colon)
-         string strRH = strRec.erase(0, nPos+1);
+         string strRH = strRec.erase(0, nPos + 1);
 
          // Remove leading whitespace
-         strRH = strTrimLeft(&strRH);
+         strRH = strTrimLeft( & strRH);
 
          // Look for a trailing comment, if found then terminate string at that point and trim off any trailing whitespace
          nPos = strRH.rfind(QUOTE1);
@@ -137,7 +136,7 @@ bool CSimulation::bReadIniFile(void)
             strRH.resize(nPos);
 
          // Remove trailing whitespace
-         strRH = strTrimRight(&strRH);
+         strRH = strTrimRight( & strRH);
 
          switch (i)
          {
@@ -241,7 +240,7 @@ bool CSimulation::bReadRunDataFile(void)
    InStream.open(m_strDataPathName.c_str(), ios::in);
 
    // Did it open OK?
-   if (!InStream.is_open())
+   if (! InStream.is_open())
    {
       // Error: cannot open run details file for input
       cerr << ERR << "cannot open " << m_strDataPathName << " for input" << endl;
@@ -258,7 +257,7 @@ bool CSimulation::bReadRunDataFile(void)
       nLine++;
 
       // Trim off leading and trailing whitespace
-      strRec = strTrim(&strRec);
+      strRec = strTrim( & strRec);
 
       // If it is a blank line or a comment then ignore it
       if ((! strRec.empty()) && (strRec[0] != QUOTE1) && (strRec[0] != QUOTE2))
@@ -278,10 +277,10 @@ bool CSimulation::bReadRunDataFile(void)
          }
 
          // Strip off leading portion (the bit up to and including the colon)
-         string strRH = strRec.erase(0, nPos+1);
+         string strRH = strRec.erase(0, nPos + 1);
 
          // Remove leading whitespace after the colon
-         strRH = strTrimLeft(&strRH);
+         strRH = strTrimLeft( & strRH);
 
          // Look for trailing comments, if found then terminate string at that point and trim off any trailing whitespace
          bool bFound = true;
@@ -307,12 +306,12 @@ bool CSimulation::bReadRunDataFile(void)
             }
 
             // Trim trailing spaces
-            strRH = strTrimRight(&strRH);
+            strRH = strTrimRight( & strRH);
          }
 
 #ifdef _WIN32
          // For Windows, make sure has backslashes, not Unix-style slashes
-         strRH = pstrChangeToBackslash(&strRH);
+         strRH = pstrChangeToBackslash( & strRH);
 #endif
          bool bFirst = true;
          int nRet = 0;
@@ -367,8 +366,21 @@ bool CSimulation::bReadRunDataFile(void)
                break;
 
             case 3:
+
+               // Output per-timestep results in CSV format?
+               strRH = strToLower( & strRH);
+
+               m_bCSVPerTimestepResults = false;
+
+               if (strRH.find("y") != string::npos)
+                  m_bCSVPerTimestepResults = true;
+
+               break;
+
+            case 4:
+
                // Get the start date/time of the simulation, format is [hh-mm-ss dd/mm/yyyy]
-               VstrTmp = VstrSplit(&strRH, SPACE);
+               VstrTmp = VstrSplit( & strRH, SPACE);
 
                // Both date and time here?
                if (VstrTmp.size() < 2)
@@ -378,14 +390,14 @@ bool CSimulation::bReadRunDataFile(void)
                }
 
                // OK, first sort out the time
-               if (! bParseTime(&VstrTmp[0], nHour, nMin, nSec))
+               if (! bParseTime( & VstrTmp[0], nHour, nMin, nSec))
                {
                   strErr = "line " + to_string(nLine) + ": could not understand simulation start time in '" + m_strDataPathName + "'";
                   break;
                }
 
                // Next sort out the date
-               if (! bParseDate(&VstrTmp[1], nDay, nMonth, nYear))
+               if (! bParseDate( & VstrTmp[1], nDay, nMonth, nYear))
                {
                   strErr = "line " + to_string(nLine) + ": could not understand simulation start date in '" + m_strDataPathName + "'";
                   break;
@@ -401,11 +413,11 @@ bool CSimulation::bReadRunDataFile(void)
 
                break;
 
-            case 4:
+            case 5:
                // Duration of simulation (in hours, days, months, or years): sort out multiplier and user units, as used in the per-timestep output
-               strRH = strToLower(&strRH);
+               strRH = strToLower( & strRH);
 
-               nRet = nDoSimulationTimeMultiplier(&strRH);
+               nRet = nDoSimulationTimeMultiplier( & strRH);
 
                if (nRet != RTN_OK)
                {
@@ -426,7 +438,7 @@ bool CSimulation::bReadRunDataFile(void)
                strRH.resize(nPos);
 
                // Remove trailing spaces
-               strRH = strTrimRight(&strRH);
+               strRH = strTrimRight( & strRH);
 
                // Calculate the duration of the simulation in hours
                m_dSimDuration = strtod(strRH.c_str(), NULL) * m_dDurationUnitsMult;
@@ -436,11 +448,11 @@ bool CSimulation::bReadRunDataFile(void)
 
                break;
 
-            case 5:
+            case 6:
                // Timestep of simulation (in hours or days)
-               strRH = strToLower(&strRH);
+               strRH = strToLower( & strRH);
 
-               dMult = dGetTimeMultiplier(&strRH);
+               dMult = dGetTimeMultiplier( & strRH);
 
                if (static_cast<int>(dMult) == TIME_UNKNOWN)
                {
@@ -461,7 +473,7 @@ bool CSimulation::bReadRunDataFile(void)
                strRH.resize(nPos);
 
                // remove trailing spaces
-               strRH = strTrimRight(&strRH);
+               strRH = strTrimRight( & strRH);
 
                // Check that this is a valid double
                if (! bIsStringValidDouble(strRH))
@@ -480,11 +492,11 @@ bool CSimulation::bReadRunDataFile(void)
 
                break;
 
-            case 6:
+            case 7:
             {
                // Save interval(s) - can handle multiple groups with different units
                // e.g., "6 12 24 48 hours, 1 2 6 months, 1 years"
-               strRH = strToLower(&strRH);
+               strRH = strToLower( & strRH);
 
                // Split by commas to handle multiple unit groups
                string strOriginal = strRH;
@@ -510,14 +522,14 @@ bool CSimulation::bReadRunDataFile(void)
                   }
 
                   // Trim whitespace from group
-                  strGroup = strTrimLeft(&strGroup);
-                  strGroup = strTrimRight(&strGroup);
+                  strGroup = strTrimLeft( & strGroup);
+                  strGroup = strTrimRight( & strGroup);
 
                   if (strGroup.empty())
                      continue;
 
                   // Get the multiplier for this group
-                  dMult = dGetTimeMultiplier(&strGroup);
+                  dMult = dGetTimeMultiplier( & strGroup);
 
                   if (static_cast<int>(dMult) == TIME_UNKNOWN)
                   {
@@ -535,7 +547,7 @@ bool CSimulation::bReadRunDataFile(void)
                   }
 
                   string strNumbers = strGroup.substr(0, nLastSpace);
-                  strNumbers = strTrimRight(&strNumbers);
+                  strNumbers = strTrimRight( & strNumbers);
 
                   // Parse numbers in this group
                   size_t nSpacePos = 0;
@@ -550,7 +562,7 @@ bool CSimulation::bReadRunDataFile(void)
 
                      string strNumber = strNumbers.substr(nSpacePos, nNextSpace - nSpacePos);
 
-                     if (!strNumber.empty())
+                     if (! strNumber.empty())
                      {
                         if (m_nUSave > static_cast<int>(SAVEMAX) - 1)
                         {
@@ -565,11 +577,11 @@ bool CSimulation::bReadRunDataFile(void)
                      nSpacePos = nNextSpace + 1;
                   } while (nSpacePos < strNumbers.length());
 
-                  if (!strErr.empty())
+                  if (! strErr.empty())
                      break;
                } while (nCommaPos != string::npos);
 
-               if (!strErr.empty())
+               if (! strErr.empty())
                   break;
 
                // Check if we only have one value (making it a regular interval)
@@ -607,7 +619,7 @@ bool CSimulation::bReadRunDataFile(void)
             }
             break;
 
-            case 7:
+            case 8:
 
                // Random number seed(s)
                if (strRH.empty())
@@ -653,7 +665,7 @@ bool CSimulation::bReadRunDataFile(void)
 
                         // We need more seeds, so get the RH bit
                         strRH = strRH.substr(nPos, strRH.size() - nPos);
-                        strRH = strTrimLeft(&strRH);
+                        strRH = strTrimLeft( & strRH);
 
                         if (strRH.size() == 0)
                            // No more seeds left to read
@@ -661,7 +673,7 @@ bool CSimulation::bReadRunDataFile(void)
                      } while (true);
 
                      // If we haven't filled all random number seeds, make all the remainder the same as the last one read
-                     if (n < NUMBER_OF_RNGS-1)
+                     if (n < NUMBER_OF_RNGS - 1)
                      {
                         for (int m = n; m < NUMBER_OF_RNGS; m++)
                            m_ulRandSeed[m] = m_ulRandSeed[n];
@@ -671,7 +683,7 @@ bool CSimulation::bReadRunDataFile(void)
 
                break;
 
-            case 8:
+            case 9:
 
                // Max save digits for GIS output file names
                if (! bIsStringValidInt(strRH))
@@ -687,7 +699,7 @@ bool CSimulation::bReadRunDataFile(void)
 
                break;
 
-            case 9:
+            case 10:
 
                // Save digits for GIS output sequential or iteration number?    [s = sequential, i = iteration]: s
                if (strRH.empty())
@@ -696,7 +708,7 @@ bool CSimulation::bReadRunDataFile(void)
                else
                {
                   // Convert to lower case
-                  strRH = strToLower(&strRH);
+                  strRH = strToLower( & strRH);
 
                   if (strRH.find('s') != string::npos)
                   {
@@ -719,17 +731,16 @@ bool CSimulation::bReadRunDataFile(void)
 
                break;
 
-
-            case 10:
+            case 11:
 
                // Raster GIS files to output
                if (strRH.empty())
-                  strErr = "line " + to_string(nLine) + ": must contain '" + RASTER_ALL_OUTPUT_CODE +"', or '" + RASTER_USUAL_OUTPUT_CODE + "', or at least one raster GIS output code";
+                  strErr = "line " + to_string(nLine) + ": must contain '" + RASTER_ALL_OUTPUT_CODE + "', or '" + RASTER_USUAL_OUTPUT_CODE + "', or at least one raster GIS output code";
 
                else
                {
                   // Convert to lower case
-                  strRH = strToLower(&strRH);
+                  strRH = strToLower( & strRH);
 
                   if (strRH.find(RASTER_ALL_OUTPUT_CODE) != string::npos)
                   {
@@ -836,361 +847,361 @@ bool CSimulation::bReadRunDataFile(void)
                      if (strRH.find(RASTER_SEDIMENT_TOP_CODE) != string::npos)
                      {
                         m_bSedimentTopSurfSave = true;
-                        strRH = strRemoveSubstr(&strRH, &RASTER_SEDIMENT_TOP_CODE);
+                        strRH = strRemoveSubstr( & strRH, & RASTER_SEDIMENT_TOP_CODE);
                      }
 
                      if (strRH.find(RASTER_TOP_CODE) != string::npos)
                      {
                         m_bTopSurfSave = true;
-                        strRH = strRemoveSubstr(&strRH, &RASTER_TOP_CODE);
+                        strRH = strRemoveSubstr( & strRH, & RASTER_TOP_CODE);
                      }
 
                      if (strRH.find(RASTER_SEA_DEPTH_CODE) != string::npos)
                      {
                         m_bSeaDepthSave = true;
-                        strRH = strRemoveSubstr(&strRH, &RASTER_SEA_DEPTH_CODE);
+                        strRH = strRemoveSubstr( & strRH, & RASTER_SEA_DEPTH_CODE);
                      }
 
                      if (strRH.find(RASTER_WAVE_HEIGHT_CODE) != string::npos)
                      {
                         m_bWaveHeightSave = true;
-                        strRH = strRemoveSubstr(&strRH, &RASTER_WAVE_HEIGHT_CODE);
+                        strRH = strRemoveSubstr( & strRH, & RASTER_WAVE_HEIGHT_CODE);
                      }
 
                      if (strRH.find(RASTER_WAVE_ORIENTATION_CODE) != string::npos)
                      {
                         m_bWaveAngleSave = true;
-                        strRH = strRemoveSubstr(&strRH, &RASTER_WAVE_ORIENTATION_CODE);
+                        strRH = strRemoveSubstr( & strRH, & RASTER_WAVE_ORIENTATION_CODE);
                      }
 
                      if (strRH.find(RASTER_WAVE_PERIOD_CODE) != string::npos)
                      {
                         m_bDeepWaterWavePeriodSave = true;
-                        strRH = strRemoveSubstr(&strRH, &RASTER_WAVE_PERIOD_CODE);
+                        strRH = strRemoveSubstr( & strRH, & RASTER_WAVE_PERIOD_CODE);
                      }
 
                      if (strRH.find(RASTER_POTENTIAL_PLATFORM_EROSION_CODE) != string::npos)
                      {
                         m_bPotentialPlatformErosionSave = true;
-                        strRH = strRemoveSubstr(&strRH, &RASTER_POTENTIAL_PLATFORM_EROSION_CODE);
+                        strRH = strRemoveSubstr( & strRH, & RASTER_POTENTIAL_PLATFORM_EROSION_CODE);
                      }
 
                      if (strRH.find(RASTER_ACTUAL_PLATFORM_EROSION_CODE) != string::npos)
                      {
                         m_bActualPlatformErosionSave = true;
-                        strRH = strRemoveSubstr(&strRH, &RASTER_ACTUAL_PLATFORM_EROSION_CODE);
+                        strRH = strRemoveSubstr( & strRH, & RASTER_ACTUAL_PLATFORM_EROSION_CODE);
                      }
 
                      if (strRH.find(RASTER_TOTAL_POTENTIAL_PLATFORM_EROSION_CODE) != string::npos)
                      {
                         m_bTotalPotentialPlatformErosionSave = true;
-                        strRH = strRemoveSubstr(&strRH, &RASTER_TOTAL_POTENTIAL_PLATFORM_EROSION_CODE);
+                        strRH = strRemoveSubstr( & strRH, & RASTER_TOTAL_POTENTIAL_PLATFORM_EROSION_CODE);
                      }
 
                      if (strRH.find(RASTER_TOTAL_ACTUAL_PLATFORM_EROSION_CODE) != string::npos)
                      {
                         m_bTotalActualPlatformErosionSave = true;
-                        strRH = strRemoveSubstr(&strRH, &RASTER_TOTAL_ACTUAL_PLATFORM_EROSION_CODE);
+                        strRH = strRemoveSubstr( & strRH, & RASTER_TOTAL_ACTUAL_PLATFORM_EROSION_CODE);
                      }
 
                      if (strRH.find(RASTER_POTENTIAL_BEACH_EROSION_CODE) != string::npos)
                      {
                         m_bPotentialBeachErosionSave = true;
-                        strRH = strRemoveSubstr(&strRH, &RASTER_POTENTIAL_BEACH_EROSION_CODE);
+                        strRH = strRemoveSubstr( & strRH, & RASTER_POTENTIAL_BEACH_EROSION_CODE);
                      }
 
                      if (strRH.find(RASTER_ACTUAL_BEACH_EROSION_CODE) != string::npos)
                      {
                         m_bActualBeachErosionSave = true;
-                        strRH = strRemoveSubstr(&strRH, &RASTER_ACTUAL_BEACH_EROSION_CODE);
+                        strRH = strRemoveSubstr( & strRH, & RASTER_ACTUAL_BEACH_EROSION_CODE);
                      }
 
                      if (strRH.find(RASTER_TOTAL_POTENTIAL_BEACH_EROSION_CODE) != string::npos)
                      {
                         m_bTotalPotentialBeachErosionSave = true;
-                        strRH = strRemoveSubstr(&strRH, &RASTER_TOTAL_POTENTIAL_BEACH_EROSION_CODE);
+                        strRH = strRemoveSubstr( & strRH, & RASTER_TOTAL_POTENTIAL_BEACH_EROSION_CODE);
                      }
 
                      if (strRH.find(RASTER_TOTAL_ACTUAL_BEACH_EROSION_CODE) != string::npos)
                      {
                         m_bTotalActualBeachErosionSave = true;
-                        strRH = strRemoveSubstr(&strRH, &RASTER_TOTAL_ACTUAL_BEACH_EROSION_CODE);
+                        strRH = strRemoveSubstr( & strRH, & RASTER_TOTAL_ACTUAL_BEACH_EROSION_CODE);
                      }
 
                      if (strRH.find(RASTER_LANDFORM_CODE) != string::npos)
                      {
                         m_bLandformSave = true;
-                        strRH = strRemoveSubstr(&strRH, &RASTER_LANDFORM_CODE);
+                        strRH = strRemoveSubstr( & strRH, & RASTER_LANDFORM_CODE);
                      }
 
                      if (strRH.find(RASTER_LOCAL_SLOPE_CODE) != string::npos)
                      {
                         m_bLocalSlopeSave = true;
-                        strRH = strRemoveSubstr(&strRH, &RASTER_LOCAL_SLOPE_CODE);
+                        strRH = strRemoveSubstr( & strRH, & RASTER_LOCAL_SLOPE_CODE);
                      }
 
                      if (strRH.find(RASTER_AVG_SEA_DEPTH_CODE) != string::npos)
                      {
                         m_bAvgSeaDepthSave = true;
-                        strRH = strRemoveSubstr(&strRH, &RASTER_AVG_SEA_DEPTH_CODE);
+                        strRH = strRemoveSubstr( & strRH, & RASTER_AVG_SEA_DEPTH_CODE);
                      }
 
                      if (strRH.find(RASTER_AVG_WAVE_HEIGHT_CODE) != string::npos)
                      {
                         m_bAvgWaveHeightSave = true;
-                        strRH = strRemoveSubstr(&strRH, &RASTER_AVG_WAVE_HEIGHT_CODE);
+                        strRH = strRemoveSubstr( & strRH, & RASTER_AVG_WAVE_HEIGHT_CODE);
                      }
 
                      if (strRH.find(RASTER_AVG_WAVE_ORIENTATION_CODE) != string::npos)
                      {
                         m_bAvgWaveAngleSave = true;
-                        strRH = strRemoveSubstr(&strRH, &RASTER_AVG_WAVE_ORIENTATION_CODE);
+                        strRH = strRemoveSubstr( & strRH, & RASTER_AVG_WAVE_ORIENTATION_CODE);
                      }
 
                      if (strRH.find(RASTER_BEACH_PROTECTION_CODE) != string::npos)
                      {
                         m_bBeachProtectionSave = true;
-                        strRH = strRemoveSubstr(&strRH, &RASTER_BEACH_PROTECTION_CODE);
+                        strRH = strRemoveSubstr( & strRH, & RASTER_BEACH_PROTECTION_CODE);
                      }
 
                      if (strRH.find(RASTER_BASEMENT_ELEVATION_CODE) != string::npos)
                      {
                         m_bBasementElevSave = true;
-                        strRH = strRemoveSubstr(&strRH, &RASTER_BASEMENT_ELEVATION_CODE);
+                        strRH = strRemoveSubstr( & strRH, & RASTER_BASEMENT_ELEVATION_CODE);
                      }
 
                      if (strRH.find(RASTER_SUSP_SED_CODE) != string::npos)
                      {
                         m_bSuspSedSave = true;
-                        strRH = strRemoveSubstr(&strRH, &RASTER_SUSP_SED_CODE);
+                        strRH = strRemoveSubstr( & strRH, & RASTER_SUSP_SED_CODE);
                      }
 
                      if (strRH.find(RASTER_AVG_SUSP_SED_CODE) != string::npos)
                      {
                         m_bAvgSuspSedSave = true;
-                        strRH = strRemoveSubstr(&strRH, &RASTER_AVG_SUSP_SED_CODE);
+                        strRH = strRemoveSubstr( & strRH, & RASTER_AVG_SUSP_SED_CODE);
                      }
 
                      if (strRH.find(RASTER_FINE_UNCONS_CODE) != string::npos)
                      {
                         m_bFineUnconsSedSave = true;
-                        strRH = strRemoveSubstr(&strRH, &RASTER_FINE_UNCONS_CODE);
+                        strRH = strRemoveSubstr( & strRH, & RASTER_FINE_UNCONS_CODE);
                      }
 
                      if (strRH.find(RASTER_SAND_UNCONS_CODE) != string::npos)
                      {
                         m_bSandUnconsSedSave = true;
-                        strRH = strRemoveSubstr(&strRH, &RASTER_SAND_UNCONS_CODE);
+                        strRH = strRemoveSubstr( & strRH, & RASTER_SAND_UNCONS_CODE);
                      }
 
                      if (strRH.find(RASTER_COARSE_UNCONS_CODE) != string::npos)
                      {
                         m_bCoarseUnconsSedSave = true;
-                        strRH = strRemoveSubstr(&strRH, &RASTER_COARSE_UNCONS_CODE);
+                        strRH = strRemoveSubstr( & strRH, & RASTER_COARSE_UNCONS_CODE);
                      }
 
                      if (strRH.find(RASTER_FINE_CONS_CODE) != string::npos)
                      {
                         m_bFineConsSedSave = true;
-                        strRH = strRemoveSubstr(&strRH, &RASTER_FINE_CONS_CODE);
+                        strRH = strRemoveSubstr( & strRH, & RASTER_FINE_CONS_CODE);
                      }
 
                      if (strRH.find(RASTER_SAND_CONS_CODE) != string::npos)
                      {
                         m_bSandConsSedSave = true;
-                        strRH = strRemoveSubstr(&strRH, &RASTER_SAND_CONS_CODE);
+                        strRH = strRemoveSubstr( & strRH, & RASTER_SAND_CONS_CODE);
                      }
 
                      if (strRH.find(RASTER_COARSE_CONS_CODE) != string::npos)
                      {
                         m_bCoarseConsSedSave = true;
-                        strRH = strRemoveSubstr(&strRH, &RASTER_COARSE_CONS_CODE);
+                        strRH = strRemoveSubstr( & strRH, & RASTER_COARSE_CONS_CODE);
                      }
 
                      if (strRH.find(RASTER_COAST_CODE) != string::npos)
                      {
                         m_bRasterCoastlineSave = true;
-                        strRH = strRemoveSubstr(&strRH, &RASTER_COAST_CODE);
+                        strRH = strRemoveSubstr( & strRH, & RASTER_COAST_CODE);
                      }
 
                      if (strRH.find(RASTER_COAST_NORMAL_CODE) != string::npos)
                      {
                         m_bRasterNormalProfileSave = true;
-                        strRH = strRemoveSubstr(&strRH, &RASTER_COAST_NORMAL_CODE);
+                        strRH = strRemoveSubstr( & strRH, & RASTER_COAST_NORMAL_CODE);
                      }
 
                      if (strRH.find(RASTER_ACTIVE_ZONE_CODE) != string::npos)
                      {
                         m_bActiveZoneSave = true;
-                        strRH = strRemoveSubstr(&strRH, &RASTER_ACTIVE_ZONE_CODE);
+                        strRH = strRemoveSubstr( & strRH, & RASTER_ACTIVE_ZONE_CODE);
                      }
 
                      if (strRH.find(RASTER_CLIFF_COLLAPSE_EROSION_FINE_CODE) != string::npos)
                      {
                         m_bCliffCollapseSave = true;
-                        strRH = strRemoveSubstr(&strRH, &RASTER_CLIFF_COLLAPSE_EROSION_FINE_CODE);
+                        strRH = strRemoveSubstr( & strRH, & RASTER_CLIFF_COLLAPSE_EROSION_FINE_CODE);
                      }
 
                      if (strRH.find(RASTER_CLIFF_COLLAPSE_EROSION_SAND_CODE) != string::npos)
                      {
                         m_bCliffCollapseSave = true;
-                        strRH = strRemoveSubstr(&strRH, &RASTER_CLIFF_COLLAPSE_EROSION_SAND_CODE);
+                        strRH = strRemoveSubstr( & strRH, & RASTER_CLIFF_COLLAPSE_EROSION_SAND_CODE);
                      }
 
                      if (strRH.find(RASTER_CLIFF_COLLAPSE_EROSION_COARSE_CODE) != string::npos)
                      {
                         m_bCliffCollapseSave = true;
-                        strRH = strRemoveSubstr(&strRH, &RASTER_CLIFF_COLLAPSE_EROSION_COARSE_CODE);
+                        strRH = strRemoveSubstr( & strRH, & RASTER_CLIFF_COLLAPSE_EROSION_COARSE_CODE);
                      }
 
                      if (strRH.find(RASTER_TOTAL_CLIFF_COLLAPSE_EROSION_FINE_CODE) != string::npos)
                      {
                         m_bTotCliffCollapseSave = true;
-                        strRH = strRemoveSubstr(&strRH, &RASTER_TOTAL_CLIFF_COLLAPSE_EROSION_FINE_CODE);
+                        strRH = strRemoveSubstr( & strRH, & RASTER_TOTAL_CLIFF_COLLAPSE_EROSION_FINE_CODE);
                      }
 
                      if (strRH.find(RASTER_TOTAL_CLIFF_COLLAPSE_EROSION_SAND_CODE) != string::npos)
                      {
                         m_bTotCliffCollapseSave = true;
-                        strRH = strRemoveSubstr(&strRH, &RASTER_TOTAL_CLIFF_COLLAPSE_EROSION_SAND_CODE);
+                        strRH = strRemoveSubstr( & strRH, & RASTER_TOTAL_CLIFF_COLLAPSE_EROSION_SAND_CODE);
                      }
 
                      if (strRH.find(RASTER_TOTAL_CLIFF_COLLAPSE_EROSION_COARSE_CODE) != string::npos)
                      {
                         m_bTotCliffCollapseSave = true;
-                        strRH = strRemoveSubstr(&strRH, &RASTER_TOTAL_CLIFF_COLLAPSE_EROSION_COARSE_CODE);
+                        strRH = strRemoveSubstr( & strRH, & RASTER_TOTAL_CLIFF_COLLAPSE_EROSION_COARSE_CODE);
                      }
 
                      if (strRH.find(RASTER_CLIFF_COLLAPSE_DEPOSITION_SAND_CODE) != string::npos)
                      {
                         m_bCliffCollapseDepositionSave = true;
-                        strRH = strRemoveSubstr(&strRH, &RASTER_CLIFF_COLLAPSE_DEPOSITION_SAND_CODE);
+                        strRH = strRemoveSubstr( & strRH, & RASTER_CLIFF_COLLAPSE_DEPOSITION_SAND_CODE);
                      }
 
                      if (strRH.find(RASTER_CLIFF_COLLAPSE_DEPOSITION_COARSE_CODE) != string::npos)
                      {
                         m_bCliffCollapseDepositionSave = true;
-                        strRH = strRemoveSubstr(&strRH, &RASTER_CLIFF_COLLAPSE_DEPOSITION_COARSE_CODE);
+                        strRH = strRemoveSubstr( & strRH, & RASTER_CLIFF_COLLAPSE_DEPOSITION_COARSE_CODE);
                      }
 
                      if (strRH.find(RASTER_TOTAL_CLIFF_COLLAPSE_DEPOSITION_SAND_CODE) != string::npos)
                      {
                         m_bTotCliffCollapseDepositionSave = true;
-                        strRH = strRemoveSubstr(&strRH, &RASTER_TOTAL_CLIFF_COLLAPSE_DEPOSITION_SAND_CODE);
+                        strRH = strRemoveSubstr( & strRH, & RASTER_TOTAL_CLIFF_COLLAPSE_DEPOSITION_SAND_CODE);
                      }
 
                      if (strRH.find(RASTER_TOTAL_CLIFF_COLLAPSE_DEPOSITION_COARSE_CODE) != string::npos)
                      {
                         m_bTotCliffCollapseDepositionSave = true;
-                        strRH = strRemoveSubstr(&strRH, &RASTER_TOTAL_CLIFF_COLLAPSE_DEPOSITION_COARSE_CODE);
+                        strRH = strRemoveSubstr( & strRH, & RASTER_TOTAL_CLIFF_COLLAPSE_DEPOSITION_COARSE_CODE);
                      }
 
                      if (strRH.find(RASTER_POLYGON_CODE) != string::npos)
                      {
                         m_bRasterPolygonSave = true;
-                        strRH = strRemoveSubstr(&strRH, &RASTER_POLYGON_CODE);
+                        strRH = strRemoveSubstr( & strRH, & RASTER_POLYGON_CODE);
                      }
 
                      if (strRH.find(RASTER_POTENTIAL_PLATFORM_EROSION_MASK_CODE) != string::npos)
                      {
                         m_bPotentialPlatformErosionMaskSave = true;
-                        strRH = strRemoveSubstr(&strRH, &RASTER_POTENTIAL_PLATFORM_EROSION_MASK_CODE);
+                        strRH = strRemoveSubstr( & strRH, & RASTER_POTENTIAL_PLATFORM_EROSION_MASK_CODE);
                      }
 
                      if (strRH.find(RASTER_INUNDATION_MASK_CODE) != string::npos)
                      {
                         m_bSeaMaskSave = true;
-                        strRH = strRemoveSubstr(&strRH, &RASTER_INUNDATION_MASK_CODE);
+                        strRH = strRemoveSubstr( & strRH, & RASTER_INUNDATION_MASK_CODE);
                      }
 
                      if (strRH.find(RASTER_BEACH_MASK_CODE) != string::npos)
                      {
                         m_bBeachMaskSave = true;
-                        strRH = strRemoveSubstr(&strRH, &RASTER_BEACH_MASK_CODE);
+                        strRH = strRemoveSubstr( & strRH, & RASTER_BEACH_MASK_CODE);
                      }
 
                      if (strRH.find(RASTER_INTERVENTION_CLASS_CODE) != string::npos)
                      {
                         m_bInterventionClassSave = true;
-                        strRH = strRemoveSubstr(&strRH, &RASTER_INTERVENTION_CLASS_CODE);
+                        strRH = strRemoveSubstr( & strRH, & RASTER_INTERVENTION_CLASS_CODE);
                      }
 
                      if (strRH.find(RASTER_INTERVENTION_HEIGHT_CODE) != string::npos)
                      {
                         m_bInterventionHeightSave = true;
-                        strRH = strRemoveSubstr(&strRH, &RASTER_INTERVENTION_HEIGHT_CODE);
+                        strRH = strRemoveSubstr( & strRH, & RASTER_INTERVENTION_HEIGHT_CODE);
                      }
 
                      if (strRH.find(RASTER_SHADOW_ZONE_CODE) != string::npos)
                      {
                         m_bShadowZoneCodesSave = true;
-                        strRH = strRemoveSubstr(&strRH, &RASTER_SHADOW_ZONE_CODE);
+                        strRH = strRemoveSubstr( & strRH, & RASTER_SHADOW_ZONE_CODE);
                      }
 
                      if (strRH.find(RASTER_DEEP_WATER_WAVE_ORIENTATION_CODE) != string::npos)
                      {
                         m_bDeepWaterWaveAngleSave = true;
-                        strRH = strRemoveSubstr(&strRH, &RASTER_DEEP_WATER_WAVE_ORIENTATION_CODE);
+                        strRH = strRemoveSubstr( & strRH, & RASTER_DEEP_WATER_WAVE_ORIENTATION_CODE);
                      }
 
                      if (strRH.find(RASTER_DEEP_WATER_WAVE_HEIGHT_CODE) != string::npos)
                      {
                         m_bDeepWaterWaveHeightSave = true;
-                        strRH = strRemoveSubstr(&strRH, &RASTER_DEEP_WATER_WAVE_HEIGHT_CODE);
+                        strRH = strRemoveSubstr( & strRH, & RASTER_DEEP_WATER_WAVE_HEIGHT_CODE);
                      }
 
                      if (strRH.find(RASTER_DEEP_WATER_WAVE_PERIOD_CODE) != string::npos)
                      {
                         m_bDeepWaterWavePeriodSave = true;
-                        strRH = strRemoveSubstr(&strRH, &RASTER_DEEP_WATER_WAVE_PERIOD_CODE);
+                        strRH = strRemoveSubstr( & strRH, & RASTER_DEEP_WATER_WAVE_PERIOD_CODE);
                      }
 
                      if (strRH.find(RASTER_POLYGON_UPDRIFT_OR_DOWNDRIFT_CODE) != string::npos)
                      {
                         m_bPolygonUnconsSedUpOrDownDriftSave = true;
-                        strRH = strRemoveSubstr(&strRH, &RASTER_POLYGON_UPDRIFT_OR_DOWNDRIFT_CODE);
+                        strRH = strRemoveSubstr( & strRH, & RASTER_POLYGON_UPDRIFT_OR_DOWNDRIFT_CODE);
                      }
 
                      if (strRH.find(RASTER_POLYGON_GAIN_OR_LOSS_CODE) != string::npos)
                      {
                         m_bPolygonUnconsSedGainOrLossSave = true;
-                        strRH = strRemoveSubstr(&strRH, &RASTER_POLYGON_GAIN_OR_LOSS_CODE);
+                        strRH = strRemoveSubstr( & strRH, & RASTER_POLYGON_GAIN_OR_LOSS_CODE);
                      }
 
                      if (strRH.find(RASTER_BEACH_DEPOSITION_CODE) != string::npos)
                      {
                         m_bBeachDepositionSave = true;
-                        strRH = strRemoveSubstr(&strRH, &RASTER_BEACH_DEPOSITION_CODE);
+                        strRH = strRemoveSubstr( & strRH, & RASTER_BEACH_DEPOSITION_CODE);
                      }
 
                      if (strRH.find(RASTER_TOTAL_BEACH_DEPOSITION_CODE) != string::npos)
                      {
                         m_bTotalBeachDepositionSave = true;
-                        strRH = strRemoveSubstr(&strRH, &RASTER_TOTAL_BEACH_DEPOSITION_CODE);
+                        strRH = strRemoveSubstr( & strRH, & RASTER_TOTAL_BEACH_DEPOSITION_CODE);
                      }
 
                      if (strRH.find(RASTER_SEDIMENT_INPUT_EVENT_CODE) != string::npos)
                      {
                         m_bSedimentInputEventSave = true;
-                        strRH = strRemoveSubstr(&strRH, &RASTER_SEDIMENT_INPUT_EVENT_CODE);
+                        strRH = strRemoveSubstr( & strRH, & RASTER_SEDIMENT_INPUT_EVENT_CODE);
                      }
 
                      if (strRH.find(RASTER_SETUP_SURGE_FLOOD_MASK_CODE) != string::npos)
                      {
                         m_bSetupSurgeFloodMaskSave = true;
-                        strRH = strRemoveSubstr(&strRH, &RASTER_SETUP_SURGE_FLOOD_MASK_CODE);
+                        strRH = strRemoveSubstr( & strRH, & RASTER_SETUP_SURGE_FLOOD_MASK_CODE);
                      }
 
                      if (strRH.find(RASTER_SETUP_SURGE_RUNUP_FLOOD_MASK_CODE) != string::npos)
                      {
                         m_bSetupSurgeRunupFloodMaskSave = true;
-                        strRH = strRemoveSubstr(&strRH, &RASTER_SETUP_SURGE_RUNUP_FLOOD_MASK_CODE);
+                        strRH = strRemoveSubstr( & strRH, & RASTER_SETUP_SURGE_RUNUP_FLOOD_MASK_CODE);
                      }
 
                      if (strRH.find(RASTER_WAVE_FLOOD_LINE_CODE) != string::npos)
                      {
                         m_bRasterWaveFloodLineSave = true;
-                        strRH = strRemoveSubstr(&strRH, &RASTER_WAVE_FLOOD_LINE_CODE);
+                        strRH = strRemoveSubstr( & strRH, & RASTER_WAVE_FLOOD_LINE_CODE);
                      }
 
                      // Check to see if all codes have been removed
@@ -1201,9 +1212,9 @@ bool CSimulation::bReadRunDataFile(void)
 
                break;
 
-            case 11:
+            case 12:
                // Raster GIS output format (note must retain original case). Blank means use same format as input DEM file (if possible)
-               m_strRasterGISOutFormat = strTrimLeft(&strRH);
+               m_strRasterGISOutFormat = strTrimLeft( & strRH);
 
                // TODO 065 Remove this when GDAL gpkg raster output is working correctly
                if (strRH.find("gpkg") != string::npos)
@@ -1211,9 +1222,9 @@ bool CSimulation::bReadRunDataFile(void)
 
                break;
 
-            case 12:
+            case 13:
                // If needed, scale GIS raster output values
-               strRH = strToLower(&strRH);
+               strRH = strToLower( & strRH);
 
                m_bScaleRasterOutput = false;
 
@@ -1222,9 +1233,9 @@ bool CSimulation::bReadRunDataFile(void)
 
                break;
 
-            case 13:
+            case 14:
                // If needed, also output GIS raster world file
-               strRH = strToLower(&strRH);
+               strRH = strToLower( & strRH);
 
                m_bWorldFile = false;
 
@@ -1233,7 +1244,7 @@ bool CSimulation::bReadRunDataFile(void)
 
                break;
 
-            case 14:
+            case 15:
 
                // Elevations for raster slice output, if desired
                if (! strRH.empty())
@@ -1254,7 +1265,7 @@ bool CSimulation::bReadRunDataFile(void)
 
                         // Get the RH bit
                         strRH = strRH.substr(nPos, strRH.size() - nPos);
-                        strRH = strTrimLeft(&strRH);
+                        strRH = strTrimLeft( & strRH);
 
                         // Now look for another space
                         nPos = strRH.find(SPACE);
@@ -1267,15 +1278,15 @@ bool CSimulation::bReadRunDataFile(void)
 
                break;
 
-            case 15:
+            case 16:
 
                // Vector GIS files to output
                if (strRH.empty())
-                  strErr = "line " + to_string(nLine) + ": must contain '" + VECTOR_ALL_OUTPUT_CODE +"', or '" + VECTOR_USUAL_OUTPUT_CODE + "', or at least one vector GIS output code";
+                  strErr = "line " + to_string(nLine) + ": must contain '" + VECTOR_ALL_OUTPUT_CODE + "', or '" + VECTOR_USUAL_OUTPUT_CODE + "', or at least one vector GIS output code";
 
                else
                {
-                  strRH = strToLower(&strRH);
+                  strRH = strToLower( & strRH);
 
                   if (strRH.find(VECTOR_ALL_OUTPUT_CODE) != string::npos)
                   {
@@ -1325,115 +1336,115 @@ bool CSimulation::bReadRunDataFile(void)
                      if (strRH.find(VECTOR_COAST_CODE) != string::npos)
                      {
                         m_bCoastSave = true;
-                        strRH = strRemoveSubstr(&strRH, &VECTOR_COAST_CODE);
+                        strRH = strRemoveSubstr( & strRH, & VECTOR_COAST_CODE);
                      }
 
                      if (strRH.find(VECTOR_AVG_WAVE_ANGLE_AND_HEIGHT_CODE) != string::npos)
                      {
                         m_bWaveAngleAndHeightSave = true;
-                        strRH = strRemoveSubstr(&strRH, &VECTOR_AVG_WAVE_ANGLE_AND_HEIGHT_CODE);
+                        strRH = strRemoveSubstr( & strRH, & VECTOR_AVG_WAVE_ANGLE_AND_HEIGHT_CODE);
                      }
 
                      if (strRH.find(VECTOR_NORMALS_CODE) != string::npos)
                      {
                         m_bNormalsSave = true;
-                        strRH = strRemoveSubstr(&strRH, &VECTOR_NORMALS_CODE);
+                        strRH = strRemoveSubstr( & strRH, & VECTOR_NORMALS_CODE);
                      }
 
                      if (strRH.find(VECTOR_INVALID_NORMALS_CODE) != string::npos)
                      {
                         m_bInvalidNormalsSave = true;
-                        strRH = strRemoveSubstr(&strRH, &VECTOR_INVALID_NORMALS_CODE);
+                        strRH = strRemoveSubstr( & strRH, & VECTOR_INVALID_NORMALS_CODE);
                      }
 
                      if (strRH.find(VECTOR_AVG_WAVE_ANGLE_AND_HEIGHT_CODE) != string::npos)
                      {
                         m_bAvgWaveAngleAndHeightSave = true;
-                        strRH = strRemoveSubstr(&strRH, &VECTOR_AVG_WAVE_ANGLE_AND_HEIGHT_CODE);
+                        strRH = strRemoveSubstr( & strRH, & VECTOR_AVG_WAVE_ANGLE_AND_HEIGHT_CODE);
                      }
 
                      if (strRH.find(VECTOR_COAST_CURVATURE_CODE) != string::npos)
                      {
                         m_bCoastCurvatureSave = true;
-                        strRH = strRemoveSubstr(&strRH, &VECTOR_COAST_CURVATURE_CODE);
+                        strRH = strRemoveSubstr( & strRH, & VECTOR_COAST_CURVATURE_CODE);
                      }
 
                      if (strRH.find(VECTOR_WAVE_ENERGY_SINCE_COLLAPSE_CODE) != string::npos)
                      {
                         m_bWaveEnergySinceCollapseSave = true;
-                        strRH = strRemoveSubstr(&strRH, &VECTOR_WAVE_ENERGY_SINCE_COLLAPSE_CODE);
+                        strRH = strRemoveSubstr( & strRH, & VECTOR_WAVE_ENERGY_SINCE_COLLAPSE_CODE);
                      }
 
                      if (strRH.find(VECTOR_MEAN_WAVE_ENERGY_CODE) != string::npos)
                      {
                         m_bMeanWaveEnergySave = true;
-                        strRH = strRemoveSubstr(&strRH, &VECTOR_MEAN_WAVE_ENERGY_CODE);
+                        strRH = strRemoveSubstr( & strRH, & VECTOR_MEAN_WAVE_ENERGY_CODE);
                      }
 
                      if (strRH.find(VECTOR_BREAKING_WAVE_HEIGHT_CODE) != string::npos)
                      {
                         m_bBreakingWaveHeightSave = true;
-                        strRH = strRemoveSubstr(&strRH, &VECTOR_BREAKING_WAVE_HEIGHT_CODE);
+                        strRH = strRemoveSubstr( & strRH, & VECTOR_BREAKING_WAVE_HEIGHT_CODE);
                      }
 
                      if (strRH.find(VECTOR_POLYGON_NODE_CODE) != string::npos)
                      {
                         m_bPolygonNodeSave = true;
-                        strRH = strRemoveSubstr(&strRH, &VECTOR_POLYGON_NODE_CODE);
+                        strRH = strRemoveSubstr( & strRH, & VECTOR_POLYGON_NODE_CODE);
                      }
 
                      if (strRH.find(VECTOR_POLYGON_BOUNDARY_CODE) != string::npos)
                      {
                         m_bPolygonBoundarySave = true;
-                        strRH = strRemoveSubstr(&strRH, &VECTOR_POLYGON_BOUNDARY_CODE);
+                        strRH = strRemoveSubstr( & strRH, & VECTOR_POLYGON_BOUNDARY_CODE);
                      }
 
                      if (strRH.find(VECTOR_CLIFF_NOTCH_SIZE_CODE) != string::npos)
                      {
                         m_bCliffNotchSave = true;
-                        strRH = strRemoveSubstr(&strRH, &VECTOR_CLIFF_NOTCH_SIZE_CODE);
+                        strRH = strRemoveSubstr( & strRH, & VECTOR_CLIFF_NOTCH_SIZE_CODE);
                      }
 
                      if (strRH.find(VECTOR_SHADOW_BOUNDARY_CODE) != string::npos)
                      {
                         m_bShadowBoundarySave = true;
-                        strRH = strRemoveSubstr(&strRH, &VECTOR_SHADOW_BOUNDARY_CODE);
+                        strRH = strRemoveSubstr( & strRH, & VECTOR_SHADOW_BOUNDARY_CODE);
                      }
 
                      if (strRH.find(VECTOR_DOWNDRIFT_BOUNDARY_CODE) != string::npos)
                      {
                         m_bShadowDowndriftBoundarySave = true;
-                        strRH = strRemoveSubstr(&strRH, &VECTOR_DOWNDRIFT_BOUNDARY_CODE);
+                        strRH = strRemoveSubstr( & strRH, & VECTOR_DOWNDRIFT_BOUNDARY_CODE);
                      }
 
                      if (strRH.find(VECTOR_DEEP_WATER_WAVE_ANGLE_AND_HEIGHT_CODE) != string::npos)
                      {
                         m_bDeepWaterWaveAngleAndHeightSave = true;
-                        strRH = strRemoveSubstr(&strRH, &VECTOR_DEEP_WATER_WAVE_ANGLE_AND_HEIGHT_CODE);
+                        strRH = strRemoveSubstr( & strRH, & VECTOR_DEEP_WATER_WAVE_ANGLE_AND_HEIGHT_CODE);
                      }
 
                      if (strRH.find(VECTOR_WAVE_SETUP_CODE) != string::npos)
                      {
                         m_bWaveSetupSave = true;
-                        strRH = strRemoveSubstr(&strRH, &VECTOR_WAVE_SETUP_CODE);
+                        strRH = strRemoveSubstr( & strRH, & VECTOR_WAVE_SETUP_CODE);
                      }
 
                      if (strRH.find(VECTOR_STORM_SURGE_CODE) != string::npos)
                      {
                         m_bStormSurgeSave = true;
-                        strRH = strRemoveSubstr(&strRH, &VECTOR_STORM_SURGE_CODE);
+                        strRH = strRemoveSubstr( & strRH, & VECTOR_STORM_SURGE_CODE);
                      }
 
                      if (strRH.find(VECTOR_RUN_UP_CODE) != string::npos)
                      {
                         m_bRunUpSave = true;
-                        strRH = strRemoveSubstr(&strRH, &VECTOR_RUN_UP_CODE);
+                        strRH = strRemoveSubstr( & strRH, & VECTOR_RUN_UP_CODE);
                      }
 
                      if (strRH.find(VECTOR_FLOOD_LINE_CODE) != string::npos)
                      {
                         m_bVectorWaveFloodLineSave = true;
-                        strRH = strRemoveSubstr(&strRH, &VECTOR_FLOOD_LINE_CODE);
+                        strRH = strRemoveSubstr( & strRH, & VECTOR_FLOOD_LINE_CODE);
                      }
 
                      // Check to see if all codes have been removed
@@ -1444,7 +1455,7 @@ bool CSimulation::bReadRunDataFile(void)
 
                break;
 
-            case 16:
+            case 17:
                // Vector GIS output format (note must retain original case)
                m_strVectorGISOutFormat = strRH;
 
@@ -1453,12 +1464,12 @@ bool CSimulation::bReadRunDataFile(void)
 
                break;
 
-            case 17:
+            case 18:
 
                // Time series files to output
                if (! strRH.empty())
                {
-                  strRH = strToLower(&strRH);
+                  strRH = strToLower( & strRH);
 
                   // First check for "all"
                   if (strRH.find(RASTER_ALL_OUTPUT_CODE) != string::npos)
@@ -1482,73 +1493,73 @@ bool CSimulation::bReadRunDataFile(void)
                      if (strRH.find(TIME_SERIES_SEA_AREA_CODE) != string::npos)
                      {
                         m_bSeaAreaTSSave = true;
-                        strRH = strRemoveSubstr(&strRH, &TIME_SERIES_SEA_AREA_CODE);
+                        strRH = strRemoveSubstr( & strRH, & TIME_SERIES_SEA_AREA_CODE);
                      }
 
                      if (strRH.find(TIME_SERIES_STILL_WATER_LEVEL_CODE) != string::npos)
                      {
                         m_bStillWaterLevelTSSave = true;
-                        strRH = strRemoveSubstr(&strRH, &TIME_SERIES_STILL_WATER_LEVEL_CODE);
+                        strRH = strRemoveSubstr( & strRH, & TIME_SERIES_STILL_WATER_LEVEL_CODE);
                      }
 
                      if (strRH.find(TIME_SERIES_PLATFORM_EROSION_CODE) != string::npos)
                      {
                         m_bActualPlatformErosionTSSave = true;
-                        strRH = strRemoveSubstr(&strRH, &TIME_SERIES_PLATFORM_EROSION_CODE);
+                        strRH = strRemoveSubstr( & strRH, & TIME_SERIES_PLATFORM_EROSION_CODE);
                      }
 
                      if (strRH.find(TIME_SERIES_CLIFF_COLLAPSE_EROSION_CODE) != string::npos)
                      {
                         m_bCliffCollapseErosionTSSave = true;
-                        strRH = strRemoveSubstr(&strRH, &TIME_SERIES_CLIFF_COLLAPSE_EROSION_CODE);
+                        strRH = strRemoveSubstr( & strRH, & TIME_SERIES_CLIFF_COLLAPSE_EROSION_CODE);
                      }
 
                      if (strRH.find(TIME_SERIES_CLIFF_COLLAPSE_DEPOSITION_CODE) != string::npos)
                      {
                         m_bCliffCollapseDepositionTSSave = true;
-                        strRH = strRemoveSubstr(&strRH, &TIME_SERIES_CLIFF_COLLAPSE_DEPOSITION_CODE);
+                        strRH = strRemoveSubstr( & strRH, & TIME_SERIES_CLIFF_COLLAPSE_DEPOSITION_CODE);
                      }
 
                      if (strRH.find(TIME_SERIES_CLIFF_COLLAPSE_NET_CODE) != string::npos)
                      {
                         m_bCliffCollapseNetTSSave = true;
-                        strRH = strRemoveSubstr(&strRH, &TIME_SERIES_CLIFF_COLLAPSE_NET_CODE);
+                        strRH = strRemoveSubstr( & strRH, & TIME_SERIES_CLIFF_COLLAPSE_NET_CODE);
                      }
 
                      if (strRH.find(TIME_SERIES_BEACH_EROSION_CODE) != string::npos)
                      {
                         m_bBeachErosionTSSave = true;
-                        strRH = strRemoveSubstr(&strRH, &TIME_SERIES_BEACH_EROSION_CODE);
+                        strRH = strRemoveSubstr( & strRH, & TIME_SERIES_BEACH_EROSION_CODE);
                      }
 
                      if (strRH.find(TIME_SERIES_BEACH_DEPOSITION_CODE) != string::npos)
                      {
                         m_bBeachDepositionTSSave = true;
-                        strRH = strRemoveSubstr(&strRH, &TIME_SERIES_BEACH_DEPOSITION_CODE);
+                        strRH = strRemoveSubstr( & strRH, & TIME_SERIES_BEACH_DEPOSITION_CODE);
                      }
 
                      if (strRH.find(TIME_SERIES_BEACH_CHANGE_NET_CODE) != string::npos)
                      {
                         m_bBeachSedimentChangeNetTSSave = true;
-                        strRH = strRemoveSubstr(&strRH, &TIME_SERIES_BEACH_CHANGE_NET_CODE);
+                        strRH = strRemoveSubstr( & strRH, & TIME_SERIES_BEACH_CHANGE_NET_CODE);
                      }
 
                      if (strRH.find(TIME_SERIES_SUSPENDED_SEDIMENT_CODE) != string::npos)
                      {
                         m_bSuspSedTSSave = true;
-                        strRH = strRemoveSubstr(&strRH, &TIME_SERIES_SUSPENDED_SEDIMENT_CODE);
+                        strRH = strRemoveSubstr( & strRH, & TIME_SERIES_SUSPENDED_SEDIMENT_CODE);
                      }
 
                      if (strRH.find(TIME_SERIES_FLOOD_SETUP_SURGE_CODE) != string::npos)
                      {
                         m_bFloodSetupSurgeTSSave = true;
-                        strRH = strRemoveSubstr(&strRH, &TIME_SERIES_FLOOD_SETUP_SURGE_CODE);
+                        strRH = strRemoveSubstr( & strRH, & TIME_SERIES_FLOOD_SETUP_SURGE_CODE);
                      }
 
                      if (strRH.find(TIME_SERIES_FLOOD_SETUP_SURGE_RUNUP_CODE) != string::npos)
                      {
                         m_bFloodSetupSurgeRunupTSSave = true;
-                        strRH = strRemoveSubstr(&strRH, &TIME_SERIES_FLOOD_SETUP_SURGE_RUNUP_CODE);
+                        strRH = strRemoveSubstr( & strRH, & TIME_SERIES_FLOOD_SETUP_SURGE_RUNUP_CODE);
                      }
 
                      // Check to see if all codes have been removed
@@ -1559,7 +1570,7 @@ bool CSimulation::bReadRunDataFile(void)
 
                break;
 
-            case 18:
+            case 19:
 
                // Vector coastline smoothing algorithm: 0 = none, 1 = running mean, 2 = Savitsky-Golay
                if (! bIsStringValidInt(strRH))
@@ -1575,7 +1586,7 @@ bool CSimulation::bReadRunDataFile(void)
 
                break;
 
-            case 19:
+            case 20:
 
                // Size of coastline smoothing window: must be odd
                if (! bIsStringValidInt(strRH))
@@ -1586,12 +1597,12 @@ bool CSimulation::bReadRunDataFile(void)
 
                m_nCoastSmoothWindow = stoi(strRH);
 
-               if ((m_nCoastSmoothWindow <= 0) || !(m_nCoastSmoothWindow % 2))
+               if ((m_nCoastSmoothWindow <= 0) || ! (m_nCoastSmoothWindow % 2))
                   strErr = "line " + to_string(nLine) + ": size of coastline vector smoothing window (must be > 0 and odd)";
 
                break;
 
-            case 20:
+            case 21:
 
                // Order of coastline profile smoothing polynomial for Savitsky-Golay: usually 2 or 4, max is 6
                if (! bIsStringValidInt(strRH))
@@ -1607,9 +1618,9 @@ bool CSimulation::bReadRunDataFile(void)
 
                break;
 
-            case 21:
+            case 22:
                // Grid edge(s) to omit when searching for coastline [NSWE]
-               strRH = strToLower(&strRH);
+               strRH = strToLower( & strRH);
 
                bFound = false;
 
@@ -1642,7 +1653,7 @@ bool CSimulation::bReadRunDataFile(void)
 
                break;
 
-            case 22:
+            case 23:
 
                // Profile slope running-mean smoothing window size: must be odd
                if (! bIsStringValidInt(strRH))
@@ -1653,12 +1664,12 @@ bool CSimulation::bReadRunDataFile(void)
 
                m_nProfileSmoothWindow = stoi(strRH);
 
-               if ((m_nProfileSmoothWindow < 0) || (m_nProfileSmoothWindow > 0 && !(m_nProfileSmoothWindow % 2)))
+               if ((m_nProfileSmoothWindow < 0) || (m_nProfileSmoothWindow > 0 && ! (m_nProfileSmoothWindow % 2)))
                   strErr = "line " + to_string(nLine) + ": size of profile vector smoothing window (must be >= 0, if > 0 must be odd)";
 
                break;
 
-            case 23:
+            case 24:
 
                // Max local slope (m/m), first check that this is a valid double
                if (! bIsStringValidDouble(strRH))
@@ -1674,7 +1685,7 @@ bool CSimulation::bReadRunDataFile(void)
 
                break;
 
-            case 24:
+            case 25:
 
                // Maximum elevation of beach above SWL, first check that this is a valid double
                if (! bIsStringValidDouble(strRH))
@@ -1691,7 +1702,7 @@ bool CSimulation::bReadRunDataFile(void)
                break;
 
             // ------------------------------------------------- Raster GIS layers ------------------------------------------------
-            case 25:
+            case 26:
 
                // Number of sediment layers
                if (! bIsStringValidInt(strRH))
@@ -1745,14 +1756,14 @@ bool CSimulation::bReadRunDataFile(void)
 
                break;
 
-            case 26:
+            case 27:
 
                // Basement DEM file (can be blank)
                if (! strRH.empty())
                {
 #ifdef _WIN32
                   // For Windows, make sure has backslashes, not Unix-style slashes
-                  strRH = pstrChangeToBackslash(&strRH);
+                  strRH = pstrChangeToBackslash( & strRH);
 #endif
 
                   // Now check for leading slash, or leading Unix home dir symbol, or occurrence of a drive letter
@@ -1770,7 +1781,7 @@ bool CSimulation::bReadRunDataFile(void)
 
                break;
 
-            case 27:
+            case 28:
 
                // Read 6 x sediment files for each layer
                for (int nLayer = 0; nLayer < m_nLayers; nLayer++)
@@ -1790,7 +1801,7 @@ bool CSimulation::bReadRunDataFile(void)
                            nLine++;
 
                            // Trim off leading and trailing whitespace
-                           strRec = strTrim(&strRec);
+                           strRec = strTrim( & strRec);
                         }
 
                         // If it is a blank line or a comment then ignore it
@@ -1811,7 +1822,7 @@ bool CSimulation::bReadRunDataFile(void)
 // ERROR                     strRH.resize(nPos);
 
                         // Remove leading whitespace after the colon
-                        strRH = strTrimLeft(&strRH);
+                        strRH = strTrimLeft( & strRH);
 
                         // Look for a trailing comment, if found then terminate string at that point and trim off any trailing whitespace
                         nPos = strRH.rfind(QUOTE1);
@@ -1825,11 +1836,11 @@ bool CSimulation::bReadRunDataFile(void)
                            strRH.resize(nPos);
 
                         // Trim trailing spaces
-                        strRH = strTrimRight(&strRH);
+                        strRH = strTrimRight( & strRH);
 
 #ifdef _WIN32
                         // For Windows, make sure has backslashes, not Unix-style slashes
-                        strRH = pstrChangeToBackslash(&strRH);
+                        strRH = pstrChangeToBackslash( & strRH);
 #endif
                      }
 
@@ -1846,7 +1857,7 @@ bool CSimulation::bReadRunDataFile(void)
                               m_bHaveFineSediment = true;
 #ifdef _WIN32
                               // For Windows, make sure has backslashes, not Unix-style slashes
-                              strRH = pstrChangeToBackslash(&strRH);
+                              strRH = pstrChangeToBackslash( & strRH);
 #endif
 
                               // Now check for leading slash, or leading Unix home dir symbol, or occurrence of a drive letter
@@ -1875,7 +1886,7 @@ bool CSimulation::bReadRunDataFile(void)
                               m_bHaveSandSediment = true;
 #ifdef _WIN32
                               // For Windows, make sure has backslashes, not Unix-style slashes
-                              strRH = pstrChangeToBackslash(&strRH);
+                              strRH = pstrChangeToBackslash( & strRH);
 #endif
 
                               // Now check for leading slash, or leading Unix home dir symbol, or occurrence of a drive letter
@@ -1904,7 +1915,7 @@ bool CSimulation::bReadRunDataFile(void)
                               m_bHaveCoarseSediment = true;
 #ifdef _WIN32
                               // For Windows, make sure has backslashes, not Unix-style slashes
-                              strRH = pstrChangeToBackslash(&strRH);
+                              strRH = pstrChangeToBackslash( & strRH);
 #endif
 
                               // Now check for leading slash, or leading Unix home dir symbol, or occurrence of a drive letter
@@ -1934,7 +1945,7 @@ bool CSimulation::bReadRunDataFile(void)
                               m_bHaveFineSediment = true;
 #ifdef _WIN32
                               // For Windows, make sure has backslashes, not Unix-style slashes
-                              strRH = pstrChangeToBackslash(&strRH);
+                              strRH = pstrChangeToBackslash( & strRH);
 #endif
 
                               // Now check for leading slash, or leading Unix home dir symbol, or occurrence of a drive letter
@@ -1964,7 +1975,7 @@ bool CSimulation::bReadRunDataFile(void)
                               m_bHaveSandSediment = true;
 #ifdef _WIN32
                               // For Windows, make sure has backslashes, not Unix-style slashes
-                              strRH = pstrChangeToBackslash(&strRH);
+                              strRH = pstrChangeToBackslash( & strRH);
 #endif
 
                               // Now check for leading slash, or leading Unix home dir symbol, or occurrence of a drive letter
@@ -1994,7 +2005,7 @@ bool CSimulation::bReadRunDataFile(void)
                               m_bHaveCoarseSediment = true;
 #ifdef _WIN32
                               // For Windows, make sure has backslashes, not Unix-style slashes
-                              strRH = pstrChangeToBackslash(&strRH);
+                              strRH = pstrChangeToBackslash( & strRH);
 #endif
 
                               // Now check for leading slash, or leading Unix home dir symbol, or occurrence of a drive letter
@@ -2029,7 +2040,7 @@ bool CSimulation::bReadRunDataFile(void)
 
                break;
 
-            case 28:
+            case 29:
 
                // Initial suspended sediment depth GIS file (can be blank)
                if (! strRH.empty())
@@ -2038,7 +2049,7 @@ bool CSimulation::bReadRunDataFile(void)
                   m_bHaveFineSediment = true;
 #ifdef _WIN32
                   // For Windows, make sure has backslashes, not Unix-style slashes
-                  strRH = pstrChangeToBackslash(&strRH);
+                  strRH = pstrChangeToBackslash( & strRH);
 #endif
 
                   // Now check for leading slash, or leading Unix home dir symbol, or occurrence of a drive letter
@@ -2058,14 +2069,14 @@ bool CSimulation::bReadRunDataFile(void)
 
                break;
 
-            case 29:
+            case 30:
 
                // Initial Landform class GIS file (can be blank)
                if (! strRH.empty())
                {
 #ifdef _WIN32
                   // For Windows, make sure has backslashes, not Unix-style slashes
-                  strRH = pstrChangeToBackslash(&strRH);
+                  strRH = pstrChangeToBackslash( & strRH);
 #endif
 
                   // Now check for leading slash, or leading Unix home dir symbol, or occurrence of a drive letter
@@ -2085,14 +2096,14 @@ bool CSimulation::bReadRunDataFile(void)
 
                break;
 
-            case 30:
+            case 31:
 
                // Initial Intervention class GIS file (can be blank: if so then intervention height file must also be blank)
                if (! strRH.empty())
                {
 #ifdef _WIN32
                   // For Windows, make sure has backslashes, not Unix-style slashes
-                  strRH = pstrChangeToBackslash(&strRH);
+                  strRH = pstrChangeToBackslash( & strRH);
 #endif
 
                   // Now check for leading slash, or leading Unix home dir symbol, or occurrence of a drive letter
@@ -2116,7 +2127,7 @@ bool CSimulation::bReadRunDataFile(void)
 
                break;
 
-            case 31:
+            case 32:
 
                // Initial Intervention height GIS file (can be blank: if so then intervention class file must also be blank)
                if (strRH.empty())
@@ -2137,7 +2148,7 @@ bool CSimulation::bReadRunDataFile(void)
 
 #ifdef _WIN32
                   // For Windows, make sure has backslashes, not Unix-style slashes
-                  strRH = pstrChangeToBackslash(&strRH);
+                  strRH = pstrChangeToBackslash( & strRH);
 #endif
 
                   // Now check for leading slash, or leading Unix home dir symbol, or occurrence of a drive letter
@@ -2158,7 +2169,7 @@ bool CSimulation::bReadRunDataFile(void)
                break;
 
             // ---------------------------------------------------- Hydrology data ------------------------------------------------
-            case 32:
+            case 33:
 
                // Wave propagation model [0 = COVE, 1 = CShore]
                if (! bIsStringValidInt(strRH))
@@ -2174,7 +2185,7 @@ bool CSimulation::bReadRunDataFile(void)
 
                break;
 
-            case 33:
+            case 34:
 
                // Density of sea water (kg/m3), first check that this is a valid double
                if (! bIsStringValidDouble(strRH))
@@ -2190,7 +2201,7 @@ bool CSimulation::bReadRunDataFile(void)
 
                break;
 
-            case 34:
+            case 35:
 
                // Initial mean still water level (m), first check that this is a valid double TODO 041 Make this a per-timestep SWL file
                if (! bIsStringValidDouble(strRH))
@@ -2202,7 +2213,7 @@ bool CSimulation::bReadRunDataFile(void)
                m_dInitialMeanSWL = strtod(strRH.c_str(), NULL);
                break;
 
-            case 35:
+            case 36:
 
                // Final mean still water level (m) [blank = same as initial MSWL]
                if (strRH.empty())
@@ -2222,7 +2233,7 @@ bool CSimulation::bReadRunDataFile(void)
 
                break;
 
-            case 36:
+            case 37:
 
                // Deep water wave height (m) or a file of point vectors giving deep water wave height (m) and orientation (for units, see below)
                if (strRH.empty())
@@ -2254,7 +2265,7 @@ bool CSimulation::bReadRunDataFile(void)
                      m_bHaveWaveStationData = true;
 #ifdef _WIN32
                      // For Windows, make sure has backslashes, not Unix-style slashes
-                     strRH = pstrChangeToBackslash(&strRH);
+                     strRH = pstrChangeToBackslash( & strRH);
 #endif
 
                      // Now check for leading slash, or leading Unix home dir symbol, or occurrence of a drive letter
@@ -2275,7 +2286,7 @@ bool CSimulation::bReadRunDataFile(void)
 
                break;
 
-            case 37:
+            case 38:
 
                // Deep water wave height input file. Each point in m_strDeepWaterWavesInputFile is a triad of wave height, orientation and period for each time step
                if (m_bHaveWaveStationData)
@@ -2288,7 +2299,7 @@ bool CSimulation::bReadRunDataFile(void)
 
 #ifdef _WIN32
                   // For Windows, make sure has backslashes, not Unix-style slashes
-                  strRH = pstrChangeToBackslash(&strRH);
+                  strRH = pstrChangeToBackslash( & strRH);
 #endif
 
                   // Now check for leading slash, or leading Unix home dir symbol, or occurrence of a drive letter
@@ -2308,7 +2319,7 @@ bool CSimulation::bReadRunDataFile(void)
 
                break;
 
-            case 38:
+            case 39:
 
                // Deep water wave orientation in input CRS: this is the oceanographic convention i.e. direction TOWARDS which the waves move (in degrees clockwise from north)
                if (! m_bHaveWaveStationData)
@@ -2331,7 +2342,7 @@ bool CSimulation::bReadRunDataFile(void)
 
                break;
 
-            case 39:
+            case 40:
 
                // Wave period (sec)
                if (! m_bHaveWaveStationData)
@@ -2351,14 +2362,14 @@ bool CSimulation::bReadRunDataFile(void)
 
                break;
 
-            case 40:
+            case 41:
 
                // Tide data file (can be blank). This is the change (m) from still water level for each timestep
                if (! strRH.empty())
                {
 #ifdef _WIN32
                   // For Windows, make sure has backslashes, not Unix-style slashes
-                  strRH = pstrChangeToBackslash(&strRH);
+                  strRH = pstrChangeToBackslash( & strRH);
 #endif
 
                   // Now check for leading slash, or leading Unix home dir symbol, or occurrence of a drive letter
@@ -2376,7 +2387,7 @@ bool CSimulation::bReadRunDataFile(void)
 
                break;
 
-            case 41:
+            case 42:
 
                // Breaking wave height-to-depth ratio, check that this is a valid double
                if (! bIsStringValidDouble(strRH))
@@ -2393,16 +2404,16 @@ bool CSimulation::bReadRunDataFile(void)
                break;
 
             // ----------------------------------------------------- Sediment data ------------------------------------------------
-            case 42:
+            case 43:
                // Simulate coast platform erosion?
-               strRH = strToLower(&strRH);
+               strRH = strToLower( & strRH);
 
                if (strRH.find("y") != string::npos)
                   m_bDoShorePlatformErosion = true;
 
                break;
 
-            case 43:
+            case 44:
 
                // If simulating coast platform erosion, R (coast platform resistance to erosion) values along profile, see Walkden & Hall, 2011
                if (m_bDoShorePlatformErosion)
@@ -2422,9 +2433,9 @@ bool CSimulation::bReadRunDataFile(void)
 
                break;
 
-            case 44:
+            case 45:
                // Simulate beach sediment transport?
-               strRH = strToLower(&strRH);
+               strRH = strToLower( & strRH);
 
                m_bDoBeachSedimentTransport = false;
 
@@ -2433,7 +2444,7 @@ bool CSimulation::bReadRunDataFile(void)
 
                break;
 
-            case 45:
+            case 46:
 
                // If simulating beach sediment transport, beach sediment transport at grid edges [0 = closed, 1 = open, 2 = re-circulate]
                if (m_bDoBeachSedimentTransport)
@@ -2452,7 +2463,7 @@ bool CSimulation::bReadRunDataFile(void)
 
                break;
 
-            case 46:
+            case 47:
 
                // If simulating beach sediment transport, beach erosion/deposition equation [0 = CERC, 1 = Kamphuis]
                if (m_bDoBeachSedimentTransport)
@@ -2471,7 +2482,7 @@ bool CSimulation::bReadRunDataFile(void)
 
                break;
 
-            case 47:
+            case 48:
 
                // Median size of fine sediment (mm), always needed [0 = default, only for Kamphuis eqn]. First check that this is a valid double
                if (! bIsStringValidDouble(strRH))
@@ -2491,7 +2502,7 @@ bool CSimulation::bReadRunDataFile(void)
 
                break;
 
-            case 48:
+            case 49:
 
                // Median size of sand sediment (mm), always needed [0 = default, only for Kamphuis eqn]. First check that this is a valid double
                if (! bIsStringValidDouble(strRH))
@@ -2511,7 +2522,7 @@ bool CSimulation::bReadRunDataFile(void)
 
                break;
 
-            case 49:
+            case 50:
 
                // Median size of coarse sediment (mm), always needed [0 = default, only for Kamphuis eqn]. First check that this is a valid double
                if (! bIsStringValidDouble(strRH))
@@ -2531,7 +2542,7 @@ bool CSimulation::bReadRunDataFile(void)
 
                break;
 
-            case 50:
+            case 51:
 
                // Density of unconsolidated beach sediment (kg/m3)
                if (m_bDoBeachSedimentTransport)
@@ -2551,7 +2562,7 @@ bool CSimulation::bReadRunDataFile(void)
 
                break;
 
-            case 51:
+            case 52:
 
                // Beach sediment porosity
                if (m_bDoBeachSedimentTransport)
@@ -2571,7 +2582,7 @@ bool CSimulation::bReadRunDataFile(void)
 
                break;
 
-            case 52:
+            case 53:
 
                // Relative erodibility (0 - 1) of fine-sized sediment, always needed. First check that this is a valid double
                if (! bIsStringValidDouble(strRH))
@@ -2587,7 +2598,7 @@ bool CSimulation::bReadRunDataFile(void)
 
                break;
 
-            case 53:
+            case 54:
 
                // Relative erodibility (0 - 1) of sand-sized sediment, always needed. First check that this is a valid double
                if (! bIsStringValidDouble(strRH))
@@ -2603,7 +2614,7 @@ bool CSimulation::bReadRunDataFile(void)
 
                break;
 
-            case 54:
+            case 55:
 
                // Relative erodibility (0 - 1) of coarse-sized sediment, always needed. First check that this is a valid double
                if (! bIsStringValidDouble(strRH))
@@ -2625,7 +2636,7 @@ bool CSimulation::bReadRunDataFile(void)
 
                break;
 
-            case 55:
+            case 56:
 
                // Transport parameter KLS in CERC equation
                if (m_bDoBeachSedimentTransport)
@@ -2649,7 +2660,7 @@ bool CSimulation::bReadRunDataFile(void)
 
                break;
 
-            case 56:
+            case 57:
 
                // Transport parameter for Kamphuis equation
                if (m_bDoBeachSedimentTransport)
@@ -2669,7 +2680,7 @@ bool CSimulation::bReadRunDataFile(void)
 
                break;
 
-            case 57:
+            case 58:
 
                // Berm height i.e. height above SWL of start of depositional Dean profile
                if (m_bDoBeachSedimentTransport)
@@ -2690,13 +2701,13 @@ bool CSimulation::bReadRunDataFile(void)
                break;
 
             // ------------------------------------------------ Cliff collapse data -----------------------------------------------
-            case 58:
+            case 59:
 
                // Simulate cliff collapse?
                if (m_bHaveConsolidatedSediment)
                {
                   // Only consider cliff collapse if we have some consolidated sedimemt
-                  strRH = strToLower(&strRH);
+                  strRH = strToLower( & strRH);
 
                   if (strRH.find("y") != string::npos)
                      m_bDoCliffCollapse = true;
@@ -2704,7 +2715,7 @@ bool CSimulation::bReadRunDataFile(void)
 
                break;
 
-            case 59:
+            case 60:
 
                // Cliff resistance to erosion
                if (m_bHaveConsolidatedSediment && m_bDoCliffCollapse)
@@ -2724,7 +2735,7 @@ bool CSimulation::bReadRunDataFile(void)
 
                break;
 
-            case 60:
+            case 61:
 
                // Notch overhang at collapse (m)
                if (m_bHaveConsolidatedSediment && m_bDoCliffCollapse)
@@ -2744,7 +2755,7 @@ bool CSimulation::bReadRunDataFile(void)
 
                break;
 
-            case 61:
+            case 62:
 
                // Notch base below still water level (m)
                if (m_bHaveConsolidatedSediment && m_bDoCliffCollapse)
@@ -2757,7 +2768,7 @@ bool CSimulation::bReadRunDataFile(void)
 
                break;
 
-            case 62:
+            case 63:
 
                // Scale parameter A for cliff deposition (m^(1/3)) [0 = auto]
                if (m_bHaveConsolidatedSediment && m_bDoCliffCollapse)
@@ -2777,7 +2788,7 @@ bool CSimulation::bReadRunDataFile(void)
 
                break;
 
-            case 63:
+            case 64:
 
                // Approximate planview width of cliff collapse talus (in m)
                if (m_bHaveConsolidatedSediment && m_bDoCliffCollapse)
@@ -2798,7 +2809,7 @@ bool CSimulation::bReadRunDataFile(void)
 
                break;
 
-            case 64:
+            case 65:
 
                // Planview length of cliff deposition talus (m)
                if (m_bHaveConsolidatedSediment && m_bDoCliffCollapse)
@@ -2818,9 +2829,9 @@ bool CSimulation::bReadRunDataFile(void)
 
                break;
 
-            case 65:
+            case 66:
 
-               // Height of landward end of talus, as a fraction of cliff elevation
+               // Minimum height of landward end of talus, as a fraction of cliff elevation
                if (m_bHaveConsolidatedSediment && m_bDoCliffCollapse)
                {
                   // First check that this is a valid double
@@ -2833,15 +2844,15 @@ bool CSimulation::bReadRunDataFile(void)
                   m_dMinCliffTalusHeightFrac = strtod(strRH.c_str(), NULL);
 
                   if (m_dMinCliffTalusHeightFrac < 0)
-                     strErr = "line " + to_string(nLine) + ": height of cliff collapse (as a fraction of cliff elevation) must be >= 0";
+                     strErr = "line " + to_string(nLine) + ": minimum height of cliff collapse (as a fraction of cliff elevation) must be >= 0";
                }
 
                break;
 
             // -------------------------------------------------- Input events data -----------------------------------------------
-            case 66:
+            case 67:
                // Simulate riverine flooding?
-               strRH = strToLower(&strRH);
+               strRH = strToLower( & strRH);
 
                if (strRH.find("y") != string::npos)
                {
@@ -2853,7 +2864,7 @@ bool CSimulation::bReadRunDataFile(void)
 
                break;
 
-            case 67:
+            case 68:
 
                // Output riverine flooding vector files
                if (m_bRiverineFlooding)
@@ -2861,7 +2872,7 @@ bool CSimulation::bReadRunDataFile(void)
                   if (! strRH.empty())
                   {
                      // Convert to lower case
-                     strRH = strToLower(&strRH);
+                     strRH = strToLower( & strRH);
 
                      // First look for "all"
                      if (strRH.find(VECTOR_ALL_RIVER_FLOOD_OUTPUT_CODE) != string::npos)
@@ -2877,19 +2888,19 @@ bool CSimulation::bReadRunDataFile(void)
                         if (strRH.find(VECTOR_FLOOD_SWL_SETUP_LINE_CODE) != string::npos)
                         {
                            m_bFloodSWLSetupLine = true;
-                           strRH = strRemoveSubstr(&strRH, &VECTOR_FLOOD_SWL_SETUP_LINE_CODE);
+                           strRH = strRemoveSubstr( & strRH, & VECTOR_FLOOD_SWL_SETUP_LINE_CODE);
                         }
 
                         if (strRH.find(VECTOR_FLOOD_SWL_SETUP_SURGE_LINE_CODE) != string::npos)
                         {
                            m_bFloodSWLSetupSurgeLine = true;
-                           strRH = strRemoveSubstr(&strRH, &VECTOR_FLOOD_SWL_SETUP_SURGE_LINE_CODE);
+                           strRH = strRemoveSubstr( & strRH, & VECTOR_FLOOD_SWL_SETUP_SURGE_LINE_CODE);
                         }
 
                         if (strRH.find(VECTOR_FLOOD_SWL_SETUP_SURGE_RUNUP_LINE_CODE) != string::npos)
                         {
                            m_bFloodSWLSetupSurgeRunupLine = true;
-                           strRH = strRemoveSubstr(&strRH, &VECTOR_FLOOD_SWL_SETUP_SURGE_RUNUP_LINE_CODE);
+                           strRH = strRemoveSubstr( & strRH, & VECTOR_FLOOD_SWL_SETUP_SURGE_RUNUP_LINE_CODE);
                         }
 
                         // Check to see if all codes have been removed
@@ -2904,7 +2915,7 @@ bool CSimulation::bReadRunDataFile(void)
 
                break;
 
-            case 68:
+            case 69:
                if (m_bRiverineFlooding)
                {
                   // Run-up equation?
@@ -2919,11 +2930,11 @@ bool CSimulation::bReadRunDataFile(void)
 
                break;
 
-            case 69:
+            case 70:
                if (m_bRiverineFlooding && m_bVectorWaveFloodLineSave)
                {
                   // Characteristic locations for flood?
-                  strRH = strToLower(&strRH);
+                  strRH = strToLower( & strRH);
 
                   m_bFloodLocation = false;
 
@@ -2935,7 +2946,7 @@ bool CSimulation::bReadRunDataFile(void)
 
                break;
 
-            case 70:
+            case 71:
                if (m_bRiverineFlooding)
                {
                   // Path of location points file
@@ -2943,7 +2954,7 @@ bool CSimulation::bReadRunDataFile(void)
                   {
 #ifdef _WIN32
                      // For Windows, make sure has backslashes, not Unix-style slashes
-                     strRH = pstrChangeToBackslash(&strRH);
+                     strRH = pstrChangeToBackslash( & strRH);
 #endif
 
                      // Now check for leading slash, or leading Unix home dir symbol, or occurrence of a drive letter
@@ -2968,9 +2979,9 @@ bool CSimulation::bReadRunDataFile(void)
 
                break;
 
-            case 71:
+            case 72:
                // Simulate sediment input?
-               strRH = strToLower(&strRH);
+               strRH = strToLower( & strRH);
 
                if (strRH.find("y") != string::npos)
                {
@@ -2980,7 +2991,7 @@ bool CSimulation::bReadRunDataFile(void)
 
                break;
 
-            case 72:
+            case 73:
 
                // Sediment input location (point or line shapefile)
                if (m_bSedimentInput)
@@ -2989,7 +3000,7 @@ bool CSimulation::bReadRunDataFile(void)
                   {
 #ifdef _WIN32
                      // For Windows, make sure has backslashes, not Unix-style slashes
-                     strRH = pstrChangeToBackslash(&strRH);
+                     strRH = pstrChangeToBackslash( & strRH);
 #endif
 
                      // Now check for leading slash, or leading Unix home dir symbol, or occurrence of a drive letter
@@ -3008,12 +3019,12 @@ bool CSimulation::bReadRunDataFile(void)
 
                break;
 
-            case 73:
+            case 74:
 
                // Sediment input type: required if have shapefile [P = Point, C = coast block, L = line]
                if (m_bSedimentInput)
                {
-                  strRH = strToLower(&strRH);
+                  strRH = strToLower( & strRH);
 
                   if (strRH.find("p") != string::npos)
                      m_bSedimentInputAtPoint = true;
@@ -3030,7 +3041,7 @@ bool CSimulation::bReadRunDataFile(void)
 
                break;
 
-            case 74:
+            case 75:
 
                // Sediment input details file (required if have shapefile)
                if (m_bSedimentInput)
@@ -3043,7 +3054,7 @@ bool CSimulation::bReadRunDataFile(void)
 
 #ifdef _WIN32
                   // For Windows, make sure has backslashes, not Unix-style slashes
-                  strRH = pstrChangeToBackslash(&strRH);
+                  strRH = pstrChangeToBackslash( & strRH);
 #endif
 
                   // Now check for leading slash, or leading Unix home dir symbol, or occurrence of a drive letter
@@ -3064,7 +3075,7 @@ bool CSimulation::bReadRunDataFile(void)
                break;
 
             // ------------------------------------------------------ Other data --------------------------------------------------
-            case 75:
+            case 76:
 
                // Gravitational acceleration (m2/s). First check that this is a valid double
                if (! bIsStringValidDouble(strRH))
@@ -3080,7 +3091,7 @@ bool CSimulation::bReadRunDataFile(void)
 
                break;
 
-            case 76:
+            case 77:
                // Spacing of coastline normals (m)
                m_dCoastNormalSpacing = strtod(strRH.c_str(), NULL);
 
@@ -3092,7 +3103,7 @@ bool CSimulation::bReadRunDataFile(void)
 
                break;
 
-            case 77:
+            case 78:
 
                // Random factor for spacing of normals  [0 to 1, 0 = deterministic], check that this is a valid double
                if (! bIsStringValidDouble(strRH))
@@ -3111,7 +3122,7 @@ bool CSimulation::bReadRunDataFile(void)
 
                break;
 
-            case 78:
+            case 79:
 
                // Length of coastline normals (m), check that this is a valid double
                if (! bIsStringValidDouble(strRH))
@@ -3127,7 +3138,7 @@ bool CSimulation::bReadRunDataFile(void)
 
                break;
 
-            case 79:
+            case 80:
 
                // Start depth for wave calcs (ratio to deep water wave height), check that this is a valid double
                if (! bIsStringValidDouble(strRH))
@@ -3143,11 +3154,10 @@ bool CSimulation::bReadRunDataFile(void)
 
                break;
 
-
             // ----------------------------------------------------- Testing only -------------------------------------------------
-            case 80:
+            case 81:
                // Output profile data?
-               strRH = strToLower(&strRH);
+               strRH = strToLower( & strRH);
 
                m_bOutputProfileData = false;
 
@@ -3166,16 +3176,16 @@ bool CSimulation::bReadRunDataFile(void)
 
                break;
 
-            case 81:
+            case 82:
 
                // Numbers of profiles to be saved
                if (m_bOutputProfileData)
                {
-                  VstrTmp = VstrSplit(&strRH, SPACE);
+                  VstrTmp = VstrSplit( & strRH, SPACE);
 
                   for (unsigned int j = 0; j < VstrTmp.size(); j++)
                   {
-                     VstrTmp[j] = strTrim(&VstrTmp[j]);
+                     VstrTmp[j] = strTrim( & VstrTmp[j]);
 
                      if (! bIsStringValidInt(VstrTmp[j]))
                      {
@@ -3197,16 +3207,16 @@ bool CSimulation::bReadRunDataFile(void)
 
                break;
 
-            case 82:
+            case 83:
 
                // Timesteps to save profiles
                if (m_bOutputProfileData)
                {
-                  VstrTmp = VstrSplit(&strRH, SPACE);
+                  VstrTmp = VstrSplit( & strRH, SPACE);
 
                   for (unsigned int j = 0; j < VstrTmp.size(); j++)
                   {
-                     VstrTmp[j] = strTrim(&VstrTmp[j]);
+                     VstrTmp[j] = strTrim( & VstrTmp[j]);
                      unsigned long ulTmp = atol(VstrTmp[j].c_str());
 
                      if (ulTmp < 1)
@@ -3221,9 +3231,9 @@ bool CSimulation::bReadRunDataFile(void)
 
                break;
 
-            case 83:
+            case 84:
                // Output parallel profile data?
-               strRH = strToLower(&strRH);
+               strRH = strToLower( & strRH);
 
                m_bOutputParallelProfileData = false;
 
@@ -3232,9 +3242,9 @@ bool CSimulation::bReadRunDataFile(void)
 
                break;
 
-            case 84:
+            case 85:
                // Output erosion potential look-up data?
-               strRH = strToLower(&strRH);
+               strRH = strToLower( & strRH);
 
                m_bOutputErosionPotentialData = false;
 
@@ -3243,7 +3253,7 @@ bool CSimulation::bReadRunDataFile(void)
 
                break;
 
-            case 85:
+            case 86:
 
                // Size of moving window for coastline curvature calculation (must be odd)
                if (! bIsStringValidInt(strRH))
@@ -3256,17 +3266,6 @@ bool CSimulation::bReadRunDataFile(void)
 
                if ((m_nCoastCurvatureMovingWindowSize <= 0) || ! (m_nCoastCurvatureMovingWindowSize % 2))
                   strErr = "line " + to_string(nLine) + ": size of moving window for coastline curvature calculation (must be > 0 and odd)";
-
-               break;
-
-            case 86:
-               // Output per-timestep results in CSV format?
-               strRH = strToLower(&strRH);
-
-               m_bCSVPerTimestepResults = false;
-
-               if (strRH.find("y") != string::npos)
-                  m_bCSVPerTimestepResults = true;
 
                break;
          }
@@ -3320,7 +3319,7 @@ int CSimulation::nReadTideDataFile()
    InStream.open(m_strTideDataFile.c_str(), ios::in);
 
    // Did it open OK?
-   if (!InStream.is_open())
+   if (! InStream.is_open())
    {
       // Error: cannot open tide data file for input
       cerr << ERR << "cannot open " << m_strTideDataFile << " for input" << endl;
@@ -3337,7 +3336,7 @@ int CSimulation::nReadTideDataFile()
       nLine++;
 
       // Trim off leading and trailing whitespace
-      strRec = strTrim(&strRec);
+      strRec = strTrim( & strRec);
 
       // If it is a blank line or a comment then ignore it
       if ((strRec.empty()) || (strRec[0] == QUOTE1) || (strRec[0] == QUOTE2))
@@ -3377,7 +3376,7 @@ int CSimulation::nReadShapeFunctionFile()
    InStream.open(m_strSCAPEShapeFunctionFile.c_str(), ios::in);
 
    // Did it open OK?
-   if (!InStream.is_open())
+   if (! InStream.is_open())
    {
       // Error: cannot open shape function file for input
       cerr << ERR << "cannot open " << m_strSCAPEShapeFunctionFile << " for input" << endl;
@@ -3403,7 +3402,7 @@ int CSimulation::nReadShapeFunctionFile()
       nLine++;
 
       // Trim off leading and trailing whitespace
-      strRec = strTrim(&strRec);
+      strRec = strTrim( & strRec);
 
       // If it is a blank line or a comment then ignore it
       if ((strRec.empty()) || (strRec[0] == QUOTE1) || (strRec[0] == QUOTE2))
@@ -3413,12 +3412,12 @@ int CSimulation::nReadShapeFunctionFile()
       nRead++;
 
       // Split the string, and remove whitespace
-      vector<string> strTmp = VstrSplit(&strRec, SPACE);
+      vector<string> strTmp = VstrSplit( & strRec, SPACE);
 
       for (unsigned int i = 0; i < strTmp.size(); i++)
       {
          // Remove leading and trailing whitespace
-         strTmp[i] = strTrim(&strTmp[i]);
+         strTmp[i] = strTrim( & strTmp[i]);
 
          // Check that this is a valid double
          if (! bIsStringValidDouble(strTmp[i]))
@@ -3460,7 +3459,7 @@ int CSimulation::nReadShapeFunctionFile()
    }
 
    // OK, now use this data to create a look-up table to be used for the rest of the simulation
-   if (! bCreateErosionPotentialLookUp(&VdDepthOverDB, &VdErosionPotential, &VdErosionPotentialFirstDeriv))
+   if (! bCreateErosionPotentialLookUp( & VdDepthOverDB, & VdErosionPotential, & VdErosionPotentialFirstDeriv))
    {
       cout << ERR << "line " + to_string(nLine) + "  in " << m_strSCAPEShapeFunctionFile << ": erosion potential function is unbounded for high values of depth over DB" << endl;
       return RTN_ERR_SCAPE_SHAPE_FUNCTION_FILE;
@@ -3481,7 +3480,7 @@ int CSimulation::nReadWaveStationInputFile(int const nWaveStations)
    InStream.open(m_strDeepWaterWavesInputFile.c_str(), ios::in);
 
    // Did it open OK?
-   if (!InStream.is_open())
+   if (! InStream.is_open())
    {
       // Error: cannot open time series file for input
       cerr << ERR << "cannot open " << m_strDeepWaterWavesInputFile << " for input" << endl;
@@ -3501,7 +3500,7 @@ int CSimulation::nReadWaveStationInputFile(int const nWaveStations)
       nLine++;
 
       // Trim off leading and trailing whitespace
-      strRec = strTrim(&strRec);
+      strRec = strTrim( & strRec);
 
       // If it is a blank line or a comment then ignore it
       if ((! strRec.empty()) && (strRec[0] != QUOTE1) && (strRec[0] != QUOTE2))
@@ -3535,7 +3534,7 @@ int CSimulation::nReadWaveStationInputFile(int const nWaveStations)
             string strRH = strRec.substr(nPos + 1);
 
             // Remove leading whitespace
-            strRH = strTrimLeft(&strRH);
+            strRH = strTrimLeft( & strRH);
 
             // Look for a trailing comment, if found then terminate string at that point and trim off any trailing whitespace
             nPos = strRH.rfind(QUOTE1);
@@ -3549,7 +3548,7 @@ int CSimulation::nReadWaveStationInputFile(int const nWaveStations)
                strRH.resize(nPos);
 
             // Remove trailing whitespace
-            strRH = strTrimRight(&strRH);
+            strRH = strTrimRight( & strRH);
 
             int nSec = 0;
             int nMin = 0;
@@ -3565,7 +3564,7 @@ int CSimulation::nReadWaveStationInputFile(int const nWaveStations)
             {
                case 1:
                   // Get the start date/time for this data, format is [hh-mm-ss dd/mm/yyyy]
-                  VstrTmp = VstrSplit(&strRH, SPACE);
+                  VstrTmp = VstrSplit( & strRH, SPACE);
 
                   // Both date and time here?
                   if (VstrTmp.size() < 2)
@@ -3575,14 +3574,14 @@ int CSimulation::nReadWaveStationInputFile(int const nWaveStations)
                   }
 
                   // OK, first sort out the time
-                  if (! bParseTime(&VstrTmp[0], nHour, nMin, nSec))
+                  if (! bParseTime( & VstrTmp[0], nHour, nMin, nSec))
                   {
                      strErr = "line " + to_string(nLine) + ": could not understand start time for data";
                      break;
                   }
 
                   // Next sort out the date
-                  if (! bParseDate(&VstrTmp[1], nDay, nMonth, nYear))
+                  if (! bParseDate( & VstrTmp[1], nDay, nMonth, nYear))
                   {
                      strErr = "line " + to_string(nLine) + ": could not understand start date for data";
                      break;
@@ -3604,9 +3603,9 @@ int CSimulation::nReadWaveStationInputFile(int const nWaveStations)
 
                case 2:
                   // Get the timestep of this data (in hours or days)
-                  strRH = strToLower(&strRH);
+                  strRH = strToLower( & strRH);
 
-                  dMult = dGetTimeMultiplier(&strRH);
+                  dMult = dGetTimeMultiplier( & strRH);
 
                   if (static_cast<int>(dMult) == TIME_UNKNOWN)
                   {
@@ -3627,7 +3626,7 @@ int CSimulation::nReadWaveStationInputFile(int const nWaveStations)
                   strRH.resize(nPos);
 
                   // Remove trailing spaces
-                  strRH = strTrimRight(&strRH);
+                  strRH = strTrimRight( & strRH);
 
                   // Check that this is a valid double
                   if (! bIsStringValidDouble(strRH))
@@ -3696,12 +3695,12 @@ int CSimulation::nReadWaveStationInputFile(int const nWaveStations)
             nTimeStepsRead++;
 
             // Read in each wave attribute for each time step and station: split the string, and remove whitespace
-            vector<string> VstrTmp = VstrSplit(&strRec, COMMA);
+            vector<string> VstrTmp = VstrSplit( & strRec, COMMA);
 
             for (unsigned int i = 0; i < VstrTmp.size(); i++) // VstrTmp.size() should be 3 x nExpectedStations
             {
                // Remove leading and trailing whitespace
-               VstrTmp[i] = strTrim(&VstrTmp[i]);
+               VstrTmp[i] = strTrim( & VstrTmp[i]);
 
                // Check that this is a valid double
                if (! bIsStringValidDouble(VstrTmp[i]))
@@ -3813,7 +3812,7 @@ int CSimulation::nReadSedimentInputEventFile(void)
    InStream.open(m_strSedimentInputEventFile.c_str(), ios::in);
 
    // Did it open OK?
-   if (!InStream.is_open())
+   if (! InStream.is_open())
    {
       // Error: cannot open time series file for input
       cerr << ERR << "cannot open " << m_strSedimentInputEventFile << " for input" << endl;
@@ -3831,7 +3830,7 @@ int CSimulation::nReadSedimentInputEventFile(void)
       nLine++;
 
       // Trim off leading and trailing whitespace
-      strRec = strTrim(&strRec);
+      strRec = strTrim( & strRec);
 
       // If it is a blank line or a comment then ignore it
       if ((! strRec.empty()) && (strRec[0] != QUOTE1) && (strRec[0] != QUOTE2))
@@ -3840,7 +3839,7 @@ int CSimulation::nReadSedimentInputEventFile(void)
          nRead++;
 
          // Split at commas
-         vector<string> VstrTmp = VstrSplit(&strRec, COMMA);
+         vector<string> VstrTmp = VstrSplit( & strRec, COMMA);
 
          // Check that have all we need
          unsigned int nTarget = 7;
@@ -3861,7 +3860,7 @@ int CSimulation::nReadSedimentInputEventFile(void)
             break;
          }
 
-         int nID = stoi(strTrim(&VstrTmp[0]));
+         int nID = stoi(strTrim( & VstrTmp[0]));
 
          // OK, check the ID against IDs read in from the shapefile
          auto result = find(m_VnSedimentInputLocationID.begin(), m_VnSedimentInputLocationID.end(), nID);
@@ -3873,7 +3872,7 @@ int CSimulation::nReadSedimentInputEventFile(void)
          }
 
          // Next get the timestep at which the sediment input event occurs. This may be specified either as a relative time (i.e. a number of hours or days after the simulation start) or as an absolute time (i.e. a time/date in the format hh-mm-ss dd/mm/yyyy)
-         unsigned long ulEventTimeStep = ulConvertToTimestep(&VstrTmp[1]);
+         unsigned long ulEventTimeStep = ulConvertToTimestep( & VstrTmp[1]);
 
          if (ulEventTimeStep == SEDIMENT_INPUT_EVENT_ERROR)
          {
@@ -3888,7 +3887,7 @@ int CSimulation::nReadSedimentInputEventFile(void)
             break;
          }
 
-         double dFineSedVol = stod(strTrim(&VstrTmp[2]));
+         double dFineSedVol = stod(strTrim( & VstrTmp[2]));
 
          if (dFineSedVol < 0)
          {
@@ -3906,7 +3905,7 @@ int CSimulation::nReadSedimentInputEventFile(void)
             break;
          }
 
-         double dSandSedVol = stod(strTrim(&VstrTmp[3]));
+         double dSandSedVol = stod(strTrim( & VstrTmp[3]));
 
          if (dSandSedVol < 0)
          {
@@ -3924,7 +3923,7 @@ int CSimulation::nReadSedimentInputEventFile(void)
             break;
          }
 
-         double dCoarseSedVol = stod(strTrim(&VstrTmp[4]));
+         double dCoarseSedVol = stod(strTrim( & VstrTmp[4]));
 
          if (dCoarseSedVol < 0)
          {
@@ -3949,7 +3948,7 @@ int CSimulation::nReadSedimentInputEventFile(void)
                break;
             }
 
-            dLen = stod(strTrim(&VstrTmp[5]));
+            dLen = stod(strTrim( & VstrTmp[5]));
 
             if (dLen <= 0)
             {
@@ -3964,7 +3963,7 @@ int CSimulation::nReadSedimentInputEventFile(void)
                break;
             }
 
-            dWidth = stod(strTrim(&VstrTmp[6]));
+            dWidth = stod(strTrim( & VstrTmp[6]));
 
             if ((! m_bSedimentInputAtCoast) && (dWidth <= 0))
             {
@@ -3975,20 +3974,20 @@ int CSimulation::nReadSedimentInputEventFile(void)
             // // The along-coast thickness (m) of the sediment block, first check that this is a valid double
             // if (! bIsStringValidDouble(VstrTmp[7]))
             // {
-            //    strErr = "line " + to_string(nLine) + ": invalid floating point number '" + VstrTmp[7] + "' for along-coast thickness of sediment input event in " + m_strSedimentInputEventFile;
-            //    break;
+            // strErr = "line " + to_string(nLine) + ": invalid floating point number '" + VstrTmp[7] + "' for along-coast thickness of sediment input event in " + m_strSedimentInputEventFile;
+            // break;
             // }
             //
             // dThick = stod(strTrim(&VstrTmp[7]));
             // if ((! m_bSedimentInputAtCoast) && (dWidth <= 0))
             // {
-            //    strErr = "line " + to_string(nLine) + ": along-coast thickness (m) of the sediment block '" + to_string(dThick) + "' must be > 0 in " + m_strSedimentInputEventFile;
-            //    break;
+            // strErr = "line " + to_string(nLine) + ": along-coast thickness (m) of the sediment block '" + to_string(dThick) + "' must be > 0 in " + m_strSedimentInputEventFile;
+            // break;
             // }
          }
 
          // Create the CSedInputEvent object
-         CSedInputEvent* pEvent = new CSedInputEvent(nID, ulEventTimeStep, dFineSedVol, dSandSedVol, dCoarseSedVol, dLen, dWidth); //, dThick);
+         CSedInputEvent * pEvent = new CSedInputEvent(nID, ulEventTimeStep, dFineSedVol, dSandSedVol, dCoarseSedVol, dLen, dWidth); //, dThick);
 
          // And store it in the m_pVSedInputEvent vector
          m_pVSedInputEvent.push_back(pEvent);
