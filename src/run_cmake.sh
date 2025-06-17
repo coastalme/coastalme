@@ -1,13 +1,19 @@
 #!/bin/sh
 
-# Change this to change build type
-buildtype=DEBUG
-# buildtype=Release
-# buildtype=Prerelease
-#buildtype=RelWithDebInfo        # Not yet implemented in CMakeLists.txt
-#buildtype=MinSizeRel            # Not yet implemented in CMakeLists.txt
-#buildtype=gcov
-#buildtype=Callgrind
+if [ $# -eq 0 ]
+  then
+          # Change this to change build type
+          # buildtype=DEBUG
+          buildtype=Release
+          # buildtype=Prerelease
+          #buildtype=RelWithDebInfo        # Not yet implemented in CMakeLists.txt
+          #buildtype=MinSizeRel            # Not yet implemented in CMakeLists.txt
+          #buildtype=gcov
+          #buildtype=Callgrind
+else
+          buildtype=${1}
+fi
+
 
 # Change this to select the CShore library type
 #cshorelibrary=STATIC
