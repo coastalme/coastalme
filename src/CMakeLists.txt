@@ -272,7 +272,7 @@ message("Finding libraries")
 # ##############################################################################
 # Find OpenMP for parallelization First try to find OpenMP using the standard
 # CMake module
-if(CMAKE_BUILD_TYPE_LC STREQUAL "debug")
+if(CMAKE_BUILD_TYPE_LC STREQUAL "Null")
   message(STATUS "OpenMP disabled for debug build")
   set(OPENMP_ENABLED FALSE)
 else()
@@ -283,6 +283,7 @@ else()
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
     set(LIBS ${LIBS} OpenMP::OpenMP_CXX)
     message(STATUS "OpenMP enabled for parallel grid operations")
+    set(OPENMP_ENABLED TRUE)
   else()
     # Standard detection failed, try manual detection based on compiler
     message(
