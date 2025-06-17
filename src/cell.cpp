@@ -1,26 +1,26 @@
 /*!
- *
- * \file cell.cpp
- * \brief CGeomCell routines
- * \details TODO 001 A more detailed description of these routines.
- * \author David Favis-Mortlock
- * \author Andres Payo
- * \date 2025
- * \copyright GNU General Public License
- *
- */
 
-/*===============================================================================================================================
+   \file cell.cpp
+   \brief CGeomCell routines
+   \details TODO 001 A more detailed description of these routines.
+   \author David Favis-Mortlock
+   \author Andres Payo
+   \date 2025
+   \copyright GNU General Public License
 
-This file is part of CoastalME, the Coastal Modelling Environment.
+*/
 
-CoastalME is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
+/* ===============================================================================================================================
 
-This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+   This file is part of CoastalME, the Coastal Modelling Environment.
 
-You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+   CoastalME is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
 
-===============================================================================================================================*/
+   This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+   You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+
+   ===============================================================================================================================*/
 #include <vector>
 using std::vector;
 
@@ -32,58 +32,58 @@ using std::vector;
 
 //! Constructor with initialization list
 CGeomCell::CGeomCell()
-    : m_bInContiguousSea(false),
-      m_bInContiguousFlood(false),
-      m_bIsInActiveZone(false),
-      m_bCoastline(false),
-      m_bFloodLine(false),
-      m_bWaveFlood(false),
-      // m_bCheckCell(false),
-      m_bCheckFloodCell(false),
-      m_bShadowBoundary(false),
-      m_bPossibleCoastStartCell(false),
-      m_bPossibleFloodStartCell(false),
-      m_nBoundingBoxEdge(NO_DIRECTION),
-      m_nPolygonID(INT_NODATA),
-      m_nPolygonCoastID(INT_NODATA),
-      m_nCoastlineNormal(INT_NODATA),
-      m_nShadowZoneNumber(0),
-      m_nDownDriftZoneNumber(0),
-      m_dLocalConsSlope(0),
-      m_dBasementElevation(0),
-      m_dSeaDepth(0),
-      m_dTotSeaDepth(0),
-      m_dWaveHeight(0),
-      m_dTotWaveHeight(0),
-      m_dWaveAngle(DBL_NODATA),
-      m_dTotWaveAngle(DBL_NODATA),
-      m_dDeepWaterWaveHeight(DBL_NODATA),
-      m_dDeepWaterWaveAngle(DBL_NODATA),
-      m_dBeachProtectionFactor(DBL_NODATA),
-      m_dSuspendedSediment(0),
-      m_dTotSuspendedSediment(0),
-      m_dPotentialPlatformErosionThisIter(0),
-      m_dTotPotentialPlatformErosion(0),
-      m_dActualPlatformErosionThisIter(0),
-      m_dTotActualPlatformErosion(0),
-      m_dCliffCollapseFineThisIter(0),
-      m_dCliffCollapseSandThisIter(0),
-      m_dCliffCollapseCoarseThisIter(0),
-      m_dTotFineCliffCollapse(0),
-      m_dTotSandCliffCollapse(0),
-      m_dTotCoarseCliffCollapse(0),
-      m_dTalusSandDepositionThisIter(0),
-      m_dTotTalusSandDeposition(0),
-      m_dTalusCoarseDepositionThisIter(0),
-      m_dTotTalusCoarseDeposition(0),
-      m_dPotentialBeachErosionThisIter(0),
-      m_dTotPotentialBeachErosion(0),
-      m_dActualBeachErosionThisIter(0),
-      m_dTotActualBeachErosion(0),
-      m_dBeachDepositionThisIter(0),
-      m_dTotBeachDeposition(0),
-      m_dUnconsD50(0),
-      m_dInterventionHeight(0)
+   : m_bInContiguousSea(false),
+     m_bInContiguousFlood(false),
+     m_bIsInActiveZone(false),
+     m_bCoastline(false),
+     m_bFloodLine(false),
+     m_bWaveFlood(false),
+     // m_bCheckCell(false),
+     m_bCheckFloodCell(false),
+     m_bShadowBoundary(false),
+     m_bPossibleCoastStartCell(false),
+     m_bPossibleFloodStartCell(false),
+     m_nBoundingBoxEdge(NO_DIRECTION),
+     m_nPolygonID(INT_NODATA),
+     m_nPolygonCoastID(INT_NODATA),
+     m_nCoastlineNormal(INT_NODATA),
+     m_nShadowZoneNumber(0),
+     m_nDownDriftZoneNumber(0),
+     m_dLocalConsSlope(0),
+     m_dBasementElevation(0),
+     m_dSeaDepth(0),
+     m_dTotSeaDepth(0),
+     m_dWaveHeight(0),
+     m_dTotWaveHeight(0),
+     m_dWaveAngle(DBL_NODATA),
+     m_dTotWaveAngle(DBL_NODATA),
+     m_dDeepWaterWaveHeight(DBL_NODATA),
+     m_dDeepWaterWaveAngle(DBL_NODATA),
+     m_dBeachProtectionFactor(DBL_NODATA),
+     m_dSuspendedSediment(0),
+     m_dTotSuspendedSediment(0),
+     m_dPotentialPlatformErosionThisIter(0),
+     m_dTotPotentialPlatformErosion(0),
+     m_dActualPlatformErosionThisIter(0),
+     m_dTotActualPlatformErosion(0),
+     m_dCliffCollapseFineThisIter(0),
+     m_dCliffCollapseSandThisIter(0),
+     m_dCliffCollapseCoarseThisIter(0),
+     m_dTotFineCliffCollapse(0),
+     m_dTotSandCliffCollapse(0),
+     m_dTotCoarseCliffCollapse(0),
+     m_dTalusSandDepositionThisIter(0),
+     m_dTotTalusSandDeposition(0),
+     m_dTalusCoarseDepositionThisIter(0),
+     m_dTotTalusCoarseDeposition(0),
+     m_dPotentialBeachErosionThisIter(0),
+     m_dTotPotentialBeachErosion(0),
+     m_dActualBeachErosionThisIter(0),
+     m_dTotActualBeachErosion(0),
+     m_dBeachDepositionThisIter(0),
+     m_dTotBeachDeposition(0),
+     m_dUnconsD50(0),
+     m_dInterventionHeight(0)
 {
    m_Landform.SetLFCategory(LF_NONE);
 }
@@ -391,7 +391,7 @@ int CGeomCell::nGetDownDriftZoneNumber(void) const
 }
 
 //! Returns a pointer to this cell's CRWCellLandform object
-CRWCellLandform *CGeomCell::pGetLandform(void)
+CRWCellLandform* CGeomCell::pGetLandform(void)
 {
    return &m_Landform;
 }
@@ -476,6 +476,7 @@ int CGeomCell::nGetTopNonZeroLayerAboveBasement(void) const
       return INT_NODATA;
 
    int nTop = static_cast<int>(m_VLayerAboveBasement.size()) - 1;
+
    while (m_VLayerAboveBasement[nTop].dGetTotalThickness() <= 0)
    {
       if (--nTop < 0)
@@ -512,7 +513,7 @@ double CGeomCell::dGetConsSedTopForLayerAboveBasement(int const nLayer) const
 }
 
 //! Return a reference to the Nth sediment layer (layer 0 being just above basement)
-CRWCellLayer *CGeomCell::pGetLayerAboveBasement(int const nLayer)
+CRWCellLayer* CGeomCell::pGetLayerAboveBasement(int const nLayer)
 {
    // TODO 055 No check that nLayer < size()
    return &m_VLayerAboveBasement[nLayer];
@@ -589,84 +590,91 @@ double CGeomCell::dGetThisIterTotWaterLevel(void) const
 double CGeomCell::dGetTotConsFineThickConsiderNotch(void) const
 {
    double dTotThick = 0;
+
    for (unsigned int n = 0; n < m_VLayerAboveBasement.size(); n++)
    {
       CRWCellLayer m_Layer = m_VLayerAboveBasement[n];
       double dLayerThick = m_Layer.dGetFineConsolidatedThickness();
       double dNotchEquiv = m_Layer.pGetConsolidatedSediment()->dGetNotchFineLost();
-      
+
       dTotThick += (dLayerThick - dNotchEquiv);
    }
 
-   return dTotThick;   
+   return dTotThick;
 }
 
 //! Returns the total thickness of fine unconsolidated sediment on this cell
 double CGeomCell::dGetTotUnconsFine(void) const
 {
    double dTotThick = 0;
+
    for (unsigned int n = 0; n < m_VLayerAboveBasement.size(); n++)
       dTotThick += m_VLayerAboveBasement[n].dGetFineUnconsolidatedThickness();
 
-   return dTotThick;   
+   return dTotThick;
 }
 
 //! Returns the total thickness of sand-sized consolidated sediment on this cell, minus the depth-equivalent of any cliff notch
 double CGeomCell::dGetTotConsSandThickConsiderNotch(void) const
 {
    double dTotThick = 0;
+
    for (unsigned int n = 0; n < m_VLayerAboveBasement.size(); n++)
    {
       CRWCellLayer m_Layer = m_VLayerAboveBasement[n];
       double dLayerThick = m_Layer.dGetSandConsolidatedThickness();
       double dNotchEquiv = m_Layer.pGetConsolidatedSediment()->dGetNotchSandLost();
-      
+
       dTotThick += (dLayerThick - dNotchEquiv);
    }
 
-   return dTotThick;   
+   return dTotThick;
 }
 
 //! Returns the total thickness of sand-sized unconsolidated sediment on this cell
 double CGeomCell::dGetTotUnconsSand(void) const
 {
    double dTotThick = 0;
+
    for (unsigned int n = 0; n < m_VLayerAboveBasement.size(); n++)
       dTotThick += m_VLayerAboveBasement[n].dGetSandUnconsolidatedThickness();
 
-   return dTotThick;   
+   return dTotThick;
 }
 
 //! Returns the total thickness of coarse consolidated sediment on this cell, minus the depth-equivalent of any cliff notch
 double CGeomCell::dGetTotConsCoarseThickConsiderNotch(void) const
 {
    double dTotThick = 0;
+
    for (unsigned int n = 0; n < m_VLayerAboveBasement.size(); n++)
    {
       CRWCellLayer m_Layer = m_VLayerAboveBasement[n];
       double dLayerThick = m_Layer.dGetCoarseConsolidatedThickness();
       double dNotchEquiv = m_Layer.pGetConsolidatedSediment()->dGetNotchCoarseLost();
-      
+
       dTotThick += (dLayerThick - dNotchEquiv);
    }
 
-   return dTotThick;   
+   return dTotThick;
 }
 
 //! Returns the total thickness of coarse unconsolidated sediment on this cell
 double CGeomCell::dGetTotUnconsCoarse(void) const
 {
-double dTotThick = 0;
+   double dTotThick = 0;
+
    for (unsigned int n = 0; n < m_VLayerAboveBasement.size(); n++)
       dTotThick += m_VLayerAboveBasement[n].dGetCoarseUnconsolidatedThickness();
 
-   return dTotThick;   
+   return dTotThick;
 }
 
 //! Returns the total thickness of consolidated sediment (all size classes) on this cell
 double CGeomCell::dGetTotConsThickness(void) const
 {
    double dTotThick = 0;
+
    for (unsigned int n = 0; n < m_VLayerAboveBasement.size(); n++)
       dTotThick += m_VLayerAboveBasement[n].dGetConsolidatedThickness();
 
@@ -677,6 +685,7 @@ double CGeomCell::dGetTotConsThickness(void) const
 double CGeomCell::dGetTotUnconsThickness(void) const
 {
    double dTotThick = 0;
+
    for (unsigned int n = 0; n < m_VLayerAboveBasement.size(); n++)
       dTotThick += m_VLayerAboveBasement[n].dGetUnconsolidatedThickness();
 
@@ -704,14 +713,17 @@ void CGeomCell::CalcAllLayerElevsAndD50(void)
 
    // Calculate the elevation of the top of all other layers
    int m = 0;
+
    for (unsigned int n = 0; n < m_VLayerAboveBasement.size(); n++)
       m_VdAllHorizonTopElev.push_back(m_VLayerAboveBasement[n].dGetTotalThickness() + m_VdAllHorizonTopElev[m++]); // Elevation of top of layer n
 
    // Now calculate the d50 of the topmost unconsolidated sediment layer with non-zero thickness. If there is no unconsolidated sediment, m_dUnconsD50 is set to DBL_NODATA
    m_dUnconsD50 = DBL_NODATA;
+
    for (int n = static_cast<int>(m_VLayerAboveBasement.size()) - 1; n >= 0; n--)
    {
       double dUnconsThick = m_VLayerAboveBasement[n].dGetUnconsolidatedThickness();
+
       if (dUnconsThick > 0)
       {
          // This is a layer with non-zero thickness of unconsolidated sediment
@@ -829,7 +841,7 @@ void CGeomCell::InitCell(void)
    m_dCliffCollapseSandThisIter =
    m_dCliffCollapseCoarseThisIter =
    m_dTalusSandDepositionThisIter =
-   m_dTalusCoarseDepositionThisIter = 
+   m_dTalusCoarseDepositionThisIter =
    m_dPotentialBeachErosionThisIter =
    m_dActualBeachErosionThisIter =
    m_dBeachDepositionThisIter =
@@ -1128,6 +1140,7 @@ void CGeomCell::SetInterventionClass(int const nSubCatCode)
 
       if (nSubCatCode == IO_INTERVENTION_STRUCT)
          this->m_Landform.SetLFSubCategory(LF_SUBCAT_INTERVENTION_STRUCT);
+
       else if (nSubCatCode == IO_INTERVENTION_NON_STRUCT)
          this->m_Landform.SetLFSubCategory(LF_SUBCAT_INTERVENTION_NON_STRUCT);
    }
@@ -1142,6 +1155,7 @@ int CGeomCell::nGetInterventionClass(void) const
    {
       if (this->m_Landform.nGetLFSubCategory() == LF_SUBCAT_INTERVENTION_STRUCT)
          nTmp = IO_INTERVENTION_STRUCT;
+
       else if (this->m_Landform.nGetLFSubCategory() == LF_SUBCAT_INTERVENTION_NON_STRUCT)
          nTmp = IO_INTERVENTION_NON_STRUCT;
    }

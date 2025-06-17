@@ -1,25 +1,25 @@
 /*!
- *
- * \file interpolate.cpp
- * \brief Returns interpolated value at x from parallel arrays
- * \details TODO 001 A more detailed description of these routines.
- * \author Modified by David Favis-Mortlock and Andres Payo
- * \date 2025
- * \copyright GNU Lesser General Public License
- *
- */
 
-/*===============================================================================================================================
+   \file interpolate.cpp
+   \brief Returns interpolated value at x from parallel arrays
+   \details TODO 001 A more detailed description of these routines.
+   \author Modified by David Favis-Mortlock and Andres Payo
+   \date 2025
+   \copyright GNU Lesser General Public License
 
-This file is part of CoastalME, the Coastal Modelling Environment.
+*/
 
-CoastalME is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
+/* ===============================================================================================================================
 
-This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+   This file is part of CoastalME, the Coastal Modelling Environment.
 
-You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+   CoastalME is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
 
-===============================================================================================================================*/
+   This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+   You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+
+   ===============================================================================================================================*/
 #include <assert.h>
 #include <cfloat>
 #include <iostream>
@@ -38,20 +38,23 @@ double dGetInterpolatedValue(vector<double> const* pVdXdata, vector<double> cons
    int size = static_cast<int>(pVdXdata->size());
 
    int i = 0;                                   // Find left end of interval for interpolation
+
    if (dX >= pVdXdata->at(size - 2))            // Special case: beyond right end
    {
       i = size - 2;
    }
+
    else
    {
-      while (dX > pVdXdata->at(i+1)) i++;
+      while (dX > pVdXdata->at(i+1))
+         i++;
    }
-   
+
    double dXL = pVdXdata->at(i);
    double dYL = pVdYdata->at(i);
    double dXR = pVdXdata->at(i+1);
    double dYR = pVdYdata->at(i+1);              // Points on either side (unless beyond ends)
-      
+
    if (! bExtrapolate)                          // If beyond ends of array and not extrapolating
    {
       if (dX < dXL)
@@ -75,25 +78,31 @@ double dGetInterpolatedValue(vector<int> const* pVnXdata, vector<double> const* 
    unsigned int nSize = static_cast<unsigned int>(pVnXdata->size());
 
    int i = 0;                                   // Find left end of interval for interpolation
+
    if (nX >= pVnXdata->at(nSize - 2))           // Special case: beyond right end
    {
       i = nSize - 2;
    }
+
    else
    {
-      while (nX > pVnXdata->at(i+1)) i++;
+      while (nX > pVnXdata->at(i+1))
+         i++;
    }
-   
+
    int nXL = pVnXdata->at(i);
    int nXR = pVnXdata->at(i+1);
-      
+
    double dYL = pVdYdata->at(i);
    double dYR = pVdYdata->at(i+1);                  // Points on either side (unless beyond ends)
-      
+
    if (! bExtrapolate)                          // If beyond ends of array and not extrapolating
    {
-      if (nX < nXL) dYR = dYL;
-      if (nX > nXR) dYL = dYR;
+      if (nX < nXL)
+         dYR = dYL;
+
+      if (nX > nXR)
+         dYL = dYR;
    }
 
    double ddYdX = (dYR - dYL) / static_cast<double>(nXR - nXL);      // Gradient
@@ -149,12 +158,14 @@ vector<double> VdInterpolateCShoreProfileOutput(vector<double> const* pVdX, vect
             dX = pVdX->at(idx) - pVdX->at(idx-1);
             dY = pVdY->at(idx) - pVdY->at(idx-1);
          }
+
          else
          {
             dX = pVdX->at(idx+1) - pVdX->at(idx);
             dY = pVdY->at(idx+1) - pVdY->at(idx);
          }
       }
+
       else
       {
          if (idx < nXSize-1)
@@ -162,6 +173,7 @@ vector<double> VdInterpolateCShoreProfileOutput(vector<double> const* pVdX, vect
             dX = pVdX->at(idx+1) - pVdX->at(idx);
             dY = pVdY->at(idx+1) - pVdY->at(idx);
          }
+
          else
          {
             dX = pVdX->at(idx) - pVdX->at(idx-1);

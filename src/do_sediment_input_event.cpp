@@ -1,26 +1,26 @@
 /*!
- *
- * \file do_sediment_input_event.cpp
- * \brief Deposits sediment onto the grid
- * \details TODO 001 A more detailed description of these routines.
- * \author David Favis-Mortlock
- * \author Andres Payo *
- * \date 2025
- * \copyright GNU General Public License
- *
- */
 
-/*==============================================================================================================================
+   \file do_sediment_input_event.cpp
+   \brief Deposits sediment onto the grid
+   \details TODO 001 A more detailed description of these routines.
+   \author David Favis-Mortlock
+   \author Andres Payo
+   \date 2025
+   \copyright GNU General Public License
 
-This file is part of CoastalME, the Coastal Modelling Environment.
+*/
 
-CoastalME is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
+/* ==============================================================================================================================
 
-This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+   This file is part of CoastalME, the Coastal Modelling Environment.
 
-You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+   CoastalME is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
 
-==============================================================================================================================*/
+   This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+   You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+
+   ==============================================================================================================================*/
 #include <iostream>
 using std::cout;
 using std::endl;
@@ -53,6 +53,7 @@ int CSimulation::nCheckForSedimentInputEvent(void)
          m_bSedimentInputThisIter = true;
 
          int nRet = nDoSedimentInputEvent(n);
+
          if (nRet != RTN_OK)
             return nRet;
       }
@@ -111,6 +112,7 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
 
          // Is some fine unconsolidated sediment being input?
          double dFineDepth = dFineSedVol / m_dCellArea;
+
          if (dFineDepth > 0)
          {
             // Yes, so add to this cell's fine unconsolidated sediment
@@ -120,6 +122,7 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
             m_pRasterGrid->m_Cell[nPointGridX][nPointGridY].CalcAllLayerElevsAndD50();
 
             int nThisPoly = m_pRasterGrid->m_Cell[nPointGridX][nPointGridY].nGetPolygonID();
+
             if (nThisPoly != INT_NODATA)
             {
                // Add to this polygon's fine sediment input total
@@ -136,6 +139,7 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
 
          // Is some sand-sized unconsolidated sediment being input?
          double dSandDepth = dSandSedVol / m_dCellArea;
+
          if (dSandDepth > 0)
          {
             // Yes, so add to this cell's sand unconsolidated sediment
@@ -145,6 +149,7 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
             m_pRasterGrid->m_Cell[nPointGridX][nPointGridY].CalcAllLayerElevsAndD50();
 
             int nThisPoly = m_pRasterGrid->m_Cell[nPointGridX][nPointGridY].nGetPolygonID();
+
             if (nThisPoly != INT_NODATA)
             {
                // Add to this polygon's sand sediment input total
@@ -161,6 +166,7 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
 
          // Is some coarse unconsolidated sediment being input?
          double dCoarseDepth = dCoarseSedVol / m_dCellArea;
+
          if (dCoarseDepth > 0)
          {
             // Yes, so add to this cell's coarse unconsolidated sediment
@@ -170,6 +176,7 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
             m_pRasterGrid->m_Cell[nPointGridX][nPointGridY].CalcAllLayerElevsAndD50();
 
             int nThisPoly = m_pRasterGrid->m_Cell[nPointGridX][nPointGridY].nGetPolygonID();
+
             if (nThisPoly != INT_NODATA)
             {
                // Add to this polygon's coarse sediment input total
@@ -187,6 +194,7 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
          if (m_nLogFileDetail >= LOG_FILE_MIDDLE_DETAIL)
             LogStream << ", depth of fine sediment added = " << dFineDepth << " m, depth of sand sediment added = " << dSandDepth << " m, depth of coarse sediment added = " << dCoarseDepth << " m" << endl;
       }
+
       else if (m_bSedimentInputAtCoast)
       {
          // Is in a sediment block, seaward from a coast
@@ -229,7 +237,7 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
 
          if (nCoastHand == LEFT_HANDED)
             nPerpHand = RIGHT_HANDED;
-         
+
          vector<CGeom2DIPoint> VPoints;
 
          // If size of plume is smaller than a cell, choose the current coast point
@@ -237,16 +245,18 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
          {
             VPoints.push_back(PtiCoastPoint);
          }
+
          else
          {
             // It is larger than a cell
             vector<int> VnCentrePointsXOffset, VnCentrePointsYOffset;
-            
+
             for (int m = 0; m < nHalfWidth; m++)
             {
                if (m == 0)
                {
                   VPoints.push_back(CGeom2DIPoint(nCoastX, nCoastY));
+
                   for (int n = 1; n < nLength; n++)
                   {
                      CGeom2DIPoint PtiTmp = PtiGetPerpendicular(nCoastXBefore, nCoastYBefore, nCoastXAfter, nCoastYAfter, n, nPerpHand);
@@ -260,6 +270,7 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
                      }
                   }
                }
+
                else
                {
                   int nCoastPointInBlockBefore = nCoastPoint - m;
@@ -347,6 +358,7 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
 
          // OK, so finally: put some sediment onto each cell in the sediment block
          int nTopLayer = m_pRasterGrid->m_Cell[nPointGridX][nPointGridY].nGetTopLayerAboveBasement();
+
          for (unsigned int n = 0; n < nArea; n++)
          {
             int nX = VPoints[n].nGetX();
@@ -368,6 +380,7 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
          m_dThisiterUnconsCoarseInput += dCoarseDepth;
       }
    }
+
    else if (m_bSedimentInputAlongLine)
    {
       // The location of the sediment input event is where a line intersects a coast. First get the line, using values read from the shapefile
@@ -506,6 +519,7 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
 
       // Is some fine unconsolidated sediment being input?
       double dFineDepth = dFineSedVol / m_dCellArea;
+
       if (dFineDepth > 0)
       {
          // Yes, so add to this cell's fine unconsolidated sediment
@@ -515,6 +529,7 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
          m_pRasterGrid->m_Cell[nCoastX][nCoastY].CalcAllLayerElevsAndD50();
 
          int nThisPoly = m_pRasterGrid->m_Cell[nCoastX][nCoastY].nGetPolygonID();
+
          if (nThisPoly != INT_NODATA)
          {
             // Add to this polygon's fine sediment input total
@@ -531,6 +546,7 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
 
       // Is some sand-sized unconsolidated sediment being input?
       double dSandDepth = dSandSedVol / m_dCellArea;
+
       if (dSandDepth > 0)
       {
          // Yes, so add to this cell's sand unconsolidated sediment
@@ -540,6 +556,7 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
          m_pRasterGrid->m_Cell[nCoastX][nCoastY].CalcAllLayerElevsAndD50();
 
          int nThisPoly = m_pRasterGrid->m_Cell[nCoastX][nCoastY].nGetPolygonID();
+
          if (nThisPoly != INT_NODATA)
          {
             // Add to this polygon's sand sediment input total
@@ -556,6 +573,7 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
 
       // Is some coarse unconsolidated sediment being input?
       double dCoarseDepth = dCoarseSedVol / m_dCellArea;
+
       if (dCoarseDepth > 0)
       {
          // Yes, so add to this cell's coarse unconsolidated sediment
@@ -565,6 +583,7 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
          m_pRasterGrid->m_Cell[nCoastX][nCoastY].CalcAllLayerElevsAndD50();
 
          int nThisPoly = m_pRasterGrid->m_Cell[nCoastX][nCoastY].nGetPolygonID();
+
          if (nThisPoly != INT_NODATA)
          {
             // Add to this polygon's coarse sediment input total

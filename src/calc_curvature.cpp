@@ -1,26 +1,26 @@
 /*!
- *
- * \file calc_curvature.cpp
- * \brief Calculates curvature of 2D vectors
- * \details TODO 001 A more detailed description of these routines.
- * \author David Favis-Mortlock
- * \author Andres Payo
- * \date 2025
- * \copyright GNU General Public License
- *
- */
 
-/*==============================================================================================================================
+   \file calc_curvature.cpp
+   \brief Calculates curvature of 2D vectors
+   \details TODO 001 A more detailed description of these routines.
+   \author David Favis-Mortlock
+   \author Andres Payo
+   \date 2025
+   \copyright GNU General Public License
 
-This file is part of CoastalME, the Coastal Modelling Environment.
+*/
 
-CoastalME is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
+/* ==============================================================================================================================
 
-This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+   This file is part of CoastalME, the Coastal Modelling Environment.
 
-You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+   CoastalME is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
 
-==============================================================================================================================*/
+   This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+   You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+
+   ==============================================================================================================================*/
 #include <cfloat>
 
 #include <iostream>
@@ -69,6 +69,7 @@ void CSimulation::DoCoastCurvature(int const nCoast, int const nHandedness)
    {
       int nTmpWindow = 0;
       double dWindowTot = 0;
+
       for (int j = -nHalfWindow; j < m_nCoastCurvatureMovingWindowSize - nHalfWindow; j++)
       {
          // For points at both ends of the coastline, use a smaller window
@@ -108,6 +109,7 @@ void CSimulation::DoCoastCurvature(int const nCoast, int const nHandedness)
 
    double dMaxConvexDetailed = DBL_MAX;
    double dMaxConvexSmoothed = DBL_MAX;
+
    for (int mm = 0; mm < nCoastSize; mm++)
    {
       if (m_VCoast[nCoast].dGetDetailedCurvature(mm) < dMaxConvexDetailed)
@@ -140,13 +142,13 @@ void CSimulation::DoCoastCurvature(int const nCoast, int const nHandedness)
 //    LogStream << "-----------------" << endl;
 
    // CGeom2DIPoint PtiMax = *m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(nMaxConvexDetailedCoastPoint);
-   
+
    // if (m_nLogFileDetail >= LOG_FILE_ALL)
    //    LogStream << m_ulIter << ": Max detailed convexity (" << m_VCoast[nCoast].dGetDetailedCurvature(nMaxConvexDetailedCoastPoint) << ") at raster coastline point " << nMaxConvexDetailedCoastPoint << " [" << PtiMax.nGetX() << "][" << PtiMax.nGetY() << "] = {" << dGridCentroidXToExtCRSX(PtiMax.nGetX()) << ", " << dGridCentroidYToExtCRSY(PtiMax.nGetY()) << "}"  << endl;
 
    // CGeom2DIPoint PtiMaxSmooth = *m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(nMaxConvexSmoothedCoastPoint);
    // CGeom2DPoint PtMaxSmooth = *m_VCoast[nCoast].pPtGetCoastlinePointExtCRS(nMaxConvexSmoothedCoastPoint);
-   
+
    // if (m_nLogFileDetail >= LOG_FILE_ALL)
    //    LogStream << m_ulIter << ": Max smoothed convexity (" << m_VCoast[nCoast].dGetSmoothCurvature(nMaxConvexSmoothedCoastPoint) << ") near vector coastline point " << nMaxConvexSmoothedCoastPoint << ", at [" << PtiMaxSmooth.nGetX() << "][" << PtiMaxSmooth.nGetY() << "] = {" << PtMaxSmooth.dGetX() << ", " << PtMaxSmooth.dGetY() << "}" << endl;
 }
@@ -160,7 +162,7 @@ double CSimulation::dCalcCurvature(int const nHandedness, CGeom2DPoint const* pP
    double dDist1 = dGetDistanceBetween(pPtBefore, pPtThis);
    double dDist2 = dGetDistanceBetween(pPtThis, pPtAfter);
    double dDist3 = dGetDistanceBetween(pPtBefore, pPtAfter);
-      
+
    // Safety checks
    if (bFPIsEqual(dDist1, 0.0, TOLERANCE))
       dDist1 = TOLERANCE;

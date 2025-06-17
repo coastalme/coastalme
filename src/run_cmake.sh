@@ -14,7 +14,6 @@ else
           buildtype=${1}
 fi
 
-
 # Change this to select the CShore library type
 #cshorelibrary=STATIC
 cshorelibrary=SHARED

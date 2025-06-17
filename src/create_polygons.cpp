@@ -1,26 +1,26 @@
 /*!
- *
- * \file create_polygons.cpp
- * \brief Creates coast polygons for sediment transport calcs
- * \details TODO 001 A more detailed description of these routines.
- * \author David Favis-Mortlock
- * \author Andres Payo
- * \date 2025
- * \copyright GNU General Public License
- *
- */
 
-/*==============================================================================================================================
+   \file create_polygons.cpp
+   \brief Creates coast polygons for sediment transport calcs
+   \details TODO 001 A more detailed description of these routines.
+   \author David Favis-Mortlock
+   \author Andres Payo
+   \date 2025
+   \copyright GNU General Public License
 
-This file is part of CoastalME, the Coastal Modelling Environment.
+*/
 
-CoastalME is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
+/* ==============================================================================================================================
 
-This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+   This file is part of CoastalME, the Coastal Modelling Environment.
 
-You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+   CoastalME is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
 
-==============================================================================================================================*/
+   This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+   You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+
+   ==============================================================================================================================*/
 #include <assert.h>
 #include <iostream>
 using std::endl;
@@ -60,6 +60,7 @@ int CSimulation::nCreateAllPolygons(void)
 
       // Do this for every point on the coastline (except the last point)
       int nCoastSize = m_VCoast[nCoast].nGetCoastlineSize();
+
       for (int nCoastPoint = 0; nCoastPoint < nCoastSize-1; nCoastPoint++)
       {
          if (! m_VCoast[nCoast].bIsProfileAtCoastPoint(nCoastPoint))
@@ -80,6 +81,7 @@ int CSimulation::nCreateAllPolygons(void)
             CGeomProfile* pNextProfile = pThisProfile->pGetDownCoastAdjacentProfile();
 
             bool bNextProfileIsOK = false;
+
             do
             {
                // if (pNextProfile == NULL)       // TODO THIS GIVES CPPCHECK ERROR
@@ -97,6 +99,7 @@ int CSimulation::nCreateAllPolygons(void)
 
                // Is the next profile OK?
                bNextProfileIsOK = pNextProfile->bOKIncStartAndEndOfCoast();
+
                if (! bNextProfileIsOK)
                {
                   // Nope, the next profile is not OK
@@ -157,6 +160,7 @@ int CSimulation::nCreateAllPolygons(void)
 
                // Find the most coastward point at which this normal and the previous normal touch. If they do not touch, the polygon requires a 'joining line'
                pThisProfile->GetMostCoastwardSharedLineSegment(nNextProfile, nTmpThisProfileEnd, nTmpNextProfileEnd);
+
                if (nTmpThisProfileEnd == -1)
                {
                   LogStream << m_ulIter << ": " << ERR << "profile " << nNextProfile << " should be coincident with profile " << nThisProfile << " but was not found" << endl;
@@ -200,8 +204,10 @@ int CSimulation::nCreateAllPolygons(void)
 
             // Now identify the 'anti-node', this is the seaward point 'opposite' the polygon's coastal node
             CGeom2DIPoint PtiAntiNode;
+
             if (bMeetsAtAPoint)
                PtiAntiNode = PtiExtCRSToGridRound(&PtCoastwardTip);
+
             else
             {
                CGeom2DPoint PtAvg = PtAverage(pThisProfile->pPtGetPointInProfile(nThisProfileEnd), pNextProfile->pPtGetPointInProfile(nNextProfileEnd));
@@ -211,8 +217,10 @@ int CSimulation::nCreateAllPolygons(void)
             // Is this a start-of-coast or an end-of-coast polygon?
             bool bStartCoast = false;
             bool bEndCoast = false;
+
             if (pThisProfile->bStartOfCoast())
                bStartCoast = true;
+
             if (pNextProfile->bEndOfCoast())
                bEndCoast = true;
 
@@ -226,6 +234,7 @@ int CSimulation::nCreateAllPolygons(void)
             pPolygon->AppendVertex(pThisProfile->pPtiGetStartPoint());
             pPolygon->AppendVertex(pThisProfile->pPtiGetEndPoint());
             pPolygon->AppendVertex(pNextProfile->pPtiGetStartPoint());
+
             if (! bMeetsAtAPoint)
                pPolygon->AppendVertex(pNextProfile->pPtiGetEndPoint());
 
@@ -248,6 +257,7 @@ int CSimulation::nCreateAllPolygons(void)
 
             // Do the down-coast normal profile (does the whole length, including any shared line segments. So some cells are marked twice, however this is not a problem)
             int nCellsInProfile = pNextProfile->nGetNumCellsInProfile();
+
             for (int i = 0; i < nCellsInProfile; i++)
             {
                CGeom2DIPoint PtiToMark = *pNextProfile->pPtiGetCellInProfile(i);
@@ -256,6 +266,7 @@ int CSimulation::nCreateAllPolygons(void)
 
             // Do this normal profile (again does the whole length, including any shared line segments)
             nCellsInProfile = pThisProfile->nGetNumCellsInProfile();
+
             for (int i = 0; i < nCellsInProfile; i++)
             {
                CGeom2DIPoint PtiToMark = *pThisProfile->pPtiGetCellInProfile(i);
@@ -272,6 +283,7 @@ int CSimulation::nCreateAllPolygons(void)
 
 //                   pPolygon->SetNotPointed();
             }
+
 //            }
 
             nNextProfile = nThisProfile;
@@ -497,7 +509,7 @@ void CSimulation::RasterizePolygonJoiningLine(CGeom2DIPoint const* pPt1, CGeom2D
 }
 
 //===============================================================================================================================
-//! Marks cells of the raster grid that are within each coastal polygon. The flood fill code used here is adapted from an example by Lode Vandevenne (http://lodev.org/cgtutor/floodfill.html#Scanline_Floodfill_Algorithm_With_Stack) 
+//! Marks cells of the raster grid that are within each coastal polygon. The flood fill code used here is adapted from an example by Lode Vandevenne (http://lodev.org/cgtutor/floodfill.html#Scanline_Floodfill_Algorithm_With_Stack)
 //===============================================================================================================================
 void CSimulation::MarkPolygonCells(void)
 {
@@ -568,6 +580,7 @@ void CSimulation::MarkPolygonCells(void)
    {
       // Do this for every coastal polygon, in along-coast sequence
       int nPolygons = m_VCoast[nCoast].nGetNumPolygons();
+
       for (int nPoly = 0; nPoly < nPolygons; nPoly++)
       {
          int nCellsInPolygon = 0;
@@ -655,34 +668,34 @@ void CSimulation::MarkPolygonCells(void)
 
             int nX = Pti.nGetX();
             int nY = Pti.nGetY();
-               
+
             while ((nX >= 0) && (m_pRasterGrid->m_Cell[nX][nY].nGetPolygonID() == INT_NODATA))
-            // while ((nX >= 0) && (m_pRasterGrid->m_Cell[nX][nY].nGetPolygonID() != (nUpCoastBoundary || nDownCoastBoundary)))
+               // while ((nX >= 0) && (m_pRasterGrid->m_Cell[nX][nY].nGetPolygonID() != (nUpCoastBoundary || nDownCoastBoundary)))
                nX--;
 
             nX++;
-            
+
             bool bSpanAbove = false;
             bool bSpanBelow = false;
 
             while ((nX < m_nXGridSize) && (m_pRasterGrid->m_Cell[nX][nY].nGetPolygonID() == INT_NODATA))
-            // while ((nX < m_nXGridSize) && (m_pRasterGrid->m_Cell[nX][nY].nGetPolygonID() != (nUpCoastBoundary || nDownCoastBoundary)))
+               // while ((nX < m_nXGridSize) && (m_pRasterGrid->m_Cell[nX][nY].nGetPolygonID() != (nUpCoastBoundary || nDownCoastBoundary)))
             {
-                // TEST
+               // TEST
                assert(nPolyID < m_VCoast[nCoast].nGetNumPolygons());
 
                // Mark the cell as being in this polygon
                m_pRasterGrid->m_Cell[nX][nY].SetPolygonID(nPolyID);
 
                // LogStream << "Marked [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "}" << endl;
-               
+
                // Increment the running totals for this polygon
                // dCliffCollapseErosionFine += m_pRasterGrid->m_Cell[nX][nY].dGetThisIterCliffCollapseErosionFine();
                // dCliffCollapseErosionSand += m_pRasterGrid->m_Cell[nX][nY].dGetThisIterCliffCollapseErosionSand();
                // dCliffCollapseErosionCoarse += m_pRasterGrid->m_Cell[nX][nY].dGetThisIterCliffCollapseErosionCoarse();
                // dCliffCollapseTalusSand += m_pRasterGrid->m_Cell[nX][nY].dGetThisIterCliffCollapseSandTalusDeposition();
                // dCliffCollapseTalusCoarse += m_pRasterGrid->m_Cell[nX][nY].dGetThisIterCliffCollapseCoarseTalusDeposition();
-               
+
                // Get the number of the highest layer with non-zero thickness
                int nThisLayer = m_pRasterGrid->m_Cell[nX][nY].nGetTopNonZeroLayerAboveBasement();
 
@@ -715,6 +728,7 @@ void CSimulation::MarkPolygonCells(void)
                   PtiStack.push(CGeom2DIPoint(nX, nY-1));
                   bSpanAbove = true;
                }
+
                else if (bSpanAbove && (nY > 0) && (m_pRasterGrid->m_Cell[nX][nY-1].nGetPolygonID() != INT_NODATA))
                {
                   bSpanAbove = false;
@@ -725,6 +739,7 @@ void CSimulation::MarkPolygonCells(void)
                   PtiStack.push(CGeom2DIPoint(nX, nY+1));
                   bSpanBelow = true;
                }
+
                else if (bSpanBelow && (nY < m_nYGridSize-1) && (m_pRasterGrid->m_Cell[nX][nY+1].nGetPolygonID() != INT_NODATA))
                {
                   bSpanBelow = false;
@@ -733,7 +748,7 @@ void CSimulation::MarkPolygonCells(void)
                nX++;
             }
          }
-         
+
          // Store this polygon's stored unconsolidated sediment depths
          pPolygon->SetPreExistingUnconsFine(dStoredUnconsFine);
          pPolygon->SetPreExistingUnconsSand(dStoredUnconsSand);
@@ -859,6 +874,7 @@ int CSimulation::nDoPolygonSharedBoundaries(void)
             pThisPolygon->SetDownCoastAdjacentPolygons(&nVDownCoastAdjacentPolygon);
             pThisPolygon->SetDownCoastAdjacentPolygonBoundaryShares(&dVDownCoastBoundaryShare);
          }
+
          else
          {
             // We are not at the end of the coastline, so there is at least one other polygon adjacent to the down-coast profile of this polygon
@@ -948,6 +964,7 @@ int CSimulation::nDoPolygonSharedBoundaries(void)
             pThisPolygon->SetUpCoastAdjacentPolygons(&nVUpCoastAdjacentPolygon);
             pThisPolygon->SetUpCoastAdjacentPolygonBoundaryShares(&dVUpCoastBoundaryShare);
          }
+
          else
          {
             // We are not at the start of the coastline, so there is at least one other polygon adjacent to the up-coast profile of this polygon
@@ -1154,7 +1171,7 @@ bool CSimulation::bIsWithinPolygon(CGeom2DPoint const* pPtStart, vector<CGeom2DP
       j = i;
    }
 
-  return bOddNodes;
+   return bOddNodes;
 }
 
 //===============================================================================================================================
@@ -1170,9 +1187,11 @@ CGeom2DPoint CSimulation::PtFindPointInPolygon(vector<CGeom2DPoint> const* pPtPo
    {
       // Choose three consecutive points from the polygon
       vector <CGeom2DPoint> nVTestPoints;
+
       for (int n = 0; n < 3; n++)
       {
          int nIndex = n + nStartPoint + nOffSet;
+
          if (nIndex > nPolySize-1)
             nIndex -= nPolySize;
 
@@ -1192,8 +1211,7 @@ CGeom2DPoint CSimulation::PtFindPointInPolygon(vector<CGeom2DPoint> const* pPtPo
 
       // Check if the halfway point between the first and the third point is inside the polygon
       PtStart = PtAverage(&nVTestPoints[0], &nVTestPoints[2]);
-   }
-   while (! bIsWithinPolygon(&PtStart, pPtPoints));
+   } while (! bIsWithinPolygon(&PtStart, pPtPoints));
 
    return PtStart;
 }

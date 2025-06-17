@@ -1,26 +1,26 @@
 /*!
- *
- * \file profile.cpp
- * \brief CGeomProfile routines
- * \details TODO 001 A more detailed description of these routines.
- * \author David Favis-Mortlock
- * \author Andres Payo
- * \date 2025
- * \copyright GNU General Public License
- *
- */
 
-/*===============================================================================================================================
+   \file profile.cpp
+   \brief CGeomProfile routines
+   \details TODO 001 A more detailed description of these routines.
+   \author David Favis-Mortlock
+   \author Andres Payo
+   \date 2025
+   \copyright GNU General Public License
 
-This file is part of CoastalME, the Coastal Modelling Environment.
+*/
 
-CoastalME is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
+/* ===============================================================================================================================
 
-This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+   This file is part of CoastalME, the Coastal Modelling Environment.
 
-You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+   CoastalME is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
 
-===============================================================================================================================*/
+   This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+   You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+
+   ===============================================================================================================================*/
 // #include <assert.h>
 #include <cmath>
 
@@ -33,28 +33,28 @@ using std::find;
 #include "profile.h"
 
 //! Constructor with initialization list, requires one parameter (the coast point at which the profile starts)
-CGeomProfile::CGeomProfile(int const nCoast,int const nCoastPoint, int const nCoastID, int const nGlobalID, CGeom2DIPoint const* pPtiStart, CGeom2DIPoint const* pPtiEnd, bool const bIntervention)
-    : m_bStartOfCoast(false),
-      m_bEndOfCoast(false),
-      m_bCShoreProblem(false),
-      m_bHitLand(false),
-      m_bHitIntervention(false),
-      m_bHitCoast(false),
-      m_bTooShort(false),
-      m_bTruncated(false),
-      m_bHitAnotherProfile(false),
-      m_bIntervention(bIntervention),
-      m_nCoast(nCoast),
-      m_nCoastPoint(nCoastPoint),
-      m_nCoastID(nCoastID),
-      m_nGlobalID(nGlobalID),
-      m_dDeepWaterWaveHeight(0),
-      m_dDeepWaterWaveAngle(0),
-      m_dDeepWaterWavePeriod(0),
-      PtiStart(*pPtiStart),
-      PtiEnd(*pPtiEnd),
-      m_pUpCoastAdjacentProfile(NULL),
-      m_pDownCoastAdjacentProfile(NULL)
+CGeomProfile::CGeomProfile(int const nCoast, int const nCoastPoint, int const nCoastID, int const nGlobalID, CGeom2DIPoint const* pPtiStart, CGeom2DIPoint const* pPtiEnd, bool const bIntervention)
+   : m_bStartOfCoast(false),
+     m_bEndOfCoast(false),
+     m_bCShoreProblem(false),
+     m_bHitLand(false),
+     m_bHitIntervention(false),
+     m_bHitCoast(false),
+     m_bTooShort(false),
+     m_bTruncated(false),
+     m_bHitAnotherProfile(false),
+     m_bIntervention(bIntervention),
+     m_nCoast(nCoast),
+     m_nCoastPoint(nCoastPoint),
+     m_nCoastID(nCoastID),
+     m_nGlobalID(nGlobalID),
+     m_dDeepWaterWaveHeight(0),
+     m_dDeepWaterWaveAngle(0),
+     m_dDeepWaterWavePeriod(0),
+     PtiStart(*pPtiStart),
+     PtiEnd(*pPtiEnd),
+     m_pUpCoastAdjacentProfile(NULL),
+     m_pDownCoastAdjacentProfile(NULL)
 {
 }
 
@@ -212,14 +212,14 @@ bool CGeomProfile::bProfileOK(void) const
 {
    // All profiles without problems, but not start- or end-of-coast profiles
    if ((! m_bStartOfCoast) &&
-       (! m_bEndOfCoast) &&
-       (! m_bHitLand) &&
-       (! m_bHitIntervention) &&
-       (! m_bHitCoast) &&
-       (! m_bTooShort) &&
-       (! m_bTruncated) &&
-       (! m_bHitAnotherProfile) &&
-       (! m_bCShoreProblem))
+         (! m_bEndOfCoast) &&
+         (! m_bHitLand) &&
+         (! m_bHitIntervention) &&
+         (! m_bHitCoast) &&
+         (! m_bTooShort) &&
+         (! m_bTruncated) &&
+         (! m_bHitAnotherProfile) &&
+         (! m_bCShoreProblem))
       return true;
 
    return false;
@@ -230,13 +230,13 @@ bool CGeomProfile::bProfileOKIncTruncated(void) const
 {
    // All profiles without problems, but not start- or end-of-coast profiles
    if ((! m_bStartOfCoast) &&
-       (! m_bEndOfCoast) &&
-       (! m_bHitLand) &&
-       (! m_bHitIntervention) &&
-       (! m_bHitCoast) &&
-       (! m_bTooShort) &&
-       (! m_bHitAnotherProfile) &&
-       (! m_bCShoreProblem))
+         (! m_bEndOfCoast) &&
+         (! m_bHitLand) &&
+         (! m_bHitIntervention) &&
+         (! m_bHitCoast) &&
+         (! m_bTooShort) &&
+         (! m_bHitAnotherProfile) &&
+         (! m_bCShoreProblem))
       return true;
 
    return false;
@@ -247,12 +247,12 @@ bool CGeomProfile::bOKIncStartAndEndOfCoast(void) const
 {
    // All profiles without problems, including start- and end-of-coast profiles
    if ((! m_bHitLand) &&
-       (! m_bHitIntervention) &&
-       (! m_bHitCoast) &&
-       (! m_bTooShort) &&
-       (! m_bTruncated) &&
-       (! m_bHitAnotherProfile) &&
-       (! m_bCShoreProblem))
+         (! m_bHitIntervention) &&
+         (! m_bHitCoast) &&
+         (! m_bTooShort) &&
+         (! m_bTruncated) &&
+         (! m_bHitAnotherProfile) &&
+         (! m_bCShoreProblem))
       return true;
 
    return false;
@@ -346,7 +346,7 @@ int CGeomProfile::nGetProfileSize(void) const
 }
 
 //! Returns a single point in the profile
-CGeom2DPoint *CGeomProfile::pPtGetPointInProfile(int const n)
+CGeom2DPoint* CGeomProfile::pPtGetPointInProfile(int const n)
 {
    return &m_VPoints[n];
 }
@@ -369,8 +369,10 @@ bool CGeomProfile::bIsPointInProfile(double const dX, double const dY)
 {
    CGeom2DPoint Pt(dX, dY);
    auto it = find(m_VPoints.begin(), m_VPoints.end(), &Pt);
+
    if (it != m_VPoints.end())
       return true;
+
    else
       return false;
 }
@@ -380,12 +382,14 @@ bool CGeomProfile::bIsPointInProfile(double const dX, double const dY, int& nPoi
 {
    CGeom2DPoint Pt(dX, dY);
    auto it = find(m_VPoints.begin(), m_VPoints.end(), &Pt);
+
    if (it != m_VPoints.end())
    {
       // Found, so return true and set nPoint to be the index of the point which was found
       nPoint = static_cast<int>(it - m_VPoints.begin());
       return true;
    }
+
    else
       return false;
 }
@@ -547,6 +551,7 @@ int CGeomProfile::nGetCellGivenDepth(CGeomRasterGrid const* pGrid, double const 
       int nY = m_VCellInProfile[n].nGetY();
 
       double dCellDepth = pGrid->m_Cell[nX][nY].dGetSeaDepth();
+
       if (dCellDepth >= dDepthIn)
       {
          nIndex = n;
