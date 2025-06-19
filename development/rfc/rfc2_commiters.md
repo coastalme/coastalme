@@ -108,9 +108,10 @@ project.
    
 CoastalME coding guidelines
 ---------------------------
+
 - Do not save CoastalME code files (*.cpp, *.h) with a limited line length (e.g. 80 characters). One consequence of doing this is that headers for fixed-width output (e.g. PER_ITER_HEAD1) are split and redistributed over several lines. This makes it much harder to ensure correct alignment of such headers. Instead, allow unlimited line length. If this is not possible, allow a line length of 250 characters or more.
 - As far as is possible, format your new or modified code to be similar to existing code.
-- You will probably find it useful to use a source code formatter to tidy your contribution before submitting it. The Python-based Artistic Style formatter (astyle) does a good job. To install this on a Linux system, run "pip install astyle" or equivalent. (Executable versions of astyle, installed using e.g. apt install astyle, will probably not be up to date.) There should be an astyle configuation file (.astylerc) in your src directory if you have pulled the CoastalME code from github. To run astyle, run tidy_src.sh in the src directory. This will format your .cpp and .h files "in place" i.e. without making a backup. For more about the Artistic Style formatter, see https://astyle.sourceforge.net/astyle.html
+- You will probably find it useful to use a source code formatter to tidy your contribution before submitting it. The clang-format source code formatter does a good job. To install this on a Linux system, run "apt install clang-format" or equivalent. There should be a clang-format configuation file (.clang-format) in your src directory if you have pulled the CoastalME code from github. To use clang-format to tidy CoastalME soure code, run astyle, run tidy_src.sh in the src directory. This will modify the .cpp and .h files "in place" i.e. without making a backup. For more about clang-format, see https://clang.llvm.org/docs/ClangFormat.html
 
 Relationship with other upstream projects imported in CoastalME code base
 ------------------------------------------------------------------------

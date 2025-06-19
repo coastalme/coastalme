@@ -325,7 +325,7 @@
 
    You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-   ===============================================================================================================================*/
+===============================================================================================================================*/
 # include <climits>
 
 # include <string>
@@ -469,11 +469,11 @@ int const COAST_LENGTH_MIN_X_PROF_SPACE = 20;               // Ignore very short
 //! The size of the arrays output by CShore. If you change this, then you must also set the same value on line 12 of cshore_wrapper.f03 (integer, parameter :: NN = 1000, NL = 1) and recompile CShore. Eventually we should move to dynamically allocated arrays TODO 070
 int const CSHOREARRAYOUTSIZE = 1000;
 
-int const FLOOD_FILL_START_OFFSET = 2;                      // In cells: flood fill starts this distance inside polygon
+int const FLOOD_FILL_START_OFFSET = 2;                      // In cells: cell-by-cell fill starts this distance inside polygon
 int const GRID_MARGIN = 10;                                 // Ignore this many along-coast grid-edge points re. shadow zone calcs
 int const INT_NODATA = -9999;                               // CME's internal NODATA value for ints
 int const MAX_CLIFF_TALUS_LENGTH = 100;                     // In cells: maximum length of the Dean  profile for cliff collapse talus
-int const MAX_LEN_SHADOW_LINE_TO_IGNORE = 200;              // In cells: if can't find flood fill start point, continue if short shadow line
+int const MAX_LEN_SHADOW_LINE_TO_IGNORE = 200;              // In cells: if can't find cell-by-cell fill start point, continue if short shadow line
 int const MAX_NUM_PREV_ORIENTATION_VALUES = 10;             // Max length of deque used in tracing shadow boundary
 int const MAX_NUM_SHADOW_ZONES = 10;                        // Consider at most this number of shadow zones
 int const MAX_SEAWARD_OFFSET_FOR_CLIFF_TALUS = 2;           // In cells: maximum distance that the Dean profile for cliff collapse talus can be offset from the coast
@@ -481,7 +481,7 @@ int const MIN_INLAND_OFFSET_UNCONS_EROSION = 5;             // Used in estimatio
 int const MIN_PARALLEL_PROFILE_SIZE = 3;                    // In cells: min size for valid unconsolidated sediment parallel profile
 int const MIN_PROFILE_SIZE = 3;                             // In cells: min size for valid unconsolidated sediment profile
 int const DEFAULT_PROFILE_SPACING = 15;                     // In cells: profile creation does not work well if profiles are too closely spaced
-int const SAVGOL_POLYNOMIAL_MAX_ORDER = 6;                  // Maximum order of Savitsky-Golay smoothing polynomial
+int const SAVGOL_POLYNOMIAL_MAX_ORDER = 6;                  // Maximum order of Savitzky-Golay smoothing polynomial
 
 // Log file detail level
 int const NO_LOG_FILE = 0;
@@ -818,7 +818,7 @@ double const INTERVENTION_PROFILE_SPACING_FACTOR = 0.5;     // Profile spacing o
 
 double const DBL_NODATA = -9999;
 
-string const PROGRAM_NAME = "Coastal Modelling Environment (CoastalME) version 1.3.20 (17 Jun 2025)";
+string const PROGRAM_NAME = "Coastal Modelling Environment (CoastalME) version 1.3.22 (19 Jun 2025)";
 string const PROGRAM_NAME_SHORT = "CME";
 string const CME_INI = "cme.ini";
 

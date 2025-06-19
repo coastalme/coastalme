@@ -20,8 +20,8 @@
 
    You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-   ===============================================================================================================================*/
-// #include <assert.h>
+===============================================================================================================================*/
+#include <assert.h>
 #include <cmath>
 
 #include <vector>
@@ -33,7 +33,7 @@ using std::find;
 #include "profile.h"
 
 //! Constructor with initialization list, requires one parameter (the coast point at which the profile starts)
-CGeomProfile::CGeomProfile(int const nCoast, int const nCoastPoint, int const nCoastID, int const nGlobalID, CGeom2DIPoint const * pPtiStart, CGeom2DIPoint const * pPtiEnd, bool const bIntervention)
+CGeomProfile::CGeomProfile(int const nCoast, int const nCoastPoint, int const nCoastID, int const nGlobalID, CGeom2DIPoint const* pPtiStart, CGeom2DIPoint const* pPtiEnd, bool const bIntervention)
    : m_bStartOfCoast(false),
      m_bEndOfCoast(false),
      m_bCShoreProblem(false),
@@ -82,19 +82,19 @@ int CGeomProfile::nGetCoastPoint(void) const
 }
 
 //! Returns a pointer to the location of the cell (grid CRS) on which the profile starts
-CGeom2DIPoint * CGeomProfile::pPtiGetStartPoint(void)
+CGeom2DIPoint* CGeomProfile::pPtiGetStartPoint(void)
 {
    return & PtiStart;
 }
 
 //! Sets the the location of the cell (grid CRS) on which the profile ends
-void CGeomProfile::SetEndPoint(CGeom2DIPoint const * pPtiEnd)
+void CGeomProfile::SetEndPoint(CGeom2DIPoint const* pPtiEnd)
 {
    PtiEnd = * pPtiEnd;
 }
 
 //! Returns a pointer to the location of the cell (grid CRS) on which the profile ends
-CGeom2DIPoint * CGeomProfile::pPtiGetEndPoint(void)
+CGeom2DIPoint* CGeomProfile::pPtiGetEndPoint(void)
 {
    return & PtiEnd;
 }
@@ -275,7 +275,7 @@ bool CGeomProfile::bOKIncStartAndEndOfCoast(void) const
 // }
 
 //! Sets all points in the profile
-void CGeomProfile::SetPointsInProfile(vector<CGeom2DPoint> const * VNewPoints)
+void CGeomProfile::SetPointsInProfile(vector<CGeom2DPoint> const* VNewPoints)
 {
    m_VPoints = * VNewPoints;
 }
@@ -294,7 +294,7 @@ void CGeomProfile::AppendPointInProfile(double const dNewX, double const dNewY)
 }
 
 //! Appends a point to the profile (overloaded version)
-void CGeomProfile::AppendPointInProfile(CGeom2DPoint const * pPt)
+void CGeomProfile::AppendPointInProfile(CGeom2DPoint const* pPt)
 {
    m_VPoints.push_back( * pPt);
 }
@@ -346,7 +346,7 @@ int CGeomProfile::nGetProfileSize(void) const
 }
 
 //! Returns a single point in the profile
-CGeom2DPoint * CGeomProfile::pPtGetPointInProfile(int const n)
+CGeom2DPoint* CGeomProfile::pPtGetPointInProfile(int const n)
 {
    return & m_VPoints[n];
 }
@@ -378,7 +378,7 @@ bool CGeomProfile::bIsPointInProfile(double const dX, double const dY)
 }
 
 //! Queries the profile: is the given point a profile point? If so, then it also returns the number of the point in the profile
-bool CGeomProfile::bIsPointInProfile(double const dX, double const dY, int& nPoint)
+bool CGeomProfile::bIsPointInProfile(double const dX, double const dY, int &nPoint)
 {
    CGeom2DPoint Pt(dX, dY);
    auto it = find(m_VPoints.begin(), m_VPoints.end(), & Pt);
@@ -452,28 +452,28 @@ bool CGeomProfile::bIsPointInProfile(double const dX, double const dY, int& nPoi
 // return m_bVShared[n];
 // }
 
-void CGeomProfile::SetUpCoastAdjacentProfile(CGeomProfile * pProfile)
+void CGeomProfile::SetUpCoastAdjacentProfile(CGeomProfile* pProfile)
 {
    m_pUpCoastAdjacentProfile = pProfile;
 }
 
-CGeomProfile * CGeomProfile::pGetUpCoastAdjacentProfile(void) const
+CGeomProfile* CGeomProfile::pGetUpCoastAdjacentProfile(void) const
 {
    return m_pUpCoastAdjacentProfile;
 }
 
-void CGeomProfile::SetDownCoastAdjacentProfile(CGeomProfile * pProfile)
+void CGeomProfile::SetDownCoastAdjacentProfile(CGeomProfile* pProfile)
 {
    m_pDownCoastAdjacentProfile = pProfile;
 }
 
-CGeomProfile * CGeomProfile::pGetDownCoastAdjacentProfile(void) const
+CGeomProfile* CGeomProfile::pGetDownCoastAdjacentProfile(void) const
 {
    return m_pDownCoastAdjacentProfile;
 }
 
 //! Appends a cell to the profile
-void CGeomProfile::AppendCellInProfile(CGeom2DIPoint const * pPti)
+void CGeomProfile::AppendCellInProfile(CGeom2DIPoint const* pPti)
 {
    // In grid CRS
    m_VCellInProfile.push_back( * pPti);
@@ -493,21 +493,21 @@ void CGeomProfile::AppendCellInProfile(int const nX, int const nY)
 // }
 
 //! Returns all cells in the profile
-vector<CGeom2DIPoint>* CGeomProfile::pPtiVGetCellsInProfile(void)
+vector<CGeom2DIPoint> *CGeomProfile::pPtiVGetCellsInProfile(void)
 {
    // In grid CRS
    return & m_VCellInProfile;
 }
 
 //! Returns a single cell in the profile
-CGeom2DIPoint * CGeomProfile::pPtiGetCellInProfile(int const n)
+CGeom2DIPoint* CGeomProfile::pPtiGetCellInProfile(int const n)
 {
    // In grid CRS TODO 055 No check to see if n < size()
    return & m_VCellInProfile[n];
 }
 
 //! Returns the last cell in the profile
-CGeom2DIPoint * CGeomProfile::pPtiGetLastCellInProfile(void)
+CGeom2DIPoint* CGeomProfile::pPtiGetLastCellInProfile(void)
 {
    // In grid CRS
    return & m_VCellInProfile.back();
@@ -534,14 +534,14 @@ void CGeomProfile::AppendCellInProfileExtCRS(double const dX, double const dY)
 }
 
 //! Appends a cell (specified in the external coordinate system) to the profile (overloaded version)
-void CGeomProfile::AppendCellInProfileExtCRS(CGeom2DPoint const * pPt)
+void CGeomProfile::AppendCellInProfileExtCRS(CGeom2DPoint const* pPt)
 {
    // In external CRS
    m_VCellInProfileExtCRS.push_back( * pPt);
 }
 
 //! Returns the index of the cell on this profile which has a sea depth which is just less than a given depth. If every cell on the profile has a sea depth which is less than the given depth it returns INT_NODATA
-int CGeomProfile::nGetCellGivenDepth(CGeomRasterGrid const * pGrid, double const dDepthIn)
+int CGeomProfile::nGetCellGivenDepth(CGeomRasterGrid const* pGrid, double const dDepthIn)
 {
    int nIndex = INT_NODATA; // If not found, i.e. if every profile cell has sea depth less than dDepthIn
 

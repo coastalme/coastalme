@@ -20,7 +20,7 @@
 
    You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-   ===============================================================================================================================*/
+===============================================================================================================================*/
 #include <vector>
 
 #include "2di_shape.h"
@@ -49,7 +49,7 @@ CGeom2DIPoint & CA2DIShape::Back(void)
 }
 
 //! Returns the address of the vector which represents this 2D shape
-vector<CGeom2DIPoint>* CA2DIShape::pPtiVGetPoints(void)
+vector<CGeom2DIPoint> *CA2DIShape::pPtiVGetPoints(void)
 {
    return & m_VPoints;
 }
@@ -78,7 +78,7 @@ int CA2DIShape::nGetSize(void) const
 // }
 
 //! Appends a new integer point to the vector which represents this 2D shape
-void CA2DIShape::Append(CGeom2DIPoint const * pPtiNew)
+void CA2DIShape::Append(CGeom2DIPoint const* pPtiNew)
 {
    m_VPoints.push_back( * pPtiNew);
 }

@@ -24,7 +24,7 @@
 
    You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-   ===============================================================================================================================*/
+===============================================================================================================================*/
 #include <vector>
 using std::vector;
 
@@ -49,13 +49,13 @@ public:
    CGeom2DIPoint & operator[] (int const);
 
    CGeom2DIPoint & Back(void);
-   vector<CGeom2DIPoint>* pPtiVGetPoints(void);
+   vector<CGeom2DIPoint> *pPtiVGetPoints(void);
 
    void Resize(const int);
    int nGetSize(void) const;
 
 // void InsertAtFront(int const, int const);
-   void Append(CGeom2DIPoint const * );
+   void Append(CGeom2DIPoint const*);
    void Append(int const, int const);
    void AppendIfNotAlready(int const, int const);
 

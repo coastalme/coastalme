@@ -20,7 +20,7 @@
 
    You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-   ===============================================================================================================================*/
+===============================================================================================================================*/
 #include <assert.h>
 
 #include <iostream>
@@ -955,7 +955,7 @@ int CSimulation::nReadRasterGISFile(int const nDataItem, int const nLayer)
 //===============================================================================================================================
 //! Writes GIS raster files using GDAL, using data from the RasterGrid array
 //===============================================================================================================================
-bool CSimulation::bWriteRasterGISFile(int const nDataItem, string const * strPlotTitle, int const nLayer, double const dElev)
+bool CSimulation::bWriteRasterGISFile(int const nDataItem, string const* strPlotTitle, int const nLayer, double const dElev)
 {
    bool bIsInteger = false;
 
@@ -1994,7 +1994,7 @@ bool CSimulation::bWriteRasterGISFile(int const nDataItem, string const * strPlo
 //===============================================================================================================================
 //! Interpolates wave properties from all profiles to all within-polygon sea cells, using GDALGridCreate(), the library version of external utility gdal_grid
 //===============================================================================================================================
-int CSimulation::nInterpolateWavesToPolygonCells(vector<double> const * pVdX, vector<double> const* pVdY, vector<double> const * pVdHeightX, vector<double> const * pVdHeightY)
+int CSimulation::nInterpolateWavesToPolygonCells(vector<double> const* pVdX, vector<double> const* pVdY, vector<double> const* pVdHeightX, vector<double> const* pVdHeightY)
 {
    int nXSize = 0;
    int nYSize = 0;

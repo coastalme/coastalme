@@ -20,7 +20,7 @@
 
    You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-   ==============================================================================================================================*/
+==============================================================================================================================*/
 #include <assert.h>
 #include <cmath>
 
@@ -70,7 +70,7 @@ bool CSimulation::bOnOrOffShoreAndUpOrDownCoast(double const dCoastAngle, double
 //===============================================================================================================================
 //! Given a cell and a wave orientation, finds the 'upwave' cell
 //===============================================================================================================================
-CGeom2DIPoint CSimulation::PtiFollowWaveAngle(CGeom2DIPoint const * pPtiLast, double const dWaveAngleIn, double& dCorrection)
+CGeom2DIPoint CSimulation::PtiFollowWaveAngle(CGeom2DIPoint const* pPtiLast, double const dWaveAngleIn, double &dCorrection)
 {
    int nXLast = pPtiLast->nGetX();
    int nYLast = pPtiLast->nGetY();
@@ -568,7 +568,7 @@ int CSimulation::nDoAllShadowZones(void)
       }
 
       // =========================================================================================================================
-      // The third stage: store the shadow zone boundary, flood fill the shadow zone, then change wave properties by sweeping the shadow zone and the area downdrift from the shadow zone
+      // The third stage: store the shadow zone boundary, cell-by-cell fill the shadow zone, then change wave properties by sweeping the shadow zone and the area downdrift from the shadow zone
       for (unsigned int nZone = 0; nZone < VILShadowBoundary.size(); nZone++)
       {
          if (m_nLogFileDetail >= LOG_FILE_HIGH_DETAIL)
@@ -617,7 +617,7 @@ int CSimulation::nDoAllShadowZones(void)
          CGeom2DIPoint PtiStart(nStartX, nStartY);
          CGeom2DIPoint PtiEnd(nEndX, nEndY);
 
-         // Flood fill the shadow zone: start by finding the centroid
+         // Cell-by-cell fill the shadow zone: start by finding the centroid
          if (VnShadowBoundaryEndCoastPoint[nZone] > VnShadowBoundaryStartCoastPoint[nZone])
          {
             // The shadow boundary endpoint is down-coast from the shadow boundary start point
@@ -665,18 +665,18 @@ int CSimulation::nDoAllShadowZones(void)
 
             if (nRet != RTN_OK)
             {
-               // Could not find start point for flood fill. How serious we judge this to be depends on the length of the shadow zone line
+               // Could not find start point for cell-by-cell fill. How serious we judge this to be depends on the length of the shadow zone line
                if (nShadowLineLen < MAX_LEN_SHADOW_LINE_TO_IGNORE)
                {
                   if (m_nLogFileDetail >= LOG_FILE_ALL)
-                     LogStream << m_ulIter << ": " << WARN << "could not find start point for flood fill of shadow zone " << nZone << " but continuing simulation because this is a small shadow zone (shadow line length = " << nShadowLineLen << " cells)" << endl;
+                     LogStream << m_ulIter << ": " << WARN << "could not find start point for cell-by-cell fill of shadow zone " << nZone << " but continuing simulation because this is a small shadow zone (shadow line length = " << nShadowLineLen << " cells)" << endl;
 
                   continue;
                }
 
                else
                {
-                  LogStream << m_ulIter << ": " << ERR << "could not find start point for flood fill of shadow zone " << nZone << " (shadow line length = " << nShadowLineLen << " cells)" << endl;
+                  LogStream << m_ulIter << ": " << ERR << "could not find start point for cell-by-cell fill of shadow zone " << nZone << " (shadow line length = " << nShadowLineLen << " cells)" << endl;
                   return nRet;
                }
             }
@@ -691,9 +691,9 @@ int CSimulation::nDoAllShadowZones(void)
 }
 
 //===============================================================================================================================
-//! Flood fills a shadow zone from the centroid
+//! Cell-by-cell fills a shadow zone from the centroid
 //===============================================================================================================================
-int CSimulation::nFloodFillShadowZone(int const nZone, CGeom2DIPoint const * pPtiCentroid, CGeom2DIPoint const * pPtiShadowBoundaryStart, CGeom2DIPoint const * pPtiShadowBoundaryEnd)
+int CSimulation::nFloodFillShadowZone(int const nZone, CGeom2DIPoint const* pPtiCentroid, CGeom2DIPoint const* pPtiShadowBoundaryStart, CGeom2DIPoint const* pPtiShadowBoundaryEnd)
 {
    // Is the centroid a sea cell?
    bool bStartPointOK = true;
@@ -708,7 +708,7 @@ int CSimulation::nFloodFillShadowZone(int const nZone, CGeom2DIPoint const * pPt
 
       while ((! bStartPointOK) && (dWeight < 1))
       {
-         // Find a start point for the flood fill. Because shadow zones are generally triangular, start by choosing a low weighting so that the start point is close to the centroid, but a bit towards the coast. If this doesn't work, go further coastwards
+         // Find a start point for the Cell-by-cell fill. Because shadow zones are generally triangular, start by choosing a low weighting so that the start point is close to the centroid, but a bit towards the coast. If this doesn't work, go further coastwards
          PtiFloodFillStart = PtiWeightedAverage(pPtiShadowBoundaryEnd, pPtiCentroid, dWeight);
 
          // Safety check
@@ -722,7 +722,7 @@ int CSimulation::nFloodFillShadowZone(int const nZone, CGeom2DIPoint const * pPt
          if (! bIsWithinValidGrid( & PtiFloodFillStart))
          {
             if (m_nLogFileDetail >= LOG_FILE_HIGH_DETAIL)
-               LogStream << m_ulIter << ": " << ERR << "start point [" << PtiFloodFillStart.nGetX() << "][" << PtiFloodFillStart.nGetY() << "] = {" << dGridCentroidXToExtCRSX(PtiFloodFillStart.nGetX()) << ", " << dGridCentroidYToExtCRSY(PtiFloodFillStart.nGetY()) << "} for flood fill of shadow zone is outside grid" << endl;
+               LogStream << m_ulIter << ": " << ERR << "start point [" << PtiFloodFillStart.nGetX() << "][" << PtiFloodFillStart.nGetY() << "] = {" << dGridCentroidXToExtCRSX(PtiFloodFillStart.nGetX()) << ", " << dGridCentroidYToExtCRSY(PtiFloodFillStart.nGetY()) << "} for cell-by-cell fill of shadow zone is outside grid" << endl;
 
             return RTN_ERR_SHADOW_ZONE_FLOOD_FILL_NOGRID;
          }
@@ -738,7 +738,7 @@ int CSimulation::nFloodFillShadowZone(int const nZone, CGeom2DIPoint const * pPt
          {
             // Start point is not a sea cell
             if (m_nLogFileDetail >= LOG_FILE_HIGH_DETAIL)
-               LogStream << m_ulIter << ": shadow zone flood fill start point [" << PtiFloodFillStart.nGetX() << "][" << PtiFloodFillStart.nGetY() << "] = {" << dGridCentroidXToExtCRSX(PtiFloodFillStart.nGetX()) << ", " << dGridCentroidYToExtCRSY(PtiFloodFillStart.nGetY()) << "} is NOT a sea cell for shadow boundary from cape point [" << pPtiShadowBoundaryStart->nGetX() << "][" << pPtiShadowBoundaryStart->nGetY() << "] = {" << dGridCentroidXToExtCRSX(pPtiShadowBoundaryStart->nGetX()) << ", " << dGridCentroidYToExtCRSY(pPtiShadowBoundaryStart->nGetY()) << "} to [" << pPtiShadowBoundaryEnd->nGetX() << "][" << pPtiShadowBoundaryEnd->nGetY() << "] = {" << dGridCentroidXToExtCRSX(pPtiShadowBoundaryEnd->nGetX()) << ", " << dGridCentroidYToExtCRSY(pPtiShadowBoundaryEnd->nGetY()) << "}, dWeight = " << dWeight << endl;
+               LogStream << m_ulIter << ": shadow zone cell-by-cell fill start point [" << PtiFloodFillStart.nGetX() << "][" << PtiFloodFillStart.nGetY() << "] = {" << dGridCentroidXToExtCRSX(PtiFloodFillStart.nGetX()) << ", " << dGridCentroidYToExtCRSY(PtiFloodFillStart.nGetY()) << "} is NOT a sea cell for shadow boundary from cape point [" << pPtiShadowBoundaryStart->nGetX() << "][" << pPtiShadowBoundaryStart->nGetY() << "] = {" << dGridCentroidXToExtCRSX(pPtiShadowBoundaryStart->nGetX()) << ", " << dGridCentroidYToExtCRSY(pPtiShadowBoundaryStart->nGetY()) << "} to [" << pPtiShadowBoundaryEnd->nGetX() << "][" << pPtiShadowBoundaryEnd->nGetY() << "] = {" << dGridCentroidXToExtCRSX(pPtiShadowBoundaryEnd->nGetX()) << ", " << dGridCentroidYToExtCRSY(pPtiShadowBoundaryEnd->nGetY()) << "}, dWeight = " << dWeight << endl;
 
             dWeight += 0.05;
          }
@@ -748,21 +748,21 @@ int CSimulation::nFloodFillShadowZone(int const nZone, CGeom2DIPoint const * pPt
    if ((! bStartPointOK) && (! bAllPointNotSea))
    {
       if (m_nLogFileDetail >= LOG_FILE_HIGH_DETAIL)
-         LogStream << m_ulIter << ": " << ERR << "could not find shadow zone flood fill start point" << endl;
+         LogStream << m_ulIter << ": " << ERR << "could not find shadow zone cell-by-cell fill start point" << endl;
 
       return RTN_ERR_SHADOW_ZONE_FLOOD_START_POINT;
    }
 
    if (m_nLogFileDetail >= LOG_FILE_ALL)
-      LogStream << m_ulIter << ": shadow zone flood fill start point [" << PtiFloodFillStart.nGetX() << "][" << PtiFloodFillStart.nGetY() << "] = {" << dGridCentroidXToExtCRSX(PtiFloodFillStart.nGetX()) << ", " << dGridCentroidYToExtCRSY(PtiFloodFillStart.nGetY()) << "} is OK for shadow boundary from [" << pPtiShadowBoundaryStart->nGetX() << "][" << pPtiShadowBoundaryStart->nGetY() << "] = {" << dGridCentroidXToExtCRSX(pPtiShadowBoundaryStart->nGetX()) << ", " << dGridCentroidYToExtCRSY(pPtiShadowBoundaryStart->nGetY()) << "} to [" << pPtiShadowBoundaryEnd->nGetX() << "][" << pPtiShadowBoundaryEnd->nGetY() << "] = {" << dGridCentroidXToExtCRSX(pPtiShadowBoundaryEnd->nGetX()) << ", " << dGridCentroidYToExtCRSY(pPtiShadowBoundaryEnd->nGetY()) << "}" << endl;
+      LogStream << m_ulIter << ": shadow zone cell-by-cell fill start point [" << PtiFloodFillStart.nGetX() << "][" << PtiFloodFillStart.nGetY() << "] = {" << dGridCentroidXToExtCRSX(PtiFloodFillStart.nGetX()) << ", " << dGridCentroidYToExtCRSY(PtiFloodFillStart.nGetY()) << "} is OK for shadow boundary from [" << pPtiShadowBoundaryStart->nGetX() << "][" << pPtiShadowBoundaryStart->nGetY() << "] = {" << dGridCentroidXToExtCRSX(pPtiShadowBoundaryStart->nGetX()) << ", " << dGridCentroidYToExtCRSY(pPtiShadowBoundaryStart->nGetY()) << "} to [" << pPtiShadowBoundaryEnd->nGetX() << "][" << pPtiShadowBoundaryEnd->nGetY() << "] = {" << dGridCentroidXToExtCRSX(pPtiShadowBoundaryEnd->nGetX()) << ", " << dGridCentroidYToExtCRSY(pPtiShadowBoundaryEnd->nGetY()) << "}" << endl;
 
    // All OK, so create an empty stack
    stack<CGeom2DIPoint> PtiStack;
 
-   // We have a flood fill start point so push this point onto the stack
+   // We have a cell-by-cell fill start point so push this point onto the stack
    PtiStack.push(PtiFloodFillStart);
 
-   // Then do the flood fill: loop until there are no more cell coordinates on the stack
+   // Then do the cell-by-cell fill: loop until there are no more cell coordinates on the stack
    while (! PtiStack.empty())
    {
       CGeom2DIPoint Pti = PtiStack.top();
@@ -922,7 +922,7 @@ void CSimulation::DoShadowZoneAndDownDriftZone(int const nCoast, int const nZone
    }
 
    // Get the location (grid CRS) of the shadow boundary start point: this is also the start point of the downdrift boundary
-   CGeom2DIPoint const * pPtiDownDriftBoundaryStartPoint = m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(nShadowBoundaryStartPoint);
+   CGeom2DIPoint const* pPtiDownDriftBoundaryStartPoint = m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(nShadowBoundaryStartPoint);
 
    // Now trace the down-drift boundary line: interpolate between cells by a simple DDA line algorithm, see http://en.wikipedia.org/wiki/Digital_differential_analyzer_(graphics_algorithm) Note that Bresenham's algorithm gave occasional gaps
    int nXStart = pPtiDownDriftBoundaryStartPoint->nGetX();
@@ -1063,7 +1063,7 @@ void CSimulation::DoShadowZoneAndDownDriftZone(int const nCoast, int const nZone
       // nAlongCoast = " << nAlongCoast << ", nShadowBoundaryEndPoint = " << nShadowBoundaryEndPoint << ",  << ", nAlongDownDriftBoundary = " << nAlongDownDriftBoundary << ", << endl;
 
       // Get the two endpoints of the linking line
-      CGeom2DIPoint const * pPtiCoast = m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(nAlongCoast);
+      CGeom2DIPoint const* pPtiCoast = m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(nAlongCoast);
       int nCoastX = pPtiCoast->nGetX();
       int nCoastY = pPtiCoast->nGetY();
 
@@ -1309,7 +1309,7 @@ void CSimulation::ProcessDownDriftCell(int const nX, int const nY, int const nTr
 //===============================================================================================================================
 //! Process a single cell which is in the shadow zone, changing its wave height and orientation
 //===============================================================================================================================
-void CSimulation::ProcessShadowZoneCell(int const nX, int const nY, int const nShadowZoneCoastToCapeSeaHand, CGeom2DIPoint const * pPtiCoast, int const nShadowEndX, int const nShadowEndY, int const nZone)
+void CSimulation::ProcessShadowZoneCell(int const nX, int const nY, int const nShadowZoneCoastToCapeSeaHand, CGeom2DIPoint const* pPtiCoast, int const nShadowEndX, int const nShadowEndY, int const nZone)
 {
    int nZoneCode = m_pRasterGrid->m_Cell[nX][nY].nGetShadowZoneNumber();
 

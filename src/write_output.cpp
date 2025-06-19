@@ -20,7 +20,7 @@
 
    You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-   ==============================================================================================================================*/
+==============================================================================================================================*/
 #include <assert.h>
 
 #include <ctime>
@@ -1313,7 +1313,7 @@ void CSimulation::WriteLookUpData(void) const
 //===============================================================================================================================
 //! Save a coastline-normal profile
 //===============================================================================================================================
-int CSimulation::nSaveProfile(int const nCoast, CGeomProfile const * pProfile, int const nProfSize, vector<double> const * pdVDistXY, vector<double> const* pdVZ, vector<double> const* pdVDepthOverDB, vector<double> const* pdVErosionPotentialFunc, vector<double> const * pdVSlope, vector<double> const * pdVRecessionXY, vector<double> const * pdVChangeElevZ, vector<CGeom2DIPoint>* const pPtVGridProfile, vector<double> const * pdVScapeXY) const
+int CSimulation::nSaveProfile(int const nCoast, CGeomProfile const* pProfile, int const nProfSize, vector<double> const* pdVDistXY, vector<double> const* pdVZ, vector<double> const* pdVDepthOverDB, vector<double> const* pdVErosionPotentialFunc, vector<double> const* pdVSlope, vector<double> const* pdVRecessionXY, vector<double> const* pdVChangeElevZ, vector<CGeom2DIPoint> *const pPtVGridProfile, vector<double> const* pdVScapeXY) const
 {
    // TODO 052 Make this more efficient, also give warnings if no profiles will be output
    int nProfile = pProfile->nGetCoastID();
@@ -1336,7 +1336,7 @@ int CSimulation::nSaveProfile(int const nCoast, CGeomProfile const * pProfile, i
 //===============================================================================================================================
 //! Writes values for a single profile, for checking purposes
 //===============================================================================================================================
-bool CSimulation::bWriteProfileData(int const nCoast, CGeomProfile const * pProfile, int const nProfSize, vector<double> const * pdVDistXY, vector<double> const* pdVZ, vector<double> const* pdVDepthOverDB, vector<double> const* pdVErosionPotentialFunc, vector<double> const * pdVSlope, vector<double> const * pdVRecessionXY, vector<double> const * pdVChangeElevZ, vector<CGeom2DIPoint>* const pPtVGridProfile, vector<double> const * pdVScapeXY) const
+bool CSimulation::bWriteProfileData(int const nCoast, CGeomProfile const* pProfile, int const nProfSize, vector<double> const* pdVDistXY, vector<double> const* pdVZ, vector<double> const* pdVDepthOverDB, vector<double> const* pdVErosionPotentialFunc, vector<double> const* pdVSlope, vector<double> const* pdVRecessionXY, vector<double> const* pdVChangeElevZ, vector<CGeom2DIPoint> *const pPtVGridProfile, vector<double> const* pdVScapeXY) const
 {
    int nProfile = pProfile->nGetCoastID();
 
@@ -1383,7 +1383,7 @@ bool CSimulation::bWriteProfileData(int const nCoast, CGeomProfile const * pProf
 //===============================================================================================================================
 //! Save a coastline-normal parallel profile
 //===============================================================================================================================
-int CSimulation::nSaveParProfile(int const nCoast, CGeomProfile const * pProfile, int const nParProfSize, int const nDirection, int const nDistFromProfile, vector<double> const * pdVDistXY, vector<double> const* pdVZ, vector<double> const* pdVDepthOverDB, vector<double> const* pdVErosionPotentialFunc, vector<double> const * pdVSlope, vector<double> const * pdVRecessionXY, vector<double> const * pdVChangeElevZ, vector<CGeom2DIPoint>* const pPtVGridProfile, vector<double> const * pdVScapeXY) const
+int CSimulation::nSaveParProfile(int const nCoast, CGeomProfile const* pProfile, int const nParProfSize, int const nDirection, int const nDistFromProfile, vector<double> const* pdVDistXY, vector<double> const* pdVZ, vector<double> const* pdVDepthOverDB, vector<double> const* pdVErosionPotentialFunc, vector<double> const* pdVSlope, vector<double> const* pdVRecessionXY, vector<double> const* pdVChangeElevZ, vector<CGeom2DIPoint> *const pPtVGridProfile, vector<double> const* pdVScapeXY) const
 {
    // TODO 052 Make this more efficient, also give warnings if no profiles will be output
    int nProfile = pProfile->nGetCoastID();
@@ -1406,7 +1406,7 @@ int CSimulation::nSaveParProfile(int const nCoast, CGeomProfile const * pProfile
 //===============================================================================================================================
 //! Writes values for a single parallel profile, for checking purposes
 //===============================================================================================================================
-bool CSimulation::bWriteParProfileData(int const nCoast, int const nProfile, int const nProfSize, int const nDirection, int const nDistFromProfile, vector<double> const * pdVDistXY, vector<double> const* pdVZ, vector<double> const* pdVDepthOverDB, vector<double> const* pdVErosionPotentialFunc, vector<double> const * pdVSlope, vector<double> const * pdVRecessionXY, vector<double> const * pdVChangeElevZ, vector<CGeom2DIPoint>* const pPtVGridProfile, vector<double> const * pdVScapeXY) const
+bool CSimulation::bWriteParProfileData(int const nCoast, int const nProfile, int const nProfSize, int const nDirection, int const nDistFromProfile, vector<double> const* pdVDistXY, vector<double> const* pdVZ, vector<double> const* pdVDepthOverDB, vector<double> const* pdVErosionPotentialFunc, vector<double> const* pdVSlope, vector<double> const* pdVRecessionXY, vector<double> const* pdVChangeElevZ, vector<CGeom2DIPoint> *const pPtVGridProfile, vector<double> const* pdVScapeXY) const
 {
    string strFName = m_strOutPath;
    stringstream ststrTmp;
@@ -1697,7 +1697,7 @@ void CSimulation::WritePolygonInfoTable(int const nCoast)
 
    for (int n = 0; n < nGetCoastPolygonSize(); n++)
    {
-      CGeomCoastPolygon const * pPolygon = pGetPolygon(n);
+      CGeomCoastPolygon const* pPolygon = pGetPolygon(n);
 
       LogStream << strIntRight(pPolygon->nGetGlobalID(), 11) << "|" << strIntRight(nCoast, 11) << "|" << strIntRight(pPolygon->nGetCoastID(), 11) << "|" << strIntRight(pPolygon->nGetUpCoastProfile(), 11) << "|" << strIntRight(pPolygon->nGetDownCoastProfile(), 11) << "|" << strDblRight(pPolygon->dGetSeawaterVolume(), 0, 14) << "|" << strDblRight(pPolygon->dGetAvgUnconsD50(), 0, 14) << "| " << endl;
    }
@@ -1738,7 +1738,7 @@ void CSimulation::WritePolygonPreExistingSedimentTable(int const nCoast)
 
    for (unsigned int n = 0; n < m_pVCoastPolygon.size(); n++)
    {
-      CGeomCoastPolygon const * pPolygon = pGetPolygon(n);
+      CGeomCoastPolygon const* pPolygon = pGetPolygon(n);
 
       // Add to this-iteration all-polygon totals of consolidated sediment within polygons
       m_dTotalFineConsInPolygons += pPolygon->dGetPreExistingConsFine();
@@ -1787,7 +1787,7 @@ void CSimulation::WritePolygonSedimentInputEventTable(int const nCoast)
 
    for (unsigned int n = 0; n < m_pVCoastPolygon.size(); n++)
    {
-      CGeomCoastPolygon const * pPolygon = pGetPolygon(n);
+      CGeomCoastPolygon const* pPolygon = pGetPolygon(n);
 
       double dThisFine = pPolygon->dGetSedimentInputUnconsFine();
       double dThisSand = pPolygon->dGetSedimentInputUnconsSand();
@@ -1825,7 +1825,7 @@ void CSimulation::WritePolygonShorePlatformErosion(int const nCoast)
 
    for (unsigned int n = 0; n < m_pVCoastPolygon.size(); n++)
    {
-      CGeomCoastPolygon const * pPolygon = pGetPolygon(n);
+      CGeomCoastPolygon const* pPolygon = pGetPolygon(n);
 
       LogStream << strIntRight(pPolygon->nGetGlobalID(), 11) << "|" << strIntRight(nCoast, 11) << "|" << strIntRight(pPolygon->nGetCoastID(), 11) << "|" << strDblRight((pPolygon->dGetPlatformErosionUnconsSand() + pPolygon->dGetPlatformErosionUnconsCoarse()) * m_dCellArea, 0, 14) << "|" << strDblRight(0, 0, 14) << "|" << strDblRight(pPolygon->dGetPlatformErosionUnconsSand() * m_dCellArea, 0, 14) << "|" << strDblRight(pPolygon->dGetPlatformErosionUnconsCoarse() * m_dCellArea, 0, 14) << "|" << endl;
 
@@ -1868,7 +1868,7 @@ void CSimulation::WritePolygonCliffCollapseErosion(int const nCoast)
 
    for (unsigned int n = 0; n < m_pVCoastPolygon.size(); n++)
    {
-      CGeomCoastPolygon const * pPolygon = pGetPolygon(n);
+      CGeomCoastPolygon const* pPolygon = pGetPolygon(n);
 
       LogStream << strIntRight(pPolygon->nGetGlobalID(), 11) << "|" << strIntRight(nCoast, 11) << "|" << strIntRight(pPolygon->nGetCoastID(), 11)
                 // All
@@ -1925,7 +1925,7 @@ void CSimulation::WritePolygonSedimentBeforeMovement(int const nCoast)
 
    for (unsigned int n = 0; n < m_pVCoastPolygon.size(); n++)
    {
-      CGeomCoastPolygon const * pPolygon = pGetPolygon(n);
+      CGeomCoastPolygon const* pPolygon = pGetPolygon(n);
 
       double dFine = pPolygon->dGetPreExistingUnconsFine();
       double dSand = pPolygon->dGetPreExistingUnconsSand();
@@ -1968,7 +1968,7 @@ void CSimulation::WritePolygonPotentialErosion(int const nCoast)
 
    for (unsigned int n = 0; n < m_pVCoastPolygon.size(); n++)
    {
-      CGeomCoastPolygon const * pPolygon = pGetPolygon(n);
+      CGeomCoastPolygon const* pPolygon = pGetPolygon(n);
 
       LogStream << strIntRight(pPolygon->nGetGlobalID(), 11) << "|" << strIntRight(nCoast, 11) << "|" << strIntRight(pPolygon->nGetCoastID(), 11) << "|" << strDblRight(pPolygon->dGetPotentialErosion() * m_dCellArea, 0, 14) << "|" << endl;
 
@@ -2029,7 +2029,7 @@ void CSimulation::WritePolygonUnsortedSequence(int const nCoast, vector<vector<i
 
    for (int n = 0; n < static_cast<int>(pnVVPolyAndAdjacent.size()); n++)
    {
-      CGeomCoastPolygon const * pPolygon = m_VCoast[nCoast].pGetPolygon(pnVVPolyAndAdjacent[n][1]);
+      CGeomCoastPolygon const* pPolygon = m_VCoast[nCoast].pGetPolygon(pnVVPolyAndAdjacent[n][1]);
 
       for (int m = 0; m < static_cast<int>(pnVVPolyAndAdjacent[n].size()); m++)
       {
@@ -2062,7 +2062,7 @@ void CSimulation::WritePolygonUnsortedSequence(int const nCoast, vector<vector<i
 
          if (nAdjDownCoast != INT_NODATA)
          {
-            CGeomCoastPolygon const * pAdjPolygon = m_VCoast[nCoast].pGetPolygon(nAdjDownCoast);
+            CGeomCoastPolygon const* pAdjPolygon = m_VCoast[nCoast].pGetPolygon(nAdjDownCoast);
             nCoastID = pAdjPolygon->nGetCoastID();
          }
 
@@ -2091,7 +2091,7 @@ void CSimulation::WritePolygonSortedSequence(int const nCoast, vector<vector<int
 
    for (int nPoly = 0; nPoly < static_cast<int>(pnVVPolyAndAdjacent.size()); nPoly++)
    {
-      const CGeomCoastPolygon * pPoly = m_VCoast[nCoast].pGetPolygon(pnVVPolyAndAdjacent[nPoly][1]);
+      const CGeomCoastPolygon* pPoly = m_VCoast[nCoast].pGetPolygon(pnVVPolyAndAdjacent[nPoly][1]);
       vector<int> VCirc = pPoly->VnGetCircularities();
 
       LogStream << strIntRight(pPoly->nGetGlobalID(), 11) << "|" << strIntRight(nCoast, 11) << "|" << strIntRight(pPoly->nGetCoastID(), 11) << "|";

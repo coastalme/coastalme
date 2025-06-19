@@ -20,7 +20,9 @@
 
    You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-   ==============================================================================================================================*/
+==============================================================================================================================*/
+#include <assert.h>
+
 #include <cmath>
 using std::abs;
 
@@ -75,7 +77,7 @@ void CSimulation::CalcSavitzkyGolayCoeffs(void)
 //===============================================================================================================================
 //! Does smoothing of a CGeomLine coastline vector (is in external CRS coordinates) using a Savitzky-Golay filter. Derived from a C original by Jean-Pierre Moreau (jpmoreau@wanadoo.fr, http://jean-pierre.moreau.pagesperso-orange.fr/index.html), to whom we are much indebted
 //===============================================================================================================================
-CGeomLine CSimulation::LSmoothCoastSavitzkyGolay(CGeomLine * pLineIn, int const nStartEdge, int const nEndEdge) const
+CGeomLine CSimulation::LSmoothCoastSavitzkyGolay(CGeomLine* pLineIn, int const nStartEdge, int const nEndEdge) const
 {
    // Note that m_nCoastSmoothWindow must be odd (have already checked this)
    int nHalfWindow = m_nCoastSmoothWindow / 2;
@@ -94,11 +96,8 @@ CGeomLine CSimulation::LSmoothCoastSavitzkyGolay(CGeomLine * pLineIn, int const 
       int nXThis = PtiThis.nGetX();
       int nYThis = PtiThis.nGetY();
 
-      // Safety checks
-      if (nXThis >= m_nXGridSize)
-         continue;
-
-      if (nYThis >= m_nYGridSize)
+      // Safety check
+      if (! bIsWithinValidGrid(nXThis, nYThis))
          continue;
 
       if (bIsInterventionCell(nXThis, nYThis))
@@ -213,7 +212,7 @@ CGeomLine CSimulation::LSmoothCoastSavitzkyGolay(CGeomLine * pLineIn, int const 
 //===============================================================================================================================
 //! Does running-mean smoothing of a CGeomLine coastline vector (is in external CRS coordinates)
 //===============================================================================================================================
-CGeomLine CSimulation::LSmoothCoastRunningMean(CGeomLine * pLineIn) const
+CGeomLine CSimulation::LSmoothCoastRunningMean(CGeomLine* pLineIn) const
 {
    // Note that m_nCoastSmoothWindow must be odd (have already checked this)
    int nHalfWindow = m_nCoastSmoothWindow / 2;
@@ -346,7 +345,7 @@ CGeomLine CSimulation::LSmoothCoastRunningMean(CGeomLine * pLineIn) const
 //===============================================================================================================================
 //! Does running-mean smoothing of the slope of a coastline-normal profile
 //===============================================================================================================================
-vector<double> CSimulation::dVSmoothProfileSlope(vector<double>* pdVSlope) const
+vector<double> CSimulation::dVSmoothProfileSlope(vector<double> *pdVSlope) const
 {
    // Make a copy of the unsmoothed profile slope vector
    int const nSize = static_cast<int>(pdVSlope->size());

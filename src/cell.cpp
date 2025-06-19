@@ -20,7 +20,7 @@
 
    You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-   ===============================================================================================================================*/
+===============================================================================================================================*/
 #include <vector>
 using std::vector;
 
@@ -279,6 +279,25 @@ void CGeomCell::SetPolygonID(int const nPolyID)
 int CGeomCell::nGetPolygonID(void) const
 {
    return m_nPolygonID;
+}
+
+//! Sets the coast number of the polygon which 'contains' this cell
+void CGeomCell::SetPolygonCoastID(int const nPolyCoastID)
+{
+   m_nPolygonCoastID = nPolyCoastID;
+}
+
+//! Returns the coast number of the polygon which 'contains' this cell (returns INT_NODATA if the cell is not 'in' a polygon)
+int CGeomCell::nGetPolygonCoastID(void) const
+{
+   return m_nPolygonCoastID;
+}
+
+//! Sets the coast number, and the polygon ID, of the polygon which 'contains' this cell
+void CGeomCell::SetCoastAndPolygonID(int const nPolyCoastID, int const nPolyID)
+{
+   m_nPolygonCoastID = nPolyCoastID;
+   m_nPolygonID = nPolyID;
 }
 
 //! Set the number of the shadow zone that this cell is in
@@ -727,7 +746,7 @@ void CGeomCell::CalcAllLayerElevsAndD50(void)
       if (dUnconsThick > 0)
       {
          // This is a layer with non-zero thickness of unconsolidated sediment
-         CRWCellSediment const * pUnconsSedLayer = m_VLayerAboveBasement[n].pGetUnconsolidatedSediment();
+         CRWCellSediment const* pUnconsSedLayer = m_VLayerAboveBasement[n].pGetUnconsolidatedSediment();
          double dFineProp = pUnconsSedLayer->dGetFineDepth() / dUnconsThick;
          double dSandProp = pUnconsSedLayer->dGetSandDepth() / dUnconsThick;
          double dCoarseProp = pUnconsSedLayer->dGetCoarseDepth() / dUnconsThick;
@@ -829,6 +848,7 @@ void CGeomCell::InitCell(void)
    m_bCheckFloodCell = false;
 
    m_nPolygonID =
+   m_nPolygonCoastID =
    m_nCoastlineNormal = INT_NODATA;
 
    m_nShadowZoneNumber =

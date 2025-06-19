@@ -20,7 +20,7 @@
 
    You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-   ==============================================================================================================================*/
+==============================================================================================================================*/
 #include <iostream>
 using std::cout;
 using std::cerr;
@@ -36,7 +36,7 @@ CGeomLine::CGeomLine(void)
 }
 
 //! Overloaded constructor with two points as parameters
-CGeomLine::CGeomLine(CGeom2DPoint const * pPt1, CGeom2DPoint const * pPt2)
+CGeomLine::CGeomLine(CGeom2DPoint const* pPt1, CGeom2DPoint const* pPt2)
 {
    m_VPoints.push_back( * pPt1);
    m_VPoints.push_back( * pPt2);
@@ -70,7 +70,7 @@ double CGeomLine::dGetYAt(int const n)
 }
 
 //! Returns the point at a given place in the line
-CGeom2DPoint * CGeomLine::pPtGetAt(int const n)
+CGeom2DPoint* CGeomLine::pPtGetAt(int const n)
 {
    return & m_VPoints[n];
 }

@@ -20,7 +20,7 @@
 
    You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-   ===============================================================================================================================*/
+===============================================================================================================================*/
 #include "cme.h"
 #include "coast_landform.h"
 
@@ -63,7 +63,7 @@ int CACoastLandform::nGetLandFormCategory(void) const
 }
 
 //! Get the grid coordinates of the cell on which this coast landform sits
-CGeom2DIPoint * CACoastLandform::pPtiGetCellMarkedAsLF(void) const
+CGeom2DIPoint* CACoastLandform::pPtiGetCellMarkedAsLF(void) const
 {
    return pCoast->pPtiGetCellMarkedAsCoastline(m_nPointOnCoast);
 }

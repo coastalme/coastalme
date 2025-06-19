@@ -19,7 +19,7 @@
 
    You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-   ===============================================================================================================================*/
+===============================================================================================================================*/
 #include "cme.h"
 #include "2d_shape.h"
 
@@ -64,9 +64,9 @@ int CA2DShape::nGetSize(void) const
 // }
 
 //! Appends a point to this 2D shape
-void CA2DShape::Append(CGeom2DPoint const * pPtNew)
+void CA2DShape::Append(CGeom2DPoint const* pPtNew)
 {
-   m_VPoints.push_back( * pPtNew);
+   m_VPoints.push_back(*pPtNew);
 }
 
 //! Appends a point to this 2D shape
@@ -88,7 +88,7 @@ void CA2DShape::AppendIfNotAlready(double const dX, double const dY)
 }
 
 //! Returns the last element of this 2D shape
-CGeom2DPoint * CA2DShape::pPtBack(void)
+CGeom2DPoint* CA2DShape::pPtBack(void)
 {
    return & m_VPoints.back();
 }
@@ -127,7 +127,7 @@ CGeom2DPoint * CA2DShape::pPtBack(void)
 // }
 
 //! Returns the address of the vector which represents this 2D shape
-vector<CGeom2DPoint>* CA2DShape::pPtVGetPoints(void)
+vector<CGeom2DPoint> *CA2DShape::pPtVGetPoints(void)
 {
    return & m_VPoints;
 }

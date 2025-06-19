@@ -20,7 +20,7 @@
 
    You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-   ===============================================================================================================================*/
+===============================================================================================================================*/
 #include "2di_point.h"
 #include "cme.h"
 
@@ -118,14 +118,14 @@ void CGeom2DIPoint::DivXDivY(double const dXDiv, double const dYDiv)
 }
 
 //! Sets one CGeom2DIPoint object to be the same as another
-void CGeom2DIPoint::operator= (CGeom2DIPoint const * pPti)
+void CGeom2DIPoint::operator= (CGeom2DIPoint const* pPti)
 {
    nX = pPti->nGetX();
    nY = pPti->nGetY();
 }
 
 //! Compares two CGeom2DIPoint objects for equality
-bool CGeom2DIPoint::operator== (CGeom2DIPoint const * pPti) const
+bool CGeom2DIPoint::operator== (CGeom2DIPoint const* pPti) const
 {
    if ((pPti->nGetX() == nX) && (pPti->nGetY() == nY))
       return true;
@@ -143,7 +143,7 @@ bool CGeom2DIPoint::operator== (CGeom2DIPoint Pti) const
 }
 
 //! Compares two CGeom2DIPoint objects for inequality
-bool CGeom2DIPoint::operator!= (CGeom2DIPoint const * pPti) const
+bool CGeom2DIPoint::operator!= (CGeom2DIPoint const* pPti) const
 {
    if ((pPti->nGetX() != nX) || (pPti->nGetY() != nY))
       return true;

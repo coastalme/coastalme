@@ -20,7 +20,7 @@
 
    You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-   ==============================================================================================================================*/
+==============================================================================================================================*/
 #include <assert.h>
 
 #include <cmath>
@@ -50,7 +50,7 @@ int CSimulation::nDoAllWaveEnergyToCoastLandforms(void)
    {
       for (int j = 0; j < m_VCoast[i].nGetCoastlineSize(); j++)
       {
-         CACoastLandform * pCoastLandform = m_VCoast[i].pGetCoastLandform(j);
+         CACoastLandform* pCoastLandform = m_VCoast[i].pGetCoastLandform(j);
 
          // First get wave energy for the coastal landform object
          double dWaveHeightAtCoast = m_VCoast[i].dGetCoastWaveHeight(j);
@@ -250,7 +250,7 @@ int CSimulation::nDoAllWaveEnergyToCoastLandforms(void)
 //===============================================================================================================================
 //! Simulates cliff collapse on a single cliff object, which happens when when a notch (incised into a condsolidated sediment layer) exceeds a critical depth. This updates the cliff object, the cell 'under' the cliff object, and the polygon which contains the cliff object
 //===============================================================================================================================
-int CSimulation::nDoCliffCollapse(int const nCoast, CRWCliff * pCliff, double& dFineCollapse, double& dSandCollapse, double& dCoarseCollapse, double& dPreCollapseCliffElev, double& dPostCollapseCliffElev)
+int CSimulation::nDoCliffCollapse(int const nCoast, CRWCliff * pCliff, double &dFineCollapse, double &dSandCollapse, double &dCoarseCollapse, double &dPreCollapseCliffElev, double &dPostCollapseCliffElev)
 {
    // Get the cliff cell's grid coords
    int nX = pCliff->pPtiGetCellMarkedAsLF()->nGetX();
@@ -267,7 +267,7 @@ int CSimulation::nDoCliffCollapse(int const nCoast, CRWCliff * pCliff, double& d
       return RTN_ERR_CLIFF_NOT_IN_POLYGON;
    }
 
-   CGeomCoastPolygon * pPolygon = m_VCoast[nCoast].pGetPolygon(nPoly);
+   CGeomCoastPolygon* pPolygon = m_VCoast[nCoast].pGetPolygon(nPoly);
 
    double dOrigCliffTopElev = m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElev();
 
@@ -521,7 +521,7 @@ int CSimulation::nDoCliffCollapse(int const nCoast, CRWCliff * pCliff, double& d
 //===============================================================================================================================
 //! Redistributes the sand-sized and coarse-sized sediment from a cliff collapse onto the foreshore, as unconsolidated talus. The talus is added to the existing beach volume (i.e. to the unconsolidated sediment). The shoreline is iteratively advanced seaward until all this volume is accommodated under a Dean equilibrium profile. This equilibrium beach profile is h(y) = A * y^(2/3) where h(y) is the water depth at a distance y from the shoreline and A is a sediment-dependent scale parameter
 //===============================================================================================================================
-int CSimulation::nDoCliffCollapseDeposition(int const nCoast, CRWCliff const * pCliff, double const dSandFromCollapse, double const dCoarseFromCollapse, double const dPreCollapseCliffElev, double const dPostCollapseCliffElev)
+int CSimulation::nDoCliffCollapseDeposition(int const nCoast, CRWCliff const* pCliff, double const dSandFromCollapse, double const dCoarseFromCollapse, double const dPreCollapseCliffElev, double const dPostCollapseCliffElev)
 {
    // Check: is there some sand- or coarse-sized sediment to deposit?
    if ((dSandFromCollapse + dCoarseFromCollapse) < SEDIMENT_ELEV_TOLERANCE)
@@ -548,7 +548,7 @@ int CSimulation::nDoCliffCollapseDeposition(int const nCoast, CRWCliff const * p
       return RTN_ERR_CLIFF_NOT_IN_POLYGON;
    }
 
-   CGeomCoastPolygon * pPolygon = m_VCoast[nCoast].pGetPolygon(nPoly);
+   CGeomCoastPolygon* pPolygon = m_VCoast[nCoast].pGetPolygon(nPoly);
 
    // OK, now set up the planview sequence talus deposition. First we deposit to create a Dean profile starting from the cliff collapse cell. Then we deposit along two profiles which start from the coast cells on either side of the cliff collapse cell, and then on two profiles starting on the next two "outside" coast cells, etc. However, we do have a "preferred" talus width
    int nTalusWidthInCells = nConvertMetresToNumCells(m_dCliffDepositionPlanviewWidth);
@@ -1143,7 +1143,7 @@ int CSimulation::nDoCliffCollapseDeposition(int const nCoast, CRWCliff const * p
 //===============================================================================================================================
 //! Given the start and end points of a cliff-collapse normal profile, returns an output vector of cells which are 'under' the vector line
 //===============================================================================================================================
-void CSimulation::RasterizeCliffCollapseProfile(vector<CGeom2DPoint> const * pVPointsIn, vector<CGeom2DIPoint>* pVIPointsOut) const
+void CSimulation::RasterizeCliffCollapseProfile(vector<CGeom2DPoint> const* pVPointsIn, vector<CGeom2DIPoint> *pVIPointsOut) const
 {
    pVIPointsOut->clear();
 

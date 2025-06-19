@@ -20,7 +20,7 @@
 
    You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-   ===============================================================================================================================*/
+===============================================================================================================================*/
 #include <assert.h>
 
 #include "cme.h"
@@ -43,7 +43,7 @@ void CGeomMultiLine::AppendLineSegment(void)
 }
 
 //! Appends a line segment which is supplied as a parameter
-void CGeomMultiLine::AppendLineSegment(vector<pair<int, int> >* pprVIn)
+void CGeomMultiLine::AppendLineSegment(vector<pair<int, int> > *pprVIn)
 {
    m_prVVLineSegment.push_back( * pprVIn);
 }
@@ -147,7 +147,7 @@ void CGeomMultiLine::AddCoincidentProfileToExistingLineSegment(int const nSegmen
 }
 
 //! Returns a vector of pairs (a line segment)
-vector<pair<int, int> >* CGeomMultiLine::pprVGetPairedCoincidentProfilesForLineSegment(int const nSegment)
+vector<pair<int, int> > *CGeomMultiLine::pprVGetPairedCoincidentProfilesForLineSegment(int const nSegment)
 {
    // TODO 055 No check to see if nSegment < size()
    return & m_prVVLineSegment[nSegment];
@@ -228,7 +228,7 @@ bool CGeomMultiLine::bFindProfileInCoincidentProfiles(int const nProfile)
 }
 
 //! Finds the number of the most coastward line segment for which the two profiles are coincident, or -1 if they are not coincident. If they are coincident, also finds the line segment of the other profile
-void CGeomMultiLine::GetMostCoastwardSharedLineSegment(int const nOtherProfile, int& nThisLineSegment, int& nOtherLineSegment)
+void CGeomMultiLine::GetMostCoastwardSharedLineSegment(int const nOtherProfile, int &nThisLineSegment, int &nOtherLineSegment)
 {
    nThisLineSegment =
    nOtherLineSegment = -1;

@@ -23,7 +23,7 @@
 
    You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-   ===============================================================================================================================*/
+===============================================================================================================================*/
 #include "2d_shape.h"
 #include "2di_point.h"
 
@@ -197,7 +197,7 @@ private:
 protected:
 
 public:
-   CGeomCoastPolygon(int const, int const, int const, int const, int const, vector<CGeom2DPoint> const *, int const, int const, CGeom2DIPoint const *, CGeom2DIPoint const *, bool const, bool const);
+   CGeomCoastPolygon(int const, int const, int const, int const, int const, vector<CGeom2DPoint> const*, int const, int const, CGeom2DIPoint const*, CGeom2DIPoint const*, bool const, bool const);
    ~CGeomCoastPolygon(void) override;
 
    void SetDownCoastThisIter(bool const);
@@ -213,8 +213,8 @@ public:
 
 // void SetCoastNode(int const);
    int nGetNodeCoastPoint(void) const;
-   CGeom2DIPoint * pPtiGetNode(void);
-   CGeom2DIPoint * pPtiGetAntiNode(void);
+   CGeom2DIPoint* pPtiGetNode(void);
+   CGeom2DIPoint* pPtiGetAntiNode(void);
 
    void SetLength(double const);
    double dGetLength(void) const;
@@ -230,7 +230,7 @@ public:
 
 // void SetBoundary(vector<CGeom2DPoint> const*);
 // vector<CGeom2DPoint>* pPtVGetBoundary(void);
-   CGeom2DPoint * pPtGetBoundaryPoint(int const);
+   CGeom2DPoint* pPtGetBoundaryPoint(int const);
    int nGetBoundarySize(void) const;
 
    int nGetNumPointsUsedUpCoastProfile(void) const;
@@ -272,18 +272,18 @@ public:
    void AddBeachCoarseErodedDeanProfile(double const);
    double dGetBeachCoarseErodedDeanProfile(void) const;
 
-   void SetUpCoastAdjacentPolygons(vector<int> const * );
+   void SetUpCoastAdjacentPolygons(vector<int> const*);
    int nGetUpCoastAdjacentPolygon(int const) const;
    int nGetNumUpCoastAdjacentPolygons(void) const;
 
-   void SetDownCoastAdjacentPolygons(vector<int> const * );
+   void SetDownCoastAdjacentPolygons(vector<int> const*);
    int nGetDownCoastAdjacentPolygon(int const) const;
    int nGetNumDownCoastAdjacentPolygons(void) const;
 
-   void SetUpCoastAdjacentPolygonBoundaryShares(vector<double> const * );
+   void SetUpCoastAdjacentPolygonBoundaryShares(vector<double> const*);
    double dGetUpCoastAdjacentPolygonBoundaryShare(int const) const;
 
-   void SetDownCoastAdjacentPolygonBoundaryShares(vector<double> const * );
+   void SetDownCoastAdjacentPolygonBoundaryShares(vector<double> const*);
    double dGetDownCoastAdjacentPolygonBoundaryShare(int const) const;
 
    bool bDownCoastIsAlreadyPresent(int const);
@@ -348,7 +348,7 @@ public:
    void SetSedimentInputUnconsCoarse(double const);
    double dGetSedimentInputUnconsCoarse(void) const;
 
-   void AppendVertex(CGeom2DIPoint const * );
+   void AppendVertex(CGeom2DIPoint const*);
    int nGetNumVertices(void) const;
    CGeom2DIPoint PtiGetVertex(int const) const;
 

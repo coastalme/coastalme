@@ -24,7 +24,7 @@
 
    You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-   ===============================================================================================================================*/
+===============================================================================================================================*/
 #include <utility>
 using std::pair;
 using std::make_pair;
@@ -44,7 +44,7 @@ public:
    ~CGeomMultiLine(void) override;
 
    void AppendLineSegment(void);
-   void AppendLineSegment(vector<pair<int, int> >*);
+   void AppendLineSegment(vector<pair<int, int> > *);
 // void AppendLineSegmentAndInherit(void);
    int nGetNumLineSegments(void) const;
    void TruncateLineSegments(int const);
@@ -54,13 +54,13 @@ public:
 
    void AppendCoincidentProfileToLineSegments(pair<int, int> const);
    void AddCoincidentProfileToExistingLineSegment(int const, int const, int const);
-   vector<pair<int, int> >* pprVGetPairedCoincidentProfilesForLineSegment(int const);
+   vector<pair<int, int> > *pprVGetPairedCoincidentProfilesForLineSegment(int const);
    int nGetCoincidentProfileForLineSegment(int const, int const) const;
    int nGetNumCoincidentProfilesInLineSegment(int const);
    bool bFindProfileInCoincidentProfilesOfLastLineSegment(int const);
 // bool bFindProfileInCoincidentProfilesOfLineSegment(int const, int const);
    bool bFindProfileInCoincidentProfiles(int const);
-   void GetMostCoastwardSharedLineSegment(int const, int&, int&);
+   void GetMostCoastwardSharedLineSegment(int const, int &, int &);
 
    int nGetProf(int const, int const) const;
    int nGetProfsLineSeg(int const, int const) const;

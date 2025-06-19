@@ -20,7 +20,7 @@
 
    You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-   ===============================================================================================================================*/
+===============================================================================================================================*/
 #include <cfloat>
 
 #include <iostream>
@@ -398,7 +398,7 @@ int CSimulation::nReadVectorGISFile(int const nDataItem)
 //===============================================================================================================================
 //! Writes vector GIS files using OGR
 //===============================================================================================================================
-bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const * strPlotTitle)
+bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const* strPlotTitle)
 {
    // Begin constructing the file name for this save
    string strFilePathName(m_strOutPath);
@@ -945,7 +945,7 @@ bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const * strPlo
          {
             for (int j = 0; j < m_VCoast[i].nGetNumProfiles(); j++)
             {
-               CGeomProfile * pProfile = m_VCoast[i].pGetProfile(j);
+               CGeomProfile* pProfile = m_VCoast[i].pGetProfile(j);
 
                if (((nDataItem == VECTOR_PLOT_NORMALS) && (pProfile->bOKIncStartAndEndOfCoast())) || ((nDataItem == VECTOR_PLOT_INVALID_NORMALS) && (! pProfile->bOKIncStartAndEndOfCoast())))
                {
@@ -1153,7 +1153,7 @@ bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const * strPlo
 
                else if (nDataItem == VECTOR_PLOT_CLIFF_NOTCH_SIZE)
                {
-                  CACoastLandform * pCoastLandform = m_VCoast[i].pGetCoastLandform(j);
+                  CACoastLandform* pCoastLandform = m_VCoast[i].pGetCoastLandform(j);
 
                   if (pCoastLandform == NULL)
                      pOGRFeature->SetField(strFieldValue1.c_str(), DBL_NODATA);
@@ -1165,7 +1165,7 @@ bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const * strPlo
 
                      if (nCategory == LF_CAT_CLIFF)
                      {
-                        CRWCliff const * pCliff = reinterpret_cast<CRWCliff*>(pCoastLandform);
+                        CRWCliff const* pCliff = reinterpret_cast<CRWCliff*>(pCoastLandform);
 
                         // Get attribute values from the cliff object
                         dNotchDepth = pCliff->dGetNotchDepth();
@@ -1422,7 +1422,7 @@ bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const * strPlo
                // Create a feature object, one per polygon
                OGRFeature * pOGRFeature = OGRFeature::CreateFeature(pOGRLayer->GetLayerDefn());
 
-               CGeomCoastPolygon * pPolygon = m_VCoast[i].pGetPolygon(j);
+               CGeomCoastPolygon* pPolygon = m_VCoast[i].pGetPolygon(j);
 
                // Set the feature's attributes
                pOGRFeature->SetField(strFieldValue1.c_str(), j);

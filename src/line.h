@@ -24,7 +24,7 @@
 
    You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-   ===============================================================================================================================*/
+===============================================================================================================================*/
 #include "2d_shape.h"
 
 class CGeomLine : public CA2DShape
@@ -40,12 +40,12 @@ protected:
 
 public:
    CGeomLine(void);
-   CGeomLine(CGeom2DPoint const *, CGeom2DPoint const * );
+   CGeomLine(CGeom2DPoint const*, CGeom2DPoint const*);
    explicit CGeomLine(int const);
    ~CGeomLine(void) override;
 
    double dGetXAt(int const);
    double dGetYAt(int const);
-   CGeom2DPoint * pPtGetAt(int const);
+   CGeom2DPoint* pPtGetAt(int const);
 };
 #endif // LINE_H

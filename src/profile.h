@@ -24,7 +24,7 @@
 
    You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-   ===============================================================================================================================*/
+===============================================================================================================================*/
 #include "cme.h"
 #include "2d_point.h"
 #include "2di_point.h"
@@ -92,10 +92,10 @@ private:
    CGeom2DIPoint PtiEnd;
 
    //! Pointer to the adjacent up-coast profile (may be an invalid profile)
-   CGeomProfile * m_pUpCoastAdjacentProfile;
+   CGeomProfile* m_pUpCoastAdjacentProfile;
 
    //! Pointer to the adjacent down-coast profile (may be an invalid profile)
-   CGeomProfile * m_pDownCoastAdjacentProfile;
+   CGeomProfile* m_pDownCoastAdjacentProfile;
 
    //! In the grid CRS, the integer coordinates of the cells 'under' this profile, point zero is the same as 'cell marked as coastline' in coast object
    vector<CGeom2DIPoint> m_VCellInProfile;
@@ -110,16 +110,16 @@ private:
 protected:
 
 public:
-   explicit CGeomProfile(int const, int const, int const, int const, CGeom2DIPoint const *, CGeom2DIPoint const *, bool const);
+   explicit CGeomProfile(int const, int const, int const, int const, CGeom2DIPoint const*, CGeom2DIPoint const*, bool const);
    ~CGeomProfile(void) override;
 
    int nGetCoastID(void) const;
    int nGetGlobalID(void) const;
    int nGetCoastPoint(void) const;
 
-   CGeom2DIPoint * pPtiGetStartPoint(void);
-   void SetEndPoint(CGeom2DIPoint const * );
-   CGeom2DIPoint * pPtiGetEndPoint(void);
+   CGeom2DIPoint* pPtiGetStartPoint(void);
+   void SetEndPoint(CGeom2DIPoint const*);
+   CGeom2DIPoint* pPtiGetEndPoint(void);
 
    void SetStartOfCoast(bool const);
    bool bStartOfCoast(void) const;
@@ -147,43 +147,43 @@ public:
    bool bOKIncStartAndEndOfCoast(void) const;
    // bool bOKIncStartOfCoast(void) const;
 
-   void SetPointsInProfile(vector<CGeom2DPoint> const * );
+   void SetPointsInProfile(vector<CGeom2DPoint> const*);
    void SetPointInProfile(int const, double const, double const);
    void AppendPointInProfile(double const, double const);
-   void AppendPointInProfile(CGeom2DPoint const * );
+   void AppendPointInProfile(CGeom2DPoint const*);
    void TruncateProfile(int const);
 // void TruncateAndSetPointInProfile(int const, double const, double const);
    bool bInsertIntersection(double const, double const, int const);
 // void ShowProfile(void) const;
    int nGetProfileSize(void) const;
-   CGeom2DPoint * pPtGetPointInProfile(int const);
-   CGeom2DIPoint * pPtiGetLastCellInProfile(void);
+   CGeom2DPoint* pPtGetPointInProfile(int const);
+   CGeom2DIPoint* pPtiGetLastCellInProfile(void);
    vector<CGeom2DPoint> PtVGetThisPointAndAllAfter(int const);
    // void RemoveLineSegment(int const);
    bool bIsPointInProfile(double const, double const);
-   bool bIsPointInProfile(double const, double const, int&);
+   bool bIsPointInProfile(double const, double const, int &);
 // int nFindInsertionLineSeg(double const, double const);
 
 // void AppendPointShared(bool const);
 // bool bPointShared(int const) const;
 
-   void SetUpCoastAdjacentProfile(CGeomProfile * );
-   CGeomProfile * pGetUpCoastAdjacentProfile(void) const;
-   void SetDownCoastAdjacentProfile(CGeomProfile * );
-   CGeomProfile * pGetDownCoastAdjacentProfile(void) const;
+   void SetUpCoastAdjacentProfile(CGeomProfile*);
+   CGeomProfile* pGetUpCoastAdjacentProfile(void) const;
+   void SetDownCoastAdjacentProfile(CGeomProfile*);
+   CGeomProfile* pGetDownCoastAdjacentProfile(void) const;
 
-   void AppendCellInProfile(CGeom2DIPoint const * );
+   void AppendCellInProfile(CGeom2DIPoint const*);
    void AppendCellInProfile(int const, int const);
 // void SetCellsInProfile(vector<CGeom2DIPoint>*);
-   vector<CGeom2DIPoint>* pPtiVGetCellsInProfile(void);
-   CGeom2DIPoint * pPtiGetCellInProfile(int const);
+   vector<CGeom2DIPoint> *pPtiVGetCellsInProfile(void);
+   CGeom2DIPoint* pPtiGetCellInProfile(int const);
    int nGetNumCellsInProfile(void) const;
 
    void AppendCellInProfileExtCRS(double const, double const);
-   void AppendCellInProfileExtCRS(CGeom2DPoint const * );
+   void AppendCellInProfileExtCRS(CGeom2DPoint const*);
 // vector<CGeom2DPoint>* PtVGetCellsInProfileExtCRS(void);
 
-   int nGetCellGivenDepth(CGeomRasterGrid const *, double const);
+   int nGetCellGivenDepth(CGeomRasterGrid const*, double const);
 
    void SetProfileDeepWaterWaveHeight(double const);
    double dGetProfileDeepWaterWaveHeight(void) const;
