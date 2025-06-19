@@ -24,7 +24,7 @@
 
    You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-   ===============================================================================================================================*/
+===============================================================================================================================*/
 #include "cme.h"
 #include "2di_point.h"
 #include "coast.h"
@@ -59,7 +59,7 @@ public:
    int nGetPointOnCoast(void) const;
 // void SetLandFormCategory(int const);
    int nGetLandFormCategory(void) const;
-   CGeom2DIPoint * pPtiGetCellMarkedAsLF(void) const;
+   CGeom2DIPoint* pPtiGetCellMarkedAsLF(void) const;
 // void SetTotAccumWaveEnergy(double const);
    void IncTotAccumWaveEnergy(double const);
    double dGetTotAccumWaveEnergy(void) const;

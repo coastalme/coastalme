@@ -20,7 +20,7 @@
 
    You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-   ===============================================================================================================================*/
+===============================================================================================================================*/
 #include <assert.h>
 #include <iostream>
 using std::cerr;
@@ -29,7 +29,7 @@ using std::cerr;
 #include "coast_polygon.h"
 
 //! Constructor with 10 parameters and initialization list
-CGeomCoastPolygon::CGeomCoastPolygon(int const nGlobalID, int const nCoastID, int const nNode, int const nProfileUpCoast, int const nProfileDownCoast, vector<CGeom2DPoint> const * pVIn, int const nLastPointUpCoast, const int nLastPointDownCoast, CGeom2DIPoint const * PtiNode, CGeom2DIPoint const * PtiAntinode, bool const bStartCoast, bool const bEndCoast)
+CGeomCoastPolygon::CGeomCoastPolygon(int const nGlobalID, int const nCoastID, int const nNode, int const nProfileUpCoast, int const nProfileDownCoast, vector<CGeom2DPoint> const* pVIn, int const nLastPointUpCoast, const int nLastPointDownCoast, CGeom2DIPoint const* PtiNode, CGeom2DIPoint const* PtiAntinode, bool const bStartCoast, bool const bEndCoast)
    :
 // m_bIsPointedSeaward(true),
    m_bUnconsSedimentMovementDownCoastThisIter(false),
@@ -158,14 +158,14 @@ int CGeomCoastPolygon::nGetNodeCoastPoint(void) const
 }
 
 //! Get the grid coordinates of the cell on which the node sits
-CGeom2DIPoint * CGeomCoastPolygon::pPtiGetNode(void)
+CGeom2DIPoint* CGeomCoastPolygon::pPtiGetNode(void)
 {
    return & m_PtiNode;
 
 }
 
 //! Get the anti-node (raster grid CRS) which is at other (seaward) end of the polygon from the node
-CGeom2DIPoint * CGeomCoastPolygon::pPtiGetAntiNode(void)
+CGeom2DIPoint* CGeomCoastPolygon::pPtiGetAntiNode(void)
 {
    return & m_PtiAntinode;
 }
@@ -217,7 +217,7 @@ int CGeomCoastPolygon::nGetDownCoastProfile(void) const
 // }
 
 //! Get the coordinates (external CRS) of a specified point on the polygon's boundary
-CGeom2DPoint * CGeomCoastPolygon::pPtGetBoundaryPoint(int const nPoint)
+CGeom2DPoint* CGeomCoastPolygon::pPtGetBoundaryPoint(int const nPoint)
 {
    // TODO 055 No check to see if nPoint < m_VPoints.size()
    return & m_VPoints[nPoint];
@@ -416,7 +416,7 @@ double CGeomCoastPolygon::dGetBeachDepositionAndSuspensionAllUncons(void) const
 }
 
 //! Sets all up-coast adjacent polygons
-void CGeomCoastPolygon::SetUpCoastAdjacentPolygons(vector<int> const * pnVPolygons)
+void CGeomCoastPolygon::SetUpCoastAdjacentPolygons(vector<int> const* pnVPolygons)
 {
    m_VnUpCoastAdjacentPolygon = * pnVPolygons;
 }
@@ -435,7 +435,7 @@ int CGeomCoastPolygon::nGetNumUpCoastAdjacentPolygons(void) const
 }
 
 //! Sets all down-coast adjacent polygons
-void CGeomCoastPolygon::SetDownCoastAdjacentPolygons(vector<int> const * pnVPolygons)
+void CGeomCoastPolygon::SetDownCoastAdjacentPolygons(vector<int> const* pnVPolygons)
 {
    m_VnDownCoastAdjacentPolygon = * pnVPolygons;
 }
@@ -482,7 +482,7 @@ bool CGeomCoastPolygon::bUpCoastIsAlreadyPresent(int const nPoly)
 }
 
 //! Sets the boundary shares for all up-coast adjacent polygons
-void CGeomCoastPolygon::SetUpCoastAdjacentPolygonBoundaryShares(vector<double> const * pdVShares)
+void CGeomCoastPolygon::SetUpCoastAdjacentPolygonBoundaryShares(vector<double> const* pdVShares)
 {
    m_VdUpCoastAdjacentPolygonBoundaryShare = * pdVShares;
 }
@@ -495,7 +495,7 @@ double CGeomCoastPolygon::dGetUpCoastAdjacentPolygonBoundaryShare(int const nInd
 }
 
 //! Sets the boundary shares for all down-coast adjacent polygons
-void CGeomCoastPolygon::SetDownCoastAdjacentPolygonBoundaryShares(vector<double> const * pdVShares)
+void CGeomCoastPolygon::SetDownCoastAdjacentPolygonBoundaryShares(vector<double> const* pdVShares)
 {
    m_VdDownCoastAdjacentPolygonBoundaryShare = * pdVShares;
 }
@@ -777,7 +777,7 @@ double CGeomCoastPolygon::dGetSedimentInputUnconsCoarse(void) const
 }
 
 //! Appends the point cordinates (grid CRS) for a polygon vertex
-void CGeomCoastPolygon::AppendVertex(CGeom2DIPoint const * pPti)
+void CGeomCoastPolygon::AppendVertex(CGeom2DIPoint const* pPti)
 {
    m_VPtiVertices.push_back( * pPti);
 }

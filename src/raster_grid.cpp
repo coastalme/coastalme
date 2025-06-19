@@ -20,7 +20,7 @@
 
    You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-   ===============================================================================================================================*/
+===============================================================================================================================*/
 #include <new>
 using std::bad_alloc;
 
@@ -31,7 +31,7 @@ using std::bad_alloc;
 CGeomRasterGrid * CGeomCell::m_pGrid = NULL;         // Initialise m_pGrid, the static member of CGeomCell
 
 //! Constructor
-CGeomRasterGrid::CGeomRasterGrid(CSimulation * pSimIn)
+CGeomRasterGrid::CGeomRasterGrid(CSimulation* pSimIn)
    : m_dD50Fine(0),
      m_dD50Sand(0),
      m_dD50Coarse(0),
@@ -53,7 +53,7 @@ CGeomRasterGrid::~CGeomRasterGrid(void)
 }
 
 //! Returns a pointer to the simulation object
-CSimulation * CGeomRasterGrid::pGetSim(void)
+CSimulation* CGeomRasterGrid::pGetSim(void)
 {
    return m_pSim;
 }

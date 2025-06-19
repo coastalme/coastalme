@@ -20,7 +20,7 @@
 
    You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-   ==============================================================================================================================*/
+==============================================================================================================================*/
 #include <stdlib.h>
 
 #include <fstream>
@@ -494,8 +494,7 @@ bool CSimulation::bReadRunDataFile(void)
 
             case 7:
             {
-               // Save interval(s) - can handle multiple groups with different units
-               // e.g., "6 12 24 48 hours, 1 2 6 months, 1 years"
+               // Save interval(s) - can handle multiple groups with different units if groups are comma-separated e.g., "6 12 24 48 hours, 1 2 6 months, 1 years"
                strRH = strToLower( & strRH);
 
                // Split by commas to handle multiple unit groups
@@ -1572,7 +1571,7 @@ bool CSimulation::bReadRunDataFile(void)
 
             case 19:
 
-               // Vector coastline smoothing algorithm: 0 = none, 1 = running mean, 2 = Savitsky-Golay
+               // Vector coastline smoothing algorithm: 0 = none, 1 = running mean, 2 = Savitzky-Golay
                if (! bIsStringValidInt(strRH))
                {
                   strErr = "line " + to_string(nLine) + ": invalid integer for coastline smoothing algorithm '" + strRH + "' in " + m_strDataPathName;
@@ -1604,17 +1603,17 @@ bool CSimulation::bReadRunDataFile(void)
 
             case 21:
 
-               // Order of coastline profile smoothing polynomial for Savitsky-Golay: usually 2 or 4, max is 6
+               // Order of coastline profile smoothing polynomial for Savitzky-Golay: usually 2 or 4, max is 6
                if (! bIsStringValidInt(strRH))
                {
-                  strErr = "line " + to_string(nLine) + ": invalid integer for Savitsky-Golay polynomial for coastline smoothing '" + strRH + "' in " + m_strDataPathName;
+                  strErr = "line " + to_string(nLine) + ": invalid integer for Savitzky-Golay polynomial for coastline smoothing '" + strRH + "' in " + m_strDataPathName;
                   break;
                }
 
                m_nSavGolCoastPoly = stoi(strRH);
 
                if ((m_nSavGolCoastPoly <= 0) || (m_nSavGolCoastPoly > 6))
-                  strErr = "line " + to_string(nLine) + ": value of Savitsky-Golay polynomial for coastline smoothing (must be <= 6)";
+                  strErr = "line " + to_string(nLine) + ": value of Savitzky-Golay polynomial for coastline smoothing (must be <= 6)";
 
                break;
 

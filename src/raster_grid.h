@@ -24,7 +24,7 @@
 
    You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-   ===============================================================================================================================*/
+===============================================================================================================================*/
 #include "cme.h"
 #include "cell.h"
 
@@ -50,7 +50,7 @@ private:
    double m_dD50Coarse;
 
    //! A pointer to the CSimulation object
-   CSimulation * m_pSim;
+   CSimulation* m_pSim;
 
    //! The 2D array of m_Cell objects. A c-style 2D array seems to be faster than using 2D STL vectors
    CGeomCell * * m_Cell;
@@ -58,10 +58,10 @@ private:
 protected:
 
 public:
-   explicit CGeomRasterGrid(CSimulation * );
+   explicit CGeomRasterGrid(CSimulation*);
    ~CGeomRasterGrid(void);
 
-   CSimulation * pGetSim(void);
+   CSimulation* pGetSim(void);
 // CGeomCell* pGetCell(int const, int const);
    int nCreateGrid(void);
 };

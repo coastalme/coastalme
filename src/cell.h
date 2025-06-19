@@ -23,7 +23,7 @@
 
    You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-   ===============================================================================================================================*/
+===============================================================================================================================*/
 #include <vector>
 using std::vector;
 
@@ -264,6 +264,11 @@ public:
 
    void SetPolygonID(int const);
    int nGetPolygonID(void) const;
+
+   void SetPolygonCoastID(int const);
+   int nGetPolygonCoastID(void) const;
+
+   void SetCoastAndPolygonID(int const, int const);
 
    CRWCellLandform * pGetLandform(void);
 

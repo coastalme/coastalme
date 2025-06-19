@@ -20,7 +20,7 @@
 
    You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-   ===============================================================================================================================*/
+===============================================================================================================================*/
 #include <iostream>
 using std::cout;
 using std::cerr;
@@ -87,7 +87,7 @@ using std::ios;
 //===============================================================================================================================
 //! This is part of a C++ library from http://people.sc.fsu.edu/~jburkardt/cpp_src/hermite_cubic/hermite_cubic.html. It demonstrates the use of cubic polynomials in the Hermite form: r8vec_bracket3() finds the interval containing or nearest to a given value
 //===============================================================================================================================
-void r8vec_bracket3(int const n, double const * t, double const tval, int* left)
+void r8vec_bracket3(int const n, double const* t, double const tval, int* left)
 {
    int high;
    int low;
@@ -270,7 +270,7 @@ void r8vec_bracket3(int const n, double const * t, double const tval, int* left)
 //
 //===============================================================================================================================
 //! This is part of a C++ library from http://people.sc.fsu.edu/~jburkardt/cpp_src/hermite_cubic/hermite_cubic.html. It demonstrates the use of cubic polynomials in the Hermite form: hermite_cubic_spline_value() evaluates a Hermite cubic spline//===============================================================================================================================
-void hermite_cubic_value(double const x1, double const f1, double const d1, double const x2, double const f2, double const d2, int const n, double const * x, double* f, double* d, double* s, double* t)
+void hermite_cubic_value(double const x1, double const f1, double const d1, double const x2, double const f2, double const d2, int const n, double const* x, double* f, double* d, double* s, double* t)
 {
    double c2;
    double c3;

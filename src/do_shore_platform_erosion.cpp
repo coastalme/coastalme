@@ -20,7 +20,7 @@
 
    You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-   ==============================================================================================================================*/
+==============================================================================================================================*/
 #include <assert.h>
 
 #include <cmath>
@@ -108,7 +108,7 @@ int CSimulation::nDoAllShorePlatFormErosion(void)
       // Calculate potential platform erosion along each coastline-normal profile, do in down-coast sequence
       for (int nn = 0; nn < nNumProfiles; nn++)
       {
-         CGeomProfile * pProfile;
+         CGeomProfile* pProfile;
 
          if (bDownCoast)
             pProfile = m_VCoast[nCoast].pGetProfileWithDownCoastSeq(nn);
@@ -125,7 +125,7 @@ int CSimulation::nDoAllShorePlatFormErosion(void)
       // Calculate potential platform erosion between the coastline-normal profiles. Do this in down-coast sequence
       for (int nn = 0; nn < nNumProfiles - 1; nn++)
       {
-         CGeomProfile * pProfile = m_VCoast[nCoast].pGetProfileWithDownCoastSeq(nn);
+         CGeomProfile* pProfile = m_VCoast[nCoast].pGetProfileWithDownCoastSeq(nn);
 
          // Calculate potential erosion for sea cells between this profile and the next profile (or up to the edge of the grid) on these cells
          int nRet = nCalcPotentialPlatformErosionBetweenProfiles(nCoast, pProfile, DIRECTION_DOWNCOAST);
@@ -173,7 +173,7 @@ int CSimulation::nDoAllShorePlatFormErosion(void)
 //===============================================================================================================================
 //! Calculates potential (i.e. unconstrained by available sediment) erosional lowering of the shore platform for a single coastline-normal profile, due to wave action. This routine uses a behavioural rule to modify the original surface elevation profile geometry, in which erosion rate/slope = f(d/Db) based on Walkden & Hall (2005). Originally coded in Matlab by Andres Payo
 //===============================================================================================================================
-int CSimulation::nCalcPotentialPlatformErosionOnProfile(int const nCoast, CGeomProfile * pProfile)
+int CSimulation::nCalcPotentialPlatformErosionOnProfile(int const nCoast, CGeomProfile* pProfile)
 {
    // Only work on this profile if it is problem-free TODO 024 Or if it has just hit dry land?
    if (! pProfile->bOKIncStartAndEndOfCoast())               // || (pProfile->nGetProblemCode() == PROFILE_DRYLAND))
@@ -409,7 +409,7 @@ int CSimulation::nCalcPotentialPlatformErosionOnProfile(int const nCoast, CGeomP
 //===============================================================================================================================
 //! Calculates potential platform erosion on cells to one side of a given coastline-normal profile, up to the next profile
 //===============================================================================================================================
-int CSimulation::nCalcPotentialPlatformErosionBetweenProfiles(int const nCoast, CGeomProfile * pProfile, int const nDirection)
+int CSimulation::nCalcPotentialPlatformErosionBetweenProfiles(int const nCoast, CGeomProfile* pProfile, int const nDirection)
 {
    // Only work on this profile if it is problem-free
    if (! pProfile->bOKIncStartAndEndOfCoast())
@@ -1039,7 +1039,7 @@ void CSimulation::DoActualPlatformErosionOnCell(int const nX, int const nY)
 //===============================================================================================================================
 //! Creates a look-up table for erosion potential, given depth over DB
 //===============================================================================================================================
-bool CSimulation::bCreateErosionPotentialLookUp(vector<double>* VdDepthOverDBIn, vector<double>* VdErosionPotentialIn, vector<double>* VdErosionPotentialFirstDerivIn)
+bool CSimulation::bCreateErosionPotentialLookUp(vector<double> *VdDepthOverDBIn, vector<double> *VdErosionPotentialIn, vector<double> *VdErosionPotentialFirstDerivIn)
 {
    // Set up a temporary vector to hold the incremental DepthOverDB values
    vector<double> VdDepthOverDB;
@@ -1286,7 +1286,7 @@ void CSimulation::FillPotentialPlatformErosionHoles(void)
 //===============================================================================================================================
 //! Constructs a parallel coastline-normal profile
 //===============================================================================================================================
-void CSimulation::ConstructParallelProfile(int const nProfileStartX, int const nProfileStartY, int const nParCoastX, int const nParCoastY, int const nProfSize, vector<CGeom2DIPoint>* const pPtViGridProfile, vector<CGeom2DIPoint>* pPtiVGridParProfile, vector<CGeom2DPoint>* pPtVExtCRSParProfile)
+void CSimulation::ConstructParallelProfile(int const nProfileStartX, int const nProfileStartY, int const nParCoastX, int const nParCoastY, int const nProfSize, vector<CGeom2DIPoint> *const pPtViGridProfile, vector<CGeom2DIPoint> *pPtiVGridParProfile, vector<CGeom2DPoint> *pPtVExtCRSParProfile)
 {
    // OK, we have the coastline start point for the parallel profile. Now construct a temporary profile, parallel to the coastline-normal profile, starting from this point
    int nXOffset = nParCoastX - nProfileStartX;

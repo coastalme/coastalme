@@ -20,7 +20,7 @@
 
    You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-   ==============================================================================================================================*/
+==============================================================================================================================*/
 #include <cfloat>
 
 #include <iostream>
@@ -86,7 +86,7 @@ void CSimulation::DoCoastCurvature(int const nCoast, int const nHandedness)
    }
 
    // Now calculate the mean and standard deviation of each set of curvature values
-   vector<double>* pVDetailed = m_VCoast[nCoast].pVGetDetailedCurvature();
+   vector<double> *pVDetailed = m_VCoast[nCoast].pVGetDetailedCurvature();
 
    double dSum = accumulate(pVDetailed->begin(), pVDetailed->end(), 0.0);
    double dMean = dSum / static_cast<double>(pVDetailed->size());
@@ -98,7 +98,7 @@ void CSimulation::DoCoastCurvature(int const nCoast, int const nHandedness)
 
    m_VCoast[nCoast].SetDetailedCurvatureSTD(dSTD);
 
-   vector<double>* pVSmooth = m_VCoast[nCoast].pVGetSmoothCurvature();
+   vector<double> *pVSmooth = m_VCoast[nCoast].pVGetSmoothCurvature();
    dSum = accumulate(pVSmooth->begin(), pVSmooth->end(), 0.0),
    dMean = dSum / static_cast<double>(pVSmooth->size());
 
@@ -156,7 +156,7 @@ void CSimulation::DoCoastCurvature(int const nCoast, int const nHandedness)
 //===============================================================================================================================
 //! Calculates signed Menger curvature (https://en.wikipedia.org/wiki/Menger_curvature#Definition) from three points on a line. Returns +ve values for concave, -ve for convex, and zero if the points are co-linear. Curvature is multiplied by 1000 to give easier-to-read numbers
 //===============================================================================================================================
-double CSimulation::dCalcCurvature(int const nHandedness, CGeom2DPoint const * pPtBefore, CGeom2DPoint const * pPtThis, CGeom2DPoint const * pPtAfter)
+double CSimulation::dCalcCurvature(int const nHandedness, CGeom2DPoint const* pPtBefore, CGeom2DPoint const* pPtThis, CGeom2DPoint const* pPtAfter)
 {
    double dAreax4 = 2 * dTriangleAreax2(pPtBefore, pPtThis, pPtAfter);
    double dDist1 = dGetDistanceBetween(pPtBefore, pPtThis);

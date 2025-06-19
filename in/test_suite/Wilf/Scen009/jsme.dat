@@ -27,7 +27,7 @@ Output per-timestep results in CSV format?                                      
 Simulation start date and time                                          [hh-mm-ss dd/mm/yyyy]: 00-00-00 01/01/1999
 Duration of simulation                                           [hours, days, months, years]: 10 years
 Timestep (hours or days)                                                                     : 6 hours
-Save times (after simulation start)                             [hours, days, months, years ]: 6 12 18 24 30 36 42 48 60 66 72 78 84 90 96 102 108 114 120 months
+Save times (after simulation start)                             [hours, days, months, years ]: 1 month
 
 Random number seed(s)                                                                        : 280764
 

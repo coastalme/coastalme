@@ -20,7 +20,7 @@
 
    You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-   ==============================================================================================================================*/
+==============================================================================================================================*/
 #include <assert.h>
 
 #include <cmath>
@@ -261,7 +261,7 @@ int CSimulation::nDoAllActualBeachErosionAndDeposition(void)
 
       for (int nn = 0; nn < m_VCoast[nCoast].nGetNumPolygons(); nn++)
       {
-         CGeomCoastPolygon const * pPolygon = m_VCoast[nCoast].pGetPolygon(nn);
+         CGeomCoastPolygon const* pPolygon = m_VCoast[nCoast].pGetPolygon(nn);
          nVPolyAndAdj.clear();
 
          // The first [0] nVPolyAndAdj array item is the polygon's global ID
@@ -326,7 +326,7 @@ int CSimulation::nDoAllActualBeachErosionAndDeposition(void)
             if (it != VnSourcePolygons.end())
             {
                // Uh-oh: this adjacent polygon is in the list of previously-processed source polygons. So store the coast ID numbers of the polygons with circularity in both polygons
-               CGeomCoastPolygon * pPoly = m_VCoast[nCoast].pGetPolygon(nThisPoly);
+               CGeomCoastPolygon* pPoly = m_VCoast[nCoast].pGetPolygon(nThisPoly);
                pPoly->AddCircularity(nToFind);
 
                pPoly = m_VCoast[nCoast].pGetPolygon(nToFind);
@@ -344,7 +344,7 @@ int CSimulation::nDoAllActualBeachErosionAndDeposition(void)
       for (int nPoly = 0; nPoly < nNumPolygons; nPoly++)
       {
          int nPolygon = nVVPolyAndAdjacent[nPoly][1];
-         CGeomCoastPolygon * pPolygon = m_VCoast[nCoast].pGetPolygon(nPolygon);
+         CGeomCoastPolygon* pPolygon = m_VCoast[nCoast].pGetPolygon(nPolygon);
 
          // // DEBUG CODE =====================
          // int nUpCoastProfile = pPolygon->nGetUpCoastProfile();
@@ -624,7 +624,7 @@ int CSimulation::nDoAllActualBeachErosionAndDeposition(void)
                            {
                               // Re-circulating grid edges, so adjust the sediment exported to the polygon at the up-coast end of this coastline
                               int nOtherEndPoly = 0;
-                              CGeomCoastPolygon * pOtherEndPoly = m_VCoast[nCoast].pGetPolygon(nOtherEndPoly);
+                              CGeomCoastPolygon* pOtherEndPoly = m_VCoast[nCoast].pGetPolygon(nOtherEndPoly);
 
                               if (dSandEroded > 0)
                               {
@@ -644,7 +644,7 @@ int CSimulation::nDoAllActualBeachErosionAndDeposition(void)
                      else
                      {
                         // This polygon is not at the grid edge
-                        CGeomCoastPolygon * pAdjPolygon = m_VCoast[nCoast].pGetPolygon(nAdjPoly);
+                        CGeomCoastPolygon* pAdjPolygon = m_VCoast[nCoast].pGetPolygon(nAdjPoly);
                         double dBoundaryShare = pPolygon->dGetDownCoastAdjacentPolygonBoundaryShare(nn);
 
                         if (dSandEroded > 0)
@@ -720,7 +720,7 @@ int CSimulation::nDoAllActualBeachErosionAndDeposition(void)
                            {
                               // Re-circulating grid edges, so adjust the sediment exported to the polygon at the up-coast end of this coastline TODO 016 Check whether this causes mass balance problems, depending on the sequence of polygon processing
                               int nOtherEndPoly = 0;
-                              CGeomCoastPolygon * pOtherEndPoly = m_VCoast[nCoast].pGetPolygon(nOtherEndPoly);
+                              CGeomCoastPolygon* pOtherEndPoly = m_VCoast[nCoast].pGetPolygon(nOtherEndPoly);
 
                               if (dSandEroded > 0)
                               {
@@ -740,7 +740,7 @@ int CSimulation::nDoAllActualBeachErosionAndDeposition(void)
                      else
                      {
                         // This polygon is not at the grid edge
-                        CGeomCoastPolygon * pAdjPolygon = m_VCoast[nCoast].pGetPolygon(nAdjPoly);
+                        CGeomCoastPolygon* pAdjPolygon = m_VCoast[nCoast].pGetPolygon(nAdjPoly);
                         double dBoundaryShare = pPolygon->dGetUpCoastAdjacentPolygonBoundaryShare(nn);
 
                         if (dSandEroded > 0)
@@ -819,7 +819,7 @@ int CSimulation::nDoAllActualBeachErosionAndDeposition(void)
       for (int nn = nPolygons - 1; nn >= 0; nn--)
       {
          int nThisPoly = nVVPolyAndAdjacent[nn][1];
-         CGeomCoastPolygon * pThisPolygon = m_VCoast[nCoast].pGetPolygon(nThisPoly);
+         CGeomCoastPolygon* pThisPolygon = m_VCoast[nCoast].pGetPolygon(nThisPoly);
 
          double dSandToDepositOnPoly = pThisPolygon->dGetToDoBeachDepositionUnconsSand();
 
@@ -878,7 +878,7 @@ void CSimulation::AllPolygonsUpdateStoredUncons(int const nCoast)
 
    for (int nPoly = 0; nPoly < nNumPolygons; nPoly++)
    {
-      CGeomCoastPolygon * pPolygon = m_VCoast[nCoast].pGetPolygon(nPoly);
+      CGeomCoastPolygon* pPolygon = m_VCoast[nCoast].pGetPolygon(nPoly);
 
       // Only include unconsolidated fine sediment from sediment input events, don't include any unconsolidated fine sediment from platform erosion and cliff collapse since these have gone to suspension
       double dFine = pPolygon->dGetSedimentInputUnconsFine();

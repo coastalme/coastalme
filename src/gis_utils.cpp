@@ -34,7 +34,7 @@
 
    You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-   ===============================================================================================================================*/
+===============================================================================================================================*/
 #include <assert.h>
 
 #include <iostream>
@@ -77,7 +77,7 @@ double CSimulation::dGridCentroidYToExtCRSY(int const nGridY) const
 //===============================================================================================================================
 //! Transforms a pointer to a CGeom2DIPoint in the raster grid CRS (assumed to be the centroid of a cell) to the equivalent CGeom2DPoint in the external CRS
 //===============================================================================================================================
-CGeom2DPoint CSimulation::PtGridCentroidToExt(CGeom2DIPoint const * pPtiIn) const
+CGeom2DPoint CSimulation::PtGridCentroidToExt(CGeom2DIPoint const* pPtiIn) const
 {
    // TODO 064
    double dX = m_dGeoTransform[0] + (pPtiIn->nGetX() * m_dGeoTransform[1]) + (m_dGeoTransform[1] / 2);
@@ -125,7 +125,7 @@ double CSimulation::dExtCRSYToGridY(double const dExtCRSY) const
 //===============================================================================================================================
 //! Transforms a pointer to a CGeom2DPoint in the external CRS to the equivalent CGeom2DIPoint in the raster grid CRS (both values rounded). The result may be outside the grid
 //===============================================================================================================================
-CGeom2DIPoint CSimulation::PtiExtCRSToGridRound(CGeom2DPoint const * pPtIn) const
+CGeom2DIPoint CSimulation::PtiExtCRSToGridRound(CGeom2DPoint const* pPtIn) const
 {
    // TODO 064
    int nX = nRound(((pPtIn->dGetX() - m_dGeoTransform[0]) / m_dGeoTransform[1]) - 1);
@@ -137,7 +137,7 @@ CGeom2DIPoint CSimulation::PtiExtCRSToGridRound(CGeom2DPoint const * pPtIn) cons
 //===============================================================================================================================
 //! Returns the distance (in external CRS) between two points
 //===============================================================================================================================
-double CSimulation::dGetDistanceBetween(CGeom2DPoint const * Pt1, CGeom2DPoint const * Pt2)
+double CSimulation::dGetDistanceBetween(CGeom2DPoint const* Pt1, CGeom2DPoint const* Pt2)
 {
    double dXDist = Pt1->dGetX() - Pt2->dGetX();
    double dYDist = Pt1->dGetY() - Pt2->dGetY();
@@ -148,7 +148,7 @@ double CSimulation::dGetDistanceBetween(CGeom2DPoint const * Pt1, CGeom2DPoint c
 //===============================================================================================================================
 //! Returns the distance (in grid units) between two grid cell points
 //===============================================================================================================================
-double CSimulation::dGetDistanceBetween(CGeom2DIPoint const * Pti1, CGeom2DIPoint const * Pti2)
+double CSimulation::dGetDistanceBetween(CGeom2DIPoint const* Pti1, CGeom2DIPoint const* Pti2)
 {
    double dXDist = Pti1->nGetX() - Pti2->nGetX();
    double dYDist = Pti1->nGetY() - Pti2->nGetY();
@@ -159,7 +159,7 @@ double CSimulation::dGetDistanceBetween(CGeom2DIPoint const * Pti1, CGeom2DIPoin
 //===============================================================================================================================
 //! Returns twice the signed area of a triangle
 //===============================================================================================================================
-double CSimulation::dTriangleAreax2(CGeom2DPoint const * pPtA, CGeom2DPoint const * pPtB, CGeom2DPoint const * pPtC)
+double CSimulation::dTriangleAreax2(CGeom2DPoint const* pPtA, CGeom2DPoint const* pPtB, CGeom2DPoint const* pPtC)
 {
    return (pPtB->dGetX() - pPtA->dGetX()) * (pPtC->dGetY() - pPtA->dGetY()) - (pPtB->dGetY() - pPtA->dGetY()) * (pPtC->dGetX() - pPtA->dGetX());
 }
@@ -184,7 +184,7 @@ bool CSimulation::bIsWithinValidGrid(int const nX, int const nY) const
 //===============================================================================================================================
 //! Checks whether the supplied point (a reference to a CGeom2DIPoint, in the grid CRS) is within the raster grid, and is a valid cell (i.e. the basement DEM is not NODATA)
 //===============================================================================================================================
-bool CSimulation::bIsWithinValidGrid(CGeom2DIPoint const * Pti) const
+bool CSimulation::bIsWithinValidGrid(CGeom2DIPoint const* Pti) const
 {
    int nX = Pti->nGetX();
    int nY = Pti->nGetY();
@@ -195,7 +195,7 @@ bool CSimulation::bIsWithinValidGrid(CGeom2DIPoint const * Pti) const
 //===============================================================================================================================
 //! Constrains the second supplied point (both are CGeom2DIPoints, in the grid CRS) to be a valid cell within the raster grid
 //===============================================================================================================================
-void CSimulation::KeepWithinValidGrid(CGeom2DIPoint const * Pti0, CGeom2DIPoint * Pti1) const
+void CSimulation::KeepWithinValidGrid(CGeom2DIPoint const* Pti0, CGeom2DIPoint* Pti1) const
 {
    KeepWithinValidGrid(Pti0->nGetX(), Pti0->nGetY(), * Pti1->pnGetX(), * Pti1->pnGetY());
 }
@@ -203,7 +203,7 @@ void CSimulation::KeepWithinValidGrid(CGeom2DIPoint const * Pti0, CGeom2DIPoint 
 //===============================================================================================================================
 //! Given two points in the grid CRS (the points assumed not to be coincident), this routine modifies the value of the second point so that it is on a line joining the original two points and is a valid cell within the raster grid. However in some cases (e.g. if the first point is at the edge of the valid part of the raster grid) then the second cell will be coincident with the first cell, and the line joining them is thus of zero length. The calling routine has to be able to handle this
 //===============================================================================================================================
-void CSimulation::KeepWithinValidGrid(int nX0, int nY0, int& nX1, int& nY1) const
+void CSimulation::KeepWithinValidGrid(int nX0, int nY0, int &nX1, int &nY1) const
 {
    // Safety check: make sure that the first point is within the valid grid
    if (nX0 >= m_nXGridSize)
@@ -387,7 +387,7 @@ double CSimulation::dKeepWithin360(double const dAngle)
 //===============================================================================================================================
 //! Returns a point (external CRS) which is the average of (i.e. is midway between) two other external CRS points
 //===============================================================================================================================
-CGeom2DPoint CSimulation::PtAverage(CGeom2DPoint const * pPt1, CGeom2DPoint const * pPt2)
+CGeom2DPoint CSimulation::PtAverage(CGeom2DPoint const* pPt1, CGeom2DPoint const* pPt2)
 {
    double dPt1X = pPt1->dGetX();
    double dPt1Y = pPt1->dGetY();
@@ -417,7 +417,7 @@ CGeom2DPoint CSimulation::PtAverage(CGeom2DPoint const * pPt1, CGeom2DPoint cons
 //===============================================================================================================================
 //! Returns an integer point (grid CRS) which is the weighted average of two other grid CRS integer points. The weight must be <= 1, if the weight is < 0.5 then the output point is closer to the first point, if the weight is > 0.5 then the output point is closer to the second point
 //===============================================================================================================================
-CGeom2DIPoint CSimulation::PtiWeightedAverage(CGeom2DIPoint const * pPti1, CGeom2DIPoint const * pPti2, double const dWeight)
+CGeom2DIPoint CSimulation::PtiWeightedAverage(CGeom2DIPoint const* pPti1, CGeom2DIPoint const* pPti2, double const dWeight)
 {
    int nPti1X = pPti1->nGetX();
    int nPti1Y = pPti1->nGetY();
@@ -434,7 +434,7 @@ CGeom2DIPoint CSimulation::PtiWeightedAverage(CGeom2DIPoint const * pPti1, CGeom
 //===============================================================================================================================
 //! Returns a point (external CRS) which is the average of a vector of external CRS points
 //===============================================================================================================================
-CGeom2DPoint CSimulation::PtAverage(vector<CGeom2DPoint>* pVIn)
+CGeom2DPoint CSimulation::PtAverage(vector<CGeom2DPoint> *pVIn)
 {
    int nSize = static_cast<int>(pVIn->size());
 
@@ -483,7 +483,7 @@ CGeom2DPoint CSimulation::PtAverage(vector<CGeom2DPoint>* pVIn)
 //===============================================================================================================================
 //! Returns an integer point (grid CRS) which is the centroid of a polygon, given by a vector of grid CRS points. From https://stackoverflow.com/questions/2792443/finding-the-centroid-of-a-polygon
 //===============================================================================================================================
-CGeom2DIPoint CSimulation::PtiPolygonCentroid(vector<CGeom2DIPoint>* pVIn)
+CGeom2DIPoint CSimulation::PtiPolygonCentroid(vector<CGeom2DIPoint> *pVIn)
 {
    CGeom2DIPoint PtiCentroid(0, 0);
    int nSize = static_cast<int>(pVIn->size());
@@ -528,7 +528,7 @@ CGeom2DIPoint CSimulation::PtiPolygonCentroid(vector<CGeom2DIPoint>* pVIn)
 
    Returns a vector which is perpendicular to an existing vector
 
-   ===============================================================================================================================*/
+===============================================================================================================================*/
 // vector<CGeom2DPoint> CSimulation::VGetPerpendicular(CGeom2DPoint const* PtStart, CGeom2DPoint const* PtNext, double const dDesiredLength, int const nHandedness)
 // {
 //    // Returns a two-point vector which passes through PtStart with a scaled length
@@ -560,7 +560,7 @@ CGeom2DIPoint CSimulation::PtiPolygonCentroid(vector<CGeom2DIPoint>* pVIn)
 //===============================================================================================================================
 //! Returns a CGeom2DPoint which is the 'other' point of a two-point vector passing through PtStart, and which is perpendicular to the two-point vector from PtStart to PtNext
 //===============================================================================================================================
-CGeom2DPoint CSimulation::PtGetPerpendicular(CGeom2DPoint const * PtStart, CGeom2DPoint const * PtNext, double const dDesiredLength, int const nHandedness)
+CGeom2DPoint CSimulation::PtGetPerpendicular(CGeom2DPoint const* PtStart, CGeom2DPoint const* PtNext, double const dDesiredLength, int const nHandedness)
 {
    double dXLen = PtNext->dGetX() - PtStart->dGetX();
    double dYLen = PtNext->dGetY() - PtStart->dGetY();
@@ -598,7 +598,7 @@ CGeom2DPoint CSimulation::PtGetPerpendicular(CGeom2DPoint const * PtStart, CGeom
 //===============================================================================================================================
 //! Returns a CGeom2DIPoint (grid CRS) which is the 'other' point of a two-point vector passing through PtiStart, and which is perpendicular to the two-point vector from PtiStart to PtiNext
 //===============================================================================================================================
-CGeom2DIPoint CSimulation::PtiGetPerpendicular(CGeom2DIPoint const * PtiStart, CGeom2DIPoint const * PtiNext, double const dDesiredLength, int const nHandedness)
+CGeom2DIPoint CSimulation::PtiGetPerpendicular(CGeom2DIPoint const* PtiStart, CGeom2DIPoint const* PtiNext, double const dDesiredLength, int const nHandedness)
 {
    double dXLen = PtiNext->nGetX() - PtiStart->nGetX();
    double dYLen = PtiNext->nGetY() - PtiStart->nGetY();
@@ -674,7 +674,7 @@ CGeom2DIPoint CSimulation::PtiGetPerpendicular(int const nStartX, int const nSta
 //===============================================================================================================================
 //! Returns the signed angle BAC (in radians) subtended between three CGeom2DIPoints B A C. From http://stackoverflow.com/questions/3057448/angle-between-3-vertices
 //===============================================================================================================================
-double CSimulation::dAngleSubtended(CGeom2DIPoint const * pPtiA, CGeom2DIPoint const * pPtiB, CGeom2DIPoint const * pPtiC)
+double CSimulation::dAngleSubtended(CGeom2DIPoint const* pPtiA, CGeom2DIPoint const* pPtiB, CGeom2DIPoint const* pPtiC)
 {
    double
    dXDistBtoA = pPtiB->nGetX() - pPtiA->nGetX(),
@@ -1410,7 +1410,7 @@ bool CSimulation::bSaveAllVectorGISFiles(void)
 //===============================================================================================================================
 //! Finds the max and min values in order to scale raster output if we cannot write doubles
 //===============================================================================================================================
-void CSimulation::GetRasterOutputMinMax(int const nDataItem, double& dMin, double& dMax, int const nLayer, double const dElev)
+void CSimulation::GetRasterOutputMinMax(int const nDataItem, double &dMin, double &dMax, int const nLayer, double const dElev)
 {
    // If this is a binary mask layer, we already know the max and min values
    if ((nDataItem == RASTER_PLOT_POTENTIAL_PLATFORM_EROSION_MASK) ||

@@ -20,7 +20,7 @@
 
    You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-   ==============================================================================================================================*/
+==============================================================================================================================*/
 #include <assert.h>
 
 #ifdef _WIN32
@@ -87,7 +87,7 @@ using std::inner_product;
 //===============================================================================================================================
 //! Handles command-line parameters
 //===============================================================================================================================
-int CSimulation::nHandleCommandLineParams(int nArg, char const * pcArgv[])
+int CSimulation::nHandleCommandLineParams(int nArg, char const* pcArgv[])
 {
    if ((! isatty(fileno(stdout))) || (! isatty(fileno(stderr))))
       // Running with stdout or stderr not a tty, so either redirected or running as a background job. Ignore all command line parameters
@@ -215,7 +215,7 @@ void CSimulation::StartClock(void)
 //===============================================================================================================================
 //! Finds the folder (directory) in which the CoastalME executable is located
 //===============================================================================================================================
-bool CSimulation::bFindExeDir(char const * pcArg)
+bool CSimulation::bFindExeDir(char const* pcArg)
 {
    string strTmp;
    char szBuf[BUF_SIZE] = "";
@@ -275,7 +275,7 @@ void CSimulation::AnnounceLicence(void)
 //===============================================================================================================================
 //! Given a string containing time units, this returns the appropriate multiplier
 //===============================================================================================================================
-double CSimulation::dGetTimeMultiplier(string const * strIn)
+double CSimulation::dGetTimeMultiplier(string const* strIn)
 {
    // First decide what the time units are
    int nTimeUnits = nDoTimeUnits(strIn);
@@ -310,7 +310,7 @@ double CSimulation::dGetTimeMultiplier(string const * strIn)
 //===============================================================================================================================
 //! Given a string containing time units, this sets up the appropriate multiplier and display units for the simulation
 //===============================================================================================================================
-int CSimulation::nDoSimulationTimeMultiplier(string const * strIn)
+int CSimulation::nDoSimulationTimeMultiplier(string const* strIn)
 {
    // First decide what the time units are
    int nTimeUnits = nDoTimeUnits(strIn);
@@ -349,7 +349,7 @@ int CSimulation::nDoSimulationTimeMultiplier(string const * strIn)
 //===============================================================================================================================
 //! This finds time units in a string
 //===============================================================================================================================
-int CSimulation::nDoTimeUnits(string const * strIn)
+int CSimulation::nDoTimeUnits(string const* strIn)
 {
    if (strIn->find("hour") != string::npos)
       return TIME_HOURS;
@@ -2101,11 +2101,11 @@ string CSimulation::strGetErrorText(int const nErr)
          break;
 
       case RTN_ERR_SHADOW_ZONE_FLOOD_FILL_NOGRID:
-         strErr = "start point for flood fill of wave shadow zone is outside grid";
+         strErr = "start point for cell-by-cell fill of wave shadow zone is outside grid";
          break;
 
       case RTN_ERR_SHADOW_ZONE_FLOOD_START_POINT:
-         strErr = "could not find start point for flood fill of wave shadow zone";
+         strErr = "could not find start point for cell-by-cell fill of wave shadow zone";
          break;
 
       case RTN_ERR_CSHORE_EMPTY_PROFILE:
@@ -2305,7 +2305,7 @@ void CSimulation::DoSimulationEnd(int const nRtn)
 //===============================================================================================================================
 //! Changes all forward slashes in the input string to backslashes, leaving the original unchanged
 //===============================================================================================================================
-string CSimulation::pstrChangeToBackslash(string const * strIn)
+string CSimulation::pstrChangeToBackslash(string const* strIn)
 {
    string strOut( * strIn);
    strOut.replace(strOut.begin(), strOut.end(), '/', '\\');
@@ -2315,7 +2315,7 @@ string CSimulation::pstrChangeToBackslash(string const * strIn)
 //===============================================================================================================================
 //! Swaps all backslashes in the input string to forward slashes, leaving the original unchanged
 //===============================================================================================================================
-string CSimulation::pstrChangeToForwardSlash(string const * strIn)
+string CSimulation::pstrChangeToForwardSlash(string const* strIn)
 {
    string strOut( * strIn);
    strOut.replace(strOut.begin(), strOut.end(), '\\', '/');
@@ -2325,7 +2325,7 @@ string CSimulation::pstrChangeToForwardSlash(string const * strIn)
 //===============================================================================================================================
 //! Trims whitespace from the left side of a string, does not change the original string
 //===============================================================================================================================
-string CSimulation::strTrimLeft(string const * strIn)
+string CSimulation::strTrimLeft(string const* strIn)
 {
    // Trim leading spaces
    size_t nStartpos = strIn->find_first_not_of(" \t");
@@ -2340,7 +2340,7 @@ string CSimulation::strTrimLeft(string const * strIn)
 //===============================================================================================================================
 //! Trims whitespace from the right side of a string, does not change the original string
 //===============================================================================================================================
-string CSimulation::strTrimRight(string const * strIn)
+string CSimulation::strTrimRight(string const* strIn)
 {
    string strTmp( * strIn);
 
@@ -2360,7 +2360,7 @@ string CSimulation::strTrimRight(string const * strIn)
 //===============================================================================================================================
 //! Trims whitespace from both sides of a string, does not change the original string
 //===============================================================================================================================
-string CSimulation::strTrim(string const * strIn)
+string CSimulation::strTrim(string const* strIn)
 {
    string strTmp = * strIn;
 
@@ -2385,7 +2385,7 @@ string CSimulation::strTrim(string const * strIn)
 //===============================================================================================================================
 //! Returns the lower case version of an string, leaving the original unchanged
 //===============================================================================================================================
-string CSimulation::strToLower(string const * strIn)
+string CSimulation::strToLower(string const* strIn)
 {
    string strOut = * strIn;
    transform(strIn->begin(), strIn->end(), strOut.begin(), tolower);
@@ -2405,7 +2405,7 @@ string CSimulation::strToLower(string const * strIn)
 //===============================================================================================================================
 //! Returns a string with a substring removed, and with whitespace trimmed
 //===============================================================================================================================
-string CSimulation::strRemoveSubstr(string * pStrIn, string const * pStrSub)
+string CSimulation::strRemoveSubstr(string * pStrIn, string const* pStrSub)
 {
    size_t nPos = pStrIn->find( * pStrSub);
 
@@ -2426,7 +2426,7 @@ string CSimulation::strRemoveSubstr(string * pStrIn, string const * pStrSub)
 //===============================================================================================================================
 //! From http://stackoverflow.com/questions/236129/split-a-string-in-c They implement (approximately) Python's split() function. This first version puts the results into a pre-constructed string vector. It ignores empty items
 //===============================================================================================================================
-vector<string>* CSimulation::VstrSplit(string const * s, char const delim, vector<string>* elems)
+vector<string> *CSimulation::VstrSplit(string const* s, char const delim, vector<string> *elems)
 {
    stringstream ss( * s);
    string item;
@@ -2443,7 +2443,7 @@ vector<string>* CSimulation::VstrSplit(string const * s, char const delim, vecto
 //===============================================================================================================================
 //! From http://stackoverflow.com/questions/236129/split-a-string-in-c They implement (approximately) Python's split() function. This second version returns a new string vector (it calls the first version)
 //===============================================================================================================================
-vector<string> CSimulation::VstrSplit(string const * s, char const delim)
+vector<string> CSimulation::VstrSplit(string const* s, char const delim)
 {
    vector<string> elems;
    VstrSplit(s, delim, & elems);
@@ -2486,7 +2486,7 @@ vector<string> CSimulation::VstrSplit(string const * s, char const delim)
 //===============================================================================================================================
 //! Appends a CGeom2DIPoint to a vector<CGeom2DIPoint>, making sure that the new end point touches the previous end point i.e. that there is no gap between the two points
 //===============================================================================================================================
-void CSimulation::AppendEnsureNoGap(vector<CGeom2DIPoint>* pVPtiPoints, CGeom2DIPoint const * pPti)
+void CSimulation::AppendEnsureNoGap(vector<CGeom2DIPoint> *pVPtiPoints, CGeom2DIPoint const* pPti)
 {
    int
    nX = pPti->nGetX(),
@@ -2525,7 +2525,7 @@ void CSimulation::AppendEnsureNoGap(vector<CGeom2DIPoint>* pVPtiPoints, CGeom2DI
 //===============================================================================================================================
 //! Calculates a Dean equilibrium profile h(y) = A * y^(2/3) where h(y) is the distance below the highest point in the Dean profile at a distance y from the landward start of the profile
 //===============================================================================================================================
-void CSimulation::CalcDeanProfile(vector<double>* pdVDeanProfile, double const dInc, double const dDeanTopElev, double const dA, bool const bDeposition, int const nSeawardOffset, double const dStartCellElev)
+void CSimulation::CalcDeanProfile(vector<double> *pdVDeanProfile, double const dInc, double const dDeanTopElev, double const dA, bool const bDeposition, int const nSeawardOffset, double const dStartCellElev)
 {
    double dDistFromProfileStart = 0;
 
@@ -2566,7 +2566,7 @@ void CSimulation::CalcDeanProfile(vector<double>* pdVDeanProfile, double const d
 //===============================================================================================================================
 //! Calculate the total elevation difference between every point in two elevation profiles (first profile - second profile)
 //===============================================================================================================================
-double CSimulation::dSubtractProfiles(vector<double> const * pdVFirstProfile, vector<double> const * pdVSecondProfile, vector<bool> const * pbVIsValid)
+double CSimulation::dSubtractProfiles(vector<double> const* pdVFirstProfile, vector<double> const* pdVSecondProfile, vector<bool> const* pbVIsValid)
 {
    double dTotElevDiff = 0;
 
@@ -2645,7 +2645,7 @@ void CSimulation::CalcDepthOfClosure(void)
 // //===============================================================================================================================
 // //! Tests a reference to a string to see if it is numeric (modified from https://tfetimes.com/c-determine-if-a-string-is-numeric/)
 // //===============================================================================================================================
-// bool CSimulation::bIsNumeric(string const *strIn)
+// bool CSimulation::bIsNumeric(string const*strIn)
 // {
 // return all_of(strIn->begin(), strIn->end(), isdigit);
 // }
@@ -2653,7 +2653,7 @@ void CSimulation::CalcDepthOfClosure(void)
 //===============================================================================================================================
 //! Parses a date string into days, months, and years, and checks each of them
 //===============================================================================================================================
-bool CSimulation::bParseDate(string const * strDate, int& nDay, int& nMonth, int& nYear)
+bool CSimulation::bParseDate(string const* strDate, int &nDay, int &nMonth, int &nYear)
 {
    vector<string> VstrTmp = VstrSplit(strDate, SLASH);
 
@@ -2714,7 +2714,7 @@ bool CSimulation::bParseDate(string const * strDate, int& nDay, int& nMonth, int
 //===============================================================================================================================
 //! Parses a time string into hours, minutes, and seconds, and checks each of them
 //===============================================================================================================================
-bool CSimulation::bParseTime(string const * strTime, int& nHour, int& nMin, int& nSec)
+bool CSimulation::bParseTime(string const* strTime, int &nHour, int &nMin, int &nSec)
 {
    vector<string> VstrTmp = VstrSplit(strTime, DASH);
 
@@ -2775,7 +2775,7 @@ bool CSimulation::bParseTime(string const * strTime, int& nHour, int& nMin, int&
 //===============================================================================================================================
 //! For sediment input events, parses a string that may be relative (a number of hours or days after the start of the simulation), or absolute (a time/date in the format hh-mm-ss dd/mm/yyyy). Returns the timestep in which the sediment input event occurs
 //===============================================================================================================================
-unsigned long CSimulation::ulConvertToTimestep(string const * pstrIn) const
+unsigned long CSimulation::ulConvertToTimestep(string const* pstrIn) const
 {
    unsigned long ulTimeStep = 0;
 
@@ -2934,7 +2934,7 @@ int CSimulation::nGetCoastPolygonSize(void) const
 //===============================================================================================================================
 //! Returns a pointer to a coast polygon, in down-coast sequence
 //===============================================================================================================================
-CGeomCoastPolygon * CSimulation::pGetPolygon(int const nPoly) const
+CGeomCoastPolygon* CSimulation::pGetPolygon(int const nPoly) const
 {
    // TODO 055 No check to see if nPoly < m_pVCoastPolygon.size()
    return m_pVCoastPolygon[nPoly];
@@ -2943,7 +2943,7 @@ CGeomCoastPolygon * CSimulation::pGetPolygon(int const nPoly) const
 //===============================================================================================================================
 //! Appends a pointer to a coast polygon, to the down-coast coast polygon vector
 //===============================================================================================================================
-void CSimulation::AppendPolygon(CGeomCoastPolygon * pPolygon)
+void CSimulation::AppendPolygon(CGeomCoastPolygon* pPolygon)
 {
    m_pVCoastPolygon.push_back(pPolygon);
 }

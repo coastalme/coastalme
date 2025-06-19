@@ -19,7 +19,7 @@
 
    You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-   ===============================================================================================================================*/
+===============================================================================================================================*/
 #include <assert.h>
 #include <cfloat>
 #include <iostream>
@@ -33,7 +33,7 @@ using namespace std;
 //! From https://cplusplus.com/forum/general/216928/
 //! Returns interpolated value at x from parallel arrays (VdXdata, VdYdata). Assumes that VdXdata has at least two elements, is sorted and is strictly monotonically increasing. The boolean argument extrapolate determines behaviour beyond ends of array (if needed). For this version, both lots of data are doubles
 //===============================================================================================================================
-double dGetInterpolatedValue(vector<double> const * pVdXdata, vector<double> const * pVdYdata, double dX, bool bExtrapolate)
+double dGetInterpolatedValue(vector<double> const* pVdXdata, vector<double> const* pVdYdata, double dX, bool bExtrapolate)
 {
    int size = static_cast<int>(pVdXdata->size());
 
@@ -73,7 +73,7 @@ double dGetInterpolatedValue(vector<double> const * pVdXdata, vector<double> con
 //! From https://cplusplus.com/forum/general/216928/
 //! Returns interpolated value at x from parallel arrays (VdXdata, VdYdata). Assumes that VdXdata has at least two elements, is sorted and is strictly monotonically increasing. The boolean argument extrapolate determines behaviour beyond ends of array (if needed). For this version, one lot of data is integer and the other is double
 //===============================================================================================================================
-double dGetInterpolatedValue(vector<int> const * pVnXdata, vector<double> const * pVdYdata, int nX, bool bExtrapolate )
+double dGetInterpolatedValue(vector<int> const* pVnXdata, vector<double> const* pVdYdata, int nX, bool bExtrapolate )
 {
    unsigned int nSize = static_cast<unsigned int>(pVnXdata->size());
 
@@ -113,7 +113,7 @@ double dGetInterpolatedValue(vector<int> const * pVnXdata, vector<double> const 
 //===============================================================================================================================
 //! This is used by VdInterpolateCShoreProfileOutput, it returns the index of the value in pVdX which is less than or equal to the absolute difference between dValueIn and the pVdX value
 //===============================================================================================================================
-int nFindIndex(vector<double> const * pVdX, double const dValueIn)
+int nFindIndex(vector<double> const* pVdX, double const dValueIn)
 {
    double dLastValue = DBL_MAX;
    int nIndexFound = 0;
@@ -135,7 +135,7 @@ int nFindIndex(vector<double> const * pVdX, double const dValueIn)
 //===============================================================================================================================
 //! Returns a linearly interpolated vector of doubles, to make CShore profile output compatible with CME. The array pVdY has been output by CShore and so always has length CSHOREARRAYOUTSIZE, whereas all other arrays have sizes which depend on CME at runtime
 //===============================================================================================================================
-vector<double> VdInterpolateCShoreProfileOutput(vector<double> const* pVdX, vector<double> const * pVdY, vector<double> const * pVdXNew)
+vector<double> VdInterpolateCShoreProfileOutput(vector<double> const* pVdX, vector<double> const* pVdY, vector<double> const* pVdXNew)
 {
    int nXSize = static_cast<int>(pVdX->size());
    int nXNewSize = static_cast<int>(pVdXNew->size());

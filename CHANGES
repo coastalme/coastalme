@@ -180,3 +180,12 @@ CoastalME CHANGELOG
          Added Artistic Style code formatter configuration file
          Further code tidying using Artistic Style
 
+1.3.22   Ongoing changes to permit multiple coastlines
+         Changed to clang-format source code formatter
+         Added clang-format configuration file
+         Changed code contribution guidelines
+         Moved some of Manuel's surge/flood code to a separate file
+         Renamed 'flood fill' stuff to 'cell-by-cell fill' to avoid flood/surge confusion
+         Improved safety check in line smoothing
+         Code tidying
+

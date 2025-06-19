@@ -20,7 +20,7 @@
 
    You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-   ===============================================================================================================================*/
+===============================================================================================================================*/
 #include <assert.h>
 
 #include <iostream>
@@ -61,7 +61,7 @@ int CSimulation::nAssignLandformsForAllCoasts(void)
          if (bIsInterventionCell(nX, nY) || m_pRasterGrid->m_Cell[nX][nY].dGetInterventionHeight() > 0)
          {
             // There is, so create an intervention object on the vector coastline with these attributes
-            CACoastLandform * pIntervention = new CRWIntervention( & m_VCoast[nCoast], nCoast, j);
+            CACoastLandform* pIntervention = new CRWIntervention( & m_VCoast[nCoast], nCoast, j);
             m_VCoast[nCoast].AppendCoastLandform(pIntervention);
 
 // LogStream << j << " [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "} " << m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->nGetLFCategory() << " " << m_pRasterGrid->m_Cell[nX][nY].dGetInterventionHeight() << endl;
@@ -109,7 +109,7 @@ int CSimulation::nAssignLandformsForAllCoasts(void)
                m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->SetCliffRemaining(m_dCellSide);
 
                // Create a cliff object on the vector coastline with these attributes
-               CACoastLandform * pCliff = new CRWCliff( & m_VCoast[nCoast], nCoast, j, m_dCellSide, 0, dNotchBaseElev, 0);
+               CACoastLandform* pCliff = new CRWCliff( & m_VCoast[nCoast], nCoast, j, m_dCellSide, 0, dNotchBaseElev, 0);
                m_VCoast[nCoast].AppendCoastLandform(pCliff);
 
 // LogStream << m_ulIter << ": CLIFF CREATED [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "}" << endl;
@@ -118,7 +118,7 @@ int CSimulation::nAssignLandformsForAllCoasts(void)
             else
             {
                // First timestep: we have unconsolidated sediment at SWL, so this is a drift cell: create a drift object on the vector coastline with these attributes
-               CACoastLandform * pDrift = new CRWDrift( & m_VCoast[nCoast], nCoast, j);
+               CACoastLandform* pDrift = new CRWDrift( & m_VCoast[nCoast], nCoast, j);
                m_VCoast[nCoast].AppendCoastLandform(pDrift);
 
                // Safety check
@@ -166,14 +166,14 @@ int CSimulation::nAssignLandformsForAllCoasts(void)
                }
 
                // Create a cliff object on the vector coastline with these attributes
-               CACoastLandform * pCliff = new CRWCliff( & m_VCoast[nCoast], nCoast, j, m_dCellSide, dNotchDepth, dNotchBaseElev, dAccumWaveEnergy);
+               CACoastLandform* pCliff = new CRWCliff( & m_VCoast[nCoast], nCoast, j, m_dCellSide, dNotchDepth, dNotchBaseElev, dAccumWaveEnergy);
                m_VCoast[nCoast].AppendCoastLandform(pCliff);
             }
 
             else
             {
                // We have unconsolidated sediment at SWL, so this is a drift cell: create a drift object on the vector coastline with these attributes
-               CACoastLandform * pDrift = new CRWDrift( & m_VCoast[nCoast], nCoast, j);
+               CACoastLandform* pDrift = new CRWDrift( & m_VCoast[nCoast], nCoast, j);
                m_VCoast[nCoast].AppendCoastLandform(pDrift);
 
                // Safety check
@@ -290,13 +290,13 @@ int CSimulation::nAssignLandformsForAllCoasts(void)
 int CSimulation::nLandformToGrid(int const nCoast, int const nPoint)
 {
    // What is the coastal landform here?
-   CACoastLandform * pCoastLandform = m_VCoast[nCoast].pGetCoastLandform(nPoint);
+   CACoastLandform* pCoastLandform = m_VCoast[nCoast].pGetCoastLandform(nPoint);
    int nCategory = pCoastLandform->nGetLandFormCategory();
 
    if (nCategory == LF_CAT_CLIFF)
    {
       // It's a cliff
-      CRWCliff const * pCliff = reinterpret_cast<CRWCliff*>(pCoastLandform);
+      CRWCliff const* pCliff = reinterpret_cast<CRWCliff*>(pCoastLandform);
 
       int nX = m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(nPoint)->nGetX();
       int nY = m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(nPoint)->nGetY();
@@ -505,7 +505,7 @@ bool CSimulation::bSurroundedByDriftCells(int const nX, int const nY)
 
    if (bIsWithinValidGrid(nXTmp, nYTmp))
    {
-      CRWCellLandform const * pLandform = m_pRasterGrid->m_Cell[nXTmp][nYTmp].pGetLandform();
+      CRWCellLandform const* pLandform = m_pRasterGrid->m_Cell[nXTmp][nYTmp].pGetLandform();
       int nCat = pLandform->nGetLFCategory();
 
       if ((nCat == LF_CAT_DRIFT) || (nCat == LF_CAT_CLIFF))
@@ -518,7 +518,7 @@ bool CSimulation::bSurroundedByDriftCells(int const nX, int const nY)
 
    if (bIsWithinValidGrid(nXTmp, nYTmp))
    {
-      CRWCellLandform const * pLandform = m_pRasterGrid->m_Cell[nXTmp][nYTmp].pGetLandform();
+      CRWCellLandform const* pLandform = m_pRasterGrid->m_Cell[nXTmp][nYTmp].pGetLandform();
       int nCat = pLandform->nGetLFCategory();
 
       if ((nCat == LF_CAT_DRIFT) || (nCat == LF_CAT_CLIFF))
@@ -531,7 +531,7 @@ bool CSimulation::bSurroundedByDriftCells(int const nX, int const nY)
 
    if (bIsWithinValidGrid(nXTmp, nYTmp))
    {
-      CRWCellLandform const * pLandform = m_pRasterGrid->m_Cell[nXTmp][nYTmp].pGetLandform();
+      CRWCellLandform const* pLandform = m_pRasterGrid->m_Cell[nXTmp][nYTmp].pGetLandform();
       int nCat = pLandform->nGetLFCategory();
 
       if ((nCat == LF_CAT_DRIFT) || (nCat == LF_CAT_CLIFF))
@@ -544,7 +544,7 @@ bool CSimulation::bSurroundedByDriftCells(int const nX, int const nY)
 
    if (bIsWithinValidGrid(nXTmp, nYTmp))
    {
-      CRWCellLandform const * pLandform = m_pRasterGrid->m_Cell[nXTmp][nYTmp].pGetLandform();
+      CRWCellLandform const* pLandform = m_pRasterGrid->m_Cell[nXTmp][nYTmp].pGetLandform();
       int nCat = pLandform->nGetLFCategory();
 
       if ((nCat == LF_CAT_DRIFT) || (nCat == LF_CAT_CLIFF))
