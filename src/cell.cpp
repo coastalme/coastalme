@@ -410,9 +410,9 @@ int CGeomCell::nGetDownDriftZoneNumber(void) const
 }
 
 //! Returns a pointer to this cell's CRWCellLandform object
-CRWCellLandform * CGeomCell::pGetLandform(void)
+CRWCellLandform* CGeomCell::pGetLandform(void)
 {
-   return & m_Landform;
+   return &m_Landform;
 }
 
 //! Sets the local slope of the consolidated sediment only
@@ -535,7 +535,7 @@ double CGeomCell::dGetConsSedTopForLayerAboveBasement(int const nLayer) const
 CRWCellLayer * CGeomCell::pGetLayerAboveBasement(int const nLayer)
 {
    // TODO 055 No check that nLayer < size()
-   return & m_VLayerAboveBasement[nLayer];
+   return &m_VLayerAboveBasement[nLayer];
 }
 
 // //! Returns the volume-equivalent elevation of the sediment's top surface for this cell (i.e. if there is a cliff notch, then lower the elevation by the notch's volume)

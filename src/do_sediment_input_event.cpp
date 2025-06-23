@@ -99,7 +99,7 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
          return RTN_ERR_SEDIMENT_INPUT_EVENT;
 
       // All OK, so get landform
-      CRWCellLandform * pLandform = m_pRasterGrid->m_Cell[nPointGridX][nPointGridY].pGetLandform();
+      CRWCellLandform* pLandform = m_pRasterGrid->m_Cell[nPointGridX][nPointGridY].pGetLandform();
 
       // Is this sediment input event at a pre-specified fixed point, or in a block on a coast, or where a line intersects with a coast?
       if (m_bSedimentInputAtPoint)
@@ -261,7 +261,7 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
                   {
                      CGeom2DIPoint PtiTmp = PtiGetPerpendicular(nCoastXBefore, nCoastYBefore, nCoastXAfter, nCoastYAfter, n, nPerpHand);
 
-                     if (bIsWithinValidGrid( & PtiTmp))
+                     if (bIsWithinValidGrid(&PtiTmp))
                      {
                         VPoints.push_back(PtiTmp);
 
@@ -514,7 +514,7 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
          LogStream << m_ulIter << ": line/coast intersection is at [" << nCoastX << "][" << nCoastY << "] = {" << dGridXToExtCRSX(nCoastX) << ", " << dGridYToExtCRSY(nCoastY) << "}" << endl;
 
       // Get landform and top layer
-      CRWCellLandform * pLandform = m_pRasterGrid->m_Cell[nCoastX][nCoastY].pGetLandform();
+      CRWCellLandform* pLandform = m_pRasterGrid->m_Cell[nCoastX][nCoastY].pGetLandform();
       int nTopLayer = m_pRasterGrid->m_Cell[nCoastX][nCoastY].nGetTopLayerAboveBasement();
 
       // Is some fine unconsolidated sediment being input?

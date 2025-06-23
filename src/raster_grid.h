@@ -53,7 +53,7 @@ private:
    CSimulation* m_pSim;
 
    //! The 2D array of m_Cell objects. A c-style 2D array seems to be faster than using 2D STL vectors
-   CGeomCell * * m_Cell;
+   CGeomCell** m_Cell;
 
 protected:
 

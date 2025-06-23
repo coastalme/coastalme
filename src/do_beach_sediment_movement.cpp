@@ -44,7 +44,7 @@ using std::stable_sort;
 //===============================================================================================================================
 //! Function used to sort polygons before doing the polygon-to-polygon source-target pattern. For both LHS and RHS arguments, the first element is the polygon global ID, the second element is the polygn coast ID, the third element is the down- or up-coast direction, and fourth and subsequent elements are adjacent polygon coast IDs in that direction. If the first argument is to be ordered before the second (i.e. the original sequence is to be retained), return true. If the second argument must be ordered before the first (i.e. the arguments must be swapped), return false
 //===============================================================================================================================
-bool bPolygonAndAdjCompare(const vector<int> & nVLeft, const vector<int> & nVRight)
+bool bPolygonAndAdjCompare(const vector<int> &nVLeft, const vector<int> &nVRight)
 {
    // Each row (vector) of this vector-of-vectors is:
    // 0: This-polygon global ID (not used)

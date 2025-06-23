@@ -149,14 +149,14 @@ void CRWCoast::SetCoastlineExtCRS(CGeomLine const* pLCoast)
 //! Returns the coastline (external CRS)
 CGeomLine* CRWCoast::pLGetCoastlineExtCRS(void)
 {
-   return & m_LCoastlineExtCRS;
+   return &m_LCoastlineExtCRS;
 }
 
 //! Returns a given coast point in external CRS
 CGeom2DPoint* CRWCoast::pPtGetCoastlinePointExtCRS(int const n)
 {
    // Point is in external CRS TODO 055 No check to see that n is < m_LCoastlineExtCRS.Size()
-   return & m_LCoastlineExtCRS[n];
+   return &m_LCoastlineExtCRS[n];
 }
 
 // CGeomLine*CRWCoast::pLGetFloodWaveSetupExtCRS(void)
@@ -213,7 +213,7 @@ void CRWCoast::SetCoastlineGridCRS(CGeomILine const* pILCoastCells)
 CGeom2DIPoint* CRWCoast::pPtiGetCellMarkedAsCoastline(int const n)
 {
    // TODO 055 No check to see if n < size()
-   return & m_ILCellsMarkedAsCoastline[n];
+   return &m_ILCellsMarkedAsCoastline[n];
 }
 
 // int CRWCoast::nGetNCellsMarkedAsCoastline(void) const
@@ -306,7 +306,7 @@ int CRWCoast::nGetCoastPointGivenCell(CGeom2DIPoint* pPtiCell)
 
       for (int nCoastPoint = 0; nCoastPoint < m_ILCellsMarkedAsCoastline.nGetSize(); nCoastPoint++)
       {
-         if (m_ILCellsMarkedAsCoastline[nCoastPoint] == & PtiTmp)
+         if (m_ILCellsMarkedAsCoastline[nCoastPoint] == &PtiTmp)
          {
             * pPtiCell = PtiTmp;
             return nCoastPoint;
@@ -334,7 +334,7 @@ void CRWCoast::SetDetailedCurvature(int const nCoastPoint, double const dCurvatu
 //! Returns a pointer to a vector of detailed curvature for all coast points
 vector<double> *CRWCoast::pVGetDetailedCurvature(void)
 {
-   return & m_VdCurvatureDetailed;
+   return &m_VdCurvatureDetailed;
 }
 
 //! Returns the smoothed curvature for a coast point
@@ -354,7 +354,7 @@ void CRWCoast::SetSmoothCurvature(int const nCoastPoint, double const dCurvature
 //! Returns a pointer to a vector of smoothed curvature for all coast points
 vector<double> *CRWCoast::pVGetSmoothCurvature(void)
 {
-   return & m_VdCurvatureSmooth;
+   return &m_VdCurvatureSmooth;
 }
 
 //! Sets the mean of the coast's detailed curvature
@@ -796,7 +796,7 @@ void CRWCoast::AppendShadowBoundary(CGeomLine const* pLBoundary)
 CGeomLine* CRWCoast::pGetShadowBoundary(int const n)
 {
    // TODO 055 No check to see if n < m_LShadowBoundary.size()
-   return & m_LShadowBoundary[n];
+   return &m_LShadowBoundary[n];
 }
 
 //! Returns the number of shadow zone downdrift boundaries on this coast
@@ -815,5 +815,5 @@ void CRWCoast::AppendShadowDowndriftBoundary(CGeomLine const* pLBoundary)
 CGeomLine* CRWCoast::pGetShadowDowndriftBoundary(int const n)
 {
    // TODO 055 No check to see if n < m_LShadowDowndriftBoundary.size()
-   return & m_LShadowDowndriftBoundary[n];
+   return &m_LShadowDowndriftBoundary[n];
 }

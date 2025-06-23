@@ -302,12 +302,12 @@ int CSimulation::nTraceAllFloodCoasts(void)
 
          if (VbPossibleStartCellLHEdge[n])
          {
-            nRet = nTraceFloodCoastLine(n, VnSearchDirection[n], LEFT_HANDED, & VbTraced, & V2DIPossibleStartCell);
+            nRet = nTraceFloodCoastLine(n, VnSearchDirection[n], LEFT_HANDED, &VbTraced, &V2DIPossibleStartCell);
          }
 
          else
          {
-            nRet = nTraceFloodCoastLine(n, VnSearchDirection[n], RIGHT_HANDED, & VbTraced, & V2DIPossibleStartCell);
+            nRet = nTraceFloodCoastLine(n, VnSearchDirection[n], RIGHT_HANDED, &VbTraced, &V2DIPossibleStartCell);
          }
 
          if (nRet == RTN_OK)
@@ -329,7 +329,7 @@ int CSimulation::nTraceAllFloodCoasts(void)
 //===============================================================================================================================
 //! Traces a coastline (which is defined to be just above still water level) on the grid using the 'wall follower' rule for maze traversal (http://en.wikipedia.org/wiki/Maze_solving_algorithm#Wall_follower). The vector coastlines are then smoothed
 //===============================================================================================================================
-int CSimulation::nTraceFloodCoastLine(unsigned int const nTraceFromStartCellIndex, int const nStartSearchDirection, int const nHandedness, vector<bool> *pVbTraced, vector<CGeom2DIPoint> const* pV2DIPossibleStartCell)
+int CSimulation::nTraceFloodCoastLine(unsigned int const nTraceFromStartCellIndex, int const nStartSearchDirection, int const nHandedness, vector<bool>*pVbTraced, vector<CGeom2DIPoint> const* pV2DIPossibleStartCell)
 {
    bool bHitStartCell = false;
    bool bAtCoast = false;
@@ -354,7 +354,7 @@ int CSimulation::nTraceFloodCoastLine(unsigned int const nTraceFromStartCellInde
    // Mark the start cell as coast and add it to the vector object
    m_pRasterGrid->m_Cell[nStartX][nStartY].SetAsFloodLine(true);
    CGeom2DIPoint PtiStart(nStartX, nStartY);
-   ILTempGridCRS.Append( & PtiStart);
+   ILTempGridCRS.Append(&PtiStart);
 
    // Start at this grid-edge point and trace the rest of the coastline using the 'wall follower' rule for maze traversal, trying to keep next to cells flagged as sea
    do
@@ -415,7 +415,7 @@ int CSimulation::nTraceFloodCoastLine(unsigned int const nTraceFromStartCellInde
                if (bAtCoast && (nX == pV2DIPossibleStartCell->at(nn).nGetX()) && (nY == pV2DIPossibleStartCell->at(nn).nGetY()))
                {
                   if (m_nLogFileDetail >= LOG_FILE_HIGH_DETAIL)
-                     LogStream << m_ulIter << ": valid flood coastline found, traced from [" << nStartX << "][" << nStartY << "] and hit another start cell at [" << nX << "][" << nY << "]" << endl;
+                     LogStream << m_ulIter << ": Possible flood coastline found, traced from [" << nStartX << "][" << nStartY << "] and hit another coast start cell at [" << nX << "][" << nY << "]" << endl;
 
                   pVbTraced->at(nn) = true;
                   bHitStartCell = true;
@@ -658,14 +658,14 @@ int CSimulation::nTraceFloodCoastLine(unsigned int const nTraceFromStartCellInde
                {
                   // It is, so mark as coast and add it to the vector object
                   m_pRasterGrid->m_Cell[nX][nY].SetAsFloodLine(true);
-                  ILTempGridCRS.Append( & Pti);
+                  ILTempGridCRS.Append(&Pti);
                }
 
                else if (! m_pRasterGrid->m_Cell[nX][nY].bIsElevLessThanWaterLevel())
                {
                   // The sediment top is above SWL so mark as coast and add it to the vector object
                   m_pRasterGrid->m_Cell[nX][nY].SetAsFloodLine(true);
-                  ILTempGridCRS.Append( & Pti);
+                  ILTempGridCRS.Append(&Pti);
                }
             }
          }
@@ -699,14 +699,14 @@ int CSimulation::nTraceFloodCoastLine(unsigned int const nTraceFromStartCellInde
                {
                   // It is, so mark as coast and add it to the vector object
                   m_pRasterGrid->m_Cell[nX][nY].SetAsFloodLine(true);
-                  ILTempGridCRS.Append( & Pti);
+                  ILTempGridCRS.Append(&Pti);
                }
 
                else if (! m_pRasterGrid->m_Cell[nX][nY].bIsElevLessThanWaterLevel())
                {
                   // The sediment top is above SWL so mark as coast and add it to the vector object
                   m_pRasterGrid->m_Cell[nX][nY].SetAsFloodLine(true);
-                  ILTempGridCRS.Append( & Pti);
+                  ILTempGridCRS.Append(&Pti);
                }
             }
          }
@@ -739,14 +739,14 @@ int CSimulation::nTraceFloodCoastLine(unsigned int const nTraceFromStartCellInde
                {
                   // It is, so mark as coast and add it to the vector object
                   m_pRasterGrid->m_Cell[nX][nY].SetAsFloodLine(true);
-                  ILTempGridCRS.Append( & Pti);
+                  ILTempGridCRS.Append(&Pti);
                }
 
                else if (! m_pRasterGrid->m_Cell[nX][nY].bIsElevLessThanWaterLevel())
                {
                   // The sediment top is above SWL so mark as coast and add it to the vector object
                   m_pRasterGrid->m_Cell[nX][nY].SetAsFloodLine(true);
-                  ILTempGridCRS.Append( & Pti);
+                  ILTempGridCRS.Append(&Pti);
                }
             }
          }
@@ -787,7 +787,7 @@ int CSimulation::nTraceFloodCoastLine(unsigned int const nTraceFromStartCellInde
    if (bOffEdge)
    {
       if (m_nLogFileDetail >= LOG_FILE_HIGH_DETAIL)
-         LogStream << m_ulIter << ": ignoring temporary flood coastline from [" << nStartX << "][" << nStartY << "] = {" << dGridCentroidXToExtCRSX(nStartX) << ", " << dGridCentroidYToExtCRSY(nStartY) << "} since hit off-edge cell at [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "}, coastline size is " << nCoastSize << endl;
+         LogStream << m_ulIter << ": Ignoring possible flood coastline from [" << nStartX << "][" << nStartY << "] = {" << dGridCentroidXToExtCRSX(nStartX) << ", " << dGridCentroidYToExtCRSY(nStartY) << "} since hit off-edge cell at [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "}, coastline size is " << nCoastSize << endl;
 
       // Unmark these cells as coast cells
       for (int n = 0; n < nCoastSize; n++)
@@ -801,7 +801,7 @@ int CSimulation::nTraceFloodCoastLine(unsigned int const nTraceFromStartCellInde
       // Around loop too many times, so abandon this coastline
       if (m_nLogFileDetail >= LOG_FILE_HIGH_DETAIL)
       {
-         LogStream << m_ulIter << ": ignoring temporary flood coastline from [" << nStartX << "][" << nStartY << "] = {" << dGridCentroidXToExtCRSX(nStartX) << ", " << dGridCentroidYToExtCRSY(nStartY) << "} since round loop " << nRoundLoop << " times (m_nCoastMax = " << m_nCoastMax << "), coastline size is " << nCoastSize;
+         LogStream << m_ulIter << ": Ignoring possible flood coastline from [" << nStartX << "][" << nStartY << "] = {" << dGridCentroidXToExtCRSX(nStartX) << ", " << dGridCentroidYToExtCRSY(nStartY) << "} since round loop " << nRoundLoop << " times (m_nCoastMax = " << m_nCoastMax << "), coastline size is " << nCoastSize;
 
          if (nCoastSize > 0)
             LogStream << ", it ended at [" << ILTempGridCRS[nCoastSize - 1].nGetX() << "][" << ILTempGridCRS[nCoastSize - 1].nGetY() << "] = {" << dGridCentroidXToExtCRSX(ILTempGridCRS[nCoastSize - 1].nGetX()) << ", " << dGridCentroidYToExtCRSY(ILTempGridCRS[nCoastSize - 1].nGetY()) << "}";
@@ -820,7 +820,7 @@ int CSimulation::nTraceFloodCoastLine(unsigned int const nTraceFromStartCellInde
    {
       if (m_nLogFileDetail >= LOG_FILE_HIGH_DETAIL)
       {
-         LogStream << m_ulIter << ": ignoring temporary flood coastline from [" << nStartX << "][" << nStartY << "] = {" << dGridCentroidXToExtCRSX(nStartX) << ", " << dGridCentroidYToExtCRSY(nStartY) << "} since repeating, coastline size is " << nCoastSize;
+         LogStream << m_ulIter << ": Ignoring possible flood coastline from [" << nStartX << "][" << nStartY << "] = {" << dGridCentroidXToExtCRSX(nStartX) << ", " << dGridCentroidYToExtCRSY(nStartY) << "} since repeating, coastline size is " << nCoastSize;
 
          if (nCoastSize > 0)
             LogStream << ", it ended at [" << ILTempGridCRS[nCoastSize - 1].nGetX() << "][" << ILTempGridCRS[nCoastSize - 1].nGetY() << "] = {" << dGridCentroidXToExtCRSX(ILTempGridCRS[nCoastSize - 1].nGetX()) << ", " << dGridCentroidYToExtCRSY(ILTempGridCRS[nCoastSize - 1].nGetY()) << "}";
@@ -848,7 +848,7 @@ int CSimulation::nTraceFloodCoastLine(unsigned int const nTraceFromStartCellInde
    {
       // The vector coastline is too small, so abandon it
       if (m_nLogFileDetail >= LOG_FILE_HIGH_DETAIL)
-         LogStream << m_ulIter << ": ignoring temporary flood coastline from [" << nStartX << "][" << nStartY << "] = {" << dGridCentroidXToExtCRSX(nStartX) << ", " << dGridCentroidYToExtCRSY(nStartY) << "} to [" << ILTempGridCRS[nCoastSize - 1].nGetX() << "][" << ILTempGridCRS[nCoastSize - 1].nGetY() << "] = {" << dGridCentroidXToExtCRSX(ILTempGridCRS[nCoastSize - 1].nGetX()) << ", " << dGridCentroidYToExtCRSY(ILTempGridCRS[nCoastSize - 1].nGetY()) << "} since size (" << nCoastSize << ") is less than minimum (" << m_nCoastMin << ")" << endl;
+         LogStream << m_ulIter << ": Ignoring possible flood coastline from [" << nStartX << "][" << nStartY << "] = {" << dGridCentroidXToExtCRSX(nStartX) << ", " << dGridCentroidYToExtCRSY(nStartY) << "} to [" << ILTempGridCRS[nCoastSize - 1].nGetX() << "][" << ILTempGridCRS[nCoastSize - 1].nGetY() << "] = {" << dGridCentroidXToExtCRSX(ILTempGridCRS[nCoastSize - 1].nGetX()) << ", " << dGridCentroidYToExtCRSY(ILTempGridCRS[nCoastSize - 1].nGetY()) << "} since size (" << nCoastSize << ") is less than minimum (" << m_nCoastMin << ")" << endl;
 
       // Unmark these cells as coast cells
       for (int n = 0; n < nCoastSize; n++)
@@ -913,13 +913,13 @@ int CSimulation::nTraceFloodCoastLine(unsigned int const nTraceFromStartCellInde
       case 0:
          m_VFloodWaveSetupSurge.push_back(CoastTmp);
          nCoast = static_cast<int>(m_VFloodWaveSetupSurge.size()) - 1;
-         m_VFloodWaveSetupSurge[nCoast].SetCoastlineExtCRS( & LTempExtCRS);
+         m_VFloodWaveSetupSurge[nCoast].SetCoastlineExtCRS(&LTempExtCRS);
          break;
 
       case 1:
          m_VFloodWaveSetupSurgeRunup.push_back(CoastTmp);
          nCoast = static_cast<int>(m_VFloodWaveSetupSurgeRunup.size()) - 1;
-         m_VFloodWaveSetupSurgeRunup[nCoast].SetCoastlineExtCRS( & LTempExtCRS);
+         m_VFloodWaveSetupSurgeRunup[nCoast].SetCoastlineExtCRS(&LTempExtCRS);
    }
 
    return RTN_OK;

@@ -272,7 +272,7 @@ int CSimulation::nCalcPotentialPlatformErosionOnProfile(int const nCoast, CGeomP
    if (m_nProfileSmoothWindow > 0)
    {
       // Smooth the vector of slopes for the consolidated-only profile
-      dVConsSlope = dVSmoothProfileSlope( & dVConsSlope);
+      dVConsSlope = dVSmoothProfileSlope(&dVConsSlope);
    }
 
    vector<double> dVProfileDepthOverDB(nProfSize, 0);          // Depth over wave breaking depth at the coastline-normal sample points
@@ -315,8 +315,7 @@ int CSimulation::nCalcPotentialPlatformErosionOnProfile(int const nCoast, CGeomP
    // Calculate recession at every point on the coastline-normal profile
    for (int i = 0; i < nProfSize; i++)
    {
-      // dRecession = dForce * (dBeachProtection / dR) * dErosionPotential * dSlope * dTime
-      // where:
+      // dRecession = dForce * (dBeachProtection / dR) * dErosionPotential * dSlope * dTime where:
       // dVRecession [m] is the landward migration distance defined in the profile relative (XY) CRS
       // dForce is given by Equation 4 in Walkden & Hall, 2005
       // dVBeachProtection [1] is beach protection factor [1, 0] = [no protection, fully protected]. (This is calculated later, see dCalcBeachProtectionFactor())
@@ -397,7 +396,7 @@ int CSimulation::nCalcPotentialPlatformErosionOnProfile(int const nCoast, CGeomP
    // If desired, save this coastline-normal profile data for checking purposes
    if (m_bOutputProfileData)
    {
-      int nRet = nSaveProfile(nCoast, pProfile, nProfSize, & VdProfileDistXY, & dVConsProfileZ, & dVProfileDepthOverDB, & dVProfileErosionPotential, & dVConsSlope, & dVRecessionXY, & dVChangeElevZ, pProfile->pPtiVGetCellsInProfile(), & dVSCAPEXY);
+      int nRet = nSaveProfile(nCoast, pProfile, nProfSize, &VdProfileDistXY, &dVConsProfileZ, &dVProfileDepthOverDB, &dVProfileErosionPotential, &dVConsSlope, &dVRecessionXY, &dVChangeElevZ, pProfile->pPtiVGetCellsInProfile(), &dVSCAPEXY);
 
       if (nRet != RTN_OK)
          return nRet;
@@ -498,7 +497,7 @@ int CSimulation::nCalcPotentialPlatformErosionBetweenProfiles(int const nCoast, 
       vector<CGeom2DIPoint> PtiVGridParProfile; // Integer coords (grid CRS) of cells under the parallel profile
       vector<CGeom2DPoint> PtVExtCRSParProfile; // coordinates (external CRS) of cells under the parallel profile
 
-      ConstructParallelProfile(nProfileStartX, nProfileStartY, nParCoastX, nParCoastY, nProfSize, pProfile->pPtiVGetCellsInProfile(), & PtiVGridParProfile, & PtVExtCRSParProfile);
+      ConstructParallelProfile(nProfileStartX, nProfileStartY, nParCoastX, nParCoastY, nProfSize, pProfile->pPtiVGetCellsInProfile(), &PtiVGridParProfile, &PtVExtCRSParProfile);
 
       int const nParProfSize = static_cast<int>(PtiVGridParProfile.size());
 
@@ -513,7 +512,7 @@ int CSimulation::nCalcPotentialPlatformErosionBetweenProfiles(int const nCoast, 
       }
 
       // This parallel profile is OK, so calculate potential erosion along it. First calculate the length of the parallel profile in external CRS units
-      double const dParProfileLenXY = dGetDistanceBetween( & PtVExtCRSParProfile[0], & PtVExtCRSParProfile[nParProfSize - 1]);
+      double const dParProfileLenXY = dGetDistanceBetween(&PtVExtCRSParProfile[0], &PtVExtCRSParProfile[nParProfSize - 1]);
 
       // Next calculate the distance between profile points, again in external CRS units. Assume that the sample points are equally spaced along the parallel profile (not quite true)
       double dParSpacingXY = dParProfileLenXY / (nParProfSize - 1);
@@ -589,7 +588,7 @@ int CSimulation::nCalcPotentialPlatformErosionBetweenProfiles(int const nCoast, 
       if (m_nProfileSmoothWindow > 0)
       {
          // Smooth the vector of slopes for the consolidated-only profile
-         dVParConsSlope = dVSmoothProfileSlope( & dVParConsSlope);
+         dVParConsSlope = dVSmoothProfileSlope(&dVParConsSlope);
       }
 
       // Initialize the parallel profile vector with depth / m_dWaveBreakingDepth
@@ -740,7 +739,7 @@ int CSimulation::nCalcPotentialPlatformErosionBetweenProfiles(int const nCoast, 
       // If desired, save this parallel coastline-normal profile for checking purposes
       if (m_bOutputParallelProfileData)
       {
-         int const nRet = nSaveParProfile(nCoast, pProfile, nParProfSize, nDirection, nDistFromProfile, & dVParProfileDistXY, & dVParConsProfileZ, & dVParProfileDepthOverDB, & dVParProfileErosionPotential, & dVParConsSlope, & dVParRecessionXY, & dVParDeltaZ, pProfile->pPtiVGetCellsInProfile(), & dVParSCAPEXY);
+         int const nRet = nSaveParProfile(nCoast, pProfile, nParProfSize, nDirection, nDistFromProfile, &dVParProfileDistXY, &dVParConsProfileZ, &dVParProfileDepthOverDB, &dVParProfileErosionPotential, &dVParConsSlope, &dVParRecessionXY, &dVParDeltaZ, pProfile->pPtiVGetCellsInProfile(), &dVParSCAPEXY);
 
          if (nRet != RTN_OK)
             return nRet;
@@ -1059,7 +1058,7 @@ bool CSimulation::bCreateErosionPotentialLookUp(vector<double> *VdDepthOverDBIn,
    vector<double> VdDeriv3(nSize, 0.);             // Third derivative at the sample points, ditto
 
    // Calculate the value of erosion potential (is a -ve value) for each of the sample values of DepthOverDB, and store it for use in the look-up function
-   hermite_cubic_spline_value(static_cast<int>(VdDepthOverDBIn->size()), & (VdDepthOverDBIn->at(0)), & (VdErosionPotentialIn->at(0)), & (VdErosionPotentialFirstDerivIn->at(0)), nSize, & (VdDepthOverDB[0]), & (m_VdErosionPotential[0]), & (VdDeriv[0]), & (VdDeriv2[0]), & (VdDeriv3[0]));
+   hermite_cubic_spline_value(static_cast<int>(VdDepthOverDBIn->size()), &(VdDepthOverDBIn->at(0)), &(VdErosionPotentialIn->at(0)), &(VdErosionPotentialFirstDerivIn->at(0)), nSize, &(VdDepthOverDB[0]), &(m_VdErosionPotential[0]), &(VdDeriv[0]), &(VdDeriv2[0]), &(VdDeriv3[0]));
 
    // Tidy the erosion potential look-up data: cut off values (after the first) for which erosion potential is no longer -ve
    int nLastVal = -1;
@@ -1097,7 +1096,7 @@ double CSimulation::dLookUpErosionPotential(double const dDepthOverDB) const
       return 0;
 
    // OK, dDepthOverDB is less than the maximum so look up a corresponding value for erosion potential. The look-up index is dDepthOverDB divided by (the Depth Over DB increment used when creating the look-up vector). But since this look-up index may not be an integer, split the look-up index into integer and fractional parts and deal with each separately
-   double dErosionPotential = dGetInterpolatedValue( & m_VdDepthOverDB, & m_VdErosionPotential, dDepthOverDB, false);
+   double dErosionPotential = dGetInterpolatedValue(&m_VdDepthOverDB, &m_VdErosionPotential, dDepthOverDB, false);
 
    return dErosionPotential;
 }

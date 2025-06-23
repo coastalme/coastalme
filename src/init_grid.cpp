@@ -210,7 +210,7 @@ int CSimulation::nInitGridAndCalcStillWaterLevel(void)
 
    if (nZeroThickness > 0)
    {
-      cerr << m_ulIter << ": " << WARN << nZeroThickness << " cells have no sediment, is this correct?" << endl;
+      cerr << m_ulIter << ": " << WARN << nZeroThickness << (nZeroThickness > 1 ? " cells" : " cell") << "( out of " << m_nXGridSize * m_nYGridSize << ") have no sediment, is this correct?" << endl;
       LogStream << m_ulIter << ": " << WARN << nZeroThickness << " cells have no sediment, is this correct?" << endl;
    }
 

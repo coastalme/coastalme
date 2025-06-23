@@ -68,9 +68,9 @@ protected:
 
 public:
    CRWCellSediment(void);
-   CRWCellSediment(CRWCellSediment const & );         // Copy constructor defined explicitly, to stop cppcheck from complaining
+   CRWCellSediment(CRWCellSediment const&);         // Copy constructor defined explicitly, to stop cppcheck from complaining
 
-   CRWCellSediment & operator= (const CRWCellSediment & );
+   CRWCellSediment& operator= (const CRWCellSediment&);
 
    void SetFineDepth(double const);
    double dGetFineDepth(void) const;

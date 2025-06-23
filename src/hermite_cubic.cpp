@@ -357,7 +357,7 @@ void hermite_cubic_spline_value(int const nn, double* const xn, double* const fn
 
    for (int i = 0; i < n; i++)
    {
-      r8vec_bracket3(nn, xn, x[i], & left);
+      r8vec_bracket3(nn, xn, x[i], &left);
 
       hermite_cubic_value(xn[left], fn[left], dn[left], xn[left + 1], fn[left + 1], dn[left + 1], 1, x + i, f + i, d + i, s + i, t + i);
    }

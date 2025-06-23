@@ -751,7 +751,7 @@ int CSimulation::nDoCliffCollapseDeposition(int const nCoast, CRWCliff const* pC
 
          // Get the end point of this coastline-normal line
          CGeom2DIPoint PtiEnd;            // In grid CRS
-         int nRtn = nGetCoastNormalEndPoint(nCoast, nThisPoint, nCoastSize, & PtStart, dThisProfileLength, & PtEnd, & PtiEnd, false);
+         int nRtn = nGetCoastNormalEndPoint(nCoast, nThisPoint, nCoastSize, &PtStart, dThisProfileLength, &PtEnd, &PtiEnd, false);
 
          // Safety check
          if (nRtn == RTN_ERR_NO_SOLUTION_FOR_ENDPOINT)
@@ -777,7 +777,7 @@ int CSimulation::nDoCliffCollapseDeposition(int const nCoast, CRWCliff const* pC
          vector<CGeom2DIPoint> VCellsUnderProfile;
 
          // Now get the raster cells under this profile
-         RasterizeCliffCollapseProfile( & VTmpProfile, & VCellsUnderProfile);
+         RasterizeCliffCollapseProfile(&VTmpProfile, &VCellsUnderProfile);
 
          int nRasterProfileLength = static_cast<int>(VCellsUnderProfile.size());
 
@@ -838,10 +838,10 @@ int CSimulation::nDoCliffCollapseDeposition(int const nCoast, CRWCliff const* pC
          vector<double> dVDeanProfile(nRasterProfileLength);
 
          // Calculate the Dean equilibrium profile of the talus h(y) = A * y^(2/3) where h(y) is the distance below the talus-top elevation (the highest point in the Dean profile) at a distance y from the cliff (the landward start of the profile)
-         CalcDeanProfile( & dVDeanProfile, dInc, dTalusTopElev, dA, true, nSeawardOffset, dTalusTopElev);
+         CalcDeanProfile(&dVDeanProfile, dInc, dTalusTopElev, dA, true, nSeawardOffset, dTalusTopElev);
 
          // Get the total difference in elevation between the two profiles (Dean profile - present profile). Since we want the Dean profile to be higher than the present profile, a good result is a +ve number
-         double dTotElevDiff = dSubtractProfiles( & dVDeanProfile, & dVProfileNow, & bVProfileValid);
+         double dTotElevDiff = dSubtractProfiles(&dVDeanProfile, &dVProfileNow, &bVProfileValid);
 
          //          // DEBUG CODE -----------------------------------------------------
          // LogStream << endl;
@@ -979,7 +979,7 @@ int CSimulation::nDoCliffCollapseDeposition(int const nCoast, CRWCliff const* pC
                m_pRasterGrid->m_Cell[nX][nY].AddCoarseTalusDeposition(dCoarseToDeposit);
 
                // And set the landform category
-               CRWCellLandform * pLandform = m_pRasterGrid->m_Cell[nX][nY].pGetLandform();
+               CRWCellLandform* pLandform = m_pRasterGrid->m_Cell[nX][nY].pGetLandform();
                int nCat = pLandform->nGetLFCategory();
 
                if ((nCat != LF_CAT_SEDIMENT_INPUT) && (nCat != LF_CAT_SEDIMENT_INPUT_SUBMERGED) && (nCat != LF_CAT_SEDIMENT_INPUT_NOT_SUBMERGED))

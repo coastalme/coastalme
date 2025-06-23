@@ -63,7 +63,7 @@ public:
    void AppendIfNotAlready(double const, double const);
    CGeom2DPoint* pPtBack(void);
 
-   CGeom2DPoint & operator[] (int const);
-   vector<CGeom2DPoint> *pPtVGetPoints(void);
+   CGeom2DPoint& operator[] (int const);
+   vector<CGeom2DPoint>* pPtVGetPoints(void);
 };
 #endif // C2DSHAPE_H

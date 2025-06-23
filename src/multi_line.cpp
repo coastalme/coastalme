@@ -150,7 +150,7 @@ void CGeomMultiLine::AddCoincidentProfileToExistingLineSegment(int const nSegmen
 vector<pair<int, int> > *CGeomMultiLine::pprVGetPairedCoincidentProfilesForLineSegment(int const nSegment)
 {
    // TODO 055 No check to see if nSegment < size()
-   return & m_prVVLineSegment[nSegment];
+   return &m_prVVLineSegment[nSegment];
 }
 
 //! Returns the numbers of coincident profiles

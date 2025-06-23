@@ -161,7 +161,7 @@ public:
    vector<CGeom2DPoint> PtVGetThisPointAndAllAfter(int const);
    // void RemoveLineSegment(int const);
    bool bIsPointInProfile(double const, double const);
-   bool bIsPointInProfile(double const, double const, int &);
+   bool bIsPointInProfile(double const, double const, int&);
 // int nFindInsertionLineSeg(double const, double const);
 
 // void AppendPointShared(bool const);

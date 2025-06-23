@@ -45,7 +45,7 @@ using std::pair;
 //===============================================================================================================================
 //! Function used to sort polygon length values. If the first argument must be ordered before the second, return true
 //===============================================================================================================================
-bool bPolygonLengthPairCompare(const pair<int, double> & prLeft, const pair<int, double> & prRight)
+bool bPolygonLengthPairCompare(const pair<int, double> &prLeft, const pair<int, double> &prRight)
 {
    // Sort in ascending order (i.e. most concave first)
    return prLeft.second < prRight.second;

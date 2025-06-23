@@ -44,7 +44,7 @@ CRWCellSediment::CRWCellSediment(void)
 }
 
 //! CRWCellSediment copy constructor
-CRWCellSediment::CRWCellSediment(CRWCellSediment const & OtherSediment)
+CRWCellSediment::CRWCellSediment(CRWCellSediment const &OtherSediment)
 {
    m_dFine = OtherSediment.m_dFine;
    m_dNotchFineLost = OtherSediment.m_dNotchFineLost;
@@ -61,7 +61,7 @@ CRWCellSediment::CRWCellSediment(CRWCellSediment const & OtherSediment)
 }
 
 //! Sets one CRWCellSediment object equal to another
-CRWCellSediment & CRWCellSediment::operator= (const CRWCellSediment & OtherSediment)
+CRWCellSediment& CRWCellSediment::operator= (const CRWCellSediment &OtherSediment)
 {
    // This copies all fields from one object to another
    m_dFine = OtherSediment.m_dFine;
@@ -101,7 +101,7 @@ void CRWCellSediment::AddFineDepth(double const dSedDepthToAdd)
 void CRWCellSediment::SetSandDepth(double const dNewSedDepth)
 {
    m_dSand = dNewSedDepth;
-// assert(m_dSand >= 0);
+   // assert(m_dSand >= 0);
 }
 
 //! Returns the sand sediment depth equivalent for this sediment layer

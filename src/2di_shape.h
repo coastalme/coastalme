@@ -46,9 +46,9 @@ protected:
    virtual void Display() = 0;
 
 public:
-   CGeom2DIPoint & operator[] (int const);
+   CGeom2DIPoint& operator[] (int const);
 
-   CGeom2DIPoint & Back(void);
+   CGeom2DIPoint& Back(void);
    vector<CGeom2DIPoint> *pPtiVGetPoints(void);
 
    void Resize(const int);

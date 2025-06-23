@@ -206,12 +206,12 @@ int CSimulation::nCreateAllPolygons(void)
             CGeom2DIPoint PtiAntiNode;
 
             if (bMeetsAtAPoint)
-               PtiAntiNode = PtiExtCRSToGridRound( & PtCoastwardTip);
+               PtiAntiNode = PtiExtCRSToGridRound(&PtCoastwardTip);
 
             else
             {
                CGeom2DPoint PtAvg = PtAverage(pThisProfile->pPtGetPointInProfile(nThisProfileEnd), pNextProfile->pPtGetPointInProfile(nNextProfileEnd));
-               PtiAntiNode = PtiExtCRSToGridRound( & PtAvg);
+               PtiAntiNode = PtiExtCRSToGridRound(&PtAvg);
             }
 
             // Is this a start-of-coast or an end-of-coast polygon?
@@ -225,7 +225,7 @@ int CSimulation::nCreateAllPolygons(void)
                bEndCoast = true;
 
             // Create the coast polygon object and get a pointer to it. TODO 044 the first parameter (global ID) will need to change when considering multiple coasts
-            CGeomCoastPolygon* pPolygon = m_VCoast[nCoast].pPolyCreatePolygon(nThisProfile, nPolygon, nNodePoint, & PtiNode, & PtiAntiNode, nThisProfile, nNextProfile, & PtVBoundary, nThisProfileEnd + 1, nNextProfileEnd + 1, bStartCoast, bEndCoast);
+            CGeomCoastPolygon* pPolygon = m_VCoast[nCoast].pPolyCreatePolygon(nThisProfile, nPolygon, nNodePoint, &PtiNode, &PtiAntiNode, nThisProfile, nNextProfile, &PtVBoundary, nThisProfileEnd + 1, nNextProfileEnd + 1, bStartCoast, bEndCoast);
 
             // And store this pointer for simulation-wide access, in along-coast sequence
             m_pVCoastPolygon.push_back(pPolygon);
@@ -279,7 +279,7 @@ int CSimulation::nCreateAllPolygons(void)
                CGeom2DIPoint PtiDownCoastNormalEnd = * pNextProfile->pPtiGetEndPoint();      // Grid CRS
                CGeom2DIPoint PtiUpCoastNormalEnd = * pThisProfile->pPtiGetEndPoint();        // Grid CRS
 
-               RasterizePolygonJoiningLine(nCoast, & PtiUpCoastNormalEnd, & PtiDownCoastNormalEnd, nPolygon);
+               RasterizePolygonJoiningLine(nCoast, &PtiUpCoastNormalEnd, &PtiDownCoastNormalEnd, nPolygon);
 
 // pPolygon->SetNotPointed();
             }
@@ -710,8 +710,8 @@ int CSimulation::nDoPolygonSharedBoundaries(void)
             dVDownCoastBoundaryShare.push_back(1);
 
             // Store in the polygon
-            pThisPolygon->SetDownCoastAdjacentPolygons( & nVDownCoastAdjacentPolygon);
-            pThisPolygon->SetDownCoastAdjacentPolygonBoundaryShares( & dVDownCoastBoundaryShare);
+            pThisPolygon->SetDownCoastAdjacentPolygons(&nVDownCoastAdjacentPolygon);
+            pThisPolygon->SetDownCoastAdjacentPolygonBoundaryShares(&dVDownCoastBoundaryShare);
          }
 
          else
@@ -730,7 +730,7 @@ int CSimulation::nDoPolygonSharedBoundaries(void)
                CGeom2DPoint PtEnd = * pProfile->pPtGetPointInProfile(nPoint + 1);
 
                // Calculate the length of this segment of the normal profile. Note that it should not be zero, since we checked for duplicate points when creating profiles
-               double dDistBetween = dGetDistanceBetween( & PtStart, & PtEnd);
+               double dDistBetween = dGetDistanceBetween(&PtStart, &PtEnd);
 
                // Find out which polygon is adjacent to each line segment of the polygon's down-coast profile boundary. The basic approach used is to count the number of coincident profiles in each line segment, and (because we are going down-coast) add this number to 'this' polygon's number. However, some of these coincident profiles may be invalid, so we must count only the valid co-incident profiles
                int nNumCoinc = pProfile->nGetNumCoincidentProfilesInLineSegment(nPoint);
@@ -788,8 +788,8 @@ int CSimulation::nDoPolygonSharedBoundaries(void)
             }
 
             // Store in the polygon
-            pThisPolygon->SetDownCoastAdjacentPolygons( & nVDownCoastAdjacentPolygon);
-            pThisPolygon->SetDownCoastAdjacentPolygonBoundaryShares( & dVDownCoastBoundaryShare);
+            pThisPolygon->SetDownCoastAdjacentPolygons(&nVDownCoastAdjacentPolygon);
+            pThisPolygon->SetDownCoastAdjacentPolygonBoundaryShares(&dVDownCoastBoundaryShare);
          }
 
          // Now deal with up-coast adjacent polygons
@@ -800,8 +800,8 @@ int CSimulation::nDoPolygonSharedBoundaries(void)
             dVUpCoastBoundaryShare.push_back(1);
 
             // Store in the polygon
-            pThisPolygon->SetUpCoastAdjacentPolygons( & nVUpCoastAdjacentPolygon);
-            pThisPolygon->SetUpCoastAdjacentPolygonBoundaryShares( & dVUpCoastBoundaryShare);
+            pThisPolygon->SetUpCoastAdjacentPolygons(&nVUpCoastAdjacentPolygon);
+            pThisPolygon->SetUpCoastAdjacentPolygonBoundaryShares(&dVUpCoastBoundaryShare);
          }
 
          else
@@ -825,7 +825,7 @@ int CSimulation::nDoPolygonSharedBoundaries(void)
                   continue;
 
                // Calculate the length of this segment of the normal profile
-               double dDistBetween = dGetDistanceBetween( & PtStart, & PtEnd);
+               double dDistBetween = dGetDistanceBetween(&PtStart, &PtEnd);
 
                // Find out which polygon is adjacent to each line segment of the polygon's up-coast profile boundary. The basic approach used is to count the number of coincident profiles in each line segment, and (because we are going up-coast) subtract this number from 'this' polygon's number. However, some of these coincident profiles may be invalid, so we must count only the valid co-incident profiles
                int nNumCoinc = pProfile->nGetNumCoincidentProfilesInLineSegment(nPoint);
@@ -883,8 +883,8 @@ int CSimulation::nDoPolygonSharedBoundaries(void)
             }
 
             // Store in the polygon
-            pThisPolygon->SetUpCoastAdjacentPolygons( & nVUpCoastAdjacentPolygon);
-            pThisPolygon->SetUpCoastAdjacentPolygonBoundaryShares( & dVUpCoastBoundaryShare);
+            pThisPolygon->SetUpCoastAdjacentPolygons(&nVUpCoastAdjacentPolygon);
+            pThisPolygon->SetUpCoastAdjacentPolygonBoundaryShares(&dVUpCoastBoundaryShare);
          }
 
          // Finally, calculate the distance between the coast node and the antinode of the polygon
@@ -1049,8 +1049,8 @@ CGeom2DPoint CSimulation::PtFindPointInPolygon(vector<CGeom2DPoint> const* pPtPo
          return CGeom2DPoint(DBL_NODATA, DBL_NODATA);
 
       // Check if the halfway point between the first and the third point is inside the polygon
-      PtStart = PtAverage( & nVTestPoints[0], & nVTestPoints[2]);
-   } while (! bIsWithinPolygon( & PtStart, pPtPoints));
+      PtStart = PtAverage(&nVTestPoints[0], &nVTestPoints[2]);
+   } while (! bIsWithinPolygon(&PtStart, pPtPoints));
 
    return PtStart;
 }

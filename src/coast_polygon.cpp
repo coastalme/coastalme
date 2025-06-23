@@ -160,14 +160,14 @@ int CGeomCoastPolygon::nGetNodeCoastPoint(void) const
 //! Get the grid coordinates of the cell on which the node sits
 CGeom2DIPoint* CGeomCoastPolygon::pPtiGetNode(void)
 {
-   return & m_PtiNode;
+   return &m_PtiNode;
 
 }
 
 //! Get the anti-node (raster grid CRS) which is at other (seaward) end of the polygon from the node
 CGeom2DIPoint* CGeomCoastPolygon::pPtiGetAntiNode(void)
 {
-   return & m_PtiAntinode;
+   return &m_PtiAntinode;
 }
 
 //! Sets the polygon's length
@@ -220,7 +220,7 @@ int CGeomCoastPolygon::nGetDownCoastProfile(void) const
 CGeom2DPoint* CGeomCoastPolygon::pPtGetBoundaryPoint(int const nPoint)
 {
    // TODO 055 No check to see if nPoint < m_VPoints.size()
-   return & m_VPoints[nPoint];
+   return &m_VPoints[nPoint];
 }
 
 //! Get the number of points in the polygon's boundary

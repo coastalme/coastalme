@@ -104,12 +104,12 @@ int CSimulation::nReadRasterBasementDEM(void)
    m_strGDALBasementDEMDriverDesc = pGDALDataset->GetDriver()->GetMetadataItem(GDAL_DMD_LONGNAME);
    m_strGDALBasementDEMProjection = pGDALDataset->GetProjectionRef();
 
-   // If we have reference units, then check that they are in meters (note US spelling)
+   // If we have reference units, then check that they are in metres
    if (! m_strGDALBasementDEMProjection.empty())
    {
-      string strTmp = strToLower( & m_strGDALBasementDEMProjection);
+      string strTmp = strToLower(&m_strGDALBasementDEMProjection);
 
-      if (strTmp.find("meter") == string::npos)
+      if ((strTmp.find("meter") == string::npos) && (strTmp.find("metre") == string::npos))
       {
          // error: x-y values must be in metres
          cerr << ERR << "GIS file x-y values (" << m_strGDALBasementDEMProjection << ") in " << m_strInitialBasementDEMFile << " must be in metres" << endl;
@@ -185,7 +185,7 @@ int CSimulation::nReadRasterBasementDEM(void)
    // Now get GDAL raster band information
    GDALRasterBand * pGDALBand = pGDALDataset->GetRasterBand(1);
    int nBlockXSize = 0, nBlockYSize = 0;
-   pGDALBand->GetBlockSize( & nBlockXSize, & nBlockYSize);
+   pGDALBand->GetBlockSize(&nBlockXSize, &nBlockYSize);
    m_strGDALBasementDEMDataType = GDALGetDataTypeName(pGDALBand->GetRasterDataType());
 
    // If we have value units, then check them
@@ -241,7 +241,7 @@ int CSimulation::nReadRasterBasementDEM(void)
       {
          double dTmp = pdScanline[i];
 
-         if (isnan(dTmp)) // Deal with any NaN values
+         if ((isnan(dTmp)) || (bFPIsEqual(dTmp, m_dGISMissingValue, TOLERANCE)))
             dTmp = m_dMissingValue;
 
          m_pRasterGrid->m_Cell[i][j].SetBasementElev(dTmp);
@@ -658,7 +658,7 @@ int CSimulation::nReadRasterGISFile(int const nDataItem, int const nLayer)
       // Now get GDAL raster band information
       GDALRasterBand * pGDALBand = pGDALDataset->GetRasterBand(1); // TODO 028 Give a message if there are several bands
       int nBlockXSize = 0, nBlockYSize = 0;
-      pGDALBand->GetBlockSize( & nBlockXSize, & nBlockYSize);
+      pGDALBand->GetBlockSize(&nBlockXSize, &nBlockYSize);
       strDataType = GDALGetDataTypeName(pGDALBand->GetRasterDataType());
 
       switch (nDataItem)
@@ -745,18 +745,18 @@ int CSimulation::nReadRasterGISFile(int const nDataItem, int const nLayer)
       }
 
       // If present, get the missing value setting
-      string strTmp = strToLower( & strDataType);
+      string strTmp = strToLower(&strDataType);
 
       if (strTmp.find("int") != string::npos)
       {
          // This is an integer layer
          CPLPushErrorHandler(CPLQuietErrorHandler);                              // Needed to get next line to fail silently, if it fails
-         int nMissingValue = static_cast<int>(pGDALBand->GetNoDataValue());      // Note will fail for some formats
+         m_nGISMissingValue = static_cast<int>(pGDALBand->GetNoDataValue());     // Note will fail for some formats
          CPLPopErrorHandler();
 
-         if (nMissingValue != m_nMissingValue)
+         if (m_nGISMissingValue != m_nMissingValue)
          {
-            cerr << "   " << NOTE << "NODATA value in " << strGISFile << " is " << nMissingValue << "\n         instead using CoatalME's default integer NODATA value " << m_nMissingValue << endl;
+            cerr << "   " << NOTE << "NODATA value in " << strGISFile << " is " << m_nGISMissingValue << "\n         instead using CoatalME's default integer NODATA value " << m_nMissingValue << endl;
          }
       }
 
@@ -764,12 +764,12 @@ int CSimulation::nReadRasterGISFile(int const nDataItem, int const nLayer)
       {
          // This is a floating point layer
          CPLPushErrorHandler(CPLQuietErrorHandler);                              // Needed to get next line to fail silently, if it fails
-         double dMissingValue = pGDALBand->GetNoDataValue();                     // Note will fail for some formats
+         m_dGISMissingValue = pGDALBand->GetNoDataValue();                       // Note will fail for some formats
          CPLPopErrorHandler();
 
-         if (! bFPIsEqual(dMissingValue, m_dMissingValue, TOLERANCE))
+         if (! bFPIsEqual(m_dGISMissingValue, m_dMissingValue, TOLERANCE))
          {
-            cerr << "   " << NOTE << "NODATA value in " << strGISFile << " is " << dMissingValue << "\n         instead using CoastalME's default floating-point NODATA value " << m_dMissingValue << endl;
+            cerr << "   " << NOTE << "NODATA value in " << strGISFile << " is " << m_dGISMissingValue << "\n         instead using CoastalME's default floating-point NODATA value " << m_dMissingValue << endl;
          }
       }
 
@@ -807,7 +807,7 @@ int CSimulation::nReadRasterGISFile(int const nDataItem, int const nLayer)
                   // Initial Landform Class GIS data, is integer TODO 030 Do we also need a landform sub-category input?
                   nTmp = static_cast<int>(pdScanline[nX]);
 
-                  if (isnan(nTmp)) // Deal with any NaN values
+                  if ((isnan(nTmp)) || (nTmp == m_nGISMissingValue))
                   {
                      nTmp = m_nMissingValue;
                      nMissing++;
@@ -820,7 +820,7 @@ int CSimulation::nReadRasterGISFile(int const nDataItem, int const nLayer)
                   // Intervention class, is integer
                   nTmp = static_cast<int>(pdScanline[nX]);
 
-                  if (isnan(nTmp)) // Deal with any NaN values
+                  if ((isnan(nTmp)) || (nTmp == m_nGISMissingValue))
                   {
                      nTmp = m_nMissingValue;
                      nMissing++;
@@ -833,7 +833,7 @@ int CSimulation::nReadRasterGISFile(int const nDataItem, int const nLayer)
                   // Intervention height
                   dTmp = pdScanline[nX];
 
-                  if (isnan(dTmp)) // Deal with any NaN values
+                  if ((isnan(dTmp)) || (bFPIsEqual(dTmp, m_dGISMissingValue, TOLERANCE)))
                   {
                      dTmp = m_dMissingValue;
                      nMissing++;
@@ -846,7 +846,7 @@ int CSimulation::nReadRasterGISFile(int const nDataItem, int const nLayer)
                   // Initial Suspended Sediment GIS data
                   dTmp = pdScanline[nX];
 
-                  if (isnan(dTmp)) // Deal with any NaN values
+                  if ((isnan(dTmp)) || (bFPIsEqual(dTmp, m_dGISMissingValue, TOLERANCE)))
                   {
                      dTmp = m_dMissingValue;
                      nMissing++;
@@ -859,7 +859,7 @@ int CSimulation::nReadRasterGISFile(int const nDataItem, int const nLayer)
                   // Initial Unconsolidated Fine Sediment GIS data
                   dTmp = pdScanline[nX];
 
-                  if (isnan(dTmp)) // Deal with any NaN values
+                  if ((isnan(dTmp)) || (bFPIsEqual(dTmp, m_dGISMissingValue, TOLERANCE)))
                   {
                      dTmp = m_dMissingValue;
                      nMissing++;
@@ -872,7 +872,7 @@ int CSimulation::nReadRasterGISFile(int const nDataItem, int const nLayer)
                   // Initial Unconsolidated Sand Sediment GIS data
                   dTmp = pdScanline[nX];
 
-                  if (isnan(dTmp)) // Deal with any NaN values
+                  if ((isnan(dTmp)) || (bFPIsEqual(dTmp, m_dGISMissingValue, TOLERANCE)))
                   {
                      dTmp = m_dMissingValue;
                      nMissing++;
@@ -885,7 +885,7 @@ int CSimulation::nReadRasterGISFile(int const nDataItem, int const nLayer)
                   // Initial Unconsolidated Coarse Sediment GIS data
                   dTmp = pdScanline[nX];
 
-                  if (isnan(dTmp)) // Deal with any NaN values
+                  if ((isnan(dTmp)) || (bFPIsEqual(dTmp, m_dGISMissingValue, TOLERANCE)))
                   {
                      dTmp = m_dMissingValue;
                      nMissing++;
@@ -898,7 +898,7 @@ int CSimulation::nReadRasterGISFile(int const nDataItem, int const nLayer)
                   // Initial Consolidated Fine Sediment GIS data
                   dTmp = pdScanline[nX];
 
-                  if (isnan(dTmp)) // Deal with any NaN values
+                  if ((isnan(dTmp)) || (bFPIsEqual(dTmp, m_dGISMissingValue, TOLERANCE)))
                   {
                      dTmp = m_dMissingValue;
                      nMissing++;
@@ -911,7 +911,7 @@ int CSimulation::nReadRasterGISFile(int const nDataItem, int const nLayer)
                   // Initial Consolidated Sand Sediment GIS data
                   dTmp = pdScanline[nX];
 
-                  if (isnan(dTmp)) // Deal with any NaN values
+                  if ((isnan(dTmp)) || (bFPIsEqual(dTmp, m_dGISMissingValue, TOLERANCE)))
                   {
                      dTmp = m_dMissingValue;
                      nMissing++;
@@ -924,7 +924,7 @@ int CSimulation::nReadRasterGISFile(int const nDataItem, int const nLayer)
                   // Initial Consolidated Coarse Sediment GIS data
                   dTmp = pdScanline[nX];
 
-                  if (isnan(dTmp)) // Deal with any NaN values
+                  if ((isnan(dTmp)) || (bFPIsEqual(dTmp, m_dGISMissingValue, TOLERANCE)))
                   {
                      dTmp = m_dMissingValue;
                      nMissing++;
@@ -1956,7 +1956,7 @@ bool CSimulation::bWriteRasterGISFile(int const nDataItem, string const* strPlot
    // Calculate statistics for this band
    double dMin, dMax, dMean, dStdDev;
    CPLPushErrorHandler(CPLQuietErrorHandler); // Needed to get next line to fail silently, if it fails
-   pBand->ComputeStatistics(false, & dMin, & dMax, & dMean, & dStdDev, NULL, NULL);
+   pBand->ComputeStatistics(false, &dMin, &dMax, &dMean, &dStdDev, NULL, NULL);
    CPLPopErrorHandler();
 
    // And then write the statistics

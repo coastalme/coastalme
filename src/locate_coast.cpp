@@ -96,9 +96,7 @@ void CSimulation::FindAllSeaCells(void)
       int nX = m_VEdgeCell[n].nGetX();
       int nY = m_VEdgeCell[n].nGetY();
 
-      // if ((m_pRasterGrid->m_Cell[nX][nY].bIsInundated()) && (m_pRasterGrid->m_Cell[nX][nY].dGetSeaDepth() == 0))
       if ((m_pRasterGrid->m_Cell[nX][nY].bIsInundated()) && (bFPIsEqual(m_pRasterGrid->m_Cell[nX][nY].dGetSeaDepth(), 0.0, TOLERANCE)))
-
          // This edge cell is below SWL and sea depth remains set to zero
          CellByCellFillSea(nX, nY);
    }
@@ -146,7 +144,7 @@ void CSimulation::CellByCellFillSea(int const nXStart, int const nYStart)
          // Set the sea depth for this cell
          m_pRasterGrid->m_Cell[nX][nY].SetSeaDepth();
 
-         CRWCellLandform * pLandform = m_pRasterGrid->m_Cell[nX][nY].pGetLandform();
+         CRWCellLandform* pLandform = m_pRasterGrid->m_Cell[nX][nY].pGetLandform();
          int nCat = pLandform->nGetLFCategory();
 
          // Have we had sediment input here?
@@ -219,76 +217,80 @@ void CSimulation::CellByCellFillSea(int const nXStart, int const nYStart)
       }
    }
 
+   // DEBUG CODE ===========================================================================================================
+   string strOutFile = m_strOutPath + "is_contiguous_sea_";
+   strOutFile += to_string(m_ulIter);
+   strOutFile += ".tif";
+
+   GDALDriver* pDriver = GetGDALDriverManager()->GetDriverByName("gtiff");
+   GDALDataset* pDataSet = pDriver->Create(strOutFile.c_str(), m_nXGridSize, m_nYGridSize, 1, GDT_Float64, m_papszGDALRasterOptions);
+   pDataSet->SetProjection(m_strGDALBasementDEMProjection.c_str());
+   pDataSet->SetGeoTransform(m_dGeoTransform);
+   double* pdRaster = new double[m_nXGridSize * m_nYGridSize];
+   int n = 0;
+   for (int nY = 0; nY < m_nYGridSize; nY++)
+   {
+      for (int nX = 0; nX < m_nXGridSize; nX++)
+      {
+      pdRaster[n++] = m_pRasterGrid->m_Cell[nX][nY].bIsInContiguousSea();
+      }
+   }
+
+   GDALRasterBand* pBand = pDataSet->GetRasterBand(1);
+   pBand->SetNoDataValue(m_dMissingValue);
+   int nRet = pBand->RasterIO(GF_Write, 0, 0, m_nXGridSize, m_nYGridSize, pdRaster, m_nXGridSize, m_nYGridSize, GDT_Float64, 0, 0, NULL);
+   if (nRet == CE_Failure)
+   return;
+
+   GDALClose(pDataSet);
+   delete[] pdRaster;
+   // DEBUG CODE ===========================================================================================================
+
    // // DEBUG CODE ===========================================================================================================
-   // string strOutFile = m_strOutPath + "is_contiguos_sea_";
-   // strOutFile += to_string(m_ulIter);
-   // strOutFile += ".tif";
-
-   // GDALDriver* pDriver = GetGDALDriverManager()->GetDriverByName("gtiff");
-   // GDALDataset* pDataSet = pDriver->Create(strOutFile.c_str(), m_nXGridSize, m_nYGridSize, 1, GDT_Float64, m_papszGDALRasterOptions);
-   // pDataSet->SetProjection(m_strGDALBasementDEMProjection.c_str());
-   // pDataSet->SetGeoTransform(m_dGeoTransform);
-   // double* pdRaster = new double[m_nXGridSize * m_nYGridSize];
-   // int n = 0;
-   // for (int nY = 0; nY < m_nYGridSize; nY++)
-   // {
-   // for (int nX = 0; nX < m_nXGridSize; nX++)
-   // {
-   // pdRaster[n++] = m_pRasterGrid->m_Cell[nX][nY].bIsInContiguousSea();
-   // }
-   // }
-
-   // GDALRasterBand* pBand = pDataSet->GetRasterBand(1);
-   // pBand->SetNoDataValue(m_dMissingValue);
-   // int nRet = pBand->RasterIO(GF_Write, 0, 0, m_nXGridSize, m_nYGridSize, pdRaster, m_nXGridSize, m_nYGridSize, GDT_Float64, 0, 0, NULL);
-   // if (nRet == CE_Failure)
-   // return;
-
-   // GDALClose(pDataSet);
-   // delete[] pdRaster;
-
    // string strOutFile = m_strOutPath + "is_inundated_";
    // strOutFile += to_string(m_ulIter);
    // strOutFile += ".tif";
-
+   //
    // GDALDriver* pDriver = GetGDALDriverManager()->GetDriverByName("gtiff");
    // GDALDataset* pDataSet = pDriver->Create(strOutFile.c_str(), m_nXGridSize, m_nYGridSize, 1, GDT_Float64, m_papszGDALRasterOptions);
    // pDataSet->SetProjection(m_strGDALBasementDEMProjection.c_str());
    // pDataSet->SetGeoTransform(m_dGeoTransform);
    // double* pdRaster = new double[m_nXGridSize * m_nYGridSize];
-
+   //
    // pDataSet = pDriver->Create(strOutFile.c_str(), m_nXGridSize, m_nYGridSize, 1, GDT_Float64, m_papszGDALRasterOptions);
    // pDataSet->SetProjection(m_strGDALBasementDEMProjection.c_str());
    // pDataSet->SetGeoTransform(m_dGeoTransform);
-
+   //
    // pdRaster = new double[m_nXGridSize * m_nYGridSize];
    // int n = 0;
    // for (int nY = 0; nY < m_nYGridSize; nY++)
    // {
-   // for (int nX = 0; nX < m_nXGridSize; nX++)
-   // {
-   // pdRaster[n++] = m_pRasterGrid->m_Cell[nX][nY].bIsInundated();
+   //    for (int nX = 0; nX < m_nXGridSize; nX++)
+   //    {
+   //       pdRaster[n++] = m_pRasterGrid->m_Cell[nX][nY].bIsInundated();
+   //    }
    // }
-   // }
-
+   //
    // GDALRasterBand* pBand = pDataSet->GetRasterBand(1);
    // pBand = pDataSet->GetRasterBand(1);
    // pBand->SetNoDataValue(m_dMissingValue);
    // int nRet = pBand->RasterIO(GF_Write, 0, 0, m_nXGridSize, m_nYGridSize, pdRaster, m_nXGridSize, m_nYGridSize, GDT_Float64, 0, 0, NULL);
    // if (nRet == CE_Failure)
    // return;
-
+   //
    // GDALClose(pDataSet);
    // delete[] pdRaster;
    // // DEBUG CODE ===========================================================================================================
 
+   // // DEBUG CODE ===========================================================================================================
    // LogStream << m_ulIter << ": cell-by-cell fill of sea from [" << nXStart << "][" << nYStart << "] = {" << dGridCentroidXToExtCRSX(nXStart) << ", " << dGridCentroidYToExtCRSY(nYStart) << "} with SWL = " << m_dThisIterSWL << ", " << m_ulThisIterNumSeaCells << " of " << m_ulNumCells << " cells now marked as sea (" <<  fixed << setprecision(3) << 100.0 * m_ulThisIterNumSeaCells / m_ulNumCells << " %)" << endl;
 
    // LogStream << " m_nXMinBoundingBox = " << m_nXMinBoundingBox << " m_nXMaxBoundingBox = " << m_nXMaxBoundingBox << " m_nYMinBoundingBox = " << m_nYMinBoundingBox << " m_nYMaxBoundingBox = " << m_nYMaxBoundingBox << endl;
+   // // DEBUG CODE ===========================================================================================================
 }
 
 //===============================================================================================================================
-//! Locates all the potential coastline start points on the edges of the raster grid, then traces vector coastline(s) from these start points
+//! Locates all the potential coastline start/finish points on the edges of the raster grid, then traces vector coastline(s) from these start points
 //===============================================================================================================================
 int CSimulation::nTraceAllCoasts(int &nValidCoast)
 {
@@ -300,7 +302,7 @@ int CSimulation::nTraceAllCoasts(int &nValidCoast)
    vector<int> VnSearchDirection;
    vector<CGeom2DIPoint> V2DIPossibleStartCell;
 
-   // Go along the list of edge cells and look for possible coastline start cells
+   // Go along the list of edge cells and look for possible coastline start/finish cells
    for (unsigned int n = 0; n < m_VEdgeCell.size() - 1; n++)
    {
       if (m_bOmitSearchNorthEdge && (m_VEdgeCellEdge[n] == NORTH || m_VEdgeCellEdge[n + 1] == NORTH))
@@ -334,7 +336,7 @@ int CSimulation::nTraceAllCoasts(int &nValidCoast)
             m_pRasterGrid->m_Cell[nXThis][nYThis].SetPossibleCoastStartCell();
 
             if (m_nLogFileDetail >= LOG_FILE_ALL)
-               LogStream << m_ulIter << ": Flagging [" << nXThis << "][" << nYThis << "] = {" << dGridCentroidXToExtCRSX(nXThis) << ", " << dGridCentroidYToExtCRSY(nYThis) << "} as possible coast start cell, with left_handed edge" << endl;
+               LogStream << m_ulIter << ": Flagging [" << nXThis << "][" << nYThis << "] = {" << dGridCentroidXToExtCRSX(nXThis) << ", " << dGridCentroidYToExtCRSY(nYThis) << "} as possible coast start cell (left_handed edge)" << endl;
 
             // And save it
             V2DIPossibleStartCell.push_back(CGeom2DIPoint(nXThis, nYThis));
@@ -353,7 +355,7 @@ int CSimulation::nTraceAllCoasts(int &nValidCoast)
             m_pRasterGrid->m_Cell[nXNext][nYNext].SetPossibleCoastStartCell();
 
             if (m_nLogFileDetail >= LOG_FILE_ALL)
-               LogStream << m_ulIter << ": Flagging [" << nXNext << "][" << nYNext << "] = {" << dGridCentroidXToExtCRSX(nXNext) << ", " << dGridCentroidYToExtCRSY(nYNext) << "} as possible coast start cell, with right_handed edge" << endl;
+               LogStream << m_ulIter << ": Flagging [" << nXNext << "][" << nYNext << "] = {" << dGridCentroidXToExtCRSX(nXNext) << ", " << dGridCentroidYToExtCRSY(nYNext) << "} as possible coast start cell (right_handed edge)" << endl;
 
             // And save it
             V2DIPossibleStartCell.push_back(CGeom2DIPoint(nXNext, nYNext));
@@ -364,6 +366,25 @@ int CSimulation::nTraceAllCoasts(int &nValidCoast)
       }
    }
 
+   // Any possible coastline start/finish cells found?
+   if (V2DIPossibleStartCell.size() == 0)
+   {
+      LogStream << m_ulIter << ": no coastline start/finish points found after grid edges searched.";
+
+      if (m_bOmitSearchNorthEdge || m_bOmitSearchSouthEdge || m_bOmitSearchWestEdge || m_bOmitSearchEastEdge)
+      {
+         LogStream << " Note that the following grid edges were not searched: " << (m_bOmitSearchNorthEdge ? "N " : "") << (m_bOmitSearchSouthEdge ? "S " : "") << (m_bOmitSearchWestEdge ? "W " : "") << (m_bOmitSearchEastEdge ? "E " : "");
+      }
+
+      LogStream << endl;
+
+      return RTN_ERR_TRACING_COAST;
+   }
+
+   // Some possible coastline start/finish points were found
+   LogStream << m_ulIter << ": " << V2DIPossibleStartCell.size() << " possible coastline start/finish points found" << endl;
+
+   // OK, so trace from each of these possible start/finish points
    for (unsigned int n = 0; n < V2DIPossibleStartCell.size(); n++)
    {
       if (! VbTraced[n])
@@ -372,12 +393,12 @@ int CSimulation::nTraceAllCoasts(int &nValidCoast)
 
          if (VbPossibleStartCellLHEdge[n])
          {
-            nRet = nTraceCoastLine(n, VnSearchDirection[n], LEFT_HANDED, & VbTraced, & V2DIPossibleStartCell);
+            nRet = nTraceCoastLine(n, VnSearchDirection[n], LEFT_HANDED, &VbTraced, &V2DIPossibleStartCell);
          }
 
          else
          {
-            nRet = nTraceCoastLine(n, VnSearchDirection[n], RIGHT_HANDED, & VbTraced, & V2DIPossibleStartCell);
+            nRet = nTraceCoastLine(n, VnSearchDirection[n], RIGHT_HANDED, &VbTraced, &V2DIPossibleStartCell);
          }
 
          if (nRet == RTN_OK)
@@ -394,7 +415,7 @@ int CSimulation::nTraceAllCoasts(int &nValidCoast)
 
    else
    {
-      cerr << m_ulIter << ": no valid coasts found" << endl;
+      cerr << m_ulIter << ": no valid coasts found, see " << m_strLogFile << " for more information" << endl;
       return RTN_ERR_TRACING_COAST;
    }
 }
@@ -402,7 +423,7 @@ int CSimulation::nTraceAllCoasts(int &nValidCoast)
 //===============================================================================================================================
 //! Traces a coastline (which is defined to be just above still water level) on the grid using the 'wall follower' rule for maze traversal (http://en.wikipedia.org/wiki/Maze_solving_algorithm#Wall_follower). The vector coastlines are then smoothed
 //===============================================================================================================================
-int CSimulation::nTraceCoastLine(unsigned int const nTraceFromStartCellIndex, int const nStartSearchDirection, int const nHandedness, vector<bool> *pVbTraced, vector<CGeom2DIPoint> const* pV2DIPossibleStartCell)
+int CSimulation::nTraceCoastLine(unsigned int const nTraceFromStartCellIndex, int const nStartSearchDirection, int const nHandedness, vector<bool>*pVbTraced, vector<CGeom2DIPoint> const* pV2DIPossibleStartCell)
 {
    bool bHitStartCell = false;
    bool bAtCoast = false;
@@ -427,7 +448,7 @@ int CSimulation::nTraceCoastLine(unsigned int const nTraceFromStartCellIndex, in
    // Mark the start cell as coast and add it to the vector object
    m_pRasterGrid->m_Cell[nStartX][nStartY].SetAsCoastline(true);
    CGeom2DIPoint PtiStart(nStartX, nStartY);
-   ILTempGridCRS.Append( & PtiStart);
+   ILTempGridCRS.Append(&PtiStart);
 
    // Start at this grid-edge point and trace the rest of the coastline using the 'wall follower' rule for maze traversal, trying to keep next to cells flagged as sea
    do
@@ -488,7 +509,7 @@ int CSimulation::nTraceCoastLine(unsigned int const nTraceFromStartCellIndex, in
                if (bAtCoast && (nX == pV2DIPossibleStartCell->at(nn).nGetX()) && (nY == pV2DIPossibleStartCell->at(nn).nGetY()))
                {
                   if (m_nLogFileDetail >= LOG_FILE_HIGH_DETAIL)
-                     LogStream << m_ulIter << ": Valid coastline found, traced from [" << nStartX << "][" << nStartY << "] and hit another start cell at [" << nX << "][" << nY << "]" << endl;
+                     LogStream << m_ulIter << ": Possible coastline found, traced from [" << nStartX << "][" << nStartY << "] and hit another coast start cell at [" << nX << "][" << nY << "]" << endl;
 
                   pVbTraced->at(nn) = true;
                   bHitStartCell = true;
@@ -731,14 +752,14 @@ int CSimulation::nTraceCoastLine(unsigned int const nTraceFromStartCellIndex, in
                {
                   // It is, so mark as coast and add it to the vector object
                   m_pRasterGrid->m_Cell[nX][nY].SetAsCoastline(true);
-                  ILTempGridCRS.Append( & Pti);
+                  ILTempGridCRS.Append(&Pti);
                }
 
                else if (m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElev() >= m_dThisIterSWL)
                {
                   // The sediment top is above SWL so mark as coast and add it to the vector object
                   m_pRasterGrid->m_Cell[nX][nY].SetAsCoastline(true);
-                  ILTempGridCRS.Append( & Pti);
+                  ILTempGridCRS.Append(&Pti);
                }
             }
          }
@@ -772,14 +793,14 @@ int CSimulation::nTraceCoastLine(unsigned int const nTraceFromStartCellIndex, in
                {
                   // It is, so mark as coast and add it to the vector object
                   m_pRasterGrid->m_Cell[nX][nY].SetAsCoastline(true);
-                  ILTempGridCRS.Append( & Pti);
+                  ILTempGridCRS.Append(&Pti);
                }
 
                else if (m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElev() >= m_dThisIterSWL)
                {
                   // The sediment top is above SWL so mark as coast and add it to the vector object
                   m_pRasterGrid->m_Cell[nX][nY].SetAsCoastline(true);
-                  ILTempGridCRS.Append( & Pti);
+                  ILTempGridCRS.Append(&Pti);
                }
             }
          }
@@ -812,14 +833,14 @@ int CSimulation::nTraceCoastLine(unsigned int const nTraceFromStartCellIndex, in
                {
                   // It is, so mark as coast and add it to the vector object
                   m_pRasterGrid->m_Cell[nX][nY].SetAsCoastline(true);
-                  ILTempGridCRS.Append( & Pti);
+                  ILTempGridCRS.Append(&Pti);
                }
 
                else if (m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElev() >= m_dThisIterSWL)
                {
                   // The sediment top is above SWL so mark as coast and add it to the vector object
                   m_pRasterGrid->m_Cell[nX][nY].SetAsCoastline(true);
-                  ILTempGridCRS.Append( & Pti);
+                  ILTempGridCRS.Append(&Pti);
                }
             }
          }
@@ -860,7 +881,7 @@ int CSimulation::nTraceCoastLine(unsigned int const nTraceFromStartCellIndex, in
    if (bOffEdge)
    {
       if (m_nLogFileDetail >= LOG_FILE_ALL)
-         LogStream << m_ulIter << ": ignoring temporary coastline from [" << nStartX << "][" << nStartY << "] = {" << dGridCentroidXToExtCRSX(nStartX) << ", " << dGridCentroidYToExtCRSY(nStartY) << "} since hit off-edge cell at [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "}, coastline size is " << nCoastSize << endl;
+         LogStream << m_ulIter << ": Ignoring possible coastline from [" << nStartX << "][" << nStartY << "] = {" << dGridCentroidXToExtCRSX(nStartX) << ", " << dGridCentroidYToExtCRSY(nStartY) << "} since hit off-edge cell at [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "}, coastline size is " << nCoastSize << endl;
 
       // Unmark these cells as coast cells
       for (int n = 0; n < nCoastSize; n++)
@@ -874,7 +895,7 @@ int CSimulation::nTraceCoastLine(unsigned int const nTraceFromStartCellIndex, in
       // Around loop too many times, so abandon this coastline
       if (m_nLogFileDetail >= LOG_FILE_ALL)
       {
-         LogStream << m_ulIter << ": ignoring temporary coastline from [" << nStartX << "][" << nStartY << "] = {" << dGridCentroidXToExtCRSX(nStartX) << ", " << dGridCentroidYToExtCRSY(nStartY) << "} since round loop " << nRoundLoop << " times (m_nCoastMax = " << m_nCoastMax << "), coastline size is " << nCoastSize;
+         LogStream << m_ulIter << ": Ignoring possible coastline from [" << nStartX << "][" << nStartY << "] = {" << dGridCentroidXToExtCRSX(nStartX) << ", " << dGridCentroidYToExtCRSY(nStartY) << "} since round loop " << nRoundLoop << " times (m_nCoastMax = " << m_nCoastMax << "), coastline size is " << nCoastSize;
 
          if (nCoastSize > 0)
             LogStream << ", it ended at [" << ILTempGridCRS[nCoastSize - 1].nGetX() << "][" << ILTempGridCRS[nCoastSize - 1].nGetY() << "] = {" << dGridCentroidXToExtCRSX(ILTempGridCRS[nCoastSize - 1].nGetX()) << ", " << dGridCentroidYToExtCRSY(ILTempGridCRS[nCoastSize - 1].nGetY()) << "}";
@@ -893,7 +914,7 @@ int CSimulation::nTraceCoastLine(unsigned int const nTraceFromStartCellIndex, in
    {
       if (m_nLogFileDetail >= LOG_FILE_ALL)
       {
-         LogStream << m_ulIter << ": ignoring temporary coastline from [" << nStartX << "][" << nStartY << "] = {" << dGridCentroidXToExtCRSX(nStartX) << ", " << dGridCentroidYToExtCRSY(nStartY) << "} since repeating, coastline size is " << nCoastSize;
+         LogStream << m_ulIter << ": Ignoring possible coastline from [" << nStartX << "][" << nStartY << "] = {" << dGridCentroidXToExtCRSX(nStartX) << ", " << dGridCentroidYToExtCRSY(nStartY) << "} since repeating, coastline size is " << nCoastSize;
 
          if (nCoastSize > 0)
             LogStream << ", it ended at [" << ILTempGridCRS[nCoastSize - 1].nGetX() << "][" << ILTempGridCRS[nCoastSize - 1].nGetY() << "] = {" << dGridCentroidXToExtCRSX(ILTempGridCRS[nCoastSize - 1].nGetX()) << ", " << dGridCentroidYToExtCRSY(ILTempGridCRS[nCoastSize - 1].nGetY()) << "}";
@@ -921,7 +942,7 @@ int CSimulation::nTraceCoastLine(unsigned int const nTraceFromStartCellIndex, in
    {
       // The vector coastline is too small, so abandon it
       if (m_nLogFileDetail >= LOG_FILE_HIGH_DETAIL)
-         LogStream << m_ulIter << ": ignoring temporary coastline from [" << nStartX << "][" << nStartY << "] = {" << dGridCentroidXToExtCRSX(nStartX) << ", " << dGridCentroidYToExtCRSY(nStartY) << "} to [" << ILTempGridCRS[nCoastSize - 1].nGetX() << "][" << ILTempGridCRS[nCoastSize - 1].nGetY() << "] = {" << dGridCentroidXToExtCRSX(ILTempGridCRS[nCoastSize - 1].nGetX()) << ", " << dGridCentroidYToExtCRSY(ILTempGridCRS[nCoastSize - 1].nGetY()) << "} since size (" << nCoastSize << ") is less than minimum (" << m_nCoastMin << ")" << endl;
+         LogStream << m_ulIter << ": Ignoring possible coastline from [" << nStartX << "][" << nStartY << "] = {" << dGridCentroidXToExtCRSX(nStartX) << ", " << dGridCentroidYToExtCRSY(nStartY) << "} to [" << ILTempGridCRS[nCoastSize - 1].nGetX() << "][" << ILTempGridCRS[nCoastSize - 1].nGetY() << "] = {" << dGridCentroidXToExtCRSX(ILTempGridCRS[nCoastSize - 1].nGetX()) << ", " << dGridCentroidYToExtCRSY(ILTempGridCRS[nCoastSize - 1].nGetY()) << "} since size (" << nCoastSize << ") is less than minimum (" << m_nCoastMin << ")" << endl;
 
       // Unmark these cells as coast cells
       for (int n = 0; n < nCoastSize; n++)
@@ -963,10 +984,10 @@ int CSimulation::nTraceCoastLine(unsigned int const nTraceFromStartCellIndex, in
 
    // Now do some smoothing of the vector output, if desired
    if (m_nCoastSmooth == SMOOTH_RUNNING_MEAN)
-      LTempExtCRS = LSmoothCoastRunningMean( & LTempExtCRS);
+      LTempExtCRS = LSmoothCoastRunningMean(&LTempExtCRS);
 
    else if (m_nCoastSmooth == SMOOTH_SAVITZKY_GOLAY)
-      LTempExtCRS = LSmoothCoastSavitzkyGolay( & LTempExtCRS, nStartEdge, nEndEdge);
+      LTempExtCRS = LSmoothCoastSavitzkyGolay(&LTempExtCRS, nStartEdge, nEndEdge);
 
    //    // DEBUG CODE ==================================================================================================
    // LogStream << "==================================" << endl;
@@ -983,10 +1004,10 @@ int CSimulation::nTraceCoastLine(unsigned int const nTraceFromStartCellIndex, in
    int nCoast = static_cast<int>(m_VCoast.size()) - 1;
 
    // Set the coastline (Ext CRS)
-   m_VCoast[nCoast].SetCoastlineExtCRS( & LTempExtCRS);
+   m_VCoast[nCoast].SetCoastlineExtCRS(&LTempExtCRS);
 
    // Set the coastline (Grid CRS)
-   m_VCoast[nCoast].SetCoastlineGridCRS( & ILTempGridCRS);
+   m_VCoast[nCoast].SetCoastlineGridCRS(&ILTempGridCRS);
 
    // CGeom2DPoint PtLast(DBL_MIN, DBL_MIN);
    // for (int j = 0; j < nCoastSize; j++)
@@ -1010,7 +1031,7 @@ int CSimulation::nTraceCoastLine(unsigned int const nTraceFromStartCellIndex, in
 
    if (m_nLogFileDetail >= LOG_FILE_HIGH_DETAIL)
    {
-      LogStream << m_ulIter << ": Coast " << nCoast << " created, from [" << nStartX << "][" << nStartY << "] to [" << nEndX << "][" << nEndY << "] = {" << dGridCentroidXToExtCRSX(nStartX) << ", " << dGridCentroidYToExtCRSY(nStartY) << "} to {" << dGridCentroidXToExtCRSX(nEndX) << ", " << dGridCentroidYToExtCRSY(nEndY) << "} with " << nCoastSize << " points, handedness = " << (nHandedness == LEFT_HANDED ? "left" : "right") << endl;
+      LogStream << m_ulIter << ": Valid coast " << nCoast << " created, from [" << nStartX << "][" << nStartY << "] to [" << nEndX << "][" << nEndY << "] = {" << dGridCentroidXToExtCRSX(nStartX) << ", " << dGridCentroidYToExtCRSY(nStartY) << "} to {" << dGridCentroidXToExtCRSX(nEndX) << ", " << dGridCentroidYToExtCRSY(nEndY) << "} with " << nCoastSize << " points, handedness = " << (nHandedness == LEFT_HANDED ? "left" : "right") << endl;
 
       LogStream << m_ulIter << ": Smoothed coastline " << nCoast << " runs from {" << LTempExtCRS[0].dGetX() << ", " << LTempExtCRS[0].dGetY() << "} to {" << LTempExtCRS[nCoastSize - 1].dGetX() << ", " << LTempExtCRS[nCoastSize - 1].dGetY() << "} i.e. from the ";
 

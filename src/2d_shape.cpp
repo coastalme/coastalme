@@ -34,7 +34,7 @@ CA2DShape::~CA2DShape(void)
 }
 
 //! Operator to return one point of this 2D shape
-CGeom2DPoint & CA2DShape::operator[] (int const n)
+CGeom2DPoint& CA2DShape::operator[] (int const n)
 {
    // TODO 055 Maybe add a safety check?
    return m_VPoints[n];
@@ -83,14 +83,14 @@ void CA2DShape::AppendIfNotAlready(double const dX, double const dY)
    if (m_VPoints.empty())
       m_VPoints.push_back(PtIn);
 
-   else if (m_VPoints.back() != & PtIn)
+   else if (m_VPoints.back() != &PtIn)
       m_VPoints.push_back(PtIn);
 }
 
 //! Returns the last element of this 2D shape
 CGeom2DPoint* CA2DShape::pPtBack(void)
 {
-   return & m_VPoints.back();
+   return &m_VPoints.back();
 }
 
 // void CA2DShape::SetPoints(const vector<CGeom2DPoint>* VNewPoints)
@@ -129,7 +129,7 @@ CGeom2DPoint* CA2DShape::pPtBack(void)
 //! Returns the address of the vector which represents this 2D shape
 vector<CGeom2DPoint> *CA2DShape::pPtVGetPoints(void)
 {
-   return & m_VPoints;
+   return &m_VPoints;
 }
 
 // //! Computes the centroid of this 2D polygon (which may be outside, if this is a concave polygon). From http://stackoverflow.com/questions/2792443/finding-the-centroid-of-a-polygon

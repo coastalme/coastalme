@@ -61,7 +61,7 @@ int CSimulation::nAssignLandformsForAllCoasts(void)
          if (bIsInterventionCell(nX, nY) || m_pRasterGrid->m_Cell[nX][nY].dGetInterventionHeight() > 0)
          {
             // There is, so create an intervention object on the vector coastline with these attributes
-            CACoastLandform* pIntervention = new CRWIntervention( & m_VCoast[nCoast], nCoast, j);
+            CACoastLandform* pIntervention = new CRWIntervention(&m_VCoast[nCoast], nCoast, j);
             m_VCoast[nCoast].AppendCoastLandform(pIntervention);
 
 // LogStream << j << " [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "} " << m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->nGetLFCategory() << " " << m_pRasterGrid->m_Cell[nX][nY].dGetInterventionHeight() << endl;
@@ -109,7 +109,7 @@ int CSimulation::nAssignLandformsForAllCoasts(void)
                m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->SetCliffRemaining(m_dCellSide);
 
                // Create a cliff object on the vector coastline with these attributes
-               CACoastLandform* pCliff = new CRWCliff( & m_VCoast[nCoast], nCoast, j, m_dCellSide, 0, dNotchBaseElev, 0);
+               CACoastLandform* pCliff = new CRWCliff(&m_VCoast[nCoast], nCoast, j, m_dCellSide, 0, dNotchBaseElev, 0);
                m_VCoast[nCoast].AppendCoastLandform(pCliff);
 
 // LogStream << m_ulIter << ": CLIFF CREATED [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "}" << endl;
@@ -118,7 +118,7 @@ int CSimulation::nAssignLandformsForAllCoasts(void)
             else
             {
                // First timestep: we have unconsolidated sediment at SWL, so this is a drift cell: create a drift object on the vector coastline with these attributes
-               CACoastLandform* pDrift = new CRWDrift( & m_VCoast[nCoast], nCoast, j);
+               CACoastLandform* pDrift = new CRWDrift(&m_VCoast[nCoast], nCoast, j);
                m_VCoast[nCoast].AppendCoastLandform(pDrift);
 
                // Safety check
@@ -166,14 +166,14 @@ int CSimulation::nAssignLandformsForAllCoasts(void)
                }
 
                // Create a cliff object on the vector coastline with these attributes
-               CACoastLandform* pCliff = new CRWCliff( & m_VCoast[nCoast], nCoast, j, m_dCellSide, dNotchDepth, dNotchBaseElev, dAccumWaveEnergy);
+               CACoastLandform* pCliff = new CRWCliff(&m_VCoast[nCoast], nCoast, j, m_dCellSide, dNotchDepth, dNotchBaseElev, dAccumWaveEnergy);
                m_VCoast[nCoast].AppendCoastLandform(pCliff);
             }
 
             else
             {
                // We have unconsolidated sediment at SWL, so this is a drift cell: create a drift object on the vector coastline with these attributes
-               CACoastLandform* pDrift = new CRWDrift( & m_VCoast[nCoast], nCoast, j);
+               CACoastLandform* pDrift = new CRWDrift(&m_VCoast[nCoast], nCoast, j);
                m_VCoast[nCoast].AppendCoastLandform(pDrift);
 
                // Safety check
@@ -368,8 +368,7 @@ int CSimulation::nLandformToGrid(int const nCoast, int const nPoint)
 //===============================================================================================================================
 int CSimulation::nAssignLandformsForAllCells(void)
 {
-   // First pass: collect information about cells that need to be changed
-   // This avoids race conditions from reading neighbor cells while writing to current cells
+   // First pass: collect information about cells that need to be changed. This avoids race conditions from reading neighbour cells while writing to current cells
    vector<vector<int>> vCellUpdates(m_nXGridSize, vector<int>(m_nYGridSize, -1));
 
    // Read-only phase: determine what changes need to be made
@@ -382,7 +381,7 @@ int CSimulation::nAssignLandformsForAllCells(void)
       for (int nY = 0; nY < m_nYGridSize; nY++)
       {
          // Get this cell's landform category
-         CRWCellLandform * pLandform = m_pRasterGrid->m_Cell[nX][nY].pGetLandform();
+         CRWCellLandform* pLandform = m_pRasterGrid->m_Cell[nX][nY].pGetLandform();
          int nCat = pLandform->nGetLFCategory();
 
          // Store what action to take (to avoid writing during read phase)
@@ -452,7 +451,7 @@ int CSimulation::nAssignLandformsForAllCells(void)
          if (nAction == -1)
             continue; // No change
 
-         CRWCellLandform * pLandform = m_pRasterGrid->m_Cell[nX][nY].pGetLandform();
+         CRWCellLandform* pLandform = m_pRasterGrid->m_Cell[nX][nY].pGetLandform();
 
          switch (nAction)
          {

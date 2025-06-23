@@ -36,14 +36,14 @@ CA2DIShape::~CA2DIShape(void)
 }
 
 //! Returns one integer point from the vector which represents this 2D shape
-CGeom2DIPoint & CA2DIShape::operator[] (int const n)
+CGeom2DIPoint& CA2DIShape::operator[] (int const n)
 {
    // TODO 055 Maybe add a safety check?
    return m_VPoints[n];
 }
 
 //! Returns the last integer point from the vector which represents this 2D shape
-CGeom2DIPoint & CA2DIShape::Back(void)
+CGeom2DIPoint& CA2DIShape::Back(void)
 {
    return m_VPoints.back();
 }
@@ -51,7 +51,7 @@ CGeom2DIPoint & CA2DIShape::Back(void)
 //! Returns the address of the vector which represents this 2D shape
 vector<CGeom2DIPoint> *CA2DIShape::pPtiVGetPoints(void)
 {
-   return & m_VPoints;
+   return &m_VPoints;
 }
 
 //! Clears the vector which represents this 2D shape
@@ -97,7 +97,7 @@ void CA2DIShape::AppendIfNotAlready(int const nX, int const nY)
    if (m_VPoints.empty())
       m_VPoints.push_back(PtiIn);
 
-   else if (m_VPoints.back() != & PtiIn)
+   else if (m_VPoints.back() != &PtiIn)
       m_VPoints.push_back(PtiIn);
 }
 

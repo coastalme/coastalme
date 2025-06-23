@@ -84,7 +84,7 @@ int CGeomProfile::nGetCoastPoint(void) const
 //! Returns a pointer to the location of the cell (grid CRS) on which the profile starts
 CGeom2DIPoint* CGeomProfile::pPtiGetStartPoint(void)
 {
-   return & PtiStart;
+   return &PtiStart;
 }
 
 //! Sets the the location of the cell (grid CRS) on which the profile ends
@@ -96,7 +96,7 @@ void CGeomProfile::SetEndPoint(CGeom2DIPoint const* pPtiEnd)
 //! Returns a pointer to the location of the cell (grid CRS) on which the profile ends
 CGeom2DIPoint* CGeomProfile::pPtiGetEndPoint(void)
 {
-   return & PtiEnd;
+   return &PtiEnd;
 }
 
 //! Sets a switch to indicate whether this is a start-of-coast profile
@@ -348,7 +348,7 @@ int CGeomProfile::nGetProfileSize(void) const
 //! Returns a single point in the profile
 CGeom2DPoint* CGeomProfile::pPtGetPointInProfile(int const n)
 {
-   return & m_VPoints[n];
+   return &m_VPoints[n];
 }
 
 //! Returns a given point from the profile, and all points after this
@@ -368,7 +368,7 @@ vector<CGeom2DPoint> CGeomProfile::PtVGetThisPointAndAllAfter(int const nStart)
 bool CGeomProfile::bIsPointInProfile(double const dX, double const dY)
 {
    CGeom2DPoint Pt(dX, dY);
-   auto it = find(m_VPoints.begin(), m_VPoints.end(), & Pt);
+   auto it = find(m_VPoints.begin(), m_VPoints.end(), &Pt);
 
    if (it != m_VPoints.end())
       return true;
@@ -381,7 +381,7 @@ bool CGeomProfile::bIsPointInProfile(double const dX, double const dY)
 bool CGeomProfile::bIsPointInProfile(double const dX, double const dY, int &nPoint)
 {
    CGeom2DPoint Pt(dX, dY);
-   auto it = find(m_VPoints.begin(), m_VPoints.end(), & Pt);
+   auto it = find(m_VPoints.begin(), m_VPoints.end(), &Pt);
 
    if (it != m_VPoints.end())
    {
@@ -496,21 +496,21 @@ void CGeomProfile::AppendCellInProfile(int const nX, int const nY)
 vector<CGeom2DIPoint> *CGeomProfile::pPtiVGetCellsInProfile(void)
 {
    // In grid CRS
-   return & m_VCellInProfile;
+   return &m_VCellInProfile;
 }
 
 //! Returns a single cell in the profile
 CGeom2DIPoint* CGeomProfile::pPtiGetCellInProfile(int const n)
 {
    // In grid CRS TODO 055 No check to see if n < size()
-   return & m_VCellInProfile[n];
+   return &m_VCellInProfile[n];
 }
 
 //! Returns the last cell in the profile
 CGeom2DIPoint* CGeomProfile::pPtiGetLastCellInProfile(void)
 {
    // In grid CRS
-   return & m_VCellInProfile.back();
+   return &m_VCellInProfile.back();
 }
 
 //! Returns the number of cells in the profile
