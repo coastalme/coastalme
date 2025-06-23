@@ -1,0 +1,1374 @@
+<!DOCTYPE qgis PUBLIC 'http://mrcc.com/qgis.dtd' 'SYSTEM'>
+<qgis saveDateTime="2025-06-22T16:51:43" saveUserFull="Dave Favis-Mortlock" saveUser="dave" version="3.40.5-Bratislava" projectname="">
+  <homePath path=""/>
+  <title></title>
+  <transaction mode="Disabled"/>
+  <projectFlags set=""/>
+  <projectCrs>
+    <spatialrefsys nativeFormat="Wkt">
+      <wkt>ENGCRS["Plane",EDATUM["Unknown engineering datum"],CS[Cartesian,2],AXIS["(E)",east,ORDER[1],LENGTHUNIT["Meter",1]],AXIS["(N)",north,ORDER[2],LENGTHUNIT["Meter",1]]]</wkt>
+      <proj4></proj4>
+      <srsid>100000</srsid>
+      <srid>0</srid>
+      <authid>USER:100000</authid>
+      <description>Plane</description>
+      <projectionacronym></projectionacronym>
+      <ellipsoidacronym></ellipsoidacronym>
+      <geographicflag>false</geographicflag>
+    </spatialrefsys>
+  </projectCrs>
+  <verticalCrs>
+    <spatialrefsys nativeFormat="Wkt">
+      <wkt></wkt>
+      <proj4></proj4>
+      <srsid>0</srsid>
+      <srid>0</srid>
+      <authid></authid>
+      <description></description>
+      <projectionacronym></projectionacronym>
+      <ellipsoidacronym></ellipsoidacronym>
+      <geographicflag>false</geographicflag>
+    </spatialrefsys>
+  </verticalCrs>
+  <elevation-shading-renderer hillshading-is-multidirectional="0" combined-method="0" light-azimuth="315" edl-is-active="1" edl-strength="1000" hillshading-is-active="0" light-altitude="45" edl-distance-unit="0" is-active="0" edl-distance="0.5" hillshading-z-factor="1"/>
+  <layer-tree-group>
+    <customproperties>
+      <Option/>
+    </customproperties>
+    <layer-tree-group name="In" expanded="1" groupLayer="" checked="Qt::Checked">
+      <customproperties>
+        <Option/>
+      </customproperties>
+      <layer-tree-layer providerKey="gdal" legend_split_behavior="0" name="two_coasts" patch_size="-1,-1" source="./two_coasts.tif" legend_exp="" id="two_coasts_c38adc53_25ea_47c1_a33e_12e224348ea2" expanded="0" checked="Qt::Unchecked">
+        <customproperties>
+          <Option/>
+        </customproperties>
+      </layer-tree-layer>
+      <layer-tree-layer providerKey="gdal" legend_split_behavior="0" name="basement" patch_size="-1,-1" source="./basement.tif" legend_exp="" id="basement_0668703f_9b4b_477e_9232_edf0015a0685" expanded="0" checked="Qt::Unchecked">
+        <customproperties>
+          <Option/>
+        </customproperties>
+      </layer-tree-layer>
+    </layer-tree-group>
+    <layer-tree-group name="Out" expanded="1" groupLayer="" checked="Qt::Checked">
+      <customproperties>
+        <Option/>
+      </customproperties>
+      <layer-tree-layer providerKey="gdal" legend_split_behavior="0" name="is_contiguous_sea_1" patch_size="-1,-1" source="../../out/two_coasts/is_contiguous_sea_1.tif" legend_exp="" id="is_contiguous_sea_1_b14c71ff_228f_4e57_8cb0_65c1c68edd02" expanded="0" checked="Qt::Checked">
+        <customproperties>
+          <Option/>
+        </customproperties>
+      </layer-tree-layer>
+      <layer-tree-group name="01" expanded="1" groupLayer="" checked="Qt::Checked">
+        <customproperties>
+          <Option/>
+        </customproperties>
+      </layer-tree-group>
+    </layer-tree-group>
+    <custom-order enabled="0">
+      <item>two_coasts_c38adc53_25ea_47c1_a33e_12e224348ea2</item>
+      <item>basement_0668703f_9b4b_477e_9232_edf0015a0685</item>
+      <item>is_contiguous_sea_1_b14c71ff_228f_4e57_8cb0_65c1c68edd02</item>
+    </custom-order>
+  </layer-tree-group>
+  <snapping-settings enabled="1" intersection-snapping="0" maxScale="0" scaleDependencyMode="0" type="1" unit="1" mode="2" tolerance="12" minScale="0" self-snapping="0">
+    <individual-layer-settings/>
+  </snapping-settings>
+  <relations/>
+  <polymorphicRelations/>
+  <mapcanvas annotationsVisible="1" name="theMapCanvas">
+    <units>meters</units>
+    <extent>
+      <xmin>-5.25</xmin>
+      <ymin>-11.5</ymin>
+      <xmax>257.25</xmax>
+      <ymax>513.5</ymax>
+    </extent>
+    <rotation>0</rotation>
+    <destinationsrs>
+      <spatialrefsys nativeFormat="Wkt">
+        <wkt>ENGCRS["Plane",EDATUM["Unknown engineering datum"],CS[Cartesian,2],AXIS["(E)",east,ORDER[1],LENGTHUNIT["Meter",1]],AXIS["(N)",north,ORDER[2],LENGTHUNIT["Meter",1]]]</wkt>
+        <proj4></proj4>
+        <srsid>100000</srsid>
+        <srid>0</srid>
+        <authid>USER:100000</authid>
+        <description>Plane</description>
+        <projectionacronym></projectionacronym>
+        <ellipsoidacronym></ellipsoidacronym>
+        <geographicflag>false</geographicflag>
+      </spatialrefsys>
+    </destinationsrs>
+    <rendermaptile>0</rendermaptile>
+    <expressionContextScope/>
+  </mapcanvas>
+  <projectModels/>
+  <legend updateDrawingOrder="true">
+    <legendgroup name="In" open="true" checked="Qt::Checked">
+      <legendlayer showFeatureCount="0" drawingOrder="-1" name="two_coasts" open="false" checked="Qt::Unchecked">
+        <filegroup open="false" hidden="false">
+          <legendlayerfile layerid="two_coasts_c38adc53_25ea_47c1_a33e_12e224348ea2" isInOverview="0" visible="0"/>
+        </filegroup>
+      </legendlayer>
+      <legendlayer showFeatureCount="0" drawingOrder="-1" name="basement" open="false" checked="Qt::Unchecked">
+        <filegroup open="false" hidden="false">
+          <legendlayerfile layerid="basement_0668703f_9b4b_477e_9232_edf0015a0685" isInOverview="0" visible="0"/>
+        </filegroup>
+      </legendlayer>
+    </legendgroup>
+    <legendgroup name="Out" open="true" checked="Qt::Checked">
+      <legendlayer showFeatureCount="0" drawingOrder="-1" name="is_contiguous_sea_1" open="false" checked="Qt::Checked">
+        <filegroup open="false" hidden="false">
+          <legendlayerfile layerid="is_contiguous_sea_1_b14c71ff_228f_4e57_8cb0_65c1c68edd02" isInOverview="0" visible="1"/>
+        </filegroup>
+      </legendlayer>
+      <legendgroup name="01" open="true" checked="Qt::Checked"/>
+    </legendgroup>
+  </legend>
+  <mapViewDocks/>
+  <mapcanvas annotationsVisible="1" name="mAreaCanvas">
+    <units>degrees</units>
+    <extent>
+      <xmin>179769313486231570814527423731704356798070567525844996598917476803157260780028538760589558632766878171540458953514382464234321326889464182768467546703537516986049910576551282076245490090389328944075868508455133942304583236903222948165808559332123348274797826204144723168738177180919299881250404026184124858368</xmin>
+      <ymin>179769313486231570814527423731704356798070567525844996598917476803157260780028538760589558632766878171540458953514382464234321326889464182768467546703537516986049910576551282076245490090389328944075868508455133942304583236903222948165808559332123348274797826204144723168738177180919299881250404026184124858368</ymin>
+      <xmax>-179769313486231570814527423731704356798070567525844996598917476803157260780028538760589558632766878171540458953514382464234321326889464182768467546703537516986049910576551282076245490090389328944075868508455133942304583236903222948165808559332123348274797826204144723168738177180919299881250404026184124858368</xmax>
+      <ymax>-179769313486231570814527423731704356798070567525844996598917476803157260780028538760589558632766878171540458953514382464234321326889464182768467546703537516986049910576551282076245490090389328944075868508455133942304583236903222948165808559332123348274797826204144723168738177180919299881250404026184124858368</ymax>
+    </extent>
+    <rotation>0</rotation>
+    <destinationsrs>
+      <spatialrefsys nativeFormat="Wkt">
+        <wkt>GEOGCRS["WGS 84",ENSEMBLE["World Geodetic System 1984 ensemble",MEMBER["World Geodetic System 1984 (Transit)"],MEMBER["World Geodetic System 1984 (G730)"],MEMBER["World Geodetic System 1984 (G873)"],MEMBER["World Geodetic System 1984 (G1150)"],MEMBER["World Geodetic System 1984 (G1674)"],MEMBER["World Geodetic System 1984 (G1762)"],MEMBER["World Geodetic System 1984 (G2139)"],MEMBER["World Geodetic System 1984 (G2296)"],ELLIPSOID["WGS 84",6378137,298.257223563,LENGTHUNIT["metre",1]],ENSEMBLEACCURACY[2.0]],PRIMEM["Greenwich",0,ANGLEUNIT["degree",0.0174532925199433]],CS[ellipsoidal,2],AXIS["geodetic latitude (Lat)",north,ORDER[1],ANGLEUNIT["degree",0.0174532925199433]],AXIS["geodetic longitude (Lon)",east,ORDER[2],ANGLEUNIT["degree",0.0174532925199433]],USAGE[SCOPE["Horizontal component of 3D system."],AREA["World."],BBOX[-90,-180,90,180]],ID["EPSG",4326]]</wkt>
+        <proj4>+proj=longlat +datum=WGS84 +no_defs</proj4>
+        <srsid>3452</srsid>
+        <srid>4326</srid>
+        <authid>EPSG:4326</authid>
+        <description>WGS 84</description>
+        <projectionacronym>longlat</projectionacronym>
+        <ellipsoidacronym>EPSG:7030</ellipsoidacronym>
+        <geographicflag>true</geographicflag>
+      </spatialrefsys>
+    </destinationsrs>
+    <rendermaptile>0</rendermaptile>
+    <expressionContextScope/>
+  </mapcanvas>
+  <main-annotation-layer legendPlaceholderImage="" autoRefreshTime="0" refreshOnNotifyMessage="" maxScale="0" styleCategories="AllStyleCategories" type="annotation" refreshOnNotifyEnabled="0" hasScaleBasedVisibilityFlag="0" autoRefreshMode="Disabled" minScale="1e+08">
+    <id>Annotations_ba8886a5_db53_4fe0_8868_759105a6210e</id>
+    <datasource></datasource>
+    <keywordList>
+      <value></value>
+    </keywordList>
+    <layername>Annotations</layername>
+    <srs>
+      <spatialrefsys nativeFormat="Wkt">
+        <wkt>ENGCRS["Plane",EDATUM["Unknown engineering datum"],CS[Cartesian,2],AXIS["(E)",east,ORDER[1],LENGTHUNIT["Meter",1]],AXIS["(N)",north,ORDER[2],LENGTHUNIT["Meter",1]]]</wkt>
+        <proj4></proj4>
+        <srsid>100000</srsid>
+        <srid>0</srid>
+        <authid>USER:100000</authid>
+        <description>Plane</description>
+        <projectionacronym></projectionacronym>
+        <ellipsoidacronym></ellipsoidacronym>
+        <geographicflag>false</geographicflag>
+      </spatialrefsys>
+    </srs>
+    <resourceMetadata>
+      <identifier></identifier>
+      <parentidentifier></parentidentifier>
+      <language></language>
+      <type></type>
+      <title></title>
+      <abstract></abstract>
+      <links/>
+      <dates/>
+      <fees></fees>
+      <encoding></encoding>
+      <crs>
+        <spatialrefsys nativeFormat="Wkt">
+          <wkt></wkt>
+          <proj4></proj4>
+          <srsid>0</srsid>
+          <srid>0</srid>
+          <authid></authid>
+          <description></description>
+          <projectionacronym></projectionacronym>
+          <ellipsoidacronym></ellipsoidacronym>
+          <geographicflag>false</geographicflag>
+        </spatialrefsys>
+      </crs>
+      <extent/>
+    </resourceMetadata>
+    <items/>
+    <flags>
+      <Identifiable>1</Identifiable>
+      <Removable>1</Removable>
+      <Searchable>1</Searchable>
+      <Private>0</Private>
+    </flags>
+    <customproperties>
+      <Option/>
+    </customproperties>
+    <layerOpacity>1</layerOpacity>
+    <blendMode>0</blendMode>
+    <paintEffect/>
+  </main-annotation-layer>
+  <projectlayers>
+    <maplayer legendPlaceholderImage="" autoRefreshTime="0" refreshOnNotifyMessage="" maxScale="0" styleCategories="AllStyleCategories" type="raster" refreshOnNotifyEnabled="0" hasScaleBasedVisibilityFlag="0" autoRefreshMode="Disabled" minScale="1e+08">
+      <extent>
+        <xmin>1</xmin>
+        <ymin>1</ymin>
+        <xmax>251</xmax>
+        <ymax>501</ymax>
+      </extent>
+      <wgs84extent>
+        <xmin>1</xmin>
+        <ymin>1</ymin>
+        <xmax>251</xmax>
+        <ymax>501</ymax>
+      </wgs84extent>
+      <id>basement_0668703f_9b4b_477e_9232_edf0015a0685</id>
+      <datasource>./basement.tif</datasource>
+      <keywordList>
+        <value></value>
+      </keywordList>
+      <layername>basement</layername>
+      <srs>
+        <spatialrefsys nativeFormat="Wkt">
+          <wkt>ENGCRS["Plane",EDATUM["Unknown engineering datum"],CS[Cartesian,2],AXIS["(E)",east,ORDER[1],LENGTHUNIT["Meter",1]],AXIS["(N)",north,ORDER[2],LENGTHUNIT["Meter",1]]]</wkt>
+          <proj4></proj4>
+          <srsid>100000</srsid>
+          <srid>0</srid>
+          <authid>USER:100000</authid>
+          <description>Plane</description>
+          <projectionacronym></projectionacronym>
+          <ellipsoidacronym></ellipsoidacronym>
+          <geographicflag>false</geographicflag>
+        </spatialrefsys>
+      </srs>
+      <resourceMetadata>
+        <identifier></identifier>
+        <parentidentifier></parentidentifier>
+        <language></language>
+        <type>dataset</type>
+        <title></title>
+        <abstract></abstract>
+        <links/>
+        <dates/>
+        <fees></fees>
+        <encoding></encoding>
+        <crs>
+          <spatialrefsys nativeFormat="Wkt">
+            <wkt>ENGCRS["Plane",EDATUM["Unknown engineering datum"],CS[Cartesian,2],AXIS["(E)",east,ORDER[1],LENGTHUNIT["Meter",1]],AXIS["(N)",north,ORDER[2],LENGTHUNIT["Meter",1]]]</wkt>
+            <proj4></proj4>
+            <srsid>100000</srsid>
+            <srid>0</srid>
+            <authid>USER:100000</authid>
+            <description>Plane</description>
+            <projectionacronym></projectionacronym>
+            <ellipsoidacronym></ellipsoidacronym>
+            <geographicflag>false</geographicflag>
+          </spatialrefsys>
+        </crs>
+        <extent/>
+      </resourceMetadata>
+      <provider>gdal</provider>
+      <noData>
+        <noDataList bandNo="1" useSrcNoData="1"/>
+      </noData>
+      <map-layer-style-manager current="default">
+        <map-layer-style name="default"/>
+      </map-layer-style-manager>
+      <metadataUrls/>
+      <flags>
+        <Identifiable>1</Identifiable>
+        <Removable>1</Removable>
+        <Searchable>1</Searchable>
+        <Private>0</Private>
+      </flags>
+      <temporal enabled="0" fetchMode="0" mode="0" bandNumber="1">
+        <fixedRange>
+          <start></start>
+          <end></end>
+        </fixedRange>
+      </temporal>
+      <elevation zoffset="0" enabled="0" band="1" symbology="Line" zscale="1" mode="RepresentsElevationSurface">
+        <data-defined-properties>
+          <Option type="Map">
+            <Option name="name" value="" type="QString"/>
+            <Option name="properties"/>
+            <Option name="type" value="collection" type="QString"/>
+          </Option>
+        </data-defined-properties>
+        <profileLineSymbol>
+          <symbol alpha="1" frame_rate="10" force_rhr="0" name="" type="line" is_animated="0" clip_to_extent="1">
+            <data_defined_properties>
+              <Option type="Map">
+                <Option name="name" value="" type="QString"/>
+                <Option name="properties"/>
+                <Option name="type" value="collection" type="QString"/>
+              </Option>
+            </data_defined_properties>
+            <layer class="SimpleLine" pass="0" enabled="1" locked="0" id="{90afc329-d21c-48cf-a8a6-9a0c6ec1e5e5}">
+              <Option type="Map">
+                <Option name="align_dash_pattern" value="0" type="QString"/>
+                <Option name="capstyle" value="square" type="QString"/>
+                <Option name="customdash" value="5;2" type="QString"/>
+                <Option name="customdash_map_unit_scale" value="3x:0,0,0,0,0,0" type="QString"/>
+                <Option name="customdash_unit" value="MM" type="QString"/>
+                <Option name="dash_pattern_offset" value="0" type="QString"/>
+                <Option name="dash_pattern_offset_map_unit_scale" value="3x:0,0,0,0,0,0" type="QString"/>
+                <Option name="dash_pattern_offset_unit" value="MM" type="QString"/>
+                <Option name="draw_inside_polygon" value="0" type="QString"/>
+                <Option name="joinstyle" value="bevel" type="QString"/>
+                <Option name="line_color" value="243,166,178,255,rgb:0.95294117647058818,0.65098039215686276,0.69803921568627447,1" type="QString"/>
+                <Option name="line_style" value="solid" type="QString"/>
+                <Option name="line_width" value="0.6" type="QString"/>
+                <Option name="line_width_unit" value="MM" type="QString"/>
+                <Option name="offset" value="0" type="QString"/>
+                <Option name="offset_map_unit_scale" value="3x:0,0,0,0,0,0" type="QString"/>
+                <Option name="offset_unit" value="MM" type="QString"/>
+                <Option name="ring_filter" value="0" type="QString"/>
+                <Option name="trim_distance_end" value="0" type="QString"/>
+                <Option name="trim_distance_end_map_unit_scale" value="3x:0,0,0,0,0,0" type="QString"/>
+                <Option name="trim_distance_end_unit" value="MM" type="QString"/>
+                <Option name="trim_distance_start" value="0" type="QString"/>
+                <Option name="trim_distance_start_map_unit_scale" value="3x:0,0,0,0,0,0" type="QString"/>
+                <Option name="trim_distance_start_unit" value="MM" type="QString"/>
+                <Option name="tweak_dash_pattern_on_corners" value="0" type="QString"/>
+                <Option name="use_custom_dash" value="0" type="QString"/>
+                <Option name="width_map_unit_scale" value="3x:0,0,0,0,0,0" type="QString"/>
+              </Option>
+              <data_defined_properties>
+                <Option type="Map">
+                  <Option name="name" value="" type="QString"/>
+                  <Option name="properties"/>
+                  <Option name="type" value="collection" type="QString"/>
+                </Option>
+              </data_defined_properties>
+            </layer>
+          </symbol>
+        </profileLineSymbol>
+        <profileFillSymbol>
+          <symbol alpha="1" frame_rate="10" force_rhr="0" name="" type="fill" is_animated="0" clip_to_extent="1">
+            <data_defined_properties>
+              <Option type="Map">
+                <Option name="name" value="" type="QString"/>
+                <Option name="properties"/>
+                <Option name="type" value="collection" type="QString"/>
+              </Option>
+            </data_defined_properties>
+            <layer class="SimpleFill" pass="0" enabled="1" locked="0" id="{49bf3472-f801-47c6-8d66-527b67b83905}">
+              <Option type="Map">
+                <Option name="border_width_map_unit_scale" value="3x:0,0,0,0,0,0" type="QString"/>
+                <Option name="color" value="243,166,178,255,rgb:0.95294117647058818,0.65098039215686276,0.69803921568627447,1" type="QString"/>
+                <Option name="joinstyle" value="bevel" type="QString"/>
+                <Option name="offset" value="0,0" type="QString"/>
+                <Option name="offset_map_unit_scale" value="3x:0,0,0,0,0,0" type="QString"/>
+                <Option name="offset_unit" value="MM" type="QString"/>
+                <Option name="outline_color" value="35,35,35,255,rgb:0.13725490196078433,0.13725490196078433,0.13725490196078433,1" type="QString"/>
+                <Option name="outline_style" value="no" type="QString"/>
+                <Option name="outline_width" value="0.26" type="QString"/>
+                <Option name="outline_width_unit" value="MM" type="QString"/>
+                <Option name="style" value="solid" type="QString"/>
+              </Option>
+              <data_defined_properties>
+                <Option type="Map">
+                  <Option name="name" value="" type="QString"/>
+                  <Option name="properties"/>
+                  <Option name="type" value="collection" type="QString"/>
+                </Option>
+              </data_defined_properties>
+            </layer>
+          </symbol>
+        </profileFillSymbol>
+      </elevation>
+      <customproperties>
+        <Option type="Map">
+          <Option name="identify/format" value="Value" type="QString"/>
+        </Option>
+      </customproperties>
+      <mapTip enabled="1"></mapTip>
+      <pipe-data-defined-properties>
+        <Option type="Map">
+          <Option name="name" value="" type="QString"/>
+          <Option name="properties"/>
+          <Option name="type" value="collection" type="QString"/>
+        </Option>
+      </pipe-data-defined-properties>
+      <pipe>
+        <provider>
+          <resampling maxOversampling="2" zoomedInResamplingMethod="nearestNeighbour" enabled="false" zoomedOutResamplingMethod="nearestNeighbour"/>
+        </provider>
+        <rasterrenderer alphaBand="-1" opacity="1" type="singlebandgray" gradient="BlackToWhite" grayBand="1" nodataColor="">
+          <rasterTransparency/>
+          <minMaxOrigin>
+            <limits>MinMax</limits>
+            <extent>WholeRaster</extent>
+            <statAccuracy>Estimated</statAccuracy>
+            <cumulativeCutLower>0.02</cumulativeCutLower>
+            <cumulativeCutUpper>0.98</cumulativeCutUpper>
+            <stdDevFactor>2</stdDevFactor>
+          </minMaxOrigin>
+          <contrastEnhancement>
+            <minValue>0</minValue>
+            <maxValue>0</maxValue>
+            <algorithm>StretchToMinimumMaximum</algorithm>
+          </contrastEnhancement>
+          <rampLegendSettings maximumLabel="" prefix="" useContinuousLegend="1" suffix="" orientation="2" direction="0" minimumLabel="">
+            <numericFormat id="basic">
+              <Option type="Map">
+                <Option name="decimal_separator" type="invalid"/>
+                <Option name="decimals" value="6" type="int"/>
+                <Option name="rounding_type" value="0" type="int"/>
+                <Option name="show_plus" value="false" type="bool"/>
+                <Option name="show_thousand_separator" value="true" type="bool"/>
+                <Option name="show_trailing_zeros" value="false" type="bool"/>
+                <Option name="thousand_separator" type="invalid"/>
+              </Option>
+            </numericFormat>
+          </rampLegendSettings>
+        </rasterrenderer>
+        <brightnesscontrast gamma="1" brightness="0" contrast="0"/>
+        <huesaturation colorizeBlue="128" saturation="0" invertColors="0" colorizeStrength="100" colorizeOn="0" colorizeGreen="128" grayscaleMode="0" colorizeRed="255"/>
+        <rasterresampler maxOversampling="2"/>
+        <resamplingStage>resamplingFilter</resamplingStage>
+      </pipe>
+      <blendMode>0</blendMode>
+    </maplayer>
+    <maplayer legendPlaceholderImage="" autoRefreshTime="0" refreshOnNotifyMessage="" maxScale="0" styleCategories="AllStyleCategories" type="raster" refreshOnNotifyEnabled="0" hasScaleBasedVisibilityFlag="0" autoRefreshMode="Disabled" minScale="1e+08">
+      <extent>
+        <xmin>1</xmin>
+        <ymin>1</ymin>
+        <xmax>251</xmax>
+        <ymax>501</ymax>
+      </extent>
+      <wgs84extent>
+        <xmin>1</xmin>
+        <ymin>1</ymin>
+        <xmax>251</xmax>
+        <ymax>501</ymax>
+      </wgs84extent>
+      <id>is_contiguous_sea_1_b14c71ff_228f_4e57_8cb0_65c1c68edd02</id>
+      <datasource>../../out/two_coasts/is_contiguous_sea_1.tif</datasource>
+      <keywordList>
+        <value></value>
+      </keywordList>
+      <layername>is_contiguous_sea_1</layername>
+      <srs>
+        <spatialrefsys nativeFormat="Wkt">
+          <wkt>ENGCRS["Plane",EDATUM["Unknown engineering datum"],CS[Cartesian,2],AXIS["(E)",east,ORDER[1],LENGTHUNIT["Meter",1]],AXIS["(N)",north,ORDER[2],LENGTHUNIT["Meter",1]]]</wkt>
+          <proj4></proj4>
+          <srsid>100000</srsid>
+          <srid>0</srid>
+          <authid>USER:100000</authid>
+          <description>Plane</description>
+          <projectionacronym></projectionacronym>
+          <ellipsoidacronym></ellipsoidacronym>
+          <geographicflag>false</geographicflag>
+        </spatialrefsys>
+      </srs>
+      <resourceMetadata>
+        <identifier></identifier>
+        <parentidentifier></parentidentifier>
+        <language></language>
+        <type>dataset</type>
+        <title></title>
+        <abstract></abstract>
+        <links/>
+        <dates/>
+        <fees></fees>
+        <encoding></encoding>
+        <crs>
+          <spatialrefsys nativeFormat="Wkt">
+            <wkt>ENGCRS["Plane",EDATUM["Unknown engineering datum"],CS[Cartesian,2],AXIS["(E)",east,ORDER[1],LENGTHUNIT["Meter",1]],AXIS["(N)",north,ORDER[2],LENGTHUNIT["Meter",1]]]</wkt>
+            <proj4></proj4>
+            <srsid>100000</srsid>
+            <srid>0</srid>
+            <authid>USER:100000</authid>
+            <description>Plane</description>
+            <projectionacronym></projectionacronym>
+            <ellipsoidacronym></ellipsoidacronym>
+            <geographicflag>false</geographicflag>
+          </spatialrefsys>
+        </crs>
+        <extent/>
+      </resourceMetadata>
+      <provider>gdal</provider>
+      <noData>
+        <noDataList bandNo="1" useSrcNoData="1"/>
+      </noData>
+      <map-layer-style-manager current="default">
+        <map-layer-style name="default"/>
+      </map-layer-style-manager>
+      <metadataUrls/>
+      <flags>
+        <Identifiable>1</Identifiable>
+        <Removable>1</Removable>
+        <Searchable>1</Searchable>
+        <Private>0</Private>
+      </flags>
+      <temporal enabled="0" fetchMode="0" mode="0" bandNumber="1">
+        <fixedRange>
+          <start></start>
+          <end></end>
+        </fixedRange>
+      </temporal>
+      <elevation zoffset="0" enabled="0" band="1" symbology="Line" zscale="1" mode="RepresentsElevationSurface">
+        <data-defined-properties>
+          <Option type="Map">
+            <Option name="name" value="" type="QString"/>
+            <Option name="properties"/>
+            <Option name="type" value="collection" type="QString"/>
+          </Option>
+        </data-defined-properties>
+        <profileLineSymbol>
+          <symbol alpha="1" frame_rate="10" force_rhr="0" name="" type="line" is_animated="0" clip_to_extent="1">
+            <data_defined_properties>
+              <Option type="Map">
+                <Option name="name" value="" type="QString"/>
+                <Option name="properties"/>
+                <Option name="type" value="collection" type="QString"/>
+              </Option>
+            </data_defined_properties>
+            <layer class="SimpleLine" pass="0" enabled="1" locked="0" id="{48f76593-9a84-49e2-8972-042d7999f2ef}">
+              <Option type="Map">
+                <Option name="align_dash_pattern" value="0" type="QString"/>
+                <Option name="capstyle" value="square" type="QString"/>
+                <Option name="customdash" value="5;2" type="QString"/>
+                <Option name="customdash_map_unit_scale" value="3x:0,0,0,0,0,0" type="QString"/>
+                <Option name="customdash_unit" value="MM" type="QString"/>
+                <Option name="dash_pattern_offset" value="0" type="QString"/>
+                <Option name="dash_pattern_offset_map_unit_scale" value="3x:0,0,0,0,0,0" type="QString"/>
+                <Option name="dash_pattern_offset_unit" value="MM" type="QString"/>
+                <Option name="draw_inside_polygon" value="0" type="QString"/>
+                <Option name="joinstyle" value="bevel" type="QString"/>
+                <Option name="line_color" value="213,180,60,255,rgb:0.83529411764705885,0.70588235294117652,0.23529411764705882,1" type="QString"/>
+                <Option name="line_style" value="solid" type="QString"/>
+                <Option name="line_width" value="0.6" type="QString"/>
+                <Option name="line_width_unit" value="MM" type="QString"/>
+                <Option name="offset" value="0" type="QString"/>
+                <Option name="offset_map_unit_scale" value="3x:0,0,0,0,0,0" type="QString"/>
+                <Option name="offset_unit" value="MM" type="QString"/>
+                <Option name="ring_filter" value="0" type="QString"/>
+                <Option name="trim_distance_end" value="0" type="QString"/>
+                <Option name="trim_distance_end_map_unit_scale" value="3x:0,0,0,0,0,0" type="QString"/>
+                <Option name="trim_distance_end_unit" value="MM" type="QString"/>
+                <Option name="trim_distance_start" value="0" type="QString"/>
+                <Option name="trim_distance_start_map_unit_scale" value="3x:0,0,0,0,0,0" type="QString"/>
+                <Option name="trim_distance_start_unit" value="MM" type="QString"/>
+                <Option name="tweak_dash_pattern_on_corners" value="0" type="QString"/>
+                <Option name="use_custom_dash" value="0" type="QString"/>
+                <Option name="width_map_unit_scale" value="3x:0,0,0,0,0,0" type="QString"/>
+              </Option>
+              <data_defined_properties>
+                <Option type="Map">
+                  <Option name="name" value="" type="QString"/>
+                  <Option name="properties"/>
+                  <Option name="type" value="collection" type="QString"/>
+                </Option>
+              </data_defined_properties>
+            </layer>
+          </symbol>
+        </profileLineSymbol>
+        <profileFillSymbol>
+          <symbol alpha="1" frame_rate="10" force_rhr="0" name="" type="fill" is_animated="0" clip_to_extent="1">
+            <data_defined_properties>
+              <Option type="Map">
+                <Option name="name" value="" type="QString"/>
+                <Option name="properties"/>
+                <Option name="type" value="collection" type="QString"/>
+              </Option>
+            </data_defined_properties>
+            <layer class="SimpleFill" pass="0" enabled="1" locked="0" id="{306ecf46-e57e-42ef-84f6-d3f10bdccf25}">
+              <Option type="Map">
+                <Option name="border_width_map_unit_scale" value="3x:0,0,0,0,0,0" type="QString"/>
+                <Option name="color" value="213,180,60,255,rgb:0.83529411764705885,0.70588235294117652,0.23529411764705882,1" type="QString"/>
+                <Option name="joinstyle" value="bevel" type="QString"/>
+                <Option name="offset" value="0,0" type="QString"/>
+                <Option name="offset_map_unit_scale" value="3x:0,0,0,0,0,0" type="QString"/>
+                <Option name="offset_unit" value="MM" type="QString"/>
+                <Option name="outline_color" value="35,35,35,255,rgb:0.13725490196078433,0.13725490196078433,0.13725490196078433,1" type="QString"/>
+                <Option name="outline_style" value="no" type="QString"/>
+                <Option name="outline_width" value="0.26" type="QString"/>
+                <Option name="outline_width_unit" value="MM" type="QString"/>
+                <Option name="style" value="solid" type="QString"/>
+              </Option>
+              <data_defined_properties>
+                <Option type="Map">
+                  <Option name="name" value="" type="QString"/>
+                  <Option name="properties"/>
+                  <Option name="type" value="collection" type="QString"/>
+                </Option>
+              </data_defined_properties>
+            </layer>
+          </symbol>
+        </profileFillSymbol>
+      </elevation>
+      <customproperties>
+        <Option type="Map">
+          <Option name="identify/format" value="Value" type="QString"/>
+        </Option>
+      </customproperties>
+      <mapTip enabled="1"></mapTip>
+      <pipe-data-defined-properties>
+        <Option type="Map">
+          <Option name="name" value="" type="QString"/>
+          <Option name="properties"/>
+          <Option name="type" value="collection" type="QString"/>
+        </Option>
+      </pipe-data-defined-properties>
+      <pipe>
+        <provider>
+          <resampling maxOversampling="2" zoomedInResamplingMethod="nearestNeighbour" enabled="false" zoomedOutResamplingMethod="nearestNeighbour"/>
+        </provider>
+        <rasterrenderer alphaBand="-1" opacity="1" type="singlebandgray" gradient="BlackToWhite" grayBand="1" nodataColor="">
+          <rasterTransparency/>
+          <minMaxOrigin>
+            <limits>MinMax</limits>
+            <extent>WholeRaster</extent>
+            <statAccuracy>Estimated</statAccuracy>
+            <cumulativeCutLower>0.02</cumulativeCutLower>
+            <cumulativeCutUpper>0.98</cumulativeCutUpper>
+            <stdDevFactor>2</stdDevFactor>
+          </minMaxOrigin>
+          <contrastEnhancement>
+            <minValue>0</minValue>
+            <maxValue>1</maxValue>
+            <algorithm>StretchToMinimumMaximum</algorithm>
+          </contrastEnhancement>
+          <rampLegendSettings maximumLabel="" prefix="" useContinuousLegend="1" suffix="" orientation="2" direction="0" minimumLabel="">
+            <numericFormat id="basic">
+              <Option type="Map">
+                <Option name="decimal_separator" type="invalid"/>
+                <Option name="decimals" value="6" type="int"/>
+                <Option name="rounding_type" value="0" type="int"/>
+                <Option name="show_plus" value="false" type="bool"/>
+                <Option name="show_thousand_separator" value="true" type="bool"/>
+                <Option name="show_trailing_zeros" value="false" type="bool"/>
+                <Option name="thousand_separator" type="invalid"/>
+              </Option>
+            </numericFormat>
+          </rampLegendSettings>
+        </rasterrenderer>
+        <brightnesscontrast gamma="1" brightness="0" contrast="0"/>
+        <huesaturation colorizeBlue="128" saturation="0" invertColors="0" colorizeStrength="100" colorizeOn="0" colorizeGreen="128" grayscaleMode="0" colorizeRed="255"/>
+        <rasterresampler maxOversampling="2"/>
+        <resamplingStage>resamplingFilter</resamplingStage>
+      </pipe>
+      <blendMode>0</blendMode>
+    </maplayer>
+    <maplayer legendPlaceholderImage="" autoRefreshTime="0" refreshOnNotifyMessage="" maxScale="0" styleCategories="AllStyleCategories" type="raster" refreshOnNotifyEnabled="0" hasScaleBasedVisibilityFlag="0" autoRefreshMode="Disabled" minScale="1e+08">
+      <extent>
+        <xmin>1</xmin>
+        <ymin>1</ymin>
+        <xmax>251</xmax>
+        <ymax>501</ymax>
+      </extent>
+      <wgs84extent>
+        <xmin>1</xmin>
+        <ymin>1</ymin>
+        <xmax>251</xmax>
+        <ymax>501</ymax>
+      </wgs84extent>
+      <id>two_coasts_c38adc53_25ea_47c1_a33e_12e224348ea2</id>
+      <datasource>./two_coasts.tif</datasource>
+      <keywordList>
+        <value></value>
+      </keywordList>
+      <layername>two_coasts</layername>
+      <srs>
+        <spatialrefsys nativeFormat="Wkt">
+          <wkt>ENGCRS["Plane",EDATUM["Unknown engineering datum"],CS[Cartesian,2],AXIS["(E)",east,ORDER[1],LENGTHUNIT["Meter",1]],AXIS["(N)",north,ORDER[2],LENGTHUNIT["Meter",1]]]</wkt>
+          <proj4></proj4>
+          <srsid>100000</srsid>
+          <srid>0</srid>
+          <authid>USER:100000</authid>
+          <description>Plane</description>
+          <projectionacronym></projectionacronym>
+          <ellipsoidacronym></ellipsoidacronym>
+          <geographicflag>false</geographicflag>
+        </spatialrefsys>
+      </srs>
+      <resourceMetadata>
+        <identifier></identifier>
+        <parentidentifier></parentidentifier>
+        <language></language>
+        <type>dataset</type>
+        <title></title>
+        <abstract></abstract>
+        <links/>
+        <dates/>
+        <fees></fees>
+        <encoding></encoding>
+        <crs>
+          <spatialrefsys nativeFormat="Wkt">
+            <wkt>ENGCRS["Plane",EDATUM["Unknown engineering datum"],CS[Cartesian,2],AXIS["(E)",east,ORDER[1],LENGTHUNIT["Meter",1]],AXIS["(N)",north,ORDER[2],LENGTHUNIT["Meter",1]]]</wkt>
+            <proj4></proj4>
+            <srsid>100000</srsid>
+            <srid>0</srid>
+            <authid>USER:100000</authid>
+            <description>Plane</description>
+            <projectionacronym></projectionacronym>
+            <ellipsoidacronym></ellipsoidacronym>
+            <geographicflag>false</geographicflag>
+          </spatialrefsys>
+        </crs>
+        <extent/>
+      </resourceMetadata>
+      <provider>gdal</provider>
+      <noData>
+        <noDataList bandNo="1" useSrcNoData="1"/>
+      </noData>
+      <map-layer-style-manager current="default">
+        <map-layer-style name="default"/>
+      </map-layer-style-manager>
+      <metadataUrls/>
+      <flags>
+        <Identifiable>1</Identifiable>
+        <Removable>1</Removable>
+        <Searchable>1</Searchable>
+        <Private>0</Private>
+      </flags>
+      <temporal enabled="0" fetchMode="0" mode="0" bandNumber="1">
+        <fixedRange>
+          <start></start>
+          <end></end>
+        </fixedRange>
+      </temporal>
+      <elevation zoffset="0" enabled="0" band="1" symbology="Line" zscale="1" mode="RepresentsElevationSurface">
+        <data-defined-properties>
+          <Option type="Map">
+            <Option name="name" value="" type="QString"/>
+            <Option name="properties"/>
+            <Option name="type" value="collection" type="QString"/>
+          </Option>
+        </data-defined-properties>
+        <profileLineSymbol>
+          <symbol alpha="1" frame_rate="10" force_rhr="0" name="" type="line" is_animated="0" clip_to_extent="1">
+            <data_defined_properties>
+              <Option type="Map">
+                <Option name="name" value="" type="QString"/>
+                <Option name="properties"/>
+                <Option name="type" value="collection" type="QString"/>
+              </Option>
+            </data_defined_properties>
+            <layer class="SimpleLine" pass="0" enabled="1" locked="0" id="{9e444603-a178-4a69-997a-3e4096c18a12}">
+              <Option type="Map">
+                <Option name="align_dash_pattern" value="0" type="QString"/>
+                <Option name="capstyle" value="square" type="QString"/>
+                <Option name="customdash" value="5;2" type="QString"/>
+                <Option name="customdash_map_unit_scale" value="3x:0,0,0,0,0,0" type="QString"/>
+                <Option name="customdash_unit" value="MM" type="QString"/>
+                <Option name="dash_pattern_offset" value="0" type="QString"/>
+                <Option name="dash_pattern_offset_map_unit_scale" value="3x:0,0,0,0,0,0" type="QString"/>
+                <Option name="dash_pattern_offset_unit" value="MM" type="QString"/>
+                <Option name="draw_inside_polygon" value="0" type="QString"/>
+                <Option name="joinstyle" value="bevel" type="QString"/>
+                <Option name="line_color" value="164,113,88,255,rgb:0.64313725490196083,0.44313725490196076,0.34509803921568627,1" type="QString"/>
+                <Option name="line_style" value="solid" type="QString"/>
+                <Option name="line_width" value="0.6" type="QString"/>
+                <Option name="line_width_unit" value="MM" type="QString"/>
+                <Option name="offset" value="0" type="QString"/>
+                <Option name="offset_map_unit_scale" value="3x:0,0,0,0,0,0" type="QString"/>
+                <Option name="offset_unit" value="MM" type="QString"/>
+                <Option name="ring_filter" value="0" type="QString"/>
+                <Option name="trim_distance_end" value="0" type="QString"/>
+                <Option name="trim_distance_end_map_unit_scale" value="3x:0,0,0,0,0,0" type="QString"/>
+                <Option name="trim_distance_end_unit" value="MM" type="QString"/>
+                <Option name="trim_distance_start" value="0" type="QString"/>
+                <Option name="trim_distance_start_map_unit_scale" value="3x:0,0,0,0,0,0" type="QString"/>
+                <Option name="trim_distance_start_unit" value="MM" type="QString"/>
+                <Option name="tweak_dash_pattern_on_corners" value="0" type="QString"/>
+                <Option name="use_custom_dash" value="0" type="QString"/>
+                <Option name="width_map_unit_scale" value="3x:0,0,0,0,0,0" type="QString"/>
+              </Option>
+              <data_defined_properties>
+                <Option type="Map">
+                  <Option name="name" value="" type="QString"/>
+                  <Option name="properties"/>
+                  <Option name="type" value="collection" type="QString"/>
+                </Option>
+              </data_defined_properties>
+            </layer>
+          </symbol>
+        </profileLineSymbol>
+        <profileFillSymbol>
+          <symbol alpha="1" frame_rate="10" force_rhr="0" name="" type="fill" is_animated="0" clip_to_extent="1">
+            <data_defined_properties>
+              <Option type="Map">
+                <Option name="name" value="" type="QString"/>
+                <Option name="properties"/>
+                <Option name="type" value="collection" type="QString"/>
+              </Option>
+            </data_defined_properties>
+            <layer class="SimpleFill" pass="0" enabled="1" locked="0" id="{e84e2725-db14-40ec-8fb8-349d60ed2385}">
+              <Option type="Map">
+                <Option name="border_width_map_unit_scale" value="3x:0,0,0,0,0,0" type="QString"/>
+                <Option name="color" value="164,113,88,255,rgb:0.64313725490196083,0.44313725490196076,0.34509803921568627,1" type="QString"/>
+                <Option name="joinstyle" value="bevel" type="QString"/>
+                <Option name="offset" value="0,0" type="QString"/>
+                <Option name="offset_map_unit_scale" value="3x:0,0,0,0,0,0" type="QString"/>
+                <Option name="offset_unit" value="MM" type="QString"/>
+                <Option name="outline_color" value="35,35,35,255,rgb:0.13725490196078433,0.13725490196078433,0.13725490196078433,1" type="QString"/>
+                <Option name="outline_style" value="no" type="QString"/>
+                <Option name="outline_width" value="0.26" type="QString"/>
+                <Option name="outline_width_unit" value="MM" type="QString"/>
+                <Option name="style" value="solid" type="QString"/>
+              </Option>
+              <data_defined_properties>
+                <Option type="Map">
+                  <Option name="name" value="" type="QString"/>
+                  <Option name="properties"/>
+                  <Option name="type" value="collection" type="QString"/>
+                </Option>
+              </data_defined_properties>
+            </layer>
+          </symbol>
+        </profileFillSymbol>
+      </elevation>
+      <customproperties>
+        <Option type="Map">
+          <Option name="WMSBackgroundLayer" value="false" type="bool"/>
+          <Option name="WMSPublishDataSourceUrl" value="false" type="bool"/>
+          <Option name="embeddedWidgets/count" value="0" type="int"/>
+          <Option name="identify/format" value="Value" type="QString"/>
+        </Option>
+      </customproperties>
+      <mapTip enabled="1"></mapTip>
+      <pipe-data-defined-properties>
+        <Option type="Map">
+          <Option name="name" value="" type="QString"/>
+          <Option name="properties"/>
+          <Option name="type" value="collection" type="QString"/>
+        </Option>
+      </pipe-data-defined-properties>
+      <pipe>
+        <provider>
+          <resampling maxOversampling="2" zoomedInResamplingMethod="nearestNeighbour" enabled="false" zoomedOutResamplingMethod="nearestNeighbour"/>
+        </provider>
+        <rasterrenderer band="1" alphaBand="-1" opacity="1" classificationMax="160" classificationMin="47.383934" type="singlebandpseudocolor" nodataColor="">
+          <rasterTransparency/>
+          <minMaxOrigin>
+            <limits>MinMax</limits>
+            <extent>WholeRaster</extent>
+            <statAccuracy>Estimated</statAccuracy>
+            <cumulativeCutLower>0.02</cumulativeCutLower>
+            <cumulativeCutUpper>0.98</cumulativeCutUpper>
+            <stdDevFactor>2</stdDevFactor>
+          </minMaxOrigin>
+          <rastershader>
+            <colorrampshader maximumValue="160" clip="0" colorRampType="INTERPOLATED" labelPrecision="4" classificationMode="1" minimumValue="47.383934000000004">
+              <colorramp name="[source]" type="gradient">
+                <Option type="Map">
+                  <Option name="color1" value="48,18,59,255,rgb:0.18823529411764706,0.07058823529411765,0.23137254901960785,1" type="QString"/>
+                  <Option name="color2" value="122,4,3,255,rgb:0.47843137254901963,0.01568627450980392,0.01176470588235294,1" type="QString"/>
+                  <Option name="direction" value="ccw" type="QString"/>
+                  <Option name="discrete" value="0" type="QString"/>
+                  <Option name="rampType" value="gradient" type="QString"/>
+                  <Option name="spec" value="rgb" type="QString"/>
+                  <Option name="stops" value="0.0039063;50,21,67,255,rgb:0.19607843137254902,0.08235294117647059,0.2627450980392157,1;rgb;ccw:0.0078125;51,24,74,255,rgb:0.20000000000000001,0.09411764705882353,0.29019607843137257,1;rgb;ccw:0.0117188;52,27,81,255,rgb:0.20392156862745098,0.10588235294117647,0.31764705882352939,1;rgb;ccw:0.015625;53,30,88,255,rgb:0.20784313725490197,0.11764705882352941,0.34509803921568627,1;rgb;ccw:0.0195313;54,33,95,255,rgb:0.21176470588235294,0.12941176470588237,0.37254901960784315,1;rgb;ccw:0.0234375;55,36,102,255,rgb:0.21568627450980393,0.14117647058823529,0.40000000000000002,1;rgb;ccw:0.0273438;56,39,109,255,rgb:0.2196078431372549,0.15294117647058825,0.42745098039215684,1;rgb;ccw:0.03125;57,42,115,255,rgb:0.22352941176470589,0.16470588235294117,0.45098039215686275,1;rgb;ccw:0.0351563;58,45,121,255,rgb:0.22745098039215686,0.17647058823529413,0.47450980392156861,1;rgb;ccw:0.0390625;59,47,128,255,rgb:0.23137254901960785,0.18431372549019609,0.50196078431372548,1;rgb;ccw:0.0429688;60,50,134,255,rgb:0.23529411764705882,0.19607843137254902,0.52549019607843139,1;rgb;ccw:0.046875;61,53,139,255,rgb:0.23921568627450981,0.20784313725490197,0.54509803921568623,1;rgb;ccw:0.0507813;62,56,145,255,rgb:0.24313725490196078,0.2196078431372549,0.56862745098039214,1;rgb;ccw:0.0546875;63,59,151,255,rgb:0.24705882352941178,0.23137254901960785,0.59215686274509804,1;rgb;ccw:0.0585938;63,62,156,255,rgb:0.24705882352941178,0.24313725490196078,0.61176470588235299,1;rgb;ccw:0.0625;64,64,162,255,rgb:0.25098039215686274,0.25098039215686274,0.63529411764705879,1;rgb;ccw:0.0664063;65,67,167,255,rgb:0.25490196078431371,0.2627450980392157,0.65490196078431373,1;rgb;ccw:0.0703125;65,70,172,255,rgb:0.25490196078431371,0.27450980392156865,0.67450980392156867,1;rgb;ccw:0.0742188;66,73,177,255,rgb:0.25882352941176473,0.28627450980392155,0.69411764705882351,1;rgb;ccw:0.078125;66,75,181,255,rgb:0.25882352941176473,0.29411764705882354,0.70980392156862748,1;rgb;ccw:0.0820313;67,78,186,255,rgb:0.2627450980392157,0.30588235294117649,0.72941176470588232,1;rgb;ccw:0.0859375;68,81,191,255,rgb:0.26666666666666666,0.31764705882352939,0.74901960784313726,1;rgb;ccw:0.0898438;68,84,195,255,rgb:0.26666666666666666,0.32941176470588235,0.76470588235294112,1;rgb;ccw:0.09375;68,86,199,255,rgb:0.26666666666666666,0.33725490196078434,0.7803921568627451,1;rgb;ccw:0.0976563;69,89,203,255,rgb:0.27058823529411763,0.34901960784313724,0.79607843137254897,1;rgb;ccw:0.101563;69,92,207,255,rgb:0.27058823529411763,0.36078431372549019,0.81176470588235294,1;rgb;ccw:0.105469;69,94,211,255,rgb:0.27058823529411763,0.36862745098039218,0.82745098039215681,1;rgb;ccw:0.109375;70,97,214,255,rgb:0.27450980392156865,0.38039215686274508,0.83921568627450982,1;rgb;ccw:0.113281;70,100,218,255,rgb:0.27450980392156865,0.39215686274509803,0.85490196078431369,1;rgb;ccw:0.117188;70,102,221,255,rgb:0.27450980392156865,0.40000000000000002,0.8666666666666667,1;rgb;ccw:0.121094;70,105,224,255,rgb:0.27450980392156865,0.41176470588235292,0.8784313725490196,1;rgb;ccw:0.125;70,107,227,255,rgb:0.27450980392156865,0.41960784313725491,0.8901960784313725,1;rgb;ccw:0.128906;71,110,230,255,rgb:0.27843137254901962,0.43137254901960786,0.90196078431372551,1;rgb;ccw:0.132813;71,113,233,255,rgb:0.27843137254901962,0.44313725490196076,0.9137254901960784,1;rgb;ccw:0.136719;71,115,235,255,rgb:0.27843137254901962,0.45098039215686275,0.92156862745098034,1;rgb;ccw:0.140625;71,118,238,255,rgb:0.27843137254901962,0.46274509803921571,0.93333333333333335,1;rgb;ccw:0.144531;71,120,240,255,rgb:0.27843137254901962,0.47058823529411764,0.94117647058823528,1;rgb;ccw:0.148438;71,123,242,255,rgb:0.27843137254901962,0.4823529411764706,0.94901960784313721,1;rgb;ccw:0.152344;70,125,244,255,rgb:0.27450980392156865,0.49019607843137253,0.95686274509803926,1;rgb;ccw:0.15625;70,128,246,255,rgb:0.27450980392156865,0.50196078431372548,0.96470588235294119,1;rgb;ccw:0.160156;70,130,248,255,rgb:0.27450980392156865,0.50980392156862742,0.97254901960784312,1;rgb;ccw:0.164063;70,133,250,255,rgb:0.27450980392156865,0.52156862745098043,0.98039215686274506,1;rgb;ccw:0.167969;70,135,251,255,rgb:0.27450980392156865,0.52941176470588236,0.98431372549019602,1;rgb;ccw:0.171875;69,138,252,255,rgb:0.27058823529411763,0.54117647058823526,0.9882352941176471,1;rgb;ccw:0.175781;69,140,253,255,rgb:0.27058823529411763,0.5490196078431373,0.99215686274509807,1;rgb;ccw:0.179688;68,143,254,255,rgb:0.26666666666666666,0.5607843137254902,0.99607843137254903,1;rgb;ccw:0.183594;67,145,254,255,rgb:0.2627450980392157,0.56862745098039214,0.99607843137254903,1;rgb;ccw:0.1875;66,148,255,255,rgb:0.25882352941176473,0.58039215686274515,1,1;rgb;ccw:0.191406;65,150,255,255,rgb:0.25490196078431371,0.58823529411764708,1,1;rgb;ccw:0.195313;64,153,255,255,rgb:0.25098039215686274,0.59999999999999998,1,1;rgb;ccw:0.199219;62,155,254,255,rgb:0.24313725490196078,0.60784313725490191,0.99607843137254903,1;rgb;ccw:0.203125;61,158,254,255,rgb:0.23921568627450981,0.61960784313725492,0.99607843137254903,1;rgb;ccw:0.207031;59,160,253,255,rgb:0.23137254901960785,0.62745098039215685,0.99215686274509807,1;rgb;ccw:0.210938;58,163,252,255,rgb:0.22745098039215686,0.63921568627450975,0.9882352941176471,1;rgb;ccw:0.214844;56,165,251,255,rgb:0.2196078431372549,0.6470588235294118,0.98431372549019602,1;rgb;ccw:0.21875;55,168,250,255,rgb:0.21568627450980393,0.6588235294117647,0.98039215686274506,1;rgb;ccw:0.222656;53,171,248,255,rgb:0.20784313725490197,0.6705882352941176,0.97254901960784312,1;rgb;ccw:0.226563;51,173,247,255,rgb:0.20000000000000001,0.67843137254901964,0.96862745098039216,1;rgb;ccw:0.230469;49,175,245,255,rgb:0.19215686274509805,0.68627450980392157,0.96078431372549022,1;rgb;ccw:0.234375;47,178,244,255,rgb:0.18431372549019609,0.69803921568627447,0.95686274509803926,1;rgb;ccw:0.238281;46,180,242,255,rgb:0.1803921568627451,0.70588235294117652,0.94901960784313721,1;rgb;ccw:0.242188;44,183,240,255,rgb:0.17254901960784313,0.71764705882352942,0.94117647058823528,1;rgb;ccw:0.246094;42,185,238,255,rgb:0.16470588235294117,0.72549019607843135,0.93333333333333335,1;rgb;ccw:0.25;40,188,235,255,rgb:0.15686274509803921,0.73725490196078436,0.92156862745098034,1;rgb;ccw:0.253906;39,190,233,255,rgb:0.15294117647058825,0.74509803921568629,0.9137254901960784,1;rgb;ccw:0.257813;37,192,231,255,rgb:0.14509803921568629,0.75294117647058822,0.90588235294117647,1;rgb;ccw:0.261719;35,195,228,255,rgb:0.13725490196078433,0.76470588235294112,0.89411764705882357,1;rgb;ccw:0.265625;34,197,226,255,rgb:0.13333333333333333,0.77254901960784317,0.88627450980392153,1;rgb;ccw:0.269531;32,199,223,255,rgb:0.12549019607843137,0.7803921568627451,0.87450980392156863,1;rgb;ccw:0.273438;31,201,221,255,rgb:0.12156862745098039,0.78823529411764703,0.8666666666666667,1;rgb;ccw:0.277344;30,203,218,255,rgb:0.11764705882352941,0.79607843137254897,0.85490196078431369,1;rgb;ccw:0.28125;28,205,216,255,rgb:0.10980392156862745,0.80392156862745101,0.84705882352941175,1;rgb;ccw:0.285156;27,208,213,255,rgb:0.10588235294117647,0.81568627450980391,0.83529411764705885,1;rgb;ccw:0.289063;26,210,210,255,rgb:0.10196078431372549,0.82352941176470584,0.82352941176470584,1;rgb;ccw:0.292969;26,212,208,255,rgb:0.10196078431372549,0.83137254901960789,0.81568627450980391,1;rgb;ccw:0.296875;25,213,205,255,rgb:0.09803921568627451,0.83529411764705885,0.80392156862745101,1;rgb;ccw:0.300781;24,215,202,255,rgb:0.09411764705882353,0.84313725490196079,0.792156862745098,1;rgb;ccw:0.304688;24,217,200,255,rgb:0.09411764705882353,0.85098039215686272,0.78431372549019607,1;rgb;ccw:0.308594;24,219,197,255,rgb:0.09411764705882353,0.85882352941176465,0.77254901960784317,1;rgb;ccw:0.3125;24,221,194,255,rgb:0.09411764705882353,0.8666666666666667,0.76078431372549016,1;rgb;ccw:0.316406;24,222,192,255,rgb:0.09411764705882353,0.87058823529411766,0.75294117647058822,1;rgb;ccw:0.320313;24,224,189,255,rgb:0.09411764705882353,0.8784313725490196,0.74117647058823533,1;rgb;ccw:0.324219;25,226,187,255,rgb:0.09803921568627451,0.88627450980392153,0.73333333333333328,1;rgb;ccw:0.328125;25,227,185,255,rgb:0.09803921568627451,0.8901960784313725,0.72549019607843135,1;rgb;ccw:0.332031;26,228,182,255,rgb:0.10196078431372549,0.89411764705882357,0.71372549019607845,1;rgb;ccw:0.335938;28,230,180,255,rgb:0.10980392156862745,0.90196078431372551,0.70588235294117652,1;rgb;ccw:0.339844;29,231,178,255,rgb:0.11372549019607843,0.90588235294117647,0.69803921568627447,1;rgb;ccw:0.34375;31,233,175,255,rgb:0.12156862745098039,0.9137254901960784,0.68627450980392157,1;rgb;ccw:0.347656;32,234,172,255,rgb:0.12549019607843137,0.91764705882352937,0.67450980392156867,1;rgb;ccw:0.351563;34,235,170,255,rgb:0.13333333333333333,0.92156862745098034,0.66666666666666663,1;rgb;ccw:0.355469;37,236,167,255,rgb:0.14509803921568629,0.92549019607843142,0.65490196078431373,1;rgb;ccw:0.359375;39,238,164,255,rgb:0.15294117647058825,0.93333333333333335,0.64313725490196083,1;rgb;ccw:0.363281;42,239,161,255,rgb:0.16470588235294117,0.93725490196078431,0.63137254901960782,1;rgb;ccw:0.367188;44,240,158,255,rgb:0.17254901960784313,0.94117647058823528,0.61960784313725492,1;rgb;ccw:0.371094;47,241,155,255,rgb:0.18431372549019609,0.94509803921568625,0.60784313725490191,1;rgb;ccw:0.375;50,242,152,255,rgb:0.19607843137254902,0.94901960784313721,0.59607843137254901,1;rgb;ccw:0.378906;53,243,148,255,rgb:0.20784313725490197,0.95294117647058818,0.58039215686274515,1;rgb;ccw:0.382813;56,244,145,255,rgb:0.2196078431372549,0.95686274509803926,0.56862745098039214,1;rgb;ccw:0.386719;60,245,142,255,rgb:0.23529411764705882,0.96078431372549022,0.55686274509803924,1;rgb;ccw:0.390625;63,246,138,255,rgb:0.24705882352941178,0.96470588235294119,0.54117647058823526,1;rgb;ccw:0.394531;67,247,135,255,rgb:0.2627450980392157,0.96862745098039216,0.52941176470588236,1;rgb;ccw:0.398438;70,248,132,255,rgb:0.27450980392156865,0.97254901960784312,0.51764705882352946,1;rgb;ccw:0.402344;74,248,128,255,rgb:0.29019607843137257,0.97254901960784312,0.50196078431372548,1;rgb;ccw:0.40625;78,249,125,255,rgb:0.30588235294117649,0.97647058823529409,0.49019607843137253,1;rgb;ccw:0.410156;82,250,122,255,rgb:0.32156862745098042,0.98039215686274506,0.47843137254901963,1;rgb;ccw:0.414063;85,250,118,255,rgb:0.33333333333333331,0.98039215686274506,0.46274509803921571,1;rgb;ccw:0.417969;89,251,115,255,rgb:0.34901960784313724,0.98431372549019602,0.45098039215686275,1;rgb;ccw:0.421875;93,252,111,255,rgb:0.36470588235294116,0.9882352941176471,0.43529411764705883,1;rgb;ccw:0.425781;97,252,108,255,rgb:0.38039215686274508,0.9882352941176471,0.42352941176470588,1;rgb;ccw:0.429688;101,253,105,255,rgb:0.396078431372549,0.99215686274509807,0.41176470588235292,1;rgb;ccw:0.433594;105,253,102,255,rgb:0.41176470588235292,0.99215686274509807,0.40000000000000002,1;rgb;ccw:0.4375;109,254,98,255,rgb:0.42745098039215684,0.99607843137254903,0.3843137254901961,1;rgb;ccw:0.441406;113,254,95,255,rgb:0.44313725490196076,0.99607843137254903,0.37254901960784315,1;rgb;ccw:0.445313;117,254,92,255,rgb:0.45882352941176469,0.99607843137254903,0.36078431372549019,1;rgb;ccw:0.449219;121,254,89,255,rgb:0.47450980392156861,0.99607843137254903,0.34901960784313724,1;rgb;ccw:0.453125;125,255,86,255,rgb:0.49019607843137253,1,0.33725490196078434,1;rgb;ccw:0.457031;128,255,83,255,rgb:0.50196078431372548,1,0.32549019607843138,1;rgb;ccw:0.460938;132,255,81,255,rgb:0.51764705882352946,1,0.31764705882352939,1;rgb;ccw:0.464844;136,255,78,255,rgb:0.53333333333333333,1,0.30588235294117649,1;rgb;ccw:0.46875;139,255,75,255,rgb:0.54509803921568623,1,0.29411764705882354,1;rgb;ccw:0.472656;143,255,73,255,rgb:0.5607843137254902,1,0.28627450980392155,1;rgb;ccw:0.476563;146,255,71,255,rgb:0.5725490196078431,1,0.27843137254901962,1;rgb;ccw:0.480469;150,254,68,255,rgb:0.58823529411764708,0.99607843137254903,0.26666666666666666,1;rgb;ccw:0.484375;153,254,66,255,rgb:0.59999999999999998,0.99607843137254903,0.25882352941176473,1;rgb;ccw:0.488281;156,254,64,255,rgb:0.61176470588235299,0.99607843137254903,0.25098039215686274,1;rgb;ccw:0.492188;159,253,63,255,rgb:0.62352941176470589,0.99215686274509807,0.24705882352941178,1;rgb;ccw:0.496094;161,253,61,255,rgb:0.63137254901960782,0.99215686274509807,0.23921568627450981,1;rgb;ccw:0.5;164,252,60,255,rgb:0.64313725490196083,0.9882352941176471,0.23529411764705882,1;rgb;ccw:0.503906;167,252,58,255,rgb:0.65490196078431373,0.9882352941176471,0.22745098039215686,1;rgb;ccw:0.507813;169,251,57,255,rgb:0.66274509803921566,0.98431372549019602,0.22352941176470589,1;rgb;ccw:0.511719;172,251,56,255,rgb:0.67450980392156867,0.98431372549019602,0.2196078431372549,1;rgb;ccw:0.515625;175,250,55,255,rgb:0.68627450980392157,0.98039215686274506,0.21568627450980393,1;rgb;ccw:0.519531;177,249,54,255,rgb:0.69411764705882351,0.97647058823529409,0.21176470588235294,1;rgb;ccw:0.523438;180,248,54,255,rgb:0.70588235294117652,0.97254901960784312,0.21176470588235294,1;rgb;ccw:0.527344;183,247,53,255,rgb:0.71764705882352942,0.96862745098039216,0.20784313725490197,1;rgb;ccw:0.53125;185,246,53,255,rgb:0.72549019607843135,0.96470588235294119,0.20784313725490197,1;rgb;ccw:0.535156;188,245,52,255,rgb:0.73725490196078436,0.96078431372549022,0.20392156862745098,1;rgb;ccw:0.539063;190,244,52,255,rgb:0.74509803921568629,0.95686274509803926,0.20392156862745098,1;rgb;ccw:0.542969;193,243,52,255,rgb:0.75686274509803919,0.95294117647058818,0.20392156862745098,1;rgb;ccw:0.546875;195,241,52,255,rgb:0.76470588235294112,0.94509803921568625,0.20392156862745098,1;rgb;ccw:0.550781;198,240,52,255,rgb:0.77647058823529413,0.94117647058823528,0.20392156862745098,1;rgb;ccw:0.554688;200,239,52,255,rgb:0.78431372549019607,0.93725490196078431,0.20392156862745098,1;rgb;ccw:0.558594;203,237,52,255,rgb:0.79607843137254897,0.92941176470588238,0.20392156862745098,1;rgb;ccw:0.5625;205,236,52,255,rgb:0.80392156862745101,0.92549019607843142,0.20392156862745098,1;rgb;ccw:0.566406;208,234,52,255,rgb:0.81568627450980391,0.91764705882352937,0.20392156862745098,1;rgb;ccw:0.570313;210,233,53,255,rgb:0.82352941176470584,0.9137254901960784,0.20784313725490197,1;rgb;ccw:0.574219;212,231,53,255,rgb:0.83137254901960789,0.90588235294117647,0.20784313725490197,1;rgb;ccw:0.578125;215,229,53,255,rgb:0.84313725490196079,0.89803921568627454,0.20784313725490197,1;rgb;ccw:0.582031;217,228,54,255,rgb:0.85098039215686272,0.89411764705882357,0.21176470588235294,1;rgb;ccw:0.585938;219,226,54,255,rgb:0.85882352941176465,0.88627450980392153,0.21176470588235294,1;rgb;ccw:0.589844;221,224,55,255,rgb:0.8666666666666667,0.8784313725490196,0.21568627450980393,1;rgb;ccw:0.59375;223,223,55,255,rgb:0.87450980392156863,0.87450980392156863,0.21568627450980393,1;rgb;ccw:0.597656;225,221,55,255,rgb:0.88235294117647056,0.8666666666666667,0.21568627450980393,1;rgb;ccw:0.601563;227,219,56,255,rgb:0.8901960784313725,0.85882352941176465,0.2196078431372549,1;rgb;ccw:0.605469;229,217,56,255,rgb:0.89803921568627454,0.85098039215686272,0.2196078431372549,1;rgb;ccw:0.609375;231,215,57,255,rgb:0.90588235294117647,0.84313725490196079,0.22352941176470589,1;rgb;ccw:0.613281;233,213,57,255,rgb:0.9137254901960784,0.83529411764705885,0.22352941176470589,1;rgb;ccw:0.617188;235,211,57,255,rgb:0.92156862745098034,0.82745098039215681,0.22352941176470589,1;rgb;ccw:0.621094;236,209,58,255,rgb:0.92549019607843142,0.81960784313725488,0.22745098039215686,1;rgb;ccw:0.625;238,207,58,255,rgb:0.93333333333333335,0.81176470588235294,0.22745098039215686,1;rgb;ccw:0.628906;239,205,58,255,rgb:0.93725490196078431,0.80392156862745101,0.22745098039215686,1;rgb;ccw:0.632813;241,203,58,255,rgb:0.94509803921568625,0.79607843137254897,0.22745098039215686,1;rgb;ccw:0.636719;242,201,58,255,rgb:0.94901960784313721,0.78823529411764703,0.22745098039215686,1;rgb;ccw:0.640625;244,199,58,255,rgb:0.95686274509803926,0.7803921568627451,0.22745098039215686,1;rgb;ccw:0.644531;245,197,58,255,rgb:0.96078431372549022,0.77254901960784317,0.22745098039215686,1;rgb;ccw:0.648438;246,195,58,255,rgb:0.96470588235294119,0.76470588235294112,0.22745098039215686,1;rgb;ccw:0.652344;247,193,58,255,rgb:0.96862745098039216,0.75686274509803919,0.22745098039215686,1;rgb;ccw:0.65625;248,190,57,255,rgb:0.97254901960784312,0.74509803921568629,0.22352941176470589,1;rgb;ccw:0.660156;249,188,57,255,rgb:0.97647058823529409,0.73725490196078436,0.22352941176470589,1;rgb;ccw:0.664063;250,186,57,255,rgb:0.98039215686274506,0.72941176470588232,0.22352941176470589,1;rgb;ccw:0.667969;251,184,56,255,rgb:0.98431372549019602,0.72156862745098038,0.2196078431372549,1;rgb;ccw:0.671875;251,182,55,255,rgb:0.98431372549019602,0.71372549019607845,0.21568627450980393,1;rgb;ccw:0.675781;252,179,54,255,rgb:0.9882352941176471,0.70196078431372544,0.21176470588235294,1;rgb;ccw:0.679688;252,177,54,255,rgb:0.9882352941176471,0.69411764705882351,0.21176470588235294,1;rgb;ccw:0.683594;253,174,53,255,rgb:0.99215686274509807,0.68235294117647061,0.20784313725490197,1;rgb;ccw:0.6875;253,172,52,255,rgb:0.99215686274509807,0.67450980392156867,0.20392156862745098,1;rgb;ccw:0.691406;254,169,51,255,rgb:0.99607843137254903,0.66274509803921566,0.20000000000000001,1;rgb;ccw:0.695313;254,167,50,255,rgb:0.99607843137254903,0.65490196078431373,0.19607843137254902,1;rgb;ccw:0.699219;254,164,49,255,rgb:0.99607843137254903,0.64313725490196083,0.19215686274509805,1;rgb;ccw:0.703125;254,161,48,255,rgb:0.99607843137254903,0.63137254901960782,0.18823529411764706,1;rgb;ccw:0.707031;254,158,47,255,rgb:0.99607843137254903,0.61960784313725492,0.18431372549019609,1;rgb;ccw:0.710938;254,155,45,255,rgb:0.99607843137254903,0.60784313725490191,0.17647058823529413,1;rgb;ccw:0.714844;254,153,44,255,rgb:0.99607843137254903,0.59999999999999998,0.17254901960784313,1;rgb;ccw:0.71875;254,150,43,255,rgb:0.99607843137254903,0.58823529411764708,0.16862745098039217,1;rgb;ccw:0.722656;254,147,42,255,rgb:0.99607843137254903,0.57647058823529407,0.16470588235294117,1;rgb;ccw:0.726563;254,144,41,255,rgb:0.99607843137254903,0.56470588235294117,0.16078431372549021,1;rgb;ccw:0.730469;253,141,39,255,rgb:0.99215686274509807,0.55294117647058827,0.15294117647058825,1;rgb;ccw:0.734375;253,138,38,255,rgb:0.99215686274509807,0.54117647058823526,0.14901960784313725,1;rgb;ccw:0.738281;252,135,37,255,rgb:0.9882352941176471,0.52941176470588236,0.14509803921568629,1;rgb;ccw:0.742188;252,132,35,255,rgb:0.9882352941176471,0.51764705882352946,0.13725490196078433,1;rgb;ccw:0.746094;251,129,34,255,rgb:0.98431372549019602,0.50588235294117645,0.13333333333333333,1;rgb;ccw:0.75;251,126,33,255,rgb:0.98431372549019602,0.49411764705882355,0.12941176470588237,1;rgb;ccw:0.753906;250,123,31,255,rgb:0.98039215686274506,0.4823529411764706,0.12156862745098039,1;rgb;ccw:0.757813;249,120,30,255,rgb:0.97647058823529409,0.47058823529411764,0.11764705882352941,1;rgb;ccw:0.761719;249,117,29,255,rgb:0.97647058823529409,0.45882352941176469,0.11372549019607843,1;rgb;ccw:0.765625;248,114,28,255,rgb:0.97254901960784312,0.44705882352941179,0.10980392156862745,1;rgb;ccw:0.769531;247,111,26,255,rgb:0.96862745098039216,0.43529411764705883,0.10196078431372549,1;rgb;ccw:0.773438;246,108,25,255,rgb:0.96470588235294119,0.42352941176470588,0.09803921568627451,1;rgb;ccw:0.777344;245,105,24,255,rgb:0.96078431372549022,0.41176470588235292,0.09411764705882353,1;rgb;ccw:0.78125;244,102,23,255,rgb:0.95686274509803926,0.40000000000000002,0.09019607843137255,1;rgb;ccw:0.785156;243,99,21,255,rgb:0.95294117647058818,0.38823529411764707,0.08235294117647059,1;rgb;ccw:0.789063;242,96,20,255,rgb:0.94901960784313721,0.37647058823529411,0.07843137254901961,1;rgb;ccw:0.792969;241,93,19,255,rgb:0.94509803921568625,0.36470588235294116,0.07450980392156863,1;rgb;ccw:0.796875;240,91,18,255,rgb:0.94117647058823528,0.35686274509803922,0.07058823529411765,1;rgb;ccw:0.800781;239,88,17,255,rgb:0.93725490196078431,0.34509803921568627,0.06666666666666667,1;rgb;ccw:0.804688;237,85,16,255,rgb:0.92941176470588238,0.33333333333333331,0.06274509803921569,1;rgb;ccw:0.808594;236,83,15,255,rgb:0.92549019607843142,0.32549019607843138,0.05882352941176471,1;rgb;ccw:0.8125;235,80,14,255,rgb:0.92156862745098034,0.31372549019607843,0.05490196078431372,1;rgb;ccw:0.816406;234,78,13,255,rgb:0.91764705882352937,0.30588235294117649,0.05098039215686274,1;rgb;ccw:0.820313;232,75,12,255,rgb:0.90980392156862744,0.29411764705882354,0.04705882352941176,1;rgb;ccw:0.824219;231,73,12,255,rgb:0.90588235294117647,0.28627450980392155,0.04705882352941176,1;rgb;ccw:0.828125;229,71,11,255,rgb:0.89803921568627454,0.27843137254901962,0.04313725490196078,1;rgb;ccw:0.832031;228,69,10,255,rgb:0.89411764705882357,0.27058823529411763,0.0392156862745098,1;rgb;ccw:0.835938;226,67,10,255,rgb:0.88627450980392153,0.2627450980392157,0.0392156862745098,1;rgb;ccw:0.839844;225,65,9,255,rgb:0.88235294117647056,0.25490196078431371,0.03529411764705882,1;rgb;ccw:0.84375;223,63,8,255,rgb:0.87450980392156863,0.24705882352941178,0.03137254901960784,1;rgb;ccw:0.847656;221,61,8,255,rgb:0.8666666666666667,0.23921568627450981,0.03137254901960784,1;rgb;ccw:0.851563;220,59,7,255,rgb:0.86274509803921573,0.23137254901960785,0.02745098039215686,1;rgb;ccw:0.855469;218,57,7,255,rgb:0.85490196078431369,0.22352941176470589,0.02745098039215686,1;rgb;ccw:0.859375;216,55,6,255,rgb:0.84705882352941175,0.21568627450980393,0.02352941176470588,1;rgb;ccw:0.863281;214,53,6,255,rgb:0.83921568627450982,0.20784313725490197,0.02352941176470588,1;rgb;ccw:0.867188;212,51,5,255,rgb:0.83137254901960789,0.20000000000000001,0.0196078431372549,1;rgb;ccw:0.871094;210,49,5,255,rgb:0.82352941176470584,0.19215686274509805,0.0196078431372549,1;rgb;ccw:0.875;208,47,5,255,rgb:0.81568627450980391,0.18431372549019609,0.0196078431372549,1;rgb;ccw:0.878906;206,45,4,255,rgb:0.80784313725490198,0.17647058823529413,0.01568627450980392,1;rgb;ccw:0.882813;204,43,4,255,rgb:0.80000000000000004,0.16862745098039217,0.01568627450980392,1;rgb;ccw:0.886719;202,42,4,255,rgb:0.792156862745098,0.16470588235294117,0.01568627450980392,1;rgb;ccw:0.890625;200,40,3,255,rgb:0.78431372549019607,0.15686274509803921,0.01176470588235294,1;rgb;ccw:0.894531;197,38,3,255,rgb:0.77254901960784317,0.14901960784313725,0.01176470588235294,1;rgb;ccw:0.898438;195,37,3,255,rgb:0.76470588235294112,0.14509803921568629,0.01176470588235294,1;rgb;ccw:0.902344;193,35,2,255,rgb:0.75686274509803919,0.13725490196078433,0.00784313725490196,1;rgb;ccw:0.90625;190,33,2,255,rgb:0.74509803921568629,0.12941176470588237,0.00784313725490196,1;rgb;ccw:0.910156;188,32,2,255,rgb:0.73725490196078436,0.12549019607843137,0.00784313725490196,1;rgb;ccw:0.914063;185,30,2,255,rgb:0.72549019607843135,0.11764705882352941,0.00784313725490196,1;rgb;ccw:0.917969;183,29,2,255,rgb:0.71764705882352942,0.11372549019607843,0.00784313725490196,1;rgb;ccw:0.921875;180,27,1,255,rgb:0.70588235294117652,0.10588235294117647,0.00392156862745098,1;rgb;ccw:0.925781;178,26,1,255,rgb:0.69803921568627447,0.10196078431372549,0.00392156862745098,1;rgb;ccw:0.929688;175,24,1,255,rgb:0.68627450980392157,0.09411764705882353,0.00392156862745098,1;rgb;ccw:0.933594;172,23,1,255,rgb:0.67450980392156867,0.09019607843137255,0.00392156862745098,1;rgb;ccw:0.9375;169,22,1,255,rgb:0.66274509803921566,0.08627450980392157,0.00392156862745098,1;rgb;ccw:0.941406;167,20,1,255,rgb:0.65490196078431373,0.07843137254901961,0.00392156862745098,1;rgb;ccw:0.945313;164,19,1,255,rgb:0.64313725490196083,0.07450980392156863,0.00392156862745098,1;rgb;ccw:0.949219;161,18,1,255,rgb:0.63137254901960782,0.07058823529411765,0.00392156862745098,1;rgb;ccw:0.953125;158,16,1,255,rgb:0.61960784313725492,0.06274509803921569,0.00392156862745098,1;rgb;ccw:0.957031;155,15,1,255,rgb:0.60784313725490191,0.05882352941176471,0.00392156862745098,1;rgb;ccw:0.960938;152,14,1,255,rgb:0.59607843137254901,0.05490196078431372,0.00392156862745098,1;rgb;ccw:0.964844;149,13,1,255,rgb:0.58431372549019611,0.05098039215686274,0.00392156862745098,1;rgb;ccw:0.96875;146,11,1,255,rgb:0.5725490196078431,0.04313725490196078,0.00392156862745098,1;rgb;ccw:0.972656;142,10,1,255,rgb:0.55686274509803924,0.0392156862745098,0.00392156862745098,1;rgb;ccw:0.976563;139,9,2,255,rgb:0.54509803921568623,0.03529411764705882,0.00784313725490196,1;rgb;ccw:0.980469;136,8,2,255,rgb:0.53333333333333333,0.03137254901960784,0.00784313725490196,1;rgb;ccw:0.984375;133,7,2,255,rgb:0.52156862745098043,0.02745098039215686,0.00784313725490196,1;rgb;ccw:0.988281;129,6,2,255,rgb:0.50588235294117645,0.02352941176470588,0.00784313725490196,1;rgb;ccw" type="QString"/>
+                </Option>
+              </colorramp>
+              <item alpha="255" label="47.3839" value="47.383934020996094" color="#30123b"/>
+              <item alpha="255" label="47.8238" value="47.82384615952988" color="#321543"/>
+              <item alpha="255" label="48.2637" value="48.26374703645706" color="#33184a"/>
+              <item alpha="255" label="48.7037" value="48.70365917499085" color="#341b51"/>
+              <item alpha="255" label="49.1436" value="49.14356005191803" color="#351e58"/>
+              <item alpha="255" label="49.5835" value="49.583472190451815" color="#36215f"/>
+              <item alpha="255" label="50.0234" value="50.023373067379" color="#372466"/>
+              <item alpha="255" label="50.4633" value="50.46328520591278" color="#38276d"/>
+              <item alpha="255" label="50.9032" value="50.903186082839966" color="#392a73"/>
+              <item alpha="255" label="51.3431" value="51.34309822137375" color="#3a2d79"/>
+              <item alpha="255" label="51.7830" value="51.782999098300934" color="#3b2f80"/>
+              <item alpha="255" label="52.2229" value="52.22291123683472" color="#3c3286"/>
+              <item alpha="255" label="52.6628" value="52.6628121137619" color="#3d358b"/>
+              <item alpha="255" label="53.1027" value="53.10272425229569" color="#3e3891"/>
+              <item alpha="255" label="53.5426" value="53.54262512922287" color="#3f3b97"/>
+              <item alpha="255" label="53.9825" value="53.982537267756655" color="#3f3e9c"/>
+              <item alpha="255" label="54.4224" value="54.42243814468384" color="#4040a2"/>
+              <item alpha="255" label="54.8624" value="54.86235028321762" color="#4143a7"/>
+              <item alpha="255" label="55.3023" value="55.302251160144806" color="#4146ac"/>
+              <item alpha="255" label="55.7422" value="55.74216329867859" color="#4249b1"/>
+              <item alpha="255" label="56.1821" value="56.182064175605774" color="#424bb5"/>
+              <item alpha="255" label="56.6220" value="56.62197631413956" color="#434eba"/>
+              <item alpha="255" label="57.0619" value="57.06187719106674" color="#4451bf"/>
+              <item alpha="255" label="57.5018" value="57.50178932960053" color="#4454c3"/>
+              <item alpha="255" label="57.9417" value="57.94169020652771" color="#4456c7"/>
+              <item alpha="255" label="58.3816" value="58.381602345061495" color="#4559cb"/>
+              <item alpha="255" label="58.8216" value="58.821559530021666" color="#455ccf"/>
+              <item alpha="255" label="59.2614" value="59.26143788373565" color="#455ed3"/>
+              <item alpha="255" label="59.7013" value="59.701316237449646" color="#4661d6"/>
+              <item alpha="255" label="60.1412" value="60.14119459116364" color="#4664da"/>
+              <item alpha="255" label="60.5812" value="60.5811855609436" color="#4666dd"/>
+              <item alpha="255" label="61.0211" value="61.02106391465759" color="#4669e0"/>
+              <item alpha="255" label="61.4609" value="61.46094226837158" color="#466be3"/>
+              <item alpha="255" label="61.9008" value="61.90082062208557" color="#476ee6"/>
+              <item alpha="255" label="62.3408" value="62.34081159186554" color="#4771e9"/>
+              <item alpha="255" label="62.7807" value="62.78068994557953" color="#4773eb"/>
+              <item alpha="255" label="63.2206" value="63.22056829929352" color="#4776ee"/>
+              <item alpha="255" label="63.6604" value="63.66044665300751" color="#4778f0"/>
+              <item alpha="255" label="64.1004" value="64.10043762278747" color="#477bf2"/>
+              <item alpha="255" label="64.5403" value="64.54031597650146" color="#467df4"/>
+              <item alpha="255" label="64.9802" value="64.98019433021545" color="#4680f6"/>
+              <item alpha="255" label="65.4201" value="65.42007268392945" color="#4682f8"/>
+              <item alpha="255" label="65.8601" value="65.8600636537094" color="#4685fa"/>
+              <item alpha="255" label="66.2999" value="66.2999420074234" color="#4687fb"/>
+              <item alpha="255" label="66.7398" value="66.73982036113739" color="#458afc"/>
+              <item alpha="255" label="67.1797" value="67.17969871485138" color="#458cfd"/>
+              <item alpha="255" label="67.6197" value="67.61968968463134" color="#448ffe"/>
+              <item alpha="255" label="68.0596" value="68.05956803834533" color="#4391fe"/>
+              <item alpha="255" label="68.4994" value="68.49944639205933" color="#4294ff"/>
+              <item alpha="255" label="68.9393" value="68.93932474577332" color="#4196ff"/>
+              <item alpha="255" label="69.3793" value="69.37931571555328" color="#4099ff"/>
+              <item alpha="255" label="69.8192" value="69.81919406926727" color="#3e9bfe"/>
+              <item alpha="255" label="70.2591" value="70.25907242298126" color="#3d9efe"/>
+              <item alpha="255" label="70.6990" value="70.69895077669526" color="#3ba0fd"/>
+              <item alpha="255" label="71.1389" value="71.13894174647521" color="#3aa3fc"/>
+              <item alpha="255" label="71.5788" value="71.5788201001892" color="#38a5fb"/>
+              <item alpha="255" label="72.0187" value="72.0186984539032" color="#37a8fa"/>
+              <item alpha="255" label="72.4586" value="72.45857680761719" color="#35abf8"/>
+              <item alpha="255" label="72.8986" value="72.89856777739715" color="#33adf7"/>
+              <item alpha="255" label="73.3384" value="73.33844613111114" color="#31aff5"/>
+              <item alpha="255" label="73.7783" value="73.77832448482513" color="#2fb2f4"/>
+              <item alpha="255" label="74.2182" value="74.21820283853913" color="#2eb4f2"/>
+              <item alpha="255" label="74.6582" value="74.65819380831908" color="#2cb7f0"/>
+              <item alpha="255" label="75.0981" value="75.09807216203308" color="#2ab9ee"/>
+              <item alpha="255" label="75.5380" value="75.53795051574707" color="#28bceb"/>
+              <item alpha="255" label="75.9778" value="75.97782886946106" color="#27bee9"/>
+              <item alpha="255" label="76.4178" value="76.41781983924103" color="#25c0e7"/>
+              <item alpha="255" label="76.8577" value="76.85769819295501" color="#23c3e4"/>
+              <item alpha="255" label="77.2976" value="77.297576546669" color="#22c5e2"/>
+              <item alpha="255" label="77.7375" value="77.737454900383" color="#20c7df"/>
+              <item alpha="255" label="78.1774" value="78.17744587016297" color="#1fc9dd"/>
+              <item alpha="255" label="78.6173" value="78.61732422387695" color="#1ecbda"/>
+              <item alpha="255" label="79.0572" value="79.05720257759094" color="#1ccdd8"/>
+              <item alpha="255" label="79.4971" value="79.49708093130494" color="#1bd0d5"/>
+              <item alpha="255" label="79.9371" value="79.93707190108489" color="#1ad2d2"/>
+              <item alpha="255" label="80.3770" value="80.37695025479888" color="#1ad4d0"/>
+              <item alpha="255" label="80.8168" value="80.81682860851288" color="#19d5cd"/>
+              <item alpha="255" label="81.2567" value="81.25670696222687" color="#18d7ca"/>
+              <item alpha="255" label="81.6967" value="81.69669793200683" color="#18d9c8"/>
+              <item alpha="255" label="82.1366" value="82.13657628572082" color="#18dbc5"/>
+              <item alpha="255" label="82.5765" value="82.57645463943481" color="#18ddc2"/>
+              <item alpha="255" label="83.0163" value="83.01633299314881" color="#18dec0"/>
+              <item alpha="255" label="83.4563" value="83.45632396292876" color="#18e0bd"/>
+              <item alpha="255" label="83.8962" value="83.89620231664276" color="#19e2bb"/>
+              <item alpha="255" label="84.3361" value="84.33608067035675" color="#19e3b9"/>
+              <item alpha="255" label="84.7760" value="84.77595902407074" color="#1ae4b6"/>
+              <item alpha="255" label="85.2159" value="85.2159499938507" color="#1ce6b4"/>
+              <item alpha="255" label="85.6558" value="85.6558283475647" color="#1de7b2"/>
+              <item alpha="255" label="86.0957" value="86.09570670127869" color="#1fe9af"/>
+              <item alpha="255" label="86.5356" value="86.53558505499268" color="#20eaac"/>
+              <item alpha="255" label="86.9756" value="86.97557602477264" color="#22ebaa"/>
+              <item alpha="255" label="87.4155" value="87.41545437848663" color="#25eca7"/>
+              <item alpha="255" label="87.8553" value="87.85533273220062" color="#27eea4"/>
+              <item alpha="255" label="88.2952" value="88.29521108591462" color="#2aefa1"/>
+              <item alpha="255" label="88.7352" value="88.73520205569457" color="#2cf09e"/>
+              <item alpha="255" label="89.1751" value="89.17508040940857" color="#2ff19b"/>
+              <item alpha="255" label="89.6150" value="89.61495876312256" color="#32f298"/>
+              <item alpha="255" label="90.0548" value="90.05483711683655" color="#35f394"/>
+              <item alpha="255" label="90.4948" value="90.49482808661651" color="#38f491"/>
+              <item alpha="255" label="90.9347" value="90.9347064403305" color="#3cf58e"/>
+              <item alpha="255" label="91.3746" value="91.3745847940445" color="#3ff68a"/>
+              <item alpha="255" label="91.8145" value="91.81446314775849" color="#43f787"/>
+              <item alpha="255" label="92.2545" value="92.25445411753844" color="#46f884"/>
+              <item alpha="255" label="92.6943" value="92.69433247125244" color="#4af880"/>
+              <item alpha="255" label="93.1342" value="93.13421082496643" color="#4ef97d"/>
+              <item alpha="255" label="93.5741" value="93.57408917868042" color="#52fa7a"/>
+              <item alpha="255" label="94.0141" value="94.01408014846038" color="#55fa76"/>
+              <item alpha="255" label="94.4540" value="94.45395850217437" color="#59fb73"/>
+              <item alpha="255" label="94.8938" value="94.89383685588837" color="#5dfc6f"/>
+              <item alpha="255" label="95.3337" value="95.33371520960236" color="#61fc6c"/>
+              <item alpha="255" label="95.7737" value="95.77370617938232" color="#65fd69"/>
+              <item alpha="255" label="96.2136" value="96.21358453309631" color="#69fd66"/>
+              <item alpha="255" label="96.6535" value="96.6534628868103" color="#6dfe62"/>
+              <item alpha="255" label="97.0933" value="97.0933412405243" color="#71fe5f"/>
+              <item alpha="255" label="97.5333" value="97.53333221030425" color="#75fe5c"/>
+              <item alpha="255" label="97.9732" value="97.97321056401825" color="#79fe59"/>
+              <item alpha="255" label="98.4131" value="98.41308891773224" color="#7dff56"/>
+              <item alpha="255" label="98.8530" value="98.85296727144623" color="#80ff53"/>
+              <item alpha="255" label="99.2930" value="99.29295824122619" color="#84ff51"/>
+              <item alpha="255" label="99.7328" value="99.73283659494018" color="#88ff4e"/>
+              <item alpha="255" label="100.1727" value="100.17271494865417" color="#8bff4b"/>
+              <item alpha="255" label="100.6126" value="100.61259330236817" color="#8fff49"/>
+              <item alpha="255" label="101.0526" value="101.05258427214812" color="#92ff47"/>
+              <item alpha="255" label="101.4925" value="101.49246262586212" color="#96fe44"/>
+              <item alpha="255" label="101.9323" value="101.93234097957611" color="#99fe42"/>
+              <item alpha="255" label="102.3722" value="102.3722193332901" color="#9cfe40"/>
+              <item alpha="255" label="102.8122" value="102.81221030307006" color="#9ffd3f"/>
+              <item alpha="255" label="103.2521" value="103.25208865678405" color="#a1fd3d"/>
+              <item alpha="255" label="103.6920" value="103.69196701049805" color="#a4fc3c"/>
+              <item alpha="255" label="104.1318" value="104.13184536421204" color="#a7fc3a"/>
+              <item alpha="255" label="104.5718" value="104.571836333992" color="#a9fb39"/>
+              <item alpha="255" label="105.0117" value="105.01171468770599" color="#acfb38"/>
+              <item alpha="255" label="105.4516" value="105.45159304141998" color="#affa37"/>
+              <item alpha="255" label="105.8915" value="105.89147139513398" color="#b1f936"/>
+              <item alpha="255" label="106.3315" value="106.33146236491393" color="#b4f836"/>
+              <item alpha="255" label="106.7713" value="106.77134071862793" color="#b7f735"/>
+              <item alpha="255" label="107.2112" value="107.21121907234192" color="#b9f635"/>
+              <item alpha="255" label="107.6511" value="107.65109742605591" color="#bcf534"/>
+              <item alpha="255" label="108.0911" value="108.09108839583587" color="#bef434"/>
+              <item alpha="255" label="108.5310" value="108.53096674954986" color="#c1f334"/>
+              <item alpha="255" label="108.9708" value="108.97084510326385" color="#c3f134"/>
+              <item alpha="255" label="109.4107" value="109.41072345697785" color="#c6f034"/>
+              <item alpha="255" label="109.8507" value="109.8507144267578" color="#c8ef34"/>
+              <item alpha="255" label="110.2906" value="110.2905927804718" color="#cbed34"/>
+              <item alpha="255" label="110.7305" value="110.73047113418579" color="#cdec34"/>
+              <item alpha="255" label="111.1703" value="111.17034948789978" color="#d0ea34"/>
+              <item alpha="255" label="111.6103" value="111.61034045767974" color="#d2e935"/>
+              <item alpha="255" label="112.0502" value="112.05021881139375" color="#d4e735"/>
+              <item alpha="255" label="112.4901" value="112.49009716510773" color="#d7e535"/>
+              <item alpha="255" label="112.9300" value="112.9299755188217" color="#d9e436"/>
+              <item alpha="255" label="113.3700" value="113.36996648860168" color="#dbe236"/>
+              <item alpha="255" label="113.8098" value="113.80984484231568" color="#dde037"/>
+              <item alpha="255" label="114.2497" value="114.24972319602966" color="#dfdf37"/>
+              <item alpha="255" label="114.6896" value="114.68960154974364" color="#e1dd37"/>
+              <item alpha="255" label="115.1296" value="115.12959251952361" color="#e3db38"/>
+              <item alpha="255" label="115.5695" value="115.56947087323762" color="#e5d938"/>
+              <item alpha="255" label="116.0093" value="116.0093492269516" color="#e7d739"/>
+              <item alpha="255" label="116.4492" value="116.44922758066558" color="#e9d539"/>
+              <item alpha="255" label="116.8892" value="116.88921855044555" color="#ebd339"/>
+              <item alpha="255" label="117.3291" value="117.32909690415956" color="#ecd13a"/>
+              <item alpha="255" label="117.7690" value="117.76897525787354" color="#eecf3a"/>
+              <item alpha="255" label="118.2089" value="118.20885361158751" color="#efcd3a"/>
+              <item alpha="255" label="118.6488" value="118.64884458136748" color="#f1cb3a"/>
+              <item alpha="255" label="119.0887" value="119.08872293508149" color="#f2c93a"/>
+              <item alpha="255" label="119.5286" value="119.52860128879547" color="#f4c73a"/>
+              <item alpha="255" label="119.9685" value="119.96847964250945" color="#f5c53a"/>
+              <item alpha="255" label="120.4085" value="120.40847061228942" color="#f6c33a"/>
+              <item alpha="255" label="120.8483" value="120.84834896600343" color="#f7c13a"/>
+              <item alpha="255" label="121.2882" value="121.28822731971741" color="#f8be39"/>
+              <item alpha="255" label="121.7281" value="121.72810567343139" color="#f9bc39"/>
+              <item alpha="255" label="122.1681" value="122.16809664321136" color="#faba39"/>
+              <item alpha="255" label="122.6080" value="122.60797499692536" color="#fbb838"/>
+              <item alpha="255" label="123.0479" value="123.04785335063934" color="#fbb637"/>
+              <item alpha="255" label="123.4877" value="123.48773170435332" color="#fcb336"/>
+              <item alpha="255" label="123.9277" value="123.92772267413329" color="#fcb136"/>
+              <item alpha="255" label="124.3676" value="124.3676010278473" color="#fdae35"/>
+              <item alpha="255" label="124.8075" value="124.80747938156128" color="#fdac34"/>
+              <item alpha="255" label="125.2474" value="125.24735773527526" color="#fea933"/>
+              <item alpha="255" label="125.6873" value="125.68734870505523" color="#fea732"/>
+              <item alpha="255" label="126.1272" value="126.12722705876924" color="#fea431"/>
+              <item alpha="255" label="126.5671" value="126.56710541248322" color="#fea130"/>
+              <item alpha="255" label="127.0070" value="127.0069837661972" color="#fe9e2f"/>
+              <item alpha="255" label="127.4470" value="127.44697473597716" color="#fe9b2d"/>
+              <item alpha="255" label="127.8869" value="127.88685308969117" color="#fe992c"/>
+              <item alpha="255" label="128.3267" value="128.32673144340515" color="#fe962b"/>
+              <item alpha="255" label="128.7666" value="128.76660979711914" color="#fe932a"/>
+              <item alpha="255" label="129.2066" value="129.2066007668991" color="#fe9029"/>
+              <item alpha="255" label="129.6465" value="129.6464791206131" color="#fd8d27"/>
+              <item alpha="255" label="130.0864" value="130.0863574743271" color="#fd8a26"/>
+              <item alpha="255" label="130.5262" value="130.52623582804108" color="#fc8725"/>
+              <item alpha="255" label="130.9662" value="130.96622679782104" color="#fc8423"/>
+              <item alpha="255" label="131.4061" value="131.40610515153503" color="#fb8122"/>
+              <item alpha="255" label="131.8460" value="131.84598350524902" color="#fb7e21"/>
+              <item alpha="255" label="132.2859" value="132.28586185896302" color="#fa7b1f"/>
+              <item alpha="255" label="132.7259" value="132.72585282874297" color="#f9781e"/>
+              <item alpha="255" label="133.1657" value="133.16573118245697" color="#f9751d"/>
+              <item alpha="255" label="133.6056" value="133.60560953617096" color="#f8721c"/>
+              <item alpha="255" label="134.0455" value="134.04548788988495" color="#f76f1a"/>
+              <item alpha="255" label="134.4855" value="134.4854788596649" color="#f66c19"/>
+              <item alpha="255" label="134.9254" value="134.9253572133789" color="#f56918"/>
+              <item alpha="255" label="135.3652" value="135.3652355670929" color="#f46617"/>
+              <item alpha="255" label="135.8051" value="135.8051139208069" color="#f36315"/>
+              <item alpha="255" label="136.2451" value="136.24510489058684" color="#f26014"/>
+              <item alpha="255" label="136.6850" value="136.68498324430084" color="#f15d13"/>
+              <item alpha="255" label="137.1249" value="137.12486159801483" color="#f05b12"/>
+              <item alpha="255" label="137.5647" value="137.56473995172882" color="#ef5811"/>
+              <item alpha="255" label="138.0047" value="138.00473092150878" color="#ed5510"/>
+              <item alpha="255" label="138.4446" value="138.44460927522277" color="#ec530f"/>
+              <item alpha="255" label="138.8845" value="138.88448762893677" color="#eb500e"/>
+              <item alpha="255" label="139.3244" value="139.32436598265076" color="#ea4e0d"/>
+              <item alpha="255" label="139.7644" value="139.76435695243072" color="#e84b0c"/>
+              <item alpha="255" label="140.2042" value="140.2042353061447" color="#e7490c"/>
+              <item alpha="255" label="140.6441" value="140.6441136598587" color="#e5470b"/>
+              <item alpha="255" label="141.0840" value="141.0839920135727" color="#e4450a"/>
+              <item alpha="255" label="141.5240" value="141.52398298335265" color="#e2430a"/>
+              <item alpha="255" label="141.9639" value="141.96386133706665" color="#e14109"/>
+              <item alpha="255" label="142.4037" value="142.40373969078064" color="#df3f08"/>
+              <item alpha="255" label="142.8436" value="142.84361804449463" color="#dd3d08"/>
+              <item alpha="255" label="143.2836" value="143.2836090142746" color="#dc3b07"/>
+              <item alpha="255" label="143.7235" value="143.72348736798858" color="#da3907"/>
+              <item alpha="255" label="144.1634" value="144.16336572170258" color="#d83706"/>
+              <item alpha="255" label="144.6032" value="144.60324407541657" color="#d63506"/>
+              <item alpha="255" label="145.0432" value="145.04323504519652" color="#d43305"/>
+              <item alpha="255" label="145.4831" value="145.48311339891052" color="#d23105"/>
+              <item alpha="255" label="145.9230" value="145.9229917526245" color="#d02f05"/>
+              <item alpha="255" label="146.3629" value="146.3628701063385" color="#ce2d04"/>
+              <item alpha="255" label="146.8029" value="146.80286107611846" color="#cc2b04"/>
+              <item alpha="255" label="147.2427" value="147.24273942983245" color="#ca2a04"/>
+              <item alpha="255" label="147.6826" value="147.68261778354645" color="#c82803"/>
+              <item alpha="255" label="148.1225" value="148.12249613726044" color="#c52603"/>
+              <item alpha="255" label="148.5625" value="148.5624871070404" color="#c32503"/>
+              <item alpha="255" label="149.0024" value="149.0023654607544" color="#c12302"/>
+              <item alpha="255" label="149.4422" value="149.44224381446838" color="#be2102"/>
+              <item alpha="255" label="149.8821" value="149.88212216818238" color="#bc2002"/>
+              <item alpha="255" label="150.3221" value="150.32211313796233" color="#b91e02"/>
+              <item alpha="255" label="150.7620" value="150.76199149167633" color="#b71d02"/>
+              <item alpha="255" label="151.2019" value="151.20186984539032" color="#b41b01"/>
+              <item alpha="255" label="151.6417" value="151.6417481991043" color="#b21a01"/>
+              <item alpha="255" label="152.0817" value="152.08173916888427" color="#af1801"/>
+              <item alpha="255" label="152.5216" value="152.52161752259826" color="#ac1701"/>
+              <item alpha="255" label="152.9615" value="152.96149587631226" color="#a91601"/>
+              <item alpha="255" label="153.4014" value="153.40137423002625" color="#a71401"/>
+              <item alpha="255" label="153.8414" value="153.8413651998062" color="#a41301"/>
+              <item alpha="255" label="154.2812" value="154.2812435535202" color="#a11201"/>
+              <item alpha="255" label="154.7211" value="154.7211219072342" color="#9e1001"/>
+              <item alpha="255" label="155.1610" value="155.16100026094819" color="#9b0f01"/>
+              <item alpha="255" label="155.6010" value="155.60099123072814" color="#980e01"/>
+              <item alpha="255" label="156.0409" value="156.04086958444213" color="#950d01"/>
+              <item alpha="255" label="156.4807" value="156.48074793815613" color="#920b01"/>
+              <item alpha="255" label="156.9206" value="156.92062629187012" color="#8e0a01"/>
+              <item alpha="255" label="157.3606" value="157.36061726165008" color="#8b0902"/>
+              <item alpha="255" label="157.8005" value="157.80049561536407" color="#880802"/>
+              <item alpha="255" label="158.2404" value="158.24037396907806" color="#850702"/>
+              <item alpha="255" label="158.6803" value="158.68025232279206" color="#810602"/>
+              <item alpha="255" label="160.0000" value="160" color="#7a0403"/>
+              <rampLegendSettings maximumLabel="" prefix="" useContinuousLegend="1" suffix="" orientation="2" direction="0" minimumLabel="">
+                <numericFormat id="basic">
+                  <Option type="Map">
+                    <Option name="decimal_separator" type="invalid"/>
+                    <Option name="decimals" value="6" type="int"/>
+                    <Option name="rounding_type" value="0" type="int"/>
+                    <Option name="show_plus" value="false" type="bool"/>
+                    <Option name="show_thousand_separator" value="true" type="bool"/>
+                    <Option name="show_trailing_zeros" value="false" type="bool"/>
+                    <Option name="thousand_separator" type="invalid"/>
+                  </Option>
+                </numericFormat>
+              </rampLegendSettings>
+            </colorrampshader>
+          </rastershader>
+        </rasterrenderer>
+        <brightnesscontrast gamma="1" brightness="0" contrast="0"/>
+        <huesaturation colorizeBlue="128" saturation="0" invertColors="0" colorizeStrength="100" colorizeOn="0" colorizeGreen="128" grayscaleMode="0" colorizeRed="255"/>
+        <rasterresampler maxOversampling="2"/>
+        <resamplingStage>resamplingFilter</resamplingStage>
+      </pipe>
+      <blendMode>0</blendMode>
+    </maplayer>
+  </projectlayers>
+  <layerorder>
+    <layer id="two_coasts_c38adc53_25ea_47c1_a33e_12e224348ea2"/>
+    <layer id="basement_0668703f_9b4b_477e_9232_edf0015a0685"/>
+    <layer id="is_contiguous_sea_1_b14c71ff_228f_4e57_8cb0_65c1c68edd02"/>
+  </layerorder>
+  <labelEngineSettings/>
+  <properties>
+    <CopyrightLabel>
+      <Enabled type="int">0</Enabled>
+      <Label type="QString"></Label>
+    </CopyrightLabel>
+    <Digitizing>
+      <AvoidIntersectionsMode type="int">0</AvoidIntersectionsMode>
+    </Digitizing>
+    <Gui>
+      <CanvasColorBluePart type="int">255</CanvasColorBluePart>
+      <CanvasColorGreenPart type="int">255</CanvasColorGreenPart>
+      <CanvasColorRedPart type="int">255</CanvasColorRedPart>
+      <SelectionColorAlphaPart type="int">255</SelectionColorAlphaPart>
+      <SelectionColorBluePart type="int">0</SelectionColorBluePart>
+      <SelectionColorGreenPart type="int">255</SelectionColorGreenPart>
+      <SelectionColorRedPart type="int">255</SelectionColorRedPart>
+    </Gui>
+    <Legend>
+      <filterByMap type="bool">false</filterByMap>
+    </Legend>
+    <Macros>
+      <pythonCode type="QString"></pythonCode>
+    </Macros>
+    <Measure>
+      <Ellipsoid type="QString">NONE</Ellipsoid>
+    </Measure>
+    <Measurement>
+      <AreaUnits type="QString">m2</AreaUnits>
+      <DistanceUnits type="QString">meters</DistanceUnits>
+    </Measurement>
+    <PAL>
+      <CandidatesLinePerCM type="double">5</CandidatesLinePerCM>
+      <CandidatesPolygonPerCM type="double">2.5</CandidatesPolygonPerCM>
+      <DrawLabelMetrics type="bool">false</DrawLabelMetrics>
+      <DrawRectOnly type="bool">false</DrawRectOnly>
+      <DrawUnplaced type="bool">false</DrawUnplaced>
+      <PlacementEngineVersion type="int">1</PlacementEngineVersion>
+      <SearchMethod type="int">0</SearchMethod>
+      <ShowingAllLabels type="bool">false</ShowingAllLabels>
+      <ShowingCandidates type="bool">false</ShowingCandidates>
+      <ShowingPartialsLabels type="bool">true</ShowingPartialsLabels>
+      <TextFormat type="int">0</TextFormat>
+      <UnplacedColor type="QString">255,0,0,255,rgb:1,0,0,1</UnplacedColor>
+    </PAL>
+    <Paths>
+      <Absolute type="bool">false</Absolute>
+    </Paths>
+    <PositionPrecision>
+      <Automatic type="bool">true</Automatic>
+      <DecimalPlaces type="int">2</DecimalPlaces>
+    </PositionPrecision>
+    <RenderMapTile type="bool">false</RenderMapTile>
+    <SpatialRefSys>
+      <ProjectionsEnabled type="int">1</ProjectionsEnabled>
+    </SpatialRefSys>
+    <WCSLayers type="QStringList"/>
+    <WCSUrl type="QString"></WCSUrl>
+    <WFSLayers type="QStringList"/>
+    <WFSTLayers>
+      <Delete type="QStringList"/>
+      <Insert type="QStringList"/>
+      <Update type="QStringList"/>
+    </WFSTLayers>
+    <WFSUrl type="QString"></WFSUrl>
+    <WMSAccessConstraints type="QString">None</WMSAccessConstraints>
+    <WMSAddLayerGroupsLegendGraphic type="bool">false</WMSAddLayerGroupsLegendGraphic>
+    <WMSAddWktGeometry type="bool">false</WMSAddWktGeometry>
+    <WMSContactMail type="QString"></WMSContactMail>
+    <WMSContactOrganization type="QString"></WMSContactOrganization>
+    <WMSContactPerson type="QString"></WMSContactPerson>
+    <WMSContactPhone type="QString"></WMSContactPhone>
+    <WMSContactPosition type="QString"></WMSContactPosition>
+    <WMSFeatureInfoUseAttributeFormSettings type="bool">false</WMSFeatureInfoUseAttributeFormSettings>
+    <WMSFees type="QString">conditions unknown</WMSFees>
+    <WMSImageQuality type="int">90</WMSImageQuality>
+    <WMSKeywordList type="QStringList">
+      <value></value>
+    </WMSKeywordList>
+    <WMSMaxAtlasFeatures type="int">1</WMSMaxAtlasFeatures>
+    <WMSOnlineResource type="QString"></WMSOnlineResource>
+    <WMSPrecision type="QString">8</WMSPrecision>
+    <WMSRootName type="QString"></WMSRootName>
+    <WMSSegmentizeFeatureInfoGeometry type="bool">false</WMSSegmentizeFeatureInfoGeometry>
+    <WMSServiceAbstract type="QString"></WMSServiceAbstract>
+    <WMSServiceCapabilities type="bool">false</WMSServiceCapabilities>
+    <WMSServiceTitle type="QString"></WMSServiceTitle>
+    <WMSSkipNameForGroup type="bool">false</WMSSkipNameForGroup>
+    <WMSTileBuffer type="int">0</WMSTileBuffer>
+    <WMSUrl type="QString"></WMSUrl>
+    <WMSUseLayerIDs type="bool">false</WMSUseLayerIDs>
+    <WMTSGrids>
+      <CRS type="QStringList"/>
+      <Config type="QStringList"/>
+    </WMTSGrids>
+    <WMTSJpegLayers>
+      <Group type="QStringList"/>
+      <Layer type="QStringList"/>
+      <Project type="bool">false</Project>
+    </WMTSJpegLayers>
+    <WMTSLayers>
+      <Group type="QStringList"/>
+      <Layer type="QStringList"/>
+      <Project type="bool">false</Project>
+    </WMTSLayers>
+    <WMTSMinScale type="int">5000</WMTSMinScale>
+    <WMTSPngLayers>
+      <Group type="QStringList"/>
+      <Layer type="QStringList"/>
+      <Project type="bool">false</Project>
+    </WMTSPngLayers>
+    <WMTSUrl type="QString"></WMTSUrl>
+  </properties>
+  <dataDefinedServerProperties>
+    <Option type="Map">
+      <Option name="name" value="" type="QString"/>
+      <Option name="properties"/>
+      <Option name="type" value="collection" type="QString"/>
+    </Option>
+  </dataDefinedServerProperties>
+  <visibility-presets/>
+  <transformContext/>
+  <projectMetadata>
+    <identifier></identifier>
+    <parentidentifier></parentidentifier>
+    <language></language>
+    <type></type>
+    <title></title>
+    <abstract></abstract>
+    <contact>
+      <name></name>
+      <organization></organization>
+      <position></position>
+      <voice></voice>
+      <fax></fax>
+      <email></email>
+      <role></role>
+    </contact>
+    <links/>
+    <dates>
+      <date value="2025-06-22T15:18:24" type="Created"/>
+    </dates>
+    <author>Dave Favis-Mortlock</author>
+    <creation>2025-06-22T15:18:24</creation>
+  </projectMetadata>
+  <Annotations/>
+  <Layouts/>
+  <mapViewDocks3D/>
+  <Bookmarks/>
+  <Sensors/>
+  <ProjectViewSettings UseProjectScales="0" rotation="0">
+    <Scales/>
+    <DefaultViewExtent ymax="513.5" xmax="592.57072368421063402" xmin="-340.57072368421057718" ymin="-11.5">
+      <spatialrefsys nativeFormat="Wkt">
+        <wkt>ENGCRS["Plane",EDATUM["Unknown engineering datum"],CS[Cartesian,2],AXIS["(E)",east,ORDER[1],LENGTHUNIT["Meter",1]],AXIS["(N)",north,ORDER[2],LENGTHUNIT["Meter",1]]]</wkt>
+        <proj4></proj4>
+        <srsid>100000</srsid>
+        <srid>0</srid>
+        <authid>USER:100000</authid>
+        <description>Plane</description>
+        <projectionacronym></projectionacronym>
+        <ellipsoidacronym></ellipsoidacronym>
+        <geographicflag>false</geographicflag>
+      </spatialrefsys>
+    </DefaultViewExtent>
+  </ProjectViewSettings>
+  <ProjectStyleSettings projectStyleId="attachment:///PLRXfV_styles.db" RandomizeDefaultSymbolColor="1" DefaultSymbolOpacity="1" colorModel="Rgb" iccProfileId="attachment:///QGIS3-DPaxtB">
+    <databases/>
+  </ProjectStyleSettings>
+  <ProjectTimeSettings timeStep="1" timeStepUnit="h" totalMovieFrames="100" frameRate="1" cumulativeTemporalRange="0"/>
+  <ElevationProperties FilterInvertSlider="0">
+    <terrainProvider type="flat">
+      <TerrainProvider scale="1" offset="0"/>
+    </terrainProvider>
+  </ElevationProperties>
+  <ProjectDisplaySettings CoordinateAxisOrder="Default" CoordinateType="MapCrs">
+    <BearingFormat id="bearing">
+      <Option type="Map">
+        <Option name="decimal_separator" type="invalid"/>
+        <Option name="decimals" value="6" type="int"/>
+        <Option name="direction_format" value="0" type="int"/>
+        <Option name="rounding_type" value="0" type="int"/>
+        <Option name="show_plus" value="false" type="bool"/>
+        <Option name="show_thousand_separator" value="true" type="bool"/>
+        <Option name="show_trailing_zeros" value="false" type="bool"/>
+        <Option name="thousand_separator" type="invalid"/>
+      </Option>
+    </BearingFormat>
+    <GeographicCoordinateFormat id="geographiccoordinate">
+      <Option type="Map">
+        <Option name="angle_format" value="DecimalDegrees" type="QString"/>
+        <Option name="decimal_separator" type="invalid"/>
+        <Option name="decimals" value="6" type="int"/>
+        <Option name="rounding_type" value="0" type="int"/>
+        <Option name="show_leading_degree_zeros" value="false" type="bool"/>
+        <Option name="show_leading_zeros" value="false" type="bool"/>
+        <Option name="show_plus" value="false" type="bool"/>
+        <Option name="show_suffix" value="false" type="bool"/>
+        <Option name="show_thousand_separator" value="true" type="bool"/>
+        <Option name="show_trailing_zeros" value="false" type="bool"/>
+        <Option name="thousand_separator" type="invalid"/>
+      </Option>
+    </GeographicCoordinateFormat>
+    <CoordinateCustomCrs>
+      <spatialrefsys nativeFormat="Wkt">
+        <wkt>GEOGCRS["WGS 84",ENSEMBLE["World Geodetic System 1984 ensemble",MEMBER["World Geodetic System 1984 (Transit)"],MEMBER["World Geodetic System 1984 (G730)"],MEMBER["World Geodetic System 1984 (G873)"],MEMBER["World Geodetic System 1984 (G1150)"],MEMBER["World Geodetic System 1984 (G1674)"],MEMBER["World Geodetic System 1984 (G1762)"],MEMBER["World Geodetic System 1984 (G2139)"],MEMBER["World Geodetic System 1984 (G2296)"],ELLIPSOID["WGS 84",6378137,298.257223563,LENGTHUNIT["metre",1]],ENSEMBLEACCURACY[2.0]],PRIMEM["Greenwich",0,ANGLEUNIT["degree",0.0174532925199433]],CS[ellipsoidal,2],AXIS["geodetic latitude (Lat)",north,ORDER[1],ANGLEUNIT["degree",0.0174532925199433]],AXIS["geodetic longitude (Lon)",east,ORDER[2],ANGLEUNIT["degree",0.0174532925199433]],USAGE[SCOPE["Horizontal component of 3D system."],AREA["World."],BBOX[-90,-180,90,180]],ID["EPSG",4326]]</wkt>
+        <proj4>+proj=longlat +datum=WGS84 +no_defs</proj4>
+        <srsid>3452</srsid>
+        <srid>4326</srid>
+        <authid>EPSG:4326</authid>
+        <description>WGS 84</description>
+        <projectionacronym>longlat</projectionacronym>
+        <ellipsoidacronym>EPSG:7030</ellipsoidacronym>
+        <geographicflag>true</geographicflag>
+      </spatialrefsys>
+    </CoordinateCustomCrs>
+  </ProjectDisplaySettings>
+  <ProjectGpsSettings destinationLayer="" autoAddTrackVertices="0" autoCommitFeatures="0" destinationFollowsActiveLayer="1">
+    <timeStampFields/>
+  </ProjectGpsSettings>
+</qgis>

@@ -220,7 +220,7 @@ private:
 protected:
 
 public:
-   static CGeomRasterGrid * m_pGrid;
+   static CGeomRasterGrid* m_pGrid;
 
    CGeomCell();
    ~CGeomCell(void);
@@ -270,7 +270,7 @@ public:
 
    void SetCoastAndPolygonID(int const, int const);
 
-   CRWCellLandform * pGetLandform(void);
+   CRWCellLandform* pGetLandform(void);
 
    void SetWaveFlood(void);
    bool bIsElevLessThanWaterLevel(void) const;

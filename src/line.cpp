@@ -72,7 +72,7 @@ double CGeomLine::dGetYAt(int const n)
 //! Returns the point at a given place in the line
 CGeom2DPoint* CGeomLine::pPtGetAt(int const n)
 {
-   return & m_VPoints[n];
+   return &m_VPoints[n];
 }
 
 // //! Sets the X value at a given place in the line

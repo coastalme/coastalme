@@ -71,7 +71,7 @@ void CSimulation::CalcSavitzkyGolayCoeffs(void)
    // Now calculate the Savitzky-Golay filter coefficients
    m_VdSavGolFCRWCoast.resize(m_nCoastSmoothWindow + 1, 0);
 
-   CalcSavitzkyGolay( & (m_VdSavGolFCRWCoast.at(0)), m_nCoastSmoothWindow, nHalfWindow, nHalfWindow, 0, m_nSavGolCoastPoly);
+   CalcSavitzkyGolay(&(m_VdSavGolFCRWCoast.at(0)), m_nCoastSmoothWindow, nHalfWindow, nHalfWindow, 0, m_nSavGolCoastPoly);
 }
 
 //===============================================================================================================================
@@ -90,16 +90,16 @@ CGeomLine CSimulation::LSmoothCoastSavitzkyGolay(CGeomLine* pLineIn, int const n
    // Apply the Savitzky-Golay smoothing filter
    for (int i = 0; i < nSize; i++)
    {
-      // Don't smooth intervention cells
       CGeom2DPoint PtThis(pLineIn->dGetXAt(i), pLineIn->dGetYAt(i));
-      CGeom2DIPoint PtiThis = PtiExtCRSToGridRound( & PtThis);
+      CGeom2DIPoint PtiThis = PtiExtCRSToGridRound(&PtThis);
       int nXThis = PtiThis.nGetX();
       int nYThis = PtiThis.nGetY();
 
       // Safety check
       if (! bIsWithinValidGrid(nXThis, nYThis))
-         continue;
+         KeepWithinValidGrid(nXThis, nYThis);
 
+      // Don't smooth intervention cells
       if (bIsInterventionCell(nXThis, nYThis))
       {
          LTemp[i] = pLineIn->pPtGetAt(i);
@@ -228,7 +228,7 @@ CGeomLine CSimulation::LSmoothCoastRunningMean(CGeomLine* pLineIn) const
    {
       // Don't smooth intervention cells
       CGeom2DPoint PtThis(pLineIn->dGetXAt(i), pLineIn->dGetYAt(i));
-      CGeom2DIPoint PtiThis = PtiExtCRSToGridRound( & PtThis);
+      CGeom2DIPoint PtiThis = PtiExtCRSToGridRound(&PtThis);
       int nXThis = tMin(PtiThis.nGetX(), m_nXGridSize - 1);
       int nYThis = tMin(PtiThis.nGetY(), m_nYGridSize - 1);
 
@@ -438,7 +438,7 @@ void CSimulation::CalcSavitzkyGolay(double dFilterCoeffsArray[], int const nWind
 
    // Solve them using LU decomposition
    int nDCode = 0, nICode = 0;
-   LUDecomp(dMatrix, nSmoothPolyOrder + 1, SAVGOL_POLYNOMIAL_MAX_ORDER + 1, nIndexArray, & nDCode, & nICode);
+   LUDecomp(dMatrix, nSmoothPolyOrder + 1, SAVGOL_POLYNOMIAL_MAX_ORDER + 1, nIndexArray, &nDCode, &nICode);
 
    // Right-hand side vector is unit vector, depending on which derivative we want
    dSolutionArray[nDerivOrder + 1] = 1;

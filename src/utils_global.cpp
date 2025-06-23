@@ -68,7 +68,7 @@ int nRound(double const d)
 //===============================================================================================================================
 //! Checks to see if a string can be read as a valid double number. Does not find trailing (i.e.post-number) rubbish, but then neither does strtod(). From https://stackoverflow.com/questions/392981/how-can-i-convert-string-to-double-in-c
 //===============================================================================================================================
-bool bIsStringValidDouble(string & str)
+bool bIsStringValidDouble(string& str)
 {
    istringstream iStr(str);
    double dDummy;
@@ -82,7 +82,7 @@ bool bIsStringValidDouble(string & str)
 //===============================================================================================================================
 //! Checks to see if a string can be read as a valid integer, from https://stackoverflow.com/questions/2844817/how-do-i-check-if-a-c-string-is-an-int
 //===============================================================================================================================
-bool bIsStringValidInt(string & str)
+bool bIsStringValidInt(string& str)
 {
    // Trim leading whitespace
    size_t nPos = str.find_first_not_of(" \t");
@@ -101,7 +101,7 @@ bool bIsStringValidInt(string & str)
 //===============================================================================================================================
 //! Operator that inserts a given fill character, to a given width, into an output stream. From http://stackoverflow.com/questions/2839592/equivalent-of-02d-with-stdstringstream
 //===============================================================================================================================
-ostream & operator<< (ostream & ostr, const FillToWidth & args)
+ostream& operator<< (ostream& ostr, const FillToWidth &args)
 {
    ostr.fill(args.chFill);
    ostr.width(args.nWidth);
@@ -187,7 +187,7 @@ string strCentre(const char* pchIn, int const nWidth)
 //===============================================================================================================================
 //! Centre-aligns string within a field of given width, pads with blank spaces to enforce alignment. From https://stackoverflow.com/questions/14765155/how-can-i-easily-format-my-data-table-in-c
 //===============================================================================================================================
-string strCentre(const string & strIn, int const nWidth)
+string strCentre(const string& strIn, int const nWidth)
 {
    stringstream ss, spaces;
    int nPadding = nWidth - static_cast<int>(strIn.size());
@@ -206,7 +206,7 @@ string strCentre(const string & strIn, int const nWidth)
 //===============================================================================================================================
 //! Right-aligns string within a field of given width, pads with blank spaces to enforce alignment. From https://stackoverflow.com/questions/14765155/how-can-i-easily-format-my-data-table-in-c
 //===============================================================================================================================
-string strRight(const string & strIn, int const nWidth)
+string strRight(const string& strIn, int const nWidth)
 {
    stringstream ss, spaces;
    int nPadding = nWidth - static_cast<int>(strIn.size()) - 1;
@@ -239,7 +239,7 @@ string strRight(const char* pchIn, int const nWidth)
 //===============================================================================================================================
 //! Left-aligns string within a field of given width, pads with blank spaces to enforce alignment. From https://stackoverflow.com/questions/14765155/how-can-i-easily-format-my-data-table-in-c
 //===============================================================================================================================
-string strLeft(const string & strIn, int const nWidth)
+string strLeft(const string& strIn, int const nWidth)
 {
    stringstream ss, spaces;
    int nPadding = nWidth - static_cast<int>(strIn.size());

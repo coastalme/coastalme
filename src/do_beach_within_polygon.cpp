@@ -281,11 +281,11 @@ int CSimulation::nDoUnconsErosionOnPolygon(int const nCoast, CGeomCoastPolygon* 
          // LogStream << endl;
 
          // Get the distance between the start and end of the parallel profile, in external CRS units. Note that the parallel profile coordinates are in reverse sequence
-         CGeom2DPoint PtStart = PtGridCentroidToExt( & VPtiParProfile.back());
-         CGeom2DPoint PtEnd = PtGridCentroidToExt( & VPtiParProfile[0]);
+         CGeom2DPoint PtStart = PtGridCentroidToExt(&VPtiParProfile.back());
+         CGeom2DPoint PtEnd = PtGridCentroidToExt(&VPtiParProfile[0]);
 
          // Calculate the length of the parallel profile
-         double dParProfileLen = dGetDistanceBetween( & PtStart, & PtEnd);
+         double dParProfileLen = dGetDistanceBetween(&PtStart, &PtEnd);
 
          // Calculate the elevation difference between the start and end of the parallel profile
          double dElevDiff = dParProfCoastElev - dParProfEndElev;
@@ -310,7 +310,7 @@ int CSimulation::nDoUnconsErosionOnPolygon(int const nCoast, CGeomCoastPolygon* 
          double dInc = dParProfileLen / (nParProfLen - 1);
 
          // For the parallel profile, calculate the Dean equilibrium profile of the unconsolidated sediment h(y) = A * y^(2/3) where h(y) is the distance below the highest point in the profile at a distance y from the landward start of the profile
-         CalcDeanProfile( & VdParProfileDeanElev, dInc, dParProfCoastElev, dParProfA, false, 0, 0);
+         CalcDeanProfile(&VdParProfileDeanElev, dInc, dParProfCoastElev, dParProfA, false, 0, 0);
 
          vector<double> dVParProfileNow(nParProfLen, 0);
          vector<bool> bVProfileValid(nParProfLen, true);
@@ -338,7 +338,7 @@ int CSimulation::nDoUnconsErosionOnPolygon(int const nCoast, CGeomCoastPolygon* 
          }
 
          // Get the total difference in elevation (present profile - Dean profile)
-         double dParProfTotDiff = dSubtractProfiles( & dVParProfileNow, & VdParProfileDeanElev, & bVProfileValid);
+         double dParProfTotDiff = dSubtractProfiles(&dVParProfileNow, &VdParProfileDeanElev, &bVProfileValid);
 
          // // DEBUG CODE -----------------------------------------------------
          // LogStream << m_ulIter<< ": eroding polygon " << nPoly << " at coast point " << nCoastPoint << ", parallel profile with nInlandOffset = " << nInlandOffset << ", from [" << VPtiParProfile.back().nGetX() << "][" << VPtiParProfile.back().nGetY() << "] = {" << dGridCentroidXToExtCRSX(VPtiParProfile.back().nGetX()) << ", " <<  dGridCentroidYToExtCRSY(VPtiParProfile.back().nGetY()) << "} to [" << VPtiParProfile[0].nGetX() << "][" << VPtiParProfile[0].nGetY() << "] = {" << dGridCentroidXToExtCRSX(VPtiParProfile[0].nGetX()) << ", " <<  dGridCentroidYToExtCRSY(VPtiParProfile[0].nGetY()) << "}, nParProfLen = " << nParProfLen << " dParProfileLen = " << dParProfileLen << " dParProfCoastElev = " << dParProfCoastElev << " dParProfEndElev = " << dParProfEndElev << " dParProfA = " << dParProfA << endl;
@@ -439,7 +439,7 @@ int CSimulation::nDoUnconsErosionOnPolygon(int const nCoast, CGeomCoastPolygon* 
       }
 
       // This value of nInlandOffset gives us some (tho' maybe not enough) erosion. So do the erosion of this sediment size class, by working along the parallel profile from the landward end (which is inland from the existing coast, if nInlandOffset > 0). Note that dStillToErodeOnProfile and dStillToErodeOnPolygon are changed within nDoParallelProfileUnconsErosion()
-      int nRet = nDoParallelProfileUnconsErosion(pPolygon, nCoastPoint, nCoastX, nCoastY, nTexture, nInlandOffset, nParProfLen, & VPtiParProfile, & VdParProfileDeanElev, dStillToErodeOnProfile, dStillToErodeOnPolygon, dEroded);
+      int nRet = nDoParallelProfileUnconsErosion(pPolygon, nCoastPoint, nCoastX, nCoastY, nTexture, nInlandOffset, nParProfLen, &VPtiParProfile, &VdParProfileDeanElev, dStillToErodeOnProfile, dStillToErodeOnPolygon, dEroded);
 
       if (nRet != RTN_OK)
          return nRet;
@@ -665,7 +665,7 @@ int CSimulation::nDoParallelProfileUnconsErosion(CGeomCoastPolygon* pPolygon, in
                   m_pRasterGrid->m_Cell[nX][nY].IncrBeachDeposition(dTotToDeposit);
 
                   // And set the landform category
-                  CRWCellLandform * pLandform = m_pRasterGrid->m_Cell[nX][nY].pGetLandform();
+                  CRWCellLandform* pLandform = m_pRasterGrid->m_Cell[nX][nY].pGetLandform();
                   int nCat = pLandform->nGetLFCategory();
 
                   if ((nCat != LF_CAT_SEDIMENT_INPUT) && (nCat != LF_CAT_SEDIMENT_INPUT_SUBMERGED) && (nCat != LF_CAT_SEDIMENT_INPUT_NOT_SUBMERGED))
@@ -949,7 +949,7 @@ int CSimulation::nDoUnconsDepositionOnPolygon(int const nCoast, CGeomCoastPolygo
          double dParProfStartElev = m_dThisIterMeanSWL + m_dDeanProfileStartAboveSWL;
 
          // Calculate the total length of the parallel profile, including any seaward offset
-         double dParProfLen = dGetDistanceBetween( & PtiVParProfile.front(), & PtiVParProfile.back());
+         double dParProfLen = dGetDistanceBetween(&PtiVParProfile.front(), &PtiVParProfile.back());
 
          // Now calculate the length of the Dean profile-only part i.e. without any seaward offset. The approach used here is approximate but probably OK
          double dParProfDeanLen = dParProfLen - (nSeawardOffset * m_dCellSide);
@@ -974,7 +974,7 @@ int CSimulation::nDoUnconsDepositionOnPolygon(int const nCoast, CGeomCoastPolygo
          double dCoastElev = m_pRasterGrid->m_Cell[nCoastX][nCoastY].dGetSedimentTopElev();
 
          // For this depositing parallel profile, calculate the Dean equilibrium profile of the unconsolidated sediment h(y) = A * y^(2/3) where h(y) is the distance below the highest point in the profile at a distance y from the landward start of the profile
-         CalcDeanProfile( & VdParProfileDeanElev, dInc, dParProfStartElev, dParProfA, true, nSeawardOffset, dCoastElev);
+         CalcDeanProfile(&VdParProfileDeanElev, dInc, dParProfStartElev, dParProfA, true, nSeawardOffset, dCoastElev);
 
          double dParProfTotDiff = 0;
 
@@ -1119,7 +1119,7 @@ int CSimulation::nDoUnconsDepositionOnPolygon(int const nCoast, CGeomCoastPolygo
 
             // Subtract the two elevations
             double dElevDiff = VdParProfileDeanElev[nSeawardFromCoast] - dThisElevNow;
-            CRWCellLandform * pLandform = m_pRasterGrid->m_Cell[nX][nY].pGetLandform();
+            CRWCellLandform* pLandform = m_pRasterGrid->m_Cell[nX][nY].pGetLandform();
 
             if (dElevDiff > SEDIMENT_ELEV_TOLERANCE)
             {
@@ -1450,7 +1450,7 @@ int CSimulation::nDoUnconsDepositionOnPolygon(int const nCoast, CGeomCoastPolygo
             double dParProfStartElev = m_dThisIterMeanSWL + m_dDeanProfileStartAboveSWL;
 
             // Calculate the total length of the parallel profile, including any seaward offset
-            double dParProfLen = dGetDistanceBetween( & PtiVParProfile.front(), & PtiVParProfile.back());
+            double dParProfLen = dGetDistanceBetween(&PtiVParProfile.front(), &PtiVParProfile.back());
 
             // Now calculate the length of the Dean profile-only part i.e. without any seaward offset. The approach used here is approximate but probably OK
             double dParProfDeanLen = dParProfLen - (nSeawardOffset * m_dCellSide);
@@ -1471,7 +1471,7 @@ int CSimulation::nDoUnconsDepositionOnPolygon(int const nCoast, CGeomCoastPolygo
             double dCoastElev = m_pRasterGrid->m_Cell[nCoastX][nCoastY].dGetSedimentTopElev();
 
             // For this depositing parallel profile, calculate the Dean equilibrium profile of the unconsolidated sediment h(y) = A * y^(2/3) where h(y) is the distance below the highest point in the profile at a distance y from the landward start of the profile
-            CalcDeanProfile( & VdParProfileDeanElev, dInc, dParProfStartElev, dParProfA, true, nSeawardOffset, dCoastElev);
+            CalcDeanProfile(&VdParProfileDeanElev, dInc, dParProfStartElev, dParProfA, true, nSeawardOffset, dCoastElev);
 
             double dParProfTotDiff = 0;
 
@@ -1616,7 +1616,7 @@ int CSimulation::nDoUnconsDepositionOnPolygon(int const nCoast, CGeomCoastPolygo
 
                // Subtract the two elevations
                double dElevDiff = VdParProfileDeanElev[nSeawardFromCoast] - dThisElevNow;
-               CRWCellLandform * pLandform = m_pRasterGrid->m_Cell[nX][nY].pGetLandform();
+               CRWCellLandform* pLandform = m_pRasterGrid->m_Cell[nX][nY].pGetLandform();
 
                if (dElevDiff > SEDIMENT_ELEV_TOLERANCE)
                {

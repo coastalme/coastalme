@@ -818,7 +818,7 @@ double const INTERVENTION_PROFILE_SPACING_FACTOR = 0.5;     // Profile spacing o
 
 double const DBL_NODATA = -9999;
 
-string const PROGRAM_NAME = "Coastal Modelling Environment (CoastalME) version 1.3.22 (19 Jun 2025)";
+string const PROGRAM_NAME = "Coastal Modelling Environment (CoastalME) version 1.3.23 (23 Jun 2025)";
 string const PROGRAM_NAME_SHORT = "CME";
 string const CME_INI = "cme.ini";
 
@@ -1257,7 +1257,7 @@ template <class T> bool bIsBetween(T a, T b, T c)
    return ((a >= b) && (a <= c));
 }
 
-template <typename T> string strDblToStr(const T & t)
+template <typename T> string strDblToStr(const T &t)
 {
    // From http://stackoverflow.com/questions/2125880/convert-float-to-stdstring-in-c
    ostringstream os;
@@ -1292,8 +1292,8 @@ template <class T> bool bFPIsEqual(const T d1, const T d2, const T dEpsilon)
 double dRound(double const);
 int nRound(double const);
 // bool bIsWhole(double const);
-bool bIsStringValidDouble(string & );
-bool bIsStringValidInt(string & );
+bool bIsStringValidDouble(string&);
+bool bIsStringValidInt(string&);
 
 struct FillToWidth
 {
@@ -1302,14 +1302,14 @@ struct FillToWidth
    int nWidth;
 };
 
-ostream & operator<<(ostream &, const FillToWidth & );
+ostream& operator<<(ostream&, const FillToWidth& );
 
 string strDbl(double const, int const);
 string strDblRight(double const, int const, int const, bool const = true);
 string strIntRight(int const, int const);
 string strCentre(const char*, int const);
-string strCentre(const string &, int const);
-string strRight(const string &, int const);
+string strCentre(const string&, int const);
+string strRight(const string&, int const);
 string strRight(const char*, int const);
 string strLeft(const string &, int const);
 string strLeft(const char*, int const);

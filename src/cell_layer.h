@@ -47,8 +47,8 @@ protected:
 public:
    CRWCellLayer(void);
 
-   CRWCellSediment * pGetUnconsolidatedSediment(void);
-   CRWCellSediment * pGetConsolidatedSediment(void);
+   CRWCellSediment* pGetUnconsolidatedSediment(void);
+   CRWCellSediment* pGetConsolidatedSediment(void);
 
    double dGetFineUnconsolidatedThickness(void) const;
    double dGetFineConsolidatedThickness(void) const;

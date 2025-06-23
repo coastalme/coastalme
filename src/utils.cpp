@@ -97,11 +97,11 @@ int CSimulation::nHandleCommandLineParams(int nArg, char const* pcArgv[])
    for (int i = 1; i < nArg; i++)
    {
       string strArg = pcArgv[i];
-      strArg = strTrim( & strArg);
+      strArg = strTrim(&strArg);
 
 #ifdef _WIN32
       // Swap any forward slashes to backslashes
-      strArg = pstrChangeToBackslash( & strArg);
+      strArg = pstrChangeToBackslash(&strArg);
 #endif
 
       if (strArg.find("--gdal") != string::npos)
@@ -268,7 +268,7 @@ void CSimulation::AnnounceLicence(void)
    cout << LINE << endl
         << endl;
 
-   cout << START_NOTICE << strGetComputerName() << " at " << put_time(localtime( & m_tSysStartTime), "%T on %A %d %B %Y") << endl;
+   cout << START_NOTICE << strGetComputerName() << " at " << put_time(localtime(&m_tSysStartTime), "%T on %A %d %B %Y") << endl;
    cout << INITIALIZING_NOTICE << endl;
 }
 
@@ -398,7 +398,7 @@ void CSimulation::AnnounceReadBasementDEM(void) const
 {
    // Tell the user what is happening
 #ifdef _WIN32
-   cout << READING_BASEMENT << pstrChangeToForwardSlash( & m_strInitialBasementDEMFile) << endl;
+   cout << READING_BASEMENT << pstrChangeToForwardSlash(&m_strInitialBasementDEMFile) << endl;
 #else
    cout << READING_BASEMENT << m_strInitialBasementDEMFile << endl;
 #endif
@@ -445,7 +445,7 @@ void CSimulation::AnnounceReadLGIS(void) const
    // Tell the user what is happening
    if (! m_strInitialLandformFile.empty())
 #ifdef _WIN32
-      cout << READING_LANDFORM_FILE << pstrChangeToForwardSlash( & m_strInitialLandformFile) << endl;
+      cout << READING_LANDFORM_FILE << pstrChangeToForwardSlash(&m_strInitialLandformFile) << endl;
 
 #else
       cout << READING_LANDFORM_FILE << m_strInitialLandformFile << endl;
@@ -460,7 +460,7 @@ void CSimulation::AnnounceReadICGIS(void) const
    // Tell the user what is happening
    if (! m_strInterventionClassFile.empty())
 #ifdef _WIN32
-      cout << READING_INTERVENTION_CLASS_FILE << pstrChangeToForwardSlash( & m_strInterventionClassFile) << endl;
+      cout << READING_INTERVENTION_CLASS_FILE << pstrChangeToForwardSlash(&m_strInterventionClassFile) << endl;
 
 #else
       cout << READING_INTERVENTION_CLASS_FILE << m_strInterventionClassFile << endl;
@@ -475,7 +475,7 @@ void CSimulation::AnnounceReadIHGIS(void) const
    // Tell the user what is happening
    if (! m_strInterventionHeightFile.empty())
 #ifdef _WIN32
-      cout << READING_INTERVENTION_HEIGHT_FILE << pstrChangeToForwardSlash( & m_strInterventionHeightFile) << endl;
+      cout << READING_INTERVENTION_HEIGHT_FILE << pstrChangeToForwardSlash(&m_strInterventionHeightFile) << endl;
 
 #else
       cout << READING_INTERVENTION_HEIGHT_FILE << m_strInterventionHeightFile << endl;
@@ -490,7 +490,7 @@ void CSimulation::AnnounceReadDeepWaterWaveValuesGIS(void) const
    // Tell the user what is happening
    if (! m_strDeepWaterWavesInputFile.empty())
 #ifdef _WIN32
-      cout << READING_DEEP_WATER_WAVE_FILE << pstrChangeToForwardSlash( & m_strDeepWaterWavesInputFile) << endl;
+      cout << READING_DEEP_WATER_WAVE_FILE << pstrChangeToForwardSlash(&m_strDeepWaterWavesInputFile) << endl;
 
 #else
       cout << READING_DEEP_WATER_WAVE_FILE << m_strDeepWaterWavesInputFile << endl;
@@ -505,7 +505,7 @@ void CSimulation::AnnounceReadSedimentEventInputValuesGIS(void) const
    // Tell the user what is happening
    if (! m_strSedimentInputEventFile.empty())
 #ifdef _WIN32
-      cout << READING_SED_INPUT_EVENT_FILE << pstrChangeToForwardSlash( & m_strSedimentInputEventFile) << endl;
+      cout << READING_SED_INPUT_EVENT_FILE << pstrChangeToForwardSlash(&m_strSedimentInputEventFile) << endl;
 
 #else
       cout << READING_SED_INPUT_EVENT_FILE << m_strSedimentInputEventFile << endl;
@@ -520,7 +520,7 @@ void CSimulation::AnnounceReadFloodLocationGIS(void) const
    // Tell the user what is happening
    if (! m_strFloodLocationShapefile.empty())
 #ifdef _WIN32
-      cout << READING_FLOOD_LOCATION << pstrChangeToForwardSlash( & m_strFloodLocationShapefile) << endl;
+      cout << READING_FLOOD_LOCATION << pstrChangeToForwardSlash(&m_strFloodLocationShapefile) << endl;
 
 #else
       cout << READING_FLOOD_LOCATION << m_strFloodLocationShapefile << endl;
@@ -534,7 +534,7 @@ void CSimulation::AnnounceReadInitialSuspSedGIS(void) const
 {
    // Tell the user what is happening
 #ifdef _WIN32
-   cout << READING_SUSPENDED_SEDIMENT_FILE << pstrChangeToForwardSlash( & m_strInitialSuspSedimentFile) << endl;
+   cout << READING_SUSPENDED_SEDIMENT_FILE << pstrChangeToForwardSlash(&m_strInitialSuspSedimentFile) << endl;
 #else
    cout << READING_SUSPENDED_SEDIMENT_FILE << m_strInitialSuspSedimentFile << endl;
 #endif
@@ -547,7 +547,7 @@ void CSimulation::AnnounceReadInitialFineUnconsSedGIS(int const nLayer) const
 {
    // Tell the user what is happening
 #ifdef _WIN32
-   cout << READING_UNCONS_FINE_SEDIMENT_FILE << nLayer + 1 << "): " << pstrChangeToForwardSlash( & m_VstrInitialFineUnconsSedimentFile[nLayer]) << endl;
+   cout << READING_UNCONS_FINE_SEDIMENT_FILE << nLayer + 1 << "): " << pstrChangeToForwardSlash(&m_VstrInitialFineUnconsSedimentFile[nLayer]) << endl;
 #else
    cout << READING_UNCONS_FINE_SEDIMENT_FILE << nLayer + 1 << "): " << m_VstrInitialFineUnconsSedimentFile[nLayer] << endl;
 #endif
@@ -560,7 +560,7 @@ void CSimulation::AnnounceReadInitialSandUnconsSedGIS(int const nLayer) const
 {
    // Tell the user what is happening
 #ifdef _WIN32
-   cout << READING_UNCONS_SAND_SEDIMENT_FILE << nLayer + 1 << "): " << pstrChangeToForwardSlash( & m_VstrInitialSandUnconsSedimentFile[nLayer]) << endl;
+   cout << READING_UNCONS_SAND_SEDIMENT_FILE << nLayer + 1 << "): " << pstrChangeToForwardSlash(&m_VstrInitialSandUnconsSedimentFile[nLayer]) << endl;
 #else
    cout << READING_UNCONS_SAND_SEDIMENT_FILE << nLayer + 1 << "): " << m_VstrInitialSandUnconsSedimentFile[nLayer] << endl;
 #endif
@@ -573,7 +573,7 @@ void CSimulation::AnnounceReadInitialCoarseUnconsSedGIS(int const nLayer) const
 {
    // Tell the user what is happening
 #ifdef _WIN32
-   cout << READING_UNCONS_COARSE_SEDIMENT_FILE << nLayer + 1 << "): " << pstrChangeToForwardSlash( & m_VstrInitialCoarseUnconsSedimentFile[nLayer]) << endl;
+   cout << READING_UNCONS_COARSE_SEDIMENT_FILE << nLayer + 1 << "): " << pstrChangeToForwardSlash(&m_VstrInitialCoarseUnconsSedimentFile[nLayer]) << endl;
 #else
    cout << READING_UNCONS_COARSE_SEDIMENT_FILE << nLayer + 1 << "): " << m_VstrInitialCoarseUnconsSedimentFile[nLayer] << endl;
 #endif
@@ -586,7 +586,7 @@ void CSimulation::AnnounceReadInitialFineConsSedGIS(int const nLayer) const
 {
    // Tell the user what is happening
 #ifdef _WIN32
-   cout << READING_CONS_FINE_SEDIMENT_FILE << nLayer + 1 << "): " << pstrChangeToForwardSlash( & m_VstrInitialFineConsSedimentFile[nLayer]) << endl;
+   cout << READING_CONS_FINE_SEDIMENT_FILE << nLayer + 1 << "): " << pstrChangeToForwardSlash(&m_VstrInitialFineConsSedimentFile[nLayer]) << endl;
 #else
    cout << READING_CONS_FINE_SEDIMENT_FILE << nLayer + 1 << "): " << m_VstrInitialFineConsSedimentFile[nLayer] << endl;
 #endif
@@ -599,7 +599,7 @@ void CSimulation::AnnounceReadInitialSandConsSedGIS(int const nLayer) const
 {
    // Tell the user what is happening
 #ifdef _WIN32
-   cout << READING_CONS_SAND_SEDIMENT_FILE << nLayer + 1 << "): " << pstrChangeToForwardSlash( & m_VstrInitialSandConsSedimentFile[nLayer]) << endl;
+   cout << READING_CONS_SAND_SEDIMENT_FILE << nLayer + 1 << "): " << pstrChangeToForwardSlash(&m_VstrInitialSandConsSedimentFile[nLayer]) << endl;
 #else
    cout << READING_CONS_SAND_SEDIMENT_FILE << nLayer + 1 << "): " << m_VstrInitialSandConsSedimentFile[nLayer] << endl;
 #endif
@@ -612,7 +612,7 @@ void CSimulation::AnnounceReadInitialCoarseConsSedGIS(int const nLayer) const
 {
    // Tell the user what is happening
 #ifdef _WIN32
-   cout << READING_CONS_COARSE_SEDIMENT_FILE << nLayer + 1 << "): " << pstrChangeToForwardSlash( & m_VstrInitialCoarseConsSedimentFile[nLayer]) << endl;
+   cout << READING_CONS_COARSE_SEDIMENT_FILE << nLayer + 1 << "): " << pstrChangeToForwardSlash(&m_VstrInitialCoarseConsSedimentFile[nLayer]) << endl;
 #else
    cout << READING_CONS_COARSE_SEDIMENT_FILE << nLayer + 1 << "): " << m_VstrInitialCoarseConsSedimentFile[nLayer] << endl;
 #endif
@@ -624,7 +624,7 @@ void CSimulation::AnnounceReadInitialCoarseConsSedGIS(int const nLayer) const
 void CSimulation::AnnounceReadTideData(void) const
 {
 #ifdef _WIN32
-   cout << READING_TIDE_DATA_FILE << pstrChangeToForwardSlash( & m_strTideDataFile) << endl;
+   cout << READING_TIDE_DATA_FILE << pstrChangeToForwardSlash(&m_strTideDataFile) << endl;
 #else
    cout << READING_TIDE_DATA_FILE << m_strTideDataFile << endl;
 #endif
@@ -1697,15 +1697,15 @@ void CSimulation::CalcProcessStats(void)
    OSVERSIONINFOEX osvi;
    BOOL bOsVersionInfoEx;
 
-   ZeroMemory( & osvi, sizeof(OSVERSIONINFOEX)); // fill this much memory with zeros
+   ZeroMemory(&osvi, sizeof(OSVERSIONINFOEX)); // fill this much memory with zeros
    osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFOEX);
 
-   if (! (bOsVersionInfoEx = GetVersionEx((OSVERSIONINFO * ) & osvi)))
+   if (! (bOsVersionInfoEx = GetVersionEx((OSVERSIONINFO *) &osvi)))
    {
       // OSVERSIONINFOEX didn't work so try OSVERSIONINFO instead
       osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
 
-      if (! GetVersionEx((OSVERSIONINFO * ) & osvi))
+      if (! GetVersionEx((OSVERSIONINFO *) &osvi))
       {
          // That didn't work either, too risky to proceed so give up
          OutStream << NA << endl;
@@ -1751,10 +1751,10 @@ void CSimulation::CalcProcessStats(void)
 
          // Display version, service pack (if any), and build number
          if (osvi.dwMajorVersion <= 4)
-            OutStream << "version " << osvi.dwMajorVersion << "." << osvi.dwMinorVersion << " " << osvi.szCSDVersion << " (Build " << (osvi.dwBuildNumber & 0xFFFF) << ")" << endl;
+            OutStream << "version " << osvi.dwMajorVersion << "." << osvi.dwMinorVersion << " " << osvi.szCSDVersion << " (Build " << (osvi.dwBuildNumber& 0xFFFF) << ")" << endl;
 
          else
-            OutStream << osvi.szCSDVersion << " (Build " << (osvi.dwBuildNumber & 0xFFFF) << ")" << endl;
+            OutStream << osvi.szCSDVersion << " (Build " << (osvi.dwBuildNumber& 0xFFFF) << ")" << endl;
 
          break;
 
@@ -1797,7 +1797,7 @@ void CSimulation::CalcProcessStats(void)
    {
       FILETIME ftCreate, ftExit, ftKernel, ftUser;
 
-      if (GetProcessTimes(GetCurrentProcess(), & ftCreate, & ftExit, & ftKernel, & ftUser))
+      if (GetProcessTimes(GetCurrentProcess(), &ftCreate, &ftExit, &ftKernel, &ftUser))
       {
          ULARGE_INTEGER ul;
          ul.LowPart = ftUser.dwLowDateTime;
@@ -1830,7 +1830,7 @@ void CSimulation::CalcProcessStats(void)
          PROCESS_MEMORY_COUNTERS pmc;
 
          // Now call the function
-         if ((ProcAdd)(GetCurrentProcess(), & pmc, sizeof(pmc)))
+         if ((ProcAdd)(GetCurrentProcess(), &pmc, sizeof(pmc)))
          {
             OutStream << "Peak working set size                        \t: " << pmc.PeakWorkingSetSize / (1024.0 * 1024.0) << " Mb" << endl;
             OutStream << "Current working set size                     \t: " << pmc.WorkingSetSize / (1024.0 * 1024.0) << " Mb" << endl;
@@ -1851,7 +1851,7 @@ void CSimulation::CalcProcessStats(void)
 #elif defined __GNUG__
    rusage ru;
 
-   if (getrusage(RUSAGE_SELF, & ru) >= 0)
+   if (getrusage(RUSAGE_SELF, &ru) >= 0)
    {
       OutStream << "Time spent executing user code               \t: " << strDispTime(static_cast<double>(ru.ru_utime.tv_sec), false, true) << endl;
       // OutStream << "ru_utime.tv_usec                             \t: " << ru.ru_utime.tv_usec << endl;
@@ -1895,7 +1895,7 @@ void CSimulation::CalcProcessStats(void)
 #endif
 
    time_t tRunTime = m_tSysEndTime - m_tSysStartTime;
-   struct tm * ptmRunTime = gmtime( & tRunTime);
+   struct tm * ptmRunTime = gmtime(&tRunTime);
 
    OutStream << "Time required for simulation                 \t: " << put_time(ptmRunTime, "%T") << endl;
    LogStream << "Time required for simulation                 \t: " << put_time(ptmRunTime, "%T") << endl;
@@ -2197,7 +2197,7 @@ void CSimulation::DoSimulationEnd(int const nRtn)
    {
       case (RTN_OK):
          // normal ending
-         cout << RUN_END_NOTICE << put_time(localtime( & m_tSysEndTime), "%T %A %d %B %Y") << endl;
+         cout << RUN_END_NOTICE << put_time(localtime(&m_tSysEndTime), "%T %A %d %B %Y") << endl;
          break;
 
       case (RTN_HELP_ONLY):
@@ -2206,7 +2206,7 @@ void CSimulation::DoSimulationEnd(int const nRtn)
 
       default:
          // Aborting because of some error
-         cerr << RUN_END_NOTICE << "iteration " << m_ulIter << ERROR_NOTICE << nRtn << " (" << strGetErrorText(nRtn) << ") on " << put_time(localtime( & m_tSysEndTime), "%T %A %d %B %Y") << endl;
+         cerr << RUN_END_NOTICE << "iteration " << m_ulIter << ERROR_NOTICE << nRtn << " (" << strGetErrorText(nRtn) << ") on " << put_time(localtime(&m_tSysEndTime), "%T %A %d %B %Y") << endl;
 
          if (m_ulIter > 1)
          {
@@ -2220,13 +2220,13 @@ void CSimulation::DoSimulationEnd(int const nRtn)
          // Write the error message to the logfile and to stdout
          if (LogStream && LogStream.is_open())
          {
-            LogStream << ERR << strGetErrorText(nRtn) << " (error code " << nRtn << ") on " << put_time(localtime( & m_tSysEndTime), "%T %A %d %B %Y") << endl;
+            LogStream << ERR << strGetErrorText(nRtn) << " (error code " << nRtn << ") on " << put_time(localtime(&m_tSysEndTime), "%T %A %d %B %Y") << endl;
             LogStream.flush();
          }
 
          if (OutStream && OutStream.is_open())
          {
-            OutStream << ERR << strGetErrorText(nRtn) << " (error code " << nRtn << ") on " << put_time(localtime( & m_tSysEndTime), "%T %A %d %B %Y") << endl;
+            OutStream << ERR << strGetErrorText(nRtn) << " (error code " << nRtn << ") on " << put_time(localtime(&m_tSysEndTime), "%T %A %d %B %Y") << endl;
             OutStream.flush();
          }
    }
@@ -2251,7 +2251,7 @@ void CSimulation::DoSimulationEnd(int const nRtn)
          string strCmd("echo \"");
 
          stringstream ststrTmp;
-         ststrTmp << put_time(localtime( & m_tSysEndTime), "%T on %A %d %B %Y") << endl;
+         ststrTmp << put_time(localtime(&m_tSysEndTime), "%T on %A %d %B %Y") << endl;
 
          // Send an email using Linux/Unix mail command
          if (RTN_OK == nRtn)
@@ -2446,7 +2446,7 @@ vector<string> *CSimulation::VstrSplit(string const* s, char const delim, vector
 vector<string> CSimulation::VstrSplit(string const* s, char const delim)
 {
    vector<string> elems;
-   VstrSplit(s, delim, & elems);
+   VstrSplit(s, delim, &elems);
    return elems;
 }
 
@@ -2781,12 +2781,12 @@ unsigned long CSimulation::ulConvertToTimestep(string const* pstrIn) const
 
    // Convert to lower case, remove leading and trailing whitespace
    string strDate = strToLower(pstrIn);
-   strDate = strTrim( & strDate);
+   strDate = strTrim(&strDate);
 
    if (strDate.find("hour") != string::npos)
    {
       // OK, this is a number of hours (a relative time, from the start of simulation)
-      vector<string> VstrTmp = VstrSplit( & strDate, SPACE);
+      vector<string> VstrTmp = VstrSplit(&strDate, SPACE);
 
       if ((VstrTmp.size() < 2) || (! bIsStringValidInt(VstrTmp[0])))
       {
@@ -2794,7 +2794,7 @@ unsigned long CSimulation::ulConvertToTimestep(string const* pstrIn) const
          return SEDIMENT_INPUT_EVENT_ERROR;
       }
 
-      double dHours = stod(strTrim( & VstrTmp[0]));
+      double dHours = stod(strTrim(&VstrTmp[0]));
 
       if (dHours > m_dSimDuration)
       {
@@ -2808,7 +2808,7 @@ unsigned long CSimulation::ulConvertToTimestep(string const* pstrIn) const
    else if (strDate.find("day") != string::npos)
    {
       // OK, this is a number of days (a relative time, from the start of simulation)
-      vector<string> VstrTmp = VstrSplit( & strDate, SPACE);
+      vector<string> VstrTmp = VstrSplit(&strDate, SPACE);
 
       if ((VstrTmp.size() < 2) || (! bIsStringValidInt(VstrTmp[0])))
       {
@@ -2816,7 +2816,7 @@ unsigned long CSimulation::ulConvertToTimestep(string const* pstrIn) const
          return SEDIMENT_INPUT_EVENT_ERROR;
       }
 
-      double dHours = stod(strTrim( & VstrTmp[0])) * 24;
+      double dHours = stod(strTrim(&VstrTmp[0])) * 24;
 
       if (dHours > m_dSimDuration)
       {
@@ -2830,7 +2830,7 @@ unsigned long CSimulation::ulConvertToTimestep(string const* pstrIn) const
    else
    {
       // This is an absolute time/date in the format hh-mm-ss dd/mm/yyyy
-      vector<string> VstrTmp = VstrSplit( & strDate, SPACE);
+      vector<string> VstrTmp = VstrSplit(&strDate, SPACE);
 
       if (VstrTmp.size() < 2)
       {
@@ -2843,7 +2843,7 @@ unsigned long CSimulation::ulConvertToTimestep(string const* pstrIn) const
       int nSec = 0;
 
       // OK, first sort out the time
-      if (! bParseTime( & VstrTmp[0], nHour, nMin, nSec))
+      if (! bParseTime(&VstrTmp[0], nHour, nMin, nSec))
       {
          cerr << "Error in time '" + VstrTmp[0] + "' of sediment input event" << endl;
          return SEDIMENT_INPUT_EVENT_ERROR;
@@ -2854,7 +2854,7 @@ unsigned long CSimulation::ulConvertToTimestep(string const* pstrIn) const
       int nYear = 0;
 
       // Now sort out the time
-      if (! bParseDate( & VstrTmp[1], nDay, nMonth, nYear))
+      if (! bParseDate(&VstrTmp[1], nDay, nMonth, nYear))
       {
          cerr << "Error in date '" + VstrTmp[1] + "' of sediment input event" << endl;
          return SEDIMENT_INPUT_EVENT_ERROR;
@@ -2877,8 +2877,8 @@ unsigned long CSimulation::ulConvertToTimestep(string const* pstrIn) const
       tmSimEvent.tm_mon = nMonth - 1;
       tmSimEvent.tm_year = nYear - 1900;
 
-      time_t tStart = mktime( & tmSimStart);
-      time_t tEvent = mktime( & tmSimEvent);
+      time_t tStart = mktime(&tmSimStart);
+      time_t tEvent = mktime(&tmSimEvent);
 
       if (tStart == (time_t)(-1))
       {

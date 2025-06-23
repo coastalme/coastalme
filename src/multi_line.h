@@ -44,7 +44,7 @@ public:
    ~CGeomMultiLine(void) override;
 
    void AppendLineSegment(void);
-   void AppendLineSegment(vector<pair<int, int> > *);
+   void AppendLineSegment(vector<pair<int, int>>*);
 // void AppendLineSegmentAndInherit(void);
    int nGetNumLineSegments(void) const;
    void TruncateLineSegments(int const);
@@ -60,7 +60,7 @@ public:
    bool bFindProfileInCoincidentProfilesOfLastLineSegment(int const);
 // bool bFindProfileInCoincidentProfilesOfLineSegment(int const, int const);
    bool bFindProfileInCoincidentProfiles(int const);
-   void GetMostCoastwardSharedLineSegment(int const, int &, int &);
+   void GetMostCoastwardSharedLineSegment(int const, int&, int&);
 
    int nGetProf(int const, int const) const;
    int nGetProfsLineSeg(int const, int const) const;

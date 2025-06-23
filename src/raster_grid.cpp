@@ -79,7 +79,7 @@ int CGeomRasterGrid::nCreateGrid(void)
          m_Cell[nX] = new CGeomCell[nYMax];
    }
 
-   catch (bad_alloc & )
+   catch (bad_alloc&)
    {
       // Uh-oh, not enough memory
       return RTN_ERR_MEMALLOC;

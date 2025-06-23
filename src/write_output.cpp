@@ -73,51 +73,51 @@ void CSimulation::WriteStartRunDetails(void)
    // ----------------------------------------------- Run Information ----------------------------------------------------------
    OutStream << "RUN DETAILS" << endl;
    OutStream << " Name                                                      \t: " << m_strRunName << endl;
-   OutStream << " Run started                                               \t: " << put_time(localtime( & m_tSysStartTime), "%T %A %d %B %Y") << endl;
+   OutStream << " Run started                                               \t: " << put_time(localtime(&m_tSysStartTime), "%T %A %d %B %Y") << endl;
 
    // Same info. for Log file
-   LogStream << m_strRunName << " run started at " << put_time(localtime( & m_tSysStartTime), "%T on %A %d %B %Y") << endl
+   LogStream << m_strRunName << " run started at " << put_time(localtime(&m_tSysStartTime), "%T on %A %d %B %Y") << endl
              << endl;
 
    // Contine with Out file
    OutStream << " Initialization file                                       \t: "
 #ifdef _WIN32
-             << pstrChangeToForwardSlash( & m_strCMEIni) << endl;
+             << pstrChangeToForwardSlash(&m_strCMEIni) << endl;
 #else
              << m_strCMEIni << endl;
 #endif
 
    OutStream << " Input data read from                                      \t: "
 #ifdef _WIN32
-             << pstrChangeToForwardSlash( & m_strDataPathName) << endl;
+             << pstrChangeToForwardSlash(&m_strDataPathName) << endl;
 #else
              << m_strDataPathName << endl;
 #endif
 
    OutStream << " Main output file (this file)                              \t: "
 #ifdef _WIN32
-             << pstrChangeToForwardSlash( & m_strOutFile) << endl;
+             << pstrChangeToForwardSlash(&m_strOutFile) << endl;
 #else
              << m_strOutFile << endl;
 #endif
 
    LogStream << "Main output file                                          \t: "
 #ifdef _WIN32
-             << pstrChangeToForwardSlash( & m_strOutFile) << endl;
+             << pstrChangeToForwardSlash(&m_strOutFile) << endl;
 #else
              << m_strOutFile << endl;
 #endif
 
    OutStream << " Log file                                                  \t: "
 #ifdef _WIN32
-             << pstrChangeToForwardSlash( & m_strOutFile) << endl;
+             << pstrChangeToForwardSlash(&m_strOutFile) << endl;
 #else
              << m_strOutFile << endl;
 #endif
 
    LogStream << "Log file (this file)                                      \t: "
 #ifdef _WIN32
-             << pstrChangeToForwardSlash( & m_strOutFile) << endl;
+             << pstrChangeToForwardSlash(&m_strOutFile) << endl;
 #else
              << m_strOutFile << endl;
 #endif
@@ -220,13 +220,13 @@ void CSimulation::WriteStartRunDetails(void)
    OutStream << " Vector GIS files saved                                    \t: " << strListVectorFiles() << endl;
    OutStream << " Output file (this file)                                   \t: "
 #ifdef _WIN32
-             << pstrChangeToForwardSlash( & m_strOutFile) << endl;
+             << pstrChangeToForwardSlash(&m_strOutFile) << endl;
 #else
              << m_strOutFile << endl;
 #endif
    OutStream << " Log file                                                  \t: "
 #ifdef _WIN32
-             << pstrChangeToForwardSlash( & m_strLogFile) << endl;
+             << pstrChangeToForwardSlash(&m_strLogFile) << endl;
 #else
              << m_strLogFile << endl;
 #endif
@@ -279,7 +279,7 @@ void CSimulation::WriteStartRunDetails(void)
    OutStream << "Raster GIS Input Files" << endl;
    OutStream << " Basement DEM file                                         \t: "
 #ifdef _WIN32
-             << pstrChangeToForwardSlash( & m_strInitialBasementDEMFile) << endl;
+             << pstrChangeToForwardSlash(&m_strInitialBasementDEMFile) << endl;
 #else
              << m_strInitialBasementDEMFile << endl;
 #endif
@@ -1298,7 +1298,7 @@ void CSimulation::WriteLookUpData(void) const
 
       while (dDepthOverDB <= m_dDepthOverDBMax)
       {
-         double dErosionPotential = dGetInterpolatedValue( & m_VdDepthOverDB, & m_VdErosionPotential, dDepthOverDB, false);
+         double dErosionPotential = dGetInterpolatedValue(&m_VdDepthOverDB, &m_VdErosionPotential, dDepthOverDB, false);
          LookUpOutStream << dDepthOverDB << ",\t" << dErosionPotential << endl;
          dDepthOverDB += DEPTH_OVER_DB_INCREMENT;
       }
@@ -1626,7 +1626,7 @@ int CSimulation::nWriteEndRunDetails(void)
    // Get the time that the run ended
    m_tSysEndTime = time(nullptr);
 
-   OutStream << "Run ended at " << put_time(localtime( & m_tSysEndTime), "%T on %A %d %B %Y") << endl;
+   OutStream << "Run ended at " << put_time(localtime(&m_tSysEndTime), "%T on %A %d %B %Y") << endl;
    OutStream << "Time simulated: " << strDispSimTime(m_dSimDuration) << endl << endl;
 
    // Write to log file
@@ -2018,7 +2018,7 @@ void CSimulation::WritePolygonPotentialErosion(int const nCoast)
 //===============================================================================================================================
 //! Writes to the log file a table showing the unsorted sequence of polygon processing
 //===============================================================================================================================
-void CSimulation::WritePolygonUnsortedSequence(int const nCoast, vector<vector<int> > & pnVVPolyAndAdjacent)
+void CSimulation::WritePolygonUnsortedSequence(int const nCoast, vector<vector<int> > &pnVVPolyAndAdjacent)
 {
    LogStream << m_ulIter << ": Unsorted sequence of polygon processing (-9999 = leaves grid)" << endl;
    LogStream << "-----------|-----------|-----------|-----------|-----------|" << endl;
@@ -2078,7 +2078,7 @@ void CSimulation::WritePolygonUnsortedSequence(int const nCoast, vector<vector<i
 //===============================================================================================================================
 //! Writes to the log file a table showing the sorted sequence of polygon processing, and any circularities
 //===============================================================================================================================
-void CSimulation::WritePolygonSortedSequence(int const nCoast, vector<vector<int> > & pnVVPolyAndAdjacent)
+void CSimulation::WritePolygonSortedSequence(int const nCoast, vector<vector<int>>& pnVVPolyAndAdjacent)
 {
    // Show sorted order of polygon processing, and any circularities
    LogStream << m_ulIter << ": Sorted sequence of polygon processing (" << INT_NODATA << " = leaves grid), and any X -> Y -> X circularities" << endl;
@@ -2150,7 +2150,7 @@ void CSimulation::WritePolygonSortedSequence(int const nCoast, vector<vector<int
 //===============================================================================================================================
 //! Writes to the log file a table showing per-polygon actual movement of unconsolidated beach sediment
 //===============================================================================================================================
-void CSimulation::WritePolygonActualMovement(int const nCoast, vector<vector<int> > const & pnVVPolyAndAdjacent)
+void CSimulation::WritePolygonActualMovement(int const nCoast, vector<vector<int>> const& pnVVPolyAndAdjacent)
 {
    // Show estimated polygon-to-polygon movement
    LogStream << m_ulIter << ": per-polygon erosion and deposition of unconsolidated beach sediment, all m^3. Fine sediment is moved to suspension, not deposited (DDPD = During Dean Profile Deposition)." << endl;

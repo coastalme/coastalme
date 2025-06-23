@@ -38,7 +38,7 @@ private:
 protected:
 
 public:
-   CRWDrift(CRWCoast *, int const, int const);
+   CRWDrift(CRWCoast*, int const, int const);
    ~CRWDrift(void) override;
 
    void Display(void) override;

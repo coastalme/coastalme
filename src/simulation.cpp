@@ -220,6 +220,7 @@ CSimulation::CSimulation (void)
    m_nCoastCurvatureMovingWindowSize = 0;
 
    // TODO 011 May wish to make this a user-supplied value
+   m_nGISMissingValue =
    m_nMissingValue = INT_NODATA;
 
    m_nXMinBoundingBox = INT_MAX;
@@ -387,6 +388,7 @@ CSimulation::CSimulation (void)
       m_dGeoTransform[i] = 0;
 
    // TODO 011 May wish to make this a user-supplied value
+   m_dGISMissingValue =
    m_dMissingValue = DBL_NODATA;
 
    m_ldGTotPotentialPlatformErosion =

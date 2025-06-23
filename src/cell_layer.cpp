@@ -32,15 +32,15 @@ CRWCellLayer::CRWCellLayer(void)
 }
 
 //! Returns a pointer to the cell's unconsolidated sediment object
-CRWCellSediment * CRWCellLayer::pGetUnconsolidatedSediment(void)
+CRWCellSediment* CRWCellLayer::pGetUnconsolidatedSediment(void)
 {
-   return & m_UnconsolidatedSediment;
+   return &m_UnconsolidatedSediment;
 }
 
 //! Returns a pointer to the cell's consolidated sediment object
-CRWCellSediment * CRWCellLayer::pGetConsolidatedSediment(void)
+CRWCellSediment* CRWCellLayer::pGetConsolidatedSediment(void)
 {
-   return & m_ConsolidatedSediment;
+   return &m_ConsolidatedSediment;
 }
 
 //! Returns the thickness of this cell's fine unconsolidated sediment
