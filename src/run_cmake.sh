@@ -21,9 +21,12 @@ cshoreinout=ARG
 # Always build CShore
 echo "Building all versions of the CShore library"
 echo ""
+rm -f ./lib/*
 cd cshore
 ./make_cshore_lib.sh
 cd ..
+# Note: The cshore Makefile now correctly names libraries for macOS automatically
+echo ""
 
 # Now run CMake for CoastalME
 echo ""

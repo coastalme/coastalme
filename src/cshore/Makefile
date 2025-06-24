@@ -3,11 +3,11 @@
 
 # Are we making a static library, a shared library, or an executable?
 #TO_BUILD := STATICLIB
-TO_BUILD := SHAREDLIB
+# TO_BUILD := SHAREDLIB
 #TO_BUILD := EXE
 
 # Is this a debug or a release build of CShore?
-BUILD_VERSION := DEBUG
+# BUILD_VERSION := DEBUG
 #BUILD_VERSION := RELEASE
 #BUILD_VERSION := VALGRIND
 
@@ -17,7 +17,7 @@ BUILD_VERSION := DEBUG
 # input and output via ASCII files read by CShore executable or by calling program (FILEINOUT)
 #INPUT_AND_OUTPUT := ARGINOUT
 #INPUT_AND_OUTPUT := ARGINBOTHOUT
-INPUT_AND_OUTPUT := FILEINOUT
+# INPUT_AND_OUTPUT := FILEINOUT
 #======================================================================================================================
 
 # Fortran directives
@@ -40,18 +40,26 @@ MOD := CshoreShared.mod
 
 # DFM Got some not-very-useful (?) "Conversion from REAL(4) to REAL(8)" warnings with -Wconversion-extra, so not using
 
+# Detect operating system for library naming
+UNAME_S := $(shell uname -s)
+ifeq ($(UNAME_S), Darwin)
+	OS_SUFFIX := MACOS
+else
+	OS_SUFFIX := LINUX
+endif
+
 ifeq ($(BUILD_VERSION), DEBUG)
 	FFLAGS := -std=f2008 -g -DDEBUG -O0 -Wall -Wextra -Wno-compare-reals -Wconversion -Wimplicit-interface -Wimplicit-procedure -Wintrinsics-std -Wsurprising -Waliasing -Wshadow -Wuninitialized -Wcast-align -Wnull-dereference -fbacktrace -ffpe-trap=zero,overflow,underflow,invalid,denormal -fcheck=all -ffree-line-length-none -fno-underscoring -cpp -I.
-	CPEXT := .DEBUG.LINUX
+	CPEXT := .DEBUG.$(OS_SUFFIX)
 
 else ifeq ($(BUILD_VERSION), RELEASE)
 	FFLAGS := -std=f2008 -O3 -ffree-line-length-none -fno-underscoring -cpp -I.
-	CPEXT := .RELEASE.LINUX
+	CPEXT := .RELEASE.$(OS_SUFFIX)
 
 else ifeq ($(BUILD_VERSION), VALGRIND)
 	FFLAGS := -pg -std=f2008 -g -O0 -Wall -Wextra -Wno-compare-reals -Wconversion -Wimplicit-interface -Wimplicit-procedure -Wintrinsics-std -Wsurprising -Waliasing -Wshadow -Wuninitialized -Wcast-align -Wnull-dereference -fbacktrace -ffpe-trap=zero,overflow,underflow,invalid,denormal -fcheck=all -ffree-line-length-none -fno-underscoring -cpp -I.
 	LDFLAGS := -pg
-	CPEXT := .DEBUG.LINUX
+	CPEXT := .DEBUG.$(OS_SUFFIX)
 endif
 
 
