@@ -1567,6 +1567,7 @@ private:
    int nInitGridAndCalcStillWaterLevel(void);
    int nLocateSeaAndCoasts(int &);
    int nLocateFloodAndCoasts(void);
+   int nLocateCliffToe(void);
    int nAssignLandformsForAllCoasts(void);
    int nAssignLandformsForAllCells(void);
    int nDoAllPropagateWaves(void);

@@ -1004,6 +1004,12 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
 
       // Locate estuaries TODO 044 someday...
 
+      // Locate and trace cliff toe
+      nRet = nLocateCliffToe();
+
+      if (nRet != RTN_OK)
+         return nRet;
+
       // For all cells, use classification rules to assign sea and hinterland landform categories
       nRet = nAssignLandformsForAllCells();
 
