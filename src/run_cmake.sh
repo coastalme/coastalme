@@ -1,8 +1,8 @@
 #!/bin/sh
 
 # Change this to change build type
-#buildtype=Debug
-buildtype=Release
+buildtype=Debug
+# buildtype=Release
 #buildtype=Prerelease
 #buildtype=RelWithDebInfo        # Not yet implemented in CMakeLists.txt
 #buildtype=MinSizeRel            # Not yet implemented in CMakeLists.txt
@@ -18,12 +18,16 @@ cshorelibrary=SHARED
 cshoreinout=ARG
 #cshoreinout=BOTH
 
+
 # Always build CShore
-echo "Building all versions of the CShore library"
 echo ""
 rm -f ./lib/*
 cd cshore
-./make_cshore_lib.sh
+if [[ $OSTYPE == 'darwin'* ]]; then
+          ./make_cshore_lib.sh $cshorelibrary $buildtype $cshoreinout
+else
+          ./make_cshore_lib.sh
+fi
 cd ..
 # Note: The cshore Makefile now correctly names libraries for macOS automatically
 echo ""
