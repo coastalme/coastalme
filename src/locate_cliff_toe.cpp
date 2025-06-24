@@ -50,11 +50,46 @@ using std::stringstream;
 
 /*===============================================================================================================================
 
+ Calculates slope at every cell throughout the grid using finite difference method
+
+===============================================================================================================================*/
+void CSimulation::nCalcSlopeAtAllCells(void) {
+  // TODO: Additional implementation will be added later
+  ;
+}
+
+/*===============================================================================================================================
+
+Highligts cells with slope greater than threshold
+
+===============================================================================================================================*/
+void CSimulation::nLocateCliffCell(void) {
+  // TODO: Additional implementation will be added later
+  ;
+}
+
+/*===============================================================================================================================
+
+Highligts cells with slope greater than threshold
+
+===============================================================================================================================*/
+void CSimulation::nTraceSeawardCliffEdge(void) {
+  // TODO: Additional implementation will be added later
+  ;
+}
+
+/*===============================================================================================================================
+
  Locates and traces the cliff toe
 
 ===============================================================================================================================*/
 int CSimulation::nLocateCliffToe(void) {
-  // TODO: Implementation will be added later
+  // First step: calculate slope at every cell throughout the grid
+  nCalcSlopeAtAllCells();
+  nLocateCliffCell();
+  nTraceSeawardCliffEdge();
+
+  // TODO: Additional implementation will be added later
 
   return RTN_OK;
 }
