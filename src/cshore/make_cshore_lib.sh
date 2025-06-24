@@ -7,10 +7,10 @@ if [ $# -eq 3 ];then
           build_type=${2}
           com_type="${3}INOUT"
 
-          # make clean
-          # touch ../lib/libcshore.so
+          build_type=$(echo $build_type | tr 'a-z' 'A-Z')
+
+          make clean
           make -B TO_BUILD=${lib_type} BUILD_VERSION=${build_type} INPUT_AND_OUTPUT=${com_type}
-          # echo "make -B TO_BUILD=${lib_type} BUILD_VERSION=${build_type} INPUT_AND_OUTPUT=${com_type}"
 else 
           echo "building all cshore versions"
           # Do ARGINOUT versions
