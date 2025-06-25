@@ -95,7 +95,7 @@ if (CMAKE_COMPILER_IS_GNUCC)
       # ===============================================================================================================
       # Also use these with debug builds to check for vulnerabilities at compile time, see https://best.openssf.org/Compiler-Hardening-Guides/Compiler-Options-Hardening-Guide-for-C-and-C++.html
       # ===============================================================================================================
-      if (CMAKE_CXX_COMPILER_VERSION VERSION_GREATER "13.0")
+      if (CMAKE_CXX_COMPILER_VERSION VERSION_GREATER "13.0" AND LINUX)
          set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wformat -Wformat=2 -Wimplicit-fallthrough -Werror=format-security -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=3 -D_GLIBCXX_ASSERTIONS -fstrict-flex-arrays=3 -fstack-clash-protection -fstack-protector-strong -Wl,-z,nodlopen -Wl,-z,noexecstack -Wl,-z,relro -Wl,-z,now -Wl,--as-needed -Wl,--no-copy-dt-needed-entries")
       # -Wtrampolines
       # -Wbidi-chars=any
