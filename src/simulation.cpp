@@ -92,6 +92,7 @@ CSimulation::CSimulation (void)
    m_bTotalBeachDepositionSave =
    m_bLandformSave =
    m_bLocalSlopeSave =
+   m_bSlopeSave =
    m_bInterventionClassSave =
    m_bInterventionHeightSave =
    m_bSuspSedSave =
