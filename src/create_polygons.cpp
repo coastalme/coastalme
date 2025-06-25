@@ -286,7 +286,7 @@ int CSimulation::nCreateAllPolygons(void)
 
 // }
 
-            nNextProfile = nThisProfile;
+            // nNextProfile = nThisProfile;
             nCoastPoint = nNextProfileCoastPoint - 1;
 
             m_nNumPolygonGlobal++;

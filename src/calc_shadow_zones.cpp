@@ -1116,8 +1116,8 @@ void CSimulation::DoShadowZoneAndDownDriftZone(int const nCoast, int const nZone
             // LogStream << m_ulIter << ": n = " << n << ", m = " << m << ", dLinkingLineLength = " << dLinkingLineLength << ", dCoastDistSoFar = " << dCoastDistSoFar << " (nTotAlongCoastDistanceToDownDriftEndpoint = " << nTotAlongCoastDistanceToDownDriftEndpoint << "), dDownDriftBoundaryDistSoFar = " << dDownDriftBoundaryDistSoFar << " (nTotDownDriftBoundaryDistance = " << nTotDownDriftBoundaryDistance << ") same as last point at [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "}" << endl;
 
             // Set for next time
-            nXLast = nX;
-            nYLast = nY;
+            // nXLast = nX;
+            // nYLast = nY;
             dX += dXInc;
             dY += dYInc;
 

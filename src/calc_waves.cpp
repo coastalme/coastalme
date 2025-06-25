@@ -144,7 +144,7 @@ int CSimulation::nSetAllCoastpointDeepWaterWaveValues(void)
 }
 
 //===============================================================================================================================
-//! Simulates wave propagation along all coastline-normal profiles
+//! Simulates wave propagation along all coastline-normal profiles, on all coasts
 //===============================================================================================================================
 int CSimulation::nDoAllPropagateWaves(void)
 {
@@ -256,9 +256,9 @@ int CSimulation::nDoAllPropagateWaves(void)
    {
       if (m_pRasterGrid->m_Cell[nX][0].bIsInContiguousSea())
       {
-         int nID = m_pRasterGrid->m_Cell[nX][0].nGetPolygonID();
+         int nPolyID = m_pRasterGrid->m_Cell[nX][0].nGetPolygonID();
 
-         if (nID == INT_NODATA)
+         if (nPolyID == INT_NODATA)
          {
             // Not in a polygon
             VdXAll.push_back(nX);
@@ -278,9 +278,9 @@ int CSimulation::nDoAllPropagateWaves(void)
 
       if (m_pRasterGrid->m_Cell[nX][m_nYGridSize - 1].bIsInContiguousSea())
       {
-         int nID = m_pRasterGrid->m_Cell[nX][m_nYGridSize - 1].nGetPolygonID();
+         int nPolyID = m_pRasterGrid->m_Cell[nX][m_nYGridSize - 1].nGetPolygonID();
 
-         if (nID == INT_NODATA)
+         if (nPolyID == INT_NODATA)
          {
             // Not in a polygon
             VdXAll.push_back(nX);
@@ -303,9 +303,9 @@ int CSimulation::nDoAllPropagateWaves(void)
    {
       if (m_pRasterGrid->m_Cell[0][nY].bIsInContiguousSea())
       {
-         int nID = m_pRasterGrid->m_Cell[0][nY].nGetPolygonID();
+         int nPolyID = m_pRasterGrid->m_Cell[0][nY].nGetPolygonID();
 
-         if (nID == INT_NODATA)
+         if (nPolyID == INT_NODATA)
          {
             // Not in a polygon
             VdXAll.push_back(0);
@@ -325,9 +325,9 @@ int CSimulation::nDoAllPropagateWaves(void)
 
       if (m_pRasterGrid->m_Cell[m_nXGridSize - 1][nY].bIsInContiguousSea())
       {
-         int nID = m_pRasterGrid->m_Cell[m_nXGridSize - 1][nY].nGetPolygonID();
+         int nPolyID = m_pRasterGrid->m_Cell[m_nXGridSize - 1][nY].nGetPolygonID();
 
-         if (nID == INT_NODATA)
+         if (nPolyID == INT_NODATA)
          {
             // Not in a polygon
             VdXAll.push_back(m_nXGridSize - 1);
@@ -2263,7 +2263,7 @@ void CSimulation::CalcD50AndFillWaveCalcHoles(void)
          if (m_pRasterGrid->m_Cell[nX][nY].bIsInContiguousSea())
          {
             // This is a sea cell, first get polygon ID
-            int nID = m_pRasterGrid->m_Cell[nX][nY].nGetPolygonID();
+            int nPolyID = m_pRasterGrid->m_Cell[nX][nY].nGetPolygonID();
 
             // Is it in the active zone?
             bool bActive = m_pRasterGrid->m_Cell[nX][nY].bIsInActiveZone();
@@ -2276,10 +2276,10 @@ void CSimulation::CalcD50AndFillWaveCalcHoles(void)
                if (! bFPIsEqual(dTmpd50, DBL_NODATA, TOLERANCE))
                {
                   // It does have unconsolidated sediment, so which polygon is this cell in?
-                  if (nID != INT_NODATA)
+                  if (nPolyID != INT_NODATA)
                   {
-                     VnPolygonD50Count[nID]++;
-                     VdPolygonD50[nID] += dTmpd50;
+                     VnPolygonD50Count[nPolyID]++;
+                     VdPolygonD50[nPolyID] += dTmpd50;
                   }
                }
             }
@@ -2519,12 +2519,12 @@ void CSimulation::CalcD50AndFillWaveCalcHoles(void)
       for (int nPoly = 0; nPoly < m_VCoast[nCoast].nGetNumPolygons(); nPoly++)
       {
          CGeomCoastPolygon* pPolygon = m_VCoast[nCoast].pGetPolygon(nPoly);
-         int nID = pPolygon->nGetCoastID();
+         int nPolyID = pPolygon->nGetCoastID();
 
-         if (VnPolygonD50Count[nID] > 0)
-            VdPolygonD50[nID] /= VnPolygonD50Count[nID];
+         if (VnPolygonD50Count[nPolyID] > 0)
+            VdPolygonD50[nPolyID] /= VnPolygonD50Count[nPolyID];
 
-         pPolygon->SetAvgUnconsD50(VdPolygonD50[nID]);
+         pPolygon->SetAvgUnconsD50(VdPolygonD50[nPolyID]);
       }
    }
 }

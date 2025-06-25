@@ -1,0 +1,1089 @@
+/home/dave/coast/CoastalME/src/2d_shape.cpp:84:7: warning: repeated branch body in conditional chain [bugprone-branch-clone]
+   84 |       m_VPoints.push_back(PtIn);
+      |       ^
+/home/dave/coast/CoastalME/src/2d_shape.cpp:84:32: note: end of the original
+   84 |       m_VPoints.push_back(PtIn);
+      |                                ^
+/home/dave/coast/CoastalME/src/2d_shape.cpp:87:7: note: clone 1 starts here
+   87 |       m_VPoints.push_back(PtIn);
+      |       ^
+/home/dave/coast/CoastalME/src/2di_point.cpp:92:30: warning: 2 adjacent parameters of 'AddXAddY' of similar type ('const int') are easily swapped by mistake [bugprone-easily-swappable-parameters]
+   92 | void CGeom2DIPoint::AddXAddY(int const nXToAdd, int const nYToAdd)
+      |                              ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/2di_point.cpp:92:40: note: the first parameter in the range is 'nXToAdd'
+   92 | void CGeom2DIPoint::AddXAddY(int const nXToAdd, int const nYToAdd)
+      |                                        ^~~~~~~
+/home/dave/coast/CoastalME/src/2di_point.cpp:92:59: note: the last parameter in the range is 'nYToAdd'
+   92 | void CGeom2DIPoint::AddXAddY(int const nXToAdd, int const nYToAdd)
+      |                                                           ^~~~~~~
+/home/dave/coast/CoastalME/src/2di_shape.cpp:98:7: warning: repeated branch body in conditional chain [bugprone-branch-clone]
+   98 |       m_VPoints.push_back(PtiIn);
+      |       ^
+/home/dave/coast/CoastalME/src/2di_shape.cpp:98:33: note: end of the original
+   98 |       m_VPoints.push_back(PtiIn);
+      |                                 ^
+/home/dave/coast/CoastalME/src/2di_shape.cpp:101:7: note: clone 1 starts here
+  101 |       m_VPoints.push_back(PtiIn);
+      |       ^
+/home/dave/coast/CoastalME/src/assign_landforms.cpp:32:13: error: 'omp.h' file not found [clang-diagnostic-error]
+   32 |    #include <omp.h>
+      |             ^~~~~~~
+/home/dave/coast/CoastalME/src/assign_landforms.cpp:76:10: warning: repeated branch body in conditional chain [bugprone-branch-clone]
+   76 |          {
+      |          ^
+/home/dave/coast/CoastalME/src/assign_landforms.cpp:81:11: note: end of the original
+   81 |          }
+      |           ^
+/home/dave/coast/CoastalME/src/assign_landforms.cpp:84:10: note: clone 1 starts here
+   84 |          {
+      |          ^
+/home/dave/coast/CoastalME/src/assign_landforms.cpp:290:34: warning: 2 adjacent parameters of 'nLandformToGrid' of similar type ('const int') are easily swapped by mistake [bugprone-easily-swappable-parameters]
+  290 | int CSimulation::nLandformToGrid(int const nCoast, int const nPoint)
+      |                                  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/assign_landforms.cpp:290:44: note: the first parameter in the range is 'nCoast'
+  290 | int CSimulation::nLandformToGrid(int const nCoast, int const nPoint)
+      |                                            ^~~~~~
+/home/dave/coast/CoastalME/src/assign_landforms.cpp:290:62: note: the last parameter in the range is 'nPoint'
+  290 | int CSimulation::nLandformToGrid(int const nCoast, int const nPoint)
+      |                                                              ^~~~~~
+/home/dave/coast/CoastalME/src/assign_landforms.cpp:454:10: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+  454 |          switch (nAction)
+      |          ^
+/home/dave/coast/CoastalME/src/calc_shadow_zones.cpp:48:75: warning: 2 adjacent parameters of 'bOnOrOffShoreAndUpOrDownCoast' of convertible types are easily swapped by mistake [bugprone-easily-swappable-parameters]
+   48 | bool CSimulation::bOnOrOffShoreAndUpOrDownCoast(double const dCoastAngle, double const dWaveAngle, int const nSeaHand, bool& bDownCoast)
+      |                                                                           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/calc_shadow_zones.cpp:48:88: note: the first parameter in the range is 'dWaveAngle'
+   48 | bool CSimulation::bOnOrOffShoreAndUpOrDownCoast(double const dCoastAngle, double const dWaveAngle, int const nSeaHand, bool& bDownCoast)
+      |                                                                                        ^~~~~~~~~~
+/home/dave/coast/CoastalME/src/calc_shadow_zones.cpp:48:110: note: the last parameter in the range is 'nSeaHand'
+   48 | bool CSimulation::bOnOrOffShoreAndUpOrDownCoast(double const dCoastAngle, double const dWaveAngle, int const nSeaHand, bool& bDownCoast)
+      |                                                                                                              ^~~~~~~~
+/home/dave/coast/CoastalME/src/calc_shadow_zones.cpp:48:100: note: 'const double' and 'const int' may be implicitly converted: 'const double' (as 'double') -> 'const int' (as 'int'), 'const int' (as 'int') -> 'const double' (as 'double')
+   48 | bool CSimulation::bOnOrOffShoreAndUpOrDownCoast(double const dCoastAngle, double const dWaveAngle, int const nSeaHand, bool& bDownCoast)
+      |                                                                                                    ^
+/home/dave/coast/CoastalME/src/calc_shadow_zones.cpp:83:4: warning: repeated branch body in conditional chain [bugprone-branch-clone]
+   83 |    {
+      |    ^
+/home/dave/coast/CoastalME/src/calc_shadow_zones.cpp:86:5: note: end of the original
+   86 |    }
+      |     ^
+/home/dave/coast/CoastalME/src/calc_shadow_zones.cpp:135:4: note: clone 1 starts here
+  135 |    {
+      |    ^
+/home/dave/coast/CoastalME/src/calc_shadow_zones.cpp:596:72: warning: narrowing conversion from 'unsigned int' to signed type 'int' is implementation-defined [bugprone-narrowing-conversions]
+  596 |                m_pRasterGrid->m_Cell[nTmpX][nTmpY].SetShadowZoneNumber(-(nZone + 1));
+      |                                                                        ^
+/home/dave/coast/CoastalME/src/calc_shadow_zones.cpp:664:45: warning: narrowing conversion from 'unsigned int' to signed type 'int' is implementation-defined [bugprone-narrowing-conversions]
+  664 |             int nRet = nFloodFillShadowZone(nZone, &PtiCentroid, &PtiStart, &PtiEnd);
+      |                                             ^
+/home/dave/coast/CoastalME/src/calc_shadow_zones.cpp:685:50: warning: narrowing conversion from 'unsigned int' to signed type 'int' is implementation-defined [bugprone-narrowing-conversions]
+  685 |             DoShadowZoneAndDownDriftZone(nCoast, nZone, VnShadowBoundaryStartCoastPoint[nZone], VnShadowBoundaryEndCoastPoint[nZone]);
+      |                                                  ^
+/home/dave/coast/CoastalME/src/calc_shadow_zones.cpp:696:56: warning: 2 adjacent parameters of 'nFloodFillShadowZone' of similar type ('const CGeom2DIPoint *') are easily swapped by mistake [bugprone-easily-swappable-parameters]
+  696 | int CSimulation::nFloodFillShadowZone(int const nZone, CGeom2DIPoint const* pPtiCentroid, CGeom2DIPoint const* pPtiShadowBoundaryStart, CGeom2DIPoint const* pPtiShadowBoundaryEnd)
+      |                                                        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/calc_shadow_zones.cpp:696:77: note: the first parameter in the range is 'pPtiCentroid'
+  696 | int CSimulation::nFloodFillShadowZone(int const nZone, CGeom2DIPoint const* pPtiCentroid, CGeom2DIPoint const* pPtiShadowBoundaryStart, CGeom2DIPoint const* pPtiShadowBoundaryEnd)
+      |                                                                             ^~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/calc_shadow_zones.cpp:696:112: note: the last parameter in the range is 'pPtiShadowBoundaryStart'
+  696 | int CSimulation::nFloodFillShadowZone(int const nZone, CGeom2DIPoint const* pPtiCentroid, CGeom2DIPoint const* pPtiShadowBoundaryStart, CGeom2DIPoint const* pPtiShadowBoundaryEnd)
+      |                                                                                                                ^~~~~~~~~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/calc_shadow_zones.cpp:823:48: warning: 2 adjacent parameters of 'DoShadowZoneAndDownDriftZone' of similar type ('const int') are easily swapped by mistake [bugprone-easily-swappable-parameters]
+  823 | void CSimulation::DoShadowZoneAndDownDriftZone(int const nCoast, int const nZone, int const nShadowBoundaryStartPoint, int const nShadowBoundaryEndPoint)
+      |                                                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/calc_shadow_zones.cpp:823:58: note: the first parameter in the range is 'nCoast'
+  823 | void CSimulation::DoShadowZoneAndDownDriftZone(int const nCoast, int const nZone, int const nShadowBoundaryStartPoint, int const nShadowBoundaryEndPoint)
+      |                                                          ^~~~~~
+/home/dave/coast/CoastalME/src/calc_shadow_zones.cpp:823:76: note: the last parameter in the range is 'nZone'
+  823 | void CSimulation::DoShadowZoneAndDownDriftZone(int const nCoast, int const nZone, int const nShadowBoundaryStartPoint, int const nShadowBoundaryEndPoint)
+      |                                                                            ^~~~~
+/home/dave/coast/CoastalME/src/calc_shadow_zones.cpp:1255:54: warning: 2 adjacent parameters of 'ProcessDownDriftCell' of similar type ('const int') are easily swapped by mistake [bugprone-easily-swappable-parameters]
+ 1255 | void CSimulation::ProcessDownDriftCell(int const nX, int const nY, int const nTraversed, double const dTotalToTraverse, int const nZone)
+      |                                                      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/calc_shadow_zones.cpp:1255:64: note: the first parameter in the range is 'nY'
+ 1255 | void CSimulation::ProcessDownDriftCell(int const nX, int const nY, int const nTraversed, double const dTotalToTraverse, int const nZone)
+      |                                                                ^~
+/home/dave/coast/CoastalME/src/calc_shadow_zones.cpp:1255:78: note: the last parameter in the range is 'nTraversed'
+ 1255 | void CSimulation::ProcessDownDriftCell(int const nX, int const nY, int const nTraversed, double const dTotalToTraverse, int const nZone)
+      |                                                                              ^~~~~~~~~~
+/home/dave/coast/CoastalME/src/calc_shadow_zones.cpp:1255:90: warning: 2 adjacent parameters of 'ProcessDownDriftCell' of convertible types are easily swapped by mistake [bugprone-easily-swappable-parameters]
+ 1255 | void CSimulation::ProcessDownDriftCell(int const nX, int const nY, int const nTraversed, double const dTotalToTraverse, int const nZone)
+      |                                                                                          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/calc_shadow_zones.cpp:1255:103: note: the first parameter in the range is 'dTotalToTraverse'
+ 1255 | void CSimulation::ProcessDownDriftCell(int const nX, int const nY, int const nTraversed, double const dTotalToTraverse, int const nZone)
+      |                                                                                                       ^~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/calc_shadow_zones.cpp:1255:131: note: the last parameter in the range is 'nZone'
+ 1255 | void CSimulation::ProcessDownDriftCell(int const nX, int const nY, int const nTraversed, double const dTotalToTraverse, int const nZone)
+      |                                                                                                                                   ^~~~~
+/home/dave/coast/CoastalME/src/calc_shadow_zones.cpp:1255:121: note: 'const double' and 'const int' may be implicitly converted: 'const double' (as 'double') -> 'const int' (as 'int'), 'const int' (as 'int') -> 'const double' (as 'double')
+ 1255 | void CSimulation::ProcessDownDriftCell(int const nX, int const nY, int const nTraversed, double const dTotalToTraverse, int const nZone)
+      |                                                                                                                         ^
+/home/dave/coast/CoastalME/src/calc_shadow_zones.cpp:1312:55: warning: 2 adjacent parameters of 'ProcessShadowZoneCell' of similar type ('const int') are easily swapped by mistake [bugprone-easily-swappable-parameters]
+ 1312 | void CSimulation::ProcessShadowZoneCell(int const nX, int const nY, int const nShadowZoneCoastToCapeSeaHand, CGeom2DIPoint const* pPtiCoast, int const nShadowEndX, int const nShadowEndY, int const nZone)
+      |                                                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/calc_shadow_zones.cpp:1312:65: note: the first parameter in the range is 'nY'
+ 1312 | void CSimulation::ProcessShadowZoneCell(int const nX, int const nY, int const nShadowZoneCoastToCapeSeaHand, CGeom2DIPoint const* pPtiCoast, int const nShadowEndX, int const nShadowEndY, int const nZone)
+      |                                                                 ^~
+/home/dave/coast/CoastalME/src/calc_shadow_zones.cpp:1312:79: note: the last parameter in the range is 'nShadowZoneCoastToCapeSeaHand'
+ 1312 | void CSimulation::ProcessShadowZoneCell(int const nX, int const nY, int const nShadowZoneCoastToCapeSeaHand, CGeom2DIPoint const* pPtiCoast, int const nShadowEndX, int const nShadowEndY, int const nZone)
+      |                                                                               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/calc_shadow_zones.cpp:1312:165: warning: 2 adjacent parameters of 'ProcessShadowZoneCell' of similar type ('const int') are easily swapped by mistake [bugprone-easily-swappable-parameters]
+ 1312 | void CSimulation::ProcessShadowZoneCell(int const nX, int const nY, int const nShadowZoneCoastToCapeSeaHand, CGeom2DIPoint const* pPtiCoast, int const nShadowEndX, int const nShadowEndY, int const nZone)
+      |                                                                                                                                                                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/calc_shadow_zones.cpp:1312:175: note: the first parameter in the range is 'nShadowEndY'
+ 1312 | void CSimulation::ProcessShadowZoneCell(int const nX, int const nY, int const nShadowZoneCoastToCapeSeaHand, CGeom2DIPoint const* pPtiCoast, int const nShadowEndX, int const nShadowEndY, int const nZone)
+      |                                                                                                                                                                               ^~~~~~~~~~~
+/home/dave/coast/CoastalME/src/calc_shadow_zones.cpp:1312:198: note: the last parameter in the range is 'nZone'
+ 1312 | void CSimulation::ProcessShadowZoneCell(int const nX, int const nY, int const nShadowZoneCoastToCapeSeaHand, CGeom2DIPoint const* pPtiCoast, int const nShadowEndX, int const nShadowEndY, int const nZone)
+      |                                                                                                                                                                                                      ^~~~~
+/home/dave/coast/CoastalME/src/calc_waves.cpp:625:75: warning: 2 adjacent parameters of 'dCalcWaveAngleToCoastNormal' of convertible types are easily swapped by mistake [bugprone-easily-swappable-parameters]
+  625 | double CSimulation::dCalcWaveAngleToCoastNormal(double const dCoastAngle, double const dWaveAngle, int const nSeaHand)
+      |                                                                           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/calc_waves.cpp:625:88: note: the first parameter in the range is 'dWaveAngle'
+  625 | double CSimulation::dCalcWaveAngleToCoastNormal(double const dCoastAngle, double const dWaveAngle, int const nSeaHand)
+      |                                                                                        ^~~~~~~~~~
+/home/dave/coast/CoastalME/src/calc_waves.cpp:625:110: note: the last parameter in the range is 'nSeaHand'
+  625 | double CSimulation::dCalcWaveAngleToCoastNormal(double const dCoastAngle, double const dWaveAngle, int const nSeaHand)
+      |                                                                                                              ^~~~~~~~
+/home/dave/coast/CoastalME/src/calc_waves.cpp:625:100: note: 'const double' and 'const int' may be implicitly converted: 'const double' (as 'double') -> 'const int' (as 'int'), 'const int' (as 'int') -> 'const double' (as 'double')
+  625 | double CSimulation::dCalcWaveAngleToCoastNormal(double const dCoastAngle, double const dWaveAngle, int const nSeaHand)
+      |                                                                                                    ^
+/home/dave/coast/CoastalME/src/calc_waves.cpp:646:47: warning: 2 adjacent parameters of 'nCalcWavePropertiesOnProfile' of similar type ('const int') are easily swapped by mistake [bugprone-easily-swappable-parameters]
+  646 | int CSimulation::nCalcWavePropertiesOnProfile(int const nCoast, int const nCoastSize, CGeomProfile* pProfile, vector<double> *pVdX, vector<double> *pVdY, vector<double> *pVdHeightX, vector<double> *pVdHeightY, vector<bool>*pVbBreaking)
+      |                                               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/calc_waves.cpp:646:57: note: the first parameter in the range is 'nCoast'
+  646 | int CSimulation::nCalcWavePropertiesOnProfile(int const nCoast, int const nCoastSize, CGeomProfile* pProfile, vector<double> *pVdX, vector<double> *pVdY, vector<double> *pVdHeightX, vector<double> *pVdHeightY, vector<bool>*pVbBreaking)
+      |                                                         ^~~~~~
+/home/dave/coast/CoastalME/src/calc_waves.cpp:646:75: note: the last parameter in the range is 'nCoastSize'
+  646 | int CSimulation::nCalcWavePropertiesOnProfile(int const nCoast, int const nCoastSize, CGeomProfile* pProfile, vector<double> *pVdX, vector<double> *pVdY, vector<double> *pVdHeightX, vector<double> *pVdHeightY, vector<bool>*pVbBreaking)
+      |                                                                           ^~~~~~~~~~
+/home/dave/coast/CoastalME/src/calc_waves.cpp:1085:10: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+ 1085 |          switch (nRet)
+      |          ^
+/home/dave/coast/CoastalME/src/calc_waves.cpp:1280:67: warning: result of integer division used in a floating point context; possible loss of precision [bugprone-integer-division]
+ 1280 |                dProfileWaveHeight = dProfileBreakingWaveHeight * (nProfilePoint / nProfileBreakingDist); // Wave height decreases linearly to zero at shoreline
+      |                                                                   ^
+/home/dave/coast/CoastalME/src/calc_waves.cpp:1761:295: warning: 4 adjacent parameters of 'InterpolateCShoreOutput' of similar type ('vector<double> *') are easily swapped by mistake [bugprone-easily-swappable-parameters]
+ 1761 | void CSimulation::InterpolateCShoreOutput(vector<double> const* pVdProfileDistXYCME, int const nOutSize, int const nProfileSize, vector<double> *pVdXYDistFromCShore, vector<double> *pVdFreeSurfaceStdCShore, vector<double> *pVdWaveSetupSurgeCShore, vector<double> *pVdSinWaveAngleRadiansCShore, vector<double> *pVdFractionBreakingWavesCShore, vector<double> *pVdFreeSurfaceStdCME, vector<double> *pVdWaveSetupSurgeCME, vector<double> *pVdSinWaveAngleRadiansCME, vector<double> *pVdFractionBreakingWavesCME)
+      |                                                                                                                                                                                                                                                                                                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/calc_waves.cpp:1761:311: note: the first parameter in the range is 'pVdFractionBreakingWavesCShore'
+ 1761 | void CSimulation::InterpolateCShoreOutput(vector<double> const* pVdProfileDistXYCME, int const nOutSize, int const nProfileSize, vector<double> *pVdXYDistFromCShore, vector<double> *pVdFreeSurfaceStdCShore, vector<double> *pVdWaveSetupSurgeCShore, vector<double> *pVdSinWaveAngleRadiansCShore, vector<double> *pVdFractionBreakingWavesCShore, vector<double> *pVdFreeSurfaceStdCME, vector<double> *pVdWaveSetupSurgeCME, vector<double> *pVdSinWaveAngleRadiansCME, vector<double> *pVdFractionBreakingWavesCME)
+      |                                                                                                                                                                                                                                                                                                                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/calc_waves.cpp:1761:435: note: the last parameter in the range is 'pVdSinWaveAngleRadiansCME'
+ 1761 | void CSimulation::InterpolateCShoreOutput(vector<double> const* pVdProfileDistXYCME, int const nOutSize, int const nProfileSize, vector<double> *pVdXYDistFromCShore, vector<double> *pVdFreeSurfaceStdCShore, vector<double> *pVdWaveSetupSurgeCShore, vector<double> *pVdSinWaveAngleRadiansCShore, vector<double> *pVdFractionBreakingWavesCShore, vector<double> *pVdFreeSurfaceStdCME, vector<double> *pVdWaveSetupSurgeCME, vector<double> *pVdSinWaveAngleRadiansCME, vector<double> *pVdFractionBreakingWavesCME)
+      |                                                                                                                                                                                                                                                                                                                                                                                                                                                   ^~~~~~~~~~~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/calc_waves.cpp:2038:64: warning: narrowing conversion from 'double' to 'int' [bugprone-narrowing-conversions]
+ 2038 |          m_VCoast[nCoast].SetBreakingDistance(nThisCoastPoint, DBL_NODATA);
+      |                                                                ^
+/home/dave/coast/CoastalME/src/cell.cpp:297:38: warning: 2 adjacent parameters of 'SetCoastAndPolygonID' of similar type ('const int') are easily swapped by mistake [bugprone-easily-swappable-parameters]
+  297 | void CGeomCell::SetCoastAndPolygonID(int const nPolyCoastID, int const nPolyID)
+      |                                      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/cell.cpp:297:48: note: the first parameter in the range is 'nPolyCoastID'
+  297 | void CGeomCell::SetCoastAndPolygonID(int const nPolyCoastID, int const nPolyID)
+      |                                                ^~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/cell.cpp:297:72: note: the last parameter in the range is 'nPolyID'
+  297 | void CGeomCell::SetCoastAndPolygonID(int const nPolyCoastID, int const nPolyID)
+      |                                                                        ^~~~~~~
+/home/dave/coast/CoastalME/src/cell.cpp:772:17: warning: narrowing conversion from 'unsigned int' to signed type 'int' is implementation-defined [bugprone-narrowing-conversions]
+  772 |          return (nLayer - 1);
+      |                 ^
+/home/dave/coast/CoastalME/src/cell.cpp:985:42: warning: 3 adjacent parameters of 'IncrCliffCollapseErosion' of similar type ('const double') are easily swapped by mistake [bugprone-easily-swappable-parameters]
+  985 | void CGeomCell::IncrCliffCollapseErosion(double const dFineDepth, double const dSandDepth, double const dCoarseDepth)
+      |                                          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/cell.cpp:985:55: note: the first parameter in the range is 'dFineDepth'
+  985 | void CGeomCell::IncrCliffCollapseErosion(double const dFineDepth, double const dSandDepth, double const dCoarseDepth)
+      |                                                       ^~~~~~~~~~
+/home/dave/coast/CoastalME/src/cell.cpp:985:105: note: the last parameter in the range is 'dCoarseDepth'
+  985 | void CGeomCell::IncrCliffCollapseErosion(double const dFineDepth, double const dSandDepth, double const dCoarseDepth)
+      |                                                                                                         ^~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/cliff.cpp:35:41: warning: 6 adjacent parameters of 'CRWCliff' of convertible types are easily swapped by mistake [bugprone-easily-swappable-parameters]
+   35 | CRWCliff::CRWCliff(CRWCoast * pCoastIn, int const nCoast, int const nPointOnCoast, double const dCellSide, double const dNotchDepthIn, double const dNotchElevIn, double const dAccumWaveEnergyIn)
+      |                                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/cliff.cpp:35:51: note: the first parameter in the range is 'nCoast'
+   35 | CRWCliff::CRWCliff(CRWCoast * pCoastIn, int const nCoast, int const nPointOnCoast, double const dCellSide, double const dNotchDepthIn, double const dNotchElevIn, double const dAccumWaveEnergyIn)
+      |                                                   ^~~~~~
+/home/dave/coast/CoastalME/src/cliff.cpp:35:176: note: the last parameter in the range is 'dAccumWaveEnergyIn'
+   35 | CRWCliff::CRWCliff(CRWCoast * pCoastIn, int const nCoast, int const nPointOnCoast, double const dCellSide, double const dNotchDepthIn, double const dNotchElevIn, double const dAccumWaveEnergyIn)
+      |                                                                                                                                                                                ^~~~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/cliff.cpp:35:84: note: 'const int' and 'const double' may be implicitly converted: 'const int' (as 'int') -> 'const double' (as 'double'), 'const double' (as 'double') -> 'const int' (as 'int')
+   35 | CRWCliff::CRWCliff(CRWCoast * pCoastIn, int const nCoast, int const nPointOnCoast, double const dCellSide, double const dNotchDepthIn, double const dNotchElevIn, double const dAccumWaveEnergyIn)
+      |                                                                                    ^
+/home/dave/coast/CoastalME/src/coast.cpp:262:7: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+  262 |       switch (++n)
+      |       ^
+/home/dave/coast/CoastalME/src/coast.cpp:577:28: warning: 2 adjacent parameters of 'dGetLevel' of similar type ('const int') are easily swapped by mistake [bugprone-easily-swappable-parameters]
+  577 | double CRWCoast::dGetLevel(int const nCoastPoint, int const level) const
+      |                            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/coast.cpp:577:38: note: the first parameter in the range is 'nCoastPoint'
+  577 | double CRWCoast::dGetLevel(int const nCoastPoint, int const level) const
+      |                                      ^~~~~~~~~~~
+/home/dave/coast/CoastalME/src/coast.cpp:577:61: note: the last parameter in the range is 'level'
+  577 | double CRWCoast::dGetLevel(int const nCoastPoint, int const level) const
+      |                                                             ^~~~~
+/home/dave/coast/CoastalME/src/coast_polygon.cpp:32:38: warning: 5 adjacent parameters of 'CGeomCoastPolygon' of similar type ('const int') are easily swapped by mistake [bugprone-easily-swappable-parameters]
+   32 | CGeomCoastPolygon::CGeomCoastPolygon(int const nGlobalID, int const nCoastID, int const nNode, int const nProfileUpCoast, int const nProfileDownCoast, vector<CGeom2DPoint> const* pVIn, int const nLastPointUpCoast, const int nLastPointDownCoast, CGeom2DIPoint const* PtiNode, CGeom2DIPoint const* PtiAntinode, bool const bStartCoast, bool const bEndCoast)
+      |                                      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/coast_polygon.cpp:32:48: note: the first parameter in the range is 'nGlobalID'
+   32 | CGeomCoastPolygon::CGeomCoastPolygon(int const nGlobalID, int const nCoastID, int const nNode, int const nProfileUpCoast, int const nProfileDownCoast, vector<CGeom2DPoint> const* pVIn, int const nLastPointUpCoast, const int nLastPointDownCoast, CGeom2DIPoint const* PtiNode, CGeom2DIPoint const* PtiAntinode, bool const bStartCoast, bool const bEndCoast)
+      |                                                ^~~~~~~~~
+/home/dave/coast/CoastalME/src/coast_polygon.cpp:32:133: note: the last parameter in the range is 'nProfileDownCoast'
+   32 | CGeomCoastPolygon::CGeomCoastPolygon(int const nGlobalID, int const nCoastID, int const nNode, int const nProfileUpCoast, int const nProfileDownCoast, vector<CGeom2DPoint> const* pVIn, int const nLastPointUpCoast, const int nLastPointDownCoast, CGeom2DIPoint const* PtiNode, CGeom2DIPoint const* PtiAntinode, bool const bStartCoast, bool const bEndCoast)
+      |                                                                                                                                     ^~~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/coast_polygon.cpp:32:186: warning: 2 adjacent parameters of 'CGeomCoastPolygon' of similar type ('const int') are easily swapped by mistake [bugprone-easily-swappable-parameters]
+   32 | CGeomCoastPolygon::CGeomCoastPolygon(int const nGlobalID, int const nCoastID, int const nNode, int const nProfileUpCoast, int const nProfileDownCoast, vector<CGeom2DPoint> const* pVIn, int const nLastPointUpCoast, const int nLastPointDownCoast, CGeom2DIPoint const* PtiNode, CGeom2DIPoint const* PtiAntinode, bool const bStartCoast, bool const bEndCoast)
+      |                                                                                                                                                                                          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/coast_polygon.cpp:32:196: note: the first parameter in the range is 'nLastPointUpCoast'
+   32 | CGeomCoastPolygon::CGeomCoastPolygon(int const nGlobalID, int const nCoastID, int const nNode, int const nProfileUpCoast, int const nProfileDownCoast, vector<CGeom2DPoint> const* pVIn, int const nLastPointUpCoast, const int nLastPointDownCoast, CGeom2DIPoint const* PtiNode, CGeom2DIPoint const* PtiAntinode, bool const bStartCoast, bool const bEndCoast)
+      |                                                                                                                                                                                                    ^~~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/coast_polygon.cpp:32:225: note: the last parameter in the range is 'nLastPointDownCoast'
+   32 | CGeomCoastPolygon::CGeomCoastPolygon(int const nGlobalID, int const nCoastID, int const nNode, int const nProfileUpCoast, int const nProfileDownCoast, vector<CGeom2DPoint> const* pVIn, int const nLastPointUpCoast, const int nLastPointDownCoast, CGeom2DIPoint const* PtiNode, CGeom2DIPoint const* PtiAntinode, bool const bStartCoast, bool const bEndCoast)
+      |                                                                                                                                                                                                                                 ^~~~~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/coast_polygon.cpp:32:246: warning: 2 adjacent parameters of 'CGeomCoastPolygon' of similar type ('const CGeom2DIPoint *') are easily swapped by mistake [bugprone-easily-swappable-parameters]
+   32 | CGeomCoastPolygon::CGeomCoastPolygon(int const nGlobalID, int const nCoastID, int const nNode, int const nProfileUpCoast, int const nProfileDownCoast, vector<CGeom2DPoint> const* pVIn, int const nLastPointUpCoast, const int nLastPointDownCoast, CGeom2DIPoint const* PtiNode, CGeom2DIPoint const* PtiAntinode, bool const bStartCoast, bool const bEndCoast)
+      |                                                                                                                                                                                                                                                      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/coast_polygon.cpp:32:267: note: the first parameter in the range is 'PtiNode'
+   32 | CGeomCoastPolygon::CGeomCoastPolygon(int const nGlobalID, int const nCoastID, int const nNode, int const nProfileUpCoast, int const nProfileDownCoast, vector<CGeom2DPoint> const* pVIn, int const nLastPointUpCoast, const int nLastPointDownCoast, CGeom2DIPoint const* PtiNode, CGeom2DIPoint const* PtiAntinode, bool const bStartCoast, bool const bEndCoast)
+      |                                                                                                                                                                                                                                                                           ^~~~~~~
+/home/dave/coast/CoastalME/src/coast_polygon.cpp:32:297: note: the last parameter in the range is 'PtiAntinode'
+   32 | CGeomCoastPolygon::CGeomCoastPolygon(int const nGlobalID, int const nCoastID, int const nNode, int const nProfileUpCoast, int const nProfileDownCoast, vector<CGeom2DPoint> const* pVIn, int const nLastPointUpCoast, const int nLastPointDownCoast, CGeom2DIPoint const* PtiNode, CGeom2DIPoint const* PtiAntinode, bool const bStartCoast, bool const bEndCoast)
+      |                                                                                                                                                                                                                                                                                                         ^~~~~~~~~~~
+/home/dave/coast/CoastalME/src/create_profiles.cpp:127:31: warning: narrowing conversion from 'unsigned int' to signed type 'int' is implementation-defined [bugprone-narrowing-conversions]
+  127 |       LocateAndCreateProfiles(nCoast, nProfile, nProfileGlobalID, &bVCoastPointDone, &prVCurvature);
+      |                               ^
+/home/dave/coast/CoastalME/src/create_profiles.cpp:146:56: warning: narrowing conversion from 'unsigned int' to signed type 'int' is implementation-defined [bugprone-narrowing-conversions]
+  146 |       int nRet = nLocateAndCreateGridEdgeProfile(true, nCoast, nProfile, nProfileGlobalID);
+      |                                                        ^
+/home/dave/coast/CoastalME/src/create_profiles.cpp:152:53: warning: narrowing conversion from 'unsigned int' to signed type 'int' is implementation-defined [bugprone-narrowing-conversions]
+  152 |       nRet = nLocateAndCreateGridEdgeProfile(false, nCoast, ++nProfile, nProfileGlobalID);
+      |                                                     ^
+/home/dave/coast/CoastalME/src/create_profiles.cpp:718:60: warning: 2 adjacent parameters of 'nGetCoastNormalEndPoint' of similar type ('const int') are easily swapped by mistake [bugprone-easily-swappable-parameters]
+  718 | int CSimulation::nGetCoastNormalEndPoint(int const nCoast, int const nStartCoastPoint, int const nCoastSize, CGeom2DPoint const* pPtStart, double const dLineLength, CGeom2DPoint* pPtEnd, CGeom2DIPoint* pPtiEnd, bool const bIntervention)
+      |                                                            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/create_profiles.cpp:718:70: note: the first parameter in the range is 'nStartCoastPoint'
+  718 | int CSimulation::nGetCoastNormalEndPoint(int const nCoast, int const nStartCoastPoint, int const nCoastSize, CGeom2DPoint const* pPtStart, double const dLineLength, CGeom2DPoint* pPtEnd, CGeom2DIPoint* pPtiEnd, bool const bIntervention)
+      |                                                                      ^~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/create_profiles.cpp:718:98: note: the last parameter in the range is 'nCoastSize'
+  718 | int CSimulation::nGetCoastNormalEndPoint(int const nCoast, int const nStartCoastPoint, int const nCoastSize, CGeom2DPoint const* pPtStart, double const dLineLength, CGeom2DPoint* pPtEnd, CGeom2DIPoint* pPtiEnd, bool const bIntervention)
+      |                                                                                                  ^~~~~~~~~~
+/home/dave/coast/CoastalME/src/create_profiles.cpp:845:120: warning: 2 adjacent parameters of 'PtChooseEndPoint' of similar type ('const double') are easily swapped by mistake [bugprone-easily-swappable-parameters]
+  845 | CGeom2DPoint CSimulation::PtChooseEndPoint(int const nHand, CGeom2DPoint const* PtBefore, CGeom2DPoint const* PtAfter, double const dXEnd1, double const dYEnd1, double const dXEnd2, double const dYEnd2)
+      |                                                                                                                        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/create_profiles.cpp:845:133: note: the first parameter in the range is 'dXEnd1'
+  845 | CGeom2DPoint CSimulation::PtChooseEndPoint(int const nHand, CGeom2DPoint const* PtBefore, CGeom2DPoint const* PtAfter, double const dXEnd1, double const dYEnd1, double const dXEnd2, double const dYEnd2)
+      |                                                                                                                                     ^~~~~~
+/home/dave/coast/CoastalME/src/create_profiles.cpp:845:154: note: the last parameter in the range is 'dYEnd1'
+  845 | CGeom2DPoint CSimulation::PtChooseEndPoint(int const nHand, CGeom2DPoint const* PtBefore, CGeom2DPoint const* PtAfter, double const dXEnd1, double const dYEnd1, double const dXEnd2, double const dYEnd2)
+      |                                                                                                                                                          ^~~~~~
+/home/dave/coast/CoastalME/src/create_profiles.cpp:845:162: warning: 2 adjacent parameters of 'PtChooseEndPoint' of similar type ('const double') are easily swapped by mistake [bugprone-easily-swappable-parameters]
+  845 | CGeom2DPoint CSimulation::PtChooseEndPoint(int const nHand, CGeom2DPoint const* PtBefore, CGeom2DPoint const* PtAfter, double const dXEnd1, double const dYEnd1, double const dXEnd2, double const dYEnd2)
+      |                                                                                                                                                                  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/create_profiles.cpp:845:175: note: the first parameter in the range is 'dXEnd2'
+  845 | CGeom2DPoint CSimulation::PtChooseEndPoint(int const nHand, CGeom2DPoint const* PtBefore, CGeom2DPoint const* PtAfter, double const dXEnd1, double const dYEnd1, double const dXEnd2, double const dYEnd2)
+      |                                                                                                                                                                               ^~~~~~
+/home/dave/coast/CoastalME/src/create_profiles.cpp:845:196: note: the last parameter in the range is 'dYEnd2'
+  845 | CGeom2DPoint CSimulation::PtChooseEndPoint(int const nHand, CGeom2DPoint const* PtBefore, CGeom2DPoint const* PtAfter, double const dXEnd1, double const dYEnd1, double const dXEnd2, double const dYEnd2)
+      |                                                                                                                                                                                                    ^~~~~~
+/home/dave/coast/CoastalME/src/create_profiles.cpp:1154:28: warning: repeated branch body in conditional chain [bugprone-branch-clone]
+ 1154 |                            {
+      |                            ^
+/home/dave/coast/CoastalME/src/create_profiles.cpp:1159:29: note: end of the original
+ 1159 |                            }
+      |                             ^
+/home/dave/coast/CoastalME/src/create_profiles.cpp:1170:28: note: clone 1 starts here
+ 1170 |                            {
+      |                            ^
+/home/dave/coast/CoastalME/src/create_profiles.cpp:1162:28: warning: repeated branch body in conditional chain [bugprone-branch-clone]
+ 1162 |                            {
+      |                            ^
+/home/dave/coast/CoastalME/src/create_profiles.cpp:1167:29: note: end of the original
+ 1167 |                            }
+      |                             ^
+/home/dave/coast/CoastalME/src/create_profiles.cpp:1178:28: note: clone 1 starts here
+ 1178 |                            {
+      |                            ^
+/home/dave/coast/CoastalME/src/create_profiles.cpp:1270:26: warning: narrowing conversion from 'unsigned int' to signed type 'int' is implementation-defined [bugprone-narrowing-conversions]
+ 1270 |       MarkProfilesOnGrid(nCoast, nValidProfiles);
+      |                          ^
+/home/dave/coast/CoastalME/src/create_profiles.cpp:1330:105: warning: 6 adjacent parameters of 'bCheckForIntersection' of convertible types are easily swapped by mistake [bugprone-easily-swappable-parameters]
+ 1330 | bool CSimulation::bCheckForIntersection(CGeomProfile* const pVProfile1, CGeomProfile* const pVProfile2, int &nProfile1LineSegment, int &nProfile2LineSegment, double &dXIntersect, double &dYIntersect, double &dXAvgEnd, double &dYAvgEnd)
+      |                                                                                                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/create_profiles.cpp:1330:110: note: the first parameter in the range is 'nProfile1LineSegment'
+ 1330 | bool CSimulation::bCheckForIntersection(CGeomProfile* const pVProfile1, CGeomProfile* const pVProfile2, int &nProfile1LineSegment, int &nProfile2LineSegment, double &dXIntersect, double &dYIntersect, double &dXAvgEnd, double &dYAvgEnd)
+      |                                                                                                              ^~~~~~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/create_profiles.cpp:1330:227: note: the last parameter in the range is 'dYAvgEnd'
+ 1330 | bool CSimulation::bCheckForIntersection(CGeomProfile* const pVProfile1, CGeomProfile* const pVProfile2, int &nProfile1LineSegment, int &nProfile2LineSegment, double &dXIntersect, double &dYIntersect, double &dXAvgEnd, double &dYAvgEnd)
+      |                                                                                                                                                                                                                                   ^~~~~~~~
+/home/dave/coast/CoastalME/src/create_profiles.cpp:1330:159: note: 'int &' and 'double &' may be implicitly converted: 'int &' (as 'int') -> 'double &' (as 'double'), 'double &' (as 'double') -> 'int &' (as 'int')
+ 1330 | bool CSimulation::bCheckForIntersection(CGeomProfile* const pVProfile1, CGeomProfile* const pVProfile2, int &nProfile1LineSegment, int &nProfile2LineSegment, double &dXIntersect, double &dYIntersect, double &dXAvgEnd, double &dYAvgEnd)
+      |                                                                                                                                                               ^
+/home/dave/coast/CoastalME/src/create_profiles.cpp:1520:146: warning: 6 adjacent parameters of 'CreateRasterizedProfile' of similar type ('bool &') are easily swapped by mistake [bugprone-easily-swappable-parameters]
+ 1520 | void CSimulation::CreateRasterizedProfile(int const nCoast, CGeomProfile* pProfile, vector<CGeom2DIPoint> *pVIPointsOut, vector<bool>*pbVShared, bool& bTooShort, bool& bTruncated, bool& bHitCoast, bool& bHitLand, bool& bHitIntervention, bool& bHitAnotherProfile) // TODO 044
+      |                                                                                                                                                  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/create_profiles.cpp:1520:152: note: the first parameter in the range is 'bTooShort'
+ 1520 | void CSimulation::CreateRasterizedProfile(int const nCoast, CGeomProfile* pProfile, vector<CGeom2DIPoint> *pVIPointsOut, vector<bool>*pbVShared, bool& bTooShort, bool& bTruncated, bool& bHitCoast, bool& bHitLand, bool& bHitIntervention, bool& bHitAnotherProfile) // TODO 044
+      |                                                                                                                                                        ^~~~~~~~~
+/home/dave/coast/CoastalME/src/create_profiles.cpp:1520:244: note: the last parameter in the range is 'bHitAnotherProfile'
+ 1520 | void CSimulation::CreateRasterizedProfile(int const nCoast, CGeomProfile* pProfile, vector<CGeom2DIPoint> *pVIPointsOut, vector<bool>*pbVShared, bool& bTooShort, bool& bTruncated, bool& bHitCoast, bool& bHitLand, bool& bHitIntervention, bool& bHitAnotherProfile) // TODO 044
+      |                                                                                                                                                                                                                                                    ^~~~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/create_profiles.cpp:1742:129: warning: 3 adjacent parameters of 'MergeProfilesAtFinalLineSegments' of convertible types are easily swapped by mistake [bugprone-easily-swappable-parameters]
+ 1742 | void CSimulation::MergeProfilesAtFinalLineSegments(int const nCoast, CGeomProfile* pFirstProfile, CGeomProfile* pSecondProfile, int const nFirstProfileLineSegments, int const nSecondProfileLineSegments, double const dIntersectX, double const dIntersectY, double const dAvgEndX, double const dAvgEndY)
+      |                                                                                                                                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/create_profiles.cpp:1742:139: note: the first parameter in the range is 'nFirstProfileLineSegments'
+ 1742 | void CSimulation::MergeProfilesAtFinalLineSegments(int const nCoast, CGeomProfile* pFirstProfile, CGeomProfile* pSecondProfile, int const nFirstProfileLineSegments, int const nSecondProfileLineSegments, double const dIntersectX, double const dIntersectY, double const dAvgEndX, double const dAvgEndY)
+      |                                                                                                                                           ^~~~~~~~~~~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/create_profiles.cpp:1742:217: note: the last parameter in the range is 'dIntersectX'
+ 1742 | void CSimulation::MergeProfilesAtFinalLineSegments(int const nCoast, CGeomProfile* pFirstProfile, CGeomProfile* pSecondProfile, int const nFirstProfileLineSegments, int const nSecondProfileLineSegments, double const dIntersectX, double const dIntersectY, double const dAvgEndX, double const dAvgEndY)
+      |                                                                                                                                                                                                                         ^~~~~~~~~~~
+/home/dave/coast/CoastalME/src/create_profiles.cpp:1742:204: note: 'const int' and 'const double' may be implicitly converted: 'const int' (as 'int') -> 'const double' (as 'double'), 'const double' (as 'double') -> 'const int' (as 'int')
+ 1742 | void CSimulation::MergeProfilesAtFinalLineSegments(int const nCoast, CGeomProfile* pFirstProfile, CGeomProfile* pSecondProfile, int const nFirstProfileLineSegments, int const nSecondProfileLineSegments, double const dIntersectX, double const dIntersectY, double const dAvgEndX, double const dAvgEndY)
+      |                                                                                                                                                                                                            ^
+/home/dave/coast/CoastalME/src/create_profiles.cpp:1742:230: warning: 2 adjacent parameters of 'MergeProfilesAtFinalLineSegments' of similar type ('const double') are easily swapped by mistake [bugprone-easily-swappable-parameters]
+ 1742 | void CSimulation::MergeProfilesAtFinalLineSegments(int const nCoast, CGeomProfile* pFirstProfile, CGeomProfile* pSecondProfile, int const nFirstProfileLineSegments, int const nSecondProfileLineSegments, double const dIntersectX, double const dIntersectY, double const dAvgEndX, double const dAvgEndY)
+      |                                                                                                                                                                                                                                      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/create_profiles.cpp:1742:243: note: the first parameter in the range is 'dIntersectY'
+ 1742 | void CSimulation::MergeProfilesAtFinalLineSegments(int const nCoast, CGeomProfile* pFirstProfile, CGeomProfile* pSecondProfile, int const nFirstProfileLineSegments, int const nSecondProfileLineSegments, double const dIntersectX, double const dIntersectY, double const dAvgEndX, double const dAvgEndY)
+      |                                                                                                                                                                                                                                                   ^~~~~~~~~~~
+/home/dave/coast/CoastalME/src/create_profiles.cpp:1742:269: note: the last parameter in the range is 'dAvgEndX'
+ 1742 | void CSimulation::MergeProfilesAtFinalLineSegments(int const nCoast, CGeomProfile* pFirstProfile, CGeomProfile* pSecondProfile, int const nFirstProfileLineSegments, int const nSecondProfileLineSegments, double const dIntersectX, double const dIntersectY, double const dAvgEndX, double const dAvgEndY)
+      |                                                                                                                                                                                                                                                                             ^~~~~~~~
+/home/dave/coast/CoastalME/src/create_profiles.cpp:1966:137: warning: 2 adjacent parameters of 'nInsertPointIntoProfilesIfNeededThenUpdate' of convertible types are easily swapped by mistake [bugprone-easily-swappable-parameters]
+ 1966 | int CSimulation::nInsertPointIntoProfilesIfNeededThenUpdate(int const nCoast, CGeomProfile* pProfileToRetain, double const dIntersectX, double const dIntersectY, int const nProfileToRetainIntersectLineSeg, CGeomProfile* pProfileToTruncate, int const nProfileToTruncateIntersectLineSeg, bool const bAlreadyPresent)
+      |                                                                                                                                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/create_profiles.cpp:1966:150: note: the first parameter in the range is 'dIntersectY'
+ 1966 | int CSimulation::nInsertPointIntoProfilesIfNeededThenUpdate(int const nCoast, CGeomProfile* pProfileToRetain, double const dIntersectX, double const dIntersectY, int const nProfileToRetainIntersectLineSeg, CGeomProfile* pProfileToTruncate, int const nProfileToTruncateIntersectLineSeg, bool const bAlreadyPresent)
+      |                                                                                                                                                      ^~~~~~~~~~~
+/home/dave/coast/CoastalME/src/create_profiles.cpp:1966:173: note: the last parameter in the range is 'nProfileToRetainIntersectLineSeg'
+ 1966 | int CSimulation::nInsertPointIntoProfilesIfNeededThenUpdate(int const nCoast, CGeomProfile* pProfileToRetain, double const dIntersectX, double const dIntersectY, int const nProfileToRetainIntersectLineSeg, CGeomProfile* pProfileToTruncate, int const nProfileToTruncateIntersectLineSeg, bool const bAlreadyPresent)
+      |                                                                                                                                                                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/create_profiles.cpp:1966:163: note: 'const double' and 'const int' may be implicitly converted: 'const double' (as 'double') -> 'const int' (as 'int'), 'const int' (as 'int') -> 'const double' (as 'double')
+ 1966 | int CSimulation::nInsertPointIntoProfilesIfNeededThenUpdate(int const nCoast, CGeomProfile* pProfileToRetain, double const dIntersectX, double const dIntersectY, int const nProfileToRetainIntersectLineSeg, CGeomProfile* pProfileToTruncate, int const nProfileToTruncateIntersectLineSeg, bool const bAlreadyPresent)
+      |                                                                                                                                                                   ^
+/home/dave/coast/CoastalME/src/do_beach_within_polygon.cpp:44:91: warning: 2 adjacent parameters of 'nDoUnconsErosionOnPolygon' of convertible types are easily swapped by mistake [bugprone-easily-swappable-parameters]
+   44 | int CSimulation::nDoUnconsErosionOnPolygon(int const nCoast, CGeomCoastPolygon* pPolygon, int const nTexture, double const dErosionTargetOnPolygon, double &dEroded)
+      |                                                                                           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/do_beach_within_polygon.cpp:44:101: note: the first parameter in the range is 'nTexture'
+   44 | int CSimulation::nDoUnconsErosionOnPolygon(int const nCoast, CGeomCoastPolygon* pPolygon, int const nTexture, double const dErosionTargetOnPolygon, double &dEroded)
+      |                                                                                                     ^~~~~~~~
+/home/dave/coast/CoastalME/src/do_beach_within_polygon.cpp:44:124: note: the last parameter in the range is 'dErosionTargetOnPolygon'
+   44 | int CSimulation::nDoUnconsErosionOnPolygon(int const nCoast, CGeomCoastPolygon* pPolygon, int const nTexture, double const dErosionTargetOnPolygon, double &dEroded)
+      |                                                                                                                            ^~~~~~~~~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/do_beach_within_polygon.cpp:44:111: note: 'const int' and 'const double' may be implicitly converted: 'const int' (as 'int') -> 'const double' (as 'double'), 'const double' (as 'double') -> 'const int' (as 'int')
+   44 | int CSimulation::nDoUnconsErosionOnPolygon(int const nCoast, CGeomCoastPolygon* pPolygon, int const nTexture, double const dErosionTargetOnPolygon, double &dEroded)
+      |                                                                                                               ^
+/home/dave/coast/CoastalME/src/do_beach_within_polygon.cpp:423:44: warning: narrowing conversion from 'unsigned int' to signed type 'int' is implementation-defined [bugprone-narrowing-conversions]
+  423 |                nOffsetForLargestPossible = nn;
+      |                                            ^
+/home/dave/coast/CoastalME/src/do_beach_within_polygon.cpp:493:79: warning: 2 adjacent parameters of 'nDoParallelProfileUnconsErosion' of similar type ('const int') are easily swapped by mistake [bugprone-easily-swappable-parameters]
+  493 | int CSimulation::nDoParallelProfileUnconsErosion(CGeomCoastPolygon* pPolygon, int const nCoastPoint, int const nCoastX, int const nCoastY, int const nTexture, int const nInlandOffset, int const nParProfLen, vector<CGeom2DIPoint> const* pVPtiParProfile, vector<double> const* pVdParProfileDeanElev, double &dStillToErodeOnProfile, double &dStillToErodeOnPolygon, double &dTotEroded)
+      |                                                                               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/do_beach_within_polygon.cpp:493:89: note: the first parameter in the range is 'nCoastPoint'
+  493 | int CSimulation::nDoParallelProfileUnconsErosion(CGeomCoastPolygon* pPolygon, int const nCoastPoint, int const nCoastX, int const nCoastY, int const nTexture, int const nInlandOffset, int const nParProfLen, vector<CGeom2DIPoint> const* pVPtiParProfile, vector<double> const* pVdParProfileDeanElev, double &dStillToErodeOnProfile, double &dStillToErodeOnPolygon, double &dTotEroded)
+      |                                                                                         ^~~~~~~~~~~
+/home/dave/coast/CoastalME/src/do_beach_within_polygon.cpp:493:112: note: the last parameter in the range is 'nCoastX'
+  493 | int CSimulation::nDoParallelProfileUnconsErosion(CGeomCoastPolygon* pPolygon, int const nCoastPoint, int const nCoastX, int const nCoastY, int const nTexture, int const nInlandOffset, int const nParProfLen, vector<CGeom2DIPoint> const* pVPtiParProfile, vector<double> const* pVdParProfileDeanElev, double &dStillToErodeOnProfile, double &dStillToErodeOnPolygon, double &dTotEroded)
+      |                                                                                                                ^~~~~~~
+/home/dave/coast/CoastalME/src/do_beach_within_polygon.cpp:493:121: warning: 4 adjacent parameters of 'nDoParallelProfileUnconsErosion' of similar type ('const int') are easily swapped by mistake [bugprone-easily-swappable-parameters]
+  493 | int CSimulation::nDoParallelProfileUnconsErosion(CGeomCoastPolygon* pPolygon, int const nCoastPoint, int const nCoastX, int const nCoastY, int const nTexture, int const nInlandOffset, int const nParProfLen, vector<CGeom2DIPoint> const* pVPtiParProfile, vector<double> const* pVdParProfileDeanElev, double &dStillToErodeOnProfile, double &dStillToErodeOnPolygon, double &dTotEroded)
+      |                                                                                                                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/do_beach_within_polygon.cpp:493:131: note: the first parameter in the range is 'nCoastY'
+  493 | int CSimulation::nDoParallelProfileUnconsErosion(CGeomCoastPolygon* pPolygon, int const nCoastPoint, int const nCoastX, int const nCoastY, int const nTexture, int const nInlandOffset, int const nParProfLen, vector<CGeom2DIPoint> const* pVPtiParProfile, vector<double> const* pVdParProfileDeanElev, double &dStillToErodeOnProfile, double &dStillToErodeOnPolygon, double &dTotEroded)
+      |                                                                                                                                   ^~~~~~~
+/home/dave/coast/CoastalME/src/do_beach_within_polygon.cpp:493:195: note: the last parameter in the range is 'nParProfLen'
+  493 | int CSimulation::nDoParallelProfileUnconsErosion(CGeomCoastPolygon* pPolygon, int const nCoastPoint, int const nCoastX, int const nCoastY, int const nTexture, int const nInlandOffset, int const nParProfLen, vector<CGeom2DIPoint> const* pVPtiParProfile, vector<double> const* pVdParProfileDeanElev, double &dStillToErodeOnProfile, double &dStillToErodeOnPolygon, double &dTotEroded)
+      |                                                                                                                                                                                                   ^~~~~~~~~~~
+/home/dave/coast/CoastalME/src/do_beach_within_polygon.cpp:493:331: warning: 2 adjacent parameters of 'nDoParallelProfileUnconsErosion' of similar type ('double &') are easily swapped by mistake [bugprone-easily-swappable-parameters]
+  493 | int CSimulation::nDoParallelProfileUnconsErosion(CGeomCoastPolygon* pPolygon, int const nCoastPoint, int const nCoastX, int const nCoastY, int const nTexture, int const nInlandOffset, int const nParProfLen, vector<CGeom2DIPoint> const* pVPtiParProfile, vector<double> const* pVdParProfileDeanElev, double &dStillToErodeOnProfile, double &dStillToErodeOnPolygon, double &dTotEroded)
+      |                                                                                                                                                                                                                                                                                                                                           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/do_beach_within_polygon.cpp:493:339: note: the first parameter in the range is 'dStillToErodeOnPolygon'
+  493 | int CSimulation::nDoParallelProfileUnconsErosion(CGeomCoastPolygon* pPolygon, int const nCoastPoint, int const nCoastX, int const nCoastY, int const nTexture, int const nInlandOffset, int const nParProfLen, vector<CGeom2DIPoint> const* pVPtiParProfile, vector<double> const* pVdParProfileDeanElev, double &dStillToErodeOnProfile, double &dStillToErodeOnPolygon, double &dTotEroded)
+      |                                                                                                                                                                                                                                                                                                                                                   ^~~~~~~~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/do_beach_within_polygon.cpp:493:371: note: the last parameter in the range is 'dTotEroded'
+  493 | int CSimulation::nDoParallelProfileUnconsErosion(CGeomCoastPolygon* pPolygon, int const nCoastPoint, int const nCoastX, int const nCoastY, int const nTexture, int const nInlandOffset, int const nParProfLen, vector<CGeom2DIPoint> const* pVPtiParProfile, vector<double> const* pVdParProfileDeanElev, double &dStillToErodeOnProfile, double &dStillToErodeOnPolygon, double &dTotEroded)
+      |                                                                                                                                                                                                                                                                                                                                                                                   ^~~~~~~~~~
+/home/dave/coast/CoastalME/src/do_beach_within_polygon.cpp:687:83: warning: 3 adjacent parameters of 'ErodeCellBeachSedimentSupplyLimited' of convertible types are easily swapped by mistake [bugprone-easily-swappable-parameters]
+  687 | void CSimulation::ErodeCellBeachSedimentSupplyLimited(int const nX, int const nY, int const nThisLayer, int const nTexture, double const dMaxToErode, double &dRemoved)
+      |                                                                                   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/do_beach_within_polygon.cpp:687:93: note: the first parameter in the range is 'nThisLayer'
+  687 | void CSimulation::ErodeCellBeachSedimentSupplyLimited(int const nX, int const nY, int const nThisLayer, int const nTexture, double const dMaxToErode, double &dRemoved)
+      |                                                                                             ^~~~~~~~~~
+/home/dave/coast/CoastalME/src/do_beach_within_polygon.cpp:687:138: note: the last parameter in the range is 'dMaxToErode'
+  687 | void CSimulation::ErodeCellBeachSedimentSupplyLimited(int const nX, int const nY, int const nThisLayer, int const nTexture, double const dMaxToErode, double &dRemoved)
+      |                                                                                                                                          ^~~~~~~~~~~
+/home/dave/coast/CoastalME/src/do_beach_within_polygon.cpp:687:125: note: 'const int' and 'const double' may be implicitly converted: 'const int' (as 'int') -> 'const double' (as 'double'), 'const double' (as 'double') -> 'const int' (as 'int')
+  687 | void CSimulation::ErodeCellBeachSedimentSupplyLimited(int const nX, int const nY, int const nThisLayer, int const nTexture, double const dMaxToErode, double &dRemoved)
+      |                                                                                                                             ^
+/home/dave/coast/CoastalME/src/do_beach_within_polygon.cpp:1859:52: warning: 2 adjacent parameters of 'bElevAboveDeanElev' of convertible types are easily swapped by mistake [bugprone-easily-swappable-parameters]
+ 1859 | bool CSimulation::bElevAboveDeanElev(int const nX, int const nY, double const dElevDiff, CRWCellLandform const* pLandform)
+      |                                                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/do_beach_within_polygon.cpp:1859:62: note: the first parameter in the range is 'nY'
+ 1859 | bool CSimulation::bElevAboveDeanElev(int const nX, int const nY, double const dElevDiff, CRWCellLandform const* pLandform)
+      |                                                              ^~
+/home/dave/coast/CoastalME/src/do_beach_within_polygon.cpp:1859:79: note: the last parameter in the range is 'dElevDiff'
+ 1859 | bool CSimulation::bElevAboveDeanElev(int const nX, int const nY, double const dElevDiff, CRWCellLandform const* pLandform)
+      |                                                                               ^~~~~~~~~
+/home/dave/coast/CoastalME/src/do_beach_within_polygon.cpp:1859:66: note: 'const int' and 'const double' may be implicitly converted: 'const int' (as 'int') -> 'const double' (as 'double'), 'const double' (as 'double') -> 'const int' (as 'int')
+ 1859 | bool CSimulation::bElevAboveDeanElev(int const nX, int const nY, double const dElevDiff, CRWCellLandform const* pLandform)
+      |                                                                  ^
+/home/dave/coast/CoastalME/src/do_cliff_collapse.cpp:252:118: warning: 3 adjacent parameters of 'nDoCliffCollapse' of similar type ('double &') are easily swapped by mistake [bugprone-easily-swappable-parameters]
+  252 | int CSimulation::nDoCliffCollapse(int const nCoast, CRWCliff * pCliff, double &dFineCollapse, double &dSandCollapse, double &dCoarseCollapse, double &dPreCollapseCliffElev, double &dPostCollapseCliffElev)
+      |                                                                                                                      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/do_cliff_collapse.cpp:252:126: note: the first parameter in the range is 'dCoarseCollapse'
+  252 | int CSimulation::nDoCliffCollapse(int const nCoast, CRWCliff * pCliff, double &dFineCollapse, double &dSandCollapse, double &dCoarseCollapse, double &dPreCollapseCliffElev, double &dPostCollapseCliffElev)
+      |                                                                                                                              ^~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/do_cliff_collapse.cpp:252:182: note: the last parameter in the range is 'dPostCollapseCliffElev'
+  252 | int CSimulation::nDoCliffCollapse(int const nCoast, CRWCliff * pCliff, double &dFineCollapse, double &dSandCollapse, double &dCoarseCollapse, double &dPreCollapseCliffElev, double &dPostCollapseCliffElev)
+      |                                                                                                                                                                                      ^~~~~~~~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/do_cliff_collapse.cpp:524:119: warning: 2 adjacent parameters of 'nDoCliffCollapseDeposition' of similar type ('const double') are easily swapped by mistake [bugprone-easily-swappable-parameters]
+  524 | int CSimulation::nDoCliffCollapseDeposition(int const nCoast, CRWCliff const* pCliff, double const dSandFromCollapse, double const dCoarseFromCollapse, double const dPreCollapseCliffElev, double const dPostCollapseCliffElev)
+      |                                                                                                                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/do_cliff_collapse.cpp:524:132: note: the first parameter in the range is 'dCoarseFromCollapse'
+  524 | int CSimulation::nDoCliffCollapseDeposition(int const nCoast, CRWCliff const* pCliff, double const dSandFromCollapse, double const dCoarseFromCollapse, double const dPreCollapseCliffElev, double const dPostCollapseCliffElev)
+      |                                                                                                                                    ^~~~~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/do_cliff_collapse.cpp:524:166: note: the last parameter in the range is 'dPreCollapseCliffElev'
+  524 | int CSimulation::nDoCliffCollapseDeposition(int const nCoast, CRWCliff const* pCliff, double const dSandFromCollapse, double const dCoarseFromCollapse, double const dPreCollapseCliffElev, double const dPostCollapseCliffElev)
+      |                                                                                                                                                                      ^~~~~~~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/do_shore_platform_erosion.cpp:1107:62: warning: 2 adjacent parameters of 'dCalcBeachProtectionFactor' of convertible types are easily swapped by mistake [bugprone-easily-swappable-parameters]
+ 1107 | double CSimulation::dCalcBeachProtectionFactor(int const nX, int const nY, double const dBreakingWaveHeight)
+      |                                                              ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/do_shore_platform_erosion.cpp:1107:72: note: the first parameter in the range is 'nY'
+ 1107 | double CSimulation::dCalcBeachProtectionFactor(int const nX, int const nY, double const dBreakingWaveHeight)
+      |                                                                        ^~
+/home/dave/coast/CoastalME/src/do_shore_platform_erosion.cpp:1107:89: note: the last parameter in the range is 'dBreakingWaveHeight'
+ 1107 | double CSimulation::dCalcBeachProtectionFactor(int const nX, int const nY, double const dBreakingWaveHeight)
+      |                                                                                         ^~~~~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/do_shore_platform_erosion.cpp:1107:76: note: 'const int' and 'const double' may be implicitly converted: 'const int' (as 'int') -> 'const double' (as 'double'), 'const double' (as 'double') -> 'const int' (as 'int')
+ 1107 | double CSimulation::dCalcBeachProtectionFactor(int const nX, int const nY, double const dBreakingWaveHeight)
+      |                                                                            ^
+/home/dave/coast/CoastalME/src/do_shore_platform_erosion.cpp:1288:70: warning: 2 adjacent parameters of 'ConstructParallelProfile' of similar type ('const int') are easily swapped by mistake [bugprone-easily-swappable-parameters]
+ 1288 | void CSimulation::ConstructParallelProfile(int const nProfileStartX, int const nProfileStartY, int const nParCoastX, int const nParCoastY, int const nProfSize, vector<CGeom2DIPoint> *const pPtViGridProfile, vector<CGeom2DIPoint> *pPtiVGridParProfile, vector<CGeom2DPoint> *pPtVExtCRSParProfile)
+      |                                                                      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/do_shore_platform_erosion.cpp:1288:80: note: the first parameter in the range is 'nProfileStartY'
+ 1288 | void CSimulation::ConstructParallelProfile(int const nProfileStartX, int const nProfileStartY, int const nParCoastX, int const nParCoastY, int const nProfSize, vector<CGeom2DIPoint> *const pPtViGridProfile, vector<CGeom2DIPoint> *pPtiVGridParProfile, vector<CGeom2DPoint> *pPtVExtCRSParProfile)
+      |                                                                                ^~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/do_shore_platform_erosion.cpp:1288:106: note: the last parameter in the range is 'nParCoastX'
+ 1288 | void CSimulation::ConstructParallelProfile(int const nProfileStartX, int const nProfileStartY, int const nParCoastX, int const nParCoastY, int const nProfSize, vector<CGeom2DIPoint> *const pPtViGridProfile, vector<CGeom2DIPoint> *pPtiVGridParProfile, vector<CGeom2DPoint> *pPtVExtCRSParProfile)
+      |                                                                                                          ^~~~~~~~~~
+/home/dave/coast/CoastalME/src/do_shore_platform_erosion.cpp:1288:118: warning: 2 adjacent parameters of 'ConstructParallelProfile' of similar type ('const int') are easily swapped by mistake [bugprone-easily-swappable-parameters]
+ 1288 | void CSimulation::ConstructParallelProfile(int const nProfileStartX, int const nProfileStartY, int const nParCoastX, int const nParCoastY, int const nProfSize, vector<CGeom2DIPoint> *const pPtViGridProfile, vector<CGeom2DIPoint> *pPtiVGridParProfile, vector<CGeom2DPoint> *pPtVExtCRSParProfile)
+      |                                                                                                                      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/do_shore_platform_erosion.cpp:1288:128: note: the first parameter in the range is 'nParCoastY'
+ 1288 | void CSimulation::ConstructParallelProfile(int const nProfileStartX, int const nProfileStartY, int const nParCoastX, int const nParCoastY, int const nProfSize, vector<CGeom2DIPoint> *const pPtViGridProfile, vector<CGeom2DIPoint> *pPtiVGridParProfile, vector<CGeom2DPoint> *pPtVExtCRSParProfile)
+      |                                                                                                                                ^~~~~~~~~~
+/home/dave/coast/CoastalME/src/do_shore_platform_erosion.cpp:1288:150: note: the last parameter in the range is 'nProfSize'
+ 1288 | void CSimulation::ConstructParallelProfile(int const nProfileStartX, int const nProfileStartY, int const nParCoastX, int const nParCoastY, int const nProfSize, vector<CGeom2DIPoint> *const pPtViGridProfile, vector<CGeom2DIPoint> *pPtiVGridParProfile, vector<CGeom2DPoint> *pPtVExtCRSParProfile)
+      |                                                                                                                                                      ^~~~~~~~~
+/home/dave/coast/CoastalME/src/do_surge_flood.cpp:135:4: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+  135 |    switch (m_nLevel)
+      |    ^
+/home/dave/coast/CoastalME/src/do_surge_flood.cpp:189:10: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+  189 |          switch (m_nLevel)
+      |          ^
+/home/dave/coast/CoastalME/src/do_surge_flood.cpp:332:39: warning: 3 adjacent parameters of 'nTraceFloodCoastLine' of convertible types are easily swapped by mistake [bugprone-easily-swappable-parameters]
+  332 | int CSimulation::nTraceFloodCoastLine(unsigned int const nTraceFromStartCellIndex, int const nStartSearchDirection, int const nHandedness, vector<bool>*pVbTraced, vector<CGeom2DIPoint> const* pV2DIPossibleStartCell)
+      |                                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/do_surge_flood.cpp:332:58: note: the first parameter in the range is 'nTraceFromStartCellIndex'
+  332 | int CSimulation::nTraceFloodCoastLine(unsigned int const nTraceFromStartCellIndex, int const nStartSearchDirection, int const nHandedness, vector<bool>*pVbTraced, vector<CGeom2DIPoint> const* pV2DIPossibleStartCell)
+      |                                                          ^~~~~~~~~~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/do_surge_flood.cpp:332:127: note: the last parameter in the range is 'nHandedness'
+  332 | int CSimulation::nTraceFloodCoastLine(unsigned int const nTraceFromStartCellIndex, int const nStartSearchDirection, int const nHandedness, vector<bool>*pVbTraced, vector<CGeom2DIPoint> const* pV2DIPossibleStartCell)
+      |                                                                                                                               ^~~~~~~~~~~
+/home/dave/coast/CoastalME/src/do_surge_flood.cpp:332:84: note: 'const unsigned int' and 'const int' may be implicitly converted: 'const unsigned int' (as 'unsigned int') -> 'const int' (as 'int'), 'const int' (as 'int') -> 'const unsigned int' (as 'unsigned int')
+  332 | int CSimulation::nTraceFloodCoastLine(unsigned int const nTraceFromStartCellIndex, int const nStartSearchDirection, int const nHandedness, vector<bool>*pVbTraced, vector<CGeom2DIPoint> const* pV2DIPossibleStartCell)
+      |                                                                                    ^
+/home/dave/coast/CoastalME/src/do_surge_flood.cpp:449:7: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+  449 |       switch (nHandedness)
+      |       ^
+/home/dave/coast/CoastalME/src/do_surge_flood.cpp:454:13: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+  454 |             switch (nSearchDirection)
+      |             ^
+/home/dave/coast/CoastalME/src/do_surge_flood.cpp:550:13: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+  550 |             switch (nSearchDirection)
+      |             ^
+/home/dave/coast/CoastalME/src/do_surge_flood.cpp:658:16: warning: repeated branch body in conditional chain [bugprone-branch-clone]
+  658 |                {
+      |                ^
+/home/dave/coast/CoastalME/src/do_surge_flood.cpp:662:17: note: end of the original
+  662 |                }
+      |                 ^
+/home/dave/coast/CoastalME/src/do_surge_flood.cpp:665:16: note: clone 1 starts here
+  665 |                {
+      |                ^
+/home/dave/coast/CoastalME/src/do_surge_flood.cpp:699:16: warning: repeated branch body in conditional chain [bugprone-branch-clone]
+  699 |                {
+      |                ^
+/home/dave/coast/CoastalME/src/do_surge_flood.cpp:703:17: note: end of the original
+  703 |                }
+      |                 ^
+/home/dave/coast/CoastalME/src/do_surge_flood.cpp:706:16: note: clone 1 starts here
+  706 |                {
+      |                ^
+/home/dave/coast/CoastalME/src/do_surge_flood.cpp:739:16: warning: repeated branch body in conditional chain [bugprone-branch-clone]
+  739 |                {
+      |                ^
+/home/dave/coast/CoastalME/src/do_surge_flood.cpp:743:17: note: end of the original
+  743 |                }
+      |                 ^
+/home/dave/coast/CoastalME/src/do_surge_flood.cpp:746:16: note: clone 1 starts here
+  746 |                {
+      |                ^
+/home/dave/coast/CoastalME/src/do_surge_flood.cpp:911:4: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+  911 |    switch (m_nLevel)
+      |    ^
+/home/dave/coast/CoastalME/src/drift.cpp:36:41: warning: 2 adjacent parameters of 'CRWDrift' of similar type ('const int') are easily swapped by mistake [bugprone-easily-swappable-parameters]
+   36 | CRWDrift::CRWDrift(CRWCoast * pCoastIn, int const nCoast, int const nPointOnCoast)
+      |                                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/drift.cpp:36:51: note: the first parameter in the range is 'nCoast'
+   36 | CRWDrift::CRWDrift(CRWCoast * pCoastIn, int const nCoast, int const nPointOnCoast)
+      |                                                   ^~~~~~
+/home/dave/coast/CoastalME/src/drift.cpp:36:69: note: the last parameter in the range is 'nPointOnCoast'
+   36 | CRWDrift::CRWDrift(CRWCoast * pCoastIn, int const nCoast, int const nPointOnCoast)
+      |                                                                     ^~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/gis_raster.cpp:513:37: warning: 2 adjacent parameters of 'nReadRasterGISFile' of similar type ('const int') are easily swapped by mistake [bugprone-easily-swappable-parameters]
+  513 | int CSimulation::nReadRasterGISFile(int const nDataItem, int const nLayer)
+      |                                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/gis_raster.cpp:513:47: note: the first parameter in the range is 'nDataItem'
+  513 | int CSimulation::nReadRasterGISFile(int const nDataItem, int const nLayer)
+      |                                               ^~~~~~~~~
+/home/dave/coast/CoastalME/src/gis_raster.cpp:513:68: note: the last parameter in the range is 'nLayer'
+  513 | int CSimulation::nReadRasterGISFile(int const nDataItem, int const nLayer)
+      |                                                                    ^~~~~~
+/home/dave/coast/CoastalME/src/gis_raster.cpp:522:4: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+  522 |    switch (nDataItem)
+      |    ^
+/home/dave/coast/CoastalME/src/gis_raster.cpp:664:7: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+  664 |       switch (nDataItem)
+      |       ^
+/home/dave/coast/CoastalME/src/gis_raster.cpp:804:13: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+  804 |             switch (nDataItem)
+      |             ^
+/home/dave/coast/CoastalME/src/gis_raster.cpp:958:88: warning: 2 adjacent parameters of 'bWriteRasterGISFile' of convertible types are easily swapped by mistake [bugprone-easily-swappable-parameters]
+  958 | bool CSimulation::bWriteRasterGISFile(int const nDataItem, string const* strPlotTitle, int const nLayer, double const dElev)
+      |                                                                                        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/gis_raster.cpp:958:98: note: the first parameter in the range is 'nLayer'
+  958 | bool CSimulation::bWriteRasterGISFile(int const nDataItem, string const* strPlotTitle, int const nLayer, double const dElev)
+      |                                                                                                  ^~~~~~
+/home/dave/coast/CoastalME/src/gis_raster.cpp:958:119: note: the last parameter in the range is 'dElev'
+  958 | bool CSimulation::bWriteRasterGISFile(int const nDataItem, string const* strPlotTitle, int const nLayer, double const dElev)
+      |                                                                                                                       ^~~~~
+/home/dave/coast/CoastalME/src/gis_raster.cpp:958:106: note: 'const int' and 'const double' may be implicitly converted: 'const int' (as 'int') -> 'const double' (as 'double'), 'const double' (as 'double') -> 'const int' (as 'int')
+  958 | bool CSimulation::bWriteRasterGISFile(int const nDataItem, string const* strPlotTitle, int const nLayer, double const dElev)
+      |                                                                                                          ^
+/home/dave/coast/CoastalME/src/gis_raster.cpp:971:4: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+  971 |    switch (nDataItem)
+      |    ^
+/home/dave/coast/CoastalME/src/gis_raster.cpp:1378:10: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+ 1378 |          switch (nDataItem)
+      |          ^
+/home/dave/coast/CoastalME/src/gis_raster.cpp:1736:4: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+ 1736 |    switch (nDataItem)
+      |    ^
+/home/dave/coast/CoastalME/src/gis_raster.cpp:1850:4: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+ 1850 |    switch (nDataItem)
+      |    ^
+/home/dave/coast/CoastalME/src/gis_raster.cpp:2085:16: warning: repeated branch body in conditional chain [bugprone-branch-clone]
+ 2085 |                VdOutX[n] = m_dMissingValue;
+      |                ^
+/home/dave/coast/CoastalME/src/gis_raster.cpp:2085:43: note: end of the original
+ 2085 |                VdOutX[n] = m_dMissingValue;
+      |                                           ^
+/home/dave/coast/CoastalME/src/gis_raster.cpp:2088:16: note: clone 1 starts here
+ 2088 |                VdOutX[n] = m_dMissingValue;
+      |                ^
+/home/dave/coast/CoastalME/src/gis_raster.cpp:2108:16: warning: repeated branch body in conditional chain [bugprone-branch-clone]
+ 2108 |                VdOutY[n] = m_dMissingValue;
+      |                ^
+/home/dave/coast/CoastalME/src/gis_raster.cpp:2108:43: note: end of the original
+ 2108 |                VdOutY[n] = m_dMissingValue;
+      |                                           ^
+/home/dave/coast/CoastalME/src/gis_raster.cpp:2111:16: note: clone 1 starts here
+ 2111 |                VdOutY[n] = m_dMissingValue;
+      |                ^
+/home/dave/coast/CoastalME/src/gis_utils.cpp:575:103: warning: 2 adjacent parameters of 'PtGetPerpendicular' of convertible types are easily swapped by mistake [bugprone-easily-swappable-parameters]
+  575 | CGeom2DPoint CSimulation::PtGetPerpendicular(CGeom2DPoint const* PtStart, CGeom2DPoint const* PtNext, double const dDesiredLength, int const nHandedness)
+      |                                                                                                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/gis_utils.cpp:575:116: note: the first parameter in the range is 'dDesiredLength'
+  575 | CGeom2DPoint CSimulation::PtGetPerpendicular(CGeom2DPoint const* PtStart, CGeom2DPoint const* PtNext, double const dDesiredLength, int const nHandedness)
+      |                                                                                                                    ^~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/gis_utils.cpp:575:142: note: the last parameter in the range is 'nHandedness'
+  575 | CGeom2DPoint CSimulation::PtGetPerpendicular(CGeom2DPoint const* PtStart, CGeom2DPoint const* PtNext, double const dDesiredLength, int const nHandedness)
+      |                                                                                                                                              ^~~~~~~~~~~
+/home/dave/coast/CoastalME/src/gis_utils.cpp:575:132: note: 'const double' and 'const int' may be implicitly converted: 'const double' (as 'double') -> 'const int' (as 'int'), 'const int' (as 'int') -> 'const double' (as 'double')
+  575 | CGeom2DPoint CSimulation::PtGetPerpendicular(CGeom2DPoint const* PtStart, CGeom2DPoint const* PtNext, double const dDesiredLength, int const nHandedness)
+      |                                                                                                                                    ^
+/home/dave/coast/CoastalME/src/gis_utils.cpp:613:109: warning: 2 adjacent parameters of 'PtiGetPerpendicular' of convertible types are easily swapped by mistake [bugprone-easily-swappable-parameters]
+  613 | CGeom2DIPoint CSimulation::PtiGetPerpendicular(CGeom2DIPoint const* PtiStart, CGeom2DIPoint const* PtiNext, double const dDesiredLength, int const nHandedness)
+      |                                                                                                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/gis_utils.cpp:613:122: note: the first parameter in the range is 'dDesiredLength'
+  613 | CGeom2DIPoint CSimulation::PtiGetPerpendicular(CGeom2DIPoint const* PtiStart, CGeom2DIPoint const* PtiNext, double const dDesiredLength, int const nHandedness)
+      |                                                                                                                          ^~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/gis_utils.cpp:613:148: note: the last parameter in the range is 'nHandedness'
+  613 | CGeom2DIPoint CSimulation::PtiGetPerpendicular(CGeom2DIPoint const* PtiStart, CGeom2DIPoint const* PtiNext, double const dDesiredLength, int const nHandedness)
+      |                                                                                                                                                    ^~~~~~~~~~~
+/home/dave/coast/CoastalME/src/gis_utils.cpp:613:138: note: 'const double' and 'const int' may be implicitly converted: 'const double' (as 'double') -> 'const int' (as 'int'), 'const int' (as 'int') -> 'const double' (as 'double')
+  613 | CGeom2DIPoint CSimulation::PtiGetPerpendicular(CGeom2DIPoint const* PtiStart, CGeom2DIPoint const* PtiNext, double const dDesiredLength, int const nHandedness)
+      |                                                                                                                                          ^
+/home/dave/coast/CoastalME/src/gis_utils.cpp:651:67: warning: 2 adjacent parameters of 'PtiGetPerpendicular' of similar type ('const int') are easily swapped by mistake [bugprone-easily-swappable-parameters]
+  651 | CGeom2DIPoint CSimulation::PtiGetPerpendicular(int const nStartX, int const nStartY, int const nNextX, int const nNextY, double const dDesiredLength, int const nHandedness)
+      |                                                                   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/gis_utils.cpp:651:77: note: the first parameter in the range is 'nStartY'
+  651 | CGeom2DIPoint CSimulation::PtiGetPerpendicular(int const nStartX, int const nStartY, int const nNextX, int const nNextY, double const dDesiredLength, int const nHandedness)
+      |                                                                             ^~~~~~~
+/home/dave/coast/CoastalME/src/gis_utils.cpp:651:96: note: the last parameter in the range is 'nNextX'
+  651 | CGeom2DIPoint CSimulation::PtiGetPerpendicular(int const nStartX, int const nStartY, int const nNextX, int const nNextY, double const dDesiredLength, int const nHandedness)
+      |                                                                                                ^~~~~~
+/home/dave/coast/CoastalME/src/gis_utils.cpp:651:104: warning: 3 adjacent parameters of 'PtiGetPerpendicular' of convertible types are easily swapped by mistake [bugprone-easily-swappable-parameters]
+  651 | CGeom2DIPoint CSimulation::PtiGetPerpendicular(int const nStartX, int const nStartY, int const nNextX, int const nNextY, double const dDesiredLength, int const nHandedness)
+      |                                                                                                        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/gis_utils.cpp:651:114: note: the first parameter in the range is 'nNextY'
+  651 | CGeom2DIPoint CSimulation::PtiGetPerpendicular(int const nStartX, int const nStartY, int const nNextX, int const nNextY, double const dDesiredLength, int const nHandedness)
+      |                                                                                                                  ^~~~~~
+/home/dave/coast/CoastalME/src/gis_utils.cpp:651:161: note: the last parameter in the range is 'nHandedness'
+  651 | CGeom2DIPoint CSimulation::PtiGetPerpendicular(int const nStartX, int const nStartY, int const nNextX, int const nNextY, double const dDesiredLength, int const nHandedness)
+      |                                                                                                                                                                 ^~~~~~~~~~~
+/home/dave/coast/CoastalME/src/gis_utils.cpp:651:122: note: 'const int' and 'const double' may be implicitly converted: 'const int' (as 'int') -> 'const double' (as 'double'), 'const double' (as 'double') -> 'const int' (as 'int')
+  651 | CGeom2DIPoint CSimulation::PtiGetPerpendicular(int const nStartX, int const nStartY, int const nNextX, int const nNextY, double const dDesiredLength, int const nHandedness)
+      |                                                                                                                          ^
+/home/dave/coast/CoastalME/src/gis_utils.cpp:1425:62: warning: 2 adjacent parameters of 'GetRasterOutputMinMax' of similar type ('double &') are easily swapped by mistake [bugprone-easily-swappable-parameters]
+ 1425 | void CSimulation::GetRasterOutputMinMax(int const nDataItem, double &dMin, double &dMax, int const nLayer, double const dElev)
+      |                                                              ^~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/gis_utils.cpp:1425:70: note: the first parameter in the range is 'dMin'
+ 1425 | void CSimulation::GetRasterOutputMinMax(int const nDataItem, double &dMin, double &dMax, int const nLayer, double const dElev)
+      |                                                                      ^~~~
+/home/dave/coast/CoastalME/src/gis_utils.cpp:1425:84: note: the last parameter in the range is 'dMax'
+ 1425 | void CSimulation::GetRasterOutputMinMax(int const nDataItem, double &dMin, double &dMax, int const nLayer, double const dElev)
+      |                                                                                    ^~~~
+/home/dave/coast/CoastalME/src/gis_utils.cpp:1425:90: warning: 2 adjacent parameters of 'GetRasterOutputMinMax' of convertible types are easily swapped by mistake [bugprone-easily-swappable-parameters]
+ 1425 | void CSimulation::GetRasterOutputMinMax(int const nDataItem, double &dMin, double &dMax, int const nLayer, double const dElev)
+      |                                                                                          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/gis_utils.cpp:1425:100: note: the first parameter in the range is 'nLayer'
+ 1425 | void CSimulation::GetRasterOutputMinMax(int const nDataItem, double &dMin, double &dMax, int const nLayer, double const dElev)
+      |                                                                                                    ^~~~~~
+/home/dave/coast/CoastalME/src/gis_utils.cpp:1425:121: note: the last parameter in the range is 'dElev'
+ 1425 | void CSimulation::GetRasterOutputMinMax(int const nDataItem, double &dMin, double &dMax, int const nLayer, double const dElev)
+      |                                                                                                                         ^~~~~
+/home/dave/coast/CoastalME/src/gis_utils.cpp:1425:108: note: 'const int' and 'const double' may be implicitly converted: 'const int' (as 'int') -> 'const double' (as 'double'), 'const double' (as 'double') -> 'const int' (as 'int')
+ 1425 | void CSimulation::GetRasterOutputMinMax(int const nDataItem, double &dMin, double &dMax, int const nLayer, double const dElev)
+      |                                                                                                            ^
+/home/dave/coast/CoastalME/src/gis_utils.cpp:1455:10: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+ 1455 |          switch (nDataItem)
+      |          ^
+/home/dave/coast/CoastalME/src/gis_utils.cpp:1655:13: warning: switch has 3 consecutive identical branches [bugprone-branch-clone]
+ 1655 |             case (RASTER_PLOT_SHADOW_DOWNDRIFT_ZONE):
+      |             ^
+/home/dave/coast/CoastalME/src/gis_utils.cpp:1665:21: note: last of these clones ends here
+ 1665 |                break;
+      |                     ^
+/home/dave/coast/CoastalME/src/gis_utils.cpp:1701:4: warning: repeated branch body in conditional chain [bugprone-branch-clone]
+ 1701 |    {
+      |    ^
+/home/dave/coast/CoastalME/src/gis_utils.cpp:1702:5: note: end of the original
+ 1702 |    }
+      |     ^
+/home/dave/coast/CoastalME/src/gis_utils.cpp:1705:4: note: clone 1 starts here
+ 1705 |    {
+      |    ^
+/home/dave/coast/CoastalME/src/gis_utils.cpp:1746:4: note: clone 2 starts here
+ 1746 |    {
+      |    ^
+/home/dave/coast/CoastalME/src/gis_utils.cpp:1758:4: note: clone 3 starts here
+ 1758 |    {
+      |    ^
+/home/dave/coast/CoastalME/src/gis_utils.cpp:1767:4: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+ 1767 |    switch (nDirection)
+      |    ^
+/home/dave/coast/CoastalME/src/gis_vector.cpp:56:4: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+   56 |    switch (nDataItem)
+      |    ^
+/home/dave/coast/CoastalME/src/gis_vector.cpp:157:13: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+  157 |             switch (nNeedGeometry)
+      |             ^
+/home/dave/coast/CoastalME/src/gis_vector.cpp:187:10: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+  187 |          switch (nDataItem)
+      |          ^
+/home/dave/coast/CoastalME/src/gis_vector.cpp:279:10: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+  279 |          switch (nDataItem)
+      |          ^
+/home/dave/coast/CoastalME/src/gis_vector.cpp:350:4: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+  350 |    switch (nDataItem)
+      |    ^
+/home/dave/coast/CoastalME/src/gis_vector.cpp:410:4: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+  410 |    switch (nDataItem)
+      |    ^
+/home/dave/coast/CoastalME/src/gis_vector.cpp:657:4: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+  657 |    switch (nDataItem)
+      |    ^
+/home/dave/coast/CoastalME/src/hermite_cubic.cpp:118:7: warning: repeated branch body in conditional chain [bugprone-branch-clone]
+  118 |       {
+      |       ^
+/home/dave/coast/CoastalME/src/hermite_cubic.cpp:121:8: note: end of the original
+  121 |       }
+      |        ^
+/home/dave/coast/CoastalME/src/hermite_cubic.cpp:130:7: note: clone 1 starts here
+  130 |       {
+      |       ^
+/home/dave/coast/CoastalME/src/hermite_cubic.cpp:175:7: warning: repeated branch body in conditional chain [bugprone-branch-clone]
+  175 |       {
+      |       ^
+/home/dave/coast/CoastalME/src/hermite_cubic.cpp:178:8: note: end of the original
+  178 |       }
+      |        ^
+/home/dave/coast/CoastalME/src/hermite_cubic.cpp:181:7: note: clone 1 starts here
+  181 |       {
+      |       ^
+/home/dave/coast/CoastalME/src/hermite_cubic.cpp:273:60: warning: 2 adjacent parameters of 'hermite_cubic_value' of similar type ('const double') are easily swapped by mistake [bugprone-easily-swappable-parameters]
+  273 | void hermite_cubic_value(double const x1, double const f1, double const d1, double const x2, double const f2, double const d2, int const n, double const* x, double* f, double* d, double* s, double* t)
+      |                                                            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/hermite_cubic.cpp:273:73: note: the first parameter in the range is 'd1'
+  273 | void hermite_cubic_value(double const x1, double const f1, double const d1, double const x2, double const f2, double const d2, int const n, double const* x, double* f, double* d, double* s, double* t)
+      |                                                                         ^~
+/home/dave/coast/CoastalME/src/hermite_cubic.cpp:273:90: note: the last parameter in the range is 'x2'
+  273 | void hermite_cubic_value(double const x1, double const f1, double const d1, double const x2, double const f2, double const d2, int const n, double const* x, double* f, double* d, double* s, double* t)
+      |                                                                                          ^~
+/home/dave/coast/CoastalME/src/hermite_cubic.cpp:273:111: warning: 2 adjacent parameters of 'hermite_cubic_value' of convertible types are easily swapped by mistake [bugprone-easily-swappable-parameters]
+  273 | void hermite_cubic_value(double const x1, double const f1, double const d1, double const x2, double const f2, double const d2, int const n, double const* x, double* f, double* d, double* s, double* t)
+      |                                                                                                               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/hermite_cubic.cpp:273:124: note: the first parameter in the range is 'd2'
+  273 | void hermite_cubic_value(double const x1, double const f1, double const d1, double const x2, double const f2, double const d2, int const n, double const* x, double* f, double* d, double* s, double* t)
+      |                                                                                                                            ^~
+/home/dave/coast/CoastalME/src/hermite_cubic.cpp:273:138: note: the last parameter in the range is 'n'
+  273 | void hermite_cubic_value(double const x1, double const f1, double const d1, double const x2, double const f2, double const d2, int const n, double const* x, double* f, double* d, double* s, double* t)
+      |                                                                                                                                          ^
+/home/dave/coast/CoastalME/src/hermite_cubic.cpp:273:128: note: 'const double' and 'const int' may be implicitly converted: 'const double' (as 'double') -> 'const int' (as 'int'), 'const int' (as 'int') -> 'const double' (as 'double')
+  273 | void hermite_cubic_value(double const x1, double const f1, double const d1, double const x2, double const f2, double const d2, int const n, double const* x, double* f, double* d, double* s, double* t)
+      |                                                                                                                                ^
+/home/dave/coast/CoastalME/src/hermite_cubic.cpp:273:158: warning: 4 adjacent parameters of 'hermite_cubic_value' of similar type ('double *') are easily swapped by mistake [bugprone-easily-swappable-parameters]
+  273 | void hermite_cubic_value(double const x1, double const f1, double const d1, double const x2, double const f2, double const d2, int const n, double const* x, double* f, double* d, double* s, double* t)
+      |                                                                                                                                                              ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/hermite_cubic.cpp:273:166: note: the first parameter in the range is 'f'
+  273 | void hermite_cubic_value(double const x1, double const f1, double const d1, double const x2, double const f2, double const d2, int const n, double const* x, double* f, double* d, double* s, double* t)
+      |                                                                                                                                                                      ^
+/home/dave/coast/CoastalME/src/hermite_cubic.cpp:273:199: note: the last parameter in the range is 't'
+  273 | void hermite_cubic_value(double const x1, double const f1, double const d1, double const x2, double const f2, double const d2, int const n, double const* x, double* f, double* d, double* s, double* t)
+      |                                                                                                                                                                                                       ^
+/home/dave/coast/CoastalME/src/init_grid.cpp:37:13: error: 'omp.h' file not found [clang-diagnostic-error]
+   37 |    #include <omp.h>
+      |             ^~~~~~~
+/home/dave/coast/CoastalME/src/interpolate.cpp:84:11: warning: narrowing conversion from 'unsigned int' to signed type 'int' is implementation-defined [bugprone-narrowing-conversions]
+   84 |       i = nSize - 2;
+      |           ^
+/home/dave/coast/CoastalME/src/interpolate.cpp:128:24: warning: narrowing conversion from 'unsigned int' to signed type 'int' is implementation-defined [bugprone-narrowing-conversions]
+  128 |          nIndexFound = i;
+      |                        ^
+/home/dave/coast/CoastalME/src/intervention.cpp:36:55: warning: 2 adjacent parameters of 'CRWIntervention' of similar type ('const int') are easily swapped by mistake [bugprone-easily-swappable-parameters]
+   36 | CRWIntervention::CRWIntervention(CRWCoast * pCoastIn, int const nCoast, int const nPointOnCoast)
+      |                                                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/intervention.cpp:36:65: note: the first parameter in the range is 'nCoast'
+   36 | CRWIntervention::CRWIntervention(CRWCoast * pCoastIn, int const nCoast, int const nPointOnCoast)
+      |                                                                 ^~~~~~
+/home/dave/coast/CoastalME/src/intervention.cpp:36:83: note: the last parameter in the range is 'nPointOnCoast'
+   36 | CRWIntervention::CRWIntervention(CRWCoast * pCoastIn, int const nCoast, int const nPointOnCoast)
+      |                                                                                   ^~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/locate_coast.cpp:426:34: warning: 3 adjacent parameters of 'nTraceCoastLine' of convertible types are easily swapped by mistake [bugprone-easily-swappable-parameters]
+  426 | int CSimulation::nTraceCoastLine(unsigned int const nTraceFromStartCellIndex, int const nStartSearchDirection, int const nHandedness, vector<bool>*pVbTraced, vector<CGeom2DIPoint> const* pV2DIPossibleStartCell)
+      |                                  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/locate_coast.cpp:426:53: note: the first parameter in the range is 'nTraceFromStartCellIndex'
+  426 | int CSimulation::nTraceCoastLine(unsigned int const nTraceFromStartCellIndex, int const nStartSearchDirection, int const nHandedness, vector<bool>*pVbTraced, vector<CGeom2DIPoint> const* pV2DIPossibleStartCell)
+      |                                                     ^~~~~~~~~~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/locate_coast.cpp:426:122: note: the last parameter in the range is 'nHandedness'
+  426 | int CSimulation::nTraceCoastLine(unsigned int const nTraceFromStartCellIndex, int const nStartSearchDirection, int const nHandedness, vector<bool>*pVbTraced, vector<CGeom2DIPoint> const* pV2DIPossibleStartCell)
+      |                                                                                                                          ^~~~~~~~~~~
+/home/dave/coast/CoastalME/src/locate_coast.cpp:426:79: note: 'const unsigned int' and 'const int' may be implicitly converted: 'const unsigned int' (as 'unsigned int') -> 'const int' (as 'int'), 'const int' (as 'int') -> 'const unsigned int' (as 'unsigned int')
+  426 | int CSimulation::nTraceCoastLine(unsigned int const nTraceFromStartCellIndex, int const nStartSearchDirection, int const nHandedness, vector<bool>*pVbTraced, vector<CGeom2DIPoint> const* pV2DIPossibleStartCell)
+      |                                                                               ^
+/home/dave/coast/CoastalME/src/locate_coast.cpp:543:7: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+  543 |       switch (nHandedness)
+      |       ^
+/home/dave/coast/CoastalME/src/locate_coast.cpp:548:13: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+  548 |             switch (nSearchDirection)
+      |             ^
+/home/dave/coast/CoastalME/src/locate_coast.cpp:644:13: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+  644 |             switch (nSearchDirection)
+      |             ^
+/home/dave/coast/CoastalME/src/locate_coast.cpp:752:16: warning: repeated branch body in conditional chain [bugprone-branch-clone]
+  752 |                {
+      |                ^
+/home/dave/coast/CoastalME/src/locate_coast.cpp:756:17: note: end of the original
+  756 |                }
+      |                 ^
+/home/dave/coast/CoastalME/src/locate_coast.cpp:759:16: note: clone 1 starts here
+  759 |                {
+      |                ^
+/home/dave/coast/CoastalME/src/locate_coast.cpp:793:16: warning: repeated branch body in conditional chain [bugprone-branch-clone]
+  793 |                {
+      |                ^
+/home/dave/coast/CoastalME/src/locate_coast.cpp:797:17: note: end of the original
+  797 |                }
+      |                 ^
+/home/dave/coast/CoastalME/src/locate_coast.cpp:800:16: note: clone 1 starts here
+  800 |                {
+      |                ^
+/home/dave/coast/CoastalME/src/locate_coast.cpp:833:16: warning: repeated branch body in conditional chain [bugprone-branch-clone]
+  833 |                {
+      |                ^
+/home/dave/coast/CoastalME/src/locate_coast.cpp:837:17: note: end of the original
+  837 |                }
+      |                 ^
+/home/dave/coast/CoastalME/src/locate_coast.cpp:840:16: note: clone 1 starts here
+  840 |                {
+      |                ^
+/home/dave/coast/CoastalME/src/locate_coast.cpp:1099:4: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+ 1099 |    switch (m_nLevel)
+      |    ^
+/home/dave/coast/CoastalME/src/multi_line.cpp:247:32: warning: narrowing conversion from 'unsigned int' to signed type 'int' is implementation-defined [bugprone-narrowing-conversions]
+  247 |             nThisLineSegment = i;
+      |                                ^
+/home/dave/coast/CoastalME/src/profile.cpp:36:28: warning: 4 adjacent parameters of 'CGeomProfile' of similar type ('const int') are easily swapped by mistake [bugprone-easily-swappable-parameters]
+   36 | CGeomProfile::CGeomProfile(int const nCoast, int const nCoastPoint, int const nCoastID, int const nGlobalID, CGeom2DIPoint const* pPtiStart, CGeom2DIPoint const* pPtiEnd, bool const bIntervention)
+      |                            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/profile.cpp:36:38: note: the first parameter in the range is 'nCoast'
+   36 | CGeomProfile::CGeomProfile(int const nCoast, int const nCoastPoint, int const nCoastID, int const nGlobalID, CGeom2DIPoint const* pPtiStart, CGeom2DIPoint const* pPtiEnd, bool const bIntervention)
+      |                                      ^~~~~~
+/home/dave/coast/CoastalME/src/profile.cpp:36:99: note: the last parameter in the range is 'nGlobalID'
+   36 | CGeomProfile::CGeomProfile(int const nCoast, int const nCoastPoint, int const nCoastID, int const nGlobalID, CGeom2DIPoint const* pPtiStart, CGeom2DIPoint const* pPtiEnd, bool const bIntervention)
+      |                                                                                                   ^~~~~~~~~
+/home/dave/coast/CoastalME/src/profile.cpp:36:110: warning: 2 adjacent parameters of 'CGeomProfile' of similar type ('const CGeom2DIPoint *') are easily swapped by mistake [bugprone-easily-swappable-parameters]
+   36 | CGeomProfile::CGeomProfile(int const nCoast, int const nCoastPoint, int const nCoastID, int const nGlobalID, CGeom2DIPoint const* pPtiStart, CGeom2DIPoint const* pPtiEnd, bool const bIntervention)
+      |                                                                                                              ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/profile.cpp:36:131: note: the first parameter in the range is 'pPtiStart'
+   36 | CGeomProfile::CGeomProfile(int const nCoast, int const nCoastPoint, int const nCoastID, int const nGlobalID, CGeom2DIPoint const* pPtiStart, CGeom2DIPoint const* pPtiEnd, bool const bIntervention)
+      |                                                                                                                                   ^~~~~~~~~
+/home/dave/coast/CoastalME/src/profile.cpp:36:163: note: the last parameter in the range is 'pPtiEnd'
+   36 | CGeomProfile::CGeomProfile(int const nCoast, int const nCoastPoint, int const nCoastID, int const nGlobalID, CGeom2DIPoint const* pPtiStart, CGeom2DIPoint const* pPtiEnd, bool const bIntervention)
+      |                                                                                                                                                                   ^~~~~~~
+/home/dave/coast/CoastalME/src/profile.cpp:557:19: warning: narrowing conversion from 'unsigned int' to signed type 'int' is implementation-defined [bugprone-narrowing-conversions]
+  557 |          nIndex = n;
+      |                   ^
+/home/dave/coast/CoastalME/src/profile.cpp:560:22: warning: narrowing conversion from 'unsigned int' to signed type 'int' is implementation-defined [bugprone-narrowing-conversions]
+  560 |             nIndex = n - 1; // Grid CRS units
+      |                      ^
+/home/dave/coast/CoastalME/src/read_input.cpp:141:10: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+  141 |          switch (i)
+      |          ^
+/home/dave/coast/CoastalME/src/read_input.cpp:328:10: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+  328 |          switch (i)
+      |          ^
+/home/dave/coast/CoastalME/src/read_input.cpp:1839:22: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+ 1839 |                      switch (j)
+      |                      ^
+/home/dave/coast/CoastalME/src/read_input.cpp:3553:13: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+ 3553 |             switch (nRead)
+      |             ^
+/home/dave/coast/CoastalME/src/sediment_input_event.cpp:30:32: warning: 7 adjacent parameters of 'CSedInputEvent' of convertible types are easily swapped by mistake [bugprone-easily-swappable-parameters]
+   30 | CSedInputEvent::CSedInputEvent(int const nIDIn, unsigned long const ulTimeStepIn, double const dFineIn, double const dSandIn, double const dCoarseIn, double const dLenIn, double const dWidthIn): //, double const dThickIn):
+      |                                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/sediment_input_event.cpp:30:42: note: the first parameter in the range is 'nIDIn'
+   30 | CSedInputEvent::CSedInputEvent(int const nIDIn, unsigned long const ulTimeStepIn, double const dFineIn, double const dSandIn, double const dCoarseIn, double const dLenIn, double const dWidthIn): //, double const dThickIn):
+      |                                          ^~~~~
+/home/dave/coast/CoastalME/src/sediment_input_event.cpp:30:185: note: the last parameter in the range is 'dWidthIn'
+   30 | CSedInputEvent::CSedInputEvent(int const nIDIn, unsigned long const ulTimeStepIn, double const dFineIn, double const dSandIn, double const dCoarseIn, double const dLenIn, double const dWidthIn): //, double const dThickIn):
+      |                                                                                                                                                                                         ^~~~~~~~
+/home/dave/coast/CoastalME/src/sediment_input_event.cpp:30:49: note: 'const int' and 'const unsigned long' may be implicitly converted: 'const int' (as 'int') -> 'const unsigned long' (as 'unsigned long'), 'const unsigned long' (as 'unsigned long') -> 'const int' (as 'int')
+   30 | CSedInputEvent::CSedInputEvent(int const nIDIn, unsigned long const ulTimeStepIn, double const dFineIn, double const dSandIn, double const dCoarseIn, double const dLenIn, double const dWidthIn): //, double const dThickIn):
+      |                                                 ^
+/home/dave/coast/CoastalME/src/sediment_input_event.cpp:30:83: note: 'const int' and 'const double' may be implicitly converted: 'const int' (as 'int') -> 'const double' (as 'double'), 'const double' (as 'double') -> 'const int' (as 'int')
+   30 | CSedInputEvent::CSedInputEvent(int const nIDIn, unsigned long const ulTimeStepIn, double const dFineIn, double const dSandIn, double const dCoarseIn, double const dLenIn, double const dWidthIn): //, double const dThickIn):
+      |                                                                                   ^
+/home/dave/coast/CoastalME/src/sediment_input_event.cpp:30:83: note: 'const unsigned long' and 'const double' may be implicitly converted: 'const unsigned long' (as 'unsigned long') -> 'const double' (as 'double'), 'const double' (as 'double') -> 'const unsigned long' (as 'unsigned long')
+/home/dave/coast/CoastalME/src/simulation.cpp:708:19: warning: performing an implicit widening conversion to type 'unsigned long' of a multiplication performed in type 'int' [bugprone-implicit-widening-of-multiplication-result]
+  708 |    m_ulNumCells = m_nXGridSize * m_nYGridSize;
+      |                   ^
+/home/dave/coast/CoastalME/src/simulation.cpp:708:19: note: make conversion explicit to silence this warning
+   26 |    m_ulNumCells = m_nXGridSize * m_nYGridSize;
+      |                   ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                   static_cast<unsigned long>()
+/home/dave/coast/CoastalME/src/simulation.cpp:708:19: note: perform multiplication in a wider type
+  708 |    m_ulNumCells = m_nXGridSize * m_nYGridSize;
+      |                   ^~~~~~~~~~~~
+      |                   static_cast<long>( )
+/home/dave/coast/CoastalME/src/smooth_line.cpp:80:70: warning: 2 adjacent parameters of 'LSmoothCoastSavitzkyGolay' of similar type ('const int') are easily swapped by mistake [bugprone-easily-swappable-parameters]
+   80 | CGeomLine CSimulation::LSmoothCoastSavitzkyGolay(CGeomLine* pLineIn, int const nStartEdge, int const nEndEdge) const
+      |                                                                      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/smooth_line.cpp:80:80: note: the first parameter in the range is 'nStartEdge'
+   80 | CGeomLine CSimulation::LSmoothCoastSavitzkyGolay(CGeomLine* pLineIn, int const nStartEdge, int const nEndEdge) const
+      |                                                                                ^~~~~~~~~~
+/home/dave/coast/CoastalME/src/smooth_line.cpp:80:102: note: the last parameter in the range is 'nEndEdge'
+   80 | CGeomLine CSimulation::LSmoothCoastSavitzkyGolay(CGeomLine* pLineIn, int const nStartEdge, int const nEndEdge) const
+      |                                                                                                      ^~~~~~~~
+/home/dave/coast/CoastalME/src/smooth_line.cpp:127:10: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+  127 |          switch (nStartEdge)
+      |          ^
+/home/dave/coast/CoastalME/src/smooth_line.cpp:165:10: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+  165 |          switch (nEndEdge)
+      |          ^
+/home/dave/coast/CoastalME/src/smooth_line.cpp:475:52: warning: 3 adjacent parameters of 'LUDecomp' of similar type ('int *') are easily swapped by mistake [bugprone-easily-swappable-parameters]
+  475 | void LUDecomp(Matrix A, int const N, int const np, int nIndexArray[], int* nDCode, int* nICode)
+      |                                                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/smooth_line.cpp:475:56: note: the first parameter in the range is 'nIndexArray'
+  475 | void LUDecomp(Matrix A, int const N, int const np, int nIndexArray[], int* nDCode, int* nICode)
+      |                                                        ^~~~~~~~~~~
+/home/dave/coast/CoastalME/src/smooth_line.cpp:475:89: note: the last parameter in the range is 'nICode'
+  475 | void LUDecomp(Matrix A, int const N, int const np, int nIndexArray[], int* nDCode, int* nICode)
+      |                                                                                         ^~~~~~
+/home/dave/coast/CoastalME/src/update_grid.cpp:29:13: error: 'omp.h' file not found [clang-diagnostic-error]
+   29 |    #include <omp.h>
+      |             ^~~~~~~
+/home/dave/coast/CoastalME/src/utils.cpp:36:13: error: 'omp.h' file not found [clang-diagnostic-error]
+   36 |    #include <omp.h>
+      |             ^~~~~~~
+/home/dave/coast/CoastalME/src/utils.cpp:284:4: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+  284 |    switch (nTimeUnits)
+      |    ^
+/home/dave/coast/CoastalME/src/utils.cpp:319:4: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+  319 |    switch (nTimeUnits)
+      |    ^
+/home/dave/coast/CoastalME/src/utils.cpp:2528:67: warning: 3 adjacent parameters of 'CalcDeanProfile' of similar type ('const double') are easily swapped by mistake [bugprone-easily-swappable-parameters]
+ 2528 | void CSimulation::CalcDeanProfile(vector<double> *pdVDeanProfile, double const dInc, double const dDeanTopElev, double const dA, bool const bDeposition, int const nSeawardOffset, double const dStartCellElev)
+      |                                                                   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/utils.cpp:2528:80: note: the first parameter in the range is 'dInc'
+ 2528 | void CSimulation::CalcDeanProfile(vector<double> *pdVDeanProfile, double const dInc, double const dDeanTopElev, double const dA, bool const bDeposition, int const nSeawardOffset, double const dStartCellElev)
+      |                                                                                ^~~~
+/home/dave/coast/CoastalME/src/utils.cpp:2528:126: note: the last parameter in the range is 'dA'
+ 2528 | void CSimulation::CalcDeanProfile(vector<double> *pdVDeanProfile, double const dInc, double const dDeanTopElev, double const dA, bool const bDeposition, int const nSeawardOffset, double const dStartCellElev)
+      |                                                                                                                              ^~
+/home/dave/coast/CoastalME/src/utils.cpp:2528:154: warning: 2 adjacent parameters of 'CalcDeanProfile' of convertible types are easily swapped by mistake [bugprone-easily-swappable-parameters]
+ 2528 | void CSimulation::CalcDeanProfile(vector<double> *pdVDeanProfile, double const dInc, double const dDeanTopElev, double const dA, bool const bDeposition, int const nSeawardOffset, double const dStartCellElev)
+      |                                                                                                                                                          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/utils.cpp:2528:164: note: the first parameter in the range is 'nSeawardOffset'
+ 2528 | void CSimulation::CalcDeanProfile(vector<double> *pdVDeanProfile, double const dInc, double const dDeanTopElev, double const dA, bool const bDeposition, int const nSeawardOffset, double const dStartCellElev)
+      |                                                                                                                                                                    ^~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/utils.cpp:2528:193: note: the last parameter in the range is 'dStartCellElev'
+ 2528 | void CSimulation::CalcDeanProfile(vector<double> *pdVDeanProfile, double const dInc, double const dDeanTopElev, double const dA, bool const bDeposition, int const nSeawardOffset, double const dStartCellElev)
+      |                                                                                                                                                                                                 ^~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/utils.cpp:2528:180: note: 'const int' and 'const double' may be implicitly converted: 'const int' (as 'int') -> 'const double' (as 'double'), 'const double' (as 'double') -> 'const int' (as 'int')
+ 2528 | void CSimulation::CalcDeanProfile(vector<double> *pdVDeanProfile, double const dInc, double const dDeanTopElev, double const dA, bool const bDeposition, int const nSeawardOffset, double const dStartCellElev)
+      |                                                                                                                                                                                    ^
+/home/dave/coast/CoastalME/src/utils.cpp:2569:39: warning: 3 adjacent parameters of 'dSubtractProfiles' of similar type ('const int *') are easily swapped by mistake [bugprone-easily-swappable-parameters]
+ 2569 | double CSimulation::dSubtractProfiles(vector<double> const* pdVFirstProfile, vector<double> const* pdVSecondProfile, vector<bool> const* pbVIsValid)
+      |                                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/utils.cpp:2569:61: note: the first parameter in the range is 'pdVFirstProfile'
+ 2569 | double CSimulation::dSubtractProfiles(vector<double> const* pdVFirstProfile, vector<double> const* pdVSecondProfile, vector<bool> const* pbVIsValid)
+      |                                                             ^~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/utils.cpp:2569:138: note: the last parameter in the range is 'pbVIsValid'
+ 2569 | double CSimulation::dSubtractProfiles(vector<double> const* pdVFirstProfile, vector<double> const* pdVSecondProfile, vector<bool> const* pbVIsValid)
+      |                                                                                                                                          ^~~~~~~~~~
+/home/dave/coast/CoastalME/src/utils.cpp:2656:53: warning: 3 adjacent parameters of 'bParseDate' of similar type ('int &') are easily swapped by mistake [bugprone-easily-swappable-parameters]
+ 2656 | bool CSimulation::bParseDate(string const* strDate, int &nDay, int &nMonth, int &nYear)
+      |                                                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/utils.cpp:2656:58: note: the first parameter in the range is 'nDay'
+ 2656 | bool CSimulation::bParseDate(string const* strDate, int &nDay, int &nMonth, int &nYear)
+      |                                                          ^~~~
+/home/dave/coast/CoastalME/src/utils.cpp:2656:82: note: the last parameter in the range is 'nYear'
+ 2656 | bool CSimulation::bParseDate(string const* strDate, int &nDay, int &nMonth, int &nYear)
+      |                                                                                  ^~~~~
+/home/dave/coast/CoastalME/src/utils.cpp:2717:53: warning: 3 adjacent parameters of 'bParseTime' of similar type ('int &') are easily swapped by mistake [bugprone-easily-swappable-parameters]
+ 2717 | bool CSimulation::bParseTime(string const* strTime, int &nHour, int &nMin, int &nSec)
+      |                                                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/utils.cpp:2717:58: note: the first parameter in the range is 'nHour'
+ 2717 | bool CSimulation::bParseTime(string const* strTime, int &nHour, int &nMin, int &nSec)
+      |                                                          ^~~~~
+/home/dave/coast/CoastalME/src/utils.cpp:2717:81: note: the last parameter in the range is 'nSec'
+ 2717 | bool CSimulation::bParseTime(string const* strTime, int &nHour, int &nMin, int &nSec)
+      |                                                                                 ^~~~
+/home/dave/coast/CoastalME/src/utils_global.cpp:115:15: warning: 2 adjacent parameters of 'strDbl' of convertible types are easily swapped by mistake [bugprone-easily-swappable-parameters]
+  115 | string strDbl(double const dX, int const nDigits)
+      |               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/utils_global.cpp:115:28: note: the first parameter in the range is 'dX'
+  115 | string strDbl(double const dX, int const nDigits)
+      |                            ^~
+/home/dave/coast/CoastalME/src/utils_global.cpp:115:42: note: the last parameter in the range is 'nDigits'
+  115 | string strDbl(double const dX, int const nDigits)
+      |                                          ^~~~~~~
+/home/dave/coast/CoastalME/src/utils_global.cpp:115:32: note: 'const double' and 'const int' may be implicitly converted: 'const double' (as 'double') -> 'const int' (as 'int'), 'const int' (as 'int') -> 'const double' (as 'double')
+  115 | string strDbl(double const dX, int const nDigits)
+      |                                ^
+/home/dave/coast/CoastalME/src/utils_global.cpp:127:20: warning: 3 adjacent parameters of 'strDblRight' of convertible types are easily swapped by mistake [bugprone-easily-swappable-parameters]
+  127 | string strDblRight(double const dX, int const nDigits, int const nWidth, bool const bShowDash)
+      |                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/utils_global.cpp:127:33: note: the first parameter in the range is 'dX'
+  127 | string strDblRight(double const dX, int const nDigits, int const nWidth, bool const bShowDash)
+      |                                 ^~
+/home/dave/coast/CoastalME/src/utils_global.cpp:127:66: note: the last parameter in the range is 'nWidth'
+  127 | string strDblRight(double const dX, int const nDigits, int const nWidth, bool const bShowDash)
+      |                                                                  ^~~~~~
+/home/dave/coast/CoastalME/src/utils_global.cpp:127:37: note: 'const double' and 'const int' may be implicitly converted: 'const double' (as 'double') -> 'const int' (as 'int'), 'const int' (as 'int') -> 'const double' (as 'double')
+  127 | string strDblRight(double const dX, int const nDigits, int const nWidth, bool const bShowDash)
+      |                                     ^
+/home/dave/coast/CoastalME/src/utils_global.cpp:156:20: warning: 2 adjacent parameters of 'strIntRight' of similar type ('const int') are easily swapped by mistake [bugprone-easily-swappable-parameters]
+  156 | string strIntRight(int const nX, int const nWidth)
+      |                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/utils_global.cpp:156:30: note: the first parameter in the range is 'nX'
+  156 | string strIntRight(int const nX, int const nWidth)
+      |                              ^~
+/home/dave/coast/CoastalME/src/utils_global.cpp:156:44: note: the last parameter in the range is 'nWidth'
+  156 | string strIntRight(int const nX, int const nWidth)
+      |                                            ^~~~~~
+/home/dave/coast/CoastalME/src/utils_global.cpp:273:41: warning: 3 adjacent parameters of 'strRightPerCent' of convertible types are easily swapped by mistake [bugprone-easily-swappable-parameters]
+  273 | string strRightPerCent(double const d1, double const d2, int const nWidth, int const nDigits, bool const bShowDash)
+      |                                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/utils_global.cpp:273:54: note: the first parameter in the range is 'd2'
+  273 | string strRightPerCent(double const d1, double const d2, int const nWidth, int const nDigits, bool const bShowDash)
+      |                                                      ^~
+/home/dave/coast/CoastalME/src/utils_global.cpp:273:86: note: the last parameter in the range is 'nDigits'
+  273 | string strRightPerCent(double const d1, double const d2, int const nWidth, int const nDigits, bool const bShowDash)
+      |                                                                                      ^~~~~~~
+/home/dave/coast/CoastalME/src/utils_global.cpp:273:58: note: 'const double' and 'const int' may be implicitly converted: 'const double' (as 'double') -> 'const int' (as 'int'), 'const int' (as 'int') -> 'const double' (as 'double')
+  273 | string strRightPerCent(double const d1, double const d2, int const nWidth, int const nDigits, bool const bShowDash)
+      |                                                          ^
+/home/dave/coast/CoastalME/src/utils_global.cpp:301:31: warning: narrowing conversion from 'size_type' (aka 'unsigned long') to signed type 'long' is implementation-defined [bugprone-narrowing-conversions]
+  301 |       long int nResultWidth = ssResult.str().size();
+      |                               ^
+/home/dave/coast/CoastalME/src/write_output.cpp:238:4: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+  238 |    switch (m_nCoastSmooth)
+      |    ^
+/home/dave/coast/CoastalME/src/write_output.cpp:1409:58: warning: 3 adjacent parameters of 'bWriteParProfileData' of similar type ('const int') are easily swapped by mistake [bugprone-easily-swappable-parameters]
+ 1409 | bool CSimulation::bWriteParProfileData(int const nCoast, int const nProfile, int const nProfSize, int const nDirection, int const nDistFromProfile, vector<double> const* pdVDistXY, vector<double> const* pdVZ, vector<double> const* pdVDepthOverDB, vector<double> const* pdVErosionPotentialFunc, vector<double> const* pdVSlope, vector<double> const* pdVRecessionXY, vector<double> const* pdVChangeElevZ, vector<CGeom2DIPoint> *const pPtVGridProfile, vector<double> const* pdVScapeXY) const
+      |                                                          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/write_output.cpp:1409:68: note: the first parameter in the range is 'nProfile'
+ 1409 | bool CSimulation::bWriteParProfileData(int const nCoast, int const nProfile, int const nProfSize, int const nDirection, int const nDistFromProfile, vector<double> const* pdVDistXY, vector<double> const* pdVZ, vector<double> const* pdVDepthOverDB, vector<double> const* pdVErosionPotentialFunc, vector<double> const* pdVSlope, vector<double> const* pdVRecessionXY, vector<double> const* pdVChangeElevZ, vector<CGeom2DIPoint> *const pPtVGridProfile, vector<double> const* pdVScapeXY) const
+      |                                                                    ^~~~~~~~
+/home/dave/coast/CoastalME/src/write_output.cpp:1409:109: note: the last parameter in the range is 'nDirection'
+ 1409 | bool CSimulation::bWriteParProfileData(int const nCoast, int const nProfile, int const nProfSize, int const nDirection, int const nDistFromProfile, vector<double> const* pdVDistXY, vector<double> const* pdVZ, vector<double> const* pdVDepthOverDB, vector<double> const* pdVErosionPotentialFunc, vector<double> const* pdVSlope, vector<double> const* pdVRecessionXY, vector<double> const* pdVChangeElevZ, vector<CGeom2DIPoint> *const pPtVGridProfile, vector<double> const* pdVScapeXY) const
+      |                                                                                                             ^~~~~~~~~~
+/home/dave/coast/CoastalME/src/write_output.cpp:1741:55: warning: narrowing conversion from 'unsigned int' to signed type 'int' is implementation-defined [bugprone-narrowing-conversions]
+ 1741 |       CGeomCoastPolygon const* pPolygon = pGetPolygon(n);
+      |                                                       ^
+/home/dave/coast/CoastalME/src/write_output.cpp:1790:55: warning: narrowing conversion from 'unsigned int' to signed type 'int' is implementation-defined [bugprone-narrowing-conversions]
+ 1790 |       CGeomCoastPolygon const* pPolygon = pGetPolygon(n);
+      |                                                       ^
+/home/dave/coast/CoastalME/src/write_output.cpp:1828:55: warning: narrowing conversion from 'unsigned int' to signed type 'int' is implementation-defined [bugprone-narrowing-conversions]
+ 1828 |       CGeomCoastPolygon const* pPolygon = pGetPolygon(n);
+      |                                                       ^
+/home/dave/coast/CoastalME/src/write_output.cpp:1871:55: warning: narrowing conversion from 'unsigned int' to signed type 'int' is implementation-defined [bugprone-narrowing-conversions]
+ 1871 |       CGeomCoastPolygon const* pPolygon = pGetPolygon(n);
+      |                                                       ^
+/home/dave/coast/CoastalME/src/write_output.cpp:1928:55: warning: narrowing conversion from 'unsigned int' to signed type 'int' is implementation-defined [bugprone-narrowing-conversions]
+ 1928 |       CGeomCoastPolygon const* pPolygon = pGetPolygon(n);
+      |                                                       ^
+/home/dave/coast/CoastalME/src/write_output.cpp:1971:55: warning: narrowing conversion from 'unsigned int' to signed type 'int' is implementation-defined [bugprone-narrowing-conversions]
+ 1971 |       CGeomCoastPolygon const* pPolygon = pGetPolygon(n);
+      |                                                       ^
+/home/dave/coast/CoastalME/src/cme.h:1232:32: warning: 2 adjacent parameters of 'tMax' of similar type ('T') are easily swapped by mistake [bugprone-easily-swappable-parameters]
+ 1232 | template <class T> T tMax(T a, T b, T c)
+      |                                ^~~~~~~~
+/home/dave/coast/CoastalME/src/cme.h:1232:34: note: the first parameter in the range is 'b'
+ 1232 | template <class T> T tMax(T a, T b, T c)
+      |                                  ^
+/home/dave/coast/CoastalME/src/cme.h:1232:39: note: the last parameter in the range is 'c'
+ 1232 | template <class T> T tMax(T a, T b, T c)
+      |                                       ^
+/home/dave/coast/CoastalME/src/cme.h:1279:7: warning: repeated branch body in conditional chain [bugprone-branch-clone]
+ 1279 |       return true;
+      |       ^
+/home/dave/coast/CoastalME/src/cme.h:1279:18: note: end of the original
+ 1279 |       return true;
+      |                  ^
+/home/dave/coast/CoastalME/src/cme.h:1282:7: note: clone 1 starts here
+ 1282 |       return true;
+      |       ^
+/home/dave/coast/CoastalME/src/cme.h:1300:16: warning: 2 adjacent parameters of 'FillToWidth' of convertible types are easily swapped by mistake [bugprone-easily-swappable-parameters]
+ 1300 |    FillToWidth(char f, int w) : chFill(f), nWidth(w) {}
+      |                ^~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/cme.h:1300:21: note: the first parameter in the range is 'f'
+ 1300 |    FillToWidth(char f, int w) : chFill(f), nWidth(w) {}
+      |                     ^
+/home/dave/coast/CoastalME/src/cme.h:1300:28: note: the last parameter in the range is 'w'
+ 1300 |    FillToWidth(char f, int w) : chFill(f), nWidth(w) {}
+      |                            ^
+/home/dave/coast/CoastalME/src/cme.h:1300:24: note: 'char' and 'int' may be implicitly converted
+ 1300 |    FillToWidth(char f, int w) : chFill(f), nWidth(w) {}
+      |                        ^

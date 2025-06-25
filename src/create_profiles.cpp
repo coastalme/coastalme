@@ -1545,13 +1545,13 @@ void CSimulation::CreateRasterizedProfile(int const nCoast, CGeomProfile* pProfi
 
       else
       {
-         CGeom2DPoint* pPtSegStart = pProfile->pPtGetPointInProfile(nSeg);
+         CGeom2DPoint const* pPtSegStart = pProfile->pPtGetPointInProfile(nSeg);
 
          // Convert from the external CRS to grid CRS
          PtiSegStart = PtiExtCRSToGridRound(pPtSegStart);
       }
 
-      CGeom2DPoint* pPtSegEnd = pProfile->pPtGetPointInProfile(nSeg + 1); // This is OK
+      CGeom2DPoint const* pPtSegEnd = pProfile->pPtGetPointInProfile(nSeg + 1); // This is OK
 
       // Convert from the external CRS to grid CRS
       CGeom2DIPoint PtiSegEnd = PtiExtCRSToGridRound(pPtSegEnd);

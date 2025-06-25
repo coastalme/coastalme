@@ -381,7 +381,7 @@ int CSimulation::nAssignLandformsForAllCells(void)
       for (int nY = 0; nY < m_nYGridSize; nY++)
       {
          // Get this cell's landform category
-         CRWCellLandform* pLandform = m_pRasterGrid->m_Cell[nX][nY].pGetLandform();
+         CRWCellLandform const* pLandform = m_pRasterGrid->m_Cell[nX][nY].pGetLandform();
          int nCat = pLandform->nGetLFCategory();
 
          // Store what action to take (to avoid writing during read phase)
@@ -429,9 +429,7 @@ int CSimulation::nAssignLandformsForAllCells(void)
                nAction = 5; // Set to former cliff
             }
 
-            else if ((nCat != LF_CAT_DRIFT) && (nCat != LF_CAT_INTERVENTION) &&
-                     (nCat != LF_CAT_SEDIMENT_INPUT) && (nCat != LF_CAT_SEDIMENT_INPUT_SUBMERGED) &&
-                     (nCat != LF_CAT_SEDIMENT_INPUT_NOT_SUBMERGED))
+            else if ((nCat != LF_CAT_DRIFT) && (nCat != LF_CAT_INTERVENTION))
             {
                nAction = 6; // Set to hinterland
             }

@@ -404,85 +404,164 @@ bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const* strPlot
    string strFilePathName(m_strOutPath);
    stringstream strstrFileName;
 
+   OGRwkbGeometryType eGType = wkbUnknown;
+   string strType = "unknown";
+
    switch (nDataItem)
    {
       case (VECTOR_PLOT_COAST):
          strFilePathName.append(VECTOR_COAST_NAME);
          strstrFileName << VECTOR_COAST_NAME;
+
+         eGType = wkbLineString;
+         strType = "line";
+
          break;
 
       case (VECTOR_PLOT_NORMALS):
          strFilePathName.append(VECTOR_NORMALS_NAME);
          strstrFileName << VECTOR_NORMALS_NAME;
+
+         eGType = wkbLineString;
+         strType = "line";
+
          break;
 
       case (VECTOR_PLOT_INVALID_NORMALS):
          strFilePathName.append(VECTOR_INVALID_NORMALS_NAME);
+
+         eGType = wkbLineString;
+         strType = "line";
+
          break;
 
       case (VECTOR_PLOT_COAST_CURVATURE):
          strFilePathName.append(VECTOR_COAST_CURVATURE_NAME);
+
+         eGType = wkbPoint;
+         strType = "point";
+
          break;
 
       case (VECTOR_PLOT_WAVE_ANGLE_AND_HEIGHT):
          strFilePathName.append(VECTOR_WAVE_ANGLE_AND_HEIGHT_NAME);
+
+         eGType = wkbPoint;
+         strType = "point";
+
          break;
 
       case (VECTOR_PLOT_AVG_WAVE_ANGLE_AND_HEIGHT):
          strFilePathName.append(VECTOR_AVG_WAVE_ANGLE_AND_HEIGHT_NAME);
+
+         eGType = wkbPoint;
+         strType = "point";
+
          break;
 
       case (VECTOR_PLOT_WAVE_ENERGY_SINCE_COLLAPSE):
          strFilePathName.append(VECTOR_WAVE_ENERGY_SINCE_COLLAPSE_NAME);
+
+         eGType = wkbPoint;
+         strType = "point";
+
          break;
 
       case (VECTOR_PLOT_MEAN_WAVE_ENERGY):
          strFilePathName.append(VECTOR_MEAN_WAVE_ENERGY_NAME);
+
+         eGType = wkbPoint;
+         strType = "point";
+
          break;
 
       case (VECTOR_PLOT_BREAKING_WAVE_HEIGHT):
          strFilePathName.append(VECTOR_BREAKING_WAVE_HEIGHT_NAME);
+
+         eGType = wkbPoint;
+         strType = "point";
+
          break;
 
       case (VECTOR_PLOT_POLYGON_NODES):
          strFilePathName.append(VECTOR_POLYGON_NODE_NAME);
+
+         eGType = wkbPoint;
+         strType = "point";
+
          break;
 
       case (VECTOR_PLOT_POLYGON_BOUNDARY):
          strFilePathName.append(VECTOR_POLYGON_BOUNDARY_NAME);
+
+         eGType = wkbLineString;
+         strType = "line";
+
          break;
 
       case (VECTOR_PLOT_CLIFF_NOTCH_SIZE):
          strFilePathName.append(VECTOR_CLIFF_NOTCH_SIZE_NAME);
+
+         eGType = wkbPoint;
+         strType = "point";
+
          break;
 
       case (VECTOR_PLOT_SHADOW_BOUNDARY):
          strFilePathName.append(VECTOR_SHADOW_BOUNDARY_NAME);
+
+         eGType = wkbLineString;
+         strType = "line";
+
          break;
 
       case (VECTOR_PLOT_DOWNDRIFT_BOUNDARY):
          strFilePathName.append(VECTOR_DOWNDRIFT_BOUNDARY_NAME);
+
+         eGType = wkbLineString;
+         strType = "line";
+
          break;
 
       case (VECTOR_PLOT_DEEP_WATER_WAVE_ANGLE_AND_HEIGHT):
          strFilePathName.append(VECTOR_DEEP_WATER_WAVE_ANGLE_AND_HEIGHT_NAME);
+
+         eGType = wkbPoint;
+         strType = "point";
+
          break;
 
       case (VECTOR_PLOT_WAVE_SETUP):
          strFilePathName.append(VECTOR_WAVE_SETUP_NAME);
+
+         eGType = wkbPoint;
+         strType = "point";
+
          break;
 
       case (VECTOR_PLOT_STORM_SURGE):
          strFilePathName.append(VECTOR_STORM_SURGE_NAME);
+
+         eGType = wkbPoint;
+         strType = "point";
+
          break;
 
       case (VECTOR_PLOT_RUN_UP):
          strFilePathName.append(VECTOR_RUN_UP_NAME);
+
+         eGType = wkbPoint;
+         strType = "point";
+
          break;
 
       case (VECTOR_PLOT_FLOOD_LINE):
          strFilePathName.append(VECTOR_FLOOD_LINE_NAME);
          strstrFileName << VECTOR_FLOOD_LINE_NAME;
+
+         eGType = wkbLineString;
+         strType = "line";
+
          break;
 
          // case (VECTOR_PLOT_FLOOD_SWL_SETUP_SURGE_LINE):
@@ -536,8 +615,7 @@ bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const* strPlot
 
    if (pGDALDataSet == NULL)
    {
-      cerr << ERR << "cannot create " << m_strVectorGISOutFormat << " named " << strFilePathName << endl
-           << CPLGetLastErrorMsg() << endl;
+      cerr << ERR << "cannot create " << m_strVectorGISOutFormat << " named " << strFilePathName << endl << CPLGetLastErrorMsg() << endl;
       return false;
    }
 
@@ -555,8 +633,6 @@ bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const* strPlot
       OGRSpatialRef.importFromEPSG(25830);      // TODO 035 Also handle other EPSG for vector spatial reference systems
    }
 
-   OGRwkbGeometryType eGType = wkbUnknown;
-   string strType = "unknown";
 
    // Now create the output layer
    // // OGRLayer* pOGRLayer = pGDALDataSet->CreateLayer(strFilePathNameNoExt.c_str(), &OGRSpatialRef, eGType, m_papszGDALVectorOptions);
@@ -582,9 +658,6 @@ bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const* strPlot
    {
       case (VECTOR_PLOT_COAST):
       {
-         eGType = wkbLineString;
-         strType = "line";
-
          // The layer has been created, so create an integer-numbered value (the number of the coast object) for the multi-line
          string strFieldValue1 = "Coast";
          OGRFieldDefn OGRField1(strFieldValue1.c_str(), OFTInteger);
@@ -632,9 +705,6 @@ bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const* strPlot
 
       case (VECTOR_PLOT_FLOOD_LINE):
       {
-         eGType = wkbLineString;
-         strType = "line";
-
          // The layer has been created, so create an integer-numbered value (the number of the coast object) for the multi-line
          string strFieldValue1 = "NMR";
          string strFieldValue2 = "tiempo";
@@ -865,9 +935,6 @@ bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const* strPlot
       case (VECTOR_PLOT_NORMALS):
       case (VECTOR_PLOT_INVALID_NORMALS):
       {
-         eGType = wkbLineString;
-         strType = "line";
-
          // The layer has been created, so create an integer-numbered value (the number of the normal) associated with the line
          string strFieldValue1 = "Normal";
          OGRFieldDefn OGRField1(strFieldValue1.c_str(), OFTInteger);
@@ -1017,9 +1084,6 @@ bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const* strPlot
       case (VECTOR_PLOT_RUN_UP):
       case (VECTOR_PLOT_CLIFF_NOTCH_SIZE):
       {
-         eGType = wkbPoint;
-         strType = "point";
-
          // The layer has been created, so create a real-numbered value associated with each point
          string strFieldValue1;
 
@@ -1194,13 +1258,9 @@ bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const* strPlot
 
       case (VECTOR_PLOT_WAVE_ANGLE_AND_HEIGHT):
       {
-         eGType = wkbPoint;
-         strType = "point";
-
          // The layer has been created, so create real-numbered values associated with each point
-         string
-         strFieldValue1 = "Angle",
-         strFieldValue2 = "Height";
+         string strFieldValue1 = "Angle";
+         string strFieldValue2 = "Height";
 
          // Create the first field
          OGRFieldDefn OGRField1(strFieldValue1.c_str(), OFTReal);
@@ -1272,13 +1332,9 @@ bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const* strPlot
 
       case (VECTOR_PLOT_AVG_WAVE_ANGLE_AND_HEIGHT):
       {
-         eGType = wkbPoint;
-         strType = "point";
-
          // The layer has been created, so create real-numbered values associated with each point
-         string
-         strFieldValue1 = "Angle",
-         strFieldValue2 = "Height";
+         string strFieldValue1 = "Angle";
+         string strFieldValue2 = "Height";
 
          // Create the first field
          OGRFieldDefn OGRField1(strFieldValue1.c_str(), OFTReal);
@@ -1346,17 +1402,13 @@ bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const* strPlot
 
       case (VECTOR_PLOT_POLYGON_BOUNDARY):
       {
-         eGType = wkbPolygon;
-         strType = "polygon";
-
          // The layer has been created, so create two integer-numbered values (the number of the polygon object, and the number of the coast point which is the polygon's node) for the polygon
-         string
-         strFieldValue1 = "Polygon",
-         strFieldValue2 = "CoastNode",
-         strFieldValue3 = "TotSedChng",
-         strFieldValue4 = "FinSedChng",
-         strFieldValue5 = "SndSedChng",
-         strFieldValue6 = "CrsSedChng";
+         string strFieldValue1 = "Polygon";
+         string strFieldValue2 = "CoastNode";
+         string strFieldValue3 = "TotSedChng";
+         string strFieldValue4 = "FinSedChng";
+         string strFieldValue5 = "SndSedChng";
+         string  strFieldValue6 = "CrsSedChng";
 
          OGRFieldDefn OGRField1(strFieldValue1.c_str(), OFTInteger);
 
@@ -1458,9 +1510,6 @@ bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const* strPlot
 
       case (VECTOR_PLOT_SHADOW_BOUNDARY):
       {
-         eGType = wkbLineString;
-         strType = "line";
-
          // Create an integer-numbered value (the number of the shadow boundary line object) for the multi-line
          string strFieldValue1 = "ShadowLine";
          OGRFieldDefn OGRField1(strFieldValue1.c_str(), OFTInteger);
@@ -1512,9 +1561,6 @@ bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const* strPlot
 
       case (VECTOR_PLOT_DOWNDRIFT_BOUNDARY):
       {
-         eGType = wkbLineString;
-         strType = "line";
-
          // Create an integer-numbered value (the number of the downdrift boundary line object) for the multi-line
          string strFieldValue1 = "DdriftLine";
          OGRFieldDefn OGRField1(strFieldValue1.c_str(), OFTInteger);
@@ -1566,9 +1612,6 @@ bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const* strPlot
 
       case (VECTOR_PLOT_DEEP_WATER_WAVE_ANGLE_AND_HEIGHT):
       {
-         eGType = wkbPoint;
-         strType = "point";
-
          // The layer has been created, so create real-numbered values associated with each point
          string
          strFieldValue1 = "Angle",

@@ -71,12 +71,11 @@ int CSimulation::nDoAllWaveEnergyToCoastLandforms(void)
          int nY = m_VCoast[i].pPtiGetCellMarkedAsCoastline(j)->nGetY();
          int nCat = pCoastLandform->nGetLandFormCategory();
          double dTopElev = m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElev();
-         double dNotchElev = 0;
 
          if ((nCat == LF_CAT_CLIFF) || (nCat == LF_SUBCAT_CLIFF_ON_COASTLINE) || (nCat == LF_SUBCAT_CLIFF_INLAND))
          {
             CRWCliff * pCliff = reinterpret_cast<CRWCliff*>(pCoastLandform);
-            dNotchElev = pCliff->dGetNotchBaseElev();
+            double dNotchElev = pCliff->dGetNotchBaseElev();
 
             // Is the notch elevation above the top surface of the sediment?
             if (dNotchElev > dTopElev)
@@ -277,23 +276,24 @@ int CSimulation::nDoCliffCollapse(int const nCoast, CRWCliff * pCliff, double &d
    // Get the index of the layer containing the notch (layer 0 being just above basement)
    int nNotchLayer = m_pRasterGrid->m_Cell[nX][nY].nGetLayerAtElev(dNotchElev);
 
-   // Safety check
-   if (nNotchLayer < 0)
+   // Safety checks
+   if (nNotchLayer == ELEV_IN_BASEMENT)
    {
-      // Notch layer is < 0
+      LogStream << m_ulIter << ": " << WARN << "in nDoCliffCollapse(), [" << nX << "][" << nY << "] nNotchLayer is in basement" << endl;
+      return RTN_ERR_CLIFFNOTCH;
+   }
+   else if (nNotchLayer == ELEV_ABOVE_SEDIMENT_TOP)
+   {
+      LogStream << m_ulIter << ": " << WARN << "in nDoCliffCollapse(), [" << nX << "][" << nY << "] has nNotchLayer above sediment top" << endl;
+      return RTN_ERR_CLIFFNOTCH;
+   }
+   else if (nNotchLayer < 0)
+   {
       LogStream << m_ulIter << ": " << WARN << "in nDoCliffCollapse(), [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "} notch layer = " << nNotchLayer << ", dNotchElev = " << dNotchElev << " m_dNotchBaseBelowSWL = " << m_dNotchBaseBelowSWL << " dOrigCliffTopElev = " << dOrigCliffTopElev << endl;
-
       return RTN_ERR_CLIFFNOTCH;
    }
 
-   if (nNotchLayer == ELEV_ABOVE_SEDIMENT_TOP)
-   {
-      LogStream << m_ulIter << ": " << WARN << "in nDoCliffCollapse(), [" << nX << "][" << nY << "] has nNotchLayer = " << nNotchLayer << ", this has elevation = " << dNotchElev << " which is above sediment top elevation (" << m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElev() << ")" << endl;
-
-      return RTN_ERR_CLIFFNOTCH;
-   }
-
-   // Flag the coastline cliff object as having collapsed
+   // Notch layer is OK, so flag the coastline cliff object as having collapsed
    pCliff->SetCliffCollapsed();
 
    int nTopLayer = m_pRasterGrid->m_Cell[nX][nY].nGetTopLayerAboveBasement();
