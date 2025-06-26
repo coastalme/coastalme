@@ -477,6 +477,16 @@ private:
   //! smoothing is used (usually 2 or 4, max is 6)
   int m_nSavGolCoastPoly;
 
+  //! Which method to use for cliff edge smoothing
+  int m_nCliffEdgeSmooth;
+
+  //! The size of the window used for cliff edge smoothing. Must be an odd number
+  int m_nCliffEdgeSmoothWindow;
+
+  //! The order of the cliff edge smoothing polynomial if Savitzky-Golay
+  //! smoothing is used (usually 2 or 4, max is 6)
+  int m_nSavGolCliffEdgePoly;
+
   //! The size of the window used for running-mean coast-normal profile
   //! smoothing (must be odd)
   int m_nProfileSmoothWindow;
@@ -1756,6 +1766,8 @@ private:
   void nCalcSlopeAtAllCells(void);
   void nLocateCliffCell(void);
   void nTraceSeawardCliffEdge(void);
+  void nValidateCliffToeEdges(void);
+  CGeomLine nValidateCliffToeDirection(CGeomLine &CliffEdge, bool bReverse);
   void nRemoveSmallCliffIslands(int const);
 
   // Lower-level simulation routines

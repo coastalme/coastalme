@@ -2965,6 +2965,63 @@ bool CSimulation::bReadRunDataFile(void) {
           strErr = "line " + to_string(nLine) + ": size of moving window for coastline curvature calculation (must be > 0 and odd)";
 
         break;
+
+      case 87:
+
+        // Cliff edge smoothing algorithm: 0 = none, 1 = running mean, 2 = Savitzky-Golay
+        if (!bIsStringValidInt(strRH)) {
+          strErr = "line " + to_string(nLine) +
+                   ": invalid integer for cliff edge smoothing algorithm '" +
+                   strRH + "' in " + m_strDataPathName;
+          break;
+        }
+
+        m_nCliffEdgeSmooth = stoi(strRH);
+
+        if ((m_nCliffEdgeSmooth < SMOOTH_NONE) ||
+            (m_nCliffEdgeSmooth > SMOOTH_SAVITZKY_GOLAY))
+          strErr = "line " + to_string(nLine) +
+                   ": cliff edge smoothing algorithm";
+
+        break;
+
+      case 88:
+
+        // Size of cliff edge smoothing window: must be odd
+        if (!bIsStringValidInt(strRH)) {
+          strErr = "line " + to_string(nLine) +
+                   ": invalid integer for cliff edge smoothing window '" +
+                   strRH + "' in " + m_strDataPathName;
+          break;
+        }
+
+        m_nCliffEdgeSmoothWindow = stoi(strRH);
+
+        if ((m_nCliffEdgeSmoothWindow <= 0) || !(m_nCliffEdgeSmoothWindow % 2))
+          strErr = "line " + to_string(nLine) +
+                   ": size of cliff edge smoothing window (must be > 0 and odd)";
+
+        break;
+
+      case 89:
+
+        // Order of cliff edge smoothing polynomial for Savitzky-Golay: usually 2 or 4, max is 6
+        if (!bIsStringValidInt(strRH)) {
+          strErr = "line " + to_string(nLine) +
+                   ": invalid integer for Savitzky-Golay polynomial for cliff edge smoothing '" +
+                   strRH + "' in " + m_strDataPathName;
+          break;
+        }
+
+        m_nSavGolCliffEdgePoly = stoi(strRH);
+
+        if ((m_nSavGolCliffEdgePoly < 2) || (m_nSavGolCliffEdgePoly > 6) ||
+            (m_nSavGolCliffEdgePoly % 2))
+          strErr = "line " + to_string(nLine) +
+                   ": order of Savitzky-Golay polynomial for cliff edge smoothing "
+                   "(must be 2, 4 or 6)";
+
+        break;
       }
 
       // Did an error occur?

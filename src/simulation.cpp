@@ -191,6 +191,9 @@ CSimulation::CSimulation (void)
    m_nCoastSmooth =
    m_nCoastSmoothWindow =
    m_nSavGolCoastPoly =
+   m_nCliffEdgeSmooth =
+   m_nCliffEdgeSmoothWindow =
+   m_nSavGolCliffEdgePoly =
    m_nProfileSmoothWindow =
    m_nCoastNormalSpacing =
    m_nCoastNormalInterventionSpacing =
