@@ -117,6 +117,7 @@ CSimulation::CSimulation (void)
    m_bShadowZoneCodesSave =
    m_bSaveRegular =
    m_bCoastSave =
+   m_bCliffEdgeSave =
    m_bNormalsSave =
    m_bInvalidNormalsSave =
    m_bCoastCurvatureSave =

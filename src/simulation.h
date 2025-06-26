@@ -265,6 +265,9 @@ private:
   //! Save
   bool m_bCoastSave;
 
+  //! Save cliff edge vector GIS files?
+  bool m_bCliffEdgeSave;
+
   //! Save coastline-normal vector GIS files?
   bool m_bNormalsSave;
 
@@ -1635,6 +1638,9 @@ private:
 
   //! The coastline objects
   vector<CRWCoast> m_VCoast;
+
+  //! The traced cliff edge lines (in external CRS)
+  vector<CGeomLine> m_VCliffEdge;
 
   //! TODO 007 Info needed
   vector<CRWCoast> m_VFloodWaveSetupSurge;

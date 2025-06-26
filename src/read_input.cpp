@@ -1178,6 +1178,7 @@ bool CSimulation::bReadRunDataFile(void) {
           if (strRH.find(VECTOR_ALL_OUTPUT_CODE) != string::npos) {
             // Output all vector files
             m_bCoastSave =
+                m_bCliffEdgeSave =
                 m_bWaveAngleAndHeightSave =
                     m_bNormalsSave =
                         m_bInvalidNormalsSave =
@@ -1201,6 +1202,7 @@ bool CSimulation::bReadRunDataFile(void) {
           else if (strRH.find(VECTOR_USUAL_OUTPUT_CODE) != string::npos) {
             // Output the "usual" collection of vector output files
             m_bCoastSave =
+                m_bCliffEdgeSave =
                 m_bWaveAngleAndHeightSave =
                     m_bNormalsSave =
                         m_bInvalidNormalsSave = // DEBUG CODE
@@ -1220,6 +1222,11 @@ bool CSimulation::bReadRunDataFile(void) {
             if (strRH.find(VECTOR_COAST_CODE) != string::npos) {
               m_bCoastSave = true;
               strRH = strRemoveSubstr(&strRH, &VECTOR_COAST_CODE);
+            }
+
+            if (strRH.find(VECTOR_CLIFF_EDGE_CODE) != string::npos) {
+              m_bCliffEdgeSave = true;
+              strRH = strRemoveSubstr(&strRH, &VECTOR_CLIFF_EDGE_CODE);
             }
 
             if (strRH.find(VECTOR_AVG_WAVE_ANGLE_AND_HEIGHT_CODE) != string::npos) {

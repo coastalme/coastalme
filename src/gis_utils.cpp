@@ -1187,6 +1187,11 @@ bool CSimulation::bSaveAllVectorGISFiles(void) {
       return false;
   }
 
+  if (m_bCliffEdgeSave) {
+    if (!bWriteVectorGISFile(VECTOR_PLOT_CLIFF_EDGE, &VECTOR_PLOT_CLIFF_EDGE_TITLE))
+      return false;
+  }
+
   if (m_bNormalsSave) {
     if (!bWriteVectorGISFile(VECTOR_PLOT_NORMALS, &VECTOR_PLOT_NORMALS_TITLE))
       return false;
