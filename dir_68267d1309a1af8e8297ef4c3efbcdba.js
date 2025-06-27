@@ -59,6 +59,7 @@ var dir_68267d1309a1af8e8297ef4c3efbcdba =
     [ "intervention.h", "d3/d47/intervention_8h.html", "d3/d47/intervention_8h" ],
     [ "line.cpp", "dd/da3/line_8cpp.html", null ],
     [ "line.h", "d7/d5d/line_8h.html", "d7/d5d/line_8h" ],
+    [ "locate_cliff_toe.cpp", "d8/dc7/locate__cliff__toe_8cpp.html", null ],
     [ "locate_coast.cpp", "d5/d9e/locate__coast_8cpp.html", null ],
     [ "multi_line.cpp", "db/d80/multi__line_8cpp.html", null ],
     [ "multi_line.h", "d9/d7c/multi__line_8h.html", "d9/d7c/multi__line_8h" ],
