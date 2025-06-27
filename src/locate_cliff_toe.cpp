@@ -43,6 +43,8 @@ using std::setiosflags;
 using std::setprecision;
 using std::setw;
 
+#include <stdint.h>
+
 #include <sstream>
 using std::stringstream;
 
@@ -86,12 +88,10 @@ Highligts cells with slope greater than threshold
 
 ===============================================================================================================================*/
 void CSimulation::nLocateCliffCell(void) {
-  // TODO: Allow user input of cliff threshold
-  double cliff_slope_limit{0.3};
   for (int nX = 0; nX < m_nXGridSize; nX++) {
     for (int nY = 0; nY < m_nYGridSize; nY++) {
       double dSlope = m_pRasterGrid->m_Cell[nX][nY].dGetSlope();
-      if (dSlope >= cliff_slope_limit) {
+      if (dSlope >= m_dCliffSlopeLimit) {
         m_pRasterGrid->m_Cell[nX][nY].SetAsCliff(true);
       }
     }
@@ -104,16 +104,19 @@ algorithm
 
 ===============================================================================================================================*/
 void CSimulation::nRemoveSmallCliffIslands(int const dMinCliffCellThreshold) {
+  // unsigned int m_nXGridSize = static_cast<unsigned int>(m_nXGridSize);
+  // unsigned int m_nYGridSize = static_cast<unsigned int>(m_nYGridSize);
+
   // Create a 2D array to track which cells have been visited during flood fill
-  vector<vector<bool>> bVisited(m_nXGridSize,
-                                vector<bool>(m_nYGridSize, false));
+  vector<vector<bool>> bVisited(static_cast<unsigned int>(m_nXGridSize),
+                                vector<bool>(static_cast<unsigned int>(m_nYGridSize), false));
 
   // Vector to store cells that belong to small cliff islands to be removed
   vector<pair<int, int>> VSmallIslandCells;
 
   // Loop through all cells to find unvisited cliff cells
-  for (int nX = 0; nX < m_nXGridSize; nX++) {
-    for (int nY = 0; nY < m_nYGridSize; nY++) {
+  for (unsigned int nX = 0; nX < static_cast<unsigned int>(m_nXGridSize); nX++) {
+    for (unsigned int nY = 0; nY < static_cast<unsigned int>(m_nYGridSize); nY++) {
       // Check if this is an unvisited cliff cell
       if (!bVisited[nX][nY] && m_pRasterGrid->m_Cell[nX][nY].bIsCliff()) {
         // Found the start of a new cliff region - use flood fill to find all
@@ -129,12 +132,12 @@ void CSimulation::nRemoveSmallCliffIslands(int const dMinCliffCellThreshold) {
           pair<int, int> currentCell = VStack.back();
           VStack.pop_back();
 
-          int nCurX = currentCell.first;
-          int nCurY = currentCell.second;
+          size_t nCurX = static_cast<size_t>(currentCell.first);
+          size_t nCurY = static_cast<size_t>(currentCell.second);
 
           // Skip if already visited or out of bounds
-          if (nCurX < 0 || nCurX >= m_nXGridSize || nCurY < 0 ||
-              nCurY >= m_nYGridSize || bVisited[nCurX][nCurY] ||
+          if (nCurX >= static_cast<unsigned int>(m_nXGridSize) ||
+              nCurY >= static_cast<unsigned int>(m_nYGridSize) || bVisited[nCurX][nCurY] ||
               !m_pRasterGrid->m_Cell[nCurX][nCurY].bIsCliff()) {
             continue;
           }
@@ -156,7 +159,7 @@ void CSimulation::nRemoveSmallCliffIslands(int const dMinCliffCellThreshold) {
         }
 
         // Calculate area of this cliff region (number of cells * cell area)
-        int dCliffRegionArea = VCurrentCliffRegion.size();
+        int dCliffRegionArea = static_cast<int>(VCurrentCliffRegion.size());
 
         // If area is below threshold, mark all cells in this region for removal
         if (dCliffRegionArea < dMinCliffCellThreshold) {
@@ -244,7 +247,6 @@ void CSimulation::nTraceSeawardCliffEdge(void) {
 
     // Begin cliff edge tracing using wall following algorithm
     vector<CGeom2DIPoint> VCliffEdge;
-    bool bHandedness = VbPossibleStartCellHandedness[nStartPoint];
     int nSearchDirection = VnSearchDirection[nStartPoint];
 
     int nX = nXStart;
