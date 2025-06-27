@@ -3022,6 +3022,24 @@ bool CSimulation::bReadRunDataFile(void) {
                    "(must be 2, 4 or 6)";
 
         break;
+
+      case 90:
+
+        // Cliff slope limit for cliff toe detection
+        if (!bIsStringValidDouble(strRH)) {
+          strErr = "line " + to_string(nLine) +
+                   ": invalid number for cliff slope limit '" +
+                   strRH + "' in " + m_strDataPathName;
+          break;
+        }
+
+        m_dCliffSlopeLimit = stod(strRH);
+
+        if (m_dCliffSlopeLimit <= 0)
+          strErr = "line " + to_string(nLine) +
+                   ": cliff slope limit must be > 0";
+
+        break;
       }
 
       // Did an error occur?

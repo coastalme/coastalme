@@ -384,7 +384,8 @@ CSimulation::CSimulation (void)
    m_dUnconsCoarseNotDepositedLastIter =
    m_dTotalFineConsInPolygons =
    m_dTotalSandConsInPolygons =
-   m_dTotalCoarseConsInPolygons = 0;
+   m_dTotalCoarseConsInPolygons =
+   m_dCliffSlopeLimit = 0;
 
    m_dMinSWL = DBL_MAX;
    m_dMaxSWL = DBL_MIN;

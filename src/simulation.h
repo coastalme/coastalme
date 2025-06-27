@@ -487,6 +487,9 @@ private:
   //! smoothing is used (usually 2 or 4, max is 6)
   int m_nSavGolCliffEdgePoly;
 
+  //! Slope limit for cliff toe detection
+  double m_dCliffSlopeLimit;
+
   //! The size of the window used for running-mean coast-normal profile
   //! smoothing (must be odd)
   int m_nProfileSmoothWindow;
