@@ -92,6 +92,7 @@ CSimulation::CSimulation (void)
    m_bTotalBeachDepositionSave =
    m_bLandformSave =
    m_bLocalSlopeSave =
+   m_bSlopeSave =
    m_bInterventionClassSave =
    m_bInterventionHeightSave =
    m_bSuspSedSave =
@@ -116,6 +117,7 @@ CSimulation::CSimulation (void)
    m_bShadowZoneCodesSave =
    m_bSaveRegular =
    m_bCoastSave =
+   m_bCliffEdgeSave =
    m_bNormalsSave =
    m_bInvalidNormalsSave =
    m_bCoastCurvatureSave =
@@ -189,6 +191,9 @@ CSimulation::CSimulation (void)
    m_nCoastSmooth =
    m_nCoastSmoothWindow =
    m_nSavGolCoastPoly =
+   m_nCliffEdgeSmooth =
+   m_nCliffEdgeSmoothWindow =
+   m_nSavGolCliffEdgePoly =
    m_nProfileSmoothWindow =
    m_nCoastNormalSpacing =
    m_nCoastNormalInterventionSpacing =
@@ -379,7 +384,8 @@ CSimulation::CSimulation (void)
    m_dUnconsCoarseNotDepositedLastIter =
    m_dTotalFineConsInPolygons =
    m_dTotalSandConsInPolygons =
-   m_dTotalCoarseConsInPolygons = 0;
+   m_dTotalCoarseConsInPolygons =
+   m_dCliffSlopeLimit = 0;
 
    m_dMinSWL = DBL_MAX;
    m_dMaxSWL = DBL_MIN;
@@ -1003,6 +1009,12 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
       AnnounceProgress();
 
       // Locate estuaries TODO 044 someday...
+
+      // Locate and trace cliff toe
+      nRet = nLocateCliffToe();
+
+      if (nRet != RTN_OK)
+         return nRet;
 
       // For all cells, use classification rules to assign sea and hinterland landform categories
       nRet = nAssignLandformsForAllCells();

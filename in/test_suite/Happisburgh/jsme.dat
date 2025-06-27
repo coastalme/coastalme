@@ -149,4 +149,8 @@ Timesteps to save profile(s)                                                    
 Save parallel profiles?                                                                      : n
 Output erosion potential look-up values                                                      : y
 Size of moving window for calculating coastline curvature (must be odd)                      : 11
+Cliff edge smoothing                               [0=none, 1=running mean, 2=Savitsky-Golay]: 1
+Cliff edge smoothing window size                                                [must be odd]: 33
+Polynomial order for Savitsky-Golay cliff edge smoothing                             [2 or 4]: 4
+Cliff slope limit for cliff toe detection                                                    : 0.3
 ; END OF FILE -------------------------------------------------------------------------------------------------------------------------------------------------
