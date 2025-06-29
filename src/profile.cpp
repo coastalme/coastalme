@@ -22,14 +22,22 @@
 
 ===============================================================================================================================*/
 #include <assert.h>
+
+#include <cstdio>
 #include <cmath>
 
 #include <vector>
+using std::vector;
 
 #include <algorithm>
 using std::find;
 
 #include "cme.h"
+#include "cell.h"
+#include "2d_point.h"
+#include "2di_point.h"
+#include "multi_line.h"
+#include "raster_grid.h"
 #include "profile.h"
 
 //! Constructor with initialization list, requires one parameter (the coast point at which the profile starts)
@@ -367,7 +375,7 @@ vector<CGeom2DPoint> CGeomProfile::PtVGetThisPointAndAllAfter(int const nStart)
 //! Queries the profile: is the given point a profile point?
 bool CGeomProfile::bIsPointInProfile(double const dX, double const dY)
 {
-   CGeom2DPoint Pt(dX, dY);
+   CGeom2DPoint const Pt(dX, dY);
    auto it = find(m_VPoints.begin(), m_VPoints.end(), &Pt);
 
    if (it != m_VPoints.end())
@@ -380,7 +388,7 @@ bool CGeomProfile::bIsPointInProfile(double const dX, double const dY)
 //! Queries the profile: is the given point a profile point? If so, then it also returns the number of the point in the profile
 bool CGeomProfile::bIsPointInProfile(double const dX, double const dY, int &nPoint)
 {
-   CGeom2DPoint Pt(dX, dY);
+   CGeom2DPoint const Pt(dX, dY);
    auto it = find(m_VPoints.begin(), m_VPoints.end(), &Pt);
 
    if (it != m_VPoints.end())
@@ -547,10 +555,10 @@ int CGeomProfile::nGetCellGivenDepth(CGeomRasterGrid const* pGrid, double const 
 
    for (unsigned int n = 0; n < m_VCellInProfile.size(); n++)
    {
-      int nX = m_VCellInProfile[n].nGetX();
-      int nY = m_VCellInProfile[n].nGetY();
+      int const nX = m_VCellInProfile[n].nGetX();
+      int const nY = m_VCellInProfile[n].nGetY();
 
-      double dCellDepth = pGrid->m_Cell[nX][nY].dGetSeaDepth();
+      double const dCellDepth = pGrid->m_Cell[nX][nY].dGetSeaDepth();
 
       if (dCellDepth >= dDepthIn)
       {

@@ -27,12 +27,12 @@
 
 #include <iostream>
 using std::cerr;
-using std::cout;
+// using std::cout;
 using std::endl;
 using std::ios;
 
-#include <iomanip>
-using std::setiosflags;
+// #include <iomanip>
+// using std::setiosflags;
 
 #include <array>
 using std::array;
@@ -42,9 +42,9 @@ using std::shuffle;
 
 #include "cme.h"
 #include "hermite_cubic.h"
-#include "interpolate.h"
 #include "simulation.h"
 #include "coast.h"
+#include "2di_point.h"
 
 //===============================================================================================================================
 //! Does platform erosion on all coastlines by first calculating platform erosion on coastline-normal profiles, then extrapolating this to cells between the profiles
@@ -184,7 +184,7 @@ int CSimulation::nCalcPotentialPlatformErosionOnProfile(int const nCoast, CGeomP
    int const nCoastPoint = pProfile->nGetCoastPoint();
 
    // Get the breaking depth for this profile from the coastline point
-   double dDepthOfBreaking = m_VCoast[nCoast].dGetDepthOfBreaking(nCoastPoint);
+   double const dDepthOfBreaking = m_VCoast[nCoast].dGetDepthOfBreaking(nCoastPoint);
 
    if (bFPIsEqual(dDepthOfBreaking, DBL_NODATA, TOLERANCE))
       // This profile is not in the active zone, so no platform erosion here
@@ -339,9 +339,9 @@ int CSimulation::nCalcPotentialPlatformErosionOnProfile(int const nCoast, CGeomP
    for (int i = 1; i < nProfSize - 1; i++)
    {
       // Vertical lowering dZ = dXY * tan(a), where tan(a) is the slope of the SCAPE profile in the XY direction
-      double dSCAPEHorizDist = dVSCAPEXY[i + 1] - dVSCAPEXY[i];
-      double dSCAPEVertDist = dVConsProfileZ[i] - dVConsProfileZ[i + 1];
-      double dSCAPESlope = dSCAPEVertDist / dSCAPEHorizDist;
+      double const dSCAPEHorizDist = dVSCAPEXY[i + 1] - dVSCAPEXY[i];
+      double const dSCAPEVertDist = dVConsProfileZ[i] - dVConsProfileZ[i + 1];
+      double const dSCAPESlope = dSCAPEVertDist / dSCAPEHorizDist;
       double dDeltaZ = dVRecessionXY[i] * dSCAPESlope;
 
       // Safety check: if thickness model has some jumps, dVConsProfileZ might be very high, limiting dSCAPESlope to 0 because all time erode a high fix quantity
@@ -360,7 +360,7 @@ int CSimulation::nCalcPotentialPlatformErosionOnProfile(int const nCoast, CGeomP
       if (dDeltaZ < 0)
       {
          // If there has already been potential erosion on this cell, then it must be a shared line segment (i.e. has co-incident profiles)
-         double dPrevPotentialErosion = -m_pRasterGrid->m_Cell[nX][nY].dGetPotentialPlatformErosion();
+         double const dPrevPotentialErosion = -m_pRasterGrid->m_Cell[nX][nY].dGetPotentialPlatformErosion();
 
          if (dPrevPotentialErosion < 0)
          {
@@ -389,14 +389,14 @@ int CSimulation::nCalcPotentialPlatformErosionOnProfile(int const nCoast, CGeomP
       }
 
       // Finally, calculate the beach protection factor, this will be used in estimating actual (supply-limited) erosion
-      double dBeachProtectionFactor = dCalcBeachProtectionFactor(nX, nY, dBreakingWaveHeight);
+      double const dBeachProtectionFactor = dCalcBeachProtectionFactor(nX, nY, dBreakingWaveHeight);
       m_pRasterGrid->m_Cell[nX][nY].SetBeachProtectionFactor(dBeachProtectionFactor);
    }
 
    // If desired, save this coastline-normal profile data for checking purposes
    if (m_bOutputProfileData)
    {
-      int nRet = nSaveProfile(nCoast, pProfile, nProfSize, &VdProfileDistXY, &dVConsProfileZ, &dVProfileDepthOverDB, &dVProfileErosionPotential, &dVConsSlope, &dVRecessionXY, &dVChangeElevZ, pProfile->pPtiVGetCellsInProfile(), &dVSCAPEXY);
+      int const nRet = nSaveProfile(nCoast, pProfile, nProfSize, &VdProfileDistXY, &dVConsProfileZ, &dVProfileDepthOverDB, &dVProfileErosionPotential, &dVConsSlope, &dVRecessionXY, &dVChangeElevZ, pProfile->pPtiVGetCellsInProfile(), &dVSCAPEXY);
 
       if (nRet != RTN_OK)
          return nRet;
@@ -543,7 +543,7 @@ int CSimulation::nCalcPotentialPlatformErosionBetweenProfiles(int const nCoast, 
          }
 
          // Is this cell in a polygon?
-         int nPolyID = m_pRasterGrid->m_Cell[nXPar][nYPar].nGetPolygonID();
+         int const nPolyID = m_pRasterGrid->m_Cell[nXPar][nYPar].nGetPolygonID();
 
          if (nPolyID == INT_NODATA)
          {
@@ -664,14 +664,14 @@ int CSimulation::nCalcPotentialPlatformErosionBetweenProfiles(int const nCoast, 
       for (int i = 1; i < nParProfSize - 1; i++)
       {
          // Vertical lowering dZ = dXY * tan(a), where tan(a) is the slope of the SCAPE profile in the XY direction
-         double dSCAPEHorizDist = dVParSCAPEXY[i + 1] - dVParSCAPEXY[i];
+         double const dSCAPEHorizDist = dVParSCAPEXY[i + 1] - dVParSCAPEXY[i];
 
          // Safety check
          if (bFPIsEqual(dSCAPEHorizDist, 0.0, TOLERANCE))
             continue;
 
-         double dSCAPEVertDist = dVParConsProfileZ[i] - dVParConsProfileZ[i + 1];
-         double dSCAPESlope = dSCAPEVertDist / dSCAPEHorizDist;
+         double const dSCAPEVertDist = dVParConsProfileZ[i] - dVParConsProfileZ[i + 1];
+         double const dSCAPESlope = dSCAPEVertDist / dSCAPEHorizDist;
          double dDeltaZ = dVParRecessionXY[i] * dSCAPESlope;
 
          // Safety check: if thickness model has some jumps, dVConsProfileZ might be very high, limiting dSCAPESlope to 0 because all time erode a high fix quantity
@@ -768,10 +768,10 @@ void CSimulation::DoActualPlatformErosionOnCell(int const nX, int const nY)
       return;
 
    // Get the potential depth of potential erosion, considering beach protection
-   double dThisPotentialErosion = m_pRasterGrid->m_Cell[nX][nY].dGetPotentialPlatformErosion() * dBeachProtectionFactor;
+   double const dThisPotentialErosion = m_pRasterGrid->m_Cell[nX][nY].dGetPotentialPlatformErosion() * dBeachProtectionFactor;
 
    // We will be eroding the topmost layer that has non-zero thickness
-   int nThisLayer = m_pRasterGrid->m_Cell[nX][nY].nGetTopNonZeroLayerAboveBasement();
+   int const nThisLayer = m_pRasterGrid->m_Cell[nX][nY].nGetTopNonZeroLayerAboveBasement();
 
    // Safety check
    if (nThisLayer == INT_NODATA)
@@ -785,16 +785,16 @@ void CSimulation::DoActualPlatformErosionOnCell(int const nX, int const nY)
       return;
 
    // OK, we have a layer that can be eroded so find out how much consolidated sediment we have available on this cell
-   double dExistingAvailableFine = m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nThisLayer)->pGetConsolidatedSediment()->dGetFineDepth();
-   double dExistingAvailableSand = m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nThisLayer)->pGetConsolidatedSediment()->dGetSandDepth();
-   double dExistingAvailableCoarse = m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nThisLayer)->pGetConsolidatedSediment()->dGetCoarseDepth();
+   double const dExistingAvailableFine = m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nThisLayer)->pGetConsolidatedSediment()->dGetFineDepth();
+   double const dExistingAvailableSand = m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nThisLayer)->pGetConsolidatedSediment()->dGetSandDepth();
+   double const dExistingAvailableCoarse = m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nThisLayer)->pGetConsolidatedSediment()->dGetCoarseDepth();
 
    // Now partition the total lowering for this cell between the three size fractions: do this by relative erodibility
-   int nFineWeight = (dExistingAvailableFine > 0 ? 1 : 0);
-   int nSandWeight = (dExistingAvailableSand > 0 ? 1 : 0);
-   int nCoarseWeight = (dExistingAvailableCoarse > 0 ? 1 : 0);
+   int const nFineWeight = (dExistingAvailableFine > 0 ? 1 : 0);
+   int const nSandWeight = (dExistingAvailableSand > 0 ? 1 : 0);
+   int const nCoarseWeight = (dExistingAvailableCoarse > 0 ? 1 : 0);
 
-   double dTotErodibility = (nFineWeight * m_dFineErodibilityNormalized) + (nSandWeight * m_dSandErodibilityNormalized) + (nCoarseWeight * m_dCoarseErodibilityNormalized);
+   double const dTotErodibility = (nFineWeight * m_dFineErodibilityNormalized) + (nSandWeight * m_dSandErodibilityNormalized) + (nCoarseWeight * m_dCoarseErodibilityNormalized);
    double dTotActualErosion = 0;
    double dSandEroded = 0;
    double dCoarseEroded = 0;
@@ -802,11 +802,11 @@ void CSimulation::DoActualPlatformErosionOnCell(int const nX, int const nY)
    if (nFineWeight)
    {
       // Erode some fine-sized consolidated sediment
-      double dFineLowering = (m_dFineErodibilityNormalized * dThisPotentialErosion) / dTotErodibility;
+      double const dFineLowering = (m_dFineErodibilityNormalized * dThisPotentialErosion) / dTotErodibility;
 
       // Make sure we don't get -ve amounts left on the cell
-      double dFineEroded = tMin(dExistingAvailableFine, dFineLowering);
-      double dRemaining = dExistingAvailableFine - dFineEroded;
+      double const dFineEroded = tMin(dExistingAvailableFine, dFineLowering);
+      double const dRemaining = dExistingAvailableFine - dFineEroded;
 
       dTotActualErosion += dFineEroded;
 
@@ -824,11 +824,11 @@ void CSimulation::DoActualPlatformErosionOnCell(int const nX, int const nY)
    if (nSandWeight)
    {
       // Erode some sand-sized consolidated sediment
-      double dSandLowering = (m_dSandErodibilityNormalized * dThisPotentialErosion) / dTotErodibility;
+      double const dSandLowering = (m_dSandErodibilityNormalized * dThisPotentialErosion) / dTotErodibility;
 
       // Make sure we don't get -ve amounts left on the source cell
       dSandEroded = tMin(dExistingAvailableSand, dSandLowering);
-      double dRemaining = dExistingAvailableSand - dSandEroded;
+      double const dRemaining = dExistingAvailableSand - dSandEroded;
 
       dTotActualErosion += dSandEroded;
 
@@ -848,11 +848,11 @@ void CSimulation::DoActualPlatformErosionOnCell(int const nX, int const nY)
    if (nCoarseWeight)
    {
       // Erode some coarse-sized consolidated sediment
-      double dCoarseLowering = (m_dCoarseErodibilityNormalized * dThisPotentialErosion) / dTotErodibility;
+      double const dCoarseLowering = (m_dCoarseErodibilityNormalized * dThisPotentialErosion) / dTotErodibility;
 
       // Make sure we don't get -ve amounts left on the source cell
       dCoarseEroded = tMin(dExistingAvailableCoarse, dCoarseLowering);
-      double dRemaining = dExistingAvailableCoarse - dCoarseEroded;
+      double const dRemaining = dExistingAvailableCoarse - dCoarseEroded;
 
       dTotActualErosion += dCoarseEroded;
 
@@ -1052,7 +1052,7 @@ bool CSimulation::bCreateErosionPotentialLookUp(vector<double> *VdDepthOverDBIn,
       m_VdErosionPotential.push_back(0);           // This will hold the corresponding value of erosion potential for each sample point
    }
 
-   int nSize = static_cast<int>(VdDepthOverDB.size());
+   int const nSize = static_cast<int>(VdDepthOverDB.size());
    vector<double> VdDeriv(nSize, 0);               // First derivative at the sample points: calculated by the spline function but not subsequently used
    vector<double> VdDeriv2(nSize, 0.);             // Second derivative at the sample points, ditto
    vector<double> VdDeriv3(nSize, 0.);             // Third derivative at the sample points, ditto
@@ -1089,14 +1089,14 @@ bool CSimulation::bCreateErosionPotentialLookUp(vector<double> *VdDepthOverDBIn,
 //===============================================================================================================================
 //! The erosion potential lookup: it returns a value for erosion potential given a value of Depth Over DB
 //===============================================================================================================================
-double CSimulation::dLookUpErosionPotential(double const dDepthOverDB) const
+double CSimulation::dLookUpErosionPotential(double const dDepthOverDB)
 {
    // If dDepthOverDB exceeds the maximum value which we calculated earlier, erosion potential is zero
    if (dDepthOverDB > m_dDepthOverDBMax)
       return 0;
 
    // OK, dDepthOverDB is less than the maximum so look up a corresponding value for erosion potential. The look-up index is dDepthOverDB divided by (the Depth Over DB increment used when creating the look-up vector). But since this look-up index may not be an integer, split the look-up index into integer and fractional parts and deal with each separately
-   double dErosionPotential = dGetInterpolatedValue(&m_VdDepthOverDB, &m_VdErosionPotential, dDepthOverDB, false);
+   double const dErosionPotential = dGetInterpolatedValue(&m_VdDepthOverDB, &m_VdErosionPotential, dDepthOverDB, false);
 
    return dErosionPotential;
 }
@@ -1111,7 +1111,7 @@ double CSimulation::dCalcBeachProtectionFactor(int const nX, int const nY, doubl
       return 0;
 
    // We are considering the unconsolidated sediment (beach) of the topmost layer that has non-zero thickness
-   int nThisLayer = m_pRasterGrid->m_Cell[nX][nY].nGetTopNonZeroLayerAboveBasement();
+   int const nThisLayer = m_pRasterGrid->m_Cell[nX][nY].nGetTopNonZeroLayerAboveBasement();
 
    // Safety check
    if (nThisLayer == INT_NODATA)
@@ -1125,8 +1125,8 @@ double CSimulation::dCalcBeachProtectionFactor(int const nX, int const nY, doubl
       return 0;
 
    // In SCAPE, 0.23 * the significant breaking wave height is assumed to be the maximum depth of beach that waves can penetrate to erode a platform. For depths less than this, the beach protective ability is assumed to vary linearly
-   double dBeachDepth = m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nThisLayer)->dGetUnconsolidatedThickness();
-   double dMaxPenetrationDepth = BEACH_PROTECTION_HB_RATIO * dBreakingWaveHeight;
+   double const dBeachDepth = m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nThisLayer)->dGetUnconsolidatedThickness();
+   double const dMaxPenetrationDepth = BEACH_PROTECTION_HB_RATIO * dBreakingWaveHeight;
    double dFactor = 0;
 
    if (dMaxPenetrationDepth > 0)
@@ -1264,7 +1264,7 @@ void CSimulation::FillPotentialPlatformErosionHoles(void)
             // If this sea cell has four neighbours with non-zero potential platform erosion values, then assume that it should not have a zero potential platform erosion value. Set it to the average of its neighbours
             if (nAdjacent == 4)
             {
-               double dThisPotentialPlatformErosion = dPotentialPlatformErosion / 4;
+               double const dThisPotentialPlatformErosion = dPotentialPlatformErosion / 4;
 
                m_pRasterGrid->m_Cell[nX][nY].SetPotentialPlatformErosion(dThisPotentialPlatformErosion);
 
@@ -1288,19 +1288,19 @@ void CSimulation::FillPotentialPlatformErosionHoles(void)
 void CSimulation::ConstructParallelProfile(int const nProfileStartX, int const nProfileStartY, int const nParCoastX, int const nParCoastY, int const nProfSize, vector<CGeom2DIPoint> *const pPtViGridProfile, vector<CGeom2DIPoint> *pPtiVGridParProfile, vector<CGeom2DPoint> *pPtVExtCRSParProfile)
 {
    // OK, we have the coastline start point for the parallel profile. Now construct a temporary profile, parallel to the coastline-normal profile, starting from this point
-   int nXOffset = nParCoastX - nProfileStartX;
-   int nYOffset = nParCoastY - nProfileStartY;
+   int const nXOffset = nParCoastX - nProfileStartX;
+   int const nYOffset = nParCoastY - nProfileStartY;
 
    // Append co-ord values for the temporary profile
    for (int nProfileStartPoint = 0; nProfileStartPoint < nProfSize; nProfileStartPoint++)
    {
       // Get the grid coordinates of the cell which is this distance seaward, from the coastline-normal profile
-      int nXProf = pPtViGridProfile->at(nProfileStartPoint).nGetX();
-      int nYProf = pPtViGridProfile->at(nProfileStartPoint).nGetY();
+      int const nXProf = pPtViGridProfile->at(nProfileStartPoint).nGetX();
+      int const nYProf = pPtViGridProfile->at(nProfileStartPoint).nGetY();
 
       // Now calculate the grid coordinates of this cell, which is potentially in the parallel profile
-      int nXPar = nXProf + nXOffset;
-      int nYPar = nYProf + nYOffset;
+      int const nXPar = nXProf + nXOffset;
+      int const nYPar = nYProf + nYOffset;
 
       // Is this cell within the grid? If not, cut short the profile
       if (! bIsWithinValidGrid(nXPar, nYPar))

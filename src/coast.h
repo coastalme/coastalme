@@ -25,12 +25,15 @@
    You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 ===============================================================================================================================*/
-#include "cme.h"
+#include <simulation.h>
 #include "profile.h"
 #include "cell.h"
 #include "coast_landform.h"
 #include "coast_polygon.h"
+#include "line.h"
 #include "i_line.h"
+#include "2d_point.h"
+#include "2di_point.h"
 
 class CGeomProfile;        // Forward declarations
 class CACoastLandform;

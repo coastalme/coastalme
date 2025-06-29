@@ -22,14 +22,16 @@
 
 ===============================================================================================================================*/
 #include <assert.h>
+
 #include <iostream>
-using std::cout;
-using std::cerr;
-using std::endl;
+// using std::cout;
+// using std::cerr;
+// using std::endl;
 using std::ios;
 
 #include "cme.h"
 #include "cliff.h"
+#include "coast.h"
 
 //! Constructor with seven parameters and an intialization list
 CRWCliff::CRWCliff(CRWCoast * pCoastIn, int const nCoast, int const nPointOnCoast, double const dCellSide, double const dNotchDepthIn, double const dNotchElevIn, double const dAccumWaveEnergyIn)

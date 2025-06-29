@@ -32,7 +32,7 @@ using std::scientific;
 
 #include <iostream>
 using std::cerr;
-using std::cout;
+// using std::cout;
 using std::endl;
 using std::ios;
 using std::noshowpos;
@@ -41,8 +41,8 @@ using std::showpos;
 #include <iomanip>
 using std::put_time;
 using std::resetiosflags;
-using std::setfill;
-using std::setiosflags;
+// using std::setfill;
+// using std::setiosflags;
 using std::setprecision;
 using std::setw;
 
@@ -52,10 +52,13 @@ using std::stringstream;
 #include <string>
 using std::to_string;
 
+#include <algorithm>
+using std::sort;
+
 #include "cme.h"
 #include "simulation.h"
 #include "coast.h"
-#include "interpolate.h"
+#include "2di_point.h"
 
 //===============================================================================================================================
 //! Writes beginning-of-run information to Out and Log files
@@ -159,7 +162,7 @@ void CSimulation::WriteStartRunDetails(void)
 
    OutStream << " Simulation start date/time                                \t: ";
    // hh:mm:ss dd/mm/yyyy
-   char cPrev = OutStream.fill('0');
+   char const cPrev = OutStream.fill('0');
    OutStream << setw(2) << m_nSimStartHour << COLON << setw(2) << m_nSimStartMin << COLON << setw(2) << m_nSimStartSec << SPACE << setw(2) << m_nSimStartDay << SLASH << setw(2) << m_nSimStartMonth << SLASH << setw(2) << m_nSimStartYear << endl;
    OutStream.fill(cPrev);
 
@@ -701,7 +704,7 @@ bool CSimulation::bWritePerTimestepResultsFixedWidth(void)
    // Output average sea depth (m) per sea cell =================================================================================
    OutStream << resetiosflags(ios::floatfield);
    OutStream << fixed << setprecision(2);
-   double dAvgSeaDepth = m_dThisIterTotSeaDepth / static_cast<double>(m_ulThisIterNumSeaCells);
+   double const dAvgSeaDepth = m_dThisIterTotSeaDepth / static_cast<double>(m_ulThisIterNumSeaCells);
    OutStream << setw(7) << dAvgSeaDepth;
    OutStream << " ";
 
@@ -728,7 +731,7 @@ bool CSimulation::bWritePerTimestepResultsFixedWidth(void)
 
    // Output per-timestep actual shore platform erosion in m (average for all sea cells)
    OutStream << fixed << setprecision(1);
-   double dThisIterActualPlatformErosion = m_dThisIterActualPlatformErosionFineCons + m_dThisIterActualPlatformErosionSandCons + m_dThisIterActualPlatformErosionCoarseCons;
+   double const dThisIterActualPlatformErosion = m_dThisIterActualPlatformErosionFineCons + m_dThisIterActualPlatformErosionSandCons + m_dThisIterActualPlatformErosionCoarseCons;
    OutStream << setw(6) << 1000 * dThisIterActualPlatformErosion / static_cast<double>(m_ulThisIterNumSeaCells);
 
    // Output per-timestep actual shore platform erosion in m (average for all cells with actual shore platform erosion)
@@ -803,7 +806,7 @@ bool CSimulation::bWritePerTimestepResultsFixedWidth(void)
    OutStream << setw(7) << 100 * static_cast<double>(m_ulThisIterNumActualBeachErosionCells) / static_cast<double>(m_ulThisIterNumSeaCells);
 
    // Output per-timestep actual beach erosion in m (average for all sea cells)
-   double dThisIterActualBeachErosion = m_dThisIterBeachErosionFine + m_dThisIterBeachErosionSand + m_dThisIterBeachErosionCoarse;
+   double const dThisIterActualBeachErosion = m_dThisIterBeachErosionFine + m_dThisIterBeachErosionSand + m_dThisIterBeachErosionCoarse;
    OutStream << setw(7) << 1000 * dThisIterActualBeachErosion / static_cast<double>(m_ulThisIterNumSeaCells);
 
    // Per-iteration actual beach erosion in m (average for all cells with actual beach erosion)
@@ -841,7 +844,7 @@ bool CSimulation::bWritePerTimestepResultsFixedWidth(void)
    OutStream << setw(7) << 100 * static_cast<double>(m_ulThisIterNumBeachDepositionCells) / static_cast<double>(m_ulThisIterNumSeaCells);
 
    // Per-iteration beach deposition in m (average for all sea cells)
-   double dThisIterBeachDeposition = m_dThisIterBeachDepositionSand + m_dThisIterBeachDepositionCoarse;
+   double const dThisIterBeachDeposition = m_dThisIterBeachDepositionSand + m_dThisIterBeachDepositionCoarse;
    OutStream << setw(6) << 1000 * dThisIterBeachDeposition / static_cast<double>(m_ulThisIterNumSeaCells);
 
    // Per-iteration beach deposition in m (average for all cells with beach deposition)
@@ -958,7 +961,7 @@ bool CSimulation::bWritePerTimestepResultsCSV(void)
    OutStream << m_dSimElapsed / (24 * 365.25) << ","; // In years
 
    // Output average sea depth (m) per sea cell
-   double dAvgSeaDepth = m_dThisIterTotSeaDepth / static_cast<double>(m_ulThisIterNumSeaCells);
+   double const dAvgSeaDepth = m_dThisIterTotSeaDepth / static_cast<double>(m_ulThisIterNumSeaCells);
    OutStream << dAvgSeaDepth << ",";
 
    // Platform erosion data
@@ -973,7 +976,7 @@ bool CSimulation::bWritePerTimestepResultsCSV(void)
 
    OutStream << 100 * static_cast<double>(m_ulThisIterNumActualPlatformErosionCells) / static_cast<double>(m_ulThisIterNumSeaCells) << ",";
 
-   double dThisIterActualPlatformErosion = m_dThisIterActualPlatformErosionFineCons + m_dThisIterActualPlatformErosionSandCons + m_dThisIterActualPlatformErosionCoarseCons;
+   double const dThisIterActualPlatformErosion = m_dThisIterActualPlatformErosionFineCons + m_dThisIterActualPlatformErosionSandCons + m_dThisIterActualPlatformErosionCoarseCons;
    OutStream << 1000 * dThisIterActualPlatformErosion / static_cast<double>(m_ulThisIterNumSeaCells) << ",";
 
    if (m_ulThisIterNumActualPlatformErosionCells > 0)
@@ -1018,7 +1021,7 @@ bool CSimulation::bWritePerTimestepResultsCSV(void)
 
    OutStream << 100 * static_cast<double>(m_ulThisIterNumActualBeachErosionCells) / static_cast<double>(m_ulThisIterNumSeaCells) << ",";
 
-   double dThisIterActualBeachErosion = m_dThisIterBeachErosionFine + m_dThisIterBeachErosionSand + m_dThisIterBeachErosionCoarse;
+   double const dThisIterActualBeachErosion = m_dThisIterBeachErosionFine + m_dThisIterBeachErosionSand + m_dThisIterBeachErosionCoarse;
    OutStream << 1000 * dThisIterActualBeachErosion / static_cast<double>(m_ulThisIterNumSeaCells) << ",";
 
    if (m_ulThisIterNumActualBeachErosionCells > 0)
@@ -1049,7 +1052,7 @@ bool CSimulation::bWritePerTimestepResultsCSV(void)
    // Beach deposition data
    OutStream << 100 * static_cast<double>(m_ulThisIterNumBeachDepositionCells) / static_cast<double>(m_ulThisIterNumSeaCells) << ",";
 
-   double dThisIterBeachDeposition = m_dThisIterBeachDepositionSand + m_dThisIterBeachDepositionCoarse;
+   double const dThisIterBeachDeposition = m_dThisIterBeachDepositionSand + m_dThisIterBeachDepositionCoarse;
    OutStream << 1000 * dThisIterBeachDeposition / static_cast<double>(m_ulThisIterNumSeaCells) << ",";
 
    if (m_ulThisIterNumBeachDepositionCells > 0)
@@ -1282,7 +1285,7 @@ bool CSimulation::bWriteTSFiles(void)
 //===============================================================================================================================
 //! Output the erosion potential look-up values, for checking purposes
 //===============================================================================================================================
-void CSimulation::WriteLookUpData(void) const
+void CSimulation::WriteLookUpData(void)
 {
    // Open the output file
    string strLookUpFile = m_strOutPath;
@@ -1298,7 +1301,7 @@ void CSimulation::WriteLookUpData(void) const
 
       while (dDepthOverDB <= m_dDepthOverDBMax)
       {
-         double dErosionPotential = dGetInterpolatedValue(&m_VdDepthOverDB, &m_VdErosionPotential, dDepthOverDB, false);
+         double const dErosionPotential = dGetInterpolatedValue(&m_VdDepthOverDB, &m_VdErosionPotential, dDepthOverDB, false);
          LookUpOutStream << dDepthOverDB << ",\t" << dErosionPotential << endl;
          dDepthOverDB += DEPTH_OVER_DB_INCREMENT;
       }
@@ -1316,7 +1319,7 @@ void CSimulation::WriteLookUpData(void) const
 int CSimulation::nSaveProfile(int const nCoast, CGeomProfile const* pProfile, int const nProfSize, vector<double> const* pdVDistXY, vector<double> const* pdVZ, vector<double> const* pdVDepthOverDB, vector<double> const* pdVErosionPotentialFunc, vector<double> const* pdVSlope, vector<double> const* pdVRecessionXY, vector<double> const* pdVChangeElevZ, vector<CGeom2DIPoint> *const pPtVGridProfile, vector<double> const* pdVScapeXY) const
 {
    // TODO 052 Make this more efficient, also give warnings if no profiles will be output
-   int nProfile = pProfile->nGetCoastID();
+   int const nProfile = pProfile->nGetCoastID();
 
    for (unsigned int i = 0; i < m_VulProfileTimestep.size(); i++)
    {
@@ -1338,7 +1341,7 @@ int CSimulation::nSaveProfile(int const nCoast, CGeomProfile const* pProfile, in
 //===============================================================================================================================
 bool CSimulation::bWriteProfileData(int const nCoast, CGeomProfile const* pProfile, int const nProfSize, vector<double> const* pdVDistXY, vector<double> const* pdVZ, vector<double> const* pdVDepthOverDB, vector<double> const* pdVErosionPotentialFunc, vector<double> const* pdVSlope, vector<double> const* pdVRecessionXY, vector<double> const* pdVChangeElevZ, vector<CGeom2DIPoint> *const pPtVGridProfile, vector<double> const* pdVScapeXY) const
 {
-   int nProfile = pProfile->nGetCoastID();
+   int const nProfile = pProfile->nGetCoastID();
 
    string strFName = m_strOutPath;
    stringstream ststrTmp;
@@ -1369,8 +1372,8 @@ bool CSimulation::bWriteProfileData(int const nCoast, CGeomProfile const* pProfi
 
    for (int i = 0; i < nProfSize; i++)
    {
-      double dX = dGridCentroidXToExtCRSX(pPtVGridProfile->at(i).nGetX());
-      double dY = dGridCentroidYToExtCRSY(pPtVGridProfile->at(i).nGetY());
+      double const dX = dGridCentroidXToExtCRSX(pPtVGridProfile->at(i).nGetX());
+      double const dY = dGridCentroidYToExtCRSY(pPtVGridProfile->at(i).nGetY());
 
       OutProfStream << pdVDistXY->at(i) << ",\t" << dX << ",\t" << dY << ",\t" << pdVZ->at(i) << ",\t" << pdVDepthOverDB->at(i) << ",\t" << pdVErosionPotentialFunc->at(i) << ",\t" << pdVSlope->at(i) << ",\t" << pdVRecessionXY->at(i) << ",\t" << pdVChangeElevZ->at(i) << ",\t" << pPtVGridProfile->at(i).nGetX() << ",\t" << pPtVGridProfile->at(i).nGetY() << ", \t" << pdVScapeXY->at(i) << endl;
    }
@@ -1386,7 +1389,7 @@ bool CSimulation::bWriteProfileData(int const nCoast, CGeomProfile const* pProfi
 int CSimulation::nSaveParProfile(int const nCoast, CGeomProfile const* pProfile, int const nParProfSize, int const nDirection, int const nDistFromProfile, vector<double> const* pdVDistXY, vector<double> const* pdVZ, vector<double> const* pdVDepthOverDB, vector<double> const* pdVErosionPotentialFunc, vector<double> const* pdVSlope, vector<double> const* pdVRecessionXY, vector<double> const* pdVChangeElevZ, vector<CGeom2DIPoint> *const pPtVGridProfile, vector<double> const* pdVScapeXY) const
 {
    // TODO 052 Make this more efficient, also give warnings if no profiles will be output
-   int nProfile = pProfile->nGetCoastID();
+   int const nProfile = pProfile->nGetCoastID();
 
    for (unsigned int i = 0; i < m_VulProfileTimestep.size(); i++)
    {
@@ -1445,8 +1448,8 @@ bool CSimulation::bWriteParProfileData(int const nCoast, int const nProfile, int
 
    for (int i = 0; i < nProfSize; i++)
    {
-      double dX = dGridCentroidXToExtCRSX(pPtVGridProfile->at(i).nGetX());
-      double dY = dGridCentroidYToExtCRSY(pPtVGridProfile->at(i).nGetY());
+      double const dX = dGridCentroidXToExtCRSX(pPtVGridProfile->at(i).nGetX());
+      double const dY = dGridCentroidYToExtCRSY(pPtVGridProfile->at(i).nGetY());
 
       OutProfStream << pdVDistXY->at(i) << ",\t" << dX << ",\t" << dY << ",\t" << pdVZ->at(i) << ",\t" << pdVDepthOverDB->at(i) << ",\t" << pdVErosionPotentialFunc->at(i) << ",\t" << pdVSlope->at(i) << ",\t" << pdVRecessionXY->at(i) << ",\t" << pdVChangeElevZ->at(i) << ",\t" << pPtVGridProfile->at(i).nGetX() << ",\t" << pPtVGridProfile->at(i).nGetY() << ", \t" << pdVScapeXY->at(i) << endl;
    }
@@ -1559,28 +1562,28 @@ int CSimulation::nWriteEndRunDetails(void)
    OutStream << endl;
 
    OutStream << "ALL-PROCESS TOTALS (all size classes)" << endl;
-   long double ldFineEroded = m_ldGTotFineActualPlatformErosion + m_ldGTotCliffCollapseFine + m_ldGTotActualFineBeachErosion;
+   long double const ldFineEroded = m_ldGTotFineActualPlatformErosion + m_ldGTotCliffCollapseFine + m_ldGTotActualFineBeachErosion;
    OutStream << "Fine sediment eroded                                   = " << ldFineEroded * m_dCellArea << " m^3" << endl;
    OutStream << "Fine sediment to suspension                            = " << m_ldGTotSuspendedSediment * m_dCellArea << " m^3" << endl;
 
    if (! bFPIsEqual(ldFineEroded, m_ldGTotSuspendedSediment, 1.0L))
       OutStream << MASS_BALANCE_ERROR << endl;
 
-   long double ldSandEroded = m_ldGTotSandActualPlatformErosion + m_ldGTotCliffCollapseSand + m_ldGTotActualSandBeachErosion;
+   long double const ldSandEroded = m_ldGTotSandActualPlatformErosion + m_ldGTotCliffCollapseSand + m_ldGTotActualSandBeachErosion;
    OutStream << "Sand sediment eroded                                   = " << ldSandEroded * m_dCellArea << " m^3" << endl;
-   long double ldSandDeposited = m_ldGTotCliffTalusSandDeposition + m_ldGTotSandBeachDeposition;
+   long double const ldSandDeposited = m_ldGTotCliffTalusSandDeposition + m_ldGTotSandBeachDeposition;
    OutStream << "Sand sediment deposited                                = " << ldSandDeposited * m_dCellArea << " m^3" << endl;
-   long double ldSandLost = m_ldGTotActualSandLostBeachErosion + m_ldGTotSandSedLostCliffCollapse;
+   long double const ldSandLost = m_ldGTotActualSandLostBeachErosion + m_ldGTotSandSedLostCliffCollapse;
    OutStream << "Sand sediment lost from grid                           = " << ldSandLost * m_dCellArea << " m^3" << endl;
 
    if (! bFPIsEqual(ldSandEroded, (ldSandDeposited + ldSandLost), 1.0L))
       OutStream << MASS_BALANCE_ERROR << endl;
 
-   long double ldCoarseEroded = m_ldGTotCoarseActualPlatformErosion + m_ldGTotCliffCollapseCoarse + m_ldGTotActualCoarseBeachErosion;
+   long double const ldCoarseEroded = m_ldGTotCoarseActualPlatformErosion + m_ldGTotCliffCollapseCoarse + m_ldGTotActualCoarseBeachErosion;
    OutStream << "Coarse sediment eroded                                 = " << ldCoarseEroded * m_dCellArea << " m^3" << endl;
-   long double ldCoarseDeposited = m_ldGTotCliffTalusCoarseDeposition + m_ldGTotCoarseBeachDeposition;
+   long double const ldCoarseDeposited = m_ldGTotCliffTalusCoarseDeposition + m_ldGTotCoarseBeachDeposition;
    OutStream << "Coarse sediment deposited                              = " << ldCoarseDeposited * m_dCellArea << " m^3" << endl;
-   long double ldCoarseLost = m_ldGTotActualCoarseLostBeachErosion + m_ldGTotCoarseSedLostCliffCollapse;
+   long double const ldCoarseLost = m_ldGTotActualCoarseLostBeachErosion + m_ldGTotCoarseSedLostCliffCollapse;
    OutStream << "Coarse sediment lost from grid                         = " << ldCoarseLost * m_dCellArea << " m^3" << endl;
 
    if (! bFPIsEqual(ldCoarseEroded, (ldCoarseDeposited + ldCoarseLost), 1.0L))
@@ -1588,13 +1591,13 @@ int CSimulation::nWriteEndRunDetails(void)
 
    OutStream << endl;
 
-   long double ldActualTotalEroded = m_ldGTotFineActualPlatformErosion + m_ldGTotSandActualPlatformErosion + m_ldGTotCoarseActualPlatformErosion + m_ldGTotCliffCollapseFine + m_ldGTotCliffCollapseSand + m_ldGTotCliffCollapseCoarse + m_ldGTotCliffCollapseFineErodedDuringDeposition + m_ldGTotCliffCollapseSandErodedDuringDeposition + m_ldGTotCliffCollapseCoarseErodedDuringDeposition + m_ldGTotActualFineBeachErosion + m_ldGTotActualSandBeachErosion + m_ldGTotActualCoarseBeachErosion;
+   long double const ldActualTotalEroded = m_ldGTotFineActualPlatformErosion + m_ldGTotSandActualPlatformErosion + m_ldGTotCoarseActualPlatformErosion + m_ldGTotCliffCollapseFine + m_ldGTotCliffCollapseSand + m_ldGTotCliffCollapseCoarse + m_ldGTotCliffCollapseFineErodedDuringDeposition + m_ldGTotCliffCollapseSandErodedDuringDeposition + m_ldGTotCliffCollapseCoarseErodedDuringDeposition + m_ldGTotActualFineBeachErosion + m_ldGTotActualSandBeachErosion + m_ldGTotActualCoarseBeachErosion;
    OutStream << "Total sediment eroded (all processes)                  = " << ldActualTotalEroded * m_dCellArea << " m^3" << endl;
 
-   long double ldTotalDepositedAndSuspension = m_ldGTotCliffTalusSandDeposition + m_ldGTotCliffTalusCoarseDeposition + m_ldGTotSandBeachDeposition + m_ldGTotCoarseBeachDeposition + m_ldGTotSuspendedSediment;
+   long double const ldTotalDepositedAndSuspension = m_ldGTotCliffTalusSandDeposition + m_ldGTotCliffTalusCoarseDeposition + m_ldGTotSandBeachDeposition + m_ldGTotCoarseBeachDeposition + m_ldGTotSuspendedSediment;
    OutStream << "Total sediment deposited/to suspension (all processes) = " << ldTotalDepositedAndSuspension * m_dCellArea << " m^3" << endl;
 
-   long double ldTotalLost = m_ldGTotActualFineLostBeachErosion + m_ldGTotActualSandLostBeachErosion + m_ldGTotActualCoarseLostBeachErosion + m_ldGTotSandSedLostCliffCollapse + m_ldGTotCoarseSedLostCliffCollapse;
+   long double const ldTotalLost = m_ldGTotActualFineLostBeachErosion + m_ldGTotActualSandLostBeachErosion + m_ldGTotActualCoarseLostBeachErosion + m_ldGTotSandSedLostCliffCollapse + m_ldGTotCoarseSedLostCliffCollapse;
    OutStream << "Total sediment lost from grid (all processes)          = " << ldTotalLost * m_dCellArea << " m^3" << endl;
    OutStream << "                                                       = " << 24 * 365.25 * ldTotalLost * m_dCellArea / m_dSimDuration << " m^3/year" << endl;
    OutStream << "                                                       = " << 24 * ldTotalLost * m_dCellArea / m_dSimDuration << " m^3/day" << endl;
@@ -1746,9 +1749,9 @@ void CSimulation::WritePolygonPreExistingSedimentTable(int const nCoast)
       m_dTotalCoarseConsInPolygons += pPolygon->dGetPreExistingConsCoarse();
 
       // Now consider unconsolidated sediment
-      double dThisFine = pPolygon->dGetPreExistingUnconsFine() + pPolygon->dGetSedimentInputUnconsFine();
-      double dThisSand = pPolygon->dGetPreExistingUnconsSand() + pPolygon->dGetSedimentInputUnconsSand();
-      double dThisCoarse = pPolygon->dGetPreExistingUnconsCoarse() + pPolygon->dGetSedimentInputUnconsCoarse();
+      double const dThisFine = pPolygon->dGetPreExistingUnconsFine() + pPolygon->dGetSedimentInputUnconsFine();
+      double const dThisSand = pPolygon->dGetPreExistingUnconsSand() + pPolygon->dGetSedimentInputUnconsSand();
+      double const dThisCoarse = pPolygon->dGetPreExistingUnconsCoarse() + pPolygon->dGetSedimentInputUnconsCoarse();
 
       LogStream << strIntRight(pPolygon->nGetGlobalID(), 11) << "|" << strIntRight(nCoast, 11) << "|" << strIntRight(pPolygon->nGetCoastID(), 11) << "|" << strDblRight((dThisFine + dThisSand + dThisCoarse) * m_dCellArea, 0, 14) << "|" << strDblRight(dThisFine * m_dCellArea, 0, 14) << "|" << strDblRight(dThisSand * m_dCellArea, 0, 14) << "|" << strDblRight(dThisCoarse * m_dCellArea, 0, 14) << "|" << endl;
 
@@ -1789,9 +1792,9 @@ void CSimulation::WritePolygonSedimentInputEventTable(int const nCoast)
    {
       CGeomCoastPolygon const* pPolygon = pGetPolygon(n);
 
-      double dThisFine = pPolygon->dGetSedimentInputUnconsFine();
-      double dThisSand = pPolygon->dGetSedimentInputUnconsSand();
-      double dThisCoarse = pPolygon->dGetSedimentInputUnconsCoarse();
+      double const dThisFine = pPolygon->dGetSedimentInputUnconsFine();
+      double const dThisSand = pPolygon->dGetSedimentInputUnconsSand();
+      double const dThisCoarse = pPolygon->dGetSedimentInputUnconsCoarse();
 
       LogStream << strIntRight(pPolygon->nGetGlobalID(), 11) << "|" << strIntRight(nCoast, 11) << "|" << strIntRight(pPolygon->nGetCoastID(), 11) << "|" << strDblRight((dThisFine + dThisSand + dThisCoarse) * m_dCellArea, 0, 14) << "|" << strDblRight(dThisFine * m_dCellArea, 0, 14) << "|" << strDblRight(dThisSand * m_dCellArea, 0, 14) << "|" << strDblRight(dThisCoarse * m_dCellArea, 0, 14) << "|" << endl;
 
@@ -1812,7 +1815,7 @@ void CSimulation::WritePolygonSedimentInputEventTable(int const nCoast)
 void CSimulation::WritePolygonShorePlatformErosion(int const nCoast)
 {
    double dTmpTot = 0;
-   double dTmpFineTot = 0;
+   double const dTmpFineTot = 0;
    double dTmpSandTot = 0;
    double dTmpCoarseTot = 0;
 
@@ -1927,9 +1930,9 @@ void CSimulation::WritePolygonSedimentBeforeMovement(int const nCoast)
    {
       CGeomCoastPolygon const* pPolygon = pGetPolygon(n);
 
-      double dFine = pPolygon->dGetPreExistingUnconsFine();
-      double dSand = pPolygon->dGetPreExistingUnconsSand();
-      double dCoarse = pPolygon->dGetPreExistingUnconsCoarse();
+      double const dFine = pPolygon->dGetPreExistingUnconsFine();
+      double const dSand = pPolygon->dGetPreExistingUnconsSand();
+      double const dCoarse = pPolygon->dGetPreExistingUnconsCoarse();
 
       LogStream << strIntRight(pPolygon->nGetGlobalID(), 11) << "|" << strIntRight(nCoast, 11) << "|" << strIntRight(pPolygon->nGetCoastID(), 11) << "|" << strDblRight((dFine + dSand + dCoarse) * m_dCellArea, 0, 14) << "|" << strDblRight(dFine * m_dCellArea, 0, 14) << "|" << strDblRight(dSand * m_dCellArea, 0, 14) << "|" << strDblRight(dCoarse * m_dCellArea, 0, 14) << "|" << endl;
 
@@ -2057,7 +2060,7 @@ void CSimulation::WritePolygonUnsortedSequence(int const nCoast, vector<vector<i
             continue;
          }
 
-         int nAdjDownCoast = pnVVPolyAndAdjacent[n][m];
+         int const nAdjDownCoast = pnVVPolyAndAdjacent[n][m];
          int nCoastID = INT_NODATA;
 
          if (nAdjDownCoast != INT_NODATA)
@@ -2178,11 +2181,11 @@ void CSimulation::WritePolygonActualMovement(int const nCoast, vector<vector<int
 
    for (unsigned int n = 0; n < m_pVCoastPolygon.size(); n++)
    {
-      int nPoly = pnVVPolyAndAdjacent[n][1];
+      int const nPoly = pnVVPolyAndAdjacent[n][1];
 
-      double dAllErosionNotDDPD = -m_pVCoastPolygon[nPoly]->dGeBeachErosionAllUncons() - (m_pVCoastPolygon[nPoly]->dGetBeachSandErodedDeanProfile() + m_pVCoastPolygon[nPoly]->dGetBeachCoarseErodedDeanProfile());
-      double dSandErosionNotDDPD = -m_pVCoastPolygon[nPoly]->dGetBeachErosionUnconsSand() - m_pVCoastPolygon[nPoly]->dGetBeachSandErodedDeanProfile();
-      double dCoarseErosionNotDDPD = -m_pVCoastPolygon[nPoly]->dGetBeachErosionUnconsCoarse() - m_pVCoastPolygon[nPoly]->dGetBeachCoarseErodedDeanProfile();
+      double const dAllErosionNotDDPD = -m_pVCoastPolygon[nPoly]->dGeBeachErosionAllUncons() - (m_pVCoastPolygon[nPoly]->dGetBeachSandErodedDeanProfile() + m_pVCoastPolygon[nPoly]->dGetBeachCoarseErodedDeanProfile());
+      double const dSandErosionNotDDPD = -m_pVCoastPolygon[nPoly]->dGetBeachErosionUnconsSand() - m_pVCoastPolygon[nPoly]->dGetBeachSandErodedDeanProfile();
+      double const dCoarseErosionNotDDPD = -m_pVCoastPolygon[nPoly]->dGetBeachErosionUnconsCoarse() - m_pVCoastPolygon[nPoly]->dGetBeachCoarseErodedDeanProfile();
 
       LogStream << strIntRight(m_pVCoastPolygon[nPoly]->nGetGlobalID(), 11) << "|" << strIntRight(nCoast, 11) << "|" << strIntRight(m_pVCoastPolygon[nPoly]->nGetCoastID(), 11) << "|"
                 // All

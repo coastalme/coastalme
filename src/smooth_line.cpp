@@ -24,22 +24,29 @@
 #include <assert.h>
 
 #include <cmath>
-using std::abs;
+// using std::abs;
+using std::pow;
 
 #include <iostream>
 using std::cerr;
-using std::cout;
+// using std::cout;
 using std::endl;
 using std::ios;
 
 #include "cme.h"
 #include "simulation.h"
+#include "2d_point.h"
+#include "2di_point.h"
+#include "line.h"
 
 // Visible throughout this file. Note that arrays here are used from index 1
 typedef double Matrix[SAVGOL_POLYNOMIAL_MAX_ORDER + 2][SAVGOL_POLYNOMIAL_MAX_ORDER + 2];
 
-void LUDecomp(Matrix, int const, int const, int[], int*, int*);
-void LULinearSolve(Matrix const, int const, int const[], double[]);
+namespace
+{
+   void LUDecomp(Matrix, int const, int const, int[], int*, int*);
+   void LULinearSolve(Matrix const, int const, int const[], double[]);
+}
 
 //===============================================================================================================================
 //! Calculates the Savitzky-Golay smoothing coefficients for a given size of smoothing window. Derived from a C original by Jean-Pierre Moreau (jpmoreau@wanadoo.fr, http://jean-pierre.moreau.pagesperso-orange.fr/index.html), to whom we are much indebted
@@ -49,7 +56,7 @@ void CSimulation::CalcSavitzkyGolayCoeffs(void)
    m_VnSavGolIndexCoast.resize(m_nCoastSmoothWindow + 1, 0);
 
    // Note that m_nCoastSmoothWindow must be odd (have already checked this)
-   int nHalfWindow = m_nCoastSmoothWindow / 2;
+   int const nHalfWindow = m_nCoastSmoothWindow / 2;
 
    // Calculate the shift index for this value of nHalfWindow
    int j = 3;
@@ -80,18 +87,18 @@ void CSimulation::CalcSavitzkyGolayCoeffs(void)
 CGeomLine CSimulation::LSmoothCoastSavitzkyGolay(CGeomLine* pLineIn, int const nStartEdge, int const nEndEdge) const
 {
    // Note that m_nCoastSmoothWindow must be odd (have already checked this)
-   int nHalfWindow = m_nCoastSmoothWindow / 2;
+   int const nHalfWindow = m_nCoastSmoothWindow / 2;
 
    // Make a copy of the unsmoothed CGeomLine (must be blank)
-   int nSize = pLineIn->nGetSize();
+   int const nSize = pLineIn->nGetSize();
    CGeomLine LTemp;
    LTemp.Resize(nSize);
 
    // Apply the Savitzky-Golay smoothing filter
    for (int i = 0; i < nSize; i++)
    {
-      CGeom2DPoint PtThis(pLineIn->dGetXAt(i), pLineIn->dGetYAt(i));
-      CGeom2DIPoint PtiThis = PtiExtCRSToGridRound(&PtThis);
+      CGeom2DPoint const PtThis(pLineIn->dGetXAt(i), pLineIn->dGetYAt(i));
+      CGeom2DIPoint const PtiThis = PtiExtCRSToGridRound(&PtThis);
       int nXThis = PtiThis.nGetX();
       int nYThis = PtiThis.nGetY();
 
@@ -114,7 +121,7 @@ CGeomLine CSimulation::LSmoothCoastSavitzkyGolay(CGeomLine* pLineIn, int const n
 
          for (int j = -nHalfWindow; j < m_nCoastSmoothWindow - nHalfWindow; j++)
          {
-            int k = i + j;
+            int const k = i + j;
 
             if ((k > 0) && (k < nSize))
             {
@@ -152,7 +159,7 @@ CGeomLine CSimulation::LSmoothCoastSavitzkyGolay(CGeomLine* pLineIn, int const n
 
          for (int j = -nHalfWindow; j < m_nCoastSmoothWindow - nHalfWindow; j++)
          {
-            int k = i + j;
+            int const k = i + j;
 
             if ((k > 0) && (k < nSize))
             {
@@ -187,7 +194,7 @@ CGeomLine CSimulation::LSmoothCoastSavitzkyGolay(CGeomLine* pLineIn, int const n
          // For all other PtVTemp values, calc Savitzky-Golay weighted values for both X and Y
          for (int j = 0; j < m_nCoastSmoothWindow; j++)
          {
-            int k = i + m_VnSavGolIndexCoast[j + 1];
+            int const k = i + m_VnSavGolIndexCoast[j + 1];
 
             if ((k >= 0) && (k < nSize)) // Skip points that do not exist, note starts from 1
             {
@@ -215,11 +222,11 @@ CGeomLine CSimulation::LSmoothCoastSavitzkyGolay(CGeomLine* pLineIn, int const n
 CGeomLine CSimulation::LSmoothCoastRunningMean(CGeomLine* pLineIn) const
 {
    // Note that m_nCoastSmoothWindow must be odd (have already checked this)
-   int nHalfWindow = m_nCoastSmoothWindow / 2;
-   double dHalfWindow = nHalfWindow;
+   int const nHalfWindow = m_nCoastSmoothWindow / 2;
+   double const dHalfWindow = nHalfWindow;
 
    // Make a copy of the unsmoothed CGeomLine
-   int nSize = pLineIn->nGetSize();
+   int const nSize = pLineIn->nGetSize();
    CGeomLine LTemp;
    LTemp = * pLineIn;
 
@@ -227,8 +234,8 @@ CGeomLine CSimulation::LSmoothCoastRunningMean(CGeomLine* pLineIn) const
    for (int i = 0; i < nSize; i++)
    {
       // Don't smooth intervention cells
-      CGeom2DPoint PtThis(pLineIn->dGetXAt(i), pLineIn->dGetYAt(i));
-      CGeom2DIPoint PtiThis = PtiExtCRSToGridRound(&PtThis);
+      CGeom2DPoint const PtThis(pLineIn->dGetXAt(i), pLineIn->dGetYAt(i));
+      CGeom2DIPoint const PtiThis = PtiExtCRSToGridRound(&PtThis);
       int nXThis = tMin(PtiThis.nGetX(), m_nXGridSize - 1);
       int nYThis = tMin(PtiThis.nGetY(), m_nYGridSize - 1);
 
@@ -252,7 +259,7 @@ CGeomLine CSimulation::LSmoothCoastRunningMean(CGeomLine* pLineIn) const
          for (int j = 0; j <= i; j++)
          {
             // // For points at both ends of the coastline, use a smaller window
-            double weight = (dHalfWindow - tAbs(i - j)) / dHalfWindow;
+            double const weight = (dHalfWindow - tAbs(i - j)) / dHalfWindow;
             dWindowTotX += pLineIn->dGetXAt(j) * weight;
             dWindowTotY += pLineIn->dGetYAt(j) * weight;
             nTmpWindow += weight;
@@ -263,7 +270,7 @@ CGeomLine CSimulation::LSmoothCoastRunningMean(CGeomLine* pLineIn) const
       {
          for (int j = nSize - 1; j >= i; j--)
          {
-            double weight = (dHalfWindow - tAbs(i - j)) / dHalfWindow;
+            double const weight = (dHalfWindow - tAbs(i - j)) / dHalfWindow;
             dWindowTotX += pLineIn->dGetXAt(j) * weight;
             dWindowTotY += pLineIn->dGetYAt(j) * weight;
             nTmpWindow += weight;
@@ -274,7 +281,7 @@ CGeomLine CSimulation::LSmoothCoastRunningMean(CGeomLine* pLineIn) const
       {
          for (int j = i - nHalfWindow; j < i + nHalfWindow; j++)
          {
-            double weight = (dHalfWindow - tAbs(i - j)) / dHalfWindow;
+            double const weight = (dHalfWindow - tAbs(i - j)) / dHalfWindow;
             dWindowTotX += pLineIn->dGetXAt(j) * weight;
             dWindowTotY += pLineIn->dGetYAt(j) * weight;
             nTmpWindow += weight;
@@ -426,7 +433,7 @@ void CSimulation::CalcSavitzkyGolay(double dFilterCoeffsArray[], int const nWind
       for (int k = 1; k <= nLeft; k++)
          dSum += pow(-k, ipj);
 
-      int mm = tMin(ipj, 2 * nSmoothPolyOrder - ipj);
+      int const mm = tMin(ipj, 2 * nSmoothPolyOrder - ipj);
       int imj = -mm;
 
       do
@@ -464,141 +471,147 @@ void CSimulation::CalcSavitzkyGolay(double dFilterCoeffsArray[], int const nWind
       }
 
       // Store in wrap-around order
-      int nInd = ((nWindowSize - n) % nWindowSize) + 1;
+      int const nInd = ((nWindowSize - n) % nWindowSize) + 1;
       dFilterCoeffsArray[nInd] = dSum;
    }
 }
 
-//===============================================================================================================================
-//! Given an N x N matrix A, this routine replaces it by the LU decomposition of a rowwise permutation of itself. A and N are input. nIndexArray is an output vector which records the row permutation effected by the partial pivoting; D is output as -1 or 1, depending on whether the number of row interchanges was even or odd, respectively. This routine is used in combination with LULinearSolve to solve linear equations or to invert a matrix. Returns with nICode = 1 if matrix is singular. Derived from a C original by Jean-Pierre Moreau (jpmoreau@wanadoo.fr, http://jean-pierre.moreau.pagesperso-orange.fr/index.html), to whom we are much indebted
-//===============================================================================================================================
-void LUDecomp(Matrix A, int const N, int const np, int nIndexArray[], int* nDCode, int* nICode)
+namespace
 {
-   if (N >= np)
+   //===============================================================================================================================
+   //! Given an N x N matrix A, this routine replaces it by the LU decomposition of a rowwise permutation of itself. A and N are input. nIndexArray is an output vector which records the row permutation effected by the partial pivoting; D is output as -1 or 1, depending on whether the number of row interchanges was even or odd, respectively. This routine is used in combination with LULinearSolve to solve linear equations or to invert a matrix. Returns with nICode = 1 if matrix is singular. Derived from a C original by Jean-Pierre Moreau (jpmoreau@wanadoo.fr, http://jean-pierre.moreau.pagesperso-orange.fr/index.html), to whom we are much indebted
+   //===============================================================================================================================
+   void LUDecomp(Matrix A, int const N, int const np, int nIndexArray[], int* nDCode, int* nICode)
    {
-      // cerr << ERR << "in LUDecomp" << endl;
-      return;
-   }
-
-   double TINY = 1e-12;
-   double AMAX, DUM, SUM;
-   double* VV = new double[np];
-   int I, IMAX = 0, J, K;
-
-   * nDCode = 1;
-   * nICode = 0;
-
-   for (I = 1; I <= N; I++)
-   {
-      AMAX = 0.0;
-
-      for (J = 1; J <= N; J++)
-         if (tAbs(A[I][J]) > AMAX)
-            AMAX = tAbs(A[I][J]);
-
-      if (AMAX < TINY)
+      if (N >= np)
       {
-         * nICode = 1;
-         delete[] VV;
+         // cerr << ERR << "in LUDecomp" << endl;
          return;
       }
 
-      VV[I] = 1.0 / AMAX;
-   }
+      double const TINY = 1e-12;
+      double AMAX, DUM, SUM;
+      double* VV = new double[np];
+      int I, IMAX = 0, J, K;
 
-   for (J = 1; J <= N; J++)
-   {
-      for (I = 1; I < J; I++)
+      * nDCode = 1;
+      * nICode = 0;
+
+      for (I = 1; I <= N; I++)
       {
-         SUM = A[I][J];
+         AMAX = 0.0;
 
-         for (K = 1; K < I; K++)
-            SUM -= A[I][K] * A[K][J];
+         for (J = 1; J <= N; J++)
+            if (tAbs(A[I][J]) > AMAX)
+               AMAX = tAbs(A[I][J]);
 
-         A[I][J] = SUM;
+         if (AMAX < TINY)
+         {
+            * nICode = 1;
+            delete[] VV;
+            return;
+         }
+
+         VV[I] = 1.0 / AMAX;
       }
 
-      AMAX = 0.0;
-
-      for (I = J; I <= N; I++)
+      for (J = 1; J <= N; J++)
       {
-         SUM = A[I][J];
-
-         for (K = 1; K < J; K++)
-            SUM -= A[I][K] * A[K][J];
-
-         A[I][J] = SUM;
-         DUM = VV[I] * tAbs(SUM);
-
-         if (DUM >= AMAX)
+         for (I = 1; I < J; I++)
          {
-            IMAX = I;
-            AMAX = DUM;
+            SUM = A[I][J];
+
+            for (K = 1; K < I; K++)
+               SUM -= A[I][K] * A[K][J];
+
+            A[I][J] = SUM;
+         }
+
+         AMAX = 0.0;
+
+         for (I = J; I <= N; I++)
+         {
+            SUM = A[I][J];
+
+            for (K = 1; K < J; K++)
+               SUM -= A[I][K] * A[K][J];
+
+            A[I][J] = SUM;
+            DUM = VV[I] * tAbs(SUM);
+
+            if (DUM >= AMAX)
+            {
+               IMAX = I;
+               AMAX = DUM;
+            }
+         }
+
+         if (J != IMAX)
+         {
+            for (K = 1; K <= N; K++)
+            {
+               DUM = A[IMAX][K];
+               A[IMAX][K] = A[J][K];
+               A[J][K] = DUM;
+            }
+
+            * nDCode = -( * nDCode);
+            VV[IMAX] = VV[J];
+         }
+
+         nIndexArray[J] = IMAX;
+
+         if (tAbs(A[J][J]) < TINY)
+            A[J][J] = TINY;
+
+         if (J != N)
+         {
+            DUM = 1.0 / A[J][J];
+
+            for (I = J + 1; I <= N; I++)
+               A[I][J] *= DUM;
          }
       }
 
-      if (J != IMAX)
-      {
-         for (K = 1; K <= N; K++)
-         {
-            DUM = A[IMAX][K];
-            A[IMAX][K] = A[J][K];
-            A[J][K] = DUM;
-         }
-
-         * nDCode = -( * nDCode);
-         VV[IMAX] = VV[J];
-      }
-
-      nIndexArray[J] = IMAX;
-
-      if (tAbs(A[J][J]) < TINY)
-         A[J][J] = TINY;
-
-      if (J != N)
-      {
-         DUM = 1.0 / A[J][J];
-
-         for (I = J + 1; I <= N; I++)
-            A[I][J] *= DUM;
-      }
+      delete[] VV;
    }
-
-   delete[] VV;
 }
 
-//===============================================================================================================================
-//! Solves the set of N linear equations A . X = B.  Here A is input, not as the matrix A but rather as its LU decomposition, determined by the routine LUDecomp. nIndexArray is input as the permutation vector returned by LUDecomp. B is input as the right-hand side vector B, and returns with the solution vector X. A, N and nIndexArray are not modified by this routine and can be used for successive calls with different right-hand sides. This routine is also efficient for plain matrix inversion. Derived from a C original by Jean-Pierre Moreau (jpmoreau@wanadoo.fr, http://jean-pierre.moreau.pagesperso-orange.fr/index.html), to whom we are much indebted
-//===============================================================================================================================
-void LULinearSolve(Matrix const A, int const N, int const nIndexArray[], double B[])
+namespace
 {
-   int II = 0;
-   double SUM;
-
-   for (int I = 1; I <= N; I++)
+   //===============================================================================================================================
+   //! Solves the set of N linear equations A . X = B.  Here A is input, not as the matrix A but rather as its LU decomposition, determined by the routine LUDecomp. nIndexArray is input as the permutation vector returned by LUDecomp. B is input as the right-hand side vector B, and returns with the solution vector X. A, N and nIndexArray are not modified by this routine and can be used for successive calls with different right-hand sides. This routine is also efficient for plain matrix inversion. Derived from a C original by Jean-Pierre Moreau (jpmoreau@wanadoo.fr, http://jean-pierre.moreau.pagesperso-orange.fr/index.html), to whom we are much indebted
+   //===============================================================================================================================
+   void LULinearSolve(Matrix const A, int const N, int const nIndexArray[], double B[])
    {
-      int LL = nIndexArray[I];
-      SUM = B[LL];
-      B[LL] = B[I];
+      int II = 0;
+      double SUM;
 
-      if (II != 0)
-         for (int J = II; J < I; J++)
-            SUM -= A[I][J] * B[J];
+      for (int I = 1; I <= N; I++)
+      {
+         int const LL = nIndexArray[I];
+         SUM = B[LL];
+         B[LL] = B[I];
 
-      else if (! bFPIsEqual(SUM, 0.0, TOLERANCE))
-         II = I;
+         if (II != 0)
+            for (int J = II; J < I; J++)
+               SUM -= A[I][J] * B[J];
 
-      B[I] = SUM;
-   }
+         else if (! bFPIsEqual(SUM, 0.0, TOLERANCE))
+            II = I;
 
-   for (int I = N; I > 0; I--)
-   {
-      SUM = B[I];
+         B[I] = SUM;
+      }
 
-      if (I < N)
-         for (int J = I + 1; J <= N; J++)
-            SUM -= A[I][J] * B[J];
+      for (int I = N; I > 0; I--)
+      {
+         SUM = B[I];
 
-      B[I] = SUM / A[I][I];
+         if (I < N)
+            for (int J = I + 1; J <= N; J++)
+               SUM -= A[I][J] * B[J];
+
+         B[I] = SUM / A[I][I];
+      }
    }
 }

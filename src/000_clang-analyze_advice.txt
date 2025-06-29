@@ -1,0 +1,130 @@
+/home/dave/coast/CoastalME/src/init_grid.cpp:169:39: warning: Dereference of undefined pointer value [clang-analyzer-core.NullDereference]
+  169 |          m_dStartIterConsFineAllCells += m_pRasterGrid->m_Cell[nX][nY].dGetTotConsFineThickConsiderNotch();
+      |          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/init_grid.cpp:56:20: note: Assuming the condition is false
+   56 |    for (int i = 0; i < static_cast<int>(m_pVCoastPolygon.size()); i++)
+      |                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/init_grid.cpp:56:4: note: Loop condition is false. Execution continues on line 59
+   56 |    for (int i = 0; i < static_cast<int>(m_pVCoastPolygon.size()); i++)
+      |    ^
+/home/dave/coast/CoastalME/src/init_grid.cpp:109:20: note: Assuming 'n' is >= field 'm_nLayers'
+  109 |    for (int n = 0; n < m_nLayers; n++)
+      |                    ^~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/init_grid.cpp:109:4: note: Loop condition is false. Execution continues on line 116
+  109 |    for (int n = 0; n < m_nLayers; n++)
+      |    ^
+/home/dave/coast/CoastalME/src/init_grid.cpp:137:21: note: Assuming 'nX' is < field 'm_nXGridSize'
+  137 |    for (int nX = 0; nX < m_nXGridSize; nX++)
+      |                     ^~~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/init_grid.cpp:137:4: note: Loop condition is true.  Entering loop body
+  137 |    for (int nX = 0; nX < m_nXGridSize; nX++)
+      |    ^
+/home/dave/coast/CoastalME/src/init_grid.cpp:139:24: note: Assuming 'nY' is < field 'm_nYGridSize'
+  139 |       for (int nY = 0; nY < m_nYGridSize; nY++)
+      |                        ^~~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/init_grid.cpp:139:7: note: Loop condition is true.  Entering loop body
+  139 |       for (int nY = 0; nY < m_nYGridSize; nY++)
+      |       ^
+/home/dave/coast/CoastalME/src/init_grid.cpp:144:14: note: Assuming field 'm_ulIter' is not equal to 1
+  144 |          if (m_ulIter == 1)
+      |              ^~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/init_grid.cpp:144:10: note: Taking false branch
+  144 |          if (m_ulIter == 1)
+      |          ^
+/home/dave/coast/CoastalME/src/init_grid.cpp:169:39: note: Dereference of undefined pointer value
+  169 |          m_dStartIterConsFineAllCells += m_pRasterGrid->m_Cell[nX][nY].dGetTotConsFineThickConsiderNotch();
+      |          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/multi_line.cpp:97:7: warning: 'push_back' is called inside a loop; consider pre-allocating the container capacity before the loop [performance-inefficient-vector-operation]
+   96 |    for (unsigned int i = 0; i < prVPrev.size(); i++)
+   97 |       nVProfsAffected.push_back(prVPrev[i].first);
+      |       ^
+/home/dave/coast/CoastalME/src/read_input.cpp:743:113: warning: string concatenation results in allocation of unnecessary temporary strings; consider using 'operator+=' or 'string::append()' instead [performance-inefficient-string-concatenation]
+  743 |                   strErr = "line " + to_string(nLine) + ": must contain '" + RASTER_ALL_OUTPUT_CODE + "', or '" + RASTER_USUAL_OUTPUT_CODE + "', or at least one raster GIS output code";
+      |                                                                                                                 ^
+/home/dave/coast/CoastalME/src/read_input.cpp:1290:113: warning: string concatenation results in allocation of unnecessary temporary strings; consider using 'operator+=' or 'string::append()' instead [performance-inefficient-string-concatenation]
+ 1290 |                   strErr = "line " + to_string(nLine) + ": must contain '" + VECTOR_ALL_OUTPUT_CODE + "', or '" + VECTOR_USUAL_OUTPUT_CODE + "', or at least one vector GIS output code";
+      |                                                                                                                 ^
+/home/dave/coast/CoastalME/src/update_grid.cpp:64:13: warning: Dereference of undefined pointer value [clang-analyzer-core.NullDereference]
+   64 |             m_ulThisIterNumCoastCells++;
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/update_grid.cpp:59:21: note: Assuming 'nX' is < field 'm_nXGridSize'
+   59 |    for (int nX = 0; nX < m_nXGridSize; nX++)
+      |                     ^~~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/update_grid.cpp:59:4: note: Loop condition is true.  Entering loop body
+   59 |    for (int nX = 0; nX < m_nXGridSize; nX++)
+      |    ^
+/home/dave/coast/CoastalME/src/update_grid.cpp:61:24: note: Assuming 'nY' is < field 'm_nYGridSize'
+   61 |       for (int nY = 0; nY < m_nYGridSize; nY++)
+      |                        ^~~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/update_grid.cpp:61:7: note: Loop condition is true.  Entering loop body
+   61 |       for (int nY = 0; nY < m_nYGridSize; nY++)
+      |       ^
+/home/dave/coast/CoastalME/src/update_grid.cpp:63:14: note: Assuming the condition is true
+   63 |          if (m_pRasterGrid->m_Cell[nX][nY].bIsCoastline())
+      |              ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/update_grid.cpp:63:10: note: Taking true branch
+   63 |          if (m_pRasterGrid->m_Cell[nX][nY].bIsCoastline())
+      |          ^
+/home/dave/coast/CoastalME/src/update_grid.cpp:64:13: note: Dereference of undefined pointer value
+   64 |             m_ulThisIterNumCoastCells++;
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/update_grid.cpp:69:36: warning: Dereference of undefined pointer value [clang-analyzer-core.NullDereference]
+   69 |             m_dThisIterTotSeaDepth += m_pRasterGrid->m_Cell[nX][nY].dGetSeaDepth();
+      |             ~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/update_grid.cpp:59:21: note: Assuming 'nX' is < field 'm_nXGridSize'
+   59 |    for (int nX = 0; nX < m_nXGridSize; nX++)
+      |                     ^~~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/update_grid.cpp:59:4: note: Loop condition is true.  Entering loop body
+   59 |    for (int nX = 0; nX < m_nXGridSize; nX++)
+      |    ^
+/home/dave/coast/CoastalME/src/update_grid.cpp:61:24: note: Assuming 'nY' is < field 'm_nYGridSize'
+   61 |       for (int nY = 0; nY < m_nYGridSize; nY++)
+      |                        ^~~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/update_grid.cpp:61:7: note: Loop condition is true.  Entering loop body
+   61 |       for (int nY = 0; nY < m_nYGridSize; nY++)
+      |       ^
+/home/dave/coast/CoastalME/src/update_grid.cpp:63:14: note: Assuming the condition is false
+   63 |          if (m_pRasterGrid->m_Cell[nX][nY].bIsCoastline())
+      |              ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/update_grid.cpp:63:10: note: Taking false branch
+   63 |          if (m_pRasterGrid->m_Cell[nX][nY].bIsCoastline())
+      |          ^
+/home/dave/coast/CoastalME/src/update_grid.cpp:66:14: note: Assuming the condition is true
+   66 |          if (m_pRasterGrid->m_Cell[nX][nY].bIsInContiguousSea())
+      |              ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/update_grid.cpp:66:10: note: Taking true branch
+   66 |          if (m_pRasterGrid->m_Cell[nX][nY].bIsInContiguousSea())
+      |          ^
+/home/dave/coast/CoastalME/src/update_grid.cpp:69:36: note: Dereference of undefined pointer value
+   69 |             m_dThisIterTotSeaDepth += m_pRasterGrid->m_Cell[nX][nY].dGetSeaDepth();
+      |             ~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/update_grid.cpp:75:25: warning: Dereference of undefined pointer value [clang-analyzer-core.NullDereference]
+   75 |          if (dTopElev > m_dThisIterTopElevMax)
+      |                         ^~~~~~~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/update_grid.cpp:59:21: note: Assuming 'nX' is < field 'm_nXGridSize'
+   59 |    for (int nX = 0; nX < m_nXGridSize; nX++)
+      |                     ^~~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/update_grid.cpp:59:4: note: Loop condition is true.  Entering loop body
+   59 |    for (int nX = 0; nX < m_nXGridSize; nX++)
+      |    ^
+/home/dave/coast/CoastalME/src/update_grid.cpp:61:24: note: Assuming 'nY' is < field 'm_nYGridSize'
+   61 |       for (int nY = 0; nY < m_nYGridSize; nY++)
+      |                        ^~~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/update_grid.cpp:61:7: note: Loop condition is true.  Entering loop body
+   61 |       for (int nY = 0; nY < m_nYGridSize; nY++)
+      |       ^
+/home/dave/coast/CoastalME/src/update_grid.cpp:63:14: note: Assuming the condition is false
+   63 |          if (m_pRasterGrid->m_Cell[nX][nY].bIsCoastline())
+      |              ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/update_grid.cpp:63:10: note: Taking false branch
+   63 |          if (m_pRasterGrid->m_Cell[nX][nY].bIsCoastline())
+      |          ^
+/home/dave/coast/CoastalME/src/update_grid.cpp:66:14: note: Assuming the condition is false
+   66 |          if (m_pRasterGrid->m_Cell[nX][nY].bIsInContiguousSea())
+      |              ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/dave/coast/CoastalME/src/update_grid.cpp:66:10: note: Taking false branch
+   66 |          if (m_pRasterGrid->m_Cell[nX][nY].bIsInContiguousSea())
+      |          ^
+/home/dave/coast/CoastalME/src/update_grid.cpp:75:25: note: Dereference of undefined pointer value
+   75 |          if (dTopElev > m_dThisIterTopElevMax)
+      |                         ^~~~~~~~~~~~~~~~~~~~~

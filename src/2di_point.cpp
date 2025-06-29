@@ -24,14 +24,21 @@
 #include "2di_point.h"
 #include "cme.h"
 
-//! Constructor with no parameters (the X and Y coordinates of the CGeom2DIPoint object are set to zero in an initialization list)
+//! Constructor with no parameters (the X and Y coordinates of the new CGeom2DIPoint object are set to zero in an initialization list)
 CGeom2DIPoint::CGeom2DIPoint(void)
    : nX(0),
      nY(0)
 {
 }
 
-//! Constructor with two integer parameters, for the X and Y coordinates of the CGeom2DIPoint object
+//! Constructor with one CGeom2DIPoint parameter (for the X and Y coordinates of the new CGeom2DIPoint object)
+CGeom2DIPoint::CGeom2DIPoint(CGeom2DIPoint const* pPti)
+   : nX(pPti->nGetX()),
+     nY(pPti->nGetY())
+{
+}
+
+//! Constructor with two integer parameters, for the X and Y coordinates of the new CGeom2DIPoint object
 CGeom2DIPoint::CGeom2DIPoint(int const nNewX, int const nNewY)
    : nX(nNewX),
      nY(nNewY)
@@ -105,9 +112,8 @@ void CGeom2DIPoint::AddXAddY(double const dXToAdd, double const dYToAdd)
 //! Divides the CGeom2DIPoint object's X coordinate by the first double parameter (rounded), divides the CGeom2DIPoint object's Y coordinate by the second double parameter (rounded)
 void CGeom2DIPoint::DivXDivY(double const dXDiv, double const dYDiv)
 {
-   int
-   nXDiv = nRound(dXDiv),
-   nYDiv = nRound(dYDiv);
+   int const nXDiv = nRound(dXDiv);
+   int const nYDiv = nRound(dYDiv);
 
    // Check for zero division
    if (nXDiv != 0)
@@ -118,10 +124,11 @@ void CGeom2DIPoint::DivXDivY(double const dXDiv, double const dYDiv)
 }
 
 //! Sets one CGeom2DIPoint object to be the same as another
-void CGeom2DIPoint::operator= (CGeom2DIPoint const* pPti)
+CGeom2DIPoint& CGeom2DIPoint::operator= (CGeom2DIPoint const* pPti)
 {
    nX = pPti->nGetX();
    nY = pPti->nGetY();
+   return *this;
 }
 
 //! Compares two CGeom2DIPoint objects for equality

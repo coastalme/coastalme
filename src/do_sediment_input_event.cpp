@@ -21,8 +21,10 @@
    You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 ==============================================================================================================================*/
+#include <cstdio>
+
 #include <iostream>
-using std::cout;
+// using std::cout;
 using std::endl;
 
 #include <algorithm>
@@ -35,6 +37,7 @@ using std::find;
 #include "cell.h"
 #include "coast.h"
 #include "sediment_input_event.h"
+#include "2di_point.h"
 
 //===============================================================================================================================
 //! Check to see if we have any sediment input events this timestep, if so then do the event(s)
@@ -44,7 +47,7 @@ int CSimulation::nCheckForSedimentInputEvent(void)
    m_bSedimentInputThisIter = false;
 
    // Go through all sediment input events, check for any this timestep
-   int nEvents = static_cast<int>(m_pVSedInputEvent.size());
+   int const nEvents = static_cast<int>(m_pVSedInputEvent.size());
 
    for (int n = 0; n < nEvents; n++)
    {
@@ -52,7 +55,7 @@ int CSimulation::nCheckForSedimentInputEvent(void)
       {
          m_bSedimentInputThisIter = true;
 
-         int nRet = nDoSedimentInputEvent(n);
+         int const nRet = nDoSedimentInputEvent(n);
 
          if (nRet != RTN_OK)
             return nRet;
@@ -68,12 +71,12 @@ int CSimulation::nCheckForSedimentInputEvent(void)
 int CSimulation::nDoSedimentInputEvent(int const nEvent)
 {
    // Get values for the sediment input event
-   int nLocID = m_pVSedInputEvent[nEvent]->nGetLocationID();
-   double dFineSedVol = m_pVSedInputEvent[nEvent]->dGetFineSedVol();
-   double dSandSedVol = m_pVSedInputEvent[nEvent]->dGetSandSedVol();
-   double dCoarseSedVol = m_pVSedInputEvent[nEvent]->dGetCoarseSedVol();
-   double dLen = m_pVSedInputEvent[nEvent]->dGetLen();
-   double dWidth = m_pVSedInputEvent[nEvent]->dGetWidth();
+   int const nLocID = m_pVSedInputEvent[nEvent]->nGetLocationID();
+   double const dFineSedVol = m_pVSedInputEvent[nEvent]->dGetFineSedVol();
+   double const dSandSedVol = m_pVSedInputEvent[nEvent]->dGetSandSedVol();
+   double const dCoarseSedVol = m_pVSedInputEvent[nEvent]->dGetCoarseSedVol();
+   double const dLen = m_pVSedInputEvent[nEvent]->dGetLen();
+   double const dWidth = m_pVSedInputEvent[nEvent]->dGetWidth();
    // double dThick = m_pVSedInputEvent[nEvent]->dGetThick();
 
    // TODO 083 Get all three kinds of sediment input events working correctly
@@ -81,7 +84,7 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
    if (m_bSedimentInputAtPoint || m_bSedimentInputAtCoast)
    {
       // The sediment input event is at a user-specified point, or in a block at the nearest point on a coast to a user-specified point. So get the point from values read from the shapefile
-      int nEvents = static_cast<int>(m_VnSedimentInputLocationID.size());
+      int const nEvents = static_cast<int>(m_VnSedimentInputLocationID.size());
       int nPointGridX = -1;
       int nPointGridY = -1;
 
@@ -108,10 +111,10 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
          if (m_nLogFileDetail >= LOG_FILE_MIDDLE_DETAIL)
             LogStream << m_ulIter << ": Sediment input event " << nEvent + 1 << " at point [" << nPointGridX << "][" << nPointGridY << "] = {" << dGridXToExtCRSX(nPointGridX) << ", " << dGridYToExtCRSY(nPointGridY) << "] with location ID " << nLocID;
 
-         int nTopLayer = m_pRasterGrid->m_Cell[nPointGridX][nPointGridY].nGetTopLayerAboveBasement();
+         int const nTopLayer = m_pRasterGrid->m_Cell[nPointGridX][nPointGridY].nGetTopLayerAboveBasement();
 
          // Is some fine unconsolidated sediment being input?
-         double dFineDepth = dFineSedVol / m_dCellArea;
+         double const dFineDepth = dFineSedVol / m_dCellArea;
 
          if (dFineDepth > 0)
          {
@@ -121,7 +124,7 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
             // And update the sediment top elevation value
             m_pRasterGrid->m_Cell[nPointGridX][nPointGridY].CalcAllLayerElevsAndD50();
 
-            int nThisPoly = m_pRasterGrid->m_Cell[nPointGridX][nPointGridY].nGetPolygonID();
+            int const nThisPoly = m_pRasterGrid->m_Cell[nPointGridX][nPointGridY].nGetPolygonID();
 
             if (nThisPoly != INT_NODATA)
             {
@@ -138,7 +141,7 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
          }
 
          // Is some sand-sized unconsolidated sediment being input?
-         double dSandDepth = dSandSedVol / m_dCellArea;
+         double const dSandDepth = dSandSedVol / m_dCellArea;
 
          if (dSandDepth > 0)
          {
@@ -148,7 +151,7 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
             // And update the sediment top elevation value
             m_pRasterGrid->m_Cell[nPointGridX][nPointGridY].CalcAllLayerElevsAndD50();
 
-            int nThisPoly = m_pRasterGrid->m_Cell[nPointGridX][nPointGridY].nGetPolygonID();
+            int const nThisPoly = m_pRasterGrid->m_Cell[nPointGridX][nPointGridY].nGetPolygonID();
 
             if (nThisPoly != INT_NODATA)
             {
@@ -165,7 +168,7 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
          }
 
          // Is some coarse unconsolidated sediment being input?
-         double dCoarseDepth = dCoarseSedVol / m_dCellArea;
+         double const dCoarseDepth = dCoarseSedVol / m_dCellArea;
 
          if (dCoarseDepth > 0)
          {
@@ -175,7 +178,7 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
             // And update the sediment top elevation value
             m_pRasterGrid->m_Cell[nPointGridX][nPointGridY].CalcAllLayerElevsAndD50();
 
-            int nThisPoly = m_pRasterGrid->m_Cell[nPointGridX][nPointGridY].nGetPolygonID();
+            int const nThisPoly = m_pRasterGrid->m_Cell[nPointGridX][nPointGridY].nGetPolygonID();
 
             if (nThisPoly != INT_NODATA)
             {
@@ -202,19 +205,19 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
             LogStream << m_ulIter << ": Sediment input event " << nEvent + 1 << " with location ID " << nLocID << " at closest point on coast to [" << nPointGridX << "][" << nPointGridY << "] = {" << dGridXToExtCRSX(nPointGridX) << ", " << dGridYToExtCRSY(nPointGridY) << "]" << endl;
 
          // Find the closest point on the coastline
-         CGeom2DIPoint PtiCoastPoint = PtiFindClosestCoastPoint(nPointGridX, nPointGridY);
+         CGeom2DIPoint const PtiCoastPoint = PtiFindClosestCoastPoint(nPointGridX, nPointGridY);
 
-         int nCoastX = PtiCoastPoint.nGetX();
-         int nCoastY = PtiCoastPoint.nGetY();
+         int const nCoastX = PtiCoastPoint.nGetX();
+         int const nCoastY = PtiCoastPoint.nGetY();
 
          if (m_nLogFileDetail >= LOG_FILE_MIDDLE_DETAIL)
             LogStream << m_ulIter << ": Closest coast point is at [" << nCoastX << "][" << nCoastY << "] = {" << dGridXToExtCRSX(nCoastX) << ", " << dGridYToExtCRSY(nCoastY) << "}, along-coast width of sediment block = " << dWidth << " m, coast-normal length of sediment block = " << dLen << " m" << endl;
 
-         int nCoast = m_pRasterGrid->m_Cell[nCoastX][nCoastY].pGetLandform()->nGetCoast();
-         int nCoastPoint = m_pRasterGrid->m_Cell[nCoastX][nCoastY].pGetLandform()->nGetPointOnCoast();
-         int nHalfWidth = nRound(dWidth / m_dCellSide);
-         int nLength = nRound(dLen / m_dCellSide);
-         int nCoastLen = m_VCoast[nCoast].nGetCoastlineSize();
+         int const nCoast = m_pRasterGrid->m_Cell[nCoastX][nCoastY].pGetLandform()->nGetCoast();
+         int const nCoastPoint = m_pRasterGrid->m_Cell[nCoastX][nCoastY].pGetLandform()->nGetPointOnCoast();
+         int const nHalfWidth = nRound(dWidth / m_dCellSide);
+         int const nLength = nRound(dLen / m_dCellSide);
+         int const nCoastLen = m_VCoast[nCoast].nGetCoastlineSize();
          int nCoastXBefore = nCoastX;
          int nCoastYBefore = nCoastY;
          int nCoastXAfter = nCoastX;
@@ -232,7 +235,7 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
             nCoastYAfter = m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(nCoastPoint + 1)->nGetY();
          }
 
-         int nCoastHand = m_VCoast[nCoast].nGetSeaHandedness();
+         int const nCoastHand = m_VCoast[nCoast].nGetSeaHandedness();
          int nPerpHand = LEFT_HANDED;
 
          if (nCoastHand == LEFT_HANDED)
@@ -259,7 +262,7 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
 
                   for (int n = 1; n < nLength; n++)
                   {
-                     CGeom2DIPoint PtiTmp = PtiGetPerpendicular(nCoastXBefore, nCoastYBefore, nCoastXAfter, nCoastYAfter, n, nPerpHand);
+                     CGeom2DIPoint const PtiTmp = PtiGetPerpendicular(nCoastXBefore, nCoastYBefore, nCoastXAfter, nCoastYAfter, n, nPerpHand);
 
                      if (bIsWithinValidGrid(&PtiTmp))
                      {
@@ -273,13 +276,13 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
 
                else
                {
-                  int nCoastPointInBlockBefore = nCoastPoint - m;
-                  int nCoastPointInBlockAfter = nCoastPoint + m;
+                  int const nCoastPointInBlockBefore = nCoastPoint - m;
+                  int const nCoastPointInBlockAfter = nCoastPoint + m;
 
                   if (nCoastPointInBlockBefore >= 0)
                   {
-                     int nCoastXInBlockBefore = m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(nCoastPointInBlockBefore)->nGetX();
-                     int nCoastYInBlockBefore = m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(nCoastPointInBlockBefore)->nGetY();
+                     int const nCoastXInBlockBefore = m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(nCoastPointInBlockBefore)->nGetX();
+                     int const nCoastYInBlockBefore = m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(nCoastPointInBlockBefore)->nGetY();
 
                      if (bIsWithinValidGrid(nCoastXInBlockBefore, nCoastYInBlockBefore))
                      {
@@ -287,8 +290,8 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
 
                         for (unsigned int n = 0; n < VnCentrePointsXOffset.size(); n++)
                         {
-                           int nXTmp = nCoastXInBlockBefore + VnCentrePointsXOffset[n];
-                           int nYTmp = nCoastYInBlockBefore + VnCentrePointsYOffset[n];
+                           int const nXTmp = nCoastXInBlockBefore + VnCentrePointsXOffset[n];
+                           int const nYTmp = nCoastYInBlockBefore + VnCentrePointsYOffset[n];
 
                            if (bIsWithinValidGrid(nXTmp, nYTmp))
                               VPoints.push_back(CGeom2DIPoint(nXTmp, nYTmp));
@@ -298,8 +301,8 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
 
                   if (nCoastPointInBlockAfter < nCoastLen)
                   {
-                     int nCoastXInBlockAfter = m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(nCoastPointInBlockAfter)->nGetX();
-                     int nCoastYInBlockAfter = m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(nCoastPointInBlockAfter)->nGetY();
+                     int const nCoastXInBlockAfter = m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(nCoastPointInBlockAfter)->nGetX();
+                     int const nCoastYInBlockAfter = m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(nCoastPointInBlockAfter)->nGetY();
 
                      if (bIsWithinValidGrid(nCoastXInBlockAfter, nCoastYInBlockAfter))
                      {
@@ -307,12 +310,12 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
 
                         for (unsigned int n = 0; n < VnCentrePointsXOffset.size(); n++)
                         {
-                           int nXTmp = nCoastXInBlockAfter + VnCentrePointsXOffset[n];
-                           int nYTmp = nCoastYInBlockAfter + VnCentrePointsYOffset[n];
+                           int const nXTmp = nCoastXInBlockAfter + VnCentrePointsXOffset[n];
+                           int const nYTmp = nCoastYInBlockAfter + VnCentrePointsYOffset[n];
 
                            if (bIsWithinValidGrid(nXTmp, nYTmp))
                            {
-                              CGeom2DIPoint PtiTmp(nXTmp, nYTmp);
+                              CGeom2DIPoint const PtiTmp(nXTmp, nYTmp);
 
                               // Is this cell already in the array?
                               if (find(begin(VPoints), end(VPoints), PtiTmp) == end(VPoints))
@@ -343,26 +346,26 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
          }
 
          // OK we now know which cells are part of the sediment block, and so will receive sediment input. Next calculate the volume per cell
-         double dFineDepth = dFineSedVol / m_dCellArea;
-         double dSandDepth = dSandSedVol / m_dCellArea;
-         double dCoarseDepth = dCoarseSedVol / m_dCellArea;
+         double const dFineDepth = dFineSedVol / m_dCellArea;
+         double const dSandDepth = dSandSedVol / m_dCellArea;
+         double const dCoarseDepth = dCoarseSedVol / m_dCellArea;
 
          if (m_nLogFileDetail >= LOG_FILE_MIDDLE_DETAIL)
             LogStream << m_ulIter << ": Total depth of fine sediment added = " << dFineDepth << " m, total depth of sand sediment added = " << dSandDepth << " m, total depth of coarse sediment added = " << dCoarseDepth << " m" << endl;
 
-         size_t nArea = VPoints.size();
-         double dArea = static_cast<double>(nArea);
-         double dFineDepthPerCell = dFineDepth / dArea;
-         double dSandDepthPerCell = dSandDepth / dArea;
-         double dCoarseDepthPerCell = dCoarseDepth / dArea;
+         size_t const nArea = VPoints.size();
+         double const dArea = static_cast<double>(nArea);
+         double const dFineDepthPerCell = dFineDepth / dArea;
+         double const dSandDepthPerCell = dSandDepth / dArea;
+         double const dCoarseDepthPerCell = dCoarseDepth / dArea;
 
          // OK, so finally: put some sediment onto each cell in the sediment block
-         int nTopLayer = m_pRasterGrid->m_Cell[nPointGridX][nPointGridY].nGetTopLayerAboveBasement();
+         int const nTopLayer = m_pRasterGrid->m_Cell[nPointGridX][nPointGridY].nGetTopLayerAboveBasement();
 
          for (unsigned int n = 0; n < nArea; n++)
          {
-            int nX = VPoints[n].nGetX();
-            int nY = VPoints[n].nGetY();
+            int const nX = VPoints[n].nGetX();
+            int const nY = VPoints[n].nGetY();
 
             // Add to this cell's fine unconsolidated sediment
             m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nTopLayer)->pGetUnconsolidatedSediment()->AddFineSedimentInputDepth(dFineDepthPerCell);
@@ -384,7 +387,7 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
    else if (m_bSedimentInputAlongLine)
    {
       // The location of the sediment input event is where a line intersects a coast. First get the line, using values read from the shapefile
-      int nPoints = static_cast<int>(m_VnSedimentInputLocationID.size());
+      int const nPoints = static_cast<int>(m_VnSedimentInputLocationID.size());
       vector<int> VnLineGridX;
       vector<int> VnLineGridY;
 
@@ -451,15 +454,15 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
 
       for (unsigned int n = 0; n < VnLineGridX.size() - 1; n++)
       {
-         int nXStart = VnLineGridX[n];
-         int nXEnd = VnLineGridX[n + 1];
-         int nYStart = VnLineGridY[n];
-         int nYEnd = VnLineGridY[n + 1];
+         int const nXStart = VnLineGridX[n];
+         int const nXEnd = VnLineGridX[n + 1];
+         int const nYStart = VnLineGridY[n];
+         int const nYEnd = VnLineGridY[n + 1];
 
          // Interpolate between pairs of points using a simple DDA line algorithm, see http://en.wikipedia.org/wiki/Digital_differential_analyzer_(graphics_algorithm). Bresenham's algorithm gave occasional gaps
          double dXInc = nXEnd - nXStart;
          double dYInc = nYEnd - nYStart;
-         double dLength = tMax(tAbs(dXInc), tAbs(dYInc));
+         double const dLength = tMax(tAbs(dXInc), tAbs(dYInc));
 
          dXInc /= dLength;
          dYInc /= dLength;
@@ -470,8 +473,8 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
          // Process each interpolated point
          for (int m = 0; m <= nRound(dLength); m++)
          {
-            int nX = nRound(dX);
-            int nY = nRound(dY);
+            int const nX = nRound(dX);
+            int const nY = nRound(dY);
 
             // Have we hit a coastline cell?
             if (bIsWithinValidGrid(nX, nY) && m_pRasterGrid->m_Cell[nX][nY].bIsCoastline())
@@ -515,10 +518,10 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
 
       // Get landform and top layer
       CRWCellLandform* pLandform = m_pRasterGrid->m_Cell[nCoastX][nCoastY].pGetLandform();
-      int nTopLayer = m_pRasterGrid->m_Cell[nCoastX][nCoastY].nGetTopLayerAboveBasement();
+      int const nTopLayer = m_pRasterGrid->m_Cell[nCoastX][nCoastY].nGetTopLayerAboveBasement();
 
       // Is some fine unconsolidated sediment being input?
-      double dFineDepth = dFineSedVol / m_dCellArea;
+      double const dFineDepth = dFineSedVol / m_dCellArea;
 
       if (dFineDepth > 0)
       {
@@ -528,7 +531,7 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
          // And update the sediment top elevation value
          m_pRasterGrid->m_Cell[nCoastX][nCoastY].CalcAllLayerElevsAndD50();
 
-         int nThisPoly = m_pRasterGrid->m_Cell[nCoastX][nCoastY].nGetPolygonID();
+         int const nThisPoly = m_pRasterGrid->m_Cell[nCoastX][nCoastY].nGetPolygonID();
 
          if (nThisPoly != INT_NODATA)
          {
@@ -545,7 +548,7 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
       }
 
       // Is some sand-sized unconsolidated sediment being input?
-      double dSandDepth = dSandSedVol / m_dCellArea;
+      double const dSandDepth = dSandSedVol / m_dCellArea;
 
       if (dSandDepth > 0)
       {
@@ -555,7 +558,7 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
          // And update the sediment top elevation value
          m_pRasterGrid->m_Cell[nCoastX][nCoastY].CalcAllLayerElevsAndD50();
 
-         int nThisPoly = m_pRasterGrid->m_Cell[nCoastX][nCoastY].nGetPolygonID();
+         int const nThisPoly = m_pRasterGrid->m_Cell[nCoastX][nCoastY].nGetPolygonID();
 
          if (nThisPoly != INT_NODATA)
          {
@@ -572,7 +575,7 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
       }
 
       // Is some coarse unconsolidated sediment being input?
-      double dCoarseDepth = dCoarseSedVol / m_dCellArea;
+      double const dCoarseDepth = dCoarseSedVol / m_dCellArea;
 
       if (dCoarseDepth > 0)
       {
@@ -582,7 +585,7 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
          // And update the sediment top elevation value
          m_pRasterGrid->m_Cell[nCoastX][nCoastY].CalcAllLayerElevsAndD50();
 
-         int nThisPoly = m_pRasterGrid->m_Cell[nCoastX][nCoastY].nGetPolygonID();
+         int const nThisPoly = m_pRasterGrid->m_Cell[nCoastX][nCoastY].nGetPolygonID();
 
          if (nThisPoly != INT_NODATA)
          {
