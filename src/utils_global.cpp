@@ -26,7 +26,8 @@
 #include <cfloat>
 
 #include <cstdio>
-using std::sprintf;
+using std::size_t;
+// using std::sprintf;
 
 #include <sstream>
 using std::stringstream;
@@ -36,8 +37,8 @@ using std::istringstream;
 using std::fixed;
 using std::right;
 
-#include <iomanip>
-using std::setw;
+// #include <iomanip>
+// using std::setw;
 
 #include "cme.h"
 
@@ -85,7 +86,7 @@ bool bIsStringValidDouble(string& str)
 bool bIsStringValidInt(string& str)
 {
    // Trim leading whitespace
-   size_t nPos = str.find_first_not_of(" \t");
+   size_t const nPos = str.find_first_not_of(" \t");
 
    if (nPos != string::npos)
       str = str.substr(nPos);
@@ -169,9 +170,9 @@ string strIntRight(int const nX, int const nWidth)
 //===============================================================================================================================
 string strCentre(const char* pchIn, int const nWidth)
 {
-   string strIn(pchIn);
+   string const strIn(pchIn);
    stringstream ss, spaces;
-   int nPadding = nWidth - static_cast<int>(strIn.size());
+   int const nPadding = nWidth - static_cast<int>(strIn.size());
 
    for (int i = 0; i < nPadding / 2; ++i)
       spaces << " ";
@@ -190,7 +191,7 @@ string strCentre(const char* pchIn, int const nWidth)
 string strCentre(const string& strIn, int const nWidth)
 {
    stringstream ss, spaces;
-   int nPadding = nWidth - static_cast<int>(strIn.size());
+   int const nPadding = nWidth - static_cast<int>(strIn.size());
 
    for (int i = 0; i < nPadding / 2; ++i)
       spaces << " ";
@@ -209,7 +210,7 @@ string strCentre(const string& strIn, int const nWidth)
 string strRight(const string& strIn, int const nWidth)
 {
    stringstream ss, spaces;
-   int nPadding = nWidth - static_cast<int>(strIn.size()) - 1;
+   int const nPadding = nWidth - static_cast<int>(strIn.size()) - 1;
 
    for (int i = 0; i < nPadding; ++i)
       spaces << " ";
@@ -224,9 +225,9 @@ string strRight(const string& strIn, int const nWidth)
 //===============================================================================================================================
 string strRight(const char* pchIn, int const nWidth)
 {
-   string strIn(pchIn);
+   string const strIn(pchIn);
    stringstream ss, spaces;
-   int nPadding = nWidth - static_cast<int>(strIn.size()) - 1;
+   int const nPadding = nWidth - static_cast<int>(strIn.size()) - 1;
 
    for (int i = 0; i < nPadding; ++i)
       spaces << " ";
@@ -242,7 +243,7 @@ string strRight(const char* pchIn, int const nWidth)
 string strLeft(const string& strIn, int const nWidth)
 {
    stringstream ss, spaces;
-   int nPadding = nWidth - static_cast<int>(strIn.size());
+   int const nPadding = nWidth - static_cast<int>(strIn.size());
 
    for (int i = 0; i < nPadding; ++i)
       spaces << " ";
@@ -256,9 +257,9 @@ string strLeft(const string& strIn, int const nWidth)
 //===============================================================================================================================
 string strLeft(const char* pchIn, int const nWidth)
 {
-   string strIn(pchIn);
+   string const strIn(pchIn);
    stringstream ss, spaces;
-   int nPadding = nWidth - static_cast<int>(strIn.size());
+   int const nPadding = nWidth - static_cast<int>(strIn.size());
 
    for (int i = 0; i < nPadding; ++i)
       spaces << " ";
@@ -291,14 +292,14 @@ string strRightPerCent(double const d1, double const d2, int const nWidth, int c
    else
    {
       // Non-zero, so calculate the percentage
-      double dResult = 100 * d1 / d2;
+      double const dResult = 100 * d1 / d2;
 
       stringstream ssResult;
       ssResult << fixed << right;
       ssResult.precision(nDigits);
       ssResult << "(" << dResult << "%)";
 
-      long int nResultWidth = ssResult.str().size();
+      long int const nResultWidth = ssResult.str().size();
 
       for (int i = 0; i < (nWidth - nResultWidth - 1); i++)
          ss << SPACE;

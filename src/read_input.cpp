@@ -21,7 +21,13 @@
    You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 ==============================================================================================================================*/
-#include <stdlib.h>
+#include <cstdio>
+
+#include <cctype>
+using std::isdigit;
+
+#include <cmath>
+using std::floor;
 
 #include <fstream>
 using std::ifstream;
@@ -65,7 +71,7 @@ bool CSimulation::bReadIniFile(void)
    m_strCMEIni.append(CME_INI);
 
    // The .ini file is assumed to be in the CoastalME executable's directory
-   string strFilePathName(m_strCMEIni);
+   string const strFilePathName(m_strCMEIni);
 
    // Tell the user what is happening
    cout << READING_FILE_LOCATIONS << strFilePathName << endl;
@@ -372,7 +378,7 @@ bool CSimulation::bReadRunDataFile(void)
 
                m_bCSVPerTimestepResults = false;
 
-               if (strRH.find("y") != string::npos)
+               if (strRH.find('y') != string::npos)
                   m_bCSVPerTimestepResults = true;
 
                break;
@@ -498,7 +504,7 @@ bool CSimulation::bReadRunDataFile(void)
                strRH = strToLower(&strRH);
 
                // Split by commas to handle multiple unit groups
-               string strOriginal = strRH;
+               string const strOriginal = strRH;
                size_t nCommaPos = 0;
 
                m_bSaveRegular = false;  // Start with assumption of multiple values
@@ -506,7 +512,7 @@ bool CSimulation::bReadRunDataFile(void)
                do
                {
                   string strGroup;
-                  size_t nNextComma = strOriginal.find(',', nCommaPos);
+                  size_t const nNextComma = strOriginal.find(',', nCommaPos);
 
                   if (nNextComma != string::npos)
                   {
@@ -537,7 +543,7 @@ bool CSimulation::bReadRunDataFile(void)
                   }
 
                   // Remove the unit text from the end
-                  size_t nLastSpace = strGroup.rfind(SPACE);
+                  size_t const nLastSpace = strGroup.rfind(SPACE);
 
                   if (nLastSpace == string::npos)
                   {
@@ -554,12 +560,12 @@ bool CSimulation::bReadRunDataFile(void)
 
                   do
                   {
-                     size_t nNextSpace = strNumbers.find(SPACE, nSpacePos);
+                     size_t const nNextSpace = strNumbers.find(SPACE, nSpacePos);
 
                      if (nNextSpace == string::npos)
                         break;
 
-                     string strNumber = strNumbers.substr(nSpacePos, nNextSpace - nSpacePos);
+                     string const strNumber = strNumbers.substr(nSpacePos, nNextSpace - nSpacePos);
 
                      if (! strNumber.empty())
                      {
@@ -569,7 +575,7 @@ bool CSimulation::bReadRunDataFile(void)
                            break;
                         }
 
-                        double dValue = strtod(strNumber.c_str(), NULL) * dMult;
+                        double const dValue = strtod(strNumber.c_str(), NULL) * dMult;
                         m_dUSaveTime[m_nUSave++] = dValue;
                      }
 
@@ -1227,7 +1233,7 @@ bool CSimulation::bReadRunDataFile(void)
 
                m_bScaleRasterOutput = false;
 
-               if (strRH.find("y") != string::npos)
+               if (strRH.find('y') != string::npos)
                   m_bScaleRasterOutput = true;
 
                break;
@@ -1238,7 +1244,7 @@ bool CSimulation::bReadRunDataFile(void)
 
                m_bWorldFile = false;
 
-               if (strRH.find("y") != string::npos)
+               if (strRH.find('y') != string::npos)
                   m_bWorldFile = true;
 
                break;
@@ -1621,22 +1627,22 @@ bool CSimulation::bReadRunDataFile(void)
                // Grid edge(s) to omit when searching for coastline [NSWE]
                strRH = strToLower(&strRH);
 
-               if (strRH.find("n") != string::npos)
+               if (strRH.find('n') != string::npos)
                {
                   m_bOmitSearchNorthEdge = true;
                }
 
-               if (strRH.find("s") != string::npos)
+               if (strRH.find('s') != string::npos)
                {
                   m_bOmitSearchSouthEdge = true;
                }
 
-               if (strRH.find("w") != string::npos)
+               if (strRH.find('w') != string::npos)
                {
                   m_bOmitSearchWestEdge = true;
                }
 
-               if (strRH.find("e") != string::npos)
+               if (strRH.find('e') != string::npos)
                {
                   m_bOmitSearchEastEdge = true;
                }
@@ -2398,7 +2404,7 @@ bool CSimulation::bReadRunDataFile(void)
                // Simulate coast platform erosion?
                strRH = strToLower(&strRH);
 
-               if (strRH.find("y") != string::npos)
+               if (strRH.find('y') != string::npos)
                   m_bDoShorePlatformErosion = true;
 
                break;
@@ -2429,7 +2435,7 @@ bool CSimulation::bReadRunDataFile(void)
 
                m_bDoBeachSedimentTransport = false;
 
-               if (strRH.find("y") != string::npos)
+               if (strRH.find('y') != string::npos)
                   m_bDoBeachSedimentTransport = true;
 
                break;
@@ -2699,7 +2705,7 @@ bool CSimulation::bReadRunDataFile(void)
                   // Only consider cliff collapse if we have some consolidated sedimemt
                   strRH = strToLower(&strRH);
 
-                  if (strRH.find("y") != string::npos)
+                  if (strRH.find('y') != string::npos)
                      m_bDoCliffCollapse = true;
                }
 
@@ -2844,7 +2850,7 @@ bool CSimulation::bReadRunDataFile(void)
                // Simulate riverine flooding?
                strRH = strToLower(&strRH);
 
-               if (strRH.find("y") != string::npos)
+               if (strRH.find('y') != string::npos)
                {
                   m_bRiverineFlooding = true;
                   m_bSetupSurgeFloodMaskSave = true;
@@ -2928,7 +2934,7 @@ bool CSimulation::bReadRunDataFile(void)
 
                   m_bFloodLocation = false;
 
-                  if (strRH.find("y") != string::npos)
+                  if (strRH.find('y') != string::npos)
                   {
                      m_bFloodLocation = true;
                   }
@@ -2973,7 +2979,7 @@ bool CSimulation::bReadRunDataFile(void)
                // Simulate sediment input?
                strRH = strToLower(&strRH);
 
-               if (strRH.find("y") != string::npos)
+               if (strRH.find('y') != string::npos)
                {
                   m_bSedimentInput = true;
                   m_bSedimentInputEventSave = true;
@@ -3016,13 +3022,13 @@ bool CSimulation::bReadRunDataFile(void)
                {
                   strRH = strToLower(&strRH);
 
-                  if (strRH.find("p") != string::npos)
+                  if (strRH.find('p') != string::npos)
                      m_bSedimentInputAtPoint = true;
 
-                  else if (strRH.find("c") != string::npos)
+                  else if (strRH.find('c') != string::npos)
                      m_bSedimentInputAtCoast = true;
 
-                  else if (strRH.find("l") != string::npos)
+                  else if (strRH.find('l') != string::npos)
                      m_bSedimentInputAlongLine = true;
 
                   else
@@ -3151,7 +3157,7 @@ bool CSimulation::bReadRunDataFile(void)
 
                m_bOutputProfileData = false;
 
-               if (strRH.find("y") != string::npos)
+               if (strRH.find('y') != string::npos)
                {
                   m_bOutputProfileData = true;
 
@@ -3183,7 +3189,7 @@ bool CSimulation::bReadRunDataFile(void)
                         break;
                      }
 
-                     int nTmp = stoi(VstrTmp[j]);
+                     int const nTmp = stoi(VstrTmp[j]);
 
                      if (nTmp < 0)
                      {
@@ -3207,7 +3213,7 @@ bool CSimulation::bReadRunDataFile(void)
                   for (unsigned int j = 0; j < VstrTmp.size(); j++)
                   {
                      VstrTmp[j] = strTrim(&VstrTmp[j]);
-                     unsigned long ulTmp = atol(VstrTmp[j].c_str());
+                     unsigned long const ulTmp = atol(VstrTmp[j].c_str());
 
                      if (ulTmp < 1)
                      {
@@ -3227,7 +3233,7 @@ bool CSimulation::bReadRunDataFile(void)
 
                m_bOutputParallelProfileData = false;
 
-               if (strRH.find("y") != string::npos)
+               if (strRH.find('y') != string::npos)
                   m_bOutputParallelProfileData = true;
 
                break;
@@ -3238,7 +3244,7 @@ bool CSimulation::bReadRunDataFile(void)
 
                m_bOutputErosionPotentialData = false;
 
-               if (strRH.find("y") != string::npos)
+               if (strRH.find('y') != string::npos)
                   m_bOutputErosionPotentialData = true;
 
                break;
@@ -3745,7 +3751,7 @@ int CSimulation::nReadWaveStationInputFile(int const nWaveStations)
    InStream.close();
 
    // Did we read in what we expected?
-   unsigned int nTotExpected = nExpectedStations * m_nDeepWaterWaveDataNumTimeSteps;
+   unsigned int const nTotExpected = nExpectedStations * m_nDeepWaterWaveDataNumTimeSteps;
 
    if (m_VdTSDeepWaterWaveStationHeight.size() != nTotExpected)
    {
@@ -3777,12 +3783,12 @@ int CSimulation::nReadWaveStationInputFile(int const nWaveStations)
    }
 
    // Finally, check whether the wave data will 'wrap' i.e. whether the number of timesteps is less than the total number of timesteps in the simulation
-   int nSimulationTimeSteps = static_cast<int>(floor(m_dSimDuration / m_dTimeStep));
+   int const nSimulationTimeSteps = static_cast<int>(floor(m_dSimDuration / m_dTimeStep));
 
    if (m_nDeepWaterWaveDataNumTimeSteps < nSimulationTimeSteps)
    {
       m_dWaveDataWrapHours = m_nDeepWaterWaveDataNumTimeSteps * m_dTimeStep;
-      string strTmp = "Deep water wave data will wrap every " + (m_nDeepWaterWaveDataNumTimeSteps > 1 ? to_string(m_nDeepWaterWaveDataNumTimeSteps) + " " : "") + "time step" + (m_nDeepWaterWaveDataNumTimeSteps > 1 ? "s" : "") + " (every " + to_string(m_dWaveDataWrapHours) + " hours)\n";
+      string const strTmp = "Deep water wave data will wrap every " + (m_nDeepWaterWaveDataNumTimeSteps > 1 ? to_string(m_nDeepWaterWaveDataNumTimeSteps) + " " : "") + "time step" + (m_nDeepWaterWaveDataNumTimeSteps > 1 ? "s" : "") + " (every " + to_string(m_dWaveDataWrapHours) + " hours)\n";
 
       cout << NOTE << strTmp;
    }
@@ -3850,7 +3856,7 @@ int CSimulation::nReadSedimentInputEventFile(void)
             break;
          }
 
-         int nID = stoi(strTrim(&VstrTmp[0]));
+         int const nID = stoi(strTrim(&VstrTmp[0]));
 
          // OK, check the ID against IDs read in from the shapefile
          auto result = find(m_VnSedimentInputLocationID.begin(), m_VnSedimentInputLocationID.end(), nID);
@@ -3862,7 +3868,7 @@ int CSimulation::nReadSedimentInputEventFile(void)
          }
 
          // Next get the timestep at which the sediment input event occurs. This may be specified either as a relative time (i.e. a number of hours or days after the simulation start) or as an absolute time (i.e. a time/date in the format hh-mm-ss dd/mm/yyyy)
-         unsigned long ulEventTimeStep = ulConvertToTimestep(&VstrTmp[1]);
+         unsigned long const ulEventTimeStep = ulConvertToTimestep(&VstrTmp[1]);
 
          if (ulEventTimeStep == SEDIMENT_INPUT_EVENT_ERROR)
          {
@@ -3877,7 +3883,7 @@ int CSimulation::nReadSedimentInputEventFile(void)
             break;
          }
 
-         double dFineSedVol = stod(strTrim(&VstrTmp[2]));
+         double const dFineSedVol = stod(strTrim(&VstrTmp[2]));
 
          if (dFineSedVol < 0)
          {
@@ -3895,7 +3901,7 @@ int CSimulation::nReadSedimentInputEventFile(void)
             break;
          }
 
-         double dSandSedVol = stod(strTrim(&VstrTmp[3]));
+         double const dSandSedVol = stod(strTrim(&VstrTmp[3]));
 
          if (dSandSedVol < 0)
          {
@@ -3913,7 +3919,7 @@ int CSimulation::nReadSedimentInputEventFile(void)
             break;
          }
 
-         double dCoarseSedVol = stod(strTrim(&VstrTmp[4]));
+         double const dCoarseSedVol = stod(strTrim(&VstrTmp[4]));
 
          if (dCoarseSedVol < 0)
          {

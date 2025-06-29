@@ -25,6 +25,9 @@
    You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 ===============================================================================================================================*/
+#include <vector>
+using std::vector;
+
 #include <ctime>
 using std::localtime;
 using std::time;
@@ -46,13 +49,13 @@ using std::stack;
 using std::default_random_engine;
 using std::normal_distribution;
 
-#include <gdal_priv.h>
+#include <gdal.h>
+using ::GDALDataType;
 
+#include "2d_point.h"
+#include "2di_point.h"
 #include "line.h"
-#include "i_line.h"
 #include "cme.h"
-
-#include "inc/cshore.h"
 
 class CGeomRasterGrid; // Forward declarations
 class CRWCoast;
@@ -1544,7 +1547,7 @@ private:
    bool bWriteProfileData(int const, CGeomProfile const*, int const, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<CGeom2DIPoint> *const, vector<double> const*) const;
    int nSaveParProfile(int const, CGeomProfile const*, int const, int const, int const, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<CGeom2DIPoint>* const, vector<double> const*) const;
    bool bWriteParProfileData(int const, int const, int const, int const, int const, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<CGeom2DIPoint>* const, vector<double> const*) const;
-   void WriteLookUpData(void) const;
+   void WriteLookUpData(void);
 
    // GIS input and output stuff
    void InitializeGDALPerformance(void);
@@ -1609,7 +1612,7 @@ private:
    void FillInBeachProtectionHoles(void);
    void FillPotentialPlatformErosionHoles(void);
    void DoActualPlatformErosionOnCell(int const, int const);
-   double dLookUpErosionPotential(double const) const;
+   double dLookUpErosionPotential(double const);
    static CGeom2DPoint PtChooseEndPoint(int const, CGeom2DPoint const*, CGeom2DPoint const*, double const, double const, double const, double const);
    int nGetCoastNormalEndPoint(int const, int const, int const, CGeom2DPoint const*, double const, CGeom2DPoint*, CGeom2DIPoint*, bool const);
    int nLandformToGrid(int const, int const);
@@ -1696,6 +1699,12 @@ private:
    // static void GetSlopeAndInterceptFromPoints(CGeom2DIPoint const*, CGeom2DIPoint const*, double&, double&);
    CGeom2DIPoint PtiFindClosestCoastPoint(int const, int const);
    int nConvertMetresToNumCells(double const) const;
+
+   // Interpolation routines
+   double dGetInterpolatedValue(vector<double> const*, vector<double> const*, double, bool);
+   double dGetInterpolatedValue(vector<int> const*, vector<double> const*, int, bool);
+   int nFindIndex(vector<double> const*, double const);
+   vector<double> VdInterpolateCShoreProfileOutput(vector<double> const*, vector<double> const*, vector<double> const*);
 
    // Utility routines
    static void AnnounceStart(void);

@@ -23,38 +23,46 @@
 ==============================================================================================================================*/
 #include <assert.h>
 
-#include <cmath>
-using std::isfinite;
+#include <cstdio>
 
-#include <unistd.h>
+#include <cmath>
+using std::sin;
+using std::cos;
+using std::pow;
+using std::fmod;
+// using std::isfinite;
+
+// #include <unistd.h>
 
 #include <string>
-using std::stoi;
+// using std::stoi;
 using std::to_string;
 
 #include <iostream>
-using std::cerr;
-using std::cout;
+// using std::cerr;
+// using std::cout;
 using std::endl;
-using std::ifstream;
 using std::ios;
 
-#include <iomanip>
-using std::resetiosflags;
-using std::setiosflags;
-using std::setprecision;
-using std::setw;
+#include <fstream>
+using std::ifstream;
+
+// #include <iomanip>
+// using std::resetiosflags;
+// using std::setiosflags;
+// using std::setprecision;
+// using std::setw;
 
 #include <algorithm>
-using std::remove;
+// using std::remove;
 using std::reverse_copy;
-using std::sort;
+// using std::sort;
 
 #include "cme.h"
 #include "coast.h"
 #include "simulation.h"
-
-#include "interpolate.h"
+#include "cshore/cshore.h"
+#include "2d_point.h"
 
 //===============================================================================================================================
 //! Give every coast point a value for deep water wave height and direction TODO 005 This may not be realistic, maybe better to use end-of-profile value instead (how?)
@@ -84,9 +92,9 @@ int CSimulation::nSetAllCoastpointDeepWaterWaveValues(void)
             CGeomProfile const* pProfile = m_VCoast[nCoast].pGetProfileAtCoastPoint(nPoint);
             // int nProfile = pProfile->nGetCoastID();
 
-            double dThisDeepWaterWaveHeight = pProfile->dGetProfileDeepWaterWaveHeight();
-            double dThisDeepWaterWaveAngle = pProfile->dGetProfileDeepWaterWaveAngle();
-            double dThisDeepWaterWavePeriod = pProfile->dGetProfileDeepWaterWavePeriod();
+            double const dThisDeepWaterWaveHeight = pProfile->dGetProfileDeepWaterWaveHeight();
+            double const dThisDeepWaterWaveAngle = pProfile->dGetProfileDeepWaterWaveAngle();
+            double const dThisDeepWaterWavePeriod = pProfile->dGetProfileDeepWaterWavePeriod();
 
             m_VCoast[nCoast].SetCoastDeepWaterWaveHeight(nPoint, dThisDeepWaterWaveHeight);
             m_VCoast[nCoast].SetCoastDeepWaterWaveAngle(nPoint, dThisDeepWaterWaveAngle);
@@ -125,11 +133,11 @@ int CSimulation::nSetAllCoastpointDeepWaterWaveValues(void)
             nDistFromPrevProfile++;
             nDistToNextProfile--;
 
-            double dPrevWeight = (dDist - nDistFromPrevProfile) / dDist;
-            double dNextWeight = (dDist - nDistToNextProfile) / dDist;
-            double dThisDeepWaterWaveHeight = (dPrevWeight * dPrevProfileDeepWaterWaveHeight) + (dNextWeight * dNextProfileDeepWaterWaveHeight);
-            double dThisDeepWaterWaveAngle = dKeepWithin360((dPrevWeight * dPrevProfileDeepWaterWaveAngle) + (dNextWeight * dNextProfileDeepWaterWaveAngle));
-            double dThisDeepWaterWavePeriod = (dPrevWeight * dPrevProfileDeepWaterWavePeriod) + (dNextWeight * dNextProfileDeepWaterWavePeriod);
+            double const dPrevWeight = (dDist - nDistFromPrevProfile) / dDist;
+            double const dNextWeight = (dDist - nDistToNextProfile) / dDist;
+            double const dThisDeepWaterWaveHeight = (dPrevWeight * dPrevProfileDeepWaterWaveHeight) + (dNextWeight * dNextProfileDeepWaterWaveHeight);
+            double const dThisDeepWaterWaveAngle = dKeepWithin360((dPrevWeight * dPrevProfileDeepWaterWaveAngle) + (dNextWeight * dNextProfileDeepWaterWaveAngle));
+            double const dThisDeepWaterWavePeriod = (dPrevWeight * dPrevProfileDeepWaterWavePeriod) + (dNextWeight * dNextProfileDeepWaterWavePeriod);
 
             m_VCoast[nCoast].SetCoastDeepWaterWaveHeight(nPoint, dThisDeepWaterWaveHeight);
             m_VCoast[nCoast].SetCoastDeepWaterWaveAngle(nPoint, dThisDeepWaterWaveAngle);
@@ -161,8 +169,8 @@ int CSimulation::nDoAllPropagateWaves(void)
 
    for (int nCoast = 0; nCoast < static_cast<int>(m_VCoast.size()); nCoast++)
    {
-      int nCoastSize = m_VCoast[nCoast].nGetCoastlineSize();
-      int nNumProfiles = m_VCoast[nCoast].nGetNumProfiles();
+      int const nCoastSize = m_VCoast[nCoast].nGetCoastlineSize();
+      int const nNumProfiles = m_VCoast[nCoast].nGetNumProfiles();
 
       static bool bDownCoast = true;
 
@@ -183,7 +191,7 @@ int CSimulation::nDoAllPropagateWaves(void)
          else
             pProfile = m_VCoast[nCoast].pGetProfileWithUpCoastSeq(nn);
 
-         int nRet = nCalcWavePropertiesOnProfile(nCoast, nCoastSize, pProfile, &VdX, &VdY, &VdHeightX, &VdHeightY, &VbBreaking);
+         int const nRet = nCalcWavePropertiesOnProfile(nCoast, nCoastSize, pProfile, &VdX, &VdY, &VdHeightX, &VdHeightY, &VbBreaking);
 
          if (nRet != RTN_OK)
          {
@@ -256,7 +264,7 @@ int CSimulation::nDoAllPropagateWaves(void)
    {
       if (m_pRasterGrid->m_Cell[nX][0].bIsInContiguousSea())
       {
-         int nPolyID = m_pRasterGrid->m_Cell[nX][0].nGetPolygonID();
+         int const nPolyID = m_pRasterGrid->m_Cell[nX][0].nGetPolygonID();
 
          if (nPolyID == INT_NODATA)
          {
@@ -278,7 +286,7 @@ int CSimulation::nDoAllPropagateWaves(void)
 
       if (m_pRasterGrid->m_Cell[nX][m_nYGridSize - 1].bIsInContiguousSea())
       {
-         int nPolyID = m_pRasterGrid->m_Cell[nX][m_nYGridSize - 1].nGetPolygonID();
+         int const nPolyID = m_pRasterGrid->m_Cell[nX][m_nYGridSize - 1].nGetPolygonID();
 
          if (nPolyID == INT_NODATA)
          {
@@ -303,7 +311,7 @@ int CSimulation::nDoAllPropagateWaves(void)
    {
       if (m_pRasterGrid->m_Cell[0][nY].bIsInContiguousSea())
       {
-         int nPolyID = m_pRasterGrid->m_Cell[0][nY].nGetPolygonID();
+         int const nPolyID = m_pRasterGrid->m_Cell[0][nY].nGetPolygonID();
 
          if (nPolyID == INT_NODATA)
          {
@@ -325,7 +333,7 @@ int CSimulation::nDoAllPropagateWaves(void)
 
       if (m_pRasterGrid->m_Cell[m_nXGridSize - 1][nY].bIsInContiguousSea())
       {
-         int nPolyID = m_pRasterGrid->m_Cell[m_nXGridSize - 1][nY].nGetPolygonID();
+         int const nPolyID = m_pRasterGrid->m_Cell[m_nXGridSize - 1][nY].nGetPolygonID();
 
          if (nPolyID == INT_NODATA)
          {
@@ -509,7 +517,7 @@ int CSimulation::nDoAllPropagateWaves(void)
    // Modify the wave breaking properties (wave height, wave dir, breaking depth, breaking distance) for coastline points within the shadow zone
    for (int nCoast = 0; nCoast < static_cast<int>(m_VCoast.size()); nCoast++)
    {
-      int nNumProfiles = m_VCoast[nCoast].nGetNumProfiles();
+      int const nNumProfiles = m_VCoast[nCoast].nGetNumProfiles();
 
       for (int nProfile = 0; nProfile < nNumProfiles; nProfile++)
          ModifyBreakingWavePropertiesWithinShadowZoneToCoastline(nCoast, nProfile);
@@ -582,8 +590,8 @@ int CSimulation::nDoAllPropagateWaves(void)
    // Interpolate these wave properties for all remaining coastline points. Do this in along-coastline sequence
    for (int nCoast = 0; nCoast < static_cast<int>(m_VCoast.size()); nCoast++)
    {
-      int nCoastSize = m_VCoast[nCoast].nGetCoastlineSize();
-      int nNumProfiles = m_VCoast[nCoast].nGetNumProfiles();
+      int const nCoastSize = m_VCoast[nCoast].nGetCoastlineSize();
+      int const nNumProfiles = m_VCoast[nCoast].nGetNumProfiles();
 
       // Interpolate these wave properties for all remaining coastline points. Do this in along-coastline sequence, but do not do this for the end-of-coastline profile (which is the final one)
       for (int n = 0; n < nNumProfiles - 1; n++)
@@ -596,8 +604,8 @@ int CSimulation::nDoAllPropagateWaves(void)
       for (int nCoastPoint = 0; nCoastPoint < nCoastSize; nCoastPoint++)
       {
          // Equation 4 from Walkden & Hall, 2005
-         double dBreakingWaveHeight = m_VCoast[nCoast].dGetBreakingWaveHeight(nCoastPoint);
-         double dCoastPointWavePeriod = m_VCoast[nCoast].dGetCoastDeepWaterWavePeriod(nCoastPoint);
+         double const dBreakingWaveHeight = m_VCoast[nCoast].dGetBreakingWaveHeight(nCoastPoint);
+         double const dCoastPointWavePeriod = m_VCoast[nCoast].dGetCoastDeepWaterWavePeriod(nCoastPoint);
 
          // TODO 080 Why do we get -ve dBreakingWaveHeight here?
          if (bFPIsEqual(dBreakingWaveHeight, DBL_NODATA, TOLERANCE))
@@ -607,10 +615,10 @@ int CSimulation::nDoAllPropagateWaves(void)
 
          else
          {
-            double dErosiveWaveForce = pow(dBreakingWaveHeight, WALKDEN_HALL_PARAM_1) * pow(dCoastPointWavePeriod, WALKDEN_HALL_PARAM_2);
+            double const dErosiveWaveForce = pow(dBreakingWaveHeight, WALKDEN_HALL_PARAM_1) * pow(dCoastPointWavePeriod, WALKDEN_HALL_PARAM_2);
 
             // Calculate total wave energy at this coast point during this timestep
-            double dWaveEnergy = dErosiveWaveForce * m_dTimeStep * 3600;
+            double const dWaveEnergy = dErosiveWaveForce * m_dTimeStep * 3600;
             m_VCoast[nCoast].SetWaveEnergyAtBreaking(nCoastPoint, dWaveEnergy);
          }
       }
@@ -655,16 +663,16 @@ int CSimulation::nCalcWavePropertiesOnProfile(int const nCoast, int const nCoast
    }
 
    // Calculate some wave properties based on the wave period following Airy wave theory
-   double dDeepWaterWavePeriod = pProfile->dGetProfileDeepWaterWavePeriod();
+   double const dDeepWaterWavePeriod = pProfile->dGetProfileDeepWaterWavePeriod();
 
    m_dC_0 = (m_dG * dDeepWaterWavePeriod) / (2 * PI); // Deep water (offshore) wave celerity (m/s)
    m_dL_0 = m_dC_0 * dDeepWaterWavePeriod;            // Deep water (offshore) wave length (m)
 
-   int nSeaHand = m_VCoast[nCoast].nGetSeaHandedness();
-   int nCoastPoint = pProfile->nGetCoastPoint();
+   int const nSeaHand = m_VCoast[nCoast].nGetSeaHandedness();
+   int const nCoastPoint = pProfile->nGetCoastPoint();
 
    // Get the flux orientation (the orientation of a line which is tangential to the coast) at adjacent coastline points. Note special treatment for the coastline end points
-   double dFluxOrientationThis = m_VCoast[nCoast].dGetFluxOrientation(nCoastPoint);
+   double const dFluxOrientationThis = m_VCoast[nCoast].dGetFluxOrientation(nCoastPoint);
    double dFluxOrientationPrev = 0;
    double dFluxOrientationNext = 0;
 
@@ -687,7 +695,7 @@ int CSimulation::nCalcWavePropertiesOnProfile(int const nCoast, int const nCoast
    }
 
    // Get the deep water wave orientation for this profile
-   double dDeepWaterWaveAngle = pProfile->dGetProfileDeepWaterWaveAngle();
+   double const dDeepWaterWaveAngle = pProfile->dGetProfileDeepWaterWaveAngle();
 
    // Calculate the angle between the deep water wave direction and a normal to the coast tangent
    double dWaveToNormalAngle = dCalcWaveAngleToCoastNormal(dFluxOrientationThis, dDeepWaterWaveAngle, nSeaHand);
@@ -709,7 +717,7 @@ int CSimulation::nCalcWavePropertiesOnProfile(int const nCoast, int const nCoast
    if (nCoastPoint > 0)
    {
       // Get the deep water wave orientation for the up-coast point
-      double dPrevDeepWaterWaveAngle = m_VCoast[nCoast].dGetCoastDeepWaterWaveAngle(nCoastPoint - 1);
+      double const dPrevDeepWaterWaveAngle = m_VCoast[nCoast].dGetCoastDeepWaterWaveAngle(nCoastPoint - 1);
 
       dWaveToNormalAnglePrev = dCalcWaveAngleToCoastNormal(dFluxOrientationPrev, dPrevDeepWaterWaveAngle, nSeaHand);
    }
@@ -730,7 +738,7 @@ int CSimulation::nCalcWavePropertiesOnProfile(int const nCoast, int const nCoast
    if (nCoastPoint < nCoastSize - 1)
    {
       // Get the deep water wave orientation for the down-coast point
-      double dNextDeepWaterWaveAngle = m_VCoast[nCoast].dGetCoastDeepWaterWaveAngle(nCoastPoint + 1);
+      double const dNextDeepWaterWaveAngle = m_VCoast[nCoast].dGetCoastDeepWaterWaveAngle(nCoastPoint + 1);
 
       dWaveToNormalAngleNext = dCalcWaveAngleToCoastNormal(dFluxOrientationNext, dNextDeepWaterWaveAngle, nSeaHand);
    }
@@ -801,30 +809,30 @@ int CSimulation::nCalcWavePropertiesOnProfile(int const nCoast, int const nCoast
    // Initialize the wave properties at breaking for this profile
    bool bBreaking = false;
 
-   int nProfileSize = pProfile->nGetNumCellsInProfile();
+   int const nProfileSize = pProfile->nGetNumCellsInProfile();
    int nProfileBreakingDist = 0;
 
    double dProfileBreakingWaveHeight = DBL_NODATA;
    double dProfileBreakingWaveAngle = 0;
    double dProfileBreakingDepth = 0;
    double dProfileWaveHeight = DBL_NODATA;
-   double dProfileDeepWaterWaveHeight = pProfile->dGetProfileDeepWaterWaveHeight();
+   double const dProfileDeepWaterWaveHeight = pProfile->dGetProfileDeepWaterWaveHeight();
    double dProfileWaveAngle = DBL_NODATA;
-   double dProfileDeepWaterWaveAngle = pProfile->dGetProfileDeepWaterWaveAngle();
+   double const dProfileDeepWaterWaveAngle = pProfile->dGetProfileDeepWaterWaveAngle();
 
    vector<bool> VbWaveIsBreaking(nProfileSize, 0);
 
    vector<double> VdWaveHeight(nProfileSize, 0);
    vector<double> VdWaveSetupSurge(nProfileSize, 0);
    // vector<double> VdStormSurge(nProfileSize, 0);
-   vector<double> VdWaveSetupRunUp(nProfileSize, 0);
+   vector<double> const VdWaveSetupRunUp(nProfileSize, 0);
    vector<double> VdWaveDirection(nProfileSize, 0);
 
    if (m_nWavePropagationModel == WAVE_MODEL_CSHORE)
    {
       // We are using CShore to propagate the waves
-      double dCShoreTimeStep = 3600;   // In seconds, not important because we are not using CShore to erode the profile, just to get the hydrodynamics
-      double dSurgeLevel = CSHORE_SURGE_LEVEL;
+      double const dCShoreTimeStep = 3600;   // In seconds, not important because we are not using CShore to erode the profile, just to get the hydrodynamics
+      double const dSurgeLevel = CSHORE_SURGE_LEVEL;
 
       // Set up vectors for the coastline-normal profile elevations. The length of this vector line is given by the number of cells 'under' the profile. Thus each point on the vector relates to a single cell in the grid. This assumes that all points on the profile vector are equally spaced (not quite true, depends on the orientation of the line segments which comprise the profile)
       vector<double> VdProfileZ;                   // Initial (pre-erosion) elevation of both consolidated and unconsolidated sediment for cells 'under' the profile, in CShore units
@@ -858,26 +866,26 @@ int CSimulation::nCalcWavePropertiesOnProfile(int const nCoast, int const nCoast
       dWaveToNormalAngle = tMax(dWaveToNormalAngle, -80.0);
       dWaveToNormalAngle = tMin(dWaveToNormalAngle, 80.0);
 
-      int nProfileDistXYSize = static_cast<int>(VdProfileDistXY.size());
+      int const nProfileDistXYSize = static_cast<int>(VdProfileDistXY.size());
       vector<double> VdFreeSurfaceStd(nProfileDistXYSize, 0);              // This is converted to Hrms by Hrms = sqr(8)*FreeSurfaceStd
       vector<double> VdSinWaveAngleRadians(nProfileDistXYSize, 0);         // This is converted to deg by asin(VdSinWaveAngleRadians)*(180/pi)
       vector<double> VdFractionBreakingWaves(nProfileDistXYSize, 0);       // Is 0 if no wave breaking, and 1 if all waves breaking
 
       // Now define the other values that CShore requires
-      int nILine = 1;               // This is the number of cross-shore lines i.e. the number of CoastalME profiles. Only one at a time, at present
-      int nIProfl = 0;              // 0 for fixed bottom profile, 1 for profile evolution computation
-      int nIPerm = 0;               // 0 for impermeable bottom, 1 for permeable bottom of stone structure
-      int nIOver = 0;               // 0 for no wave overtopping and overflow on crest, 1 for wave overtopping and overflow
-      int nIWCInt = 0;              // 0 for no wave/current interaction, 1 for wave/current interaction in frequency dispersion, momentum and wave action equations
-      int nIRoll = 0;               // 0 for no roller effects, 1 for roller effects in governing equations
-      int nIWind = 0;               // 0 for no wind effects, 1 for wind shear stresses on momentum equations
-      int nITide = 0;               // 0 for no tidal effect on currents, 1 for longshore and cross-shore tidal currents
-      int nILab = 0;                // 0 for field data set, 1 for laboratory data set
-      int nNWave = 1;               // Number of waves at x = 0 starting from time = 0
-      int nNSurge = 1;              // Number of water levels at x = 0 from time = 0
-      double dDX = VdProfileDistXY.back() / (static_cast<double>(VdProfileDistXY.size() - 1));
-      double dWaveInitTime = 0;     // CShore wave start time
-      double dSurgeInitTime = 0;    // CShore surge start time
+      int const nILine = 1;                  // This is the number of cross-shore lines i.e. the number of CoastalME profiles. Only one at a time, at present
+      int const nIProfl = 0;                 // 0 for fixed bottom profile, 1 for profile evolution computation
+      int const nIPerm = 0;                  // 0 for impermeable bottom, 1 for permeable bottom of stone structure
+      int const nIOver = 0;                  // 0 for no wave overtopping and overflow on crest, 1 for wave overtopping and overflow
+      int const nIWCInt = 0;                 // 0 for no wave/current interaction, 1 for wave/current interaction in frequency dispersion, momentum and wave action equations
+      int const nIRoll = 0;                  // 0 for no roller effects, 1 for roller effects in governing equations
+      int const nIWind = 0;                  // 0 for no wind effects, 1 for wind shear stresses on momentum equations
+      int const nITide = 0;                  // 0 for no tidal effect on currents, 1 for longshore and cross-shore tidal currents
+      int const nILab = 0;                   // 0 for field data set, 1 for laboratory data set
+      int const nNWave = 1;                  // Number of waves at x = 0 starting from time = 0
+      int const nNSurge = 1;                 // Number of water levels at x = 0 from time = 0
+      double const dDX = VdProfileDistXY.back() / (static_cast<double>(VdProfileDistXY.size() - 1));
+      double const dWaveInitTime = 0;        // CShore wave start time
+      double const dSurgeInitTime = 0;       // CShore surge start time
 
 #if defined CSHORE_FILE_INOUT || CSHORE_BOTH
       // Move to the CShore folder
@@ -1018,7 +1026,7 @@ int CSimulation::nCalcWavePropertiesOnProfile(int const nCoast, int const nCoast
       vector<double> VdFreeSurfaceStdOut(CSHOREARRAYOUTSIZE, 0);                            // Ditto
       vector<double> VdWaveSetupSurgeOut(CSHOREARRAYOUTSIZE, 0);                            // Ditto
       // vector<double> VdStormSurgeOut(CSHOREARRAYOUTSIZE, 0);                             // Ditto
-      vector<double> VdWaveSetupRunUpOut(CSHOREARRAYOUTSIZE, 0);                            // Ditto
+      vector<double> const VdWaveSetupRunUpOut(CSHOREARRAYOUTSIZE, 0);                            // Ditto
       vector<double> VdSinWaveAngleRadiansOut(CSHOREARRAYOUTSIZE, 0);                       // Ditto
       vector<double> VdFractionBreakingWavesOut(CSHOREARRAYOUTSIZE, 0);                     // Ditto
 
@@ -1153,8 +1161,8 @@ int CSimulation::nCalcWavePropertiesOnProfile(int const nCoast, int const nCoast
       // Do more safety checks, then convert the CShore output to wave height and wave direction, and update wave profile attributes
       for (int nProfilePoint = (nProfileSize - 1); nProfilePoint >= 0; nProfilePoint--)
       {
-         int nX = pProfile->pPtiGetCellInProfile(nProfilePoint)->nGetX();
-         int nY = pProfile->pPtiGetCellInProfile(nProfilePoint)->nGetY();
+         int const nX = pProfile->pPtiGetCellInProfile(nProfilePoint)->nGetX();
+         int const nY = pProfile->pPtiGetCellInProfile(nProfilePoint)->nGetY();
 
          // Safety check
          if (nProfilePoint > static_cast<int>(VdFreeSurfaceStd.size()) - 1)
@@ -1180,7 +1188,7 @@ int CSimulation::nCalcWavePropertiesOnProfile(int const nCoast, int const nCoast
          if (VdSinWaveAngleRadians[nProfilePoint] > 1)
             VdSinWaveAngleRadians[nProfilePoint] = 1;
 
-         double dAlpha = asin(VdSinWaveAngleRadians[nProfilePoint]) * (180 / PI);
+         double const dAlpha = asin(VdSinWaveAngleRadians[nProfilePoint]) * (180 / PI);
 
          if (nSeaHand == LEFT_HANDED)
             VdWaveDirection[nProfilePoint] = dKeepWithin360(dAlpha + 90 + dFluxOrientationThis);
@@ -1220,19 +1228,19 @@ int CSimulation::nCalcWavePropertiesOnProfile(int const nCoast, int const nCoast
    else if (m_nWavePropagationModel == WAVE_MODEL_COVE)
    {
       // We are using COVE's linear wave theory to propagate the waves
-      double dDepthLookupMax = m_dWaveDepthRatioForWaveCalcs * dProfileDeepWaterWaveHeight;
+      double const dDepthLookupMax = m_dWaveDepthRatioForWaveCalcs * dProfileDeepWaterWaveHeight;
 
       // Go landwards along the profile, calculating wave height and wave angle for every inundated point on the profile (don't do point zero, this is on the coastline) until the waves start to break  after breaking wave height is assumed to decrease linearly to zero at the shoreline and wave angle is equalt to wave angle at breaking
       for (int nProfilePoint = (nProfileSize - 1); nProfilePoint >= 0; nProfilePoint--)
       {
-         int nX = pProfile->pPtiGetCellInProfile(nProfilePoint)->nGetX();
-         int nY = pProfile->pPtiGetCellInProfile(nProfilePoint)->nGetY();
+         int const nX = pProfile->pPtiGetCellInProfile(nProfilePoint)->nGetX();
+         int const nY = pProfile->pPtiGetCellInProfile(nProfilePoint)->nGetY();
 
          // Safety check
          if (! m_pRasterGrid->m_Cell[nX][nY].bIsInContiguousSea())
             continue;
 
-         double dSeaDepth = m_pRasterGrid->m_Cell[nX][nY].dGetSeaDepth(); // Water depth for the cell 'under' this point in the profile
+         double const dSeaDepth = m_pRasterGrid->m_Cell[nX][nY].dGetSeaDepth(); // Water depth for the cell 'under' this point in the profile
 
          if (dSeaDepth > dDepthLookupMax)
          {
@@ -1246,14 +1254,14 @@ int CSimulation::nCalcWavePropertiesOnProfile(int const nCoast, int const nCoast
             if (! bBreaking)
             {
                // Start calculating wave properties using linear wave theory
-               double dL = m_dL_0 * sqrt(tanh((2 * PI * dSeaDepth) / m_dL_0));                          // Wavelength (m) in intermediate-shallow waters
-               double dC = m_dC_0 * tanh((2 * PI * dSeaDepth) / dL);                                    // Wave speed (m/s) set by dSeaDepth, dL and m_dC_0
-               double dk = 2 * PI / dL;                                                                 // Wave number (1/m)
-               double dn = ((2 * dSeaDepth * dk) / (sinh(2 * dSeaDepth * dk)) + 1) / 2;                 // Shoaling factor
-               double dKs = sqrt(m_dC_0 / (dn * dC * 2));                                               // Shoaling coefficient
-               double dAlpha = (180 / PI) * asin((dC / m_dC_0) * sin((PI / 180) * dWaveToNormalAngle)); // Calculate angle between wave direction and the normal to the coast tangent
-               double dKr = sqrt(cos((PI / 180) * dWaveToNormalAngle) / cos((PI / 180) * dAlpha));      // Refraction coefficient
-               dProfileWaveHeight = dProfileDeepWaterWaveHeight * dKs * dKr;                            // Calculate wave height, based on the previous (more seaward) wave height
+               double const dL = m_dL_0 * sqrt(tanh((2 * PI * dSeaDepth) / m_dL_0));                           // Wavelength (m) in intermediate-shallow waters
+               double const dC = m_dC_0 * tanh((2 * PI * dSeaDepth) / dL);                                     // Wave speed (m/s) set by dSeaDepth, dL and m_dC_0
+               double const dk = 2 * PI / dL;                                                                  // Wave number (1/m)
+               double const dn = ((2 * dSeaDepth * dk) / (sinh(2 * dSeaDepth * dk)) + 1) / 2;                  // Shoaling factor
+               double const dKs = sqrt(m_dC_0 / (dn * dC * 2));                                                // Shoaling coefficient
+               double const dAlpha = (180 / PI) * asin((dC / m_dC_0) * sin((PI / 180) * dWaveToNormalAngle));  // Calculate angle between wave direction and the normal to the coast tangent
+               double const dKr = sqrt(cos((PI / 180) * dWaveToNormalAngle) / cos((PI / 180) * dAlpha));       // Refraction coefficient
+               dProfileWaveHeight = dProfileDeepWaterWaveHeight * dKs * dKr;                                   // Calculate wave height, based on the previous (more seaward) wave height
 
                if (nSeaHand == LEFT_HANDED)
                   dProfileWaveAngle = dKeepWithin360(dAlpha + 90 + dFluxOrientationThis);
@@ -1302,8 +1310,8 @@ int CSimulation::nCalcWavePropertiesOnProfile(int const nCoast, int const nCoast
          continue;
 
       // Get the wave attributes calculated for this profile: wave height, wave angle, and whether is in the active zone
-      double dWaveHeight = VdWaveHeight[nProfilePoint];
-      double dWaveAngle = VdWaveDirection[nProfilePoint];
+      double const dWaveHeight = VdWaveHeight[nProfilePoint];
+      double const dWaveAngle = VdWaveDirection[nProfilePoint];
 
       bBreaking = VbWaveIsBreaking[nProfilePoint];
 
@@ -1316,10 +1324,10 @@ int CSimulation::nCalcWavePropertiesOnProfile(int const nCoast, int const nCoast
    }
 
    // Obtain the profile nodes near the coast
-   int nX = pProfile->pPtiGetCellInProfile(nProfileSize - 2)->nGetX();
-   int nY = pProfile->pPtiGetCellInProfile(nProfileSize - 2)->nGetY();
-   int nX1 = pProfile->pPtiGetCellInProfile(nProfileSize - 1)->nGetX();
-   int nY1 = pProfile->pPtiGetCellInProfile(nProfileSize - 1)->nGetY();
+   int const nX = pProfile->pPtiGetCellInProfile(nProfileSize - 2)->nGetX();
+   int const nY = pProfile->pPtiGetCellInProfile(nProfileSize - 2)->nGetY();
+   int const nX1 = pProfile->pPtiGetCellInProfile(nProfileSize - 1)->nGetX();
+   int const nY1 = pProfile->pPtiGetCellInProfile(nProfileSize - 1)->nGetY();
 
    // Calculate the horizontal distance between the profile points
    double dXDist = tAbs(dGridCentroidXToExtCRSX(nX1) - dGridCentroidXToExtCRSX(nX));
@@ -1333,10 +1341,10 @@ int CSimulation::nCalcWavePropertiesOnProfile(int const nCoast, int const nCoast
    if (bFPIsEqual(dYDist, 0.0, TOLERANCE))
       dYDist = 1e-3;
 
-   double dDiffProfileDistXY = hypot(dXDist, dYDist);
+   double const dDiffProfileDistXY = hypot(dXDist, dYDist);
 
    // Compute the beach slope
-   double dtanBeta = tan(tAbs(m_pRasterGrid->m_Cell[nX1][nY1].dGetSeaDepth() - m_pRasterGrid->m_Cell[nX][nY].dGetSeaDepth()) / dDiffProfileDistXY);
+   double const dtanBeta = tan(tAbs(m_pRasterGrid->m_Cell[nX1][nY1].dGetSeaDepth() - m_pRasterGrid->m_Cell[nX][nY].dGetSeaDepth()) / dDiffProfileDistXY);
 
    // Compute the wave run-up using NIELSEN & HANSLOW (1991) & DHI (2004)
    int nValidPointsWaveHeight = 0;
@@ -1392,19 +1400,19 @@ int CSimulation::nCalcWavePropertiesOnProfile(int const nCoast, int const nCoast
    else if (m_nRunUpEquation == 1)
    {
       // Compute the run-up using MASE 1989
-      double dS0 = 2 * PI * dWaveHeight / (9.81 * dDeepWaterWavePeriod * dDeepWaterWavePeriod);
+      double const dS0 = 2 * PI * dWaveHeight / (9.81 * dDeepWaterWavePeriod * dDeepWaterWavePeriod);
       dRunUp = 1.86 * dWaveHeight * pow(pow(dtanBeta / dS0, 0.5), 0.71);
    }
 
    else if (m_nRunUpEquation == 2)
    {
       // Compute the run-up using STOCKDON (2006)
-      double dS0 = 2 * PI * dWaveHeight / (9.81 * dDeepWaterWavePeriod * dDeepWaterWavePeriod);
+      double const dS0 = 2 * PI * dWaveHeight / (9.81 * dDeepWaterWavePeriod * dDeepWaterWavePeriod);
       // dRunUp = 1.1 * ((0.35 * dWaveHeight * (pow((1 / dS0) * dWaveHeight * dWaveHeight, 0.5))) + (((((1 / dS0) * dWaveHeight * dWaveHeight) * (0.563 * dWaveHeight * dWaveHeight + 0.0004)), 0.5)) / 2);
 
-      double dH0OverL0 = (1 / dS0) * dWaveHeight;
-      double dTmp1 = 0.35 * dWaveHeight * pow(dH0OverL0, 0.5);
-      double dTmp2 = pow(dH0OverL0 * ((0.563 * dWaveHeight * dWaveHeight) + 0.0004), 0.5);
+      double const dH0OverL0 = (1 / dS0) * dWaveHeight;
+      double const dTmp1 = 0.35 * dWaveHeight * pow(dH0OverL0, 0.5);
+      double const dTmp2 = pow(dH0OverL0 * ((0.563 * dWaveHeight * dWaveHeight) + 0.0004), 0.5);
       dRunUp = 1.1 * (dTmp1 + (dTmp2 / 2));
    }
 
@@ -1550,8 +1558,8 @@ int CSimulation::nGetThisProfileElevationsForCShore(int const nCoast, CGeomProfi
 
    for (int i = nProfSize - 1; i >= 0; i--)
    {
-      int nX = pProfile->pPtiVGetCellsInProfile()->at(i).nGetX();
-      int nY = pProfile->pPtiVGetCellsInProfile()->at(i).nGetY();
+      int const nX = pProfile->pPtiVGetCellsInProfile()->at(i).nGetX();
+      int const nY = pProfile->pPtiVGetCellsInProfile()->at(i).nGetY();
 
       // Calculate the horizontal distance relative to the most seaward point
       if (i == nProfSize - 1)
@@ -1584,8 +1592,8 @@ int CSimulation::nGetThisProfileElevationsForCShore(int const nCoast, CGeomProfi
          return RTN_OK;
 
       // Get the elevation for both consolidated and unconsolidated sediment on this cell
-      double dTopElev = m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElev() + m_pRasterGrid->m_Cell[nX][nY].dGetInterventionHeight();
-      double VdProfileZ = dTopElev - m_dThisIterSWL;
+      double const dTopElev = m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElev() + m_pRasterGrid->m_Cell[nX][nY].dGetInterventionHeight();
+      double const VdProfileZ = dTopElev - m_dThisIterSWL;
 
       // Check that landward elevation is greater than SWL
       if (i == 0)
@@ -1613,7 +1621,7 @@ int CSimulation::nGetThisProfileElevationsForCShore(int const nCoast, CGeomProfi
       VdDistXY->push_back(dProfileDistXY);
 
       // Get the landform type at each point along the profile
-      double dInterventionHeight = m_pRasterGrid->m_Cell[nX][nY].dGetInterventionHeight();
+      double const dInterventionHeight = m_pRasterGrid->m_Cell[nX][nY].dGetInterventionHeight();
 
       // Modify default friction factor if a structural intervention is found, otherwise use the default
       if (dInterventionHeight > 0 || bIsBehindIntervention)
@@ -1875,8 +1883,8 @@ void CSimulation::ModifyBreakingWavePropertiesWithinShadowZoneToCoastline(int co
 
    bool bModfiedWaveHeightisBreaking = false;
    bool bProfileIsinShadowZone = false;
-   int nThisCoastPoint = pProfile->nGetCoastPoint();
-   int nProfileSize = pProfile->nGetNumCellsInProfile();
+   int const nThisCoastPoint = pProfile->nGetCoastPoint();
+   int const nProfileSize = pProfile->nGetNumCellsInProfile();
    int nThisBreakingDist = m_VCoast[nCoast].nGetBreakingDistance(nThisCoastPoint);
    double dThisBreakingWaveHeight = m_VCoast[nCoast].dGetBreakingWaveHeight(nThisCoastPoint);      // This could be DBL_NODATA
    double dThisBreakingWaveAngle = m_VCoast[nCoast].dGetBreakingWaveAngle(nThisCoastPoint);
@@ -1885,8 +1893,8 @@ void CSimulation::ModifyBreakingWavePropertiesWithinShadowZoneToCoastline(int co
    // Traverse the profile landwards, checking if any profile cell is within the shadow zone
    for (int nProfilePoint = (nProfileSize - 1); nProfilePoint >= 0; nProfilePoint--)
    {
-      int nX = pProfile->pPtiGetCellInProfile(nProfilePoint)->nGetX();
-      int nY = pProfile->pPtiGetCellInProfile(nProfilePoint)->nGetY();
+      int const nX = pProfile->pPtiGetCellInProfile(nProfilePoint)->nGetX();
+      int const nY = pProfile->pPtiGetCellInProfile(nProfilePoint)->nGetY();
 
       // If there is any cell profile  within the shadow zone and waves are breaking then modify wave breaking properties otherwise continue
       if (m_pRasterGrid->m_Cell[nX][nY].bIsinAnyShadowZone())
@@ -1894,7 +1902,7 @@ void CSimulation::ModifyBreakingWavePropertiesWithinShadowZoneToCoastline(int co
          bProfileIsinShadowZone = true;
 
          // Check if the new wave height is breaking
-         double dWaveHeight = m_pRasterGrid->m_Cell[nX][nY].dGetWaveHeight();
+         double const dWaveHeight = m_pRasterGrid->m_Cell[nX][nY].dGetWaveHeight();
 
          // Check that wave height at the given point is lower than maximum real wave height. If breaking wave height is expected that no good wave height are obtained, so, do not take it
          if (dWaveHeight > (m_dDepthOfClosure * m_dBreakingWaveHeightDepthRatio) && (! bModfiedWaveHeightisBreaking) && (! bFPIsEqual(dThisBreakingWaveHeight, DBL_NODATA, TOLERANCE)))
@@ -1953,16 +1961,16 @@ void CSimulation::InterpolateWavePropertiesBetweenProfiles(int const nCoast, int
    // if (!pProfile->bOKIncStartOfCoast())
    // return;
 
-   int nThisCoastPoint = pProfile->nGetCoastPoint();
+   int const nThisCoastPoint = pProfile->nGetCoastPoint();
 
    // For the breaking wave stuff, to go into the in-between coastline points
    int const nThisBreakingDist = m_VCoast[nCoast].nGetBreakingDistance(nThisCoastPoint);
-   double dThisBreakingWaveHeight = m_VCoast[nCoast].dGetBreakingWaveHeight(nThisCoastPoint);   // This could be DBL_NODATA
-   double dThisBreakingWaveAngle = m_VCoast[nCoast].dGetBreakingWaveAngle(nThisCoastPoint);
-   double dThisBreakingDepth = m_VCoast[nCoast].dGetDepthOfBreaking(nThisCoastPoint);
-   double dThisWaveSetupSurge = m_VCoast[nCoast].dGetWaveSetupSurge(nThisCoastPoint);
+   double const dThisBreakingWaveHeight = m_VCoast[nCoast].dGetBreakingWaveHeight(nThisCoastPoint);   // This could be DBL_NODATA
+   double const dThisBreakingWaveAngle = m_VCoast[nCoast].dGetBreakingWaveAngle(nThisCoastPoint);
+   double const dThisBreakingDepth = m_VCoast[nCoast].dGetDepthOfBreaking(nThisCoastPoint);
+   double const dThisWaveSetupSurge = m_VCoast[nCoast].dGetWaveSetupSurge(nThisCoastPoint);
    // double dThisStormSurge = m_VCoast[nCoast].dGetStormSurge(nThisCoastPoint);
-   double dThisRunUp = m_VCoast[nCoast].dGetRunUp(nThisCoastPoint);
+   double const dThisRunUp = m_VCoast[nCoast].dGetRunUp(nThisCoastPoint);
 
    // Get the next profile along the coast, in the down-coast direction. If this next profile has a problem, go to the one after that, etc
    CGeomProfile const* pTmpProfile = pProfile;
@@ -1997,20 +2005,20 @@ void CSimulation::InterpolateWavePropertiesBetweenProfiles(int const nCoast, int
       // Nothing to do
       return;
 
-   int nNextBreakingDist = m_VCoast[nCoast].nGetBreakingDistance(nNextCoastPoint);
-   double dNextBreakingWaveHeight = m_VCoast[nCoast].dGetBreakingWaveHeight(nNextCoastPoint); // This could be DBL_NODATA
-   double dNextBreakingWaveAngle = m_VCoast[nCoast].dGetBreakingWaveAngle(nNextCoastPoint);
-   double dNextBreakingDepth = m_VCoast[nCoast].dGetDepthOfBreaking(nNextCoastPoint);
-   double dNextWaveSetupSurge = m_VCoast[nCoast].dGetWaveSetupSurge(nNextCoastPoint);
-   double dNextRunUp = m_VCoast[nCoast].dGetRunUp(nNextCoastPoint);
+   int const nNextBreakingDist = m_VCoast[nCoast].nGetBreakingDistance(nNextCoastPoint);
+   double const dNextBreakingWaveHeight = m_VCoast[nCoast].dGetBreakingWaveHeight(nNextCoastPoint); // This could be DBL_NODATA
+   double const dNextBreakingWaveAngle = m_VCoast[nCoast].dGetBreakingWaveAngle(nNextCoastPoint);
+   double const dNextBreakingDepth = m_VCoast[nCoast].dGetDepthOfBreaking(nNextCoastPoint);
+   double const dNextWaveSetupSurge = m_VCoast[nCoast].dGetWaveSetupSurge(nNextCoastPoint);
+   double const dNextRunUp = m_VCoast[nCoast].dGetRunUp(nNextCoastPoint);
 
    // OK, fill coast point between profiles for setupsurge and runup
    for (int n = nThisCoastPoint; n <= nNextCoastPoint; n++)
    {
       // Fill first wave setup and surge
-      int nDist = n - nThisCoastPoint;
-      double dThisWeight = (nDistBetween - nDist) / static_cast<double>(nDistBetween);
-      double dNextWeight = 1 - dThisWeight;
+      int const nDist = n - nThisCoastPoint;
+      double const dThisWeight = (nDistBetween - nDist) / static_cast<double>(nDistBetween);
+      double const dNextWeight = 1 - dThisWeight;
       double dWaveSetupSurge = 0;
       double dRunUp = 0;
 
@@ -2077,7 +2085,7 @@ void CSimulation::InterpolateWavePropertiesBetweenProfiles(int const nCoast, int
    // The values for both this profile point and the next profile point are fine, so do a weighted interpolation between this profile and the next profile
    for (int n = nThisCoastPoint + 1; n < nNextCoastPoint; n++)
    {
-      int nDist = n - nThisCoastPoint;
+      int const nDist = n - nThisCoastPoint;
 
       double dBreakingWaveHeight = DBL_NODATA;
       double dBreakingWaveAngle = DBL_NODATA;
@@ -2086,9 +2094,8 @@ void CSimulation::InterpolateWavePropertiesBetweenProfiles(int const nCoast, int
 
       if ((dNextBreakingDepth > 0) && (dThisBreakingDepth > 0))
       {
-         double
-         dThisWeight = (nDistBetween - nDist) / static_cast<double>(nDistBetween),
-         dNextWeight = 1 - dThisWeight;
+         double const dThisWeight = (nDistBetween - nDist) / static_cast<double>(nDistBetween);
+         double const dNextWeight = 1 - dThisWeight;
 
          dBreakingWaveHeight = (dThisWeight * dThisBreakingWaveHeight) + (dNextWeight * dNextBreakingWaveHeight),
          dBreakingWaveAngle = (dThisWeight * dThisBreakingWaveAngle) + (dNextWeight * dNextBreakingWaveAngle),
@@ -2126,7 +2133,7 @@ void CSimulation::InterpolateWavePropertiesBetweenProfiles(int const nCoast, int
 //===============================================================================================================================
 void CSimulation::InterpolateWaveHeightToCoastPoints(int const nCoast)
 {
-   int nCoastPoints = m_VCoast[nCoast].nGetCoastlineSize();
+   int const nCoastPoints = m_VCoast[nCoast].nGetCoastlineSize();
 
    // Initialize all vectors pairs (x,y) for each variable
    vector<int> nVCoastWaveHeightX;
@@ -2135,7 +2142,7 @@ void CSimulation::InterpolateWaveHeightToCoastPoints(int const nCoast)
    // Search all coast points for non NaN values and store them into temporary variables for later interporlation
    for (int n = 0; n < nCoastPoints; n++)
    {
-      double dCoastWaveHeight = m_VCoast[nCoast].dGetCoastWaveHeight(n);
+      double const dCoastWaveHeight = m_VCoast[nCoast].dGetCoastWaveHeight(n);
 
       if (! bFPIsEqual(dCoastWaveHeight, DBL_NODATA, TOLERANCE))
       {
@@ -2149,7 +2156,7 @@ void CSimulation::InterpolateWaveHeightToCoastPoints(int const nCoast)
    {
       for (int n = 0; n < nCoastPoints; n++)
       {
-         double dInterpCoastWaveHeight = dGetInterpolatedValue(&nVCoastWaveHeightX, &dVCoastWaveHeightY, n, false);
+         double const dInterpCoastWaveHeight = dGetInterpolatedValue(&nVCoastWaveHeightX, &dVCoastWaveHeightY, n, false);
          m_VCoast[nCoast].SetCoastWaveHeight(n, dInterpCoastWaveHeight);
       }
    }
@@ -2168,7 +2175,7 @@ void CSimulation::InterpolateWaveHeightToCoastPoints(int const nCoast)
 //===============================================================================================================================
 void CSimulation::CalcCoastTangents(int const nCoast)
 {
-   int nCoastSize = m_VCoast[nCoast].nGetCoastlineSize();
+   int const nCoastSize = m_VCoast[nCoast].nGetCoastlineSize();
 
    for (int nCoastPoint = 0; nCoastPoint < nCoastSize; nCoastPoint++)
    {
@@ -2178,8 +2185,8 @@ void CSimulation::CalcCoastTangents(int const nCoast)
       if (nCoastPoint == 0)
       {
          // For the point at the start of the coastline: use the straight line from 'this' point to the next point
-         CGeom2DPoint PtThis = * m_VCoast[nCoast].pPtGetCoastlinePointExtCRS(nCoastPoint);     // In external CRS
-         CGeom2DPoint PtAfter = * m_VCoast[nCoast].pPtGetCoastlinePointExtCRS(nCoastPoint + 1); // In external CRS
+         CGeom2DPoint const PtThis = * m_VCoast[nCoast].pPtGetCoastlinePointExtCRS(nCoastPoint);     // In external CRS
+         CGeom2DPoint const PtAfter = * m_VCoast[nCoast].pPtGetCoastlinePointExtCRS(nCoastPoint + 1); // In external CRS
 
          dXDiff = PtAfter.dGetX() - PtThis.dGetX();
          dYDiff = PtAfter.dGetY() - PtThis.dGetY();
@@ -2188,8 +2195,8 @@ void CSimulation::CalcCoastTangents(int const nCoast)
       else if (nCoastPoint == nCoastSize - 1)
       {
          // For the point at the end of the coastline: use the straight line from the point before to 'this' point
-         CGeom2DPoint PtBefore = * m_VCoast[nCoast].pPtGetCoastlinePointExtCRS(nCoastPoint - 1); // In external CRS
-         CGeom2DPoint PtThis = * m_VCoast[nCoast].pPtGetCoastlinePointExtCRS(nCoastPoint);      // In external CRS
+         CGeom2DPoint const PtBefore = * m_VCoast[nCoast].pPtGetCoastlinePointExtCRS(nCoastPoint - 1); // In external CRS
+         CGeom2DPoint const PtThis = * m_VCoast[nCoast].pPtGetCoastlinePointExtCRS(nCoastPoint);      // In external CRS
 
          dXDiff = PtThis.dGetX() - PtBefore.dGetX();
          dYDiff = PtThis.dGetY() - PtBefore.dGetY();
@@ -2198,8 +2205,8 @@ void CSimulation::CalcCoastTangents(int const nCoast)
       else
       {
          // For coastline points not at the start or end of the coast: start with a straight line which links the coastline points before and after 'this' coastline point
-         CGeom2DPoint PtBefore = * m_VCoast[nCoast].pPtGetCoastlinePointExtCRS(nCoastPoint - 1); // In external CRS
-         CGeom2DPoint PtAfter = * m_VCoast[nCoast].pPtGetCoastlinePointExtCRS(nCoastPoint + 1); // In external CRS
+         CGeom2DPoint const PtBefore = * m_VCoast[nCoast].pPtGetCoastlinePointExtCRS(nCoastPoint - 1); // In external CRS
+         CGeom2DPoint const PtAfter = * m_VCoast[nCoast].pPtGetCoastlinePointExtCRS(nCoastPoint + 1); // In external CRS
 
          dXDiff = PtAfter.dGetX() - PtBefore.dGetX();
          dYDiff = PtAfter.dGetY() - PtBefore.dGetY();
@@ -2263,15 +2270,15 @@ void CSimulation::CalcD50AndFillWaveCalcHoles(void)
          if (m_pRasterGrid->m_Cell[nX][nY].bIsInContiguousSea())
          {
             // This is a sea cell, first get polygon ID
-            int nPolyID = m_pRasterGrid->m_Cell[nX][nY].nGetPolygonID();
+            int const nPolyID = m_pRasterGrid->m_Cell[nX][nY].nGetPolygonID();
 
             // Is it in the active zone?
-            bool bActive = m_pRasterGrid->m_Cell[nX][nY].bIsInActiveZone();
+            bool const bActive = m_pRasterGrid->m_Cell[nX][nY].bIsInActiveZone();
 
             if (bActive)
             {
                // It is in the active zone. Does it have unconsolidated sediment on it? Test this using the UnconD50 value: if dGetUnconsD50() returns DBL_NODATA, there is no unconsolidated sediment
-               double dTmpd50 = m_pRasterGrid->m_Cell[nX][nY].dGetUnconsD50();
+               double const dTmpd50 = m_pRasterGrid->m_Cell[nX][nY].dGetUnconsD50();
 
                if (! bFPIsEqual(dTmpd50, DBL_NODATA, TOLERANCE))
                {
@@ -2470,7 +2477,7 @@ void CSimulation::CalcD50AndFillWaveCalcHoles(void)
                }
 
                // If this sea cell has a wave height which is the same as its deep-water wave height, but its neighbours have a different average wave height, then give it the average of its neighbours
-               double dDeepWaterWaveHeight = m_pRasterGrid->m_Cell[nX][nY].dGetCellDeepWaterWaveHeight();
+               double const dDeepWaterWaveHeight = m_pRasterGrid->m_Cell[nX][nY].dGetCellDeepWaterWaveHeight();
 
                if ((bFPIsEqual(m_pRasterGrid->m_Cell[nX][nY].dGetWaveHeight(), dDeepWaterWaveHeight, TOLERANCE)) && (! bFPIsEqual(dDeepWaterWaveHeight, dWaveHeight, TOLERANCE)))
                {
@@ -2478,7 +2485,7 @@ void CSimulation::CalcD50AndFillWaveCalcHoles(void)
                }
 
                // If this sea cell has a wave orientation which is the same as its deep-water wave orientation, but its neighbours have a different average wave orientation, then give it the average of its neighbours
-               double dDeepWaterWaveAngle = m_pRasterGrid->m_Cell[nX][nY].dGetCellDeepWaterWaveAngle();
+               double const dDeepWaterWaveAngle = m_pRasterGrid->m_Cell[nX][nY].dGetCellDeepWaterWaveAngle();
 
                if ((bFPIsEqual(m_pRasterGrid->m_Cell[nX][nY].dGetWaveAngle(), dDeepWaterWaveAngle, TOLERANCE)) && (! bFPIsEqual(dDeepWaterWaveAngle, dWaveAngle, TOLERANCE)))
                {
@@ -2486,7 +2493,7 @@ void CSimulation::CalcD50AndFillWaveCalcHoles(void)
                }
 
                // Is this sea cell is not already marked as in a shadow zone (note could be marked as in a shadow zone but not yet processed: a -ve number)?
-               int nShadowZoneCode = m_pRasterGrid->m_Cell[nX][nY].nGetShadowZoneNumber();
+               int const nShadowZoneCode = m_pRasterGrid->m_Cell[nX][nY].nGetShadowZoneNumber();
 
                if (nShadowZoneCode <= 0)
                {
@@ -2500,7 +2507,7 @@ void CSimulation::CalcD50AndFillWaveCalcHoles(void)
                }
 
                // If this sea cell is not marked as in a downdrift zone but has four neighbours which are in a downdrift zone, then it should also be in the downdrift zone: give it the average of its neighbours
-               int nDownDriftZoneCode = m_pRasterGrid->m_Cell[nX][nY].nGetDownDriftZoneNumber();
+               int const nDownDriftZoneCode = m_pRasterGrid->m_Cell[nX][nY].nGetDownDriftZoneNumber();
 
                if ((nDownDriftZoneCode == 0) && (nDownDrift == 4))
                {
@@ -2519,7 +2526,7 @@ void CSimulation::CalcD50AndFillWaveCalcHoles(void)
       for (int nPoly = 0; nPoly < m_VCoast[nCoast].nGetNumPolygons(); nPoly++)
       {
          CGeomCoastPolygon* pPolygon = m_VCoast[nCoast].pGetPolygon(nPoly);
-         int nPolyID = pPolygon->nGetCoastID();
+         int const nPolyID = pPolygon->nGetCoastID();
 
          if (VnPolygonD50Count[nPolyID] > 0)
             VdPolygonD50[nPolyID] /= VnPolygonD50Count[nPolyID];

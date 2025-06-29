@@ -21,10 +21,10 @@
    You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 ==============================================================================================================================*/
-#include <iostream>
-using std::cerr;
-using std::endl;
-using std::cout;
+// #include <iostream>
+// using std::cerr;
+// using std::endl;
+// using std::cout;
 
 #include "cme.h"
 #include "simulation.h"
@@ -40,7 +40,7 @@ int CSimulation::nCalcExternalForcing(void)
    // This-iteration mean SWL includes only long-term SWL change
    m_dThisIterMeanSWL = m_dInitialMeanSWL + m_dAccumulatedSeaLevelChange;
 
-   int nSize = static_cast<int>(m_VdTideData.size());
+   int const nSize = static_cast<int>(m_VdTideData.size());
 
    if (nSize == 0)
    {
@@ -90,8 +90,8 @@ int CSimulation::nCalcExternalForcing(void)
       else
       {
          // More than one wave station, so update this time step's deep water wave values for use in the nInterpolateAllDeepWaterWaveValues() routine. Note that the order on the vector is determined by the points ID i.e. to ensure that stations match with time series
-         int nNumberDeepWaterWaveStations = static_cast<int>(m_VnDeepWaterWaveStationID.size());
-         int nTot = nNumberDeepWaterWaveStations * snWaveStationDataCount;
+         int const nNumberDeepWaterWaveStations = static_cast<int>(m_VnDeepWaterWaveStationID.size());
+         int const nTot = nNumberDeepWaterWaveStations * snWaveStationDataCount;
 
          for (int j = 0; j < nNumberDeepWaterWaveStations; j++)
          {

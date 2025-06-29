@@ -157,7 +157,7 @@ CoastalME CHANGELOG
          Minor change to profile spacing
          Code tidying
 
-1.3.17   Extra safett check in cliff collapse
+1.3.17   Extra safety check in cliff collapse
          Fixed error in CMakeLists.txt
          Code tidying
 
@@ -189,8 +189,12 @@ CoastalME CHANGELOG
          Improved safety check in line smoothing
          Code tidying
 
-1.2.23   Ongoing changes to permit multiple coastlines
+1.3.23   Ongoing changes to permit multiple coastlines
          Bug fix in line smoothing
          Code tidying
 
+1.3.24   Ongoing changes to permit multiple coastlines
+         Added clang-tidy configuration
+         Const-correctness etc. enforced via clang-tidy
+         Code tidying
 

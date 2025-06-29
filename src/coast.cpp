@@ -23,14 +23,20 @@
 ===============================================================================================================================*/
 #include <assert.h>
 
+#include <cstdio>
+
 #include <vector>
-#include <algorithm>
-using std::sort;
+using std::vector;
+
+// #include <algorithm>
+// using std::sort;
 
 #include "cme.h"
 #include "simulation.h"
 #include "coast.h"
 #include "raster_grid.h"
+#include "2d_point.h"
+#include "2di_point.h"
 #include "line.h"
 #include "i_line.h"
 
@@ -104,7 +110,7 @@ void CRWCoast::SetCoastlineExtCRS(CGeomLine const* pLCoast)
 {
    m_LCoastlineExtCRS = * pLCoast;
 
-   int nLen = m_LCoastlineExtCRS.nGetSize();
+   int const nLen = m_LCoastlineExtCRS.nGetSize();
 
    m_VnPolygonNode = vector<int>(nLen, INT_NODATA);
    m_VnBreakingDistance = vector<int>(nLen, INT_NODATA);
@@ -252,8 +258,8 @@ int CRWCoast::nGetCoastPointGivenCell(CGeom2DIPoint* pPtiCell)
 
    // This cell is not under a coastline, so try the adjacent cells
    int n = -1;
-   int nX = pPtiCell->nGetX();
-   int nY = pPtiCell->nGetY();
+   int const nX = pPtiCell->nGetX();
+   int const nY = pPtiCell->nGetY();
    int nXAdj = 0;
    int nYAdj = 0;
 
@@ -302,13 +308,13 @@ int CRWCoast::nGetCoastPointGivenCell(CGeom2DIPoint* pPtiCell)
             break;
       }
 
-      CGeom2DIPoint PtiTmp(nXAdj, nYAdj);
+      CGeom2DIPoint const PtiTmp(nXAdj, nYAdj);
 
       for (int nCoastPoint = 0; nCoastPoint < m_ILCellsMarkedAsCoastline.nGetSize(); nCoastPoint++)
       {
          if (m_ILCellsMarkedAsCoastline[nCoastPoint] == &PtiTmp)
          {
-            * pPtiCell = PtiTmp;
+            *pPtiCell = PtiTmp;
             return nCoastPoint;
          }
       }
@@ -458,7 +464,7 @@ CGeomProfile* CRWCoast::pGetProfileWithDownCoastSeq(int const nProf) const
 CGeomProfile* CRWCoast::pGetProfileWithUpCoastSeq(int const nProf) const
 {
    // Note no check whether n < size()
-   int nSize = static_cast<int>(m_pVProfileDownCoastSeq.size());
+   int const nSize = static_cast<int>(m_pVProfileDownCoastSeq.size());
    return m_pVProfileDownCoastSeq[nSize - (nProf + 1)];
 }
 
@@ -688,7 +694,7 @@ void CRWCoast::InsertProfilesInProfileCoastPointIndex(void)
 {
    for (int n = 0; n < static_cast<int>(m_pVProfile.size()); n++)
    {
-      int nCoastPoint = m_pVProfile[n]->nGetCoastPoint();
+      int const nCoastPoint = m_pVProfile[n]->nGetCoastPoint();
 
       // Note no check to see whether nCoastPoint < m_pVNormalProfileDownAllCoastpointSeq.size()
       m_pVNormalProfileDownAllCoastpointSeq.at(nCoastPoint) = m_pVProfile[n];

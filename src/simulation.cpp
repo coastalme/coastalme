@@ -23,12 +23,18 @@
 ==============================================================================================================================*/
 #include <assert.h>
 
+#include <cstdio>
+#include <unistd.h>
+#include <stdio.h>
+
+#include <climits>
+
 #include <ios>
 using std::fixed;
 
 #include <iostream>
 using std::cerr;
-using std::cout;
+// using std::cout;
 using std::cin;
 using std::endl;
 using std::ios;
@@ -46,8 +52,10 @@ using std::filesystem::is_directory;
 using std::filesystem::exists;
 using std::filesystem::create_directories;
 
-#include <random>
-using std::random_device;
+// #include <random>
+// using std::random_device;
+
+#include <gdal.h>
 
 #include "cme.h"
 #include "simulation.h"
@@ -691,11 +699,11 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
    // If we are simulating cliff collapse: then now that we have a value for m_dCellSide, we can check some more input parameters. Talus must be more than one cell wide, and since the number of cells must be odd, three cells is the minimum width
    if (m_bDoCliffCollapse)
    {
-      int nTmp = nConvertMetresToNumCells(m_dCliffDepositionPlanviewWidth);
+      int const nTmp = nConvertMetresToNumCells(m_dCliffDepositionPlanviewWidth);
 
       if (nTmp < 3)
       {
-         string strErr = ERR + "cliff deposition must have a planview width of at least three cells. The current setting of " + to_string(m_dCliffDepositionPlanviewWidth) + " m gives a planview width of " + to_string(nTmp) + " cells. Please edit " + m_strDataPathName;
+         string const strErr = ERR + "cliff deposition must have a planview width of at least three cells. The current setting of " + to_string(m_dCliffDepositionPlanviewWidth) + " m gives a planview width of " + to_string(nTmp) + " cells. Please edit " + m_strDataPathName;
          cerr << strErr << endl;
          LogStream << strErr << endl;
          OutStream << strErr << endl;
@@ -868,7 +876,7 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
       if (nRet != RTN_OK)
          return (nRet);
 
-      int nWaveStations = static_cast<int> (m_VnDeepWaterWaveStationID.size());
+      int const nWaveStations = static_cast<int> (m_VnDeepWaterWaveStationID.size());
 
       if (nWaveStations == 1)
          m_bSingleDeepWaterWaveValues = true;
@@ -941,7 +949,7 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
    m_bUnconsChangedThisIter.resize(m_nLayers, false);
 
    // Normalize sediment erodibility values, so that none are > 1
-   double dTmp = m_dFineErodibility + m_dSandErodibility + m_dCoarseErodibility;
+   double const dTmp = m_dFineErodibility + m_dSandErodibility + m_dCoarseErodibility;
    m_dFineErodibilityNormalized = m_dFineErodibility / dTmp;
    m_dSandErodibilityNormalized = m_dSandErodibility / dTmp;
    m_dCoarseErodibilityNormalized = m_dCoarseErodibility / dTmp;

@@ -1,9 +1,15 @@
 #!/bin/bash
 
-# clang-tidy *.cpp  -checks=-*,clang-analyzer-*,-clang-analyzer-cplusplus*,-header-filter=.*  > 000_clang-analyze_advice.txt
+clang-tidy *.cpp -header-filter=.* -checks=-*,clang-analyzer-*,performance-*,-performance-avoid-endl  > 000_clang-analyze_advice.txt
+clang-tidy *.h -header-filter=.* -checks=-*,clang-analyzer-*,performance-*,-performance-avoid-endl  >> 000_clang-analyze_advice.txt
 
-clang-tidy *.cpp  -checks=-*,clang-analyzer-*,bugprone-*  > 000_clang-analyze_advice.txt
-clang-tidy *.h  -checks=-*,clang-analyzer-*,bugprone-*  >> 000_clang-analyze_advice.txt
+# If get "error: 'omp.h' file not found [clang-diagnostic-error]" then need to install libomp-dev
+# Some warnings seem crazy with openmp-*
+# Run with misc-* occasionally, but note spurious errors especially e. headers and OpenMP
 
-# cppcoreguidelines-*,misc-*
-# modernize-*,openmp-*,performance-*,readability-*,portability-*
+# Sometime, work on modernize-* results
+
+# Not sure if readability-* results are useful
+# Not sure if cppcoreguidelines-* results are useful
+# Got no results from portability-*
+

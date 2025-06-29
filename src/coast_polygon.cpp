@@ -22,11 +22,20 @@
 
 ===============================================================================================================================*/
 #include <assert.h>
-#include <iostream>
-using std::cerr;
+
+// #include <iostream>
+// using std::cerr;
+
+#include <vector>
+using std::vector;
+
+#include <algorithm>
+using std::find;
 
 #include "cme.h"
 #include "coast_polygon.h"
+#include "2d_point.h"
+#include "2di_point.h"
 
 //! Constructor with 10 parameters and initialization list
 CGeomCoastPolygon::CGeomCoastPolygon(int const nGlobalID, int const nCoastID, int const nNode, int const nProfileUpCoast, int const nProfileDownCoast, vector<CGeom2DPoint> const* pVIn, int const nLastPointUpCoast, const int nLastPointDownCoast, CGeom2DIPoint const* PtiNode, CGeom2DIPoint const* PtiAntinode, bool const bStartCoast, bool const bEndCoast)
@@ -797,7 +806,7 @@ CGeom2DIPoint CGeomCoastPolygon::PtiGetVertex(int const nIndex) const
 
 CGeom2DIPoint CGeomCoastPolygon::PtiGetFillStartPoint(void)
 {
-   int nVertices = static_cast<int>(m_VPtiVertices.size());
+   int const nVertices = static_cast<int>(m_VPtiVertices.size());
    double dXTot = 0;
    double dYTot = 0;
 

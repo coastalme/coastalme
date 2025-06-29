@@ -23,8 +23,8 @@
 ==============================================================================================================================*/
 #include <cfloat>
 
-#include <iostream>
-using std::endl;
+// #include <iostream>
+// using std::endl;
 
 #include <cmath>
 using std::sqrt;
@@ -34,6 +34,7 @@ using std::accumulate;
 using std::inner_product;
 
 #include "cme.h"
+#include "2d_point.h"
 #include "simulation.h"
 #include "coast.h"
 
@@ -42,13 +43,13 @@ using std::inner_product;
 //===============================================================================================================================
 void CSimulation::DoCoastCurvature(int const nCoast, int const nHandedness)
 {
-   int nCoastSize = m_VCoast[nCoast].nGetCoastlineSize();
+   int const nCoastSize = m_VCoast[nCoast].nGetCoastlineSize();
 
    // Start with detailed curvature, do every point on the coastline, apart from the first and last points
    for (int nThisCoastPoint = 1; nThisCoastPoint < (nCoastSize - 1); nThisCoastPoint++)
    {
       // Calculate the signed curvature based on this point, and the points before and after
-      double dCurvature = dCalcCurvature(nHandedness, m_VCoast[nCoast].pPtGetCoastlinePointExtCRS(nThisCoastPoint - 1), m_VCoast[nCoast].pPtGetCoastlinePointExtCRS(nThisCoastPoint), m_VCoast[nCoast].pPtGetCoastlinePointExtCRS(nThisCoastPoint + 1));
+      double const dCurvature = dCalcCurvature(nHandedness, m_VCoast[nCoast].pPtGetCoastlinePointExtCRS(nThisCoastPoint - 1), m_VCoast[nCoast].pPtGetCoastlinePointExtCRS(nThisCoastPoint), m_VCoast[nCoast].pPtGetCoastlinePointExtCRS(nThisCoastPoint + 1));
 
       // Set the detailed curvature
       m_VCoast[nCoast].SetDetailedCurvature(nThisCoastPoint, dCurvature);
@@ -130,7 +131,7 @@ void CSimulation::DoCoastCurvature(int const nCoast, int const nHandedness)
    if (bFPIsEqual(dMaxConvexDetailed, 0.0, TOLERANCE))
    {
       // We have a straight-line coast, so set the point of maximum convexity at the coast mid-point
-      int nMaxConvexCoastPoint = nCoastSize / 2;
+      int const nMaxConvexCoastPoint = nCoastSize / 2;
 
       m_VCoast[nCoast].SetDetailedCurvature(nMaxConvexCoastPoint, STRAIGHT_COAST_MAX_DETAILED_CURVATURE);
       m_VCoast[nCoast].SetSmoothCurvature(nMaxConvexCoastPoint, STRAIGHT_COAST_MAX_SMOOTH_CURVATURE);
@@ -158,7 +159,7 @@ void CSimulation::DoCoastCurvature(int const nCoast, int const nHandedness)
 //===============================================================================================================================
 double CSimulation::dCalcCurvature(int const nHandedness, CGeom2DPoint const* pPtBefore, CGeom2DPoint const* pPtThis, CGeom2DPoint const* pPtAfter)
 {
-   double dAreax4 = 2 * dTriangleAreax2(pPtBefore, pPtThis, pPtAfter);
+   double const dAreax4 = 2 * dTriangleAreax2(pPtBefore, pPtThis, pPtAfter);
    double dDist1 = dGetDistanceBetween(pPtBefore, pPtThis);
    double dDist2 = dGetDistanceBetween(pPtThis, pPtAfter);
    double dDist3 = dGetDistanceBetween(pPtBefore, pPtAfter);
@@ -173,10 +174,10 @@ double CSimulation::dCalcCurvature(int const nHandedness, CGeom2DPoint const* pP
    if (bFPIsEqual(dDist3, 0.0, TOLERANCE))
       dDist3 = TOLERANCE;
 
-   double dCurvature = dAreax4 / (dDist1 * dDist2 * dDist3);
+   double const dCurvature = dAreax4 / (dDist1 * dDist2 * dDist3);
 
    // Reverse if left-handed
-   int nShape = (nHandedness == LEFT_HANDED ? 1 : -1);
+   int const nShape = (nHandedness == LEFT_HANDED ? 1 : -1);
 
    return (dCurvature * nShape * 1000);
 }

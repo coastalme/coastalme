@@ -22,8 +22,9 @@
 
 ==============================================================================================================================*/
 #include <cfloat>
-#include <iostream>
-using std::endl;
+
+// #include <iostream>
+// using std::endl;
 
 #ifdef _OPENMP
    #include <omp.h>
@@ -68,7 +69,7 @@ int CSimulation::nUpdateGrid(void)
             m_dThisIterTotSeaDepth += m_pRasterGrid->m_Cell[nX][nY].dGetSeaDepth();
          }
 
-         double dTopElev = m_pRasterGrid->m_Cell[nX][nY].dGetOverallTopElev();
+         double const dTopElev = m_pRasterGrid->m_Cell[nX][nY].dGetOverallTopElev();
 
          // Get highest and lowest elevations of the top surface of the DEM
          if (dTopElev > m_dThisIterTopElevMax)
@@ -85,7 +86,7 @@ int CSimulation::nUpdateGrid(void)
       return RTN_ERR_NOSEACELLS;
 
    // Now go through all cells again and sort out suspended sediment load
-   double dSuspPerSeaCell = m_dThisIterFineSedimentToSuspension / static_cast<double>(m_ulThisIterNumSeaCells);
+   double const dSuspPerSeaCell = m_dThisIterFineSedimentToSuspension / static_cast<double>(m_ulThisIterNumSeaCells);
 
    // Parallelize the sediment distribution loop
 #ifdef _OPENMP
@@ -106,7 +107,7 @@ int CSimulation::nUpdateGrid(void)
    {
       for (int j = 0; j < m_VCoast[i].nGetCoastlineSize(); j++)
       {
-         int nRet = nLandformToGrid(i, j);
+         int const nRet = nLandformToGrid(i, j);
 
          if (nRet != RTN_OK)
             return nRet;

@@ -22,12 +22,13 @@
 
 ==============================================================================================================================*/
 #include <iostream>
-using std::cout;
-using std::cerr;
-using std::endl;
+// using std::cout;
+// using std::cerr;
+// using std::endl;
 using std::ios;
 
-#include "cme.h"
+// #include "cme.h"
+#include "2d_point.h"
 #include "line.h"
 
 //! Constructor
@@ -45,7 +46,7 @@ CGeomLine::CGeomLine(CGeom2DPoint const* pPt1, CGeom2DPoint const* pPt2)
 //! Overloaded constructor with one parameter, this creates a given number of uninitialized points
 CGeomLine::CGeomLine(int const nNum)
 {
-   CGeom2DPoint pPt;
+   CGeom2DPoint const pPt;
    m_VPoints.reserve(nNum);
 
    for (int n = 0; n <= nNum; n++)

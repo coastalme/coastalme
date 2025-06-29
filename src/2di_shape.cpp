@@ -21,8 +21,7 @@
    You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 ===============================================================================================================================*/
-#include <vector>
-
+#include "2di_point.h"
 #include "2di_shape.h"
 
 //! Constructor, no parameters
@@ -80,7 +79,7 @@ int CA2DIShape::nGetSize(void) const
 //! Appends a new integer point to the vector which represents this 2D shape
 void CA2DIShape::Append(CGeom2DIPoint const* pPtiNew)
 {
-   m_VPoints.push_back( * pPtiNew);
+   m_VPoints.push_back(*pPtiNew);
 }
 
 //! Appends a new integer point to the vector which represents this 2D shape
@@ -92,7 +91,7 @@ void CA2DIShape::Append(int const nX, int const nY)
 //! Appends a new integer point to the vector which represents this 2D shape, but only if the point is not already present
 void CA2DIShape::AppendIfNotAlready(int const nX, int const nY)
 {
-   CGeom2DIPoint PtiIn(nX, nY);
+   CGeom2DIPoint const PtiIn(nX, nY);
 
    if (m_VPoints.empty())
       m_VPoints.push_back(PtiIn);
