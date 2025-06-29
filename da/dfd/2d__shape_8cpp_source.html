@@ -112,7 +112,7 @@ $(function(){initNavTree('da/dfd/2d__shape_8cpp_source.html','../../'); initResi
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="comment">   You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.</span></div>
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="comment"></span> </div>
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="comment">===============================================================================================================================*/</span></div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="preprocessor">#include &quot;<a class="code" href="../../d6/d2a/cme_8h.html">cme.h</a>&quot;</span></div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="preprocessor">#include &quot;<a class="code" href="../../d0/dee/2d__point_8h.html">2d_point.h</a>&quot;</span></div>
 <div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="preprocessor">#include &quot;<a class="code" href="../../d5/dea/2d__shape_8h.html">2d_shape.h</a>&quot;</span></div>
 <div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span></div>
 <div class="foldopen" id="foldopen00027" data-start="{" data-end="}">
@@ -179,7 +179,7 @@ $(function(){initNavTree('da/dfd/2d__shape_8cpp_source.html','../../'); initResi
 <div class="foldopen" id="foldopen00079" data-start="{" data-end="}">
 <div class="line"><a id="l00079" name="l00079"></a><span class="lineno"><a class="line" href="../../d9/d0e/classCA2DShape.html#aaa15397a5761d17635afdaddbec35c8a">   79</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="../../d9/d0e/classCA2DShape.html#aaa15397a5761d17635afdaddbec35c8a">CA2DShape::AppendIfNotAlready</a>(<span class="keywordtype">double</span> <span class="keyword">const</span> dX, <span class="keywordtype">double</span> <span class="keyword">const</span> dY)</div>
 <div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>{</div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>   <a class="code hl_class" href="../../d5/d4e/classCGeom2DPoint.html">CGeom2DPoint</a> PtIn(dX, dY);</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>   <a class="code hl_class" href="../../d5/d4e/classCGeom2DPoint.html">CGeom2DPoint</a> <span class="keyword">const</span> PtIn(dX, dY);</div>
 <div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span> </div>
 <div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>   <span class="keywordflow">if</span> (<a class="code hl_variable" href="../../d9/d0e/classCA2DShape.html#a070febdc96942442edb3553f2c4b87c9">m_VPoints</a>.empty())</div>
 <div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>      <a class="code hl_variable" href="../../d9/d0e/classCA2DShape.html#a070febdc96942442edb3553f2c4b87c9">m_VPoints</a>.push_back(PtIn);</div>
@@ -272,6 +272,7 @@ $(function(){initNavTree('da/dfd/2d__shape_8cpp_source.html','../../'); initResi
 <div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>   reverse(<a class="code hl_variable" href="../../d9/d0e/classCA2DShape.html#a070febdc96942442edb3553f2c4b87c9">m_VPoints</a>.begin(), <a class="code hl_variable" href="../../d9/d0e/classCA2DShape.html#a070febdc96942442edb3553f2c4b87c9">m_VPoints</a>.end());</div>
 <div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>}</div>
 </div>
+<div class="ttc" id="a2d__point_8h_html"><div class="ttname"><a href="../../d0/dee/2d__point_8h.html">2d_point.h</a></div><div class="ttdoc">Contains CGeom2DPoint definitions.</div></div>
 <div class="ttc" id="a2d__shape_8h_html"><div class="ttname"><a href="../../d5/dea/2d__shape_8h.html">2d_shape.h</a></div><div class="ttdoc">Contains CA2DShape definitions.</div></div>
 <div class="ttc" id="aclassCA2DShape_html_a070febdc96942442edb3553f2c4b87c9"><div class="ttname"><a href="../../d9/d0e/classCA2DShape.html#a070febdc96942442edb3553f2c4b87c9">CA2DShape::m_VPoints</a></div><div class="ttdeci">vector&lt; CGeom2DPoint &gt; m_VPoints</div><div class="ttdoc">The points which comprise the float-coordinate 2D shape.</div><div class="ttdef"><b>Definition</b> <a href="../../d5/dea/2d__shape_8h_source.html#l00040">2d_shape.h:40</a></div></div>
 <div class="ttc" id="aclassCA2DShape_html_a089f43fb767f120e2bffbfc40b8dc0ac"><div class="ttname"><a href="../../d9/d0e/classCA2DShape.html#a089f43fb767f120e2bffbfc40b8dc0ac">CA2DShape::Append</a></div><div class="ttdeci">void Append(CGeom2DPoint const *)</div><div class="ttdoc">Appends a point to this 2D shape.</div><div class="ttdef"><b>Definition</b> <a href="#l00067">2d_shape.cpp:67</a></div></div>
@@ -286,14 +287,13 @@ $(function(){initNavTree('da/dfd/2d__shape_8cpp_source.html','../../'); initResi
 <div class="ttc" id="aclassCA2DShape_html_af4420f608a68e28650424c8cab9ee51a"><div class="ttname"><a href="../../d9/d0e/classCA2DShape.html#af4420f608a68e28650424c8cab9ee51a">CA2DShape::operator[]</a></div><div class="ttdeci">CGeom2DPoint &amp; operator[](int const)</div><div class="ttdoc">Operator to return one point of this 2D shape.</div><div class="ttdef"><b>Definition</b> <a href="#l00037">2d_shape.cpp:37</a></div></div>
 <div class="ttc" id="aclassCA2DShape_html_af7f4ef9649f998b9ee84ec0f71352eff"><div class="ttname"><a href="../../d9/d0e/classCA2DShape.html#af7f4ef9649f998b9ee84ec0f71352eff">CA2DShape::~CA2DShape</a></div><div class="ttdeci">virtual ~CA2DShape(void)</div><div class="ttdoc">Destructor.</div><div class="ttdef"><b>Definition</b> <a href="#l00032">2d_shape.cpp:32</a></div></div>
 <div class="ttc" id="aclassCGeom2DPoint_html"><div class="ttname"><a href="../../d5/d4e/classCGeom2DPoint.html">CGeom2DPoint</a></div><div class="ttdoc">Geometry class used to represent 2D point objects with floating-point coordinates.</div><div class="ttdef"><b>Definition</b> <a href="../../d0/dee/2d__point_8h_source.html#l00026">2d_point.h:27</a></div></div>
-<div class="ttc" id="acme_8h_html"><div class="ttname"><a href="../../d6/d2a/cme_8h.html">cme.h</a></div><div class="ttdoc">This file contains global definitions for CoastalME.</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="../../da/dfd/2d__shape_8cpp.html">2d_shape.cpp</a></li>
-    <li class="footer">Generated on Fri Jun 27 2025 12:06:36 for CoastalME (Coastal Modelling Environment) by <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+    <li class="footer">Generated on Sun Jun 29 2025 12:14:10 for CoastalME (Coastal Modelling Environment) by <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
   </ul>
 </div>
 </body>

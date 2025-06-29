@@ -1,12 +1,13 @@
 var classCGeom2DPoint =
 [
     [ "CGeom2DPoint", "d5/d4e/classCGeom2DPoint.html#aa49d55127eca1e3f6b7e1e5a2104be41", null ],
+    [ "CGeom2DPoint", "d5/d4e/classCGeom2DPoint.html#a2d648b00bc1844976706e2de3c4f43ea", null ],
     [ "CGeom2DPoint", "d5/d4e/classCGeom2DPoint.html#a822b42ed0debf17841b2c2699d2464fc", null ],
     [ "dGetX", "d5/d4e/classCGeom2DPoint.html#a250f937d03cfdf6e0244b74ad2bf96a4", null ],
     [ "dGetY", "d5/d4e/classCGeom2DPoint.html#a216921dc2c592d9468e6430fee7c7719", null ],
     [ "operator!=", "d5/d4e/classCGeom2DPoint.html#ab67a1d0553772d0bfdd4aaa925a4d52e", null ],
     [ "operator!=", "d5/d4e/classCGeom2DPoint.html#a8ac9e5c85c6a387e88c4d2c0070be48d", null ],
-    [ "operator=", "d5/d4e/classCGeom2DPoint.html#a1ea4b15a793cd85256c8f801c6d28caf", null ],
+    [ "operator=", "d5/d4e/classCGeom2DPoint.html#a41a2dd7367a0b2729848e7fca8a6e2e1", null ],
     [ "operator==", "d5/d4e/classCGeom2DPoint.html#ac238ee088b928bbcfdad91e0c0905849", null ],
     [ "operator==", "d5/d4e/classCGeom2DPoint.html#a3de57cf810783c31f7731a39187eb783", null ],
     [ "SetX", "d5/d4e/classCGeom2DPoint.html#af5dfdef4b78c0703800049b064483278", null ],

@@ -97,8 +97,6 @@ $(function(){initNavTree('d7/d62/interpolate_8cpp.html','../../'); initResizable
 </div>
 
 <div class="header">
-  <div class="summary">
-<a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">interpolate.cpp File Reference</div></div>
 </div><!--header-->
 <div class="contents">
@@ -107,26 +105,11 @@ $(function(){initNavTree('d7/d62/interpolate_8cpp.html','../../'); initResizable
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;assert.h&gt;</code><br />
 <code>#include &lt;cfloat&gt;</code><br />
-<code>#include &lt;iostream&gt;</code><br />
-<code>#include &lt;iomanip&gt;</code><br />
 <code>#include &lt;vector&gt;</code><br />
 <code>#include &quot;<a class="el" href="../../d6/d2a/cme_8h_source.html">cme.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="../../dd/d6a/simulation_8h_source.html">simulation.h</a>&quot;</code><br />
 </div>
 <p><a href="../../d7/d62/interpolate_8cpp_source.html">Go to the source code of this file.</a></p>
-<table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
-Functions</h2></td></tr>
-<tr class="memitem:aec8942141bf8fa2a69bacd12ee72cbd2" id="r_aec8942141bf8fa2a69bacd12ee72cbd2"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aec8942141bf8fa2a69bacd12ee72cbd2">dGetInterpolatedValue</a> (<a class="el" href="../../d7/dfc/classvector.html">vector</a>&lt; double &gt; const *pVdXdata, <a class="el" href="../../d7/dfc/classvector.html">vector</a>&lt; double &gt; const *pVdYdata, double dX, bool bExtrapolate)</td></tr>
-<tr class="separator:aec8942141bf8fa2a69bacd12ee72cbd2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac5865fa6a8bb4aabb6a598e2a66c410c" id="r_ac5865fa6a8bb4aabb6a598e2a66c410c"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac5865fa6a8bb4aabb6a598e2a66c410c">dGetInterpolatedValue</a> (<a class="el" href="../../d7/dfc/classvector.html">vector</a>&lt; int &gt; const *pVnXdata, <a class="el" href="../../d7/dfc/classvector.html">vector</a>&lt; double &gt; const *pVdYdata, int nX, bool bExtrapolate)</td></tr>
-<tr class="separator:ac5865fa6a8bb4aabb6a598e2a66c410c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4f88b28bb87f810c44970dc22bbb1975" id="r_a4f88b28bb87f810c44970dc22bbb1975"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4f88b28bb87f810c44970dc22bbb1975">nFindIndex</a> (<a class="el" href="../../d7/dfc/classvector.html">vector</a>&lt; double &gt; const *pVdX, double const dValueIn)</td></tr>
-<tr class="memdesc:a4f88b28bb87f810c44970dc22bbb1975"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is used by VdInterpolateCShoreProfileOutput, it returns the index of the value in pVdX which is less than or equal to the absolute difference between dValueIn and the pVdX value.  <br /></td></tr>
-<tr class="separator:a4f88b28bb87f810c44970dc22bbb1975"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a827d9b75395722acc9e19935195772be" id="r_a827d9b75395722acc9e19935195772be"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d7/dfc/classvector.html">vector</a>&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a827d9b75395722acc9e19935195772be">VdInterpolateCShoreProfileOutput</a> (<a class="el" href="../../d7/dfc/classvector.html">vector</a>&lt; double &gt; const *pVdX, <a class="el" href="../../d7/dfc/classvector.html">vector</a>&lt; double &gt; const *pVdY, <a class="el" href="../../d7/dfc/classvector.html">vector</a>&lt; double &gt; const *pVdXNew)</td></tr>
-<tr class="memdesc:a827d9b75395722acc9e19935195772be"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a linearly interpolated vector of doubles, to make CShore profile output compatible with CME. The array pVdY has been output by CShore and so always has length CSHOREARRAYOUTSIZE, whereas all other arrays have sizes which depend on CME at runtime.  <br /></td></tr>
-<tr class="separator:a827d9b75395722acc9e19935195772be"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Returns interpolated value at x from parallel arrays. </p>
 <p>TODO 001 A more detailed description of these routines. </p><dl class="section author"><dt>Author</dt><dd>Modified by David Favis-Mortlock and Andres Payo </dd></dl>
@@ -134,141 +117,13 @@ Functions</h2></td></tr>
 <dl class="section copyright"><dt>Copyright</dt><dd>GNU Lesser General Public License </dd></dl>
 
 <p class="definition">Definition in file <a class="el" href="../../d7/d62/interpolate_8cpp_source.html">interpolate.cpp</a>.</p>
-</div><h2 class="groupheader">Function Documentation</h2>
-<a id="aec8942141bf8fa2a69bacd12ee72cbd2" name="aec8942141bf8fa2a69bacd12ee72cbd2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aec8942141bf8fa2a69bacd12ee72cbd2">&#9670;&#160;</a></span>dGetInterpolatedValue() <span class="overload">[1/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">double dGetInterpolatedValue </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="../../d7/dfc/classvector.html">vector</a>&lt; double &gt; const *</td>          <td class="paramname"><span class="paramname"><em>pVdXdata</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="../../d7/dfc/classvector.html">vector</a>&lt; double &gt; const *</td>          <td class="paramname"><span class="paramname"><em>pVdYdata</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>dX</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>bExtrapolate</em></span>&#160;)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>From <a href="https://cplusplus.com/forum/general/216928/">https://cplusplus.com/forum/general/216928/</a> Returns interpolated value at x from parallel arrays (VdXdata, VdYdata). Assumes that VdXdata has at least two elements, is sorted and is strictly monotonically increasing. The boolean argument extrapolate determines behaviour beyond ends of array (if needed). For this version, both lots of data are doubles </p>
-
-<p class="definition">Definition at line <a class="el" href="../../d7/d62/interpolate_8cpp_source.html#l00036">36</a> of file <a class="el" href="../../d7/d62/interpolate_8cpp_source.html">interpolate.cpp</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="../../d6/db6/do__shore__platform__erosion_8cpp_source.html#l01092">CSimulation::dLookUpErosionPotential()</a>, <a class="el" href="../../d2/d24/calc__waves_8cpp_source.html#l02127">CSimulation::InterpolateWaveHeightToCoastPoints()</a>, and <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01285">CSimulation::WriteLookUpData()</a>.</p>
-
-</div>
-</div>
-<a id="ac5865fa6a8bb4aabb6a598e2a66c410c" name="ac5865fa6a8bb4aabb6a598e2a66c410c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac5865fa6a8bb4aabb6a598e2a66c410c">&#9670;&#160;</a></span>dGetInterpolatedValue() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">double dGetInterpolatedValue </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="../../d7/dfc/classvector.html">vector</a>&lt; int &gt; const *</td>          <td class="paramname"><span class="paramname"><em>pVnXdata</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="../../d7/dfc/classvector.html">vector</a>&lt; double &gt; const *</td>          <td class="paramname"><span class="paramname"><em>pVdYdata</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>nX</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>bExtrapolate</em></span>&#160;)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>From <a href="https://cplusplus.com/forum/general/216928/">https://cplusplus.com/forum/general/216928/</a> Returns interpolated value at x from parallel arrays (VdXdata, VdYdata). Assumes that VdXdata has at least two elements, is sorted and is strictly monotonically increasing. The boolean argument extrapolate determines behaviour beyond ends of array (if needed). For this version, one lot of data is integer and the other is double </p>
-
-<p class="definition">Definition at line <a class="el" href="../../d7/d62/interpolate_8cpp_source.html#l00076">76</a> of file <a class="el" href="../../d7/d62/interpolate_8cpp_source.html">interpolate.cpp</a>.</p>
-
-</div>
-</div>
-<a id="a4f88b28bb87f810c44970dc22bbb1975" name="a4f88b28bb87f810c44970dc22bbb1975"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4f88b28bb87f810c44970dc22bbb1975">&#9670;&#160;</a></span>nFindIndex()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int nFindIndex </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="../../d7/dfc/classvector.html">vector</a>&lt; double &gt; const *</td>          <td class="paramname"><span class="paramname"><em>pVdX</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double const</td>          <td class="paramname"><span class="paramname"><em>dValueIn</em></span>&#160;)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>This is used by VdInterpolateCShoreProfileOutput, it returns the index of the value in pVdX which is less than or equal to the absolute difference between dValueIn and the pVdX value. </p>
-
-<p class="definition">Definition at line <a class="el" href="../../d7/d62/interpolate_8cpp_source.html#l00116">116</a> of file <a class="el" href="../../d7/d62/interpolate_8cpp_source.html">interpolate.cpp</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="../../d7/d62/interpolate_8cpp_source.html#l00138">VdInterpolateCShoreProfileOutput()</a>.</p>
-
-</div>
-</div>
-<a id="a827d9b75395722acc9e19935195772be" name="a827d9b75395722acc9e19935195772be"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a827d9b75395722acc9e19935195772be">&#9670;&#160;</a></span>VdInterpolateCShoreProfileOutput()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="../../d7/dfc/classvector.html">vector</a>&lt; double &gt; VdInterpolateCShoreProfileOutput </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="../../d7/dfc/classvector.html">vector</a>&lt; double &gt; const *</td>          <td class="paramname"><span class="paramname"><em>pVdX</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="../../d7/dfc/classvector.html">vector</a>&lt; double &gt; const *</td>          <td class="paramname"><span class="paramname"><em>pVdY</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="../../d7/dfc/classvector.html">vector</a>&lt; double &gt; const *</td>          <td class="paramname"><span class="paramname"><em>pVdXNew</em></span>&#160;)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Returns a linearly interpolated vector of doubles, to make CShore profile output compatible with CME. The array pVdY has been output by CShore and so always has length CSHOREARRAYOUTSIZE, whereas all other arrays have sizes which depend on CME at runtime. </p>
-
-<p class="definition">Definition at line <a class="el" href="../../d7/d62/interpolate_8cpp_source.html#l00138">138</a> of file <a class="el" href="../../d7/d62/interpolate_8cpp_source.html">interpolate.cpp</a>.</p>
-
-</div>
-</div>
-</div><!-- contents -->
+</div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="../../d7/d62/interpolate_8cpp.html">interpolate.cpp</a></li>
-    <li class="footer">Generated on Fri Jun 27 2025 12:06:36 for CoastalME (Coastal Modelling Environment) by <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+    <li class="footer">Generated on Sun Jun 29 2025 12:14:10 for CoastalME (Coastal Modelling Environment) by <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
   </ul>
 </div>
 </body>

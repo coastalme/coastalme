@@ -24,6 +24,7 @@ var annotated_dup =
     [ "CSedInputEvent", "db/d5f/classCSedInputEvent.html", "db/d5f/classCSedInputEvent" ],
     [ "CSimulation", "d1/d98/classCSimulation.html", "d1/d98/classCSimulation" ],
     [ "deque", "dd/d58/classdeque.html", "dd/d58/classdeque" ],
+    [ "GDALDataType", "d9/da5/classGDALDataType.html", null ],
     [ "ifstream", "d0/d68/classifstream.html", null ],
     [ "ios", "df/d02/classios.html", null ],
     [ "istringstream", "dc/d35/classistringstream.html", null ],

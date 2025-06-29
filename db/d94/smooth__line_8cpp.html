@@ -98,8 +98,7 @@ $(function(){initNavTree('db/d94/smooth__line_8cpp.html','../../'); initResizabl
 
 <div class="header">
   <div class="summary">
-<a href="#typedef-members">Typedefs</a> &#124;
-<a href="#func-members">Functions</a>  </div>
+<a href="#typedef-members">Typedefs</a>  </div>
   <div class="headertitle"><div class="title">smooth_line.cpp File Reference</div></div>
 </div><!--header-->
 <div class="contents">
@@ -111,6 +110,9 @@ $(function(){initNavTree('db/d94/smooth__line_8cpp.html','../../'); initResizabl
 <code>#include &lt;iostream&gt;</code><br />
 <code>#include &quot;<a class="el" href="../../d6/d2a/cme_8h_source.html">cme.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="../../dd/d6a/simulation_8h_source.html">simulation.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="../../d0/dee/2d__point_8h_source.html">2d_point.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="../../d2/d66/2di__point_8h_source.html">2di_point.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="../../d7/d5d/line_8h_source.html">line.h</a>&quot;</code><br />
 </div>
 <p><a href="../../db/d94/smooth__line_8cpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
@@ -118,15 +120,6 @@ $(function(){initNavTree('db/d94/smooth__line_8cpp.html','../../'); initResizabl
 Typedefs</h2></td></tr>
 <tr class="memitem:a7648f167587f78da48e6c6c51f49b34f" id="r_a7648f167587f78da48e6c6c51f49b34f"><td class="memItemLeft" align="right" valign="top">typedef double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7648f167587f78da48e6c6c51f49b34f">Matrix</a>[<a class="el" href="../../d6/d2a/cme_8h.html#a0ea931436632ddd96f15f55fdcaee2b1">SAVGOL_POLYNOMIAL_MAX_ORDER</a>+2][<a class="el" href="../../d6/d2a/cme_8h.html#a0ea931436632ddd96f15f55fdcaee2b1">SAVGOL_POLYNOMIAL_MAX_ORDER</a>+2]</td></tr>
 <tr class="separator:a7648f167587f78da48e6c6c51f49b34f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
-Functions</h2></td></tr>
-<tr class="memitem:a657958179024760c11643407d6fbb729" id="r_a657958179024760c11643407d6fbb729"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a657958179024760c11643407d6fbb729">LUDecomp</a> (<a class="el" href="#a7648f167587f78da48e6c6c51f49b34f">Matrix</a> A, int const N, int const np, int nIndexArray[], int *nDCode, int *nICode)</td></tr>
-<tr class="memdesc:a657958179024760c11643407d6fbb729"><td class="mdescLeft">&#160;</td><td class="mdescRight">Given an N x N matrix A, this routine replaces it by the LU decomposition of a rowwise permutation of itself. A and N are input. nIndexArray is an output vector which records the row permutation effected by the partial pivoting; D is output as -1 or 1, depending on whether the number of row interchanges was even or odd, respectively. This routine is used in combination with LULinearSolve to solve linear equations or to invert a matrix. Returns with nICode = 1 if matrix is singular. Derived from a C original by Jean-Pierre Moreau (<a href="#" onclick="location.href='mai'+'lto:'+'jpm'+'or'+'eau'+'@w'+'ana'+'do'+'o.f'+'r'; return false;">jpmor<span class="obfuscator">.nosp@m.</span>eau@<span class="obfuscator">.nosp@m.</span>wanad<span class="obfuscator">.nosp@m.</span>oo.f<span class="obfuscator">.nosp@m.</span>r</a>, <a href="http://jean-pierre.moreau.pagesperso-orange.fr/index.html">http://jean-pierre.moreau.pagesperso-orange.fr/index.html</a>), to whom we are much indebted.  <br /></td></tr>
-<tr class="separator:a657958179024760c11643407d6fbb729"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1d0a8455516f34f43c16373c1017ca1e" id="r_a1d0a8455516f34f43c16373c1017ca1e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1d0a8455516f34f43c16373c1017ca1e">LULinearSolve</a> (<a class="el" href="#a7648f167587f78da48e6c6c51f49b34f">Matrix</a> const A, int const N, int const nIndexArray[], double B[])</td></tr>
-<tr class="memdesc:a1d0a8455516f34f43c16373c1017ca1e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Solves the set of N linear equations A . X = B. Here A is input, not as the matrix A but rather as its LU decomposition, determined by the routine LUDecomp. nIndexArray is input as the permutation vector returned by LUDecomp. B is input as the right-hand side vector B, and returns with the solution vector X. A, N and nIndexArray are not modified by this routine and can be used for successive calls with different right-hand sides. This routine is also efficient for plain matrix inversion. Derived from a C original by Jean-Pierre Moreau (<a href="#" onclick="location.href='mai'+'lto:'+'jpm'+'or'+'eau'+'@w'+'ana'+'do'+'o.f'+'r'; return false;">jpmor<span class="obfuscator">.nosp@m.</span>eau@<span class="obfuscator">.nosp@m.</span>wanad<span class="obfuscator">.nosp@m.</span>oo.f<span class="obfuscator">.nosp@m.</span>r</a>, <a href="http://jean-pierre.moreau.pagesperso-orange.fr/index.html">http://jean-pierre.moreau.pagesperso-orange.fr/index.html</a>), to whom we are much indebted.  <br /></td></tr>
-<tr class="separator:a1d0a8455516f34f43c16373c1017ca1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Smoothing routines for <a class="el" href="../../d7/dd3/classCGeomLine.html" title="Geometry class used to represent 2D vector line objects.">CGeomLine</a> objects. </p>
@@ -150,92 +143,7 @@ Andres Payo </dd></dl>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../db/d94/smooth__line_8cpp_source.html#l00039">39</a> of file <a class="el" href="../../db/d94/smooth__line_8cpp_source.html">smooth_line.cpp</a>.</p>
-
-</div>
-</div>
-<h2 class="groupheader">Function Documentation</h2>
-<a id="a657958179024760c11643407d6fbb729" name="a657958179024760c11643407d6fbb729"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a657958179024760c11643407d6fbb729">&#9670;&#160;</a></span>LUDecomp()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void LUDecomp </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="#a7648f167587f78da48e6c6c51f49b34f">Matrix</a></td>          <td class="paramname"><span class="paramname"><em>A</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int const</td>          <td class="paramname"><span class="paramname"><em>N</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int const</td>          <td class="paramname"><span class="paramname"><em>np</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>nIndexArray</em></span>[], </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int *</td>          <td class="paramname"><span class="paramname"><em>nDCode</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int *</td>          <td class="paramname"><span class="paramname"><em>nICode</em></span>&#160;)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Given an N x N matrix A, this routine replaces it by the LU decomposition of a rowwise permutation of itself. A and N are input. nIndexArray is an output vector which records the row permutation effected by the partial pivoting; D is output as -1 or 1, depending on whether the number of row interchanges was even or odd, respectively. This routine is used in combination with LULinearSolve to solve linear equations or to invert a matrix. Returns with nICode = 1 if matrix is singular. Derived from a C original by Jean-Pierre Moreau (<a href="#" onclick="location.href='mai'+'lto:'+'jpm'+'or'+'eau'+'@w'+'ana'+'do'+'o.f'+'r'; return false;">jpmor<span class="obfuscator">.nosp@m.</span>eau@<span class="obfuscator">.nosp@m.</span>wanad<span class="obfuscator">.nosp@m.</span>oo.f<span class="obfuscator">.nosp@m.</span>r</a>, <a href="http://jean-pierre.moreau.pagesperso-orange.fr/index.html">http://jean-pierre.moreau.pagesperso-orange.fr/index.html</a>), to whom we are much indebted. </p>
-
-<p class="definition">Definition at line <a class="el" href="../../db/d94/smooth__line_8cpp_source.html#l00475">475</a> of file <a class="el" href="../../db/d94/smooth__line_8cpp_source.html">smooth_line.cpp</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="../../db/d94/smooth__line_8cpp_source.html#l00392">CSimulation::CalcSavitzkyGolay()</a>.</p>
-
-</div>
-</div>
-<a id="a1d0a8455516f34f43c16373c1017ca1e" name="a1d0a8455516f34f43c16373c1017ca1e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1d0a8455516f34f43c16373c1017ca1e">&#9670;&#160;</a></span>LULinearSolve()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void LULinearSolve </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="#a7648f167587f78da48e6c6c51f49b34f">Matrix</a> const</td>          <td class="paramname"><span class="paramname"><em>A</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int const</td>          <td class="paramname"><span class="paramname"><em>N</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int const</td>          <td class="paramname"><span class="paramname"><em>nIndexArray</em></span>[], </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>B</em></span>[]&#160;)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Solves the set of N linear equations A . X = B. Here A is input, not as the matrix A but rather as its LU decomposition, determined by the routine LUDecomp. nIndexArray is input as the permutation vector returned by LUDecomp. B is input as the right-hand side vector B, and returns with the solution vector X. A, N and nIndexArray are not modified by this routine and can be used for successive calls with different right-hand sides. This routine is also efficient for plain matrix inversion. Derived from a C original by Jean-Pierre Moreau (<a href="#" onclick="location.href='mai'+'lto:'+'jpm'+'or'+'eau'+'@w'+'ana'+'do'+'o.f'+'r'; return false;">jpmor<span class="obfuscator">.nosp@m.</span>eau@<span class="obfuscator">.nosp@m.</span>wanad<span class="obfuscator">.nosp@m.</span>oo.f<span class="obfuscator">.nosp@m.</span>r</a>, <a href="http://jean-pierre.moreau.pagesperso-orange.fr/index.html">http://jean-pierre.moreau.pagesperso-orange.fr/index.html</a>), to whom we are much indebted. </p>
-
-<p class="definition">Definition at line <a class="el" href="../../db/d94/smooth__line_8cpp_source.html#l00573">573</a> of file <a class="el" href="../../db/d94/smooth__line_8cpp_source.html">smooth_line.cpp</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="../../db/d94/smooth__line_8cpp_source.html#l00392">CSimulation::CalcSavitzkyGolay()</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../db/d94/smooth__line_8cpp_source.html#l00043">43</a> of file <a class="el" href="../../db/d94/smooth__line_8cpp_source.html">smooth_line.cpp</a>.</p>
 
 </div>
 </div>
@@ -245,7 +153,7 @@ Andres Payo </dd></dl>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="../../db/d94/smooth__line_8cpp.html">smooth_line.cpp</a></li>
-    <li class="footer">Generated on Fri Jun 27 2025 12:06:36 for CoastalME (Coastal Modelling Environment) by <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+    <li class="footer">Generated on Sun Jun 29 2025 12:14:10 for CoastalME (Coastal Modelling Environment) by <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
   </ul>
 </div>
 </body>

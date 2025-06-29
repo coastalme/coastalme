@@ -97,8 +97,6 @@ $(function(){initNavTree('d2/d22/do__beach__sediment__movement_8cpp.html','../..
 </div>
 
 <div class="header">
-  <div class="summary">
-<a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">do_beach_sediment_movement.cpp File Reference</div></div>
 </div><!--header-->
 <div class="contents">
@@ -109,20 +107,12 @@ $(function(){initNavTree('d2/d22/do__beach__sediment__movement_8cpp.html','../..
 <code>#include &lt;cmath&gt;</code><br />
 <code>#include &lt;cfloat&gt;</code><br />
 <code>#include &lt;iostream&gt;</code><br />
-<code>#include &lt;string&gt;</code><br />
 <code>#include &lt;algorithm&gt;</code><br />
 <code>#include &quot;<a class="el" href="../../d6/d2a/cme_8h_source.html">cme.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="../../dd/d6a/simulation_8h_source.html">simulation.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="../../de/d65/coast_8h_source.html">coast.h</a>&quot;</code><br />
 </div>
 <p><a href="../../d2/d22/do__beach__sediment__movement_8cpp_source.html">Go to the source code of this file.</a></p>
-<table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
-Functions</h2></td></tr>
-<tr class="memitem:a0a8801fe3da215959bcf6352e5331b91" id="r_a0a8801fe3da215959bcf6352e5331b91"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0a8801fe3da215959bcf6352e5331b91">bPolygonAndAdjCompare</a> (const <a class="el" href="../../d7/dfc/classvector.html">vector</a>&lt; int &gt; &amp;nVLeft, const <a class="el" href="../../d7/dfc/classvector.html">vector</a>&lt; int &gt; &amp;nVRight)</td></tr>
-<tr class="memdesc:a0a8801fe3da215959bcf6352e5331b91"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function used to sort polygons before doing the polygon-to-polygon source-target pattern. For both LHS and RHS arguments, the first element is the polygon global ID, the second element is the polygn coast ID, the third element is the down- or up-coast direction, and fourth and subsequent elements are adjacent polygon coast IDs in that direction. If the first argument is to be ordered before the second (i.e. the original sequence is to be retained), return true. If the second argument must be ordered before the first (i.e. the arguments must be swapped), return false.  <br /></td></tr>
-<tr class="separator:a0a8801fe3da215959bcf6352e5331b91"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Does between-polygon actual (supply-limited) redistribution of transported beach sediment. </p>
 <p>TODO 001 A more detailed description of these routines. </p><dl class="section author"><dt>Author</dt><dd>David Favis-Mortlock </dd>
@@ -132,41 +122,13 @@ Andres Payo </dd></dl>
 <dl class="section copyright"><dt>Copyright</dt><dd>GNU General Public License </dd></dl>
 
 <p class="definition">Definition in file <a class="el" href="../../d2/d22/do__beach__sediment__movement_8cpp_source.html">do_beach_sediment_movement.cpp</a>.</p>
-</div><h2 class="groupheader">Function Documentation</h2>
-<a id="a0a8801fe3da215959bcf6352e5331b91" name="a0a8801fe3da215959bcf6352e5331b91"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0a8801fe3da215959bcf6352e5331b91">&#9670;&#160;</a></span>bPolygonAndAdjCompare()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool bPolygonAndAdjCompare </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="../../d7/dfc/classvector.html">vector</a>&lt; int &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>nVLeft</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="../../d7/dfc/classvector.html">vector</a>&lt; int &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>nVRight</em></span>&#160;)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Function used to sort polygons before doing the polygon-to-polygon source-target pattern. For both LHS and RHS arguments, the first element is the polygon global ID, the second element is the polygn coast ID, the third element is the down- or up-coast direction, and fourth and subsequent elements are adjacent polygon coast IDs in that direction. If the first argument is to be ordered before the second (i.e. the original sequence is to be retained), return true. If the second argument must be ordered before the first (i.e. the arguments must be swapped), return false. </p>
-
-<p class="definition">Definition at line <a class="el" href="../../d2/d22/do__beach__sediment__movement_8cpp_source.html#l00047">47</a> of file <a class="el" href="../../d2/d22/do__beach__sediment__movement_8cpp_source.html">do_beach_sediment_movement.cpp</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="../../d2/d22/do__beach__sediment__movement_8cpp_source.html#l00235">CSimulation::nDoAllActualBeachErosionAndDeposition()</a>.</p>
-
-</div>
-</div>
-</div><!-- contents -->
+</div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="../../d2/d22/do__beach__sediment__movement_8cpp.html">do_beach_sediment_movement.cpp</a></li>
-    <li class="footer">Generated on Fri Jun 27 2025 12:06:36 for CoastalME (Coastal Modelling Environment) by <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+    <li class="footer">Generated on Sun Jun 29 2025 12:14:10 for CoastalME (Coastal Modelling Environment) by <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
   </ul>
 </div>
 </body>

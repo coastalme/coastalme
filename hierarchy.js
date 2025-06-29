@@ -37,6 +37,7 @@ var hierarchy =
     [ "CSedInputEvent", "db/d5f/classCSedInputEvent.html", null ],
     [ "CSimulation", "d1/d98/classCSimulation.html", null ],
     [ "deque< T >", "dd/d58/classdeque.html", null ],
+    [ "GDALDataType", "d9/da5/classGDALDataType.html", null ],
     [ "ifstream", "d0/d68/classifstream.html", null ],
     [ "ios", "df/d02/classios.html", null ],
     [ "istringstream", "dc/d35/classistringstream.html", null ],
