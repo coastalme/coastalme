@@ -1237,64 +1237,72 @@ string const ACTIVE_ZONE_FILENAME = "activezone.csv";
 
 //================================================ Globally-available functions =================================================
 template <class T>
-T tMax(T a, T b) {
-  return ((a > b) ? a : b);
+T tMax(T a, T b)
+{
+   return ((a > b) ? a : b);
 }
 
 template <class T>
-T tMax(T a, T b, T c) {
-  T max = (a < b) ? b : a;
-  return ((max < c) ? c : max);
+T tMax(T a, T b, T c)
+{
+   T max = (a < b) ? b : a;
+   return ((max < c) ? c : max);
 }
 
 template <class T>
-T tMin(T a, T b) {
-  return ((a < b) ? a : b);
+T tMin(T a, T b)
+{
+   return ((a < b) ? a : b);
 }
 
 template <class T>
-T tMin(T a, T b, T c) {
-  return (a < b ? (a < c ? a : c) : (b < c ? b : c));
+T tMin(T a, T b, T c)
+{
+   return (a < b ? (a < c ? a : c) : (b < c ? b : c));
 }
 
 template <class T>
-T tAbs(T a) {
-  // From a posting dated 18 Nov 93 by rmartin@rcmcon.com (Robert Martin), archived in cpp_tips
-  return ((a < 0) ? -a : a);
+T tAbs(T a)
+{
+   // From a posting dated 18 Nov 93 by rmartin@rcmcon.com (Robert Martin), archived in cpp_tips
+   return ((a < 0) ? -a : a);
 }
 
 template <class T>
-bool bIsBetween(T a, T b, T c) {
-  // Assumes b > c
-  return ((a >= b) && (a <= c));
+bool bIsBetween(T a, T b, T c)
+{
+   // Assumes b > c
+   return ((a >= b) && (a <= c));
 }
 
 template <typename T>
-string strDblToStr(const T &t) {
-  // From http://stackoverflow.com/questions/2125880/convert-float-to-stdstring-in-c
-  ostringstream os;
-  os << t;
-  return os.str();
+string strDblToStr(const T &t)
+{
+   // From http://stackoverflow.com/questions/2125880/convert-float-to-stdstring-in-c
+   ostringstream os;
+   os << t;
+   return os.str();
 }
 
 // ==============================================================================================================================
 // For comparison of two floating-point numbers, with a specified accuracy
 // ==============================================================================================================================
 template <class T>
-bool bFPIsEqual(const T d1, const T d2, const T dEpsilon) {
-  // Since the accuracy of floating-point numbers varies with their magnitude, we must compare them by using an accuracy threshold which is relative to the magnitude of the two numbers being compared. This is a blend of an example from Knuth's 'The Art of Computer Programming. Volume 1. Fundamental Algorithms' and a posting dated 18 Nov 93 by rmartin@rcmcon.com (Robert Martin), archived in cpp_tips
+bool bFPIsEqual(const T d1, const T d2, const T dEpsilon)
+{
+   // Since the accuracy of floating-point numbers varies with their magnitude, we must compare them by using an accuracy threshold which is relative to the magnitude of the two numbers being compared. This is a blend of an example from Knuth's 'The Art of Computer Programming. Volume 1. Fundamental Algorithms' and a posting dated 18 Nov 93 by rmartin@rcmcon.com (Robert Martin), archived in cpp_tips
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wfloat-equal"
 
-  if ((0 == d1) && (tAbs(d2) < dEpsilon))
-    return true;
+   if ((0 == d1) && (tAbs(d2) < dEpsilon))
+      return true;
 
-  else if ((0 == d2) && (tAbs(d1) < dEpsilon))
-    return true;
+   else if ((0 == d2) && (tAbs(d1) < dEpsilon))
+      return true;
 
-  else
-    return ((tAbs(d1 - d2) < (dEpsilon * tAbs(d1))) ? true : false);
+   else
+      return ((tAbs(d1 - d2) < (dEpsilon * tAbs(d1))) ? true : false);
 
 #pragma GCC diagnostic pop
 }
@@ -1307,10 +1315,11 @@ int nRound(double const);
 bool bIsStringValidDouble(string &);
 bool bIsStringValidInt(string &);
 
-struct FillToWidth {
-  FillToWidth(char f, int w) : chFill(f), nWidth(w) {}
-  char chFill;
-  int nWidth;
+struct FillToWidth
+{
+   FillToWidth(char f, int w) : chFill(f), nWidth(w) {}
+   char chFill;
+   int nWidth;
 };
 
 ostream &operator<<(ostream &, const FillToWidth &);
