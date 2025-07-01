@@ -49,6 +49,7 @@ using std::setw;
 using std::stringstream;
 
 #include "cme.h"
+#include "cell.h"
 #include "raster_grid.h"
 #include "simulation.h"
 
