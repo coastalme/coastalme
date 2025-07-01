@@ -868,7 +868,7 @@ bool CSimulation::bCheckRasterGISOutputFormat(void)
 }
 
 //===============================================================================================================================
-//! Checks whether the selected vector OGR driver supports file creation etc.
+//! Checks whether the selected vector GDAL/OGR driver supports file creation etc.
 //===============================================================================================================================
 bool CSimulation::bCheckVectorGISOutputFormat(void)
 {

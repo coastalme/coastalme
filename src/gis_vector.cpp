@@ -48,7 +48,7 @@ using std::stringstream;
 #include "cliff.h"
 
 //===============================================================================================================================
-//! Reads vector GIS datafiles using OGR
+//! Reads vector GIS datafiles using GDAL/OGR
 //===============================================================================================================================
 int CSimulation::nReadVectorGISFile(int const nDataItem)
 {
@@ -402,7 +402,7 @@ int CSimulation::nReadVectorGISFile(int const nDataItem)
 }
 
 //===============================================================================================================================
-//! Writes vector GIS files using OGR
+//! Writes vector GIS files using GDAL/OGR
 //===============================================================================================================================
 bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const* strPlotTitle)
 {
@@ -656,7 +656,7 @@ bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const* strPlot
       return false;
    }
 
-   // Need to switch off OGR error messages here, since real (floating point) fields in ESRI shapefiles are treated as width 24 with 15 decimal places of precision (unless an explicit width is given). If fields exceed this, then a "not successfully written. Possibly due to too larger number with respect to field width" error message is shown. Get this to fail silently
+   // Need to switch off GDAL/OGR error messages here, since real (floating point) fields in ESRI shapefiles are treated as width 24 with 15 decimal places of precision (unless an explicit width is given). If fields exceed this, then a "not successfully written. Possibly due to too larger number with respect to field width" error message is shown. Get this to fail silently
    CPLPushErrorHandler(CPLQuietErrorHandler);
 
    switch (nDataItem)

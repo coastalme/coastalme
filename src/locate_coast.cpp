@@ -1136,7 +1136,7 @@ int CSimulation::FindAllInundatedCells(void)
       {
          m_pRasterGrid->m_Cell[nX][nY].UnSetCheckFloodCell();
          m_pRasterGrid->m_Cell[nX][nY].UnSetInContiguousFlood();
-         m_pRasterGrid->m_Cell[nX][nY].SetAsFloodLine(false);
+         m_pRasterGrid->m_Cell[nX][nY].SetAsFloodline(false);
       }
    }
 

@@ -1589,7 +1589,7 @@ private:
    int nTraceFloodCoastLine(unsigned int const, int const, int const, vector<bool>*, vector<CGeom2DIPoint> const*);
    int nTraceAllFloodCoasts(void);
    void DoCoastCurvature(int const, int const);
-   int nCheckAllProfiles(void);
+   int nCheckAndMarkAllProfiles(void);
    int nCreateAllProfiles(void);
    void LocateAndCreateProfiles(int const, int&, int&, vector<bool>*, vector<pair<int, double >> const*);
    int nCreateProfile(int const, int const, int const, int const, int&, bool const, CGeom2DIPoint const*);

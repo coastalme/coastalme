@@ -48,8 +48,6 @@ private:
    //! Switch to indicate that this cell is in the active zone
    bool m_bIsInActiveZone;
 
-   //! Switch to indicate that this cell is 'under' a coastline
-   bool m_bCoastline;
 
    //! Switch to indicate that this cell is 'under' a runup flood line
    bool m_bFloodLine;
@@ -81,19 +79,25 @@ private:
    //! If this cell is an edge (or bounding box) cell, this specifies the edge
    int m_nBoundingBoxEdge;
 
+   //! If this cell is 'under' a coastline, this is the ID nymber of the coastline
+   int m_nCoastlineID;
+
+   //! If this cell is 'under' a coast-normal profile, this is the ID number of the profile
+   int m_nProfileID;
+
+   //! If this cell is 'under' a coast-normal profile, this is the ID number of the profile's cast
+   int m_nProfileCoastID;
+
    //! If this cell is within a polygon, this is the ID of the polygon
    int m_nPolygonID;
 
-   //! If this cell is within a polygon, this is the ID of the polygon's coast
+   //! If this cell is within a polygon, this is the ID number of the polygon's coast
    int m_nPolygonCoastID;
 
-   //! If this cell is 'under' a coastline normal, this is the number of the normal
-   int m_nCoastlineNormal;
-
-   //! If this cell is within a shadow zone, this is the number of the shadow zone
+   //! If this cell is within a shadow zone, this is the ID number of the shadow zone
    int m_nShadowZoneNumber;
 
-   //! If this cell is within a downdrift zone, this is the number of the downdrift zone
+   //! If this cell is within a downdrift zone, this is theID  number of the downdrift zone
    int m_nDownDriftZoneNumber;
 
    //! Used in erosion calculations, stored here for display purposes
@@ -240,14 +244,17 @@ public:
    bool bIsInActiveZone(void) const;
    bool bPotentialPlatformErosion(void) const;
    // bool bActualPlatformErosion(void) const;
-   void SetAsCoastline(bool const);
+   void SetAsCoastline(int const);
    bool bIsCoastline(void) const;
-   void SetAsFloodLine(bool const);
-   bool bIsFloodLine(void) const;
+   void SetAsFloodline(bool const);
+   bool bIsFloodline(void) const;
 
    void SetProfileID(int const);
    int nGetProfileID(void) const;
    bool bIsProfile(void) const;
+   void SetProfileCoastID(int const);
+   int nGetProfileCoastID(void) const;
+   void SetCoastAndProfileID(int const, int const);
 
    void SetShadowZoneBoundary(void);
    bool bIsShadowZoneBoundary(void) const;
@@ -264,10 +271,8 @@ public:
 
    void SetPolygonID(int const);
    int nGetPolygonID(void) const;
-
    void SetPolygonCoastID(int const);
    int nGetPolygonCoastID(void) const;
-
    void SetCoastAndPolygonID(int const, int const);
 
    CRWCellLandform* pGetLandform(void);

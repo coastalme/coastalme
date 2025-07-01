@@ -1030,11 +1030,20 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
       if (nRet != RTN_OK)
          return nRet;
 
-      // Check the coastline-normal profiles for intersection
-      nRet = nCheckAllProfiles();
+      // Check the coastline-normal profiles for intersection, modify the profiles if they intersect, then mark valid profiles on the raster grid
+      nRet = nCheckAndMarkAllProfiles();
 
       if (nRet != RTN_OK)
          return nRet;
+
+      // DEBUG CODE ================
+      if (! bWriteVectorGISFile(VECTOR_PLOT_COAST, &VECTOR_PLOT_COAST_TITLE))
+         return false;
+      if (! bWriteVectorGISFile(VECTOR_PLOT_NORMALS, &VECTOR_PLOT_NORMALS_TITLE))
+         return false;
+      if (! bWriteVectorGISFile(VECTOR_PLOT_INVALID_NORMALS, &VECTOR_PLOT_INVALID_NORMALS_TITLE))
+         return false;
+      // DEBUG CODE ================
 
       // // DEBUG CODE =================
       // for (int nCoast = 0; nCoast < static_cast<int>(m_VCoast.size()); nCoast++)
@@ -1060,6 +1069,11 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
 
       if (nRet != RTN_OK)
          return nRet;
+
+      // DEBUG CODE ====================
+      if (! bWriteVectorGISFile(VECTOR_PLOT_POLYGON_BOUNDARY, &VECTOR_PLOT_POLYGON_BOUNDARY_TITLE))
+         return false;
+      // DEBUG CODE ====================
 
       // // DEBUG CODE =========================================================================================================
       // int nNODATA = 0;

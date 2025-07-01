@@ -37,7 +37,6 @@ CGeomCell::CGeomCell()
    : m_bInContiguousSea(false),
      m_bInContiguousFlood(false),
      m_bIsInActiveZone(false),
-     m_bCoastline(false),
      m_bFloodLine(false),
      m_bWaveFlood(false),
      // m_bCheckCell(false),
@@ -46,9 +45,11 @@ CGeomCell::CGeomCell()
      m_bPossibleCoastStartCell(false),
      m_bPossibleFloodStartCell(false),
      m_nBoundingBoxEdge(NO_DIRECTION),
+     m_nCoastlineID(INT_NODATA),
+     m_nProfileID(INT_NODATA),
+     m_nProfileCoastID(INT_NODATA),
      m_nPolygonID(INT_NODATA),
      m_nPolygonCoastID(INT_NODATA),
-     m_nCoastlineNormal(INT_NODATA),
      m_nShadowZoneNumber(0),
      m_nDownDriftZoneNumber(0),
      m_dLocalConsSlope(0),
@@ -226,49 +227,68 @@ bool CGeomCell::bPotentialPlatformErosion(void) const
 // return (m_dActualPlatformErosionThisIter > 0);
 // }
 
-//! Marks this cell as 'under' a coastline
-void CGeomCell::SetAsCoastline(bool const bNewFlag)
+//! Marks this cell with the ID nunber of the coastline that it is 'under'
+void CGeomCell::SetAsCoastline(int const nCoast)
 {
-   m_bCoastline = bNewFlag;
+   m_nCoastlineID = nCoast;
 }
 
 //! Returns true if the cell is 'under' a coastline
 bool CGeomCell::bIsCoastline(void) const
 {
-   return m_bCoastline;
+   return m_nCoastlineID;
 }
 
-//! Marks this cell is flood line
-void CGeomCell::SetAsFloodLine(bool const bNewFlag)
+//! Marks this cell as flood line
+void CGeomCell::SetAsFloodline(bool const bNewFlag)
 {
    m_bFloodLine = bNewFlag;
 }
 
 //! Returns true if the cell is flood line
-bool CGeomCell::bIsFloodLine(void) const
+bool CGeomCell::bIsFloodline(void) const
 {
    return m_bFloodLine;
 }
 
-//! Marks this cell as 'under' a coastline-normal profile
-void CGeomCell::SetProfileID(int const nNormal)
+//! Sets the ID number of the coast-normal profile which this cell is 'under'
+void CGeomCell::SetProfileID(int const nProfile)
 {
-   m_nCoastlineNormal = nNormal;
+   m_nProfileID = nProfile;
 }
 
-//! If this cell is 'under' a coastline-normal profile, returns the number of the profile. Otherwise it returns INT_NODATA
+//! Gets the ID number of the coast-normal profile which this cell is 'under', or returns INT_NODATA
 int CGeomCell::nGetProfileID(void) const
 {
-   return m_nCoastlineNormal;
+   return m_nProfileID;
 }
 
 //! Returns true if this cell is 'under' a coastline normal
 bool CGeomCell::bIsProfile(void) const
 {
-   if (m_nCoastlineNormal == INT_NODATA)
+   if (m_nProfileID == INT_NODATA)
       return false;
 
    return true;
+}
+
+//! Sets the coast ID number of the coast-normal profile which this cell is 'under'
+void CGeomCell::SetProfileCoastID(int const nCoast)
+{
+   m_nProfileCoastID = nCoast;
+}
+
+//! Gets the coast ID number of the coast-normal profile which this cell is 'under', or returns INT_NODATA
+int CGeomCell::nGetProfileCoastID(void) const
+{
+   return m_nProfileCoastID;
+}
+
+//! Sets the coast ID number, and the profile ID number, of the coast-normal profile which this cell is 'under'
+void CGeomCell::SetCoastAndProfileID(int const nProfileCoastID, int const nProfile)
+{
+   m_nProfileCoastID = nProfileCoastID;
+   m_nProfileID = nProfile;
 }
 
 //! Sets the global ID number of the polygon which 'contains' this cell
@@ -838,7 +858,7 @@ void CGeomCell::InitCell(void)
 {
    m_bInContiguousSea =
    m_bInContiguousFlood =
-   m_bCoastline =
+   m_nCoastlineID =
    m_bFloodLine =
    m_bIsInActiveZone =
    // m_bEstimated =
@@ -851,7 +871,7 @@ void CGeomCell::InitCell(void)
 
    m_nPolygonID =
    m_nPolygonCoastID =
-   m_nCoastlineNormal = INT_NODATA;
+   m_nProfileID = INT_NODATA;
 
    m_nShadowZoneNumber =
    m_nDownDriftZoneNumber = 0;
