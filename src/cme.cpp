@@ -21,10 +21,12 @@
    You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 ===============================================================================================================================*/
-#include "cme.h"
+#include <clocale>
+
+// #include "cme.h"
 #include "simulation.h"
 
-#include <fenv.h>    // Include this to check for first appearance in NaN when debugging (comment out, otherwise)
+// #include <fenv.h>    // Include this to check for first appearance in NaN when debugging (comment out, otherwise)
 
 //===============================================================================================================================
 //! CoastalME's main function
@@ -44,7 +46,7 @@ int main(int argc, char const* argv[])
    CSimulation* pSimulation = new CSimulation;
 
    // Run the simulation and then check how it ends
-   int nRtn = pSimulation->nDoSimulation(argc, argv);
+   int const nRtn = pSimulation->nDoSimulation(argc, argv);
    pSimulation->DoSimulationEnd(nRtn);
 
    // Get rid of the CSimulation object and close files

@@ -24,11 +24,10 @@
 #include <assert.h>
 
 #include <cmath>
-
 #include <cfloat>
 
 #include <iostream>
-using std::cout;
+// using std::cout;
 using std::endl;
 
 #include <algorithm>
@@ -37,6 +36,8 @@ using std::shuffle;
 #include "cme.h"
 #include "simulation.h"
 #include "coast.h"
+#include "2d_point.h"
+#include "2di_point.h"
 
 //===============================================================================================================================
 //! Erodes unconsolidated beach sediment of one texture class on the cells within a polygon. This is done by working down the coastline and constructing profiles which are parallel to the up-coast polygon boundary; then reversing direction and going up-coast, constructing profiles parallel to the down-coast boundary. Then iteratively fit a Dean equilibrium profile until the normal's share of the change in total depth of unconsolidated sediment is accommodated under the revised profile. For erosion, this reduces the beach volume
@@ -59,14 +60,14 @@ int CSimulation::nDoUnconsErosionOnPolygon(int const nCoast, CGeomCoastPolygon* 
    dEroded = 0;
 
    // Get the up-coast and down-coast boundary details
-   int nUpCoastProfile = pPolygon->nGetUpCoastProfile();
+   int const nUpCoastProfile = pPolygon->nGetUpCoastProfile();
    CGeomProfile* pUpCoastProfile = m_VCoast[nCoast].pGetProfile(nUpCoastProfile);
 
-   int nDownCoastProfile = pPolygon->nGetDownCoastProfile();
+   int const nDownCoastProfile = pPolygon->nGetDownCoastProfile();
    CGeomProfile const* pDownCoastProfile = m_VCoast[nCoast].pGetProfile(nDownCoastProfile);
 
    // We will use only part of the up-coast boundary profile, seaward as far as the depth of closure. First find the seaward end point of this up-coast part-profile. Note that this does not change as the landwards offset changes
-   int nIndex = pUpCoastProfile->nGetCellGivenDepth(m_pRasterGrid, m_dDepthOfClosure);
+   int const nIndex = pUpCoastProfile->nGetCellGivenDepth(m_pRasterGrid, m_dDepthOfClosure);
 
    if (nIndex == INT_NODATA)
    {
@@ -77,7 +78,7 @@ int CSimulation::nDoUnconsErosionOnPolygon(int const nCoast, CGeomCoastPolygon* 
    }
 
    // The part-profile length is one greater than nIndex, since pPtiGetCellGivenDepth() returns the index of the cell at the depth of closure
-   int nUpCoastPartProfileLen = nIndex + 1;
+   int const nUpCoastPartProfileLen = nIndex + 1;
 
    // assert(bIsWithinValidGrid(&PtiUpCoastPartProfileSeawardEnd));
 
@@ -88,14 +89,14 @@ int CSimulation::nDoUnconsErosionOnPolygon(int const nCoast, CGeomCoastPolygon* 
    // PtiVUpCoastPartProfileCell.push_back(*pUpCoastProfile->pPtiGetCellInProfile(nUpCoastPartProfileLen - n - 1));
    for (int n = nUpCoastPartProfileLen - 1; n >= 0; n--)
    {
-      CGeom2DIPoint Pti = * pUpCoastProfile->pPtiGetCellInProfile(n);
+      CGeom2DIPoint const Pti = * pUpCoastProfile->pPtiGetCellInProfile(n);
       PtiVUpCoastPartProfileCell.push_back(Pti);
    }
 
-   int nUpCoastProfileCoastPoint = pUpCoastProfile->nGetCoastPoint();
-   int nDownCoastProfileCoastPoint = pDownCoastProfile->nGetCoastPoint();
-   int nXUpCoastProfileExistingCoastPoint = m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(nUpCoastProfileCoastPoint)->nGetX();
-   int nYUpCoastProfileExistingCoastPoint = m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(nUpCoastProfileCoastPoint)->nGetY();
+   int const nUpCoastProfileCoastPoint = pUpCoastProfile->nGetCoastPoint();
+   int const nDownCoastProfileCoastPoint = pDownCoastProfile->nGetCoastPoint();
+   int const nXUpCoastProfileExistingCoastPoint = m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(nUpCoastProfileCoastPoint)->nGetX();
+   int const nYUpCoastProfileExistingCoastPoint = m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(nUpCoastProfileCoastPoint)->nGetY();
    int nCoastSegLen;
 
    // Store the coast point numbers for this polygon so that we can shuffle them
@@ -120,7 +121,7 @@ int CSimulation::nDoUnconsErosionOnPolygon(int const nCoast, CGeomCoastPolygon* 
    }
 
    // Estimate the volume of sediment which is to be eroded from each parallel profile
-   double dAllTargetPerProfile = dErosionTargetOnPolygon / nCoastSegLen;
+   double const dAllTargetPerProfile = dErosionTargetOnPolygon / nCoastSegLen;
 
    // Shuffle the coast points, this is necessary so that leaving the loop does not create sequence-related artefacts
    shuffle(nVCoastPoint.begin(), nVCoastPoint.begin() + nCoastSegLen, m_Rand[1]);
@@ -129,11 +130,11 @@ int CSimulation::nDoUnconsErosionOnPolygon(int const nCoast, CGeomCoastPolygon* 
    for (int n = 0; n < nCoastSegLen; n++)
    {
       // Get the coast point
-      int nCoastPoint = nVCoastPoint[n];
+      int const nCoastPoint = nVCoastPoint[n];
 
-      CGeom2DIPoint PtiCoastPoint = * m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(nCoastPoint);
-      int nCoastX = PtiCoastPoint.nGetX();
-      int nCoastY = PtiCoastPoint.nGetY();
+      CGeom2DIPoint const PtiCoastPoint = * m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(nCoastPoint);
+      int const nCoastX = PtiCoastPoint.nGetX();
+      int const nCoastY = PtiCoastPoint.nGetY();
 
       // LogStream << m_ulIter << ": nCoastX = " << nCoastX << ", nCoastY = " << nCoastY << ", this is {" << dGridCentroidXToExtCRSX(nCoastX) << ", " <<  dGridCentroidYToExtCRSY(nCoastY) << "}" << endl;
 
@@ -149,8 +150,8 @@ int CSimulation::nDoUnconsErosionOnPolygon(int const nCoast, CGeomCoastPolygon* 
       // LogStream << m_ulIter << ": PtiVUpCoastPartProfileCell.back().nGetX() = " << PtiVUpCoastPartProfileCell.back().nGetX() << ", PtiVUpCoastPartProfileCell.back().nGetY() = " << PtiVUpCoastPartProfileCell.back().nGetY() << ", this is {" << dGridCentroidXToExtCRSX(PtiVUpCoastPartProfileCell.back().nGetX()) << ", " <<  dGridCentroidYToExtCRSY(PtiVUpCoastPartProfileCell.back().nGetY()) << "}" << endl;
 
       // Not an intervention structure, so calculate the x-y offset between this coast point, and the coast point of the up-coast normal
-      int nXOffset = nCoastX - PtiVUpCoastPartProfileCell.back().nGetX();
-      int nYOffset = nCoastY - PtiVUpCoastPartProfileCell.back().nGetY();
+      int const nXOffset = nCoastX - PtiVUpCoastPartProfileCell.back().nGetX();
+      int const nYOffset = nCoastY - PtiVUpCoastPartProfileCell.back().nGetY();
 
       // Get the x-y coords of a profile starting from this coast point and parallel to the up-coast polygon boundary profile (these are in reverse sequence, like the boundary part-profile)
       vector<CGeom2DIPoint> VPtiParProfile;
@@ -158,7 +159,7 @@ int CSimulation::nDoUnconsErosionOnPolygon(int const nCoast, CGeomCoastPolygon* 
       for (int m = 0; m < nUpCoastPartProfileLen; m++)
       {
          // TODO 017 Check that each point is within valid grid, do same for other similar places in rest of model
-         CGeom2DIPoint PtiTmp(PtiVUpCoastPartProfileCell[m].nGetX() + nXOffset, PtiVUpCoastPartProfileCell[m].nGetY() + nYOffset);
+         CGeom2DIPoint const PtiTmp(PtiVUpCoastPartProfileCell[m].nGetX() + nXOffset, PtiVUpCoastPartProfileCell[m].nGetY() + nYOffset);
          VPtiParProfile.push_back(PtiTmp);
       }
 
@@ -185,8 +186,8 @@ int CSimulation::nDoUnconsErosionOnPolygon(int const nCoast, CGeomCoastPolygon* 
       int nParProfLen;
       int nInlandOffset = -1;
 
-      double dParProfCoastElev = m_pRasterGrid->m_Cell[nCoastX][nCoastY].dGetSedimentTopElev();
-      double dParProfEndElev = m_pRasterGrid->m_Cell[nParProfEndX][nParProfEndY].dGetSedimentTopElev();
+      double const dParProfCoastElev = m_pRasterGrid->m_Cell[nCoastX][nCoastY].dGetSedimentTopElev();
+      double const dParProfEndElev = m_pRasterGrid->m_Cell[nParProfEndX][nParProfEndY].dGetSedimentTopElev();
 
       vector<double> VdParProfileDeanElev;
 
@@ -214,13 +215,13 @@ int CSimulation::nDoUnconsErosionOnPolygon(int const nCoast, CGeomCoastPolygon* 
             }
 
             // Extend the parallel profile by one cell in the coastward direction. First get the coords of the cell that is nInlandOffset cells seaward from the existing up-coast part-profile start point
-            CGeom2DIPoint PtiUpCoastTmp = * pUpCoastProfile->pPtiGetCellInProfile(nInlandOffset);
+            CGeom2DIPoint const PtiUpCoastTmp = * pUpCoastProfile->pPtiGetCellInProfile(nInlandOffset);
 
             // Then get the offset between this PtiUpCoastTmp cell and the existing up-coast part-profile start point, and use the reverse of this offset to get the coordinates of the cell that extends the existing up-coast part-profile landwards
-            int nXUpCoastStartOffset = PtiUpCoastTmp.nGetX() - nXUpCoastProfileExistingCoastPoint;
-            int nYUpCoastStartOffset = PtiUpCoastTmp.nGetY() - nYUpCoastProfileExistingCoastPoint;
-            int nXUpCoastThisStart = nCoastX - nXUpCoastStartOffset;
-            int nYUpCoastThisStart = nCoastY - nYUpCoastStartOffset;
+            int const nXUpCoastStartOffset = PtiUpCoastTmp.nGetX() - nXUpCoastProfileExistingCoastPoint;
+            int const nYUpCoastStartOffset = PtiUpCoastTmp.nGetY() - nYUpCoastProfileExistingCoastPoint;
+            int const nXUpCoastThisStart = nCoastX - nXUpCoastStartOffset;
+            int const nYUpCoastThisStart = nCoastY - nYUpCoastStartOffset;
 
             // Is the new landwards point within the raster grid?
             if (! bIsWithinValidGrid(nXUpCoastThisStart, nYUpCoastThisStart))
@@ -253,7 +254,7 @@ int CSimulation::nDoUnconsErosionOnPolygon(int const nCoast, CGeomCoastPolygon* 
                if ((VPtiParProfile.back().nGetX() != nXParNew) || (VPtiParProfile.back().nGetY() != nYParNew))
                {
                   // It isn't, so append it to the parallel profile
-                  CGeom2DIPoint PtiTmp(nXParNew, nYParNew);
+                  CGeom2DIPoint const PtiTmp(nXParNew, nYParNew);
                   VPtiParProfile.push_back(PtiTmp);
                }
             }
@@ -261,7 +262,7 @@ int CSimulation::nDoUnconsErosionOnPolygon(int const nCoast, CGeomCoastPolygon* 
             else
             {
                // No problem, so just append this to the parallel profile
-               CGeom2DIPoint PtiTmp(nXParNew, nYParNew);
+               CGeom2DIPoint const PtiTmp(nXParNew, nYParNew);
                VPtiParProfile.push_back(PtiTmp);
             }
          }
@@ -281,14 +282,14 @@ int CSimulation::nDoUnconsErosionOnPolygon(int const nCoast, CGeomCoastPolygon* 
          // LogStream << endl;
 
          // Get the distance between the start and end of the parallel profile, in external CRS units. Note that the parallel profile coordinates are in reverse sequence
-         CGeom2DPoint PtStart = PtGridCentroidToExt(&VPtiParProfile.back());
-         CGeom2DPoint PtEnd = PtGridCentroidToExt(&VPtiParProfile[0]);
+         CGeom2DPoint const PtStart = PtGridCentroidToExt(&VPtiParProfile.back());
+         CGeom2DPoint const PtEnd = PtGridCentroidToExt(&VPtiParProfile[0]);
 
          // Calculate the length of the parallel profile
          double dParProfileLen = dGetDistanceBetween(&PtStart, &PtEnd);
 
          // Calculate the elevation difference between the start and end of the parallel profile
-         double dElevDiff = dParProfCoastElev - dParProfEndElev;
+         double const dElevDiff = dParProfCoastElev - dParProfEndElev;
 
          if (bFPIsEqual(dElevDiff, 0.0, TOLERANCE))
          {
@@ -305,9 +306,9 @@ int CSimulation::nDoUnconsErosionOnPolygon(int const nCoast, CGeomCoastPolygon* 
             dParProfileLen = 1;
 
          // Solve for dA so that the existing elevations at the end of the parallel profile, and at the end of a Dean equilibrium profile on that part-normal, are the same
-         double dParProfA = dElevDiff / pow(dParProfileLen, DEAN_POWER);
+         double const dParProfA = dElevDiff / pow(dParProfileLen, DEAN_POWER);
          VdParProfileDeanElev.resize(nParProfLen, 0);
-         double dInc = dParProfileLen / (nParProfLen - 1);
+         double const dInc = dParProfileLen / (nParProfLen - 1);
 
          // For the parallel profile, calculate the Dean equilibrium profile of the unconsolidated sediment h(y) = A * y^(2/3) where h(y) is the distance below the highest point in the profile at a distance y from the landward start of the profile
          CalcDeanProfile(&VdParProfileDeanElev, dInc, dParProfCoastElev, dParProfA, false, 0, 0);
@@ -317,8 +318,8 @@ int CSimulation::nDoUnconsErosionOnPolygon(int const nCoast, CGeomCoastPolygon* 
 
          for (int m = 0; m < nParProfLen; m++)
          {
-            int nX = VPtiParProfile[nParProfLen - m - 1].nGetX();
-            int nY = VPtiParProfile[nParProfLen - m - 1].nGetY();
+            int const nX = VPtiParProfile[nParProfLen - m - 1].nGetX();
+            int const nY = VPtiParProfile[nParProfLen - m - 1].nGetY();
 
             // Safety check
             if (! bIsWithinValidGrid(nX, nY))
@@ -338,7 +339,7 @@ int CSimulation::nDoUnconsErosionOnPolygon(int const nCoast, CGeomCoastPolygon* 
          }
 
          // Get the total difference in elevation (present profile - Dean profile)
-         double dParProfTotDiff = dSubtractProfiles(&dVParProfileNow, &VdParProfileDeanElev, &bVProfileValid);
+         double const dParProfTotDiff = dSubtractProfiles(&dVParProfileNow, &VdParProfileDeanElev, &bVProfileValid);
 
          // // DEBUG CODE -----------------------------------------------------
          // LogStream << m_ulIter<< ": eroding polygon " << nPoly << " at coast point " << nCoastPoint << ", parallel profile with nInlandOffset = " << nInlandOffset << ", from [" << VPtiParProfile.back().nGetX() << "][" << VPtiParProfile.back().nGetY() << "] = {" << dGridCentroidXToExtCRSX(VPtiParProfile.back().nGetX()) << ", " <<  dGridCentroidYToExtCRSY(VPtiParProfile.back().nGetY()) << "} to [" << VPtiParProfile[0].nGetX() << "][" << VPtiParProfile[0].nGetY() << "] = {" << dGridCentroidXToExtCRSX(VPtiParProfile[0].nGetX()) << ", " <<  dGridCentroidYToExtCRSY(VPtiParProfile[0].nGetY()) << "}, nParProfLen = " << nParProfLen << " dParProfileLen = " << dParProfileLen << " dParProfCoastElev = " << dParProfCoastElev << " dParProfEndElev = " << dParProfEndElev << " dParProfA = " << dParProfA << endl;
@@ -439,7 +440,7 @@ int CSimulation::nDoUnconsErosionOnPolygon(int const nCoast, CGeomCoastPolygon* 
       }
 
       // This value of nInlandOffset gives us some (tho' maybe not enough) erosion. So do the erosion of this sediment size class, by working along the parallel profile from the landward end (which is inland from the existing coast, if nInlandOffset > 0). Note that dStillToErodeOnProfile and dStillToErodeOnPolygon are changed within nDoParallelProfileUnconsErosion()
-      int nRet = nDoParallelProfileUnconsErosion(pPolygon, nCoastPoint, nCoastX, nCoastY, nTexture, nInlandOffset, nParProfLen, &VPtiParProfile, &VdParProfileDeanElev, dStillToErodeOnProfile, dStillToErodeOnPolygon, dEroded);
+      int const nRet = nDoParallelProfileUnconsErosion(pPolygon, nCoastPoint, nCoastX, nCoastY, nTexture, nInlandOffset, nParProfLen, &VPtiParProfile, &VdParProfileDeanElev, dStillToErodeOnProfile, dStillToErodeOnPolygon, dEroded);
 
       if (nRet != RTN_OK)
          return nRet;
@@ -535,12 +536,12 @@ int CSimulation::nDoParallelProfileUnconsErosion(CGeomCoastPolygon* pPolygon, in
       if (! m_pRasterGrid->m_Cell[nX][nY].bBeachErosionOrDepositionThisIter())
       {
          // Get this cell's current elevation
-         double dThisElevNow = m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElev();
+         double const dThisElevNow = m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElev();
 
 // LogStream << "\tnPoly = " << nPoly << ", [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " <<  dGridCentroidYToExtCRSY(nY) << "}  nCoastPoint = " << nCoastPoint << " nDistSeawardFromNewCoast = " << nDistSeawardFromNewCoast << " dThisElevNow = " << dThisElevNow << " Dean Elev = " << VdParProfileDeanElev[nDistSeawardFromNewCoast] << endl;
 
          // Subtract the two elevations
-         double dElevDiff = dThisElevNow - pVdParProfileDeanElev->at(nDistSeawardFromNewCoast);
+         double const dElevDiff = dThisElevNow - pVdParProfileDeanElev->at(nDistSeawardFromNewCoast);
 
          if ((dElevDiff > 0) && (m_pRasterGrid->m_Cell[nX][nY].bIsInContiguousSea()))
          {
@@ -548,7 +549,7 @@ int CSimulation::nDoParallelProfileUnconsErosion(CGeomCoastPolygon* pPolygon, in
 // LogStream << "\tnPoly = " << nPoly << " doing DOWN-COAST, possible beach erosion = " << dElevDiff << " at [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " <<  dGridCentroidYToExtCRSY(nY) << "} nCoastPoint = " << nCoastPoint << " nDistSeawardFromNewCoast = " << nDistSeawardFromNewCoast << " dThisElevNow = " << dThisElevNow << " Dean Elev = " << pVdParProfileDeanElev->at(nDistSeawardFromNewCoast) << endl;
 
             // Now get the number of the highest layer with non-zero thickness
-            int nThisLayer = m_pRasterGrid->m_Cell[nX][nY].nGetTopNonZeroLayerAboveBasement();
+            int const nThisLayer = m_pRasterGrid->m_Cell[nX][nY].nGetTopNonZeroLayerAboveBasement();
 
             // Safety check
             if (nThisLayer == INT_NODATA)
@@ -557,7 +558,7 @@ int CSimulation::nDoParallelProfileUnconsErosion(CGeomCoastPolygon* pPolygon, in
             if (nThisLayer != NO_NONZERO_THICKNESS_LAYERS)
             {
                // We still have at least one layer left with non-zero thickness (i.e. we are not down to basement), and the cell's current elevation is higher than the Dean equilibrium profile elevation. So do some beach erosion
-               double dToErode = tMin(dElevDiff, dStillToErodeOnProfile, dStillToErodeOnPolygon);
+               double const dToErode = tMin(dElevDiff, dStillToErodeOnProfile, dStillToErodeOnPolygon);
                double dRemoved = 0;
 
 // assert(dToErode > 0);
@@ -608,7 +609,7 @@ int CSimulation::nDoParallelProfileUnconsErosion(CGeomCoastPolygon* pPolygon, in
                {
                   double dTotToDeposit = tMin(-dElevDiff, dTotEroded);
 
-                  int nTopLayer = m_pRasterGrid->m_Cell[nX][nY].nGetTopLayerAboveBasement();
+                  int const nTopLayer = m_pRasterGrid->m_Cell[nX][nY].nGetTopLayerAboveBasement();
 
                   // Safety check
                   if (nTopLayer == INT_NODATA)
@@ -620,7 +621,7 @@ int CSimulation::nDoParallelProfileUnconsErosion(CGeomCoastPolygon* pPolygon, in
 
                      if (nTexture == TEXTURE_SAND)
                      {
-                        double dSandNow = m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nTopLayer)->pGetUnconsolidatedSediment()->dGetSandDepth();
+                        double const dSandNow = m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nTopLayer)->pGetUnconsolidatedSediment()->dGetSandDepth();
                         m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nTopLayer)->pGetUnconsolidatedSediment()->SetSandDepth(dSandNow + dTotToDeposit);
 
                         // Set the changed-this-timestep switch
@@ -638,7 +639,7 @@ int CSimulation::nDoParallelProfileUnconsErosion(CGeomCoastPolygon* pPolygon, in
 
                      if (nTexture == TEXTURE_COARSE)
                      {
-                        double dCoarseNow = m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nTopLayer)->pGetUnconsolidatedSediment()->dGetCoarseDepth();
+                        double const dCoarseNow = m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nTopLayer)->pGetUnconsolidatedSediment()->dGetCoarseDepth();
                         m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nTopLayer)->pGetUnconsolidatedSediment()->SetCoarseDepth(dCoarseNow + dTotToDeposit);
 
                         // Set the changed-this-timestep switch
@@ -666,7 +667,7 @@ int CSimulation::nDoParallelProfileUnconsErosion(CGeomCoastPolygon* pPolygon, in
 
                   // And set the landform category
                   CRWCellLandform* pLandform = m_pRasterGrid->m_Cell[nX][nY].pGetLandform();
-                  int nCat = pLandform->nGetLFCategory();
+                  int const nCat = pLandform->nGetLFCategory();
 
                   if ((nCat != LF_CAT_SEDIMENT_INPUT) && (nCat != LF_CAT_SEDIMENT_INPUT_SUBMERGED) && (nCat != LF_CAT_SEDIMENT_INPUT_NOT_SUBMERGED))
                      pLandform->SetLFSubCategory(LF_SUBCAT_DRIFT_BEACH);
@@ -715,11 +716,11 @@ void CSimulation::ErodeCellBeachSedimentSupplyLimited(int const nX, int const nY
    }
 
    // Erode some unconsolidated sediment
-   double dLowering = dErodibility * dMaxToErode;
+   double const dLowering = dErodibility * dMaxToErode;
 
    // Make sure we don't get -ve amounts left on the cell
    dRemoved = tMin(dExistingAvailable, dLowering);
-   double dRemaining = dExistingAvailable - dRemoved;
+   double const dRemaining = dExistingAvailable - dRemoved;
 
    if (nTexture == TEXTURE_FINE)
    {
@@ -781,8 +782,8 @@ int CSimulation::nDoUnconsDepositionOnPolygon(int const nCoast, CGeomCoastPolygo
       return RTN_OK;
 
    // Get the grid cell coordinates of this polygon's up-coast and down-coast profiles
-   int nUpCoastProfile = pPolygon->nGetUpCoastProfile();
-   int nDownCoastProfile = pPolygon->nGetDownCoastProfile();
+   int const nUpCoastProfile = pPolygon->nGetUpCoastProfile();
+   int const nDownCoastProfile = pPolygon->nGetDownCoastProfile();
 
    CGeomProfile* pUpCoastProfile = m_VCoast[nCoast].pGetProfile(nUpCoastProfile);
    CGeomProfile* pDownCoastProfile = m_VCoast[nCoast].pGetProfile(nDownCoastProfile);
@@ -790,7 +791,7 @@ int CSimulation::nDoUnconsDepositionOnPolygon(int const nCoast, CGeomCoastPolygo
    // We are using only part of each profile, seaward as far as the depth of closure. First find the seaward end point of the up-coast part-profile
 // CGeom2DIPoint PtiUpCoastPartProfileSeawardEnd;
 // int nIndex =  pUpCoastProfile->nGetCellGivenDepth(m_pRasterGrid, m_dDepthOfClosure, &PtiUpCoastPartProfileSeawardEnd);
-   int nIndex = pUpCoastProfile->nGetCellGivenDepth(m_pRasterGrid, m_dDepthOfClosure);
+   int const nIndex = pUpCoastProfile->nGetCellGivenDepth(m_pRasterGrid, m_dDepthOfClosure);
 
    if (nIndex == INT_NODATA)
    {
@@ -800,7 +801,7 @@ int CSimulation::nDoUnconsDepositionOnPolygon(int const nCoast, CGeomCoastPolygo
    }
 
    // The part-profile length is one greater than nIndex, since pPtiGetCellGivenDepth() returns the index of the cell at depth of closure. This will be the number of cells in the Dean profile portion of every parallel profile
-   int nUpCoastDeanLen = nIndex + 1;
+   int const nUpCoastDeanLen = nIndex + 1;
 
 // assert(bIsWithinValidGrid(&PtiUpCoastPartProfileSeawardEnd));
 
@@ -811,10 +812,10 @@ int CSimulation::nDoUnconsDepositionOnPolygon(int const nCoast, CGeomCoastPolygo
 
 // double dUpCoastDeanLen = dGetDistanceBetween(&PtUpCoastProfileStart, &PtUpCoastProfileEnd);
 
-   int nUpCoastProfileCoastPoint = pUpCoastProfile->nGetCoastPoint();
-   int nDownCoastProfileCoastPoint = pDownCoastProfile->nGetCoastPoint();
-   int nXUpCoastProfileExistingCoastPoint = m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(nUpCoastProfileCoastPoint)->nGetX();
-   int nYUpCoastProfileExistingCoastPoint = m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(nUpCoastProfileCoastPoint)->nGetY();
+   int const nUpCoastProfileCoastPoint = pUpCoastProfile->nGetCoastPoint();
+   int const nDownCoastProfileCoastPoint = pDownCoastProfile->nGetCoastPoint();
+   int const nXUpCoastProfileExistingCoastPoint = m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(nUpCoastProfileCoastPoint)->nGetX();
+   int const nYUpCoastProfileExistingCoastPoint = m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(nUpCoastProfileCoastPoint)->nGetY();
    int nCoastSegLen;
 
    // Store the coast point numbers for this polygon so that we can shuffle them
@@ -887,14 +888,14 @@ int CSimulation::nDoUnconsDepositionOnPolygon(int const nCoast, CGeomCoastPolygo
    for (int n = 0; n < nCoastSegLen; n++)
    {
       // Pick a random coast point
-      int nCoastPoint = nVCoastPoint[n];
-      CGeom2DIPoint PtiCoastPoint = * m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(nCoastPoint);
-      int nCoastX = PtiCoastPoint.nGetX();
-      int nCoastY = PtiCoastPoint.nGetY();
+      int const nCoastPoint = nVCoastPoint[n];
+      CGeom2DIPoint const PtiCoastPoint = * m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(nCoastPoint);
+      int const nCoastX = PtiCoastPoint.nGetX();
+      int const nCoastY = PtiCoastPoint.nGetY();
 
       // Calculate the x-y offset between this coast point, and the coast point of the up-coast normal
-      int nXOffset = nCoastX - nXUpCoastProfileExistingCoastPoint;
-      int nYOffset = nCoastY - nYUpCoastProfileExistingCoastPoint;
+      int const nXOffset = nCoastX - nXUpCoastProfileExistingCoastPoint;
+      int const nYOffset = nCoastY - nYUpCoastProfileExistingCoastPoint;
       int nSeawardOffset = -1;
       // nParProfLen;
       vector<CGeom2DIPoint> PtiVParProfile;
@@ -923,8 +924,8 @@ int CSimulation::nDoUnconsDepositionOnPolygon(int const nCoast, CGeomCoastPolygo
 
          for (int m = 0; m < nParProfLen; m++)
          {
-            CGeom2DIPoint PtiProf = * pUpCoastProfile->pPtiGetCellInProfile(m);
-            CGeom2DIPoint PtiTmp(PtiProf.nGetX() + nXOffset, PtiProf.nGetY() + nYOffset);
+            CGeom2DIPoint const PtiProf = * pUpCoastProfile->pPtiGetCellInProfile(m);
+            CGeom2DIPoint const PtiTmp(PtiProf.nGetX() + nXOffset, PtiProf.nGetY() + nYOffset);
             PtiVParProfile.push_back(PtiTmp);
          }
 
@@ -943,13 +944,13 @@ int CSimulation::nDoUnconsDepositionOnPolygon(int const nCoast, CGeomCoastPolygo
             PtiVParProfile.back().SetY(nSeaEndY);
          }
 
-         double dParProfEndElev = m_pRasterGrid->m_Cell[nSeaEndX][nSeaEndY].dGetSedimentTopElev();
+         double const dParProfEndElev = m_pRasterGrid->m_Cell[nSeaEndX][nSeaEndY].dGetSedimentTopElev();
 
          // Set the start elevation for the Dean profile just a bit above mean SWL for this timestep (i.e. so that it is a Bruun profile)
-         double dParProfStartElev = m_dThisIterMeanSWL + m_dDeanProfileStartAboveSWL;
+         double const dParProfStartElev = m_dThisIterMeanSWL + m_dDeanProfileStartAboveSWL;
 
          // Calculate the total length of the parallel profile, including any seaward offset
-         double dParProfLen = dGetDistanceBetween(&PtiVParProfile.front(), &PtiVParProfile.back());
+         double const dParProfLen = dGetDistanceBetween(&PtiVParProfile.front(), &PtiVParProfile.back());
 
          // Now calculate the length of the Dean profile-only part i.e. without any seaward offset. The approach used here is approximate but probably OK
          double dParProfDeanLen = dParProfLen - (nSeawardOffset * m_dCellSide);
@@ -959,7 +960,7 @@ int CSimulation::nDoUnconsDepositionOnPolygon(int const nCoast, CGeomCoastPolygo
             dParProfDeanLen = 1;
 
          // Solve for dA so that the existing elevations at the end of the parallel profile, and at the end of a Dean equilibrium profile on that part-normal, are the same
-         double dParProfA = (dParProfStartElev - dParProfEndElev) / pow(dParProfDeanLen, DEAN_POWER);
+         double const dParProfA = (dParProfStartElev - dParProfEndElev) / pow(dParProfDeanLen, DEAN_POWER);
 
          nParProfLen = static_cast<int>(PtiVParProfile.size());
          VdParProfileDeanElev.resize(nParProfLen, 0);
@@ -968,10 +969,10 @@ int CSimulation::nDoUnconsDepositionOnPolygon(int const nCoast, CGeomCoastPolygo
 // LogStream << "[" << PtiVParProfile[m].nGetX() << "][" << PtiVParProfile[m].nGetY() << "] ";
 // LogStream << endl;
 
-         double dInc = dParProfDeanLen / (nParProfLen - nSeawardOffset - 2);
+         double const dInc = dParProfDeanLen / (nParProfLen - nSeawardOffset - 2);
 
          // The elevation of the coast point in the Dean profile is the same as the elevation of the current coast point TODO 020 Is this correct? Should it be dParProfStartElev?
-         double dCoastElev = m_pRasterGrid->m_Cell[nCoastX][nCoastY].dGetSedimentTopElev();
+         double const dCoastElev = m_pRasterGrid->m_Cell[nCoastX][nCoastY].dGetSedimentTopElev();
 
          // For this depositing parallel profile, calculate the Dean equilibrium profile of the unconsolidated sediment h(y) = A * y^(2/3) where h(y) is the distance below the highest point in the profile at a distance y from the landward start of the profile
          CalcDeanProfile(&VdParProfileDeanElev, dInc, dParProfStartElev, dParProfA, true, nSeawardOffset, dCoastElev);
@@ -1001,8 +1002,8 @@ int CSimulation::nDoUnconsDepositionOnPolygon(int const nCoast, CGeomCoastPolygo
             // Don't do cells twice
             if (! m_pRasterGrid->m_Cell[nX][nY].bBeachErosionOrDepositionThisIter())
             {
-               double dTmpElev = m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElev();
-               double dDiff = VdParProfileDeanElev[m] - dTmpElev;
+               double const dTmpElev = m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElev();
+               double const dDiff = VdParProfileDeanElev[m] - dTmpElev;
 
                dParProfTotDiff += dDiff;
             }
@@ -1113,12 +1114,12 @@ int CSimulation::nDoUnconsDepositionOnPolygon(int const nCoast, CGeomCoastPolygo
          if (! m_pRasterGrid->m_Cell[nX][nY].bBeachErosionOrDepositionThisIter())
          {
             // Get this cell's current elevation
-            double dThisElevNow = m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElev();
+            double const dThisElevNow = m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElev();
 
 // LogStream << "\tnPoly = " << nPoly << ", [" << nX << "][" << nY << "] nCoastPoint = " << nCoastPoint << " nSeawardFromCoast = " << nSeawardFromCoast << " dThisElevNow = " << dThisElevNow << " Dean Elev = " << VdParProfileDeanElev[nSeawardFromCoast] << endl;
 
             // Subtract the two elevations
-            double dElevDiff = VdParProfileDeanElev[nSeawardFromCoast] - dThisElevNow;
+            double const dElevDiff = VdParProfileDeanElev[nSeawardFromCoast] - dThisElevNow;
             CRWCellLandform* pLandform = m_pRasterGrid->m_Cell[nX][nY].pGetLandform();
 
             if (dElevDiff > SEDIMENT_ELEV_TOLERANCE)
@@ -1133,7 +1134,7 @@ int CSimulation::nDoUnconsDepositionOnPolygon(int const nCoast, CGeomCoastPolygo
 
                   // LogStream << "        DOWN-COAST nPoly = " << nPoly << " nCoastPoint = " << nCoastPoint << " texture = " << strTexture << " dToDepositHere = " << dToDepositHere << endl;
 
-                  int nTopLayer = m_pRasterGrid->m_Cell[nX][nY].nGetTopLayerAboveBasement();
+                  int const nTopLayer = m_pRasterGrid->m_Cell[nX][nY].nGetTopLayerAboveBasement();
 
                   // Safety check
                   if (nTopLayer == INT_NODATA)
@@ -1145,7 +1146,7 @@ int CSimulation::nDoUnconsDepositionOnPolygon(int const nCoast, CGeomCoastPolygo
 
                      if (nTexture == TEXTURE_SAND)
                      {
-                        double dSandNow = m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nTopLayer)->pGetUnconsolidatedSediment()->dGetSandDepth();
+                        double const dSandNow = m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nTopLayer)->pGetUnconsolidatedSediment()->dGetSandDepth();
 
                         m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nTopLayer)->pGetUnconsolidatedSediment()->SetSandDepth(dSandNow + dToDepositHere);
 
@@ -1173,7 +1174,7 @@ int CSimulation::nDoUnconsDepositionOnPolygon(int const nCoast, CGeomCoastPolygo
 
                      else if (nTexture == TEXTURE_COARSE)
                      {
-                        double dCoarseNow = m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nTopLayer)->pGetUnconsolidatedSediment()->dGetCoarseDepth();
+                        double const dCoarseNow = m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nTopLayer)->pGetUnconsolidatedSediment()->dGetCoarseDepth();
 
                         m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nTopLayer)->pGetUnconsolidatedSediment()->SetCoarseDepth(dCoarseNow + dToDepositHere);
 
@@ -1215,7 +1216,7 @@ int CSimulation::nDoUnconsDepositionOnPolygon(int const nCoast, CGeomCoastPolygo
                   m_pRasterGrid->m_Cell[nX][nY].SetSeaDepth();
 
                   // And set the landform category
-                  int nCat = pLandform->nGetLFCategory();
+                  int const nCat = pLandform->nGetLFCategory();
 
                   if ((nCat != LF_CAT_SEDIMENT_INPUT) && (nCat != LF_CAT_SEDIMENT_INPUT_SUBMERGED) && (nCat != LF_CAT_SEDIMENT_INPUT_NOT_SUBMERGED))
                      pLandform->SetLFSubCategory(LF_SUBCAT_DRIFT_BEACH);
@@ -1241,7 +1242,7 @@ int CSimulation::nDoUnconsDepositionOnPolygon(int const nCoast, CGeomCoastPolygo
                // LogStream << m_ulIter << ": nPoly = " << nPoly << " texture = " << strTexture << " going DOWN-COAST, potential beach erosion = " << -dElevDiff << " at [" << nX << "][" << nY << "] nCoastPoint = " << nCoastPoint << " nSeawardFromCoast = " << nSeawardFromCoast << " dThisElevNow = " << dThisElevNow << " Dean Elev = " << VdParProfileDeanElev[nSeawardFromCoast] << endl;
 
                // Now get the number of the highest layer with non-zero thickness
-               int nThisLayer = m_pRasterGrid->m_Cell[nX][nY].nGetTopNonZeroLayerAboveBasement();
+               int const nThisLayer = m_pRasterGrid->m_Cell[nX][nY].nGetTopNonZeroLayerAboveBasement();
 
                // Safety check
                if (nThisLayer == INT_NODATA)
@@ -1325,7 +1326,7 @@ int CSimulation::nDoUnconsDepositionOnPolygon(int const nCoast, CGeomCoastPolygo
       // Start by finding the seaward end point of the down-coast part-profile, as before we are using only part of each profile, seaward as far as the depth of closure
 // CGeom2DIPoint PtiDownCoastPartProfileSeawardEnd;
 // int nIndex1 = pDownCoastProfile->nGetCellGivenDepth(m_pRasterGrid, m_dDepthOfClosure, &PtiDownCoastPartProfileSeawardEnd);
-      int nIndex1 = pDownCoastProfile->nGetCellGivenDepth(m_pRasterGrid, m_dDepthOfClosure);
+      int const nIndex1 = pDownCoastProfile->nGetCellGivenDepth(m_pRasterGrid, m_dDepthOfClosure);
 
       if (nIndex1 == INT_NODATA)
       {
@@ -1335,7 +1336,7 @@ int CSimulation::nDoUnconsDepositionOnPolygon(int const nCoast, CGeomCoastPolygo
       }
 
       // The part-profile length is one greater than nIndex1, since pPtiGetCellGivenDepth() returns the index of the cell at depth of closure. This will be the number of cells in the Dean profile portion of every parallel profile
-      int nDownCoastDeanLen = nIndex1 + 1;
+      int const nDownCoastDeanLen = nIndex1 + 1;
 
 // assert(bIsWithinValidGrid(&PtiDownCoastPartProfileSeawardEnd));
 
@@ -1346,8 +1347,8 @@ int CSimulation::nDoUnconsDepositionOnPolygon(int const nCoast, CGeomCoastPolygo
 
 // double dDownCoastDeanLen = dGetDistanceBetween(&PtDownCoastProfileStart, &PtDownCoastProfileEnd);
 
-      int nXDownCoastProfileExistingCoastPoint = m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(nDownCoastProfileCoastPoint)->nGetX();
-      int nYDownCoastProfileExistingCoastPoint = m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(nDownCoastProfileCoastPoint)->nGetY();
+      int const nXDownCoastProfileExistingCoastPoint = m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(nDownCoastProfileCoastPoint)->nGetX();
+      int const nYDownCoastProfileExistingCoastPoint = m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(nDownCoastProfileCoastPoint)->nGetY();
 
       // int nCoastSegLen;
 
@@ -1389,14 +1390,14 @@ int CSimulation::nDoUnconsDepositionOnPolygon(int const nCoast, CGeomCoastPolygo
             break;
 
          // Pick a random coast point
-         int nCoastPoint = nVCoastPoint[n];
-         CGeom2DIPoint PtiCoastPoint = * m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(nCoastPoint);
-         int nCoastX = PtiCoastPoint.nGetX();
-         int nCoastY = PtiCoastPoint.nGetY();
+         int const nCoastPoint = nVCoastPoint[n];
+         CGeom2DIPoint const PtiCoastPoint = * m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(nCoastPoint);
+         int const nCoastX = PtiCoastPoint.nGetX();
+         int const nCoastY = PtiCoastPoint.nGetY();
 
          // Calculate the x-y offset between this coast point, and the coast point of the down-coast normal
-         int nXOffset = nCoastX - nXDownCoastProfileExistingCoastPoint;
-         int nYOffset = nCoastY - nYDownCoastProfileExistingCoastPoint;
+         int const nXOffset = nCoastX - nXDownCoastProfileExistingCoastPoint;
+         int const nYOffset = nCoastY - nYDownCoastProfileExistingCoastPoint;
          int nSeawardOffset = -1;
          // nParProfLen;
          vector<CGeom2DIPoint> PtiVParProfile;
@@ -1425,8 +1426,8 @@ int CSimulation::nDoUnconsDepositionOnPolygon(int const nCoast, CGeomCoastPolygo
 
             for (int m = 0; m < nParProfLen; m++)
             {
-               CGeom2DIPoint PtiProf = * pDownCoastProfile->pPtiGetCellInProfile(m);
-               CGeom2DIPoint PtiTmp(PtiProf.nGetX() + nXOffset, PtiProf.nGetY() + nYOffset);
+               CGeom2DIPoint const PtiProf = * pDownCoastProfile->pPtiGetCellInProfile(m);
+               CGeom2DIPoint const PtiTmp(PtiProf.nGetX() + nXOffset, PtiProf.nGetY() + nYOffset);
                PtiVParProfile.push_back(PtiTmp);
             }
 
@@ -1444,13 +1445,13 @@ int CSimulation::nDoUnconsDepositionOnPolygon(int const nCoast, CGeomCoastPolygo
                PtiVParProfile.back().SetY(nSeaEndY);
             }
 
-            double dParProfEndElev = m_pRasterGrid->m_Cell[nSeaEndX][nSeaEndY].dGetSedimentTopElev();
+            double const dParProfEndElev = m_pRasterGrid->m_Cell[nSeaEndX][nSeaEndY].dGetSedimentTopElev();
 
             // Set the start elevation for the Dean profile just a bit above mean SWL for this timestep (i.e. so that it is a Bruun profile)
-            double dParProfStartElev = m_dThisIterMeanSWL + m_dDeanProfileStartAboveSWL;
+            double const dParProfStartElev = m_dThisIterMeanSWL + m_dDeanProfileStartAboveSWL;
 
             // Calculate the total length of the parallel profile, including any seaward offset
-            double dParProfLen = dGetDistanceBetween(&PtiVParProfile.front(), &PtiVParProfile.back());
+            double const dParProfLen = dGetDistanceBetween(&PtiVParProfile.front(), &PtiVParProfile.back());
 
             // Now calculate the length of the Dean profile-only part i.e. without any seaward offset. The approach used here is approximate but probably OK
             double dParProfDeanLen = dParProfLen - (nSeawardOffset * m_dCellSide);
@@ -1460,15 +1461,15 @@ int CSimulation::nDoUnconsDepositionOnPolygon(int const nCoast, CGeomCoastPolygo
                dParProfDeanLen = 1;
 
             // Solve for dA so that the existing elevations at the end of the parallel profile, and at the end of a Dean equilibrium profile on that part-normal, are the same
-            double dParProfA = (dParProfStartElev - dParProfEndElev) / pow(dParProfDeanLen, DEAN_POWER);
+            double const dParProfA = (dParProfStartElev - dParProfEndElev) / pow(dParProfDeanLen, DEAN_POWER);
 
             nParProfLen = static_cast<int>(PtiVParProfile.size());
             VdParProfileDeanElev.resize(nParProfLen, 0);
 
-            double dInc = dParProfDeanLen / (nParProfLen - nSeawardOffset - 2);
+            double const dInc = dParProfDeanLen / (nParProfLen - nSeawardOffset - 2);
 
             // The elevation of the coast point in the Dean profile is the same as the elevation of the current coast point TODO 020 Is this correct? Should it be dParProfStartElev?
-            double dCoastElev = m_pRasterGrid->m_Cell[nCoastX][nCoastY].dGetSedimentTopElev();
+            double const dCoastElev = m_pRasterGrid->m_Cell[nCoastX][nCoastY].dGetSedimentTopElev();
 
             // For this depositing parallel profile, calculate the Dean equilibrium profile of the unconsolidated sediment h(y) = A * y^(2/3) where h(y) is the distance below the highest point in the profile at a distance y from the landward start of the profile
             CalcDeanProfile(&VdParProfileDeanElev, dInc, dParProfStartElev, dParProfA, true, nSeawardOffset, dCoastElev);
@@ -1498,8 +1499,8 @@ int CSimulation::nDoUnconsDepositionOnPolygon(int const nCoast, CGeomCoastPolygo
                // Don't do cells twice
                if (! m_pRasterGrid->m_Cell[nX][nY].bBeachErosionOrDepositionThisIter())
                {
-                  double dTmpElev = m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElev();
-                  double dDiff = VdParProfileDeanElev[m] - dTmpElev;
+                  double const dTmpElev = m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElev();
+                  double const dDiff = VdParProfileDeanElev[m] - dTmpElev;
 
                   dParProfTotDiff += dDiff;
                }
@@ -1610,12 +1611,12 @@ int CSimulation::nDoUnconsDepositionOnPolygon(int const nCoast, CGeomCoastPolygo
             if (! m_pRasterGrid->m_Cell[nX][nY].bBeachErosionOrDepositionThisIter())
             {
                // Get this cell's current elevation
-               double dThisElevNow = m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElev();
+               double const dThisElevNow = m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElev();
 
 // LogStream << "\tnPoly = " << nPoly << " going UP-COAST, [" << nX << "][" << nY << "] nCoastPoint = " << nCoastPoint << " nSeawardFromCoast = " << nSeawardFromCoast << " dThisElevNow = " << dThisElevNow << " Dean Elev = " << VdParProfileDeanElev[nSeawardFromCoast] << endl;
 
                // Subtract the two elevations
-               double dElevDiff = VdParProfileDeanElev[nSeawardFromCoast] - dThisElevNow;
+               double const dElevDiff = VdParProfileDeanElev[nSeawardFromCoast] - dThisElevNow;
                CRWCellLandform* pLandform = m_pRasterGrid->m_Cell[nX][nY].pGetLandform();
 
                if (dElevDiff > SEDIMENT_ELEV_TOLERANCE)
@@ -1630,7 +1631,7 @@ int CSimulation::nDoUnconsDepositionOnPolygon(int const nCoast, CGeomCoastPolygo
 
                      // LogStream << "          UP-COAST nPoly = " << nPoly << " nCoastPoint = " << nCoastPoint << " texture = " << strTexture << " dToDepositHere = " << dToDepositHere << endl;
 
-                     int nTopLayer = m_pRasterGrid->m_Cell[nX][nY].nGetTopLayerAboveBasement();
+                     int const nTopLayer = m_pRasterGrid->m_Cell[nX][nY].nGetTopLayerAboveBasement();
 
                      // Safety check
                      if (nTopLayer == INT_NODATA)
@@ -1642,7 +1643,7 @@ int CSimulation::nDoUnconsDepositionOnPolygon(int const nCoast, CGeomCoastPolygo
 
                         if (nTexture == TEXTURE_SAND)
                         {
-                           double dSandNow = m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nTopLayer)->pGetUnconsolidatedSediment()->dGetSandDepth();
+                           double const dSandNow = m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nTopLayer)->pGetUnconsolidatedSediment()->dGetSandDepth();
 
                            m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nTopLayer)->pGetUnconsolidatedSediment()->SetSandDepth(dSandNow + dToDepositHere);
 
@@ -1670,7 +1671,7 @@ int CSimulation::nDoUnconsDepositionOnPolygon(int const nCoast, CGeomCoastPolygo
 
                         else if (nTexture == TEXTURE_COARSE)
                         {
-                           double dCoarseNow = m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nTopLayer)->pGetUnconsolidatedSediment()->dGetCoarseDepth();
+                           double const dCoarseNow = m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nTopLayer)->pGetUnconsolidatedSediment()->dGetCoarseDepth();
 
                            m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nTopLayer)->pGetUnconsolidatedSediment()->SetCoarseDepth(dCoarseNow + dToDepositHere);
 
@@ -1706,7 +1707,7 @@ int CSimulation::nDoUnconsDepositionOnPolygon(int const nCoast, CGeomCoastPolygo
                      // Update the cell's sea depth
                      m_pRasterGrid->m_Cell[nX][nY].SetSeaDepth();
 
-                     int nCat = pLandform->nGetLFCategory();
+                     int const nCat = pLandform->nGetLFCategory();
 
                      if ((nCat != LF_CAT_SEDIMENT_INPUT) && (nCat != LF_CAT_SEDIMENT_INPUT_SUBMERGED) && (nCat != LF_CAT_SEDIMENT_INPUT_NOT_SUBMERGED))
                         pLandform->SetLFSubCategory(LF_SUBCAT_DRIFT_BEACH);
@@ -1732,7 +1733,7 @@ int CSimulation::nDoUnconsDepositionOnPolygon(int const nCoast, CGeomCoastPolygo
                   // LogStream << m_ulIter << ": nPoly = " << nPoly << " texture = " << strTexture << " going UP-COAST, potential beach erosion = " << -dElevDiff << " at [" << nX << "][" << nY << "] nCoastPoint = " << nCoastPoint << " nSeawardFromCoast = " << nSeawardFromCoast << " dThisElevNow = " << dThisElevNow << " Dean Elev = " << VdParProfileDeanElev[nSeawardFromCoast] << endl;
 
                   // Now get the number of the highest layer with non-zero thickness
-                  int nThisLayer = m_pRasterGrid->m_Cell[nX][nY].nGetTopNonZeroLayerAboveBasement();
+                  int const nThisLayer = m_pRasterGrid->m_Cell[nX][nY].nGetTopNonZeroLayerAboveBasement();
 
                   // Safety check
                   if (nThisLayer == INT_NODATA)
@@ -1864,7 +1865,7 @@ bool CSimulation::bElevAboveDeanElev(int const nX, int const nY, double const dE
       if (m_pRasterGrid->m_Cell[nX][nY].bIsInContiguousSea())
          return true;
 
-      int nCat = pLandform->nGetLFCategory();
+      int const nCat = pLandform->nGetLFCategory();
 
       if (nCat == LF_CAT_DRIFT)
          return true;

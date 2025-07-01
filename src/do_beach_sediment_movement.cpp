@@ -28,11 +28,11 @@
 #include <cfloat>
 
 #include <iostream>
-using std::cout;
+// using std::cout;
 using std::endl;
 
-#include <string>
-using std::to_string;
+// #include <string>
+// using std::to_string;
 
 #include <algorithm>
 using std::stable_sort;
@@ -41,192 +41,195 @@ using std::stable_sort;
 #include "simulation.h"
 #include "coast.h"
 
-//===============================================================================================================================
-//! Function used to sort polygons before doing the polygon-to-polygon source-target pattern. For both LHS and RHS arguments, the first element is the polygon global ID, the second element is the polygn coast ID, the third element is the down- or up-coast direction, and fourth and subsequent elements are adjacent polygon coast IDs in that direction. If the first argument is to be ordered before the second (i.e. the original sequence is to be retained), return true. If the second argument must be ordered before the first (i.e. the arguments must be swapped), return false
-//===============================================================================================================================
-bool bPolygonAndAdjCompare(const vector<int> &nVLeft, const vector<int> &nVRight)
+namespace
 {
-   // Each row (vector) of this vector-of-vectors is:
-   // 0: This-polygon global ID (not used)
-   // 1: This-polygon coast ID (in down-coast seq when sorted)
-   // 2: This-polygon down-coast (true) or up-coast (false) sediment movement
-   // 3 and subsequent: if sediment movement is down-coast, coast IDs of down-coast adjacent polygons; if sediment movement is up-coast, coast IDs of up-coast adjacent polygons
-
-   bool bDownCoastLeft = nVLeft[2];
-   bool bDownCoastRight = nVRight[2];
-
-   if (bDownCoastLeft)
+   //===============================================================================================================================
+   //! Function used to sort polygons before doing the polygon-to-polygon source-target pattern. For both LHS and RHS arguments, the first element is the polygon global ID, the second element is the polygn coast ID, the third element is the down- or up-coast direction, and fourth and subsequent elements are adjacent polygon coast IDs in that direction. If the first argument is to be ordered before the second (i.e. the original sequence is to be retained), return true. If the second argument must be ordered before the first (i.e. the arguments must be swapped), return false
+   //===============================================================================================================================
+   bool bPolygonAndAdjCompare(const vector<int> &nVLeft, const vector<int> &nVRight)
    {
-      // LHS polygon is down-coast. First, deal with polygon 0
-      if (nVLeft[1] == 0)
-         // Do not swap LHS and RHS polygons
-         return true;
+      // Each row (vector) of this vector-of-vectors is:
+      // 0: This-polygon global ID (not used)
+      // 1: This-polygon coast ID (in down-coast seq when sorted)
+      // 2: This-polygon down-coast (true) or up-coast (false) sediment movement
+      // 3 and subsequent: if sediment movement is down-coast, coast IDs of down-coast adjacent polygons; if sediment movement is up-coast, coast IDs of up-coast adjacent polygons
 
-      if (nVRight[1] == 0)
-         // Swap LHS and RHS polygons
-         return false;
+      bool const bDownCoastLeft = nVLeft[2];
+      bool const bDownCoastRight = nVRight[2];
 
-      if ((nVLeft.size() >= 4) && (nVRight.size() >= 4))
+      if (bDownCoastLeft)
       {
-         // Search the adjacent polygons of the LHS argument, is there an "off edge" amongst them?
-         bool bLHSOffEdge = false;
+         // LHS polygon is down-coast. First, deal with polygon 0
+         if (nVLeft[1] == 0)
+            // Do not swap LHS and RHS polygons
+            return true;
 
-         for (unsigned int n = 3; n < nVLeft.size(); n++)
-         {
-            if (nVLeft[n] == INT_NODATA)
-            {
-               bLHSOffEdge = true;
-               break;
-            }
-         }
-
-         if (bLHSOffEdge)
-            // Yes, there is an "off edge" among the adjacent polygons of the LHS polygon: so swap LHS and RHS polygons
+         if (nVRight[1] == 0)
+            // Swap LHS and RHS polygons
             return false;
 
-         // Search the adjacent polygons of the RHS argument, is there an "off edge" amongst them?
-         bool bRHSOffEdge = false;
-
-         for (unsigned int n = 3; n < nVRight.size(); n++)
+         if ((nVLeft.size() >= 4) && (nVRight.size() >= 4))
          {
-            if (nVRight[n] == INT_NODATA)
+            // Search the adjacent polygons of the LHS argument, is there an "off edge" amongst them?
+            bool bLHSOffEdge = false;
+
+            for (unsigned int n = 3; n < nVLeft.size(); n++)
             {
-               bRHSOffEdge = true;
-               break;
+               if (nVLeft[n] == INT_NODATA)
+               {
+                  bLHSOffEdge = true;
+                  break;
+               }
             }
+
+            if (bLHSOffEdge)
+               // Yes, there is an "off edge" among the adjacent polygons of the LHS polygon: so swap LHS and RHS polygons
+               return false;
+
+            // Search the adjacent polygons of the RHS argument, is there an "off edge" amongst them?
+            bool bRHSOffEdge = false;
+
+            for (unsigned int n = 3; n < nVRight.size(); n++)
+            {
+               if (nVRight[n] == INT_NODATA)
+               {
+                  bRHSOffEdge = true;
+                  break;
+               }
+            }
+
+            if (bRHSOffEdge)
+               // Yes, there is an "off edge" among the adjacent polygons of the LHS polygon: do not swap LHS and RHS polygons
+               return true;
+
+            // Do we have a local change of sediment direction?
+            if (! bDownCoastRight)
+               // Yes, there is a change of sediment direction between this and the adjacent polygon. Keep the existing sequence
+               return true;
+
+            // Now sort out polygon-to-polygon dependencies. We need to put 'target' polygons after 'source' polygons, so that the source is processed before the target. So is the RHS polygon among the adjacent polygons of the LHS polygon?
+            bool bLeftFound = false;
+
+            for (unsigned int n = 3; n < nVLeft.size(); n++)
+            {
+               if (nVLeft[n] == nVRight[1])
+                  bLeftFound = true;
+            }
+
+            if (bLeftFound)
+               // Yes, the RHS polygon is among the adjacent polygons of the LHS polygon, so uncons sediment movement is from the LHS polygon to the RHS polygon, and so down-coast (i.e. along the coast in the direction of increasing coastline point numbers). Keep the existing sequence
+               return true;
+
+            // Is the LHS polygon among the adjacent polygons of the RHS polygon?
+            bool bRightFound = false;
+
+            for (unsigned int n = 3; n < nVRight.size(); n++)
+            {
+               if (nVRight[n] == nVLeft[1])
+                  bRightFound = true;
+            }
+
+            if (bRightFound)
+               // Yes, the LHS polygon is among the adjacent polygons of the RHS polygon, so uncons sediment movement is from the RHS polygon to the LHS polygon, and so up-coast (i.e. along the coast in the direction of decreasing coastline point numbers). Swap them
+               return false;
          }
 
-         if (bRHSOffEdge)
-            // Yes, there is an "off edge" among the adjacent polygons of the LHS polygon: do not swap LHS and RHS polygons
+         // Neither polygon has an "off edge", and each polygon does not have the other polygon's coast ID amongst its list of adjacent polygons. So just put the polygon in increasing own-coast sequence
+         if (nVLeft[1] < nVRight[1])
             return true;
 
-         // Do we have a local change of sediment direction?
-         if (! bDownCoastRight)
-            // Yes, there is a change of sediment direction between this and the adjacent polygon. Keep the existing sequence
-            return true;
-
-         // Now sort out polygon-to-polygon dependencies. We need to put 'target' polygons after 'source' polygons, so that the source is processed before the target. So is the RHS polygon among the adjacent polygons of the LHS polygon?
-         bool bLeftFound = false;
-
-         for (unsigned int n = 3; n < nVLeft.size(); n++)
-         {
-            if (nVLeft[n] == nVRight[1])
-               bLeftFound = true;
-         }
-
-         if (bLeftFound)
-            // Yes, the RHS polygon is among the adjacent polygons of the LHS polygon, so uncons sediment movement is from the LHS polygon to the RHS polygon, and so down-coast (i.e. along the coast in the direction of increasing coastline point numbers). Keep the existing sequence
-            return true;
-
-         // Is the LHS polygon among the adjacent polygons of the RHS polygon?
-         bool bRightFound = false;
-
-         for (unsigned int n = 3; n < nVRight.size(); n++)
-         {
-            if (nVRight[n] == nVLeft[1])
-               bRightFound = true;
-         }
-
-         if (bRightFound)
-            // Yes, the LHS polygon is among the adjacent polygons of the RHS polygon, so uncons sediment movement is from the RHS polygon to the LHS polygon, and so up-coast (i.e. along the coast in the direction of decreasing coastline point numbers). Swap them
+         else
             return false;
       }
 
-      // Neither polygon has an "off edge", and each polygon does not have the other polygon's coast ID amongst its list of adjacent polygons. So just put the polygon in increasing own-coast sequence
-      if (nVLeft[1] < nVRight[1])
-         return true;
-
       else
-         return false;
-   }
-
-   else
-   {
-      // LHS polygon is up-coast. First, deal with polygon 0
-      if (nVLeft[1] == 0)
-         // Swap LHS and RHS polygons
-         return false;
-
-      if (nVRight[1] == 0)
-         // Do not swap LHS and RHS polygons
-         return true;
-
-      if ((nVLeft.size() >= 4) && (nVRight.size() >= 4))
       {
-         // Next, search the adjacent polygons of the LHS argument, is there an "off edge" amongst them?
-         bool bLHSOffEdge = false;
-
-         for (unsigned int n = 3; n < nVLeft.size(); n++)
-         {
-            if (nVLeft[n] == INT_NODATA)
-            {
-               bLHSOffEdge = true;
-               break;
-            }
-         }
-
-         if (bLHSOffEdge)
-            // Yes, there is an "off edge" among the adjacent polygons of the LHS polygon: so do not swap LHS and RHS polygons
-            return true;
-
-         // Search the adjacent polygons of the RHS argument, is there an "off edge" amongst them?
-         bool bRHSOffEdge = false;
-
-         for (unsigned int n = 3; n < nVRight.size(); n++)
-         {
-            if (nVRight[n] == INT_NODATA)
-            {
-               bRHSOffEdge = true;
-               break;
-            }
-         }
-
-         if (bRHSOffEdge)
-            // Yes, there is an "off edge" among the adjacent polygons of the LHS polygon: swap LHS and RHS polygons
+         // LHS polygon is up-coast. First, deal with polygon 0
+         if (nVLeft[1] == 0)
+            // Swap LHS and RHS polygons
             return false;
 
-         // Do we have a local change of sediment direction?
-         if (! bDownCoastRight)
-            // Yes, there is a change of sediment direction between this and the adjacent polygon. Keep the existing sequence
+         if (nVRight[1] == 0)
+            // Do not swap LHS and RHS polygons
             return true;
 
-         // Now sort out polygon-to-polygon dependencies. We need to put 'target' polygons after 'source' polygons, so that the source is processed before the target. So is the RHS polygon among the adjacent polygons of the LHS polygon?
-         bool bLeftFound = false;
-
-         for (unsigned int n = 3; n < nVLeft.size(); n++)
+         if ((nVLeft.size() >= 4) && (nVRight.size() >= 4))
          {
-            if (nVLeft[n] == nVRight[1])
-               bLeftFound = true;
+            // Next, search the adjacent polygons of the LHS argument, is there an "off edge" amongst them?
+            bool bLHSOffEdge = false;
+
+            for (unsigned int n = 3; n < nVLeft.size(); n++)
+            {
+               if (nVLeft[n] == INT_NODATA)
+               {
+                  bLHSOffEdge = true;
+                  break;
+               }
+            }
+
+            if (bLHSOffEdge)
+               // Yes, there is an "off edge" among the adjacent polygons of the LHS polygon: so do not swap LHS and RHS polygons
+               return true;
+
+            // Search the adjacent polygons of the RHS argument, is there an "off edge" amongst them?
+            bool bRHSOffEdge = false;
+
+            for (unsigned int n = 3; n < nVRight.size(); n++)
+            {
+               if (nVRight[n] == INT_NODATA)
+               {
+                  bRHSOffEdge = true;
+                  break;
+               }
+            }
+
+            if (bRHSOffEdge)
+               // Yes, there is an "off edge" among the adjacent polygons of the LHS polygon: swap LHS and RHS polygons
+               return false;
+
+            // Do we have a local change of sediment direction?
+            if (! bDownCoastRight)
+               // Yes, there is a change of sediment direction between this and the adjacent polygon. Keep the existing sequence
+               return true;
+
+            // Now sort out polygon-to-polygon dependencies. We need to put 'target' polygons after 'source' polygons, so that the source is processed before the target. So is the RHS polygon among the adjacent polygons of the LHS polygon?
+            bool bLeftFound = false;
+
+            for (unsigned int n = 3; n < nVLeft.size(); n++)
+            {
+               if (nVLeft[n] == nVRight[1])
+                  bLeftFound = true;
+            }
+
+            if (bLeftFound)
+               // Yes, the RHS polygon is among the adjacent polygons of the LHS polygon, so uncons sediment movement is from the LHS polygon to the RHS polygon, and so down-coast (i.e. along the coast in the direction of increasing coastline point numbers). Keep the existing sequence of polygons
+               return true;
+
+            // Is the LHS polygon among the adjacent polygons of the RHS polygon?
+            bool bRightFound = false;
+
+            for (unsigned int n = 3; n < nVRight.size(); n++)
+            {
+               if (nVRight[n] == nVLeft[1])
+                  bRightFound = true;
+            }
+
+            if (bRightFound)
+               // Yes, the LHS polygon is among the adjacent polygons of the RHS polygon, so uncons sediment movement is from the RHS polygon to the LHS polygon, and so up-coast (i.e. along the coast in the direction of decreasing coastline point numbers). Swap the LHS and RHS polygons
+               return false;
          }
 
-         if (bLeftFound)
-            // Yes, the RHS polygon is among the adjacent polygons of the LHS polygon, so uncons sediment movement is from the LHS polygon to the RHS polygon, and so down-coast (i.e. along the coast in the direction of increasing coastline point numbers). Keep the existing sequence of polygons
-            return true;
-
-         // Is the LHS polygon among the adjacent polygons of the RHS polygon?
-         bool bRightFound = false;
-
-         for (unsigned int n = 3; n < nVRight.size(); n++)
-         {
-            if (nVRight[n] == nVLeft[1])
-               bRightFound = true;
-         }
-
-         if (bRightFound)
-            // Yes, the LHS polygon is among the adjacent polygons of the RHS polygon, so uncons sediment movement is from the RHS polygon to the LHS polygon, and so up-coast (i.e. along the coast in the direction of decreasing coastline point numbers). Swap the LHS and RHS polygons
+         // Neither polygon has an "off edge", and each polygon does not have the other polygon's coast ID amongst its list of adjacent polygons. So just put the polygons in decreasing own-coast sequence
+         if (nVLeft[1] < nVRight[1])
             return false;
+
+         else
+            return true;
       }
 
-      // Neither polygon has an "off edge", and each polygon does not have the other polygon's coast ID amongst its list of adjacent polygons. So just put the polygons in decreasing own-coast sequence
-      if (nVLeft[1] < nVRight[1])
-         return false;
-
-      else
-         return true;
+      // Default return value, should never get here
+      return true;
    }
-
-   // Default return value, should never get here
-   return true;
 }
 
 //===============================================================================================================================
@@ -279,7 +282,7 @@ int CSimulation::nDoAllActualBeachErosionAndDeposition(void)
             for (int nAdj = 0; nAdj < pPolygon->nGetNumDownCoastAdjacentPolygons(); nAdj++)
             {
                // Save the coast ID of each down-coast adjacent polygon
-               int nAdjPolyID = pPolygon->nGetDownCoastAdjacentPolygon(nAdj);
+               int const nAdjPolyID = pPolygon->nGetDownCoastAdjacentPolygon(nAdj);
                nVPolyAndAdj.push_back(nAdjPolyID);
             }
          }
@@ -293,7 +296,7 @@ int CSimulation::nDoAllActualBeachErosionAndDeposition(void)
             for (int nAdj = 0; nAdj < pPolygon->nGetNumUpCoastAdjacentPolygons(); nAdj++)
             {
                // Save the coast ID of each up-coast adjacent polygon
-               int nAdjPolyID = pPolygon->nGetUpCoastAdjacentPolygon(nAdj);
+               int const nAdjPolyID = pPolygon->nGetUpCoastAdjacentPolygon(nAdj);
                nVPolyAndAdj.push_back(nAdjPolyID);
             }
          }
@@ -314,14 +317,14 @@ int CSimulation::nDoAllActualBeachErosionAndDeposition(void)
 
       for (int n = 0; n < static_cast<int>(nVVPolyAndAdjacent.size()); n++)
       {
-         int nThisPoly = nVVPolyAndAdjacent[n][1];
+         int const nThisPoly = nVVPolyAndAdjacent[n][1];
          VnSourcePolygons.push_back(nThisPoly);
 
          for (int m = 3; m < static_cast<int>(nVVPolyAndAdjacent[n].size()); m++)
          {
             // Check the adjacent polygon(s) for circularities
-            int nToFind = nVVPolyAndAdjacent[n][m];
-            vector<int>::iterator it = find(VnSourcePolygons.begin(), VnSourcePolygons.end(), nToFind);
+            int const nToFind = nVVPolyAndAdjacent[n][m];
+            vector<int>::iterator const it = find(VnSourcePolygons.begin(), VnSourcePolygons.end(), nToFind);
 
             if (it != VnSourcePolygons.end())
             {
@@ -338,12 +341,12 @@ int CSimulation::nDoAllActualBeachErosionAndDeposition(void)
       if (m_nLogFileDetail >= LOG_FILE_MIDDLE_DETAIL)
          WritePolygonSortedSequence(nCoast, nVVPolyAndAdjacent);
 
-      int nNumPolygons = m_VCoast[nCoast].nGetNumPolygons();
+      int const nNumPolygons = m_VCoast[nCoast].nGetNumPolygons();
 
       // Now process all polygons and do the actual (supply-limited) unconsolidated sediment movement
       for (int nPoly = 0; nPoly < nNumPolygons; nPoly++)
       {
-         int nPolygon = nVVPolyAndAdjacent[nPoly][1];
+         int const nPolygon = nVVPolyAndAdjacent[nPoly][1];
          CGeomCoastPolygon* pPolygon = m_VCoast[nCoast].pGetPolygon(nPolygon);
 
          // // DEBUG CODE =====================
@@ -401,7 +404,7 @@ int CSimulation::nDoAllActualBeachErosionAndDeposition(void)
             if (nRet != RTN_OK)
                return nRet;
 
-            double dCoarseNotDeposited = dCoarseDepositionTarget - dCoarseDeposited;
+            double const dCoarseNotDeposited = dCoarseDepositionTarget - dCoarseDeposited;
 
             if (dCoarseNotDeposited > 0)
             {
@@ -435,7 +438,7 @@ int CSimulation::nDoAllActualBeachErosionAndDeposition(void)
             if (nRet != RTN_OK)
                return nRet;
 
-            double dSandNotDeposited = dSandDepositionTarget - dSandDeposited;
+            double const dSandNotDeposited = dSandDepositionTarget - dSandDeposited;
 
             if (dSandNotDeposited > 0)
             {
@@ -462,20 +465,20 @@ int CSimulation::nDoAllActualBeachErosionAndDeposition(void)
          }
 
          // Now do erosion
-         double dPotentialErosion = -pPolygon->dGetPotentialErosion();
+         double const dPotentialErosion = -pPolygon->dGetPotentialErosion();
 
          if (dPotentialErosion > 0)
          {
             // There is some erosion on this polygon: process this in the sequence fine, sand, coarse. Is there any fine sediment on this polygon?
-            double dExistingUnconsFine = pPolygon->dGetPreExistingUnconsFine();
+            double const dExistingUnconsFine = pPolygon->dGetPreExistingUnconsFine();
 
             if (dExistingUnconsFine > 0)
             {
                // Yes there is, so crudely partition this potential value for this size class by erodibility, the result will almost always be much greater than actual (supply limited) erosion
-               double dFinePotentialErosion = dPotentialErosion * m_dFineErodibilityNormalized;
+               double const dFinePotentialErosion = dPotentialErosion * m_dFineErodibilityNormalized;
 
                // Now reduce this further, by considering the total depth of fine sediment on the polygon
-               double dFineErosionTarget = tMin(dFinePotentialErosion, dExistingUnconsFine);
+               double const dFineErosionTarget = tMin(dFinePotentialErosion, dExistingUnconsFine);
 
                // OK, do the supply-limited erosion of fine sediment
                double dFineEroded = 0;
@@ -498,16 +501,16 @@ int CSimulation::nDoAllActualBeachErosionAndDeposition(void)
             }
 
             // Is there any sand-sized sediment on this polygon?
-            double dExistingUnconsSand = pPolygon->dGetPreExistingUnconsSand();
+            double const dExistingUnconsSand = pPolygon->dGetPreExistingUnconsSand();
             double dSandEroded = 0;
 
             if (dExistingUnconsSand > 0)
             {
                // There is: so crudely partition this potential value for this size class by erodibility, the result will almost always be much greater than actual (supply limited) erosion
-               double dSandPotentialErosion = dPotentialErosion * m_dSandErodibilityNormalized;
+               double const dSandPotentialErosion = dPotentialErosion * m_dSandErodibilityNormalized;
 
                // Now reduce this further, by considering the total depth of sand sediment on the polygon
-               double dSandErosionTarget = tMin(dSandPotentialErosion, dExistingUnconsSand);
+               double const dSandErosionTarget = tMin(dSandPotentialErosion, dExistingUnconsSand);
 
                // OK, do the supply-limited erosion of sand sediment
                nRet = nDoUnconsErosionOnPolygon(nCoast, pPolygon, TEXTURE_SAND, dSandErosionTarget, dSandEroded);
@@ -544,16 +547,16 @@ int CSimulation::nDoAllActualBeachErosionAndDeposition(void)
             }
 
             // Is there any coarse sediment on this polygon?
-            double dExistingUnconsCoarse = pPolygon->dGetPreExistingUnconsCoarse();
+            double const dExistingUnconsCoarse = pPolygon->dGetPreExistingUnconsCoarse();
             double dCoarseEroded = 0;
 
             if (dExistingUnconsCoarse > 0)
             {
                // There is: so crudely partition this potential value for this size class by erodibility, the result will almost always be much greater than actual (supply limited) erosion
-               double dCoarsePotentialErosion = dPotentialErosion * m_dCoarseErodibilityNormalized;
+               double const dCoarsePotentialErosion = dPotentialErosion * m_dCoarseErodibilityNormalized;
 
                // Now reduce this further, by considering the total depth of coarse sediment on the polygon
-               double dCoarseErosionTarget = tMin(dCoarsePotentialErosion, dExistingUnconsCoarse);
+               double const dCoarseErosionTarget = tMin(dCoarsePotentialErosion, dExistingUnconsCoarse);
 
                // OK, do the supply-limited erosion of coarse sediment
                nRet = nDoUnconsErosionOnPolygon(nCoast, pPolygon, TEXTURE_COARSE, dCoarseErosionTarget, dCoarseEroded);
@@ -577,11 +580,11 @@ int CSimulation::nDoAllActualBeachErosionAndDeposition(void)
                if (pPolygon->bDownCoastThisIter())
                {
                   // Moving eroded sediment down-coast
-                  int nNumAdjPoly = pPolygon->nGetNumDownCoastAdjacentPolygons();
+                  int const nNumAdjPoly = pPolygon->nGetNumDownCoastAdjacentPolygons();
 
                   for (int nn = 0; nn < nNumAdjPoly; nn++)
                   {
-                     int nAdjPoly = pPolygon->nGetDownCoastAdjacentPolygon(nn);
+                     int const nAdjPoly = pPolygon->nGetDownCoastAdjacentPolygon(nn);
 
                      // if (m_nLogFileDetail >= LOG_FILE_MIDDLE_DETAIL)
                      // LogStream << m_ulIter << ": polygon " << nPoly << " moves sediment down-coast to polygon " << nAdjPoly << endl;
@@ -623,7 +626,7 @@ int CSimulation::nDoAllActualBeachErosionAndDeposition(void)
                            else if (m_nUnconsSedimentHandlingAtGridEdges == GRID_EDGE_RECIRCULATE)
                            {
                               // Re-circulating grid edges, so adjust the sediment exported to the polygon at the up-coast end of this coastline
-                              int nOtherEndPoly = 0;
+                              int const nOtherEndPoly = 0;
                               CGeomCoastPolygon* pOtherEndPoly = m_VCoast[nCoast].pGetPolygon(nOtherEndPoly);
 
                               if (dSandEroded > 0)
@@ -645,7 +648,7 @@ int CSimulation::nDoAllActualBeachErosionAndDeposition(void)
                      {
                         // This polygon is not at the grid edge
                         CGeomCoastPolygon* pAdjPolygon = m_VCoast[nCoast].pGetPolygon(nAdjPoly);
-                        double dBoundaryShare = pPolygon->dGetDownCoastAdjacentPolygonBoundaryShare(nn);
+                        double const dBoundaryShare = pPolygon->dGetDownCoastAdjacentPolygonBoundaryShare(nn);
 
                         if (dSandEroded > 0)
                         {
@@ -680,11 +683,11 @@ int CSimulation::nDoAllActualBeachErosionAndDeposition(void)
                else
                {
                   // Moving eroded sediment up-coast
-                  int nNumAdjPoly = pPolygon->nGetNumUpCoastAdjacentPolygons();
+                  int const nNumAdjPoly = pPolygon->nGetNumUpCoastAdjacentPolygons();
 
                   for (int nn = 0; nn < nNumAdjPoly; nn++)
                   {
-                     int nAdjPoly = pPolygon->nGetUpCoastAdjacentPolygon(nn);
+                     int const nAdjPoly = pPolygon->nGetUpCoastAdjacentPolygon(nn);
                      // if (m_nLogFileDetail >= LOG_FILE_ALL)
                      // LogStream << m_ulIter << ": polygon " << nPoly << " moves sediment up-coast to polygon " << nAdjPoly << endl;
 
@@ -719,7 +722,7 @@ int CSimulation::nDoAllActualBeachErosionAndDeposition(void)
                            else if (m_nUnconsSedimentHandlingAtGridEdges == GRID_EDGE_RECIRCULATE)
                            {
                               // Re-circulating grid edges, so adjust the sediment exported to the polygon at the up-coast end of this coastline TODO 016 Check whether this causes mass balance problems, depending on the sequence of polygon processing
-                              int nOtherEndPoly = 0;
+                              int const nOtherEndPoly = 0;
                               CGeomCoastPolygon* pOtherEndPoly = m_VCoast[nCoast].pGetPolygon(nOtherEndPoly);
 
                               if (dSandEroded > 0)
@@ -741,7 +744,7 @@ int CSimulation::nDoAllActualBeachErosionAndDeposition(void)
                      {
                         // This polygon is not at the grid edge
                         CGeomCoastPolygon* pAdjPolygon = m_VCoast[nCoast].pGetPolygon(nAdjPoly);
-                        double dBoundaryShare = pPolygon->dGetUpCoastAdjacentPolygonBoundaryShare(nn);
+                        double const dBoundaryShare = pPolygon->dGetUpCoastAdjacentPolygonBoundaryShare(nn);
 
                         if (dSandEroded > 0)
                         {
@@ -813,15 +816,15 @@ int CSimulation::nDoAllActualBeachErosionAndDeposition(void)
       }     // for (int n = 0; n < nNumPolygons; n++)
 
       // OK we have processed all polygons, But if there are adjacent-polygon circularities (i.e. Polygon A -> Polygon B -> Polygon A) then we may have some still-to-do deposition on at least one polygon. So look through all polygons and check their still-to-do lists
-      int nPolygons = m_VCoast[nCoast].nGetNumPolygons();
+      int const nPolygons = m_VCoast[nCoast].nGetNumPolygons();
 
 // for (int nn = 0; nn < nPolygons; nn++)
       for (int nn = nPolygons - 1; nn >= 0; nn--)
       {
-         int nThisPoly = nVVPolyAndAdjacent[nn][1];
+         int const nThisPoly = nVVPolyAndAdjacent[nn][1];
          CGeomCoastPolygon* pThisPolygon = m_VCoast[nCoast].pGetPolygon(nThisPoly);
 
-         double dSandToDepositOnPoly = pThisPolygon->dGetToDoBeachDepositionUnconsSand();
+         double const dSandToDepositOnPoly = pThisPolygon->dGetToDoBeachDepositionUnconsSand();
 
          if (dSandToDepositOnPoly > 0)
          {
@@ -832,7 +835,7 @@ int CSimulation::nDoAllActualBeachErosionAndDeposition(void)
             if (nRet != RTN_OK)
                return nRet;
 
-            double dSandNotDeposited = dSandToDepositOnPoly - dSandDeposited;
+            double const dSandNotDeposited = dSandToDepositOnPoly - dSandDeposited;
 
             if (dSandNotDeposited > 0)
                m_dDepositionSandDiff += dSandNotDeposited;
@@ -841,7 +844,7 @@ int CSimulation::nDoAllActualBeachErosionAndDeposition(void)
                LogStream << m_ulIter << ": re-processing nThisPoly = " << nThisPoly << " dSandDeposited = " << dSandDeposited * m_dCellArea << " dSandNotDeposited = " << dSandNotDeposited * m_dCellArea << " m_dDepositionSandDiff = " << m_dDepositionSandDiff * m_dCellArea << endl;
          }
 
-         double dCoarseToDepositOnPoly = pThisPolygon->dGetToDoBeachDepositionUnconsCoarse();
+         double const dCoarseToDepositOnPoly = pThisPolygon->dGetToDoBeachDepositionUnconsCoarse();
 
          if (dCoarseToDepositOnPoly > 0)
          {
@@ -852,7 +855,7 @@ int CSimulation::nDoAllActualBeachErosionAndDeposition(void)
             if (nRet != RTN_OK)
                return nRet;
 
-            double dCoarseNotDeposited = dCoarseToDepositOnPoly - dCoarseDeposited;
+            double const dCoarseNotDeposited = dCoarseToDepositOnPoly - dCoarseDeposited;
 
             if (dCoarseNotDeposited > 0)
                m_dDepositionCoarseDiff += dCoarseNotDeposited;
@@ -874,22 +877,22 @@ int CSimulation::nDoAllActualBeachErosionAndDeposition(void)
 //===============================================================================================================================
 void CSimulation::AllPolygonsUpdateStoredUncons(int const nCoast)
 {
-   int nNumPolygons = m_VCoast[nCoast].nGetNumPolygons();
+   int const nNumPolygons = m_VCoast[nCoast].nGetNumPolygons();
 
    for (int nPoly = 0; nPoly < nNumPolygons; nPoly++)
    {
       CGeomCoastPolygon* pPolygon = m_VCoast[nCoast].pGetPolygon(nPoly);
 
       // Only include unconsolidated fine sediment from sediment input events, don't include any unconsolidated fine sediment from platform erosion and cliff collapse since these have gone to suspension
-      double dFine = pPolygon->dGetSedimentInputUnconsFine();
+      double const dFine = pPolygon->dGetSedimentInputUnconsFine();
       pPolygon->SetPreExistingUnconsFine(dFine);
 
       // Include unconsolidated sand sediment derived from platform erosion, cliff collapse, and sediment input events
-      double dSand = pPolygon->dGetPreExistingUnconsSand() + pPolygon->dGetPlatformErosionUnconsSand() + pPolygon->dGetCliffCollapseUnconsSandDeposition() + pPolygon->dGetSedimentInputUnconsSand();
+      double const dSand = pPolygon->dGetPreExistingUnconsSand() + pPolygon->dGetPlatformErosionUnconsSand() + pPolygon->dGetCliffCollapseUnconsSandDeposition() + pPolygon->dGetSedimentInputUnconsSand();
       pPolygon->SetPreExistingUnconsSand(dSand);
 
       // Include unconsolidated coarse sediment derived from platform erosion, cliff collapse, and sediment input events
-      double dCoarse = pPolygon->dGetPreExistingUnconsCoarse() + pPolygon->dGetPlatformErosionUnconsCoarse() + pPolygon->dGetCliffCollapseUnconsCoarseDeposition() + pPolygon->dGetSedimentInputUnconsCoarse();
+      double const dCoarse = pPolygon->dGetPreExistingUnconsCoarse() + pPolygon->dGetPlatformErosionUnconsCoarse() + pPolygon->dGetCliffCollapseUnconsCoarseDeposition() + pPolygon->dGetSedimentInputUnconsCoarse();
       pPolygon->SetPreExistingUnconsCoarse(dCoarse);
    }
 }

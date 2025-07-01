@@ -38,6 +38,7 @@ protected:
 
 public:
    CGeom2DIPoint(void);
+   CGeom2DIPoint(CGeom2DIPoint const*);
    CGeom2DIPoint(int const, int const);
 
    int nGetX(void) const;
@@ -53,7 +54,7 @@ public:
    void AddXAddY(double const, double const);
    void DivXDivY(double const, double const);
 
-   void operator= (CGeom2DIPoint const*);
+   CGeom2DIPoint& operator= (CGeom2DIPoint const*);
    bool operator== (CGeom2DIPoint const*) const;
    bool operator== (CGeom2DIPoint) const;
    bool operator!= (CGeom2DIPoint const*) const;

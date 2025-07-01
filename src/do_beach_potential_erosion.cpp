@@ -24,15 +24,14 @@
 #include <assert.h>
 
 #include <cmath>
-
 #include <cfloat>
 
-#include <iostream>
-using std::cout;
-using std::endl;
+// #include <iostream>
+// using std::cout;
+// using std::endl;
 
 #include <algorithm>
-using std::stable_sort;
+using std::sort;
 
 #include <utility>
 using std::make_pair;
@@ -42,13 +41,16 @@ using std::pair;
 #include "simulation.h"
 #include "coast.h"
 
-//===============================================================================================================================
-//! Function used to sort polygon length values. If the first argument must be ordered before the second, return true
-//===============================================================================================================================
-bool bPolygonLengthPairCompare(const pair<int, double> &prLeft, const pair<int, double> &prRight)
+namespace
 {
-   // Sort in ascending order (i.e. most concave first)
-   return prLeft.second < prRight.second;
+   //===============================================================================================================================
+   //! Function used to sort polygon length values. If the first argument must be ordered before the second, return true
+   //===============================================================================================================================
+   bool bPolygonLengthPairCompare(const pair<int, double> &prLeft, const pair<int, double> &prRight)
+   {
+      // Sort in ascending order (i.e. most concave first)
+      return prLeft.second < prRight.second;
+   }
 }
 
 //===============================================================================================================================
@@ -59,7 +61,7 @@ void CSimulation::DoAllPotentialBeachErosion(void)
    // Do this for each coast
    for (int nCoast = 0; nCoast < static_cast<int>(m_VCoast.size()); nCoast++)
    {
-      int nNumPolygons = m_VCoast[nCoast].nGetNumPolygons();
+      int const nNumPolygons = m_VCoast[nCoast].nGetNumPolygons();
 
       // Create a vector of pairs: the first value of the pair is the profile index, the second is the seaward length of that profile
       vector<pair<int, double>> prVPolygonLength;
@@ -67,7 +69,7 @@ void CSimulation::DoAllPotentialBeachErosion(void)
       for (int nPoly = 0; nPoly < nNumPolygons; nPoly++)
       {
          CGeomCoastPolygon const* pPolygon = m_VCoast[nCoast].pGetPolygon(nPoly);
-         double dSeawardLength = pPolygon->dGetLength();
+         double const dSeawardLength = pPolygon->dGetLength();
          prVPolygonLength.push_back(make_pair(nPoly, dSeawardLength));
       }
 
@@ -77,15 +79,15 @@ void CSimulation::DoAllPotentialBeachErosion(void)
       // Do this for every coastal polygon in sequence of coastline concavity
       for (int n = 0; n < nNumPolygons; n++)
       {
-         int nThisPoly = prVPolygonLength[n].first;
+         int const nThisPoly = prVPolygonLength[n].first;
 
          CGeomCoastPolygon* pPolygon = m_VCoast[nCoast].pGetPolygon(nThisPoly);
 
          // Calculate the average breaking wave height and angle along this polygon's segment of coastline
-         int nStartNormal = pPolygon->nGetUpCoastProfile();
-         int nEndNormal = pPolygon->nGetDownCoastProfile();
-         int nCoastStartPoint = m_VCoast[nCoast].pGetProfile(nStartNormal)->nGetCoastPoint();
-         int nCoastEndPoint = m_VCoast[nCoast].pGetProfile(nEndNormal)->nGetCoastPoint();
+         int const nStartNormal = pPolygon->nGetUpCoastProfile();
+         int const nEndNormal = pPolygon->nGetDownCoastProfile();
+         int const nCoastStartPoint = m_VCoast[nCoast].pGetProfile(nStartNormal)->nGetCoastPoint();
+         int const nCoastEndPoint = m_VCoast[nCoast].pGetProfile(nEndNormal)->nGetCoastPoint();
          int nCoastPoints = 0;
          int nActiveZonePoints = 0;
 
@@ -102,7 +104,7 @@ void CSimulation::DoAllPotentialBeachErosion(void)
             nCoastPoints++;
             dAvgFluxOrientation += m_VCoast[nCoast].dGetFluxOrientation(nCoastPoint);
 
-            double dThisBreakingWaveHeight = m_VCoast[nCoast].dGetBreakingWaveHeight(nCoastPoint);
+            double const dThisBreakingWaveHeight = m_VCoast[nCoast].dGetBreakingWaveHeight(nCoastPoint);
 
             if (! bFPIsEqual(dThisBreakingWaveHeight, DBL_NODATA, TOLERANCE))
             {
@@ -110,8 +112,8 @@ void CSimulation::DoAllPotentialBeachErosion(void)
                nActiveZonePoints++;
                dAvgBreakingWaveHeight += dThisBreakingWaveHeight;
 
-               double dThisBreakingWaveAngle = m_VCoast[nCoast].dGetBreakingWaveAngle(nCoastPoint);
-               double dThisDeepWaterWavePeriod = m_VCoast[nCoast].dGetCoastDeepWaterWavePeriod(nCoastPoint);
+               double const dThisBreakingWaveAngle = m_VCoast[nCoast].dGetBreakingWaveAngle(nCoastPoint);
+               double const dThisDeepWaterWavePeriod = m_VCoast[nCoast].dGetCoastDeepWaterWavePeriod(nCoastPoint);
 
                dAvgBreakingWaveAngle += dThisBreakingWaveAngle;
                dAvgDeepWaterWavePeriod += dThisDeepWaterWavePeriod;
@@ -139,7 +141,7 @@ void CSimulation::DoAllPotentialBeachErosion(void)
             dAvgBreakingDist /= nActiveZonePoints;
 
             // Get the coast handedness, and (based on the average tangent) calculate the direction towards which a coastline-normal profile points
-            int nSeaHand = m_VCoast[nCoast].nGetSeaHandedness();
+            int const nSeaHand = m_VCoast[nCoast].nGetSeaHandedness();
             double dNormalOrientation;
 
             if (nSeaHand == RIGHT_HANDED)
@@ -202,11 +204,11 @@ void CSimulation::DoAllPotentialBeachErosion(void)
 
                if (dAvgBreakingDist > 0)
                {
-                  double dD50 = pPolygon->dGetAvgUnconsD50();
+                  double const dD50 = pPolygon->dGetAvgUnconsD50();
 
                   if (dD50 > 0)
                   {
-                     double dBeachSlope = dAvgBreakingDepth / dAvgBreakingDist;
+                     double const dBeachSlope = dAvgBreakingDepth / dAvgBreakingDist;
 
                      // Note that we use a calibration constant here (m_dKamphuis)
                      dImmersedWeightTransport = m_dKamphuis * 2.33 * pow(dAvgDeepWaterWavePeriod, 1.5) * pow(dBeachSlope, 0.75) * pow(dD50, -0.25) * pow(dAvgBreakingWaveHeight, 2) * pow(sin((PI / 180) * 2 * dThetaBr), 0.6);

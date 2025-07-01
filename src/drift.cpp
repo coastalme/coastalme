@@ -23,14 +23,15 @@
 ===============================================================================================================================*/
 #include <assert.h>
 
-#include <iostream>
-using std::cout;
-using std::cerr;
-using std::endl;
-using std::ios;
+// #include <iostream>
+// using std::cout;
+// using std::cerr;
+// using std::endl;
+// using std::ios;
 
 #include "cme.h"
 #include "drift.h"
+#include "coast.h"
 
 //! Constructor with three parameters and an intialization list
 CRWDrift::CRWDrift(CRWCoast * pCoastIn, int const nCoast, int const nPointOnCoast)

@@ -23,32 +23,38 @@
 
 ==============================================================================================================================*/
 #include <assert.h>
+
+#include <cmath>
+using std::isnan;
+
 #include <cfloat>
 
 #include <iostream>
-using std::cerr;
-using std::cout;
+// using std::cerr;
+// using std::cout;
 using std::endl;
 using std::ios;
 
-#include <iomanip>
-using std::resetiosflags;
-using std::setiosflags;
-using std::setprecision;
-using std::setw;
+// #include <iomanip>
+// using std::resetiosflags;
+// using std::setiosflags;
+// using std::setprecision;
+// using std::setw;
 
-#include <string>
-using std::to_string;
+// #include <string>
+// using std::to_string;
 
 #include <stack>
 using std::stack;
 
 #include "cme.h"
+#include "2d_point.h"
 #include "i_line.h"
 #include "line.h"
 #include "simulation.h"
 #include "raster_grid.h"
 #include "coast.h"
+#include "2di_point.h"
 
 //===============================================================================================================================
 //! Use the sealevel, wave set-up and run-up to evaluate flood hydraulically connected TODO 007 Not clear why we need this. We already have a cell-by-cell fill sea routine: every cell that isn't sea is land
@@ -56,7 +62,7 @@ using std::stack;
 void CSimulation::FloodFillLand(int const nXStart, int const nYStart)
 {
    // The flood is at a user-specified location. So get the location from values read from the shapefile
-   long unsigned int nLocIDs = m_VdFloodLocationX.size();
+   long const unsigned int nLocIDs = m_VdFloodLocationX.size();
    double dDiffTotWaterLevel = 0;
 
    double dAuxWaterLevelDiff = 0;
@@ -67,7 +73,7 @@ void CSimulation::FloodFillLand(int const nXStart, int const nYStart)
 
       for (int nCoast = 0; nCoast < static_cast<int>(m_VCoast.size()); nCoast++)
       {
-         int nCoastSize = m_VCoast[nCoast].pLGetCoastlineExtCRS()->nGetSize();
+         int const nCoastSize = m_VCoast[nCoast].pLGetCoastlineExtCRS()->nGetSize();
 
          for (int nCoastPoint = 0; nCoastPoint < nCoastSize; nCoastPoint++)
          {
@@ -95,21 +101,21 @@ void CSimulation::FloodFillLand(int const nXStart, int const nYStart)
    {
       for (long unsigned int n = 0; n < nLocIDs; n++)
       {
-         double dPointGridXExtCRS = m_VdFloodLocationX[n];
-         double dPointGridYExtCRS = m_VdFloodLocationY[n];
+         double const dPointGridXExtCRS = m_VdFloodLocationX[n];
+         double const dPointGridYExtCRS = m_VdFloodLocationY[n];
          double dMinDiffTotWaterLevelAtCoast = 1e10;
 
          for (int nCoast = 0; nCoast < static_cast<int>(m_VCoast.size()); nCoast++)
          {
-            int nCoastSize = m_VCoast[nCoast].pLGetCoastlineExtCRS()->nGetSize();
+            int const nCoastSize = m_VCoast[nCoast].pLGetCoastlineExtCRS()->nGetSize();
             double dMinDistSquare = 1e10;
 
             for (int nCoastPoint = 0; nCoastPoint < nCoastSize; nCoastPoint++)
             {
-               double dCoastPointXExtCRS = m_VCoast[nCoast].pPtGetCoastlinePointExtCRS(nCoastPoint)->dGetX();
-               double dCoastPointYExtCRS = m_VCoast[nCoast].pPtGetCoastlinePointExtCRS(nCoastPoint)->dGetY();
+               double const dCoastPointXExtCRS = m_VCoast[nCoast].pPtGetCoastlinePointExtCRS(nCoastPoint)->dGetX();
+               double const dCoastPointYExtCRS = m_VCoast[nCoast].pPtGetCoastlinePointExtCRS(nCoastPoint)->dGetY();
 
-               double dDistSquare = (dCoastPointXExtCRS - dPointGridXExtCRS) * (dCoastPointXExtCRS - dPointGridXExtCRS) + (dCoastPointYExtCRS - dPointGridYExtCRS) * (dCoastPointYExtCRS - dPointGridYExtCRS);
+               double const dDistSquare = (dCoastPointXExtCRS - dPointGridXExtCRS) * (dCoastPointXExtCRS - dPointGridXExtCRS) + (dCoastPointYExtCRS - dPointGridYExtCRS) * (dCoastPointYExtCRS - dPointGridYExtCRS);
 
                if (dDistSquare < dMinDistSquare)
                {
@@ -152,11 +158,11 @@ void CSimulation::FloodFillLand(int const nXStart, int const nYStart)
    // Then do the cell-by-cell fill loop until there are no more cell coordinates on the stack
    while (! PtiStackFlood.empty())
    {
-      CGeom2DIPoint Pti = PtiStackFlood.top();
+      CGeom2DIPoint const Pti = PtiStackFlood.top();
       PtiStackFlood.pop();
 
       int nX = Pti.nGetX();
-      int nY = Pti.nGetY();
+      int const nY = Pti.nGetY();
 
       while (nX >= 0)
       {
@@ -249,14 +255,14 @@ int CSimulation::nTraceAllFloodCoasts(void)
       if (m_bOmitSearchEastEdge && (m_VEdgeCellEdge[n] == EAST || m_VEdgeCellEdge[n + 1] == EAST))
          continue;
 
-      int nXThis = m_VEdgeCell[n].nGetX();
-      int nYThis = m_VEdgeCell[n].nGetY();
-      int nXNext = m_VEdgeCell[n + 1].nGetX();
-      int nYNext = m_VEdgeCell[n + 1].nGetY();
+      int const nXThis = m_VEdgeCell[n].nGetX();
+      int const nYThis = m_VEdgeCell[n].nGetY();
+      int const nXNext = m_VEdgeCell[n + 1].nGetX();
+      int const nYNext = m_VEdgeCell[n + 1].nGetY();
 
       // Get "Is it sea?" information for 'this' and 'next' cells
-      bool bThisCellIsSea = m_pRasterGrid->m_Cell[nXThis][nYThis].bIsInContiguousSeaArea();
-      bool bNextCellIsSea = m_pRasterGrid->m_Cell[nXNext][nYNext].bIsInContiguousSeaArea();
+      bool const bThisCellIsSea = m_pRasterGrid->m_Cell[nXThis][nYThis].bIsInContiguousSeaArea();
+      bool const bNextCellIsSea = m_pRasterGrid->m_Cell[nXNext][nYNext].bIsInContiguousSeaArea();
 
       // Are we at a coast?
       if ((! bThisCellIsSea) && bNextCellIsSea)
@@ -338,8 +344,8 @@ int CSimulation::nTraceFloodCoastLine(unsigned int const nTraceFromStartCellInde
    bool bOffEdge = false;
    bool bRepeating = false;
 
-   int nStartX = pV2DIPossibleStartCell->at(nTraceFromStartCellIndex).nGetX();
-   int nStartY = pV2DIPossibleStartCell->at(nTraceFromStartCellIndex).nGetY();
+   int const nStartX = pV2DIPossibleStartCell->at(nTraceFromStartCellIndex).nGetX();
+   int const nStartY = pV2DIPossibleStartCell->at(nTraceFromStartCellIndex).nGetY();
    int nX = nStartX;
    int nY = nStartY;
    int nSearchDirection = nStartSearchDirection;
@@ -353,7 +359,7 @@ int CSimulation::nTraceFloodCoastLine(unsigned int const nTraceFromStartCellInde
 
    // Mark the start cell as coast and add it to the vector object
    m_pRasterGrid->m_Cell[nStartX][nStartY].SetAsFloodLine(true);
-   CGeom2DIPoint PtiStart(nStartX, nStartY);
+   CGeom2DIPoint const PtiStart(nStartX, nStartY);
    ILTempGridCRS.Append(&PtiStart);
 
    // Start at this grid-edge point and trace the rest of the coastline using the 'wall follower' rule for maze traversal, trying to keep next to cells flagged as sea
@@ -443,7 +449,7 @@ int CSimulation::nTraceFloodCoastLine(unsigned int const nTraceFromStartCellInde
       int nYGoBack = 0;
       int nGoBackNewDirection = 0;
 
-      CGeom2DIPoint Pti(nX, nY);
+      CGeom2DIPoint const Pti(nX, nY);
 
       // Set up the variables
       switch (nHandedness)
@@ -858,10 +864,10 @@ int CSimulation::nTraceFloodCoastLine(unsigned int const nTraceFromStartCellInde
    }
 
    // OK this new coastline is fine
-   int nEndX = nX;
-   int nEndY = nY;
-   int nCoastEndX = ILTempGridCRS[nCoastSize - 1].nGetX();
-   int nCoastEndY = ILTempGridCRS[nCoastSize - 1].nGetY();
+   int const nEndX = nX;
+   int const nEndY = nY;
+   int const nCoastEndX = ILTempGridCRS[nCoastSize - 1].nGetX();
+   int const nCoastEndY = ILTempGridCRS[nCoastSize - 1].nGetY();
 
    if ((nCoastEndX != nEndX) || (nCoastEndY != nEndY))
    {
@@ -905,7 +911,7 @@ int CSimulation::nTraceFloodCoastLine(unsigned int const nTraceFromStartCellInde
    //    // DEBUG CODE ==================================================================================================
 
    // Create a new coastline object and append to it the vector of coastline objects
-   CRWCoast CoastTmp(this);
+   CRWCoast const CoastTmp(this);
    int nCoast;
 
    switch (m_nLevel)

@@ -2,7 +2,7 @@
 
 # Change this to change build type
 buildtype=Debug
-# buildtype=Release
+#buildtype=Release
 #buildtype=Prerelease
 #buildtype=RelWithDebInfo        # Not yet implemented in CMakeLists.txt
 #buildtype=MinSizeRel            # Not yet implemented in CMakeLists.txt

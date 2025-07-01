@@ -20,7 +20,7 @@
    You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 ===============================================================================================================================*/
-#include "cme.h"
+#include "2d_point.h"
 #include "2d_shape.h"
 
 //! Constructor
@@ -78,7 +78,7 @@ void CA2DShape::Append(double const dX, double const dY)
 //! Appends a point to this 2D shape only if it isn't already in the shape vector
 void CA2DShape::AppendIfNotAlready(double const dX, double const dY)
 {
-   CGeom2DPoint PtIn(dX, dY);
+   CGeom2DPoint const PtIn(dX, dY);
 
    if (m_VPoints.empty())
       m_VPoints.push_back(PtIn);

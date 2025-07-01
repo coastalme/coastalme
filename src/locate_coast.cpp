@@ -26,23 +26,24 @@
 
 #include <iostream>
 using std::cerr;
-using std::cout;
+// using std::cout;
 using std::endl;
 using std::ios;
 
-#include <iomanip>
-using std::resetiosflags;
-using std::setiosflags;
-using std::setprecision;
-using std::setw;
+// #include <iomanip>
+// using std::resetiosflags;
+// using std::setiosflags;
+// using std::setprecision;
+// using std::setw;
 
-#include <string>
-using std::to_string;
+// #include <string>
+// using std::to_string;
 
 #include <stack>
 using std::stack;
 
 #include "cme.h"
+#include "2di_point.h"
 #include "i_line.h"
 #include "line.h"
 #include "simulation.h"
@@ -58,7 +59,7 @@ int CSimulation::nLocateSeaAndCoasts(int &nValidCoast)
    FindAllSeaCells();
 
    // Find every coastline on the raster grid, mark raster cells, then create the vector coastline
-   int nRet = nTraceAllCoasts(nValidCoast);
+   int const nRet = nTraceAllCoasts(nValidCoast);
 
    if (nRet != RTN_OK)
       return nRet;
@@ -93,8 +94,8 @@ void CSimulation::FindAllSeaCells(void)
       if (m_bOmitSearchEastEdge && m_VEdgeCellEdge[n] == EAST)
          continue;
 
-      int nX = m_VEdgeCell[n].nGetX();
-      int nY = m_VEdgeCell[n].nGetY();
+      int const nX = m_VEdgeCell[n].nGetX();
+      int const nY = m_VEdgeCell[n].nGetY();
 
       if ((m_pRasterGrid->m_Cell[nX][nY].bIsInundated()) && (bFPIsEqual(m_pRasterGrid->m_Cell[nX][nY].dGetSeaDepth(), 0.0, TOLERANCE)))
          // This edge cell is below SWL and sea depth remains set to zero
@@ -108,7 +109,7 @@ void CSimulation::FindAllSeaCells(void)
 void CSimulation::CellByCellFillSea(int const nXStart, int const nYStart)
 {
    // For safety check
-   int nRoundLoopMax = m_nXGridSize * m_nYGridSize;
+   int const nRoundLoopMax = m_nXGridSize * m_nYGridSize;
 
    // Create an empty stack
    stack<CGeom2DIPoint> PtiStack;
@@ -125,11 +126,11 @@ void CSimulation::CellByCellFillSea(int const nXStart, int const nYStart)
       if (nRoundLoop++ > nRoundLoopMax)
          break;
 
-      CGeom2DIPoint Pti = PtiStack.top();
+      CGeom2DIPoint const Pti = PtiStack.top();
       PtiStack.pop();
 
       int nX = Pti.nGetX();
-      int nY = Pti.nGetY();
+      int const nY = Pti.nGetY();
 
       while ((nX >= 0) && (! m_pRasterGrid->m_Cell[nX][nY].bBasementElevIsMissingValue()) && (m_pRasterGrid->m_Cell[nX][nY].bIsInundated()))
          nX--;
@@ -145,7 +146,7 @@ void CSimulation::CellByCellFillSea(int const nXStart, int const nYStart)
          m_pRasterGrid->m_Cell[nX][nY].SetSeaDepth();
 
          CRWCellLandform* pLandform = m_pRasterGrid->m_Cell[nX][nY].pGetLandform();
-         int nCat = pLandform->nGetLFCategory();
+         int const nCat = pLandform->nGetLFCategory();
 
          // Have we had sediment input here?
          if ((nCat == LF_CAT_SEDIMENT_INPUT) || (nCat == LF_CAT_SEDIMENT_INPUT_SUBMERGED) || (nCat == LF_CAT_SEDIMENT_INPUT_NOT_SUBMERGED))
@@ -217,34 +218,34 @@ void CSimulation::CellByCellFillSea(int const nXStart, int const nYStart)
       }
    }
 
-   // DEBUG CODE ===========================================================================================================
-   string strOutFile = m_strOutPath + "is_contiguous_sea_";
-   strOutFile += to_string(m_ulIter);
-   strOutFile += ".tif";
-
-   GDALDriver* pDriver = GetGDALDriverManager()->GetDriverByName("gtiff");
-   GDALDataset* pDataSet = pDriver->Create(strOutFile.c_str(), m_nXGridSize, m_nYGridSize, 1, GDT_Float64, m_papszGDALRasterOptions);
-   pDataSet->SetProjection(m_strGDALBasementDEMProjection.c_str());
-   pDataSet->SetGeoTransform(m_dGeoTransform);
-   double* pdRaster = new double[m_nXGridSize * m_nYGridSize];
-   int n = 0;
-   for (int nY = 0; nY < m_nYGridSize; nY++)
-   {
-      for (int nX = 0; nX < m_nXGridSize; nX++)
-      {
-      pdRaster[n++] = m_pRasterGrid->m_Cell[nX][nY].bIsInContiguousSea();
-      }
-   }
-
-   GDALRasterBand* pBand = pDataSet->GetRasterBand(1);
-   pBand->SetNoDataValue(m_dMissingValue);
-   int nRet = pBand->RasterIO(GF_Write, 0, 0, m_nXGridSize, m_nYGridSize, pdRaster, m_nXGridSize, m_nYGridSize, GDT_Float64, 0, 0, NULL);
-   if (nRet == CE_Failure)
-   return;
-
-   GDALClose(pDataSet);
-   delete[] pdRaster;
-   // DEBUG CODE ===========================================================================================================
+   // // DEBUG CODE ===========================================================================================================
+   // string strOutFile = m_strOutPath + "is_contiguous_sea_";
+   // strOutFile += to_string(m_ulIter);
+   // strOutFile += ".tif";
+   //
+   // GDALDriver* pDriver = GetGDALDriverManager()->GetDriverByName("gtiff");
+   // GDALDataset* pDataSet = pDriver->Create(strOutFile.c_str(), m_nXGridSize, m_nYGridSize, 1, GDT_Float64, m_papszGDALRasterOptions);
+   // pDataSet->SetProjection(m_strGDALBasementDEMProjection.c_str());
+   // pDataSet->SetGeoTransform(m_dGeoTransform);
+   // double* pdRaster = new double[m_nXGridSize * m_nYGridSize];
+   // int n = 0;
+   // for (int nY = 0; nY < m_nYGridSize; nY++)
+   // {
+   //    for (int nX = 0; nX < m_nXGridSize; nX++)
+   //    {
+   //    pdRaster[n++] = m_pRasterGrid->m_Cell[nX][nY].bIsInContiguousSea();
+   //    }
+   // }
+   //
+   // GDALRasterBand* pBand = pDataSet->GetRasterBand(1);
+   // pBand->SetNoDataValue(m_dMissingValue);
+   // int nRet = pBand->RasterIO(GF_Write, 0, 0, m_nXGridSize, m_nYGridSize, pdRaster, m_nXGridSize, m_nYGridSize, GDT_Float64, 0, 0, NULL);
+   // if (nRet == CE_Failure)
+   // return;
+   //
+   // GDALClose(pDataSet);
+   // delete[] pdRaster;
+   // // DEBUG CODE ===========================================================================================================
 
    // // DEBUG CODE ===========================================================================================================
    // string strOutFile = m_strOutPath + "is_inundated_";
@@ -317,14 +318,14 @@ int CSimulation::nTraceAllCoasts(int &nValidCoast)
       if (m_bOmitSearchEastEdge && (m_VEdgeCellEdge[n] == EAST || m_VEdgeCellEdge[n + 1] == EAST))
          continue;
 
-      int nXThis = m_VEdgeCell[n].nGetX();
-      int nYThis = m_VEdgeCell[n].nGetY();
-      int nXNext = m_VEdgeCell[n + 1].nGetX();
-      int nYNext = m_VEdgeCell[n + 1].nGetY();
+      int const nXThis = m_VEdgeCell[n].nGetX();
+      int const nYThis = m_VEdgeCell[n].nGetY();
+      int const nXNext = m_VEdgeCell[n + 1].nGetX();
+      int const nYNext = m_VEdgeCell[n + 1].nGetY();
 
       // Get "Is it sea?" information for 'this' and 'next' cells
-      bool bThisCellIsSea = m_pRasterGrid->m_Cell[nXThis][nYThis].bIsInContiguousSea();
-      bool bNextCellIsSea = m_pRasterGrid->m_Cell[nXNext][nYNext].bIsInContiguousSea();
+      bool const bThisCellIsSea = m_pRasterGrid->m_Cell[nXThis][nYThis].bIsInContiguousSea();
+      bool const bNextCellIsSea = m_pRasterGrid->m_Cell[nXNext][nYNext].bIsInContiguousSea();
 
       // Are we at a coast?
       if ((! bThisCellIsSea) && bNextCellIsSea)
@@ -432,8 +433,8 @@ int CSimulation::nTraceCoastLine(unsigned int const nTraceFromStartCellIndex, in
    bool bOffEdge = false;
    bool bRepeating = false;
 
-   int nStartX = pV2DIPossibleStartCell->at(nTraceFromStartCellIndex).nGetX();
-   int nStartY = pV2DIPossibleStartCell->at(nTraceFromStartCellIndex).nGetY();
+   int const nStartX = pV2DIPossibleStartCell->at(nTraceFromStartCellIndex).nGetX();
+   int const nStartY = pV2DIPossibleStartCell->at(nTraceFromStartCellIndex).nGetY();
    int nX = nStartX;
    int nY = nStartY;
    int nSearchDirection = nStartSearchDirection;
@@ -447,7 +448,7 @@ int CSimulation::nTraceCoastLine(unsigned int const nTraceFromStartCellIndex, in
 
    // Mark the start cell as coast and add it to the vector object
    m_pRasterGrid->m_Cell[nStartX][nStartY].SetAsCoastline(true);
-   CGeom2DIPoint PtiStart(nStartX, nStartY);
+   CGeom2DIPoint const PtiStart(nStartX, nStartY);
    ILTempGridCRS.Append(&PtiStart);
 
    // Start at this grid-edge point and trace the rest of the coastline using the 'wall follower' rule for maze traversal, trying to keep next to cells flagged as sea
@@ -537,7 +538,7 @@ int CSimulation::nTraceCoastLine(unsigned int const nTraceFromStartCellIndex, in
       int nYGoBack = 0;
       int nGoBackNewDirection = 0;
 
-      CGeom2DIPoint Pti(nX, nY);
+      CGeom2DIPoint const Pti(nX, nY);
 
       // Set up the variables
       switch (nHandedness)
@@ -952,10 +953,10 @@ int CSimulation::nTraceCoastLine(unsigned int const nTraceFromStartCellIndex, in
    }
 
    // OK this new coastline is fine
-   int nEndX = nX;
-   int nEndY = nY;
-   int nCoastEndX = ILTempGridCRS[nCoastSize - 1].nGetX();
-   int nCoastEndY = ILTempGridCRS[nCoastSize - 1].nGetY();
+   int const nEndX = nX;
+   int const nEndY = nY;
+   int const nCoastEndX = ILTempGridCRS[nCoastSize - 1].nGetX();
+   int const nCoastEndY = ILTempGridCRS[nCoastSize - 1].nGetY();
 
    if ((nCoastEndX != nEndX) || (nCoastEndY != nEndY))
    {
@@ -971,8 +972,8 @@ int CSimulation::nTraceCoastLine(unsigned int const nTraceFromStartCellIndex, in
    }
 
    // Need to specify start edge and end edge for smoothing routines
-   int nStartEdge = m_pRasterGrid->m_Cell[nStartX][nStartY].nGetBoundingBoxEdge();
-   int nEndEdge = m_pRasterGrid->m_Cell[nEndX][nEndY].nGetBoundingBoxEdge();
+   int const nStartEdge = m_pRasterGrid->m_Cell[nStartX][nStartY].nGetBoundingBoxEdge();
+   int const nEndEdge = m_pRasterGrid->m_Cell[nEndX][nEndY].nGetBoundingBoxEdge();
 
    // Next, convert the grid coordinates in ILTempGridCRS (integer values stored as doubles) to external CRS coordinates (which will probably be non-integer, again stored as doubles). This is done now, so that smoothing is more effective
    CGeomLine LTempExtCRS;
@@ -999,9 +1000,9 @@ int CSimulation::nTraceCoastLine(unsigned int const nTraceFromStartCellIndex, in
    //    // DEBUG CODE ==================================================================================================
 
    // Create a new coastline object and append to it the vector of coastline objects
-   CRWCoast CoastTmp(this);
+   CRWCoast const CoastTmp(this);
    m_VCoast.push_back(CoastTmp);
-   int nCoast = static_cast<int>(m_VCoast.size()) - 1;
+   int const nCoast = static_cast<int>(m_VCoast.size()) - 1;
 
    // Set the coastline (Ext CRS)
    m_VCoast[nCoast].SetCoastlineExtCRS(&LTempExtCRS);
@@ -1090,7 +1091,7 @@ int CSimulation::nLocateFloodAndCoasts(void)
    FindAllInundatedCells();
 
    // Find every coastline on the raster grid, mark raster cells, then create the vector coastline
-   int nRet = nTraceAllFloodCoasts();
+   int const nRet = nTraceAllFloodCoasts();
 
    if (nRet != RTN_OK)
       return nRet;
@@ -1154,8 +1155,8 @@ int CSimulation::FindAllInundatedCells(void)
       if (m_bOmitSearchEastEdge && m_VEdgeCellEdge[n] == EAST)
          continue;
 
-      int nX = m_VEdgeCell[n].nGetX();
-      int nY = m_VEdgeCell[n].nGetY();
+      int const nX = m_VEdgeCell[n].nGetX();
+      int const nY = m_VEdgeCell[n].nGetY();
 
       if ((! m_pRasterGrid->m_Cell[nX][nY].bIsCellFloodCheck()) && (m_pRasterGrid->m_Cell[nX][nY].bIsInundated()))
       {

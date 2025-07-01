@@ -23,9 +23,18 @@
 ===============================================================================================================================*/
 #include <assert.h>
 
+#include <cstdio>
+
+#include <cmath>
+using std::hypot;
+using std::isnan;
+using std::sqrt;
+using std::atan2;
+using std:: isfinite;
+
 #include <iostream>
 using std::cerr;
-using std::cout;
+// using std::cout;
 using std::endl;
 using std::ios;
 
@@ -38,14 +47,16 @@ using std::stringstream;
 #include <string>
 using std::to_string;
 
-#include <cpl_config.h>
-#include <gdal_alg.h>
+#include <gdal.h>
 #include <gdal_priv.h>
+#include <gdal_alg.h>
+#include <cpl_conv.h>
+#include <cpl_error.h>
+#include <cpl_string.h>
 
 #include "cme.h"
 #include "coast.h"
-#include "raster_grid.h"
-#include "simulation.h"
+#include "2di_point.h"
 
 //===============================================================================================================================
 //! Initialize GDAL with performance optimizations
@@ -107,7 +118,7 @@ int CSimulation::nReadRasterBasementDEM(void)
    // If we have reference units, then check that they are in metres
    if (!m_strGDALBasementDEMProjection.empty())
    {
-      string strTmp = strToLower(&m_strGDALBasementDEMProjection);
+      string const strTmp = strToLower(&m_strGDALBasementDEMProjection);
 
       if ((strTmp.find("meter") == string::npos) && (strTmp.find("metre") == string::npos))
       {
@@ -153,8 +164,8 @@ int CSimulation::nReadRasterBasementDEM(void)
    }
 
    // Get the X and Y cell sizes, in external CRS units. Note that while the cell is supposed to be square, it may not be exactly so due to oddities with some GIS calculations
-   double dCellSideX = tAbs(m_dGeoTransform[1]);
-   double dCellSideY = tAbs(m_dGeoTransform[5]);
+   double const dCellSideX = tAbs(m_dGeoTransform[1]);
+   double const dCellSideY = tAbs(m_dGeoTransform[5]);
 
    // Check that the cell is more or less square
    if (!bFPIsEqual(dCellSideX, dCellSideY, 1e-2))
@@ -189,9 +200,9 @@ int CSimulation::nReadRasterBasementDEM(void)
    m_strGDALBasementDEMDataType = GDALGetDataTypeName(pGDALBand->GetRasterDataType());
 
    // If we have value units, then check them
-   string strUnits = pGDALBand->GetUnitType();
+   string const strUnits = pGDALBand->GetUnitType();
 
-   if ((!strUnits.empty()) && (strUnits.find("m") == string::npos))
+   if ((! strUnits.empty()) && (strUnits.find('m') == string::npos))
    {
       // Error: value units must be m
       cerr << ERR << "DEM vertical units are (" << strUnits << " ) in " << m_strInitialBasementDEMFile << ", should be 'm'" << endl;
@@ -200,7 +211,7 @@ int CSimulation::nReadRasterBasementDEM(void)
 
    // If present, get the missing value (NODATA) setting
    CPLPushErrorHandler(CPLQuietErrorHandler);          // Needed to get next line to fail silently, if it fails
-   double dMissingValue = pGDALBand->GetNoDataValue(); // Will fail for some formats
+   double const dMissingValue = pGDALBand->GetNoDataValue(); // Will fail for some formats
    CPLPopErrorHandler();
 
    if (!bFPIsEqual(dMissingValue, m_dMissingValue, TOLERANCE))
@@ -210,7 +221,7 @@ int CSimulation::nReadRasterBasementDEM(void)
 
    // Next allocate memory for a 2D array of raster cell objects: tell the user what is happening
    AnnounceAllocateMemory();
-   int nRet = m_pRasterGrid->nCreateGrid();
+   int const nRet = m_pRasterGrid->nCreateGrid();
 
    if (nRet != RTN_OK)
       return nRet;
@@ -277,7 +288,7 @@ int CSimulation::nMarkBoundingBoxEdgeCells(void)
       {
          if (!m_pRasterGrid->m_Cell[nX][nY].bBasementElevIsMissingValue())
          {
-            CGeom2DIPoint PtiTmp(nX, nY);
+            CGeom2DIPoint const PtiTmp(nX, nY);
             VPtiBoundingBoxCorner.push_back(PtiTmp);
             bFound = true;
             break;
@@ -305,7 +316,7 @@ int CSimulation::nMarkBoundingBoxEdgeCells(void)
       {
          if (!m_pRasterGrid->m_Cell[nX][nY].bBasementElevIsMissingValue())
          {
-            CGeom2DIPoint PtiTmp(nX, nY);
+            CGeom2DIPoint const PtiTmp(nX, nY);
             VPtiBoundingBoxCorner.push_back(PtiTmp);
             bFound = true;
             break;
@@ -333,7 +344,7 @@ int CSimulation::nMarkBoundingBoxEdgeCells(void)
       {
          if (!m_pRasterGrid->m_Cell[nX][nY].bBasementElevIsMissingValue())
          {
-            CGeom2DIPoint PtiTmp(nX, nY);
+            CGeom2DIPoint const PtiTmp(nX, nY);
             VPtiBoundingBoxCorner.push_back(PtiTmp);
             bFound = true;
             break;
@@ -361,7 +372,7 @@ int CSimulation::nMarkBoundingBoxEdgeCells(void)
       {
          if (!m_pRasterGrid->m_Cell[nX][nY].bBasementElevIsMissingValue())
          {
-            CGeom2DIPoint PtiTmp(nX, nY);
+            CGeom2DIPoint const PtiTmp(nX, nY);
             VPtiBoundingBoxCorner.push_back(PtiTmp);
             bFound = true;
             break;
@@ -601,7 +612,7 @@ int CSimulation::nReadRasterGISFile(int const nDataItem, int const nLayer)
       }
 
       // Now get dataset size, and do some checks
-      int nTmpXSize = pGDALDataset->GetRasterXSize();
+      int const nTmpXSize = pGDALDataset->GetRasterXSize();
 
       if (nTmpXSize != m_nXGridSize)
       {
@@ -610,7 +621,7 @@ int CSimulation::nReadRasterGISFile(int const nDataItem, int const nLayer)
          return (RTN_ERR_RASTER_FILE_READ);
       }
 
-      int nTmpYSize = pGDALDataset->GetRasterYSize();
+      int const nTmpYSize = pGDALDataset->GetRasterYSize();
 
       if (nTmpYSize != m_nYGridSize)
       {
@@ -637,7 +648,7 @@ int CSimulation::nReadRasterGISFile(int const nDataItem, int const nLayer)
          return (RTN_ERR_RASTER_FILE_READ);
       }
 
-      double dTmpResX = tAbs(dGeoTransform[1]);
+      double const dTmpResX = tAbs(dGeoTransform[1]);
 
       if (!bFPIsEqual(dTmpResX, m_dCellSide, 1e-2))
       {
@@ -646,7 +657,7 @@ int CSimulation::nReadRasterGISFile(int const nDataItem, int const nLayer)
          return (RTN_ERR_RASTER_FILE_READ);
       }
 
-      double dTmpResY = tAbs(dGeoTransform[5]);
+      double const dTmpResY = tAbs(dGeoTransform[5]);
 
       if (!bFPIsEqual(dTmpResY, m_dCellSide, 1e-2))
       {
@@ -745,7 +756,7 @@ int CSimulation::nReadRasterGISFile(int const nDataItem, int const nLayer)
       }
 
       // If present, get the missing value setting
-      string strTmp = strToLower(&strDataType);
+      string const strTmp = strToLower(&strDataType);
 
       if (strTmp.find("int") != string::npos)
       {
@@ -1324,8 +1335,7 @@ bool CSimulation::bWriteRasterGISFile(int const nDataItem, string const *strPlot
       if (NULL == pDataSet)
       {
          // Couldn't create in-memory file dataset
-         cerr << ERR << "cannot create in-memory file for " << m_strRasterGISOutFormat << " file named " << strFilePathName << endl
-              << CPLGetLastErrorMsg() << endl;
+         cerr << ERR << "cannot create in-memory file for " << m_strRasterGISOutFormat << " file named " << strFilePathName << endl << CPLGetLastErrorMsg() << endl;
          return false;
       }
    }
@@ -1361,9 +1371,8 @@ bool CSimulation::bWriteRasterGISFile(int const nDataItem, string const *strPlot
       // The output file format cannot handle floating-point numbers, so we may need to scale the output
       GetRasterOutputMinMax(nDataItem, dDataMin, dDataMax, nLayer, 0);
 
-      double
-          dDataRange = dDataMax - dDataMin,
-          dWriteRange = static_cast<double>(m_lGDALMaxCanWrite - m_lGDALMinCanWrite);
+      double const dDataRange = dDataMax - dDataMin;
+      double const dWriteRange = static_cast<double>(m_lGDALMaxCanWrite - m_lGDALMinCanWrite);
 
       if (dDataRange > 0)
          dRangeScale = dWriteRange / dDataRange;
@@ -1986,13 +1995,12 @@ bool CSimulation::bWriteRasterGISFile(int const nDataItem, string const *strPlot
    {
       // Since the user-selected raster driver cannot use the Create() method, we have been writing to a dataset created by the in-memory driver. So now we need to use CreateCopy() to copy this in-memory dataset to a file in the user-specified raster driver format
       GDALDriver *pOutDriver = GetGDALDriverManager()->GetDriverByName(m_strRasterGISOutFormat.c_str());
-      GDALDataset *pOutDataSet = pOutDriver->CreateCopy(strFilePathName.c_str(), pDataSet, FALSE, m_papszGDALRasterOptions, NULL, NULL);
+      GDALDataset* pOutDataSet = pOutDriver->CreateCopy(strFilePathName.c_str(), pDataSet, false, m_papszGDALRasterOptions, NULL, NULL);
 
       if (NULL == pOutDataSet)
       {
          // Couldn't create file
-         cerr << ERR << "cannot create " << m_strRasterGISOutFormat << " file named " << strFilePathName << endl
-              << CPLGetLastErrorMsg() << endl;
+         cerr << ERR << "cannot create " << m_strRasterGISOutFormat << " file named " << strFilePathName << endl << CPLGetLastErrorMsg() << endl;
          return false;
       }
 
@@ -2022,9 +2030,9 @@ int CSimulation::nInterpolateWavesToPolygonCells(vector<double> const *pVdX, vec
 
    nXSize = m_nXMaxBoundingBox - m_nXMinBoundingBox + 1;
    nYSize = m_nYMaxBoundingBox - m_nYMinBoundingBox + 1;
-   int nGridSize = nXSize * nYSize;
+   int const nGridSize = nXSize * nYSize;
 
-   unsigned int nPoints = static_cast<unsigned int>(pVdX->size());
+   unsigned int const nPoints = static_cast<unsigned int>(pVdX->size());
 
    //    // DEBUG CODE ============================================================================================================
    // for (int nn = 0; nn < nPoints; nn++)
@@ -2269,8 +2277,8 @@ int CSimulation::nInterpolateWavesToPolygonCells(vector<double> const *pVdX, vec
    {
       for (int nX = 0; nX < nXSize; nX++)
       {
-         int nActualX = nX + m_nXMinBoundingBox;
-         int nActualY = nY + m_nYMinBoundingBox;
+         int const nActualX = nX + m_nXMinBoundingBox;
+         int const nActualY = nY + m_nYMinBoundingBox;
 
          if (m_pRasterGrid->m_Cell[nActualX][nActualY].bIsInContiguousSea())
          {
@@ -2278,10 +2286,10 @@ int CSimulation::nInterpolateWavesToPolygonCells(vector<double> const *pVdX, vec
             if (m_pRasterGrid->m_Cell[nActualX][nActualY].nGetPolygonID() == INT_NODATA)
             {
                // This is a deep water sea cell (not in a polygon)
-               double dDeepWaterWaveHeight = m_pRasterGrid->m_Cell[nActualX][nActualY].dGetCellDeepWaterWaveHeight();
+               double const dDeepWaterWaveHeight = m_pRasterGrid->m_Cell[nActualX][nActualY].dGetCellDeepWaterWaveHeight();
                m_pRasterGrid->m_Cell[nActualX][nActualY].SetWaveHeight(dDeepWaterWaveHeight);
 
-               double dDeepWaterWaveAngle = m_pRasterGrid->m_Cell[nActualX][nActualY].dGetCellDeepWaterWaveAngle();
+               double const dDeepWaterWaveAngle = m_pRasterGrid->m_Cell[nActualX][nActualY].dGetCellDeepWaterWaveAngle();
                m_pRasterGrid->m_Cell[nActualX][nActualY].SetWaveAngle(dDeepWaterWaveAngle);
             }
 
@@ -2305,8 +2313,8 @@ int CSimulation::nInterpolateWavesToPolygonCells(vector<double> const *pVdX, vec
                   dWaveHeightY = VdOutY[n];
 
                // Now calculate wave direction
-               double dWaveHeight = sqrt((dWaveHeightX * dWaveHeightX) + (dWaveHeightY * dWaveHeightY));
-               double dWaveDir = atan2(dWaveHeightX, dWaveHeightY) * (180 / PI);
+               double const dWaveHeight = sqrt((dWaveHeightX * dWaveHeightX) + (dWaveHeightY * dWaveHeightY));
+               double const dWaveDir = atan2(dWaveHeightX, dWaveHeightY) * (180 / PI);
 
                // assert(isfinite(dWaveHeight));
                // assert(isfinite(dWaveDir));
@@ -2316,7 +2324,7 @@ int CSimulation::nInterpolateWavesToPolygonCells(vector<double> const *pVdX, vec
                m_pRasterGrid->m_Cell[nActualX][nActualY].SetWaveAngle(dKeepWithin360(dWaveDir));
 
                // Calculate the wave height-to-depth ratio for this cell, then update the cell's active zone status
-               double dSeaDepth = m_pRasterGrid->m_Cell[nActualX][nActualY].dGetSeaDepth();
+               double const dSeaDepth = m_pRasterGrid->m_Cell[nActualX][nActualY].dGetSeaDepth();
 
                if ((dWaveHeight / dSeaDepth) >= m_dBreakingWaveHeightDepthRatio)
                   m_pRasterGrid->m_Cell[nActualX][nActualY].SetInActiveZone(true);
@@ -2404,7 +2412,7 @@ int CSimulation::nInterpolateWavesToPolygonCells(vector<double> const *pVdX, vec
 int CSimulation::nInterpolateAllDeepWaterWaveValues(void)
 {
    // Interpolate deep water height and orientation from multiple user-supplied values
-   unsigned int nUserPoints = static_cast<unsigned int>(m_VdDeepWaterWaveStationX.size());
+   unsigned int const nUserPoints = static_cast<unsigned int>(m_VdDeepWaterWaveStationX.size());
 
    // Performance optimization: Enable GDAL threading for interpolation
    CPLSetThreadLocalConfigOption("GDAL_NUM_THREADS", "ALL_CPUS");

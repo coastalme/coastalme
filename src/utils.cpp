@@ -30,11 +30,20 @@
 #elif defined __GNUG__
    #include <sys/resource.h>  // Needed for CalcProcessStats()
    #include <unistd.h>        // For isatty()
+   #include <sys/types.h>
+   #include <sys/wait.h>
 #endif
 
 #ifdef _OPENMP
    #include <omp.h>
 #endif
+
+#include <stdio.h>
+
+#include <cstdlib>
+
+#include <cctype>
+using std::tolower;
 
 #include <cmath>
 using std::floor;
@@ -54,13 +63,13 @@ using std::cerr;
 using std::cout;
 using std::endl;
 using std::ios;
-using std::noshowpos;
-using std::showpos;
+// using std::noshowpos;
+// using std::showpos;
 
 #include <iomanip>
 using std::put_time;
 using std::resetiosflags;
-using std::setiosflags;
+// using std::setiosflags;
 using std::setprecision;
 using std::setw;
 
@@ -71,18 +80,20 @@ using std::to_string;
 using std::stringstream;
 
 #include <algorithm>
-using std::all_of;
+// using std::all_of;
 using std::transform;
 
-#include <numeric>
-using std::accumulate;
-using std::inner_product;
+// #include <numeric>
+// using std::accumulate;
+// using std::inner_product;
 
-#include <gdal_priv.h>
+#include <gdal.h>
+// #include <gdal_priv.h>
 
 #include "cme.h"
 #include "simulation.h"
 #include "coast.h"
+#include "2di_point.h"
 
 //===============================================================================================================================
 //! Handles command-line parameters
@@ -142,7 +153,7 @@ int CSimulation::nHandleCommandLineParams(int nArg, char const* pcArgv[])
                // string strTmp;
 
                // Find the position of '='
-               size_t pos = strArg.find('=');
+               size_t const pos = strArg.find('=');
 
                // Was '=' found?
                if (pos != string::npos)
@@ -246,7 +257,7 @@ bool CSimulation::bFindExeDir(char const* pcArg)
       return false;
 
    // It's OK, so trim off the executable's name
-   int nPos = static_cast<int>(strTmp.find_last_of(PATH_SEPARATOR));
+   int const nPos = static_cast<int>(strTmp.find_last_of(PATH_SEPARATOR));
    m_strCMEDir = strTmp.substr(0, nPos + 1); // Note that this must be terminated with a backslash
 
    return true;
@@ -278,7 +289,7 @@ void CSimulation::AnnounceLicence(void)
 double CSimulation::dGetTimeMultiplier(string const* strIn)
 {
    // First decide what the time units are
-   int nTimeUnits = nDoTimeUnits(strIn);
+   int const nTimeUnits = nDoTimeUnits(strIn);
 
    // Then return the correct multiplier, since m_dTimeStep is in hours
    switch (nTimeUnits)
@@ -313,7 +324,7 @@ double CSimulation::dGetTimeMultiplier(string const* strIn)
 int CSimulation::nDoSimulationTimeMultiplier(string const* strIn)
 {
    // First decide what the time units are
-   int nTimeUnits = nDoTimeUnits(strIn);
+   int const nTimeUnits = nDoTimeUnits(strIn);
 
    // Next set up the correct multiplier, since m_dTimeStep is in hours
    switch (nTimeUnits)
@@ -1447,14 +1458,14 @@ void CSimulation::CalcTime(double const dRunLength)
    if (! bFPIsEqual(m_dCPUClock, -1.0, TOLERANCE))
    {
       // Calculate CPU time in secs
-      double dDuration = m_dCPUClock / CLOCKS_PER_SEC;
+      double const dDuration = m_dCPUClock / CLOCKS_PER_SEC;
 
       // And write CPU time out to OutStream and LogStream
       OutStream << "CPU time elapsed: " << strDispTime(dDuration, false, true);
       LogStream << "CPU time elapsed: " << strDispTime(dDuration, false, true);
 
       // Calculate CPU time per timestep
-      double dPerTimestep = dDuration / static_cast<double>(m_ulTotTimestep);
+      double const dPerTimestep = dDuration / static_cast<double>(m_ulTotTimestep);
 
       // And write CPU time per timestep to OutStream and LogStream
       OutStream << fixed << setprecision(4) << " (" << dPerTimestep << " per timestep)" << endl;
@@ -1480,14 +1491,14 @@ void CSimulation::CalcTime(double const dRunLength)
    }
 
    // Calculate run time
-   double dDuration = difftime(m_tSysEndTime, m_tSysStartTime);
+   double const dDuration = difftime(m_tSysEndTime, m_tSysStartTime);
 
    // And write run time out to OutStream and LogStream
    OutStream << "Run time elapsed: " << strDispTime(dDuration, false, false);
    LogStream << "Run time elapsed: " << strDispTime(dDuration, false, false);
 
    // Calculate run time per timestep
-   double dPerTimestep = dDuration / static_cast<double>(m_ulTotTimestep);
+   double const dPerTimestep = dDuration / static_cast<double>(m_ulTotTimestep);
 
    // And write run time per timestep to OutStream and LogStream
    OutStream << resetiosflags(ios::floatfield);
@@ -1524,12 +1535,12 @@ string CSimulation::strDispSimTime(const double dTimeIn)
 
    // Constants
    double const dHoursInYear = 24 * 365; // it was 365.25
-   double dHoursInDay = 24;
+   double const dHoursInDay = 24;
 
    // Display years
    if (dTmpTime >= dHoursInYear)
    {
-      double dYears = floor(dTmpTime / dHoursInYear);
+      double const dYears = floor(dTmpTime / dHoursInYear);
       dTmpTime -= (dYears * dHoursInYear);
 
       strTime = to_string(static_cast<int>(dYears));
@@ -1542,7 +1553,7 @@ string CSimulation::strDispSimTime(const double dTimeIn)
    // Display Julian days
    if (dTmpTime >= dHoursInDay)
    {
-      double dJDays = floor(dTmpTime / dHoursInDay);
+      double const dJDays = floor(dTmpTime / dHoursInDay);
       dTmpTime -= (dJDays * dHoursInDay);
 
       stringstream ststrTmp;
@@ -1583,7 +1594,7 @@ string CSimulation::strDispTime(const double dTimeIn, const bool bRound, const b
    if (ulTimeIn >= 3600)
    {
       // Display some hours
-      unsigned long ulHours = ulTimeIn / 3600ul;
+      unsigned long const ulHours = ulTimeIn / 3600ul;
       ulTimeIn -= (ulHours * 3600ul);
 
       strTime = to_string(ulHours);
@@ -1597,7 +1608,7 @@ string CSimulation::strDispTime(const double dTimeIn, const bool bRound, const b
    if (ulTimeIn >= 60)
    {
       // display some minutes
-      unsigned long ulMins = ulTimeIn / 60ul;
+      unsigned long const ulMins = ulTimeIn / 60ul;
       ulTimeIn -= (ulMins * 60ul);
 
       stringstream ststrTmp;
@@ -1654,7 +1665,7 @@ void CSimulation::AnnounceProgress(void)
       // Stdout is connected to a tty, so not running as a background job
       static double sdElapsed = 0;
       static double sdToGo = 0;
-      time_t tNow = time(nullptr);
+      time_t const tNow = time(nullptr);
 
       // Calculate time elapsed and remaining
       sdElapsed = difftime(tNow, m_tSysStartTime);
@@ -1894,13 +1905,13 @@ void CSimulation::CalcProcessStats(void)
    }
 #endif
 
-   time_t tRunTime = m_tSysEndTime - m_tSysStartTime;
+   time_t const tRunTime = m_tSysEndTime - m_tSysStartTime;
    struct tm * ptmRunTime = gmtime(&tRunTime);
 
    OutStream << "Time required for simulation                 \t: " << put_time(ptmRunTime, "%T") << endl;
    LogStream << "Time required for simulation                 \t: " << put_time(ptmRunTime, "%T") << endl;
 
-   double dSpeedUp = m_dSimDuration * 3600 / static_cast<double>(tRunTime);
+   double const dSpeedUp = m_dSimDuration * 3600 / static_cast<double>(tRunTime);
    OutStream << setprecision(0);
    OutStream << "Time simulated / time required for simulation\t: " << dSpeedUp << " x faster than reality" << endl;
 
@@ -2292,7 +2303,7 @@ void CSimulation::DoSimulationEnd(int const nRtn)
             strCmd.append(m_strMailAddress);
          }
 
-         int nRet = system(strCmd.c_str());
+         int const nRet = system(strCmd.c_str());
 
          if (WEXITSTATUS(nRet) != 0)
             cerr << ERR << EMAIL_ERROR << endl;
@@ -2328,7 +2339,7 @@ string CSimulation::pstrChangeToForwardSlash(string const* strIn)
 string CSimulation::strTrimLeft(string const* strIn)
 {
    // Trim leading spaces
-   size_t nStartpos = strIn->find_first_not_of(" \t");
+   size_t const nStartpos = strIn->find_first_not_of(" \t");
 
    if (nStartpos == string::npos)
       return * strIn;
@@ -2348,7 +2359,7 @@ string CSimulation::strTrimRight(string const* strIn)
    strTmp.erase(remove(strTmp.begin(), strTmp.end(), '\r'), strTmp.end());
 
    // Trim trailing spaces
-   size_t nEndpos = strTmp.find_last_not_of(" \t");
+   size_t const nEndpos = strTmp.find_last_not_of(" \t");
 
    if (nEndpos == string::npos)
       return strTmp;
@@ -2407,7 +2418,7 @@ string CSimulation::strToLower(string const* strIn)
 //===============================================================================================================================
 string CSimulation::strRemoveSubstr(string * pStrIn, string const* pStrSub)
 {
-   size_t nPos = pStrIn->find( * pStrSub);
+   size_t const nPos = pStrIn->find( * pStrSub);
 
    if (nPos != string::npos)
    {
@@ -2488,16 +2499,15 @@ vector<string> CSimulation::VstrSplit(string const* s, char const delim)
 //===============================================================================================================================
 void CSimulation::AppendEnsureNoGap(vector<CGeom2DIPoint> *pVPtiPoints, CGeom2DIPoint const* pPti)
 {
-   int
-   nX = pPti->nGetX(),
-   nY = pPti->nGetY(),
-   nXLast = pVPtiPoints->back().nGetX(),
-   nYLast = pVPtiPoints->back().nGetY(),
-   nXDiff = nX - nXLast,
-   nYDiff = nY - nYLast,
-   nXDiffA = tAbs(nXDiff),
-   nYDiffA = tAbs(nYDiff),
-   nDiff = tMax(nXDiffA, nYDiffA);
+   int const nX = pPti->nGetX();
+   int const nY = pPti->nGetY();
+   int const nXLast = pVPtiPoints->back().nGetX();
+   int const nYLast = pVPtiPoints->back().nGetY();
+   int const nXDiff = nX - nXLast;
+   int const nYDiff = nY - nYLast;
+   int const nXDiffA = tAbs(nXDiff);
+   int const nYDiffA = tAbs(nYDiff);
+   int const nDiff = tMax(nXDiffA, nYDiffA);
 
    if (nDiff > 1)
    {
@@ -2514,7 +2524,7 @@ void CSimulation::AppendEnsureNoGap(vector<CGeom2DIPoint> *pVPtiPoints, CGeom2DI
 
       for (int n = 1; n < nDiff; n++)
       {
-         CGeom2DIPoint Pti(nXLast + nRound(n * dXInc), nYLast + nRound(n * dYInc));
+         CGeom2DIPoint const Pti(nXLast + nRound(n * dXInc), nYLast + nRound(n * dYInc));
          pVPtiPoints->push_back(Pti);
       }
    }
@@ -2542,7 +2552,7 @@ void CSimulation::CalcDeanProfile(vector<double> *pdVDeanProfile, double const d
 
          else
          {
-            double dDistBelowTop = dA * pow(dDistFromProfileStart, DEAN_POWER);
+            double const dDistBelowTop = dA * pow(dDistFromProfileStart, DEAN_POWER);
             pdVDeanProfile->at(n) = dDeanTopElev - dDistBelowTop;
 
             dDistFromProfileStart += dInc;
@@ -2555,7 +2565,7 @@ void CSimulation::CalcDeanProfile(vector<double> *pdVDeanProfile, double const d
       // This Dean profile is for erosion i.e. landward displacement of the profile
       for (int n = 0; n < static_cast<int>(pdVDeanProfile->size()); n++)
       {
-         double dDistBelowTop = dA * pow(dDistFromProfileStart, DEAN_POWER);
+         double const dDistBelowTop = dA * pow(dDistFromProfileStart, DEAN_POWER);
          pdVDeanProfile->at(n) = dDeanTopElev - dDistBelowTop;
 
          dDistFromProfileStart += dInc;
@@ -2575,7 +2585,7 @@ double CSimulation::dSubtractProfiles(vector<double> const* pdVFirstProfile, vec
    {
       if (pbVIsValid->at(n))
       {
-         double dProfileDiff = pdVFirstProfile->at(n) - pdVSecondProfile->at(n);
+         double const dProfileDiff = pdVFirstProfile->at(n) - pdVSecondProfile->at(n);
 
          dTotElevDiff += dProfileDiff;
       }
@@ -2794,7 +2804,7 @@ unsigned long CSimulation::ulConvertToTimestep(string const* pstrIn) const
          return SEDIMENT_INPUT_EVENT_ERROR;
       }
 
-      double dHours = stod(strTrim(&VstrTmp[0]));
+      double const dHours = stod(strTrim(&VstrTmp[0]));
 
       if (dHours > m_dSimDuration)
       {
@@ -2816,7 +2826,7 @@ unsigned long CSimulation::ulConvertToTimestep(string const* pstrIn) const
          return SEDIMENT_INPUT_EVENT_ERROR;
       }
 
-      double dHours = stod(strTrim(&VstrTmp[0])) * 24;
+      double const dHours = stod(strTrim(&VstrTmp[0])) * 24;
 
       if (dHours > m_dSimDuration)
       {
@@ -2877,8 +2887,8 @@ unsigned long CSimulation::ulConvertToTimestep(string const* pstrIn) const
       tmSimEvent.tm_mon = nMonth - 1;
       tmSimEvent.tm_year = nYear - 1900;
 
-      time_t tStart = mktime(&tmSimStart);
-      time_t tEvent = mktime(&tmSimEvent);
+      time_t const tStart = mktime(&tmSimStart);
+      time_t const tEvent = mktime(&tmSimEvent);
 
       if (tStart == (time_t)(-1))
       {
@@ -2892,7 +2902,7 @@ unsigned long CSimulation::ulConvertToTimestep(string const* pstrIn) const
          return SEDIMENT_INPUT_EVENT_ERROR;
       }
 
-      double dHours = difftime(tEvent, tStart) / (60 * 60);
+      double const dHours = difftime(tEvent, tStart) / (60 * 60);
 
       if (dHours < 0)
       {

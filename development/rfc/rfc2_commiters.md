@@ -97,9 +97,9 @@ project.
 -  All source code in SVC should be in Unix text format as opposed to
    DOS text mode.
 -  When committing new features or significant changes to existing
-   source code, the committer should take reasonable measures to insure
+   source code, the committer should take reasonable measures to ensure
    that the source code continues to build and work on the most commonly
-   supported platforms (currently Linux and Windows), either by testing
+   supported platforms (currently Linux, Windows, and Mac), either by testing
    on those platforms directly, running [wiki:Buildbot] tests, or by
    getting help from other developers working on those platforms. If new
    files or library dependencies are added, then the configure.in,
@@ -109,9 +109,10 @@ project.
 CoastalME coding guidelines
 ---------------------------
 
-- Do not save CoastalME code files (*.cpp, *.h) with a limited line length (e.g. 80 characters). One consequence of doing this is that headers for fixed-width output (e.g. PER_ITER_HEAD1) are split and redistributed over several lines. This makes it much harder to ensure correct alignment of such headers. Instead, allow unlimited line length. If this is not possible, allow a line length of 250 characters or more.
-- As far as is possible, format your new or modified code to be similar to existing code.
-- You will probably find it useful to use a source code formatter to tidy your contribution before submitting it. The clang-format source code formatter does a good job. To install this on a Linux system, run "apt install clang-format" or equivalent. There should be a clang-format configuation file (.clang-format) in your src directory if you have pulled the CoastalME code from github. To use clang-format to tidy CoastalME source code, run tidy_src.sh in the src directory. This will modify the .cpp and .h files "in place" i.e. without making a backup. For more about clang-format, see https://clang.llvm.org/docs/ClangFormat.html
+- Do not save CoastalME source code files (*.cpp, *.h) with a limited line length (e.g. 80 characters). One consequence of doing this is that headers for fixed-width output (e.g. PER_ITER_HEAD1) are split and redistributed over several lines. This makes it much harder to ensure correct run-time alignment of such headers. Instead, allow unlimited line length. If this is not possible, allow a line length of at least 250 characters.
+- As far as is possible, format your new or modified source code to be similar in style to existing code.
+- You will probably find it useful to use a source code formatter to tidy and style your contribution before submitting it. The clang-format source code formatter does a good job. To install this on a Linux system, run "apt install clang-format" or equivalent. There should be a clang-format configuration file (.clang-format) in your src directory if you have pulled the CoastalME code from github. To use clang-format to tidy CoastalME source code, run tidy_src.sh in the src directory. This will modify the .cpp and .h files "in place" i.e. without making a backup. For more about clang-format, see https://clang.llvm.org/docs/ClangFormat.html
+- Additionally, you are strongly advised to use a static code analyzer such as clang-tidy on your new or modified source code. Run do_clang-analyse.sh in the src directory, this will produce a text file named 000_clang-analyze_advice.txt, which gives suggestions for e.g. maiaining const-correctness of variables. Note however that not all suggestions by clang-tidy "work", some may prevent your code building. For this reason, it is sensible to try just a few suggestions at a time, then do a test build. 
 
 Relationship with other upstream projects imported in CoastalME code base
 ------------------------------------------------------------------------

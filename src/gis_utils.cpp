@@ -51,24 +51,34 @@ Cambridge, MA 02139, USA.
 ===============================================================================================================================*/
 #include <assert.h>
 
+#include <cstdio>
+
 #include <iostream>
 using std::cerr;
-using std::cout;
+// using std::cout;
 using std::endl;
 using std::ios;
 
 #include <cmath>
+using std::atan2;
 
 #include <cfloat>
+#include <climits>
+#include <cstdint>
 
+#include <cstring>
+using std::strstr;
+
+#include <gdal.h>
 #include <gdal_priv.h>
-
-#include <ogrsf_frmts.h>
+// #include <cpl_error.h>
+#include <cpl_string.h>
 
 #include "cme.h"
 #include "coast.h"
 #include "raster_grid.h"
-#include "simulation.h"
+#include "2d_point.h"
+#include "2di_point.h"
 
 //===============================================================================================================================
 //! Given the integer X-axis ordinate of a cell in the raster grid CRS, returns
@@ -101,10 +111,8 @@ CGeom2DPoint
 CSimulation::PtGridCentroidToExt(CGeom2DIPoint const *pPtiIn) const
 {
    // TODO 064
-   double dX = m_dGeoTransform[0] + (pPtiIn->nGetX() * m_dGeoTransform[1]) +
-               (m_dGeoTransform[1] / 2);
-   double dY = m_dGeoTransform[3] + (pPtiIn->nGetY() * m_dGeoTransform[5]) +
-               (m_dGeoTransform[5] / 2);
+   double const dX = m_dGeoTransform[0] + (pPtiIn->nGetX() * m_dGeoTransform[1]) + (m_dGeoTransform[1] / 2);
+   double const dY = m_dGeoTransform[3] + (pPtiIn->nGetY() * m_dGeoTransform[5]) + (m_dGeoTransform[5] / 2);
 
    return CGeom2DPoint(dX, dY);
 }
@@ -160,10 +168,8 @@ CGeom2DIPoint
 CSimulation::PtiExtCRSToGridRound(CGeom2DPoint const *pPtIn) const
 {
    // TODO 064
-   int nX =
-       nRound(((pPtIn->dGetX() - m_dGeoTransform[0]) / m_dGeoTransform[1]) - 1);
-   int nY =
-       nRound(((pPtIn->dGetY() - m_dGeoTransform[3]) / m_dGeoTransform[5]) - 1);
+   int const nX = nRound(((pPtIn->dGetX() - m_dGeoTransform[0]) / m_dGeoTransform[1]) - 1);
+   int const nY = nRound(((pPtIn->dGetY() - m_dGeoTransform[3]) / m_dGeoTransform[5]) - 1);
 
    return CGeom2DIPoint(nX, nY);
 }
@@ -174,8 +180,8 @@ CSimulation::PtiExtCRSToGridRound(CGeom2DPoint const *pPtIn) const
 double CSimulation::dGetDistanceBetween(CGeom2DPoint const *Pt1,
                                         CGeom2DPoint const *Pt2)
 {
-   double dXDist = Pt1->dGetX() - Pt2->dGetX();
-   double dYDist = Pt1->dGetY() - Pt2->dGetY();
+   double const dXDist = Pt1->dGetX() - Pt2->dGetX();
+   double const dYDist = Pt1->dGetY() - Pt2->dGetY();
 
    return hypot(dXDist, dYDist);
 }
@@ -186,8 +192,8 @@ double CSimulation::dGetDistanceBetween(CGeom2DPoint const *Pt1,
 double CSimulation::dGetDistanceBetween(CGeom2DIPoint const *Pti1,
                                         CGeom2DIPoint const *Pti2)
 {
-   double dXDist = Pti1->nGetX() - Pti2->nGetX();
-   double dYDist = Pti1->nGetY() - Pti2->nGetY();
+   double const dXDist = Pti1->nGetX() - Pti2->nGetX();
+   double const dYDist = Pti1->nGetY() - Pti2->nGetY();
 
    return hypot(dXDist, dYDist);
 }
@@ -228,8 +234,8 @@ bool CSimulation::bIsWithinValidGrid(int const nX, int const nY) const
 //===============================================================================================================================
 bool CSimulation::bIsWithinValidGrid(CGeom2DIPoint const *Pti) const
 {
-   int nX = Pti->nGetX();
-   int nY = Pti->nGetY();
+   int const nX = Pti->nGetX();
+   int const nY = Pti->nGetY();
 
    return this->bIsWithinValidGrid(nX, nY);
 }
@@ -284,8 +290,8 @@ void CSimulation::KeepWithinValidGrid(int nX0, int nY0, int &nX1,
       nY0 = 0;
 
    // OK let's go
-   int nDiffX = nX0 - nX1;
-   int nDiffY = nY0 - nY1;
+   int const nDiffX = nX0 - nX1;
+   int const nDiffY = nY0 - nY1;
 
    if (nDiffX == 0)
    {
@@ -479,12 +485,12 @@ double CSimulation::dKeepWithin360(double const dAngle)
 CGeom2DPoint CSimulation::PtAverage(CGeom2DPoint const *pPt1,
                                     CGeom2DPoint const *pPt2)
 {
-   double dPt1X = pPt1->dGetX();
-   double dPt1Y = pPt1->dGetY();
-   double dPt2X = pPt2->dGetX();
-   double dPt2Y = pPt2->dGetY();
-   double dPtAvgX = (dPt1X + dPt2X) / 2;
-   double dPtAvgY = (dPt1Y + dPt2Y) / 2;
+   double const dPt1X = pPt1->dGetX();
+   double const dPt1Y = pPt1->dGetY();
+   double const dPt2X = pPt2->dGetX();
+   double const dPt2Y = pPt2->dGetY();
+   double const dPtAvgX = (dPt1X + dPt2X) / 2;
+   double const dPtAvgY = (dPt1Y + dPt2Y) / 2;
 
    return CGeom2DPoint(dPtAvgX, dPtAvgY);
 }
@@ -516,14 +522,14 @@ CGeom2DIPoint CSimulation::PtiWeightedAverage(CGeom2DIPoint const *pPti1,
                                               CGeom2DIPoint const *pPti2,
                                               double const dWeight)
 {
-   int nPti1X = pPti1->nGetX();
-   int nPti1Y = pPti1->nGetY();
-   int nPti2X = pPti2->nGetX();
-   int nPti2Y = pPti2->nGetY();
-   double dOtherWeight = 1.0 - dWeight;
+   int const nPti1X = pPti1->nGetX();
+   int const nPti1Y = pPti1->nGetY();
+   int const nPti2X = pPti2->nGetX();
+   int const nPti2Y = pPti2->nGetY();
+   double const dOtherWeight = 1.0 - dWeight;
 
-   int nPtiWeightAvgX = nRound((dWeight * nPti2X) + (dOtherWeight * nPti1X));
-   int nPtiWeightAvgY = nRound((dWeight * nPti2Y) + (dOtherWeight * nPti1Y));
+   int const nPtiWeightAvgX = nRound((dWeight * nPti2X) + (dOtherWeight * nPti1X));
+   int const nPtiWeightAvgY = nRound((dWeight * nPti2Y) + (dOtherWeight * nPti1Y));
 
    return CGeom2DIPoint(nPtiWeightAvgX, nPtiWeightAvgY);
 }
@@ -534,7 +540,7 @@ CGeom2DIPoint CSimulation::PtiWeightedAverage(CGeom2DIPoint const *pPti1,
 //===============================================================================================================================
 CGeom2DPoint CSimulation::PtAverage(vector<CGeom2DPoint> *pVIn)
 {
-   int nSize = static_cast<int>(pVIn->size());
+   int const nSize = static_cast<int>(pVIn->size());
 
    if (nSize == 0)
       return CGeom2DPoint(DBL_NODATA, DBL_NODATA);
@@ -587,7 +593,7 @@ CGeom2DPoint CSimulation::PtAverage(vector<CGeom2DPoint> *pVIn)
 CGeom2DIPoint CSimulation::PtiPolygonCentroid(vector<CGeom2DIPoint> *pVIn)
 {
    CGeom2DIPoint PtiCentroid(0, 0);
-   int nSize = static_cast<int>(pVIn->size());
+   int const nSize = static_cast<int>(pVIn->size());
    int nX0 = 0; // Current vertex X
    int nY0 = 0; // Current vertex Y
    int nX1 = 0; // Next vertex X
@@ -673,8 +679,8 @@ CGeom2DPoint CSimulation::PtGetPerpendicular(CGeom2DPoint const *PtStart,
                                              double const dDesiredLength,
                                              int const nHandedness)
 {
-   double dXLen = PtNext->dGetX() - PtStart->dGetX();
-   double dYLen = PtNext->dGetY() - PtStart->dGetY();
+   double const dXLen = PtNext->dGetX() - PtStart->dGetX();
+   double const dYLen = PtNext->dGetY() - PtStart->dGetY();
    double dLength;
 
    if (bFPIsEqual(dXLen, 0.0, TOLERANCE))
@@ -686,7 +692,7 @@ CGeom2DPoint CSimulation::PtGetPerpendicular(CGeom2DPoint const *PtStart,
    else
       dLength = hypot(dXLen, dYLen);
 
-   double dScaleFactor = dDesiredLength / dLength;
+   double const dScaleFactor = dDesiredLength / dLength;
 
    // The difference vector is (dXLen, dYLen), so the perpendicular difference
    // vector is (-dYLen, dXLen) or (dYLen, -dXLen)
@@ -717,8 +723,8 @@ CGeom2DIPoint CSimulation::PtiGetPerpendicular(CGeom2DIPoint const *PtiStart,
                                                double const dDesiredLength,
                                                int const nHandedness)
 {
-   double dXLen = PtiNext->nGetX() - PtiStart->nGetX();
-   double dYLen = PtiNext->nGetY() - PtiStart->nGetY();
+   double const dXLen = PtiNext->nGetX() - PtiStart->nGetX();
+   double const dYLen = PtiNext->nGetY() - PtiStart->nGetY();
    double dLength;
 
    if (bFPIsEqual(dXLen, 0.0, TOLERANCE))
@@ -730,7 +736,7 @@ CGeom2DIPoint CSimulation::PtiGetPerpendicular(CGeom2DIPoint const *PtiStart,
    else
       dLength = hypot(dXLen, dYLen);
 
-   double dScaleFactor = dDesiredLength / dLength;
+   double const dScaleFactor = dDesiredLength / dLength;
 
    // The difference vector is (dXLen, dYLen), so the perpendicular difference
    // vector is (-dYLen, dXLen) or (dYLen, -dXLen)
@@ -760,8 +766,8 @@ CGeom2DIPoint CSimulation::PtiGetPerpendicular(
     int const nStartX, int const nStartY, int const nNextX, int const nNextY,
     double const dDesiredLength, int const nHandedness)
 {
-   double dXLen = nNextX - nStartX;
-   double dYLen = nNextY - nStartY;
+   double const dXLen = nNextX - nStartX;
+   double const dYLen = nNextY - nStartY;
    double dLength;
 
    if (bFPIsEqual(dXLen, 0.0, TOLERANCE))
@@ -773,7 +779,7 @@ CGeom2DIPoint CSimulation::PtiGetPerpendicular(
    else
       dLength = hypot(dXLen, dYLen);
 
-   double dScaleFactor = dDesiredLength / dLength;
+   double const dScaleFactor = dDesiredLength / dLength;
 
    // The difference vector is (dXLen, dYLen), so the perpendicular difference
    // vector is (-dYLen, dXLen) or (dYLen, -dXLen)
@@ -803,14 +809,13 @@ double CSimulation::dAngleSubtended(CGeom2DIPoint const *pPtiA,
                                     CGeom2DIPoint const *pPtiB,
                                     CGeom2DIPoint const *pPtiC)
 {
-   double dXDistBtoA = pPtiB->nGetX() - pPtiA->nGetX(),
-          dYDistBtoA = pPtiB->nGetY() - pPtiA->nGetY(),
-          dXDistCtoA = pPtiC->nGetX() - pPtiA->nGetX(),
-          dYDistCtoA = pPtiC->nGetY() - pPtiA->nGetY(),
-          dDotProduct = dXDistBtoA * dXDistCtoA + dYDistBtoA * dYDistCtoA,
-          dPseudoCrossProduct =
-              dXDistBtoA * dYDistCtoA - dYDistBtoA * dXDistCtoA,
-          dAngle = atan2(dPseudoCrossProduct, dDotProduct);
+   double const dXDistBtoA = pPtiB->nGetX() - pPtiA->nGetX();
+   double const dYDistBtoA = pPtiB->nGetY() - pPtiA->nGetY();
+   double const dXDistCtoA = pPtiC->nGetX() - pPtiA->nGetX();
+   double const dYDistCtoA = pPtiC->nGetY() - pPtiA->nGetY();
+   double const dDotProduct = dXDistBtoA * dXDistCtoA + dYDistBtoA * dYDistCtoA;
+   double const dPseudoCrossProduct = dXDistBtoA * dYDistCtoA - dYDistBtoA * dXDistCtoA;
+   double const dAngle = atan2(dPseudoCrossProduct, dDotProduct);
 
    return dAngle;
 }
@@ -849,7 +854,7 @@ bool CSimulation::bCheckRasterGISOutputFormat(void)
    // cout << endl;
 
    // Need to test if this is a raster driver
-   if (!CSLFetchBoolean(papszMetadata, GDAL_DCAP_RASTER, FALSE))
+   if (! CSLFetchBoolean(papszMetadata, GDAL_DCAP_RASTER, false))
    {
       // This is not a raster driver
       cerr << ERR << "GDAL driver '" << m_strRasterGISOutFormat
@@ -866,9 +871,8 @@ bool CSimulation::bCheckRasterGISOutputFormat(void)
                           // not to be implemented for newer drivers
    strTmp = strTrim(&strTmp);
 
-   // We have a space-separated list of one or more file extensions: use the
-   // first extension in the list
-   long unsigned int nPos = strTmp.find(SPACE);
+   // We have a space-separated list of one or more file extensions: use the first extension in the list
+   long unsigned int const nPos = strTmp.find(SPACE);
 
    if (nPos == string::npos)
    {
@@ -886,11 +890,10 @@ bool CSimulation::bCheckRasterGISOutputFormat(void)
    SetRasterFileCreationDefaults();
 
    // Now do various tests of the driver's capabilities
-   if (!CSLFetchBoolean(papszMetadata, GDAL_DCAP_CREATE, FALSE))
+   if (! CSLFetchBoolean(papszMetadata, GDAL_DCAP_CREATE, false))
    {
-      // This raster driver does not support the Create() method, does it support
-      // CreateCopy()?
-      if (!CSLFetchBoolean(papszMetadata, GDAL_DCAP_CREATECOPY, FALSE))
+      // This raster driver does not support the Create() method, does it support CreateCopy()?
+      if (! CSLFetchBoolean(papszMetadata, GDAL_DCAP_CREATECOPY, false))
       {
          cerr << ERR << "Cannot write using raster GDAL driver '"
               << m_strRasterGISOutFormat
@@ -1019,7 +1022,7 @@ bool CSimulation::bCheckVectorGISOutputFormat(void)
    char **papszMetadata = pDriver->GetMetadata();
 
    // For GDAL2, need to test if this is a vector driver
-   if (!CSLFetchBoolean(papszMetadata, GDAL_DCAP_VECTOR, FALSE))
+   if (! CSLFetchBoolean(papszMetadata, GDAL_DCAP_VECTOR, false))
    {
       // This is not a vector driver
       cerr << ERR << "GDAL driver '" << m_strVectorGISOutFormat
@@ -1027,7 +1030,7 @@ bool CSimulation::bCheckVectorGISOutputFormat(void)
       return false;
    }
 
-   if (!CSLFetchBoolean(papszMetadata, GDAL_DCAP_CREATE, FALSE))
+   if (! CSLFetchBoolean(papszMetadata, GDAL_DCAP_CREATE, false))
    {
       // Driver does not support create() method
       cerr << ERR << "Cannot write vector GIS files using GDAL driver '"
@@ -1955,7 +1958,7 @@ void CSimulation::GetRasterOutputMinMax(int const nDataItem, double &dMin,
             break;
 
          case (RASTER_PLOT_POLYGON_GAIN_OR_LOSS):
-            int nPoly = m_pRasterGrid->m_Cell[nX][nY].nGetPolygonID();
+               int const nPoly = m_pRasterGrid->m_Cell[nX][nY].nGetPolygonID();
 
             if (nPoly == INT_NODATA)
                dTmp = m_dMissingValue;
@@ -1984,9 +1987,8 @@ void CSimulation::GetRasterOutputMinMax(int const nDataItem, double &dMin,
 //===============================================================================================================================
 void CSimulation::SetRasterFileCreationDefaults(void)
 {
-   string strDriver = strToLower(&m_strRasterGISOutFormat);
-   string strComment = "Created by " + PROGRAM_NAME + " for " + PLATFORM + " " +
-                       strGetBuild() + " running on " + strGetComputerName();
+   string const strDriver = strToLower(&m_strRasterGISOutFormat);
+   string const strComment = "Created by " + PROGRAM_NAME + " for " + PLATFORM + " " + strGetBuild() + " running on " + strGetComputerName();
 
    // TODO 034 Do these for all commonly-used file types
    if (strDriver == "aaigrid")
@@ -2142,15 +2144,15 @@ CGeom2DIPoint CSimulation::PtiFindClosestCoastPoint(int const nX,
    {
       for (int j = 0; j < m_VCoast[nCoast].nGetCoastlineSize(); j++)
       {
-         // Get the coords of the grid cell marked as coastline for the coastal
-         // landform object
-         int nXCoast = m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(j)->nGetX(),
-             nYCoast = m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(j)->nGetY();
+         // Get the coords of the grid cell marked as coastline for the coastal landform object
+         int const nXCoast = m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(j)->nGetX();
+         int const nYCoast = m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(j)->nGetY();
 
          // Calculate the squared distance between this point and the given point
-         int nXDist = nX - nXCoast, nYDist = nY - nYCoast;
+         int const nXDist = nX - nXCoast;
+         int const nYDist = nY - nYCoast;
 
-         unsigned int nSqDist = (nXDist * nXDist) + (nYDist * nYDist);
+         unsigned int const nSqDist = (nXDist * nXDist) + (nYDist * nYDist);
 
          // Is this the closest so dar?
          if (nSqDist < nMinSqDist)

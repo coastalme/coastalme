@@ -22,12 +22,12 @@
 
 ==============================================================================================================================*/
 #include <iostream>
-using std::cout;
-using std::cerr;
-using std::endl;
+// using std::cout;
+// using std::cerr;
+// using std::endl;
 using std::ios;
 
-#include "cme.h"
+// #include "cme.h"
 #include "i_line.h"
 
 //! Constructor
@@ -71,7 +71,7 @@ CGeomILine::~CGeomILine(void)
 //! Returns true if the point is present in the line
 bool CGeomILine::bIsPresent(int const nX, int const nY)
 {
-   int nSize = static_cast<int>(m_VPoints.size());
+   int const nSize = static_cast<int>(m_VPoints.size());
 
    if (nSize == 0)
       return false;

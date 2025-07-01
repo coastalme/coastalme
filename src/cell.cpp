@@ -36,6 +36,9 @@ using std::vector;
 #include "cell.h"
 #include "cme.h"
 #include "simulation.h"
+#include "cell.h"
+#include "cell_layer.h"
+#include "cell_sediment.h"
 
 //! Constructor with initialization list
 CGeomCell::CGeomCell()
@@ -564,9 +567,8 @@ double CGeomCell::dGetTotConsFineThickConsiderNotch(void) const
    for (unsigned int n = 0; n < m_VLayerAboveBasement.size(); n++)
    {
       CRWCellLayer m_Layer = m_VLayerAboveBasement[n];
-      double dLayerThick = m_Layer.dGetFineConsolidatedThickness();
-      double dNotchEquiv =
-          m_Layer.pGetConsolidatedSediment()->dGetNotchFineLost();
+      double const dLayerThick = m_Layer.dGetFineConsolidatedThickness();
+      double const dNotchEquiv = m_Layer.pGetConsolidatedSediment()->dGetNotchFineLost();
 
       dTotThick += (dLayerThick - dNotchEquiv);
    }
@@ -594,9 +596,8 @@ double CGeomCell::dGetTotConsSandThickConsiderNotch(void) const
    for (unsigned int n = 0; n < m_VLayerAboveBasement.size(); n++)
    {
       CRWCellLayer m_Layer = m_VLayerAboveBasement[n];
-      double dLayerThick = m_Layer.dGetSandConsolidatedThickness();
-      double dNotchEquiv =
-          m_Layer.pGetConsolidatedSediment()->dGetNotchSandLost();
+      double const dLayerThick = m_Layer.dGetSandConsolidatedThickness();
+      double const dNotchEquiv = m_Layer.pGetConsolidatedSediment()->dGetNotchSandLost();
 
       dTotThick += (dLayerThick - dNotchEquiv);
    }
@@ -625,9 +626,8 @@ double CGeomCell::dGetTotConsCoarseThickConsiderNotch(void) const
    for (unsigned int n = 0; n < m_VLayerAboveBasement.size(); n++)
    {
       CRWCellLayer m_Layer = m_VLayerAboveBasement[n];
-      double dLayerThick = m_Layer.dGetCoarseConsolidatedThickness();
-      double dNotchEquiv =
-          m_Layer.pGetConsolidatedSediment()->dGetNotchCoarseLost();
+      double const dLayerThick = m_Layer.dGetCoarseConsolidatedThickness();
+      double const dNotchEquiv = m_Layer.pGetConsolidatedSediment()->dGetNotchCoarseLost();
 
       dTotThick += (dLayerThick - dNotchEquiv);
    }
@@ -707,17 +707,15 @@ void CGeomCell::CalcAllLayerElevsAndD50(void)
    for (int n = static_cast<int>(m_VLayerAboveBasement.size()) - 1; n >= 0;
         n--)
    {
-      double dUnconsThick =
-          m_VLayerAboveBasement[n].dGetUnconsolidatedThickness();
+      double const dUnconsThick = m_VLayerAboveBasement[n].dGetUnconsolidatedThickness();
 
       if (dUnconsThick > 0)
       {
          // This is a layer with non-zero thickness of unconsolidated sediment
-         CRWCellSediment const *pUnconsSedLayer =
-             m_VLayerAboveBasement[n].pGetUnconsolidatedSediment();
-         double dFineProp = pUnconsSedLayer->dGetFineDepth() / dUnconsThick;
-         double dSandProp = pUnconsSedLayer->dGetSandDepth() / dUnconsThick;
-         double dCoarseProp = pUnconsSedLayer->dGetCoarseDepth() / dUnconsThick;
+         CRWCellSediment const* pUnconsSedLayer = m_VLayerAboveBasement[n].pGetUnconsolidatedSediment();
+         double const dFineProp = pUnconsSedLayer->dGetFineDepth() / dUnconsThick;
+         double const dSandProp = pUnconsSedLayer->dGetSandDepth() / dUnconsThick;
+         double const dCoarseProp = pUnconsSedLayer->dGetCoarseDepth() / dUnconsThick;
 
          // Calculate d50 for the unconsolidated sediment
          m_dUnconsD50 = (dFineProp * m_pGrid->pGetSim()->dGetD50Fine()) +
@@ -842,7 +840,7 @@ void CGeomCell::InitCell(void)
    m_dBeachProtectionFactor = DBL_NODATA;
 
    // Initialize this-iteration sediment input event values
-   int nThisLayer = this->nGetTopNonZeroLayerAboveBasement();
+   int const nThisLayer = this->nGetTopNonZeroLayerAboveBasement();
 
    // Safety check
    if ((nThisLayer == NO_NONZERO_THICKNESS_LAYERS) ||

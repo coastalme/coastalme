@@ -23,7 +23,8 @@
 ===============================================================================================================================*/
 #include <assert.h>
 
-#include "cme.h"
+// #include "cme.h"
+// #include "2di_point.h"
 #include "multi_line.h"
 
 //! Constructor, no parameters
@@ -134,7 +135,7 @@ void CGeomMultiLine::RemoveLineSegment(int const nSegment)
 //! Appends a coincident profile pair to the CGeomMultiLine object's final line segment
 void CGeomMultiLine::AppendCoincidentProfileToLineSegments(pair<int, int> const prIn)
 {
-   long unsigned int nSize = m_prVVLineSegment.size();
+   long unsigned int const nSize = m_prVVLineSegment.size();
    m_prVVLineSegment[nSize - 1].push_back(prIn);
 // m_prVVLineSegment.back().push_back(prIn);
 }
@@ -180,10 +181,10 @@ int CGeomMultiLine::nGetNumCoincidentProfilesInLineSegment(int const nSegment)
 //! Returns true if the given profile number is amongst the coincident profiles of the CGeomMultiLine object's final line segment
 bool CGeomMultiLine::bFindProfileInCoincidentProfilesOfLastLineSegment(int const nProfile)
 {
-   long unsigned int nLineSegSize = m_prVVLineSegment.size();
+   long unsigned int const nLineSegSize = m_prVVLineSegment.size();
 
    // Note no check to ensure that nLineSegSize < 0
-   long unsigned int nCoincidentSize = m_prVVLineSegment[nLineSegSize - 1].size();
+   long unsigned int const nCoincidentSize = m_prVVLineSegment[nLineSegSize - 1].size();
 
    for (unsigned int i = 0; i < nCoincidentSize; i++)
    {
@@ -210,7 +211,7 @@ bool CGeomMultiLine::bFindProfileInCoincidentProfilesOfLastLineSegment(int const
 //! Returns true if the given profile number is a coincident profile of any line segment of the CGeomMultiLine object
 bool CGeomMultiLine::bFindProfileInCoincidentProfiles(int const nProfile)
 {
-   int nSegSize = static_cast<int>(m_prVVLineSegment.size());
+   int const nSegSize = static_cast<int>(m_prVVLineSegment.size());
 
    if (nSegSize == 0)
       return false;
@@ -233,7 +234,7 @@ void CGeomMultiLine::GetMostCoastwardSharedLineSegment(int const nOtherProfile, 
    nThisLineSegment =
    nOtherLineSegment = -1;
 
-   long unsigned int nSegSize = m_prVVLineSegment.size();
+   long unsigned int const nSegSize = m_prVVLineSegment.size();
 
    if (nSegSize == 0)
       return;

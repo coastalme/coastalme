@@ -23,22 +23,25 @@
 ==============================================================================================================================*/
 #include <assert.h>
 
-#include <string>
-using std::to_string;
+#include <cstdio>
+#include <climits>
+
+// #include <string>
+// using std::to_string;
 
 #include <iostream>
 using std::cerr;
 using std::endl;
 
-#include <gdal_priv.h>
-#include <gdal_alg.h>
+// #include <gdal_priv.h>
+// #include <gdal_alg.h>
 
 #ifdef _OPENMP
    #include <omp.h>
 #endif
 
 #include "cme.h"
-#include "line.h"
+// #include "line.h"
 #include "cell.h"
 #include "coast.h"
 #include "simulation.h"
@@ -141,7 +144,7 @@ int CSimulation::nInitGridAndCalcStillWaterLevel(void)
          if (m_ulIter == 1)
          {
             // For the first timestep only, check to see that all cells have some sediment on them
-            double dSedThickness = m_pRasterGrid->m_Cell[nX][nY].dGetTotAllSedThickness();
+            double const dSedThickness = m_pRasterGrid->m_Cell[nX][nY].dGetTotAllSedThickness();
 
             if (dSedThickness <= 0)
             {
@@ -185,7 +188,7 @@ int CSimulation::nInitGridAndCalcStillWaterLevel(void)
    if (m_bHaveWaveStationData && (! m_bSingleDeepWaterWaveValues))
    {
       // Each cell's value for deep water wave height and deep water wave orientation is interpolated from multiple user-supplied values
-      int nRet = nInterpolateAllDeepWaterWaveValues();
+      int const nRet = nInterpolateAllDeepWaterWaveValues();
 
       if (nRet != RTN_OK)
          return nRet;

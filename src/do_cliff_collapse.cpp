@@ -27,13 +27,15 @@
 
 #include <iostream>
 using std::cerr;
-using std::cout;
+// using std::cout;
 using std::endl;
 using std::ios;
 
 #include "cme.h"
 #include "simulation.h"
 #include "cliff.h"
+#include "coast_landform.h"
+#include "2d_point.h"
 
 //===============================================================================================================================
 //! Update accumulated wave energy in coastal landform objects
@@ -53,30 +55,29 @@ int CSimulation::nDoAllWaveEnergyToCoastLandforms(void)
          CACoastLandform* pCoastLandform = m_VCoast[i].pGetCoastLandform(j);
 
          // First get wave energy for the coastal landform object
-         double dWaveHeightAtCoast = m_VCoast[i].dGetCoastWaveHeight(j);
+         double const dWaveHeightAtCoast = m_VCoast[i].dGetCoastWaveHeight(j);
 
          // If the waves at this point are off-shore, then do nothing, just move to next coast point
          if (bFPIsEqual(dWaveHeightAtCoast, DBL_NODATA, TOLERANCE))
             continue;
 
          // OK we have on-shore waves so get the previously-calculated wave energy
-         double dWaveEnergy = m_VCoast[i].dGetWaveEnergyAtBreaking(j);
+         double const dWaveEnergy = m_VCoast[i].dGetWaveEnergyAtBreaking(j);
 // assert(isfinite(dWaveEnergy));
 
          // And save the accumulated value
          pCoastLandform->IncTotAccumWaveEnergy(dWaveEnergy);
 
          // Now, check the notch elevation
-         int nX = m_VCoast[i].pPtiGetCellMarkedAsCoastline(j)->nGetX();
-         int nY = m_VCoast[i].pPtiGetCellMarkedAsCoastline(j)->nGetY();
-         int nCat = pCoastLandform->nGetLandFormCategory();
-         double dTopElev = m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElev();
-         double dNotchElev = 0;
+         int const nX = m_VCoast[i].pPtiGetCellMarkedAsCoastline(j)->nGetX();
+         int const nY = m_VCoast[i].pPtiGetCellMarkedAsCoastline(j)->nGetY();
+         int const nCat = pCoastLandform->nGetLandFormCategory();
+         double const dTopElev = m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElev();
 
          if ((nCat == LF_CAT_CLIFF) || (nCat == LF_SUBCAT_CLIFF_ON_COASTLINE) || (nCat == LF_SUBCAT_CLIFF_INLAND))
          {
             CRWCliff * pCliff = reinterpret_cast<CRWCliff*>(pCoastLandform);
-            dNotchElev = pCliff->dGetNotchBaseElev();
+            double const dNotchElev = pCliff->dGetNotchBaseElev();
 
             // Is the notch elevation above the top surface of the sediment?
             if (dNotchElev > dTopElev)
@@ -122,7 +123,7 @@ int CSimulation::nDoAllWaveEnergyToCoastLandforms(void)
          // // DEBUG CODE =============
 
          // Now simulate how the coastal landform responds to this wave energy
-         int nCategory = pCoastLandform->nGetLandFormCategory();
+         int const nCategory = pCoastLandform->nGetLandFormCategory();
 
          if (nCategory == LF_CAT_CLIFF)
          {
@@ -130,7 +131,7 @@ int CSimulation::nDoAllWaveEnergyToCoastLandforms(void)
             CRWCliff * pCliff = reinterpret_cast<CRWCliff*>(pCoastLandform);
 
             // Calculate this-timestep cliff notch erosion (is a length in external CRS units). Only consolidated sediment can have a cliff notch
-            double dNotchExtension = dWaveEnergy / m_dCliffErosionResistance;
+            double const dNotchExtension = dWaveEnergy / m_dCliffErosionResistance;
 
             // Deepen the cliff object's erosional notch as a result of wave energy during this timestep. Note that notch deepening may be constrained, since this-timestep notch extension cannot exceed the length (i.e. cellside minus notch depth) of sediment remaining on the cell
             pCliff->DeepenErosionalNotch(dNotchExtension);
@@ -253,11 +254,11 @@ int CSimulation::nDoAllWaveEnergyToCoastLandforms(void)
 int CSimulation::nDoCliffCollapse(int const nCoast, CRWCliff * pCliff, double &dFineCollapse, double &dSandCollapse, double &dCoarseCollapse, double &dPreCollapseCliffElev, double &dPostCollapseCliffElev)
 {
    // Get the cliff cell's grid coords
-   int nX = pCliff->pPtiGetCellMarkedAsLF()->nGetX();
-   int nY = pCliff->pPtiGetCellMarkedAsLF()->nGetY();
+   int const nX = pCliff->pPtiGetCellMarkedAsLF()->nGetX();
+   int const nY = pCliff->pPtiGetCellMarkedAsLF()->nGetY();
 
    // Get this cell's polygon
-   int nPoly = m_pRasterGrid->m_Cell[nX][nY].nGetPolygonID();
+   int const nPoly = m_pRasterGrid->m_Cell[nX][nY].nGetPolygonID();
 
    if (nPoly == INT_NODATA)
    {
@@ -269,34 +270,35 @@ int CSimulation::nDoCliffCollapse(int const nCoast, CRWCliff * pCliff, double &d
 
    CGeomCoastPolygon* pPolygon = m_VCoast[nCoast].pGetPolygon(nPoly);
 
-   double dOrigCliffTopElev = m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElev();
+   double const dOrigCliffTopElev = m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElev();
 
    // Get the elevation of the base of the notch from the cliff object
-   double dNotchElev = pCliff->dGetNotchBaseElev();
+   double const dNotchElev = pCliff->dGetNotchBaseElev();
 
    // Get the index of the layer containing the notch (layer 0 being just above basement)
-   int nNotchLayer = m_pRasterGrid->m_Cell[nX][nY].nGetLayerAtElev(dNotchElev);
+   int const nNotchLayer = m_pRasterGrid->m_Cell[nX][nY].nGetLayerAtElev(dNotchElev);
 
-   // Safety check
-   if (nNotchLayer < 0)
+   // Safety checks
+   if (nNotchLayer == ELEV_IN_BASEMENT)
    {
-      // Notch layer is < 0
+      LogStream << m_ulIter << ": " << WARN << "in nDoCliffCollapse(), [" << nX << "][" << nY << "] nNotchLayer is in basement" << endl;
+      return RTN_ERR_CLIFFNOTCH;
+   }
+   else if (nNotchLayer == ELEV_ABOVE_SEDIMENT_TOP)
+   {
+      LogStream << m_ulIter << ": " << WARN << "in nDoCliffCollapse(), [" << nX << "][" << nY << "] has nNotchLayer above sediment top" << endl;
+      return RTN_ERR_CLIFFNOTCH;
+   }
+   else if (nNotchLayer < 0)
+   {
       LogStream << m_ulIter << ": " << WARN << "in nDoCliffCollapse(), [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "} notch layer = " << nNotchLayer << ", dNotchElev = " << dNotchElev << " m_dNotchBaseBelowSWL = " << m_dNotchBaseBelowSWL << " dOrigCliffTopElev = " << dOrigCliffTopElev << endl;
-
       return RTN_ERR_CLIFFNOTCH;
    }
 
-   if (nNotchLayer == ELEV_ABOVE_SEDIMENT_TOP)
-   {
-      LogStream << m_ulIter << ": " << WARN << "in nDoCliffCollapse(), [" << nX << "][" << nY << "] has nNotchLayer = " << nNotchLayer << ", this has elevation = " << dNotchElev << " which is above sediment top elevation (" << m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElev() << ")" << endl;
-
-      return RTN_ERR_CLIFFNOTCH;
-   }
-
-   // Flag the coastline cliff object as having collapsed
+   // Notch layer is OK, so flag the coastline cliff object as having collapsed
    pCliff->SetCliffCollapsed();
 
-   int nTopLayer = m_pRasterGrid->m_Cell[nX][nY].nGetTopLayerAboveBasement();
+   int const nTopLayer = m_pRasterGrid->m_Cell[nX][nY].nGetTopLayerAboveBasement();
 
    // Safety check
    if (nTopLayer == INT_NODATA)
@@ -392,9 +394,9 @@ int CSimulation::nDoCliffCollapse(int const nCoast, CRWCliff * pCliff, double &d
    }
 
    // Now sort out the sediment lost from the consolidated layer into which the erosional notch was incised
-   double dNotchLayerTop = m_pRasterGrid->m_Cell[nX][nY].dCalcLayerElev(nNotchLayer);
-   double dNotchLayerThickness = m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nNotchLayer)->dGetTotalThickness();
-   double dNotchLayerFracRemoved = (dNotchLayerTop - dNotchElev) / dNotchLayerThickness;
+   double const dNotchLayerTop = m_pRasterGrid->m_Cell[nX][nY].dCalcLayerElev(nNotchLayer);
+   double const dNotchLayerThickness = m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nNotchLayer)->dGetTotalThickness();
+   double const dNotchLayerFracRemoved = (dNotchLayerTop - dNotchElev) / dNotchLayerThickness;
 
    // Sort out the notched layer's sediment, both consolidated and unconsolidated, for this cell. First the unconsolidated sediment
    double dFineDepth = m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nNotchLayer)->pGetUnconsolidatedSediment()->dGetFineDepth();
@@ -403,7 +405,7 @@ int CSimulation::nDoCliffCollapse(int const nCoast, CRWCliff * pCliff, double &d
    if (dAvailable > 0)
    {
       // Some unconsolidated fine sediment is available for collapse
-      double dLost = dAvailable * dNotchLayerFracRemoved;
+      double const dLost = dAvailable * dNotchLayerFracRemoved;
       dFineCollapse += dLost;
       dFineUnconsLost += dLost;
       m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nNotchLayer)->pGetUnconsolidatedSediment()->SetFineDepth(dFineDepth - dLost);
@@ -416,7 +418,7 @@ int CSimulation::nDoCliffCollapse(int const nCoast, CRWCliff * pCliff, double &d
    if (dAvailable > 0)
    {
       // Some unconsolidated sand sediment is available for collapse
-      double dLost = dAvailable * dNotchLayerFracRemoved;
+      double const dLost = dAvailable * dNotchLayerFracRemoved;
       dSandCollapse += dLost;
       dSandUnconsLost += dLost;
       m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nNotchLayer)->pGetUnconsolidatedSediment()->SetSandDepth(dSandDepth - dLost);
@@ -429,7 +431,7 @@ int CSimulation::nDoCliffCollapse(int const nCoast, CRWCliff * pCliff, double &d
    if (dAvailable > 0)
    {
       // Some unconsolidated coarse sediment is available for collapse
-      double dLost = dAvailable * dNotchLayerFracRemoved;
+      double const dLost = dAvailable * dNotchLayerFracRemoved;
       dCoarseCollapse += dLost;
       dCoarseUnconsLost += dLost;
       m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nNotchLayer)->pGetUnconsolidatedSediment()->SetCoarseDepth(dCoarseDepth - dLost);
@@ -443,7 +445,7 @@ int CSimulation::nDoCliffCollapse(int const nCoast, CRWCliff * pCliff, double &d
    if (dAvailable > 0)
    {
       // Some consolidated fine sediment is available for collapse
-      double dLost = dAvailable * dNotchLayerFracRemoved;
+      double const dLost = dAvailable * dNotchLayerFracRemoved;
       dFineCollapse += dLost;
       dFineConsLost += dLost;
       m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nNotchLayer)->pGetConsolidatedSediment()->SetFineDepth(dFineDepth - dLost);
@@ -456,7 +458,7 @@ int CSimulation::nDoCliffCollapse(int const nCoast, CRWCliff * pCliff, double &d
    if (dAvailable > 0)
    {
       // Some consolidated sand sediment is available for collapse
-      double dLost = dAvailable * dNotchLayerFracRemoved;
+      double const dLost = dAvailable * dNotchLayerFracRemoved;
       dSandCollapse += dLost;
       dSandConsLost += dLost;
       m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nNotchLayer)->pGetConsolidatedSediment()->SetSandDepth(dSandDepth - dLost);
@@ -469,7 +471,7 @@ int CSimulation::nDoCliffCollapse(int const nCoast, CRWCliff * pCliff, double &d
    if (dAvailable > 0)
    {
       // Some consolidated coarse sediment is available for collapse
-      double dLost = dAvailable * dNotchLayerFracRemoved;
+      double const dLost = dAvailable * dNotchLayerFracRemoved;
       dCoarseCollapse += dLost;
       dCoarseConsLost += dLost;
       m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nNotchLayer)->pGetConsolidatedSediment()->SetCoarseDepth(dCoarseDepth - dLost);
@@ -530,15 +532,15 @@ int CSimulation::nDoCliffCollapseDeposition(int const nCoast, CRWCliff const* pC
    // LogStream << "\tdSandFromCollapse = " << dSandFromCollapse << " dCoarseFromCollapse = " << dCoarseFromCollapse << endl;
 
    // OK, we have some sand- and/or coarse-sized sediment to deposit
-   int nStartPoint = pCliff->nGetPointOnCoast();
-   int nCoastSize = m_VCoast[nCoast].nGetCoastlineSize();
+   int const nStartPoint = pCliff->nGetPointOnCoast();
+   int const nCoastSize = m_VCoast[nCoast].nGetCoastlineSize();
 
    // Get the cliff cell's grid coords
-   int nXCliff = pCliff->pPtiGetCellMarkedAsLF()->nGetX();
-   int nYCliff = pCliff->pPtiGetCellMarkedAsLF()->nGetY();
+   int const nXCliff = pCliff->pPtiGetCellMarkedAsLF()->nGetX();
+   int const nYCliff = pCliff->pPtiGetCellMarkedAsLF()->nGetY();
 
    // Get this cell's polygon
-   int nPoly = m_pRasterGrid->m_Cell[nXCliff][nYCliff].nGetPolygonID();
+   int const nPoly = m_pRasterGrid->m_Cell[nXCliff][nYCliff].nGetPolygonID();
 
    if (nPoly == INT_NODATA)
    {
@@ -666,7 +668,7 @@ int CSimulation::nDoCliffCollapseDeposition(int const nCoast, CRWCliff const* pC
       }
 
       // Get the start point of this cliff collapse deposition profile
-      int nThisPoint = VnTalusProfileCoastStartPoint[nAcross];
+      int const nThisPoint = VnTalusProfileCoastStartPoint[nAcross];
 
       // Are we at the start or end of the coast?
       if (nThisPoint == 0)
@@ -747,11 +749,11 @@ int CSimulation::nDoCliffCollapseDeposition(int const nCoast, CRWCliff const* pC
          }
 
          // Now construct a deposition collapse profile from the start point, it is one cell longer than the specified length because it includes the cliff point in the profile. Calculate its length in external CRS units, the way it is done here is approximate but probably OK
-         double dThisProfileLength = (nTalusProfileLenInCells + nSeawardOffset + 1) * m_dCellSide;
+         double const dThisProfileLength = (nTalusProfileLenInCells + nSeawardOffset + 1) * m_dCellSide;
 
          // Get the end point of this coastline-normal line
          CGeom2DIPoint PtiEnd;            // In grid CRS
-         int nRtn = nGetCoastNormalEndPoint(nCoast, nThisPoint, nCoastSize, &PtStart, dThisProfileLength, &PtEnd, &PtiEnd, false);
+         int const nRtn = nGetCoastNormalEndPoint(nCoast, nThisPoint, nCoastSize, &PtStart, dThisProfileLength, &PtEnd, &PtiEnd, false);
 
          // Safety check
          if (nRtn == RTN_ERR_NO_SOLUTION_FOR_ENDPOINT)
@@ -779,7 +781,7 @@ int CSimulation::nDoCliffCollapseDeposition(int const nCoast, CRWCliff const* pC
          // Now get the raster cells under this profile
          RasterizeCliffCollapseProfile(&VTmpProfile, &VCellsUnderProfile);
 
-         int nRasterProfileLength = static_cast<int>(VCellsUnderProfile.size());
+         int const nRasterProfileLength = static_cast<int>(VCellsUnderProfile.size());
 
          // Check now, for the case where the profile is very short
          if (nRasterProfileLength - nSeawardOffset < 3)
@@ -802,8 +804,8 @@ int CSimulation::nDoCliffCollapseDeposition(int const nCoast, CRWCliff const* pC
          // Calculate the existing elevation for all points along the deposition profile
          for (int n = 0; n < nRasterProfileLength; n++)
          {
-            int nX = VCellsUnderProfile[n].nGetX();
-            int nY = VCellsUnderProfile[n].nGetY();
+            int const nX = VCellsUnderProfile[n].nGetX();
+            int const nY = VCellsUnderProfile[n].nGetY();
 
             dVProfileNow[n] = m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElev();
 
@@ -813,8 +815,8 @@ int CSimulation::nDoCliffCollapseDeposition(int const nCoast, CRWCliff const* pC
          }
 
          // Now calculate the elevation of the talus top at the shoreline
-         double dCliffHeight = dPreCollapseCliffElev - dPostCollapseCliffElev;
-         double dTalusTopElev = dPostCollapseCliffElev + (dCliffHeight * dCliffHeightFrac);
+         double const dCliffHeight = dPreCollapseCliffElev - dPostCollapseCliffElev;
+         double const dTalusTopElev = dPostCollapseCliffElev + (dCliffHeight * dCliffHeightFrac);
 
          // LogStream << "Elevations: cliff top = " << dPreCollapseCliffElev << " cliff base = " << dPostCollapseCliffElev << " talus top = " << dTalusTopElev << endl;
 
@@ -822,7 +824,7 @@ int CSimulation::nDoCliffCollapseDeposition(int const nCoast, CRWCliff const* pC
          // LogStream << "*** ERROR, cliff top is lower than cliff base" << endl;
 
          // Next calculate the talus slope length in external CRS units, this is approximate but probably OK
-         double dTalusSlopeLength = dThisProfileLength - ((nSeawardOffset - 1) * m_dCellSide);
+         double const dTalusSlopeLength = dThisProfileLength - ((nSeawardOffset - 1) * m_dCellSide);
 
          // If user has not supplied a value for m_dCliffDepositionA, then solve for dA so that the elevations at end of the existing profile, and at the end of the Dean equilibrium profile, are the same
          double dA = 0;
@@ -834,14 +836,14 @@ int CSimulation::nDoCliffCollapseDeposition(int const nCoast, CRWCliff const* pC
             dA = (dTalusTopElev - dVProfileNow[nRasterProfileLength - 1]) / pow(dTalusSlopeLength, DEAN_POWER);
 
          // assert((nRasterProfileLength - nSeawardOffset - 2) > 0);
-         double dInc = dTalusSlopeLength / (nRasterProfileLength - nSeawardOffset - 2);
+         double const dInc = dTalusSlopeLength / (nRasterProfileLength - nSeawardOffset - 2);
          vector<double> dVDeanProfile(nRasterProfileLength);
 
          // Calculate the Dean equilibrium profile of the talus h(y) = A * y^(2/3) where h(y) is the distance below the talus-top elevation (the highest point in the Dean profile) at a distance y from the cliff (the landward start of the profile)
          CalcDeanProfile(&dVDeanProfile, dInc, dTalusTopElev, dA, true, nSeawardOffset, dTalusTopElev);
 
          // Get the total difference in elevation between the two profiles (Dean profile - present profile). Since we want the Dean profile to be higher than the present profile, a good result is a +ve number
-         double dTotElevDiff = dSubtractProfiles(&dVDeanProfile, &dVProfileNow, &bVProfileValid);
+         double const dTotElevDiff = dSubtractProfiles(&dVDeanProfile, &dVProfileNow, &bVProfileValid);
 
          //          // DEBUG CODE -----------------------------------------------------
          // LogStream << endl;
@@ -912,14 +914,14 @@ int CSimulation::nDoCliffCollapseDeposition(int const nCoast, CRWCliff const* pC
             }
 
             // Nope, we still have some talus left to deposit
-            int nX = VCellsUnderProfile[n].nGetX();
-            int nY = VCellsUnderProfile[n].nGetY();
+            int const nX = VCellsUnderProfile[n].nGetX();
+            int const nY = VCellsUnderProfile[n].nGetY();
 
             // Don't allow cliff collapse talus onto intervention cells TODO 078 Is this realistic? Should it change with different types on intervention?
             if (bIsInterventionCell(nX, nY))
                continue;
 
-            int nTopLayer = m_pRasterGrid->m_Cell[nX][nY].nGetTopNonZeroLayerAboveBasement();
+            int const nTopLayer = m_pRasterGrid->m_Cell[nX][nY].nGetTopNonZeroLayerAboveBasement();
 
             // Safety check
             if (nTopLayer == INT_NODATA)
@@ -980,7 +982,7 @@ int CSimulation::nDoCliffCollapseDeposition(int const nCoast, CRWCliff const* pC
 
                // And set the landform category
                CRWCellLandform* pLandform = m_pRasterGrid->m_Cell[nX][nY].pGetLandform();
-               int nCat = pLandform->nGetLFCategory();
+               int const nCat = pLandform->nGetLFCategory();
 
                if ((nCat != LF_CAT_SEDIMENT_INPUT) && (nCat != LF_CAT_SEDIMENT_INPUT_SUBMERGED) && (nCat != LF_CAT_SEDIMENT_INPUT_NOT_SUBMERGED))
                   pLandform->SetLFSubCategory(LF_SUBCAT_DRIFT_TALUS);
@@ -989,28 +991,28 @@ int CSimulation::nDoCliffCollapseDeposition(int const nCoast, CRWCliff const* pC
             else if (dVDeanProfile[n] < dVProfileNow[n])
             {
                // Here, the Dean profile is lower than the existing profile, so we must remove some sediment from this cell  TODO 075 What if bedrock sticks above Dean profile?
-               double dThisLowering = dVProfileNow[n] - dVDeanProfile[n];
+               double const dThisLowering = dVProfileNow[n] - dVDeanProfile[n];
 
                // Find out how much sediment we have available on this cell
-               double dExistingAvailableFine = m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nTopLayer)->pGetUnconsolidatedSediment()->dGetFineDepth();
-               double dExistingAvailableSand = m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nTopLayer)->pGetUnconsolidatedSediment()->dGetSandDepth();
-               double dExistingAvailableCoarse = m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nTopLayer)->pGetUnconsolidatedSediment()->dGetCoarseDepth();
+               double const dExistingAvailableFine = m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nTopLayer)->pGetUnconsolidatedSediment()->dGetFineDepth();
+               double const dExistingAvailableSand = m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nTopLayer)->pGetUnconsolidatedSediment()->dGetSandDepth();
+               double const dExistingAvailableCoarse = m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nTopLayer)->pGetUnconsolidatedSediment()->dGetCoarseDepth();
 
                // Now partition the total lowering for this cell between the three size fractions: do this by relative erodibility
-               int nFineWeight = (dExistingAvailableFine > 0 ? 1 : 0);
-               int nSandWeight = (dExistingAvailableSand > 0 ? 1 : 0);
-               int nCoarseWeight = (dExistingAvailableCoarse > 0 ? 1 : 0);
+               int const nFineWeight = (dExistingAvailableFine > 0 ? 1 : 0);
+               int const nSandWeight = (dExistingAvailableSand > 0 ? 1 : 0);
+               int const nCoarseWeight = (dExistingAvailableCoarse > 0 ? 1 : 0);
 
-               double dTotErodibility = (nFineWeight * m_dFineErodibilityNormalized) + (nSandWeight * m_dSandErodibilityNormalized) + (nCoarseWeight * m_dCoarseErodibilityNormalized);
+               double const dTotErodibility = (nFineWeight * m_dFineErodibilityNormalized) + (nSandWeight * m_dSandErodibilityNormalized) + (nCoarseWeight * m_dCoarseErodibilityNormalized);
 
                if (nFineWeight)
                {
                   // Erode some fine-sized sediment
-                  double dFineLowering = (m_dFineErodibilityNormalized * dThisLowering) / dTotErodibility;
+                  double const dFineLowering = (m_dFineErodibilityNormalized * dThisLowering) / dTotErodibility;
 
                   // Make sure we don't get -ve amounts left on the cell
-                  double dFine = tMin(dExistingAvailableFine, dFineLowering);
-                  double dRemaining = dExistingAvailableFine - dFine;
+                  double const dFine = tMin(dExistingAvailableFine, dFineLowering);
+                  double const dRemaining = dExistingAvailableFine - dFine;
 
                   // Set the value for this layer
                   m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nTopLayer)->pGetUnconsolidatedSediment()->SetFineDepth(dRemaining);
@@ -1030,11 +1032,11 @@ int CSimulation::nDoCliffCollapseDeposition(int const nCoast, CRWCliff const* pC
                if (nSandWeight)
                {
                   // Erode some sand-sized sediment
-                  double dSandLowering = (m_dSandErodibilityNormalized * dThisLowering) / dTotErodibility;
+                  double const dSandLowering = (m_dSandErodibilityNormalized * dThisLowering) / dTotErodibility;
 
                   // Make sure we don't get -ve amounts left on the source cell
-                  double dSandToErode = tMin(dExistingAvailableSand, dSandLowering);
-                  double dRemaining = dExistingAvailableSand - dSandToErode;
+                  double const dSandToErode = tMin(dExistingAvailableSand, dSandLowering);
+                  double const dRemaining = dExistingAvailableSand - dSandToErode;
 
                   // Set the value for this layer
                   m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nTopLayer)->pGetUnconsolidatedSediment()->SetSandDepth(dRemaining);
@@ -1058,11 +1060,11 @@ int CSimulation::nDoCliffCollapseDeposition(int const nCoast, CRWCliff const* pC
                if (nCoarseWeight)
                {
                   // Erode some coarse-sized sediment
-                  double dCoarseLowering = (m_dCoarseErodibilityNormalized * dThisLowering) / dTotErodibility;
+                  double const dCoarseLowering = (m_dCoarseErodibilityNormalized * dThisLowering) / dTotErodibility;
 
                   // Make sure we don't get -ve amounts left on the source cell
-                  double dCoarseToErode = tMin(dExistingAvailableCoarse, dCoarseLowering);
-                  double dRemaining = dExistingAvailableCoarse - dCoarseToErode;
+                  double const dCoarseToErode = tMin(dExistingAvailableCoarse, dCoarseLowering);
+                  double const dRemaining = dExistingAvailableCoarse - dCoarseToErode;
 
                   // Set the value for this layer
                   m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nTopLayer)->pGetUnconsolidatedSediment()->SetCoarseDepth(dRemaining);
@@ -1148,17 +1150,17 @@ void CSimulation::RasterizeCliffCollapseProfile(vector<CGeom2DPoint> const* pVPo
    pVIPointsOut->clear();
 
    // The start point of the normal is the centroid of a coastline cell. Convert from the external CRS to grid CRS
-   double dXStart = dExtCRSXToGridX(pVPointsIn->at(0).dGetX());
-   double dYStart = dExtCRSYToGridY(pVPointsIn->at(0).dGetY());
+   double const dXStart = dExtCRSXToGridX(pVPointsIn->at(0).dGetX());
+   double const dYStart = dExtCRSYToGridY(pVPointsIn->at(0).dGetY());
 
    // The end point of the normal, again convert from the external CRS to grid CRS. Note too that it could be off the grid
-   double dXEnd = dExtCRSXToGridX(pVPointsIn->at(1).dGetX());
-   double dYEnd = dExtCRSYToGridY(pVPointsIn->at(1).dGetY());
+   double const dXEnd = dExtCRSXToGridX(pVPointsIn->at(1).dGetX());
+   double const dYEnd = dExtCRSYToGridY(pVPointsIn->at(1).dGetY());
 
    // Interpolate between cells by a simple DDA line algorithm, see http://en.wikipedia.org/wiki/Digital_differential_analyzer_(graphics_algorithm) Note that Bresenham's algorithm gave occasional gaps
    double dXInc = dXEnd - dXStart;
    double dYInc = dYEnd - dYStart;
-   double dLength = tMax(tAbs(dXInc), tAbs(dYInc));
+   double const dLength = tMax(tAbs(dXInc), tAbs(dYInc));
 
    dXInc /= dLength;
    dYInc /= dLength;
@@ -1167,7 +1169,7 @@ void CSimulation::RasterizeCliffCollapseProfile(vector<CGeom2DPoint> const* pVPo
    double dY = dYStart;
 
    // Process each interpolated point
-   int nLength = nRound(dLength);
+   int const nLength = nRound(dLength);
 
    for (int m = 0; m <= nLength; m++)
    {

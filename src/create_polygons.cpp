@@ -22,21 +22,24 @@
 
 ==============================================================================================================================*/
 #include <assert.h>
+
 #include <iostream>
 using std::endl;
 
-#include <string>
-using std::to_string;
+// #include <string>
+// using std::to_string;
 
 #include <stack>
 using std::stack;
 
-#include <algorithm>
-using std::remove;
+// #include <algorithm>
+// using std::remove;
 
 #include "cme.h"
 #include "simulation.h"
 #include "coast.h"
+#include "2d_point.h"
+#include "2di_point.h"
 
 //===============================================================================================================================
 //! Create polygons, and mark the polygon boundaries on the raster grid
@@ -59,7 +62,7 @@ int CSimulation::nCreateAllPolygons(void)
       m_pVCoastPolygon.clear();
 
       // Do this for every point on the coastline (except the last point)
-      int nCoastSize = m_VCoast[nCoast].nGetCoastlineSize();
+      int const nCoastSize = m_VCoast[nCoast].nGetCoastlineSize();
 
       for (int nCoastPoint = 0; nCoastPoint < nCoastSize - 1; nCoastPoint++)
       {
@@ -72,7 +75,7 @@ int CSimulation::nCreateAllPolygons(void)
          if (pThisProfile->bOKIncStartAndEndOfCoast())
          {
             // This profile is OK, so we will start a polygon here and extend it down-coast (i.e. along the coast in the direction of increasing coastline point numbers)
-            int nThisProfile = pThisProfile->nGetCoastID();
+            int const nThisProfile = pThisProfile->nGetCoastID();
 
             // This will be the coast ID number of the polygon, and also the polygon's along-coast sequence
             nPolygon++;
@@ -115,17 +118,17 @@ int CSimulation::nCreateAllPolygons(void)
             // LogStream << "Profile " << pNextProfile->nGetCoastID() << " is OK" << endl;
 
             // Get the coast point at which this next profile starts
-            int nNextProfileCoastPoint = pNextProfile->nGetCoastPoint();
+            int const nNextProfileCoastPoint = pNextProfile->nGetCoastPoint();
 
             // Calculate half the along-coast distance (in coast points) between this profile and the next (i.e. down-coast) profile
-            int nDist = (nNextProfileCoastPoint - nCoastPoint) / 2;
+            int const nDist = (nNextProfileCoastPoint - nCoastPoint) / 2;
 
             // OK, set the node point in the coast object. We do this now, instead of earlier on, since some profiles (i.e. polygon boundaries) may have been marked as invalid
-            int nNodePoint = nCoastPoint + nDist;
+            int const nNodePoint = nCoastPoint + nDist;
             m_VCoast[nCoast].SetPolygonNode(nNodePoint, ++nNode);
 
             // Get the grid CRS coordinates of the coast node
-            CGeom2DIPoint PtiNode = * m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(nNodePoint);
+            CGeom2DIPoint const PtiNode = *m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(nNodePoint);
 
             // // DEBUG CODE ===================
             // if ((m_ulIter == 18) && (nThisProfile == 29))
@@ -180,26 +183,26 @@ int CSimulation::nCreateAllPolygons(void)
             // Start appending points: begin by appending the points in this normal, in reverse order
             for (int i = nThisProfileEnd; i >= 0; i--)
             {
-               CGeom2DPoint PtThis = * pThisProfile->pPtGetPointInProfile(i);
+               CGeom2DPoint const PtThis = * pThisProfile->pPtGetPointInProfile(i);
                PtVBoundary.push_back(PtThis);
             }
 
             // Next add coast points: from the start point of this normal, moving down-coast as far as the down-coast norma
             for (int i = nCoastPoint; i <= nNextProfileCoastPoint; i++)
             {
-               CGeom2DPoint PtThis = * m_VCoast[nCoast].pPtGetCoastlinePointExtCRS(i);
+               CGeom2DPoint const PtThis = * m_VCoast[nCoast].pPtGetCoastlinePointExtCRS(i);
                PtVBoundary.push_back(PtThis);
             }
 
             // Append the points in the down-coast (next) normal
             for (int i = 0; i <= nNextProfileEnd; i++)
             {
-               CGeom2DPoint PtThis = * pNextProfile->pPtGetPointInProfile(i);
+               CGeom2DPoint const PtThis = * pNextProfile->pPtGetPointInProfile(i);
                PtVBoundary.push_back(PtThis);
             }
 
             // Finally, append the end point of this normal
-            CGeom2DPoint PtThis = * pThisProfile->pPtGetPointInProfile(nThisProfileEnd);
+            CGeom2DPoint const PtThis = * pThisProfile->pPtGetPointInProfile(nThisProfileEnd);
             PtVBoundary.push_back(PtThis);
 
             // Now identify the 'anti-node', this is the seaward point 'opposite' the polygon's coastal node
@@ -210,7 +213,7 @@ int CSimulation::nCreateAllPolygons(void)
 
             else
             {
-               CGeom2DPoint PtAvg = PtAverage(pThisProfile->pPtGetPointInProfile(nThisProfileEnd), pNextProfile->pPtGetPointInProfile(nNextProfileEnd));
+               CGeom2DPoint const PtAvg = PtAverage(pThisProfile->pPtGetPointInProfile(nThisProfileEnd), pNextProfile->pPtGetPointInProfile(nNextProfileEnd));
                PtiAntiNode = PtiExtCRSToGridRound(&PtAvg);
             }
 
@@ -251,7 +254,7 @@ int CSimulation::nCreateAllPolygons(void)
             // Now rasterize the polygon boundaries: first, the coastline. This is necessary so that sand/coarse sediment derived from platform erosion of the coast cells is correctly added to the containing polygon's unconsolidated sediment
             for (int i = nCoastPoint; i <= nNextProfileCoastPoint; i++)
             {
-               CGeom2DIPoint PtiToMark = * m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(i);
+               CGeom2DIPoint const PtiToMark = * m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(i);
                m_pRasterGrid->m_Cell[PtiToMark.nGetX()][PtiToMark.nGetY()].SetCoastAndPolygonID(nCoast, nPolygon);
             }
 
@@ -260,7 +263,7 @@ int CSimulation::nCreateAllPolygons(void)
 
             for (int i = 0; i < nCellsInProfile; i++)
             {
-               CGeom2DIPoint PtiToMark = * pNextProfile->pPtiGetCellInProfile(i);
+               CGeom2DIPoint const PtiToMark = * pNextProfile->pPtiGetCellInProfile(i);
                m_pRasterGrid->m_Cell[PtiToMark.nGetX()][PtiToMark.nGetY()].SetCoastAndPolygonID(nCoast, nPolygon);
             }
 
@@ -269,15 +272,15 @@ int CSimulation::nCreateAllPolygons(void)
 
             for (int i = 0; i < nCellsInProfile; i++)
             {
-               CGeom2DIPoint PtiToMark = * pThisProfile->pPtiGetCellInProfile(i);
+               CGeom2DIPoint const PtiToMark = * pThisProfile->pPtiGetCellInProfile(i);
                m_pRasterGrid->m_Cell[PtiToMark.nGetX()][PtiToMark.nGetY()].SetCoastAndPolygonID(nCoast, nPolygon);
             }
 
             // If the polygon doesn't meet at a point at its seaward end, also need to rasterize the 'joining line'
             if (! bMeetsAtAPoint)
             {
-               CGeom2DIPoint PtiDownCoastNormalEnd = * pNextProfile->pPtiGetEndPoint();      // Grid CRS
-               CGeom2DIPoint PtiUpCoastNormalEnd = * pThisProfile->pPtiGetEndPoint();        // Grid CRS
+               CGeom2DIPoint const PtiDownCoastNormalEnd = * pNextProfile->pPtiGetEndPoint();      // Grid CRS
+               CGeom2DIPoint const PtiUpCoastNormalEnd = * pThisProfile->pPtiGetEndPoint();        // Grid CRS
 
                RasterizePolygonJoiningLine(nCoast, &PtiUpCoastNormalEnd, &PtiDownCoastNormalEnd, nPolygon);
 
@@ -286,7 +289,7 @@ int CSimulation::nCreateAllPolygons(void)
 
 // }
 
-            nNextProfile = nThisProfile;
+            // nNextProfile = nThisProfile;
             nCoastPoint = nNextProfileCoastPoint - 1;
 
             m_nNumPolygonGlobal++;
@@ -306,12 +309,12 @@ int CSimulation::nCreateAllPolygons(void)
 void CSimulation::RasterizePolygonJoiningLine(int nCoast, CGeom2DIPoint const* pPt1, CGeom2DIPoint const* pPt2, int const nPoly)
 {
    // The start point of the line (grid CRS)
-   int nXStart = pPt1->nGetX();
-   int nYStart = pPt1->nGetY();
+   int const nXStart = pPt1->nGetX();
+   int const nYStart = pPt1->nGetY();
 
    // The end point of the line (grid CRS)
-   int nXEnd = pPt2->nGetX();
-   int nYEnd = pPt2->nGetY();
+   int const nXEnd = pPt2->nGetX();
+   int const nYEnd = pPt2->nGetY();
 
    // Safety check, in case the two points are identical (can happen due to rounding errors)
    if ((nXStart == nXEnd) && (nYStart == nYEnd))
@@ -320,7 +323,7 @@ void CSimulation::RasterizePolygonJoiningLine(int nCoast, CGeom2DIPoint const* p
    // Interpolate between cells by a simple DDA line algorithm, see http://en.wikipedia.org/wiki/Digital_differential_analyzer_(graphics_algorithm) Note that Bresenham's algorithm gave occasional gaps
    double dXInc = nXEnd - nXStart;
    double dYInc = nYEnd - nYStart;
-   double dLength = tMax(tAbs(dXInc), tAbs(dYInc));
+   double const dLength = tMax(tAbs(dXInc), tAbs(dYInc));
 
    dXInc /= dLength;
    dYInc /= dLength;
@@ -421,7 +424,7 @@ void CSimulation::MarkPolygonCells(void)
    for (int nCoast = 0; nCoast < static_cast<int>(m_VCoast.size()); nCoast++)
    {
       // Do this for every coastal polygon, in along-coast sequence
-      int nPolygons = m_VCoast[nCoast].nGetNumPolygons();
+      int const nPolygons = m_VCoast[nCoast].nGetNumPolygons();
 
       for (int nPoly = 0; nPoly < nPolygons; nPoly++)
       {
@@ -438,7 +441,7 @@ void CSimulation::MarkPolygonCells(void)
          double dSedimentInputCoarse = 0;
 
          CGeomCoastPolygon* pPolygon = m_VCoast[nCoast].pGetPolygon(nPoly);
-         int nPolyID = pPolygon->nGetCoastID();    // TODO 044
+         int const nPolyID = pPolygon->nGetCoastID();    // TODO 044
 
          // LogStream << m_ulIter << ": in MarkPolygonCells() nPoly = " << nPoly << " nPolyID = " << nPolyID << endl;
 
@@ -477,7 +480,7 @@ void CSimulation::MarkPolygonCells(void)
          // // DEBUG CODE ==============================================================================================
 
          // Use the centroid as the start point for the cell-by-cell fill procedure
-         CGeom2DIPoint PtiStart = pPolygon->PtiGetFillStartPoint();
+         CGeom2DIPoint const PtiStart = pPolygon->PtiGetFillStartPoint();
 
          // // Is the centroid within the inner buffer?
          // if (! bIsWithinPolygon(&PtStart, &PtVInnerBuffer))
@@ -505,11 +508,11 @@ void CSimulation::MarkPolygonCells(void)
          // Then do the cell-by-cell fill: loop until there are no more cell coordinates on the stack
          while (! PtiStack.empty())
          {
-            CGeom2DIPoint Pti = PtiStack.top();
+            CGeom2DIPoint const Pti = PtiStack.top();
             PtiStack.pop();
 
             int nX = Pti.nGetX();
-            int nY = Pti.nGetY();
+            int const nY = Pti.nGetY();
 
             while ((nX >= 0) && (m_pRasterGrid->m_Cell[nX][nY].nGetPolygonID() == INT_NODATA))
                nX--;
@@ -536,7 +539,7 @@ void CSimulation::MarkPolygonCells(void)
                // dCliffCollapseTalusCoarse += m_pRasterGrid->m_Cell[nX][nY].dGetThisIterCliffCollapseCoarseTalusDeposition();
 
                // Get the number of the highest layer with non-zero thickness
-               int nThisLayer = m_pRasterGrid->m_Cell[nX][nY].nGetTopNonZeroLayerAboveBasement();
+               int const nThisLayer = m_pRasterGrid->m_Cell[nX][nY].nGetTopNonZeroLayerAboveBasement();
 
                // Safety check
                if ((nThisLayer != NO_NONZERO_THICKNESS_LAYERS) && (nThisLayer != INT_NODATA))
@@ -608,7 +611,7 @@ void CSimulation::MarkPolygonCells(void)
          // LogStream << m_ulIter << ": in MarkPolygonCells() N cells = " << nCellsInPolygon << " in polygon " << nPolyID << endl;
 
          // Calculate the total volume of seawater on the polygon (m3) and store it
-         double dSeaVolume = dTotDepth * m_dCellSide;
+         double const dSeaVolume = dTotDepth * m_dCellSide;
          pPolygon->SetSeawaterVolume(dSeaVolume);
       }
    }
@@ -670,7 +673,7 @@ int CSimulation::nDoPolygonSharedBoundaries(void)
    // Do this for every coast
    for (int nCoast = 0; nCoast < static_cast<int>(m_VCoast.size()); nCoast++)
    {
-      int nNumPolygons = m_VCoast[nCoast].nGetNumPolygons();
+      int const nNumPolygons = m_VCoast[nCoast].nGetNumPolygons();
 
       // // DEBUG CODE =================
       // for (int m = 0; m < m_VCoast[nCoast].nGetNumProfiles(); m++)
@@ -694,7 +697,7 @@ int CSimulation::nDoPolygonSharedBoundaries(void)
       for (int nn = 0; nn < nNumPolygons; nn++)
       {
          CGeomCoastPolygon* pThisPolygon = m_VCoast[nCoast].pGetPolygon(nn);
-         int nThisPolygon = pThisPolygon->nGetCoastID();
+         int const nThisPolygon = pThisPolygon->nGetCoastID();
 
          vector<int> nVUpCoastAdjacentPolygon;
          vector<int> nVDownCoastAdjacentPolygon;
@@ -717,8 +720,8 @@ int CSimulation::nDoPolygonSharedBoundaries(void)
          else
          {
             // We are not at the end of the coastline, so there is at least one other polygon adjacent to the down-coast profile of this polygon
-            int nDownCoastProfile = pThisPolygon->nGetDownCoastProfile();
-            int nPointsInProfile = pThisPolygon->nGetNumPointsUsedDownCoastProfile();
+            int const nDownCoastProfile = pThisPolygon->nGetDownCoastProfile();
+            int const nPointsInProfile = pThisPolygon->nGetNumPointsUsedDownCoastProfile();
 
             double dDownCoastTotBoundaryLen = 0;
 
@@ -726,14 +729,14 @@ int CSimulation::nDoPolygonSharedBoundaries(void)
 
             for (int nPoint = 0; nPoint < nPointsInProfile - 1; nPoint++)
             {
-               CGeom2DPoint PtStart = * pProfile->pPtGetPointInProfile(nPoint);
-               CGeom2DPoint PtEnd = * pProfile->pPtGetPointInProfile(nPoint + 1);
+               CGeom2DPoint const PtStart = * pProfile->pPtGetPointInProfile(nPoint);
+               CGeom2DPoint const PtEnd = * pProfile->pPtGetPointInProfile(nPoint + 1);
 
                // Calculate the length of this segment of the normal profile. Note that it should not be zero, since we checked for duplicate points when creating profiles
-               double dDistBetween = dGetDistanceBetween(&PtStart, &PtEnd);
+               double const dDistBetween = dGetDistanceBetween(&PtStart, &PtEnd);
 
                // Find out which polygon is adjacent to each line segment of the polygon's down-coast profile boundary. The basic approach used is to count the number of coincident profiles in each line segment, and (because we are going down-coast) add this number to 'this' polygon's number. However, some of these coincident profiles may be invalid, so we must count only the valid co-incident profiles
-               int nNumCoinc = pProfile->nGetNumCoincidentProfilesInLineSegment(nPoint);
+               int const nNumCoinc = pProfile->nGetNumCoincidentProfilesInLineSegment(nPoint);
 
                // Safety check
                if (nNumCoinc < 0)
@@ -743,7 +746,7 @@ int CSimulation::nDoPolygonSharedBoundaries(void)
 
                for (int nCoinc = 0; nCoinc < nNumCoinc; nCoinc++)
                {
-                  int nProf = pProfile->nGetCoincidentProfileForLineSegment(nPoint, nCoinc);
+                  int const nProf = pProfile->nGetCoincidentProfileForLineSegment(nPoint, nCoinc);
 
                   // Safety check
                   if (nProf == -1)
@@ -807,8 +810,8 @@ int CSimulation::nDoPolygonSharedBoundaries(void)
          else
          {
             // We are not at the start of the coastline, so there is at least one other polygon adjacent to the up-coast profile of this polygon
-            int nUpCoastProfile = pThisPolygon->nGetUpCoastProfile();
-            int nPointsInProfile = pThisPolygon->nGetNumPointsUsedUpCoastProfile();
+            int const nUpCoastProfile = pThisPolygon->nGetUpCoastProfile();
+            int const nPointsInProfile = pThisPolygon->nGetNumPointsUsedUpCoastProfile();
 
             double dUpCoastTotBoundaryLen = 0;
 
@@ -816,8 +819,8 @@ int CSimulation::nDoPolygonSharedBoundaries(void)
 
             for (int nPoint = 0; nPoint < nPointsInProfile - 1; nPoint++)
             {
-               CGeom2DPoint PtStart = * pProfile->pPtGetPointInProfile(nPoint);
-               CGeom2DPoint PtEnd = * pProfile->pPtGetPointInProfile(nPoint + 1);
+               CGeom2DPoint const PtStart = * pProfile->pPtGetPointInProfile(nPoint);
+               CGeom2DPoint const PtEnd = * pProfile->pPtGetPointInProfile(nPoint + 1);
 
                // Safety check
                if (PtStart == PtEnd)
@@ -825,10 +828,10 @@ int CSimulation::nDoPolygonSharedBoundaries(void)
                   continue;
 
                // Calculate the length of this segment of the normal profile
-               double dDistBetween = dGetDistanceBetween(&PtStart, &PtEnd);
+               double const dDistBetween = dGetDistanceBetween(&PtStart, &PtEnd);
 
                // Find out which polygon is adjacent to each line segment of the polygon's up-coast profile boundary. The basic approach used is to count the number of coincident profiles in each line segment, and (because we are going up-coast) subtract this number from 'this' polygon's number. However, some of these coincident profiles may be invalid, so we must count only the valid co-incident profiles
-               int nNumCoinc = pProfile->nGetNumCoincidentProfilesInLineSegment(nPoint);
+               int const nNumCoinc = pProfile->nGetNumCoincidentProfilesInLineSegment(nPoint);
 
                // Safety check
                if (nNumCoinc < 0)
@@ -838,7 +841,7 @@ int CSimulation::nDoPolygonSharedBoundaries(void)
 
                for (int nCoinc = 0; nCoinc < nNumCoinc; nCoinc++)
                {
-                  int nProf = pProfile->nGetCoincidentProfileForLineSegment(nPoint, nCoinc);
+                  int const nProf = pProfile->nGetCoincidentProfileForLineSegment(nPoint, nCoinc);
 
                   // Safety check
                   if (nProf == -1)
@@ -888,7 +891,7 @@ int CSimulation::nDoPolygonSharedBoundaries(void)
          }
 
          // Finally, calculate the distance between the coast node and the antinode of the polygon
-         double dPolygonSeawardLen = dGetDistanceBetween(pThisPolygon->pPtiGetNode(), pThisPolygon->pPtiGetAntiNode());
+         double const dPolygonSeawardLen = dGetDistanceBetween(pThisPolygon->pPtiGetNode(), pThisPolygon->pPtiGetAntiNode());
 
          // And store it
          pThisPolygon->SetLength(dPolygonSeawardLen);
@@ -986,18 +989,18 @@ bool CSimulation::bIsWithinPolygon(CGeom2DPoint const* pPtStart, vector<CGeom2DP
 {
    bool bOddNodes = false;
 
-   int nPolyCorners = static_cast<int>(pPtPoints->size());
+   int const nPolyCorners = static_cast<int>(pPtPoints->size());
    int j = nPolyCorners - 1;
 
-   double dX = pPtStart->dGetX();
-   double dY = pPtStart->dGetY();
+   double const dX = pPtStart->dGetX();
+   double const dY = pPtStart->dGetY();
 
    for (int i = 0; i < nPolyCorners; i++)
    {
-      double dCorneriX = pPtPoints->at(i).dGetX();
-      double dCorneriY = pPtPoints->at(i).dGetY();
-      double dCornerjX = pPtPoints->at(j).dGetX();
-      double dCornerjY = pPtPoints->at(j).dGetY();
+      double const dCorneriX = pPtPoints->at(i).dGetX();
+      double const dCorneriY = pPtPoints->at(i).dGetY();
+      double const dCornerjX = pPtPoints->at(j).dGetX();
+      double const dCornerjY = pPtPoints->at(j).dGetY();
 
       if ((dCorneriY < dY && dCornerjY >= dY) || (dCornerjY < dY && dCorneriY >= dY))
       {
@@ -1018,7 +1021,7 @@ bool CSimulation::bIsWithinPolygon(CGeom2DPoint const* pPtStart, vector<CGeom2DP
 //===============================================================================================================================
 CGeom2DPoint CSimulation::PtFindPointInPolygon(vector<CGeom2DPoint> const* pPtPoints, int const nStartPoint)
 {
-   int nPolySize = static_cast<int>(pPtPoints->size());
+   int const nPolySize = static_cast<int>(pPtPoints->size());
    int nOffSet = 0;
    CGeom2DPoint PtStart;
 

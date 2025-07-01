@@ -21,10 +21,13 @@
    You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 ===============================================================================================================================*/
+#include <cstdio>
+
 #include <new>
 using std::bad_alloc;
 
 #include "cme.h"
+#include "cell.h"
 #include "simulation.h"
 #include "raster_grid.h"
 
@@ -43,7 +46,7 @@ CGeomRasterGrid::CGeomRasterGrid(CSimulation* pSimIn)
 //! Destructor
 CGeomRasterGrid::~CGeomRasterGrid(void)
 {
-   int nXMax = m_pSim->nGetGridXMax();
+   int const nXMax = m_pSim->nGetGridXMax();
 
    // Free the m_Cell memory
    for (int nX = 0; nX < nXMax; nX++)
@@ -67,8 +70,8 @@ CSimulation* CGeomRasterGrid::pGetSim(void)
 int CGeomRasterGrid::nCreateGrid(void)
 {
    // Create the 2D CGeomCell array (this is faster than using 2D STL vectors)
-   int nXMax = m_pSim->nGetGridXMax();
-   int nYMax = m_pSim->nGetGridYMax();
+   int const nXMax = m_pSim->nGetGridXMax();
+   int const nYMax = m_pSim->nGetGridYMax();
 
    // TODO 038 Do better error handling if insufficient memory
    try
