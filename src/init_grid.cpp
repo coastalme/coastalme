@@ -37,7 +37,7 @@ using std::endl;
 // #include <gdal_alg.h>
 
 #ifdef _OPENMP
-   #include <omp.h>
+#include <omp.h>
 #endif
 
 #include "cme.h"
@@ -70,41 +70,41 @@ int CSimulation::nInitGridAndCalcStillWaterLevel(void)
    m_nYMaxBoundingBox = INT_MIN;
 
    m_ulThisIterNumSeaCells =
-   m_ulThisIterNumCoastCells =
-   m_ulThisIterNumPotentialPlatformErosionCells =
-   m_ulThisIterNumActualPlatformErosionCells = 0;
+       m_ulThisIterNumCoastCells =
+           m_ulThisIterNumPotentialPlatformErosionCells =
+               m_ulThisIterNumActualPlatformErosionCells = 0;
 
    m_ulThisIterNumPotentialBeachErosionCells =
-   m_ulThisIterNumActualBeachErosionCells =
-   m_ulThisIterNumBeachDepositionCells = 0;
+       m_ulThisIterNumActualBeachErosionCells =
+           m_ulThisIterNumBeachDepositionCells = 0;
 
    m_dThisIterTotSeaDepth =
-   m_dThisIterPotentialPlatformErosion =
-   m_dThisIterPotentialBeachErosion =
-   m_dThisIterBeachErosionFine =
-   m_dThisIterBeachErosionSand =
-   m_dThisIterBeachErosionCoarse =
-   m_dThisIterBeachDepositionSand =
-   m_dThisIterBeachDepositionCoarse =
-   m_dThisIterPotentialSedLostBeachErosion =
-   m_dThisIterFineSedimentToSuspension =
-   m_dThisIterCliffCollapseErosionFineUncons =
-   m_dThisIterCliffCollapseErosionSandUncons =
-   m_dThisIterCliffCollapseErosionCoarseUncons =
-   m_dThisIterUnconsSandCliffDeposition =
-   m_dThisIterUnconsCoarseCliffDeposition =
-   m_dThisIterCliffCollapseErosionFineCons =
-   m_dThisIterCliffCollapseErosionSandCons =
-   m_dThisIterCliffCollapseErosionCoarseCons =
-   m_dThisIterActualPlatformErosionFineCons =
-   m_dThisIterActualPlatformErosionSandCons =
-   m_dThisIterActualPlatformErosionCoarseCons =
-   m_dThisIterLeftGridUnconsFine =                 // TODO 067 Suspended fine sediment never decreases i.e. no suspended fine sediment ever leaves the grid. Is this OK?
-   m_dThisIterLeftGridUnconsSand =
-   m_dThisIterLeftGridUnconsCoarse =
-   m_dThisiterUnconsFineInput =
-   m_dThisiterUnconsSandInput =
-   m_dThisiterUnconsCoarseInput = 0;
+       m_dThisIterPotentialPlatformErosion =
+           m_dThisIterPotentialBeachErosion =
+               m_dThisIterBeachErosionFine =
+                   m_dThisIterBeachErosionSand =
+                       m_dThisIterBeachErosionCoarse =
+                           m_dThisIterBeachDepositionSand =
+                               m_dThisIterBeachDepositionCoarse =
+                                   m_dThisIterPotentialSedLostBeachErosion =
+                                       m_dThisIterFineSedimentToSuspension =
+                                           m_dThisIterCliffCollapseErosionFineUncons =
+                                               m_dThisIterCliffCollapseErosionSandUncons =
+                                                   m_dThisIterCliffCollapseErosionCoarseUncons =
+                                                       m_dThisIterUnconsSandCliffDeposition =
+                                                           m_dThisIterUnconsCoarseCliffDeposition =
+                                                               m_dThisIterCliffCollapseErosionFineCons =
+                                                                   m_dThisIterCliffCollapseErosionSandCons =
+                                                                       m_dThisIterCliffCollapseErosionCoarseCons =
+                                                                           m_dThisIterActualPlatformErosionFineCons =
+                                                                               m_dThisIterActualPlatformErosionSandCons =
+                                                                                   m_dThisIterActualPlatformErosionCoarseCons =
+                                                                                       m_dThisIterLeftGridUnconsFine = // TODO 067 Suspended fine sediment never decreases i.e. no suspended fine sediment ever leaves the grid. Is this OK?
+       m_dThisIterLeftGridUnconsSand =
+           m_dThisIterLeftGridUnconsCoarse =
+               m_dThisiterUnconsFineInput =
+                   m_dThisiterUnconsSandInput =
+                       m_dThisiterUnconsCoarseInput = 0;
 
    for (int n = 0; n < m_nLayers; n++)
    {
@@ -118,20 +118,20 @@ int CSimulation::nInitGridAndCalcStillWaterLevel(void)
    int nZeroThickness = 0;
 
    m_dStartIterSuspFineAllCells =
-   m_dStartIterSuspFineInPolygons =
-   m_dStartIterUnconsFineAllCells =
-   m_dStartIterUnconsSandAllCells =
-   m_dStartIterUnconsCoarseAllCells =
-   m_dStartIterConsFineAllCells =
-   m_dStartIterConsSandAllCells =
-   m_dStartIterConsCoarseAllCells = 0;
+       m_dStartIterSuspFineInPolygons =
+           m_dStartIterUnconsFineAllCells =
+               m_dStartIterUnconsSandAllCells =
+                   m_dStartIterUnconsCoarseAllCells =
+                       m_dStartIterConsFineAllCells =
+                           m_dStartIterConsSandAllCells =
+                               m_dStartIterConsCoarseAllCells = 0;
 
    // And go through all cells in the RasterGrid array
    // Use OpenMP parallel loop with reduction clauses for thread-safe accumulation
 #ifdef _OPENMP
-   #pragma omp parallel for collapse(2) reduction(+:nZeroThickness) \
-   reduction(+:m_dStartIterConsFineAllCells,m_dStartIterConsSandAllCells,m_dStartIterConsCoarseAllCells) \
-   reduction(+:m_dStartIterSuspFineAllCells,m_dStartIterUnconsFineAllCells,m_dStartIterUnconsSandAllCells,m_dStartIterUnconsCoarseAllCells)
+#pragma omp parallel for collapse(2) reduction(+ : nZeroThickness)                                            \
+    reduction(+ : m_dStartIterConsFineAllCells, m_dStartIterConsSandAllCells, m_dStartIterConsCoarseAllCells) \
+    reduction(+ : m_dStartIterSuspFineAllCells, m_dStartIterUnconsFineAllCells, m_dStartIterUnconsSandAllCells, m_dStartIterUnconsCoarseAllCells)
 #endif
 
    for (int nX = 0; nX < m_nXGridSize; nX++)
@@ -155,7 +155,7 @@ int CSimulation::nInitGridAndCalcStillWaterLevel(void)
                if (m_nLogFileDetail >= LOG_FILE_MIDDLE_DETAIL)
                {
 #ifdef _OPENMP
-                  #pragma omp critical(logging)
+#pragma omp critical(logging)
 #endif
                   LogStream << m_ulIter << ": " << WARN << "total sediment thickness is " << dSedThickness << " at [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "}" << endl;
                }
@@ -185,7 +185,7 @@ int CSimulation::nInitGridAndCalcStillWaterLevel(void)
       }
    }
 
-   if (m_bHaveWaveStationData && (! m_bSingleDeepWaterWaveValues))
+   if (m_bHaveWaveStationData && (!m_bSingleDeepWaterWaveValues))
    {
       // Each cell's value for deep water wave height and deep water wave orientation is interpolated from multiple user-supplied values
       int const nRet = nInterpolateAllDeepWaterWaveValues();

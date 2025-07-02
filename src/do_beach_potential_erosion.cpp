@@ -43,15 +43,15 @@ using std::pair;
 
 namespace
 {
-   //===============================================================================================================================
-   //! Function used to sort polygon length values. If the first argument must be ordered before the second, return true
-   //===============================================================================================================================
-   bool bPolygonLengthPairCompare(const pair<int, double> &prLeft, const pair<int, double> &prRight)
-   {
-      // Sort in ascending order (i.e. most concave first)
-      return prLeft.second < prRight.second;
-   }
+//===============================================================================================================================
+//! Function used to sort polygon length values. If the first argument must be ordered before the second, return true
+//===============================================================================================================================
+bool bPolygonLengthPairCompare(const pair<int, double>& prLeft, const pair<int, double>& prRight)
+{
+   // Sort in ascending order (i.e. most concave first)
+   return prLeft.second < prRight.second;
 }
+} // namespace
 
 //===============================================================================================================================
 //! Uses either the CERC equation or the Kamphuis (1990) equation to calculate potential (unconstrained) sediment movement between polygons
@@ -106,7 +106,7 @@ void CSimulation::DoAllPotentialBeachErosion(void)
 
             double const dThisBreakingWaveHeight = m_VCoast[nCoast].dGetBreakingWaveHeight(nCoastPoint);
 
-            if (! bFPIsEqual(dThisBreakingWaveHeight, DBL_NODATA, TOLERANCE))
+            if (!bFPIsEqual(dThisBreakingWaveHeight, DBL_NODATA, TOLERANCE))
             {
                // We are in the active zone
                nActiveZonePoints++;

@@ -27,7 +27,7 @@
 ===============================================================================================================================*/
 class CRWCellLandform
 {
-private:
+ private:
    //! Landform category for this cell
    int m_nCategory;
 
@@ -50,8 +50,7 @@ private:
       {
          //! Currently unused for all landforms except cliffs
          int m_nDummy;
-      }
-      m_sBeachData;
+      } m_sBeachData;
 
       struct
       {
@@ -63,15 +62,12 @@ private:
 
          //! Cliff notch depth remaining
          double m_dRemaining;
-      }
-      m_sCliffData;
+      } m_sCliffData;
 
-   }
-   m_uLFData;
+   } m_uLFData;
 
-protected:
-
-public:
+ protected:
+ public:
    CRWCellLandform();
    ~CRWCellLandform(void);
 

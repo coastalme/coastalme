@@ -35,7 +35,7 @@ using std::vector;
 
 class CGeomProfile : public CGeomMultiLine
 {
-private:
+ private:
    //! Is this a start-of-coast profile?
    bool m_bStartOfCoast;
 
@@ -107,11 +107,10 @@ private:
    vector<CGeom2DPoint> m_VCellInProfileExtCRS;
 
    // Is this profile point part of a multi-line?
-// vector<bool> m_bVShared;
+   // vector<bool> m_bVShared;
 
-protected:
-
-public:
+ protected:
+ public:
    explicit CGeomProfile(int const, int const, int const, int const, CGeom2DIPoint const*, CGeom2DIPoint const*, bool const);
    ~CGeomProfile(void) override;
 
@@ -154,9 +153,9 @@ public:
    void AppendPointInProfile(double const, double const);
    void AppendPointInProfile(CGeom2DPoint const*);
    void TruncateProfile(int const);
-// void TruncateAndSetPointInProfile(int const, double const, double const);
+   // void TruncateAndSetPointInProfile(int const, double const, double const);
    bool bInsertIntersection(double const, double const, int const);
-// void ShowProfile(void) const;
+   // void ShowProfile(void) const;
    int nGetProfileSize(void) const;
    CGeom2DPoint* pPtGetPointInProfile(int const);
    CGeom2DIPoint* pPtiGetLastCellInProfile(void);
@@ -164,10 +163,10 @@ public:
    // void RemoveLineSegment(int const);
    bool bIsPointInProfile(double const, double const);
    bool bIsPointInProfile(double const, double const, int&);
-// int nFindInsertionLineSeg(double const, double const);
+   // int nFindInsertionLineSeg(double const, double const);
 
-// void AppendPointShared(bool const);
-// bool bPointShared(int const) const;
+   // void AppendPointShared(bool const);
+   // bool bPointShared(int const) const;
 
    void SetUpCoastAdjacentProfile(CGeomProfile*);
    CGeomProfile* pGetUpCoastAdjacentProfile(void) const;
@@ -176,14 +175,14 @@ public:
 
    void AppendCellInProfile(CGeom2DIPoint const*);
    void AppendCellInProfile(int const, int const);
-// void SetCellsInProfile(vector<CGeom2DIPoint>*);
-   vector<CGeom2DIPoint> *pPtiVGetCellsInProfile(void);
+   // void SetCellsInProfile(vector<CGeom2DIPoint>*);
+   vector<CGeom2DIPoint>* pPtiVGetCellsInProfile(void);
    CGeom2DIPoint* pPtiGetCellInProfile(int const);
    int nGetNumCellsInProfile(void) const;
 
    void AppendCellInProfileExtCRS(double const, double const);
    void AppendCellInProfileExtCRS(CGeom2DPoint const*);
-// vector<CGeom2DPoint>* PtVGetCellsInProfileExtCRS(void);
+   // vector<CGeom2DPoint>* PtVGetCellsInProfileExtCRS(void);
 
    int nGetCellGivenDepth(CGeomRasterGrid const*, double const);
 
@@ -198,4 +197,4 @@ public:
 
    bool bIsIntervention(void) const;
 };
-#endif //PROFILE_H
+#endif // PROFILE_H

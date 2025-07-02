@@ -86,13 +86,19 @@ if (CMAKE_Fortran_COMPILER_ID MATCHES "GNU")
    UNSET(GFORTRAN_EXEC_PREFIX_STR)
 
    # Find library directory and include directory, if library directory specified
-#    string(REGEX MATCH "--libdir=[^\t\n ]+"
-#    GFORTRAN_LIB_DIR_STR "${GFORTRAN_VERBOSE_STR}")
-#    if (NOT GFORTRAN_LIB_DIR_STR)
+   string(REGEX MATCH "--libdir=[^\t\n ]+"
+   GFORTRAN_LIB_DIR_STR "${GFORTRAN_VERBOSE_STR}")
+   if (NOT GFORTRAN_LIB_DIR_STR)
 #       message(STATUS "Found --libdir flag -- not found")
 #       message(STATUS "Using default gfortran library & include directory paths")
       set(GFORTRAN_LIBRARIES_DIR "${GFORTRAN_EXEC_PREFIX_DIR}/lib/gcc/${GFORTRAN_ARCH}/${GFORTRAN_VERSION_STRING}")
       string(CONCAT GFORTRAN_INCLUDE_DIR "${GFORTRAN_LIBRARIES_DIR}" "/include")
+   else (NOT GFORTRAN_LIB_DIR_STR)
+#       message(STATUS "Found --libdir flag -- yes")
+       string(REGEX REPLACE "--libdir=([^\t\n ]+)" "\\1"
+       GFORTRAN_LIBRARIES_DIR "${GFORTRAN_LIB_DIR_STR}")
+       string(CONCAT GFORTRAN_INCLUDE_DIR "${GFORTRAN_LIBRARIES_DIR}" "/include")
+   endif (NOT GFORTRAN_LIB_DIR_STR)
 #    else (NOT GFORTRAN_LIB_DIR_STR)
 #       message(STATUS "Found --libdir flag -- yes")
 #       string(REGEX REPLACE "--libdir=([^\t\n ]+)" "\\1"

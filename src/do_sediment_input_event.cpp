@@ -92,8 +92,8 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
       {
          if (m_VnSedimentInputLocationID[n] == nLocID)
          {
-            nPointGridX = nRound(m_VdSedimentInputLocationX[n]);        // In grid coords
-            nPointGridY = nRound(m_VdSedimentInputLocationY[n]);        // In grid coords
+            nPointGridX = nRound(m_VdSedimentInputLocationX[n]); // In grid coords
+            nPointGridY = nRound(m_VdSedimentInputLocationY[n]); // In grid coords
          }
       }
 

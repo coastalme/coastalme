@@ -74,7 +74,7 @@ bool bIsStringValidDouble(string& str)
    istringstream iStr(str);
    double dDummy;
 
-   if (! (iStr >> dDummy))
+   if (!(iStr >> dDummy))
       return false;
 
    return true;
@@ -102,7 +102,7 @@ bool bIsStringValidInt(string& str)
 //===============================================================================================================================
 //! Operator that inserts a given fill character, to a given width, into an output stream. From http://stackoverflow.com/questions/2839592/equivalent-of-02d-with-stdstringstream
 //===============================================================================================================================
-ostream& operator<< (ostream& ostr, const FillToWidth &args)
+ostream& operator<<(ostream& ostr, const FillToWidth& args)
 {
    ostr.fill(args.chFill);
    ostr.width(args.nWidth);
@@ -117,7 +117,7 @@ string strDbl(double const dX, int const nDigits)
 {
    stringstream ss;
    ss << fixed;
-   ss.precision(nDigits);      // Set the number of places after decimal
+   ss.precision(nDigits); // Set the number of places after decimal
    ss << dX;
    return ss.str();
 }
@@ -143,11 +143,11 @@ string strDblRight(double const dX, int const nDigits, int const nWidth, bool co
 
    else
    {
-      ss.precision(nDigits);  // Set number of places after decimal
+      ss.precision(nDigits); // Set number of places after decimal
       ss << dX;
    }
 
-   ss << " ";                 // Add a final space
+   ss << " "; // Add a final space
    return ss.str();
 }
 
@@ -158,10 +158,10 @@ string strIntRight(int const nX, int const nWidth)
 {
    stringstream ss;
    ss << fixed << right;
-   ss.fill(' ');              // Fill space around displayed number
-   ss.width(nWidth - 1);      // Set width around displayed number
+   ss.fill(' ');         // Fill space around displayed number
+   ss.width(nWidth - 1); // Set width around displayed number
    ss << nX;
-   ss << " ";                 // Add a final space
+   ss << " "; // Add a final space
    return ss.str();
 }
 
@@ -179,7 +179,7 @@ string strCentre(const char* pchIn, int const nWidth)
 
    ss << spaces.str() << strIn << spaces.str();
 
-   if (nPadding > 0 && nPadding % 2 != 0)       // If odd number, add one space
+   if (nPadding > 0 && nPadding % 2 != 0) // If odd number, add one space
       ss << " ";
 
    return ss.str();
@@ -198,7 +198,7 @@ string strCentre(const string& strIn, int const nWidth)
 
    ss << spaces.str() << strIn << spaces.str();
 
-   if (nPadding > 0 && nPadding % 2 != 0)       // If odd number, add one space
+   if (nPadding > 0 && nPadding % 2 != 0) // If odd number, add one space
       ss << " ";
 
    return ss.str();

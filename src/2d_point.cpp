@@ -24,22 +24,22 @@
 
 //! Constructor with no parameters (the X and Y coordinates of the new CGeom2DPoint object are set to zero)
 CGeom2DPoint::CGeom2DPoint(void)
-   : dX(0),
-     dY(0)
+    : dX(0),
+      dY(0)
 {
 }
 
 //! Constructor with one CGeom2DPoint parameter (for the X and Y coordinates of the new CGeom2DPoint object)
 CGeom2DPoint::CGeom2DPoint(CGeom2DPoint const* pPt)
-   : dX(pPt->dGetX()),
-     dY(pPt->dGetY())
+    : dX(pPt->dGetX()),
+      dY(pPt->dGetY())
 {
 }
 
 //! Constructor with two double parameters, for the X and Y coordinates of the new CGeom2DPoint object
 CGeom2DPoint::CGeom2DPoint(double const dNewX, double const dNewY)
-   : dX(dNewX),
-     dY(dNewY)
+    : dX(dNewX),
+      dY(dNewY)
 {
 }
 
@@ -80,7 +80,7 @@ void CGeom2DPoint::SetY(double const dNewY)
 // }
 
 //! Sets one CGeom2DPoint object equal to another
-CGeom2DPoint& CGeom2DPoint::operator= (CGeom2DPoint const* pPt)
+CGeom2DPoint& CGeom2DPoint::operator=(CGeom2DPoint const* pPt)
 {
    dX = pPt->dGetX();
    dY = pPt->dGetY();
@@ -88,7 +88,7 @@ CGeom2DPoint& CGeom2DPoint::operator= (CGeom2DPoint const* pPt)
 }
 
 //! Compares two CGeom2DPoint pointed-to objects for equality
-bool CGeom2DPoint::operator== (CGeom2DPoint const* pPt) const
+bool CGeom2DPoint::operator==(CGeom2DPoint const* pPt) const
 {
    if ((bFPIsEqual(pPt->dGetX(), dX, TOLERANCE)) && (bFPIsEqual(pPt->dGetY(), dY, TOLERANCE)))
       return true;
@@ -97,7 +97,7 @@ bool CGeom2DPoint::operator== (CGeom2DPoint const* pPt) const
 }
 
 //! Compares two CGeom2DPoint objects for equality
-bool CGeom2DPoint::operator== (CGeom2DPoint Pt) const
+bool CGeom2DPoint::operator==(CGeom2DPoint Pt) const
 {
    if ((bFPIsEqual(Pt.dGetX(), dX, TOLERANCE)) && (bFPIsEqual(Pt.dGetY(), dY, TOLERANCE)))
       return true;
@@ -106,18 +106,18 @@ bool CGeom2DPoint::operator== (CGeom2DPoint Pt) const
 }
 
 //! Compares two CGeom2DPoint pointed-to objects for inequality
-bool CGeom2DPoint::operator!= (CGeom2DPoint const* pPt) const
+bool CGeom2DPoint::operator!=(CGeom2DPoint const* pPt) const
 {
-   if ((! bFPIsEqual(pPt->dGetX(), dX, TOLERANCE)) || (! bFPIsEqual(pPt->dGetY(), dY, TOLERANCE)))
+   if ((!bFPIsEqual(pPt->dGetX(), dX, TOLERANCE)) || (!bFPIsEqual(pPt->dGetY(), dY, TOLERANCE)))
       return true;
 
    return false;
 }
 
 //! Compares two CGeom2DPoint objects for inequality
-bool CGeom2DPoint::operator!= (CGeom2DPoint Pt) const
+bool CGeom2DPoint::operator!=(CGeom2DPoint Pt) const
 {
-   if ((! bFPIsEqual(Pt.dGetX(), dX, TOLERANCE)) || (! bFPIsEqual(Pt.dGetY(), dY, TOLERANCE)))
+   if ((!bFPIsEqual(Pt.dGetX(), dX, TOLERANCE)) || (!bFPIsEqual(Pt.dGetY(), dY, TOLERANCE)))
       return true;
 
    return false;

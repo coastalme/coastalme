@@ -1,7 +1,7 @@
 #!/bin/bash
 
-clang-tidy *.cpp -header-filter=.* -checks=-*,clang-analyzer-*,performance-*,-performance-avoid-endl  > 000_clang-analyze_advice.txt
-clang-tidy *.h -header-filter=.* -checks=-*,clang-analyzer-*,performance-*,-performance-avoid-endl  >> 000_clang-analyze_advice.txt
+clang-tidy *.cpp -header-filter=.* -checks=-*,clang-analyzer-*,performance-*,-performance-avoid-endl,-clang-analyzer-core.NullDereference  > 000_clang-analyze_advice.txt
+clang-tidy *.h -header-filter=.* -checks=-*,clang-analyzer-*,performance-*,-performance-avoid-endl,-clang-analyzer-core.NullDereference  >> 000_clang-analyze_advice.txt
 
 # If get "error: 'omp.h' file not found [clang-diagnostic-error]" then need to install libomp-dev
 # Some warnings seem crazy with openmp-*

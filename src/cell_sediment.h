@@ -27,7 +27,7 @@
 ===============================================================================================================================*/
 class CRWCellSediment
 {
-private:
+ private:
    //! Depth equivalent of fine sediment in m
    double m_dFine;
 
@@ -64,13 +64,12 @@ private:
    //! Depth equivalent (m) of coarse sediment added via sediment input events, since start of simulation
    double m_dTotCoarseSedimentInput;
 
-protected:
-
-public:
+ protected:
+ public:
    CRWCellSediment(void);
-   CRWCellSediment(CRWCellSediment const&);         // Copy constructor defined explicitly, to stop cppcheck from complaining
+   CRWCellSediment(CRWCellSediment const&); // Copy constructor defined explicitly, to stop cppcheck from complaining
 
-   CRWCellSediment& operator= (const CRWCellSediment&);
+   CRWCellSediment& operator=(const CRWCellSediment&);
 
    void SetFineDepth(double const);
    double dGetFineDepth(void) const;

@@ -27,7 +27,7 @@
 ===============================================================================================================================*/
 class CSedInputEvent
 {
-private:
+ private:
    //! The location ID in the shapefile
    int m_nLocationID;
 
@@ -49,7 +49,7 @@ private:
    //! The along-coast width (m) of the sediment block
    double m_dWidth;
 
-public:
+ public:
    CSedInputEvent(int const, unsigned long const, double const, double const, double const, double const, double const); //, double const);
    ~CSedInputEvent(void);
 

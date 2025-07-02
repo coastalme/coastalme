@@ -34,10 +34,10 @@
 int main(int argc, char const* argv[])
 {
    // This is to check for first appearance of NaN when debugging (comment out, otherwise)
-// #ifdef __APPLE__
-// #else
-//    feenableexcept(FE_INVALID | FE_OVERFLOW);
-// #endif
+   // #ifdef __APPLE__
+   // #else
+   //    feenableexcept(FE_INVALID | FE_OVERFLOW);
+   // #endif
 
    // Enable the use of UTF-8 symbols in CoastalME output
    setlocale(LC_ALL, "en_GB.UTF-8");

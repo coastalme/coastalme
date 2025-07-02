@@ -40,13 +40,13 @@ CGeomMultiLine::~CGeomMultiLine(void)
 //! Appends a new empty line segment
 void CGeomMultiLine::AppendLineSegment(void)
 {
-   m_prVVLineSegment.push_back(vector<pair<int, int> >());
+   m_prVVLineSegment.push_back(vector<pair<int, int>>());
 }
 
 //! Appends a line segment which is supplied as a parameter
-void CGeomMultiLine::AppendLineSegment(vector<pair<int, int> > *pprVIn)
+void CGeomMultiLine::AppendLineSegment(vector<pair<int, int>> *pprVIn)
 {
-   m_prVVLineSegment.push_back( * pprVIn);
+   m_prVVLineSegment.push_back(*pprVIn);
 }
 
 //! Appends a line segment which then inherits from the preceding line segments
@@ -85,18 +85,19 @@ void CGeomMultiLine::TruncateLineSegments(int const nSize)
 //! Inserts a line segment, inheriting from preceding line segments
 void CGeomMultiLine::InsertLineSegment(int const nSegment)
 {
-// assert(nSegment < m_prVVLineSegment.size());
+   // assert(nSegment < m_prVVLineSegment.size());
 
    // The new vector of pairs is identical to the existing vector of pairs i.e. we inherit profile/line seg details from the previous line seg
-   vector<pair<int, int> > prVPrev = m_prVVLineSegment[nSegment];
+   vector<pair<int, int>> prVPrev = m_prVVLineSegment[nSegment];
 
    // Store the profile numbers that are in this existing vector of pairs, these are the profiles that will be affected by this insertion
    vector<int> nVProfsAffected;
+   nVProfsAffected.reserve(prVPrev.size());
 
    for (unsigned int i = 0; i < prVPrev.size(); i++)
       nVProfsAffected.push_back(prVPrev[i].first);
 
-   vector<vector<pair<int, int> > >::iterator it;
+   vector<vector<pair<int, int>>>::iterator it;
    it = m_prVVLineSegment.begin();
 
    m_prVVLineSegment.insert(it + nSegment + 1, prVPrev);
@@ -116,9 +117,9 @@ void CGeomMultiLine::InsertLineSegment(int const nSegment)
 }
 
 //! Returns a vector of the line segments which succeed the specified line segment number
-vector<vector<pair<int, int> > > CGeomMultiLine::prVVGetAllLineSegAfter(int const nSegment)
+vector<vector<pair<int, int>>> CGeomMultiLine::prVVGetAllLineSegAfter(int const nSegment)
 {
-   vector<vector<pair<int, int> > > prVTmp;
+   vector<vector<pair<int, int>>> prVTmp;
 
    for (unsigned int n = nSegment; n < m_prVVLineSegment.size(); n++)
       prVTmp.push_back(m_prVVLineSegment[n]);
@@ -137,18 +138,18 @@ void CGeomMultiLine::AppendCoincidentProfileToLineSegments(pair<int, int> const 
 {
    long unsigned int const nSize = m_prVVLineSegment.size();
    m_prVVLineSegment[nSize - 1].push_back(prIn);
-// m_prVVLineSegment.back().push_back(prIn);
+   // m_prVVLineSegment.back().push_back(prIn);
 }
 
 //! Adds a coincident profile to a pre-existing line segment of the CGeomMultiLine object
 void CGeomMultiLine::AddCoincidentProfileToExistingLineSegment(int const nSegment, int const nProfile, int const nLineSeg)
 {
-// assert(nSegment < m_prVVLineSegment.size());
+   // assert(nSegment < m_prVVLineSegment.size());
    m_prVVLineSegment[nSegment].push_back(make_pair(nProfile, nLineSeg));
 }
 
 //! Returns a vector of pairs (a line segment)
-vector<pair<int, int> > *CGeomMultiLine::pprVGetPairedCoincidentProfilesForLineSegment(int const nSegment)
+vector<pair<int, int>> *CGeomMultiLine::pprVGetPairedCoincidentProfilesForLineSegment(int const nSegment)
 {
    // TODO 055 No check to see if nSegment < size()
    return &m_prVVLineSegment[nSegment];
@@ -232,7 +233,7 @@ bool CGeomMultiLine::bFindProfileInCoincidentProfiles(int const nProfile)
 void CGeomMultiLine::GetMostCoastwardSharedLineSegment(int const nOtherProfile, int &nThisLineSegment, int &nOtherLineSegment)
 {
    nThisLineSegment =
-   nOtherLineSegment = -1;
+       nOtherLineSegment = -1;
 
    long unsigned int const nSegSize = m_prVVLineSegment.size();
 

@@ -29,7 +29,7 @@
 using std::endl;
 
 #ifdef _OPENMP
-   #include <omp.h>
+#include <omp.h>
 #endif
 
 #include "cme.h"
@@ -64,7 +64,7 @@ int CSimulation::nAssignLandformsForAllCoasts(void)
             CACoastLandform* pIntervention = new CRWIntervention(&m_VCoast[nCoast], nCoast, j);
             m_VCoast[nCoast].AppendCoastLandform(pIntervention);
 
-// LogStream << j << " [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "} " << m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->nGetLFCategory() << " " << m_pRasterGrid->m_Cell[nX][nY].dGetInterventionHeight() << endl;
+            // LogStream << j << " [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "} " << m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->nGetLFCategory() << " " << m_pRasterGrid->m_Cell[nX][nY].dGetInterventionHeight() << endl;
 
             continue;
          }
@@ -112,7 +112,7 @@ int CSimulation::nAssignLandformsForAllCoasts(void)
                CACoastLandform* pCliff = new CRWCliff(&m_VCoast[nCoast], nCoast, j, m_dCellSide, 0, dNotchBaseElev, 0);
                m_VCoast[nCoast].AppendCoastLandform(pCliff);
 
-// LogStream << m_ulIter << ": CLIFF CREATED [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "}" << endl;
+               // LogStream << m_ulIter << ": CLIFF CREATED [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "}" << endl;
             }
 
             else
@@ -125,7 +125,7 @@ int CSimulation::nAssignLandformsForAllCoasts(void)
                if (m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->nGetLFCategory() != LF_CAT_DRIFT)
                   m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->SetLFSubCategory(LF_SUBCAT_DRIFT_MIXED);
 
-// LogStream << m_ulIter << ": DRIFT CREATED [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "}" << endl;
+               // LogStream << m_ulIter << ": DRIFT CREATED [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "}" << endl;
             }
          }
 
@@ -150,7 +150,7 @@ int CSimulation::nAssignLandformsForAllCoasts(void)
                   // LogStream << "*** BBB [" << nX << "][" << nY << "] dNotchBaseElev = " << dNotchBaseElev << endl;
                   // dRemaining       = m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->dGetCliffRemaining();
 
-// LogStream << m_ulIter << ": CLIFF RE-CREATED [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "}" << endl;
+                  // LogStream << m_ulIter << ": CLIFF RE-CREATED [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "}" << endl;
                }
 
                else
@@ -162,7 +162,7 @@ int CSimulation::nAssignLandformsForAllCoasts(void)
                   m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->SetCliffNotchBaseElev(dNotchBaseElev);
                   m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->SetCliffRemaining(dRemaining);
 
-// LogStream << m_ulIter << ": CLIFF CREATED [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "}" << endl;
+                  // LogStream << m_ulIter << ": CLIFF CREATED [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "}" << endl;
                }
 
                // Create a cliff object on the vector coastline with these attributes
@@ -180,106 +180,106 @@ int CSimulation::nAssignLandformsForAllCoasts(void)
                if (m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->nGetLFCategory() != LF_CAT_DRIFT)
                   m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->SetLFSubCategory(LF_SUBCAT_DRIFT_MIXED);
 
-// LogStream << m_ulIter << ": DRIFT CREATED [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "}" << endl;
+               // LogStream << m_ulIter << ": DRIFT CREATED [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "}" << endl;
             }
          }
       }
    }
 
-//    // DEBUG CODE ============================================================================================================================================
-// for (int i = 0; i < static_cast<int>(m_VCoast.size()); i++)
-// {
-// for (int j = 0; j < m_VCoast[i].nGetCoastlineSize(); j++)
-// {
-// int
-// nX = m_VCoast[i].pPtiGetCellMarkedAsCoastline(j)->nGetX(),
-// nY = m_VCoast[i].pPtiGetCellMarkedAsCoastline(j)->nGetY();
-//
-// LogStream << m_ulIter << ": coast cell " << j << " at [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "} has landform category = ";
-//
-// int
-// nCat = m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->nGetLFCategory(),
-// nSubCat = m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->nGetLFSubCategory();
-//
-// switch (nCat)
-// {
-// case LF_CAT_HINTERLAND:
-// LogStream << "hinterland";
-// break;
-//
-// case LF_CAT_SEA:
-// LogStream << "sea";
-// break;
-//
-// case LF_CAT_CLIFF:
-// LogStream << "cliff";
-// break;
-//
-// case LF_CAT_DRIFT:
-// LogStream << "drift";
-// break;
-//
-// case LF_CAT_INTERVENTION:
-// LogStream << "intervention";
-// break;
-//
-// case LF_NONE:
-// LogStream << "none";
-// break;
-//
-// default:
-// LogStream << "NONE";
-// break;
-// }
-//
-// LogStream << " and landform subcategory = ";
-//
-// switch (nSubCat)
-// {
-// case LF_SUBCAT_CLIFF_ON_COASTLINE:
-// LogStream << "cliff on coastline";
-// break;
-//
-// case LF_SUBCAT_CLIFF_INLAND:
-// LogStream << "cliff inland";
-// break;
-//
-// case LF_SUBCAT_DRIFT_MIXED:
-// LogStream << "mixed drift";
-// break;
-//
-// case LF_SUBCAT_DRIFT_TALUS:
-// LogStream << "talus";
-// break;
-//
-// case LF_SUBCAT_DRIFT_BEACH:
-// LogStream << "beach";
-// break;
-//
-// case LF_SUBCAT_DRIFT_DUNES:
-// LogStream << "dunes";
-// break;
-//
-// case LF_SUBCAT_INTERVENTION_STRUCT:
-// LogStream << "structural intervention";
-// break;
-//
-// case LF_SUBCAT_INTERVENTION_NON_STRUCT:
-// LogStream << "non-structural intervention";
-// break;
-//
-// case LF_NONE:
-// LogStream << "none";
-// break;
-//
-// default:
-// LogStream << "NONE";
-// break;
-// }
-// LogStream << endl;
-// }
-// }
-//    // DEBUG CODE ============================================================================================================================================
+   //    // DEBUG CODE ============================================================================================================================================
+   // for (int i = 0; i < static_cast<int>(m_VCoast.size()); i++)
+   // {
+   // for (int j = 0; j < m_VCoast[i].nGetCoastlineSize(); j++)
+   // {
+   // int
+   // nX = m_VCoast[i].pPtiGetCellMarkedAsCoastline(j)->nGetX(),
+   // nY = m_VCoast[i].pPtiGetCellMarkedAsCoastline(j)->nGetY();
+   //
+   // LogStream << m_ulIter << ": coast cell " << j << " at [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "} has landform category = ";
+   //
+   // int
+   // nCat = m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->nGetLFCategory(),
+   // nSubCat = m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->nGetLFSubCategory();
+   //
+   // switch (nCat)
+   // {
+   // case LF_CAT_HINTERLAND:
+   // LogStream << "hinterland";
+   // break;
+   //
+   // case LF_CAT_SEA:
+   // LogStream << "sea";
+   // break;
+   //
+   // case LF_CAT_CLIFF:
+   // LogStream << "cliff";
+   // break;
+   //
+   // case LF_CAT_DRIFT:
+   // LogStream << "drift";
+   // break;
+   //
+   // case LF_CAT_INTERVENTION:
+   // LogStream << "intervention";
+   // break;
+   //
+   // case LF_NONE:
+   // LogStream << "none";
+   // break;
+   //
+   // default:
+   // LogStream << "NONE";
+   // break;
+   // }
+   //
+   // LogStream << " and landform subcategory = ";
+   //
+   // switch (nSubCat)
+   // {
+   // case LF_SUBCAT_CLIFF_ON_COASTLINE:
+   // LogStream << "cliff on coastline";
+   // break;
+   //
+   // case LF_SUBCAT_CLIFF_INLAND:
+   // LogStream << "cliff inland";
+   // break;
+   //
+   // case LF_SUBCAT_DRIFT_MIXED:
+   // LogStream << "mixed drift";
+   // break;
+   //
+   // case LF_SUBCAT_DRIFT_TALUS:
+   // LogStream << "talus";
+   // break;
+   //
+   // case LF_SUBCAT_DRIFT_BEACH:
+   // LogStream << "beach";
+   // break;
+   //
+   // case LF_SUBCAT_DRIFT_DUNES:
+   // LogStream << "dunes";
+   // break;
+   //
+   // case LF_SUBCAT_INTERVENTION_STRUCT:
+   // LogStream << "structural intervention";
+   // break;
+   //
+   // case LF_SUBCAT_INTERVENTION_NON_STRUCT:
+   // LogStream << "non-structural intervention";
+   // break;
+   //
+   // case LF_NONE:
+   // LogStream << "none";
+   // break;
+   //
+   // default:
+   // LogStream << "NONE";
+   // break;
+   // }
+   // LogStream << endl;
+   // }
+   // }
+   //    // DEBUG CODE ============================================================================================================================================
 
    return RTN_OK;
 }
@@ -301,7 +301,7 @@ int CSimulation::nLandformToGrid(int const nCoast, int const nPoint)
       int const nX = m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(nPoint)->nGetX();
       int const nY = m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(nPoint)->nGetY();
 
-      if (! pCliff->bHasCollapsed())
+      if (!pCliff->bHasCollapsed())
       {
          // The cliff has not collapsed. Get attribute values from the cliff object
          double const dNotchBaseElev = pCliff->dGetNotchBaseElev();
@@ -335,7 +335,7 @@ int CSimulation::nLandformToGrid(int const nCoast, int const nPoint)
          if (nY > m_nYMaxBoundingBox)
             m_nYMaxBoundingBox = nY;
 
-// LogStream << m_ulIter << ": CLIFF REMOVED [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "} is no longer a cliff landform" << endl;
+         // LogStream << m_ulIter << ": CLIFF REMOVED [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "} is no longer a cliff landform" << endl;
 
          int const nTopLayer = m_pRasterGrid->m_Cell[nX][nY].nGetTopLayerAboveBasement();
 
@@ -357,7 +357,6 @@ int CSimulation::nLandformToGrid(int const nCoast, int const nPoint)
    else if (nCategory == LF_CAT_DRIFT)
    {
       // It's drift, so calculate D50 TODO 002 Why might we need this?
-
    }
 
    return RTN_OK;
@@ -373,7 +372,7 @@ int CSimulation::nAssignLandformsForAllCells(void)
 
    // Read-only phase: determine what changes need to be made
 #ifdef _OPENMP
-   #pragma omp parallel for collapse(2)
+#pragma omp parallel for collapse(2)
 #endif
 
    for (int nX = 0; nX < m_nXGridSize; nX++)
@@ -421,7 +420,7 @@ int CSimulation::nAssignLandformsForAllCells(void)
             // else keep as sea (no action needed)
          }
 
-         else if (! m_pRasterGrid->m_Cell[nX][nY].bIsCoastline())
+         else if (!m_pRasterGrid->m_Cell[nX][nY].bIsCoastline())
          {
             // Is not coastline
             if (nCat == LF_CAT_CLIFF)
@@ -453,34 +452,34 @@ int CSimulation::nAssignLandformsForAllCells(void)
 
          switch (nAction)
          {
-            case 0: // Set to unknown landform
-               pLandform->SetLFCategory(LF_NONE);
-               break;
+         case 0: // Set to unknown landform
+            pLandform->SetLFCategory(LF_NONE);
+            break;
 
-            case 1: // Set to submerged sediment input
-               pLandform->SetLFCategory(LF_CAT_SEDIMENT_INPUT_SUBMERGED);
-               m_pRasterGrid->m_Cell[nX][nY].SetInContiguousSea();
-               break;
+         case 1: // Set to submerged sediment input
+            pLandform->SetLFCategory(LF_CAT_SEDIMENT_INPUT_SUBMERGED);
+            m_pRasterGrid->m_Cell[nX][nY].SetInContiguousSea();
+            break;
 
-            case 2: // Set to not submerged sediment input
-               pLandform->SetLFCategory(LF_CAT_SEDIMENT_INPUT_NOT_SUBMERGED);
-               break;
+         case 2: // Set to not submerged sediment input
+            pLandform->SetLFCategory(LF_CAT_SEDIMENT_INPUT_NOT_SUBMERGED);
+            break;
 
-            case 3: // Set to beach
-               pLandform->SetLFSubCategory(LF_SUBCAT_DRIFT_BEACH);
-               break;
+         case 3: // Set to beach
+            pLandform->SetLFSubCategory(LF_SUBCAT_DRIFT_BEACH);
+            break;
 
-            case 4: // Set to island
-               pLandform->SetLFCategory(LF_CAT_ISLAND);
-               break;
+         case 4: // Set to island
+            pLandform->SetLFCategory(LF_CAT_ISLAND);
+            break;
 
-            case 5: // Set to former cliff
-               pLandform->SetLFSubCategory(LF_SUBCAT_CLIFF_INLAND);
-               break;
+         case 5: // Set to former cliff
+            pLandform->SetLFSubCategory(LF_SUBCAT_CLIFF_INLAND);
+            break;
 
-            case 6: // Set to hinterland
-               pLandform->SetLFCategory(LF_CAT_HINTERLAND);
-               break;
+         case 6: // Set to hinterland
+            pLandform->SetLFCategory(LF_CAT_HINTERLAND);
+            break;
          }
       }
    }

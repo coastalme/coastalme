@@ -27,7 +27,7 @@
 // using std::endl;
 
 #ifdef _OPENMP
-   #include <omp.h>
+#include <omp.h>
 #endif
 
 #include "cme.h"
@@ -50,10 +50,10 @@ int CSimulation::nUpdateGrid(void)
 
    // Use OpenMP parallel reduction for thread-safe accumulation and min/max calculations
 #ifdef _OPENMP
-   #pragma omp parallel for collapse(2) \
-   reduction(+:m_ulThisIterNumCoastCells,m_dThisIterTotSeaDepth) \
-   reduction(max:m_dThisIterTopElevMax) \
-   reduction(min:m_dThisIterTopElevMin)
+#pragma omp parallel for collapse(2)                                 \
+    reduction(+ : m_ulThisIterNumCoastCells, m_dThisIterTotSeaDepth) \
+    reduction(max : m_dThisIterTopElevMax)                           \
+    reduction(min : m_dThisIterTopElevMin)
 #endif
 
    for (int nX = 0; nX < m_nXGridSize; nX++)
@@ -90,7 +90,7 @@ int CSimulation::nUpdateGrid(void)
 
    // Parallelize the sediment distribution loop
 #ifdef _OPENMP
-   #pragma omp parallel for collapse(2)
+#pragma omp parallel for collapse(2)
 #endif
 
    for (int nX = 0; nX < m_nXGridSize; nX++)
@@ -116,4 +116,3 @@ int CSimulation::nUpdateGrid(void)
 
    return RTN_OK;
 }
-

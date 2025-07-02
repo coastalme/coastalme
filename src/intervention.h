@@ -30,9 +30,8 @@
 
 class CRWIntervention : public CACoastLandform
 {
-private:
-
-public:
+ private:
+ public:
    CRWIntervention(CRWCoast*, int const, int const);
    ~CRWIntervention(void) override;
 

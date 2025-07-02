@@ -26,22 +26,22 @@
 
 //! Constructor with no parameters (the X and Y coordinates of the new CGeom2DIPoint object are set to zero in an initialization list)
 CGeom2DIPoint::CGeom2DIPoint(void)
-   : nX(0),
-     nY(0)
+    : nX(0),
+      nY(0)
 {
 }
 
 //! Constructor with one CGeom2DIPoint parameter (for the X and Y coordinates of the new CGeom2DIPoint object)
 CGeom2DIPoint::CGeom2DIPoint(CGeom2DIPoint const* pPti)
-   : nX(pPti->nGetX()),
-     nY(pPti->nGetY())
+    : nX(pPti->nGetX()),
+      nY(pPti->nGetY())
 {
 }
 
 //! Constructor with two integer parameters, for the X and Y coordinates of the new CGeom2DIPoint object
 CGeom2DIPoint::CGeom2DIPoint(int const nNewX, int const nNewY)
-   : nX(nNewX),
-     nY(nNewY)
+    : nX(nNewX),
+      nY(nNewY)
 {
 }
 
@@ -124,7 +124,7 @@ void CGeom2DIPoint::DivXDivY(double const dXDiv, double const dYDiv)
 }
 
 //! Sets one CGeom2DIPoint object to be the same as another
-CGeom2DIPoint& CGeom2DIPoint::operator= (CGeom2DIPoint const* pPti)
+CGeom2DIPoint& CGeom2DIPoint::operator=(CGeom2DIPoint const* pPti)
 {
    nX = pPti->nGetX();
    nY = pPti->nGetY();
@@ -132,7 +132,7 @@ CGeom2DIPoint& CGeom2DIPoint::operator= (CGeom2DIPoint const* pPti)
 }
 
 //! Compares two CGeom2DIPoint objects for equality
-bool CGeom2DIPoint::operator== (CGeom2DIPoint const* pPti) const
+bool CGeom2DIPoint::operator==(CGeom2DIPoint const* pPti) const
 {
    if ((pPti->nGetX() == nX) && (pPti->nGetY() == nY))
       return true;
@@ -141,7 +141,7 @@ bool CGeom2DIPoint::operator== (CGeom2DIPoint const* pPti) const
 }
 
 //! Compares two CGeom2DIPoint objects for equality
-bool CGeom2DIPoint::operator== (CGeom2DIPoint Pti) const
+bool CGeom2DIPoint::operator==(CGeom2DIPoint Pti) const
 {
    if ((Pti.nGetX() == nX) && (Pti.nGetY() == nY))
       return true;
@@ -150,7 +150,7 @@ bool CGeom2DIPoint::operator== (CGeom2DIPoint Pti) const
 }
 
 //! Compares two CGeom2DIPoint objects for inequality
-bool CGeom2DIPoint::operator!= (CGeom2DIPoint const* pPti) const
+bool CGeom2DIPoint::operator!=(CGeom2DIPoint const* pPti) const
 {
    if ((pPti->nGetX() != nX) || (pPti->nGetY() != nY))
       return true;
@@ -159,7 +159,7 @@ bool CGeom2DIPoint::operator!= (CGeom2DIPoint const* pPti) const
 }
 
 //! Compares two CGeom2DIPoint objects for inequality
-bool CGeom2DIPoint::operator!= (CGeom2DIPoint Pti) const
+bool CGeom2DIPoint::operator!=(CGeom2DIPoint Pti) const
 {
    if ((Pti.nGetX() != nX) || (Pti.nGetY() != nY))
       return true;

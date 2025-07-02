@@ -42,27 +42,27 @@ using std::find;
 
 //! Constructor with initialization list, requires one parameter (the coast point at which the profile starts)
 CGeomProfile::CGeomProfile(int const nCoast, int const nCoastPoint, int const nCoastID, int const nGlobalID, CGeom2DIPoint const* pPtiStart, CGeom2DIPoint const* pPtiEnd, bool const bIntervention)
-   : m_bStartOfCoast(false),
-     m_bEndOfCoast(false),
-     m_bCShoreProblem(false),
-     m_bHitLand(false),
-     m_bHitIntervention(false),
-     m_bHitCoast(false),
-     m_bTooShort(false),
-     m_bTruncated(false),
-     m_bHitAnotherProfile(false),
-     m_bIntervention(bIntervention),
-     m_nCoast(nCoast),
-     m_nCoastPoint(nCoastPoint),
-     m_nCoastID(nCoastID),
-     m_nGlobalID(nGlobalID),
-     m_dDeepWaterWaveHeight(0),
-     m_dDeepWaterWaveAngle(0),
-     m_dDeepWaterWavePeriod(0),
-     PtiStart( * pPtiStart),
-     PtiEnd( * pPtiEnd),
-     m_pUpCoastAdjacentProfile(NULL),
-     m_pDownCoastAdjacentProfile(NULL)
+    : m_bStartOfCoast(false),
+      m_bEndOfCoast(false),
+      m_bCShoreProblem(false),
+      m_bHitLand(false),
+      m_bHitIntervention(false),
+      m_bHitCoast(false),
+      m_bTooShort(false),
+      m_bTruncated(false),
+      m_bHitAnotherProfile(false),
+      m_bIntervention(bIntervention),
+      m_nCoast(nCoast),
+      m_nCoastPoint(nCoastPoint),
+      m_nCoastID(nCoastID),
+      m_nGlobalID(nGlobalID),
+      m_dDeepWaterWaveHeight(0),
+      m_dDeepWaterWaveAngle(0),
+      m_dDeepWaterWavePeriod(0),
+      PtiStart(*pPtiStart),
+      PtiEnd(*pPtiEnd),
+      m_pUpCoastAdjacentProfile(NULL),
+      m_pDownCoastAdjacentProfile(NULL)
 {
 }
 
@@ -98,7 +98,7 @@ CGeom2DIPoint* CGeomProfile::pPtiGetStartPoint(void)
 //! Sets the the location of the cell (grid CRS) on which the profile ends
 void CGeomProfile::SetEndPoint(CGeom2DIPoint const* pPtiEnd)
 {
-   PtiEnd = * pPtiEnd;
+   PtiEnd = *pPtiEnd;
 }
 
 //! Returns a pointer to the location of the cell (grid CRS) on which the profile ends
@@ -219,15 +219,15 @@ bool CGeomProfile::bHitAnotherProfile(void) const
 bool CGeomProfile::bProfileOK(void) const
 {
    // All profiles without problems, but not start- or end-of-coast profiles
-   if ((! m_bStartOfCoast) &&
-         (! m_bEndOfCoast) &&
-         (! m_bHitLand) &&
-         (! m_bHitIntervention) &&
-         (! m_bHitCoast) &&
-         (! m_bTooShort) &&
-         (! m_bTruncated) &&
-         (! m_bHitAnotherProfile) &&
-         (! m_bCShoreProblem))
+   if ((!m_bStartOfCoast) &&
+       (!m_bEndOfCoast) &&
+       (!m_bHitLand) &&
+       (!m_bHitIntervention) &&
+       (!m_bHitCoast) &&
+       (!m_bTooShort) &&
+       (!m_bTruncated) &&
+       (!m_bHitAnotherProfile) &&
+       (!m_bCShoreProblem))
       return true;
 
    return false;
@@ -237,14 +237,14 @@ bool CGeomProfile::bProfileOK(void) const
 bool CGeomProfile::bProfileOKIncTruncated(void) const
 {
    // All profiles without problems, but not start- or end-of-coast profiles
-   if ((! m_bStartOfCoast) &&
-         (! m_bEndOfCoast) &&
-         (! m_bHitLand) &&
-         (! m_bHitIntervention) &&
-         (! m_bHitCoast) &&
-         (! m_bTooShort) &&
-         (! m_bHitAnotherProfile) &&
-         (! m_bCShoreProblem))
+   if ((!m_bStartOfCoast) &&
+       (!m_bEndOfCoast) &&
+       (!m_bHitLand) &&
+       (!m_bHitIntervention) &&
+       (!m_bHitCoast) &&
+       (!m_bTooShort) &&
+       (!m_bHitAnotherProfile) &&
+       (!m_bCShoreProblem))
       return true;
 
    return false;
@@ -254,13 +254,13 @@ bool CGeomProfile::bProfileOKIncTruncated(void) const
 bool CGeomProfile::bOKIncStartAndEndOfCoast(void) const
 {
    // All profiles without problems, including start- and end-of-coast profiles
-   if ((! m_bHitLand) &&
-         (! m_bHitIntervention) &&
-         (! m_bHitCoast) &&
-         (! m_bTooShort) &&
-         (! m_bTruncated) &&
-         (! m_bHitAnotherProfile) &&
-         (! m_bCShoreProblem))
+   if ((!m_bHitLand) &&
+       (!m_bHitIntervention) &&
+       (!m_bHitCoast) &&
+       (!m_bTooShort) &&
+       (!m_bTruncated) &&
+       (!m_bHitAnotherProfile) &&
+       (!m_bCShoreProblem))
       return true;
 
    return false;
@@ -285,7 +285,7 @@ bool CGeomProfile::bOKIncStartAndEndOfCoast(void) const
 //! Sets all points in the profile
 void CGeomProfile::SetPointsInProfile(vector<CGeom2DPoint> const* VNewPoints)
 {
-   m_VPoints = * VNewPoints;
+   m_VPoints = *VNewPoints;
 }
 
 //! Sets a single point in the profile
@@ -304,7 +304,7 @@ void CGeomProfile::AppendPointInProfile(double const dNewX, double const dNewY)
 //! Appends a point to the profile (overloaded version)
 void CGeomProfile::AppendPointInProfile(CGeom2DPoint const* pPt)
 {
-   m_VPoints.push_back( * pPt);
+   m_VPoints.push_back(*pPt);
 }
 
 //! Inserts an intersection into the profile
@@ -386,7 +386,7 @@ bool CGeomProfile::bIsPointInProfile(double const dX, double const dY)
 }
 
 //! Queries the profile: is the given point a profile point? If so, then it also returns the number of the point in the profile
-bool CGeomProfile::bIsPointInProfile(double const dX, double const dY, int &nPoint)
+bool CGeomProfile::bIsPointInProfile(double const dX, double const dY, int& nPoint)
 {
    CGeom2DPoint const Pt(dX, dY);
    auto it = find(m_VPoints.begin(), m_VPoints.end(), &Pt);
@@ -484,7 +484,7 @@ CGeomProfile* CGeomProfile::pGetDownCoastAdjacentProfile(void) const
 void CGeomProfile::AppendCellInProfile(CGeom2DIPoint const* pPti)
 {
    // In grid CRS
-   m_VCellInProfile.push_back( * pPti);
+   m_VCellInProfile.push_back(*pPti);
 }
 
 //! Appends a cell to the profile (overloaded version)
@@ -501,7 +501,7 @@ void CGeomProfile::AppendCellInProfile(int const nX, int const nY)
 // }
 
 //! Returns all cells in the profile
-vector<CGeom2DIPoint> *CGeomProfile::pPtiVGetCellsInProfile(void)
+vector<CGeom2DIPoint>* CGeomProfile::pPtiVGetCellsInProfile(void)
 {
    // In grid CRS
    return &m_VCellInProfile;
@@ -545,7 +545,7 @@ void CGeomProfile::AppendCellInProfileExtCRS(double const dX, double const dY)
 void CGeomProfile::AppendCellInProfileExtCRS(CGeom2DPoint const* pPt)
 {
    // In external CRS
-   m_VCellInProfileExtCRS.push_back( * pPt);
+   m_VCellInProfileExtCRS.push_back(*pPt);
 }
 
 //! Returns the index of the cell on this profile which has a sea depth which is just less than a given depth. If every cell on the profile has a sea depth which is less than the given depth it returns INT_NODATA

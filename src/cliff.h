@@ -31,7 +31,7 @@
 
 class CRWCliff : public CACoastLandform
 {
-private:
+ private:
    //! Switch to say whether the cliff has just collapsed, earlier in this timestep
    bool m_bCliffHasCollapsed;
 
@@ -44,9 +44,8 @@ private:
    //! Z-plane elevation (in external CRS units) of the base of the erosional notch. The notch is assumed to extend across the whole width of the coast cell, along the side of the cell that touches the sea
    double m_dNotchBaseElev;
 
-protected:
-
-public:
+ protected:
+ public:
    CRWCliff(CRWCoast *, int const, int const, double const, double const, double const, double const);
    ~CRWCliff(void) override;
 

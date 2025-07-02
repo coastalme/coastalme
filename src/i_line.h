@@ -29,18 +29,17 @@
 
 class CGeomILine : public CA2DIShape
 {
-private:
-
-protected:
+ private:
+ protected:
    void Display(void) override;
 
-public:
+ public:
    CGeomILine(void);
    ~CGeomILine(void) override;
 
    // CGeom2DIPoint* pPtiGetAt(int const);
-// int nGetXAt(int const);
-// int nGetYAt(int const);
+   // int nGetXAt(int const);
+   // int nGetYAt(int const);
    // void SetXAt(int const, int const);
    // void SetYAt(int const, int const);
 

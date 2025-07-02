@@ -29,13 +29,12 @@
 #include "2di_point.h"
 #include "coast.h"
 
-class CRWCoast;      // Forward declaration
+class CRWCoast; // Forward declaration
 
 class CACoastLandform
 {
-private:
-
-protected:
+ private:
+ protected:
    //! The coast number on which this coast landform sits
    int m_nCoast;
 
@@ -49,18 +48,18 @@ protected:
    double m_dTotAccumWaveEnergy;
 
    //! Pointer to this landform's coast
-   CRWCoast * pCoast;
+   CRWCoast* pCoast;
 
-public:
+ public:
    CACoastLandform(void);
    virtual ~CACoastLandform(void);
 
    int nGetCoast(void) const;
    int nGetPointOnCoast(void) const;
-// void SetLandFormCategory(int const);
+   // void SetLandFormCategory(int const);
    int nGetLandFormCategory(void) const;
    CGeom2DIPoint* pPtiGetCellMarkedAsLF(void) const;
-// void SetTotAccumWaveEnergy(double const);
+   // void SetTotAccumWaveEnergy(double const);
    void IncTotAccumWaveEnergy(double const);
    double dGetTotAccumWaveEnergy(void) const;
 

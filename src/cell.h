@@ -17,11 +17,18 @@
 
    This file is part of CoastalME, the Coastal Modelling Environment.
 
-   CoastalME is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
+   CoastalME is free software; you can redistribute it and/or modify it under
+the terms of the GNU General Public License as published by the Free Software
+Foundation; either version 3 of the License, or (at your option) any later
+version.
 
-   This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+   This program is distributed in the hope that it will be useful, but WITHOUT
+ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-   You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+   You should have received a copy of the GNU General Public License along with
+this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave,
+Cambridge, MA 02139, USA.
 
 ===============================================================================================================================*/
 #include <vector>
@@ -30,15 +37,16 @@ using std::vector;
 // #include "cme.h"
 #include "cell_landform.h"
 #include "cell_layer.h"
+#include "cme.h"
 #include "raster_grid.h"
 
-class CGeomRasterGrid;     // Forward declaration
+class CGeomRasterGrid; // Forward declaration
 
 class CGeomCell
 {
    friend class CSimulation;
 
-private:
+ private:
    //! Switch to indicate if this is a sea cell, contiguous with other sea cells
    bool m_bInContiguousSea;
 
@@ -50,6 +58,9 @@ private:
 
    //! Switch to indicate that this cell is 'under' a coastline
    bool m_bCoastline;
+
+   //! Is this cell a cliff
+   bool m_bCliff;
 
    //! Switch to indicate that this cell is 'under' a runup flood line
    bool m_bFloodLine;
@@ -87,13 +98,16 @@ private:
    //! If this cell is within a polygon, this is the ID of the polygon's coast
    int m_nPolygonCoastID;
 
-   //! If this cell is 'under' a coastline normal, this is the number of the normal
+   //! If this cell is 'under' a coastline normal, this is the number of the
+   //! normal
    int m_nCoastlineNormal;
 
-   //! If this cell is within a shadow zone, this is the number of the shadow zone
+   //! If this cell is within a shadow zone, this is the number of the shadow
+   //! zone
    int m_nShadowZoneNumber;
 
-   //! If this cell is within a downdrift zone, this is the number of the downdrift zone
+   //! If this cell is within a downdrift zone, this is the number of the
+   //! downdrift zone
    int m_nDownDriftZoneNumber;
 
    //! Used in erosion calculations, stored here for display purposes
@@ -102,10 +116,14 @@ private:
    //! Elevation of basement surface (m)
    double m_dBasementElevation;
 
+   //! Slope at this cell (degrees or unitless)
+   double m_dSlope;
+
    //! Depth of still water (m), is zero if not inundated
    double m_dSeaDepth;
 
-   //! Total depth of still water (m) since beginning of simulation (used to calc average)
+   //! Total depth of still water (m) since beginning of simulation (used to calc
+   //! average)
    double m_dTotSeaDepth;
 
    //! Wave height (m)
@@ -132,19 +150,23 @@ private:
    //! Wave period if this is a deep water cell
    double m_dDeepWaterWavePeriod;
 
-   //! Only meaningful if in zone of platform erosion. 0 is fully protected; 1 = no protection
+   //! Only meaningful if in zone of platform erosion. 0 is fully protected; 1 =
+   //! no protection
    double m_dBeachProtectionFactor;
 
    //! Suspended sediment as depth equivalent (m)
    double m_dSuspendedSediment;
 
-   //! Total depth of suspended sediment (m) since simulation start (used to calc average)
+   //! Total depth of suspended sediment (m) since simulation start (used to calc
+   //! average)
    double m_dTotSuspendedSediment;
 
-   //! Depth of sediment on the shore platform that could be eroded this timestep, if no supply-limitation
+   //! Depth of sediment on the shore platform that could be eroded this
+   //! timestep, if no supply-limitation
    double m_dPotentialPlatformErosionThisIter;
 
-   //! Total depth of sediment eroded from the shore platform, if no supply-limitation
+   //! Total depth of sediment eroded from the shore platform, if no
+   //! supply-limitation
    double m_dTotPotentialPlatformErosion;
 
    //! Depth of sediment actually eroded from the shore platform this timestep
@@ -153,40 +175,52 @@ private:
    //! Total depth of sediment actually eroded from the shore platform
    double m_dTotActualPlatformErosion;
 
-   //! Depth of fine sediment (consolidated and unconsolidated) removed via cliff collapse this timestep
+   //! Depth of fine sediment (consolidated and unconsolidated) removed via cliff
+   //! collapse this timestep
    double m_dCliffCollapseFineThisIter;
 
-   //! Depth of sand sediment (consolidated and unconsolidated) removed via cliff collapse this timestep
+   //! Depth of sand sediment (consolidated and unconsolidated) removed via cliff
+   //! collapse this timestep
    double m_dCliffCollapseSandThisIter;
 
-   //! Depth of coarse sediment (consolidated and unconsolidated) removed via cliff collapse this timestep
+   //! Depth of coarse sediment (consolidated and unconsolidated) removed via
+   //! cliff collapse this timestep
    double m_dCliffCollapseCoarseThisIter;
 
-   //! Total depth of fine sediment (consolidated and unconsolidated) removed via cliff collapse
+   //! Total depth of fine sediment (consolidated and unconsolidated) removed via
+   //! cliff collapse
    double m_dTotFineCliffCollapse;
 
-   //! Total depth of sand sediment (consolidated and unconsolidated) removed via cliff collapse
+   //! Total depth of sand sediment (consolidated and unconsolidated) removed via
+   //! cliff collapse
    double m_dTotSandCliffCollapse;
 
-   //! Total depth of coarse sediment (consolidated and unconsolidated) removed via cliff collapse
+   //! Total depth of coarse sediment (consolidated and unconsolidated) removed
+   //! via cliff collapse
    double m_dTotCoarseCliffCollapse;
 
-   //! Depth of unconsolidated sand sediment deposited as a result of cliff collapse this timestep
+   //! Depth of unconsolidated sand sediment deposited as a result of cliff
+   //! collapse this timestep
    double m_dTalusSandDepositionThisIter;
 
-   //! Total depth of unconsolidated sand sediment deposited as a result of cliff collapse
+   //! Total depth of unconsolidated sand sediment deposited as a result of cliff
+   //! collapse
    double m_dTotTalusSandDeposition;
 
-   //! Depth of unconsolidated coarse sediment deposited as a result of cliff collapse this timestep
+   //! Depth of unconsolidated coarse sediment deposited as a result of cliff
+   //! collapse this timestep
    double m_dTalusCoarseDepositionThisIter;
 
-   //! Total depth of unconsolidated coarse sediment deposited as a result of cliff collapse
+   //! Total depth of unconsolidated coarse sediment deposited as a result of
+   //! cliff collapse
    double m_dTotTalusCoarseDeposition;
 
-   //! Depth of unconsolidated beach sediment that could be eroded this timestep, if no supply-limitation
+   //! Depth of unconsolidated beach sediment that could be eroded this timestep,
+   //! if no supply-limitation
    double m_dPotentialBeachErosionThisIter;
 
-   //! Total depth of unconsolidated beach sediment eroded; if no supply-limitation
+   //! Total depth of unconsolidated beach sediment eroded; if no
+   //! supply-limitation
    double m_dTotPotentialBeachErosion;
 
    //! Depth of unconsolidated beach sediment actually eroded this timestep
@@ -201,7 +235,8 @@ private:
    //! Total depth of unconsolidated beach sediment deposited
    double m_dTotBeachDeposition;
 
-   //! d50 of unconsolidated sediment on top layer with unconsolidated sediment depth > 0
+   //! d50 of unconsolidated sediment on top layer with unconsolidated sediment
+   //! depth > 0
    double m_dUnconsD50;
 
    //! Height of intervention structure
@@ -214,13 +249,14 @@ private:
    //! Number of layers NOT including the basement. Layer 0 is the lowest
    vector<CRWCellLayer> m_VLayerAboveBasement;
 
-   //! Number of layer-top elevations (inc. that of the basement, which is m_VdAllHorizonTopElev[0]); size 1 greater than size of m_VLayerAboveBasement
+   //! Number of layer-top elevations (inc. that of the basement, which is
+   //! m_VdAllHorizonTopElev[0]); size 1 greater than size of
+   //! m_VLayerAboveBasement
    vector<double> m_VdAllHorizonTopElev;
 
-protected:
-
-public:
-   static CGeomRasterGrid* m_pGrid;
+ protected:
+ public:
+   static CGeomRasterGrid *m_pGrid;
 
    CGeomCell();
    ~CGeomCell(void);
@@ -244,6 +280,9 @@ public:
    bool bIsCoastline(void) const;
    void SetAsFloodLine(bool const);
    bool bIsFloodLine(void) const;
+
+   void SetAsCliff(bool const);
+   bool bIsCliff(void) const;
 
    void SetProfileID(int const);
    int nGetProfileID(void) const;
@@ -270,7 +309,7 @@ public:
 
    void SetCoastAndPolygonID(int const, int const);
 
-   CRWCellLandform* pGetLandform(void);
+   CRWCellLandform *pGetLandform(void);
 
    void SetWaveFlood(void);
    bool bIsElevLessThanWaterLevel(void) const;
@@ -288,6 +327,9 @@ public:
    void SetBasementElev(double const);
    double dGetBasementElev(void) const;
    bool bBasementElevIsMissingValue(void) const;
+
+   void SetSlope(double const);
+   double dGetSlope(void) const;
 
    // double dGetVolEquivSedTopElev(void) const;
    double dGetSedimentTopElev(void) const;
@@ -331,7 +373,7 @@ public:
    int nGetTopLayerAboveBasement(void) const;
 
    double dGetConsSedTopForLayerAboveBasement(int const) const;
-   CRWCellLayer * pGetLayerAboveBasement(int const);
+   CRWCellLayer *pGetLayerAboveBasement(int const);
    void AppendLayers(int const);
    void CalcAllLayerElevsAndD50(void);
    int nGetLayerAtElev(double const) const;

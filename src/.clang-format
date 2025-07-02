@@ -1,19 +1,29 @@
 BasedOnStyle: None
-AlignTrailingComments: true
 BreakBeforeBraces: Allman
+
 ColumnLimit: 0
 IndentWidth: 3
-KeepEmptyLinesAtTheStartOfBlocks: false
-ObjCSpaceAfterProperty: true
-ObjCSpaceBeforeProtocolList: true
-PointerBindsToType: false
-SpacesBeforeTrailingComments: 1
 TabWidth: 3
 UseTab: Never
+
+KeepEmptyLinesAtTheStartOfBlocks: false
+RemoveEmptyLinesInUnwrappedLines: true
 
 DerivePointerAlignment: true
 PointerAlignment: Left
 ReferenceAlignment: Right
+
+ObjCSpaceAfterProperty: true
+ObjCSpaceBeforeProtocolList: true
+PointerBindsToType: false
+
+SpacesBeforeTrailingComments: 1
+AlignTrailingComments: true
+
+AllowAllArgumentsOnNextLine: false
+AllowAllParametersOfDeclarationOnNextLine: false
+BinPackArguments: true;
+BinPackParameters: true;
 
 SpaceBeforeParens: Custom
 SpaceBeforeParensOptions:

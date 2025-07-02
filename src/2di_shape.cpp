@@ -35,7 +35,7 @@ CA2DIShape::~CA2DIShape(void)
 }
 
 //! Returns one integer point from the vector which represents this 2D shape
-CGeom2DIPoint& CA2DIShape::operator[] (int const n)
+CGeom2DIPoint& CA2DIShape::operator[](int const n)
 {
    // TODO 055 Maybe add a safety check?
    return m_VPoints[n];
@@ -48,7 +48,7 @@ CGeom2DIPoint& CA2DIShape::Back(void)
 }
 
 //! Returns the address of the vector which represents this 2D shape
-vector<CGeom2DIPoint> *CA2DIShape::pPtiVGetPoints(void)
+vector<CGeom2DIPoint>* CA2DIShape::pPtiVGetPoints(void)
 {
    return &m_VPoints;
 }

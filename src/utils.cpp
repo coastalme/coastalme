@@ -24,18 +24,18 @@
 #include <assert.h>
 
 #ifdef _WIN32
-   #include <windows.h>       // Needed for CalcProcessStats()
-   #include <psapi.h>
-   #include <io.h>            // For isatty()
+#include <windows.h> // Needed for CalcProcessStats()
+#include <psapi.h>
+#include <io.h> // For isatty()
 #elif defined __GNUG__
-   #include <sys/resource.h>  // Needed for CalcProcessStats()
-   #include <unistd.h>        // For isatty()
-   #include <sys/types.h>
-   #include <sys/wait.h>
+#include <sys/resource.h> // Needed for CalcProcessStats()
+#include <unistd.h>       // For isatty()
+#include <sys/types.h>
+#include <sys/wait.h>
 #endif
 
 #ifdef _OPENMP
-   #include <omp.h>
+#include <omp.h>
 #endif
 
 #include <stdio.h>
@@ -100,7 +100,7 @@ using std::transform;
 //===============================================================================================================================
 int CSimulation::nHandleCommandLineParams(int nArg, char const* pcArgv[])
 {
-   if ((! isatty(fileno(stdout))) || (! isatty(fileno(stderr))))
+   if ((!isatty(fileno(stdout))) || (!isatty(fileno(stderr))))
       // Running with stdout or stderr not a tty, so either redirected or running as a background job. Ignore all command line parameters
       return RTN_OK;
 
@@ -118,7 +118,8 @@ int CSimulation::nHandleCommandLineParams(int nArg, char const* pcArgv[])
       if (strArg.find("--gdal") != string::npos)
       {
          // User wants to know what GDAL raster drivers are available
-         cout << GDAL_DRIVERS << endl << endl;
+         cout << GDAL_DRIVERS << endl
+              << endl;
 
          for (int j = 0; j < GDALGetDriverCount(); j++)
          {
@@ -196,7 +197,8 @@ int CSimulation::nHandleCommandLineParams(int nArg, char const* pcArgv[])
 //===============================================================================================================================
 void CSimulation::AnnounceStart(void)
 {
-   cout << endl << PROGRAM_NAME << " for " << PLATFORM << " " << strGetBuild() << endl;
+   cout << endl
+        << PROGRAM_NAME << " for " << PLATFORM << " " << strGetBuild() << endl;
 }
 
 //===============================================================================================================================
@@ -294,25 +296,25 @@ double CSimulation::dGetTimeMultiplier(string const* strIn)
    // Then return the correct multiplier, since m_dTimeStep is in hours
    switch (nTimeUnits)
    {
-      case TIME_UNKNOWN:
-         return TIME_UNKNOWN;
-         break;
+   case TIME_UNKNOWN:
+      return TIME_UNKNOWN;
+      break;
 
-      case TIME_HOURS:
-         return 1; // Multiplier for hours
-         break;
+   case TIME_HOURS:
+      return 1; // Multiplier for hours
+      break;
 
-      case TIME_DAYS:
-         return 24; // Multiplier for days -> hours
-         break;
+   case TIME_DAYS:
+      return 24; // Multiplier for days -> hours
+      break;
 
-      case TIME_MONTHS:
-         return 24 * 30.416667; // Multiplier for months -> hours (assume 30 + 5/12 day months, no leap years)
-         break;
+   case TIME_MONTHS:
+      return 24 * 30.416667; // Multiplier for months -> hours (assume 30 + 5/12 day months, no leap years)
+      break;
 
-      case TIME_YEARS:
-         return 24 * 365.25; // Multiplier for years -> hours
-         break;
+   case TIME_YEARS:
+      return 24 * 365.25; // Multiplier for years -> hours
+      break;
    }
 
    return 0;
@@ -329,29 +331,29 @@ int CSimulation::nDoSimulationTimeMultiplier(string const* strIn)
    // Next set up the correct multiplier, since m_dTimeStep is in hours
    switch (nTimeUnits)
    {
-      case TIME_UNKNOWN:
-         return RTN_ERR_TIMEUNITS;
-         break;
+   case TIME_UNKNOWN:
+      return RTN_ERR_TIMEUNITS;
+      break;
 
-      case TIME_HOURS:
-         m_dDurationUnitsMult = 1; // Multiplier for hours
-         m_strDurationUnits = "hours";
-         break;
+   case TIME_HOURS:
+      m_dDurationUnitsMult = 1; // Multiplier for hours
+      m_strDurationUnits = "hours";
+      break;
 
-      case TIME_DAYS:
-         m_dDurationUnitsMult = 24; // Multiplier for days -> hours
-         m_strDurationUnits = "days";
-         break;
+   case TIME_DAYS:
+      m_dDurationUnitsMult = 24; // Multiplier for days -> hours
+      m_strDurationUnits = "days";
+      break;
 
-      case TIME_MONTHS:
-         m_dDurationUnitsMult = 24 * 30.416667; // Multiplier for months -> hours (assume 30 + 5/12 day months, no leap years)
-         m_strDurationUnits = "months";
-         break;
+   case TIME_MONTHS:
+      m_dDurationUnitsMult = 24 * 30.416667; // Multiplier for months -> hours (assume 30 + 5/12 day months, no leap years)
+      m_strDurationUnits = "months";
+      break;
 
-      case TIME_YEARS:
-         m_dDurationUnitsMult = 24 * 365.25; // Multiplier for years -> hours
-         m_strDurationUnits = "years";
-         break;
+   case TIME_YEARS:
+      m_dDurationUnitsMult = 24 * 365.25; // Multiplier for years -> hours
+      m_strDurationUnits = "years";
+      break;
    }
 
    return RTN_OK;
@@ -392,7 +394,7 @@ bool CSimulation::bOpenLogFile(void)
    else
       LogStream.open(m_strLogFile.c_str(), ios::out | ios::trunc);
 
-   if (! LogStream)
+   if (!LogStream)
    {
       // Error, cannot open log file
       cerr << ERR << "cannot open " << m_strLogFile << " for output" << endl;
@@ -454,7 +456,7 @@ void CSimulation::AnnounceReadVectorFiles(void)
 void CSimulation::AnnounceReadLGIS(void) const
 {
    // Tell the user what is happening
-   if (! m_strInitialLandformFile.empty())
+   if (!m_strInitialLandformFile.empty())
 #ifdef _WIN32
       cout << READING_LANDFORM_FILE << pstrChangeToForwardSlash(&m_strInitialLandformFile) << endl;
 
@@ -469,7 +471,7 @@ void CSimulation::AnnounceReadLGIS(void) const
 void CSimulation::AnnounceReadICGIS(void) const
 {
    // Tell the user what is happening
-   if (! m_strInterventionClassFile.empty())
+   if (!m_strInterventionClassFile.empty())
 #ifdef _WIN32
       cout << READING_INTERVENTION_CLASS_FILE << pstrChangeToForwardSlash(&m_strInterventionClassFile) << endl;
 
@@ -484,7 +486,7 @@ void CSimulation::AnnounceReadICGIS(void) const
 void CSimulation::AnnounceReadIHGIS(void) const
 {
    // Tell the user what is happening
-   if (! m_strInterventionHeightFile.empty())
+   if (!m_strInterventionHeightFile.empty())
 #ifdef _WIN32
       cout << READING_INTERVENTION_HEIGHT_FILE << pstrChangeToForwardSlash(&m_strInterventionHeightFile) << endl;
 
@@ -499,7 +501,7 @@ void CSimulation::AnnounceReadIHGIS(void) const
 void CSimulation::AnnounceReadDeepWaterWaveValuesGIS(void) const
 {
    // Tell the user what is happening
-   if (! m_strDeepWaterWavesInputFile.empty())
+   if (!m_strDeepWaterWavesInputFile.empty())
 #ifdef _WIN32
       cout << READING_DEEP_WATER_WAVE_FILE << pstrChangeToForwardSlash(&m_strDeepWaterWavesInputFile) << endl;
 
@@ -514,7 +516,7 @@ void CSimulation::AnnounceReadDeepWaterWaveValuesGIS(void) const
 void CSimulation::AnnounceReadSedimentEventInputValuesGIS(void) const
 {
    // Tell the user what is happening
-   if (! m_strSedimentInputEventFile.empty())
+   if (!m_strSedimentInputEventFile.empty())
 #ifdef _WIN32
       cout << READING_SED_INPUT_EVENT_FILE << pstrChangeToForwardSlash(&m_strSedimentInputEventFile) << endl;
 
@@ -529,7 +531,7 @@ void CSimulation::AnnounceReadSedimentEventInputValuesGIS(void) const
 void CSimulation::AnnounceReadFloodLocationGIS(void) const
 {
    // Tell the user what is happening
-   if (! m_strFloodLocationShapefile.empty())
+   if (!m_strFloodLocationShapefile.empty())
 #ifdef _WIN32
       cout << READING_FLOOD_LOCATION << pstrChangeToForwardSlash(&m_strFloodLocationShapefile) << endl;
 
@@ -1127,7 +1129,7 @@ bool CSimulation::bSetUpTSFiles(void)
       // Open wetted time-series CSV file
       SeaAreaTSStream.open(strTSFile.c_str(), ios::out | ios::trunc);
 
-      if (! SeaAreaTSStream)
+      if (!SeaAreaTSStream)
       {
          // Error, cannot open wetted area  time-series file
          cerr << ERR << "cannot open " << strTSFile << " for output" << endl;
@@ -1145,7 +1147,7 @@ bool CSimulation::bSetUpTSFiles(void)
       // Open still water level time-series CSV file
       StillWaterLevelTSStream.open(strTSFile.c_str(), ios::out | ios::trunc);
 
-      if (! StillWaterLevelTSStream)
+      if (!StillWaterLevelTSStream)
       {
          // Error, cannot open still water level time-series file
          cerr << ERR << "cannot open " << strTSFile << " for output" << endl;
@@ -1163,7 +1165,7 @@ bool CSimulation::bSetUpTSFiles(void)
       // Open erosion time-series CSV file
       PlatformErosionTSStream.open(strTSFile.c_str(), ios::out | ios::trunc);
 
-      if (! PlatformErosionTSStream)
+      if (!PlatformErosionTSStream)
       {
          // Error, cannot open erosion time-series file
          cerr << ERR << "cannot open " << strTSFile << " for output" << endl;
@@ -1181,7 +1183,7 @@ bool CSimulation::bSetUpTSFiles(void)
       // Open cliff collapse erosion time-series CSV file
       CliffCollapseErosionTSStream.open(strTSFile.c_str(), ios::out | ios::trunc);
 
-      if (! CliffCollapseErosionTSStream)
+      if (!CliffCollapseErosionTSStream)
       {
          // Error, cannot open cliff collapse erosion time-series file
          cerr << ERR << "cannot open " << strTSFile << " for output" << endl;
@@ -1199,7 +1201,7 @@ bool CSimulation::bSetUpTSFiles(void)
       // Open cliff collapse deposition time-series CSV file
       CliffCollapseDepositionTSStream.open(strTSFile.c_str(), ios::out | ios::trunc);
 
-      if (! CliffCollapseDepositionTSStream)
+      if (!CliffCollapseDepositionTSStream)
       {
          // Error, cannot open cliff collapse deposition time-series file
          cerr << ERR << "cannot open " << strTSFile << " for output" << endl;
@@ -1217,7 +1219,7 @@ bool CSimulation::bSetUpTSFiles(void)
       // Open net cliff collapse time-series CSV file
       CliffCollapseNetChangeTSStream.open(strTSFile.c_str(), ios::out | ios::trunc);
 
-      if (! CliffCollapseNetChangeTSStream)
+      if (!CliffCollapseNetChangeTSStream)
       {
          // Error, cannot open net cliff collapse time-series file
          cerr << ERR << "cannot open " << strTSFile << " for output" << endl;
@@ -1235,7 +1237,7 @@ bool CSimulation::bSetUpTSFiles(void)
       // Open beach erosion time-series CSV file
       BeachErosionTSStream.open(strTSFile.c_str(), ios::out | ios::trunc);
 
-      if (! BeachErosionTSStream)
+      if (!BeachErosionTSStream)
       {
          // Error, cannot open beach erosion time-series file
          cerr << ERR << "cannot open " << strTSFile << " for output" << endl;
@@ -1253,7 +1255,7 @@ bool CSimulation::bSetUpTSFiles(void)
       // Open beach deposition time-series CSV file
       BeachDepositionTSStream.open(strTSFile.c_str(), ios::out | ios::trunc);
 
-      if (! BeachDepositionTSStream)
+      if (!BeachDepositionTSStream)
       {
          // Error, cannot open beach deposition time-series file
          cerr << ERR << "cannot open " << strTSFile << " for output" << endl;
@@ -1271,7 +1273,7 @@ bool CSimulation::bSetUpTSFiles(void)
       // Open net beach sediment change time-series CSV file
       BeachSedimentNetChangeTSStream.open(strTSFile.c_str(), ios::out | ios::trunc);
 
-      if (! BeachSedimentNetChangeTSStream)
+      if (!BeachSedimentNetChangeTSStream)
       {
          // Error, cannot open beach sediment change time-series file
          cerr << ERR << "cannot open " << strTSFile << " for output" << endl;
@@ -1289,7 +1291,7 @@ bool CSimulation::bSetUpTSFiles(void)
       // Open sediment load time-series CSV file
       FineSedSuspensionTSStream.open(strTSFile.c_str(), ios::out | ios::trunc);
 
-      if (! FineSedSuspensionTSStream)
+      if (!FineSedSuspensionTSStream)
       {
          // Error, cannot open sediment load time-series file
          cerr << ERR << "cannot open " << strTSFile << " for output" << endl;
@@ -1307,7 +1309,7 @@ bool CSimulation::bSetUpTSFiles(void)
       // Open sediment load time-series CSV file
       FloodSetupSurgeTSStream.open(strTSFile.c_str(), ios::out | ios::trunc);
 
-      if (! FloodSetupSurgeTSStream)
+      if (!FloodSetupSurgeTSStream)
       {
          // Error, cannot open sediment load time-series file
          cerr << ERR << "cannot open " << strTSFile << " for output" << endl;
@@ -1325,7 +1327,7 @@ bool CSimulation::bSetUpTSFiles(void)
       // Open sediment load time-series CSV file
       FloodSetupSurgeRunupTSStream.open(strTSFile.c_str(), ios::out | ios::trunc);
 
-      if (! FloodSetupSurgeRunupTSStream)
+      if (!FloodSetupSurgeRunupTSStream)
       {
          // Error, cannot open sediment load time-series file
          cerr << ERR << "cannot open " << strTSFile << " for output" << endl;
@@ -1444,7 +1446,8 @@ void CSimulation::DoCPUClockReset(void)
 //===============================================================================================================================
 void CSimulation::AnnounceSimEnd(void)
 {
-   cout << endl << FINAL_OUTPUT << endl;
+   cout << endl
+        << FINAL_OUTPUT << endl;
 }
 
 //===============================================================================================================================
@@ -1455,7 +1458,7 @@ void CSimulation::CalcTime(double const dRunLength)
    // Reset CPU count for last time
    DoCPUClockReset();
 
-   if (! bFPIsEqual(m_dCPUClock, -1.0, TOLERANCE))
+   if (!bFPIsEqual(m_dCPUClock, -1.0, TOLERANCE))
    {
       // Calculate CPU time in secs
       double const dDuration = m_dCPUClock / CLOCKS_PER_SEC;
@@ -1711,12 +1714,12 @@ void CSimulation::CalcProcessStats(void)
    ZeroMemory(&osvi, sizeof(OSVERSIONINFOEX)); // fill this much memory with zeros
    osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFOEX);
 
-   if (! (bOsVersionInfoEx = GetVersionEx((OSVERSIONINFO *) &osvi)))
+   if (!(bOsVersionInfoEx = GetVersionEx((OSVERSIONINFO*)&osvi)))
    {
       // OSVERSIONINFOEX didn't work so try OSVERSIONINFO instead
       osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
 
-      if (! GetVersionEx((OSVERSIONINFO *) &osvi))
+      if (!GetVersionEx((OSVERSIONINFO*)&osvi))
       {
          // That didn't work either, too risky to proceed so give up
          OutStream << NA << endl;
@@ -1729,78 +1732,78 @@ void CSimulation::CalcProcessStats(void)
 
    switch (osvi.dwPlatformId)
    {
-      case VER_PLATFORM_WIN32_NT:
-         if (osvi.dwMajorVersion <= 4)
-            OutStream << "Windows NT ";
+   case VER_PLATFORM_WIN32_NT:
+      if (osvi.dwMajorVersion <= 4)
+         OutStream << "Windows NT ";
 
-         else if (5 == osvi.dwMajorVersion && 0 == osvi.dwMinorVersion)
-            OutStream << "Windows 2000 ";
+      else if (5 == osvi.dwMajorVersion && 0 == osvi.dwMinorVersion)
+         OutStream << "Windows 2000 ";
 
-         else if (5 == osvi.dwMajorVersion && 1 == osvi.dwMinorVersion)
-            OutStream << "Windows XP ";
+      else if (5 == osvi.dwMajorVersion && 1 == osvi.dwMinorVersion)
+         OutStream << "Windows XP ";
 
-         else if (6 == osvi.dwMajorVersion && 0 == osvi.dwMinorVersion)
-            OutStream << "Windows Vista ";
+      else if (6 == osvi.dwMajorVersion && 0 == osvi.dwMinorVersion)
+         OutStream << "Windows Vista ";
 
-         else if (6 == osvi.dwMajorVersion && 1 == osvi.dwMinorVersion)
-            OutStream << "Windows 7 ";
+      else if (6 == osvi.dwMajorVersion && 1 == osvi.dwMinorVersion)
+         OutStream << "Windows 7 ";
 
-         else if (6 == osvi.dwMajorVersion && 2 == osvi.dwMinorVersion)
-            OutStream << "Windows 8 ";
+      else if (6 == osvi.dwMajorVersion && 2 == osvi.dwMinorVersion)
+         OutStream << "Windows 8 ";
 
-         else if (6 == osvi.dwMajorVersion && 3 == osvi.dwMinorVersion)
-            OutStream << "Windows 8.1 ";
+      else if (6 == osvi.dwMajorVersion && 3 == osvi.dwMinorVersion)
+         OutStream << "Windows 8.1 ";
 
-         else if (10 == osvi.dwMajorVersion && 0 == osvi.dwMinorVersion)
-            OutStream << "Windows 10 ";
+      else if (10 == osvi.dwMajorVersion && 0 == osvi.dwMinorVersion)
+         OutStream << "Windows 10 ";
 
-         else if (11 == osvi.dwMajorVersion && 0 == osvi.dwMinorVersion)
-            OutStream << "Windows 11 ";
+      else if (11 == osvi.dwMajorVersion && 0 == osvi.dwMinorVersion)
+         OutStream << "Windows 11 ";
 
-         else
-            OutStream << "unknown Windows version ";
+      else
+         OutStream << "unknown Windows version ";
 
-         // Display version, service pack (if any), and build number
-         if (osvi.dwMajorVersion <= 4)
-            OutStream << "version " << osvi.dwMajorVersion << "." << osvi.dwMinorVersion << " " << osvi.szCSDVersion << " (Build " << (osvi.dwBuildNumber& 0xFFFF) << ")" << endl;
+      // Display version, service pack (if any), and build number
+      if (osvi.dwMajorVersion <= 4)
+         OutStream << "version " << osvi.dwMajorVersion << "." << osvi.dwMinorVersion << " " << osvi.szCSDVersion << " (Build " << (osvi.dwBuildNumber & 0xFFFF) << ")" << endl;
 
-         else
-            OutStream << osvi.szCSDVersion << " (Build " << (osvi.dwBuildNumber& 0xFFFF) << ")" << endl;
+      else
+         OutStream << osvi.szCSDVersion << " (Build " << (osvi.dwBuildNumber & 0xFFFF) << ")" << endl;
 
-         break;
+      break;
 
-      case VER_PLATFORM_WIN32_WINDOWS:
-         if (4 == osvi.dwMajorVersion && 0 == osvi.dwMinorVersion)
-         {
-            OutStream << "Windows 95";
+   case VER_PLATFORM_WIN32_WINDOWS:
+      if (4 == osvi.dwMajorVersion && 0 == osvi.dwMinorVersion)
+      {
+         OutStream << "Windows 95";
 
-            if ('C' == osvi.szCSDVersion[1] || 'B' == osvi.szCSDVersion[1])
-               OutStream << " OSR2";
+         if ('C' == osvi.szCSDVersion[1] || 'B' == osvi.szCSDVersion[1])
+            OutStream << " OSR2";
 
-            OutStream << endl;
-         }
+         OutStream << endl;
+      }
 
-         else if (4 == osvi.dwMajorVersion && 10 == osvi.dwMinorVersion)
-         {
-            OutStream << "Windows 98";
+      else if (4 == osvi.dwMajorVersion && 10 == osvi.dwMinorVersion)
+      {
+         OutStream << "Windows 98";
 
-            if ('A' == osvi.szCSDVersion[1])
-               OutStream << "SE";
+         if ('A' == osvi.szCSDVersion[1])
+            OutStream << "SE";
 
-            OutStream << endl;
-         }
+         OutStream << endl;
+      }
 
-         else if (4 == osvi.dwMajorVersion && 90 == osvi.dwMinorVersion)
-            OutStream << "Windows Me" << endl;
+      else if (4 == osvi.dwMajorVersion && 90 == osvi.dwMinorVersion)
+         OutStream << "Windows Me" << endl;
 
-         else
-            OutStream << "unknown 16-bit Windows version " << endl;
+      else
+         OutStream << "unknown 16-bit Windows version " << endl;
 
-         break;
+      break;
 
-      case VER_PLATFORM_WIN32s:
-         OutStream << "Win32s" << endl;
-         break;
+   case VER_PLATFORM_WIN32s:
+      OutStream << "Win32s" << endl;
+      break;
    }
 
    // Now get process timimgs: this only works under 32-bit windows
@@ -1892,7 +1895,7 @@ void CSimulation::CalcProcessStats(void)
    OutStream << endl;
 
 #ifdef _OPENMP
-   #pragma omp parallel
+#pragma omp parallel
    {
       if (0 == omp_get_thread_num())
       {
@@ -1906,7 +1909,7 @@ void CSimulation::CalcProcessStats(void)
 #endif
 
    time_t const tRunTime = m_tSysEndTime - m_tSysStartTime;
-   struct tm * ptmRunTime = gmtime(&tRunTime);
+   struct tm* ptmRunTime = gmtime(&tRunTime);
 
    OutStream << "Time required for simulation                 \t: " << put_time(ptmRunTime, "%T") << endl;
    LogStream << "Time required for simulation                 \t: " << put_time(ptmRunTime, "%T") << endl;
@@ -1928,268 +1931,268 @@ string CSimulation::strGetErrorText(int const nErr)
 
    switch (nErr)
    {
-      case RTN_USER_ABORT:
-         strErr = "run ended by user";
-         break;
-
-      case RTN_ERR_BADPARAM:
-         strErr = "error in command-line parameter";
-         break;
-
-      case RTN_ERR_INI:
-         strErr = "error reading initialization file";
-         break;
-
-      case RTN_ERR_CMEDIR:
-         strErr = "error in directory name";
-         break;
-
-      case RTN_ERR_RUNDATA:
-         strErr = "error reading run details file";
-         break;
-
-      case RTN_ERR_SCAPE_SHAPE_FUNCTION_FILE:
-         strErr = "error reading SCAPE shape function file";
-         break;
-
-      case RTN_ERR_TIDEDATAFILE:
-         strErr = "error reading tide data file";
-         break;
-
-      case RTN_ERR_LOGFILE:
-         strErr = "error creating log file";
-         break;
-
-      case RTN_ERR_OUTFILE:
-         strErr = "error creating text output file";
-         break;
-
-      case RTN_ERR_TSFILE:
-         strErr = "error creating time series file";
-         break;
-
-      case RTN_ERR_DEMFILE:
-         strErr = "error reading initial DEM file";
-         break;
-
-      case RTN_ERR_RASTER_FILE_READ:
-         strErr = "error reading raster GIS file";
-         break;
-
-      case RTN_ERR_VECTOR_FILE_READ:
-         strErr = "error reading vector GIS file";
-         break;
-
-      case RTN_ERR_MEMALLOC:
-         strErr = "error allocating memory";
-         break;
-
-      case RTN_ERR_RASTER_GIS_OUT_FORMAT:
-         strErr = "problem with raster GIS output format";
-         break;
-
-      case RTN_ERR_VECTOR_GIS_OUT_FORMAT:
-         strErr = "problem with vector GIS output format";
-         break;
-
-      case RTN_ERR_TEXT_FILE_WRITE:
-         strErr = "error writing text output file";
-         break;
-
-      case RTN_ERR_RASTER_FILE_WRITE:
-         strErr = "error writing raster GIS output file";
-         break;
-
-      case RTN_ERR_VECTOR_FILE_WRITE:
-         strErr = "error writing vector GIS output file";
-         break;
-
-      case RTN_ERR_TIMESERIES_FILE_WRITE:
-         strErr = "error writing time series output file";
-         break;
-
-      case RTN_ERR_LINETOGRID:
-         strErr = "error putting linear feature onto raster grid";
-         break;
-
-      case RTN_ERR_NOSEACELLS:
-         strErr = "no sea cells found";
-         break;
-
-      case RTN_ERR_GRIDTOLINE:
-         strErr = "error when searching grid for linear feature";
-         break;
-
-      case RTN_ERR_TRACING_COAST:
-         strErr = "error tracing coastline on grid";
-         break;
-
-      case RTN_ERR_NOCOAST:
-         strErr = "no coastlines found. Is the SWL correct?";
-         break;
-
-      case RTN_ERR_PROFILEWRITE:
-         strErr = "error writing coastline-normal profiles";
-         break;
-
-      case RTN_ERR_TIMEUNITS:
-         strErr = "error in time units";
-         break;
-
-      case RTN_ERR_NO_SOLUTION_FOR_ENDPOINT:
-         strErr = "no solution when finding end point for coastline-normal line";
-         break;
-
-      // case RTN_ERR_PROFILE_ENDPOINT_AT_GRID_EDGE:
-      // strErr = "end point for coastline-normal line is at the grid edge";
-      // break;
-      case RTN_ERR_PROFILE_ENDPOINT_IS_INLAND:
-         strErr = "end point for coastline-normal line is not in the contiguous sea";
-         break;
-
-      case RTN_ERR_CLIFFNOTCH:
-         strErr = "cliff notch is above sediment top elevation";
-         break;
-
-      case RTN_ERR_CLIFFDEPOSIT:
-         strErr = "unable to deposit sediment from cliff collapse";
-         break;
-
-      case RTN_ERR_PROFILESPACING:
-         strErr = "coastline-normal profiles are too closely spaced";
-         break;
-
-      case RTN_ERR_NO_PROFILES_1:
-         strErr = "no coastline-normal profiles created, check the SWL";
-         break;
-
-      case RTN_ERR_NO_PROFILES_2:
-         strErr = "no coastline-normal profiles created during rasterization";
-         break;
-
-      case RTN_ERR_EDGE_OF_GRID:
-         strErr = "hit grid edge when eroding beach";
-         break;
-
-      case RTN_ERR_NO_SEAWARD_END_OF_PROFILE_1:
-         strErr = "could not locate seaward end of profile when creating Dean profile during estimation of beach erosion";
-         break;
-
-      case RTN_ERR_NO_SEAWARD_END_OF_PROFILE_2:
-         strErr = "could not locate seaward end of profile when creating Dean profile for beach erosion";
-         break;
-
-      case RTN_ERR_NO_SEAWARD_END_OF_PROFILE_3:
-         strErr = "could not locate seaward end of profile when creating Dean profile for beach deposition (up-coast)";
-         break;
-
-      case RTN_ERR_NO_SEAWARD_END_OF_PROFILE_4:
-         strErr = "could not locate seaward end of profile when creating Dean profile for beach deposition (down-coast)";
-         break;
-
-      case RTN_ERR_LANDFORM_TO_GRID:
-         strErr = "updating grid with landforms";
-         break;
-
-      case RTN_ERR_NO_TOP_LAYER:
-         strErr = "no top layer of sediment";
-         break;
-
-      case RTN_ERR_NO_ADJACENT_POLYGON:
-         strErr = "problem with polygon-to-polygon sediment routing sequence";
-         break;
-
-      case RTN_ERR_BAD_MULTILINE:
-         strErr = "inconsistent multiline";
-         break;
-
-      case RTN_ERR_CANNOT_INSERT_POINT:
-         strErr = "cannot insert point into multiline";
-         break;
-
-      case RTN_ERR_CANNOT_ASSIGN_COASTAL_LANDFORM:
-         strErr = "cannot assign coastal landform";
-         break;
-
-      case RTN_ERR_SHADOW_ZONE_FLOOD_FILL_NOGRID:
-         strErr = "start point for cell-by-cell fill of wave shadow zone is outside grid";
-         break;
-
-      case RTN_ERR_SHADOW_ZONE_FLOOD_START_POINT:
-         strErr = "could not find start point for cell-by-cell fill of wave shadow zone";
-         break;
-
-      case RTN_ERR_CSHORE_EMPTY_PROFILE:
-         strErr = "empty profile during during CShore wave propagation";
-         break;
-
-      case RTN_ERR_CSHORE_FILE_INPUT:
-         strErr = "creating file for CShore input";
-         break;
-
-      case RTN_ERR_READING_CSHORE_FILE_OUTPUT:
-         strErr = "reading CShore output file";
-         break;
-
-      case RTN_ERR_WAVE_INTERPOLATION_LOOKUP:
-         strErr = "during wave interpolation lookup";
-         break;
-
-      case RTN_ERR_GRIDCREATE:
-         strErr = "while running GDALGridCreate()";
-         break;
-
-      case RTN_ERR_COAST_CANT_FIND_EDGE_CELL:
-         strErr = "cannot find edge cell while constructing grid-edge profile";
-         break;
-
-      case RTN_ERR_CSHORE_ERROR:
-         strErr = "CShore did not finish correctly";
-         break;
-
-      case RTN_ERR_NO_CELL_UNDER_COASTLINE:
-         strErr = "Could not find cell under coastline";
-         break;
-
-      case RTN_ERR_OPEN_DEEP_WATER_WAVE_DATA:
-         strErr = "opening deep sea wave time series file";
-         break;
-
-      case RTN_ERR_READING_DEEP_WATER_WAVE_DATA:
-         strErr = "reading deep sea wave time series file";
-         break;
-
-      case RTN_ERR_BOUNDING_BOX:
-         strErr = "finding edges of the bounding box";
-         break;
-
-      case RTN_ERR_READING_SEDIMENT_INPUT_EVENT:
-         strErr = "reading sediment input event time series file";
-         break;
-
-      case RTN_ERR_SEDIMENT_INPUT_EVENT:
-         strErr = "simulating sediment input event";
-         break;
-
-      case RTN_ERR_SEDIMENT_INPUT_EVENT_LOCATION:
-         strErr = "location of sediment input event is outside grod";
-         break;
-
-      case RTN_ERR_WAVESTATION_LOCATION:
-         strErr = "location of wavestation is outside grid";
-         break;
-
-      case RTN_ERR_CLIFF_NOT_IN_POLYGON:
-         strErr = "cliff not in polygon";
-         break;
-
-      case RTN_ERR_UNKNOWN:
-         strErr = "unknown error";
-         break;
-
-      default:
-         // should never get here
-         strErr = "totally unknown error";
+   case RTN_USER_ABORT:
+      strErr = "run ended by user";
+      break;
+
+   case RTN_ERR_BADPARAM:
+      strErr = "error in command-line parameter";
+      break;
+
+   case RTN_ERR_INI:
+      strErr = "error reading initialization file";
+      break;
+
+   case RTN_ERR_CMEDIR:
+      strErr = "error in directory name";
+      break;
+
+   case RTN_ERR_RUNDATA:
+      strErr = "error reading run details file";
+      break;
+
+   case RTN_ERR_SCAPE_SHAPE_FUNCTION_FILE:
+      strErr = "error reading SCAPE shape function file";
+      break;
+
+   case RTN_ERR_TIDEDATAFILE:
+      strErr = "error reading tide data file";
+      break;
+
+   case RTN_ERR_LOGFILE:
+      strErr = "error creating log file";
+      break;
+
+   case RTN_ERR_OUTFILE:
+      strErr = "error creating text output file";
+      break;
+
+   case RTN_ERR_TSFILE:
+      strErr = "error creating time series file";
+      break;
+
+   case RTN_ERR_DEMFILE:
+      strErr = "error reading initial DEM file";
+      break;
+
+   case RTN_ERR_RASTER_FILE_READ:
+      strErr = "error reading raster GIS file";
+      break;
+
+   case RTN_ERR_VECTOR_FILE_READ:
+      strErr = "error reading vector GIS file";
+      break;
+
+   case RTN_ERR_MEMALLOC:
+      strErr = "error allocating memory";
+      break;
+
+   case RTN_ERR_RASTER_GIS_OUT_FORMAT:
+      strErr = "problem with raster GIS output format";
+      break;
+
+   case RTN_ERR_VECTOR_GIS_OUT_FORMAT:
+      strErr = "problem with vector GIS output format";
+      break;
+
+   case RTN_ERR_TEXT_FILE_WRITE:
+      strErr = "error writing text output file";
+      break;
+
+   case RTN_ERR_RASTER_FILE_WRITE:
+      strErr = "error writing raster GIS output file";
+      break;
+
+   case RTN_ERR_VECTOR_FILE_WRITE:
+      strErr = "error writing vector GIS output file";
+      break;
+
+   case RTN_ERR_TIMESERIES_FILE_WRITE:
+      strErr = "error writing time series output file";
+      break;
+
+   case RTN_ERR_LINETOGRID:
+      strErr = "error putting linear feature onto raster grid";
+      break;
+
+   case RTN_ERR_NOSEACELLS:
+      strErr = "no sea cells found";
+      break;
+
+   case RTN_ERR_GRIDTOLINE:
+      strErr = "error when searching grid for linear feature";
+      break;
+
+   case RTN_ERR_TRACING_COAST:
+      strErr = "error tracing coastline on grid";
+      break;
+
+   case RTN_ERR_NOCOAST:
+      strErr = "no coastlines found. Is the SWL correct?";
+      break;
+
+   case RTN_ERR_PROFILEWRITE:
+      strErr = "error writing coastline-normal profiles";
+      break;
+
+   case RTN_ERR_TIMEUNITS:
+      strErr = "error in time units";
+      break;
+
+   case RTN_ERR_NO_SOLUTION_FOR_ENDPOINT:
+      strErr = "no solution when finding end point for coastline-normal line";
+      break;
+
+   // case RTN_ERR_PROFILE_ENDPOINT_AT_GRID_EDGE:
+   // strErr = "end point for coastline-normal line is at the grid edge";
+   // break;
+   case RTN_ERR_PROFILE_ENDPOINT_IS_INLAND:
+      strErr = "end point for coastline-normal line is not in the contiguous sea";
+      break;
+
+   case RTN_ERR_CLIFFNOTCH:
+      strErr = "cliff notch is above sediment top elevation";
+      break;
+
+   case RTN_ERR_CLIFFDEPOSIT:
+      strErr = "unable to deposit sediment from cliff collapse";
+      break;
+
+   case RTN_ERR_PROFILESPACING:
+      strErr = "coastline-normal profiles are too closely spaced";
+      break;
+
+   case RTN_ERR_NO_PROFILES_1:
+      strErr = "no coastline-normal profiles created, check the SWL";
+      break;
+
+   case RTN_ERR_NO_PROFILES_2:
+      strErr = "no coastline-normal profiles created during rasterization";
+      break;
+
+   case RTN_ERR_EDGE_OF_GRID:
+      strErr = "hit grid edge when eroding beach";
+      break;
+
+   case RTN_ERR_NO_SEAWARD_END_OF_PROFILE_1:
+      strErr = "could not locate seaward end of profile when creating Dean profile during estimation of beach erosion";
+      break;
+
+   case RTN_ERR_NO_SEAWARD_END_OF_PROFILE_2:
+      strErr = "could not locate seaward end of profile when creating Dean profile for beach erosion";
+      break;
+
+   case RTN_ERR_NO_SEAWARD_END_OF_PROFILE_3:
+      strErr = "could not locate seaward end of profile when creating Dean profile for beach deposition (up-coast)";
+      break;
+
+   case RTN_ERR_NO_SEAWARD_END_OF_PROFILE_4:
+      strErr = "could not locate seaward end of profile when creating Dean profile for beach deposition (down-coast)";
+      break;
+
+   case RTN_ERR_LANDFORM_TO_GRID:
+      strErr = "updating grid with landforms";
+      break;
+
+   case RTN_ERR_NO_TOP_LAYER:
+      strErr = "no top layer of sediment";
+      break;
+
+   case RTN_ERR_NO_ADJACENT_POLYGON:
+      strErr = "problem with polygon-to-polygon sediment routing sequence";
+      break;
+
+   case RTN_ERR_BAD_MULTILINE:
+      strErr = "inconsistent multiline";
+      break;
+
+   case RTN_ERR_CANNOT_INSERT_POINT:
+      strErr = "cannot insert point into multiline";
+      break;
+
+   case RTN_ERR_CANNOT_ASSIGN_COASTAL_LANDFORM:
+      strErr = "cannot assign coastal landform";
+      break;
+
+   case RTN_ERR_SHADOW_ZONE_FLOOD_FILL_NOGRID:
+      strErr = "start point for cell-by-cell fill of wave shadow zone is outside grid";
+      break;
+
+   case RTN_ERR_SHADOW_ZONE_FLOOD_START_POINT:
+      strErr = "could not find start point for cell-by-cell fill of wave shadow zone";
+      break;
+
+   case RTN_ERR_CSHORE_EMPTY_PROFILE:
+      strErr = "empty profile during during CShore wave propagation";
+      break;
+
+   case RTN_ERR_CSHORE_FILE_INPUT:
+      strErr = "creating file for CShore input";
+      break;
+
+   case RTN_ERR_READING_CSHORE_FILE_OUTPUT:
+      strErr = "reading CShore output file";
+      break;
+
+   case RTN_ERR_WAVE_INTERPOLATION_LOOKUP:
+      strErr = "during wave interpolation lookup";
+      break;
+
+   case RTN_ERR_GRIDCREATE:
+      strErr = "while running GDALGridCreate()";
+      break;
+
+   case RTN_ERR_COAST_CANT_FIND_EDGE_CELL:
+      strErr = "cannot find edge cell while constructing grid-edge profile";
+      break;
+
+   case RTN_ERR_CSHORE_ERROR:
+      strErr = "CShore did not finish correctly";
+      break;
+
+   case RTN_ERR_NO_CELL_UNDER_COASTLINE:
+      strErr = "Could not find cell under coastline";
+      break;
+
+   case RTN_ERR_OPEN_DEEP_WATER_WAVE_DATA:
+      strErr = "opening deep sea wave time series file";
+      break;
+
+   case RTN_ERR_READING_DEEP_WATER_WAVE_DATA:
+      strErr = "reading deep sea wave time series file";
+      break;
+
+   case RTN_ERR_BOUNDING_BOX:
+      strErr = "finding edges of the bounding box";
+      break;
+
+   case RTN_ERR_READING_SEDIMENT_INPUT_EVENT:
+      strErr = "reading sediment input event time series file";
+      break;
+
+   case RTN_ERR_SEDIMENT_INPUT_EVENT:
+      strErr = "simulating sediment input event";
+      break;
+
+   case RTN_ERR_SEDIMENT_INPUT_EVENT_LOCATION:
+      strErr = "location of sediment input event is outside grod";
+      break;
+
+   case RTN_ERR_WAVESTATION_LOCATION:
+      strErr = "location of wavestation is outside grid";
+      break;
+
+   case RTN_ERR_CLIFF_NOT_IN_POLYGON:
+      strErr = "cliff not in polygon";
+      break;
+
+   case RTN_ERR_UNKNOWN:
+      strErr = "unknown error";
+      break;
+
+   default:
+      // should never get here
+      strErr = "totally unknown error";
    }
 
    return strErr;
@@ -2206,40 +2209,40 @@ void CSimulation::DoSimulationEnd(int const nRtn)
 
    switch (nRtn)
    {
-      case (RTN_OK):
-         // normal ending
-         cout << RUN_END_NOTICE << put_time(localtime(&m_tSysEndTime), "%T %A %d %B %Y") << endl;
-         break;
+   case (RTN_OK):
+      // normal ending
+      cout << RUN_END_NOTICE << put_time(localtime(&m_tSysEndTime), "%T %A %d %B %Y") << endl;
+      break;
 
-      case (RTN_HELP_ONLY):
-      case (RTN_CHECK_ONLY):
-         return;
+   case (RTN_HELP_ONLY):
+   case (RTN_CHECK_ONLY):
+      return;
 
-      default:
-         // Aborting because of some error
-         cerr << RUN_END_NOTICE << "iteration " << m_ulIter << ERROR_NOTICE << nRtn << " (" << strGetErrorText(nRtn) << ") on " << put_time(localtime(&m_tSysEndTime), "%T %A %d %B %Y") << endl;
+   default:
+      // Aborting because of some error
+      cerr << RUN_END_NOTICE << "iteration " << m_ulIter << ERROR_NOTICE << nRtn << " (" << strGetErrorText(nRtn) << ") on " << put_time(localtime(&m_tSysEndTime), "%T %A %d %B %Y") << endl;
 
-         if (m_ulIter > 1)
-         {
-            // If the run has actually started, then output all GIS files: this is very helpful in tracking down problems
-            m_bSaveGISThisIter = true;
-            m_nGISSave = 998; // Will get incremented to 999 when we write the files
-            bSaveAllRasterGISFiles();
-            bSaveAllVectorGISFiles();
-         }
+      if (m_ulIter > 1)
+      {
+         // If the run has actually started, then output all GIS files: this is very helpful in tracking down problems
+         m_bSaveGISThisIter = true;
+         m_nGISSave = 998; // Will get incremented to 999 when we write the files
+         bSaveAllRasterGISFiles();
+         bSaveAllVectorGISFiles();
+      }
 
-         // Write the error message to the logfile and to stdout
-         if (LogStream && LogStream.is_open())
-         {
-            LogStream << ERR << strGetErrorText(nRtn) << " (error code " << nRtn << ") on " << put_time(localtime(&m_tSysEndTime), "%T %A %d %B %Y") << endl;
-            LogStream.flush();
-         }
+      // Write the error message to the logfile and to stdout
+      if (LogStream && LogStream.is_open())
+      {
+         LogStream << ERR << strGetErrorText(nRtn) << " (error code " << nRtn << ") on " << put_time(localtime(&m_tSysEndTime), "%T %A %d %B %Y") << endl;
+         LogStream.flush();
+      }
 
-         if (OutStream && OutStream.is_open())
-         {
-            OutStream << ERR << strGetErrorText(nRtn) << " (error code " << nRtn << ") on " << put_time(localtime(&m_tSysEndTime), "%T %A %d %B %Y") << endl;
-            OutStream.flush();
-         }
+      if (OutStream && OutStream.is_open())
+      {
+         OutStream << ERR << strGetErrorText(nRtn) << " (error code " << nRtn << ") on " << put_time(localtime(&m_tSysEndTime), "%T %A %d %B %Y") << endl;
+         OutStream.flush();
+      }
    }
 
 #ifdef __GNUG__
@@ -2255,7 +2258,7 @@ void CSimulation::DoSimulationEnd(int const nRtn)
    else
    {
       // Stdout is not connected to a tty, so must be running in the background; if we have something entered for the email address, then send an email
-      if (! m_strMailAddress.empty())
+      if (!m_strMailAddress.empty())
       {
          cout << SEND_EMAIL << m_strMailAddress << endl;
 
@@ -2318,7 +2321,7 @@ void CSimulation::DoSimulationEnd(int const nRtn)
 //===============================================================================================================================
 string CSimulation::pstrChangeToBackslash(string const* strIn)
 {
-   string strOut( * strIn);
+   string strOut(*strIn);
    strOut.replace(strOut.begin(), strOut.end(), '/', '\\');
    return strOut;
 }
@@ -2328,7 +2331,7 @@ string CSimulation::pstrChangeToBackslash(string const* strIn)
 //===============================================================================================================================
 string CSimulation::pstrChangeToForwardSlash(string const* strIn)
 {
-   string strOut( * strIn);
+   string strOut(*strIn);
    strOut.replace(strOut.begin(), strOut.end(), '\\', '/');
    return strOut;
 }
@@ -2342,7 +2345,7 @@ string CSimulation::strTrimLeft(string const* strIn)
    size_t const nStartpos = strIn->find_first_not_of(" \t");
 
    if (nStartpos == string::npos)
-      return * strIn;
+      return *strIn;
 
    else
       return strIn->substr(nStartpos);
@@ -2353,7 +2356,7 @@ string CSimulation::strTrimLeft(string const* strIn)
 //===============================================================================================================================
 string CSimulation::strTrimRight(string const* strIn)
 {
-   string strTmp( * strIn);
+   string strTmp(*strIn);
 
    // Remove any stray carriage returns (can happen if file was edited in Windows)
    strTmp.erase(remove(strTmp.begin(), strTmp.end(), '\r'), strTmp.end());
@@ -2373,7 +2376,7 @@ string CSimulation::strTrimRight(string const* strIn)
 //===============================================================================================================================
 string CSimulation::strTrim(string const* strIn)
 {
-   string strTmp = * strIn;
+   string strTmp = *strIn;
 
    // Remove any stray carriage returns (can happen if file was edited in Windows)
    strTmp.erase(remove(strTmp.begin(), strTmp.end(), '\r'), strTmp.end());
@@ -2398,7 +2401,7 @@ string CSimulation::strTrim(string const* strIn)
 //===============================================================================================================================
 string CSimulation::strToLower(string const* strIn)
 {
-   string strOut = * strIn;
+   string strOut = *strIn;
    transform(strIn->begin(), strIn->end(), strOut.begin(), tolower);
    return strOut;
 }
@@ -2416,9 +2419,9 @@ string CSimulation::strToLower(string const* strIn)
 //===============================================================================================================================
 //! Returns a string with a substring removed, and with whitespace trimmed
 //===============================================================================================================================
-string CSimulation::strRemoveSubstr(string * pStrIn, string const* pStrSub)
+string CSimulation::strRemoveSubstr(string* pStrIn, string const* pStrSub)
 {
-   size_t const nPos = pStrIn->find( * pStrSub);
+   size_t const nPos = pStrIn->find(*pStrSub);
 
    if (nPos != string::npos)
    {
@@ -2430,21 +2433,21 @@ string CSimulation::strRemoveSubstr(string * pStrIn, string const* pStrSub)
    else
    {
       // If not found, return the string unchanged
-      return * pStrIn;
+      return *pStrIn;
    }
 }
 
 //===============================================================================================================================
 //! From http://stackoverflow.com/questions/236129/split-a-string-in-c They implement (approximately) Python's split() function. This first version puts the results into a pre-constructed string vector. It ignores empty items
 //===============================================================================================================================
-vector<string> *CSimulation::VstrSplit(string const* s, char const delim, vector<string> *elems)
+vector<string>* CSimulation::VstrSplit(string const* s, char const delim, vector<string>* elems)
 {
-   stringstream ss( * s);
+   stringstream ss(*s);
    string item;
 
    while (getline(ss, item, delim))
    {
-      if (! item.empty())
+      if (!item.empty())
          elems->push_back(item);
    }
 
@@ -2497,7 +2500,7 @@ vector<string> CSimulation::VstrSplit(string const* s, char const delim)
 //===============================================================================================================================
 //! Appends a CGeom2DIPoint to a vector<CGeom2DIPoint>, making sure that the new end point touches the previous end point i.e. that there is no gap between the two points
 //===============================================================================================================================
-void CSimulation::AppendEnsureNoGap(vector<CGeom2DIPoint> *pVPtiPoints, CGeom2DIPoint const* pPti)
+void CSimulation::AppendEnsureNoGap(vector<CGeom2DIPoint>* pVPtiPoints, CGeom2DIPoint const* pPti)
 {
    int const nX = pPti->nGetX();
    int const nY = pPti->nGetY();
@@ -2513,8 +2516,8 @@ void CSimulation::AppendEnsureNoGap(vector<CGeom2DIPoint> *pVPtiPoints, CGeom2DI
    {
       // We have a gap
       double
-      dXInc = 0,
-      dYInc = 0;
+          dXInc = 0,
+          dYInc = 0;
 
       if (nXDiffA > 1)
          dXInc = static_cast<double>(nXDiff) / nDiff;
@@ -2535,14 +2538,14 @@ void CSimulation::AppendEnsureNoGap(vector<CGeom2DIPoint> *pVPtiPoints, CGeom2DI
 //===============================================================================================================================
 //! Calculates a Dean equilibrium profile h(y) = A * y^(2/3) where h(y) is the distance below the highest point in the Dean profile at a distance y from the landward start of the profile
 //===============================================================================================================================
-void CSimulation::CalcDeanProfile(vector<double> *pdVDeanProfile, double const dInc, double const dDeanTopElev, double const dA, bool const bDeposition, int const nSeawardOffset, double const dStartCellElev)
+void CSimulation::CalcDeanProfile(vector<double>* pdVDeanProfile, double const dInc, double const dDeanTopElev, double const dA, bool const bDeposition, int const nSeawardOffset, double const dStartCellElev)
 {
    double dDistFromProfileStart = 0;
 
    if (bDeposition)
    {
       // This Dean profile is for deposition i.e. seaward displacement of the profile
-      pdVDeanProfile->at(0) = dStartCellElev;      // Is talus-top elev for cliffs, coast elevation for coasts
+      pdVDeanProfile->at(0) = dStartCellElev; // Is talus-top elev for cliffs, coast elevation for coasts
 
       for (int n = 1; n < static_cast<int>(pdVDeanProfile->size()); n++)
       {
@@ -2622,8 +2625,8 @@ double CSimulation::dSubtractProfiles(vector<double> const* pdVFirstProfile, vec
 void CSimulation::CalcDepthOfClosure(void)
 {
    double
-   dDeepWaterWaveHeight,
-   dDeepWaterPeriod;
+       dDeepWaterWaveHeight,
+       dDeepWaterPeriod;
 
    if (m_bSingleDeepWaterWaveValues)
    {
@@ -2663,7 +2666,7 @@ void CSimulation::CalcDepthOfClosure(void)
 //===============================================================================================================================
 //! Parses a date string into days, months, and years, and checks each of them
 //===============================================================================================================================
-bool CSimulation::bParseDate(string const* strDate, int &nDay, int &nMonth, int &nYear)
+bool CSimulation::bParseDate(string const* strDate, int& nDay, int& nMonth, int& nYear)
 {
    vector<string> VstrTmp = VstrSplit(strDate, SLASH);
 
@@ -2674,7 +2677,7 @@ bool CSimulation::bParseDate(string const* strDate, int &nDay, int &nMonth, int 
    }
 
    // Sort out day
-   if (! bIsStringValidInt(VstrTmp[0]))
+   if (!bIsStringValidInt(VstrTmp[0]))
    {
       cerr << "invalid integer for day in date '" << strDate << "'" << endl;
       return false;
@@ -2689,7 +2692,7 @@ bool CSimulation::bParseDate(string const* strDate, int &nDay, int &nMonth, int 
    }
 
    // Sort out month
-   if (! bIsStringValidInt(VstrTmp[1]))
+   if (!bIsStringValidInt(VstrTmp[1]))
    {
       cerr << "invalid integer for month in date '" << strDate << "'" << endl;
       return false;
@@ -2704,7 +2707,7 @@ bool CSimulation::bParseDate(string const* strDate, int &nDay, int &nMonth, int 
    }
 
    // Sort out year
-   if (! bIsStringValidInt(VstrTmp[2]))
+   if (!bIsStringValidInt(VstrTmp[2]))
    {
       cerr << "invalid integer for year in date '" << strDate << "'" << endl;
       return false;
@@ -2724,7 +2727,7 @@ bool CSimulation::bParseDate(string const* strDate, int &nDay, int &nMonth, int 
 //===============================================================================================================================
 //! Parses a time string into hours, minutes, and seconds, and checks each of them
 //===============================================================================================================================
-bool CSimulation::bParseTime(string const* strTime, int &nHour, int &nMin, int &nSec)
+bool CSimulation::bParseTime(string const* strTime, int& nHour, int& nMin, int& nSec)
 {
    vector<string> VstrTmp = VstrSplit(strTime, DASH);
 
@@ -2735,7 +2738,7 @@ bool CSimulation::bParseTime(string const* strTime, int &nHour, int &nMin, int &
    }
 
    // Sort out hour
-   if (! bIsStringValidInt(VstrTmp[0]))
+   if (!bIsStringValidInt(VstrTmp[0]))
    {
       cerr << "invalid integer for hours in time '" << strTime << "'" << endl;
       return false;
@@ -2750,7 +2753,7 @@ bool CSimulation::bParseTime(string const* strTime, int &nHour, int &nMin, int &
    }
 
    // Sort out minutes
-   if (! bIsStringValidInt(VstrTmp[1]))
+   if (!bIsStringValidInt(VstrTmp[1]))
    {
       cerr << "invalid integer for minutes in time '" << strTime << "'" << endl;
       return false;
@@ -2765,7 +2768,7 @@ bool CSimulation::bParseTime(string const* strTime, int &nHour, int &nMin, int &
    }
 
    // Sort out seconds
-   if (! bIsStringValidInt(VstrTmp[2]))
+   if (!bIsStringValidInt(VstrTmp[2]))
    {
       cerr << "invalid integer for seconds in time '" << strTime << "'" << endl;
       return false;
@@ -2798,7 +2801,7 @@ unsigned long CSimulation::ulConvertToTimestep(string const* pstrIn) const
       // OK, this is a number of hours (a relative time, from the start of simulation)
       vector<string> VstrTmp = VstrSplit(&strDate, SPACE);
 
-      if ((VstrTmp.size() < 2) || (! bIsStringValidInt(VstrTmp[0])))
+      if ((VstrTmp.size() < 2) || (!bIsStringValidInt(VstrTmp[0])))
       {
          cerr << "Error in number of hours '" + strDate + "' for sediment input event" << endl;
          return SEDIMENT_INPUT_EVENT_ERROR;
@@ -2820,7 +2823,7 @@ unsigned long CSimulation::ulConvertToTimestep(string const* pstrIn) const
       // OK, this is a number of days (a relative time, from the start of simulation)
       vector<string> VstrTmp = VstrSplit(&strDate, SPACE);
 
-      if ((VstrTmp.size() < 2) || (! bIsStringValidInt(VstrTmp[0])))
+      if ((VstrTmp.size() < 2) || (!bIsStringValidInt(VstrTmp[0])))
       {
          cerr << "Error in number of days '" + strDate + "' for sediment input event" << endl;
          return SEDIMENT_INPUT_EVENT_ERROR;
@@ -2853,7 +2856,7 @@ unsigned long CSimulation::ulConvertToTimestep(string const* pstrIn) const
       int nSec = 0;
 
       // OK, first sort out the time
-      if (! bParseTime(&VstrTmp[0], nHour, nMin, nSec))
+      if (!bParseTime(&VstrTmp[0], nHour, nMin, nSec))
       {
          cerr << "Error in time '" + VstrTmp[0] + "' of sediment input event" << endl;
          return SEDIMENT_INPUT_EVENT_ERROR;
@@ -2864,7 +2867,7 @@ unsigned long CSimulation::ulConvertToTimestep(string const* pstrIn) const
       int nYear = 0;
 
       // Now sort out the time
-      if (! bParseDate(&VstrTmp[1], nDay, nMonth, nYear))
+      if (!bParseDate(&VstrTmp[1], nDay, nMonth, nYear))
       {
          cerr << "Error in date '" + VstrTmp[1] + "' of sediment input event" << endl;
          return SEDIMENT_INPUT_EVENT_ERROR;

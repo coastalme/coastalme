@@ -53,7 +53,7 @@ using std::stack;
 //===============================================================================================================================
 //! First find all connected sea areas, then locate the vector coastline(s), then put these onto the raster grid
 //===============================================================================================================================
-int CSimulation::nLocateSeaAndCoasts(int &nValidCoast)
+int CSimulation::nLocateSeaAndCoasts(int& nValidCoast)
 {
    // Find all connected sea cells
    FindAllSeaCells();
@@ -120,7 +120,7 @@ void CSimulation::CellByCellFillSea(int const nXStart, int const nYStart)
    // Then do the cell-by-cell fill loop until there are no more cell coordinates on the stack
    int nRoundLoop = 0;
 
-   while (! PtiStack.empty())
+   while (!PtiStack.empty())
    {
       // Safety check
       if (nRoundLoop++ > nRoundLoopMax)
@@ -132,7 +132,7 @@ void CSimulation::CellByCellFillSea(int const nXStart, int const nYStart)
       int nX = Pti.nGetX();
       int const nY = Pti.nGetY();
 
-      while ((nX >= 0) && (! m_pRasterGrid->m_Cell[nX][nY].bBasementElevIsMissingValue()) && (m_pRasterGrid->m_Cell[nX][nY].bIsInundated()))
+      while ((nX >= 0) && (!m_pRasterGrid->m_Cell[nX][nY].bBasementElevIsMissingValue()) && (m_pRasterGrid->m_Cell[nX][nY].bIsInundated()))
          nX--;
 
       nX++;
@@ -140,7 +140,7 @@ void CSimulation::CellByCellFillSea(int const nXStart, int const nYStart)
       bool bSpanAbove = false;
       bool bSpanBelow = false;
 
-      while ((nX < m_nXGridSize) && (! m_pRasterGrid->m_Cell[nX][nY].bBasementElevIsMissingValue()) && (m_pRasterGrid->m_Cell[nX][nY].bIsInundated()) && (bFPIsEqual(m_pRasterGrid->m_Cell[nX][nY].dGetSeaDepth(), 0.0, TOLERANCE)))
+      while ((nX < m_nXGridSize) && (!m_pRasterGrid->m_Cell[nX][nY].bBasementElevIsMissingValue()) && (m_pRasterGrid->m_Cell[nX][nY].bIsInundated()) && (bFPIsEqual(m_pRasterGrid->m_Cell[nX][nY].dGetSeaDepth(), 0.0, TOLERANCE)))
       {
          // Set the sea depth for this cell
          m_pRasterGrid->m_Cell[nX][nY].SetSeaDepth();
@@ -192,24 +192,24 @@ void CSimulation::CellByCellFillSea(int const nXStart, int const nYStart)
          // Update count
          m_ulThisIterNumSeaCells++;
 
-         if ((! bSpanAbove) && (nY > 0) && (! m_pRasterGrid->m_Cell[nX][nY - 1].bBasementElevIsMissingValue()) && (m_pRasterGrid->m_Cell[nX][nY - 1].bIsInundated()))
+         if ((!bSpanAbove) && (nY > 0) && (!m_pRasterGrid->m_Cell[nX][nY - 1].bBasementElevIsMissingValue()) && (m_pRasterGrid->m_Cell[nX][nY - 1].bIsInundated()))
          {
             PtiStack.push(CGeom2DIPoint(nX, nY - 1));
             bSpanAbove = true;
          }
 
-         else if (bSpanAbove && (nY > 0) && (! m_pRasterGrid->m_Cell[nX][nY - 1].bBasementElevIsMissingValue()) && (! m_pRasterGrid->m_Cell[nX][nY - 1].bIsInundated()))
+         else if (bSpanAbove && (nY > 0) && (!m_pRasterGrid->m_Cell[nX][nY - 1].bBasementElevIsMissingValue()) && (!m_pRasterGrid->m_Cell[nX][nY - 1].bIsInundated()))
          {
             bSpanAbove = false;
          }
 
-         if ((! bSpanBelow) && (nY < m_nYGridSize - 1) && (! m_pRasterGrid->m_Cell[nX][nY + 1].bBasementElevIsMissingValue()) && (m_pRasterGrid->m_Cell[nX][nY + 1].bIsInundated()))
+         if ((!bSpanBelow) && (nY < m_nYGridSize - 1) && (!m_pRasterGrid->m_Cell[nX][nY + 1].bBasementElevIsMissingValue()) && (m_pRasterGrid->m_Cell[nX][nY + 1].bIsInundated()))
          {
             PtiStack.push(CGeom2DIPoint(nX, nY + 1));
             bSpanBelow = true;
          }
 
-         else if (bSpanBelow && (nY < m_nYGridSize - 1) && (! m_pRasterGrid->m_Cell[nX][nY + 1].bBasementElevIsMissingValue()) && (! m_pRasterGrid->m_Cell[nX][nY + 1].bIsInundated()))
+         else if (bSpanBelow && (nY < m_nYGridSize - 1) && (!m_pRasterGrid->m_Cell[nX][nY + 1].bBasementElevIsMissingValue()) && (!m_pRasterGrid->m_Cell[nX][nY + 1].bIsInundated()))
          {
             bSpanBelow = false;
          }
@@ -293,7 +293,7 @@ void CSimulation::CellByCellFillSea(int const nXStart, int const nYStart)
 //===============================================================================================================================
 //! Locates all the potential coastline start/finish points on the edges of the raster grid, then traces vector coastline(s) from these start points
 //===============================================================================================================================
-int CSimulation::nTraceAllCoasts(int &nValidCoast)
+int CSimulation::nTraceAllCoasts(int& nValidCoast)
 {
    if (m_nLogFileDetail >= LOG_FILE_MIDDLE_DETAIL)
       LogStream << m_ulIter << ": Tracing coast" << endl;
@@ -328,10 +328,10 @@ int CSimulation::nTraceAllCoasts(int &nValidCoast)
       bool const bNextCellIsSea = m_pRasterGrid->m_Cell[nXNext][nYNext].bIsInContiguousSea();
 
       // Are we at a coast?
-      if ((! bThisCellIsSea) && bNextCellIsSea)
+      if ((!bThisCellIsSea) && bNextCellIsSea)
       {
          // 'This' cell is just inland, has it already been flagged as a possible start for a coastline (even if this subsequently 'failed' as a coastline)?
-         if (! m_pRasterGrid->m_Cell[nXThis][nYThis].bIsPossibleCoastStartCell())
+         if (!m_pRasterGrid->m_Cell[nXThis][nYThis].bIsPossibleCoastStartCell())
          {
             // It has not, so flag it
             m_pRasterGrid->m_Cell[nXThis][nYThis].SetPossibleCoastStartCell();
@@ -347,10 +347,10 @@ int CSimulation::nTraceAllCoasts(int &nValidCoast)
          }
       }
 
-      else if (bThisCellIsSea && (! bNextCellIsSea))
+      else if (bThisCellIsSea && (!bNextCellIsSea))
       {
          // The 'next' cell is just inland, has it already been flagged as a possible start for a coastline (even if this subsequently 'failed' as a coastline)?
-         if (! m_pRasterGrid->m_Cell[nXNext][nYNext].bIsPossibleCoastStartCell())
+         if (!m_pRasterGrid->m_Cell[nXNext][nYNext].bIsPossibleCoastStartCell())
          {
             // It has not, so flag it
             m_pRasterGrid->m_Cell[nXNext][nYNext].SetPossibleCoastStartCell();
@@ -388,7 +388,7 @@ int CSimulation::nTraceAllCoasts(int &nValidCoast)
    // OK, so trace from each of these possible start/finish points
    for (unsigned int n = 0; n < V2DIPossibleStartCell.size(); n++)
    {
-      if (! VbTraced[n])
+      if (!VbTraced[n])
       {
          int nRet = 0;
 
@@ -424,7 +424,7 @@ int CSimulation::nTraceAllCoasts(int &nValidCoast)
 //===============================================================================================================================
 //! Traces a coastline (which is defined to be just above still water level) on the grid using the 'wall follower' rule for maze traversal (http://en.wikipedia.org/wiki/Maze_solving_algorithm#Wall_follower). The vector coastlines are then smoothed
 //===============================================================================================================================
-int CSimulation::nTraceCoastLine(unsigned int const nTraceFromStartCellIndex, int const nStartSearchDirection, int const nHandedness, vector<bool>*pVbTraced, vector<CGeom2DIPoint> const* pV2DIPossibleStartCell)
+int CSimulation::nTraceCoastLine(unsigned int const nTraceFromStartCellIndex, int const nStartSearchDirection, int const nHandedness, vector<bool>* pVbTraced, vector<CGeom2DIPoint> const* pV2DIPossibleStartCell)
 {
    bool bHitStartCell = false;
    bool bAtCoast = false;
@@ -486,11 +486,11 @@ int CSimulation::nTraceCoastLine(unsigned int const nTraceFromStartCellIndex, in
       }
 
       // OK so far: so have we left the start edge?
-      if (! bHasLeftStartEdge)
+      if (!bHasLeftStartEdge)
       {
          // We have not yet left the start edge
          if (((nStartSearchDirection == SOUTH) && (nY > nStartY)) || ((nStartSearchDirection == NORTH) && (nY < nStartY)) ||
-               ((nStartSearchDirection == EAST) && (nX > nStartX)) || ((nStartSearchDirection == WEST) && (nX < nStartX)))
+             ((nStartSearchDirection == EAST) && (nX > nStartX)) || ((nStartSearchDirection == WEST) && (nX < nStartX)))
             bHasLeftStartEdge = true;
 
          // Flag this cell to ensure that it is not chosen as a coastline start cell later
@@ -503,7 +503,7 @@ int CSimulation::nTraceCoastLine(unsigned int const nTraceFromStartCellIndex, in
       {
          for (unsigned int nn = 0; nn < pVbTraced->size(); nn++)
          {
-            if ((nn != nTraceFromStartCellIndex) && (! pVbTraced->at(nn)))
+            if ((nn != nTraceFromStartCellIndex) && (!pVbTraced->at(nn)))
             {
                // LogStream << "[" << pV2DIPossibleStartCell->at(nn).nGetX() << "][" << pV2DIPossibleStartCell->at(nn).nGetY() << "]" << endl;
 
@@ -543,197 +543,197 @@ int CSimulation::nTraceCoastLine(unsigned int const nTraceFromStartCellIndex, in
       // Set up the variables
       switch (nHandedness)
       {
-         case RIGHT_HANDED:
+      case RIGHT_HANDED:
 
-            // The sea is to the right-hand side of the coast as we traverse it. We are just inland, so we need to keep heading right to find the sea
-            switch (nSearchDirection)
-            {
-               case NORTH:
-                  // The sea is towards the RHS (E) of the coast, so first try to go right (to the E)
-                  nXSeaward = nX + 1;
-                  nYSeaward = nY;
-                  nSeawardNewDirection = EAST;
+         // The sea is to the right-hand side of the coast as we traverse it. We are just inland, so we need to keep heading right to find the sea
+         switch (nSearchDirection)
+         {
+         case NORTH:
+            // The sea is towards the RHS (E) of the coast, so first try to go right (to the E)
+            nXSeaward = nX + 1;
+            nYSeaward = nY;
+            nSeawardNewDirection = EAST;
 
-                  // If can't do this, try to go straight on (to the N)
-                  nXStraightOn = nX;
-                  nYStraightOn = nY - 1;
+            // If can't do this, try to go straight on (to the N)
+            nXStraightOn = nX;
+            nYStraightOn = nY - 1;
 
-                  // If can't do either of these, try to go anti-seaward i.e. towards the LHS (W)
-                  nXAntiSeaward = nX - 1;
-                  nYAntiSeaward = nY;
-                  nAntiSeawardNewDirection = WEST;
+            // If can't do either of these, try to go anti-seaward i.e. towards the LHS (W)
+            nXAntiSeaward = nX - 1;
+            nYAntiSeaward = nY;
+            nAntiSeawardNewDirection = WEST;
 
-                  // As a last resort, go back (to the S)
-                  nXGoBack = nX;
-                  nYGoBack = nY + 1;
-                  nGoBackNewDirection = SOUTH;
-
-                  break;
-
-               case EAST:
-                  // The sea is towards the RHS (S) of the coast, so first try to go right (to the S)
-                  nXSeaward = nX;
-                  nYSeaward = nY + 1;
-                  nSeawardNewDirection = SOUTH;
-
-                  // If can't do this, try to go straight on (to the E)
-                  nXStraightOn = nX + 1;
-                  nYStraightOn = nY;
-
-                  // If can't do either of these, try to go anti-seaward i.e. towards the LHS (N)
-                  nXAntiSeaward = nX;
-                  nYAntiSeaward = nY - 1;
-                  nAntiSeawardNewDirection = NORTH;
-
-                  // As a last resort, go back (to the W)
-                  nXGoBack = nX - 1;
-                  nYGoBack = nY;
-                  nGoBackNewDirection = WEST;
-
-                  break;
-
-               case SOUTH:
-                  // The sea is towards the RHS (W) of the coast, so first try to go right (to the W)
-                  nXSeaward = nX - 1;
-                  nYSeaward = nY;
-                  nSeawardNewDirection = WEST;
-
-                  // If can't do this, try to go straight on (to the S)
-                  nXStraightOn = nX;
-                  nYStraightOn = nY + 1;
-
-                  // If can't do either of these, try to go anti-seaward i.e. towards the LHS (E)
-                  nXAntiSeaward = nX + 1;
-                  nYAntiSeaward = nY;
-                  nAntiSeawardNewDirection = EAST;
-
-                  // As a last resort, go back (to the N)
-                  nXGoBack = nX;
-                  nYGoBack = nY - 1;
-                  nGoBackNewDirection = NORTH;
-
-                  break;
-
-               case WEST:
-                  // The sea is towards the RHS (N) of the coast, so first try to go right (to the N)
-                  nXSeaward = nX;
-                  nYSeaward = nY - 1;
-                  nSeawardNewDirection = NORTH;
-
-                  // If can't do this, try to go straight on (to the W)
-                  nXStraightOn = nX - 1;
-                  nYStraightOn = nY;
-
-                  // If can't do either of these, try to go anti-seaward i.e. towards the LHS (S)
-                  nXAntiSeaward = nX;
-                  nYAntiSeaward = nY + 1;
-                  nAntiSeawardNewDirection = SOUTH;
-
-                  // As a last resort, go back (to the E)
-                  nXGoBack = nX + 1;
-                  nYGoBack = nY;
-                  nGoBackNewDirection = EAST;
-
-                  break;
-            }
+            // As a last resort, go back (to the S)
+            nXGoBack = nX;
+            nYGoBack = nY + 1;
+            nGoBackNewDirection = SOUTH;
 
             break;
 
-         case LEFT_HANDED:
+         case EAST:
+            // The sea is towards the RHS (S) of the coast, so first try to go right (to the S)
+            nXSeaward = nX;
+            nYSeaward = nY + 1;
+            nSeawardNewDirection = SOUTH;
 
-            // The sea is to the left-hand side of the coast as we traverse it. We are just inland, so we need to keep heading left to find the sea
-            switch (nSearchDirection)
-            {
-               case NORTH:
-                  // The sea is towards the LHS (W) of the coast, so first try to go left (to the W)
-                  nXSeaward = nX - 1;
-                  nYSeaward = nY;
-                  nSeawardNewDirection = WEST;
+            // If can't do this, try to go straight on (to the E)
+            nXStraightOn = nX + 1;
+            nYStraightOn = nY;
 
-                  // If can't do this, try to go straight on (to the N)
-                  nXStraightOn = nX;
-                  nYStraightOn = nY - 1;
+            // If can't do either of these, try to go anti-seaward i.e. towards the LHS (N)
+            nXAntiSeaward = nX;
+            nYAntiSeaward = nY - 1;
+            nAntiSeawardNewDirection = NORTH;
 
-                  // If can't do either of these, try to go anti-seaward i.e. towards the RHS (E)
-                  nXAntiSeaward = nX + 1;
-                  nYAntiSeaward = nY;
-                  nAntiSeawardNewDirection = EAST;
-
-                  // As a last resort, go back (to the S)
-                  nXGoBack = nX;
-                  nYGoBack = nY + 1;
-                  nGoBackNewDirection = SOUTH;
-
-                  break;
-
-               case EAST:
-                  // The sea is towards the LHS (N) of the coast, so first try to go left (to the N)
-                  nXSeaward = nX;
-                  nYSeaward = nY - 1;
-                  nSeawardNewDirection = NORTH;
-
-                  // If can't do this, try to go straight on (to the E)
-                  nXStraightOn = nX + 1;
-                  nYStraightOn = nY;
-
-                  // If can't do either of these, try to go anti-seaward i.e. towards the RHS (S)
-                  nXAntiSeaward = nX;
-                  nYAntiSeaward = nY + 1;
-                  nAntiSeawardNewDirection = SOUTH;
-
-                  // As a last resort, go back (to the W)
-                  nXGoBack = nX - 1;
-                  nYGoBack = nY;
-                  nGoBackNewDirection = WEST;
-
-                  break;
-
-               case SOUTH:
-                  // The sea is towards the LHS (E) of the coast, so first try to go left (to the E)
-                  nXSeaward = nX + 1;
-                  nYSeaward = nY;
-                  nSeawardNewDirection = EAST;
-
-                  // If can't do this, try to go straight on (to the S)
-                  nXStraightOn = nX;
-                  nYStraightOn = nY + 1;
-
-                  // If can't do either of these, try to go anti-seaward i.e. towards the RHS (W)
-                  nXAntiSeaward = nX - 1;
-                  nYAntiSeaward = nY;
-                  nAntiSeawardNewDirection = WEST;
-
-                  // As a last resort, go back (to the N)
-                  nXGoBack = nX;
-                  nYGoBack = nY - 1;
-                  nGoBackNewDirection = NORTH;
-
-                  break;
-
-               case WEST:
-                  // The sea is towards the LHS (S) of the coast, so first try to go left (to the S)
-                  nXSeaward = nX;
-                  nYSeaward = nY + 1;
-                  nSeawardNewDirection = SOUTH;
-
-                  // If can't do this, try to go straight on (to the W)
-                  nXStraightOn = nX - 1;
-                  nYStraightOn = nY;
-
-                  // If can't do either of these, try to go anti-seaward i.e. towards the RHS (N)
-                  nXAntiSeaward = nX;
-                  nYAntiSeaward = nY - 1;
-                  nAntiSeawardNewDirection = NORTH;
-
-                  // As a last resort, go back (to the E)
-                  nXGoBack = nX + 1;
-                  nYGoBack = nY;
-                  nGoBackNewDirection = EAST;
-
-                  break;
-            }
+            // As a last resort, go back (to the W)
+            nXGoBack = nX - 1;
+            nYGoBack = nY;
+            nGoBackNewDirection = WEST;
 
             break;
+
+         case SOUTH:
+            // The sea is towards the RHS (W) of the coast, so first try to go right (to the W)
+            nXSeaward = nX - 1;
+            nYSeaward = nY;
+            nSeawardNewDirection = WEST;
+
+            // If can't do this, try to go straight on (to the S)
+            nXStraightOn = nX;
+            nYStraightOn = nY + 1;
+
+            // If can't do either of these, try to go anti-seaward i.e. towards the LHS (E)
+            nXAntiSeaward = nX + 1;
+            nYAntiSeaward = nY;
+            nAntiSeawardNewDirection = EAST;
+
+            // As a last resort, go back (to the N)
+            nXGoBack = nX;
+            nYGoBack = nY - 1;
+            nGoBackNewDirection = NORTH;
+
+            break;
+
+         case WEST:
+            // The sea is towards the RHS (N) of the coast, so first try to go right (to the N)
+            nXSeaward = nX;
+            nYSeaward = nY - 1;
+            nSeawardNewDirection = NORTH;
+
+            // If can't do this, try to go straight on (to the W)
+            nXStraightOn = nX - 1;
+            nYStraightOn = nY;
+
+            // If can't do either of these, try to go anti-seaward i.e. towards the LHS (S)
+            nXAntiSeaward = nX;
+            nYAntiSeaward = nY + 1;
+            nAntiSeawardNewDirection = SOUTH;
+
+            // As a last resort, go back (to the E)
+            nXGoBack = nX + 1;
+            nYGoBack = nY;
+            nGoBackNewDirection = EAST;
+
+            break;
+         }
+
+         break;
+
+      case LEFT_HANDED:
+
+         // The sea is to the left-hand side of the coast as we traverse it. We are just inland, so we need to keep heading left to find the sea
+         switch (nSearchDirection)
+         {
+         case NORTH:
+            // The sea is towards the LHS (W) of the coast, so first try to go left (to the W)
+            nXSeaward = nX - 1;
+            nYSeaward = nY;
+            nSeawardNewDirection = WEST;
+
+            // If can't do this, try to go straight on (to the N)
+            nXStraightOn = nX;
+            nYStraightOn = nY - 1;
+
+            // If can't do either of these, try to go anti-seaward i.e. towards the RHS (E)
+            nXAntiSeaward = nX + 1;
+            nYAntiSeaward = nY;
+            nAntiSeawardNewDirection = EAST;
+
+            // As a last resort, go back (to the S)
+            nXGoBack = nX;
+            nYGoBack = nY + 1;
+            nGoBackNewDirection = SOUTH;
+
+            break;
+
+         case EAST:
+            // The sea is towards the LHS (N) of the coast, so first try to go left (to the N)
+            nXSeaward = nX;
+            nYSeaward = nY - 1;
+            nSeawardNewDirection = NORTH;
+
+            // If can't do this, try to go straight on (to the E)
+            nXStraightOn = nX + 1;
+            nYStraightOn = nY;
+
+            // If can't do either of these, try to go anti-seaward i.e. towards the RHS (S)
+            nXAntiSeaward = nX;
+            nYAntiSeaward = nY + 1;
+            nAntiSeawardNewDirection = SOUTH;
+
+            // As a last resort, go back (to the W)
+            nXGoBack = nX - 1;
+            nYGoBack = nY;
+            nGoBackNewDirection = WEST;
+
+            break;
+
+         case SOUTH:
+            // The sea is towards the LHS (E) of the coast, so first try to go left (to the E)
+            nXSeaward = nX + 1;
+            nYSeaward = nY;
+            nSeawardNewDirection = EAST;
+
+            // If can't do this, try to go straight on (to the S)
+            nXStraightOn = nX;
+            nYStraightOn = nY + 1;
+
+            // If can't do either of these, try to go anti-seaward i.e. towards the RHS (W)
+            nXAntiSeaward = nX - 1;
+            nYAntiSeaward = nY;
+            nAntiSeawardNewDirection = WEST;
+
+            // As a last resort, go back (to the N)
+            nXGoBack = nX;
+            nYGoBack = nY - 1;
+            nGoBackNewDirection = NORTH;
+
+            break;
+
+         case WEST:
+            // The sea is towards the LHS (S) of the coast, so first try to go left (to the S)
+            nXSeaward = nX;
+            nYSeaward = nY + 1;
+            nSeawardNewDirection = SOUTH;
+
+            // If can't do this, try to go straight on (to the W)
+            nXStraightOn = nX - 1;
+            nYStraightOn = nY;
+
+            // If can't do either of these, try to go anti-seaward i.e. towards the RHS (N)
+            nXAntiSeaward = nX;
+            nYAntiSeaward = nY - 1;
+            nAntiSeawardNewDirection = NORTH;
+
+            // As a last resort, go back (to the E)
+            nXGoBack = nX + 1;
+            nYGoBack = nY;
+            nGoBackNewDirection = EAST;
+
+            break;
+         }
+
+         break;
       }
 
       // Now do the actual search for this timestep: first try going in the direction of the sea. Is this seaward cell still within the grid?
@@ -746,7 +746,7 @@ int CSimulation::nTraceCoastLine(unsigned int const nTraceFromStartCellIndex, in
             bAtCoast = true;
 
             // Has the current cell already marked been marked as a coast cell?
-            if (! m_pRasterGrid->m_Cell[nX][nY].bIsCoastline())
+            if (!m_pRasterGrid->m_Cell[nX][nY].bIsCoastline())
             {
                // Not already marked, is this an intervention cell with the top above SWL?
                if ((bIsInterventionCell(nX, nY)) && (m_pRasterGrid->m_Cell[nX][nY].dGetInterventionTopElev() >= m_dThisIterSWL))
@@ -787,7 +787,7 @@ int CSimulation::nTraceCoastLine(unsigned int const nTraceFromStartCellIndex, in
             bAtCoast = true;
 
             // Has the current cell already marked been marked as a coast cell?
-            if (! m_pRasterGrid->m_Cell[nX][nY].bIsCoastline())
+            if (!m_pRasterGrid->m_Cell[nX][nY].bIsCoastline())
             {
                // Not already marked, is this an intervention cell with the top above SWL?
                if ((bIsInterventionCell(nX, nY)) && (m_pRasterGrid->m_Cell[nX][nY].dGetInterventionTopElev() >= m_dThisIterSWL))
@@ -827,7 +827,7 @@ int CSimulation::nTraceCoastLine(unsigned int const nTraceFromStartCellIndex, in
             bAtCoast = true;
 
             // Has the current cell already marked been marked as a coast cell?
-            if (! m_pRasterGrid->m_Cell[nX][nY].bIsCoastline())
+            if (!m_pRasterGrid->m_Cell[nX][nY].bIsCoastline())
             {
                // Not already marked, is this an intervention cell with the top above SWL?
                if ((bIsInterventionCell(nX, nY)) && (m_pRasterGrid->m_Cell[nX][nY].dGetInterventionTopElev() >= m_dThisIterSWL))
@@ -961,7 +961,7 @@ int CSimulation::nTraceCoastLine(unsigned int const nTraceFromStartCellIndex, in
    if ((nCoastEndX != nEndX) || (nCoastEndY != nEndY))
    {
       // The grid-edge cell at nEndX, nEndY is not already at end of ILTempGridCRS. But is the final cell in ILTempGridCRS already at the edge of the grid?
-      if (! m_pRasterGrid->m_Cell[nCoastEndX][nCoastEndY].bIsBoundingBoxEdge())
+      if (!m_pRasterGrid->m_Cell[nCoastEndX][nCoastEndY].bIsBoundingBoxEdge())
       {
          // The final cell in ILTempGridCRS is not a grid-edge cell, so add the grid-edge cell and mark the cell as coastline
          ILTempGridCRS.Append(nEndX, nEndY);
@@ -1099,27 +1099,27 @@ int CSimulation::nLocateFloodAndCoasts(void)
    // Have we created any coasts?
    switch (m_nLevel)
    {
-      case 0: // WAVESETUP + SURGE:
+   case 0: // WAVESETUP + SURGE:
+   {
+      if (m_VFloodWaveSetupSurge.empty())
       {
-         if (m_VFloodWaveSetupSurge.empty())
-         {
-            cerr << m_ulIter << ": " << ERR << "no flood coastline located: this iteration SWL = " << m_dThisIterSWL << ", maximum DEM top surface elevation = " << m_dThisIterTopElevMax << ", minimum DEM top surface elevation = " << m_dThisIterTopElevMin << endl;
-            return RTN_ERR_NOCOAST;
-         }
-
-         break;
+         cerr << m_ulIter << ": " << ERR << "no flood coastline located: this iteration SWL = " << m_dThisIterSWL << ", maximum DEM top surface elevation = " << m_dThisIterTopElevMax << ", minimum DEM top surface elevation = " << m_dThisIterTopElevMin << endl;
+         return RTN_ERR_NOCOAST;
       }
 
-      case 1: // WAVESETUP + SURGE + RUNUP:
-      {
-         if (m_VFloodWaveSetupSurgeRunup.empty())
-         {
-            cerr << m_ulIter << ": " << ERR << "no flood coastline located: this iteration SWL = " << m_dThisIterSWL << ", maximum DEM top surface elevation = " << m_dThisIterTopElevMax << ", minimum DEM top surface elevation = " << m_dThisIterTopElevMin << endl;
-            return RTN_ERR_NOCOAST;
-         }
+      break;
+   }
 
-         break;
+   case 1: // WAVESETUP + SURGE + RUNUP:
+   {
+      if (m_VFloodWaveSetupSurgeRunup.empty())
+      {
+         cerr << m_ulIter << ": " << ERR << "no flood coastline located: this iteration SWL = " << m_dThisIterSWL << ", maximum DEM top surface elevation = " << m_dThisIterTopElevMax << ", minimum DEM top surface elevation = " << m_dThisIterTopElevMin << endl;
+         return RTN_ERR_NOCOAST;
       }
+
+      break;
+   }
    }
 
    return RTN_OK;
@@ -1158,7 +1158,7 @@ int CSimulation::FindAllInundatedCells(void)
       int const nX = m_VEdgeCell[n].nGetX();
       int const nY = m_VEdgeCell[n].nGetY();
 
-      if ((! m_pRasterGrid->m_Cell[nX][nY].bIsCellFloodCheck()) && (m_pRasterGrid->m_Cell[nX][nY].bIsInundated()))
+      if ((!m_pRasterGrid->m_Cell[nX][nY].bIsCellFloodCheck()) && (m_pRasterGrid->m_Cell[nX][nY].bIsInundated()))
       {
          // This edge cell is below SWL and sea depth remains set to zero
          FloodFillLand(nX, nY);
@@ -1167,4 +1167,3 @@ int CSimulation::FindAllInundatedCells(void)
 
    return RTN_OK;
 }
-

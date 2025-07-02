@@ -30,16 +30,15 @@
 
 class CGeomLine : public CA2DShape
 {
-private:
-
-protected:
-// void SetXAt(int const, double const);
-// void SetYAt(int const, double const);
-// bool bIsPresent(CGeom2DPoint*);
+ private:
+ protected:
+   // void SetXAt(int const, double const);
+   // void SetYAt(int const, double const);
+   // bool bIsPresent(CGeom2DPoint*);
 
    void Display(void) override;
 
-public:
+ public:
    CGeomLine(void);
    CGeomLine(CGeom2DPoint const*, CGeom2DPoint const*);
    explicit CGeomLine(int const);

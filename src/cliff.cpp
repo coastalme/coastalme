@@ -34,7 +34,7 @@ using std::ios;
 #include "coast.h"
 
 //! Constructor with seven parameters and an intialization list
-CRWCliff::CRWCliff(CRWCoast * pCoastIn, int const nCoast, int const nPointOnCoast, double const dCellSide, double const dNotchDepthIn, double const dNotchElevIn, double const dAccumWaveEnergyIn)
+CRWCliff::CRWCliff(CRWCoast* pCoastIn, int const nCoast, int const nPointOnCoast, double const dCellSide, double const dNotchDepthIn, double const dNotchElevIn, double const dAccumWaveEnergyIn)
 {
    m_bCliffHasCollapsed = false;
 
@@ -48,7 +48,7 @@ CRWCliff::CRWCliff(CRWCoast * pCoastIn, int const nCoast, int const nPointOnCoas
    m_dNotchDepth = dNotchDepthIn;
    m_dNotchBaseElev = dNotchElevIn;
    m_dTotAccumWaveEnergy = dAccumWaveEnergyIn;
-// assert(m_dRemaining >=0);
+   // assert(m_dRemaining >=0);
 }
 
 //! Destructor
@@ -116,7 +116,7 @@ void CRWCliff::DeepenErosionalNotch(double const dLenIn)
    // Constrain the notch depth, it cannot be greater than the max notch depth
    m_dNotchDepth = tMin(m_dNotchDepth, m_dMaxDepth);
 
-// assert((m_dMaxDepth - m_dNotchDepth) >=0);
+   // assert((m_dMaxDepth - m_dNotchDepth) >=0);
 }
 
 //! Instantiates the pure virtual function in the abstract parent class, so that CRWCliff is not an abstract class
