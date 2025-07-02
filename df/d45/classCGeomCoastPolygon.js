@@ -112,7 +112,7 @@ var classCGeomCoastPolygon =
     [ "SetUpCoastAdjacentPolygons", "df/d45/classCGeomCoastPolygon.html#adbd8b304081b250addc82262b474ed08", null ],
     [ "SetZeroToDoDepositionUnconsCoarse", "df/d45/classCGeomCoastPolygon.html#a92f542bc73cb5d130613c35295edc17c", null ],
     [ "SetZeroToDoDepositionUnconsSand", "df/d45/classCGeomCoastPolygon.html#a6ee36d0e033ce599d9e0eb21a1d3d9ed", null ],
-    [ "VnGetCircularities", "df/d45/classCGeomCoastPolygon.html#afa3b802758951329706df385dcfa7b59", null ],
+    [ "VnGetCircularities", "df/d45/classCGeomCoastPolygon.html#a4ad424e6e91b9700f74d1122222fbcd7", null ],
     [ "m_bCoastEndPolygon", "df/d45/classCGeomCoastPolygon.html#a55ffb36bbf69438d5d09ea0ff07d59cd", null ],
     [ "m_bCoastStartPolygon", "df/d45/classCGeomCoastPolygon.html#ad9efc9da04bb5fe2e9f8d68482343b14", null ],
     [ "m_bUnconsSedimentMovementDownCoastThisIter", "df/d45/classCGeomCoastPolygon.html#aad7342a6b464ac5dcf45b82f9b812462", null ],

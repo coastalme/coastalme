@@ -446,7 +446,7 @@ var searchData=
   ['m_5fncoastnormalspacing_443',['m_nCoastNormalSpacing',['../d1/d98/classCSimulation.html#a50e5297e7c9dd45da078e543c04151be',1,'CSimulation']]],
   ['m_5fncoastpoint_444',['m_nCoastPoint',['../da/dae/classCGeomProfile.html#a0d9f29c251069a0753538de5894c0d33',1,'CGeomProfile']]],
   ['m_5fncoastsmooth_445',['m_nCoastSmooth',['../d1/d98/classCSimulation.html#ac98d1278d1ffc629485f7a67d4f99ed6',1,'CSimulation']]],
-  ['m_5fncoastsmoothwindow_446',['m_nCoastSmoothWindow',['../d1/d98/classCSimulation.html#afe99264858eb61d5e58b2af79cb311b9',1,'CSimulation']]],
+  ['m_5fncoastsmoothingwindowsize_446',['m_nCoastSmoothingWindowSize',['../d1/d98/classCSimulation.html#a5c09705a5726025200cb3b4871188b40',1,'CSimulation']]],
   ['m_5fndeepwaterwavedatanumtimesteps_447',['m_nDeepWaterWaveDataNumTimeSteps',['../d1/d98/classCSimulation.html#a879caef8def45279b1627b9c4cef4898',1,'CSimulation']]],
   ['m_5fndowndriftzonenumber_448',['m_nDownDriftZoneNumber',['../d1/dd9/classCGeomCell.html#ac652cb224ea97cb312926e0c7173efc3',1,'CGeomCell']]],
   ['m_5fndummy_449',['m_nDummy',['../dc/d4a/classCRWCellLandform.html#ab6d324f5f1bac68c3d7c7037f9f981da',1,'CRWCellLandform']]],

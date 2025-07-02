@@ -564,7 +564,7 @@ var classCSimulation =
     [ "m_nCoastNormalInterventionSpacing", "d1/d98/classCSimulation.html#a6d38a32401702ff85a6bb65c884db477", null ],
     [ "m_nCoastNormalSpacing", "d1/d98/classCSimulation.html#a50e5297e7c9dd45da078e543c04151be", null ],
     [ "m_nCoastSmooth", "d1/d98/classCSimulation.html#ac98d1278d1ffc629485f7a67d4f99ed6", null ],
-    [ "m_nCoastSmoothWindow", "d1/d98/classCSimulation.html#afe99264858eb61d5e58b2af79cb311b9", null ],
+    [ "m_nCoastSmoothingWindowSize", "d1/d98/classCSimulation.html#a5c09705a5726025200cb3b4871188b40", null ],
     [ "m_nDeepWaterWaveDataNumTimeSteps", "d1/d98/classCSimulation.html#a879caef8def45279b1627b9c4cef4898", null ],
     [ "m_nGISMaxSaveDigits", "d1/d98/classCSimulation.html#a05e91a11491b490172a0e9a8c55b29b5", null ],
     [ "m_nGISMissingValue", "d1/d98/classCSimulation.html#a234aaee67851cdde7add42e80489d87c", null ],
