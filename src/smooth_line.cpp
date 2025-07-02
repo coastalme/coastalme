@@ -44,19 +44,19 @@ typedef double Matrix[SAVGOL_POLYNOMIAL_MAX_ORDER + 2][SAVGOL_POLYNOMIAL_MAX_ORD
 
 namespace
 {
-   void LUDecomp(Matrix, int const, int const, int[], int*, int*);
-   void LULinearSolve(Matrix const, int const, int const[], double[]);
-}
+void LUDecomp(Matrix, int const, int const, int[], int*, int*);
+void LULinearSolve(Matrix const, int const, int const[], double[]);
+} // namespace
 
 //===============================================================================================================================
 //! Calculates the Savitzky-Golay smoothing coefficients for a given size of smoothing window. Derived from a C original by Jean-Pierre Moreau (jpmoreau@wanadoo.fr, http://jean-pierre.moreau.pagesperso-orange.fr/index.html), to whom we are much indebted
 //===============================================================================================================================
 void CSimulation::CalcSavitzkyGolayCoeffs(void)
 {
-   m_VnSavGolIndexCoast.resize(m_nCoastSmoothWindow + 1, 0);
+   m_VnSavGolIndexCoast.resize(m_nCoastSmoothingWindowSize + 1, 0);
 
-   // Note that m_nCoastSmoothWindow must be odd (have already checked this)
-   int const nHalfWindow = m_nCoastSmoothWindow / 2;
+   // Note that m_nCoastSmoothingWindowSize must be odd (have already checked this)
+   int const nHalfWindow = m_nCoastSmoothingWindowSize / 2;
 
    // Calculate the shift index for this value of nHalfWindow
    int j = 3;
@@ -69,16 +69,16 @@ void CSimulation::CalcSavitzkyGolayCoeffs(void)
 
    j = 2;
 
-   for (int i = nHalfWindow + 2; i <= m_nCoastSmoothWindow; i++)
+   for (int i = nHalfWindow + 2; i <= m_nCoastSmoothingWindowSize; i++)
    {
       m_VnSavGolIndexCoast[i] = i - j;
       j += 2;
    }
 
    // Now calculate the Savitzky-Golay filter coefficients
-   m_VdSavGolFCRWCoast.resize(m_nCoastSmoothWindow + 1, 0);
+   m_VdSavGolFCRWCoast.resize(m_nCoastSmoothingWindowSize + 1, 0);
 
-   CalcSavitzkyGolay(&(m_VdSavGolFCRWCoast.at(0)), m_nCoastSmoothWindow, nHalfWindow, nHalfWindow, 0, m_nSavGolCoastPoly);
+   CalcSavitzkyGolay(&(m_VdSavGolFCRWCoast.at(0)), m_nCoastSmoothingWindowSize, nHalfWindow, nHalfWindow, 0, m_nSavGolCoastPoly);
 }
 
 //===============================================================================================================================
@@ -86,8 +86,8 @@ void CSimulation::CalcSavitzkyGolayCoeffs(void)
 //===============================================================================================================================
 CGeomLine CSimulation::LSmoothCoastSavitzkyGolay(CGeomLine* pLineIn, int const nStartEdge, int const nEndEdge) const
 {
-   // Note that m_nCoastSmoothWindow must be odd (have already checked this)
-   int const nHalfWindow = m_nCoastSmoothWindow / 2;
+   // Note that m_nCoastSmoothingWindowSize must be odd (have already checked this)
+   int const nHalfWindow = m_nCoastSmoothingWindowSize / 2;
 
    // Make a copy of the unsmoothed CGeomLine (must be blank)
    int const nSize = pLineIn->nGetSize();
@@ -103,7 +103,7 @@ CGeomLine CSimulation::LSmoothCoastSavitzkyGolay(CGeomLine* pLineIn, int const n
       int nYThis = PtiThis.nGetY();
 
       // Safety check
-      if (! bIsWithinValidGrid(nXThis, nYThis))
+      if (!bIsWithinValidGrid(nXThis, nYThis))
          KeepWithinValidGrid(nXThis, nYThis);
 
       // Don't smooth intervention cells
@@ -119,7 +119,7 @@ CGeomLine CSimulation::LSmoothCoastSavitzkyGolay(CGeomLine* pLineIn, int const n
          int nTmpWindow = 0;
          double dWindowTotX = 0, dWindowTotY = 0;
 
-         for (int j = -nHalfWindow; j < m_nCoastSmoothWindow - nHalfWindow; j++)
+         for (int j = -nHalfWindow; j < m_nCoastSmoothingWindowSize - nHalfWindow; j++)
          {
             int const k = i + j;
 
@@ -133,21 +133,21 @@ CGeomLine CSimulation::LSmoothCoastSavitzkyGolay(CGeomLine* pLineIn, int const n
 
          switch (nStartEdge)
          {
-            case NORTH:
-            case SOUTH:
-               // Don't apply the filter in the Y direction
-               LTemp[i] = CGeom2DPoint(dWindowTotX / nTmpWindow, pLineIn->dGetYAt(i));
-               // LTemp.SetXAt(i, dWindowTotX / static_cast<double>(nTmpWindow));
-               // LTemp.SetYAt(i, pLineIn->dGetYAt(i));
-               break;
+         case NORTH:
+         case SOUTH:
+            // Don't apply the filter in the Y direction
+            LTemp[i] = CGeom2DPoint(dWindowTotX / nTmpWindow, pLineIn->dGetYAt(i));
+            // LTemp.SetXAt(i, dWindowTotX / static_cast<double>(nTmpWindow));
+            // LTemp.SetYAt(i, pLineIn->dGetYAt(i));
+            break;
 
-            case EAST:
-            case WEST:
-               // Don't apply the filter in the X direction
-               LTemp[i] = CGeom2DPoint(pLineIn->dGetXAt(i), dWindowTotY / nTmpWindow);
-               // LTemp.SetXAt(i, pLineIn->dGetXAt(i));
-               // LTemp.SetYAt(i, dWindowTotY / static_cast<double>(nTmpWindow));
-               break;
+         case EAST:
+         case WEST:
+            // Don't apply the filter in the X direction
+            LTemp[i] = CGeom2DPoint(pLineIn->dGetXAt(i), dWindowTotY / nTmpWindow);
+            // LTemp.SetXAt(i, pLineIn->dGetXAt(i));
+            // LTemp.SetYAt(i, dWindowTotY / static_cast<double>(nTmpWindow));
+            break;
          }
       }
 
@@ -157,7 +157,7 @@ CGeomLine CSimulation::LSmoothCoastSavitzkyGolay(CGeomLine* pLineIn, int const n
          int nTmpWindow = 0;
          double dWindowTotX = 0, dWindowTotY = 0;
 
-         for (int j = -nHalfWindow; j < m_nCoastSmoothWindow - nHalfWindow; j++)
+         for (int j = -nHalfWindow; j < m_nCoastSmoothingWindowSize - nHalfWindow; j++)
          {
             int const k = i + j;
 
@@ -171,28 +171,28 @@ CGeomLine CSimulation::LSmoothCoastSavitzkyGolay(CGeomLine* pLineIn, int const n
 
          switch (nEndEdge)
          {
-            case NORTH:
-            case SOUTH:
-               // Don't apply the filter in the Y direction
-               LTemp[i] = CGeom2DPoint(dWindowTotX / nTmpWindow, pLineIn->dGetYAt(i));
-               // LTemp.SetXAt(i, dWindowTotX / static_cast<double>(nTmpWindow));
-               // LTemp.SetYAt(i, pLineIn->dGetYAt(i));
-               break;
+         case NORTH:
+         case SOUTH:
+            // Don't apply the filter in the Y direction
+            LTemp[i] = CGeom2DPoint(dWindowTotX / nTmpWindow, pLineIn->dGetYAt(i));
+            // LTemp.SetXAt(i, dWindowTotX / static_cast<double>(nTmpWindow));
+            // LTemp.SetYAt(i, pLineIn->dGetYAt(i));
+            break;
 
-            case EAST:
-            case WEST:
-               // Don't apply the filter in the X direction
-               LTemp[i] = CGeom2DPoint(pLineIn->dGetXAt(i), dWindowTotY / nTmpWindow);
-               // LTemp.SetXAt(i, pLineIn->dGetXAt(i));
-               // LTemp.SetYAt(i, dWindowTotY / static_cast<double>(nTmpWindow));
-               break;
+         case EAST:
+         case WEST:
+            // Don't apply the filter in the X direction
+            LTemp[i] = CGeom2DPoint(pLineIn->dGetXAt(i), dWindowTotY / nTmpWindow);
+            // LTemp.SetXAt(i, pLineIn->dGetXAt(i));
+            // LTemp.SetYAt(i, dWindowTotY / static_cast<double>(nTmpWindow));
+            break;
          }
       }
 
       else
       {
          // For all other PtVTemp values, calc Savitzky-Golay weighted values for both X and Y
-         for (int j = 0; j < m_nCoastSmoothWindow; j++)
+         for (int j = 0; j < m_nCoastSmoothingWindowSize; j++)
          {
             int const k = i + m_VnSavGolIndexCoast[j + 1];
 
@@ -221,14 +221,14 @@ CGeomLine CSimulation::LSmoothCoastSavitzkyGolay(CGeomLine* pLineIn, int const n
 //===============================================================================================================================
 CGeomLine CSimulation::LSmoothCoastRunningMean(CGeomLine* pLineIn) const
 {
-   // Note that m_nCoastSmoothWindow must be odd (have already checked this)
-   int const nHalfWindow = m_nCoastSmoothWindow / 2;
+   // Note that m_nCoastSmoothingWindowSize must be odd (have already checked this)
+   int const nHalfWindow = m_nCoastSmoothingWindowSize / 2;
    double const dHalfWindow = nHalfWindow;
 
    // Make a copy of the unsmoothed CGeomLine
    int const nSize = pLineIn->nGetSize();
    CGeomLine LTemp;
-   LTemp = * pLineIn;
+   LTemp = *pLineIn;
 
    // Apply the running mean smoothing filter, with a variable window size at both ends of the line
    for (int i = 0; i < nSize; i++)
@@ -352,11 +352,11 @@ CGeomLine CSimulation::LSmoothCoastRunningMean(CGeomLine* pLineIn) const
 //===============================================================================================================================
 //! Does running-mean smoothing of the slope of a coastline-normal profile
 //===============================================================================================================================
-vector<double> CSimulation::dVSmoothProfileSlope(vector<double> *pdVSlope) const
+vector<double> CSimulation::dVSmoothProfileSlope(vector<double>* pdVSlope) const
 {
    // Make a copy of the unsmoothed profile slope vector
    int const nSize = static_cast<int>(pdVSlope->size());
-   vector<double> dVSmoothed = * pdVSlope;
+   vector<double> dVSmoothed = *pdVSlope;
 
    // Note that m_nProfileSmoothWindow must be odd (have already checked this)
    int const nHalfWindow = m_nProfileSmoothWindow / 2;
@@ -478,140 +478,140 @@ void CSimulation::CalcSavitzkyGolay(double dFilterCoeffsArray[], int const nWind
 
 namespace
 {
-   //===============================================================================================================================
-   //! Given an N x N matrix A, this routine replaces it by the LU decomposition of a rowwise permutation of itself. A and N are input. nIndexArray is an output vector which records the row permutation effected by the partial pivoting; D is output as -1 or 1, depending on whether the number of row interchanges was even or odd, respectively. This routine is used in combination with LULinearSolve to solve linear equations or to invert a matrix. Returns with nICode = 1 if matrix is singular. Derived from a C original by Jean-Pierre Moreau (jpmoreau@wanadoo.fr, http://jean-pierre.moreau.pagesperso-orange.fr/index.html), to whom we are much indebted
-   //===============================================================================================================================
-   void LUDecomp(Matrix A, int const N, int const np, int nIndexArray[], int* nDCode, int* nICode)
+//===============================================================================================================================
+//! Given an N x N matrix A, this routine replaces it by the LU decomposition of a rowwise permutation of itself. A and N are input. nIndexArray is an output vector which records the row permutation effected by the partial pivoting; D is output as -1 or 1, depending on whether the number of row interchanges was even or odd, respectively. This routine is used in combination with LULinearSolve to solve linear equations or to invert a matrix. Returns with nICode = 1 if matrix is singular. Derived from a C original by Jean-Pierre Moreau (jpmoreau@wanadoo.fr, http://jean-pierre.moreau.pagesperso-orange.fr/index.html), to whom we are much indebted
+//===============================================================================================================================
+void LUDecomp(Matrix A, int const N, int const np, int nIndexArray[], int* nDCode, int* nICode)
+{
+   if (N >= np)
    {
-      if (N >= np)
+      // cerr << ERR << "in LUDecomp" << endl;
+      return;
+   }
+
+   double const TINY = 1e-12;
+   double AMAX, DUM, SUM;
+   double* VV = new double[np];
+   int I, IMAX = 0, J, K;
+
+   *nDCode = 1;
+   *nICode = 0;
+
+   for (I = 1; I <= N; I++)
+   {
+      AMAX = 0.0;
+
+      for (J = 1; J <= N; J++)
+         if (tAbs(A[I][J]) > AMAX)
+            AMAX = tAbs(A[I][J]);
+
+      if (AMAX < TINY)
       {
-         // cerr << ERR << "in LUDecomp" << endl;
+         *nICode = 1;
+         delete[] VV;
          return;
       }
 
-      double const TINY = 1e-12;
-      double AMAX, DUM, SUM;
-      double* VV = new double[np];
-      int I, IMAX = 0, J, K;
-
-      * nDCode = 1;
-      * nICode = 0;
-
-      for (I = 1; I <= N; I++)
-      {
-         AMAX = 0.0;
-
-         for (J = 1; J <= N; J++)
-            if (tAbs(A[I][J]) > AMAX)
-               AMAX = tAbs(A[I][J]);
-
-         if (AMAX < TINY)
-         {
-            * nICode = 1;
-            delete[] VV;
-            return;
-         }
-
-         VV[I] = 1.0 / AMAX;
-      }
-
-      for (J = 1; J <= N; J++)
-      {
-         for (I = 1; I < J; I++)
-         {
-            SUM = A[I][J];
-
-            for (K = 1; K < I; K++)
-               SUM -= A[I][K] * A[K][J];
-
-            A[I][J] = SUM;
-         }
-
-         AMAX = 0.0;
-
-         for (I = J; I <= N; I++)
-         {
-            SUM = A[I][J];
-
-            for (K = 1; K < J; K++)
-               SUM -= A[I][K] * A[K][J];
-
-            A[I][J] = SUM;
-            DUM = VV[I] * tAbs(SUM);
-
-            if (DUM >= AMAX)
-            {
-               IMAX = I;
-               AMAX = DUM;
-            }
-         }
-
-         if (J != IMAX)
-         {
-            for (K = 1; K <= N; K++)
-            {
-               DUM = A[IMAX][K];
-               A[IMAX][K] = A[J][K];
-               A[J][K] = DUM;
-            }
-
-            * nDCode = -( * nDCode);
-            VV[IMAX] = VV[J];
-         }
-
-         nIndexArray[J] = IMAX;
-
-         if (tAbs(A[J][J]) < TINY)
-            A[J][J] = TINY;
-
-         if (J != N)
-         {
-            DUM = 1.0 / A[J][J];
-
-            for (I = J + 1; I <= N; I++)
-               A[I][J] *= DUM;
-         }
-      }
-
-      delete[] VV;
+      VV[I] = 1.0 / AMAX;
    }
+
+   for (J = 1; J <= N; J++)
+   {
+      for (I = 1; I < J; I++)
+      {
+         SUM = A[I][J];
+
+         for (K = 1; K < I; K++)
+            SUM -= A[I][K] * A[K][J];
+
+         A[I][J] = SUM;
+      }
+
+      AMAX = 0.0;
+
+      for (I = J; I <= N; I++)
+      {
+         SUM = A[I][J];
+
+         for (K = 1; K < J; K++)
+            SUM -= A[I][K] * A[K][J];
+
+         A[I][J] = SUM;
+         DUM = VV[I] * tAbs(SUM);
+
+         if (DUM >= AMAX)
+         {
+            IMAX = I;
+            AMAX = DUM;
+         }
+      }
+
+      if (J != IMAX)
+      {
+         for (K = 1; K <= N; K++)
+         {
+            DUM = A[IMAX][K];
+            A[IMAX][K] = A[J][K];
+            A[J][K] = DUM;
+         }
+
+         *nDCode = -(*nDCode);
+         VV[IMAX] = VV[J];
+      }
+
+      nIndexArray[J] = IMAX;
+
+      if (tAbs(A[J][J]) < TINY)
+         A[J][J] = TINY;
+
+      if (J != N)
+      {
+         DUM = 1.0 / A[J][J];
+
+         for (I = J + 1; I <= N; I++)
+            A[I][J] *= DUM;
+      }
+   }
+
+   delete[] VV;
 }
+} // namespace
 
 namespace
 {
-   //===============================================================================================================================
-   //! Solves the set of N linear equations A . X = B.  Here A is input, not as the matrix A but rather as its LU decomposition, determined by the routine LUDecomp. nIndexArray is input as the permutation vector returned by LUDecomp. B is input as the right-hand side vector B, and returns with the solution vector X. A, N and nIndexArray are not modified by this routine and can be used for successive calls with different right-hand sides. This routine is also efficient for plain matrix inversion. Derived from a C original by Jean-Pierre Moreau (jpmoreau@wanadoo.fr, http://jean-pierre.moreau.pagesperso-orange.fr/index.html), to whom we are much indebted
-   //===============================================================================================================================
-   void LULinearSolve(Matrix const A, int const N, int const nIndexArray[], double B[])
+//===============================================================================================================================
+//! Solves the set of N linear equations A . X = B.  Here A is input, not as the matrix A but rather as its LU decomposition, determined by the routine LUDecomp. nIndexArray is input as the permutation vector returned by LUDecomp. B is input as the right-hand side vector B, and returns with the solution vector X. A, N and nIndexArray are not modified by this routine and can be used for successive calls with different right-hand sides. This routine is also efficient for plain matrix inversion. Derived from a C original by Jean-Pierre Moreau (jpmoreau@wanadoo.fr, http://jean-pierre.moreau.pagesperso-orange.fr/index.html), to whom we are much indebted
+//===============================================================================================================================
+void LULinearSolve(Matrix const A, int const N, int const nIndexArray[], double B[])
+{
+   int II = 0;
+   double SUM;
+
+   for (int I = 1; I <= N; I++)
    {
-      int II = 0;
-      double SUM;
+      int const LL = nIndexArray[I];
+      SUM = B[LL];
+      B[LL] = B[I];
 
-      for (int I = 1; I <= N; I++)
-      {
-         int const LL = nIndexArray[I];
-         SUM = B[LL];
-         B[LL] = B[I];
+      if (II != 0)
+         for (int J = II; J < I; J++)
+            SUM -= A[I][J] * B[J];
 
-         if (II != 0)
-            for (int J = II; J < I; J++)
-               SUM -= A[I][J] * B[J];
+      else if (!bFPIsEqual(SUM, 0.0, TOLERANCE))
+         II = I;
 
-         else if (! bFPIsEqual(SUM, 0.0, TOLERANCE))
-            II = I;
+      B[I] = SUM;
+   }
 
-         B[I] = SUM;
-      }
+   for (int I = N; I > 0; I--)
+   {
+      SUM = B[I];
 
-      for (int I = N; I > 0; I--)
-      {
-         SUM = B[I];
+      if (I < N)
+         for (int J = I + 1; J <= N; J++)
+            SUM -= A[I][J] * B[J];
 
-         if (I < N)
-            for (int J = I + 1; J <= N; J++)
-               SUM -= A[I][J] * B[J];
-
-         B[I] = SUM / A[I][I];
-      }
+      B[I] = SUM / A[I][I];
    }
 }
+} // namespace

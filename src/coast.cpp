@@ -42,14 +42,14 @@ using std::vector;
 
 //! Constructor with initialization list
 CRWCoast::CRWCoast(CSimulation* pSimIn)
-   : m_nSeaHandedness(NULL_HANDED),
-     m_nStartEdge(INT_NODATA),
-     m_nEndEdge(INT_NODATA),
-     m_dCurvatureDetailedMean(0),
-     m_dCurvatureDetailedSTD(0),
-     m_dCurvatureSmoothMean(0),
-     m_dCurvatureSmoothSTD(0),
-     m_pSim(pSimIn)
+    : m_nSeaHandedness(NULL_HANDED),
+      m_nStartEdge(INT_NODATA),
+      m_nEndEdge(INT_NODATA),
+      m_dCurvatureDetailedMean(0),
+      m_dCurvatureDetailedSTD(0),
+      m_dCurvatureSmoothMean(0),
+      m_dCurvatureSmoothSTD(0),
+      m_pSim(pSimIn)
 {
 }
 
@@ -108,7 +108,7 @@ int CRWCoast::nGetEndEdge(void) const
 //! Given the vector line of a coast, this initializes coastline values (curvature, breaking wave height, wave angle, and flux orientation etc.)
 void CRWCoast::SetCoastlineExtCRS(CGeomLine const* pLCoast)
 {
-   m_LCoastlineExtCRS = * pLCoast;
+   m_LCoastlineExtCRS = *pLCoast;
 
    int const nLen = m_LCoastlineExtCRS.nGetSize();
 
@@ -202,7 +202,7 @@ int CRWCoast::nGetCoastlineSize(void) const
 //! Sets the coordinates (grid CRS) of the cells marked as coastline
 void CRWCoast::SetCoastlineGridCRS(CGeomILine const* pILCoastCells)
 {
-   m_ILCellsMarkedAsCoastline = * pILCoastCells;
+   m_ILCellsMarkedAsCoastline = *pILCoastCells;
 }
 
 // void CRWCoast::AppendCellMarkedAsCoastline(CGeom2DIPoint const* pPti)
@@ -267,45 +267,45 @@ int CRWCoast::nGetCoastPointGivenCell(CGeom2DIPoint* pPtiCell)
    {
       switch (++n)
       {
-         case 0:
-            nXAdj = nX;
-            nYAdj = nY - 1;
-            break;
+      case 0:
+         nXAdj = nX;
+         nYAdj = nY - 1;
+         break;
 
-         case 1:
-            nXAdj = nX + 1;
-            nYAdj = nY - 1;
-            break;
+      case 1:
+         nXAdj = nX + 1;
+         nYAdj = nY - 1;
+         break;
 
-         case 2:
-            nXAdj = nX + 1;
-            nYAdj = nY;
-            break;
+      case 2:
+         nXAdj = nX + 1;
+         nYAdj = nY;
+         break;
 
-         case 3:
-            nXAdj = nX + 1;
-            nYAdj = nY + 1;
-            break;
+      case 3:
+         nXAdj = nX + 1;
+         nYAdj = nY + 1;
+         break;
 
-         case 4:
-            nXAdj = nX;
-            nYAdj = nY + 1;
-            break;
+      case 4:
+         nXAdj = nX;
+         nYAdj = nY + 1;
+         break;
 
-         case 5:
-            nXAdj = nX - 1;
-            nYAdj = nY + 1;
-            break;
+      case 5:
+         nXAdj = nX - 1;
+         nYAdj = nY + 1;
+         break;
 
-         case 6:
-            nXAdj = nX - 1;
-            nYAdj = nY;
-            break;
+      case 6:
+         nXAdj = nX - 1;
+         nYAdj = nY;
+         break;
 
-         case 7:
-            nXAdj = nX - 1;
-            nYAdj = nY - 1;
-            break;
+      case 7:
+         nXAdj = nX - 1;
+         nYAdj = nY - 1;
+         break;
       }
 
       CGeom2DIPoint const PtiTmp(nXAdj, nYAdj);
@@ -338,7 +338,7 @@ void CRWCoast::SetDetailedCurvature(int const nCoastPoint, double const dCurvatu
 }
 
 //! Returns a pointer to a vector of detailed curvature for all coast points
-vector<double> *CRWCoast::pVGetDetailedCurvature(void)
+vector<double>* CRWCoast::pVGetDetailedCurvature(void)
 {
    return &m_VdCurvatureDetailed;
 }
@@ -358,7 +358,7 @@ void CRWCoast::SetSmoothCurvature(int const nCoastPoint, double const dCurvature
 }
 
 //! Returns a pointer to a vector of smoothed curvature for all coast points
-vector<double> *CRWCoast::pVGetSmoothCurvature(void)
+vector<double>* CRWCoast::pVGetSmoothCurvature(void)
 {
    return &m_VdCurvatureSmooth;
 }
@@ -584,16 +584,16 @@ double CRWCoast::dGetLevel(int const nCoastPoint, int const level) const
 {
    switch (level)
    {
-      case 0: // WAVESETUPSURGE:
-         return m_VdWaveSetupSurge[nCoastPoint];
-         break;
+   case 0: // WAVESETUPSURGE:
+      return m_VdWaveSetupSurge[nCoastPoint];
+      break;
 
-      case 1: // WAVESETUPSURGE + RUNUP:
-         return m_VdWaveSetupSurge[nCoastPoint] + m_VdRunUp[nCoastPoint];
-         break;
+   case 1: // WAVESETUPSURGE + RUNUP:
+      return m_VdWaveSetupSurge[nCoastPoint] + m_VdRunUp[nCoastPoint];
+      break;
 
-      default:
-         return 0;
+   default:
+      return 0;
    }
 }
 

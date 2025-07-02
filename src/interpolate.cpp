@@ -41,9 +41,9 @@ double CSimulation::dGetInterpolatedValue(vector<double> const* pVdXdata, vector
 {
    int const size = static_cast<int>(pVdXdata->size());
 
-   int i = 0;                                   // Find left end of interval for interpolation
+   int i = 0; // Find left end of interval for interpolation
 
-   if (dX >= pVdXdata->at(size - 2))            // Special case: beyond right end
+   if (dX >= pVdXdata->at(size - 2)) // Special case: beyond right end
    {
       i = size - 2;
    }
@@ -57,9 +57,9 @@ double CSimulation::dGetInterpolatedValue(vector<double> const* pVdXdata, vector
    double const dXL = pVdXdata->at(i);
    double dYL = pVdYdata->at(i);
    double const dXR = pVdXdata->at(i + 1);
-   double dYR = pVdYdata->at(i + 1);            // Points on either side (unless beyond ends)
+   double dYR = pVdYdata->at(i + 1); // Points on either side (unless beyond ends)
 
-   if (! bExtrapolate)                          // If beyond ends of array and not extrapolating
+   if (!bExtrapolate) // If beyond ends of array and not extrapolating
    {
       if (dX < dXL)
          dYR = dYL;
@@ -68,22 +68,22 @@ double CSimulation::dGetInterpolatedValue(vector<double> const* pVdXdata, vector
          dYL = dYR;
    }
 
-   double const ddYdX = (dYR - dYL) / (dXR - dXL);    // Gradient
+   double const ddYdX = (dYR - dYL) / (dXR - dXL); // Gradient
 
-   return (dYL + ddYdX * (dX - dXL));           // Linear interpolation
+   return (dYL + ddYdX * (dX - dXL)); // Linear interpolation
 }
 
 //===============================================================================================================================
 //! From https://cplusplus.com/forum/general/216928/
 //! Returns interpolated value at x from parallel arrays (VdXdata, VdYdata). Assumes that VdXdata has at least two elements, is sorted and is strictly monotonically increasing. The boolean argument extrapolate determines behaviour beyond ends of array (if needed). For this version, one lot of data is integer and the other is double
 //===============================================================================================================================
-double CSimulation::dGetInterpolatedValue(vector<int> const* pVnXdata, vector<double> const* pVdYdata, int nX, bool bExtrapolate )
+double CSimulation::dGetInterpolatedValue(vector<int> const* pVnXdata, vector<double> const* pVdYdata, int nX, bool bExtrapolate)
 {
    unsigned int const nSize = static_cast<unsigned int>(pVnXdata->size());
 
-   int i = 0;                                   // Find left end of interval for interpolation
+   int i = 0; // Find left end of interval for interpolation
 
-   if (nX >= pVnXdata->at(nSize - 2))           // Special case: beyond right end
+   if (nX >= pVnXdata->at(nSize - 2)) // Special case: beyond right end
    {
       i = nSize - 2;
    }
@@ -98,9 +98,9 @@ double CSimulation::dGetInterpolatedValue(vector<int> const* pVnXdata, vector<do
    int const nXR = pVnXdata->at(i + 1);
 
    double dYL = pVdYdata->at(i);
-   double dYR = pVdYdata->at(i + 1);                // Points on either side (unless beyond ends)
+   double dYR = pVdYdata->at(i + 1); // Points on either side (unless beyond ends)
 
-   if (! bExtrapolate)                          // If beyond ends of array and not extrapolating
+   if (!bExtrapolate) // If beyond ends of array and not extrapolating
    {
       if (nX < nXL)
          dYR = dYL;
@@ -109,9 +109,9 @@ double CSimulation::dGetInterpolatedValue(vector<int> const* pVnXdata, vector<do
          dYL = dYR;
    }
 
-   double const ddYdX = (dYR - dYL) / static_cast<double>(nXR - nXL);      // Gradient
+   double const ddYdX = (dYR - dYL) / static_cast<double>(nXR - nXL); // Gradient
 
-   return dYL + ddYdX * static_cast<double>(nX - nXL);               // Linear interpolation
+   return dYL + ddYdX * static_cast<double>(nX - nXL); // Linear interpolation
 }
 
 //===============================================================================================================================

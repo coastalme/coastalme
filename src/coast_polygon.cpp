@@ -39,57 +39,56 @@ using std::find;
 
 //! Constructor with 10 parameters and initialization list
 CGeomCoastPolygon::CGeomCoastPolygon(int const nGlobalID, int const nCoastID, int const nNode, int const nProfileUpCoast, int const nProfileDownCoast, vector<CGeom2DPoint> const* pVIn, int const nLastPointUpCoast, const int nLastPointDownCoast, CGeom2DIPoint const* PtiNode, CGeom2DIPoint const* PtiAntinode, bool const bStartCoast, bool const bEndCoast)
-   :
-// m_bIsPointedSeaward(true),
-   m_bUnconsSedimentMovementDownCoastThisIter(false),
-   m_bCoastEndPolygon(bEndCoast),
-   m_bCoastStartPolygon(bStartCoast),
-   m_nGlobalID(nGlobalID),
-   m_nCoastID(nCoastID),
-   m_nCoastNode(nNode),
-   m_nProfileUpCoast(nProfileUpCoast),
-   m_nProfileDownCoast(nProfileDownCoast),
-   m_nProfileUpCoastNumPointsUsed(nLastPointUpCoast),
-   m_nProfileDownCoastNumPointsUsed(nLastPointDownCoast),
-   m_nNumCells(0),
-   m_dAvgUnconsD50(0),
-   m_dSeawaterVolume(0),
-   m_dPotentialBeachErosionAllUncons(0),
-   m_dBeachErosionUnconsFine(0),
-   m_dBeachErosionUnconsSand(0),
-   m_dBeachErosionUnconsCoarse(0),
-   m_dBeachDepositionUnconsSand(0),
-   m_dBeachDepositionUnconsCoarse(0),
-   m_dSuspensionUnconsFine(0),
-   m_dToDoBeachDepositionUnconsSand(0),
-   m_dToDoBeachDepositionUnconsCoarse(0),
-   m_dBeachSandErodedDeanProfile(0),
-   m_dBeachCoarseErodedDeanProfile(0),
-   m_dCliffCollapseErosionFine(0),
-   m_dCliffCollapseErosionSand(0),
-   m_dCliffCollapseErosionCoarse(0),
-   m_dCliffCollapseTalusFineToSuspension(0),
-   m_dCliffCollapseTalusSand(0),
-   m_dCliffCollapseTalusCoarse(0),
-   m_dCliffCollapseSandErodedDeanProfile(0),
-   m_dCliffCollapseCoarseErodedDeanProfile(0),
-   m_dPlatformErosionToSuspensionFine(0),
-   m_dPlatformErosionUnconsSand(0),
-   m_dPlatformErosionUnconsCoarse(0),
-   m_dPreExistingUnconsFine(0),
-   m_dPreExistingUnconsSand(0),
-   m_dPreExistingUnconsCoarse(0),
-   m_dPreExistingConsFine(0),
-   m_dPreExistingConsSand(0),
-   m_dPreExistingConsCoarse(0),
-   m_dSedimentInputFine(0),
-   m_dSedimentInputSand(0),
-   m_dSedimentInputCoarse(0),
-   m_dLength(0),
-   m_PtiNode( * PtiNode),
-   m_PtiAntinode( * PtiAntinode)
+    : // m_bIsPointedSeaward(true),
+      m_bUnconsSedimentMovementDownCoastThisIter(false),
+      m_bCoastEndPolygon(bEndCoast),
+      m_bCoastStartPolygon(bStartCoast),
+      m_nGlobalID(nGlobalID),
+      m_nCoastID(nCoastID),
+      m_nCoastNode(nNode),
+      m_nProfileUpCoast(nProfileUpCoast),
+      m_nProfileDownCoast(nProfileDownCoast),
+      m_nProfileUpCoastNumPointsUsed(nLastPointUpCoast),
+      m_nProfileDownCoastNumPointsUsed(nLastPointDownCoast),
+      m_nNumCells(0),
+      m_dAvgUnconsD50(0),
+      m_dSeawaterVolume(0),
+      m_dPotentialBeachErosionAllUncons(0),
+      m_dBeachErosionUnconsFine(0),
+      m_dBeachErosionUnconsSand(0),
+      m_dBeachErosionUnconsCoarse(0),
+      m_dBeachDepositionUnconsSand(0),
+      m_dBeachDepositionUnconsCoarse(0),
+      m_dSuspensionUnconsFine(0),
+      m_dToDoBeachDepositionUnconsSand(0),
+      m_dToDoBeachDepositionUnconsCoarse(0),
+      m_dBeachSandErodedDeanProfile(0),
+      m_dBeachCoarseErodedDeanProfile(0),
+      m_dCliffCollapseErosionFine(0),
+      m_dCliffCollapseErosionSand(0),
+      m_dCliffCollapseErosionCoarse(0),
+      m_dCliffCollapseTalusFineToSuspension(0),
+      m_dCliffCollapseTalusSand(0),
+      m_dCliffCollapseTalusCoarse(0),
+      m_dCliffCollapseSandErodedDeanProfile(0),
+      m_dCliffCollapseCoarseErodedDeanProfile(0),
+      m_dPlatformErosionToSuspensionFine(0),
+      m_dPlatformErosionUnconsSand(0),
+      m_dPlatformErosionUnconsCoarse(0),
+      m_dPreExistingUnconsFine(0),
+      m_dPreExistingUnconsSand(0),
+      m_dPreExistingUnconsCoarse(0),
+      m_dPreExistingConsFine(0),
+      m_dPreExistingConsSand(0),
+      m_dPreExistingConsCoarse(0),
+      m_dSedimentInputFine(0),
+      m_dSedimentInputSand(0),
+      m_dSedimentInputCoarse(0),
+      m_dLength(0),
+      m_PtiNode(*PtiNode),
+      m_PtiAntinode(*PtiAntinode)
 {
-   m_VPoints = * pVIn;
+   m_VPoints = *pVIn;
 }
 
 //! Destructor
@@ -170,7 +169,6 @@ int CGeomCoastPolygon::nGetNodeCoastPoint(void) const
 CGeom2DIPoint* CGeomCoastPolygon::pPtiGetNode(void)
 {
    return &m_PtiNode;
-
 }
 
 //! Get the anti-node (raster grid CRS) which is at other (seaward) end of the polygon from the node
@@ -427,13 +425,13 @@ double CGeomCoastPolygon::dGetBeachDepositionAndSuspensionAllUncons(void) const
 //! Sets all up-coast adjacent polygons
 void CGeomCoastPolygon::SetUpCoastAdjacentPolygons(vector<int> const* pnVPolygons)
 {
-   m_VnUpCoastAdjacentPolygon = * pnVPolygons;
+   m_VnUpCoastAdjacentPolygon = *pnVPolygons;
 }
 
 //! Gets a single up-coast adjacent polygon
 int CGeomCoastPolygon::nGetUpCoastAdjacentPolygon(int const nIndex) const
 {
-// assert(nIndex < m_VnUpCoastAdjacentPolygon.size());
+   // assert(nIndex < m_VnUpCoastAdjacentPolygon.size());
    return m_VnUpCoastAdjacentPolygon[nIndex];
 }
 
@@ -446,13 +444,13 @@ int CGeomCoastPolygon::nGetNumUpCoastAdjacentPolygons(void) const
 //! Sets all down-coast adjacent polygons
 void CGeomCoastPolygon::SetDownCoastAdjacentPolygons(vector<int> const* pnVPolygons)
 {
-   m_VnDownCoastAdjacentPolygon = * pnVPolygons;
+   m_VnDownCoastAdjacentPolygon = *pnVPolygons;
 }
 
 //! Gets a single down-coast adjacent polygon
 int CGeomCoastPolygon::nGetDownCoastAdjacentPolygon(int const nIndex) const
 {
-// assert(nIndex < m_VnDownCoastAdjacentPolygon.size());
+   // assert(nIndex < m_VnDownCoastAdjacentPolygon.size());
    return m_VnDownCoastAdjacentPolygon[nIndex];
 }
 
@@ -493,7 +491,7 @@ bool CGeomCoastPolygon::bUpCoastIsAlreadyPresent(int const nPoly)
 //! Sets the boundary shares for all up-coast adjacent polygons
 void CGeomCoastPolygon::SetUpCoastAdjacentPolygonBoundaryShares(vector<double> const* pdVShares)
 {
-   m_VdUpCoastAdjacentPolygonBoundaryShare = * pdVShares;
+   m_VdUpCoastAdjacentPolygonBoundaryShare = *pdVShares;
 }
 
 //! Gets the boundary shares for all up-coast adjacent polygons
@@ -506,7 +504,7 @@ double CGeomCoastPolygon::dGetUpCoastAdjacentPolygonBoundaryShare(int const nInd
 //! Sets the boundary shares for all down-coast adjacent polygons
 void CGeomCoastPolygon::SetDownCoastAdjacentPolygonBoundaryShares(vector<double> const* pdVShares)
 {
-   m_VdDownCoastAdjacentPolygonBoundaryShare = * pdVShares;
+   m_VdDownCoastAdjacentPolygonBoundaryShare = *pdVShares;
 }
 
 //! Gets the boundary shares for all down-coast adjacent polygons
@@ -540,9 +538,9 @@ void CGeomCoastPolygon::AddCircularity(int const nPoly)
 }
 
 //! Get all circularities for this polygon
-vector<int> CGeomCoastPolygon::VnGetCircularities(void) const
+vector<int> const* CGeomCoastPolygon::VnGetCircularities(void) const
 {
-   return m_VnCircularityWith;
+   return &m_VnCircularityWith;
 }
 
 //! Add to the this-iteration total of unconsolidated fine sediment from cliff collapse which goes to suspension on this polygon
@@ -788,7 +786,7 @@ double CGeomCoastPolygon::dGetSedimentInputUnconsCoarse(void) const
 //! Appends the point cordinates (grid CRS) for a polygon vertex
 void CGeomCoastPolygon::AppendVertex(CGeom2DIPoint const* pPti)
 {
-   m_VPtiVertices.push_back( * pPti);
+   m_VPtiVertices.push_back(*pPti);
 }
 
 //! Returns the number of vertices for this polygon

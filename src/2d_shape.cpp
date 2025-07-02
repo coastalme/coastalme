@@ -34,7 +34,7 @@ CA2DShape::~CA2DShape(void)
 }
 
 //! Operator to return one point of this 2D shape
-CGeom2DPoint& CA2DShape::operator[] (int const n)
+CGeom2DPoint& CA2DShape::operator[](int const n)
 {
    // TODO 055 Maybe add a safety check?
    return m_VPoints[n];
@@ -127,7 +127,7 @@ CGeom2DPoint* CA2DShape::pPtBack(void)
 // }
 
 //! Returns the address of the vector which represents this 2D shape
-vector<CGeom2DPoint> *CA2DShape::pPtVGetPoints(void)
+vector<CGeom2DPoint>* CA2DShape::pPtVGetPoints(void)
 {
    return &m_VPoints;
 }

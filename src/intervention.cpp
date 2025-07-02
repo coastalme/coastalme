@@ -34,7 +34,7 @@ using std::ios;
 #include "intervention.h"
 
 //! Constructor with three parameters
-CRWIntervention::CRWIntervention(CRWCoast * pCoastIn, int const nCoast, int const nPointOnCoast)
+CRWIntervention::CRWIntervention(CRWCoast* pCoastIn, int const nCoast, int const nPointOnCoast)
 {
    pCoast = pCoastIn;
 

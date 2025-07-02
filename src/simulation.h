@@ -153,23 +153,19 @@ class CSimulation
    //! Save total potential shore platform erosion raster GIS files?
    bool m_bTotalPotentialPlatformErosionSave;
 
-   //! Save total actual (supply-limited) shore platform erosion raster GIS
-   //! files?
+   //! Save total actual (supply-limited) shore platform erosion raster GIS files?
    bool m_bTotalActualPlatformErosionSave;
 
    //! Save potential beach (unconsolidated sediment) erosion raster GIS files?
    bool m_bPotentialBeachErosionSave;
 
-   //! Save actual (supply-limited) beach (unconsolidated sediment) erosion
-   //! raster GIS files?
+   //! Save actual (supply-limited) beach (unconsolidated sediment) erosion raster GIS files?
    bool m_bActualBeachErosionSave;
 
-   //! Save total potential beach (unconsolidated sediment) erosion raster GIS
-   //! files?
+   //! Save total potential beach (unconsolidated sediment) erosion raster GIS files?
    bool m_bTotalPotentialBeachErosionSave;
 
-   //! Save total actual (supply-limited) beach (unconsolidated sediment) erosion
-   //! raster GIS files?
+   //! Save total actual (supply-limited) beach (unconsolidated sediment) erosion raster GIS files?
    bool m_bTotalActualBeachErosionSave;
 
    //! Save beach (unconsolidated sediment) deposition raster GIS files?
@@ -328,12 +324,10 @@ class CSimulation
    //! Save the suspended sediment time series file?
    bool m_bSuspSedTSSave;
 
-   //! Save the flood setup surge time series file? TODO 007 Does this work
-   //! correctly?
+   //! Save the flood setup surge time series file? TODO 007 Does this work correctly?
    bool m_bFloodSetupSurgeTSSave;
 
-   //! Save the flood setup surge runup time series file? TODO 007 Does this work
-   //! correctly?
+   //! Save the flood setup surge runup time series file? TODO 007 Does this work correctly?
    bool m_bFloodSetupSurgeRunupTSSave;
 
    //! Save GIS files this iteration?
@@ -375,12 +369,10 @@ class CSimulation
    //! Is the selected GDAL output file format capable of writing files?
    bool m_bGDALCanCreate;
 
-   //! Is the selected GDAL output file format capable of writing floating-point
-   //! values to files?
+   //! Is the selected GDAL output file format capable of writing floating-point values to files?
    bool m_bGDALCanWriteFloat;
 
-   //! Is the selected GDAL output file format capable of writing 32-bit integers
-   //! to files?
+   //! Is the selected GDAL output file format capable of writing 32-bit integers to files?
    bool m_bGDALCanWriteInt32;
 
    //! Scale raster output?
@@ -389,8 +381,7 @@ class CSimulation
    //! Write a GIS World file?
    bool m_bWorldFile;
 
-   //! Do we have just a point source for (i.e. only a single measurement of)
-   //! deep water wave values
+   //! Do we have just a point source for (i.e. only a single measurement of) deep water wave values
    bool m_bSingleDeepWaterWaveValues;
 
    //! Do we have wave station data?
@@ -450,12 +441,10 @@ class CSimulation
    //! Are we saving the flood still water level setup surge runup line? TODO 007
    bool m_bFloodSWLSetupSurgeRunupLine;
 
-   //! Are the GIS save digits (which are part of each GIS file name) sequential,
-   //! or are they the iteration number?
+   //! Are the GIS save digits (which are part of each GIS file name) sequential, or are they the iteration number?
    bool m_bGISSaveDigitsSequential;
 
-   //! Does this simulation consider consolidated sediment, or is it an
-   //! unconsolidated sediment only simulation?>
+   //! Does this simulation consider consolidated sediment, or is it an unconsolidated sediment only simulation?>
    bool m_bHaveConsolidatedSediment;
 
    //! Options for GDAL when handling raster files
@@ -477,10 +466,9 @@ class CSimulation
    int m_nCoastSmooth;
 
    //! The size of the window used for coast smoothing. Must be an odd number
-   int m_nCoastSmoothWindow;
+   int m_nCoastSmoothingWindowSize;
 
-   //! The order of the coastline profile smoothing polynomial if Savitzky-Golay
-   //! smoothing is used (usually 2 or 4, max is 6)
+   //! The order of the coastline profile smoothing polynomial if Savitzky-Golay smoothing is used (usually 2 or 4, max is 6)
    int m_nSavGolCoastPoly;
 
    //! Which method to use for cliff edge smoothing
@@ -489,29 +477,25 @@ class CSimulation
    //! The size of the window used for cliff edge smoothing. Must be an odd number
    int m_nCliffEdgeSmoothWindow;
 
-   //! The order of the cliff edge smoothing polynomial if Savitzky-Golay
-   //! smoothing is used (usually 2 or 4, max is 6)
+   //! The order of the cliff edge smoothing polynomial if Savitzky-Golay smoothing is used (usually 2 or 4, max is 6)
    int m_nSavGolCliffEdgePoly;
 
    //! Slope limit for cliff toe detection
    double m_dCliffSlopeLimit;
 
-   //! The size of the window used for running-mean coast-normal profile
-   //! smoothing (must be odd)
+   //! The size of the window used for running-mean coast-normal profile smoothing (must be odd)
    int m_nProfileSmoothWindow;
 
    //! Average spacing between coastline normals, measured in cells
    int m_nCoastNormalSpacing;
 
-   //! Average spacing between coastline normals on interventions, measured in
-   //! cells
+   //! Average spacing between coastline normals on interventions, measured in cells
    int m_nCoastNormalInterventionSpacing;
 
    //! Coast curvature interval is a length, measured in coastline points
    int m_nCoastCurvatureInterval;
 
-   //! The maximum number of digits in GIS filenames. These can be sequential, or
-   //! the iteration number
+   //! The maximum number of digits in GIS filenames. These can be sequential, or the iteration number
    int m_nGISMaxSaveDigits;
 
    //! The save number for GIS files (can be sequential, or the iteration number)
@@ -523,12 +507,10 @@ class CSimulation
    //! Used in calculations of GIS save intervals
    int m_nThisSave;
 
-   //! Maximum valid coast length when searching for coasts, actually is
-   //! COAST_LENGTH_MAX * tMax(m_nXGridSize, m_nYGridSize)
+   //! Maximum valid coast length when searching for coasts
    int m_nCoastMax;
 
-   //! Minimum valid coast legth when searching for coass, actualli is
-   //! tMin(m_nXGridSize, m_nYGridSize)
+   //! Minimum valid coast length when searching for coasts
    int m_nCoastMin;
 
    // NOT USED
@@ -540,12 +522,10 @@ class CSimulation
    //! Number of global (all coasts) polygons
    int m_nNumPolygonGlobal;
 
-   //! How sediment which moves off an edge of the grid is handled. Possible
-   //! values are GRID_EDGE_CLOSED, GRID_EDGE_OPEN, GRID_EDGE_RECIRCULATE
+   //! How sediment which moves off an edge of the grid is handled. Possible values are GRID_EDGE_CLOSED, GRID_EDGE_OPEN, GRID_EDGE_RECIRCULATE
    int m_nUnconsSedimentHandlingAtGridEdges;
 
-   //! Which beach erosion-deposition equation is used. Possible values are
-   //! UNCONS_SEDIMENT_EQUATION_CERC and UNCONS_SEDIMENT_EQUATION_KAMPHUIS
+   //! Which beach erosion-deposition equation is used. Possible values are UNCONS_SEDIMENT_EQUATION_CERC and UNCONS_SEDIMENT_EQUATION_KAMPHUIS
    int m_nBeachErosionDepositionEquation;
 
    //! The value for integer missing values, as read from GIS input files
@@ -566,8 +546,7 @@ class CSimulation
    //! The maximum y value of the bounding box
    int m_nYMaxBoundingBox;
 
-   //! The wave propagation model used. Possible values are WAVE_MODEL_CSHORE and
-   //! WAVE_MODEL_COVE
+   //! The wave propagation model used. Possible values are WAVE_MODEL_CSHORE and WAVE_MODEL_COVE
    int m_nWavePropagationModel;
 
    //! Start time of the simulation (seconds)
@@ -588,12 +567,10 @@ class CSimulation
    //! Start date of the simulation (year)
    int m_nSimStartYear;
 
-   //! The duration of data for deep water waves, expressed as a number of time
-   //! steps
+   //! The duration of data for deep water waves, expressed as a number of timesteps
    int m_nDeepWaterWaveDataNumTimeSteps;
 
-   //! The level of detail in the log file output. Can be LOG_FILE_LOW_DETAIL,
-   //! LOG_FILE_MIDDLE_DETAIL, LOG_FILE_HIGH_DETAIL, or LOG_FILE_ALL
+   //! The level of detail in the log file output. Can be LOG_FILE_LOW_DETAIL, LOG_FILE_MIDDLE_DETAIL, LOG_FILE_HIGH_DETAIL, or LOG_FILE_ALL
    int m_nLogFileDetail;
 
    //! The run-up equation used TODO 007
@@ -602,22 +579,19 @@ class CSimulation
    //! TODO 007 Used in WAVESETUP + SURGE + RUNUP
    int m_nLevel;
 
+   //! WHAT IS THOS FOR?
    int m_nCoastCurvatureMovingWindowSize;
 
-   //! The data type used by GDAL for integer operations, can be GDT_Byte,
-   //! GDT_Int16, GDT_UInt16, GDT_Int32, or GDT_UInt32
+   //! The data type used by GDAL for integer operations, can be GDT_Byte, GDT_Int16, GDT_UInt16, GDT_Int32, or GDT_UInt32
    GDALDataType m_GDALWriteIntDataType;
 
-   //! Thw data type used by GDAL for floating point operations, can be GDT_Byte,
-   //! GDT_Int16, GDT_UInt16, GDT_Int32, GDT_UInt32, or GDT_Float32
+   //! Thw data type used by GDAL for floating point operations, can be GDT_Byte, GDT_Int16, GDT_UInt16, GDT_Int32, GDT_UInt32, or GDT_Float32
    GDALDataType m_GDALWriteFloatDataType;
 
-   //! The maximum integer value which GDAL can write, can be UINT8_MAX,
-   //! INT16_MAX, UINT16_MAX, INT32_MAX, or UINT32_MAX,
+   //! The maximum integer value which GDAL can write, can be UINT8_MAX, INT16_MAX, UINT16_MAX, INT32_MAX, or UINT32_MAX,
    long m_lGDALMaxCanWrite;
 
-   //! The minimum integer value which GDAL can write, can be zero, INT16_MIN,
-   //! INT32_MIN
+   //! The minimum integer value which GDAL can write, can be zero, INT16_MIN, INT32_MIN
    long m_lGDALMinCanWrite;
 
    //! The number of the current iteration (time step)
@@ -638,32 +612,25 @@ class CSimulation
    //! The number of grid cells which are marked as coast, for this iteration
    unsigned long m_ulThisIterNumCoastCells;
 
-   //! The number of grid cells on which potential platform erosion occurs, for
-   //! this iteration
+   //! The number of grid cells on which potential platform erosion occurs, for this iteration
    unsigned long m_ulThisIterNumPotentialPlatformErosionCells;
 
-   //! The number of grid cells on which actual platform erosion occurs, for this
-   //! iteration
+   //! The number of grid cells on which actual platform erosion occurs, for this iteration
    unsigned long m_ulThisIterNumActualPlatformErosionCells;
 
-   //! The number of grid cells on which potential beach (unconsolidated
-   //! sediment) erosion occurs, for this iteration
+   //! The number of grid cells on which potential beach (unconsolidated sediment) erosion occurs, for this iteration
    unsigned long m_ulThisIterNumPotentialBeachErosionCells;
 
-   //! The number of grid cells on which actual beach (unconsolidated sediment)
-   //! erosion occurs, for this iteration
+   //! The number of grid cells on which actual beach (unconsolidated sediment) erosion occurs, for this iteration
    unsigned long m_ulThisIterNumActualBeachErosionCells;
 
-   //! The number of grid cells on which beach (unconsolidated sediment)
-   //! deposition occurs, for this iteration
+   //! The number of grid cells on which beach (unconsolidated sediment) deposition occurs, for this iteration
    unsigned long m_ulThisIterNumBeachDepositionCells;
 
-   //! The number of cells on which on-profile average potential shore platform
-   //! erosion occurs
+   //! The number of cells on which on-profile average potential shore platform erosion occurs
    unsigned long m_ulTotPotentialPlatformErosionOnProfiles;
 
-   //! The number of cells on which between-profile average potential shore
-   //! platform erosion occurs
+   //! The number of cells on which between-profile average potential shore platform erosion occurs
    unsigned long m_ulTotPotentialPlatformErosionBetweenProfiles;
 
    //! The number of basement cells marked with as missing value
@@ -672,20 +639,16 @@ class CSimulation
    //! Multiplier for duration units, to convert to hours
    double m_dDurationUnitsMult;
 
-   //! The north-west x coordinate, in the external coordinate reference system
-   //! (CRS)
+   //! The north-west x coordinate, in the external coordinate reference system (CRS)
    double m_dNorthWestXExtCRS;
 
-   //! The north-west y coordinate, in the external coordinate reference system
-   //! (CRS)
+   //! The north-west y coordinate, in the external coordinate reference system (CRS)
    double m_dNorthWestYExtCRS;
 
-   //! The south-east x coordinate, in the external coordinate reference system
-   //! (CRS)
+   //! The south-east x coordinate, in the external coordinate reference system (CRS)
    double m_dSouthEastXExtCRS;
 
-   //! The south-east y coordinate, in the external coordinate reference system
-   //! (CRS)
+   //! The south-east y coordinate, in the external coordinate reference system (CRS)
    double m_dSouthEastYExtCRS;
 
    //! The area of the grid (in external CRS units)
@@ -715,15 +678,13 @@ class CSimulation
    //! Time simulated so far, in hours
    double m_dSimElapsed;
 
-   //! The time of the next save, in hours from the start of the simulation, if
-   //! we are saving regularly
+   //! The time of the next save, in hours from the start of the simulation, if we are saving regularly
    double m_dRegularSaveTime;
 
    //! The interval between regular saves, in hours
    double m_dRegularSaveInterval;
 
-   //! Save time, in hours from the start of the simukation, if we are not saving
-   //! regularly
+   //! Save time, in hours from the start of the simukation, if we are not saving regularly
    double m_dUSaveTime[SAVEMAX];
 
    //! Last value returned by clock()
@@ -732,8 +693,7 @@ class CSimulation
    //! Total elapsed CPU time
    double m_dCPUClock;
 
-   //! GDAL geotransformation info (see
-   //! http://www.gdal.org/classGDALDataset.html)
+   //! GDAL geotransformation info (see http://www.gdal.org/classGDALDataset.html)
    double m_dGeoTransform[6];
 
    //! Density of sea water in kg/m**3
@@ -742,23 +702,19 @@ class CSimulation
    //! The start-of-simulation still water level (m)
    double m_dInitialMeanSWL;
 
-   //! The end-of-simulation still water (m), is same as m_dInitialMeanSWL unless
-   //! SWL changes
+   //! The end-of-simulation still water (m), is same as m_dInitialMeanSWL unless SWL changes
    double m_dFinalMeanSWL;
 
    //! If long-term SWL changes, the increment per timestep
    double m_dDeltaSWLPerTimestep;
 
-   //! The still water level for this timestep (this includes tidal changes and
-   //! any long-term SWL change)
+   //! The still water level for this timestep (this includes tidal changes and any long-term SWL change)
    double m_dThisIterSWL;
 
-   //! The mean still water level for this timestep (does not include tidal
-   //! changes, but includes any long-term SWL change)
+   //! The mean still water level for this timestep (does not include tidal changes, but includes any long-term SWL change)
    double m_dThisIterMeanSWL;
 
-   //! If long-term SWL changes, the total change so far since the start of
-   //! simulation
+   //! If long-term SWL changes, the total change so far since the start of simulation
    double m_dAccumulatedSeaLevelChange;
 
    //! Minimum still water level
@@ -854,13 +810,10 @@ class CSimulation
    //! Gravitational acceleration (m**2/sec)
    double m_dG;
 
-   //! For beach erosion/deposition, conversion from immersed weight to bulk
-   //! volumetric (sand and voids) transport rate (Leo Van Rijn) TODO 007 Need
-   //! date of reference
+   //! For beach erosion/deposition, conversion from immersed weight to bulk volumetric (sand and voids) transport rate (Leo Van Rijn) TODO 007 Need date of reference
    double m_dInmersedToBulkVolumetric;
 
-   //! Depth of closure (in m) TODO 007 can be calculated using Hallermeier, R.J.
-   //! (1978) or Birkemeier (1985) TODO 045 This needs to be a user decision
+   //! Depth of closure (in m) TODO 007 can be calculated using Hallermeier, R.J. (1978) or Birkemeier (1985) TODO 045 This needs to be a user decision
    double m_dDepthOfClosure;
 
    //! Average spacing of the coastline-normal profiles, in m
@@ -875,88 +828,67 @@ class CSimulation
    //! Total sea depth (m) for this iteration
    double m_dThisIterTotSeaDepth;
 
-   //! Total potential platform erosion (all size classes of consolidated
-   //! sediment) for this iteration (depth in m)
+   //! Total potential platform erosion (all size classes of consolidated sediment) for this iteration (depth in m)
    double m_dThisIterPotentialPlatformErosion;
 
-   //! Total actual platform erosion (fine consolidated sediment) for this
-   //! iteration (depth in m)
+   //! Total actual platform erosion (fine consolidated sediment) for this iteration (depth in m)
    double m_dThisIterActualPlatformErosionFineCons;
 
-   //! Total actual platform erosion (sand consolidated sediment) for this
-   //! iteration (depth in m)
+   //! Total actual platform erosion (sand consolidated sediment) for this iteration (depth in m)
    double m_dThisIterActualPlatformErosionSandCons;
 
-   //! Total actual platform erosion (coarse consolidated sediment) for this
-   //! iteration (depth in m)
+   //! Total actual platform erosion (coarse consolidated sediment) for this iteration (depth in m)
    double m_dThisIterActualPlatformErosionCoarseCons;
 
-   //! Total potential beach erosion (all size classes of unconsolidated
-   //! sediment) for this iteration (depth in m)
+   //! Total potential beach erosion (all size classes of unconsolidated sediment) for this iteration (depth in m)
    double m_dThisIterPotentialBeachErosion;
 
-   //! Total actual beach erosion (fine unconsolidated sediment) for this
-   //! iteration (depth in m)
+   //! Total actual beach erosion (fine unconsolidated sediment) for this iteration (depth in m)
    double m_dThisIterBeachErosionFine;
 
-   //! Total actual beach erosion (sand unconsolidated sediment) for this
-   //! iteration (depth in m)
+   //! Total actual beach erosion (sand unconsolidated sediment) for this iteration (depth in m)
    double m_dThisIterBeachErosionSand;
 
-   //! Total actual  beach erosion (coarse unconsolidated sediment) for this
-   //! iteration (depth in m)
+   //! Total actual  beach erosion (coarse unconsolidated sediment) for this iteration (depth in m)
    double m_dThisIterBeachErosionCoarse;
 
-   //! Total beach deposition (sand unconsolidated sediment) for this iteration
-   //! (depth in m)
+   //! Total beach deposition (sand unconsolidated sediment) for this iteration (depth in m)
    double m_dThisIterBeachDepositionSand;
 
-   //! Total beach deposition (coarse unconsolidated sediment) for this iteration
-   //! (depth in m)
+   //! Total beach deposition (coarse unconsolidated sediment) for this iteration (depth in m)
    double m_dThisIterBeachDepositionCoarse;
 
-   //! Total fine unconsolidated sediment in suspension for this iteration (depth
-   //! in m)
+   //! Total fine unconsolidated sediment in suspension for this iteration (depth in m)
    double m_dThisIterFineSedimentToSuspension;
 
-   //! Total unconsolidated sediment from beach erosion (all size classes) lost
-   //! from the grid this iteration (depth in m)
+   //! Total unconsolidated sediment from beach erosion (all size classes) lost from the grid this iteration (depth in m)
    double m_dThisIterPotentialSedLostBeachErosion;
 
-   //! Total fine unconsolidated sediment lost from the grid this iteration
-   //! (depth in m)
+   //! Total fine unconsolidated sediment lost from the grid this iteration (depth in m)
    double m_dThisIterLeftGridUnconsFine;
 
-   //! Total sand unconsolidated sediment lost from the grid this iteration
-   //! (depth in m)
+   //! Total sand unconsolidated sediment lost from the grid this iteration (depth in m)
    double m_dThisIterLeftGridUnconsSand;
 
-   //! Total coarse unconsolidated sediment lost from the grid this iteration
-   //! (depth in m)
+   //! Total coarse unconsolidated sediment lost from the grid this iteration (depth in m)
    double m_dThisIterLeftGridUnconsCoarse;
 
-   //! Total fine sediment eroded during Dean profile deposition of talus
-   //! following cliff collapse (depth in m)
+   //! Total fine sediment eroded during Dean profile deposition of talus following cliff collapse (depth in m)
    double m_dThisIterCliffCollapseFineErodedDuringDeposition;
 
-   //! Total sand sediment eroded during Dean profile deposition of talus
-   //! following cliff collapse (depth in m)
+   //! Total sand sediment eroded during Dean profile deposition of talus following cliff collapse (depth in m)
    double m_dThisIterCliffCollapseSandErodedDuringDeposition;
 
-   //! Total coarse sediment eroded during Dean profile deposition of talus
-   //! following cliff collapse (depth in m)
+   //! Total coarse sediment eroded during Dean profile deposition of talus following cliff collapse (depth in m)
    double m_dThisIterCliffCollapseCoarseErodedDuringDeposition;
 
-   //! Error term: if we are unable to deposit enough unconslidated sand on
-   //! polygon(s), this is held over to be deposited the next iteration
+   //! Error term: if we are unable to deposit enough unconslidated sand on polygon(s), this is held over to be deposited the next iteration
    double m_dDepositionSandDiff;
 
-   //! Error term: if we are unable to deposit enough unconslidated coarse on
-   //! polygon(s), this is held over to be deposited the next iteration
+   //! Error term: if we are unable to deposit enough unconslidated coarse on polygon(s), this is held over to be deposited the next iteration
    double m_dDepositionCoarseDiff;
 
-   //! Maximum value of deoth over DB, is used in erosion potential look-up
-   //! function
+   //! Maximum value of deoth over DB, is used in erosion potential look-up function
    double m_dDepthOverDBMax;
 
    //! Total potential platform erosion on profiles
@@ -974,15 +906,13 @@ class CSimulation
    //! Resistance of cliff to notch erosion
    double m_dCliffErosionResistance;
 
-   //! Notch overhang (i.e. length of horizontal incision) to initiate collapse
-   //! (m)
+   //! Notch overhang (i.e. length of horizontal incision) to initiate collapse (m)
    double m_dNotchDepthAtCollapse;
 
    //! Notch base below SWL (m)
    double m_dNotchBaseBelowSWL;
 
-   //! Scale parameter A for cliff deposition (m^(1/3)), may be zero for
-   //! auto-calculation
+   //! Scale parameter A for cliff deposition (m^(1/3)), may be zero for auto-calculation
    double m_dCliffDepositionA;
 
    //! Planview width of cliff collapse talus (m)
@@ -991,40 +921,31 @@ class CSimulation
    //! Planview length of cliff deposition talus (m)
    double m_dCliffTalusMinDepositionLength;
 
-   //! Minimum height of the landward end of cliff collapse talus, as a fraction
-   //! of cliff elevation
+   //! Minimum height of the landward end of cliff collapse talus, as a fraction of cliff elevation
    double m_dMinCliffTalusHeightFrac;
 
-   //! This-iteration total of fine unconsolidated sediment produced by cliff
-   //! collapse (m^3)
+   //! This-iteration total of fine unconsolidated sediment produced by cliff collapse (m^3)
    double m_dThisIterCliffCollapseErosionFineUncons;
 
-   //! This-iteration total of sand unconsolidated sediment produced by cliff
-   //! collapse (m^3)
+   //! This-iteration total of sand unconsolidated sediment produced by cliff collapse (m^3)
    double m_dThisIterCliffCollapseErosionSandUncons;
 
-   //! This-iteration total of coarse unconsolidated sediment produced by cliff
-   //! collapse (m^3)
+   //! This-iteration total of coarse unconsolidated sediment produced by cliff collapse (m^3)
    double m_dThisIterCliffCollapseErosionCoarseUncons;
 
-   //! This-iteration total of fine consolidated sediment produced by cliff
-   //! collapse (m^3)
+   //! This-iteration total of fine consolidated sediment produced by cliff collapse (m^3)
    double m_dThisIterCliffCollapseErosionFineCons;
 
-   //! This-iteration total of sand consolidated sediment produced by cliff
-   //! collapse (m^3)
+   //! This-iteration total of sand consolidated sediment produced by cliff collapse (m^3)
    double m_dThisIterCliffCollapseErosionSandCons;
 
-   //! This-iteration total of coarse consolidated sediment produced by cliff
-   //! collapse (m^3)
+   //! This-iteration total of coarse consolidated sediment produced by cliff collapse (m^3)
    double m_dThisIterCliffCollapseErosionCoarseCons;
 
-   //! This-iteration total of sand unconsolidated sediment deposited due to
-   //! cliff collapse (m^3)
+   //! This-iteration total of sand unconsolidated sediment deposited due to cliff collapse (m^3)
    double m_dThisIterUnconsSandCliffDeposition;
 
-   //! This-iteration total of coarse unconsolidated sediment deposited due to
-   //! cliff collapse (m^3)
+   //! This-iteration total of coarse unconsolidated sediment deposited due to cliff collapse (m^3)
    double m_dThisIterUnconsCoarseCliffDeposition;
 
    //! Random factor for spacing of along-coast normals
@@ -1057,74 +978,55 @@ class CSimulation
    //! Depth (m) of coarse unconsolidated sediment added, at this iteration
    double m_dThisiterUnconsCoarseInput;
 
-   //! Depth (m) of fine suspended sediment at the start of the simulation, all
-   //! cells (both inside and outside polygons)
+   //! Depth (m) of fine suspended sediment at the start of the simulation, all cells (both inside and outside polygons)
    double m_dStartIterSuspFineAllCells;
 
-   //! Depth (m) of fine suspended sediment at the start of the simulation (only
-   //! cells in polygons)
+   //! Depth (m) of fine suspended sediment at the start of the simulation (only cells in polygons)
    double m_dStartIterSuspFineInPolygons;
 
-   //! Depth (m) of fine unconsolidated sediment at the start of the simulation,
-   //! all cells (both inside and outside polygons)
+   //! Depth (m) of fine unconsolidated sediment at the start of the simulation, all cells (both inside and outside polygons)
    double m_dStartIterUnconsFineAllCells;
 
-   //! Depth (m) of sand unconsolidated sediment at the start of the simulation,
-   //! all cells (both inside and outside polygons)
+   //! Depth (m) of sand unconsolidated sediment at the start of the simulation, all cells (both inside and outside polygons)
    double m_dStartIterUnconsSandAllCells;
 
-   //! Depth (m) of coarse unconsolidated sediment at the start of the
-   //! simulation, all cells (both inside and outside polygons)
+   //! Depth (m) of coarse unconsolidated sediment at the start of the simulation, all cells (both inside and outside polygons)
    double m_dStartIterUnconsCoarseAllCells;
 
-   //! Depth (m) of fine consolidated sediment at the start of the simulation,
-   //! all cells (both inside and outside polygons)
+   //! Depth (m) of fine consolidated sediment at the start of the simulation, all cells (both inside and outside polygons)
    double m_dStartIterConsFineAllCells;
 
-   //! Depth (m) of sand consolidated sediment at the start of the simulation,
-   //! all cells (both inside and outside polygons)
+   //! Depth (m) of sand consolidated sediment at the start of the simulation, all cells (both inside and outside polygons)
    double m_dStartIterConsSandAllCells;
 
-   //! Depth (m) of coarse consolidated sediment at the start of the simulation,
-   //! all cells (both inside and outside polygons)
+   //! Depth (m) of coarse consolidated sediment at the start of the simulation, all cells (both inside and outside polygons)
    double m_dStartIterConsCoarseAllCells;
 
-   //! Total fine unconsolidated sediment in all polygons, before
-   //! polygon-to-polygon movement (only cells in polygons)
+   //! Total fine unconsolidated sediment in all polygons, before polygon-to-polygon movement (only cells in polygons)
    double m_dTotalFineUnconsInPolygons;
 
-   //! Total sand unconsolidated sediment in all polygons, before
-   //! polygon-to-polygon movement (only cells in polygons)
+   //! Total sand unconsolidated sediment in all polygons, before polygon-to-polygon movement (only cells in polygons)
    double m_dTotalSandUnconsInPolygons;
 
-   //! Total coarse unconsolidated sediment in all polygons, before
-   //! polygon-to-polygon movement (only cells in polygons)
+   //! Total coarse unconsolidated sediment in all polygons, before polygon-to-polygon movement (only cells in polygons)
    double m_dTotalCoarseUnconsInPolygons;
 
-   //! Total fine consolidated sediment in all polygons, before
-   //! polygon-to-polygon movement (only cells in polygons)
+   //! Total fine consolidated sediment in all polygons, before polygon-to-polygon movement (only cells in polygons)
    double m_dTotalFineConsInPolygons;
 
-   //! Total sand consolidated sediment in all polygons, before
-   //! polygon-to-polygon movement (only cells in polygons)
+   //! Total sand consolidated sediment in all polygons, before polygon-to-polygon movement (only cells in polygons)
    double m_dTotalSandConsInPolygons;
 
-   //! Total coarse consolidated sediment in all polygons, before
-   //! polygon-to-polygon movement (only cells in polygons)
+   //! Total coarse consolidated sediment in all polygons, before polygon-to-polygon movement (only cells in polygons)
    double m_dTotalCoarseConsInPolygons;
 
-   //! Depth of unconsolidated sand sediment that could not be deposited during
-   //! the last iteration, carried forward to this iteration
+   //! Depth of unconsolidated sand sediment that could not be deposited during the last iteration, carried forward to this iteration
    double m_dUnconsSandNotDepositedLastIter;
 
-   //! Depth of unconsolidated coarse sediment that could not be deposited during
-   //! the last iteration, carried forward to this iteration
+   //! Depth of unconsolidated coarse sediment that could not be deposited during the last iteration, carried forward to this iteration
    double m_dUnconsCoarseNotDepositedLastIter;
 
-   // These grand totals are all long doubles. The aim is to minimize rounding
-   // errors when many very small numbers are added to a single much larger
-   // number, see e.g. http://www.ddj.com/cpp/184403224
-
+   // These grand totals are all long doubles. The aim is to minimize rounding errors when many very small numbers are added to a single much larger number, see e.g. http://www.ddj.com/cpp/184403224
    //! All-simulation total of potential platform erosion (m), all size classes
    long double m_ldGTotPotentialPlatformErosion;
 
@@ -1137,20 +1039,16 @@ class CSimulation
    //! All-simulation total of coarse sediment actual platform erosion (m)
    long double m_ldGTotCoarseActualPlatformErosion;
 
-   //! All-simulation total of potential sediment lost via beach (unconsolidated)
-   //! sediment movement (m), all size classes
+   //! All-simulation total of potential sediment lost via beach (unconsolidated) sediment movement (m), all size classes
    long double m_ldGTotPotentialSedLostBeachErosion;
 
-   //! All-simulation total of fine sediment lost via beach (unconsolidated)
-   //! sediment movement (m)
+   //! All-simulation total of fine sediment lost via beach (unconsolidated) sediment movement (m)
    long double m_ldGTotActualFineLostBeachErosion;
 
-   //! All-simulation total of sand sediment lost via beach (unconsolidated)
-   //! sediment movement (m)
+   //! All-simulation total of sand sediment lost via beach (unconsolidated) sediment movement (m)
    long double m_ldGTotActualSandLostBeachErosion;
 
-   //! All-simulation total of coarse sediment lost via beach (unconsolidated)
-   //! sediment movement (m)
+   //! All-simulation total of coarse sediment lost via beach (unconsolidated) sediment movement (m)
    long double m_ldGTotActualCoarseLostBeachErosion;
 
    //! All-simulation total of sand sediment lost via cliff collapse (m)
@@ -1168,62 +1066,49 @@ class CSimulation
    //! All-simulation total of coarse sediment from cliff collapse (m)
    long double m_ldGTotCliffCollapseCoarse;
 
-   //! All-simulation total of fine sediment moved to suspension, due to cliff
-   //! collapse (m)
+   //! All-simulation total of fine sediment moved to suspension, due to cliff collapse (m)
    long double m_ldGTotCliffTalusFineToSuspension;
 
-   //! All-simulation total of sand sediment deposited as talus following cliff
-   //! collapse (m)
+   //! All-simulation total of sand sediment deposited as talus following cliff collapse (m)
    long double m_ldGTotCliffTalusSandDeposition;
 
-   //! All-simulation total of coarse sediment deposited as talus following cliff
-   //! collapse (m)
+   //! All-simulation total of coarse sediment deposited as talus following cliff collapse (m)
    long double m_ldGTotCliffTalusCoarseDeposition;
 
-   //! All-simulation total of fine sediment eroded during talus deposition
-   //! following cliff collapse (m)
+   //! All-simulation total of fine sediment eroded during talus deposition following cliff collapse (m)
    long double m_ldGTotCliffCollapseFineErodedDuringDeposition;
 
-   //! All-simulation total of sand sediment eroded during talus deposition
-   //! following cliff collapse (m)
+   //! All-simulation total of sand sediment eroded during talus deposition following cliff collapse (m)
    long double m_ldGTotCliffCollapseSandErodedDuringDeposition;
 
-   //! All-simulation total of coarse sediment eroded during talus deposition
-   //! following cliff collapse (m)
+   //! All-simulation total of coarse sediment eroded during talus deposition following cliff collapse (m)
    long double m_ldGTotCliffCollapseCoarseErodedDuringDeposition;
 
    //! All-simulation total of potential beach erosion (m), all size classes
    long double m_ldGTotPotentialBeachErosion;
 
-   //! All-simulation total of fine sediment eroded during beach (unconsolidated
-   //! sediment) movement (m)
+   //! All-simulation total of fine sediment eroded during beach (unconsolidated sediment) movement (m)
    long double m_ldGTotActualFineBeachErosion;
 
-   //! All-simulation total of sand sediment eroded during beach (unconsolidated
-   //! sediment) movement (m)
+   //! All-simulation total of sand sediment eroded during beach (unconsolidated sediment) movement (m)
    long double m_ldGTotActualSandBeachErosion;
 
-   //! All-simulation total of coarse sediment eroded during beach
-   //! (unconsolidated sediment) movement (m)
+   //! All-simulation total of coarse sediment eroded during beach (unconsolidated sediment) movement (m)
    long double m_ldGTotActualCoarseBeachErosion;
 
-   //! All-simulation total of sand sediment deposited during beach
-   //! (unconsolidated sediment) movement (m)
+   //! All-simulation total of sand sediment deposited during beach (unconsolidated sediment) movement (m)
    long double m_ldGTotSandBeachDeposition;
 
-   //! All-simulation total of coarse sediment deposited during beach
-   //! (unconsolidated sediment) movement (m)
+   //! All-simulation total of coarse sediment deposited during beach (unconsolidated sediment) movement (m)
    long double m_ldGTotCoarseBeachDeposition;
 
    //! All-simulation total of suspended sediment (m)
    long double m_ldGTotSuspendedSediment;
 
-   //! All-simulation total of shortfall in unconsolidated sand sediment
-   //! deposition (m, not currently used)
+   //! All-simulation total of shortfall in unconsolidated sand sediment deposition (m, not currently used)
    long double m_ldGTotSandDepositionDiff;
 
-   //! All-simulation total of shortfall in unconsolidated coarse sediment
-   //! deposition (m, not currently used)
+   //! All-simulation total of shortfall in unconsolidated coarse sediment deposition (m, not currently used)
    long double m_ldGTotCoarseDepositionDiff;
 
    //! All-simulation total of fine sediment input (m)
@@ -1470,23 +1355,19 @@ class CSimulation
    //! Flood setup surge runup time series file output stream
    ofstream FloodSetupSurgeRunupTSStream;
 
-   //! One element per layer: has the consolidated sediment of this layer been
-   //! changed during this iteration?
+   //! One element per layer: has the consolidated sediment of this layer been changed during this iteration?
    vector<bool> m_bConsChangedThisIter;
 
-   //! One element per layer: has the consolidated sediment of this layer been
-   //! changed during this iteration?
+   //! One element per layer: has the consolidated sediment of this layer been changed during this iteration?
    vector<bool> m_bUnconsChangedThisIter;
 
    //! The numbers of the profiles which are to be saved
    vector<int> m_VnProfileToSave;
 
-   //! ID for deep water wave station, this corresponds with the ID in the wave
-   //! time series file
+   //! ID for deep water wave station, this corresponds with the ID in the wave time series file
    vector<int> m_VnDeepWaterWaveStationID;
 
-   //! ID for sediment input location, this corresponds with the ID in the
-   //! sediment input time series file
+   //! ID for sediment input location, this corresponds with the ID in the sediment input time series file
    vector<int> m_VnSedimentInputLocationID;
 
    //! ID for flood location
@@ -1516,8 +1397,7 @@ class CSimulation
    //! Savitzky-Golay filter coefficients for the profile vectors
    vector<double> m_VdSavGolFCGeomProfile;
 
-   //! Tide data: one record per timestep, is the change (m) from still water
-   //! level for that timestep
+   //! Tide data: one record per timestep, is the change (m) from still water level for that timestep
    vector<double> m_VdTideData;
 
    //! X coordinate (grid CRS) for deep water wave station
@@ -1629,8 +1509,7 @@ class CSimulation
    //! GDAL driver code for the initial consolidated sand sediment GIS data
    vector<string> m_VstrGDALICSDriverCode;
 
-   //! GDAL driver description for the initial consolidated sand sediment GIS
-   //! data
+   //! GDAL driver description for the initial consolidated sand sediment GIS data
    vector<string> m_VstrGDALICSDriverDesc;
 
    //! GDAL dprojection for the initial consolidated sand sediment GIS data
@@ -1642,8 +1521,7 @@ class CSimulation
    //! GDAL driver code for the initial consolidated coarse sediment GIS data
    vector<string> m_VstrGDALICCDriverCode;
 
-   //! GDAL driver decription for the initial consolidated coarse sediment GIS
-   //! data
+   //! GDAL driver decription for the initial consolidated coarse sediment GIS data
    vector<string> m_VstrGDALICCDriverDesc;
 
    //! GDAL projection for the initial consolidated coarse sediment GIS data
@@ -1667,8 +1545,7 @@ class CSimulation
    //! TODO 007 Info needed
    vector<CRWCoast> m_VFloodWaveSetupSurgeRunup;
 
-   //! Pointers to coast polygon objects, in down-coast sequence TODO 044 Will
-   //! need to use global polygon ID here to support multiple coastlines
+   //! Pointers to coast polygon objects, in down-coast sequence TODO 044 Will need to use global polygon ID here to support multiple coastlines
    vector<CGeomCoastPolygon *> m_pVCoastPolygon;
 
    //! Edge cells
@@ -1691,7 +1568,7 @@ class CSimulation
 
  private:
    // Input and output routines
-   int nHandleCommandLineParams(int, char const *[]);
+   int nHandleCommandLineParams(int, char const*[]);
    bool bReadIniFile(void);
    bool bReadRunDataFile(void);
    bool bOpenLogFile(void);
@@ -1706,10 +1583,10 @@ class CSimulation
    int nReadWaveStationInputFile(int const);
    int nReadSedimentInputEventFile(void);
    int nReadTideDataFile(void);
-   int nSaveProfile(int const, CGeomProfile const*, int const, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<CGeom2DIPoint> *const, vector<double> const*) const;
-   bool bWriteProfileData(int const, CGeomProfile const*, int const, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<CGeom2DIPoint> *const, vector<double> const*) const;
-   int nSaveParProfile(int const, CGeomProfile const*, int const, int const, int const, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<CGeom2DIPoint>* const, vector<double> const*) const;
-   bool bWriteParProfileData(int const, int const, int const, int const, int const, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<CGeom2DIPoint>* const, vector<double> const*) const;
+   int nSaveProfile(int const, CGeomProfile const*, int const, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<CGeom2DIPoint>*const, vector<double> const*) const;
+   bool bWriteProfileData(int const, CGeomProfile const*, int const, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<CGeom2DIPoint>*const, vector<double> const*) const;
+   int nSaveParProfile(int const, CGeomProfile const*, int const, int const, int const, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<CGeom2DIPoint>*const, vector<double> const*) const;
+   bool bWriteParProfileData(int const, int const, int const, int const, int const, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<CGeom2DIPoint>*const, vector<double> const*) const;
    void WriteLookUpData(void);
 
    // GIS input and output stuff
@@ -1717,45 +1594,38 @@ class CSimulation
    int nReadRasterBasementDEM(void);
    int nReadRasterGISFile(int const, int const);
    int nReadVectorGISFile(int const);
-   bool bWriteRasterGISFile(int const, string const *, int const = 0,
-                            double const = 0);
-   bool bWriteVectorGISFile(int const, string const *);
-   void GetRasterOutputMinMax(int const, double &, double &, int const,
-                              double const);
+   bool bWriteRasterGISFile(int const, string const*, int const = 0, double const = 0);
+   bool bWriteVectorGISFile(int const, string const*);
+   void GetRasterOutputMinMax(int const, double&, double&, int const, double const);
    void SetRasterFileCreationDefaults(void);
-   int nInterpolateWavesToPolygonCells(vector<double> const *,
-                                       vector<double> const *,
-                                       vector<double> const *,
-                                       vector<double> const *);
+   int nInterpolateWavesToPolygonCells(vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*);
 
    // Initialization
-   bool bCreateErosionPotentialLookUp(vector<double> *, vector<double> *,
-                                      vector<double> *);
+   bool bCreateErosionPotentialLookUp(vector<double>*, vector<double>*, vector<double>*);
 
    // Top-level simulation routines
    static int nUpdateIntervention(void);
    int nCheckForSedimentInputEvent(void);
    int nCalcExternalForcing(void);
    int nInitGridAndCalcStillWaterLevel(void);
-   int nLocateSeaAndCoasts(int &);
+   int nLocateSeaAndCoasts(int&);
    int nLocateFloodAndCoasts(void);
    int nAssignLandformsForAllCoasts(void);
    int nAssignLandformsForAllCells(void);
    int nDoAllPropagateWaves(void);
    int nDoAllShorePlatFormErosion(void);
    int nDoAllWaveEnergyToCoastLandforms(void);
-   int nDoCliffCollapse(int const, CRWCliff *, double &, double &, double &,
-                        double &, double &);
-   int nDoCliffCollapseDeposition(int const, CRWCliff const *, double const,
-                                  double const, double const, double const);
+   int nDoCliffCollapse(int const, CRWCliff *, double&, double&, double&, double&, double&);
+   int nDoCliffCollapseDeposition(int const, CRWCliff const*, double const, double const, double const, double const);
    int nUpdateGrid(void);
+
    // Cliff finder
    int nLocateCliffToe(void);
    void nCalcSlopeAtAllCells(void);
    void nLocateCliffCell(void);
    void nTraceSeawardCliffEdge(void);
    void nValidateCliffToeEdges(void);
-   CGeomLine nValidateCliffToeDirection(CGeomLine &CliffEdge, bool bReverse);
+   CGeomLine nValidateCliffToeDirection(CGeomLine& CliffEdge, bool bReverse);
    void nRemoveSmallCliffIslands(int const);
 
    // Lower-level simulation routines
@@ -1763,133 +1633,71 @@ class CSimulation
    int FindAllInundatedCells(void);
    void CellByCellFillSea(int const, int const);
    void FloodFillLand(int const, int const);
-   int nTraceCoastLine(unsigned int const, int const, int const, vector<bool> *,
-                       vector<CGeom2DIPoint> const *);
-   int nTraceAllCoasts(int &);
-   int nTraceFloodCoastLine(unsigned int const, int const, int const,
-                            vector<bool> *, vector<CGeom2DIPoint> const *);
+   int nTraceCoastLine(unsigned int const, int const, int const, vector<bool>*, vector<CGeom2DIPoint> const*);
+   int nTraceAllCoasts(int&);
+   int nTraceFloodCoastLine(unsigned int const, int const, int const, vector<bool>*, vector<CGeom2DIPoint> const*);
    int nTraceAllFloodCoasts(void);
    void DoCoastCurvature(int const, int const);
    int nCheckAllProfiles(void);
    int nCreateAllProfiles(void);
-   void LocateAndCreateProfiles(int const, int &, int &, vector<bool> *,
-                                vector<pair<int, double>> const *);
-   int nCreateProfile(int const, int const, int const, int const, int &,
-                      bool const, CGeom2DIPoint const *);
-   int nLocateAndCreateGridEdgeProfile(bool const, int const, int &, int &);
-   void MarkProfilesOnGrid(int const, int &);
+   void LocateAndCreateProfiles(int const, int&, int&, vector<bool>*, vector<pair<int, double>> const*);
+   int nCreateProfile(int const, int const, int const, int const, int&, bool const, CGeom2DIPoint const*);
+   int nLocateAndCreateGridEdgeProfile(bool const, int const, int&, int&);
+   void MarkProfilesOnGrid(int const, int&);
    void CheckForIntersectingProfiles(void);
-   static bool bCheckForIntersection(CGeomProfile *const, CGeomProfile *const,
-                                     int &, int &, double &, double &, double &,
-                                     double &);
-   void MergeProfilesAtFinalLineSegments(int const, CGeomProfile *,
-                                         CGeomProfile *, int const, int const,
-                                         double const, double const,
-                                         double const, double const);
-   void TruncateOneProfileRetainOtherProfile(int const, CGeomProfile *,
-                                             CGeomProfile *, double, double, int,
-                                             int, bool const);
-   int nInsertPointIntoProfilesIfNeededThenUpdate(int const, CGeomProfile *,
-                                                  double const, double const,
-                                                  int const, CGeomProfile *,
-                                                  int const, bool const);
-   void TruncateProfileAndAppendNew(int const, CGeomProfile *, int const,
-                                    vector<CGeom2DPoint> const *,
-                                    vector<vector<pair<int, int>>> const *);
-   void CreateRasterizedProfile(int const, CGeomProfile *,
-                                vector<CGeom2DIPoint> *, vector<bool> *, bool &,
-                                bool &, bool &, bool &, bool &,
-                                bool &); // TODO 044
-   static void CalcDeanProfile(vector<double> *, double const, double const,
-                               double const, bool const, int const,
-                               double const);
-   static double dSubtractProfiles(vector<double> const *,
-                                   vector<double> const *, vector<bool> const *);
-   void RasterizeCliffCollapseProfile(vector<CGeom2DPoint> const *,
-                                      vector<CGeom2DIPoint> *) const;
-   int nCalcPotentialPlatformErosionOnProfile(int const, CGeomProfile *);
-   int nCalcPotentialPlatformErosionBetweenProfiles(int const, CGeomProfile *,
-                                                    int const);
-   void ConstructParallelProfile(int const, int const, int const, int const,
-                                 int const, vector<CGeom2DIPoint> *const,
-                                 vector<CGeom2DIPoint> *,
-                                 vector<CGeom2DPoint> *);
+   static bool bCheckForIntersection(CGeomProfile* const, CGeomProfile* const, int&, int&, double&, double&, double&, double&);
+   void MergeProfilesAtFinalLineSegments(int const, CGeomProfile*, CGeomProfile*, int const, int const, double const, double const, double const, double const);
+   void TruncateOneProfileRetainOtherProfile(int const, CGeomProfile*, CGeomProfile*, double, double, int, int, bool const);
+   int nInsertPointIntoProfilesIfNeededThenUpdate(int const, CGeomProfile*, double const, double const, int const, CGeomProfile*, int const, bool const);
+   void TruncateProfileAndAppendNew(int const, CGeomProfile*, int const, vector<CGeom2DPoint> const*, vector<vector<pair<int, int>>> const*);
+   void CreateRasterizedProfile(int const, CGeomProfile*, vector<CGeom2DIPoint>*, vector<bool>*, bool&, bool&, bool&, bool&, bool&, bool&); // TODO 044
+   static void CalcDeanProfile(vector<double>*, double const, double const, double const, bool const, int const, double const);
+   static double dSubtractProfiles(vector<double> const*, vector<double> const*, vector<bool> const*);
+   void RasterizeCliffCollapseProfile(vector<CGeom2DPoint> const*, vector<CGeom2DIPoint>*) const;
+   int nCalcPotentialPlatformErosionOnProfile(int const, CGeomProfile*);
+   int nCalcPotentialPlatformErosionBetweenProfiles(int const, CGeomProfile*, int const);
+   void ConstructParallelProfile(int const, int const, int const, int const, int const, vector<CGeom2DIPoint>* const, vector<CGeom2DIPoint>*, vector<CGeom2DPoint> *);
    double dCalcBeachProtectionFactor(int const, int const, double const);
    void FillInBeachProtectionHoles(void);
    void FillPotentialPlatformErosionHoles(void);
    void DoActualPlatformErosionOnCell(int const, int const);
    double dLookUpErosionPotential(double const);
    static CGeom2DPoint PtChooseEndPoint(int const, CGeom2DPoint const*, CGeom2DPoint const*, double const, double const, double const, double const);
-   int nGetCoastNormalEndPoint(int const, int const, int const, CGeom2DPoint const*, double const, CGeom2DPoint*, CGeom2DIPoint*, bool const);
+   int nGetCoastNormalEndPoint(int const, int const, int const, CGeom2DPoint const*, double const, CGeom2DPoint *, CGeom2DIPoint *, bool const);
    int nLandformToGrid(int const, int const);
-   int nCalcWavePropertiesOnProfile(int const, int const, CGeomProfile *,
-                                    vector<double> *, vector<double> *,
-                                    vector<double> *, vector<double> *,
-                                    vector<bool> *);
-   int nGetThisProfileElevationsForCShore(int const, CGeomProfile *, int const,
-                                          vector<double> *, vector<double> *,
-                                          vector<double> *);
-   int nCreateCShoreInfile(int const, int const, int const, int const, int const,
-                           int const, int const, int const, int const, int const,
-                           int const, int const, int const, double const,
-                           double const, double const, double const,
-                           double const, double const, double const,
-                           double const, vector<double> const *,
-                           vector<double> const *, vector<double> const *);
-   int nReadCShoreOutput(int const, string const *, int const, int const,
-                         vector<double> const *, vector<double> *);
-   /*   static */ void
-   InterpolateCShoreOutput(vector<double> const *, int const, int const,
-                           vector<double> *, vector<double> *, vector<double> *,
-                           vector<double> *, vector<double> *, vector<double> *,
-                           vector<double> *, vector<double> *, vector<double> *);
-   static double dCalcWaveAngleToCoastNormal(double const, double const,
-                                             int const);
+   int nCalcWavePropertiesOnProfile(int const, int const, CGeomProfile*, vector<double>*, vector<double>*, vector<double>*, vector<double>*, vector<bool>*);
+   int nGetThisProfileElevationsForCShore(int const, CGeomProfile*, int const, vector<double>*, vector<double>*, vector<double>*);
+   int nCreateCShoreInfile(int const, int const, int const, int const, int const, int const, int const, int const, int const, int const, int const, int const, int const, double const, double const, double const, double const, double const, double const, double const, double const, vector<double> const*, vector<double> const*, vector<double> const*);
+   int nReadCShoreOutput(int const, string const*, int const, int const, vector<double> const*, vector<double>*);
+   /*   static */ void InterpolateCShoreOutput(vector<double> const*, int const, int const, vector<double>*, vector<double>*, vector<double>*, vector<double>*, vector<double>*, vector<double>*, vector<double>*, vector<double>*, vector<double>*);
+   static double dCalcWaveAngleToCoastNormal(double const, double const, int const);
    void CalcCoastTangents(int const);
    void InterpolateWavePropertiesBetweenProfiles(int const, int const);
    void InterpolateWaveHeightToCoastPoints(int const);
    // void InterpolateWavePropertiesToCells(int const, int const, int const);
-   void ModifyBreakingWavePropertiesWithinShadowZoneToCoastline(int const,
-                                                                int const);
-   static double dCalcCurvature(int const, CGeom2DPoint const *,
-                                CGeom2DPoint const *, CGeom2DPoint const *);
+   void ModifyBreakingWavePropertiesWithinShadowZoneToCoastline(int const, int const);
+   static double dCalcCurvature(int const, CGeom2DPoint const*, CGeom2DPoint const*, CGeom2DPoint const*);
    void CalcD50AndFillWaveCalcHoles(void);
    int nDoAllShadowZones(void);
-   static bool bOnOrOffShoreAndUpOrDownCoast(double const, double const,
-                                             int const, bool &);
-   static CGeom2DIPoint PtiFollowWaveAngle(CGeom2DIPoint const *, double const,
-                                           double &);
+   static bool bOnOrOffShoreAndUpOrDownCoast(double const, double const, int const, bool&);
+   static CGeom2DIPoint PtiFollowWaveAngle(CGeom2DIPoint const*, double const, double&);
    // int nFindAllShadowZones(void);
-   int nFloodFillShadowZone(int const, CGeom2DIPoint const *,
-                            CGeom2DIPoint const *, CGeom2DIPoint const *);
+   int nFloodFillShadowZone(int const, CGeom2DIPoint const*, CGeom2DIPoint const*, CGeom2DIPoint const*);
    void DoShadowZoneAndDownDriftZone(int const, int const, int const, int const);
-   void ProcessDownDriftCell(int const, int const, int const, double const,
-                             int const);
-   void ProcessShadowZoneCell(int const, int const, int const,
-                              CGeom2DIPoint const *, int const, int const,
-                              int const);
+   void ProcessDownDriftCell(int const, int const, int const, double const, int const);
+   void ProcessShadowZoneCell(int const, int const, int const, CGeom2DIPoint const*, int const, int const, int const);
    int nCreateAllPolygons(void);
-   void RasterizePolygonJoiningLine(int const, CGeom2DIPoint const *,
-                                    CGeom2DIPoint const *, int const);
-   static bool bIsWithinPolygon(CGeom2DPoint const *,
-                                vector<CGeom2DPoint> const *);
-   static CGeom2DPoint PtFindPointInPolygon(vector<CGeom2DPoint> const *,
-                                            int const);
+   void RasterizePolygonJoiningLine(int const, CGeom2DIPoint const*, CGeom2DIPoint const*, int const);
+   static bool bIsWithinPolygon(CGeom2DPoint const*, vector<CGeom2DPoint> const*);
+   static CGeom2DPoint PtFindPointInPolygon(vector<CGeom2DPoint> const*, int const);
    void MarkPolygonCells(void);
    int nDoPolygonSharedBoundaries(void);
    void DoAllPotentialBeachErosion(void);
    int nDoAllActualBeachErosionAndDeposition(void);
-   int nDoParallelProfileUnconsErosion(CGeomCoastPolygon *, int const, int const,
-                                       int const, int const, int const,
-                                       int const, vector<CGeom2DIPoint> const *,
-                                       vector<double> const *, double &,
-                                       double &, double &);
-   void ErodeCellBeachSedimentSupplyLimited(int const, int const, int const,
-                                            int const, double const, double &);
-   int nDoUnconsErosionOnPolygon(int const, CGeomCoastPolygon *, int const,
-                                 double const, double &);
-   int nDoUnconsDepositionOnPolygon(int const, CGeomCoastPolygon *, int const,
-                                    double, double &);
+   int nDoParallelProfileUnconsErosion(CGeomCoastPolygon *, int const, int const, int const, int const, int const, int const, vector<CGeom2DIPoint> const*, vector<double> const*, double&, double&, double&);
+   void ErodeCellBeachSedimentSupplyLimited(int const, int const, int const, int const, double const, double&);
+   int nDoUnconsErosionOnPolygon(int const, CGeomCoastPolygon *, int const, double const, double&);
+   int nDoUnconsDepositionOnPolygon(int const, CGeomCoastPolygon *, int const, double, double&);
    void CalcDepthOfClosure(void);
    int nInterpolateAllDeepWaterWaveValues(void);
    int nSetAllCoastpointDeepWaterWaveValues(void);
@@ -1897,8 +1705,7 @@ class CSimulation
    void AllPolygonsUpdateStoredUncons(int const);
    bool bIsInterventionCell(int const, int const) const;
    bool bSurroundedByDriftCells(int const, int const);
-   bool bElevAboveDeanElev(int const, int const, double const,
-                           CRWCellLandform const *);
+   bool bElevAboveDeanElev(int const, int const, double const, CRWCellLandform const*);
    // void CreatePolygonIndexIDSeq(int const);
 
    // GIS utility routines
@@ -1908,45 +1715,36 @@ class CSimulation
    bool bSaveAllRasterGISFiles(void);
    bool bSaveAllVectorGISFiles(void);
    bool bIsWithinValidGrid(int const, int const) const;
-   bool bIsWithinValidGrid(CGeom2DIPoint const *) const;
+   bool bIsWithinValidGrid(CGeom2DIPoint const*) const;
    double dGridCentroidXToExtCRSX(int const) const;
    double dGridCentroidYToExtCRSY(int const) const;
    double dGridXToExtCRSX(double const) const;
    double dGridYToExtCRSY(double const) const;
    // double dExtCRSXToGridCentroidX(double const) const;
    // double dExtCRSYToGridCentroidY(double const) const;
-   CGeom2DIPoint PtiExtCRSToGridRound(CGeom2DPoint const *) const;
-   CGeom2DPoint PtGridCentroidToExt(CGeom2DIPoint const *) const;
+   CGeom2DIPoint PtiExtCRSToGridRound(CGeom2DPoint const*) const;
+   CGeom2DPoint PtGridCentroidToExt(CGeom2DIPoint const*) const;
    double dExtCRSXToGridX(double const) const;
    double dExtCRSYToGridY(double const) const;
-   static double dGetDistanceBetween(CGeom2DPoint const *, CGeom2DPoint const *);
-   static double dGetDistanceBetween(CGeom2DIPoint const *,
-                                     CGeom2DIPoint const *);
-   static double dTriangleAreax2(CGeom2DPoint const *, CGeom2DPoint const *,
-                                 CGeom2DPoint const *);
-   void KeepWithinValidGrid(int &, int &) const;
-   void KeepWithinValidGrid(int, int, int &, int &) const;
-   void KeepWithinValidGrid(CGeom2DIPoint const *, CGeom2DIPoint *) const;
+   static double dGetDistanceBetween(CGeom2DPoint const*, CGeom2DPoint const*);
+   static double dGetDistanceBetween(CGeom2DIPoint const*, CGeom2DIPoint const*);
+   static double dTriangleAreax2(CGeom2DPoint const*, CGeom2DPoint const*, CGeom2DPoint const*);
+   void KeepWithinValidGrid(int&, int&) const;
+   void KeepWithinValidGrid(int, int, int&, int&) const;
+   void KeepWithinValidGrid(CGeom2DIPoint const*, CGeom2DIPoint *) const;
    static double dKeepWithin360(double const);
    // vector<CGeom2DPoint> VGetPerpendicular(CGeom2DPoint const*, CGeom2DPoint
    // const*, double const, int const);
-   static CGeom2DPoint PtGetPerpendicular(CGeom2DPoint const *,
-                                          CGeom2DPoint const *, double const,
-                                          int const);
-   static CGeom2DIPoint PtiGetPerpendicular(CGeom2DIPoint const *,
-                                            CGeom2DIPoint const *, double const,
-                                            int const);
-   static CGeom2DIPoint PtiGetPerpendicular(int const, int const, int const,
-                                            int const, double const, int const);
-   static CGeom2DPoint PtAverage(CGeom2DPoint const *, CGeom2DPoint const *);
+   static CGeom2DPoint PtGetPerpendicular(CGeom2DPoint const*, CGeom2DPoint const*, double const, int const);
+   static CGeom2DIPoint PtiGetPerpendicular(CGeom2DIPoint const*, CGeom2DIPoint const*, double const, int const);
+   static CGeom2DIPoint PtiGetPerpendicular(int const, int const, int const, int const, double const, int const);
+   static CGeom2DPoint PtAverage(CGeom2DPoint const*, CGeom2DPoint const*);
    static CGeom2DPoint PtAverage(vector<CGeom2DPoint> *);
    // static CGeom2DIPoint PtiAverage(CGeom2DIPoint const*, CGeom2DIPoint
    // const*); static CGeom2DIPoint PtiAverage(vector<CGeom2DIPoint>*);
-   static CGeom2DIPoint PtiWeightedAverage(CGeom2DIPoint const *,
-                                           CGeom2DIPoint const *, double const);
-   static CGeom2DIPoint PtiPolygonCentroid(vector<CGeom2DIPoint> *);
-   static double dAngleSubtended(CGeom2DIPoint const *, CGeom2DIPoint const *,
-                                 CGeom2DIPoint const *);
+   static CGeom2DIPoint PtiWeightedAverage(CGeom2DIPoint const*, CGeom2DIPoint const*, double const);
+   static CGeom2DIPoint PtiPolygonCentroid(vector<CGeom2DIPoint>*);
+   static double dAngleSubtended(CGeom2DIPoint const*, CGeom2DIPoint const*, CGeom2DIPoint const*);
    static int nGetOppositeDirection(int const);
    // static void GetSlopeAndInterceptFromPoints(CGeom2DIPoint const*,
    // CGeom2DIPoint const*, double&, double&);
@@ -1986,13 +1784,13 @@ class CSimulation
    static void AnnounceIsRunning(void);
    static void AnnounceSimEnd(void);
    void StartClock(void);
-   bool bFindExeDir(char const *);
+   bool bFindExeDir(char const*);
    bool bTimeToQuit(void);
-   static int nDoTimeUnits(string const *);
-   int nDoSimulationTimeMultiplier(string const *);
-   static double dGetTimeMultiplier(string const *);
-   static bool bParseDate(string const *, int &, int &, int &);
-   static bool bParseTime(string const *, int &, int &, int &);
+   static int nDoTimeUnits(string const*);
+   int nDoSimulationTimeMultiplier(string const*);
+   static double dGetTimeMultiplier(string const*);
+   static bool bParseDate(string const*, int&, int&, int&);
+   static bool bParseTime(string const*, int&, int&, int&);
    void DoEndOfTimestepTotals(void);
    static string strGetBuild(void);
    static string strGetComputerName(void);
@@ -2009,33 +1807,30 @@ class CSimulation
    void CalcSavitzkyGolayCoeffs(void);
    CGeomLine LSmoothCoastSavitzkyGolay(CGeomLine *, int const, int const) const;
    CGeomLine LSmoothCoastRunningMean(CGeomLine *) const;
-   vector<double> dVSmoothProfileSlope(vector<double> *) const;
-   // vector<double> dVCalCGeomProfileSlope(vector<CGeom2DPoint>*,
-   // vector<double>*);         // TODO 007 Why was this removed? vector<double>
+   vector<double> dVSmoothProfileSlope(vector<double>*) const;
+   // vector<double> dVCalCGeomProfileSlope(vector<CGeom2DPoint>*, vector<double>*);         // TODO 007 Why was this removed? vector<double>
    // dVSmoothProfileSavitzkyGolay(vector<double>*, vector<double>*);         //
    // TODO 007 was this removed? vector<double>
    // dVSmoothProfileRunningMean(vector<double>*);                            //
    // TODO 007 was this removed?
-   static void CalcSavitzkyGolay(double[], int const, int const, int const,
-                                 int const, int const);
-   static string pstrChangeToBackslash(string const *);
-   static string pstrChangeToForwardSlash(string const *);
-   static string strTrim(string const *);
-   static string strTrimLeft(string const *);
-   static string strTrimRight(string const *);
-   static string strToLower(string const *);
+   static void CalcSavitzkyGolay(double[], int const, int const, int const, int const, int const);
+   static string pstrChangeToBackslash(string const*);
+   static string pstrChangeToForwardSlash(string const*);
+   static string strTrim(string const*);
+   static string strTrimLeft(string const*);
+   static string strTrimRight(string const*);
+   static string strToLower(string const*);
    // static string strToUpper(string const*);
-   static string strRemoveSubstr(string *, string const *);
-   static vector<string> *VstrSplit(string const *, char const,
-                                    vector<string> *);
-   static vector<string> VstrSplit(string const *, char const);
+   static string strRemoveSubstr(string*, string const*);
+   static vector<string>* VstrSplit(string const*, char const, vector<string>*);
+   static vector<string> VstrSplit(string const*, char const);
    // static double dCrossProduct(double const, double const, double const,
    // double const, double const, double const); static double
    // dGetMean(vector<double> const*); static double dGetStdDev(vector<double>
    // const*);
-   static void AppendEnsureNoGap(vector<CGeom2DIPoint> *, CGeom2DIPoint const *);
+   static void AppendEnsureNoGap(vector<CGeom2DIPoint>*, CGeom2DIPoint const*);
    // static bool bIsNumeric(string const*);
-   unsigned long ulConvertToTimestep(string const *) const;
+   unsigned long ulConvertToTimestep(string const*) const;
    void WritePolygonInfoTable(int const);
    void WritePolygonPreExistingSedimentTable(int const);
    void WritePolygonSedimentInputEventTable(int const);
@@ -2097,7 +1892,7 @@ class CSimulation
    double dGetD50Coarse(void) const;
 
    //! Runs the simulation
-   int nDoSimulation(int, char const *[]);
+   int nDoSimulation(int, char const*[]);
 
    //! Carries out end-of-simulation tidying (error messages etc.)
    void DoSimulationEnd(int const);

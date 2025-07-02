@@ -27,18 +27,17 @@
 ===============================================================================================================================*/
 class CGeom2DIPoint
 {
-private:
+ private:
    //! The integer x coordinate
    int nX;
 
    //! The integer y coordinate
    int nY;
 
-protected:
-
-public:
+ protected:
+ public:
    CGeom2DIPoint(void);
-   CGeom2DIPoint(CGeom2DIPoint const*);
+   explicit CGeom2DIPoint(CGeom2DIPoint const*);
    CGeom2DIPoint(int const, int const);
 
    int nGetX(void) const;
@@ -48,16 +47,16 @@ public:
    void SetX(int const);
    void SetY(int const);
    void SetXY(int const, int const);
-// void SetXY(CGeom2DIPoint const*);
+   // void SetXY(CGeom2DIPoint const*);
 
    void AddXAddY(int const, int const);
    void AddXAddY(double const, double const);
    void DivXDivY(double const, double const);
 
-   CGeom2DIPoint& operator= (CGeom2DIPoint const*);
-   bool operator== (CGeom2DIPoint const*) const;
-   bool operator== (CGeom2DIPoint) const;
-   bool operator!= (CGeom2DIPoint const*) const;
-   bool operator!= (CGeom2DIPoint) const;
+   CGeom2DIPoint& operator=(CGeom2DIPoint const*);
+   bool operator==(CGeom2DIPoint const*) const;
+   bool operator==(CGeom2DIPoint) const;
+   bool operator!=(CGeom2DIPoint const*) const;
+   bool operator!=(CGeom2DIPoint) const;
 };
 #endif // C2DIPOINT_H

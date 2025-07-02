@@ -854,7 +854,7 @@ bool CSimulation::bCheckRasterGISOutputFormat(void)
    // cout << endl;
 
    // Need to test if this is a raster driver
-   if (! CSLFetchBoolean(papszMetadata, GDAL_DCAP_RASTER, false))
+   if (!CSLFetchBoolean(papszMetadata, GDAL_DCAP_RASTER, false))
    {
       // This is not a raster driver
       cerr << ERR << "GDAL driver '" << m_strRasterGISOutFormat
@@ -890,10 +890,10 @@ bool CSimulation::bCheckRasterGISOutputFormat(void)
    SetRasterFileCreationDefaults();
 
    // Now do various tests of the driver's capabilities
-   if (! CSLFetchBoolean(papszMetadata, GDAL_DCAP_CREATE, false))
+   if (!CSLFetchBoolean(papszMetadata, GDAL_DCAP_CREATE, false))
    {
       // This raster driver does not support the Create() method, does it support CreateCopy()?
-      if (! CSLFetchBoolean(papszMetadata, GDAL_DCAP_CREATECOPY, false))
+      if (!CSLFetchBoolean(papszMetadata, GDAL_DCAP_CREATECOPY, false))
       {
          cerr << ERR << "Cannot write using raster GDAL driver '"
               << m_strRasterGISOutFormat
@@ -1022,7 +1022,7 @@ bool CSimulation::bCheckVectorGISOutputFormat(void)
    char **papszMetadata = pDriver->GetMetadata();
 
    // For GDAL2, need to test if this is a vector driver
-   if (! CSLFetchBoolean(papszMetadata, GDAL_DCAP_VECTOR, false))
+   if (!CSLFetchBoolean(papszMetadata, GDAL_DCAP_VECTOR, false))
    {
       // This is not a vector driver
       cerr << ERR << "GDAL driver '" << m_strVectorGISOutFormat
@@ -1030,7 +1030,7 @@ bool CSimulation::bCheckVectorGISOutputFormat(void)
       return false;
    }
 
-   if (! CSLFetchBoolean(papszMetadata, GDAL_DCAP_CREATE, false))
+   if (!CSLFetchBoolean(papszMetadata, GDAL_DCAP_CREATE, false))
    {
       // Driver does not support create() method
       cerr << ERR << "Cannot write vector GIS files using GDAL driver '"
@@ -1958,7 +1958,7 @@ void CSimulation::GetRasterOutputMinMax(int const nDataItem, double &dMin,
             break;
 
          case (RASTER_PLOT_POLYGON_GAIN_OR_LOSS):
-               int const nPoly = m_pRasterGrid->m_Cell[nX][nY].nGetPolygonID();
+            int const nPoly = m_pRasterGrid->m_Cell[nX][nY].nGetPolygonID();
 
             if (nPoly == INT_NODATA)
                dTmp = m_dMissingValue;

@@ -35,13 +35,13 @@
 #include "2d_point.h"
 #include "2di_point.h"
 
-class CGeomProfile;        // Forward declarations
+class CGeomProfile; // Forward declarations
 class CACoastLandform;
 class CGeomCoastPolygon;
 
 class CRWCoast
 {
-private:
+ private:
    //! Direction of the sea from the coastline, travelling down-coast (i.e. in direction of increasing coast point indices)
    int m_nSeaHandedness;
 
@@ -111,7 +111,7 @@ private:
    vector<double> m_VdWaveSetupSurge;
 
    // The storm surge on a normal drawn from each point on m_LCoastlineExtCRS
-// vector<double> m_VdStormSurge;
+   // vector<double> m_VdStormSurge;
 
    //! The run-up on a normal drawn from each point on m_LCoastlineExtCRS
    vector<double> m_VdRunUp;
@@ -151,9 +151,8 @@ private:
    //! Lines which comprise the edge of a downdrift zone, ext CRS
    vector<CGeomLine> m_LShadowDowndriftBoundary;
 
-protected:
-
-public:
+ protected:
+ public:
    explicit CRWCoast(CSimulation*);
    ~CRWCoast(void);
 
@@ -170,33 +169,33 @@ public:
 
    void SetCoastlineExtCRS(CGeomLine const*);
    CGeomLine* pLGetCoastlineExtCRS(void);
-// CGeomLine* pLGetFloodWaveSetupExtCRS(void);
-// void SetFloodWaveSetupPointExtCRS(CGeomLine const*);
-// void SetFloodWaveSetupSurgePointExtCRS(CGeomLine const*);
-// void SetFloodWaveSetupSurgeRunupPointExtCRS(CGeomLine const*);
+   // CGeomLine* pLGetFloodWaveSetupExtCRS(void);
+   // void SetFloodWaveSetupPointExtCRS(CGeomLine const*);
+   // void SetFloodWaveSetupSurgePointExtCRS(CGeomLine const*);
+   // void SetFloodWaveSetupSurgeRunupPointExtCRS(CGeomLine const*);
    CGeom2DPoint* pPtGetCoastlinePointExtCRS(int const);
-// CGeom2DPoint* pPtGetFloodWaveSetupPointExtCRS(int const);
-// CGeom2DPoint* pPtGetFloodWaveSetupSurgePointExtCRS(int const);
-// CGeom2DPoint* pPtGetFloodWaveSetupSurgeRunupPointExtCRS(int const);
+   // CGeom2DPoint* pPtGetFloodWaveSetupPointExtCRS(int const);
+   // CGeom2DPoint* pPtGetFloodWaveSetupSurgePointExtCRS(int const);
+   // CGeom2DPoint* pPtGetFloodWaveSetupSurgeRunupPointExtCRS(int const);
 
    int nGetCoastlineSize(void) const;
-// double dGetCoastlineSegmentLength(int const, int const);
-// double dGetCoastlineLengthSoFar(int const);
-// void DisplayCoastline(void);
+   // double dGetCoastlineSegmentLength(int const, int const);
+   // double dGetCoastlineLengthSoFar(int const);
+   // void DisplayCoastline(void);
 
    void SetCoastlineGridCRS(CGeomILine const*);
-// void AppendCellMarkedAsCoastline(CGeom2DIPoint const*);
-// void AppendCellMarkedAsCoastline(int const, int const);
+   // void AppendCellMarkedAsCoastline(CGeom2DIPoint const*);
+   // void AppendCellMarkedAsCoastline(int const, int const);
    CGeom2DIPoint* pPtiGetCellMarkedAsCoastline(int const);
-// int nGetNCellsMarkedAsCoastline(void) const;
+   // int nGetNCellsMarkedAsCoastline(void) const;
    int nGetCoastPointGivenCell(CGeom2DIPoint*);
 
    double dGetDetailedCurvature(int const) const;
    void SetDetailedCurvature(int const, double const);
-   vector<double> *pVGetDetailedCurvature(void);
+   vector<double>* pVGetDetailedCurvature(void);
    double dGetSmoothCurvature(int const) const;
    void SetSmoothCurvature(int const, double const);
-   vector<double> *pVGetSmoothCurvature(void);
+   vector<double>* pVGetSmoothCurvature(void);
    void SetDetailedCurvatureMean(double const);
    // double dGetDetailedCurvatureMean(void) const;
    void SetDetailedCurvatureSTD(double const);
@@ -209,7 +208,7 @@ public:
    void AppendProfile(CGeomProfile*);
    CGeomProfile* pGetProfile(int const);
    CGeomProfile* pGetLastProfile(void);
-// void ReplaceProfile(int const, vector<CGeom2DPoint> const*);
+   // void ReplaceProfile(int const, vector<CGeom2DPoint> const*);
    int nGetNumProfiles(void) const;
    void CreateProfileDownCoastIndex(void);
    void InsertProfilesInProfileCoastPointIndex(void);
@@ -246,8 +245,8 @@ public:
    void SetWaveSetupSurge(int const, double const);
    double dGetWaveSetupSurge(int const) const;
 
-// void SetStormSurge(int const, double const);
-// double dGetStormSurge(int const) const;
+   // void SetStormSurge(int const, double const);
+   // double dGetStormSurge(int const) const;
 
    void SetRunUp(int const, double const);
    double dGetRunUp(int const) const;

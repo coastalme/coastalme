@@ -29,11 +29,11 @@
 
 //! Constructor with initialization list
 CACoastLandform::CACoastLandform(void)
-   : m_nCoast(0),
-     m_nPointOnCoast(0),
-     m_nCategory(LF_NONE),
-     m_dTotAccumWaveEnergy(0),
-     pCoast(NULL)
+    : m_nCoast(0),
+      m_nPointOnCoast(0),
+      m_nCategory(LF_NONE),
+      m_dTotAccumWaveEnergy(0),
+      pCoast(NULL)
 {
 }
 

@@ -34,9 +34,8 @@
 #include "coast.h"
 
 //! Constructor with three parameters and an intialization list
-CRWDrift::CRWDrift(CRWCoast * pCoastIn, int const nCoast, int const nPointOnCoast)
-   :
-   m_dD50(0)
+CRWDrift::CRWDrift(CRWCoast* pCoastIn, int const nCoast, int const nPointOnCoast)
+    : m_dD50(0)
 {
    pCoast = pCoastIn;
 

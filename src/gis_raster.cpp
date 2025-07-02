@@ -30,7 +30,7 @@ using std::hypot;
 using std::isnan;
 using std::sqrt;
 using std::atan2;
-using std:: isfinite;
+using std::isfinite;
 
 #include <iostream>
 using std::cerr;
@@ -202,7 +202,7 @@ int CSimulation::nReadRasterBasementDEM(void)
    // If we have value units, then check them
    string const strUnits = pGDALBand->GetUnitType();
 
-   if ((! strUnits.empty()) && (strUnits.find('m') == string::npos))
+   if ((!strUnits.empty()) && (strUnits.find('m') == string::npos))
    {
       // Error: value units must be m
       cerr << ERR << "DEM vertical units are (" << strUnits << " ) in " << m_strInitialBasementDEMFile << ", should be 'm'" << endl;
@@ -210,7 +210,7 @@ int CSimulation::nReadRasterBasementDEM(void)
    }
 
    // If present, get the missing value (NODATA) setting
-   CPLPushErrorHandler(CPLQuietErrorHandler);          // Needed to get next line to fail silently, if it fails
+   CPLPushErrorHandler(CPLQuietErrorHandler);                // Needed to get next line to fail silently, if it fails
    double const dMissingValue = pGDALBand->GetNoDataValue(); // Will fail for some formats
    CPLPopErrorHandler();
 
@@ -1335,7 +1335,8 @@ bool CSimulation::bWriteRasterGISFile(int const nDataItem, string const *strPlot
       if (NULL == pDataSet)
       {
          // Couldn't create in-memory file dataset
-         cerr << ERR << "cannot create in-memory file for " << m_strRasterGISOutFormat << " file named " << strFilePathName << endl << CPLGetLastErrorMsg() << endl;
+         cerr << ERR << "cannot create in-memory file for " << m_strRasterGISOutFormat << " file named " << strFilePathName << endl
+              << CPLGetLastErrorMsg() << endl;
          return false;
       }
    }
@@ -1416,7 +1417,7 @@ bool CSimulation::bWriteRasterGISFile(int const nDataItem, string const *strPlot
             break;
 
          case (RASTER_PLOT_CLIFF):
-            dTmp = m_pRasterGrid->m_Cell[nX][nY].bIsCliff();
+            dTmp = static_cast<double>(m_pRasterGrid->m_Cell[nX][nY].bIsCliff());
             break;
 
          case (RASTER_PLOT_SEA_DEPTH):
@@ -1995,12 +1996,13 @@ bool CSimulation::bWriteRasterGISFile(int const nDataItem, string const *strPlot
    {
       // Since the user-selected raster driver cannot use the Create() method, we have been writing to a dataset created by the in-memory driver. So now we need to use CreateCopy() to copy this in-memory dataset to a file in the user-specified raster driver format
       GDALDriver *pOutDriver = GetGDALDriverManager()->GetDriverByName(m_strRasterGISOutFormat.c_str());
-      GDALDataset* pOutDataSet = pOutDriver->CreateCopy(strFilePathName.c_str(), pDataSet, false, m_papszGDALRasterOptions, NULL, NULL);
+      GDALDataset *pOutDataSet = pOutDriver->CreateCopy(strFilePathName.c_str(), pDataSet, false, m_papszGDALRasterOptions, NULL, NULL);
 
       if (NULL == pOutDataSet)
       {
          // Couldn't create file
-         cerr << ERR << "cannot create " << m_strRasterGISOutFormat << " file named " << strFilePathName << endl << CPLGetLastErrorMsg() << endl;
+         cerr << ERR << "cannot create " << m_strRasterGISOutFormat << " file named " << strFilePathName << endl
+              << CPLGetLastErrorMsg() << endl;
          return false;
       }
 

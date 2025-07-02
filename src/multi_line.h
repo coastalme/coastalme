@@ -36,34 +36,33 @@ using std::make_pair;
 
 class CGeomMultiLine : public CGeomLine
 {
-private:
+ private:
    //! A vector of line segments, each element is a vector of pairs. The first of the pair is a co-incident profile number, the second is that profile's 'own' line segment number
-   vector<vector<pair<int, int> > > m_prVVLineSegment;
+   vector<vector<pair<int, int>>> m_prVVLineSegment;
 
-protected:
-
-public:
+ protected:
+ public:
    CGeomMultiLine(void);
    ~CGeomMultiLine(void) override;
 
    void AppendLineSegment(void);
-   void AppendLineSegment(vector<pair<int, int>>*);
-// void AppendLineSegmentAndInherit(void);
+   void AppendLineSegment(vector<pair<int, int>> *);
+   // void AppendLineSegmentAndInherit(void);
    int nGetNumLineSegments(void) const;
    void TruncateLineSegments(int const);
    void InsertLineSegment(int const);
-   vector<vector<pair<int, int> > > prVVGetAllLineSegAfter(int const);
+   vector<vector<pair<int, int>>> prVVGetAllLineSegAfter(int const);
    void RemoveLineSegment(int const);
 
    void AppendCoincidentProfileToLineSegments(pair<int, int> const);
    void AddCoincidentProfileToExistingLineSegment(int const, int const, int const);
-   vector<pair<int, int> > *pprVGetPairedCoincidentProfilesForLineSegment(int const);
+   vector<pair<int, int>> *pprVGetPairedCoincidentProfilesForLineSegment(int const);
    int nGetCoincidentProfileForLineSegment(int const, int const) const;
    int nGetNumCoincidentProfilesInLineSegment(int const);
    bool bFindProfileInCoincidentProfilesOfLastLineSegment(int const);
-// bool bFindProfileInCoincidentProfilesOfLineSegment(int const, int const);
+   // bool bFindProfileInCoincidentProfilesOfLineSegment(int const, int const);
    bool bFindProfileInCoincidentProfiles(int const);
-   void GetMostCoastwardSharedLineSegment(int const, int&, int&);
+   void GetMostCoastwardSharedLineSegment(int const, int &, int &);
 
    int nGetProf(int const, int const) const;
    int nGetProfsLineSeg(int const, int const) const;

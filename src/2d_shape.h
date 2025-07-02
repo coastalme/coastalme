@@ -33,9 +33,8 @@ using std::reverse;
 
 class CA2DShape
 {
-private:
-
-protected:
+ private:
+ protected:
    //! The points which comprise the float-coordinate 2D shape
    vector<CGeom2DPoint> m_VPoints;
 
@@ -44,15 +43,15 @@ protected:
 
    void Clear(void);
 
-// void InsertAtFront(double const, double const);
-// void SetPoints(const vector<CGeom2DPoint>*);
-// int nLookUp(CGeom2DPoint*);
-// double dGetLength(void) const;
-// CGeom2DPoint PtGetCentroid(void);
+   // void InsertAtFront(double const, double const);
+   // void SetPoints(const vector<CGeom2DPoint>*);
+   // int nLookUp(CGeom2DPoint*);
+   // double dGetLength(void) const;
+   // CGeom2DPoint PtGetCentroid(void);
 
    virtual void Display() = 0;
 
-public:
+ public:
    void Reverse(void);
 
    int nGetSize(void) const;
@@ -63,7 +62,7 @@ public:
    void AppendIfNotAlready(double const, double const);
    CGeom2DPoint* pPtBack(void);
 
-   CGeom2DPoint& operator[] (int const);
+   CGeom2DPoint& operator[](int const);
    vector<CGeom2DPoint>* pPtVGetPoints(void);
 };
 #endif // C2DSHAPE_H

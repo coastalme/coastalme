@@ -30,12 +30,12 @@
 
 class CGeomCoastPolygon : public CA2DShape
 {
-private:
+ private:
    //! Is the movement of unconsolidated sediment on this polygon down-coast (i.e. along the coast in the direction of increasing coastline point numbers) during this iteration?
    bool m_bUnconsSedimentMovementDownCoastThisIter;
 
    // Does the polygon meet at a point at its seaward end? (is it roughly triangular?)
-// bool m_bIsPointedSeaward;
+   // bool m_bIsPointedSeaward;
 
    //! Is this polygon at the end of the coastline?
    bool m_bCoastEndPolygon;
@@ -195,9 +195,8 @@ private:
    //! The polygon's vertices (not all of them, just the ends of the profile sides), used to calculate the polygon's centroid for filling it
    vector<CGeom2DIPoint> m_VPtiVertices;
 
-protected:
-
-public:
+ protected:
+ public:
    CGeomCoastPolygon(int const, int const, int const, int const, int const, vector<CGeom2DPoint> const*, int const, int const, CGeom2DIPoint const*, CGeom2DIPoint const*, bool const, bool const);
    ~CGeomCoastPolygon(void) override;
 
@@ -212,7 +211,7 @@ public:
    int nGetGlobalID(void) const;
    int nGetCoastID(void) const;
 
-// void SetCoastNode(int const);
+   // void SetCoastNode(int const);
    int nGetNodeCoastPoint(void) const;
    CGeom2DIPoint* pPtiGetNode(void);
    CGeom2DIPoint* pPtiGetAntiNode(void);
@@ -220,8 +219,8 @@ public:
    void SetLength(double const);
    double dGetLength(void) const;
 
-// void SetNotPointed(void);
-// bool bIsPointed(void) const;
+   // void SetNotPointed(void);
+   // bool bIsPointed(void) const;
 
    void SetNumCellsInPolygon(int const);
    // int nGetNumCellsinPolygon(void) const;
@@ -229,8 +228,8 @@ public:
    int nGetUpCoastProfile(void) const;
    int nGetDownCoastProfile(void) const;
 
-// void SetBoundary(vector<CGeom2DPoint> const*);
-// vector<CGeom2DPoint>* pPtVGetBoundary(void);
+   // void SetBoundary(vector<CGeom2DPoint> const*);
+   // vector<CGeom2DPoint>* pPtVGetBoundary(void);
    CGeom2DPoint* pPtGetBoundaryPoint(int const);
    int nGetBoundarySize(void) const;
 
@@ -298,7 +297,7 @@ public:
    void Display(void) override;
 
    void AddCircularity(int const);
-   vector<int> VnGetCircularities(void) const;
+   vector<int> const* VnGetCircularities(void) const;
 
    void AddCliffCollapseErosionFine(double const);
    double dGetCliffCollapseErosionFine(void) const;
@@ -355,4 +354,4 @@ public:
 
    CGeom2DIPoint PtiGetFillStartPoint(void);
 };
-#endif //COASTPOLYGON_H
+#endif // COASTPOLYGON_H

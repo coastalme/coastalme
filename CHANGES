@@ -196,5 +196,7 @@ CoastalME CHANGELOG
 1.3.24   Ongoing changes to permit multiple coastlines
          Added clang-tidy configuration
          Const-correctness etc. enforced via clang-tidy
+         Wilf's cliff toe tracing added
          Code tidying
+
 

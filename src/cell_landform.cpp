@@ -26,11 +26,11 @@
 
 //! Constructor
 CRWCellLandform::CRWCellLandform()
-   : m_nCategory(LF_NONE),
-     m_nSubCategory(LF_NONE),
-     m_nCoast(-1),
-     m_nPointOnCoast(-1),
-     m_dAccumWaveEnergy(0)
+    : m_nCategory(LF_NONE),
+      m_nSubCategory(LF_NONE),
+      m_nCoast(-1),
+      m_nPointOnCoast(-1),
+      m_dAccumWaveEnergy(0)
 {
 }
 

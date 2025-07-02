@@ -25,31 +25,30 @@
 ===============================================================================================================================*/
 class CGeom2DPoint
 {
-private:
+ private:
    //! The x coordinate
    double dX;
 
    //! The y coordinate
    double dY;
 
-protected:
-
-public:
+ protected:
+ public:
    CGeom2DPoint(void);
-   CGeom2DPoint(CGeom2DPoint const*);
+   explicit CGeom2DPoint(CGeom2DPoint const*);
    CGeom2DPoint(double const, double const);
 
    double dGetX(void) const;
    double dGetY(void) const;
    void SetX(double const);
    void SetY(double const);
-// void SetXY(double const, double const);
-// void SetXY(CGeom2DPoint const*);
+   // void SetXY(double const, double const);
+   // void SetXY(CGeom2DPoint const*);
 
-   CGeom2DPoint& operator= (CGeom2DPoint const*);
-   bool operator== (CGeom2DPoint const*) const;
-   bool operator== (CGeom2DPoint) const;
-   bool operator!= (CGeom2DPoint const*) const;
-   bool operator!= (CGeom2DPoint) const;
+   CGeom2DPoint& operator=(CGeom2DPoint const*);
+   bool operator==(CGeom2DPoint const*) const;
+   bool operator==(CGeom2DPoint) const;
+   bool operator!=(CGeom2DPoint const*) const;
+   bool operator!=(CGeom2DPoint) const;
 };
 #endif // C2DPOINT_H

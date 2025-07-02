@@ -27,15 +27,15 @@
 #include "sediment_input_event.h"
 
 //! Constructor with eight parameters and an initialization list
-CSedInputEvent::CSedInputEvent(int const nIDIn, unsigned long const ulTimeStepIn, double const dFineIn, double const dSandIn, double const dCoarseIn, double const dLenIn, double const dWidthIn): //, double const dThickIn):
-   m_nLocationID(nIDIn),
-   m_ulEventTimeStep(ulTimeStepIn),
-   m_dFineSedVol(dFineIn),
-   m_dSandSedVol(dSandIn),
-   m_dCoarseSedVol(dCoarseIn),
-   m_dLen(dLenIn),
-   m_dWidth(dWidthIn)
-   // m_dThick(dThickIn)
+CSedInputEvent::CSedInputEvent(int const nIDIn, unsigned long const ulTimeStepIn, double const dFineIn, double const dSandIn, double const dCoarseIn, double const dLenIn, double const dWidthIn) : //, double const dThickIn):
+                                                                                                                                                                                                    m_nLocationID(nIDIn),
+                                                                                                                                                                                                    m_ulEventTimeStep(ulTimeStepIn),
+                                                                                                                                                                                                    m_dFineSedVol(dFineIn),
+                                                                                                                                                                                                    m_dSandSedVol(dSandIn),
+                                                                                                                                                                                                    m_dCoarseSedVol(dCoarseIn),
+                                                                                                                                                                                                    m_dLen(dLenIn),
+                                                                                                                                                                                                    m_dWidth(dWidthIn)
+// m_dThick(dThickIn)
 {
 }
 

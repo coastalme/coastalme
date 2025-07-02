@@ -27,8 +27,8 @@
 ===============================================================================================================================*/
 // #include "cell.h"
 
-class CGeomCell;           // Forward declaration
-class CSimulation;         // Ditto
+class CGeomCell;   // Forward declaration
+class CSimulation; // Ditto
 
 class CGeomRasterGrid
 {
@@ -38,7 +38,7 @@ class CGeomRasterGrid
    //! The CGeomProfile class is a friend of the CGeomRasterGrid class
    friend class CGeomProfile;
 
-private:
+ private:
    //! The d50 of fine-sized  sediment
    double m_dD50Fine;
 
@@ -54,14 +54,13 @@ private:
    //! The 2D array of m_Cell objects. A c-style 2D array seems to be faster than using 2D STL vectors
    CGeomCell** m_Cell;
 
-protected:
-
-public:
+ protected:
+ public:
    explicit CGeomRasterGrid(CSimulation*);
    ~CGeomRasterGrid(void);
 
    CSimulation* pGetSim(void);
-// CGeomCell* pGetCell(int const, int const);
+   // CGeomCell* pGetCell(int const, int const);
    int nCreateGrid(void);
 };
 #endif // RASTERGRID_H

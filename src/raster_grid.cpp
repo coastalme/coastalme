@@ -31,15 +31,15 @@ using std::bad_alloc;
 #include "simulation.h"
 #include "raster_grid.h"
 
-CGeomRasterGrid * CGeomCell::m_pGrid = NULL;         // Initialise m_pGrid, the static member of CGeomCell
+CGeomRasterGrid* CGeomCell::m_pGrid = NULL; // Initialise m_pGrid, the static member of CGeomCell
 
 //! Constructor
 CGeomRasterGrid::CGeomRasterGrid(CSimulation* pSimIn)
-   : m_dD50Fine(0),
-     m_dD50Sand(0),
-     m_dD50Coarse(0),
-     m_pSim(pSimIn),
-     m_Cell(NULL)
+    : m_dD50Fine(0),
+      m_dD50Sand(0),
+      m_dD50Coarse(0),
+      m_pSim(pSimIn),
+      m_Cell(NULL)
 {
 }
 
@@ -50,9 +50,9 @@ CGeomRasterGrid::~CGeomRasterGrid(void)
 
    // Free the m_Cell memory
    for (int nX = 0; nX < nXMax; nX++)
-      delete [] m_Cell[nX];
+      delete[] m_Cell[nX];
 
-   delete [] m_Cell;
+   delete[] m_Cell;
 }
 
 //! Returns a pointer to the simulation object
@@ -76,7 +76,7 @@ int CGeomRasterGrid::nCreateGrid(void)
    // TODO 038 Do better error handling if insufficient memory
    try
    {
-      m_Cell = new CGeomCell * [nXMax];
+      m_Cell = new CGeomCell*[nXMax];
 
       for (int nX = 0; nX < nXMax; nX++)
          m_Cell[nX] = new CGeomCell[nYMax];

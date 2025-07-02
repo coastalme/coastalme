@@ -46,9 +46,9 @@ Time series files to output                                                   [s
 ;Get problems here since if the coastline vector has been heavily smoothed.
 ;This can result is 'false positives' profiles marked as invalid which are not actually invalid, because the profile hits land when m = 0 or m = 1.
 ;This results in some cells being flagged as profile cells which are actually inland
-Coastline smoothing                          [0 = none, 1 = running mean, 2 = Savitsky-Golay]: 1
+Coastline smoothing                          [0 = none, 1 = running mean, 2 = Savitzky-Golay]: 1
 Coastline smoothing window size                                                 [must be odd]: 53
-Polynomial order for Savitsky-Golay coastline smoothing                              [2 or 4]: 4
+Polynomial order for Savitzky-Golay coastline smoothing                              [2 or 4]: 4
 Grid edge(s) to omit when searching for coastline                                      [NSWE]: W
 
 Profile slope running-mean smoothing window size                        [must be zero or odd]: 0
@@ -144,7 +144,7 @@ Sediment input details file                                      [required if ha
 ; Other data -----------------------------------------------------------------------------------------------------------
 Gravitational acceleration (m2/s)                                                            : 9.81
 
-; TEMPORARY ONLY, CHANGE DYNAMICALLY LATER
+; MOVE THESE?
 Spacing of coastline normals (m)                                        [0 = default minimum]: 0 
 Random factor for spacing of normals                              [0 to 1, 0 = deterministic]: 0        ; *** 0.1
 Length of coastline normals (m)                                                              : 100
@@ -156,6 +156,12 @@ Save profile data?                                                              
 Profile number(s) to save                                                                    : 0 1 2 3
 Timesteps to save profile(s)                                                                 : 1 240 480 720 960 1200 1440 1680 1920 2160 2400 2640 2880 3120 3360 3600 3840 4080 4320 4560 4800 5040 5280 5520 5760 6000 6240 120 240 360 480 600 720 840 960
 Save parallel profiles?                                                                      : n
-Output erosion potential look-up values                                                      : y
-Size of moving window for calculating coastline curvature (must be odd)                      : 11 
+Output erosion potential look-up values                                                      : n
+
+; MOVE THESE?
+Size of moving window for calculating coastline curvature (must be odd)                      : 11
+Cliff edge smoothing                         [0 = none, 1 = running mean, 2 = Savitzky-Golay]: 1
+Cliff edge smoothing window size                                                [must be odd]: 33
+Polynomial order for Savitzky-Golay cliff edge smoothing                             [2 or 4]: 4
+Cliff slope limit for cliff toe detection                                                    : 0.3
 ; END OF FILE ----------------------------------------------------------------------------------------------------------
