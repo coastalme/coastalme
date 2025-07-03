@@ -1,0 +1,32 @@
+BasedOnStyle: Microsoft
+BreakBeforeBraces: Allman
+
+ColumnLimit: 0
+IndentWidth: 3
+TabWidth: 3
+UseTab: Never
+
+KeepEmptyLinesAtTheStartOfBlocks: false
+
+DerivePointerAlignment: true
+PointerAlignment: Left
+
+
+
+SpacesBeforeTrailingComments: 6
+AlignTrailingComments: true
+
+AllowAllArgumentsOnNextLine: false
+AllowAllParametersOfDeclarationOnNextLine: false
+BinPackArguments: true
+BinPackParameters: true
+
+// ??
+SpaceBeforeParens: Custom
+SpaceBeforeParensOptions:
+  AfterControlStatements: true
+
+// New
+RemoveEmptyLinesInUnwrappedLines: true
+PointerBindsToType: false
+ReferenceAlignment: Right

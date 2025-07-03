@@ -1546,7 +1546,7 @@ class CSimulation
    vector<CRWCoast> m_VFloodWaveSetupSurgeRunup;
 
    //! Pointers to coast polygon objects, in down-coast sequence TODO 044 Will need to use global polygon ID here to support multiple coastlines
-   vector<CGeomCoastPolygon *> m_pVCoastPolygon;
+   vector<CGeomCoastPolygon*> m_pVCoastPolygon;
 
    //! Edge cells
    vector<CGeom2DIPoint> m_VEdgeCell;
@@ -1558,7 +1558,7 @@ class CSimulation
    vector<int> m_VCellFloodLocation;
 
    //! Sediment input events
-   vector<CSedInputEvent *> m_pVSedInputEvent;
+   vector<CSedInputEvent*> m_pVSedInputEvent;
 
    //! The c++11 random number generators
    default_random_engine m_Rand[NUMBER_OF_RNGS];
@@ -1638,7 +1638,7 @@ class CSimulation
    int nTraceFloodCoastLine(unsigned int const, int const, int const, vector<bool>*, vector<CGeom2DIPoint> const*);
    int nTraceAllFloodCoasts(void);
    void DoCoastCurvature(int const, int const);
-   int nCheckAllProfiles(void);
+   int nCheckAndMarkAllProfiles(void);
    int nCreateAllProfiles(void);
    void LocateAndCreateProfiles(int const, int&, int&, vector<bool>*, vector<pair<int, double>> const*);
    int nCreateProfile(int const, int const, int const, int const, int&, bool const, CGeom2DIPoint const*);

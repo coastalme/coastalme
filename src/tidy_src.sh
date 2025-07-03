@@ -1,5 +1,9 @@
 #!/bin/bash
 
-for i in *.h; do echo "Formatting $i" && clang-format -i "$i"; done
-for i in *.cpp; do echo "Formatting $i" && clang-format -i "$i"; done
+if [ -z "$1" ]; then
+  echo "Usage: $0 <filename>"
+  exit 1
+fi
+
+echo "Formatting $1" && clang-format -i "$1"
 

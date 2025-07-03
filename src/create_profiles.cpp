@@ -670,8 +670,16 @@ int CSimulation::nLocateAndCreateGridEdgeProfile(bool const bCoastStart, int con
       int const nX = VPtiNormalPoints[n].nGetX();
       int const nY = VPtiNormalPoints[n].nGetY();
 
+      // Is this cell marked as coastline?
+      if (m_pRasterGrid->m_Cell[nX][nY].bIsCoastline())
+      {
+         // We have, what is the coast ID?
+         // int nHitCoast = m_pRasterGrid->m_Cell[nX][nY].
+
+      }
+
       // Mark each cell in the raster grid
-      m_pRasterGrid->m_Cell[nX][nY].SetProfileID(nProfile);
+      m_pRasterGrid->m_Cell[nX][nY].SetCoastAndProfileID(nCoast, nProfile);
 
       // Store the raster grid coordinates in the profile object
       pProfile->AppendCellInProfile(nX, nY);
@@ -1219,7 +1227,7 @@ void CSimulation::CheckForIntersectingProfiles(void)
 //===============================================================================================================================
 //! Check all coastline-normal profiles and modify the profiles if they intersect, then mark valid profiles on the raster grid
 //===============================================================================================================================
-int CSimulation::nCheckAllProfiles(void)
+int CSimulation::nCheckAndMarkAllProfiles(void)
 {
    // Check to see which coastline-normal profiles intersect. Then modify intersecting profiles so that the sections of each profile seaward of the point of intersection are 'shared' i.e. are multi-lines. This creates the boundaries of the triangular polygons
    CheckForIntersectingProfiles();
@@ -1483,7 +1491,7 @@ void CSimulation::MarkProfilesOnGrid(int const nCoast, int& nValidProfiles)
             continue;
 
          // Mark each cell in the raster grid
-         m_pRasterGrid->m_Cell[VCellsToMark[k].nGetX()][VCellsToMark[k].nGetY()].SetProfileID(nProfile);
+         m_pRasterGrid->m_Cell[VCellsToMark[k].nGetX()][VCellsToMark[k].nGetY()].SetCoastAndProfileID(nCoast, nProfile);
 
          // Store the raster grid coordinates in the profile object
          m_VCoast[nCoast].pGetProfile(nProfile)->AppendCellInProfile(VCellsToMark[k].nGetX(), VCellsToMark[k].nGetY());
@@ -1669,13 +1677,24 @@ void CSimulation::CreateRasterizedProfile(int const nCoast, CGeomProfile* pProfi
             // Now check to see if we hit another profile which is not a coincident normal to this normal
             if (m_pRasterGrid->m_Cell[nX][nY].bIsProfile())
             {
-               // We've hit a raster cell which is already marked as 'under' a normal profile. Get the number of the profile which marked this cell
+               // We've hit a raster cell which is already marked as 'under' a normal profile. Get the number of the profile which marked this cell, and the coast to hich this profile belongs
                int const nHitProfile = m_pRasterGrid->m_Cell[nX][nY].nGetProfileID();
+               int const nHitProfileCoast = m_pRasterGrid->m_Cell[nX][nY].nGetProfileCoastID();
 
-               // LogStream << m_ulIter << ": profile " << nProfile << " HIT ANOTHER PROFILE (" << nHitProfile << ") at [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "}, elevation = " << m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElev() << ", SWL = " << m_dThisIterSWL << endl;
+               LogStream << m_ulIter << ": coast = " << nCoast << " profile = " << nProfile << " HIT ANOTHER PROFILE (coast = " << nHitProfileCoast << " profile = " << nHitProfile << ") at [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "}, elevation = " << m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElev() << ", SWL = " << m_dThisIterSWL << endl;
 
-               // Is this the number of a coincident profile of this profile?
-               if (!pProfile->bFindProfileInCoincidentProfilesOfLastLineSegment(nHitProfile))
+               // Do both profiles belong to the same coast?
+               if (nCoast != nHitProfileCoast)
+               {
+                  // They do not
+                  // pProfile->SetHitAnotherProfile(true);
+                  // bHitAnotherProfile = true;
+
+                  return;
+               }
+
+               // Both profiles belong to the same coast. Is this the number of a coincident profile of this profile?
+               if (! pProfile->bFindProfileInCoincidentProfilesOfLastLineSegment(nHitProfile))
                {
                   // It isn't a coincident profile, so we have just hit an unrelated profile. Mark this profile as invalid and move on
                   pProfile->SetHitAnotherProfile(true);

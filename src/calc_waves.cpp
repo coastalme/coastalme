@@ -1779,7 +1779,7 @@ void CSimulation::InterpolateCShoreOutput(vector<double> const *pVdProfileDistXY
    if (nOutSize < nProfileSize)
    {
       bTooShort = true;
-      nTooShort = nProfileSize - nOutSize;
+      nTooShort = nProfileSize - nOutSize - 1;
 
       // LogStream << m_ulIter << ": CShore PROFILE IS TOO SHORT" << endl;
    }

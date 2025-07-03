@@ -42,31 +42,59 @@ using std::vector;
 
 //! Constructor with initialization list
 CGeomCell::CGeomCell()
-    : m_bInContiguousSea(false), m_bInContiguousFlood(false),
-      m_bIsInActiveZone(false), m_bCoastline(false), m_bCliff(false),
-      m_bFloodLine(false), m_bWaveFlood(false),
-      // m_bCheckCell(false),
-      m_bCheckFloodCell(false), m_bShadowBoundary(false),
-      m_bPossibleCoastStartCell(false), m_bPossibleFloodStartCell(false),
-      m_nBoundingBoxEdge(NO_DIRECTION), m_nPolygonID(INT_NODATA),
-      m_nPolygonCoastID(INT_NODATA), m_nCoastlineNormal(INT_NODATA),
-      m_nShadowZoneNumber(0), m_nDownDriftZoneNumber(0), m_dLocalConsSlope(0),
-      m_dBasementElevation(0), m_dSlope(0), m_dSeaDepth(0), m_dTotSeaDepth(0),
-      m_dWaveHeight(0), m_dTotWaveHeight(0), m_dWaveAngle(DBL_NODATA),
-      m_dTotWaveAngle(DBL_NODATA), m_dDeepWaterWaveHeight(DBL_NODATA),
-      m_dDeepWaterWaveAngle(DBL_NODATA), m_dBeachProtectionFactor(DBL_NODATA),
-      m_dSuspendedSediment(0), m_dTotSuspendedSediment(0),
-      m_dPotentialPlatformErosionThisIter(0), m_dTotPotentialPlatformErosion(0),
-      m_dActualPlatformErosionThisIter(0), m_dTotActualPlatformErosion(0),
-      m_dCliffCollapseFineThisIter(0), m_dCliffCollapseSandThisIter(0),
-      m_dCliffCollapseCoarseThisIter(0), m_dTotFineCliffCollapse(0),
-      m_dTotSandCliffCollapse(0), m_dTotCoarseCliffCollapse(0),
-      m_dTalusSandDepositionThisIter(0), m_dTotTalusSandDeposition(0),
-      m_dTalusCoarseDepositionThisIter(0), m_dTotTalusCoarseDeposition(0),
-      m_dPotentialBeachErosionThisIter(0), m_dTotPotentialBeachErosion(0),
-      m_dActualBeachErosionThisIter(0), m_dTotActualBeachErosion(0),
-      m_dBeachDepositionThisIter(0), m_dTotBeachDeposition(0), m_dUnconsD50(0),
-      m_dInterventionHeight(0)
+   : m_bInContiguousSea(false),
+     m_bInContiguousFlood(false),
+     m_bIsInActiveZone(false),
+     m_bFloodLine(false),
+     m_bWaveFlood(false),
+     // m_bCheckCell(false),
+     m_bCheckFloodCell(false),
+     m_bShadowBoundary(false),
+     m_bPossibleCoastStartCell(false),
+     m_bPossibleFloodStartCell(false),
+     m_nBoundingBoxEdge(NO_DIRECTION),
+     m_nCoastlineID(INT_NODATA),
+     m_nProfileID(INT_NODATA),
+     m_nProfileCoastID(INT_NODATA),
+     m_nPolygonID(INT_NODATA),
+     m_nPolygonCoastID(INT_NODATA),
+     m_nShadowZoneNumber(0),
+     m_nDownDriftZoneNumber(0),
+     m_dLocalConsSlope(0),
+     m_dBasementElevation(0),
+     m_dSeaDepth(0),
+     m_dTotSeaDepth(0),
+     m_dWaveHeight(0),
+     m_dTotWaveHeight(0),
+     m_dWaveAngle(DBL_NODATA),
+     m_dTotWaveAngle(DBL_NODATA),
+     m_dDeepWaterWaveHeight(DBL_NODATA),
+     m_dDeepWaterWaveAngle(DBL_NODATA),
+     m_dBeachProtectionFactor(DBL_NODATA),
+     m_dSuspendedSediment(0),
+     m_dTotSuspendedSediment(0),
+     m_dPotentialPlatformErosionThisIter(0),
+     m_dTotPotentialPlatformErosion(0),
+     m_dActualPlatformErosionThisIter(0),
+     m_dTotActualPlatformErosion(0),
+     m_dCliffCollapseFineThisIter(0),
+     m_dCliffCollapseSandThisIter(0),
+     m_dCliffCollapseCoarseThisIter(0),
+     m_dTotFineCliffCollapse(0),
+     m_dTotSandCliffCollapse(0),
+     m_dTotCoarseCliffCollapse(0),
+     m_dTalusSandDepositionThisIter(0),
+     m_dTotTalusSandDeposition(0),
+     m_dTalusCoarseDepositionThisIter(0),
+     m_dTotTalusCoarseDeposition(0),
+     m_dPotentialBeachErosionThisIter(0),
+     m_dTotPotentialBeachErosion(0),
+     m_dActualBeachErosionThisIter(0),
+     m_dTotActualBeachErosion(0),
+     m_dBeachDepositionThisIter(0),
+     m_dTotBeachDeposition(0),
+     m_dUnconsD50(0),
+     m_dInterventionHeight(0)
 {
    m_Landform.SetLFCategory(LF_NONE);
 }
@@ -81,7 +109,10 @@ void CGeomCell::SetBoundingBoxEdge(int const nDirection)
 }
 
 //! Returns the number of the bounding-box edge, or NO_DIRECTION if it is not
-int CGeomCell::nGetBoundingBoxEdge(void) const { return m_nBoundingBoxEdge; }
+int CGeomCell::nGetBoundingBoxEdge(void) const
+{
+   return m_nBoundingBoxEdge;
+}
 
 //! Is this an edge bounding-box cell?
 bool CGeomCell::bIsBoundingBoxEdge(void) const
@@ -90,19 +121,34 @@ bool CGeomCell::bIsBoundingBoxEdge(void) const
 }
 
 //! Set this cell as a sea cell
-void CGeomCell::SetInContiguousSea(void) { m_bInContiguousSea = true; }
+void CGeomCell::SetInContiguousSea(void)
+{
+   m_bInContiguousSea = true;
+}
 
 //! Is this a sea cell?
-bool CGeomCell::bIsInContiguousSea(void) const { return m_bInContiguousSea; }
+bool CGeomCell::bIsInContiguousSea(void) const
+{
+   return m_bInContiguousSea;
+}
 
 //! Set this cell as in the contiguous runup flood area
-void CGeomCell::SetInContiguousFlood(void) { m_bInContiguousFlood = true; }
+void CGeomCell::SetInContiguousFlood(void)
+{
+   m_bInContiguousFlood = true;
+}
 
 //! Set this cell as not in the contiguous runup flood area
-void CGeomCell::UnSetInContiguousFlood(void) { m_bInContiguousFlood = false; }
+void CGeomCell::UnSetInContiguousFlood(void)
+{
+   m_bInContiguousFlood = false;
+}
 
 //! Set this cell as flooded by setup surge
-void CGeomCell::SetFloodBySetupSurge(void) { m_bFloodBySetupSurge = true; }
+void CGeomCell::SetFloodBySetupSurge(void)
+{
+   m_bFloodBySetupSurge = true;
+}
 
 //! Is this cell flooded by setup surge?
 bool CGeomCell::bIsFloodBySetupSurge(void) const
@@ -129,40 +175,48 @@ bool CGeomCell::bIsInContiguousSeaArea(void) const
 }
 
 //! Sets a flag to show whether this cell is in the active zone
-void CGeomCell::SetInActiveZone(bool const bFlag) { m_bIsInActiveZone = bFlag; }
+void CGeomCell::SetInActiveZone(bool const bFlag)
+{
+   m_bIsInActiveZone = bFlag;
+}
 
 //! Returns a flag which shows whether this cell is in the active zone
-bool CGeomCell::bIsInActiveZone(void) const { return m_bIsInActiveZone; }
+bool CGeomCell::bIsInActiveZone(void) const
+{
+   return m_bIsInActiveZone;
+}
 
 //! Sets a flag to show that this cell is a shadow zone boundary
-void CGeomCell::SetShadowZoneBoundary(void) { m_bShadowBoundary = true; }
+void CGeomCell::SetShadowZoneBoundary(void)
+{
+   m_bShadowBoundary = true;
+}
 
 //! Returns a flag which shows whether this cell is a shadow zone boundary
-bool CGeomCell::bIsShadowZoneBoundary(void) const { return m_bShadowBoundary; }
+bool CGeomCell::bIsShadowZoneBoundary(void) const
+{
+   return m_bShadowBoundary;
+}
 
-//! Sets a flag to show that this cell has been flagged as a possible start- or
-//! end-point for a coastline
+//! Sets a flag to show that this cell has been flagged as a possible start- or end-point for a coastline
 void CGeomCell::SetPossibleCoastStartCell(void)
 {
    m_bPossibleCoastStartCell = true;
 }
 
-//! Returns a flag which shows whether this cell has been flagged as a possible
-//! start- or end-point for a coastline
+//! Returns a flag which shows whether this cell has been flagged as a possible start- or end-point for a coastline
 bool CGeomCell::bIsPossibleCoastStartCell(void) const
 {
    return m_bPossibleCoastStartCell;
 }
 
-//! Sets a flag to show that this cell has been flagged as a possible
-//! start-point for runup flooding
+//! Sets a flag to show that this cell has been flagged as a possible start-point for runup flooding
 void CGeomCell::SetPossibleFloodStartCell(void)
 {
    m_bPossibleFloodStartCell = true;
 }
 
-//! Returns a flag which shows whether this cell has been flagged as a possible
-//! start point for runup flooding
+//! Returns a flag which shows whether this cell has been flagged as a possible start point for runup flooding
 bool CGeomCell::bIsPossibleFloodStartCell(void) const
 {
    return m_bPossibleFloodStartCell;
@@ -176,51 +230,98 @@ bool CGeomCell::bPotentialPlatformErosion(void) const
 
 // bool CGeomCell::bActualPlatformErosion(void) const
 // {
-// return (m_dActualPlatformErosionThisIter > 0);
+//    return (m_dActualPlatformErosionThisIter > 0);
 // }
 
-//! Marks this cell as 'under' a coastline
-void CGeomCell::SetAsCoastline(bool const bNewFlag) { m_bCoastline = bNewFlag; }
-
-//! Returns true if the cell is 'under' a coastline
-bool CGeomCell::bIsCoastline(void) const { return m_bCoastline; }
-
-//! Marks this cell as 'under' a coastline
-void CGeomCell::SetAsCliff(bool const bNewFlag) { m_bCliff = bNewFlag; }
-
-//! Returns true if the cell is 'under' a coastline
-bool CGeomCell::bIsCliff(void) const { return m_bCliff; }
-
-//! Marks this cell is flood line
-void CGeomCell::SetAsFloodLine(bool const bNewFlag) { m_bFloodLine = bNewFlag; }
-
-//! Returns true if the cell is flood line
-bool CGeomCell::bIsFloodLine(void) const { return m_bFloodLine; }
-
-//! Marks this cell as 'under' a coastline-normal profile
-void CGeomCell::SetProfileID(int const nNormal)
+//! Marks this cell with a coastline ID nunber
+void CGeomCell::SetAsCoastline(int const nCoast)
 {
-   m_nCoastlineNormal = nNormal;
+   m_nCoastlineID = nCoast;
 }
 
-//! If this cell is 'under' a coastline-normal profile, returns the number of
-//! the profile. Otherwise it returns INT_NODATA
-int CGeomCell::nGetProfileID(void) const { return m_nCoastlineNormal; }
-
-//! Returns true if this cell is 'under' a coastline normal
-bool CGeomCell::bIsProfile(void) const
+//! Returns true if the cell is a coastline
+bool CGeomCell::bIsCoastline(void) const
 {
-   if (m_nCoastlineNormal == INT_NODATA)
+   if (m_nCoastlineID == INT_NODATA)
       return false;
 
    return true;
 }
 
+//! Returns the ID of the coastline, or INT_NODATA if not a coastline
+int CGeomCell::nGetCoastline(void) const
+{
+   return m_nCoastlineID;
+}
+
+//! Marks this cell as a cliff cell
+void CGeomCell::SetAsCliff(bool const bNewFlag)
+{
+   m_bCliff = bNewFlag;
+}
+
+//! Returns true if this cell is marked as a cliff
+bool CGeomCell::bIsCliff(void) const
+{
+   return m_bCliff;
+}
+
+//! Marks this cell is flood line
+void CGeomCell::SetAsFloodline(bool const bNewFlag)
+{
+   m_bFloodLine = bNewFlag;
+}
+
+//! Returns true if the cell is flood line
+bool CGeomCell::bIsFloodline(void) const
+{
+   return m_bFloodLine;
+}
+
+//! Sets the ID number of the coast-normal profile which this cell is 'under'
+void CGeomCell::SetProfileID(int const nProfile)
+{
+   m_nProfileID = nProfile;
+}
+
+//! Gets the ID number of the coast-normal profile which this cell is 'under', or returns INT_NODATA
+int CGeomCell::nGetProfileID(void) const
+{
+   return m_nProfileID;
+}
+
+//! Returns true if this cell is 'under' a coastline normal
+bool CGeomCell::bIsProfile(void) const
+{
+   if (m_nProfileID == INT_NODATA)
+      return false;
+
+   return true;
+}
+
+//! Sets the coast ID number of the coast-normal profile which this cell is 'under'
+void CGeomCell::SetProfileCoastID(int const nCoast)
+{
+   m_nProfileCoastID = nCoast;
+}
+
+//! Gets the coast ID number of the coast-normal profile which this cell is 'under', or returns INT_NODATA
+int CGeomCell::nGetProfileCoastID(void) const
+{
+   return m_nProfileCoastID;
+}
+
+//! Sets the coast ID number, and the profile ID number, of the coast-normal profile which this cell is 'under'
+void CGeomCell::SetCoastAndProfileID(int const nProfileCoastID, int const nProfile)
+{
+   m_nProfileCoastID = nProfileCoastID;
+   m_nProfileID = nProfile;
+}
+
 //! Sets the global ID number of the polygon which 'contains' this cell
 void CGeomCell::SetPolygonID(int const nPolyID) { m_nPolygonID = nPolyID; }
 
-//! Returns the global ID number of the polygon which 'contains' this cell
-//! (returns INT_NODATA if the cell is not 'in' a polygon)
+//! Returns the global ID number of the polygon which 'contains' this cell (returns INT_NODATA if the cell is not 'in' a polygon)
 int CGeomCell::nGetPolygonID(void) const { return m_nPolygonID; }
 
 //! Sets the coast number of the polygon which 'contains' this cell
@@ -229,14 +330,14 @@ void CGeomCell::SetPolygonCoastID(int const nPolyCoastID)
    m_nPolygonCoastID = nPolyCoastID;
 }
 
-//! Returns the coast number of the polygon which 'contains' this cell (returns
-//! INT_NODATA if the cell is not 'in' a polygon)
-int CGeomCell::nGetPolygonCoastID(void) const { return m_nPolygonCoastID; }
+//! Returns the coast number of the polygon which 'contains' this cell (returns INT_NODATA if the cell is not 'in' a polygon)
+int CGeomCell::nGetPolygonCoastID(void) const
+{
+   return m_nPolygonCoastID;
+}
 
-//! Sets the coast number, and the polygon ID, of the polygon which 'contains'
-//! this cell
-void CGeomCell::SetCoastAndPolygonID(int const nPolyCoastID,
-                                     int const nPolyID)
+//! Sets the coast number, and the polygon ID, of the polygon which 'contains' this cell
+void CGeomCell::SetCoastAndPolygonID(int const nPolyCoastID, int const nPolyID)
 {
    m_nPolygonCoastID = nPolyCoastID;
    m_nPolygonID = nPolyID;
@@ -251,8 +352,7 @@ void CGeomCell::SetShadowZoneNumber(int const nCode)
 //! Gets the number of the shadow zone that this cell is in
 int CGeomCell::nGetShadowZoneNumber(void) const { return m_nShadowZoneNumber; }
 
-//! Returns true if this cell is in the shadow zone with number given by the
-//! parameter, false otherwise
+//! Returns true if this cell is in the shadow zone with number given by the parameter, false otherwise
 bool CGeomCell::bIsinThisShadowZone(int const nZone) const
 {
    if (m_nShadowZoneNumber == nZone)
@@ -299,13 +399,10 @@ void CGeomCell::SetWaveFlood(void) { m_bWaveFlood = true; }
 // return m_dTotLevel;
 // }
 
-//! Returns true if the top elevation of this cell (sediment plus any
-//! intervention) is less than this iteration's total water level
+//! Returns true if the top elevation of this cell (sediment plus any intervention) is less than this iteration's total water level
 bool CGeomCell::bIsElevLessThanWaterLevel(void) const
 {
-   return ((m_VdAllHorizonTopElev.back() + m_dInterventionHeight) <
-           (m_pGrid->pGetSim()->dGetThisIterTotWaterLevel() +
-            m_pGrid->pGetSim()->dGetThisIterSWL()));
+   return ((m_VdAllHorizonTopElev.back() + m_dInterventionHeight) < (m_pGrid->pGetSim()->dGetThisIterTotWaterLevel() + m_pGrid->pGetSim()->dGetThisIterSWL()));
 }
 
 // //! Set this cell as checked TODO What is this used for?
@@ -321,13 +418,22 @@ bool CGeomCell::bIsElevLessThanWaterLevel(void) const
 // }
 
 //! Set this cell as checked (flood switch)
-void CGeomCell::SetCheckFloodCell(void) { m_bCheckFloodCell = true; }
+void CGeomCell::SetCheckFloodCell(void)
+{
+   m_bCheckFloodCell = true;
+}
 
 //! Set the cell as not checked (flood switch)
-void CGeomCell::UnSetCheckFloodCell(void) { m_bCheckFloodCell = false; }
+void CGeomCell::UnSetCheckFloodCell(void)
+{
+   m_bCheckFloodCell = false;
+}
 
 //! Returns true if this cell is checked, false otherwise (flood switch)
-bool CGeomCell::bIsCellFloodCheck(void) const { return m_bCheckFloodCell; }
+bool CGeomCell::bIsCellFloodCheck(void) const
+{
+   return m_bCheckFloodCell;
+}
 
 //! Sets the down drift zone number
 void CGeomCell::SetDownDriftZoneNumber(int const nCode)
@@ -351,7 +457,10 @@ void CGeomCell::SetLocalConsSlope(double const dNewSlope)
 }
 
 //! Returns the local slope of the consolidated sediment only
-double CGeomCell::dGetLocalConsSlope(void) const { return m_dLocalConsSlope; }
+double CGeomCell::dGetLocalConsSlope(void) const
+{
+   return m_dLocalConsSlope;
+}
 
 //! Sets this cell's basement elevation
 void CGeomCell::SetBasementElev(double const dNewElev)
@@ -366,45 +475,50 @@ double CGeomCell::dGetBasementElev(void) const
 }
 
 //! Sets this cell's slope
-void CGeomCell::SetSlope(double const dNewSlope) { m_dSlope = dNewSlope; }
+void CGeomCell::SetSlope(double const dNewSlope)
+{
+   m_dSlope = dNewSlope;
+}
 
 //! Returns this cell's slope
-double CGeomCell::dGetSlope(void) const { return (m_dSlope); }
+double CGeomCell::dGetSlope(void) const
+{
+   return (m_dSlope);
+}
 
-//! Returns true if this cells's basement data is NODATA, is needed for
-//! irregularly-shaped DEMs
+//! Returns true if this cells's basement data is NODATA, is needed for irregularly-shaped DEMs
 bool CGeomCell::bBasementElevIsMissingValue(void) const
 {
-   if (bFPIsEqual(m_dBasementElevation,
-                  m_pGrid->pGetSim()->CSimulation::dGetMissingValue(),
-                  TOLERANCE))
+   if (bFPIsEqual(m_dBasementElevation, m_pGrid->pGetSim()->CSimulation::dGetMissingValue(), TOLERANCE))
       return true;
 
    return false;
 }
 
 //! Returns the depth of seawater on this cell
-double CGeomCell::dGetSeaDepth(void) const { return (m_dSeaDepth); }
+double CGeomCell::dGetSeaDepth(void) const
+{
+   return (m_dSeaDepth);
+}
 
 //! Returns the total depth of seawater on this cell
-double CGeomCell::dGetTotSeaDepth(void) const { return (m_dTotSeaDepth); }
+double CGeomCell::dGetTotSeaDepth(void) const
+{
+   return (m_dTotSeaDepth);
+}
 
-//! Sets this cell's suspended sediment depth equivalent, it also increments the
-//! running total of suspended sediment depth equivalent
+//! Sets this cell's suspended sediment depth equivalent, it also increments the running total of suspended sediment depth equivalent
 void CGeomCell::SetSuspendedSediment(double const dNewSedDepth)
 {
-   // Note no checks here to see if new equiv depth is sensible (e.g.
-   // non-negative)
+   // Note no checks here to see if new equiv depth is sensible (e.g. non-negative)
    m_dSuspendedSediment = dNewSedDepth;
    m_dTotSuspendedSediment += dNewSedDepth;
 }
 
-//! Adds to this cell's suspended sediment depth equivalent, it also increments
-//! the running total of suspended sediment depth equivalent
+//! Adds to this cell's suspended sediment depth equivalent, it also increments the running total of suspended sediment depth equivalent
 void CGeomCell::AddSuspendedSediment(double const dIncSedDepth)
 {
-   // Note no checks here to see if increment equiv depth is sensible (e.g.
-   // non-negative)
+   // Note no checks here to see if increment equiv depth is sensible (e.g. non-negative)
    m_dSuspendedSediment += dIncSedDepth;
    m_dTotSuspendedSediment += dIncSedDepth;
 }
@@ -421,9 +535,7 @@ double CGeomCell::dGetTotSuspendedSediment(void) const
    return (m_dTotSuspendedSediment);
 }
 
-//! Returns the index of the topmost sediment layer (layer 0 being the one just
-//! above basement) with non-zero thickness. If there is no such layer, it
-//! returns NO_NONZERO_THICKNESS_LAYERS
+//! Returns the index of the topmost sediment layer (layer 0 being the one just above basement) with non-zero thickness. If there is no such layer, it returns NO_NONZERO_THICKNESS_LAYERS
 int CGeomCell::nGetTopNonZeroLayerAboveBasement(void) const
 {
    if (m_VLayerAboveBasement.empty())
@@ -440,8 +552,7 @@ int CGeomCell::nGetTopNonZeroLayerAboveBasement(void) const
    return nTop;
 }
 
-//! Returns the index of the topmost sediment layer (layer 0 being the one just
-//! above basement), which could have zero thickness
+//! Returns the index of the topmost sediment layer (layer 0 being the one just above basement), which could have zero thickness
 int CGeomCell::nGetTopLayerAboveBasement(void) const
 {
    if (m_VLayerAboveBasement.empty())
@@ -450,8 +561,7 @@ int CGeomCell::nGetTopLayerAboveBasement(void) const
    return static_cast<int>(m_VLayerAboveBasement.size()) - 1;
 }
 
-//! Returns the elevation of the top of the consolidated sediment only, for a
-//! given layer (layer 0 being the one just above basement)
+//! Returns the elevation of the top of the consolidated sediment only, for a given layer (layer 0 being the one just above basement)
 double CGeomCell::dGetConsSedTopForLayerAboveBasement(int const nLayer) const
 {
    // Note no check to see if nLayer < m_VLayerAboveBasement.size()
@@ -468,17 +578,15 @@ double CGeomCell::dGetConsSedTopForLayerAboveBasement(int const nLayer) const
    return dTopElev;
 }
 
-//! Return a reference to the Nth sediment layer (layer 0 being just above
-//! basement)
+//! Return a reference to the Nth sediment layer (layer 0 being just above basement)
 CRWCellLayer *CGeomCell::pGetLayerAboveBasement(int const nLayer)
 {
    // TODO 055 No check that nLayer < size()
    return &m_VLayerAboveBasement[nLayer];
 }
 
-// //! Returns the volume-equivalent elevation of the sediment's top surface for
-// this cell (i.e. if there is a cliff notch, then lower the elevation by the
-// notch's volume) double CGeomCell::dGetVolEquivSedTopElev(void) const
+// //! Returns the volume-equivalent elevation of the sediment's top surface for this cell (i.e. if there is a cliff notch, then lower the elevation by the notch's volume)
+// double CGeomCell::dGetVolEquivSedTopElev(void) const
 // {
 // double dTopElev = m_dBasementElevation;
 // for (unsigned int n = 0; n < m_VLayerAboveBasement.size(); n++)
@@ -492,35 +600,28 @@ CRWCellLayer *CGeomCell::pGetLayerAboveBasement(int const nLayer)
 // return dTopElev;
 // }
 
-//! Returns the true elevation of the sediment's top surface for this cell (if
-//! there is a cliff notch, ignore the missing volume)
+//! Returns the true elevation of the sediment's top surface for this cell (if there is a cliff notch, ignore the missing volume)
 double CGeomCell::dGetSedimentTopElev(void) const
 {
    return m_VdAllHorizonTopElev.back();
 }
 
-//! Returns the true elevation of the sediment's top surface for this cell (if
-//! there is a cliff notch, ignore the missing volume) plus the height of any
-//! intervention
+//! Returns the true elevation of the sediment's top surface for this cell (if there is a cliff notch, ignore the missing volume) plus the height of any intervention
 double CGeomCell::dGetSedimentPlusInterventionTopElev(void) const
 {
    return m_VdAllHorizonTopElev.back() + m_dInterventionHeight;
 }
 
-//! Returns the highest elevation of the cell, which is either the sediment top
-//! elevation plus intervention height, or the sea surface elevation
+//! Returns the highest elevation of the cell, which is either the sediment top elevation plus intervention height, or the sea surface elevation
 double CGeomCell::dGetOverallTopElev(void) const
 {
    return m_VdAllHorizonTopElev.back() + m_dInterventionHeight + m_dSeaDepth;
 }
 
-//! Returns true if the elevation of the sediment top surface for this cell
-//! (plus any intervention) is less than the grid's this-timestep still water
-//! elevation
+//! Returns true if the elevation of the sediment top surface for this cell (plus any intervention) is less than the grid's this-timestep still water elevation
 bool CGeomCell::bIsInundated(void) const
 {
-   return ((m_VdAllHorizonTopElev.back() + m_dInterventionHeight) <
-           m_pGrid->pGetSim()->CSimulation::dGetThisIterSWL());
+   return ((m_VdAllHorizonTopElev.back() + m_dInterventionHeight) < m_pGrid->pGetSim()->CSimulation::dGetThisIterSWL());
 }
 
 //! Returns the sea surface elevation at current iteration
@@ -558,8 +659,7 @@ double CGeomCell::dGetThisIterTotWaterLevel(void) const
 // return false;
 // }
 
-//! Returns the total thickness of fine consolidated sediment on this cell,
-//! minus the depth-equivalent of any cliff notch
+//! Returns the total thickness of fine consolidated sediment on this cell, minus the depth-equivalent of any cliff notch
 double CGeomCell::dGetTotConsFineThickConsiderNotch(void) const
 {
    double dTotThick = 0;
@@ -587,8 +687,7 @@ double CGeomCell::dGetTotUnconsFine(void) const
    return dTotThick;
 }
 
-//! Returns the total thickness of sand-sized consolidated sediment on this
-//! cell, minus the depth-equivalent of any cliff notch
+//! Returns the total thickness of sand-sized consolidated sediment on this cell, minus the depth-equivalent of any cliff notch
 double CGeomCell::dGetTotConsSandThickConsiderNotch(void) const
 {
    double dTotThick = 0;
@@ -605,8 +704,7 @@ double CGeomCell::dGetTotConsSandThickConsiderNotch(void) const
    return dTotThick;
 }
 
-//! Returns the total thickness of sand-sized unconsolidated sediment on this
-//! cell
+//! Returns the total thickness of sand-sized unconsolidated sediment on this cell
 double CGeomCell::dGetTotUnconsSand(void) const
 {
    double dTotThick = 0;
@@ -617,8 +715,7 @@ double CGeomCell::dGetTotUnconsSand(void) const
    return dTotThick;
 }
 
-//! Returns the total thickness of coarse consolidated sediment on this cell,
-//! minus the depth-equivalent of any cliff notch
+//! Returns the total thickness of coarse consolidated sediment on this cell, minus the depth-equivalent of any cliff notch
 double CGeomCell::dGetTotConsCoarseThickConsiderNotch(void) const
 {
    double dTotThick = 0;
@@ -646,8 +743,7 @@ double CGeomCell::dGetTotUnconsCoarse(void) const
    return dTotThick;
 }
 
-//! Returns the total thickness of consolidated sediment (all size classes) on
-//! this cell
+//! Returns the total thickness of consolidated sediment (all size classes) on this cell
 double CGeomCell::dGetTotConsThickness(void) const
 {
    double dTotThick = 0;
@@ -658,8 +754,7 @@ double CGeomCell::dGetTotConsThickness(void) const
    return dTotThick;
 }
 
-//! Returns the total thickness of unconsolidated sediment (all size classes) on
-//! this cell
+//! Returns the total thickness of unconsolidated sediment (all size classes) on this cell
 double CGeomCell::dGetTotUnconsThickness(void) const
 {
    double dTotThick = 0;
@@ -683,29 +778,22 @@ void CGeomCell::AppendLayers(int const nLayer)
       m_VLayerAboveBasement.push_back(CRWCellLayer());
 }
 
-//! For this cell, calculates the elevation of the top of every layer, and the
-//! d50 for the topmost unconsolidated sediment layer
+//! For this cell, calculates the elevation of the top of every layer, and the d50 for the topmost unconsolidated sediment layer
 void CGeomCell::CalcAllLayerElevsAndD50(void)
 {
    m_VdAllHorizonTopElev.clear();
-   m_VdAllHorizonTopElev.push_back(
-       m_dBasementElevation); // Elevation of top of the basement
+   m_VdAllHorizonTopElev.push_back(m_dBasementElevation);      // Elevation of top of the basement
 
    // Calculate the elevation of the top of all other layers
    int m = 0;
 
    for (unsigned int n = 0; n < m_VLayerAboveBasement.size(); n++)
-      m_VdAllHorizonTopElev.push_back(
-          m_VLayerAboveBasement[n].dGetTotalThickness() +
-          m_VdAllHorizonTopElev[m++]); // Elevation of top of layer n
+      m_VdAllHorizonTopElev.push_back(m_VLayerAboveBasement[n].dGetTotalThickness() + m_VdAllHorizonTopElev[m++]); // Elevation of top of layer n
 
-   // Now calculate the d50 of the topmost unconsolidated sediment layer with
-   // non-zero thickness. If there is no unconsolidated sediment, m_dUnconsD50 is
-   // set to DBL_NODATA
+   // Now calculate the d50 of the topmost unconsolidated sediment layer with non-zero thickness. If there is no unconsolidated sediment, m_dUnconsD50 is set to DBL_NODATA
    m_dUnconsD50 = DBL_NODATA;
 
-   for (int n = static_cast<int>(m_VLayerAboveBasement.size()) - 1; n >= 0;
-        n--)
+   for (int n = static_cast<int>(m_VLayerAboveBasement.size()) - 1; n >= 0; n--)
    {
       double const dUnconsThick = m_VLayerAboveBasement[n].dGetUnconsolidatedThickness();
 
@@ -727,15 +815,10 @@ void CGeomCell::CalcAllLayerElevsAndD50(void)
    }
 }
 
-//! Given an elevation, this finds the index of the layer that contains that
-//! elevation (layer 0 being the first above the basement). Note that the
-//! elevation cannot exactly equal the elevation of the layer's top surface
-//! (this causes problems with e.g. cliff notches, which extend above this
-//! elevation)
+//! Given an elevation, this finds the index of the layer that contains that elevation (layer 0 being the first above the basement). Note that the elevation cannot exactly equal the elevation of the layer's top surface (this causes problems with e.g. cliff notches, which extend above this elevation)
 int CGeomCell::nGetLayerAtElev(double const dElev) const
 {
-   /*! Returns ELEV_IN_BASEMENT if in basement, ELEV_ABOVE_SEDIMENT_TOP if higher
-    * than or equal to sediment top, or layer number (0 to n),  */
+   /*! Returns ELEV_IN_BASEMENT if in basement, ELEV_ABOVE_SEDIMENT_TOP if higher than or equal to sediment top, or layer number (0 to n),  */
    if (dElev < m_VdAllHorizonTopElev[0])
       return ELEV_IN_BASEMENT;
 
@@ -763,8 +846,7 @@ double CGeomCell::dCalcLayerElev(const int nLayer)
    return dTopElev;
 }
 
-//! Set potential (unconstrained) shore platform erosion and increment total
-//! shore platform potential erosion
+//! Set potential (unconstrained) shore platform erosion and increment total shore platform potential erosion
 void CGeomCell::SetPotentialPlatformErosion(double const dPotentialIn)
 {
    m_dPotentialPlatformErosionThisIter = dPotentialIn;
@@ -783,8 +865,7 @@ double CGeomCell::dGetTotPotentialPlatformErosion(void) const
    return m_dTotPotentialPlatformErosion;
 }
 
-//! Set this-timestep actual (constrained) shore platform erosion and increment
-//! total actual shore platform erosion
+//! Set this-timestep actual (constrained) shore platform erosion and increment total actual shore platform erosion
 void CGeomCell::SetActualPlatformErosion(double const dThisActualErosion)
 {
    m_dActualPlatformErosionThisIter = dThisActualErosion;
@@ -803,39 +884,49 @@ double CGeomCell::dGetTotActualPlatformErosion(void) const
    return m_dTotActualPlatformErosion;
 }
 
-//! Returns the depth of seawater on this cell if the sediment top is < SWL, or
-//! zero
+//! Returns the depth of seawater on this cell if the sediment top is < SWL, or zero
 void CGeomCell::SetSeaDepth(void)
 {
-   m_dSeaDepth = tMax(m_pGrid->pGetSim()->CSimulation::dGetThisIterSWL() -
-                          (m_VdAllHorizonTopElev.back() + m_dInterventionHeight),
-                      0.0);
+   m_dSeaDepth = tMax(m_pGrid->pGetSim()->CSimulation::dGetThisIterSWL() - (m_VdAllHorizonTopElev.back() + m_dInterventionHeight), 0.0);
 }
 
 //! Initialise values for this cell
 void CGeomCell::InitCell(void)
 {
-   m_bInContiguousSea = m_bInContiguousFlood = m_bCoastline = m_bFloodLine =
-       m_bIsInActiveZone =
-           // m_bEstimated =
-       m_bShadowBoundary = m_bPossibleCoastStartCell =
-           m_bPossibleFloodStartCell = m_bWaveFlood =
-               // m_bCheckCell =
-       m_bCheckFloodCell = false;
+   m_bInContiguousSea =
+   m_bInContiguousFlood =
+   m_bFloodLine =
+   m_bIsInActiveZone =
+   // m_bEstimated =
+   m_bShadowBoundary =
+   m_bPossibleCoastStartCell =
+   m_bPossibleFloodStartCell =
+   m_bWaveFlood =
+   // m_bCheckCell =
+   m_bCheckFloodCell = false;
 
-   m_nPolygonID = m_nPolygonCoastID = m_nCoastlineNormal = INT_NODATA;
+   m_nCoastlineID =
+   m_nPolygonID =
+   m_nPolygonCoastID =
+   m_nProfileID = INT_NODATA;
 
-   m_nShadowZoneNumber = m_nDownDriftZoneNumber = 0;
+   m_nShadowZoneNumber =
+   m_nDownDriftZoneNumber = 0;
 
-   m_dLocalConsSlope = m_dPotentialPlatformErosionThisIter =
-       m_dActualPlatformErosionThisIter = m_dCliffCollapseFineThisIter =
-           m_dCliffCollapseSandThisIter = m_dCliffCollapseCoarseThisIter =
-               m_dTalusSandDepositionThisIter =
-                   m_dTalusCoarseDepositionThisIter =
-                       m_dPotentialBeachErosionThisIter =
-                           m_dActualBeachErosionThisIter =
-                               m_dBeachDepositionThisIter = m_dSeaDepth =
-                                   m_dWaveHeight = m_dWaveAngle = 0;
+   m_dLocalConsSlope =
+   m_dPotentialPlatformErosionThisIter =
+   m_dActualPlatformErosionThisIter =
+   m_dCliffCollapseFineThisIter =
+   m_dCliffCollapseSandThisIter =
+   m_dCliffCollapseCoarseThisIter =
+   m_dTalusSandDepositionThisIter =
+   m_dTalusCoarseDepositionThisIter =
+   m_dPotentialBeachErosionThisIter =
+   m_dActualBeachErosionThisIter =
+   m_dBeachDepositionThisIter =
+   m_dSeaDepth =
+   m_dWaveHeight =
+   m_dWaveAngle = 0;
 
    m_dBeachProtectionFactor = DBL_NODATA;
 
@@ -850,9 +941,7 @@ void CGeomCell::InitCell(void)
       return;
    }
 
-   m_VLayerAboveBasement[nThisLayer]
-       .pGetUnconsolidatedSediment()
-       ->InitThisIterSedimentInputAll();
+   m_VLayerAboveBasement[nThisLayer].pGetUnconsolidatedSediment()->InitThisIterSedimentInputAll();
 }
 
 //! Sets the wave height on this cell, also increments the total wave height
@@ -866,13 +955,18 @@ void CGeomCell::SetWaveHeight(double const dWaveHeight)
 }
 
 //! Returns the wave height on this cell
-double CGeomCell::dGetWaveHeight(void) const { return m_dWaveHeight; }
+double CGeomCell::dGetWaveHeight(void) const
+{
+   return m_dWaveHeight;
+}
 
 //! Returns the total wave height on this cell
-double CGeomCell::dGetTotWaveHeight(void) const { return m_dTotWaveHeight; }
+double CGeomCell::dGetTotWaveHeight(void) const
+{
+   return m_dTotWaveHeight;
+}
 
-//! Sets the wave orientation on this cell, also increments the total wave
-//! orientation
+//! Sets the wave orientation on this cell, also increments the total wave orientation
 void CGeomCell::SetWaveAngle(double const dWaveAngle)
 {
    m_dWaveAngle = dWaveAngle;
@@ -880,10 +974,16 @@ void CGeomCell::SetWaveAngle(double const dWaveAngle)
 }
 
 //! Returns the wave orientation on this cell
-double CGeomCell::dGetWaveAngle(void) const { return m_dWaveAngle; }
+double CGeomCell::dGetWaveAngle(void) const
+{
+   return m_dWaveAngle;
+}
 
 //! Returns the total wave orientation on this cell
-double CGeomCell::dGetTotWaveAngle(void) const { return m_dTotWaveAngle; }
+double CGeomCell::dGetTotWaveAngle(void) const
+{
+   return m_dTotWaveAngle;
+}
 
 //! Sets the deep water wave height on this cell
 void CGeomCell::SetCellDeepWaterWaveHeight(double const dWaveHeight)
@@ -921,8 +1021,7 @@ double CGeomCell::dGetCellDeepWaterWavePeriod(void) const
    return m_dDeepWaterWavePeriod;
 }
 
-//! Sets wave height to the deep water wave height value, and sets wave
-//! orientation to the deep water wave orientation value
+//! Sets wave height to the deep water wave height value, and sets wave orientation to the deep water wave orientation value
 void CGeomCell::SetWaveValuesToDeepWaterWaveValues(void)
 {
    m_dWaveHeight = m_dDeepWaterWaveHeight;
@@ -942,11 +1041,8 @@ double CGeomCell::dGetBeachProtectionFactor(void) const
    return m_dBeachProtectionFactor;
 }
 
-//! Increments the fine, sand, and coarse depths of this-timestep cliff collapse
-//! on this cell, also increments the totals
-void CGeomCell::IncrCliffCollapseErosion(double const dFineDepth,
-                                         double const dSandDepth,
-                                         double const dCoarseDepth)
+//! Increments the fine, sand, and coarse depths of this-timestep cliff collapse on this cell, also increments the totals
+void CGeomCell::IncrCliffCollapseErosion(double const dFineDepth, double const dSandDepth, double const dCoarseDepth)
 {
    m_dCliffCollapseFineThisIter += dFineDepth;
    m_dCliffCollapseSandThisIter += dSandDepth;
@@ -957,94 +1053,81 @@ void CGeomCell::IncrCliffCollapseErosion(double const dFineDepth,
    m_dTotCoarseCliffCollapse += dCoarseDepth;
 }
 
-//! Returns the depth of this-timestep fine-sized sediment cliff collapse on
-//! this cell
+//! Returns the depth of this-timestep fine-sized sediment cliff collapse on this cell
 double CGeomCell::dGetThisIterCliffCollapseErosionFine(void) const
 {
    return m_dCliffCollapseFineThisIter;
 }
 
-//! Returns the depth of this-timestep sand-sized sediment cliff collapse on
-//! this cell
+//! Returns the depth of this-timestep sand-sized sediment cliff collapse on this cell
 double CGeomCell::dGetThisIterCliffCollapseErosionSand(void) const
 {
    return m_dCliffCollapseSandThisIter;
 }
 
-//! Returns the depth of this-timestep coarse-sized sediment cliff collapse on
-//! this cell
+//! Returns the depth of this-timestep coarse-sized sediment cliff collapse on this cell
 double CGeomCell::dGetThisIterCliffCollapseErosionCoarse(void) const
 {
    return m_dCliffCollapseCoarseThisIter;
 }
 
-//! Returns the running total depth of fine-sized sediment eroded by cliff
-//! collapse on this cell
+//! Returns the running total depth of fine-sized sediment eroded by cliff collapse on this cell
 double CGeomCell::dGetTotCliffCollapseFine(void) const
 {
    return m_dTotFineCliffCollapse;
 }
 
-//! Returns the running total depth of sand-sized sediment eroded by cliff
-//! collapse on this cell
+//! Returns the running total depth of sand-sized sediment eroded by cliff collapse on this cell
 double CGeomCell::dGetTotCliffCollapseSand(void) const
 {
    return m_dTotSandCliffCollapse;
 }
 
-//! Returns the running total depth of coarse-sized sediment eroded by cliff
-//! collapse on this cell
+//! Returns the running total depth of coarse-sized sediment eroded by cliff collapse on this cell
 double CGeomCell::dGetTotCliffCollapseCoarse(void) const
 {
    return m_dTotCoarseCliffCollapse;
 }
 
-//! Increments the depth of this-timestep sand-sized talus from cliff collapse
-//! on this cell, also increments the total
+//! Increments the depth of this-timestep sand-sized talus from cliff collapse on this cell, also increments the total
 void CGeomCell::AddSandTalusDeposition(double const dDepth)
 {
    m_dTalusSandDepositionThisIter += dDepth;
    m_dTotTalusSandDeposition += dDepth;
 }
 
-//! Increments the depth of this-timestep coarse-sized talus from cliff collapse
-//! on this cell, also increments the total
+//! Increments the depth of this-timestep coarse-sized talus from cliff collapse on this cell, also increments the total
 void CGeomCell::AddCoarseTalusDeposition(double const dDepth)
 {
    m_dTalusCoarseDepositionThisIter += dDepth;
    m_dTotTalusCoarseDeposition += dDepth;
 }
 
-//! Returns the depth of this-timestep sand talus deposition from cliff collapse
-//! on this cell
+//! Returns the depth of this-timestep sand talus deposition from cliff collapse on this cell
 double CGeomCell::dGetThisIterCliffCollapseSandTalusDeposition(void) const
 {
    return m_dTalusSandDepositionThisIter;
 }
 
-//! Retuns the depth of this-timestep coarse talus deposition from cliff
-//! collapse on this cell
+//! Retuns the depth of this-timestep coarse talus deposition from cliff collapse on this cell
 double CGeomCell::dGetThisIterCliffCollapseCoarseTalusDeposition(void) const
 {
    return m_dTalusCoarseDepositionThisIter;
 }
 
-//! Returns the total depth of sand talus deposition from cliff collapse on this
-//! cell
+//! Returns the total depth of sand talus deposition from cliff collapse on this cell
 double CGeomCell::dGetTotSandTalusDeposition(void) const
 {
    return m_dTotTalusSandDeposition;
 }
 
-//! Returns the total depth of coarse talus deposition from cliff collapse on
-//! this cell
+//! Returns the total depth of coarse talus deposition from cliff collapse on this cell
 double CGeomCell::dGetTotCoarseTalusDeposition(void) const
 {
    return m_dTotTalusCoarseDeposition;
 }
 
-//! Set potential (unconstrained) beach erosion and increment total beach
-//! potential erosion
+//! Set potential (unconstrained) beach erosion and increment total beach potential erosion
 void CGeomCell::SetPotentialBeachErosion(double const dPotentialIn)
 {
    m_dPotentialBeachErosionThisIter = dPotentialIn;
@@ -1063,8 +1146,7 @@ double CGeomCell::dGetTotPotentialBeachErosion(void) const
    return m_dTotPotentialBeachErosion;
 }
 
-//! Set this-timestep actual (supply-constrained) beach erosion and increment
-//! total actual beach erosion
+//! Set this-timestep actual (supply-constrained) beach erosion and increment total actual beach erosion
 void CGeomCell::SetActualBeachErosion(double const dThisActualErosion)
 {
    m_dActualBeachErosionThisIter = dThisActualErosion;
@@ -1089,8 +1171,7 @@ double CGeomCell::dGetTotActualBeachErosion(void) const
 // return (m_dActualBeachErosionThisIter > 0 ? true : false);
 // }
 
-//! Increment this-timestep beach deposition, also increment total beach
-//! deposition
+//! Increment this-timestep beach deposition, also increment total beach deposition
 void CGeomCell::IncrBeachDeposition(double const dThisDeposition)
 {
    m_dBeachDepositionThisIter += dThisDeposition;
@@ -1115,8 +1196,7 @@ double CGeomCell::dGetTotBeachDeposition(void) const
 // return (m_dBeachDepositionThisIter > 0 ? true : false);
 // }
 
-//! Returns true only if this cell has had no deposition or erosion this
-//! timestep
+//! Returns true only if this cell has had no deposition or erosion this timestep
 bool CGeomCell::bBeachErosionOrDepositionThisIter(void) const
 {
    if ((m_dActualBeachErosionThisIter > 0) || (m_dBeachDepositionThisIter > 0))
@@ -1126,7 +1206,10 @@ bool CGeomCell::bBeachErosionOrDepositionThisIter(void) const
 }
 
 //! Returns the D50 of unconsolidated sediment on this cell
-double CGeomCell::dGetUnconsD50(void) const { return m_dUnconsD50; }
+double CGeomCell::dGetUnconsD50(void) const
+{
+   return m_dUnconsD50;
+}
 
 //! Sets the landform category and subcategory for an intervention
 void CGeomCell::SetInterventionClass(int const nSubCatCode)
@@ -1173,8 +1256,7 @@ double CGeomCell::dGetInterventionHeight(void) const
    return m_dInterventionHeight;
 }
 
-//! Returns the elevation of the top of the intervention, assuming it rests on
-//! the sediment-top surface
+//! Returns the elevation of the top of the intervention, assuming it rests on the sediment-top surface
 double CGeomCell::dGetInterventionTopElev(void) const
 {
    return m_VdAllHorizonTopElev.back() + m_dInterventionHeight;

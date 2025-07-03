@@ -101,7 +101,7 @@ int CSimulation::nReadRasterBasementDEM(void)
    }
 
    // Use GDAL to create a dataset object, which then opens the DEM file
-   GDALDataset *pGDALDataset = static_cast<GDALDataset *>(GDALOpen(m_strInitialBasementDEMFile.c_str(), GA_ReadOnly));
+   GDALDataset *pGDALDataset = static_cast<GDALDataset*>(GDALOpen(m_strInitialBasementDEMFile.c_str(), GA_ReadOnly));
 
    if (NULL == pGDALDataset)
    {
@@ -587,7 +587,7 @@ int CSimulation::nReadRasterGISFile(int const nDataItem, int const nLayer)
    if (!strGISFile.empty())
    {
       // We do have a filename, so use GDAL to create a dataset object, which then opens the GIS file
-      GDALDataset *pGDALDataset = static_cast<GDALDataset *>(GDALOpen(strGISFile.c_str(), GA_ReadOnly));
+      GDALDataset *pGDALDataset = static_cast<GDALDataset*>(GDALOpen(strGISFile.c_str(), GA_ReadOnly));
 
       if (NULL == pGDALDataset)
       {
@@ -1728,7 +1728,7 @@ bool CSimulation::bWriteRasterGISFile(int const nDataItem, string const *strPlot
             break;
 
          case (RASTER_PLOT_WAVE_FLOOD_LINE):
-            dTmp = (m_pRasterGrid->m_Cell[nX][nY].bIsFloodLine() ? 1 : 0);
+            dTmp = (m_pRasterGrid->m_Cell[nX][nY].bIsFloodline() ? 1 : 0);
             break;
          }
 

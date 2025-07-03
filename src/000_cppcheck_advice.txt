@@ -1,19 +1,25 @@
 2d_shape.cpp:44:0: style: The function 'Clear' is never used. [unusedFunction]
 void CA2DShape::Clear(void)
 ^
-cell.cpp:166:0: style: The function 'bIsPossibleFloodStartCell' is never used. [unusedFunction]
+cell.cpp:220:0: style: The function 'bIsPossibleFloodStartCell' is never used. [unusedFunction]
 bool CGeomCell::bIsPossibleFloodStartCell(void) const
 ^
-cell.cpp:220:0: style: The function 'SetPolygonID' is never used. [unusedFunction]
+cell.cpp:273:0: style: The function 'SetProfileID' is never used. [unusedFunction]
+void CGeomCell::SetProfileID(int const nProfile)
+^
+cell.cpp:294:0: style: The function 'SetProfileCoastID' is never used. [unusedFunction]
+void CGeomCell::SetProfileCoastID(int const nCoast)
+^
+cell.cpp:313:0: style: The function 'SetPolygonID' is never used. [unusedFunction]
 void CGeomCell::SetPolygonID(int const nPolyID) { m_nPolygonID = nPolyID; }
 ^
-cell.cpp:227:0: style: The function 'SetPolygonCoastID' is never used. [unusedFunction]
+cell.cpp:319:0: style: The function 'SetPolygonCoastID' is never used. [unusedFunction]
 void CGeomCell::SetPolygonCoastID(int const nPolyCoastID)
 ^
-cell.cpp:234:0: style: The function 'nGetPolygonCoastID' is never used. [unusedFunction]
-int CGeomCell::nGetPolygonCoastID(void) const { return m_nPolygonCoastID; }
+cell.cpp:325:0: style: The function 'nGetPolygonCoastID' is never used. [unusedFunction]
+int CGeomCell::nGetPolygonCoastID(void) const
 ^
-cell.cpp:274:0: style: The function 'SetWaveFlood' is never used. [unusedFunction]
+cell.cpp:365:0: style: The function 'SetWaveFlood' is never used. [unusedFunction]
 void CGeomCell::SetWaveFlood(void) { m_bWaveFlood = true; }
 ^
 cell_sediment.cpp:95:0: style: The function 'AddFineDepth' is never used. [unusedFunction]
@@ -67,7 +73,7 @@ CGeom2DPoint CSimulation::PtFindPointInPolygon(vector<CGeom2DPoint> const* pPtPo
 gis_utils.cpp:677:0: style: The function 'PtGetPerpendicular' is never used. [unusedFunction]
 CGeom2DPoint CSimulation::PtGetPerpendicular(CGeom2DPoint const *PtStart,
 ^
-multi_line.cpp:130:0: style: The function 'RemoveLineSegment' is never used. [unusedFunction]
+multi_line.cpp:131:0: style: The function 'RemoveLineSegment' is never used. [unusedFunction]
 void CGeomMultiLine::RemoveLineSegment(int const nSegment)
 ^
 profile.cpp:189:0: style: The function 'bTooShort' is never used. [unusedFunction]

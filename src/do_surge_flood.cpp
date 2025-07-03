@@ -358,7 +358,7 @@ int CSimulation::nTraceFloodCoastLine(unsigned int const nTraceFromStartCellInde
    CGeomILine ILTempGridCRS;
 
    // Mark the start cell as coast and add it to the vector object
-   m_pRasterGrid->m_Cell[nStartX][nStartY].SetAsFloodLine(true);
+   m_pRasterGrid->m_Cell[nStartX][nStartY].SetAsFloodline(true);
    CGeom2DIPoint const PtiStart(nStartX, nStartY);
    ILTempGridCRS.Append(&PtiStart);
 
@@ -657,20 +657,20 @@ int CSimulation::nTraceFloodCoastLine(unsigned int const nTraceFromStartCellInde
             bAtCoast = true;
 
             // Has the current cell already marked been marked as a coast cell?
-            if (!m_pRasterGrid->m_Cell[nX][nY].bIsFloodLine())
+            if (! m_pRasterGrid->m_Cell[nX][nY].bIsFloodline())
             {
                // Not already marked, is this an intervention cell with the top above SWL?
                if ((bIsInterventionCell(nX, nY)) && (!m_pRasterGrid->m_Cell[nX][nY].bIsElevLessThanWaterLevel()))
                {
                   // It is, so mark as coast and add it to the vector object
-                  m_pRasterGrid->m_Cell[nX][nY].SetAsFloodLine(true);
+                  m_pRasterGrid->m_Cell[nX][nY].SetAsFloodline(true);
                   ILTempGridCRS.Append(&Pti);
                }
 
                else if (!m_pRasterGrid->m_Cell[nX][nY].bIsElevLessThanWaterLevel())
                {
                   // The sediment top is above SWL so mark as coast and add it to the vector object
-                  m_pRasterGrid->m_Cell[nX][nY].SetAsFloodLine(true);
+                  m_pRasterGrid->m_Cell[nX][nY].SetAsFloodline(true);
                   ILTempGridCRS.Append(&Pti);
                }
             }
@@ -697,21 +697,21 @@ int CSimulation::nTraceFloodCoastLine(unsigned int const nTraceFromStartCellInde
             // Sea is in front, so we are on the coast
             bAtCoast = true;
 
-            // Has the current cell already marked been marked as a coast cell?
-            if (!m_pRasterGrid->m_Cell[nX][nY].bIsFloodLine())
+            // Has the current cell already marked been marked as a floodline cell?
+            if (! m_pRasterGrid->m_Cell[nX][nY].bIsFloodline())
             {
                // Not already marked, is this an intervention cell with the top above SWL?
                if ((bIsInterventionCell(nX, nY)) && (!m_pRasterGrid->m_Cell[nX][nY].bIsElevLessThanWaterLevel()))
                {
                   // It is, so mark as coast and add it to the vector object
-                  m_pRasterGrid->m_Cell[nX][nY].SetAsFloodLine(true);
+                  m_pRasterGrid->m_Cell[nX][nY].SetAsFloodline(true);
                   ILTempGridCRS.Append(&Pti);
                }
 
                else if (!m_pRasterGrid->m_Cell[nX][nY].bIsElevLessThanWaterLevel())
                {
                   // The sediment top is above SWL so mark as coast and add it to the vector object
-                  m_pRasterGrid->m_Cell[nX][nY].SetAsFloodLine(true);
+                  m_pRasterGrid->m_Cell[nX][nY].SetAsFloodline(true);
                   ILTempGridCRS.Append(&Pti);
                }
             }
@@ -737,21 +737,21 @@ int CSimulation::nTraceFloodCoastLine(unsigned int const nTraceFromStartCellInde
             // There is sea on the anti-seaward side, so we are on the coast
             bAtCoast = true;
 
-            // Has the current cell already marked been marked as a coast cell?
-            if (!m_pRasterGrid->m_Cell[nX][nY].bIsFloodLine())
+            // Has the current cell already marked been marked as a floodline cell?
+            if (! m_pRasterGrid->m_Cell[nX][nY].bIsFloodline())
             {
                // Not already marked, is this an intervention cell with the top above SWL?
                if ((bIsInterventionCell(nX, nY)) && (!m_pRasterGrid->m_Cell[nX][nY].bIsElevLessThanWaterLevel()))
                {
                   // It is, so mark as coast and add it to the vector object
-                  m_pRasterGrid->m_Cell[nX][nY].SetAsFloodLine(true);
+                  m_pRasterGrid->m_Cell[nX][nY].SetAsFloodline(true);
                   ILTempGridCRS.Append(&Pti);
                }
 
                else if (!m_pRasterGrid->m_Cell[nX][nY].bIsElevLessThanWaterLevel())
                {
                   // The sediment top is above SWL so mark as coast and add it to the vector object
-                  m_pRasterGrid->m_Cell[nX][nY].SetAsFloodLine(true);
+                  m_pRasterGrid->m_Cell[nX][nY].SetAsFloodline(true);
                   ILTempGridCRS.Append(&Pti);
                }
             }
@@ -797,7 +797,7 @@ int CSimulation::nTraceFloodCoastLine(unsigned int const nTraceFromStartCellInde
 
       // Unmark these cells as coast cells
       for (int n = 0; n < nCoastSize; n++)
-         m_pRasterGrid->m_Cell[ILTempGridCRS[n].nGetX()][ILTempGridCRS[n].nGetY()].SetAsFloodLine(false);
+         m_pRasterGrid->m_Cell[ILTempGridCRS[n].nGetX()][ILTempGridCRS[n].nGetY()].SetAsFloodline(false);
 
       return RTN_ERR_TRACING_COAST;
    }
@@ -817,7 +817,7 @@ int CSimulation::nTraceFloodCoastLine(unsigned int const nTraceFromStartCellInde
 
       // Unmark these cells as coast cells
       for (int n = 0; n < nCoastSize; n++)
-         m_pRasterGrid->m_Cell[ILTempGridCRS[n].nGetX()][ILTempGridCRS[n].nGetY()].SetAsFloodLine(false);
+         m_pRasterGrid->m_Cell[ILTempGridCRS[n].nGetX()][ILTempGridCRS[n].nGetY()].SetAsFloodline(false);
 
       return RTN_ERR_TRACING_COAST;
    }
@@ -836,7 +836,7 @@ int CSimulation::nTraceFloodCoastLine(unsigned int const nTraceFromStartCellInde
 
       // Unmark these cells as coast cells
       for (int n = 0; n < nCoastSize; n++)
-         m_pRasterGrid->m_Cell[ILTempGridCRS[n].nGetX()][ILTempGridCRS[n].nGetY()].SetAsFloodLine(false);
+         m_pRasterGrid->m_Cell[ILTempGridCRS[n].nGetX()][ILTempGridCRS[n].nGetY()].SetAsFloodline(false);
 
       return RTN_ERR_TRACING_COAST;
    }
@@ -858,7 +858,7 @@ int CSimulation::nTraceFloodCoastLine(unsigned int const nTraceFromStartCellInde
 
       // Unmark these cells as coast cells
       for (int n = 0; n < nCoastSize; n++)
-         m_pRasterGrid->m_Cell[ILTempGridCRS[n].nGetX()][ILTempGridCRS[n].nGetY()].SetAsFloodLine(false);
+         m_pRasterGrid->m_Cell[ILTempGridCRS[n].nGetX()][ILTempGridCRS[n].nGetY()].SetAsFloodline(false);
 
       return RTN_ERR_TRACING_COAST;
    }
@@ -878,7 +878,7 @@ int CSimulation::nTraceFloodCoastLine(unsigned int const nTraceFromStartCellInde
          ILTempGridCRS.Append(nEndX, nEndY);
          nCoastSize++;
 
-         m_pRasterGrid->m_Cell[nEndX][nEndY].SetAsFloodLine(true);
+         m_pRasterGrid->m_Cell[nEndX][nEndY].SetAsFloodline(true);
       }
    }
 
