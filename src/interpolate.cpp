@@ -59,7 +59,7 @@ double CSimulation::dGetInterpolatedValue(vector<double> const* pVdXdata, vector
    double const dXR = pVdXdata->at(i + 1);
    double dYR = pVdYdata->at(i + 1); // Points on either side (unless beyond ends)
 
-   if (! bExtrapolate) // If beyond ends of array and not extrapolating
+   if (!bExtrapolate) // If beyond ends of array and not extrapolating
    {
       if (dX < dXL)
          dYR = dYL;
@@ -100,7 +100,7 @@ double CSimulation::dGetInterpolatedValue(vector<int> const* pVnXdata, vector<do
    double dYL = pVdYdata->at(i);
    double dYR = pVdYdata->at(i + 1); // Points on either side (unless beyond ends)
 
-   if (! bExtrapolate) // If beyond ends of array and not extrapolating
+   if (!bExtrapolate) // If beyond ends of array and not extrapolating
    {
       if (nX < nXL)
          dYR = dYL;

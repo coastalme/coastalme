@@ -103,7 +103,7 @@ bool bPolygonAndAdjCompare(const vector<int>& nVLeft, const vector<int>& nVRight
             return true;
 
          // Do we have a local change of sediment direction?
-         if (! bDownCoastRight)
+         if (!bDownCoastRight)
             // Yes, there is a change of sediment direction between this and the adjacent polygon. Keep the existing sequence
             return true;
 
@@ -188,7 +188,7 @@ bool bPolygonAndAdjCompare(const vector<int>& nVLeft, const vector<int>& nVRight
             return false;
 
          // Do we have a local change of sediment direction?
-         if (! bDownCoastRight)
+         if (!bDownCoastRight)
             // Yes, there is a change of sediment direction between this and the adjacent polygon. Keep the existing sequence
             return true;
 

@@ -619,14 +619,14 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
       return (nRet);
 
    // Find out the folder in which the CoastalME executable sits, in order to open the .ini file (they are assumed to be in the same folder)
-   if (! bFindExeDir(pcArgv[0]))
+   if (!bFindExeDir(pcArgv[0]))
       return (RTN_ERR_CMEDIR);
 
    // OK, we are off, tell the user about the licence and the start time
    AnnounceLicence();
 
    // Read the .ini file and get the name of the run-data file, and path for output etc.
-   if (! bReadIniFile())
+   if (!bReadIniFile())
       return (RTN_ERR_INI);
 
    // Check if output dir exists
@@ -668,23 +668,23 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
    }
 
    // We have the name of the run-data input file, so read it
-   if (! bReadRunDataFile())
+   if (!bReadRunDataFile())
       return RTN_ERR_RUNDATA;
 
    // Check raster GIS output format
-   if (! bCheckRasterGISOutputFormat())
+   if (!bCheckRasterGISOutputFormat())
       return (RTN_ERR_RASTER_GIS_OUT_FORMAT);
 
    // Check vector GIS output format
-   if (! bCheckVectorGISOutputFormat())
+   if (!bCheckVectorGISOutputFormat())
       return (RTN_ERR_VECTOR_GIS_OUT_FORMAT);
 
    // Open log file
-   if (! bOpenLogFile())
+   if (!bOpenLogFile())
       return (RTN_ERR_LOGFILE);
 
    // Set up the time series output files
-   if (! bSetUpTSFiles())
+   if (!bSetUpTSFiles())
       return (RTN_ERR_TSFILE);
 
    // Initialize the random number generators
@@ -967,7 +967,7 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
    m_dThisIterSWL = m_dInitialMeanSWL;
 
    // If SWL changes during the simulation, calculate the per-timestep increment (could be -ve)
-   if (! bFPIsEqual(m_dFinalMeanSWL, m_dInitialMeanSWL, TOLERANCE))
+   if (!bFPIsEqual(m_dFinalMeanSWL, m_dInitialMeanSWL, TOLERANCE))
    {
       m_dDeltaSWLPerTimestep = (m_dTimeStep * (m_dFinalMeanSWL - m_dInitialMeanSWL)) / m_dSimDuration;
       m_dAccumulatedSeaLevelChange -= m_dDeltaSWLPerTimestep;
@@ -1447,14 +1447,14 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
          m_bSaveGISThisIter = true;
 
          // Save the values from the RasterGrid array into raster GIS files
-         if (! bSaveAllRasterGISFiles())
+         if (!bSaveAllRasterGISFiles())
             return (RTN_ERR_RASTER_FILE_WRITE);
 
          // Tell the user how the simulation is progressing
          AnnounceProgress();
 
          // Save the vector GIS files
-         if (! bSaveAllVectorGISFiles())
+         if (!bSaveAllVectorGISFiles())
             return (RTN_ERR_VECTOR_FILE_WRITE);
 
          // Tell the user how the simulation is progressing
@@ -1462,11 +1462,11 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
       }
 
       // Output per-timestep results to the .out file
-      if (! bWritePerTimestepResults())
+      if (!bWritePerTimestepResults())
          return (RTN_ERR_TEXT_FILE_WRITE);
 
       // Now output time series CSV stuff
-      if (! bWriteTSFiles())
+      if (!bWriteTSFiles())
          return (RTN_ERR_TIMESERIES_FILE_WRITE);
 
       // Tell the user how the simulation is progressing

@@ -1458,7 +1458,7 @@ void CSimulation::CalcTime(double const dRunLength)
    // Reset CPU count for last time
    DoCPUClockReset();
 
-   if (! bFPIsEqual(m_dCPUClock, -1.0, TOLERANCE))
+   if (!bFPIsEqual(m_dCPUClock, -1.0, TOLERANCE))
    {
       // Calculate CPU time in secs
       double const dDuration = m_dCPUClock / CLOCKS_PER_SEC;
@@ -2074,6 +2074,22 @@ string CSimulation::strGetErrorText(int const nErr)
       strErr = "hit grid edge when eroding beach";
       break;
 
+   case RTN_ERR_NO_SEAWARD_END_OF_PROFILE_1:
+      strErr = "could not locate seaward end of profile when creating Dean profile during estimation of beach erosion";
+      break;
+
+   case RTN_ERR_NO_SEAWARD_END_OF_PROFILE_2:
+      strErr = "could not locate seaward end of profile when creating Dean profile for beach erosion";
+      break;
+
+   case RTN_ERR_NO_SEAWARD_END_OF_PROFILE_3:
+      strErr = "could not locate seaward end of profile when creating Dean profile for beach deposition (up-coast)";
+      break;
+
+   case RTN_ERR_NO_SEAWARD_END_OF_PROFILE_4:
+      strErr = "could not locate seaward end of profile when creating Dean profile for beach deposition (down-coast)";
+      break;
+
    case RTN_ERR_LANDFORM_TO_GRID:
       strErr = "updating grid with landforms";
       break;
@@ -2661,7 +2677,7 @@ bool CSimulation::bParseDate(string const* strDate, int& nDay, int& nMonth, int&
    }
 
    // Sort out day
-   if (! bIsStringValidInt(VstrTmp[0]))
+   if (!bIsStringValidInt(VstrTmp[0]))
    {
       cerr << "invalid integer for day in date '" << strDate << "'" << endl;
       return false;
@@ -2676,7 +2692,7 @@ bool CSimulation::bParseDate(string const* strDate, int& nDay, int& nMonth, int&
    }
 
    // Sort out month
-   if (! bIsStringValidInt(VstrTmp[1]))
+   if (!bIsStringValidInt(VstrTmp[1]))
    {
       cerr << "invalid integer for month in date '" << strDate << "'" << endl;
       return false;
@@ -2691,7 +2707,7 @@ bool CSimulation::bParseDate(string const* strDate, int& nDay, int& nMonth, int&
    }
 
    // Sort out year
-   if (! bIsStringValidInt(VstrTmp[2]))
+   if (!bIsStringValidInt(VstrTmp[2]))
    {
       cerr << "invalid integer for year in date '" << strDate << "'" << endl;
       return false;
@@ -2722,7 +2738,7 @@ bool CSimulation::bParseTime(string const* strTime, int& nHour, int& nMin, int& 
    }
 
    // Sort out hour
-   if (! bIsStringValidInt(VstrTmp[0]))
+   if (!bIsStringValidInt(VstrTmp[0]))
    {
       cerr << "invalid integer for hours in time '" << strTime << "'" << endl;
       return false;
@@ -2737,7 +2753,7 @@ bool CSimulation::bParseTime(string const* strTime, int& nHour, int& nMin, int& 
    }
 
    // Sort out minutes
-   if (! bIsStringValidInt(VstrTmp[1]))
+   if (!bIsStringValidInt(VstrTmp[1]))
    {
       cerr << "invalid integer for minutes in time '" << strTime << "'" << endl;
       return false;
@@ -2752,7 +2768,7 @@ bool CSimulation::bParseTime(string const* strTime, int& nHour, int& nMin, int& 
    }
 
    // Sort out seconds
-   if (! bIsStringValidInt(VstrTmp[2]))
+   if (!bIsStringValidInt(VstrTmp[2]))
    {
       cerr << "invalid integer for seconds in time '" << strTime << "'" << endl;
       return false;
@@ -2785,7 +2801,7 @@ unsigned long CSimulation::ulConvertToTimestep(string const* pstrIn) const
       // OK, this is a number of hours (a relative time, from the start of simulation)
       vector<string> VstrTmp = VstrSplit(&strDate, SPACE);
 
-      if ((VstrTmp.size() < 2) || (! bIsStringValidInt(VstrTmp[0])))
+      if ((VstrTmp.size() < 2) || (!bIsStringValidInt(VstrTmp[0])))
       {
          cerr << "Error in number of hours '" + strDate + "' for sediment input event" << endl;
          return SEDIMENT_INPUT_EVENT_ERROR;
@@ -2807,7 +2823,7 @@ unsigned long CSimulation::ulConvertToTimestep(string const* pstrIn) const
       // OK, this is a number of days (a relative time, from the start of simulation)
       vector<string> VstrTmp = VstrSplit(&strDate, SPACE);
 
-      if ((VstrTmp.size() < 2) || (! bIsStringValidInt(VstrTmp[0])))
+      if ((VstrTmp.size() < 2) || (!bIsStringValidInt(VstrTmp[0])))
       {
          cerr << "Error in number of days '" + strDate + "' for sediment input event" << endl;
          return SEDIMENT_INPUT_EVENT_ERROR;
@@ -2840,7 +2856,7 @@ unsigned long CSimulation::ulConvertToTimestep(string const* pstrIn) const
       int nSec = 0;
 
       // OK, first sort out the time
-      if (! bParseTime(&VstrTmp[0], nHour, nMin, nSec))
+      if (!bParseTime(&VstrTmp[0], nHour, nMin, nSec))
       {
          cerr << "Error in time '" + VstrTmp[0] + "' of sediment input event" << endl;
          return SEDIMENT_INPUT_EVENT_ERROR;
@@ -2851,7 +2867,7 @@ unsigned long CSimulation::ulConvertToTimestep(string const* pstrIn) const
       int nYear = 0;
 
       // Now sort out the time
-      if (! bParseDate(&VstrTmp[1], nDay, nMonth, nYear))
+      if (!bParseDate(&VstrTmp[1], nDay, nMonth, nYear))
       {
          cerr << "Error in date '" + VstrTmp[1] + "' of sediment input event" << endl;
          return SEDIMENT_INPUT_EVENT_ERROR;

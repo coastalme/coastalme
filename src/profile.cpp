@@ -541,16 +541,18 @@ void CGeomProfile::AppendCellInProfileExtCRS(CGeom2DPoint const* pPt)
    m_VCellInProfileExtCRS.push_back(*pPt);
 }
 
-//! Returns the index of the cell on this profile which has a sea depth which is just less than a given depth. If all cells have a sea depth which is less than the given depth, then it returns the index of the last cells. Note that while this is not theoretically ideal, it increases simulation robustness
+//! Returns the index of the cell on this profile which has a sea depth which is just less than a given depth. If every cell on the profile has a sea depth which is less than the given depth it returns INT_NODATA
 int CGeomProfile::nGetCellGivenDepth(CGeomRasterGrid const* pGrid, double const dDepthIn)
 {
-   int nIndex = INT_NODATA;
+   int nIndex = INT_NODATA; // If not found, i.e. if every profile cell has sea depth less than dDepthIn
+
    for (unsigned int n = 0; n < m_VCellInProfile.size(); n++)
    {
       int const nX = m_VCellInProfile[n].nGetX();
       int const nY = m_VCellInProfile[n].nGetY();
 
       double const dCellDepth = pGrid->m_Cell[nX][nY].dGetSeaDepth();
+
       if (dCellDepth >= dDepthIn)
       {
          nIndex = n;
@@ -562,9 +564,11 @@ int CGeomProfile::nGetCellGivenDepth(CGeomRasterGrid const* pGrid, double const 
       }
    }
 
-   // All cells have a sea depth which is less than the given depth
-   if (nIndex == INT_NODATA)
-      nIndex = static_cast<int>(m_VCellInProfile.size()) - 1;
+   // ####################
+   // if (nIndex == INT_NODATA)
+   // {
+   // nIndex = static_cast<int>(m_VCellInProfile.size()) - 1;
+   // }
 
    return nIndex;
 }
