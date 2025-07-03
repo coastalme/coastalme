@@ -1330,7 +1330,7 @@ int CSimulation::nSaveProfile(int const nCoast, CGeomProfile const* pProfile, in
       {
          if ((m_ulIter == m_VulProfileTimestep[i]) && (nProfile == m_VnProfileToSave[j]))
          {
-            if (!bWriteProfileData(nCoast, pProfile, nProfSize, pdVDistXY, pdVZ, pdVDepthOverDB, pdVErosionPotentialFunc, pdVSlope, pdVRecessionXY, pdVChangeElevZ, pPtVGridProfile, pdVScapeXY))
+            if (! bWriteProfileData(nCoast, pProfile, nProfSize, pdVDistXY, pdVZ, pdVDepthOverDB, pdVErosionPotentialFunc, pdVSlope, pdVRecessionXY, pdVChangeElevZ, pPtVGridProfile, pdVScapeXY))
                return RTN_ERR_PROFILEWRITE;
          }
       }
@@ -1400,7 +1400,7 @@ int CSimulation::nSaveParProfile(int const nCoast, CGeomProfile const* pProfile,
       {
          if ((m_ulIter == m_VulProfileTimestep[i]) && (nProfile == m_VnProfileToSave[j]))
          {
-            if (!bWriteParProfileData(nCoast, nProfile, nParProfSize, nDirection, nDistFromProfile, pdVDistXY, pdVZ, pdVDepthOverDB, pdVErosionPotentialFunc, pdVSlope, pdVRecessionXY, pdVChangeElevZ, pPtVGridProfile, pdVScapeXY))
+            if (! bWriteParProfileData(nCoast, nProfile, nParProfSize, nDirection, nDistFromProfile, pdVDistXY, pdVZ, pdVDepthOverDB, pdVErosionPotentialFunc, pdVSlope, pdVRecessionXY, pdVChangeElevZ, pPtVGridProfile, pdVScapeXY))
                return RTN_ERR_PROFILEWRITE;
          }
       }
@@ -1468,15 +1468,15 @@ bool CSimulation::bWriteParProfileData(int const nCoast, int const nProfile, int
 int CSimulation::nWriteEndRunDetails(void)
 {
    // Final write to time series CSV files
-   if (!bWriteTSFiles())
+   if (! bWriteTSFiles())
       return (RTN_ERR_TIMESERIES_FILE_WRITE);
 
    // Save the values from the RasterGrid array into raster GIS files
-   if (!bSaveAllRasterGISFiles())
+   if (! bSaveAllRasterGISFiles())
       return (RTN_ERR_RASTER_FILE_WRITE);
 
    // Save the vector GIS files
-   if (!bSaveAllVectorGISFiles())
+   if (! bSaveAllVectorGISFiles())
       return (RTN_ERR_VECTOR_FILE_WRITE);
 
    OutStream << " GIS" << m_nGISSave << endl;
@@ -1569,7 +1569,7 @@ int CSimulation::nWriteEndRunDetails(void)
    OutStream << "Fine sediment eroded                                   = " << ldFineEroded * m_dCellArea << " m^3" << endl;
    OutStream << "Fine sediment to suspension                            = " << m_ldGTotSuspendedSediment * m_dCellArea << " m^3" << endl;
 
-   if (!bFPIsEqual(ldFineEroded, m_ldGTotSuspendedSediment, 1.0L))
+   if (! bFPIsEqual(ldFineEroded, m_ldGTotSuspendedSediment, 1.0L))
       OutStream << MASS_BALANCE_ERROR << endl;
 
    long double const ldSandEroded = m_ldGTotSandActualPlatformErosion + m_ldGTotCliffCollapseSand + m_ldGTotActualSandBeachErosion;
@@ -1579,7 +1579,7 @@ int CSimulation::nWriteEndRunDetails(void)
    long double const ldSandLost = m_ldGTotActualSandLostBeachErosion + m_ldGTotSandSedLostCliffCollapse;
    OutStream << "Sand sediment lost from grid                           = " << ldSandLost * m_dCellArea << " m^3" << endl;
 
-   if (!bFPIsEqual(ldSandEroded, (ldSandDeposited + ldSandLost), 1.0L))
+   if (! bFPIsEqual(ldSandEroded, (ldSandDeposited + ldSandLost), 1.0L))
       OutStream << MASS_BALANCE_ERROR << endl;
 
    long double const ldCoarseEroded = m_ldGTotCoarseActualPlatformErosion + m_ldGTotCliffCollapseCoarse + m_ldGTotActualCoarseBeachErosion;
@@ -1589,7 +1589,7 @@ int CSimulation::nWriteEndRunDetails(void)
    long double const ldCoarseLost = m_ldGTotActualCoarseLostBeachErosion + m_ldGTotCoarseSedLostCliffCollapse;
    OutStream << "Coarse sediment lost from grid                         = " << ldCoarseLost * m_dCellArea << " m^3" << endl;
 
-   if (!bFPIsEqual(ldCoarseEroded, (ldCoarseDeposited + ldCoarseLost), 1.0L))
+   if (! bFPIsEqual(ldCoarseEroded, (ldCoarseDeposited + ldCoarseLost), 1.0L))
       OutStream << MASS_BALANCE_ERROR << endl;
 
    OutStream << endl;
@@ -2240,13 +2240,13 @@ void CSimulation::WritePolygonActualMovement(int const nCoast, vector<vector<int
    bool bShowZeroSand = false;
    bool bShowZeroCoarse = false;
 
-   if (!bFPIsEqual(dTmpFineErosion, 0.0, MASS_BALANCE_TOLERANCE))
+   if (! bFPIsEqual(dTmpFineErosion, 0.0, MASS_BALANCE_TOLERANCE))
       bShowZeroFine = true;
 
-   if (!bFPIsEqual(dTmpSandErosion, 0.0, MASS_BALANCE_TOLERANCE))
+   if (! bFPIsEqual(dTmpSandErosion, 0.0, MASS_BALANCE_TOLERANCE))
       bShowZeroSand = true;
 
-   if (!bFPIsEqual(dTmpCoarseErosion, 0.0, MASS_BALANCE_TOLERANCE))
+   if (! bFPIsEqual(dTmpCoarseErosion, 0.0, MASS_BALANCE_TOLERANCE))
       bShowZeroCoarse = true;
 
    LogStream << "-----------|-----------|-----------|--------------|--------------|--------------|--------------|--------------|--------------|--------------|--------------|--------------|--------------|--------------|" << endl;
@@ -2480,19 +2480,19 @@ void CSimulation::DoEndOfTimestepTotals(void)
       string strCoarseErrMsg = "";
       string strAllErrMsg = "";
 
-      if (!bFPIsEqual(dFineError, 0.0, MASS_BALANCE_TOLERANCE))
+      if (! bFPIsEqual(dFineError, 0.0, MASS_BALANCE_TOLERANCE))
       {
          strFineErrMsg = MASS_BALANCE_ERROR;
          bError = true;
       }
 
-      if (!bFPIsEqual(dSandError, 0.0, MASS_BALANCE_TOLERANCE))
+      if (! bFPIsEqual(dSandError, 0.0, MASS_BALANCE_TOLERANCE))
       {
          strSandErrMsg = MASS_BALANCE_ERROR;
          bError = true;
       }
 
-      if (!bFPIsEqual(dCoarseError, 0.0, MASS_BALANCE_TOLERANCE))
+      if (! bFPIsEqual(dCoarseError, 0.0, MASS_BALANCE_TOLERANCE))
       {
          strCoarseErrMsg = MASS_BALANCE_ERROR;
          bError = true;
@@ -2654,19 +2654,19 @@ void CSimulation::DoEndOfTimestepTotals(void)
       strCoarseErrMsg = "";
       strAllErrMsg = "";
 
-      if (!bFPIsEqual(dFineError, 0.0, MASS_BALANCE_TOLERANCE))
+      if (! bFPIsEqual(dFineError, 0.0, MASS_BALANCE_TOLERANCE))
       {
          strFineErrMsg = MASS_BALANCE_ERROR;
          bError = true;
       }
 
-      if (!bFPIsEqual(dSandError, 0.0, MASS_BALANCE_TOLERANCE))
+      if (! bFPIsEqual(dSandError, 0.0, MASS_BALANCE_TOLERANCE))
       {
          strSandErrMsg = MASS_BALANCE_ERROR;
          bError = true;
       }
 
-      if (!bFPIsEqual(dCoarseError, 0.0, MASS_BALANCE_TOLERANCE))
+      if (! bFPIsEqual(dCoarseError, 0.0, MASS_BALANCE_TOLERANCE))
       {
          strCoarseErrMsg = MASS_BALANCE_ERROR;
          bError = true;

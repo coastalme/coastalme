@@ -94,7 +94,7 @@ int CSimulation::nReadRasterBasementDEM(void)
    // Initialize GDAL performance settings (only needs to be done once)
    static bool bGDALInitialized = false;
 
-   if (!bGDALInitialized)
+   if (! bGDALInitialized)
    {
       InitializeGDALPerformance();
       bGDALInitialized = true;
@@ -156,7 +156,7 @@ int CSimulation::nReadRasterBasementDEM(void)
    }
 
    // CoastalME can only handle rasters that are oriented N-S and W-E. (If you need to work with a raster that is oriented differently, then you must rotate it before running CoastalME). So here we check whether row rotation (m_dGeoTransform[2]) and column rotation (m_dGeoTransform[4]) are both zero. See https://gdal.org/tutorials/geotransforms_tut.html
-   if ((!bFPIsEqual(m_dGeoTransform[2], 0.0, TOLERANCE)) || (!bFPIsEqual(m_dGeoTransform[4], 0.0, TOLERANCE)))
+   if ((! bFPIsEqual(m_dGeoTransform[2], 0.0, TOLERANCE)) || (! bFPIsEqual(m_dGeoTransform[4], 0.0, TOLERANCE)))
    {
       // Error: not oriented NS and W-E
       cerr << ERR << m_strInitialBasementDEMFile << " is not oriented N-S and W-E. Row rotation = " << m_dGeoTransform[2] << " and column rotation = " << m_dGeoTransform[4] << endl;
@@ -168,7 +168,7 @@ int CSimulation::nReadRasterBasementDEM(void)
    double const dCellSideY = tAbs(m_dGeoTransform[5]);
 
    // Check that the cell is more or less square
-   if (!bFPIsEqual(dCellSideX, dCellSideY, 1e-2))
+   if (! bFPIsEqual(dCellSideX, dCellSideY, 1e-2))
    {
       // Error: cell is not square enough
       cerr << ERR << "cell is not square in " << m_strInitialBasementDEMFile << ", is " << dCellSideX << " x " << dCellSideY << endl;
@@ -214,7 +214,7 @@ int CSimulation::nReadRasterBasementDEM(void)
    double const dMissingValue = pGDALBand->GetNoDataValue(); // Will fail for some formats
    CPLPopErrorHandler();
 
-   if (!bFPIsEqual(dMissingValue, m_dMissingValue, TOLERANCE))
+   if (! bFPIsEqual(dMissingValue, m_dMissingValue, TOLERANCE))
    {
       cerr << "   " << NOTE << "NODATA value in " << m_strInitialBasementDEMFile << " is " << dMissingValue << "\n         instead using CoastalME's default floating-point NODATA value " << m_dMissingValue << endl;
    }
@@ -296,7 +296,7 @@ int CSimulation::nMarkBoundingBoxEdgeCells(void)
       }
    }
 
-   if (!bFound)
+   if (! bFound)
    {
       if (m_nLogFileDetail >= LOG_FILE_ALL)
          LogStream << m_ulIter << ": north (top) edge of bounding box not found" << endl;
@@ -324,7 +324,7 @@ int CSimulation::nMarkBoundingBoxEdgeCells(void)
       }
    }
 
-   if (!bFound)
+   if (! bFound)
    {
       if (m_nLogFileDetail >= LOG_FILE_ALL)
          LogStream << m_ulIter << ": east (right) edge of bounding box not found" << endl;
@@ -352,7 +352,7 @@ int CSimulation::nMarkBoundingBoxEdgeCells(void)
       }
    }
 
-   if (!bFound)
+   if (! bFound)
    {
       if (m_nLogFileDetail >= LOG_FILE_ALL)
          LogStream << m_ulIter << ": south (bottom) edge of bounding box not found" << endl;
@@ -380,7 +380,7 @@ int CSimulation::nMarkBoundingBoxEdgeCells(void)
       }
    }
 
-   if (!bFound)
+   if (! bFound)
    {
       if (m_nLogFileDetail >= LOG_FILE_ALL)
          LogStream << m_ulIter << ": west (left) edge of bounding box not found" << endl;
@@ -411,7 +411,7 @@ int CSimulation::nMarkBoundingBoxEdgeCells(void)
          break;
       }
 
-      if (!bFound)
+      if (! bFound)
       {
          if (m_nLogFileDetail >= LOG_FILE_MIDDLE_DETAIL)
             LogStream << m_ulIter << ": could not find a bounding box edge cell for grid column " << nX << endl;
@@ -443,7 +443,7 @@ int CSimulation::nMarkBoundingBoxEdgeCells(void)
          break;
       }
 
-      if (!bFound)
+      if (! bFound)
       {
          if (m_nLogFileDetail >= LOG_FILE_MIDDLE_DETAIL)
             LogStream << m_ulIter << ": could not find a bounding box edge cell for grid row " << nY << endl;
@@ -475,7 +475,7 @@ int CSimulation::nMarkBoundingBoxEdgeCells(void)
          break;
       }
 
-      if (!bFound)
+      if (! bFound)
       {
          if (m_nLogFileDetail >= LOG_FILE_MIDDLE_DETAIL)
             LogStream << m_ulIter << ": could not find a bounding box edge cell for grid column " << nX << endl;
@@ -506,7 +506,7 @@ int CSimulation::nMarkBoundingBoxEdgeCells(void)
          break;
       }
 
-      if (!bFound)
+      if (! bFound)
       {
          if (m_nLogFileDetail >= LOG_FILE_MIDDLE_DETAIL)
             LogStream << m_ulIter << ": could not find a bounding box edge cell for grid row " << nY << endl;
@@ -632,7 +632,7 @@ int CSimulation::nReadRasterGISFile(int const nDataItem, int const nLayer)
 
       double dTmp = m_dGeoTransform[0] - (m_dGeoTransform[1] / 2);
 
-      if (!bFPIsEqual(dTmp, m_dNorthWestXExtCRS, TOLERANCE))
+      if (! bFPIsEqual(dTmp, m_dNorthWestXExtCRS, TOLERANCE))
       {
          // Error: different min x from DEM file
          cerr << ERR << "different min x values in " << strGISFile << " (" << dTmp << ") and " << m_strInitialBasementDEMFile << " (" << m_dNorthWestXExtCRS << ")" << endl;
@@ -641,7 +641,7 @@ int CSimulation::nReadRasterGISFile(int const nDataItem, int const nLayer)
 
       dTmp = m_dGeoTransform[3] - (m_dGeoTransform[5] / 2);
 
-      if (!bFPIsEqual(dTmp, m_dNorthWestYExtCRS, TOLERANCE))
+      if (! bFPIsEqual(dTmp, m_dNorthWestYExtCRS, TOLERANCE))
       {
          // Error: different min x from DEM file
          cerr << ERR << "different min y values in " << strGISFile << " (" << dTmp << ") and " << m_strInitialBasementDEMFile << " (" << m_dNorthWestYExtCRS << ")" << endl;
@@ -650,7 +650,7 @@ int CSimulation::nReadRasterGISFile(int const nDataItem, int const nLayer)
 
       double const dTmpResX = tAbs(dGeoTransform[1]);
 
-      if (!bFPIsEqual(dTmpResX, m_dCellSide, 1e-2))
+      if (! bFPIsEqual(dTmpResX, m_dCellSide, 1e-2))
       {
          // Error: different cell size in X direction: note that due to rounding errors in some GIS packages, must expect some discrepancies
          cerr << ERR << "cell size in X direction (" << dTmpResX << ") in " << strGISFile << " differs from cell size in of basement DEM (" << m_dCellSide << ")" << endl;
@@ -659,7 +659,7 @@ int CSimulation::nReadRasterGISFile(int const nDataItem, int const nLayer)
 
       double const dTmpResY = tAbs(dGeoTransform[5]);
 
-      if (!bFPIsEqual(dTmpResY, m_dCellSide, 1e-2))
+      if (! bFPIsEqual(dTmpResY, m_dCellSide, 1e-2))
       {
          // Error: different cell size in Y direction: note that due to rounding errors in some GIS packages, must expect some discrepancies
          cerr << ERR << "cell size in Y direction (" << dTmpResY << ") in " << strGISFile << " differs from cell size of basement DEM (" << m_dCellSide << ")" << endl;
@@ -778,7 +778,7 @@ int CSimulation::nReadRasterGISFile(int const nDataItem, int const nLayer)
          m_dGISMissingValue = pGDALBand->GetNoDataValue(); // Note will fail for some formats
          CPLPopErrorHandler();
 
-         if (!bFPIsEqual(m_dGISMissingValue, m_dMissingValue, TOLERANCE))
+         if (! bFPIsEqual(m_dGISMissingValue, m_dMissingValue, TOLERANCE))
          {
             cerr << "   " << NOTE << "NODATA value in " << strGISFile << " is " << m_dGISMissingValue << "\n         instead using CoastalME's default floating-point NODATA value " << m_dMissingValue << endl;
          }
