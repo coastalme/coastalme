@@ -75,7 +75,7 @@ int CSimulation::nCreateAllPolygons(void)
          if (pThisProfile->bOKIncStartAndEndOfCoast())
          {
             // This profile is OK, so we will start a polygon here and extend it down-coast (i.e. along the coast in the direction of increasing coastline point numbers)
-            int const nThisProfile = pThisProfile->nGetCoastID();
+            int const nThisProfile = pThisProfile->nGetProfileCoastID();
 
             // This will be the coast ID number of the polygon, and also the polygon's along-coast sequence
             nPolygon++;
@@ -98,7 +98,7 @@ int CSimulation::nCreateAllPolygons(void)
                // }
 
                // Get the ID of the next (down-coast) profile
-               nNextProfile = pNextProfile->nGetCoastID();
+               nNextProfile = pNextProfile->nGetProfileCoastID();
 
                // Is the next profile OK?
                bNextProfileIsOK = pNextProfile->bOKIncStartAndEndOfCoast();
@@ -115,7 +115,7 @@ int CSimulation::nCreateAllPolygons(void)
 
             } while (!bNextProfileIsOK);
 
-            // LogStream << "Profile " << pNextProfile->nGetCoastID() << " is OK" << endl;
+            // LogStream << "Profile " << pNextProfile->nGetProfileCoastID() << " is OK" << endl;
 
             // Get the coast point at which this next profile starts
             int const nNextProfileCoastPoint = pNextProfile->nGetCoastPoint();
@@ -370,7 +370,7 @@ void CSimulation::MarkPolygonCells(void)
    // {
    // CGeomCoastPolygon* pPolygon = m_VCoast[nCoast].pGetPolygon(nPoly);
    //
-   // int nPolyID = pPolygon->nGetCoastID();
+   // int nPolyID = pPolygon->nGetPolygonCoastID();
    // VnID.push_back(nPolyID);
    //
    // CGeom2DIPoint PtiStart = pPolygon->PtiGetFillStartPoint();
@@ -441,7 +441,7 @@ void CSimulation::MarkPolygonCells(void)
          double dSedimentInputCoarse = 0;
 
          CGeomCoastPolygon* pPolygon = m_VCoast[nCoast].pGetPolygon(nPoly);
-         int const nPolyID = pPolygon->nGetCoastID(); // TODO 044
+         int const nPolyID = pPolygon->nGetPolygonCoastID(); // TODO 044
 
          // LogStream << m_ulIter << ": in MarkPolygonCells() nPoly = " << nPoly << " nPolyID = " << nPolyID << endl;
 
@@ -680,7 +680,7 @@ int CSimulation::nDoPolygonSharedBoundaries(void)
       // {
       // CGeomProfile* pProfile = m_VCoast[nCoast].pGetProfile(m);
       //
-      // LogStream << m << "\t" << pProfile->nGetCoastID() << "\t" << pProfile->nGetGlobalID() << "\t";
+      // LogStream << m << "\t" << pProfile->nGetProfileCoastID() << "\t" << pProfile->nGetGlobalID() << "\t";
       //
       // int nPointsInProfile = pProfile->nGetProfileSize();
       //
@@ -697,7 +697,7 @@ int CSimulation::nDoPolygonSharedBoundaries(void)
       for (int nn = 0; nn < nNumPolygons; nn++)
       {
          CGeomCoastPolygon* pThisPolygon = m_VCoast[nCoast].pGetPolygon(nn);
-         int const nThisPolygon = pThisPolygon->nGetCoastID();
+         int const nThisPolygon = pThisPolygon->nGetPolygonCoastID();
 
          vector<int> nVUpCoastAdjacentPolygon;
          vector<int> nVDownCoastAdjacentPolygon;

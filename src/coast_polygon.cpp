@@ -149,7 +149,7 @@ int CGeomCoastPolygon::nGetGlobalID(void) const
 }
 
 //! Get the coast ID, this is the same as the down-coast sequence of polygons
-int CGeomCoastPolygon::nGetCoastID(void) const
+int CGeomCoastPolygon::nGetPolygonCoastID(void) const
 {
    return m_nCoastID;
 }

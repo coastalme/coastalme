@@ -226,7 +226,7 @@ int CSimulation::nDoAllWaveEnergyToCoastLandforms(void)
                // double dTmpSandErosion = m_pVCoastPolygon[n]->dGetCliffCollapseErosionSand() * m_dCellArea ;
                // double dTmpSandDeposition = m_pVCoastPolygon[n]->dGetCliffCollapseUnconsSandDeposition() * m_dCellArea ;
                //
-               // LogStream << m_ulIter << ": polygon = " << m_pVCoastPolygon[n]->nGetCoastID() << " sand erosion = " << dTmpSandErosion << " sand deposition = " << dTmpSandDeposition << endl;
+               // LogStream << m_ulIter << ": polygon = " << m_pVCoastPolygon[n]->nGetPolygonCoastID() << " sand erosion = " << dTmpSandErosion << " sand deposition = " << dTmpSandDeposition << endl;
                //
                // dTmpAllPolySandErosion += dTmpSandErosion;
                // dTmpAllPolySandDeposition += dTmpSandDeposition;

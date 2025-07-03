@@ -75,9 +75,6 @@ class CGeomProfile : public CGeomMultiLine
    //! The this-coast ID of the profile
    int m_nCoastID;
 
-   //! The global ID of the profile
-   int m_nGlobalID;
-
    //! The wave height at the end of the profile
    double m_dDeepWaterWaveHeight;
 
@@ -111,11 +108,11 @@ class CGeomProfile : public CGeomMultiLine
 
  protected:
  public:
-   explicit CGeomProfile(int const, int const, int const, int const, CGeom2DIPoint const*, CGeom2DIPoint const*, bool const);
+   explicit CGeomProfile(int const, int const, int const, CGeom2DIPoint const*, CGeom2DIPoint const*, bool const);
    ~CGeomProfile(void) override;
 
-   int nGetCoastID(void) const;
-   int nGetGlobalID(void) const;
+   int nGetProfileCoastID(void) const;
+   // int nGetGlobalID(void) const;
    int nGetCoastPoint(void) const;
 
    CGeom2DIPoint* pPtiGetStartPoint(void);

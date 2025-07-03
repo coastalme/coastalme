@@ -139,7 +139,7 @@ class CRWCoast
 
    // These do not have the same length as m_LCoastlineExtCRS
 
-   //! Coast-normal profile objects, in sequence of creation (which is the same as nGetCoastID() sequence)
+   //! Coast-normal profile objects, in sequence of creation (which is the same as nGetProfileCoastID() sequence)
    vector<CGeomProfile*> m_pVProfile;
 
    //! Pointers to coastline-normal objects, in along-coastline sequence

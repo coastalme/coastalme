@@ -1640,9 +1640,9 @@ class CSimulation
    void DoCoastCurvature(int const, int const);
    int nCheckAndMarkAllProfiles(void);
    int nCreateAllProfiles(void);
-   void LocateAndCreateProfiles(int const, int&, int&, vector<bool>*, vector<pair<int, double>> const*);
-   int nCreateProfile(int const, int const, int const, int const, int&, bool const, CGeom2DIPoint const*);
-   int nLocateAndCreateGridEdgeProfile(bool const, int const, int&, int&);
+   void LocateAndCreateProfiles(int const, int&, vector<bool>*, vector<pair<int, double>> const*);
+   int nCreateProfile(int const, int const, int const, int const, bool const, CGeom2DIPoint const*);
+   int nLocateAndCreateGridEdgeProfile(bool const, int const, int&);
    void MarkProfilesOnGrid(int const, int&);
    void CheckForIntersectingProfiles(void);
    static bool bCheckForIntersection(CGeomProfile* const, CGeomProfile* const, int&, int&, double&, double&, double&, double&);

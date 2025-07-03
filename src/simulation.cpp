@@ -1068,7 +1068,7 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
       // if (m_VCoast[nCoast].bIsProfileAtCoastPoint(nCoastPoint))
       // {
       // CGeomProfile const* pProfile = m_VCoast[nCoast].pGetProfileAtCoastPoint(nCoastPoint);
-      // int nProfile = pProfile->nGetCoastID();
+      // int nProfile = pProfile->nGetProfileCoastID();
       //
       // LogStream << m_ulIter << ": profile " << nProfile << " bStartOfCoast = " << pProfile->bStartOfCoast() << " bEndOfCoast = " << pProfile->bEndOfCoast() << " bCShoreProblem = " << pProfile->bCShoreProblem() << " bHitLand = " << pProfile->bHitLand() << " bHitCoast = " << pProfile->bHitCoast() << " bTooShort = " << pProfile->bTooShort() << " bTruncated = " << pProfile->bTruncated() << " bHitAnotherProfile = " << pProfile->bHitAnotherProfile() << endl;
       // }
@@ -1166,7 +1166,7 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
       // {
       // CGeomProfile* pProfile = m_VCoast[nCoast].pGetProfile(nProfile);
       // int nCell = pProfile->nGetNumCellsInProfile();
-      // LogStream << "Profile " << pProfile->nGetCoastID() << " nGetNumCellsInProfile() = " << nCell << endl;
+      // LogStream << "Profile " << pProfile->nGetProfileCoastID() << " nGetNumCellsInProfile() = " << nCell << endl;
       // }
       //
       // LogStream << endl;
@@ -1175,7 +1175,7 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
       // {
       // CGeomProfile* pProfile = m_VCoast[nCoast].pGetProfileWithDownCoastSeq(nProfile);
       // int nCell = pProfile->nGetNumCellsInProfile();
-      // LogStream << "Profile " << pProfile->nGetCoastID() << " nGetNumCellsInProfile() = " << nCell << endl;
+      // LogStream << "Profile " << pProfile->nGetProfileCoastID() << " nGetNumCellsInProfile() = " << nCell << endl;
       // }
       //
       // LogStream << "====================" << endl;
