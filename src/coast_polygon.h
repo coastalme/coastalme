@@ -208,7 +208,6 @@ class CGeomCoastPolygon : public CA2DShape
    void SetCoastStartPolygon(void);
    bool bIsCoastStartPolygon(void) const;
 
-   int nGetGlobalID(void) const;
    int nGetPolygonCoastID(void) const;
 
    // void SetCoastNode(int const);

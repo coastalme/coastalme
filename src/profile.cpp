@@ -41,7 +41,7 @@ using std::find;
 #include "profile.h"
 
 //! Constructor with initialization list, requires one parameter (the coast point at which the profile starts)
-CGeomProfile::CGeomProfile(int const nCoast, int const nCoastPoint, int const nCoastID, CGeom2DIPoint const* pPtiStart, CGeom2DIPoint const* pPtiEnd, bool const bIntervention)
+CGeomProfile::CGeomProfile(int const nCoast, int const nCoastPoint, int const nProfileID, CGeom2DIPoint const* pPtiStart, CGeom2DIPoint const* pPtiEnd, bool const bIntervention)
     : m_bStartOfCoast(false),
       m_bEndOfCoast(false),
       m_bCShoreProblem(false),
@@ -54,7 +54,7 @@ CGeomProfile::CGeomProfile(int const nCoast, int const nCoastPoint, int const nC
       m_bIntervention(bIntervention),
       m_nCoast(nCoast),
       m_nCoastPoint(nCoastPoint),
-      m_nCoastID(nCoastID),
+      m_nProfileID(nProfileID),
       m_dDeepWaterWaveHeight(0),
       m_dDeepWaterWaveAngle(0),
       m_dDeepWaterWavePeriod(0),
@@ -70,10 +70,10 @@ CGeomProfile::~CGeomProfile(void)
 {
 }
 
-//! Returns the profile's coast ID
+//! Returns the profile's this-coast ID
 int CGeomProfile::nGetProfileCoastID(void) const
 {
-   return m_nCoastID;
+   return m_nProfileID;
 }
 
 //! Returns the coast point at which the profile starts

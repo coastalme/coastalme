@@ -227,7 +227,7 @@ int CSimulation::nCreateAllProfiles(void)
       // nUpCoastProfile = pUpCoastProfile->nGetProfileCoastID();
       // if (pDownCoastProfile != 0)
       // nDownCoastProfile = pDownCoastProfile->nGetProfileCoastID();
-      // LogStream << "nCoastID = " << pProfile->nGetProfileCoastID() << "\tnGlobalID = " << pProfile->nGetGlobalID() << "\t up-coast profile = " << nUpCoastProfile << "\t down-coast profile = " << nDownCoastProfile << endl;
+      // LogStream << "nCoastID = " << pProfile->nGetProfileCoastID() << "\t up-coast profile = " << nUpCoastProfile << "\t down-coast profile = " << nDownCoastProfile << endl;
       // }
       // LogStream << endl;
       // // DEBUG CODE =======================================================================================================================
@@ -265,7 +265,7 @@ int CSimulation::nCreateAllProfiles(void)
       // CGeomProfile* pProfile = m_VCoast[nCoast].pGetProfileWithDownCoastSeq(n);
       // int nStartPoint = pProfile->nGetCoastPoint();
       //
-      // LogStream << n << "\t nCoastID = " << pProfile->nGetProfileCoastID() << "\tnGlobalID = " << pProfile->nGetGlobalID() << "\tnStartPoint = " << nStartPoint << endl;
+      // LogStream << n << "\t nCoastID = " << pProfile->nGetProfileCoastID() << "\tnStartPoint = " << nStartPoint << endl;
       // }
       // LogStream << endl;
       // LogStream << "=====================" << endl;
@@ -325,7 +325,7 @@ void CSimulation::LocateAndCreateProfiles(int const nCoast, int& nProfile, vecto
          // // DEBUG CODE =================
          // LogStream << "After nCreateProfile() ===========" << endl;
          // CGeomProfile* pProfile = m_VCoast[nCoast].pGetProfile(nProfile);
-         // LogStream << pProfile->nGetProfileCoastID() << "\t" << pProfile->nGetGlobalID() << "\t";
+         // LogStream << pProfile->nGetProfileCoastID() << "\t";
          //
          // int nPointsInProfile = pProfile->nGetProfileSize();
          //
@@ -506,7 +506,7 @@ int CSimulation::nCreateProfile(int const nCoast, int const nCoastSize, int cons
    // // DEBUG CODE =================
    // LogStream << "in nCreateProfile() ===========" << endl;
    // // CGeomProfile* pProfile = m_VCoast[nCoast].pGetProfile(nProfile);
-   // LogStream << pProfile->nGetProfileCoastID() << "\t" << pProfile->nGetGlobalID() << "\t";
+   // LogStream << pProfile->nGetProfileCoastID() << "\t";
    //
    // int nPointsInProfile = pProfile->nGetProfileSize();
    //
@@ -643,7 +643,7 @@ int CSimulation::nLocateAndCreateGridEdgeProfile(bool const bCoastStart, int con
          if (m_nLogFileDetail >= LOG_FILE_ALL)
             LogStream << m_ulIter << ": coast " << nCoast << " " << (bCoastStart ? "start" : "end") << " profile " << nProfile << " hit coast " << nHitCoast << " at [" << nXTmp << "][" << nYTmp << "] = {" << dGridCentroidXToExtCRSX(nXTmp) << ", " << dGridCentroidYToExtCRSY(nYTmp) << "}, truncated the profile" << endl;
 
-         // Truncate the grid-edge profile
+         // Truncate the grid-edge profile ** TODO TRUNCATE BOTH PROFILES
          break;
       }
 
@@ -1680,9 +1680,9 @@ void CSimulation::CreateRasterizedProfile(int const nCoast, CGeomProfile* pProfi
                // Do both profiles belong to the same coast?
                if (nCoast != nHitProfileCoast)
                {
-                  // They do not
-                  // pProfile->SetHitAnotherProfile(true);
-                  // bHitAnotherProfile = true;
+                  // They do not *** TODO TRUNCATE BOTH
+                  pProfile->SetHitAnotherProfile(true);
+                  bHitAnotherProfile = true;
 
                   return;
                }

@@ -72,8 +72,8 @@ class CGeomProfile : public CGeomMultiLine
    //! The coastline point at which this profile hits the coast (not necessarily coincident wih the profile start cell)
    int m_nCoastPoint;
 
-   //! The this-coast ID of the profile
-   int m_nCoastID;
+   //! The this-coast ID of the profile (note that a profile in a different coast may have the same ID as this profile)
+   int m_nProfileID;
 
    //! The wave height at the end of the profile
    double m_dDeepWaterWaveHeight;
@@ -112,7 +112,6 @@ class CGeomProfile : public CGeomMultiLine
    ~CGeomProfile(void) override;
 
    int nGetProfileCoastID(void) const;
-   // int nGetGlobalID(void) const;
    int nGetCoastPoint(void) const;
 
    CGeom2DIPoint* pPtiGetStartPoint(void);

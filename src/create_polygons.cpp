@@ -680,7 +680,7 @@ int CSimulation::nDoPolygonSharedBoundaries(void)
       // {
       // CGeomProfile* pProfile = m_VCoast[nCoast].pGetProfile(m);
       //
-      // LogStream << m << "\t" << pProfile->nGetProfileCoastID() << "\t" << pProfile->nGetGlobalID() << "\t";
+      // LogStream << m << "\t" << pProfile->nGetProfileCoastID() << "\t";
       //
       // int nPointsInProfile = pProfile->nGetProfileSize();
       //

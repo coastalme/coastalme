@@ -142,12 +142,6 @@ bool CGeomCoastPolygon::bIsCoastStartPolygon(void) const
    return m_bCoastStartPolygon;
 }
 
-//! Get the global ID
-int CGeomCoastPolygon::nGetGlobalID(void) const
-{
-   return m_nGlobalID;
-}
-
 //! Get the coast ID, this is the same as the down-coast sequence of polygons
 int CGeomCoastPolygon::nGetPolygonCoastID(void) const
 {

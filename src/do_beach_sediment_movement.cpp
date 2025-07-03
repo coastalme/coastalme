@@ -268,7 +268,7 @@ int CSimulation::nDoAllActualBeachErosionAndDeposition(void)
          nVPolyAndAdj.clear();
 
          // The first [0] nVPolyAndAdj array item is the polygon's global ID
-         nVPolyAndAdj.push_back(pPolygon->nGetGlobalID());
+         nVPolyAndAdj.push_back(INT_NODATA);
 
          // The second [1] nVPolyAndAdj array item is the polygon's down-coast ID
          nVPolyAndAdj.push_back(pPolygon->nGetPolygonCoastID());
