@@ -270,7 +270,7 @@ class CRWCoast
 
    void SetPolygonNode(int const, int const);
    int nGetPolygonNode(int const) const;
-   CGeomCoastPolygon* pPolyCreatePolygon(int const, int const, int const, CGeom2DIPoint const*, CGeom2DIPoint const*, int const, int const, vector<CGeom2DPoint> const*, int const, int const, bool const, bool const);
+   CGeomCoastPolygon* pPolyCreatePolygon(int const, int const, CGeom2DIPoint const*, CGeom2DIPoint const*, int const, int const, vector<CGeom2DPoint> const*, int const, int const, bool const, bool const);
    int nGetNumPolygons(void) const;
    CGeomCoastPolygon* pGetPolygon(int const) const;
 

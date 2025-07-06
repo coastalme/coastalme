@@ -103,7 +103,7 @@ CGeomLine CSimulation::LSmoothCoastSavitzkyGolay(CGeomLine* pLineIn, int const n
       int nYThis = PtiThis.nGetY();
 
       // Safety check
-      if (!bIsWithinValidGrid(nXThis, nYThis))
+      if (! bIsWithinValidGrid(nXThis, nYThis))
          KeepWithinValidGrid(nXThis, nYThis);
 
       // Don't smooth intervention cells
@@ -597,7 +597,7 @@ void LULinearSolve(Matrix const A, int const N, int const nIndexArray[], double 
          for (int J = II; J < I; J++)
             SUM -= A[I][J] * B[J];
 
-      else if (!bFPIsEqual(SUM, 0.0, TOLERANCE))
+      else if (! bFPIsEqual(SUM, 0.0, TOLERANCE))
          II = I;
 
       B[I] = SUM;

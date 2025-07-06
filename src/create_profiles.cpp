@@ -838,7 +838,7 @@ int CSimulation::nGetCoastNormalEndPoint(int const nCoast, int const nStartCoast
    // Check that pPtiEnd is not off the grid. Note that pPtiEnd is not necessarily a cell centroid
    pPtiEnd->SetXY(nRound(dExtCRSXToGridX(pPtEnd->dGetX())), nRound(dExtCRSYToGridY(pPtEnd->dGetY())));
 
-   if (!bIsWithinValidGrid(pPtiEnd))
+   if (! bIsWithinValidGrid(pPtiEnd))
    {
       // LogStream << m_ulIter << ": profile endpoint is outside grid [" << pPtiEnd->nGetX() << "][" << pPtiEnd->nGetY() << "] = {" << pPtEnd->dGetX() << ", " << pPtEnd->dGetY() << "}. The profile starts at coastline point " << nStartCoastPoint << " = {" << pPtStart->dGetX() << ", " << pPtStart->dGetY() << "}" << endl;
 
@@ -1383,12 +1383,12 @@ bool CSimulation::bCheckForIntersection(CGeomProfile* const pVProfile1, CGeomPro
 
          dTmp = -dDiffX2 * dDiffY1 + dDiffX1 * dDiffY2;
 
-         if (!bFPIsEqual(dTmp, 0.0, TOLERANCE))
+         if (! bFPIsEqual(dTmp, 0.0, TOLERANCE))
             dS = (-dDiffY1 * (dX1 - dX3) + dDiffX1 * (dY1 - dY3)) / dTmp;
 
          dTmp = -dDiffX2 * dDiffY1 + dDiffX1 * dDiffY2;
 
-         if (!bFPIsEqual(dTmp, 0.0, TOLERANCE))
+         if (! bFPIsEqual(dTmp, 0.0, TOLERANCE))
             dT = (dDiffX2 * (dY1 - dY3) - dDiffY2 * (dX1 - dX3)) / dTmp;
 
          if (dS >= 0 && dS <= 1 && dT >= 0 && dT <= 1)
@@ -1528,7 +1528,7 @@ void CSimulation::MarkProfilesOnGrid(int const nCoast, int& nValidProfiles)
       m_VCoast[nCoast].pGetProfile(nProfile)->SetProfileDeepWaterWavePeriod(dDeepWaterWavePeriod);
    }
 
-   bDownCoast = !bDownCoast;
+   bDownCoast = ! bDownCoast;
 }
 
 //===============================================================================================================================
@@ -1614,7 +1614,7 @@ void CSimulation::CreateRasterizedProfile(int const nCoast, CGeomProfile* pProfi
          if ((!pProfile->bStartOfCoast()) && (!pProfile->bEndOfCoast()))
          {
             // Is the interpolated point within the valid raster grid?
-            if (!bIsWithinValidGrid(nX, nY))
+            if (! bIsWithinValidGrid(nX, nY))
             {
                // It is outside the valid grid, so mark this profile and quit the loop
                bTruncated = true;
@@ -1675,7 +1675,7 @@ void CSimulation::CreateRasterizedProfile(int const nCoast, CGeomProfile* pProfi
                int const nHitProfile = m_pRasterGrid->m_Cell[nX][nY].nGetProfileID();
                int const nHitProfileCoast = m_pRasterGrid->m_Cell[nX][nY].nGetProfileCoastID();
 
-               LogStream << m_ulIter << ": coast = " << nCoast << " profile = " << nProfile << " HIT ANOTHER PROFILE (coast = " << nHitProfileCoast << " profile = " << nHitProfile << ") at [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "}, elevation = " << m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElev() << ", SWL = " << m_dThisIterSWL << endl;
+               // LogStream << m_ulIter << ": coast = " << nCoast << " profile = " << nProfile << " HIT ANOTHER PROFILE (coast = " << nHitProfileCoast << " profile = " << nHitProfile << ") at [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "}, elevation = " << m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElev() << ", SWL = " << m_dThisIterSWL << endl;
 
                // Do both profiles belong to the same coast?
                if (nCoast != nHitProfileCoast)

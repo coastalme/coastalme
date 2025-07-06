@@ -474,11 +474,11 @@ int const CSHOREARRAYOUTSIZE = 1000;
 int const FLOOD_FILL_START_OFFSET = 2;            // In cells: cell-by-cell fill starts this distance inside polygon
 int const GRID_MARGIN = 10;                       // Ignore this many along-coast grid-edge points re. shadow zone calcs
 int const INT_NODATA = -9999;                     // CME's internal NODATA value for ints
-int const MAX_CLIFF_TALUS_LENGTH = 100;           // In cells: maximum length of the Dean  profile for cliff collapse talus
+int const MAX_CLIFF_TALUS_LENGTH = 100;           // In cells: maximum length of the Dean  profile for cliff collapse talus TEST
+int const MAX_SEAWARD_OFFSET_FOR_CLIFF_TALUS = 5; // In cells: maximum distance that the Dean profile for cliff collapse talus can be offset from the coast TEST
 int const MAX_LEN_SHADOW_LINE_TO_IGNORE = 200;    // In cells: if can't find cell-by-cell fill start point, continue if short shadow line
 int const MAX_NUM_PREV_ORIENTATION_VALUES = 10;   // Max length of deque used in tracing shadow boundary
 int const MAX_NUM_SHADOW_ZONES = 10;              // Consider at most this number of shadow zones
-int const MAX_SEAWARD_OFFSET_FOR_CLIFF_TALUS = 2; // In cells: maximum distance that the Dean profile for cliff collapse talus can be offset from the coast
 int const MIN_INLAND_OFFSET_UNCONS_EROSION = 5;   // Used in estimation of beach erosion
 int const MIN_PARALLEL_PROFILE_SIZE = 3;          // In cells: min size for valid unconsolidated sediment parallel profile
 int const MIN_PROFILE_SIZE = 3;                   // In cells: min size for valid unconsolidated sediment profile
@@ -732,10 +732,9 @@ int const RTN_ERR_CLIFFNOTCH = 37;
 int const RTN_ERR_CLIFFDEPOSIT = 38;
 int const RTN_ERR_BAD_INDEX = 39;
 int const RTN_ERR_EDGE_OF_GRID = 40;
-int const RTN_ERR_NO_SEAWARD_END_OF_PROFILE_1 = 41;
-int const RTN_ERR_NO_SEAWARD_END_OF_PROFILE_2 = 42;
-int const RTN_ERR_NO_SEAWARD_END_OF_PROFILE_3 = 43;
-int const RTN_ERR_NO_SEAWARD_END_OF_PROFILE_4 = 44;
+int const RTN_ERR_NO_SEAWARD_END_OF_PROFILE_BEACH_EROSION = 42;
+int const RTN_ERR_NO_SEAWARD_END_OF_PROFILE_UPCOAST_BEACH_DEPOSITION = 43;
+int const RTN_ERR_NO_SEAWARD_END_OF_PROFILE_DOWNCOAST_BEACH_DEPOSITION = 44;
 int const RTN_ERR_LANDFORM_TO_GRID = 45;
 int const RTN_ERR_NO_TOP_LAYER = 46;
 int const RTN_ERR_NO_ADJACENT_POLYGON = 47;
@@ -823,7 +822,7 @@ double const INTERVENTION_PROFILE_SPACING_FACTOR = 0.5; // Profile spacing on in
 
 double const DBL_NODATA = -9999;
 
-string const PROGRAM_NAME = "Coastal Modelling Environment (CoastalME) version 1.3.25 (03 Jul 2025)";
+string const PROGRAM_NAME = "Coastal Modelling Environment (CoastalME) version 1.3.25 (06 Jul 2025)";
 string const PROGRAM_NAME_SHORT = "CME";
 string const CME_INI = "cme.ini";
 

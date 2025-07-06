@@ -238,11 +238,11 @@ int CSimulation::nDoAllPropagateWaves(void)
          VbBreakingAll.insert(VbBreakingAll.end(), VbBreaking.begin(), VbBreaking.end());
       }
 
-      bDownCoast = !bDownCoast;
+      bDownCoast = ! bDownCoast;
    }
 
    // OK, do we have some profiles other than start of coast or end of coast profiles in the all-profile vectors? We need to check this, because GDALGridCreate() in nInterpolateWavePropertiesToWithinPolygonCells() does not work if we give it only a start-of-coast or an end-of-coast profile to work with TODO 006 Is this still true?
-   if (!bSomeNonStartOrEndOfCoastProfiles)
+   if (! bSomeNonStartOrEndOfCoastProfiles)
    {
       LogStream << m_ulIter << ": waves are on-shore only, for start and/or end of coast profiles" << endl;
 
@@ -754,7 +754,7 @@ int CSimulation::nCalcWavePropertiesOnProfile(int const nCoast, int const nCoast
    // LogStream << "\tNext profile, dWaveToNormalAngleNext = " << dWaveToNormalAngleNext << " which is " << (dWaveToNormalAngleNext < 0 ? "DOWN" : "UP") << "-coast" << endl;
 
    // Following Ashton and Murray (2006), if we have high-angle waves then use the flux orientation of the previous (up-coast) profile, if transitioning from diffusive to antidiffusive use flux maximizing angle (45 degrees)
-   if ((dWaveToNormalAngle > 0) && (!bFPIsEqual(dWaveToNormalAnglePrev, DBL_NODATA, TOLERANCE)) && (dWaveToNormalAnglePrev > 0))
+   if ((dWaveToNormalAngle > 0) && (! bFPIsEqual(dWaveToNormalAnglePrev, DBL_NODATA, TOLERANCE)) && (dWaveToNormalAnglePrev > 0))
    {
       if (dWaveToNormalAngle > 45)
       {
@@ -772,7 +772,7 @@ int CSimulation::nCalcWavePropertiesOnProfile(int const nCoast, int const nCoast
       }
    }
 
-   else if ((dWaveToNormalAngle < 0) && (!bFPIsEqual(dWaveToNormalAngleNext, DBL_NODATA, TOLERANCE)) && (dWaveToNormalAngleNext < 0))
+   else if ((dWaveToNormalAngle < 0) && (! bFPIsEqual(dWaveToNormalAngleNext, DBL_NODATA, TOLERANCE)) && (dWaveToNormalAngleNext < 0))
    {
       if (dWaveToNormalAngle < -45)
       {
@@ -790,7 +790,7 @@ int CSimulation::nCalcWavePropertiesOnProfile(int const nCoast, int const nCoast
       }
    }
 
-   else if ((dWaveToNormalAngle > 45) && (!bFPIsEqual(dWaveToNormalAnglePrev, DBL_NODATA, TOLERANCE)) && (dWaveToNormalAnglePrev > 0))
+   else if ((dWaveToNormalAngle > 45) && (! bFPIsEqual(dWaveToNormalAnglePrev, DBL_NODATA, TOLERANCE)) && (dWaveToNormalAnglePrev > 0))
    {
       // The wave direction here has an up-coast (decreasing indices) component: so for high-angle waves use the orientation from the up-coast (previous) profile
       // LogStream << "\tCCC" << endl;
@@ -798,7 +798,7 @@ int CSimulation::nCalcWavePropertiesOnProfile(int const nCoast, int const nCoast
       dWaveToNormalAngle = dFluxOrientationPrev;
    }
 
-   else if ((dWaveToNormalAngle < -45) && (!bFPIsEqual(dWaveToNormalAngleNext, DBL_NODATA, TOLERANCE)) && (dWaveToNormalAngleNext < 0))
+   else if ((dWaveToNormalAngle < -45) && (! bFPIsEqual(dWaveToNormalAngleNext, DBL_NODATA, TOLERANCE)) && (dWaveToNormalAngleNext < 0))
    {
       // The wave direction here has a down-coast (increasing indices) component: so for high-angle waves use the orientation from the down-coast (next) profile
       // LogStream << "\tDDD" << endl;
@@ -1204,7 +1204,7 @@ int CSimulation::nCalcWavePropertiesOnProfile(int const nCoast, int const nCoast
          }
 
          // if ((VdFractionBreakingWaves[nProfilePoint] >= 0.10) && (! bBreaking)) // Sometimes is possible that waves break again
-         if ((VdFractionBreakingWaves[nProfilePoint] >= 0.10) && (m_dDepthOfClosure >= m_pRasterGrid->m_Cell[nX][nY].dGetSeaDepth()) && (!bBreaking))
+         if ((VdFractionBreakingWaves[nProfilePoint] >= 0.10) && (m_dDepthOfClosure >= m_pRasterGrid->m_Cell[nX][nY].dGetSeaDepth()) && (! bBreaking))
          {
             bBreaking = true;
             // assert(VdWaveHeight[nProfilePoint] >= 0);
@@ -1251,7 +1251,7 @@ int CSimulation::nCalcWavePropertiesOnProfile(int const nCoast, int const nCoast
 
          else
          {
-            if (!bBreaking)
+            if (! bBreaking)
             {
                // Start calculating wave properties using linear wave theory
                double const dL = m_dL_0 * sqrt(tanh((2 * PI * dSeaDepth) / m_dL_0));                          // Wavelength (m) in intermediate-shallow waters
@@ -1383,7 +1383,7 @@ int CSimulation::nCalcWavePropertiesOnProfile(int const nCoast, int const nCoast
    double dWaveHeight = 0;
 
    // Safety checks
-   if ((nValidPointsWaveHeight >= 0) && (!bFPIsEqual(VdWaveHeight[nValidPointsWaveHeight], DBL_NODATA, TOLERANCE)))
+   if ((nValidPointsWaveHeight >= 0) && (! bFPIsEqual(VdWaveHeight[nValidPointsWaveHeight], DBL_NODATA, TOLERANCE)))
    {
       dWaveHeight = VdWaveHeight[nValidPointsWaveHeight];
    }
@@ -1424,7 +1424,7 @@ int CSimulation::nCalcWavePropertiesOnProfile(int const nCoast, int const nCoast
    double dWaveSetupSurge = 0;
 
    // Safety checks
-   if ((nValidPointsWaveSetup >= 0) && (!bFPIsEqual(VdWaveSetupSurge[nValidPointsWaveSetup], DBL_NODATA, TOLERANCE)))
+   if ((nValidPointsWaveSetup >= 0) && (! bFPIsEqual(VdWaveSetupSurge[nValidPointsWaveSetup], DBL_NODATA, TOLERANCE)))
    {
       dWaveSetupSurge = VdWaveSetupSurge[nValidPointsWaveSetup];
    }
@@ -1681,7 +1681,7 @@ int CSimulation::nReadCShoreOutput(int const nProfile, string const *strCShoreFi
          // Read in the header line
          vector<string> VstrItems = VstrSplit(&strLineIn, SPACE);
 
-         if (!bIsStringValidInt(VstrItems[1]))
+         if (! bIsStringValidInt(VstrItems[1]))
          {
             string strErr = ERR + "invalid integer for number of expected rows '" + VstrItems[1] + "' in " + *strCShoreFilename + "\n";
             cerr << strErr;
@@ -1905,7 +1905,7 @@ void CSimulation::ModifyBreakingWavePropertiesWithinShadowZoneToCoastline(int co
          double const dWaveHeight = m_pRasterGrid->m_Cell[nX][nY].dGetWaveHeight();
 
          // Check that wave height at the given point is lower than maximum real wave height. If breaking wave height is expected that no good wave height are obtained, so, do not take it
-         if (dWaveHeight > (m_dDepthOfClosure * m_dBreakingWaveHeightDepthRatio) && (!bModfiedWaveHeightisBreaking) && (!bFPIsEqual(dThisBreakingWaveHeight, DBL_NODATA, TOLERANCE)))
+         if (dWaveHeight > (m_dDepthOfClosure * m_dBreakingWaveHeightDepthRatio) && (! bModfiedWaveHeightisBreaking) && (! bFPIsEqual(dThisBreakingWaveHeight, DBL_NODATA, TOLERANCE)))
          {
             // It is breaking
             bModfiedWaveHeightisBreaking = true;
@@ -1936,7 +1936,7 @@ void CSimulation::ModifyBreakingWavePropertiesWithinShadowZoneToCoastline(int co
       // LogStream << m_ulIter << ": nProfile = " << nProfile << ", nCoastPoint = " << nCoastPoint << " in active zone, dBreakingWaveHeight = " << dBreakingWaveHeight << endl;
    }
 
-   else if (bProfileIsinShadowZone && (!bModfiedWaveHeightisBreaking))
+   else if (bProfileIsinShadowZone && (! bModfiedWaveHeightisBreaking))
    {
       // This coast point is no longer in the active zone
       m_VCoast[nCoast].SetBreakingWaveHeight(nThisCoastPoint, DBL_NODATA);
@@ -2144,7 +2144,7 @@ void CSimulation::InterpolateWaveHeightToCoastPoints(int const nCoast)
    {
       double const dCoastWaveHeight = m_VCoast[nCoast].dGetCoastWaveHeight(n);
 
-      if (!bFPIsEqual(dCoastWaveHeight, DBL_NODATA, TOLERANCE))
+      if (! bFPIsEqual(dCoastWaveHeight, DBL_NODATA, TOLERANCE))
       {
          nVCoastWaveHeightX.push_back(n);
          dVCoastWaveHeightY.push_back(dCoastWaveHeight);
@@ -2280,7 +2280,7 @@ void CSimulation::CalcD50AndFillWaveCalcHoles(void)
                // It is in the active zone. Does it have unconsolidated sediment on it? Test this using the UnconD50 value: if dGetUnconsD50() returns DBL_NODATA, there is no unconsolidated sediment
                double const dTmpd50 = m_pRasterGrid->m_Cell[nX][nY].dGetUnconsD50();
 
-               if (!bFPIsEqual(dTmpd50, DBL_NODATA, TOLERANCE))
+               if (! bFPIsEqual(dTmpd50, DBL_NODATA, TOLERANCE))
                {
                   // It does have unconsolidated sediment, so which polygon is this cell in?
                   if (nPolyID != INT_NODATA)
@@ -2479,7 +2479,7 @@ void CSimulation::CalcD50AndFillWaveCalcHoles(void)
                // If this sea cell has a wave height which is the same as its deep-water wave height, but its neighbours have a different average wave height, then give it the average of its neighbours
                double const dDeepWaterWaveHeight = m_pRasterGrid->m_Cell[nX][nY].dGetCellDeepWaterWaveHeight();
 
-               if ((bFPIsEqual(m_pRasterGrid->m_Cell[nX][nY].dGetWaveHeight(), dDeepWaterWaveHeight, TOLERANCE)) && (!bFPIsEqual(dDeepWaterWaveHeight, dWaveHeight, TOLERANCE)))
+               if ((bFPIsEqual(m_pRasterGrid->m_Cell[nX][nY].dGetWaveHeight(), dDeepWaterWaveHeight, TOLERANCE)) && (! bFPIsEqual(dDeepWaterWaveHeight, dWaveHeight, TOLERANCE)))
                {
                   m_pRasterGrid->m_Cell[nX][nY].SetWaveHeight(dWaveHeight);
                }
@@ -2487,7 +2487,7 @@ void CSimulation::CalcD50AndFillWaveCalcHoles(void)
                // If this sea cell has a wave orientation which is the same as its deep-water wave orientation, but its neighbours have a different average wave orientation, then give it the average of its neighbours
                double const dDeepWaterWaveAngle = m_pRasterGrid->m_Cell[nX][nY].dGetCellDeepWaterWaveAngle();
 
-               if ((bFPIsEqual(m_pRasterGrid->m_Cell[nX][nY].dGetWaveAngle(), dDeepWaterWaveAngle, TOLERANCE)) && (!bFPIsEqual(dDeepWaterWaveAngle, dWaveAngle, TOLERANCE)))
+               if ((bFPIsEqual(m_pRasterGrid->m_Cell[nX][nY].dGetWaveAngle(), dDeepWaterWaveAngle, TOLERANCE)) && (! bFPIsEqual(dDeepWaterWaveAngle, dWaveAngle, TOLERANCE)))
                {
                   m_pRasterGrid->m_Cell[nX][nY].SetWaveAngle(dWaveAngle);
                }
@@ -2525,7 +2525,7 @@ void CSimulation::CalcD50AndFillWaveCalcHoles(void)
    {
       for (int nPoly = 0; nPoly < m_VCoast[nCoast].nGetNumPolygons(); nPoly++)
       {
-         CGeomCoastPolygon *pPolygon = m_VCoast[nCoast].pGetPolygon(nPoly);
+         CGeomCoastPolygon* pPolygon = m_VCoast[nCoast].pGetPolygon(nPoly);
          int const nPolyID = pPolygon->nGetPolygonCoastID();
 
          if (VnPolygonD50Count[nPolyID] > 0)

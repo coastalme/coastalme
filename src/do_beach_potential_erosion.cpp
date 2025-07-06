@@ -106,7 +106,7 @@ void CSimulation::DoAllPotentialBeachErosion(void)
 
             double const dThisBreakingWaveHeight = m_VCoast[nCoast].dGetBreakingWaveHeight(nCoastPoint);
 
-            if (!bFPIsEqual(dThisBreakingWaveHeight, DBL_NODATA, TOLERANCE))
+            if (! bFPIsEqual(dThisBreakingWaveHeight, DBL_NODATA, TOLERANCE))
             {
                // We are in the active zone
                nActiveZonePoints++;

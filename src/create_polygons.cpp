@@ -103,7 +103,7 @@ int CSimulation::nCreateAllPolygons(void)
                // Is the next profile OK?
                bNextProfileIsOK = pNextProfile->bOKIncStartAndEndOfCoast();
 
-               if (!bNextProfileIsOK)
+               if (! bNextProfileIsOK)
                {
                   // Nope, the next profile is not OK
                   // LogStream << m_ulIter << ": down-coast adjacent profile = " << nNextProfile << " is not OK" << endl;
@@ -113,7 +113,7 @@ int CSimulation::nCreateAllPolygons(void)
                   pNextProfile = pNextNextProfile;
                }
 
-            } while (!bNextProfileIsOK);
+            } while (! bNextProfileIsOK);
 
             // LogStream << "Profile " << pNextProfile->nGetProfileCoastID() << " is OK" << endl;
 
@@ -228,7 +228,7 @@ int CSimulation::nCreateAllPolygons(void)
                bEndCoast = true;
 
             // Create the coast polygon object and get a pointer to it. TODO 044 the first parameter (global ID) will need to change when considering multiple coasts
-            CGeomCoastPolygon* pPolygon = m_VCoast[nCoast].pPolyCreatePolygon(nThisProfile, nPolygon, nNodePoint, &PtiNode, &PtiAntiNode, nThisProfile, nNextProfile, &PtVBoundary, nThisProfileEnd + 1, nNextProfileEnd + 1, bStartCoast, bEndCoast);
+            CGeomCoastPolygon* pPolygon = m_VCoast[nCoast].pPolyCreatePolygon(nPolygon, nNodePoint, &PtiNode, &PtiAntiNode, nThisProfile, nNextProfile, &PtVBoundary, nThisProfileEnd + 1, nNextProfileEnd + 1, bStartCoast, bEndCoast);
 
             // And store this pointer for simulation-wide access, in along-coast sequence
             m_pVCoastPolygon.push_back(pPolygon);
@@ -238,7 +238,7 @@ int CSimulation::nCreateAllPolygons(void)
             pPolygon->AppendVertex(pThisProfile->pPtiGetEndPoint());
             pPolygon->AppendVertex(pNextProfile->pPtiGetStartPoint());
 
-            if (!bMeetsAtAPoint)
+            if (! bMeetsAtAPoint)
                pPolygon->AppendVertex(pNextProfile->pPtiGetEndPoint());
 
             // // DEBUG CODE =================================================================================
@@ -277,7 +277,7 @@ int CSimulation::nCreateAllPolygons(void)
             }
 
             // If the polygon doesn't meet at a point at its seaward end, also need to rasterize the 'joining line'
-            if (!bMeetsAtAPoint)
+            if (! bMeetsAtAPoint)
             {
                CGeom2DIPoint const PtiDownCoastNormalEnd = *pNextProfile->pPtiGetEndPoint(); // Grid CRS
                CGeom2DIPoint const PtiUpCoastNormalEnd = *pThisProfile->pPtiGetEndPoint();   // Grid CRS
@@ -338,7 +338,7 @@ void CSimulation::RasterizePolygonJoiningLine(int nCoast, CGeom2DIPoint const* p
       int nY = nRound(dY);
 
       // Safety check
-      if (!bIsWithinValidGrid(nX, nY))
+      if (! bIsWithinValidGrid(nX, nY))
          KeepWithinValidGrid(nXStart, nYStart, nX, nY);
 
       // TEST
@@ -565,7 +565,7 @@ void CSimulation::MarkPolygonCells(void)
                nCellsInPolygon++;
                dTotDepth += m_pRasterGrid->m_Cell[nX][nY].dGetSeaDepth();
 
-               if ((!bSpanAbove) && (nY > 0) && (m_pRasterGrid->m_Cell[nX][nY - 1].nGetPolygonID() == INT_NODATA))
+               if ((! bSpanAbove) && (nY > 0) && (m_pRasterGrid->m_Cell[nX][nY - 1].nGetPolygonID() == INT_NODATA))
                {
                   PtiStack.push(CGeom2DIPoint(nX, nY - 1));
                   bSpanAbove = true;
@@ -576,7 +576,7 @@ void CSimulation::MarkPolygonCells(void)
                   bSpanAbove = false;
                }
 
-               if ((!bSpanBelow) && (nY < m_nYGridSize - 1) && (m_pRasterGrid->m_Cell[nX][nY + 1].nGetPolygonID() == INT_NODATA))
+               if ((! bSpanBelow) && (nY < m_nYGridSize - 1) && (m_pRasterGrid->m_Cell[nX][nY + 1].nGetPolygonID() == INT_NODATA))
                {
                   PtiStack.push(CGeom2DIPoint(nX, nY + 1));
                   bSpanBelow = true;
@@ -1006,7 +1006,7 @@ bool CSimulation::bIsWithinPolygon(CGeom2DPoint const* pPtStart, vector<CGeom2DP
       {
          if (dCorneriX + (dY - dCorneriY) / (dCornerjY - dCorneriY) * (dCornerjX - dCorneriX) < dX)
          {
-            bOddNodes = !bOddNodes;
+            bOddNodes = ! bOddNodes;
          }
       }
 
@@ -1053,7 +1053,7 @@ CGeom2DPoint CSimulation::PtFindPointInPolygon(vector<CGeom2DPoint> const* pPtPo
 
       // Check if the halfway point between the first and the third point is inside the polygon
       PtStart = PtAverage(&nVTestPoints[0], &nVTestPoints[2]);
-   } while (!bIsWithinPolygon(&PtStart, pPtPoints));
+   } while (! bIsWithinPolygon(&PtStart, pPtPoints));
 
    return PtStart;
 }

@@ -141,7 +141,7 @@ int CSimulation::nDoAllShorePlatFormErosion(void)
    }
 
    // Swap direction for next timestep
-   bDownCoast = !bDownCoast;
+   bDownCoast = ! bDownCoast;
 
    // Fills in 'holes' in the potential platform erosion i.e. orphan cells which get omitted because of rounding problems
    FillPotentialPlatformErosionHoles();
@@ -476,8 +476,8 @@ int CSimulation::nCalcPotentialPlatformErosionBetweenProfiles(int const nCoast, 
       if ((nParCoastX == nParCoastXLast) && (nParCoastY == nParCoastYLast))
       {
          // Should not happen, but could do due to rounding errors
-         if (m_nLogFileDetail >= LOG_FILE_ALL)
-            LogStream << WARN << m_ulIter << ": rounding problem on coast " << nCoast << " profile " << pProfile->nGetProfileCoastID() << " at [" << nParCoastX << "][" << nParCoastY << "]" << endl;
+         // if (m_nLogFileDetail >= LOG_FILE_ALL)
+         //    LogStream << WARN << m_ulIter << ": rounding problem on coast " << nCoast << " profile " << pProfile->nGetProfileCoastID() << " at [" << nParCoastX << "][" << nParCoastY << "]" << endl;
 
          // So move on to the next point along the coastline in this direction
          continue;
@@ -1158,7 +1158,7 @@ void CSimulation::FillInBeachProtectionHoles(void)
             nXTmp = nX;
             nYTmp = nY - 1;
 
-            if ((bIsWithinValidGrid(nXTmp, nYTmp)) && (!bFPIsEqual(m_pRasterGrid->m_Cell[nXTmp][nYTmp].dGetBeachProtectionFactor(), DBL_NODATA, TOLERANCE)))
+            if ((bIsWithinValidGrid(nXTmp, nYTmp)) && (! bFPIsEqual(m_pRasterGrid->m_Cell[nXTmp][nYTmp].dGetBeachProtectionFactor(), DBL_NODATA, TOLERANCE)))
             {
                nAdjacent++;
                dBeachProtection += m_pRasterGrid->m_Cell[nXTmp][nYTmp].dGetBeachProtectionFactor();
@@ -1168,7 +1168,7 @@ void CSimulation::FillInBeachProtectionHoles(void)
             nXTmp = nX + 1;
             nYTmp = nY;
 
-            if ((bIsWithinValidGrid(nXTmp, nYTmp)) && (!bFPIsEqual(m_pRasterGrid->m_Cell[nXTmp][nYTmp].dGetBeachProtectionFactor(), DBL_NODATA, TOLERANCE)))
+            if ((bIsWithinValidGrid(nXTmp, nYTmp)) && (! bFPIsEqual(m_pRasterGrid->m_Cell[nXTmp][nYTmp].dGetBeachProtectionFactor(), DBL_NODATA, TOLERANCE)))
             {
                nAdjacent++;
                dBeachProtection += m_pRasterGrid->m_Cell[nXTmp][nYTmp].dGetBeachProtectionFactor();
@@ -1178,7 +1178,7 @@ void CSimulation::FillInBeachProtectionHoles(void)
             nXTmp = nX;
             nYTmp = nY + 1;
 
-            if ((bIsWithinValidGrid(nXTmp, nYTmp)) && (!bFPIsEqual(m_pRasterGrid->m_Cell[nXTmp][nYTmp].dGetBeachProtectionFactor(), DBL_NODATA, TOLERANCE)))
+            if ((bIsWithinValidGrid(nXTmp, nYTmp)) && (! bFPIsEqual(m_pRasterGrid->m_Cell[nXTmp][nYTmp].dGetBeachProtectionFactor(), DBL_NODATA, TOLERANCE)))
             {
                nAdjacent++;
                dBeachProtection += m_pRasterGrid->m_Cell[nXTmp][nYTmp].dGetBeachProtectionFactor();
@@ -1188,7 +1188,7 @@ void CSimulation::FillInBeachProtectionHoles(void)
             nXTmp = nX - 1;
             nYTmp = nY;
 
-            if ((bIsWithinValidGrid(nXTmp, nYTmp)) && (!bFPIsEqual(m_pRasterGrid->m_Cell[nXTmp][nYTmp].dGetBeachProtectionFactor(), DBL_NODATA, TOLERANCE)))
+            if ((bIsWithinValidGrid(nXTmp, nYTmp)) && (! bFPIsEqual(m_pRasterGrid->m_Cell[nXTmp][nYTmp].dGetBeachProtectionFactor(), DBL_NODATA, TOLERANCE)))
             {
                nAdjacent++;
                dBeachProtection += m_pRasterGrid->m_Cell[nXTmp][nYTmp].dGetBeachProtectionFactor();
@@ -1225,7 +1225,7 @@ void CSimulation::FillPotentialPlatformErosionHoles(void)
             nXTmp = nX;
             nYTmp = nY - 1;
 
-            if ((bIsWithinValidGrid(nXTmp, nYTmp)) && (!bFPIsEqual(m_pRasterGrid->m_Cell[nXTmp][nYTmp].dGetPotentialPlatformErosion(), 0.0, TOLERANCE)))
+            if ((bIsWithinValidGrid(nXTmp, nYTmp)) && (! bFPIsEqual(m_pRasterGrid->m_Cell[nXTmp][nYTmp].dGetPotentialPlatformErosion(), 0.0, TOLERANCE)))
             {
                nAdjacent++;
                dPotentialPlatformErosion += m_pRasterGrid->m_Cell[nXTmp][nYTmp].dGetPotentialPlatformErosion();
@@ -1235,7 +1235,7 @@ void CSimulation::FillPotentialPlatformErosionHoles(void)
             nXTmp = nX + 1;
             nYTmp = nY;
 
-            if ((bIsWithinValidGrid(nXTmp, nYTmp)) && (!bFPIsEqual(m_pRasterGrid->m_Cell[nXTmp][nYTmp].dGetPotentialPlatformErosion(), 0.0, TOLERANCE)))
+            if ((bIsWithinValidGrid(nXTmp, nYTmp)) && (! bFPIsEqual(m_pRasterGrid->m_Cell[nXTmp][nYTmp].dGetPotentialPlatformErosion(), 0.0, TOLERANCE)))
             {
                nAdjacent++;
                dPotentialPlatformErosion += m_pRasterGrid->m_Cell[nXTmp][nYTmp].dGetPotentialPlatformErosion();
@@ -1245,7 +1245,7 @@ void CSimulation::FillPotentialPlatformErosionHoles(void)
             nXTmp = nX;
             nYTmp = nY + 1;
 
-            if ((bIsWithinValidGrid(nXTmp, nYTmp)) && (!bFPIsEqual(m_pRasterGrid->m_Cell[nXTmp][nYTmp].dGetPotentialPlatformErosion(), 0.0, TOLERANCE)))
+            if ((bIsWithinValidGrid(nXTmp, nYTmp)) && (! bFPIsEqual(m_pRasterGrid->m_Cell[nXTmp][nYTmp].dGetPotentialPlatformErosion(), 0.0, TOLERANCE)))
             {
                nAdjacent++;
                dPotentialPlatformErosion += m_pRasterGrid->m_Cell[nXTmp][nYTmp].dGetPotentialPlatformErosion();
@@ -1255,7 +1255,7 @@ void CSimulation::FillPotentialPlatformErosionHoles(void)
             nXTmp = nX - 1;
             nYTmp = nY;
 
-            if ((bIsWithinValidGrid(nXTmp, nYTmp)) && (!bFPIsEqual(m_pRasterGrid->m_Cell[nXTmp][nYTmp].dGetPotentialPlatformErosion(), 0.0, TOLERANCE)))
+            if ((bIsWithinValidGrid(nXTmp, nYTmp)) && (! bFPIsEqual(m_pRasterGrid->m_Cell[nXTmp][nYTmp].dGetPotentialPlatformErosion(), 0.0, TOLERANCE)))
             {
                nAdjacent++;
                dPotentialPlatformErosion += m_pRasterGrid->m_Cell[nXTmp][nYTmp].dGetPotentialPlatformErosion();
@@ -1303,7 +1303,7 @@ void CSimulation::ConstructParallelProfile(int const nProfileStartX, int const n
       int const nYPar = nYProf + nYOffset;
 
       // Is this cell within the grid? If not, cut short the profile
-      if (!bIsWithinValidGrid(nXPar, nYPar))
+      if (! bIsWithinValidGrid(nXPar, nYPar))
       {
          // LogStream << "NOT WITHIN GRID [" << nXPar << "][" << nYPar << "]" << endl;
          return;

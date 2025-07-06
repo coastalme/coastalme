@@ -38,12 +38,11 @@ using std::find;
 #include "2di_point.h"
 
 //! Constructor with 10 parameters and initialization list
-CGeomCoastPolygon::CGeomCoastPolygon(int const nGlobalID, int const nCoastID, int const nNode, int const nProfileUpCoast, int const nProfileDownCoast, vector<CGeom2DPoint> const* pVIn, int const nLastPointUpCoast, const int nLastPointDownCoast, CGeom2DIPoint const* PtiNode, CGeom2DIPoint const* PtiAntinode, bool const bStartCoast, bool const bEndCoast)
+CGeomCoastPolygon::CGeomCoastPolygon(int const nCoastID, int const nNode, int const nProfileUpCoast, int const nProfileDownCoast, vector<CGeom2DPoint> const* pVIn, int const nLastPointUpCoast, const int nLastPointDownCoast, CGeom2DIPoint const* PtiNode, CGeom2DIPoint const* PtiAntinode, bool const bStartCoast, bool const bEndCoast)
     : // m_bIsPointedSeaward(true),
       m_bUnconsSedimentMovementDownCoastThisIter(false),
       m_bCoastEndPolygon(bEndCoast),
       m_bCoastStartPolygon(bStartCoast),
-      m_nGlobalID(nGlobalID),
       m_nCoastID(nCoastID),
       m_nCoastNode(nNode),
       m_nProfileUpCoast(nProfileUpCoast),
