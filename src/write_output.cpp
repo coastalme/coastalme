@@ -69,11 +69,9 @@ void CSimulation::WriteStartRunDetails(void)
    OutStream << fixed;
 
    // Start outputting stuff
-   OutStream << PROGRAM_NAME << " for " << PLATFORM << " " << strGetBuild() << " on " << strGetComputerName() << endl
-             << endl;
+   OutStream << PROGRAM_NAME << " for " << PLATFORM << " " << strGetBuild() << " on " << strGetComputerName() << endl << endl;
 
-   LogStream << PROGRAM_NAME << " for " << PLATFORM << " " << strGetBuild() << " on " << strGetComputerName() << endl
-             << endl;
+   LogStream << PROGRAM_NAME << " for " << PLATFORM << " " << strGetBuild() << " on " << strGetComputerName() << endl << endl;
 
    // ----------------------------------------------- Run Information ----------------------------------------------------------
    OutStream << "RUN DETAILS" << endl;
@@ -1705,7 +1703,7 @@ void CSimulation::WritePolygonInfoTable(int const nCoast)
    {
       CGeomCoastPolygon const* pPolygon = pGetPolygon(n);
 
-      LogStream << strIntRight(nCoast, 11) << "|" << strIntRight(pPolygon->nGetPolygonCoastID(), 11) << "|" << strIntRight(pPolygon->nGetUpCoastProfile(), 11) << "|" << strIntRight(pPolygon->nGetDownCoastProfile(), 11) << "|" << strDblRight(pPolygon->dGetSeawaterVolume(), 0, 14) << "|" << strDblRight(pPolygon->dGetAvgUnconsD50(), 0, 14) << "| " << endl;
+      LogStream << strIntRight(nCoast, 11) << "|" << strIntRight(pPolygon->nGetPolygonCoastID(), 11) << "|" << strIntRight(pPolygon->nGetUpCoastProfile(), 11) << "|" << strIntRight(pPolygon->nGetDownCoastProfile(), 11) << "|" << strDblRight(pPolygon->dGetSeawaterVolume(), 0, 14) << "|" << strDblRight(pPolygon->dGetAvgUnconsD50(), 2, 14) << "| " << endl;
    }
 
    LogStream << "-----------|-----------|-----------|-----------|--------------|--------------|" << endl << endl;
@@ -2035,25 +2033,20 @@ void CSimulation::WritePolygonUnsortedSequence(int const nCoast, vector<vector<i
 
    for (int n = 0; n < static_cast<int>(pnVVPolyAndAdjacent.size()); n++)
    {
-      CGeomCoastPolygon const* pPolygon = m_VCoast[nCoast].pGetPolygon(pnVVPolyAndAdjacent[n][1]);
+      CGeomCoastPolygon const* pPolygon = m_VCoast[nCoast].pGetPolygon(pnVVPolyAndAdjacent[n][0]);
 
       for (int m = 0; m < static_cast<int>(pnVVPolyAndAdjacent[n].size()); m++)
       {
          if (m == 0)
          {
             LogStream << strIntRight(nCoast, 11) << "|";
+            LogStream << strIntRight(pPolygon->nGetPolygonCoastID(), 11) << "|";
             continue;
          }
 
          if (m == 1)
          {
-            LogStream << strIntRight(pPolygon->nGetPolygonCoastID(), 11) << "|";
-            continue;
-         }
-
-         if (m == 2)
-         {
-            if (pnVVPolyAndAdjacent[n][m] == true)
+            if (pnVVPolyAndAdjacent[n][1] == true)
                LogStream << strCentre("DOWN ", 11) << "|";
 
             else
@@ -2096,13 +2089,13 @@ void CSimulation::WritePolygonSortedSequence(int const nCoast, vector<vector<int
 
    for (int nPoly = 0; nPoly < static_cast<int>(pnVVPolyAndAdjacent.size()); nPoly++)
    {
-      const CGeomCoastPolygon* pPoly = m_VCoast[nCoast].pGetPolygon(pnVVPolyAndAdjacent[nPoly][1]);
+      const CGeomCoastPolygon* pPoly = m_VCoast[nCoast].pGetPolygon(pnVVPolyAndAdjacent[nPoly][0]);
       vector<int> VCirc = *pPoly->VnGetCircularities();
 
       LogStream << strIntRight(nCoast, 11) << "|" << strIntRight(pPoly->nGetPolygonCoastID(), 11) << "|";
 
       // Up-coast or down-coast sediment movement?
-      if (pnVVPolyAndAdjacent[nPoly][2] == true)
+      if (pnVVPolyAndAdjacent[nPoly][1] == true)
          LogStream << strCentre("DOWN ", 11) << "|";
 
       else
@@ -2111,7 +2104,7 @@ void CSimulation::WritePolygonSortedSequence(int const nCoast, vector<vector<int
       // Now the 'To' polygons: first copy the list of adjacent polygons
       vector<int> nVTmp;
 
-      for (int m = 3; m < static_cast<int>(pnVVPolyAndAdjacent[nPoly].size()); m++)
+      for (int m = 2; m < static_cast<int>(pnVVPolyAndAdjacent[nPoly].size()); m++)
          nVTmp.push_back(pnVVPolyAndAdjacent[nPoly][m]);
 
       // Now sort the copy
@@ -2157,7 +2150,7 @@ void CSimulation::WritePolygonSortedSequence(int const nCoast, vector<vector<int
 void CSimulation::WritePolygonActualMovement(int const nCoast, vector<vector<int>> const& pnVVPolyAndAdjacent)
 {
    // Show estimated polygon-to-polygon movement
-   LogStream << m_ulIter << ": per-polygon erosion and deposition of unconsolidated beach sediment, all m^3. Fine sediment is moved to suspension, not deposited (DDPD = During Dean Profile Deposition)." << endl;
+   LogStream << m_ulIter << ": Per-polygon erosion and deposition of unconsolidated beach sediment, all m^3. Fine sediment is moved to suspension, not deposited (DDPD = During Dean Profile Deposition)." << endl;
 
    LogStream << "-----------|-----------|--------------------------------------------|-----------------------------|--------------------------------------------|--------------------------------------------|" << endl;
    LogStream << strCentre("Coast", 11) << "|" << strCentre("Polygon", 11) << "|" << strCentre("All", 44) << "|" << strCentre("Fine", 29) << "|" << strCentre("Sand", 44) << "|" << strCentre("Coarse", 44) << "|" << endl;
@@ -2182,7 +2175,7 @@ void CSimulation::WritePolygonActualMovement(int const nCoast, vector<vector<int
 
    for (unsigned int n = 0; n < m_pVCoastPolygon.size(); n++)
    {
-      int const nPoly = pnVVPolyAndAdjacent[n][1];
+      int const nPoly = pnVVPolyAndAdjacent[n][0];
 
       double const dAllErosionNotDDPD = -m_pVCoastPolygon[nPoly]->dGeBeachErosionAllUncons() - (m_pVCoastPolygon[nPoly]->dGetBeachSandErodedDeanProfile() + m_pVCoastPolygon[nPoly]->dGetBeachCoarseErodedDeanProfile());
       double const dSandErosionNotDDPD = -m_pVCoastPolygon[nPoly]->dGetBeachErosionUnconsSand() - m_pVCoastPolygon[nPoly]->dGetBeachSandErodedDeanProfile();
