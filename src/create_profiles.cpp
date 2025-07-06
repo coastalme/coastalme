@@ -542,7 +542,6 @@ int CSimulation::nLocateAndCreateGridEdgeProfile(bool const bCoastStart, int con
       PtiProfileStart = *m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(0); // Grid CRS
       nProfileStartEdge = m_VCoast[nCoast].nGetStartEdge();
    }
-
    else
    {
       // At end of coast
@@ -584,7 +583,6 @@ int CSimulation::nLocateAndCreateGridEdgeProfile(bool const bCoastStart, int con
                break;
             }
          }
-
          else // Right-handed
          {
             // The list of edge cells is in clockwise sequence, go in the opposite direction
@@ -597,7 +595,6 @@ int CSimulation::nLocateAndCreateGridEdgeProfile(bool const bCoastStart, int con
             }
          }
       }
-
       else
       {
          // At end of coast
@@ -612,7 +609,6 @@ int CSimulation::nLocateAndCreateGridEdgeProfile(bool const bCoastStart, int con
                break;
             }
          }
-
          else // Right-handed
          {
             // The list of edge cells is in clockwise sequence, go in this direction
@@ -640,11 +636,16 @@ int CSimulation::nLocateAndCreateGridEdgeProfile(bool const bCoastStart, int con
          // Yes, hit a coast
          int nHitCoast = m_pRasterGrid->m_Cell[nXTmp][nYTmp].nGetCoastline();
 
-         if (m_nLogFileDetail >= LOG_FILE_ALL)
-            LogStream << m_ulIter << ": coast " << nCoast << " " << (bCoastStart ? "start" : "end") << " profile " << nProfile << " hit coast " << nHitCoast << " at [" << nXTmp << "][" << nYTmp << "] = {" << dGridCentroidXToExtCRSX(nXTmp) << ", " << dGridCentroidYToExtCRSY(nYTmp) << "}, truncated the profile" << endl;
+         // Have we hit a different coast?
+         if (nCoast != nHitCoast)
+         {
+            // Yes, this is a different coast
+            if (m_nLogFileDetail >= LOG_FILE_ALL)
+               LogStream << m_ulIter << ": coast " << nCoast << " " << (bCoastStart ? "start" : "end") << " profile " << nProfile << " hit coast " << nHitCoast << " at [" << nXTmp << "][" << nYTmp << "] = {" << dGridCentroidXToExtCRSX(nXTmp) << ", " << dGridCentroidYToExtCRSY(nYTmp) << "}, truncated the profile" << endl;
 
-         // Truncate the grid-edge profile ** TODO TRUNCATE BOTH PROFILES
-         break;
+            // Truncate the grid-edge profile ** TODO TRUNCATE BOTH PROFILES
+            break;
+         }
       }
 
       // Append this grid-edge cell, making sure that there is no gap between this and the previously-appended cell (if there is, will get problems with cell-by-cell fill)
@@ -665,7 +666,6 @@ int CSimulation::nLocateAndCreateGridEdgeProfile(bool const bCoastStart, int con
       // Mark this as a start-of-coast profile
       pProfile->SetStartOfCoast(true);
    }
-
    else
    {
       nProfileStartPoint = nCoastSize - 1;

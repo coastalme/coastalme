@@ -574,7 +574,6 @@ int CSimulation::nDoCliffCollapseDeposition(int const nCoast, CRWCliff const* pC
 
       if ((nCount % 2) != 0)
          nTmpPoint = nStartPoint + nSigned;
-
       else
       {
          nTmpPoint = nStartPoint - nSigned;
@@ -588,7 +587,6 @@ int CSimulation::nDoCliffCollapseDeposition(int const nCoast, CRWCliff const* pC
          nCount++;
          continue;
       }
-
       else
       {
          // It is valid
@@ -614,14 +612,14 @@ int CSimulation::nDoCliffCollapseDeposition(int const nCoast, CRWCliff const* pC
       bool bDoCoarseDepositionOnThisProfile = false;
       bool bCoarseDepositionCompletedOnThisProfile = false;
 
-      int nRemaining = tMax(1, nTalusWidthInCells - nDepProfile);
+      int nRemainingProfiles = tMax(1, nTalusWidthInCells - nDepProfile);
 
       // This is the minimum planview length (in cells) of the Dean profile. The initial length will be increased later if we can't deposit sufficient talus
       int nTalusProfileLenInCells = nConvertMetresToNumCells(m_dCliffTalusMinDepositionLength);
 
       // Calculate the target amount to be deposited on each talus profile, assuming the "preferred" talus width
-      double dTargetSandToDepositOnThisProfile = (dTotSandToDepositAllProfiles - dTotSandDepositedAllProfiles) / nRemaining;
-      double dTargetCoarseToDepositOnThisProfile = (dTotCoarseToDepositAllProfiles - dTotCoarseDepositedAllProfiles) / nRemaining;
+      double dTargetSandToDepositOnThisProfile = (dTotSandToDepositAllProfiles - dTotSandDepositedAllProfiles) / nRemainingProfiles;
+      double dTargetCoarseToDepositOnThisProfile = (dTotCoarseToDepositAllProfiles - dTotCoarseDepositedAllProfiles) / nRemainingProfiles;
 
       // Use this to make sure that, if we have both sand and coarse to deposit, we don't drop all the sand on a cell and then be unable to deposit any coarse
       double dSandProp = 0.5;
