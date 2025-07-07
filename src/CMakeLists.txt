@@ -90,7 +90,7 @@ if (CMAKE_COMPILER_IS_GNUCC)
 
    # Debug build using gcc
    if (CMAKE_BUILD_TYPE_LC STREQUAL "debug")
-      set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -W -Wall -Wextra -Wpointer-arith -Wconversion -Wcast-qual -Wcast-align -Wwrite-strings -Wredundant-decls -Wno-strict-overflow -Wshadow -Wuninitialized -Wnull-dereference -Wformat -Wformat-overflow -Wformat-signedness -Wuseless-cast -Wempty-body -Wfloat-equal")
+      set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Og -W -Wall -Wextra -Wpointer-arith -Wconversion -Wcast-qual -Wcast-align -Wwrite-strings -Wredundant-decls -Wno-strict-overflow -Wshadow -Wuninitialized -Wnull-dereference -Wformat -Wformat-overflow -Wformat-signedness -Wuseless-cast -Wempty-body -Wfloat-equal")
 
       # ===============================================================================================================
       # Also use these with debug builds to check for vulnerabilities at compile time, see https://best.openssf.org/Compiler-Hardening-Guides/Compiler-Options-Hardening-Guide-for-C-and-C++.html
@@ -111,7 +111,7 @@ if (CMAKE_COMPILER_IS_GNUCC)
       # Pre-release build using gcc, do this before a release to check for memory access problems. Note that -fsanitize=address (and the other sanitize options?) DO NOT work if run under gdb
       # # ===============================================================================================================
       if (CMAKE_CXX_COMPILER_VERSION VERSION_GREATER "5.0")
-         set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=undefined -fsanitize=shift -fsanitize=integer-divide-by-zero -fsanitize=unreachable -fsanitize=null -fsanitize=return -fsanitize=vla-bound -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fsanitize=bounds -fsanitize=alignment -fsanitize=object-size -fsanitize=vptr -fsanitize=address")
+         set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Og -fsanitize=undefined -fsanitize=shift -fsanitize=integer-divide-by-zero -fsanitize=unreachable -fsanitize=null -fsanitize=return -fsanitize=vla-bound -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fsanitize=bounds -fsanitize=alignment -fsanitize=object-size -fsanitize=vptr -fsanitize=address")
          # Note  -fsanitize-ignorelist=sanitize_ignorelist.txt not yet working for gcc, need this to hide GDAL errors
       endif ()
       # # ===============================================================================================================

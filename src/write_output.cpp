@@ -2025,15 +2025,18 @@ void CSimulation::WritePolygonPotentialErosion(int const nCoast)
 void CSimulation::WritePolygonUnsortedSequence(int const nCoast, vector<vector<int>>& pnVVPolyAndAdjacent)
 {
    LogStream << m_ulIter << ": Unsorted sequence of polygon processing (-9999 = leaves grid)" << endl;
-   LogStream << "-----------|-----------|-----------|-----------|" << endl;
-   LogStream << strCentre("Coast", 11) << "|" << strCentre("From", 11) << "|" << strCentre("Direction", 11) << "|" << strCentre("To", 11) << "|" << endl;
-   LogStream << strCentre("", 11) << "|" << strCentre("Polygon", 11) << "|" << strCentre("", 11) << "|" << strCentre("Polygon", 11) << "|" << endl;
-   LogStream << strCentre("", 11) << "|" << strCentre("Coast ID", 11) << "|" << strCentre("", 11) << "|" << strCentre("Coast ID", 11) << "|" << endl;
-   LogStream << "-----------|-----------|-----------|-----------|" << endl;
+   LogStream << "-----------|-----------|-----------|----------------------|" << endl;
+   LogStream << strCentre("Coast", 11) << "|" << strCentre("From", 11) << "|" << strCentre("Direction", 11) << "|" << strCentre("To", 22) << "|" << endl;
+   LogStream << strCentre("", 11) << "|" << strCentre("Polygon", 11) << "|" << strCentre("", 11) << "|" << strCentre("Polygon", 22) << "|" << endl;
+   LogStream << strCentre("", 11) << "|" << strCentre("Coast ID", 11) << "|" << strCentre("", 11) << "|" << strCentre("Coast ID", 22) << "|" << endl;
+   LogStream << "-----------|-----------|-----------|----------------------|" << endl;
 
    for (int n = 0; n < static_cast<int>(pnVVPolyAndAdjacent.size()); n++)
    {
       CGeomCoastPolygon const* pPolygon = m_VCoast[nCoast].pGetPolygon(pnVVPolyAndAdjacent[n][0]);
+
+      // For the list of adjacent polygons
+      vector<int> nVTmp;
 
       for (int m = 0; m < static_cast<int>(pnVVPolyAndAdjacent[n].size()); m++)
       {
@@ -2055,22 +2058,32 @@ void CSimulation::WritePolygonUnsortedSequence(int const nCoast, vector<vector<i
             continue;
          }
 
-         int const nAdjDownCoast = pnVVPolyAndAdjacent[n][m];
-         int nCoastID = INT_NODATA;
+         // Add to the list of adjacent polygons
+         nVTmp.push_back(pnVVPolyAndAdjacent[n][m]);
 
-         if (nAdjDownCoast != INT_NODATA)
+         if (m == static_cast<int>(pnVVPolyAndAdjacent[n].size()) - 1)
          {
-            CGeomCoastPolygon const* pAdjPolygon = m_VCoast[nCoast].pGetPolygon(nAdjDownCoast);
-            nCoastID = pAdjPolygon->nGetPolygonCoastID();
-         }
+            // No more adjacent polygons, so sort the copy
+            sort(nVTmp.begin(), nVTmp.end());
 
-         LogStream << strIntRight(nCoastID, 11) << "|";
+            // And write it out
+            string strTmp;
+            for (int mm = 0; mm < static_cast<int>(nVTmp.size()); mm++)
+            {
+               strTmp += to_string(nVTmp[mm]);
+
+               if (mm < static_cast<int>(nVTmp.size()) - 1)
+                  strTmp += " ";
+            }
+
+            LogStream << strRight(strTmp, 22) << "|";
+         }
       }
 
       LogStream << endl;
    }
 
-   LogStream << "-----------|-----------|-----------|-----------|" << endl << endl;
+   LogStream << "-----------|-----------|-----------|----------------------|" << endl << endl;
 }
 
 //===============================================================================================================================

@@ -45,6 +45,7 @@ CGeomCell::CGeomCell()
    : m_bInContiguousSea(false),
      m_bInContiguousFlood(false),
      m_bIsInActiveZone(false),
+     m_bCliff(false),
      m_bFloodLine(false),
      m_bWaveFlood(false),
      // m_bCheckCell(false),

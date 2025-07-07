@@ -200,5 +200,8 @@ CoastalME CHANGELOG
          Code tidying
 
 1.3.25   Ongoing changes to permit multiple coastlines
+         Bug fix re. multiple coastlines
+         Tidied logfile output
+         Added -Og flag for debug builds
          Code tidying
 
