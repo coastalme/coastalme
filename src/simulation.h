@@ -74,9 +74,12 @@ class CGeomCoastPolygon;
 class CRWCliff;
 class CSedInputEvent;
 class CRWCellLandform;
+class CCliffCollapseManager;
 
 class CSimulation
 {
+   friend class CCliffCollapseManager;  // Allow cliff collapse manager to access private members
+   
  private:
    //! Does this simulation consider fine-sized sediment?
    bool m_bHaveFineSediment;
@@ -548,6 +551,9 @@ class CSimulation
 
    //! The wave propagation model used. Possible values are WAVE_MODEL_CSHORE and WAVE_MODEL_COVE
    int m_nWavePropagationModel;
+   
+   //! Cliff algorithm selection (e.g., "simple_notch", "legacy_original")
+   string m_strCliffAlgorithm;
 
    //! Start time of the simulation (seconds)
    int m_nSimStartSec;
@@ -1532,6 +1538,9 @@ class CSimulation
 
    //! Pointer to the raster grid object
    CGeomRasterGrid *m_pRasterGrid;
+   
+   //! Pointer to the cliff collapse manager object
+   CCliffCollapseManager *m_pCliffCollapseManager;
 
    //! The coastline objects
    vector<CRWCoast> m_VCoast;
