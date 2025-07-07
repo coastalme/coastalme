@@ -1,57 +1,40 @@
 /*!
-
    \file gis_utils.cpp
    \brief Various GIS-related functions, requires GDAL
    \details Note re. coordinate systems used
 
-   1. In the raster CRS, cell[0][0] is at the top left (NW) corner of the grid.
-   Raster grid co-oordinate [0][0] is actually the top left (NW) corner of this
-   cell.
+   1. In the raster CRS, cell[0][0] is at the top left (NW) corner of the grid. Raster grid co-oordinate [0][0] is actually the top left (NW) corner of this cell.
 
-   2. We assume that the grid CRS and external CRS have parallel axes. If they
-   have not, see http://www.gdal.org/classGDALDataset.html which says that:
+   2. We assume that the grid CRS and external CRS have parallel axes. If they have not, see http://www.gdal.org/classGDALDataset.html which says that:
 
-   To convert between pixel/line (P,L) raster space, and projection coordinates
-   (Xp,Yp) space Xp = padfTransform[0] + padfTransform[1] + padfTransform[2]; Yp
+   To convert between pixel/line (P,L) raster space, and projection coordinates (Xp,Yp) space Xp = padfTransform[0] + padfTransform[1] + padfTransform[2]; Yp
    = padfTransform[3] + padfTransform[4] + padfTransform[5];
 
-   In a north-up image, padfTransform[1] is the pixel width, and
-   padfTransform[5] is the pixel height. The upper left corner of the upper left
-   pixel is at position (padfTransform[0], padfTransform[3]).
+   In a north-up image, padfTransform[1] is the pixel width, and padfTransform[5] is the pixel height. The upper left corner of the upper left pixel is at position (padfTransform[0], padfTransform[3]).
 
-   3. Usually, raster grid CRS values are integer, i.e. they refer to a point
-   which is at the centroid of a cell. They may also be -ve or greater than
-   m_nXGridSize-1 i.e. may refer to a point which lies outside any cell of the
-   raster grid.
+   3. Usually, raster grid CRS values are integer, i.e. they refer to a point which is at the centroid of a cell. They may also be -ve or greater than m_nXGridSize-1 i.e. may refer to a point which lies outside any cell of the raster grid.
 
    \author David Favis-Mortlock
    \author Andres Payo
    \date 2025
    \copyright GNU General Public License
-
 */
 
 /* ===============================================================================================================================
 
-   This file is part of CoastalME, the Coastal Modelling Environment.
+   This file is part of CoastalME, the Coastal Modelling Environment. CoastalME is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
 
-   CoastalME is free software; you can redistribute it and/or modify it under
-the terms of the GNU General Public License as published by the Free Software
-Foundation; either version 3 of the License, or (at your option) any later
-version.
+   This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-   This program is distributed in the hope that it will be useful, but WITHOUT
-ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
-
-   You should have received a copy of the GNU General Public License along with
-this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave,
-Cambridge, MA 02139, USA.
+   You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 ===============================================================================================================================*/
 #include <assert.h>
 
 #include <cstdio>
+
+#include <vector>
+using std::vector;
 
 #include <iostream>
 using std::cerr;

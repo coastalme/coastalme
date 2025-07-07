@@ -58,6 +58,7 @@ using std::to_string;
 #include <cpl_string.h>
 
 #include "cme.h"
+#include "simulation.h"
 #include "coast.h"
 #include "2di_point.h"
 

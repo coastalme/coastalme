@@ -24,24 +24,22 @@
 ==============================================================================================================================*/
 #include <assert.h>
 
+#include <cmath>
+using std::sqrt;
+
 #include <cfloat>
 
 #include <cstdio>
 using std::size_t;
 
-#include <cstdlib>
-using std::atol;
-
 #include <stdint.h>
-
-#include <string>
-using std::stod;
 
 #include <sstream>
 using std::stringstream;
 
 #include <algorithm>
 using std::max;
+using std::min;
 
 #include <utility>
 using std::make_pair;
@@ -140,7 +138,7 @@ void CSimulation::nRemoveSmallCliffIslands(int const dMinCliffCellThreshold)
 
             // Stack for iterative flood fill algorithm
             vector<pair<int, int>> VStack;
-            VStack.push_back(std::make_pair(nX, nY));
+            VStack.push_back(make_pair(nX, nY));
 
             // Flood fill to find all connected cliff cells
             while (! VStack.empty())
@@ -161,17 +159,17 @@ void CSimulation::nRemoveSmallCliffIslands(int const dMinCliffCellThreshold)
 
                // Mark as visited and add to current cliff region
                bVisited[nCurX][nCurY] = true;
-               VCurrentCliffRegion.push_back(std::make_pair(nCurX, nCurY));
+               VCurrentCliffRegion.push_back(make_pair(nCurX, nCurY));
 
                // Add neighboring cells to stack (8-connectivity: N, NE, E, SE, S, SW, W, NW)
-               VStack.push_back(std::make_pair(nCurX - 1, nCurY));     // North
-               VStack.push_back(std::make_pair(nCurX - 1, nCurY + 1)); // Northeast
-               VStack.push_back(std::make_pair(nCurX, nCurY + 1));     // East
-               VStack.push_back(std::make_pair(nCurX + 1, nCurY + 1)); // Southeast
-               VStack.push_back(std::make_pair(nCurX + 1, nCurY));     // South
-               VStack.push_back(std::make_pair(nCurX + 1, nCurY - 1)); // Southwest
-               VStack.push_back(std::make_pair(nCurX, nCurY - 1));     // West
-               VStack.push_back(std::make_pair(nCurX - 1, nCurY - 1)); // Northwest
+               VStack.push_back(make_pair(nCurX - 1, nCurY));     // North
+               VStack.push_back(make_pair(nCurX - 1, nCurY + 1)); // Northeast
+               VStack.push_back(make_pair(nCurX, nCurY + 1));     // East
+               VStack.push_back(make_pair(nCurX + 1, nCurY + 1)); // Southeast
+               VStack.push_back(make_pair(nCurX + 1, nCurY));     // South
+               VStack.push_back(make_pair(nCurX + 1, nCurY - 1)); // Southwest
+               VStack.push_back(make_pair(nCurX, nCurY - 1));     // West
+               VStack.push_back(make_pair(nCurX - 1, nCurY - 1)); // Northwest
             }
 
             // Calculate area of this cliff region (number of cells * cell area)
@@ -536,10 +534,10 @@ CGeomLine CSimulation::nValidateCliffToeDirection(CGeomLine& CliffEdge, bool bRe
       int nNextY = static_cast<int>((CliffEdge.dGetYAt(nNextPoint) - m_dGeoTransform[3]) /  m_dGeoTransform[5]);
 
       // Ensure coordinates are within grid bounds
-      nX = max(0, std::min(m_nXGridSize - 1, nX));
-      nY = max(0, std::min(m_nYGridSize - 1, nY));
-      nNextX = max(0, std::min(m_nXGridSize - 1, nNextX));
-      nNextY = max(0, std::min(m_nYGridSize - 1, nNextY));
+      nX = max(0, min(m_nXGridSize - 1, nX));
+      nY = max(0, min(m_nYGridSize - 1, nY));
+      nNextX = max(0, min(m_nXGridSize - 1, nNextX));
+      nNextY = max(0, min(m_nYGridSize - 1, nNextY));
 
       // Calculate direction of travel
       int const nDirX = nNextX - nX;

@@ -23,6 +23,10 @@
 ==============================================================================================================================*/
 #include <cstdio>
 
+#include <cstdlib>
+using std::strtod;
+using std::atol;
+
 #include <cctype>
 using std::isdigit;
 

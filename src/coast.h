@@ -25,7 +25,7 @@
    You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 ===============================================================================================================================*/
-#include <simulation.h>
+#include "simulation.h"
 #include "profile.h"
 #include "cell.h"
 #include "coast_landform.h"
