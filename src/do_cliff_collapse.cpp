@@ -612,7 +612,7 @@ int CSimulation::nDoCliffCollapseDeposition(int const nCoast, CRWCliff const* pC
       bool bDoCoarseDepositionOnThisProfile = false;
       bool bCoarseDepositionCompletedOnThisProfile = false;
 
-      int nRemainingProfiles = tMax(1, nTalusWidthInCells - nDepProfile);
+      int const nRemainingProfiles = tMax(1, nTalusWidthInCells - nDepProfile);
 
       // This is the minimum planview length (in cells) of the Dean profile. The initial length will be increased later if we can't deposit sufficient talus
       int nTalusProfileLenInCells = nConvertMetresToNumCells(m_dCliffTalusMinDepositionLength);

@@ -634,7 +634,7 @@ int CSimulation::nLocateAndCreateGridEdgeProfile(bool const bCoastStart, int con
       if (m_pRasterGrid->m_Cell[nXTmp][nYTmp].bIsCoastline())
       {
          // Yes, hit a coast
-         int nHitCoast = m_pRasterGrid->m_Cell[nXTmp][nYTmp].nGetCoastline();
+         int const nHitCoast = m_pRasterGrid->m_Cell[nXTmp][nYTmp].nGetCoastline();
 
          // Have we hit a different coast?
          if (nCoast != nHitCoast)
@@ -1637,7 +1637,7 @@ void CSimulation::CreateRasterizedProfile(int const nCoast, CGeomProfile* pProfi
                   // We've hit a coastline so set a switch and mark the profile, then quit
                   bHitCoast = true;
                   pProfile->SetHitCoast(true);
-                  int nHitCoast = m_pRasterGrid->m_Cell[nX][nY].nGetCoastline();
+                  int const nHitCoast = m_pRasterGrid->m_Cell[nX][nY].nGetCoastline();
 
                   if (m_nLogFileDetail >= LOG_FILE_ALL)
                      LogStream << m_ulIter << ": coast " << nCoast << " profile " << nProfile << " is invalid, hit coast " << nHitCoast << " at [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "}" << endl;

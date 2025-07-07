@@ -3,7 +3,7 @@
 # Change this to change build type
 buildtype=Debug
 #buildtype=Release
-#buildtype=Prerelease
+#buildtype=Prerelease             # DO NOT run using debugger e.g. gdb
 #buildtype=RelWithDebInfo        # Not yet implemented in CMakeLists.txt
 #buildtype=MinSizeRel            # Not yet implemented in CMakeLists.txt
 #buildtype=gcov
@@ -18,18 +18,17 @@ cshorelibrary=SHARED
 cshoreinout=ARG
 #cshoreinout=BOTH
 
-
 # Always build CShore
 echo ""
 rm -f ./lib/*
 cd cshore
 if [[ $OSTYPE == 'darwin'* ]]; then
-          ./make_cshore_lib.sh $cshorelibrary $buildtype $cshoreinout
+   ./make_cshore_lib.sh $cshorelibrary $buildtype $cshoreinout
 else
-          ./make_cshore_lib.sh
+   ./make_cshore_lib.sh
 fi
 cd ..
-# Note: The cshore Makefile now correctly names libraries for macOS automatically
+# Note: The cshore Makefile now correctly names libraries for MacOS automatically
 echo ""
 
 # Now run CMake for CoastalME
@@ -37,15 +36,15 @@ echo ""
 echo "================================================================="
 echo ""
 
-# Swich to gcc15 to ensure openMP compatability on mac
+# On Mac, switch to gcc15 to ensure openMP compatability
 if [[ $OSTYPE == 'darwin'* ]]; then
-    export CC=gcc-15
-    export CXX=g++-15
-    CMAKE_COMPILER_ARGS="-DCMAKE_C_COMPILER=gcc-15 -DCMAKE_CXX_COMPILER=g++-15"
+   export CC=gcc-15
+   export CXX=g++-15
+   CMAKE_COMPILER_ARGS="-DCMAKE_C_COMPILER=gcc-15 -DCMAKE_CXX_COMPILER=g++-15"
 else
-    echo "Using default compiler, OpenMP may not be available"
-    echo "For OpenMP support, install GCC or install libomp for Clang"
-    CMAKE_COMPILER_ARGS=""
+   echo "Using default compiler, OpenMP may not be available"
+   echo "For OpenMP support, install GCC or install libomp for Clang"
+   CMAKE_COMPILER_ARGS=""
 fi
 echo ""
 

@@ -936,12 +936,9 @@ bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const* strPlot
 
    case (VECTOR_PLOT_CLIFF_EDGE):
    {
-      // eGType = wkbLineString;
-      // strType = "line";
-
       // The layer has been created, so create an integer-numbered value (the number of the cliff edge object) for the multi-line
-      string strFieldValue1 = "CliffEdge";
-      OGRFieldDefn OGRField1(strFieldValue1.c_str(), OFTInteger);
+      string const strFieldValue1 = "CliffEdge";
+      OGRFieldDefn const OGRField1(strFieldValue1.c_str(), OFTInteger);
 
       if (pOGRLayer->CreateField(&OGRField1) != OGRERR_NONE)
       {

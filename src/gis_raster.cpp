@@ -32,6 +32,9 @@ using std::sqrt;
 using std::atan2;
 using std::isfinite;
 
+#include <vector>
+using std::vector;
+
 #include <iostream>
 using std::cerr;
 // using std::cout;
