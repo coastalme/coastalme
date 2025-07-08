@@ -71,7 +71,7 @@ class CGeomCell
    //! TODO 007 What is this used for?
    bool m_bCheckFloodCell;
 
-   //! Switch to show this cell is 'under' a shadow boundaryu
+   //! Switch to show this cell is 'under' a shadow boundary
    bool m_bShadowBoundary;
 
    //! Switch to show that this cell could be the start of a coastline
@@ -89,13 +89,13 @@ class CGeomCell
    //! If this cell is an edge (or bounding box) cell, this specifies the edge
    int m_nBoundingBoxEdge;
 
-   //! If this cell is 'under' a coastline, this is the ID number of the coastline
+   //! If this cell is 'under' a coastline, this is the ID number of the coast
    int m_nCoastlineID;
 
    //! If this cell is 'under' a coast-normal profile, this is the ID number of the profile
    int m_nProfileID;
 
-   //! If this cell is 'under' a coast-normal profile, this is the ID number of the profile's cast
+   //! If this cell is 'under' a coast-normal profile, this is the ID number of the profile's coast
    int m_nProfileCoastID;
 
    //! If this cell is within a polygon, this is the ID of the polygon

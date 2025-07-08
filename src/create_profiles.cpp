@@ -628,27 +628,34 @@ int CSimulation::nLocateAndCreateGridEdgeProfile(bool const bCoastStart, int con
          break;
       }
 
-      // Have we hit a coast?
+      // Have we hit a cell which is 'under' a coast-normal profile belonging to another coast?
       int const nXTmp = m_VEdgeCell[nPos].nGetX();
       int const nYTmp = m_VEdgeCell[nPos].nGetY();
-      if (m_pRasterGrid->m_Cell[nXTmp][nYTmp].bIsCoastline())
+
+      int nHitProfCoast = m_pRasterGrid->m_Cell[nXTmp][nYTmp].nGetProfileCoastID();
+      if ((nHitProfCoast != INT_NODATA) && (nHitProfCoast != nCoast))
       {
-         // Yes, hit a coast
-         int const nHitCoast = m_pRasterGrid->m_Cell[nXTmp][nYTmp].nGetCoastline();
+         // Yes, we have hit a profile which belongs to a different coast
+         if (m_nLogFileDetail >= LOG_FILE_ALL)
+            LogStream << m_ulIter << ": coast " << nCoast << " " << (bCoastStart ? "start" : "end") << " profile " << nProfile << " hit profile belonging to another coast " << nHitProfCoast << " at [" << nXTmp << "][" << nYTmp << "] = {" << dGridCentroidXToExtCRSX(nXTmp) << ", " << dGridCentroidYToExtCRSY(nYTmp) << "}, truncated the profile" << endl;
 
-         // Have we hit a different coast?
-         if (nCoast != nHitCoast)
-         {
-            // Yes, this is a different coast
-            if (m_nLogFileDetail >= LOG_FILE_ALL)
-               LogStream << m_ulIter << ": coast " << nCoast << " " << (bCoastStart ? "start" : "end") << " profile " << nProfile << " hit coast " << nHitCoast << " at [" << nXTmp << "][" << nYTmp << "] = {" << dGridCentroidXToExtCRSX(nXTmp) << ", " << dGridCentroidYToExtCRSY(nYTmp) << "}, truncated the profile" << endl;
-
-            // Truncate the grid-edge profile ** TODO TRUNCATE BOTH PROFILES
-            break;
-         }
+         // TODO TRUNCATE BOTH PROFILES, LEAVE A GAP
+         break;
       }
 
-      // Append this grid-edge cell, making sure that there is no gap between this and the previously-appended cell (if there is, will get problems with cell-by-cell fill)
+      // Have we hit a cell which is 'under' another coastline?
+      int nHitCoast = m_pRasterGrid->m_Cell[nXTmp][nYTmp].nGetCoastline();
+      if ((nHitCoast != INT_NODATA) && (nHitCoast != nCoast))
+      {
+         // Yes, we have hit a different coast
+         if (m_nLogFileDetail >= LOG_FILE_ALL)
+            LogStream << m_ulIter << ": coast " << nCoast << " " << (bCoastStart ? "start" : "end") << " profile " << nProfile << " hit anpther coast " << nHitCoast << " at [" << nXTmp << "][" << nYTmp << "] = {" << dGridCentroidXToExtCRSX(nXTmp) << ", " << dGridCentroidYToExtCRSY(nYTmp) << "}, truncated the profile" << endl;
+
+         // TODO TRUNCATE BOTH PROFILES, LEAVE A GAP
+         break;
+      }
+
+      // All OK, so append this grid-edge cell, making sure that there is no gap between this and the previously-appended cell (if there is, will get problems with cell-by-cell fill)
       AppendEnsureNoGap(&VPtiNormalPoints, &m_VEdgeCell[nPos]);
    }
 
