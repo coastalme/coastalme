@@ -2177,6 +2177,53 @@ bool CSimulation::bReadRunDataFile(void)
 
             break;
 
+         case 91:
+            // Initial Intervention trigger depth GIS file (optional - can be blank)
+            if (!strRH.empty())
+            {
+#ifdef _WIN32
+               // For Windows, make sure has backslashes, not Unix-style slashes
+               strRH = pstrChangeToBackslash(&strRH);
+#endif
+
+               // Now check for leading slash, or leading Unix home dir symbol, or occurrence of a drive letter
+               if ((strRH[0] == PATH_SEPARATOR) || (strRH[0] == TILDE) || (strRH[1] == COLON))
+               {
+                  // It has an absolute path, so use it 'as is'
+                  m_strInterventionTriggerDepthFile = strRH;
+               }
+
+               else
+               {
+                  // It has a relative path, so prepend the CoastalME dir
+                  m_strInterventionTriggerDepthFile = m_strCMEDir;
+                  m_strInterventionTriggerDepthFile.append(strRH);
+               }
+            }
+
+            break;
+
+         case 92:
+            // Intervention influence distance for failure checking (optional - defaults to 5.0m)
+            if (!strRH.empty())
+            {
+               if (!bIsStringValidDouble(strRH))
+               {
+                  strErr = "line " + to_string(nLine) + ": invalid intervention influence distance '" + strRH + "' in " + m_strDataPathName;
+                  break;
+               }
+
+               m_dInterventionInfluenceDistance = stod(strRH);
+
+               if (m_dInterventionInfluenceDistance < 0)
+               {
+                  strErr = "line " + to_string(nLine) + ": intervention influence distance must be >= 0 in " + m_strDataPathName;
+                  break;
+               }
+            }
+
+            break;
+
          // ---------------------------------------------------- Hydrology data ------------------------------------------------
          case 33:
             // Wave propagation model [0 = COVE, 1 = CShore]

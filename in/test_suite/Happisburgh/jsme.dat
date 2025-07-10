@@ -22,12 +22,12 @@
 ; Run information ---------------------------------------------------------------------------------------------------------------------------------------------
 Main output/log file names                                          [omit path and extension]: jsme
 Content of log file                                               [0 = least detail, 4 = all]: 4
-Output per-timestep results in CSV format?                                              [y/n]: n
+Output per-timestep results in CSV format?                                              [y/n]: y
 
 Simulation start date and time                                          [hh-mm-ss dd/mm/yyyy]: 00-00-00 01/01/1999
-Duration of simulation                                           [hours, days, months, years]: 30 days
-Timestep (hours or days)                                                                     : 1 hours
-Save times (after simulation start)                             [hours, days, months, years ]: 10 20 40 80 160 320 640 hours
+Duration of simulation                                           [hours, days, months, years]: 6 months
+Timestep (hours or days)                                                                     : 3 hours
+Save times (after simulation start)                             [hours, days, months, years ]: 5 days
 
 Random number seed(s)                                                                        : 280764
 
@@ -78,16 +78,16 @@ Density of sea water (kg/m3)                                                    
 
 Initial still water level (m), or per-timestep SWL file                                      : 40.0      ; 41.76
 Final still water level (m)                                     [blank = same as initial SWL]:
-Deep water wave height (m)                                    [real value or point shapefile]: in/test_suite/Happisburgh/S002DeepWaterWavesOneStations.shp
-Deep water wave height time series (m)                            [empty if real value above]: in/test_suite/Happisburgh/cme_1_hours_POLWAM_MyPoint_23.dat
-Deep water wave orientation (degrees)                      [empty if time wave height series]:           ; 245       ; 225 315 270 355 200 265 310 190 340
+Deep water wave height (m)                                    [real value or point shapefile]:  in/test_suite/Happisburgh/S002DeepWaterWavesOneStations.shp
+Deep water wave height time series (m)                            [empty if real value above]: in/test_suite/Happisburgh/cme_3_hours_POLWAM_MyPoint_23.dat
+Deep water wave orientation (degrees)                      [empty if time wave height series]: 245          ; 245       ; 225 315 270 355 200 265 310 190 340
 Wave period (sec)                                          [empty if time wave height series]:           ; 5
 Tide data is the change (m) from still water level for each timestep                         : in/test_suite/Happisburgh/jsmeTide.dat    ; Either empty or a file
 Breaking wave height to water depth ratio (non dimensional)                                  : 0.80
 
 ; Sediment data -----------------------------------------------------------------------------------------------------------------------------------------------
 Simulate coast platform erosion?                                                             : y
-Resistance of coast platform (m^(9/4)s^(3/2))                                                : 8e6       ; [2-6]e6 to produce 0.6 m/yr recession (Walkden & Hall, 2011), is 1/erodibility
+Resistance of coast platform (m^(9/4)s^(3/2))                                                : 2e3       ; [2-6]e6 to produce 0.6 m/yr recession (Walkden & Hall, 2011), is 1/erodibility
 
 Simulate beach sediment transport?                                                           : y
 Beach sediment transport at grid edges                     [0 = closed, 1 = open, 2 = Mobius]: 1
@@ -106,13 +106,13 @@ Fine erosivity                                                                  
 Sand erosivity                                                                               : 0.7
 Coarse erosivity                                                                             : 0.3
 
-Transport parameter KLS                                                   [only for CERC eqn]: 0.79      ; Should vary between 0.4 to 0.79
+Transport parameter KLS                                                   [only for CERC eqn]: 0.4      ; Should vary between 0.4 to 0.79
 Transport parameter                                                   [only for Kamphuis eqn]: 0.01
 
 Berm height i.e. height above SWL of start of depositional Dean profile (m)                  : 0.5
 
 ; Cliff collapse data -----------------------------------------------------------------------------------------------------------------------------------------
-Simulate cliff collapse?                                                                     : y
+Simulate cliff collapse?                                                                     : n
 Resistance to erosion of cliff (m^(9/4)s^(3/2))                                              : 2e3        ; Note is different from coast platform erosion resistance
 Notch overhang to initiate collapse (m)                                                      : 0.10
 Notch base below still water level (m)                                                       : 0.3       ; Must be greater than zero
@@ -155,4 +155,6 @@ Cliff edge smoothing                         [0 = none, 1 = running mean, 2 = Sa
 Cliff edge smoothing window size                                                [must be odd]: 33
 Polynomial order for Savitzky-Golay cliff edge smoothing                             [2 or 4]: 4
 Cliff slope limit for cliff toe detection                                                    : 0.3
+Intervention trigger file                                                     [path and name]: in/test_suite/Happisburgh/DefenceToe.tif
+Intervention trigger buffer                                                   [distance in m]: 3
 ; END OF FILE -------------------------------------------------------------------------------------------------------------------------------------------------

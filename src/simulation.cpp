@@ -321,7 +321,10 @@ CSimulation::CSimulation(void)
    m_dInmersedToBulkVolumetric =
    m_dDepthOfClosure =
    m_dCoastNormalSpacing =
-   m_dCoastNormalInterventionSpacing =
+   m_dCoastNormalInterventionSpacing = 0;
+   
+   m_dInterventionTriggerDepth = DEFAULT_INTERVENTION_TRIGGER_DEPTH;
+   m_dInterventionInfluenceDistance = DEFAULT_INTERVENTION_INFLUENCE_DISTANCE;
    m_dCoastNormalLength =
    m_dThisIterTotSeaDepth =
    m_dThisIterPotentialSedLostBeachErosion =
@@ -846,6 +849,30 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
 
       if (nRet != RTN_OK)
          return (nRet);
+
+      // NOTE: Intervention trigger depths must be set AFTER sediment layers are loaded
+      // so that m_VdAllHorizonTopElev is populated and trigger elevations are calculated
+      // relative to the sediment surface, not the basement elevation
+      // This is handled below after all sediment data is loaded
+   }
+
+   // Now that all sediment layers are loaded, set intervention trigger depths
+   // This ensures trigger elevations are calculated relative to sediment surface
+   if (!m_strInterventionClassFile.empty())
+   {
+      if (!m_strInterventionTriggerDepthFile.empty())
+      {
+         AnnounceReadITGIS();
+         nRet = nReadRasterGISFile(INTERVENTION_TRIGGER_RASTER, 0);
+
+         if (nRet != RTN_OK)
+            return (nRet);
+      }
+      else
+      {
+         // Set default trigger depths for all intervention cells
+         SetInterventionTriggerDepths(m_dInterventionTriggerDepth);
+      }
    }
 
    // Maybe read in the tide data

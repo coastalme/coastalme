@@ -822,6 +822,12 @@ class CSimulation
    //! Average spacing of the coastline-normal profiles on interventions, in m
    double m_dCoastNormalInterventionSpacing;
 
+   //! Default trigger depth for intervention failure (m below initial ground level)
+   double m_dInterventionTriggerDepth;
+
+   //! Influence zone distance for intervention failure (m) - check nearby cells within this distance
+   double m_dInterventionInfluenceDistance;
+
    //! Length of the coastline-normal profiles, in m
    double m_dCoastNormalLength;
 
@@ -1152,6 +1158,9 @@ class CSimulation
    //! Name of intervention height file
    string m_strInterventionHeightFile;
 
+   //! Name of intervention trigger depth file (optional)
+   string m_strInterventionTriggerDepthFile;
+
    //! Name of initial suspended sediment file
    string m_strInitialSuspSedimentFile;
 
@@ -1217,6 +1226,18 @@ class CSimulation
 
    //! GDAL data type for the initial intervention height raster file
    string m_strGDALIHDataType;
+
+   //! GDAL code for the initial intervention trigger depth raster file
+   string m_strGDALITDriverCode;
+
+   //! GDAL description for the initial intervention trigger depth raster file
+   string m_strGDALITDriverDesc;
+
+   //! GDAL projection string for the initial intervention trigger depth raster file
+   string m_strGDALITProjection;
+
+   //! GDAL data type for the initial intervention trigger depth raster file
+   string m_strGDALITDataType;
 
    //! GDAL code for the initial water depth raster file
    string m_strGDALIWDriverCode;
@@ -1604,7 +1625,10 @@ class CSimulation
    bool bCreateErosionPotentialLookUp(vector<double>*, vector<double>*, vector<double>*);
 
    // Top-level simulation routines
-   static int nUpdateIntervention(void);
+   int nUpdateIntervention(void);
+   int nCheckInterventionFailures(void);
+   void SetInterventionTriggerDepths(double const);
+   bool bCheckInfluenceZoneFailure(int const, int const) const;
    int nCheckForSedimentInputEvent(void);
    int nCalcExternalForcing(void);
    int nInitGridAndCalcStillWaterLevel(void);
@@ -1767,6 +1791,7 @@ class CSimulation
    void AnnounceReadLGIS(void) const;
    void AnnounceReadICGIS(void) const;
    void AnnounceReadIHGIS(void) const;
+   void AnnounceReadITGIS(void) const;
    static void AnnounceInitializing(void);
    void AnnounceReadInitialSuspSedGIS(void) const;
    void AnnounceReadInitialFineUnconsSedGIS(int const) const;
