@@ -26,6 +26,10 @@
 #include "raster_grid.h"
 #include "cell.h"
 
+#ifdef _OPENMP
+#include <omp.h>
+#endif
+
 using std::endl;
 
 //===============================================================================================================================
@@ -49,7 +53,42 @@ int CSimulation::nCheckInterventionFailures(void)
    int nInterventionsRemoved = 0;
    vector<CGeom2DIPoint> vFailedInterventions;
 
-   // Scan all cells for interventions that should fail based on influence zone undermining
+   // Use OpenMP to parallelize the grid scan for intervention failures
+   // Each thread collects failures in a private vector, then we merge them
+   vector<vector<CGeom2DIPoint>> vThreadFailures;
+   
+#ifdef _OPENMP
+   int nThreads = omp_get_max_threads();
+   vThreadFailures.resize(nThreads);
+   
+   #pragma omp parallel
+   {
+      int nThreadID = omp_get_thread_num();
+      vector<CGeom2DIPoint>& vLocalFailures = vThreadFailures[nThreadID];
+      
+      // Parallelize the outer loop with dynamic scheduling for load balancing
+      #pragma omp for schedule(dynamic, 10)
+      for (int nX = 0; nX < m_nXGridSize; nX++)
+      {
+         for (int nY = 0; nY < m_nYGridSize; nY++)
+         {
+            // Check if this cell is an intervention and if its influence zone has failed
+            if (bIsInterventionCell(nX, nY) && bCheckInfluenceZoneFailure(nX, nY))
+            {
+               vLocalFailures.push_back(CGeom2DIPoint(nX, nY));
+            }
+         }
+      }
+   }
+   
+   // Merge results from all threads
+   for (const auto& vThreadResult : vThreadFailures)
+   {
+      vFailedInterventions.insert(vFailedInterventions.end(), 
+                                  vThreadResult.begin(), vThreadResult.end());
+   }
+#else
+   // Fallback for non-OpenMP builds
    for (int nX = 0; nX < m_nXGridSize; nX++)
    {
       for (int nY = 0; nY < m_nYGridSize; nY++)
@@ -61,6 +100,7 @@ int CSimulation::nCheckInterventionFailures(void)
          }
       }
    }
+#endif
 
    // Group contiguous failed interventions and remove them as units
    vector<bool> vProcessed(vFailedInterventions.size(), false);
@@ -177,35 +217,85 @@ bool CSimulation::bCheckInfluenceZoneFailure(int const nIntX, int const nIntY) c
    // Calculate search radius in grid cells (convert from meters to cells)
    int nSearchRadius = static_cast<int>(ceil(m_dInterventionInfluenceDistance / m_dCellSide));
    
-   // Search within the influence zone around this intervention cell
-   for (int nXOffset = -nSearchRadius; nXOffset <= nSearchRadius; nXOffset++)
+   // Pre-calculate squared influence distance to avoid sqrt in inner loop
+   double dInfluenceDistanceSquared = m_dInterventionInfluenceDistance * m_dInterventionInfluenceDistance;
+   double dCellSideSquared = m_dCellSide * m_dCellSide;
+   
+   bool bFailureFound = false;
+   
+   // Parallelize the influence zone search for large zones (radius > 3)
+   // For small zones, the overhead isn't worth it
+#ifdef _OPENMP
+   if (nSearchRadius > 3)
    {
-      for (int nYOffset = -nSearchRadius; nYOffset <= nSearchRadius; nYOffset++)
+      #pragma omp parallel for collapse(2) shared(bFailureFound) if(!bFailureFound)
+      for (int nXOffset = -nSearchRadius; nXOffset <= nSearchRadius; nXOffset++)
       {
-         int nCheckX = nIntX + nXOffset;
-         int nCheckY = nIntY + nYOffset;
-         
-         // Skip if outside grid bounds
-         if (!bIsWithinValidGrid(nCheckX, nCheckY))
-            continue;
-         
-         // Calculate actual distance from intervention cell to check cell
-         double dDistance = sqrt((nXOffset * m_dCellSide) * (nXOffset * m_dCellSide) + 
-                               (nYOffset * m_dCellSide) * (nYOffset * m_dCellSide));
-         
-         // Skip if outside influence distance
-         if (dDistance > m_dInterventionInfluenceDistance)
-            continue;
-         
-         // Check if this cell's ground elevation is below the trigger level
-         double dCurrentElev = m_pRasterGrid->m_Cell[nCheckX][nCheckY].dGetSedimentTopElev();
-         
-         if (dCurrentElev < dTriggerElev)
+         for (int nYOffset = -nSearchRadius; nYOffset <= nSearchRadius; nYOffset++)
          {
-            return true; // Failure detected in influence zone
+            // Skip if failure already found by another thread
+            if (bFailureFound)
+               continue;
+               
+            int nCheckX = nIntX + nXOffset;
+            int nCheckY = nIntY + nYOffset;
+            
+            // Skip if outside grid bounds
+            if (!bIsWithinValidGrid(nCheckX, nCheckY))
+               continue;
+            
+            // Fast distance check using squared distances (avoid sqrt)
+            double dDistanceSquared = (nXOffset * nXOffset + nYOffset * nYOffset) * dCellSideSquared;
+            
+            // Skip if outside influence distance
+            if (dDistanceSquared > dInfluenceDistanceSquared)
+               continue;
+            
+            // Check if this cell's ground elevation is below the trigger level
+            double dCurrentElev = m_pRasterGrid->m_Cell[nCheckX][nCheckY].dGetSedimentTopElev();
+            
+            if (dCurrentElev < dTriggerElev)
+            {
+               #pragma omp critical
+               {
+                  bFailureFound = true; // Failure detected in influence zone
+               }
+            }
+         }
+      }
+   }
+   else
+#endif
+   {
+      // Serial version for small influence zones or non-OpenMP builds
+      for (int nXOffset = -nSearchRadius; nXOffset <= nSearchRadius; nXOffset++)
+      {
+         for (int nYOffset = -nSearchRadius; nYOffset <= nSearchRadius; nYOffset++)
+         {
+            int nCheckX = nIntX + nXOffset;
+            int nCheckY = nIntY + nYOffset;
+            
+            // Skip if outside grid bounds
+            if (!bIsWithinValidGrid(nCheckX, nCheckY))
+               continue;
+            
+            // Fast distance check using squared distances (avoid sqrt)
+            double dDistanceSquared = (nXOffset * nXOffset + nYOffset * nYOffset) * dCellSideSquared;
+            
+            // Skip if outside influence distance
+            if (dDistanceSquared > dInfluenceDistanceSquared)
+               continue;
+            
+            // Check if this cell's ground elevation is below the trigger level
+            double dCurrentElev = m_pRasterGrid->m_Cell[nCheckX][nCheckY].dGetSedimentTopElev();
+            
+            if (dCurrentElev < dTriggerElev)
+            {
+               return true; // Failure detected in influence zone
+            }
          }
       }
    }
    
-   return false; // No failure detected in influence zone
+   return bFailureFound;
 }
