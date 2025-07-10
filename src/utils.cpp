@@ -496,6 +496,21 @@ void CSimulation::AnnounceReadIHGIS(void) const
 }
 
 //===============================================================================================================================
+//! Tells the user that we are now reading the Intervention trigger depth GIS file
+//===============================================================================================================================
+void CSimulation::AnnounceReadITGIS(void) const
+{
+   // Tell the user what is happening
+   if (!m_strInterventionTriggerDepthFile.empty())
+#ifdef _WIN32
+      cout << READING_INTERVENTION_TRIGGER_FILE << pstrChangeToForwardSlash(&m_strInterventionTriggerDepthFile) << endl;
+
+#else
+      cout << READING_INTERVENTION_TRIGGER_FILE << m_strInterventionTriggerDepthFile << endl;
+#endif
+}
+
+//===============================================================================================================================
 //! Tells the user that we are now reading the deep water wave values GIS file
 //===============================================================================================================================
 void CSimulation::AnnounceReadDeepWaterWaveValuesGIS(void) const
