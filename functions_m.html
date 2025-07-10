@@ -339,6 +339,9 @@ $(function(){initNavTree('functions_m.html',''); initResizable(true); });
 <li>m_dInitialMeanSWL&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#a58b6cf0c6be3c02086f0373a4dcd45cc">CSimulation</a></li>
 <li>m_dInmersedToBulkVolumetric&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#a5ce61a9c341d3eea4901fe08d084d272">CSimulation</a></li>
 <li>m_dInterventionHeight&#160;:&#160;<a class="el" href="d1/dd9/classCGeomCell.html#ad74c33fd0e7a50999b66f85bb9e48fb0">CGeomCell</a></li>
+<li>m_dInterventionInfluenceDistance&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#abefece865f4a014f3315612da53ad4f9">CSimulation</a></li>
+<li>m_dInterventionTriggerDepth&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#a45072854b75c068f78e6fbac25b51910">CSimulation</a></li>
+<li>m_dInterventionTriggerElev&#160;:&#160;<a class="el" href="d1/dd9/classCGeomCell.html#af50755f0dc74ce3d3f9b02fc253692be">CGeomCell</a></li>
 <li>m_dInvCellDiagonal&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#a415d3b30433c3202ca74b7fbeccd5aa6">CSimulation</a></li>
 <li>m_dInvCellSide&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#a82930e45dfa4d4dea6969f2e9d77338d">CSimulation</a></li>
 <li>m_dKamphuis&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#afa0e3dce4efcca5110524c11ab9f962b">CSimulation</a></li>
@@ -635,6 +638,10 @@ $(function(){initNavTree('functions_m.html',''); initResizable(true); });
 <li>m_strGDALISSDriverCode&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#a041cb11891fcc19966c43325457f2216">CSimulation</a></li>
 <li>m_strGDALISSDriverDesc&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#abe2c96fa34a7d9c95fa460483056ebeb">CSimulation</a></li>
 <li>m_strGDALISSProjection&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#a06c540c246df130ed0a4c8f940e5e2a1">CSimulation</a></li>
+<li>m_strGDALITDataType&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#a5df68b59cc7b6b26477d6f338d0011a4">CSimulation</a></li>
+<li>m_strGDALITDriverCode&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#aadaba0bebe7afb3791e10b29f5608056">CSimulation</a></li>
+<li>m_strGDALITDriverDesc&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#a7b3e2165516726ef608296b654b1c60f">CSimulation</a></li>
+<li>m_strGDALITProjection&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#acc5d43aab8a2de05c80256d07355122d">CSimulation</a></li>
 <li>m_strGDALIWDataType&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#aa8aab74e772d2d2a2f8d45941f535f4d">CSimulation</a></li>
 <li>m_strGDALIWDriverCode&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#a4bcaace37819b4af89507e8a9c75fcdb">CSimulation</a></li>
 <li>m_strGDALIWDriverDesc&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#ac7f9f45db33488ed655e91cde2c62124">CSimulation</a></li>
@@ -650,6 +657,7 @@ $(function(){initNavTree('functions_m.html',''); initResizable(true); });
 <li>m_strInitialSuspSedimentFile&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#a071cd4a50bc6c768f4d9ed9ad97ed4e9">CSimulation</a></li>
 <li>m_strInterventionClassFile&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#aaae340bf9e42e613a92f4ae6ec556969">CSimulation</a></li>
 <li>m_strInterventionHeightFile&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#acbdbc3ab6337700bfc6445cca7411a8c">CSimulation</a></li>
+<li>m_strInterventionTriggerDepthFile&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#a5075133aa5cccc730f05e52aba57114c">CSimulation</a></li>
 <li>m_strLogFile&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#a6c8e6700304425504120e782dc6355d3">CSimulation</a></li>
 <li>m_strMailAddress&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#a8e7003f2351716121c6e74135a67368e">CSimulation</a></li>
 <li>m_strOGRDWWVDataType&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#ad809e956159513560e58f4928c705865">CSimulation</a></li>
@@ -791,7 +799,7 @@ $(function(){initNavTree('functions_m.html',''); initResizable(true); });
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Wed Jul 2 2025 15:20:44 for CoastalME (Coastal Modelling Environment) by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+    <li class="footer">Generated on Thu Jul 10 2025 15:24:45 for CoastalME (Coastal Modelling Environment) by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
   </ul>
 </div>
 </body>
