@@ -301,7 +301,7 @@ void CSimulation::WriteStartRunDetails(void)
    OutStream << fixed << setprecision(2);
    OutStream << "*Grid area                                                 \t: " << m_dExtCRSGridArea * 1e-6 << " km^2" << endl;
 
-   if (!m_strInitialLandformFile.empty())
+   if (! m_strInitialLandformFile.empty())
    {
       OutStream << " Initial Landform Class file                               \t: " << m_strInitialLandformFile << endl;
       OutStream << " GDAL Initial Landform Class file driver code              \t: " << m_strGDALLDriverCode << endl;
@@ -311,7 +311,7 @@ void CSimulation::WriteStartRunDetails(void)
       OutStream << endl;
    }
 
-   if (!m_strInterventionClassFile.empty())
+   if (! m_strInterventionClassFile.empty())
    {
       OutStream << " Intervention Class file                                   \t: " << m_strInterventionClassFile << endl;
       OutStream << " GDAL Intervention Class file driver code                  \t: " << m_strGDALICDriverCode << endl;
@@ -321,7 +321,7 @@ void CSimulation::WriteStartRunDetails(void)
       OutStream << endl;
    }
 
-   if (!m_strInterventionHeightFile.empty())
+   if (! m_strInterventionHeightFile.empty())
    {
       OutStream << " Intervention Height file                                  \t: " << m_strInterventionHeightFile << endl;
       OutStream << " GDAL Intervention Height file driver code                 \t: " << m_strGDALIHDriverCode << endl;
@@ -331,7 +331,7 @@ void CSimulation::WriteStartRunDetails(void)
       OutStream << endl;
    }
 
-   if (!m_strInitialSuspSedimentFile.empty())
+   if (! m_strInitialSuspSedimentFile.empty())
    {
       OutStream << " Initial Susp Sediment file                                \t: " << m_strInitialSuspSedimentFile << endl;
       OutStream << " GDAL Initial Susp Sediment file driver code               \t: " << m_strGDALISSDriverCode << endl;
@@ -349,7 +349,7 @@ void CSimulation::WriteStartRunDetails(void)
       else
          OutStream << " Layer " << i << (i == 0 ? "(Top)" : "") << (i == m_nLayers - 1 ? "(Bottom)" : "") << endl;
 
-      if (!m_VstrInitialFineUnconsSedimentFile[i].empty())
+      if (! m_VstrInitialFineUnconsSedimentFile[i].empty())
       {
          OutStream << "    Initial Fine Uncons Sediment file                      \t: " << m_VstrInitialFineUnconsSedimentFile[i] << endl;
          OutStream << "    GDAL Initial Fine Uncons Sediment file driver code     \t: " << m_VstrGDALIUFDriverCode[i] << endl;
@@ -359,7 +359,7 @@ void CSimulation::WriteStartRunDetails(void)
          OutStream << endl;
       }
 
-      if (!m_VstrInitialSandUnconsSedimentFile[i].empty())
+      if (! m_VstrInitialSandUnconsSedimentFile[i].empty())
       {
          OutStream << "    Initial Sand Uncons Sediment file                      \t: " << m_VstrInitialSandUnconsSedimentFile[i] << endl;
          OutStream << "    GDAL Initial Sand Uncons Sediment file driver code     \t: " << m_VstrGDALIUSDriverCode[i] << endl;
@@ -369,7 +369,7 @@ void CSimulation::WriteStartRunDetails(void)
          OutStream << endl;
       }
 
-      if (!m_VstrInitialCoarseUnconsSedimentFile[i].empty())
+      if (! m_VstrInitialCoarseUnconsSedimentFile[i].empty())
       {
          OutStream << "    Initial Coarse Uncons Sediment file                    \t: " << m_VstrInitialCoarseUnconsSedimentFile[i] << endl;
          OutStream << "    GDAL Initial Coarse Uncons Sediment file driver code   \t: " << m_VstrGDALIUCDriverCode[i] << endl;
@@ -379,7 +379,7 @@ void CSimulation::WriteStartRunDetails(void)
          OutStream << endl;
       }
 
-      if (!m_VstrInitialFineConsSedimentFile[i].empty())
+      if (! m_VstrInitialFineConsSedimentFile[i].empty())
       {
          OutStream << "    Initial Fine Cons Sediment file                        \t: " << m_VstrInitialFineConsSedimentFile[i] << endl;
          OutStream << "    GDAL Initial Fine Cons Sediment file driver code       \t: " << m_VstrGDALICFDriverCode[i] << endl;
@@ -389,7 +389,7 @@ void CSimulation::WriteStartRunDetails(void)
          OutStream << endl;
       }
 
-      if (!m_VstrInitialSandConsSedimentFile[i].empty())
+      if (! m_VstrInitialSandConsSedimentFile[i].empty())
       {
          OutStream << "    Initial Sand Cons Sediment file                        \t: " << m_VstrInitialSandConsSedimentFile[i] << endl;
          OutStream << "    GDAL Initial Sand Cons Sediment file driver code       \t: " << m_VstrGDALICSDriverCode[i] << endl;
@@ -399,7 +399,7 @@ void CSimulation::WriteStartRunDetails(void)
          OutStream << endl;
       }
 
-      if (!m_VstrInitialCoarseConsSedimentFile[i].empty())
+      if (! m_VstrInitialCoarseConsSedimentFile[i].empty())
       {
          OutStream << "    Initial Coarse Cons Sediment file                      \t: " << m_VstrInitialCoarseConsSedimentFile[i] << endl;
          OutStream << "    GDAL Initial Coarse Cons Sediment file driver code     \t: " << m_VstrGDALICCDriverCode[i] << endl;
@@ -415,12 +415,12 @@ void CSimulation::WriteStartRunDetails(void)
    // ---------------------------------------------------- Vector GIS stuff ------------------------------------------------------
    OutStream << "Vector GIS Input Files" << endl;
 
-   if (m_bSingleDeepWaterWaveValues && (!m_bSedimentInput) && (!m_bRiverineFlooding))
+   if (m_bSingleDeepWaterWaveValues && (! m_bSedimentInput) && (! m_bRiverineFlooding))
       OutStream << " None" << endl;
 
    else
    {
-      if (!m_bSingleDeepWaterWaveValues)
+      if (! m_bSingleDeepWaterWaveValues)
       {
          OutStream << " Deep water wave stations shapefile                        \t: " << m_strDeepWaterWaveStationsShapefile << endl;
          OutStream << " Deep water wave values file                               \t: " << m_strDeepWaterWavesInputFile << endl;

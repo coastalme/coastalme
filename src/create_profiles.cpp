@@ -628,33 +628,6 @@ int CSimulation::nLocateAndCreateGridEdgeProfile(bool const bCoastStart, int con
          break;
       }
 
-      // Have we hit a cell which is 'under' a coast-normal profile belonging to another coast?
-      int const nXTmp = m_VEdgeCell[nPos].nGetX();
-      int const nYTmp = m_VEdgeCell[nPos].nGetY();
-
-      int nHitProfCoast = m_pRasterGrid->m_Cell[nXTmp][nYTmp].nGetProfileCoastID();
-      if ((nHitProfCoast != INT_NODATA) && (nHitProfCoast != nCoast))
-      {
-         // Yes, we have hit a profile which belongs to a different coast
-         if (m_nLogFileDetail >= LOG_FILE_ALL)
-            LogStream << m_ulIter << ": coast " << nCoast << " " << (bCoastStart ? "start" : "end") << " profile " << nProfile << " hit profile belonging to another coast " << nHitProfCoast << " at [" << nXTmp << "][" << nYTmp << "] = {" << dGridCentroidXToExtCRSX(nXTmp) << ", " << dGridCentroidYToExtCRSY(nYTmp) << "}, truncated the profile" << endl;
-
-         // TODO TRUNCATE BOTH PROFILES, LEAVE A GAP
-         break;
-      }
-
-      // Have we hit a cell which is 'under' another coastline?
-      int nHitCoast = m_pRasterGrid->m_Cell[nXTmp][nYTmp].nGetCoastline();
-      if ((nHitCoast != INT_NODATA) && (nHitCoast != nCoast))
-      {
-         // Yes, we have hit a different coast
-         if (m_nLogFileDetail >= LOG_FILE_ALL)
-            LogStream << m_ulIter << ": coast " << nCoast << " " << (bCoastStart ? "start" : "end") << " profile " << nProfile << " hit anpther coast " << nHitCoast << " at [" << nXTmp << "][" << nYTmp << "] = {" << dGridCentroidXToExtCRSX(nXTmp) << ", " << dGridCentroidYToExtCRSY(nYTmp) << "}, truncated the profile" << endl;
-
-         // TODO TRUNCATE BOTH PROFILES, LEAVE A GAP
-         break;
-      }
-
       // All OK, so append this grid-edge cell, making sure that there is no gap between this and the previously-appended cell (if there is, will get problems with cell-by-cell fill)
       AppendEnsureNoGap(&VPtiNormalPoints, &m_VEdgeCell[nPos]);
    }
@@ -700,13 +673,8 @@ int CSimulation::nLocateAndCreateGridEdgeProfile(bool const bCoastStart, int con
 
       // Store the external coordinates in the profile object. Note that for this 'special' profile, the coordinates of the cells and the coordinates of points on the profile itself are identical, this is not the case for ordinary profiles
       pProfile->AppendCellInProfileExtCRS(&Pt);
-
-      if ((n == 0) || (n == VPtiNormalPoints.size() - 1))
-      {
-         // Store just the first and last points in this 'special' profile's coastline-normal vector
-         pProfile->AppendPointInProfile(&Pt);
-      }
-   }
+      pProfile->AppendPointInProfile(&Pt);
+  }
 
    int const nEndX = VPtiNormalPoints.back().nGetX();
    int const nEndY = VPtiNormalPoints.back().nGetY();
@@ -727,12 +695,12 @@ int CSimulation::nLocateAndCreateGridEdgeProfile(bool const bCoastStart, int con
    pProfile->AppendLineSegment();
    pProfile->AppendCoincidentProfileToLineSegments(make_pair(nProfile, 0));
 
-   // Store the profile
+   // Store the grid-edge profile
    m_VCoast[nCoast].AppendProfile(pProfile);
    m_VCoast[nCoast].SetProfileAtCoastPoint(nProfileStartPoint, pProfile);
 
    if (m_nLogFileDetail >= LOG_FILE_ALL)
-      LogStream << m_ulIter << ": coast " << nCoast << " profile " << nProfile << " (nCoastID = " << pProfile->nGetProfileCoastID() << ") created at coast " << (bCoastStart ? "start" : "end") << " point " << (bCoastStart ? 0 : nCoastSize - 1) << ", from [" << PtiProfileStart.nGetX() << "][" << PtiProfileStart.nGetY() << "] = {" << dGridCentroidXToExtCRSX(PtiProfileStart.nGetX()) << ", " << dGridCentroidYToExtCRSY(PtiProfileStart.nGetY()) << "} to [" << VPtiNormalPoints.back().nGetX() << "][" << VPtiNormalPoints.back().nGetY() << "] = {" << dGridCentroidXToExtCRSX(VPtiNormalPoints.back().nGetX()) << ", " << dGridCentroidYToExtCRSY(VPtiNormalPoints.back().nGetY()) << "}" << endl;
+      LogStream << m_ulIter << ": coast " << nCoast << " grid-edge profile " << nProfile << " (nCoastID = " << pProfile->nGetProfileCoastID() << ") created at coast " << (bCoastStart ? "start" : "end") << " point " << (bCoastStart ? 0 : nCoastSize - 1) << ", from [" << PtiProfileStart.nGetX() << "][" << PtiProfileStart.nGetY() << "] = {" << dGridCentroidXToExtCRSX(PtiProfileStart.nGetX()) << ", " << dGridCentroidYToExtCRSY(PtiProfileStart.nGetY()) << "} to [" << VPtiNormalPoints.back().nGetX() << "][" << VPtiNormalPoints.back().nGetY() << "] = {" << dGridCentroidXToExtCRSX(VPtiNormalPoints.back().nGetX()) << ", " << dGridCentroidYToExtCRSY(VPtiNormalPoints.back().nGetY()) << "} profile length = " << VPtiNormalPoints.size() << endl;
 
    return RTN_OK;
 }
@@ -1034,7 +1002,7 @@ void CSimulation::CheckForIntersectingProfiles(void)
       // Do once for every profile, in along-coast sequence
       for (int nCoastPoint = 0; nCoastPoint < nCoastSize; nCoastPoint++)
       {
-         if (!m_VCoast[nCoast].bIsProfileAtCoastPoint(nCoastPoint))
+         if (! m_VCoast[nCoast].bIsProfileAtCoastPoint(nCoastPoint))
             continue;
 
          // There is a profile at this coast point
@@ -1079,7 +1047,7 @@ void CSimulation::CheckForIntersectingProfiles(void)
                   // LogStream << m_ulIter << ": " << (nDirection == DIRECTION_DOWNCOAST ? "down" : "up") << "-coast search, nCoastPoint = " << nCoastPoint << " nSecondCoastPoint = " << nSecondCoastPoint << " (profiles " << pFirstProfile->nGetProfileCoastID() << " and " << pSecondProfile->nGetProfileCoastID() << ")" << endl;
 
                   // Only check this profile if it is problem free, and is not a start- or end-of-coast profile. Continue checking if it has been truncated, however
-                  if (!pSecondProfile->bProfileOKIncTruncated())
+                  if (! pSecondProfile->bProfileOKIncTruncated())
                   {
                      // LogStream << m_ulIter << ": second profile = " << pSecondProfile->nGetProfileCoastID() << " is not OK (could be a start- or end-of-coast profile), abandoning" << endl;
                      continue;
@@ -1482,15 +1450,15 @@ void CSimulation::MarkProfilesOnGrid(int const nCoast, int& nValidProfiles)
       vector<CGeom2DIPoint> VCellsToMark;
       vector<bool> bVShared;
       bool bTooShort = false;
-      bool bTruncated = false;
+      bool bTruncatedSameCoast = false;
       bool bHitCoast = false;
       bool bHitLand = false;
       bool bHitIntervention = false;
       bool bHitAnotherProfile = false; // TODO 044
 
-      CreateRasterizedProfile(nCoast, pProfile, &VCellsToMark, &bVShared, bTooShort, bTruncated, bHitCoast, bHitLand, bHitIntervention, bHitAnotherProfile); // TODO 044
+      CreateRasterizedProfile(nCoast, pProfile, &VCellsToMark, &bVShared, bTooShort, bTruncatedSameCoast, bHitCoast, bHitLand, bHitIntervention, bHitAnotherProfile); // TODO 044
 
-      if ((bTruncated && (!ACCEPT_TRUNCATED_PROFILES)) || bTooShort || bHitCoast || bHitLand || bHitIntervention || bHitAnotherProfile || VCellsToMark.size() == 0)
+      if ((bTruncatedSameCoast && (!ACCEPT_TRUNCATED_PROFILES)) || bTooShort || bHitCoast || bHitLand || bHitIntervention || bHitAnotherProfile || VCellsToMark.size() == 0)
          continue;
 
       // This profile is fine
@@ -1503,13 +1471,15 @@ void CSimulation::MarkProfilesOnGrid(int const nCoast, int& nValidProfiles)
             continue;
 
          // Mark each cell in the raster grid
-         m_pRasterGrid->m_Cell[VCellsToMark[k].nGetX()][VCellsToMark[k].nGetY()].SetCoastAndProfileID(nCoast, nProfile);
+         int nXTmp = VCellsToMark[k].nGetX();
+         int nYTmp = VCellsToMark[k].nGetY();
+         m_pRasterGrid->m_Cell[nXTmp][nYTmp].SetCoastAndProfileID(nCoast, nProfile);
 
          // Store the raster grid coordinates in the profile object
-         m_VCoast[nCoast].pGetProfile(nProfile)->AppendCellInProfile(VCellsToMark[k].nGetX(), VCellsToMark[k].nGetY());
+         m_VCoast[nCoast].pGetProfile(nProfile)->AppendCellInProfile(nXTmp, nYTmp);
 
          // And also store the external coordinates in the profile object
-         m_VCoast[nCoast].pGetProfile(nProfile)->AppendCellInProfileExtCRS(dGridCentroidXToExtCRSX(VCellsToMark[k].nGetX()), dGridCentroidYToExtCRSY(VCellsToMark[k].nGetY()));
+         m_VCoast[nCoast].pGetProfile(nProfile)->AppendCellInProfileExtCRS(dGridCentroidXToExtCRSX(nXTmp), dGridCentroidYToExtCRSY(nYTmp));
 
          // Mark the shared (i.e. multi-line) parts of the profile (if any)
          // if (bVShared[k])
@@ -1541,7 +1511,7 @@ void CSimulation::MarkProfilesOnGrid(int const nCoast, int& nValidProfiles)
 //===============================================================================================================================
 //! Given a pointer to a coastline-normal profile, returns an output vector of cells which are 'under' every line segment of the profile. If there is a problem with the profile (e.g. a rasterized cell is dry land or coast, or the profile has to be truncated) then we pass this back as an error code
 //===============================================================================================================================
-void CSimulation::CreateRasterizedProfile(int const nCoast, CGeomProfile* pProfile, vector<CGeom2DIPoint>* pVIPointsOut, vector<bool>* pbVShared, bool& bTooShort, bool& bTruncated, bool& bHitCoast, bool& bHitLand, bool& bHitIntervention, bool& bHitAnotherProfile) // TODO 044
+void CSimulation::CreateRasterizedProfile(int const nCoast, CGeomProfile* pProfile, vector<CGeom2DIPoint>* pVIPointsOut, vector<bool>* pbVShared, bool& bTooShort, bool& bTruncatedSameCoast, bool& bHitCoast, bool& bHitLand, bool& bHitIntervention, bool& bHitAnotherProfile) // TODO 044
 {
    int const nProfile = pProfile->nGetProfileCoastID();
    int nSeg = 0;
@@ -1618,16 +1588,16 @@ void CSimulation::CreateRasterizedProfile(int const nCoast, CGeomProfile* pProfi
          int const nY = nRound(dY);
 
          // Do some checking of this interpolated point, but only if this is not a grid-edge profile (these profiles are always valid)
-         if ((!pProfile->bStartOfCoast()) && (!pProfile->bEndOfCoast()))
+         if ((! pProfile->bStartOfCoast()) && (! pProfile->bEndOfCoast()))
          {
             // Is the interpolated point within the valid raster grid?
             if (! bIsWithinValidGrid(nX, nY))
             {
                // It is outside the valid grid, so mark this profile and quit the loop
-               bTruncated = true;
+               bTruncatedSameCoast = true;
 
                if (! ACCEPT_TRUNCATED_PROFILES)
-                  pProfile->SetTruncated(true);
+                  pProfile->SetTruncatedSameCoast(true);
 
                if (m_nLogFileDetail >= LOG_FILE_MIDDLE_DETAIL)
                   LogStream << m_ulIter << ": profile " << nProfile << " is invalid, truncated at [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "}" << endl;
@@ -1682,26 +1652,18 @@ void CSimulation::CreateRasterizedProfile(int const nCoast, CGeomProfile* pProfi
                int const nHitProfile = m_pRasterGrid->m_Cell[nX][nY].nGetProfileID();
                int const nHitProfileCoast = m_pRasterGrid->m_Cell[nX][nY].nGetProfileCoastID();
 
-               // LogStream << m_ulIter << ": coast = " << nCoast << " profile = " << nProfile << " HIT ANOTHER PROFILE (coast = " << nHitProfileCoast << " profile = " << nHitProfile << ") at [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "}, elevation = " << m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElev() << ", SWL = " << m_dThisIterSWL << endl;
-
                // Do both profiles belong to the same coast?
-               if (nCoast != nHitProfileCoast)
+               if (nCoast == nHitProfileCoast)
                {
-                  // They do not *** TODO TRUNCATE BOTH
-                  pProfile->SetHitAnotherProfile(true);
-                  bHitAnotherProfile = true;
+                  // Both profiles belong to the same coast. Is this the number of a coincident profile of this profile?
+                  if (! pProfile->bFindProfileInCoincidentProfilesOfLastLineSegment(nHitProfile))
+                  {
+                     // It isn't a coincident profile, so we have just hit an unrelated profile. Mark this profile as invalid and move on
+                     pProfile->SetHitAnotherProfile(true);
+                     bHitAnotherProfile = true;
 
-                  return;
-               }
-
-               // Both profiles belong to the same coast. Is this the number of a coincident profile of this profile?
-               if (! pProfile->bFindProfileInCoincidentProfilesOfLastLineSegment(nHitProfile))
-               {
-                  // It isn't a coincident profile, so we have just hit an unrelated profile. Mark this profile as invalid and move on
-                  pProfile->SetHitAnotherProfile(true);
-                  bHitAnotherProfile = true;
-
-                  return;
+                     return;
+                  }
                }
             }
          }
@@ -1720,11 +1682,11 @@ void CSimulation::CreateRasterizedProfile(int const nCoast, CGeomProfile* pProfi
       nXEndLast = nXEnd;
       nYEndLast = nYEnd;
 
-      if (bTruncated)
+      if (bTruncatedSameCoast)
          break;
    }
 
-   if (bTruncated)
+   if (bTruncatedSameCoast)
    {
       if (nSeg < (nNumSegments - 1))
          // We are truncating the profile, so remove any line segments after this one
@@ -2321,3 +2283,4 @@ void CSimulation::TruncateProfileAndAppendNew(int const nCoast, CGeomProfile* pP
    // }
    // // DEBUG CODE ******************************************************************
 }
+

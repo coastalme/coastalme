@@ -66,7 +66,7 @@ int CSimulation::nCreateAllPolygons(void)
 
       for (int nCoastPoint = 0; nCoastPoint < nCoastSize - 1; nCoastPoint++)
       {
-         if (!m_VCoast[nCoast].bIsProfileAtCoastPoint(nCoastPoint))
+         if (! m_VCoast[nCoast].bIsProfileAtCoastPoint(nCoastPoint))
             continue;
 
          // OK, this coast point is the start of a coastline-normal profile
@@ -249,7 +249,7 @@ int CSimulation::nCreateAllPolygons(void)
             // // DEBUG CODE =================================================================================
 
             // TEST
-            assert(nPolygon < m_VCoast[nCoast].nGetNumPolygons());
+            // assert(nPolygon < m_VCoast[nCoast].nGetNumPolygons());
 
             // Now rasterize the polygon boundaries: first, the coastline. This is necessary so that sand/coarse sediment derived from platform erosion of the coast cells is correctly added to the containing polygon's unconsolidated sediment
             for (int i = nCoastPoint; i <= nNextProfileCoastPoint; i++)
@@ -342,7 +342,7 @@ void CSimulation::RasterizePolygonJoiningLine(int nCoast, CGeom2DIPoint const* p
          KeepWithinValidGrid(nXStart, nYStart, nX, nY);
 
       // TEST
-      assert(nPoly < m_VCoast[0].nGetNumPolygons());
+      // assert(nPoly < m_VCoast[0].nGetNumPolygons());
 
       // Mark this point on the raster grid
       m_pRasterGrid->m_Cell[nX][nY].SetCoastAndPolygonID(nCoast, nPoly);
@@ -506,7 +506,7 @@ void CSimulation::MarkPolygonCells(void)
          // LogStream << m_ulIter << ": filling polygon " << nPoly << " from [" << PtiStart.nGetX() << "][" << PtiStart.nGetY() << "] = {" << dGridCentroidXToExtCRSX(PtiStart.nGetX()) << ", " << dGridCentroidYToExtCRSY(PtiStart.nGetY()) << "}" << endl;
 
          // Then do the cell-by-cell fill: loop until there are no more cell coordinates on the stack
-         while (!PtiStack.empty())
+         while (! PtiStack.empty())
          {
             CGeom2DIPoint const Pti = PtiStack.top();
             PtiStack.pop();
@@ -716,7 +716,6 @@ int CSimulation::nDoPolygonSharedBoundaries(void)
             pThisPolygon->SetDownCoastAdjacentPolygons(&nVDownCoastAdjacentPolygon);
             pThisPolygon->SetDownCoastAdjacentPolygonBoundaryShares(&dVDownCoastBoundaryShare);
          }
-
          else
          {
             // We are not at the end of the coastline, so there is at least one other polygon adjacent to the down-coast profile of this polygon

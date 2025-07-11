@@ -425,7 +425,7 @@ CGeomProfile* CRWCoast::pGetLastProfile(void)
    return m_pVProfile.back();
 }
 
-//! Appenda a coastline-normal profile
+//! Appends a coastline-normal profile
 void CRWCoast::AppendProfile(CGeomProfile* pProfile)
 {
    m_pVProfile.push_back(pProfile);

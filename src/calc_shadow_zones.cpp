@@ -359,7 +359,7 @@ int CSimulation::nDoAllShadowZones(void)
                int const nXPrev = PtiPrev.nGetX();
                int const nYPrev = PtiPrev.nGetY();
 
-               if (!m_pRasterGrid->m_Cell[nXPrev][nYPrev].bIsInActiveZone())
+               if (! m_pRasterGrid->m_Cell[nXPrev][nYPrev].bIsInActiveZone())
                {
                   // The previous cell was outside the active zone, so use its wave orientation value
                   dPrevWaveAngle = m_pRasterGrid->m_Cell[nXPrev][nYPrev].dGetWaveAngle();
@@ -389,7 +389,7 @@ int CSimulation::nDoAllShadowZones(void)
                {
                   // LogStream << m_ulIter << ": dPrevWaveAngle == DBL_NODATA for cell [" << nXPrev << "][" << nYPrev << "] = {" << dGridCentroidXToExtCRSX(nXPrev) << ", " << dGridCentroidYToExtCRSY(nYPrev) << "}" << endl;
 
-                  if (!m_pRasterGrid->m_Cell[nXPrev][nYPrev].bIsInContiguousSea())
+                  if (! m_pRasterGrid->m_Cell[nXPrev][nYPrev].bIsInContiguousSea())
                   {
                      // The previous cell was an inland cell, so use the deep water wave orientation
                      dPrevWaveAngle = m_pRasterGrid->m_Cell[nXPrev][nYPrev].dGetCellDeepWaterWaveAngle();
@@ -702,7 +702,7 @@ int CSimulation::nFloodFillShadowZone(int const nZone, CGeom2DIPoint const* pPti
    bool bAllPointNotSea = true;
    CGeom2DIPoint PtiFloodFillStart = *pPtiCentroid;
 
-   if (!m_pRasterGrid->m_Cell[PtiFloodFillStart.nGetX()][PtiFloodFillStart.nGetY()].bIsInContiguousSea())
+   if (! m_pRasterGrid->m_Cell[PtiFloodFillStart.nGetX()][PtiFloodFillStart.nGetY()].bIsInContiguousSea())
    {
       // No it isn't: so try to find a cell that is
       bStartPointOK = false;
@@ -765,7 +765,7 @@ int CSimulation::nFloodFillShadowZone(int const nZone, CGeom2DIPoint const* pPti
    PtiStack.push(PtiFloodFillStart);
 
    // Then do the cell-by-cell fill: loop until there are no more cell coordinates on the stack
-   while (!PtiStack.empty())
+   while (! PtiStack.empty())
    {
       CGeom2DIPoint const Pti = PtiStack.top();
       PtiStack.pop();
@@ -1141,7 +1141,7 @@ void CSimulation::DoShadowZoneAndDownDriftZone(int const nCoast, int const nZone
          }
 
          // Not a sea cell?
-         if (!m_pRasterGrid->m_Cell[nX][nY].bIsInContiguousSea())
+         if (! m_pRasterGrid->m_Cell[nX][nY].bIsInContiguousSea())
          {
             // Not a sea cell
             // LogStream << m_ulIter << ": n = " << n << ", m = " << m << ", dLinkingLineLength = " << dLinkingLineLength << ", dCoastDistSoFar = " << dCoastDistSoFar << " (nTotAlongCoastDistanceToDownDriftEndpoint = " << nTotAlongCoastDistanceToDownDriftEndpoint << "), dDownDriftBoundaryDistSoFar = " << dDownDriftBoundaryDistSoFar << " (nTotDownDriftBoundaryDistance = " << nTotDownDriftBoundaryDistance << ") not a sea cell at [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "}" << endl;
@@ -1161,7 +1161,7 @@ void CSimulation::DoShadowZoneAndDownDriftZone(int const nCoast, int const nZone
             // We have not, so the linking line has two parts: one between the coast and the shadow boundary, one between the shadow boundary and the downdrift boundary
             bool bInShadowZone = true;
 
-            if (!m_pRasterGrid->m_Cell[nX][nY].bIsinAnyShadowZone())
+            if (! m_pRasterGrid->m_Cell[nX][nY].bIsinAnyShadowZone())
             {
                // We have left the shadow zone
                // LogStream << "[" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "} LEFT SHADOW ZONE" << endl;

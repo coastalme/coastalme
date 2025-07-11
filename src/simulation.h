@@ -1707,6 +1707,9 @@ class CSimulation
    bool bSurroundedByDriftCells(int const, int const);
    bool bElevAboveDeanElev(int const, int const, double const, CRWCellLandform const*);
    // void CreatePolygonIndexIDSeq(int const);
+   int nDoMultipleCoastlines(void);
+   int nHitProfileTruncate(int const, int const, int const, int const, int const, int const, bool const, bool const);
+   int nThisProfileTruncate(int const, int const, int const, int const, bool const, bool const);
 
    // GIS utility routines
    int nMarkBoundingBoxEdgeCells(void);

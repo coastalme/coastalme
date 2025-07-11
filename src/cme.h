@@ -760,7 +760,8 @@ int const RTN_ERR_SEDIMENT_INPUT_EVENT_LOCATION = 66;
 int const RTN_ERR_WAVESTATION_LOCATION = 67;
 int const RTN_ERR_FLOOD_LOCATION = 68;
 int const RTN_ERR_CLIFF_NOT_IN_POLYGON = 69;
-int const RTN_ERR_UNKNOWN = 70;
+int const RTN_ERR_CELL_MARKED_PROFILE_COAST_BUT_NOT_PROFILE = 70;
+int const RTN_ERR_UNKNOWN = 999;
 
 // Elevation and 'slice' codes
 int const ELEV_IN_BASEMENT = -1;
@@ -785,44 +786,45 @@ int const WAVE_MODEL_CSHORE = 1;
 int const UNCONS_SEDIMENT_EQUATION_CERC = 0;
 int const UNCONS_SEDIMENT_EQUATION_KAMPHUIS = 1;
 
-int const CLIFF_COLLAPSE_LENGTH_INCREMENT = 10; // Increment the planview length of the cliff talus Dean profile, if we have not been able to deposit enough
-int const PROFILE_CHECK_DIST_FROM_COAST = 3;    // Used in checking shoreline-normal profiles for intersection
+int const CLIFF_COLLAPSE_LENGTH_INCREMENT = 10;          // Increment the planview length of the cliff talus Dean profile, if we have not been able to deposit enough
+int const PROFILE_CHECK_DIST_FROM_COAST = 3;             // Used in checking shoreline-normal profiles for intersection
+int const GAP_BETWEEN_DIFFERENT_COAST_PROFILES = 5;      // In cells, is the gap between profile ends bekonging to different coasts
 
 unsigned long const MASK = 0xfffffffful;
 unsigned long const SEDIMENT_INPUT_EVENT_ERROR = -1;
 
 double const PI = 3.141592653589793238462643;
 
-double const D50_FINE_DEFAULT = 0.0625; // In mm
-double const D50_SAND_DEFAULT = 0.42;   // In mm
-double const D50_COARSE_DEFAULT = 19.0; // In mm
+double const D50_FINE_DEFAULT = 0.0625;                  // In mm
+double const D50_SAND_DEFAULT = 0.42;                    // In mm
+double const D50_COARSE_DEFAULT = 19.0;                  // In mm
 
-double const BEACH_PROTECTION_HB_RATIO = 0.23; // The beach protection factor is this times breaking depth
-double const WALKDEN_HALL_PARAM_1 = 3.25;      // First param in Equation 4 from Walkden & Hall, 2005
-double const WALKDEN_HALL_PARAM_2 = 1.50;      // Second param in Equation 4 from Walkden & Hall, 2005
+double const BEACH_PROTECTION_HB_RATIO = 0.23;           // The beach protection factor is this times breaking depth
+double const WALKDEN_HALL_PARAM_1 = 3.25;                // First parameter in Equation 4 from Walkden & Hall, 2005
+double const WALKDEN_HALL_PARAM_2 = 1.50;                // Second parameter in Equation 4 from Walkden & Hall, 2005
 
-double const DEPTH_OVER_DB_INCREMENT = 0.001;        // Depth over DB increment for erosion potential look-up function
-double const INVERSE_DEPTH_OVER_DB_INCREMENT = 1000; // Inverse of the above
-double const DEAN_POWER = 2.0 / 3.0;                 // Dean profile exponent
+double const DEPTH_OVER_DB_INCREMENT = 0.001;            // Depth over DB increment for erosion potential look-up function
+double const INVERSE_DEPTH_OVER_DB_INCREMENT = 1000;     // Inverse of the above
+double const DEAN_POWER = 2.0 / 3.0;                     // Dean profile exponent
 
 // TODO 011 Let the user define these CShore input parameters
-double const CSHORE_FRICTION_FACTOR = 0.015; // Friction factor for CShore model
-double const CSHORE_SURGE_LEVEL = 0.0;       // TODO 007
+double const CSHORE_FRICTION_FACTOR = 0.015;             // Friction factor for CShore model
+double const CSHORE_SURGE_LEVEL = 0.0;                   // TODO 007
 
-double const TOLERANCE = 1e-7; // For bFPIsEqual, if too small (e.g. 1e-10), get
+double const TOLERANCE = 1e-7;                           // For bFPIsEqual, if too small (e.g. 1e-10), get
 // spurious "rounding" errors
-double const SEDIMENT_ELEV_TOLERANCE = 1e-10; // For bFPIsEqual, used to compare depth-equivalent sediment amounts
-double const MASS_BALANCE_TOLERANCE = 1e-5;   // For bFPIsEqual, used to compare for mass balance checks
+double const SEDIMENT_ELEV_TOLERANCE = 1e-10;            // For bFPIsEqual, used to compare depth-equivalent sediment amounts
+double const MASS_BALANCE_TOLERANCE = 1e-5;              // For bFPIsEqual, used to compare for mass balance checks
 double const STRAIGHT_COAST_MAX_DETAILED_CURVATURE = -5;
 double const STRAIGHT_COAST_MAX_SMOOTH_CURVATURE = -1;
-double const MIN_LENGTH_OF_SHADOW_ZONE_LINE = 10;       // Used in shadow line tracing
-double const MAX_LAND_LENGTH_OF_SHADOW_ZONE_LINE = 5;   // Used in shadow line tracing
-double const CLIFF_COLLAPSE_HEIGHT_INCREMENT = 0.1;     // Increment the fractional height of the cliff talus Dean profile, if we have not been able to deposit enough
-double const INTERVENTION_PROFILE_SPACING_FACTOR = 0.5; // Profile spacing on interventions works better if it is smaller than profile spacing on coastline
+double const MIN_LENGTH_OF_SHADOW_ZONE_LINE = 10;        // Used in shadow line tracing
+double const MAX_LAND_LENGTH_OF_SHADOW_ZONE_LINE = 5;    // Used in shadow line tracing
+double const CLIFF_COLLAPSE_HEIGHT_INCREMENT = 0.1;      // Increment the fractional height of the cliff talus Dean profile, if we have not been able to deposit enough
+double const INTERVENTION_PROFILE_SPACING_FACTOR = 0.5;  // Profile spacing on interventions works better if it is smaller than profile spacing on coastline
 
 double const DBL_NODATA = -9999;
 
-string const PROGRAM_NAME = "Coastal Modelling Environment (CoastalME) version 1.3.25 (08 Jul 2025)";
+string const PROGRAM_NAME = "Coastal Modelling Environment (CoastalME) version 1.3.25 (11 Jul 2025)";
 string const PROGRAM_NAME_SHORT = "CME";
 string const CME_INI = "cme.ini";
 

@@ -216,7 +216,7 @@ int CSimulation::nDoAllPropagateWaves(void)
             continue;
 
          // Is this a start of coast or end of coast profile?
-         if ((!pProfile->bStartOfCoast()) && (!pProfile->bEndOfCoast()))
+         if ((! pProfile->bStartOfCoast()) && (! pProfile->bEndOfCoast()))
          {
             // It is neither a start of coast or an end of coast profile, so set switch
             bSomeNonStartOrEndOfCoastProfiles = true;
@@ -272,7 +272,7 @@ int CSimulation::nDoAllPropagateWaves(void)
             VdXAll.push_back(nX);
             VdYAll.push_back(0);
 
-            if (!m_bSingleDeepWaterWaveValues)
+            if (! m_bSingleDeepWaterWaveValues)
             {
                // Not using the same value of deep water height and angle for all cells, so get this cell's deep water height and angle values
                dDeepWaterWaveX = m_pRasterGrid->m_Cell[nX][0].dGetCellDeepWaterWaveHeight() * sin(m_pRasterGrid->m_Cell[nX][0].dGetCellDeepWaterWaveAngle() * PI / 180);
@@ -294,7 +294,7 @@ int CSimulation::nDoAllPropagateWaves(void)
             VdXAll.push_back(nX);
             VdYAll.push_back(m_nYGridSize - 1);
 
-            if (!m_bSingleDeepWaterWaveValues)
+            if (! m_bSingleDeepWaterWaveValues)
             {
                // Not using the same value of deep water height and angle for all cells, so get this cell's deep water height and angle values
                dDeepWaterWaveX = m_pRasterGrid->m_Cell[nX][m_nYGridSize - 1].dGetCellDeepWaterWaveHeight() * sin(m_pRasterGrid->m_Cell[nX][m_nYGridSize - 1].dGetCellDeepWaterWaveAngle() * PI / 180);
@@ -319,7 +319,7 @@ int CSimulation::nDoAllPropagateWaves(void)
             VdXAll.push_back(0);
             VdYAll.push_back(nY);
 
-            if (!m_bSingleDeepWaterWaveValues)
+            if (! m_bSingleDeepWaterWaveValues)
             {
                // Not using the same value of deep water height and angle for all cells, so get this cell's deep water height and angle values
                dDeepWaterWaveX = m_pRasterGrid->m_Cell[0][nY].dGetCellDeepWaterWaveHeight() * sin(m_pRasterGrid->m_Cell[0][nY].dGetCellDeepWaterWaveAngle() * PI / 180);
@@ -341,7 +341,7 @@ int CSimulation::nDoAllPropagateWaves(void)
             VdXAll.push_back(m_nXGridSize - 1);
             VdYAll.push_back(nY);
 
-            if (!m_bSingleDeepWaterWaveValues)
+            if (! m_bSingleDeepWaterWaveValues)
             {
                // Not using the same value of deep water height and angle for all cells, so get this cell's deep water height and angle values
                dDeepWaterWaveX = m_pRasterGrid->m_Cell[m_nXGridSize - 1][nY].dGetCellDeepWaterWaveHeight() * sin(m_pRasterGrid->m_Cell[m_nXGridSize - 1][nY].dGetCellDeepWaterWaveAngle() * PI / 180);
@@ -654,7 +654,7 @@ double CSimulation::dCalcWaveAngleToCoastNormal(double const dCoastAngle, double
 int CSimulation::nCalcWavePropertiesOnProfile(int const nCoast, int const nCoastSize, CGeomProfile *pProfile, vector<double> *pVdX, vector<double> *pVdY, vector<double> *pVdHeightX, vector<double> *pVdHeightY, vector<bool> *pVbBreaking)
 {
    // Only do this for profiles without problems. Still do start- and end-of-coast profiles however
-   if (!pProfile->bOKIncStartAndEndOfCoast())
+   if (! pProfile->bOKIncStartAndEndOfCoast())
    {
       // if (m_nLogFileDetail >= LOG_FILE_ALL)
       // LogStream << m_ulIter << ": Coast " << nCoast << ", profile " << nProfile << " has been marked invalid, will not calc wave properties on this profile" << endl;
@@ -1237,7 +1237,7 @@ int CSimulation::nCalcWavePropertiesOnProfile(int const nCoast, int const nCoast
          int const nY = pProfile->pPtiGetCellInProfile(nProfilePoint)->nGetY();
 
          // Safety check
-         if (!m_pRasterGrid->m_Cell[nX][nY].bIsInContiguousSea())
+         if (! m_pRasterGrid->m_Cell[nX][nY].bIsInContiguousSea())
             continue;
 
          double const dSeaDepth = m_pRasterGrid->m_Cell[nX][nY].dGetSeaDepth(); // Water depth for the cell 'under' this point in the profile
@@ -1306,7 +1306,7 @@ int CSimulation::nCalcWavePropertiesOnProfile(int const nCoast, int const nCoast
       int nY = pProfile->pPtiGetCellInProfile(nProfilePoint)->nGetY();
 
       // Safety check
-      if (!m_pRasterGrid->m_Cell[nX][nY].bIsInContiguousSea())
+      if (! m_pRasterGrid->m_Cell[nX][nY].bIsInContiguousSea())
          continue;
 
       // Get the wave attributes calculated for this profile: wave height, wave angle, and whether is in the active zone
@@ -1878,7 +1878,7 @@ void CSimulation::ModifyBreakingWavePropertiesWithinShadowZoneToCoastline(int co
    CGeomProfile *pProfile = m_VCoast[nCoast].pGetProfile(nProfile);
 
    // Only do this for profiles without problems, including the start and end-of-coast profile
-   if (!pProfile->bOKIncStartAndEndOfCoast())
+   if (! pProfile->bOKIncStartAndEndOfCoast())
       return;
 
    bool bModfiedWaveHeightisBreaking = false;
@@ -1958,7 +1958,7 @@ void CSimulation::InterpolateWavePropertiesBetweenProfiles(int const nCoast, int
    CGeomProfile *pProfile = m_VCoast[nCoast].pGetProfileWithDownCoastSeq(nCount);
 
    // Only do this for profiles without problems, including the start-of-coast profile (but not the end-of-coast profile)
-   // if (!pProfile->bOKIncStartOfCoast())
+   // if (! pProfile->bOKIncStartOfCoast())
    // return;
 
    int const nThisCoastPoint = pProfile->nGetCoastPoint();

@@ -24,12 +24,12 @@
 #include <assert.h>
 
 #ifdef _WIN32
-#include <windows.h> // Needed for CalcProcessStats()
+#include <windows.h>       // Needed for CalcProcessStats()
 #include <psapi.h>
-#include <io.h> // For isatty()
+#include <io.h>            // For isatty()
 #elif defined __GNUG__
-#include <sys/resource.h> // Needed for CalcProcessStats()
-#include <unistd.h>       // For isatty()
+#include <sys/resource.h>  // Needed for CalcProcessStats()
+#include <unistd.h>        // For isatty()
 #include <sys/types.h>
 #include <sys/wait.h>
 #endif
@@ -456,7 +456,7 @@ void CSimulation::AnnounceReadVectorFiles(void)
 void CSimulation::AnnounceReadLGIS(void) const
 {
    // Tell the user what is happening
-   if (!m_strInitialLandformFile.empty())
+   if (! m_strInitialLandformFile.empty())
 #ifdef _WIN32
       cout << READING_LANDFORM_FILE << pstrChangeToForwardSlash(&m_strInitialLandformFile) << endl;
 
@@ -471,7 +471,7 @@ void CSimulation::AnnounceReadLGIS(void) const
 void CSimulation::AnnounceReadICGIS(void) const
 {
    // Tell the user what is happening
-   if (!m_strInterventionClassFile.empty())
+   if (! m_strInterventionClassFile.empty())
 #ifdef _WIN32
       cout << READING_INTERVENTION_CLASS_FILE << pstrChangeToForwardSlash(&m_strInterventionClassFile) << endl;
 
@@ -486,7 +486,7 @@ void CSimulation::AnnounceReadICGIS(void) const
 void CSimulation::AnnounceReadIHGIS(void) const
 {
    // Tell the user what is happening
-   if (!m_strInterventionHeightFile.empty())
+   if (! m_strInterventionHeightFile.empty())
 #ifdef _WIN32
       cout << READING_INTERVENTION_HEIGHT_FILE << pstrChangeToForwardSlash(&m_strInterventionHeightFile) << endl;
 
@@ -501,7 +501,7 @@ void CSimulation::AnnounceReadIHGIS(void) const
 void CSimulation::AnnounceReadDeepWaterWaveValuesGIS(void) const
 {
    // Tell the user what is happening
-   if (!m_strDeepWaterWavesInputFile.empty())
+   if (! m_strDeepWaterWavesInputFile.empty())
 #ifdef _WIN32
       cout << READING_DEEP_WATER_WAVE_FILE << pstrChangeToForwardSlash(&m_strDeepWaterWavesInputFile) << endl;
 
@@ -516,7 +516,7 @@ void CSimulation::AnnounceReadDeepWaterWaveValuesGIS(void) const
 void CSimulation::AnnounceReadSedimentEventInputValuesGIS(void) const
 {
    // Tell the user what is happening
-   if (!m_strSedimentInputEventFile.empty())
+   if (! m_strSedimentInputEventFile.empty())
 #ifdef _WIN32
       cout << READING_SED_INPUT_EVENT_FILE << pstrChangeToForwardSlash(&m_strSedimentInputEventFile) << endl;
 
@@ -531,7 +531,7 @@ void CSimulation::AnnounceReadSedimentEventInputValuesGIS(void) const
 void CSimulation::AnnounceReadFloodLocationGIS(void) const
 {
    // Tell the user what is happening
-   if (!m_strFloodLocationShapefile.empty())
+   if (! m_strFloodLocationShapefile.empty())
 #ifdef _WIN32
       cout << READING_FLOOD_LOCATION << pstrChangeToForwardSlash(&m_strFloodLocationShapefile) << endl;
 
@@ -1165,7 +1165,7 @@ bool CSimulation::bSetUpTSFiles(void)
       // Open erosion time-series CSV file
       PlatformErosionTSStream.open(strTSFile.c_str(), ios::out | ios::trunc);
 
-      if (!PlatformErosionTSStream)
+      if (! PlatformErosionTSStream)
       {
          // Error, cannot open erosion time-series file
          cerr << ERR << "cannot open " << strTSFile << " for output" << endl;
@@ -2182,6 +2182,10 @@ string CSimulation::strGetErrorText(int const nErr)
       strErr = "cliff not in polygon";
       break;
 
+   case RTN_ERR_CELL_MARKED_PROFILE_COAST_BUT_NOT_PROFILE:
+      strErr = "Cell marked as profile coast but not as profile";
+      break;
+
    case RTN_ERR_UNKNOWN:
       strErr = "unknown error";
       break;
@@ -2254,7 +2258,7 @@ void CSimulation::DoSimulationEnd(int const nRtn)
    else
    {
       // Stdout is not connected to a tty, so must be running in the background; if we have something entered for the email address, then send an email
-      if (!m_strMailAddress.empty())
+      if (! m_strMailAddress.empty())
       {
          cout << SEND_EMAIL << m_strMailAddress << endl;
 

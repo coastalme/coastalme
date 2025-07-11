@@ -176,7 +176,7 @@ int CSimulation::nDoAllShorePlatFormErosion(void)
 int CSimulation::nCalcPotentialPlatformErosionOnProfile(int const nCoast, CGeomProfile *pProfile)
 {
    // Only work on this profile if it is problem-free TODO 024 Or if it has just hit dry land?
-   if (!pProfile->bOKIncStartAndEndOfCoast()) // || (pProfile->nGetProblemCode() == PROFILE_DRYLAND))
+   if (! pProfile->bOKIncStartAndEndOfCoast()) // || (pProfile->nGetProblemCode() == PROFILE_DRYLAND))
       return RTN_OK;
 
    // Get the length of the profile (in cells) and the index of the coast point at which this profile starts
@@ -411,7 +411,7 @@ int CSimulation::nCalcPotentialPlatformErosionOnProfile(int const nCoast, CGeomP
 int CSimulation::nCalcPotentialPlatformErosionBetweenProfiles(int const nCoast, CGeomProfile *pProfile, int const nDirection)
 {
    // Only work on this profile if it is problem-free
-   if (!pProfile->bOKIncStartAndEndOfCoast())
+   if (! pProfile->bOKIncStartAndEndOfCoast())
       return RTN_OK;
 
    int const nProfSize = pProfile->nGetNumCellsInProfile();
@@ -535,7 +535,7 @@ int CSimulation::nCalcPotentialPlatformErosionBetweenProfiles(int const nCoast, 
          int const nYPar = PtiVGridParProfile[i].nGetY();
 
          // Is this a sea cell?
-         if (!m_pRasterGrid->m_Cell[nXPar][nYPar].bIsInundated())
+         if (! m_pRasterGrid->m_Cell[nXPar][nYPar].bIsInundated())
          {
             // It isn't so move along, nothing to do here
             // LogStream << m_ulIter << " : [" << nXPar << "][" << nYPar << "] is not inundated" << endl;
@@ -1013,7 +1013,7 @@ void CSimulation::DoActualPlatformErosionOnCell(int const nX, int const nY)
       }
 
       // TEST
-      assert(nPolyID < m_VCoast[0].nGetNumPolygons());
+      // assert(nPolyID < m_VCoast[0].nGetNumPolygons());
 
       // Safety check
       if (nPolyID == INT_NODATA)

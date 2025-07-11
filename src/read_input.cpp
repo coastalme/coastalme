@@ -2145,7 +2145,7 @@ bool CSimulation::bReadRunDataFile(void)
             // Initial Intervention height GIS file (can be blank: if so then intervention class file must also be blank)
             if (strRH.empty())
             {
-               if (!m_strInterventionClassFile.empty())
+               if (! m_strInterventionClassFile.empty())
                   strErr = "line " + to_string(nLine) + ": must specify both intervention class and intervention height files";
 
                break;
@@ -2328,7 +2328,7 @@ bool CSimulation::bReadRunDataFile(void)
 
          case 39:
             // Deep water wave orientation in input CRS: this is the oceanographic convention i.e. direction TOWARDS which the waves move (in degrees clockwise from north)
-            if (!m_bHaveWaveStationData)
+            if (! m_bHaveWaveStationData)
             {
                // Only read this if we have just a single value of wave height for all deep water cells. Check that this is a valid double
                if (! bIsStringValidDouble(strRH))
@@ -2350,7 +2350,7 @@ bool CSimulation::bReadRunDataFile(void)
 
          case 40:
             // Wave period (sec)
-            if (!m_bHaveWaveStationData)
+            if (! m_bHaveWaveStationData)
             {
                // Only read this if we also have just a single value of wave height for all deep water cells. Check that this is a valid double
                if (! bIsStringValidDouble(strRH))
@@ -3137,7 +3137,7 @@ bool CSimulation::bReadRunDataFile(void)
             {
                m_bOutputProfileData = true;
 
-               if (!m_bDoShorePlatformErosion)
+               if (! m_bDoShorePlatformErosion)
                {
                   strErr = "line " + to_string(nLine) + ": cannot save profiile data if not simulating shore platform erosion";
                   break;
@@ -4018,7 +4018,7 @@ int CSimulation::nReadSedimentInputEventFile(void)
 
             dWidth = stod(strTrim(&VstrTmp[6]));
 
-            if ((!m_bSedimentInputAtCoast) && (dWidth <= 0))
+            if ((! m_bSedimentInputAtCoast) && (dWidth <= 0))
             {
                strErr = "line " + to_string(nLine) + ": along-coast width (m) of the sediment block '" + to_string(dWidth) + "' must be > 0 in " + m_strSedimentInputEventFile;
                break;

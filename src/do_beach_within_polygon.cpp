@@ -541,7 +541,7 @@ int CSimulation::nDoParallelProfileUnconsErosion(CGeomCoastPolygon* pPolygon, in
          continue;
 
       // Don't do cells twice
-      if (!m_pRasterGrid->m_Cell[nX][nY].bBeachErosionOrDepositionThisIter())
+      if (! m_pRasterGrid->m_Cell[nX][nY].bBeachErosionOrDepositionThisIter())
       {
          // Get this cell's current elevation
          double const dThisElevNow = m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElev();
@@ -1016,7 +1016,7 @@ int CSimulation::nDoUnconsDepositionOnPolygon(int const nCoast, CGeomCoastPolygo
                continue;
 
             // Don't do cells twice
-            if (!m_pRasterGrid->m_Cell[nX][nY].bBeachErosionOrDepositionThisIter())
+            if (! m_pRasterGrid->m_Cell[nX][nY].bBeachErosionOrDepositionThisIter())
             {
                double const dTmpElev = m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElev();
                double const dDiff = VdParProfileDeanElev[m] - dTmpElev;
@@ -1127,7 +1127,7 @@ int CSimulation::nDoUnconsDepositionOnPolygon(int const nCoast, CGeomCoastPolygo
             continue;
 
          // Don't do cells twice
-         if (!m_pRasterGrid->m_Cell[nX][nY].bBeachErosionOrDepositionThisIter())
+         if (! m_pRasterGrid->m_Cell[nX][nY].bBeachErosionOrDepositionThisIter())
          {
             // Get this cell's current elevation
             double const dThisElevNow = m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElev();
@@ -1522,7 +1522,7 @@ int CSimulation::nDoUnconsDepositionOnPolygon(int const nCoast, CGeomCoastPolygo
                   continue;
 
                // Don't do cells twice
-               if (!m_pRasterGrid->m_Cell[nX][nY].bBeachErosionOrDepositionThisIter())
+               if (! m_pRasterGrid->m_Cell[nX][nY].bBeachErosionOrDepositionThisIter())
                {
                   double const dTmpElev = m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElev();
                   double const dDiff = VdParProfileDeanElev[m] - dTmpElev;
@@ -1633,7 +1633,7 @@ int CSimulation::nDoUnconsDepositionOnPolygon(int const nCoast, CGeomCoastPolygo
                continue;
 
             // Don't do cells twice
-            if (!m_pRasterGrid->m_Cell[nX][nY].bBeachErosionOrDepositionThisIter())
+            if (! m_pRasterGrid->m_Cell[nX][nY].bBeachErosionOrDepositionThisIter())
             {
                // Get this cell's current elevation
                double const dThisElevNow = m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElev();

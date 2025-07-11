@@ -301,7 +301,7 @@ int CSimulation::nLandformToGrid(int const nCoast, int const nPoint)
       int const nX = m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(nPoint)->nGetX();
       int const nY = m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(nPoint)->nGetY();
 
-      if (!pCliff->bHasCollapsed())
+      if (! pCliff->bHasCollapsed())
       {
          // The cliff has not collapsed. Get attribute values from the cliff object
          double const dNotchBaseElev = pCliff->dGetNotchBaseElev();
@@ -420,7 +420,7 @@ int CSimulation::nAssignLandformsForAllCells(void)
             // else keep as sea (no action needed)
          }
 
-         else if (!m_pRasterGrid->m_Cell[nX][nY].bIsCoastline())
+         else if (! m_pRasterGrid->m_Cell[nX][nY].bIsCoastline())
          {
             // Is not coastline
             if (nCat == LF_CAT_CLIFF)

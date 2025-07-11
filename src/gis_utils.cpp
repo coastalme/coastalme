@@ -908,7 +908,7 @@ bool CSimulation::bCheckRasterGISOutputFormat(void)
       m_lGDALMaxCanWrite = UINT32_MAX;
       m_lGDALMinCanWrite = 0;
 
-      if (!m_bGDALCanWriteFloat)
+      if (! m_bGDALCanWriteFloat)
          m_GDALWriteFloatDataType = GDT_UInt32;
 
       return true;
@@ -923,7 +923,7 @@ bool CSimulation::bCheckRasterGISOutputFormat(void)
       m_lGDALMaxCanWrite = INT32_MAX;
       m_lGDALMinCanWrite = INT32_MIN;
 
-      if (!m_bGDALCanWriteFloat)
+      if (! m_bGDALCanWriteFloat)
          m_GDALWriteFloatDataType = GDT_Int32;
 
       return true;
@@ -938,7 +938,7 @@ bool CSimulation::bCheckRasterGISOutputFormat(void)
       m_lGDALMaxCanWrite = UINT16_MAX;
       m_lGDALMinCanWrite = 0;
 
-      if (!m_bGDALCanWriteFloat)
+      if (! m_bGDALCanWriteFloat)
          m_GDALWriteFloatDataType = GDT_UInt16;
 
       return true;
@@ -953,7 +953,7 @@ bool CSimulation::bCheckRasterGISOutputFormat(void)
       m_lGDALMaxCanWrite = INT16_MAX;
       m_lGDALMinCanWrite = INT16_MIN;
 
-      if (!m_bGDALCanWriteFloat)
+      if (! m_bGDALCanWriteFloat)
          m_GDALWriteFloatDataType = GDT_Int16;
 
       return true;
@@ -968,7 +968,7 @@ bool CSimulation::bCheckRasterGISOutputFormat(void)
       m_lGDALMaxCanWrite = UINT8_MAX;
       m_lGDALMinCanWrite = 0;
 
-      if (!m_bGDALCanWriteFloat)
+      if (! m_bGDALCanWriteFloat)
          m_GDALWriteFloatDataType = GDT_Byte;
 
       return true;
@@ -1087,19 +1087,15 @@ bool CSimulation::bSaveAllRasterGISFiles(void)
    }
 
    if (m_bSedimentTopSurfSave)
-      if (! bWriteRasterGISFile(RASTER_PLOT_SEDIMENT_TOP_ELEVATION_ELEV,
-                               &RASTER_PLOT_SEDIMENT_TOP_ELEVATION_ELEV_TITLE))
+      if (! bWriteRasterGISFile(RASTER_PLOT_SEDIMENT_TOP_ELEVATION_ELEV, &RASTER_PLOT_SEDIMENT_TOP_ELEVATION_ELEV_TITLE))
          return false;
 
    if (m_bTopSurfSave)
-      if (! bWriteRasterGISFile(RASTER_PLOT_OVERALL_TOP_ELEVATION,
-                               &RASTER_PLOT_OVERALL_TOP_ELEVATION_TITLE))
+      if (! bWriteRasterGISFile(RASTER_PLOT_OVERALL_TOP_ELEVATION, &RASTER_PLOT_OVERALL_TOP_ELEVATION_TITLE))
          return false;
 
    if (m_bLocalSlopeSave)
-      if (! bWriteRasterGISFile(
-              RASTER_PLOT_LOCAL_SLOPE_OF_CONSOLIDATED_SEDIMENT,
-              &RASTER_PLOT_LOCAL_SLOPE_OF_CONSOLIDATED_SEDIMENT_TITLE))
+      if (! bWriteRasterGISFile(RASTER_PLOT_LOCAL_SLOPE_OF_CONSOLIDATED_SEDIMENT, &RASTER_PLOT_LOCAL_SLOPE_OF_CONSOLIDATED_SEDIMENT_TITLE))
          return false;
 
    if (m_bSlopeSave)
@@ -1111,85 +1107,66 @@ bool CSimulation::bSaveAllRasterGISFiles(void)
          return false;
 
    if (m_bSeaDepthSave)
-      if (! bWriteRasterGISFile(RASTER_PLOT_SEA_DEPTH,
-                               &RASTER_PLOT_SEA_DEPTH_TITLE))
+      if (! bWriteRasterGISFile(RASTER_PLOT_SEA_DEPTH, &RASTER_PLOT_SEA_DEPTH_TITLE))
          return false;
 
    if (m_bWaveHeightSave)
-      if (! bWriteRasterGISFile(RASTER_PLOT_WAVE_HEIGHT,
-                               &RASTER_PLOT_WAVE_HEIGHT_TITLE))
+      if (! bWriteRasterGISFile(RASTER_PLOT_WAVE_HEIGHT, &RASTER_PLOT_WAVE_HEIGHT_TITLE))
          return false;
 
    if (m_bWaveAngleSave)
-      if (! bWriteRasterGISFile(RASTER_PLOT_WAVE_ORIENTATION,
-                               &RASTER_PLOT_WAVE_ORIENTATION_TITLE))
+      if (! bWriteRasterGISFile(RASTER_PLOT_WAVE_ORIENTATION, &RASTER_PLOT_WAVE_ORIENTATION_TITLE))
          return false;
 
    // Don't write platform erosion files if there is no platform erosion
    if (m_bDoShorePlatformErosion)
    {
       if (m_bPotentialPlatformErosionSave)
-         if (! bWriteRasterGISFile(RASTER_PLOT_POTENTIAL_PLATFORM_EROSION,
-                                  &RASTER_PLOT_POTENTIAL_PLATFORM_EROSION_TITLE))
+         if (! bWriteRasterGISFile(RASTER_PLOT_POTENTIAL_PLATFORM_EROSION, &RASTER_PLOT_POTENTIAL_PLATFORM_EROSION_TITLE))
             return false;
 
       if (m_bActualPlatformErosionSave)
-         if (! bWriteRasterGISFile(RASTER_PLOT_ACTUAL_PLATFORM_EROSION,
-                                  &RASTER_PLOT_ACTUAL_PLATFORM_EROSION_TITLE))
+         if (! bWriteRasterGISFile(RASTER_PLOT_ACTUAL_PLATFORM_EROSION, &RASTER_PLOT_ACTUAL_PLATFORM_EROSION_TITLE))
             return false;
 
       if (m_bTotalPotentialPlatformErosionSave)
-         if (! bWriteRasterGISFile(
-                 RASTER_PLOT_TOTAL_POTENTIAL_PLATFORM_EROSION,
-                 &RASTER_PLOT_TOTAL_POTENTIAL_PLATFORM_EROSION_TITLE))
+         if (! bWriteRasterGISFile(RASTER_PLOT_TOTAL_POTENTIAL_PLATFORM_EROSION, &RASTER_PLOT_TOTAL_POTENTIAL_PLATFORM_EROSION_TITLE))
             return false;
 
       if (m_bTotalActualPlatformErosionSave)
-         if (! bWriteRasterGISFile(
-                 RASTER_PLOT_TOTAL_ACTUAL_PLATFORM_EROSION,
-                 &RASTER_PLOT_TOTAL_ACTUAL_PLATFORM_EROSION_TITLE))
+         if (! bWriteRasterGISFile(RASTER_PLOT_TOTAL_ACTUAL_PLATFORM_EROSION, &RASTER_PLOT_TOTAL_ACTUAL_PLATFORM_EROSION_TITLE))
             return false;
 
       if (m_bPotentialPlatformErosionMaskSave)
-         if (! bWriteRasterGISFile(
-                 RASTER_PLOT_POTENTIAL_PLATFORM_EROSION_MASK,
-                 &RASTER_PLOT_POTENTIAL_PLATFORM_EROSION_MASK_TITLE))
+         if (! bWriteRasterGISFile(RASTER_PLOT_POTENTIAL_PLATFORM_EROSION_MASK, &RASTER_PLOT_POTENTIAL_PLATFORM_EROSION_MASK_TITLE))
             return false;
 
       if (m_bBeachProtectionSave)
-         if (! bWriteRasterGISFile(RASTER_PLOT_BEACH_PROTECTION,
-                                  &RASTER_PLOT_BEACH_PROTECTION_TITLE))
+         if (! bWriteRasterGISFile(RASTER_PLOT_BEACH_PROTECTION, &RASTER_PLOT_BEACH_PROTECTION_TITLE))
             return false;
 
       if (m_bPotentialBeachErosionSave)
-         if (! bWriteRasterGISFile(RASTER_PLOT_POTENTIAL_BEACH_EROSION,
-                                  &RASTER_PLOT_POTENTIAL_BEACH_EROSION_TITLE))
+         if (! bWriteRasterGISFile(RASTER_PLOT_POTENTIAL_BEACH_EROSION, &RASTER_PLOT_POTENTIAL_BEACH_EROSION_TITLE))
             return false;
 
       if (m_bActualBeachErosionSave)
-         if (! bWriteRasterGISFile(RASTER_PLOT_ACTUAL_BEACH_EROSION,
-                                  &RASTER_PLOT_ACTUAL_BEACH_EROSION_TITLE))
+         if (! bWriteRasterGISFile(RASTER_PLOT_ACTUAL_BEACH_EROSION, &RASTER_PLOT_ACTUAL_BEACH_EROSION_TITLE))
             return false;
 
       if (m_bTotalPotentialBeachErosionSave)
-         if (! bWriteRasterGISFile(
-                 RASTER_PLOT_TOTAL_POTENTIAL_BEACH_EROSION,
-                 &RASTER_PLOT_TOTAL_POTENTIAL_BEACH_EROSION_TITLE))
+         if (! bWriteRasterGISFile(RASTER_PLOT_TOTAL_POTENTIAL_BEACH_EROSION, &RASTER_PLOT_TOTAL_POTENTIAL_BEACH_EROSION_TITLE))
             return false;
 
       if (m_bTotalActualBeachErosionSave)
-         if (! bWriteRasterGISFile(RASTER_PLOT_TOTAL_ACTUAL_BEACH_EROSION,
-                                  &RASTER_PLOT_TOTAL_ACTUAL_BEACH_EROSION_TITLE))
+         if (! bWriteRasterGISFile(RASTER_PLOT_TOTAL_ACTUAL_BEACH_EROSION, &RASTER_PLOT_TOTAL_ACTUAL_BEACH_EROSION_TITLE))
             return false;
 
       if (m_bBeachDepositionSave)
-         if (! bWriteRasterGISFile(RASTER_PLOT_BEACH_DEPOSITION,
-                                  &RASTER_PLOT_BEACH_DEPOSITION_TITLE))
+         if (! bWriteRasterGISFile(RASTER_PLOT_BEACH_DEPOSITION, &RASTER_PLOT_BEACH_DEPOSITION_TITLE))
             return false;
 
       if (m_bTotalBeachDepositionSave)
-         if (! bWriteRasterGISFile(RASTER_PLOT_TOTAL_BEACH_DEPOSITION,
-                                  &RASTER_PLOT_TOTAL_BEACH_DEPOSITION_TITLE))
+         if (! bWriteRasterGISFile(RASTER_PLOT_TOTAL_BEACH_DEPOSITION, &RASTER_PLOT_TOTAL_BEACH_DEPOSITION_TITLE))
             return false;
    }
 
@@ -1198,91 +1175,72 @@ bool CSimulation::bSaveAllRasterGISFiles(void)
          return false;
 
    if (m_bAvgWaveHeightSave)
-      if (! bWriteRasterGISFile(RASTER_PLOT_AVG_WAVE_HEIGHT,
-                               &RASTER_PLOT_AVG_WAVE_HEIGHT_TITLE))
+      if (! bWriteRasterGISFile(RASTER_PLOT_AVG_WAVE_HEIGHT, &RASTER_PLOT_AVG_WAVE_HEIGHT_TITLE))
          return false;
 
    if (m_bAvgWaveAngleSave)
-      if (! bWriteRasterGISFile(RASTER_PLOT_AVG_WAVE_ORIENTATION,
-                               &RASTER_PLOT_AVG_WAVE_ORIENTATION_TITLE))
+      if (! bWriteRasterGISFile(RASTER_PLOT_AVG_WAVE_ORIENTATION, &RASTER_PLOT_AVG_WAVE_ORIENTATION_TITLE))
          return false;
 
    if (m_bAvgSeaDepthSave)
-      if (! bWriteRasterGISFile(RASTER_PLOT_AVG_SEA_DEPTH,
-                               &RASTER_PLOT_AVG_SEA_DEPTH_TITLE))
+      if (! bWriteRasterGISFile(RASTER_PLOT_AVG_SEA_DEPTH, &RASTER_PLOT_AVG_SEA_DEPTH_TITLE))
          return false;
 
    if (m_bSedimentInput && m_bSedimentInputEventSave)
-      if (! bWriteRasterGISFile(RASTER_PLOT_SEDIMENT_INPUT,
-                               &RASTER_PLOT_SEDIMENT_INPUT_EVENT_TITLE))
+      if (! bWriteRasterGISFile(RASTER_PLOT_SEDIMENT_INPUT, &RASTER_PLOT_SEDIMENT_INPUT_EVENT_TITLE))
          return false;
 
    // Don't write suspended sediment files if there is no fine sediment
    if (m_bHaveFineSediment)
    {
       if (m_bSuspSedSave)
-         if (! bWriteRasterGISFile(RASTER_PLOT_SUSPENDED_SEDIMENT,
-                                  &RASTER_PLOT_SUSPENDED_SEDIMENT_TITLE))
+         if (! bWriteRasterGISFile(RASTER_PLOT_SUSPENDED_SEDIMENT, &RASTER_PLOT_SUSPENDED_SEDIMENT_TITLE))
             return false;
 
       if (m_bAvgSuspSedSave)
-         if (! bWriteRasterGISFile(RASTER_PLOT_AVG_SUSPENDED_SEDIMENT,
-                                  &RASTER_PLOT_AVG_SUSPENDED_SEDIMENT_TITLE))
+         if (! bWriteRasterGISFile(RASTER_PLOT_AVG_SUSPENDED_SEDIMENT, &RASTER_PLOT_AVG_SUSPENDED_SEDIMENT_TITLE))
             return false;
    }
 
    if (m_bBasementElevSave)
-      if (! bWriteRasterGISFile(RASTER_PLOT_BASEMENT_ELEVATION,
-                               &RASTER_PLOT_BASEMENT_ELEVATION_TITLE))
+      if (! bWriteRasterGISFile(RASTER_PLOT_BASEMENT_ELEVATION, &RASTER_PLOT_BASEMENT_ELEVATION_TITLE))
          return false;
 
    for (int nLayer = 0; nLayer < m_nLayers; nLayer++)
    {
       if (m_bHaveFineSediment && m_bFineUnconsSedSave)
       {
-         if (! bWriteRasterGISFile(RASTER_PLOT_FINE_UNCONSOLIDATED_SEDIMENT,
-                                  &RASTER_PLOT_FINE_UNCONSOLIDATED_SEDIMENT_TITLE,
-                                  nLayer))
+         if (! bWriteRasterGISFile(RASTER_PLOT_FINE_UNCONSOLIDATED_SEDIMENT, &RASTER_PLOT_FINE_UNCONSOLIDATED_SEDIMENT_TITLE, nLayer))
             return false;
       }
 
       if (m_bHaveSandSediment && m_bSandUnconsSedSave)
       {
-         if (! bWriteRasterGISFile(RASTER_PLOT_SAND_UNCONSOLIDATED_SEDIMENT,
-                                  &RASTER_PLOT_SAND_UNCONSOLIDATED_SEDIMENT_TITLE,
-                                  nLayer))
+         if (! bWriteRasterGISFile(RASTER_PLOT_SAND_UNCONSOLIDATED_SEDIMENT, &RASTER_PLOT_SAND_UNCONSOLIDATED_SEDIMENT_TITLE, nLayer))
             return false;
       }
 
       if (m_bHaveCoarseSediment && m_bCoarseUnconsSedSave)
       {
-         if (! bWriteRasterGISFile(
-                 RASTER_PLOT_COARSE_UNCONSOLIDATED_SEDIMENT,
-                 &RASTER_PLOT_COARSE_UNCONSOLIDATED_SEDIMENT_TITLE, nLayer))
+         if (! bWriteRasterGISFile(RASTER_PLOT_COARSE_UNCONSOLIDATED_SEDIMENT, &RASTER_PLOT_COARSE_UNCONSOLIDATED_SEDIMENT_TITLE, nLayer))
             return false;
       }
 
       if (m_bHaveFineSediment && m_bFineConsSedSave)
       {
-         if (! bWriteRasterGISFile(RASTER_PLOT_FINE_CONSOLIDATED_SEDIMENT,
-                                  &RASTER_PLOT_FINE_CONSOLIDATED_SEDIMENT_TITLE,
-                                  nLayer))
+         if (! bWriteRasterGISFile(RASTER_PLOT_FINE_CONSOLIDATED_SEDIMENT, &RASTER_PLOT_FINE_CONSOLIDATED_SEDIMENT_TITLE, nLayer))
             return false;
       }
 
       if (m_bHaveSandSediment && m_bSandConsSedSave)
       {
-         if (! bWriteRasterGISFile(RASTER_PLOT_SAND_CONSOLIDATED_SEDIMENT,
-                                  &RASTER_PLOT_SAND_CONSOLIDATED_SEDIMENT_TITLE,
-                                  nLayer))
+         if (! bWriteRasterGISFile(RASTER_PLOT_SAND_CONSOLIDATED_SEDIMENT, &RASTER_PLOT_SAND_CONSOLIDATED_SEDIMENT_TITLE, nLayer))
             return false;
       }
 
       if (m_bHaveCoarseSediment && m_bCoarseConsSedSave)
       {
-         if (! bWriteRasterGISFile(RASTER_PLOT_COARSE_CONSOLIDATED_SEDIMENT,
-                                  &RASTER_PLOT_COARSE_CONSOLIDATED_SEDIMENT_TITLE,
-                                  nLayer))
+         if (! bWriteRasterGISFile(RASTER_PLOT_COARSE_CONSOLIDATED_SEDIMENT, &RASTER_PLOT_COARSE_CONSOLIDATED_SEDIMENT_TITLE, nLayer))
             return false;
       }
    }
@@ -1291,8 +1249,7 @@ bool CSimulation::bSaveAllRasterGISFiles(void)
    {
       for (int i = 0; i < static_cast<int>(m_VdSliceElev.size()); i++)
       {
-         if (! bWriteRasterGISFile(RASTER_PLOT_SLICE, &RASTER_PLOT_SLICE_TITLE, 0,
-                                  m_VdSliceElev[i]))
+         if (! bWriteRasterGISFile(RASTER_PLOT_SLICE, &RASTER_PLOT_SLICE_TITLE, 0, m_VdSliceElev[i]))
             return false;
       }
    }
@@ -1305,15 +1262,13 @@ bool CSimulation::bSaveAllRasterGISFiles(void)
 
    if (m_bRasterNormalProfileSave)
    {
-      if (! bWriteRasterGISFile(RASTER_PLOT_NORMAL_PROFILE,
-                               &RASTER_PLOT_NORMAL_PROFILE_TITLE))
+      if (! bWriteRasterGISFile(RASTER_PLOT_NORMAL_PROFILE, &RASTER_PLOT_NORMAL_PROFILE_TITLE))
          return false;
    }
 
    if (m_bActiveZoneSave)
    {
-      if (! bWriteRasterGISFile(RASTER_PLOT_ACTIVE_ZONE,
-                               &RASTER_PLOT_ACTIVE_ZONE_TITLE))
+      if (! bWriteRasterGISFile(RASTER_PLOT_ACTIVE_ZONE, &RASTER_PLOT_ACTIVE_ZONE_TITLE))
          return false;
    }
 
@@ -1324,25 +1279,19 @@ bool CSimulation::bSaveAllRasterGISFiles(void)
       {
          if (m_bHaveFineSediment)
          {
-            if (! bWriteRasterGISFile(
-                    RASTER_PLOT_CLIFF_COLLAPSE_EROSION_FINE,
-                    &RASTER_PLOT_CLIFF_COLLAPSE_EROSION_FINE_TITLE))
+            if (! bWriteRasterGISFile(RASTER_PLOT_CLIFF_COLLAPSE_EROSION_FINE, &RASTER_PLOT_CLIFF_COLLAPSE_EROSION_FINE_TITLE))
                return false;
          }
 
          if (m_bHaveSandSediment)
          {
-            if (! bWriteRasterGISFile(
-                    RASTER_PLOT_CLIFF_COLLAPSE_EROSION_SAND,
-                    &RASTER_PLOT_CLIFF_COLLAPSE_EROSION_SAND_TITLE))
+            if (! bWriteRasterGISFile(RASTER_PLOT_CLIFF_COLLAPSE_EROSION_SAND, &RASTER_PLOT_CLIFF_COLLAPSE_EROSION_SAND_TITLE))
                return false;
          }
 
          if (m_bHaveCoarseSediment)
          {
-            if (! bWriteRasterGISFile(
-                    RASTER_PLOT_CLIFF_COLLAPSE_EROSION_COARSE,
-                    &RASTER_PLOT_CLIFF_COLLAPSE_EROSION_COARSE_TITLE))
+            if (! bWriteRasterGISFile(RASTER_PLOT_CLIFF_COLLAPSE_EROSION_COARSE, &RASTER_PLOT_CLIFF_COLLAPSE_EROSION_COARSE_TITLE))
                return false;
          }
       }
@@ -1351,25 +1300,19 @@ bool CSimulation::bSaveAllRasterGISFiles(void)
       {
          if (m_bHaveFineSediment)
          {
-            if (! bWriteRasterGISFile(
-                    RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_EROSION_FINE,
-                    &RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_EROSION_FINE_TITLE))
+            if (! bWriteRasterGISFile(RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_EROSION_FINE, &RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_EROSION_FINE_TITLE))
                return false;
          }
 
          if (m_bHaveSandSediment)
          {
-            if (! bWriteRasterGISFile(
-                    RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_EROSION_SAND,
-                    &RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_EROSION_SAND_TITLE))
+            if (! bWriteRasterGISFile(RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_EROSION_SAND, &RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_EROSION_SAND_TITLE))
                return false;
          }
 
          if (m_bHaveCoarseSediment)
          {
-            if (! bWriteRasterGISFile(
-                    RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_EROSION_COARSE,
-                    &RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_EROSION_COARSE_TITLE))
+            if (! bWriteRasterGISFile(RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_EROSION_COARSE, &RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_EROSION_COARSE_TITLE))
                return false;
          }
       }
@@ -1378,17 +1321,13 @@ bool CSimulation::bSaveAllRasterGISFiles(void)
       {
          if (m_bHaveSandSediment)
          {
-            if (! bWriteRasterGISFile(
-                    RASTER_PLOT_CLIFF_COLLAPSE_DEPOSITION_SAND,
-                    &RASTER_PLOT_CLIFF_COLLAPSE_DEPOSITION_SAND_TITLE))
+            if (! bWriteRasterGISFile(RASTER_PLOT_CLIFF_COLLAPSE_DEPOSITION_SAND, &RASTER_PLOT_CLIFF_COLLAPSE_DEPOSITION_SAND_TITLE))
                return false;
          }
 
          if (m_bHaveCoarseSediment)
          {
-            if (! bWriteRasterGISFile(
-                    RASTER_PLOT_CLIFF_COLLAPSE_DEPOSITION_COARSE,
-                    &RASTER_PLOT_CLIFF_COLLAPSE_DEPOSITION_COARSE_TITLE))
+            if (! bWriteRasterGISFile(RASTER_PLOT_CLIFF_COLLAPSE_DEPOSITION_COARSE, &RASTER_PLOT_CLIFF_COLLAPSE_DEPOSITION_COARSE_TITLE))
                return false;
          }
       }
@@ -1397,17 +1336,13 @@ bool CSimulation::bSaveAllRasterGISFiles(void)
       {
          if (m_bHaveSandSediment)
          {
-            if (! bWriteRasterGISFile(
-                    RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_DEPOSITION_SAND,
-                    &RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_DEPOSITION_SAND_TITLE))
+            if (! bWriteRasterGISFile(RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_DEPOSITION_SAND, &RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_DEPOSITION_SAND_TITLE))
                return false;
          }
 
          if (m_bHaveCoarseSediment)
          {
-            if (! bWriteRasterGISFile(
-                    RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_DEPOSITION_COARSE,
-                    &RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_DEPOSITION_COARSE_TITLE))
+            if (! bWriteRasterGISFile(RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_DEPOSITION_COARSE, &RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_DEPOSITION_COARSE_TITLE))
                return false;
          }
       }
@@ -1421,89 +1356,76 @@ bool CSimulation::bSaveAllRasterGISFiles(void)
 
    if (m_bSeaMaskSave)
    {
-      if (! bWriteRasterGISFile(RASTER_PLOT_INUNDATION_MASK,
-                               &RASTER_PLOT_INUNDATION_MASK_TITLE))
+      if (! bWriteRasterGISFile(RASTER_PLOT_INUNDATION_MASK, &RASTER_PLOT_INUNDATION_MASK_TITLE))
          return false;
    }
 
    if (m_bBeachMaskSave)
    {
-      if (! bWriteRasterGISFile(RASTER_PLOT_BEACH_MASK,
-                               &RASTER_PLOT_BEACH_MASK_TITLE))
+      if (! bWriteRasterGISFile(RASTER_PLOT_BEACH_MASK, &RASTER_PLOT_BEACH_MASK_TITLE))
          return false;
    }
 
    if (m_bInterventionClassSave)
    {
-      if (! bWriteRasterGISFile(RASTER_PLOT_INTERVENTION_CLASS,
-                               &RASTER_PLOT_INTERVENTION_CLASS_TITLE))
+      if (! bWriteRasterGISFile(RASTER_PLOT_INTERVENTION_CLASS, &RASTER_PLOT_INTERVENTION_CLASS_TITLE))
          return false;
    }
 
    if (m_bInterventionHeightSave)
    {
-      if (! bWriteRasterGISFile(RASTER_PLOT_INTERVENTION_HEIGHT,
-                               &RASTER_PLOT_INTERVENTION_HEIGHT_TITLE))
+      if (! bWriteRasterGISFile(RASTER_PLOT_INTERVENTION_HEIGHT, &RASTER_PLOT_INTERVENTION_HEIGHT_TITLE))
          return false;
    }
 
    if (m_bShadowZoneCodesSave)
    {
-      if (! bWriteRasterGISFile(RASTER_PLOT_SHADOW_ZONE,
-                               &RASTER_PLOT_SHADOW_ZONE_TITLE))
+      if (! bWriteRasterGISFile(RASTER_PLOT_SHADOW_ZONE, &RASTER_PLOT_SHADOW_ZONE_TITLE))
          return false;
 
-      if (! bWriteRasterGISFile(RASTER_PLOT_SHADOW_DOWNDRIFT_ZONE,
-                               &RASTER_PLOT_SHADOW_DOWNDRIFT_ZONE_TITLE))
+      if (! bWriteRasterGISFile(RASTER_PLOT_SHADOW_DOWNDRIFT_ZONE, &RASTER_PLOT_SHADOW_DOWNDRIFT_ZONE_TITLE))
          return false;
    }
 
    if (m_bDeepWaterWaveAngleSave)
    {
-      if (! bWriteRasterGISFile(RASTER_PLOT_DEEP_WATER_WAVE_ORIENTATION,
-                               &RASTER_PLOT_DEEP_WATER_WAVE_ORIENTATION_TITLE))
+      if (! bWriteRasterGISFile(RASTER_PLOT_DEEP_WATER_WAVE_ORIENTATION, &RASTER_PLOT_DEEP_WATER_WAVE_ORIENTATION_TITLE))
          return false;
    }
 
    if (m_bDeepWaterWaveHeightSave)
    {
-      if (! bWriteRasterGISFile(RASTER_PLOT_DEEP_WATER_WAVE_HEIGHT,
-                               &RASTER_PLOT_DEEP_WATER_WAVE_HEIGHT_TITLE))
+      if (! bWriteRasterGISFile(RASTER_PLOT_DEEP_WATER_WAVE_HEIGHT, &RASTER_PLOT_DEEP_WATER_WAVE_HEIGHT_TITLE))
          return false;
    }
 
    if (m_bDeepWaterWavePeriodSave)
    {
-      if (! bWriteRasterGISFile(RASTER_PLOT_DEEP_WATER_WAVE_PERIOD,
-                               &RASTER_PLOT_DEEP_WATER_WAVE_PERIOD_TITLE))
+      if (! bWriteRasterGISFile(RASTER_PLOT_DEEP_WATER_WAVE_PERIOD, &RASTER_PLOT_DEEP_WATER_WAVE_PERIOD_TITLE))
          return false;
    }
 
    if (m_bPolygonUnconsSedUpOrDownDriftSave)
    {
-      if (! bWriteRasterGISFile(RASTER_PLOT_POLYGON_UPDRIFT_OR_DOWNDRIFT,
-                               &RASTER_PLOT_POLYGON_UPDRIFT_OR_DOWNDRIFT_TITLE))
+      if (! bWriteRasterGISFile(RASTER_PLOT_POLYGON_UPDRIFT_OR_DOWNDRIFT, &RASTER_PLOT_POLYGON_UPDRIFT_OR_DOWNDRIFT_TITLE))
          return false;
    }
 
    if (m_bPolygonUnconsSedGainOrLossSave)
    {
-      if (! bWriteRasterGISFile(RASTER_PLOT_POLYGON_GAIN_OR_LOSS,
-                               &RASTER_PLOT_POLYGON_GAIN_OR_LOSS_TITLE))
+      if (! bWriteRasterGISFile(RASTER_PLOT_POLYGON_GAIN_OR_LOSS, &RASTER_PLOT_POLYGON_GAIN_OR_LOSS_TITLE))
          return false;
    }
 
    if (m_bSetupSurgeFloodMaskSave)
    {
-      if (! bWriteRasterGISFile(RASTER_PLOT_SETUP_SURGE_FLOOD_MASK,
-                               &RASTER_PLOT_SETUP_SURGE_FLOOD_MASK_TITLE))
+      if (! bWriteRasterGISFile(RASTER_PLOT_SETUP_SURGE_FLOOD_MASK, &RASTER_PLOT_SETUP_SURGE_FLOOD_MASK_TITLE))
          return false;
    }
 
    if (m_bSetupSurgeRunupFloodMaskSave)
    {
-      if (! bWriteRasterGISFile(RASTER_PLOT_SETUP_SURGE_RUNUP_FLOOD_MASK,
-                               &RASTER_PLOT_SETUP_SURGE_RUNUP_FLOOD_MASK_TITLE))
+      if (! bWriteRasterGISFile(RASTER_PLOT_SETUP_SURGE_RUNUP_FLOOD_MASK, &RASTER_PLOT_SETUP_SURGE_RUNUP_FLOOD_MASK_TITLE))
          return false;
    }
 
@@ -1735,7 +1657,7 @@ void CSimulation::GetRasterOutputMinMax(int const nDataItem, double &dMin,
             break;
 
          case (RASTER_PLOT_WAVE_HEIGHT):
-            if (!m_pRasterGrid->m_Cell[nX][nY].bIsInContiguousSea())
+            if (! m_pRasterGrid->m_Cell[nX][nY].bIsInContiguousSea())
                dTmp = m_dMissingValue;
 
             else
@@ -1749,7 +1671,7 @@ void CSimulation::GetRasterOutputMinMax(int const nDataItem, double &dMin,
             break;
 
          case (RASTER_PLOT_WAVE_ORIENTATION):
-            if (!m_pRasterGrid->m_Cell[nX][nY].bIsInContiguousSea())
+            if (! m_pRasterGrid->m_Cell[nX][nY].bIsInContiguousSea())
                dTmp = m_dMissingValue;
 
             else

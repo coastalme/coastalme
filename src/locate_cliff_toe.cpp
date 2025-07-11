@@ -212,7 +212,7 @@ void CSimulation::nTraceSeawardCliffEdge(void)
          if (m_pRasterGrid->m_Cell[nX][nY].bIsCliff())
          {
             // East direction (check if this is a seaward-facing cliff toe)
-            if (!m_pRasterGrid->m_Cell[nX][nY + 1].bIsCliff())
+            if (! m_pRasterGrid->m_Cell[nX][nY + 1].bIsCliff())
             {
                V2DIPossibleStartCell.push_back(CGeom2DIPoint(nX, nY));
                VbPossibleStartCellHandedness.push_back(true);
@@ -220,7 +220,7 @@ void CSimulation::nTraceSeawardCliffEdge(void)
             }
 
             // South direction
-            if (!m_pRasterGrid->m_Cell[nX + 1][nY].bIsCliff())
+            if (! m_pRasterGrid->m_Cell[nX + 1][nY].bIsCliff())
             {
                V2DIPossibleStartCell.push_back(CGeom2DIPoint(nX, nY));
                VbPossibleStartCellHandedness.push_back(true);
@@ -228,7 +228,7 @@ void CSimulation::nTraceSeawardCliffEdge(void)
             }
 
             // West direction
-            if (!m_pRasterGrid->m_Cell[nX][nY - 1].bIsCliff())
+            if (! m_pRasterGrid->m_Cell[nX][nY - 1].bIsCliff())
             {
                V2DIPossibleStartCell.push_back(CGeom2DIPoint(nX, nY));
                VbPossibleStartCellHandedness.push_back(true);
@@ -236,7 +236,7 @@ void CSimulation::nTraceSeawardCliffEdge(void)
             }
 
             // North direction
-            if (!m_pRasterGrid->m_Cell[nX - 1][nY].bIsCliff())
+            if (! m_pRasterGrid->m_Cell[nX - 1][nY].bIsCliff())
             {
                V2DIPossibleStartCell.push_back(CGeom2DIPoint(nX, nY));
                VbPossibleStartCellHandedness.push_back(true);

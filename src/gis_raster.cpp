@@ -120,7 +120,7 @@ int CSimulation::nReadRasterBasementDEM(void)
    m_strGDALBasementDEMProjection = pGDALDataset->GetProjectionRef();
 
    // If we have reference units, then check that they are in metres
-   if (!m_strGDALBasementDEMProjection.empty())
+   if (! m_strGDALBasementDEMProjection.empty())
    {
       string const strTmp = strToLower(&m_strGDALBasementDEMProjection);
 
@@ -290,7 +290,7 @@ int CSimulation::nMarkBoundingBoxEdgeCells(void)
 
       for (int nY = 0; nY < m_nYGridSize; nY++)
       {
-         if (!m_pRasterGrid->m_Cell[nX][nY].bBasementElevIsMissingValue())
+         if (! m_pRasterGrid->m_Cell[nX][nY].bBasementElevIsMissingValue())
          {
             CGeom2DIPoint const PtiTmp(nX, nY);
             VPtiBoundingBoxCorner.push_back(PtiTmp);
@@ -318,7 +318,7 @@ int CSimulation::nMarkBoundingBoxEdgeCells(void)
 
       for (int nX = m_nXGridSize - 1; nX >= 0; nX--)
       {
-         if (!m_pRasterGrid->m_Cell[nX][nY].bBasementElevIsMissingValue())
+         if (! m_pRasterGrid->m_Cell[nX][nY].bBasementElevIsMissingValue())
          {
             CGeom2DIPoint const PtiTmp(nX, nY);
             VPtiBoundingBoxCorner.push_back(PtiTmp);
@@ -346,7 +346,7 @@ int CSimulation::nMarkBoundingBoxEdgeCells(void)
 
       for (int nY = m_nYGridSize - 1; nY >= 0; nY--)
       {
-         if (!m_pRasterGrid->m_Cell[nX][nY].bBasementElevIsMissingValue())
+         if (! m_pRasterGrid->m_Cell[nX][nY].bBasementElevIsMissingValue())
          {
             CGeom2DIPoint const PtiTmp(nX, nY);
             VPtiBoundingBoxCorner.push_back(PtiTmp);
@@ -374,7 +374,7 @@ int CSimulation::nMarkBoundingBoxEdgeCells(void)
 
       for (int nX = 0; nX < m_nXGridSize; nX++)
       {
-         if (!m_pRasterGrid->m_Cell[nX][nY].bBasementElevIsMissingValue())
+         if (! m_pRasterGrid->m_Cell[nX][nY].bBasementElevIsMissingValue())
          {
             CGeom2DIPoint const PtiTmp(nX, nY);
             VPtiBoundingBoxCorner.push_back(PtiTmp);
@@ -1287,7 +1287,7 @@ bool CSimulation::bWriteRasterGISFile(int const nDataItem, string const *strPlot
    strFilePathName.append(ststrTmp.str());
 
    // Finally, maybe append the extension
-   if (!m_strGDALRasterOutputDriverExtension.empty())
+   if (! m_strGDALRasterOutputDriverExtension.empty())
    {
       strFilePathName.append(".");
       strFilePathName.append(m_strGDALRasterOutputDriverExtension);
@@ -1369,7 +1369,7 @@ bool CSimulation::bWriteRasterGISFile(int const nDataItem, string const *strPlot
    double dRangeScale = 0;
    double dDataMin = 0;
 
-   if (!m_bGDALCanWriteFloat)
+   if (! m_bGDALCanWriteFloat)
    {
       double dDataMax = 0;
 
@@ -1996,7 +1996,7 @@ bool CSimulation::bWriteRasterGISFile(int const nDataItem, string const *strPlot
    pBand->SetStatistics(dMin, dMax, dMean, dStdDev);
    CPLPopErrorHandler();
 
-   if (!m_bGDALCanCreate)
+   if (! m_bGDALCanCreate)
    {
       // Since the user-selected raster driver cannot use the Create() method, we have been writing to a dataset created by the in-memory driver. So now we need to use CreateCopy() to copy this in-memory dataset to a file in the user-specified raster driver format
       GDALDriver *pOutDriver = GetGDALDriverManager()->GetDriverByName(m_strRasterGISOutFormat.c_str());

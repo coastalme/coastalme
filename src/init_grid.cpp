@@ -185,7 +185,7 @@ int CSimulation::nInitGridAndCalcStillWaterLevel(void)
       }
    }
 
-   if (m_bHaveWaveStationData && (!m_bSingleDeepWaterWaveValues))
+   if (m_bHaveWaveStationData && (! m_bSingleDeepWaterWaveValues))
    {
       // Each cell's value for deep water wave height and deep water wave orientation is interpolated from multiple user-supplied values
       int const nRet = nInterpolateAllDeepWaterWaveValues();

@@ -35,7 +35,7 @@
 #include "2d_point.h"
 #include "2di_point.h"
 
-class CGeomProfile; // Forward declarations
+class CGeomProfile;           // Forward declarations
 class CACoastLandform;
 class CGeomCoastPolygon;
 
