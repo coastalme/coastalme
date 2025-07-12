@@ -2514,21 +2514,18 @@ int CSimulation::nInterpolateAllDeepWaterWaveValues(void)
    GDALGridContextFree(pContext);
 
    // The output from GDALGridCreate() is in dHeightOut, dAngleOut and dPeriopdOut but must be reversed
-   vector<double>
-       VdHeight,
-       VdAngle,
-       VdPeriod;
+   vector<double> VdHeight;
+   vector<double> VdAngle;
+   vector<double> VdPeriod;
 
-   int
-       n = 0,
-       nValidHeight = 0,
-       nValidAngle = 0,
-       nValidPeriod = 0;
+   int n = 0;
+   int nValidHeight = 0;
+   int nValidAngle = 0;
+   int nValidPeriod = 0;
 
-   double
-       dAvgHeight = 0,
-       dAvgAngle = 0,
-       dAvgPeriod = 0;
+   double dAvgHeight = 0;
+   double dAvgAngle = 0;
+   double dAvgPeriod = 0;
 
    for (int nY = m_nYGridSize - 1; nY >= 0; nY--)
    {

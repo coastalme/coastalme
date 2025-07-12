@@ -1416,7 +1416,6 @@ void CSimulation::MarkProfilesOnGrid(int const nCoast, int& nValidProfiles)
 
       if (bDownCoast)
          pProfile = m_VCoast[nCoast].pGetProfileWithDownCoastSeq(n);
-
       else
          pProfile = m_VCoast[nCoast].pGetProfileWithUpCoastSeq(n);
 
@@ -1458,7 +1457,7 @@ void CSimulation::MarkProfilesOnGrid(int const nCoast, int& nValidProfiles)
 
       CreateRasterizedProfile(nCoast, pProfile, &VCellsToMark, &bVShared, bTooShort, bTruncatedSameCoast, bHitCoast, bHitLand, bHitIntervention, bHitAnotherProfile); // TODO 044
 
-      if ((bTruncatedSameCoast && (!ACCEPT_TRUNCATED_PROFILES)) || bTooShort || bHitCoast || bHitLand || bHitIntervention || bHitAnotherProfile || VCellsToMark.size() == 0)
+      if ((bTruncatedSameCoast && (! ACCEPT_TRUNCATED_PROFILES)) || bTooShort || bHitCoast || bHitLand || bHitIntervention || bHitAnotherProfile || VCellsToMark.size() == 0)
          continue;
 
       // This profile is fine
@@ -1536,7 +1535,6 @@ void CSimulation::CreateRasterizedProfile(int const nCoast, CGeomProfile* pProfi
          // If this is the first segment, use the profile start point to prevent Ext CRS to Grid CGS rounding errors
          PtiSegStart = pProfile->pPtiGetStartPoint();
       }
-
       else
       {
          CGeom2DPoint const* pPtSegStart = pProfile->pPtGetPointInProfile(nSeg);
@@ -1603,6 +1601,22 @@ void CSimulation::CreateRasterizedProfile(int const nCoast, CGeomProfile* pProfi
                   LogStream << m_ulIter << ": profile " << nProfile << " is invalid, truncated at [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "}" << endl;
 
                break;
+            }
+
+            // Check again: is this cell (or an adjacent cell: does not matter which) already marked as 'under' a profile?
+            if (m_pRasterGrid->m_Cell[nX][nY].bIsProfile() || m_pRasterGrid->m_Cell[nX][nY+1].bIsProfile())
+            {
+               // This cell or an adjacent cell, is 'under' a profile, so now check if the profile belongs to another coast
+               int nHitProfileCoast1 = m_pRasterGrid->m_Cell[nX][nY].nGetProfileCoastID();
+               int nHitProfileCoast2 = m_pRasterGrid->m_Cell[nX][nY+1].nGetProfileCoastID();
+
+               if ((nHitProfileCoast1 == nCoast) || (nHitProfileCoast2 == nCoast))
+               {
+                  // The profile belongs to the same coast, mark this profile as invalid
+                  bHitAnotherProfile = true;
+                  pProfile->SetHitAnotherProfile(true);
+                  return;
+               }
             }
 
             // If this is the first line segment of the profile, then once we are clear of the coastline (say, when m > 3), check if this profile hits land at this interpolated point. NOTE Get problems here since if the coastline vector has been heavily smoothed, this can result is 'false positives' profiles marked as invalid which are not actually invalid, because the profile hits land when m = 0 or m = 1. This results in some cells being flagged as profile cells which are actually inland
