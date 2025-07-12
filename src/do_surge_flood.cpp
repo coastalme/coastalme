@@ -327,9 +327,8 @@ int CSimulation::nTraceAllFloodCoasts(void)
 
    if (bAtLeastOneCoastTraced)
       return RTN_OK;
-
    else
-      return RTN_ERR_TRACING_COAST;
+      return RTN_ERR_TRACING_FLOOD;
 }
 
 //===============================================================================================================================
@@ -799,7 +798,7 @@ int CSimulation::nTraceFloodCoastLine(unsigned int const nTraceFromStartCellInde
       for (int n = 0; n < nCoastSize; n++)
          m_pRasterGrid->m_Cell[ILTempGridCRS[n].nGetX()][ILTempGridCRS[n].nGetY()].SetAsFloodline(false);
 
-      return RTN_ERR_TRACING_COAST;
+      return RTN_ERR_TRACING_FLOOD;
    }
 
    if (bTooLong)
@@ -819,7 +818,7 @@ int CSimulation::nTraceFloodCoastLine(unsigned int const nTraceFromStartCellInde
       for (int n = 0; n < nCoastSize; n++)
          m_pRasterGrid->m_Cell[ILTempGridCRS[n].nGetX()][ILTempGridCRS[n].nGetY()].SetAsFloodline(false);
 
-      return RTN_ERR_TRACING_COAST;
+      return RTN_ERR_TRACING_FLOOD;
    }
 
    if (bRepeating)
@@ -838,7 +837,7 @@ int CSimulation::nTraceFloodCoastLine(unsigned int const nTraceFromStartCellInde
       for (int n = 0; n < nCoastSize; n++)
          m_pRasterGrid->m_Cell[ILTempGridCRS[n].nGetX()][ILTempGridCRS[n].nGetY()].SetAsFloodline(false);
 
-      return RTN_ERR_TRACING_COAST;
+      return RTN_ERR_TRACING_FLOOD;
    }
 
    if (nCoastSize == 0)
@@ -847,7 +846,7 @@ int CSimulation::nTraceFloodCoastLine(unsigned int const nTraceFromStartCellInde
       if (m_nLogFileDetail >= LOG_FILE_HIGH_DETAIL)
          LogStream << m_ulIter << ": abandoning zero-length flood coastline from [" << nStartX << "][" << nStartY << "] = {" << dGridCentroidXToExtCRSX(nStartX) << ", " << dGridCentroidYToExtCRSY(nStartY) << "}" << endl;
 
-      return RTN_ERR_TRACING_COAST;
+      return RTN_ERR_TRACING_FLOOD;
    }
 
    if (nCoastSize < m_nCoastMin)
@@ -860,7 +859,7 @@ int CSimulation::nTraceFloodCoastLine(unsigned int const nTraceFromStartCellInde
       for (int n = 0; n < nCoastSize; n++)
          m_pRasterGrid->m_Cell[ILTempGridCRS[n].nGetX()][ILTempGridCRS[n].nGetY()].SetAsFloodline(false);
 
-      return RTN_ERR_TRACING_COAST;
+      return RTN_ERR_TRACING_FLOOD;
    }
 
    // OK this new coastline is fine

@@ -379,7 +379,7 @@ int CSimulation::nTraceAllCoasts(int& nValidCoast)
 
       LogStream << endl;
 
-      return RTN_ERR_TRACING_COAST;
+      return RTN_ERR_NO_START_FINISH_POINTS_TRACING_COAST;
    }
 
    // Some possible coastline start/finish points were found
@@ -388,7 +388,7 @@ int CSimulation::nTraceAllCoasts(int& nValidCoast)
    // OK, so trace from each of these possible start/finish points
    for (unsigned int n = 0; n < V2DIPossibleStartCell.size(); n++)
    {
-      if (!VbTraced[n])
+      if (! VbTraced[n])
       {
          int nRet = 0;
 
@@ -417,7 +417,7 @@ int CSimulation::nTraceAllCoasts(int& nValidCoast)
    else
    {
       cerr << m_ulIter << ": no valid coasts found, see " << m_strLogFile << " for more information" << endl;
-      return RTN_ERR_TRACING_COAST;
+      return RTN_ERR_NO_VALID_COAST;
    }
 }
 
@@ -877,7 +877,7 @@ int CSimulation::nTraceCoastLine(unsigned int const nTraceFromStartCellIndex, in
       if (m_nLogFileDetail >= LOG_FILE_ALL)
          LogStream << m_ulIter << ": Ignoring possible coastline from [" << nStartX << "][" << nStartY << "] = {" << dGridCentroidXToExtCRSX(nStartX) << ", " << dGridCentroidYToExtCRSY(nStartY) << "} since hit off-edge cell at [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "}, coastline size is " << nCoastSize << endl;
 
-      return RTN_ERR_TRACING_COAST;
+      return RTN_ERR_IGNORING_COAST;
    }
 
    if (bTooLong)
@@ -893,7 +893,7 @@ int CSimulation::nTraceCoastLine(unsigned int const nTraceFromStartCellIndex, in
          LogStream << endl;
       }
 
-      return RTN_ERR_TRACING_COAST;
+      return RTN_ERR_TOO_LONG_TRACING_COAST;
    }
 
    if (bRepeating)
@@ -908,7 +908,7 @@ int CSimulation::nTraceCoastLine(unsigned int const nTraceFromStartCellIndex, in
          LogStream << endl;
       }
 
-      return RTN_ERR_TRACING_COAST;
+      return RTN_ERR_REPEATING_WHEN_TRACING_COAST;
    }
 
    if (nCoastSize == 0)
@@ -917,7 +917,7 @@ int CSimulation::nTraceCoastLine(unsigned int const nTraceFromStartCellIndex, in
       if (m_nLogFileDetail >= LOG_FILE_ALL)
          LogStream << m_ulIter << ": abandoning zero-length coastline from [" << nStartX << "][" << nStartY << "] = {" << dGridCentroidXToExtCRSX(nStartX) << ", " << dGridCentroidYToExtCRSY(nStartY) << "}" << endl;
 
-      return RTN_ERR_TRACING_COAST;
+      return RTN_ERR_ZERO_LENGTH_COAST;
    }
 
    if (nCoastSize < m_nCoastMin)
@@ -926,7 +926,7 @@ int CSimulation::nTraceCoastLine(unsigned int const nTraceFromStartCellIndex, in
       if (m_nLogFileDetail >= LOG_FILE_HIGH_DETAIL)
          LogStream << m_ulIter << ": Ignoring possible coastline from [" << nStartX << "][" << nStartY << "] = {" << dGridCentroidXToExtCRSX(nStartX) << ", " << dGridCentroidYToExtCRSY(nStartY) << "} to [" << ILTempGridCRS[nCoastSize - 1].nGetX() << "][" << ILTempGridCRS[nCoastSize - 1].nGetY() << "] = {" << dGridCentroidXToExtCRSX(ILTempGridCRS[nCoastSize - 1].nGetX()) << ", " << dGridCentroidYToExtCRSY(ILTempGridCRS[nCoastSize - 1].nGetY()) << "} since size (" << nCoastSize << ") is less than minimum (" << m_nCoastMin << ")" << endl;
 
-      return RTN_ERR_TRACING_COAST;
+      return RTN_ERR_COAST_TOO_SMALL;
    }
 
    // OK this new coastline is fine

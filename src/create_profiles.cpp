@@ -1603,7 +1603,7 @@ void CSimulation::CreateRasterizedProfile(int const nCoast, CGeomProfile* pProfi
                break;
             }
 
-            // Check again: is this cell (or an adjacent cell: does not matter which) already marked as 'under' a profile?
+            // Check again: is this cell (or an adjacent cell: does not matter which) already marked as 'under' a profile? TODO check that nY+1 is OK
             if (m_pRasterGrid->m_Cell[nX][nY].bIsProfile() || m_pRasterGrid->m_Cell[nX][nY+1].bIsProfile())
             {
                // This cell or an adjacent cell, is 'under' a profile, so now check if the profile belongs to another coast

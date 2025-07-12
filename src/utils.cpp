@@ -2023,10 +2023,6 @@ string CSimulation::strGetErrorText(int const nErr)
       strErr = "error when searching grid for linear feature";
       break;
 
-   case RTN_ERR_TRACING_COAST:
-      strErr = "error tracing coastline on grid";
-      break;
-
    case RTN_ERR_NOCOAST:
       strErr = "no coastlines found. Is the SWL correct?";
       break;
@@ -2184,6 +2180,38 @@ string CSimulation::strGetErrorText(int const nErr)
 
    case RTN_ERR_CELL_MARKED_PROFILE_COAST_BUT_NOT_PROFILE:
       strErr = "Cell marked as profile coast but not as profile";
+      break;
+
+   case RTN_ERR_TRACING_FLOOD:
+      strErr = "error tracing flood line on grid";
+      break;
+
+   case RTN_ERR_NO_START_FINISH_POINTS_TRACING_COAST:
+      strErr = "error tracing coastline on grid, no coast start-finish points found";
+      break;
+
+   case RTN_ERR_NO_VALID_COAST:
+      strErr = "error tracing coastline on grid, no valid coast found";
+      break;
+
+   case RTN_ERR_REPEATING_WHEN_TRACING_COAST:
+      strErr = "error tracing coastline on grid, coast search just repeats";
+      break;
+
+   case RTN_ERR_ZERO_LENGTH_COAST:
+      strErr = "error tracing coastline on grid, zero-length coast found";
+      break;
+
+   case RTN_ERR_COAST_TOO_SMALL:
+      strErr = "error tracing coastline on grid, coast below minimum permitted length";
+      break;
+
+   case RTN_ERR_IGNORING_COAST:
+      strErr = "error tracing coastline on grid, coast ignored";
+      break;
+
+   case RTN_ERR_TOO_LONG_TRACING_COAST:
+      strErr = "error tracing coastline on grid, too many times round tracing loop";
       break;
 
    case RTN_ERR_UNKNOWN:

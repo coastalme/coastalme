@@ -1513,7 +1513,11 @@ int CSimulation::nWriteEndRunDetails(void)
    OutStream << "Cliff collapse, fine                                   = " << m_ldGTotCliffCollapseFine * m_dCellArea << " m^3" << endl;
    OutStream << "Cliff collapse, sand                                   = " << m_ldGTotCliffCollapseSand * m_dCellArea << " m^3" << endl;
    OutStream << "Cliff collapse, coarse                                 = " << m_ldGTotCliffCollapseCoarse * m_dCellArea << " m^3" << endl;
-   OutStream << "Cliff collapse, all size classes                       = " << (m_ldGTotCliffCollapseFine + m_ldGTotCliffCollapseSand + m_ldGTotCliffCollapseCoarse + m_ldGTotCliffCollapseFineErodedDuringDeposition + m_ldGTotCliffCollapseSandErodedDuringDeposition + m_ldGTotCliffCollapseCoarseErodedDuringDeposition) * m_dCellArea << " m^3" << endl;
+   OutStream << "Cliff collapse, all size classes                       = " << (m_ldGTotCliffCollapseFine + m_ldGTotCliffCollapseSand + m_ldGTotCliffCollapseCoarse) * m_dCellArea << " m^3" << endl << endl;
+   OutStream << "Cliff collapse, fine eroded during deposition          = " << m_ldGTotCliffCollapseFineErodedDuringDeposition * m_dCellArea << " m^3" << endl;
+   OutStream << "Cliff collapse, sand eroded during deposition          = " << m_ldGTotCliffCollapseSandErodedDuringDeposition * m_dCellArea << " m^3" << endl;
+   OutStream << "Cliff collapse, coarse eroded during deposition        = " << m_ldGTotCliffCollapseCoarseErodedDuringDeposition * m_dCellArea << " m^3" << endl;
+   OutStream << "Cliff collapse, all sizes eroded during deposition     = " << (m_ldGTotCliffCollapseFine + m_ldGTotCliffCollapseSand + m_ldGTotCliffCollapseCoarse + m_ldGTotCliffCollapseFineErodedDuringDeposition + m_ldGTotCliffCollapseSandErodedDuringDeposition + m_ldGTotCliffCollapseCoarseErodedDuringDeposition) * m_dCellArea << " m^3" << endl;
    OutStream << endl;
 
    OutStream << "TOTAL DEPOSITION AND SUSPENSION OF CLIFF COLLAPSE TALUS" << endl;
