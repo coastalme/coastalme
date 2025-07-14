@@ -45,8 +45,11 @@ class CGeomMultiLine : public CGeomLine
    CGeomMultiLine(void);
    ~CGeomMultiLine(void) override;
 
+   vector<CGeom2DPoint>& pGetPoints(void);
+   void SetPoints(vector<CGeom2DPoint>&);
+
    void AppendLineSegment(void);
-   void AppendLineSegment(vector<pair<int, int>> *);
+   void AppendLineSegment(vector<pair<int, int>>*);
    // void AppendLineSegmentAndInherit(void);
    int nGetNumLineSegments(void) const;
    void TruncateLineSegments(int const);
@@ -56,13 +59,13 @@ class CGeomMultiLine : public CGeomLine
 
    void AppendCoincidentProfileToLineSegments(pair<int, int> const);
    void AddCoincidentProfileToExistingLineSegment(int const, int const, int const);
-   vector<pair<int, int>> *pprVGetPairedCoincidentProfilesForLineSegment(int const);
+   vector<pair<int, int>>* pprVGetPairedCoincidentProfilesForLineSegment(int const);
    int nGetCoincidentProfileForLineSegment(int const, int const) const;
    int nGetNumCoincidentProfilesInLineSegment(int const);
    bool bFindProfileInCoincidentProfilesOfLastLineSegment(int const);
    // bool bFindProfileInCoincidentProfilesOfLineSegment(int const, int const);
    bool bFindProfileInCoincidentProfiles(int const);
-   void GetMostCoastwardSharedLineSegment(int const, int &, int &);
+   void GetMostCoastwardSharedLineSegment(int const, int&, int &);
 
    int nGetProf(int const, int const) const;
    int nGetProfsLineSeg(int const, int const) const;

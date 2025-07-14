@@ -50,7 +50,6 @@ CGeomProfile::CGeomProfile(int const nCoast, int const nCoastPoint, int const nP
       m_bHitCoast(false),
       m_bTooShort(false),
       m_bTruncatedSameCoast(false),
-      m_bTruncatedDifferentCoast(false),
       m_bHitAnotherProfile(false),
       m_bIntervention(bIntervention),
       m_nCoast(nCoast),
@@ -78,7 +77,7 @@ int CGeomProfile::nGetCoast(void) const
 }
 
 //! Returns the profile's this-coast ID
-int CGeomProfile::nGetProfileCoastID(void) const
+int CGeomProfile::nGetProfileID(void) const
 {
    return m_nProfileID;
 }
@@ -297,26 +296,26 @@ bool CGeomProfile::bOKIncStartAndEndOfCoast(void) const
 //! Sets points (external CRS) in the profile. Note that only two points, the start and end point, are initially stored each profile
 void CGeomProfile::SetPointsInProfile(vector<CGeom2DPoint> const* VNewPoints)
 {
-   m_VPoints = *VNewPoints;
+   CGeomMultiLine::m_VPoints = *VNewPoints;
 }
 
 //! Sets a single point (external CRS) in the profile
 void CGeomProfile::SetPointInProfile(int const nPoint, double const dNewX, double const dNewY)
 {
-   // TODO 055 No check to see if nPoint < m_VPoints,size()
-   m_VPoints[nPoint] = CGeom2DPoint(dNewX, dNewY);
+   // TODO 055 No check to see if nPoint < CGeomMultiLine::m_VPoints,size()
+   CGeomMultiLine::m_VPoints[nPoint] = CGeom2DPoint(dNewX, dNewY);
 }
 
 //! Appends a point (external CRS) to the profile
 void CGeomProfile::AppendPointInProfile(double const dNewX, double const dNewY)
 {
-   m_VPoints.push_back(CGeom2DPoint(dNewX, dNewY));
+   CGeomMultiLine::m_VPoints.push_back(CGeom2DPoint(dNewX, dNewY));
 }
 
 //! Appends a point (external CRS) to the profile (overloaded version)
 void CGeomProfile::AppendPointInProfile(CGeom2DPoint const* pPt)
 {
-   m_VPoints.push_back(*pPt);
+   CGeomMultiLine::m_VPoints.push_back(*pPt);
 }
 
 //! Inserts an intersection (at a point specified in external CRS, with a line segment) into the profile
@@ -327,10 +326,10 @@ bool CGeomProfile::bInsertIntersection(double const dX, double const dY, int con
       return false;
 
    vector<CGeom2DPoint>::iterator it;
-   it = m_VPoints.begin();
+   it = CGeomMultiLine::m_VPoints.begin();
 
    // Do the insertion
-   m_VPoints.insert(it + nSeg + 1, CGeom2DPoint(dX, dY));
+   CGeomMultiLine::m_VPoints.insert(it + nSeg + 1, CGeom2DPoint(dX, dY));
 
    // Now insert a line segment in the associated multi-line, this will inherit the profile/line seg details from the preceding line segment
    CGeomMultiLine::InsertLineSegment(nSeg);
@@ -338,49 +337,48 @@ bool CGeomProfile::bInsertIntersection(double const dX, double const dY, int con
    return true;
 }
 
-//! Truncates the profile (external CRS points only)
+//! Truncates the profile's CGeomLine (external CRS points)
 void CGeomProfile::TruncateProfile(int const nSize)
 {
-   m_VPoints.resize(nSize);
+   CGeomMultiLine::m_VPoints.resize(nSize);
 }
 
 // void CGeomProfile::TruncateAndSetPointInProfile(int const nPoint, double const dNewX, double const dNewY)
 // {
-// m_VPoints.resize(nPoint+1);
-// m_VPoints[nPoint] = CGeom2DPoint(dNewX, dNewY);
+// CGeomMultiLine::m_VPoints.resize(nPoint+1);
+// CGeomMultiLine::m_VPoints[nPoint] = CGeom2DPoint(dNewX, dNewY);
 // }
 
 // void CGeomProfile::ShowProfile(void) const
 // {
-// for (int n = 0; n < m_VPoints.size(); n++)
+// for (int n = 0; n < CGeomMultiLine::m_VPoints.size(); n++)
 // {
-// cout << n << " [" << m_VPoints[n].dGetX() << "][" << m_VPoints[n].dGetY() << "]" << endl;
+// cout << n << " [" << CGeomMultiLine::m_VPoints[n].dGetX() << "][" << CGeomMultiLine::m_VPoints[n].dGetY() << "]" << endl;
 // }
 // }
 
 //! Returns the number of external CRS points in the profile (only two, initally; and always just two for grid-edge profiles)
 int CGeomProfile::nGetProfileSize(void) const
 {
-   // return CGeomMultiLine::nGetSize();
-   return static_cast<int>(m_VPoints.size());
+   return static_cast<int>(CGeomMultiLine::m_VPoints.size());
 }
 
-//! Returns a single point (external CRS) into the profile
+//! Returns a single point (external CRS) from the profile
 CGeom2DPoint* CGeomProfile::pPtGetPointInProfile(int const n)
 {
-   return &m_VPoints[n];
+   return &CGeomMultiLine::m_VPoints[n];
 }
 
 //! Returns a given external CRS point from the profile, and all points after this
 vector<CGeom2DPoint> CGeomProfile::PtVGetThisPointAndAllAfter(int const nStart)
 {
-   return vector<CGeom2DPoint>(m_VPoints.begin() + nStart, m_VPoints.end());
+   return vector<CGeom2DPoint>(CGeomMultiLine::m_VPoints.begin() + nStart, CGeomMultiLine::m_VPoints.end());
 }
 
 //! Removes a line segment from the profile
 // void CGeomProfile::RemoveLineSegment(int const nPoint)
 // {
-// m_VPoints.erase(m_VPoints.begin() + nPoint);
+// m_VPoints.erase(CGeomMultiLine::m_VPoints.begin() + nPoint);
 // CGeomMultiLine::RemoveLineSegment(nPoint);
 // }
 
@@ -388,9 +386,9 @@ vector<CGeom2DPoint> CGeomProfile::PtVGetThisPointAndAllAfter(int const nStart)
 bool CGeomProfile::bIsPointInProfile(double const dX, double const dY)
 {
    CGeom2DPoint const Pt(dX, dY);
-   auto it = find(m_VPoints.begin(), m_VPoints.end(), &Pt);
+   auto it = find(CGeomMultiLine::m_VPoints.begin(), CGeomMultiLine::m_VPoints.end(), &Pt);
 
-   if (it != m_VPoints.end())
+   if (it != CGeomMultiLine::m_VPoints.end())
       return true;
    else
       return false;
@@ -400,12 +398,12 @@ bool CGeomProfile::bIsPointInProfile(double const dX, double const dY)
 bool CGeomProfile::bIsPointInProfile(double const dX, double const dY, int& nPoint)
 {
    CGeom2DPoint const Pt(dX, dY);
-   auto it = find(m_VPoints.begin(), m_VPoints.end(), &Pt);
+   auto it = find(CGeomMultiLine::m_VPoints.begin(), CGeomMultiLine::m_VPoints.end(), &Pt);
 
-   if (it != m_VPoints.end())
+   if (it != CGeomMultiLine::m_VPoints.end())
    {
       // Found, so return true and set nPoint to be the index of the point which was found
-      nPoint = static_cast<int>(it - m_VPoints.begin());
+      nPoint = static_cast<int>(it - CGeomMultiLine::m_VPoints.begin());
       return true;
    }
 
@@ -415,13 +413,13 @@ bool CGeomProfile::bIsPointInProfile(double const dX, double const dY, int& nPoi
 
 // int CGeomProfile::nFindInsertionLineSeg(double const dInsertX, double const dInsertY)
 // {
-// for (int n = 0; n < m_VPoints.back(); n++)
+// for (int n = 0; n < CGeomMultiLine::m_VPoints.back(); n++)
 // {
 // double
-// dThisX = m_VPoints[n].dGetX(),
-// dThisY = m_VPoints[n].dGetY(),
-// dNextX = m_VPoints[n+1].dGetX(),
-// dNextY = m_VPoints[n+1].dGetY();
+// dThisX = CGeomMultiLine::m_VPoints[n].dGetX(),
+// dThisY = CGeomMultiLine::m_VPoints[n].dGetY(),
+// dNextX = CGeomMultiLine::m_VPoints[n+1].dGetX(),
+// dNextY = CGeomMultiLine::m_VPoints[n+1].dGetY();
 //
 // bool
 // bBetweenX = false,
@@ -477,7 +475,7 @@ void CGeomProfile::SetUpCoastAdjacentProfile(CGeomProfile* pProfile)
    m_pUpCoastAdjacentProfile = pProfile;
 }
 
-//! Returns the up-coast adjacent profile
+//! Returns the up-coast adjacent profile, returns NULL if there is no up-coast adjacent profile
 CGeomProfile* CGeomProfile::pGetUpCoastAdjacentProfile(void) const
 {
    return m_pUpCoastAdjacentProfile;
@@ -489,7 +487,7 @@ void CGeomProfile::SetDownCoastAdjacentProfile(CGeomProfile* pProfile)
    m_pDownCoastAdjacentProfile = pProfile;
 }
 
-//! Returns the down-coast adjacent profile
+//! Returns the down-coast adjacent profile, returns NULL if there is no down-coast adjacent profile
 CGeomProfile* CGeomProfile::pGetDownCoastAdjacentProfile(void) const
 {
    return m_pDownCoastAdjacentProfile;
@@ -539,25 +537,25 @@ int CGeomProfile::nGetNumCellsInProfile(void) const
    return static_cast<int>(m_VCellInProfile.size());
 }
 
-//! Returns the vector of points (external CRS) in the profile
-vector<CGeom2DPoint>* CGeomProfile::pPtVGetCellsInProfileExtCRS(void)
-{
-   return &m_VCellInProfileExtCRS;
-}
-
-//! Appends a cell (specified in the external CRS) to the profile
-void CGeomProfile::AppendCellInProfileExtCRS(double const dX, double const dY)
-{
-   // In external CRS
-   m_VCellInProfileExtCRS.push_back(CGeom2DPoint(dX, dY));
-}
-
-//! Appends a cell (specified in the external CRS) to the profile (overloaded version)
-void CGeomProfile::AppendCellInProfileExtCRS(CGeom2DPoint const* pPt)
-{
-   // In external CRS
-   m_VCellInProfileExtCRS.push_back(*pPt);
-}
+// //! Returns the vector of points (external CRS) in the profile
+// vector<CGeom2DPoint>* CGeomProfile::pPtVGetCellsInProfileExtCRS(void)
+// {
+//    return &m_VCellInProfileExtCRS;
+// }
+//
+// //! Appends a cell (specified in the external CRS) to the profile
+// void CGeomProfile::AppendCellInProfileExtCRS(double const dX, double const dY)
+// {
+//    // In external CRS
+//    m_VCellInProfileExtCRS.push_back(CGeom2DPoint(dX, dY));
+// }
+//
+// //! Appends a cell (specified in the external CRS) to the profile (overloaded version)
+// void CGeomProfile::AppendCellInProfileExtCRS(CGeom2DPoint const* pPt)
+// {
+//    // In external CRS
+//    m_VCellInProfileExtCRS.push_back(*pPt);
+// }
 
 //! Returns the index of the cell on this profile which has a sea depth which is just less than a given depth. If every cell on the profile has a sea depth which is less than the given depth it returns INT_NODATA
 int CGeomProfile::nGetCellGivenDepth(CGeomRasterGrid const* pGrid, double const dDepthIn)
@@ -609,13 +607,13 @@ double CGeomProfile::dGetProfileDeepWaterWaveAngle(void) const
    return m_dDeepWaterWaveAngle;
 }
 
-//! Sets the deep-water wave Period for this profile
+//! Sets the deep-water wave period for this profile
 void CGeomProfile::SetProfileDeepWaterWavePeriod(double const dWavePeriod)
 {
    m_dDeepWaterWavePeriod = dWavePeriod;
 }
 
-//! Returns the deep-water wave Period for this profile
+//! Returns the deep-water wave period for this profile
 double CGeomProfile::dGetProfileDeepWaterWavePeriod(void) const
 {
    return m_dDeepWaterWavePeriod;
@@ -626,3 +624,16 @@ bool CGeomProfile::bIsIntervention(void) const
 {
    return m_bIntervention;
 }
+
+//! Returns the index of a given cell in the vector of profile cells; returns INT_NODATA if not found
+int CGeomProfile::nGetIndexOfCellInProfile(int const nX, int const nY)
+{
+   for (unsigned int n = 0; n < m_VCellInProfile.size(); n++)
+   {
+      if ((m_VCellInProfile[n].nGetX() == nX) && (m_VCellInProfile[n].nGetY() == nY))
+         return n;
+   }
+
+   return INT_NODATA;
+}
+

@@ -1320,7 +1320,7 @@ void CSimulation::WriteLookUpData(void)
 int CSimulation::nSaveProfile(int const nCoast, CGeomProfile const* pProfile, int const nProfSize, vector<double> const* pdVDistXY, vector<double> const* pdVZ, vector<double> const* pdVDepthOverDB, vector<double> const* pdVErosionPotentialFunc, vector<double> const* pdVSlope, vector<double> const* pdVRecessionXY, vector<double> const* pdVChangeElevZ, vector<CGeom2DIPoint>* const pPtVGridProfile, vector<double> const* pdVScapeXY) const
 {
    // TODO 052 Make this more efficient, also give warnings if no profiles will be output
-   int const nProfile = pProfile->nGetProfileCoastID();
+   int const nProfile = pProfile->nGetProfileID();
 
    for (unsigned int i = 0; i < m_VulProfileTimestep.size(); i++)
    {
@@ -1342,7 +1342,7 @@ int CSimulation::nSaveProfile(int const nCoast, CGeomProfile const* pProfile, in
 //===============================================================================================================================
 bool CSimulation::bWriteProfileData(int const nCoast, CGeomProfile const* pProfile, int const nProfSize, vector<double> const* pdVDistXY, vector<double> const* pdVZ, vector<double> const* pdVDepthOverDB, vector<double> const* pdVErosionPotentialFunc, vector<double> const* pdVSlope, vector<double> const* pdVRecessionXY, vector<double> const* pdVChangeElevZ, vector<CGeom2DIPoint>* const pPtVGridProfile, vector<double> const* pdVScapeXY) const
 {
-   int const nProfile = pProfile->nGetProfileCoastID();
+   int const nProfile = pProfile->nGetProfileID();
 
    string strFName = m_strOutPath;
    stringstream ststrTmp;
@@ -1390,7 +1390,7 @@ bool CSimulation::bWriteProfileData(int const nCoast, CGeomProfile const* pProfi
 int CSimulation::nSaveParProfile(int const nCoast, CGeomProfile const* pProfile, int const nParProfSize, int const nDirection, int const nDistFromProfile, vector<double> const* pdVDistXY, vector<double> const* pdVZ, vector<double> const* pdVDepthOverDB, vector<double> const* pdVErosionPotentialFunc, vector<double> const* pdVSlope, vector<double> const* pdVRecessionXY, vector<double> const* pdVChangeElevZ, vector<CGeom2DIPoint>* const pPtVGridProfile, vector<double> const* pdVScapeXY) const
 {
    // TODO 052 Make this more efficient, also give warnings if no profiles will be output
-   int const nProfile = pProfile->nGetProfileCoastID();
+   int const nProfile = pProfile->nGetProfileID();
 
    for (unsigned int i = 0; i < m_VulProfileTimestep.size(); i++)
    {

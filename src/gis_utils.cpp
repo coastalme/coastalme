@@ -75,8 +75,7 @@ double CSimulation::dGridCentroidXToExtCRSX(int const nGridX) const
 }
 
 //===============================================================================================================================
-//! Given the integer Y-axis ordinate of a cell in the raster grid CRS, returns
-//! the external CRS Y-axis ordinate of the cell's centroid
+//! Given the integer Y-axis ordinate of a cell in the raster grid CRS, returns the external CRS Y-axis ordinate of the cell's centroid
 //===============================================================================================================================
 double CSimulation::dGridCentroidYToExtCRSY(int const nGridY) const
 {
@@ -86,12 +85,9 @@ double CSimulation::dGridCentroidYToExtCRSY(int const nGridY) const
 }
 
 //===============================================================================================================================
-//! Transforms a pointer to a CGeom2DIPoint in the raster grid CRS (assumed to
-//! be the centroid of a cell) to the equivalent CGeom2DPoint in the external
-//! CRS
+//! Transforms a pointer to a CGeom2DIPoint in the raster grid CRS (assumed to be the centroid of a cell) to the equivalent CGeom2DPoint in the external CRS
 //===============================================================================================================================
-CGeom2DPoint
-CSimulation::PtGridCentroidToExt(CGeom2DIPoint const *pPtiIn) const
+CGeom2DPoint CSimulation::PtGridCentroidToExt(CGeom2DIPoint const *pPtiIn) const
 {
    // TODO 064
    double const dX = m_dGeoTransform[0] + (pPtiIn->nGetX() * m_dGeoTransform[1]) + (m_dGeoTransform[1] / 2);
@@ -101,8 +97,7 @@ CSimulation::PtGridCentroidToExt(CGeom2DIPoint const *pPtiIn) const
 }
 
 //===============================================================================================================================
-//! Given a real-valued X-axis ordinate in the raster grid CRS (i.e. not the
-//! centroid of a cell), returns the external CRS X-axis ordinate
+//! Given a real-valued X-axis ordinate in the raster grid CRS (i.e. not the centroid of a cell), returns the external CRS X-axis ordinate
 //===============================================================================================================================
 double CSimulation::dGridXToExtCRSX(double const dGridX) const
 {
@@ -132,9 +127,7 @@ double CSimulation::dExtCRSXToGridX(double const dExtCRSX) const
 }
 
 //===============================================================================================================================
-//! Transforms a Y-axis ordinate in the external CRS to the equivalent Y-axis
-//! ordinate in the raster grid CRS (the result is not rounded, and so may not
-//! be integer, and may be outside the grid)
+//! Transforms a Y-axis ordinate in the external CRS to the equivalent Y-axis ordinate in the raster grid CRS (the result is not rounded, and so may not be integer, and may be outside the grid)
 //===============================================================================================================================
 double CSimulation::dExtCRSYToGridY(double const dExtCRSY) const
 {
@@ -143,12 +136,9 @@ double CSimulation::dExtCRSYToGridY(double const dExtCRSY) const
 }
 
 //===============================================================================================================================
-//! Transforms a pointer to a CGeom2DPoint in the external CRS to the equivalent
-//! CGeom2DIPoint in the raster grid CRS (both values rounded). The result may
-//! be outside the grid
+//! Transforms a pointer to a CGeom2DPoint in the external CRS to the equivalent CGeom2DIPoint in the raster grid CRS (both values rounded). The result may be outside the grid
 //===============================================================================================================================
-CGeom2DIPoint
-CSimulation::PtiExtCRSToGridRound(CGeom2DPoint const *pPtIn) const
+CGeom2DIPoint CSimulation::PtiExtCRSToGridRound(CGeom2DPoint const *pPtIn) const
 {
    // TODO 064
    int const nX = nRound(((pPtIn->dGetX() - m_dGeoTransform[0]) / m_dGeoTransform[1]) - 1);
@@ -160,8 +150,7 @@ CSimulation::PtiExtCRSToGridRound(CGeom2DPoint const *pPtIn) const
 //===============================================================================================================================
 //! Returns the distance (in external CRS) between two points
 //===============================================================================================================================
-double CSimulation::dGetDistanceBetween(CGeom2DPoint const *Pt1,
-                                        CGeom2DPoint const *Pt2)
+double CSimulation::dGetDistanceBetween(CGeom2DPoint const *Pt1, CGeom2DPoint const *Pt2)
 {
    double const dXDist = Pt1->dGetX() - Pt2->dGetX();
    double const dYDist = Pt1->dGetY() - Pt2->dGetY();
@@ -462,11 +451,9 @@ double CSimulation::dKeepWithin360(double const dAngle)
 }
 
 //===============================================================================================================================
-//! Returns a point (external CRS) which is the average of (i.e. is midway
-//! between) two other external CRS points
+//! Returns a point (external CRS) which is the average of (i.e. is midway between) two other external CRS points
 //===============================================================================================================================
-CGeom2DPoint CSimulation::PtAverage(CGeom2DPoint const *pPt1,
-                                    CGeom2DPoint const *pPt2)
+CGeom2DPoint CSimulation::PtAverage(CGeom2DPoint const *pPt1, CGeom2DPoint const *pPt2)
 {
    double const dPt1X = pPt1->dGetX();
    double const dPt1Y = pPt1->dGetY();
@@ -478,32 +465,25 @@ CGeom2DPoint CSimulation::PtAverage(CGeom2DPoint const *pPt1,
    return CGeom2DPoint(dPtAvgX, dPtAvgY);
 }
 
-// //===============================================================================================================================
-// //! Returns an integer point (grid CRS) which is the approximate average of
-// (i.e. is midway between) two other grid CRS integer points
-// //===============================================================================================================================
-// CGeom2DIPoint CSimulation::PtiAverage(CGeom2DIPoint const* pPti1,
-// CGeom2DIPoint const* pPti2)
-// {
-// int nPti1X = pPti1->nGetX();
-// int nPti1Y = pPti1->nGetY();
-// int nPti2X = pPti2->nGetX();
-// int nPti2Y = pPti2->nGetY();
-// int nPtiAvgX = (nPti1X + nPti2X) / 2;
-// int nPtiAvgY = (nPti1Y + nPti2Y) / 2;
-//
-// return CGeom2DIPoint(nPtiAvgX, nPtiAvgY);
-// }
+//===============================================================================================================================
+//! Returns an integer point (grid CRS) which is the approximate average of (i.e. is midway between) two other grid CRS integer points
+//===============================================================================================================================
+CGeom2DIPoint CSimulation::PtiAverage(CGeom2DIPoint const* pPti1, CGeom2DIPoint const* pPti2)
+{
+   int nPti1X = pPti1->nGetX();
+   int nPti1Y = pPti1->nGetY();
+   int nPti2X = pPti2->nGetX();
+   int nPti2Y = pPti2->nGetY();
+   int nPtiAvgX = (nPti1X + nPti2X) / 2;
+   int nPtiAvgY = (nPti1Y + nPti2Y) / 2;
+
+   return CGeom2DIPoint(nPtiAvgX, nPtiAvgY);
+}
 
 //===============================================================================================================================
-//! Returns an integer point (grid CRS) which is the weighted average of two
-//! other grid CRS integer points. The weight must be <= 1, if the weight is <
-//! 0.5 then the output point is closer to the first point, if the weight is >
-//! 0.5 then the output point is closer to the second point
+//! Returns an integer point (grid CRS) which is the weighted average of two other grid CRS integer points. The weight must be <= 1, if the weight is < 0.5 then the output point is closer to the first point, if the weight is > 0.5 then the output point is closer to the second point
 //===============================================================================================================================
-CGeom2DIPoint CSimulation::PtiWeightedAverage(CGeom2DIPoint const *pPti1,
-                                              CGeom2DIPoint const *pPti2,
-                                              double const dWeight)
+CGeom2DIPoint CSimulation::PtiWeightedAverage(CGeom2DIPoint const *pPti1, CGeom2DIPoint const *pPti2, double const dWeight)
 {
    int const nPti1X = pPti1->nGetX();
    int const nPti1Y = pPti1->nGetY();
@@ -518,10 +498,9 @@ CGeom2DIPoint CSimulation::PtiWeightedAverage(CGeom2DIPoint const *pPti1,
 }
 
 //===============================================================================================================================
-//! Returns a point (external CRS) which is the average of a vector of external
-//! CRS points
+//! Returns a point (external CRS) which is the average of a vector of external CRS points
 //===============================================================================================================================
-CGeom2DPoint CSimulation::PtAverage(vector<CGeom2DPoint> *pVIn)
+CGeom2DPoint CSimulation::PtAverage(vector<CGeom2DPoint>* pVIn)
 {
    int const nSize = static_cast<int>(pVIn->size());
 

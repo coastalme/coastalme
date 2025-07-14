@@ -90,7 +90,7 @@ int CSimulation::nSetAllCoastpointDeepWaterWaveValues(void)
          {
             // OK, a coastline-normal profile begins at this coastline point, so set the deep water wave values at this coastline point to be the values at the seaward end of the coastline normal
             CGeomProfile const* pProfile = m_VCoast[nCoast].pGetProfileAtCoastPoint(nPoint);
-            // int nProfile = pProfile->nGetProfileCoastID();
+            // int nProfile = pProfile->nGetProfileID();
 
             double const dThisDeepWaterWaveHeight = pProfile->dGetProfileDeepWaterWaveHeight();
             double const dThisDeepWaterWaveAngle = pProfile->dGetProfileDeepWaterWaveAngle();
@@ -124,7 +124,7 @@ int CSimulation::nSetAllCoastpointDeepWaterWaveValues(void)
             dNextProfileDeepWaterWaveAngle = pNextProfile->dGetProfileDeepWaterWaveAngle();
             dNextProfileDeepWaterWavePeriod = pNextProfile->dGetProfileDeepWaterWavePeriod();
 
-            // LogStream << m_ulIter << ": coast point = " << nPoint << " is start of profile " << pProfile->nGetProfileCoastID() << ", next profile is " << pNextProfile->nGetProfileCoastID() << ", which starts at coast piint " << pNextProfile->nGetCoastPoint() << ", dThisDeepWaterWaveHeight = " << dThisDeepWaterWaveHeight << ", dThisDeepWaterWaveAngle = " << dThisDeepWaterWaveAngle << " nDistToNextProfile = " << nDistToNextProfile << endl;
+            // LogStream << m_ulIter << ": coast point = " << nPoint << " is start of profile " << pProfile->nGetProfileID() << ", next profile is " << pNextProfile->nGetProfileID() << ", which starts at coast piint " << pNextProfile->nGetCoastPoint() << ", dThisDeepWaterWaveHeight = " << dThisDeepWaterWaveHeight << ", dThisDeepWaterWaveAngle = " << dThisDeepWaterWaveAngle << " nDistToNextProfile = " << nDistToNextProfile << endl;
          }
 
          else
@@ -845,7 +845,7 @@ int CSimulation::nCalcWavePropertiesOnProfile(int const nCoast, int const nCoast
       if (nRet != RTN_OK)
       {
          // Could not create the profile elevation vectors
-         LogStream << m_ulIter << ": could not create CShore profile elevation vectors for profile " << pProfile->nGetProfileCoastID() << endl;
+         LogStream << m_ulIter << ": could not create CShore profile elevation vectors for profile " << pProfile->nGetProfileID() << endl;
 
          return nRet;
       }
@@ -857,7 +857,7 @@ int CSimulation::nCalcWavePropertiesOnProfile(int const nCoast, int const nCoast
       if (VdProfileDistXY.empty())
       {
          // The profile elevation vector was created, but was not populated
-         LogStream << m_ulIter << ": could not populate CShore profile elevation vector for profile " << pProfile->nGetProfileCoastID() << endl;
+         LogStream << m_ulIter << ": could not populate CShore profile elevation vector for profile " << pProfile->nGetProfileID() << endl;
 
          return RTN_ERR_CSHORE_EMPTY_PROFILE;
       }
@@ -942,7 +942,7 @@ int CSimulation::nCalcWavePropertiesOnProfile(int const nCoast, int const nCoast
             break;
          }
 
-         strErr += "(coast " + to_string(nCoast) + " profile " + to_string(pProfile->nGetProfileCoastID()) + " profile length " + to_string(nOutSize) + ")\n";
+         strErr += "(coast " + to_string(nCoast) + " profile " + to_string(pProfile->nGetProfileID()) + " profile length " + to_string(nOutSize) + ")\n";
 
          // OK, give up for this profile
          // LogStream << strErr;
@@ -1069,7 +1069,7 @@ int CSimulation::nCalcWavePropertiesOnProfile(int const nCoast, int const nCoast
       {
          // CShore sometimes returns only one row of results, which contains data only for the seaward point of the profile. This happens when all other (more coastward) points give an invalid result during CShore's calculations. This is a problem. We don't want to abandon the simulation just because of this, so instead we just put some dummy data into the second row, and carry on with these two rows. The profile will get ignored later, since it is too small to be useful
          if (m_nLogFileDetail >= LOG_FILE_MIDDLE_DETAIL)
-            LogStream << m_ulIter << ": " << WARN << "for coast " << nCoast << " profile " << pProfile->nGetProfileCoastID() << ", only " << nOutSize << " CShore output rows, abandoning this profile" << endl;
+            LogStream << m_ulIter << ": " << WARN << "for coast " << nCoast << " profile " << pProfile->nGetProfileID() << ", only " << nOutSize << " CShore output rows, abandoning this profile" << endl;
 
          // // Set dummy data in the second row
          // VdXYDistFromCShoreOut[1] = 1e-5;    // Dummy data, must not be the same as VdXYDistFromCShoreOut[0] tho', or get crash in linear interpolation routine
@@ -1117,7 +1117,7 @@ int CSimulation::nCalcWavePropertiesOnProfile(int const nCoast, int const nCoast
             break;
          }
 
-         strErr += "(coast " + to_string(nCoast) + " profile " + to_string(pProfile->nGetProfileCoastID()) + " profile length " + to_string(nOutSize) + ")\n";
+         strErr += "(coast " + to_string(nCoast) + " profile " + to_string(pProfile->nGetProfileID()) + " profile length " + to_string(nOutSize) + ")\n";
          LogStream << strErr;
 
          // OK, give up for this profile
@@ -1603,7 +1603,7 @@ int CSimulation::nGetThisProfileElevationsForCShore(int const nCoast, CGeomProfi
             VdVZ->push_back(0.1); // TODO 053 Set it to a small +ve elevation (compared with SWL). However there must be a better way of doing this
 
             // Could not create the profile elevation vectors
-            LogStream << m_ulIter << ": " << WARN << "for coast " << nCoast << ", profile " << pProfile->nGetProfileCoastID() << ", elevation at the landward end is " << dTopElev << " m. This is lower than this-iteration SWL (" << m_dThisIterSWL << " m). For CShore, changing the landward elevation for profile " << pProfile->nGetProfileCoastID() << " to " << m_dThisIterSWL + 0.1 << "m" << endl;
+            LogStream << m_ulIter << ": " << WARN << "for coast " << nCoast << ", profile " << pProfile->nGetProfileID() << ", elevation at the landward end is " << dTopElev << " m. This is lower than this-iteration SWL (" << m_dThisIterSWL << " m). For CShore, changing the landward elevation for profile " << pProfile->nGetProfileID() << " to " << m_dThisIterSWL + 0.1 << "m" << endl;
          }
 
          else
@@ -2029,13 +2029,13 @@ void CSimulation::InterpolateWavePropertiesBetweenProfiles(int const nCoast, int
       m_VCoast[nCoast].SetRunUp(n, dRunUp);
    }
 
-   // int const nNextProfile = pNextProfile->nGetProfileCoastID();
+   // int const nNextProfile = pNextProfile->nGetProfileID();
 
    // If both this profile and the next profile are not in the active zone, then do no more
    if ((bFPIsEqual(dThisBreakingWaveHeight, DBL_NODATA, TOLERANCE)) && (bFPIsEqual(dNextBreakingWaveHeight, DBL_NODATA, TOLERANCE)))
    {
       // if (m_nLogFileDetail >= LOG_FILE_HIGH_DETAIL)
-      // LogStream << m_ulIter << ": both profile " << pProfile->nGetProfileCoastID() << " at coast point " << nThisCoastPoint << ", and profile " << nNextProfile << " at coast point " << nNextCoastPoint << ", are not in the active zone" << endl;
+      // LogStream << m_ulIter << ": both profile " << pProfile->nGetProfileID() << " at coast point " << nThisCoastPoint << ", and profile " << nNextProfile << " at coast point " << nNextCoastPoint << ", are not in the active zone" << endl;
 
       // Set the breaking wave height, breaking wave angle, and depth of breaking to DBL_NODATA
       for (int n = nThisCoastPoint; n < nNextCoastPoint; n++)

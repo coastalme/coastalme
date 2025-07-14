@@ -296,7 +296,7 @@ class CGeomCell
    int nGetPolygonCoastID(void) const;
    void SetCoastAndPolygonID(int const, int const);
 
-   CRWCellLandform *pGetLandform(void);
+   CRWCellLandform* pGetLandform(void);
 
    void SetWaveFlood(void);
    bool bIsElevLessThanWaterLevel(void) const;

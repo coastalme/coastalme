@@ -768,6 +768,8 @@ int const RTN_ERR_ZERO_LENGTH_COAST = 75;
 int const RTN_ERR_COAST_TOO_SMALL = 77;
 int const RTN_ERR_IGNORING_COAST = 78;
 int const RTN_ERR_TOO_LONG_TRACING_COAST = 79;
+int const RTN_ERR_CELL_NOT_FOUND_IN_HIT_PROFILE_DIFFERENT_COASTS = 80;
+int const RTN_ERR_POINT_NOT_FOUND_IN_MULTILINE_DIFFERENT_COASTS = 81;
 int const RTN_ERR_UNKNOWN = 999;
 
 // Elevation and 'slice' codes
@@ -795,7 +797,7 @@ int const UNCONS_SEDIMENT_EQUATION_KAMPHUIS = 1;
 
 int const CLIFF_COLLAPSE_LENGTH_INCREMENT = 10;          // Increment the planview length of the cliff talus Dean profile, if we have not been able to deposit enough
 int const PROFILE_CHECK_DIST_FROM_COAST = 3;             // Used in checking shoreline-normal profiles for intersection
-int const GAP_BETWEEN_DIFFERENT_COAST_PROFILES = 5;      // In cells, is the gap between profile ends bekonging to different coasts
+int const GAP_BETWEEN_DIFFERENT_COAST_PROFILES = 20;     // In cells, is the gap between profile ends bekonging to different coasts
 
 unsigned long const MASK = 0xfffffffful;
 unsigned long const SEDIMENT_INPUT_EVENT_ERROR = -1;
@@ -831,7 +833,7 @@ double const INTERVENTION_PROFILE_SPACING_FACTOR = 0.5;  // Profile spacing on i
 
 double const DBL_NODATA = -9999;
 
-string const PROGRAM_NAME = "Coastal Modelling Environment (CoastalME) version 1.3.25 (12 Jul 2025)";
+string const PROGRAM_NAME = "Coastal Modelling Environment (CoastalME) version 1.3.25 (14 Jul 2025)";
 string const PROGRAM_NAME_SHORT = "CME";
 string const CME_INI = "cme.ini";
 

@@ -1053,16 +1053,16 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
 
       // DEBUG CODE ================
       // m_nGISSave++;
-      // if (! bWriteVectorGISFile(VECTOR_PLOT_COAST, &VECTOR_PLOT_COAST_TITLE))
-      //    return false;
-      // if (! bWriteVectorGISFile(VECTOR_PLOT_NORMALS, &VECTOR_PLOT_NORMALS_TITLE))
-      //    return false;
-      // if (! bWriteVectorGISFile(VECTOR_PLOT_INVALID_NORMALS, &VECTOR_PLOT_INVALID_NORMALS_TITLE))
-      //    return false;
-      // if (! bWriteRasterGISFile(RASTER_PLOT_NORMAL_PROFILE, &RASTER_PLOT_NORMAL_PROFILE_TITLE))
-      //    return false;
-      // if (! bWriteRasterGISFile(RASTER_PLOT_POLYGON, &RASTER_PLOT_POLYGON_TITLE))
-      //    return false;
+      if (! bWriteVectorGISFile(VECTOR_PLOT_COAST, &VECTOR_PLOT_COAST_TITLE))
+         return false;
+      if (! bWriteVectorGISFile(VECTOR_PLOT_NORMALS, &VECTOR_PLOT_NORMALS_TITLE))
+         return false;
+      if (! bWriteVectorGISFile(VECTOR_PLOT_INVALID_NORMALS, &VECTOR_PLOT_INVALID_NORMALS_TITLE))
+         return false;
+      if (! bWriteRasterGISFile(RASTER_PLOT_NORMAL_PROFILE, &RASTER_PLOT_NORMAL_PROFILE_TITLE))
+         return false;
+      if (! bWriteRasterGISFile(RASTER_PLOT_POLYGON, &RASTER_PLOT_POLYGON_TITLE))
+         return false;
       // DEBUG CODE ================
 
       // // DEBUG CODE =================
@@ -1073,7 +1073,7 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
       // if (m_VCoast[nCoast].bIsProfileAtCoastPoint(nCoastPoint))
       // {
       // CGeomProfile const* pProfile = m_VCoast[nCoast].pGetProfileAtCoastPoint(nCoastPoint);
-      // int nProfile = pProfile->nGetProfileCoastID();
+      // int nProfile = pProfile->nGetProfileID();
       //
       // LogStream << m_ulIter << ": profile " << nProfile << " bStartOfCoast = " << pProfile->bStartOfCoast() << " bEndOfCoast = " << pProfile->bEndOfCoast() << " bCShoreProblem = " << pProfile->bCShoreProblem() << " bHitLand = " << pProfile->bHitLand() << " bHitCoast = " << pProfile->bHitCoast() << " bTooShort = " << pProfile->bTooShort() << " bTruncatedSameCoast = " << pProfile->bTruncatedSameCoast() << " bHitAnotherProfile = " << pProfile->bHitAnotherProfile() << endl;
       // }
@@ -1089,10 +1089,10 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
       if (nRet != RTN_OK)
          return nRet;
 
-      // DEBUG CODE ====================
-      if (! bWriteVectorGISFile(VECTOR_PLOT_POLYGON_BOUNDARY, &VECTOR_PLOT_POLYGON_BOUNDARY_TITLE))
-         return false;
-      // DEBUG CODE ====================
+      // // DEBUG CODE ====================
+      // if (! bWriteVectorGISFile(VECTOR_PLOT_POLYGON_BOUNDARY, &VECTOR_PLOT_POLYGON_BOUNDARY_TITLE))
+      //    return false;
+      // // DEBUG CODE ====================
 
       // // DEBUG CODE =========================================================================================================
       // int nNODATA = 0;
@@ -1168,7 +1168,7 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
       // {
       // CGeomProfile* pProfile = m_VCoast[nCoast].pGetProfile(nProfile);
       // int nCell = pProfile->nGetNumCellsInProfile();
-      // LogStream << "Profile " << pProfile->nGetProfileCoastID() << " nGetNumCellsInProfile() = " << nCell << endl;
+      // LogStream << "Profile " << pProfile->nGetProfileID() << " nGetNumCellsInProfile() = " << nCell << endl;
       // }
       //
       // LogStream << endl;
@@ -1177,7 +1177,7 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
       // {
       // CGeomProfile* pProfile = m_VCoast[nCoast].pGetProfileWithDownCoastSeq(nProfile);
       // int nCell = pProfile->nGetNumCellsInProfile();
-      // LogStream << "Profile " << pProfile->nGetProfileCoastID() << " nGetNumCellsInProfile() = " << nCell << endl;
+      // LogStream << "Profile " << pProfile->nGetProfileID() << " nGetNumCellsInProfile() = " << nCell << endl;
       // }
       //
       // LogStream << "====================" << endl;

@@ -23,8 +23,6 @@
 ===============================================================================================================================*/
 #include <assert.h>
 
-// #include "cme.h"
-// #include "2di_point.h"
 #include "multi_line.h"
 
 //! Constructor, no parameters
@@ -37,6 +35,18 @@ CGeomMultiLine::~CGeomMultiLine(void)
 {
 }
 
+//! Returns a pointer to the points of the CGeomLine
+vector<CGeom2DPoint>& CGeomMultiLine::pGetPoints(void)
+{
+   return CGeomLine::m_VPoints;
+}
+
+//! Replaces the points of the CGeomLine
+void CGeomMultiLine::SetPoints(vector<CGeom2DPoint>& pVPts)
+{
+   CGeomLine::m_VPoints = pVPts;
+}
+
 //! Appends a new empty line segment
 void CGeomMultiLine::AppendLineSegment(void)
 {
@@ -44,7 +54,7 @@ void CGeomMultiLine::AppendLineSegment(void)
 }
 
 //! Appends a line segment which is supplied as a parameter
-void CGeomMultiLine::AppendLineSegment(vector<pair<int, int>> *pprVIn)
+void CGeomMultiLine::AppendLineSegment(vector<pair<int, int>>* pprVIn)
 {
    m_prVVLineSegment.push_back(*pprVIn);
 }
@@ -149,7 +159,7 @@ void CGeomMultiLine::AddCoincidentProfileToExistingLineSegment(int const nSegmen
 }
 
 //! Returns a vector of pairs (a line segment)
-vector<pair<int, int>> *CGeomMultiLine::pprVGetPairedCoincidentProfilesForLineSegment(int const nSegment)
+vector<pair<int, int>>* CGeomMultiLine::pprVGetPairedCoincidentProfilesForLineSegment(int const nSegment)
 {
    // TODO 055 No check to see if nSegment < size()
    return &m_prVVLineSegment[nSegment];
@@ -230,10 +240,10 @@ bool CGeomMultiLine::bFindProfileInCoincidentProfiles(int const nProfile)
 }
 
 //! Finds the number of the most coastward line segment for which the two profiles are coincident, or -1 if they are not coincident. If they are coincident, also finds the line segment of the other profile
-void CGeomMultiLine::GetMostCoastwardSharedLineSegment(int const nOtherProfile, int &nThisLineSegment, int &nOtherLineSegment)
+void CGeomMultiLine::GetMostCoastwardSharedLineSegment(int const nOtherProfile, int& nThisLineSegment, int& nOtherLineSegment)
 {
    nThisLineSegment =
-       nOtherLineSegment = -1;
+   nOtherLineSegment = -1;
 
    long unsigned int const nSegSize = m_prVVLineSegment.size();
 

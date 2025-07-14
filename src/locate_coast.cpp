@@ -346,7 +346,6 @@ int CSimulation::nTraceAllCoasts(int& nValidCoast)
             VbTraced.push_back(false);
          }
       }
-
       else if (bThisCellIsSea && (! bNextCellIsSea))
       {
          // The 'next' cell is just inland, has it already been flagged as a possible start for a coastline (even if this subsequently 'failed' as a coastline)?
@@ -396,7 +395,6 @@ int CSimulation::nTraceAllCoasts(int& nValidCoast)
          {
             nRet = nTraceCoastLine(n, VnSearchDirection[n], LEFT_HANDED, &VbTraced, &V2DIPossibleStartCell);
          }
-
          else
          {
             nRet = nTraceCoastLine(n, VnSearchDirection[n], RIGHT_HANDED, &VbTraced, &V2DIPossibleStartCell);
@@ -413,7 +411,6 @@ int CSimulation::nTraceAllCoasts(int& nValidCoast)
 
    if (nValidCoast > 0)
       return RTN_OK;
-
    else
    {
       cerr << m_ulIter << ": no valid coasts found, see " << m_strLogFile << " for more information" << endl;

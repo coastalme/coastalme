@@ -2214,6 +2214,10 @@ string CSimulation::strGetErrorText(int const nErr)
       strErr = "error tracing coastline on grid, too many times round tracing loop";
       break;
 
+   case RTN_ERR_CELL_NOT_FOUND_IN_HIT_PROFILE_DIFFERENT_COASTS:
+      strErr = "intersection cell not found in hit profile";
+      break;
+
    case RTN_ERR_UNKNOWN:
       strErr = "unknown error";
       break;

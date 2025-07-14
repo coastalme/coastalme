@@ -449,7 +449,10 @@ int CGeomCell::nGetDownDriftZoneNumber(void) const
 }
 
 //! Returns a pointer to this cell's CRWCellLandform object
-CRWCellLandform *CGeomCell::pGetLandform(void) { return &m_Landform; }
+CRWCellLandform* CGeomCell::pGetLandform(void)
+{
+   return &m_Landform;
+}
 
 //! Sets the local slope of the consolidated sediment only
 void CGeomCell::SetLocalConsSlope(double const dNewSlope)
