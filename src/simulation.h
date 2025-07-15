@@ -1531,7 +1531,7 @@ class CSimulation
    vector<string> m_VstrGDALICCDataType;
 
    //! Pointer to the raster grid object
-   CGeomRasterGrid *m_pRasterGrid;
+   CGeomRasterGrid* m_pRasterGrid;
 
    //! The coastline objects
    vector<CRWCoast> m_VCoast;
@@ -1546,7 +1546,7 @@ class CSimulation
    vector<CRWCoast> m_VFloodWaveSetupSurgeRunup;
 
    //! Pointers to coast polygon objects, in down-coast sequence TODO 044 Will need to use global polygon ID here to support multiple coastlines
-   vector<CGeomCoastPolygon *> m_pVCoastPolygon;
+   vector<CGeomCoastPolygon*> m_pVCoastPolygon;
 
    //! Edge cells
    vector<CGeom2DIPoint> m_VEdgeCell;
@@ -1558,7 +1558,7 @@ class CSimulation
    vector<int> m_VCellFloodLocation;
 
    //! Sediment input events
-   vector<CSedInputEvent *> m_pVSedInputEvent;
+   vector<CSedInputEvent*> m_pVSedInputEvent;
 
    //! The c++11 random number generators
    default_random_engine m_Rand[NUMBER_OF_RNGS];
@@ -1638,11 +1638,11 @@ class CSimulation
    int nTraceFloodCoastLine(unsigned int const, int const, int const, vector<bool>*, vector<CGeom2DIPoint> const*);
    int nTraceAllFloodCoasts(void);
    void DoCoastCurvature(int const, int const);
-   int nCheckAllProfiles(void);
+   int nCheckAndMarkAllProfiles(void);
    int nCreateAllProfiles(void);
-   void LocateAndCreateProfiles(int const, int&, int&, vector<bool>*, vector<pair<int, double>> const*);
-   int nCreateProfile(int const, int const, int const, int const, int&, bool const, CGeom2DIPoint const*);
-   int nLocateAndCreateGridEdgeProfile(bool const, int const, int&, int&);
+   void LocateAndCreateProfiles(int const, int&, vector<bool>*, vector<pair<int, double>> const*);
+   int nCreateProfile(int const, int const, int const, int const, bool const, CGeom2DIPoint const*);
+   int nLocateAndCreateGridEdgeProfile(bool const, int const, int&);
    void MarkProfilesOnGrid(int const, int&);
    void CheckForIntersectingProfiles(void);
    static bool bCheckForIntersection(CGeomProfile* const, CGeomProfile* const, int&, int&, double&, double&, double&, double&);
@@ -1707,6 +1707,10 @@ class CSimulation
    bool bSurroundedByDriftCells(int const, int const);
    bool bElevAboveDeanElev(int const, int const, double const, CRWCellLandform const*);
    // void CreatePolygonIndexIDSeq(int const);
+   int nDoMultipleCoastlines(void);
+   int nTruncateProfilesDifferentCoasts(int const, int const, int, int const, int const, int, int, bool const, bool const);
+   int nTruncateProfileHitDifferentCoast(int const, int const, int const, int const, int const, bool const, bool const);
+   int nTruncateProfileMultiLineDifferentCoasts(CGeomProfile*, int const, int const);
 
    // GIS utility routines
    int nMarkBoundingBoxEdgeCells(void);
@@ -1739,9 +1743,9 @@ class CSimulation
    static CGeom2DIPoint PtiGetPerpendicular(CGeom2DIPoint const*, CGeom2DIPoint const*, double const, int const);
    static CGeom2DIPoint PtiGetPerpendicular(int const, int const, int const, int const, double const, int const);
    static CGeom2DPoint PtAverage(CGeom2DPoint const*, CGeom2DPoint const*);
-   static CGeom2DPoint PtAverage(vector<CGeom2DPoint> *);
-   // static CGeom2DIPoint PtiAverage(CGeom2DIPoint const*, CGeom2DIPoint
-   // const*); static CGeom2DIPoint PtiAverage(vector<CGeom2DIPoint>*);
+   static CGeom2DPoint PtAverage(vector<CGeom2DPoint>*);
+   static CGeom2DIPoint PtiAverage(CGeom2DIPoint const*, CGeom2DIPoint const*);
+   // static CGeom2DIPoint PtiAverage(vector<CGeom2DIPoint>*);
    static CGeom2DIPoint PtiWeightedAverage(CGeom2DIPoint const*, CGeom2DIPoint const*, double const);
    static CGeom2DIPoint PtiPolygonCentroid(vector<CGeom2DIPoint>*);
    static double dAngleSubtended(CGeom2DIPoint const*, CGeom2DIPoint const*, CGeom2DIPoint const*);
@@ -1839,10 +1843,10 @@ class CSimulation
    void WritePolygonSedimentBeforeMovement(int const);
    void WritePolygonPotentialErosion(int const);
    // void WritePolygonUnconsErosion(int const);
-   void WritePolygonUnsortedSequence(int const, vector<vector<int>> &);
-   void WritePolygonSortedSequence(int const, vector<vector<int>> &);
-   void WritePolygonEstimatedMovement(int const, vector<vector<int>> &);
-   void WritePolygonActualMovement(int const, vector<vector<int>> const &);
+   void WritePolygonUnsortedSequence(int const, vector<vector<int>>&);
+   void WritePolygonSortedSequence(int const, vector<vector<int>>&);
+   void WritePolygonEstimatedMovement(int const, vector<vector<int>>&);
+   void WritePolygonActualMovement(int const, vector<vector<int>> const&);
    void DoEndOfRunDeletes(void);
 
  protected:
@@ -1856,10 +1860,10 @@ class CSimulation
    int nGetCoastPolygonSize(void) const;
 
    //! Returns a pointer to a coast polygon, in down-coast sequence
-   CGeomCoastPolygon *pGetPolygon(int const) const;
+   CGeomCoastPolygon* pGetPolygon(int const) const;
 
    //! Appends a pointer to a coast polygon to the coast polygon vector
-   void AppendPolygon(CGeomCoastPolygon *);
+   void AppendPolygon(CGeomCoastPolygon*);
 
    //! Returns the NODATA value
    double dGetMissingValue(void) const;

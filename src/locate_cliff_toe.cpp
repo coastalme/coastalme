@@ -23,19 +23,14 @@
 
 ==============================================================================================================================*/
 #include <assert.h>
+
+#include <cmath>
+using std::sqrt;
+
 #include <cfloat>
 
-#include <cpl_port.h>
-#include <iostream>
-using std::cerr;
-using std::cout;
-using std::endl;
-
-#include <iomanip>
-using std::resetiosflags;
-using std::setiosflags;
-using std::setprecision;
-using std::setw;
+#include <cstdio>
+using std::size_t;
 
 #include <stdint.h>
 
@@ -44,12 +39,18 @@ using std::stringstream;
 
 #include <algorithm>
 using std::max;
+using std::min;
+
+#include <utility>
+using std::make_pair;
+using std::pair;
 
 #include "cme.h"
 #include "cell.h"
 #include "raster_grid.h"
 #include "simulation.h"
-
+#include "2di_point.h"
+#include "line.h"
 
 /*===============================================================================================================================
 //! Locates and traces the cliff toe
@@ -78,15 +79,15 @@ void CSimulation::nCalcSlopeAtAllCells(void)
          // Now look at surounding cells
          if ((nX > 0) && (nX < m_nXGridSize - 1) && (nY > 0) && (nY < m_nYGridSize - 1))
          {
-            double dElevLeft = m_pRasterGrid->m_Cell[nX - 1][nY].dGetSedimentTopElev();
-            double dElevRight = m_pRasterGrid->m_Cell[nX + 1][nY].dGetSedimentTopElev();
-            double dElevUp = m_pRasterGrid->m_Cell[nX][nY - 1].dGetSedimentTopElev();
-            double dElevDown = m_pRasterGrid->m_Cell[nX][nY + 1].dGetSedimentTopElev();
+            double const dElevLeft = m_pRasterGrid->m_Cell[nX - 1][nY].dGetSedimentTopElev();
+            double const dElevRight = m_pRasterGrid->m_Cell[nX + 1][nY].dGetSedimentTopElev();
+            double const dElevUp = m_pRasterGrid->m_Cell[nX][nY - 1].dGetSedimentTopElev();
+            double const dElevDown = m_pRasterGrid->m_Cell[nX][nY + 1].dGetSedimentTopElev();
 
             // Calculate slope using finite difference method
-            double dSlopeX = (dElevRight - dElevLeft) / (2.0 * m_dCellSide);
-            double dSlopeY = (dElevDown - dElevUp) / (2.0 * m_dCellSide);
-            double dSlope = sqrt(dSlopeX * dSlopeX + dSlopeY * dSlopeY);
+            double const dSlopeX = (dElevRight - dElevLeft) / (2.0 * m_dCellSide);
+            double const dSlopeY = (dElevDown - dElevUp) / (2.0 * m_dCellSide);
+            double const dSlope = sqrt(dSlopeX * dSlopeX + dSlopeY * dSlopeY);
             m_pRasterGrid->m_Cell[nX][nY].SetSlope(dSlope);
          }
       }
@@ -102,7 +103,7 @@ void CSimulation::nLocateCliffCell(void)
    {
       for (int nY = 0; nY < m_nYGridSize; nY++)
       {
-         double dSlope = m_pRasterGrid->m_Cell[nX][nY].dGetSlope();
+         double const dSlope = m_pRasterGrid->m_Cell[nX][nY].dGetSlope();
          if (dSlope >= m_dCliffSlopeLimit)
          {
             m_pRasterGrid->m_Cell[nX][nY].SetAsCliff(true);
@@ -137,16 +138,16 @@ void CSimulation::nRemoveSmallCliffIslands(int const dMinCliffCellThreshold)
 
             // Stack for iterative flood fill algorithm
             vector<pair<int, int>> VStack;
-            VStack.push_back(std::make_pair(nX, nY));
+            VStack.push_back(make_pair(nX, nY));
 
             // Flood fill to find all connected cliff cells
             while (! VStack.empty())
             {
-               pair<int, int> currentCell = VStack.back();
+               pair<int, int> const currentCell = VStack.back();
                VStack.pop_back();
 
-               size_t nCurX = static_cast<size_t>(currentCell.first);
-               size_t nCurY = static_cast<size_t>(currentCell.second);
+               size_t const nCurX = static_cast<size_t>(currentCell.first);
+               size_t const nCurY = static_cast<size_t>(currentCell.second);
 
                // Skip if already visited or out of bounds
                if (nCurX >= static_cast<unsigned int>(m_nXGridSize) ||
@@ -158,21 +159,21 @@ void CSimulation::nRemoveSmallCliffIslands(int const dMinCliffCellThreshold)
 
                // Mark as visited and add to current cliff region
                bVisited[nCurX][nCurY] = true;
-               VCurrentCliffRegion.push_back(std::make_pair(nCurX, nCurY));
+               VCurrentCliffRegion.push_back(make_pair(nCurX, nCurY));
 
                // Add neighboring cells to stack (8-connectivity: N, NE, E, SE, S, SW, W, NW)
-               VStack.push_back(std::make_pair(nCurX - 1, nCurY));     // North
-               VStack.push_back(std::make_pair(nCurX - 1, nCurY + 1)); // Northeast
-               VStack.push_back(std::make_pair(nCurX, nCurY + 1));     // East
-               VStack.push_back(std::make_pair(nCurX + 1, nCurY + 1)); // Southeast
-               VStack.push_back(std::make_pair(nCurX + 1, nCurY));     // South
-               VStack.push_back(std::make_pair(nCurX + 1, nCurY - 1)); // Southwest
-               VStack.push_back(std::make_pair(nCurX, nCurY - 1));     // West
-               VStack.push_back(std::make_pair(nCurX - 1, nCurY - 1)); // Northwest
+               VStack.push_back(make_pair(nCurX - 1, nCurY));     // North
+               VStack.push_back(make_pair(nCurX - 1, nCurY + 1)); // Northeast
+               VStack.push_back(make_pair(nCurX, nCurY + 1));     // East
+               VStack.push_back(make_pair(nCurX + 1, nCurY + 1)); // Southeast
+               VStack.push_back(make_pair(nCurX + 1, nCurY));     // South
+               VStack.push_back(make_pair(nCurX + 1, nCurY - 1)); // Southwest
+               VStack.push_back(make_pair(nCurX, nCurY - 1));     // West
+               VStack.push_back(make_pair(nCurX - 1, nCurY - 1)); // Northwest
             }
 
             // Calculate area of this cliff region (number of cells * cell area)
-            int dCliffRegionArea = static_cast<int>(VCurrentCliffRegion.size());
+            int const dCliffRegionArea = static_cast<int>(VCurrentCliffRegion.size());
 
             // If area is below threshold, mark all cells in this region for removal
             if (dCliffRegionArea < dMinCliffCellThreshold)
@@ -211,7 +212,7 @@ void CSimulation::nTraceSeawardCliffEdge(void)
          if (m_pRasterGrid->m_Cell[nX][nY].bIsCliff())
          {
             // East direction (check if this is a seaward-facing cliff toe)
-            if (!m_pRasterGrid->m_Cell[nX][nY + 1].bIsCliff())
+            if (! m_pRasterGrid->m_Cell[nX][nY + 1].bIsCliff())
             {
                V2DIPossibleStartCell.push_back(CGeom2DIPoint(nX, nY));
                VbPossibleStartCellHandedness.push_back(true);
@@ -219,7 +220,7 @@ void CSimulation::nTraceSeawardCliffEdge(void)
             }
 
             // South direction
-            if (!m_pRasterGrid->m_Cell[nX + 1][nY].bIsCliff())
+            if (! m_pRasterGrid->m_Cell[nX + 1][nY].bIsCliff())
             {
                V2DIPossibleStartCell.push_back(CGeom2DIPoint(nX, nY));
                VbPossibleStartCellHandedness.push_back(true);
@@ -227,7 +228,7 @@ void CSimulation::nTraceSeawardCliffEdge(void)
             }
 
             // West direction
-            if (!m_pRasterGrid->m_Cell[nX][nY - 1].bIsCliff())
+            if (! m_pRasterGrid->m_Cell[nX][nY - 1].bIsCliff())
             {
                V2DIPossibleStartCell.push_back(CGeom2DIPoint(nX, nY));
                VbPossibleStartCellHandedness.push_back(true);
@@ -235,7 +236,7 @@ void CSimulation::nTraceSeawardCliffEdge(void)
             }
 
             // North direction
-            if (!m_pRasterGrid->m_Cell[nX - 1][nY].bIsCliff())
+            if (! m_pRasterGrid->m_Cell[nX - 1][nY].bIsCliff())
             {
                V2DIPossibleStartCell.push_back(CGeom2DIPoint(nX, nY));
                VbPossibleStartCellHandedness.push_back(true);
@@ -253,8 +254,8 @@ void CSimulation::nTraceSeawardCliffEdge(void)
    // For each possible start point, attempt to trace a cliff edge
    for (size_t nStartPoint = 0; nStartPoint < V2DIPossibleStartCell.size(); nStartPoint++)
    {
-      int nXStart = V2DIPossibleStartCell[nStartPoint].nGetX();
-      int nYStart = V2DIPossibleStartCell[nStartPoint].nGetY();
+      int const nXStart = V2DIPossibleStartCell[nStartPoint].nGetX();
+      int const nYStart = V2DIPossibleStartCell[nStartPoint].nGetY();
 
       // Skip if this cell has already been used in another cliff trace
       if (bUsedInCliffTrace[nXStart][nYStart])
@@ -471,7 +472,7 @@ void CSimulation::nValidateCliffToeEdges(void)
       CGeomLine &CliffEdge = m_VCliffEdge[nEdge];
 
       // Try validating in forward direction first
-      CGeomLine ForwardValidated = nValidateCliffToeDirection(CliffEdge, false);
+      CGeomLine const ForwardValidated = nValidateCliffToeDirection(CliffEdge, false);
 
       // If we got a very short result (broke early), try reverse direction
       CGeomLine ReverseValidated;
@@ -511,16 +512,15 @@ CGeomLine CSimulation::nValidateCliffToeDirection(CGeomLine& CliffEdge, bool bRe
    CGeomLine ValidatedEdge;
 
    int nConsecutiveFailures = 0;
-   const int nMaxConsecutiveFailures = 2;
-
-   int nSize = CliffEdge.nGetSize();
+   int const nMaxConsecutiveFailures = 2;
+   int const nSize = CliffEdge.nGetSize();
 
    // Check each point along the cliff edge
    for (int i = 0; i < nSize - 1; i++)
    {
       // Determine which point to process based on direction
-      int nPoint = bReverse ? (nSize - 1 - i) : i;
-      int nNextPoint = bReverse ? (nSize - 2 - i) : (i + 1);
+      int const nPoint = bReverse ? (nSize - 1 - i) : i;
+      int const nNextPoint = bReverse ? (nSize - 2 - i) : (i + 1);
 
       // Skip if we've gone beyond bounds
       if (nNextPoint < 0 || nNextPoint >= nSize)
@@ -534,35 +534,35 @@ CGeomLine CSimulation::nValidateCliffToeDirection(CGeomLine& CliffEdge, bool bRe
       int nNextY = static_cast<int>((CliffEdge.dGetYAt(nNextPoint) - m_dGeoTransform[3]) /  m_dGeoTransform[5]);
 
       // Ensure coordinates are within grid bounds
-      nX = max(0, std::min(m_nXGridSize - 1, nX));
-      nY = max(0, std::min(m_nYGridSize - 1, nY));
-      nNextX = max(0, std::min(m_nXGridSize - 1, nNextX));
-      nNextY = max(0, std::min(m_nYGridSize - 1, nNextY));
+      nX = max(0, min(m_nXGridSize - 1, nX));
+      nY = max(0, min(m_nYGridSize - 1, nY));
+      nNextX = max(0, min(m_nXGridSize - 1, nNextX));
+      nNextY = max(0, min(m_nYGridSize - 1, nNextY));
 
       // Calculate direction of travel
-      int nDirX = nNextX - nX;
-      int nDirY = nNextY - nY;
+      int const nDirX = nNextX - nX;
+      int const nDirY = nNextY - nY;
 
       // Get perpendicular directions (90 degrees to travel direction)
-      int nLeftX = nX - nDirY;         // Rotate direction 90 degrees counter-clockwise
-      int nLeftY = nY + nDirX;
-      int nRightX = nX + nDirY;        // Rotate direction 90 degrees clockwise
-      int nRightY = nY - nDirX;
+      int const nLeftX = nX - nDirY;         // Rotate direction 90 degrees counter-clockwise
+      int const nLeftY = nY + nDirX;
+      int const nRightX = nX + nDirY;        // Rotate direction 90 degrees clockwise
+      int const nRightY = nY - nDirX;
 
       bool bIsValidToe = true;
 
       // Check if perpendicular cells are within bounds
       if (bIsWithinValidGrid(nLeftX, nLeftY) && bIsWithinValidGrid(nRightX, nRightY))
       {
-         bool bLeftIsCliff = m_pRasterGrid->m_Cell[nLeftX][nLeftY].bIsCliff();
-         bool bRightIsCliff = m_pRasterGrid->m_Cell[nRightX][nRightY].bIsCliff();
+         bool const bLeftIsCliff = m_pRasterGrid->m_Cell[nLeftX][nLeftY].bIsCliff();
+         bool const bRightIsCliff = m_pRasterGrid->m_Cell[nRightX][nRightY].bIsCliff();
 
          // One should be cliff and one should be not cliff for a valid cliff edge
          if (bLeftIsCliff != bRightIsCliff)
          {
             // Get the elevation of these two adjacent cells
-            double dLeftElev = m_pRasterGrid->m_Cell[nLeftX][nLeftY].dGetSedimentTopElev();
-            double dRightElev = m_pRasterGrid->m_Cell[nRightX][nRightY].dGetSedimentTopElev();
+            double const dLeftElev = m_pRasterGrid->m_Cell[nLeftX][nLeftY].dGetSedimentTopElev();
+            double const dRightElev = m_pRasterGrid->m_Cell[nRightX][nRightY].dGetSedimentTopElev();
 
             // Determine which is the cliff side and which is the non-cliff side
             double dCliffElev;

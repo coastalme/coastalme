@@ -57,8 +57,11 @@ class CGeomProfile : public CGeomMultiLine
    //! Is this profile too short?
    bool m_bTooShort;
 
-   //! Has this profile been truncated?
-   bool m_bTruncated;
+   //! Has this profile been truncated by hitting another profile from the same coast?
+   bool m_bTruncatedSameCoast;
+
+   //! Has this profile been truncated by hitting another profile from a different coast?
+   bool m_bTruncatedDifferentCoast;
 
    //! Has this profile hit another profile?
    bool m_bHitAnotherProfile;
@@ -72,11 +75,8 @@ class CGeomProfile : public CGeomMultiLine
    //! The coastline point at which this profile hits the coast (not necessarily coincident wih the profile start cell)
    int m_nCoastPoint;
 
-   //! The this-coast ID of the profile
-   int m_nCoastID;
-
-   //! The global ID of the profile
-   int m_nGlobalID;
+   //! The this-coast ID of the profile (note that a profile in a different coast may have the same ID as this profile)
+   int m_nProfileID;
 
    //! The wave height at the end of the profile
    double m_dDeepWaterWaveHeight;
@@ -102,20 +102,21 @@ class CGeomProfile : public CGeomMultiLine
    //! In the grid CRS, the integer coordinates of the cells 'under' this profile, point zero is the same as 'cell marked as coastline' in coast object
    vector<CGeom2DIPoint> m_VCellInProfile;
 
-   // The following have the same length as m_VCellInProfile
-   //! In external CRS, the coords of cells 'under' this profile
-   vector<CGeom2DPoint> m_VCellInProfileExtCRS;
+   //! In external CRS, the coords of cells 'under' this profile (has the same length as m_VCellInProfile)
+   // vector<CGeom2DPoint> m_VCellInProfileExtCRS;
 
-   // Is this profile point part of a multi-line?
+   // Is this profile point part of a multi-line? (Has have the same length as m_VCellInProfile)
    // vector<bool> m_bVShared;
 
  protected:
  public:
-   explicit CGeomProfile(int const, int const, int const, int const, CGeom2DIPoint const*, CGeom2DIPoint const*, bool const);
+   explicit CGeomProfile(int const, int const, int const, CGeom2DIPoint const*, CGeom2DIPoint const*, bool const);
    ~CGeomProfile(void) override;
 
-   int nGetCoastID(void) const;
-   int nGetGlobalID(void) const;
+   int nGetCoast(void) const;
+
+   int nGetProfileID(void) const;
+   int nGetProfileCoastID(void) const;
    int nGetCoastPoint(void) const;
 
    CGeom2DIPoint* pPtiGetStartPoint(void);
@@ -138,8 +139,10 @@ class CGeomProfile : public CGeomMultiLine
    bool bHitCoast(void) const;
    void SetTooShort(bool const);
    bool bTooShort(void) const;
-   void SetTruncated(bool const);
-   bool bTruncated(void) const;
+   void SetTruncatedSameCoast(bool const);
+   bool bTruncatedSameCoast(void) const;
+   void SetTruncatedDifferentCoast(bool const);
+   bool bTruncatedDifferentCoast(void) const;
    void SetHitAnotherProfile(bool const);
    bool bHitAnotherProfile(void) const;
 
@@ -175,14 +178,11 @@ class CGeomProfile : public CGeomMultiLine
 
    void AppendCellInProfile(CGeom2DIPoint const*);
    void AppendCellInProfile(int const, int const);
-   // void SetCellsInProfile(vector<CGeom2DIPoint>*);
+   void SetCellsInProfile(vector<CGeom2DIPoint>*);
    vector<CGeom2DIPoint>* pPtiVGetCellsInProfile(void);
    CGeom2DIPoint* pPtiGetCellInProfile(int const);
    int nGetNumCellsInProfile(void) const;
-
-   void AppendCellInProfileExtCRS(double const, double const);
-   void AppendCellInProfileExtCRS(CGeom2DPoint const*);
-   // vector<CGeom2DPoint>* PtVGetCellsInProfileExtCRS(void);
+   int nGetIndexOfCellInProfile(int const, int const);
 
    int nGetCellGivenDepth(CGeomRasterGrid const*, double const);
 

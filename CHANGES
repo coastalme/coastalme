@@ -199,4 +199,10 @@ CoastalME CHANGELOG
          Wilf's cliff toe tracing added
          Code tidying
 
+1.3.25   Ongoing changes to permit multiple coastlines
+         Bug fixes re. multiple coastlines
+         Tidied logfile output
+         Added -Og flag for prerelrease debug builds
+         More bug fixes
+         Code simplification and tidying
 

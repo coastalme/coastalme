@@ -111,7 +111,7 @@ if (CMAKE_COMPILER_IS_GNUCC)
       # Pre-release build using gcc, do this before a release to check for memory access problems. Note that -fsanitize=address (and the other sanitize options?) DO NOT work if run under gdb
       # # ===============================================================================================================
       if (CMAKE_CXX_COMPILER_VERSION VERSION_GREATER "5.0")
-         set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=undefined -fsanitize=shift -fsanitize=integer-divide-by-zero -fsanitize=unreachable -fsanitize=null -fsanitize=return -fsanitize=vla-bound -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fsanitize=bounds -fsanitize=alignment -fsanitize=object-size -fsanitize=vptr -fsanitize=address")
+         set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Og -fsanitize=undefined -fsanitize=shift -fsanitize=integer-divide-by-zero -fsanitize=unreachable -fsanitize=null -fsanitize=return -fsanitize=vla-bound -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fsanitize=bounds -fsanitize=alignment -fsanitize=object-size -fsanitize=vptr -fsanitize=address")
          # Note  -fsanitize-ignorelist=sanitize_ignorelist.txt not yet working for gcc, need this to hide GDAL errors
       endif ()
       # # ===============================================================================================================

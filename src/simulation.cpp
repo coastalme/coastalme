@@ -34,7 +34,6 @@ using std::fixed;
 
 #include <iostream>
 using std::cerr;
-// using std::cout;
 using std::cin;
 using std::endl;
 using std::ios;
@@ -51,9 +50,6 @@ using std::to_string;
 using std::filesystem::is_directory;
 using std::filesystem::exists;
 using std::filesystem::create_directories;
-
-// #include <random>
-// using std::random_device;
 
 #include <gdal.h>
 
@@ -619,18 +615,18 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
       return (nRet);
 
    // Find out the folder in which the CoastalME executable sits, in order to open the .ini file (they are assumed to be in the same folder)
-   if (!bFindExeDir(pcArgv[0]))
+   if (! bFindExeDir(pcArgv[0]))
       return (RTN_ERR_CMEDIR);
 
    // OK, we are off, tell the user about the licence and the start time
    AnnounceLicence();
 
    // Read the .ini file and get the name of the run-data file, and path for output etc.
-   if (!bReadIniFile())
+   if (! bReadIniFile())
       return (RTN_ERR_INI);
 
    // Check if output dir exists
-   if ((!is_directory(m_strOutPath.c_str())) || (!exists(m_strOutPath.c_str())))
+   if ((! is_directory(m_strOutPath.c_str())) || (! exists(m_strOutPath.c_str())))
    {
       // Output dir does not exist
       bool bCreateDir = false;
@@ -658,8 +654,7 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
       {
          // Yes, so create the directory
          create_directories(m_strOutPath.c_str());
-         cerr << m_strOutPath << " created" << endl
-              << endl;
+         cerr << m_strOutPath << " created" << endl << endl;
       }
 
       else
@@ -668,23 +663,23 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
    }
 
    // We have the name of the run-data input file, so read it
-   if (!bReadRunDataFile())
+   if (! bReadRunDataFile())
       return RTN_ERR_RUNDATA;
 
    // Check raster GIS output format
-   if (!bCheckRasterGISOutputFormat())
+   if (! bCheckRasterGISOutputFormat())
       return (RTN_ERR_RASTER_GIS_OUT_FORMAT);
 
    // Check vector GIS output format
-   if (!bCheckVectorGISOutputFormat())
+   if (! bCheckVectorGISOutputFormat())
       return (RTN_ERR_VECTOR_GIS_OUT_FORMAT);
 
    // Open log file
-   if (!bOpenLogFile())
+   if (! bOpenLogFile())
       return (RTN_ERR_LOGFILE);
 
    // Set up the time series output files
-   if (!bSetUpTSFiles())
+   if (! bSetUpTSFiles())
       return (RTN_ERR_TSFILE);
 
    // Initialize the random number generators
@@ -775,42 +770,36 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
       // Read in the initial fine unconsolidated sediment depth file(s)
       AnnounceReadInitialFineUnconsSedGIS(nLayer);
       nRet = nReadRasterGISFile(FINE_UNCONS_RASTER, nLayer);
-
       if (nRet != RTN_OK)
          return (nRet);
 
       // Read in the initial sand unconsolidated sediment depth file
       AnnounceReadInitialSandUnconsSedGIS(nLayer);
       nRet = nReadRasterGISFile(SAND_UNCONS_RASTER, nLayer);
-
       if (nRet != RTN_OK)
          return (nRet);
 
       // Read in the initial coarse unconsolidated sediment depth file
       AnnounceReadInitialCoarseUnconsSedGIS(nLayer);
       nRet = nReadRasterGISFile(COARSE_UNCONS_RASTER, nLayer);
-
       if (nRet != RTN_OK)
          return (nRet);
 
       // Read in the initial fine consolidated sediment depth file
       AnnounceReadInitialFineConsSedGIS(nLayer);
       nRet = nReadRasterGISFile(FINE_CONS_RASTER, nLayer);
-
       if (nRet != RTN_OK)
          return (nRet);
 
       // Read in the initial sand consolidated sediment depth file
       AnnounceReadInitialSandConsSedGIS(nLayer);
       nRet = nReadRasterGISFile(SAND_CONS_RASTER, nLayer);
-
       if (nRet != RTN_OK)
          return (nRet);
 
       // Read in the initial coarse consolidated sediment depth file
       AnnounceReadInitialCoarseConsSedGIS(nLayer);
       nRet = nReadRasterGISFile(COARSE_CONS_RASTER, nLayer);
-
       if (nRet != RTN_OK)
          return (nRet);
    }
@@ -818,42 +807,37 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
    // Read in the initial suspended sediment depth file
    AnnounceReadInitialSuspSedGIS();
    nRet = nReadRasterGISFile(SUSP_SED_RASTER, 0);
-
    if (nRet != RTN_OK)
       return (nRet);
 
    // Maybe read in the landform class data, otherwise calculate this during the first timestep using identification rules
-   if (!m_strInitialLandformFile.empty())
+   if (! m_strInitialLandformFile.empty())
    {
       AnnounceReadLGIS();
       nRet = nReadRasterGISFile(LANDFORM_RASTER, 0);
-
       if (nRet != RTN_OK)
          return (nRet);
    }
 
    // Maybe read in intervention data
-   if (!m_strInterventionClassFile.empty())
+   if (! m_strInterventionClassFile.empty())
    {
       AnnounceReadICGIS();
       nRet = nReadRasterGISFile(INTERVENTION_CLASS_RASTER, 0);
-
       if (nRet != RTN_OK)
          return (nRet);
 
       AnnounceReadIHGIS();
       nRet = nReadRasterGISFile(INTERVENTION_HEIGHT_RASTER, 0);
-
       if (nRet != RTN_OK)
          return (nRet);
    }
 
    // Maybe read in the tide data
-   if (!m_strTideDataFile.empty())
+   if (! m_strTideDataFile.empty())
    {
       AnnounceReadTideData();
       nRet = nReadTideDataFile();
-
       if (nRet != RTN_OK)
          return (nRet);
    }
@@ -861,7 +845,6 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
    // Read in the erosion potential shape function data
    AnnounceReadSCAPEShapeFunctionFile();
    nRet = nReadShapeFunctionFile();
-
    if (nRet != RTN_OK)
       return (nRet);
 
@@ -881,7 +864,6 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
 
       // Read in vector points
       nRet = nReadVectorGISFile(DEEP_WATER_WAVE_STATIONS_VEC);
-
       if (nRet != RTN_OK)
          return (nRet);
 
@@ -892,7 +874,6 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
 
       // Read in time series values, and initialize the vector which stores each timestep's deep water wave height, orientation and period
       nRet = nReadWaveStationInputFile(nWaveStations);
-
       if (nRet != RTN_OK)
          return (nRet);
    }
@@ -905,13 +886,11 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
 
       // Read in vector points for sediment input events
       nRet = nReadVectorGISFile(SEDIMENT_INPUT_EVENT_LOCATION_VEC);
-
       if (nRet != RTN_OK)
          return (nRet);
 
       // Read in the time series values for sediment input events
       nRet = nReadSedimentInputEventFile();
-
       if (nRet != RTN_OK)
          return (nRet);
    }
@@ -924,7 +903,6 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
 
       // Read in vector points for sediment input events
       nRet = nReadVectorGISFile(FLOOD_LOCATION_VEC);
-
       if (nRet != RTN_OK)
          return (nRet);
    }
@@ -967,7 +945,7 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
    m_dThisIterSWL = m_dInitialMeanSWL;
 
    // If SWL changes during the simulation, calculate the per-timestep increment (could be -ve)
-   if (!bFPIsEqual(m_dFinalMeanSWL, m_dInitialMeanSWL, TOLERANCE))
+   if (! bFPIsEqual(m_dFinalMeanSWL, m_dInitialMeanSWL, TOLERANCE))
    {
       m_dDeltaSWLPerTimestep = (m_dTimeStep * (m_dFinalMeanSWL - m_dInitialMeanSWL)) / m_dSimDuration;
       m_dAccumulatedSeaLevelChange -= m_dDeltaSWLPerTimestep;
@@ -993,26 +971,22 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
 
       // Check to see if there is a new intervention in place: if so, update it on the RasterGrid array
       nRet = nUpdateIntervention();
-
       if (nRet != RTN_OK)
          return nRet;
 
       // Calculate changes due to external forcing (change in still water level, tide level and deep water waves height, orientation and period)
       nRet = nCalcExternalForcing();
-
       if (nRet != RTN_OK)
          return nRet;
 
       // Do per-timestep intialization: set up the grid cells ready for this timestep, also initialize per-timestep totals. Note that in the first timestep, all cells (including hinterland cells) are given the deep water wave values
       nRet = nInitGridAndCalcStillWaterLevel();
-
       if (nRet != RTN_OK)
          return nRet;
 
       // Next find out which cells are inundated and locate the coastline(s). This also gives to all sea cells, wave values which are the same as the deep water values. For shallow water sea cells, these wave values will be changed later, in nDoAllPropagateWaves()
       int nValidCoast = 0;
       nRet = nLocateSeaAndCoasts(nValidCoast);
-
       if (nRet != RTN_OK)
          return nRet;
 
@@ -1023,33 +997,69 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
 
       // Locate and trace cliff toe
       nRet = nLocateCliffToe();
-
       if (nRet != RTN_OK)
          return nRet;
 
       // For all cells, use classification rules to assign sea and hinterland landform categories
       nRet = nAssignLandformsForAllCells();
-
       if (nRet != RTN_OK)
          return nRet;
 
       // For every coastline, use classification rules to assign landform categories
       nRet = nAssignLandformsForAllCoasts();
-
       if (nRet != RTN_OK)
          return nRet;
 
       // Create all coastline-normal profiles, in coastline-concave-curvature sequence
       nRet = nCreateAllProfiles();
-
       if (nRet != RTN_OK)
          return nRet;
 
-      // Check the coastline-normal profiles for intersection
-      nRet = nCheckAllProfiles();
+      // // DEBUG CODE ================
+      // if (! bWriteVectorGISFile(VECTOR_PLOT_COAST, &VECTOR_PLOT_COAST_TITLE))
+      //    return false;
+      // if (! bWriteVectorGISFile(VECTOR_PLOT_NORMALS, &VECTOR_PLOT_NORMALS_TITLE))
+      //    return false;
+      // if (! bWriteVectorGISFile(VECTOR_PLOT_INVALID_NORMALS, &VECTOR_PLOT_INVALID_NORMALS_TITLE))
+      //    return false;
+      // // DEBUG CODE ================
 
+      // Check the coastline-normal profiles for intersection, modify the profiles if they intersect, then mark valid profiles on the raster grid
+      nRet = nCheckAndMarkAllProfiles();
       if (nRet != RTN_OK)
          return nRet;
+
+      // // DEBUG CODE ================
+      // m_nGISSave++;
+      // if (! bWriteVectorGISFile(VECTOR_PLOT_COAST, &VECTOR_PLOT_COAST_TITLE))
+      //    return false;
+      // if (! bWriteVectorGISFile(VECTOR_PLOT_NORMALS, &VECTOR_PLOT_NORMALS_TITLE))
+      //    return false;
+      // if (! bWriteVectorGISFile(VECTOR_PLOT_INVALID_NORMALS, &VECTOR_PLOT_INVALID_NORMALS_TITLE))
+      //    return false;
+      // // DEBUG CODE ================
+
+      if (m_VCoast.size() > 0)
+      {
+         // We have multiple coastlines
+         nRet = nDoMultipleCoastlines();
+         if (nRet != RTN_OK)
+         return nRet;
+      }
+
+      // DEBUG CODE ================
+      // m_nGISSave++;
+      if (! bWriteVectorGISFile(VECTOR_PLOT_COAST, &VECTOR_PLOT_COAST_TITLE))
+         return false;
+      if (! bWriteVectorGISFile(VECTOR_PLOT_NORMALS, &VECTOR_PLOT_NORMALS_TITLE))
+         return false;
+      if (! bWriteVectorGISFile(VECTOR_PLOT_INVALID_NORMALS, &VECTOR_PLOT_INVALID_NORMALS_TITLE))
+         return false;
+      if (! bWriteRasterGISFile(RASTER_PLOT_NORMAL_PROFILE, &RASTER_PLOT_NORMAL_PROFILE_TITLE))
+         return false;
+      if (! bWriteRasterGISFile(RASTER_PLOT_POLYGON, &RASTER_PLOT_POLYGON_TITLE))
+         return false;
+      // DEBUG CODE ================
 
       // // DEBUG CODE =================
       // for (int nCoast = 0; nCoast < static_cast<int>(m_VCoast.size()); nCoast++)
@@ -1059,9 +1069,9 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
       // if (m_VCoast[nCoast].bIsProfileAtCoastPoint(nCoastPoint))
       // {
       // CGeomProfile const* pProfile = m_VCoast[nCoast].pGetProfileAtCoastPoint(nCoastPoint);
-      // int nProfile = pProfile->nGetCoastID();
+      // int nProfile = pProfile->nGetProfileID();
       //
-      // LogStream << m_ulIter << ": profile " << nProfile << " bStartOfCoast = " << pProfile->bStartOfCoast() << " bEndOfCoast = " << pProfile->bEndOfCoast() << " bCShoreProblem = " << pProfile->bCShoreProblem() << " bHitLand = " << pProfile->bHitLand() << " bHitCoast = " << pProfile->bHitCoast() << " bTooShort = " << pProfile->bTooShort() << " bTruncated = " << pProfile->bTruncated() << " bHitAnotherProfile = " << pProfile->bHitAnotherProfile() << endl;
+      // LogStream << m_ulIter << ": profile " << nProfile << " bStartOfCoast = " << pProfile->bStartOfCoast() << " bEndOfCoast = " << pProfile->bEndOfCoast() << " bCShoreProblem = " << pProfile->bCShoreProblem() << " bHitLand = " << pProfile->bHitLand() << " bHitCoast = " << pProfile->bHitCoast() << " bTooShort = " << pProfile->bTooShort() << " bTruncatedSameCoast = " << pProfile->bTruncatedSameCoast() << " bHitAnotherProfile = " << pProfile->bHitAnotherProfile() << endl;
       // }
       // }
       // }
@@ -1072,9 +1082,13 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
 
       // Create the coast polygons
       nRet = nCreateAllPolygons();
-
       if (nRet != RTN_OK)
          return nRet;
+
+      // // DEBUG CODE ====================
+      // if (! bWriteVectorGISFile(VECTOR_PLOT_POLYGON_BOUNDARY, &VECTOR_PLOT_POLYGON_BOUNDARY_TITLE))
+      //    return false;
+      // // DEBUG CODE ====================
 
       // // DEBUG CODE =========================================================================================================
       // int nNODATA = 0;
@@ -1105,7 +1119,6 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
 
       // Calculate the length of the shared normal between each polygon and the adjacent polygon(s)
       nRet = nDoPolygonSharedBoundaries();
-
       if (nRet != RTN_OK)
          return nRet;
 
@@ -1139,7 +1152,6 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
 
       // Give every coast point a value for deep water wave height and direction
       nRet = nSetAllCoastpointDeepWaterWaveValues();
-
       if (nRet != RTN_OK)
          return nRet;
 
@@ -1152,7 +1164,7 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
       // {
       // CGeomProfile* pProfile = m_VCoast[nCoast].pGetProfile(nProfile);
       // int nCell = pProfile->nGetNumCellsInProfile();
-      // LogStream << "Profile " << pProfile->nGetCoastID() << " nGetNumCellsInProfile() = " << nCell << endl;
+      // LogStream << "Profile " << pProfile->nGetProfileID() << " nGetNumCellsInProfile() = " << nCell << endl;
       // }
       //
       // LogStream << endl;
@@ -1161,7 +1173,7 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
       // {
       // CGeomProfile* pProfile = m_VCoast[nCoast].pGetProfileWithDownCoastSeq(nProfile);
       // int nCell = pProfile->nGetNumCellsInProfile();
-      // LogStream << "Profile " << pProfile->nGetCoastID() << " nGetNumCellsInProfile() = " << nCell << endl;
+      // LogStream << "Profile " << pProfile->nGetProfileID() << " nGetNumCellsInProfile() = " << nCell << endl;
       // }
       //
       // LogStream << "====================" << endl;
@@ -1170,7 +1182,6 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
 
       // Change the wave properties in all shallow water sea cells: propagate waves and define the active zone, also locate wave shadow zones
       nRet = nDoAllPropagateWaves();
-
       if (nRet != RTN_OK)
          return nRet;
 
@@ -1266,7 +1277,6 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
       {
          // Calculate elevation change on the consolidated sediment which comprises the coastal platform
          nRet = nDoAllShorePlatFormErosion();
-
          if (nRet != RTN_OK)
             return nRet;
       }
@@ -1282,7 +1292,6 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
       {
          // Do all cliff collapses for this timestep (if any)
          nRet = nDoAllWaveEnergyToCoastLandforms();
-
          if (nRet != RTN_OK)
             return nRet;
       }
@@ -1304,7 +1313,6 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
 
          // Do within-sediment redistribution of unconsolidated sediment, constraining potential sediment movement to give actual (i.e. supply-limited) sediment movement to/from each polygon in three size clases
          nRet = nDoAllActualBeachErosionAndDeposition();
-
          if (nRet != RTN_OK)
             return nRet;
       }
@@ -1313,7 +1321,6 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
       if (m_bSedimentInput)
       {
          nRet = nCheckForSedimentInputEvent();
-
          if (nRet != RTN_OK)
             return nRet;
 
@@ -1399,7 +1406,6 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
 
       // Do some end-of-timestep updates to the raster grid, also update per-timestep and running totals
       nRet = nUpdateGrid();
-
       if (nRet != RTN_OK)
          return nRet;
 
@@ -1409,7 +1415,6 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
          m_nLevel = 0;
 
          nRet = nLocateFloodAndCoasts();
-
          if (nRet != RTN_OK)
             return nRet;
       }
@@ -1420,7 +1425,6 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
          m_nLevel = 1;
 
          nRet = nLocateFloodAndCoasts();
-
          if (nRet != RTN_OK)
             return nRet;
       }
@@ -1428,19 +1432,19 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
       // Now save results, first the raster and vector GIS files if required
       m_bSaveGISThisIter = false;
 
-      if ((m_bSaveRegular && (m_dSimElapsed >= m_dRegularSaveTime) && (m_dSimElapsed < m_dSimDuration)) || (!m_bSaveRegular && (m_dSimElapsed >= m_dUSaveTime[m_nThisSave])))
+      if ((m_bSaveRegular && (m_dSimElapsed >= m_dRegularSaveTime) && (m_dSimElapsed < m_dSimDuration)) || (! m_bSaveRegular && (m_dSimElapsed >= m_dUSaveTime[m_nThisSave])))
       {
          m_bSaveGISThisIter = true;
 
          // Save the values from the RasterGrid array into raster GIS files
-         if (!bSaveAllRasterGISFiles())
+         if (! bSaveAllRasterGISFiles())
             return (RTN_ERR_RASTER_FILE_WRITE);
 
          // Tell the user how the simulation is progressing
          AnnounceProgress();
 
          // Save the vector GIS files
-         if (!bSaveAllVectorGISFiles())
+         if (! bSaveAllVectorGISFiles())
             return (RTN_ERR_VECTOR_FILE_WRITE);
 
          // Tell the user how the simulation is progressing
@@ -1448,11 +1452,11 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
       }
 
       // Output per-timestep results to the .out file
-      if (!bWritePerTimestepResults())
+      if (! bWritePerTimestepResults())
          return (RTN_ERR_TEXT_FILE_WRITE);
 
       // Now output time series CSV stuff
-      if (!bWriteTSFiles())
+      if (! bWriteTSFiles())
          return (RTN_ERR_TIMESERIES_FILE_WRITE);
 
       // Tell the user how the simulation is progressing
@@ -1469,12 +1473,10 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
 
    // Write end-of-run information to Out, Log and time-series files
    nRet = nWriteEndRunDetails();
-
    if (nRet != RTN_OK)
       return (nRet);
 
-   // Do end-of-run memory clerance
+   // Do end-of-run memory clearance
    DoEndOfRunDeletes();
-
    return RTN_OK;
 }

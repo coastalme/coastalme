@@ -26,10 +26,6 @@
 #include <cmath>
 #include <cfloat>
 
-// #include <iostream>
-// using std::cout;
-// using std::endl;
-
 #include <algorithm>
 using std::sort;
 
@@ -106,7 +102,7 @@ void CSimulation::DoAllPotentialBeachErosion(void)
 
             double const dThisBreakingWaveHeight = m_VCoast[nCoast].dGetBreakingWaveHeight(nCoastPoint);
 
-            if (!bFPIsEqual(dThisBreakingWaveHeight, DBL_NODATA, TOLERANCE))
+            if (! bFPIsEqual(dThisBreakingWaveHeight, DBL_NODATA, TOLERANCE))
             {
                // We are in the active zone
                nActiveZonePoints++;

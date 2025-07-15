@@ -24,12 +24,12 @@
 #include <assert.h>
 
 #ifdef _WIN32
-#include <windows.h> // Needed for CalcProcessStats()
+#include <windows.h>       // Needed for CalcProcessStats()
 #include <psapi.h>
-#include <io.h> // For isatty()
+#include <io.h>            // For isatty()
 #elif defined __GNUG__
-#include <sys/resource.h> // Needed for CalcProcessStats()
-#include <unistd.h>       // For isatty()
+#include <sys/resource.h>  // Needed for CalcProcessStats()
+#include <unistd.h>        // For isatty()
 #include <sys/types.h>
 #include <sys/wait.h>
 #endif
@@ -63,13 +63,10 @@ using std::cerr;
 using std::cout;
 using std::endl;
 using std::ios;
-// using std::noshowpos;
-// using std::showpos;
 
 #include <iomanip>
 using std::put_time;
 using std::resetiosflags;
-// using std::setiosflags;
 using std::setprecision;
 using std::setw;
 
@@ -80,15 +77,9 @@ using std::to_string;
 using std::stringstream;
 
 #include <algorithm>
-// using std::all_of;
 using std::transform;
 
-// #include <numeric>
-// using std::accumulate;
-// using std::inner_product;
-
 #include <gdal.h>
-// #include <gdal_priv.h>
 
 #include "cme.h"
 #include "simulation.h"
@@ -456,7 +447,7 @@ void CSimulation::AnnounceReadVectorFiles(void)
 void CSimulation::AnnounceReadLGIS(void) const
 {
    // Tell the user what is happening
-   if (!m_strInitialLandformFile.empty())
+   if (! m_strInitialLandformFile.empty())
 #ifdef _WIN32
       cout << READING_LANDFORM_FILE << pstrChangeToForwardSlash(&m_strInitialLandformFile) << endl;
 
@@ -471,7 +462,7 @@ void CSimulation::AnnounceReadLGIS(void) const
 void CSimulation::AnnounceReadICGIS(void) const
 {
    // Tell the user what is happening
-   if (!m_strInterventionClassFile.empty())
+   if (! m_strInterventionClassFile.empty())
 #ifdef _WIN32
       cout << READING_INTERVENTION_CLASS_FILE << pstrChangeToForwardSlash(&m_strInterventionClassFile) << endl;
 
@@ -486,7 +477,7 @@ void CSimulation::AnnounceReadICGIS(void) const
 void CSimulation::AnnounceReadIHGIS(void) const
 {
    // Tell the user what is happening
-   if (!m_strInterventionHeightFile.empty())
+   if (! m_strInterventionHeightFile.empty())
 #ifdef _WIN32
       cout << READING_INTERVENTION_HEIGHT_FILE << pstrChangeToForwardSlash(&m_strInterventionHeightFile) << endl;
 
@@ -501,7 +492,7 @@ void CSimulation::AnnounceReadIHGIS(void) const
 void CSimulation::AnnounceReadDeepWaterWaveValuesGIS(void) const
 {
    // Tell the user what is happening
-   if (!m_strDeepWaterWavesInputFile.empty())
+   if (! m_strDeepWaterWavesInputFile.empty())
 #ifdef _WIN32
       cout << READING_DEEP_WATER_WAVE_FILE << pstrChangeToForwardSlash(&m_strDeepWaterWavesInputFile) << endl;
 
@@ -516,7 +507,7 @@ void CSimulation::AnnounceReadDeepWaterWaveValuesGIS(void) const
 void CSimulation::AnnounceReadSedimentEventInputValuesGIS(void) const
 {
    // Tell the user what is happening
-   if (!m_strSedimentInputEventFile.empty())
+   if (! m_strSedimentInputEventFile.empty())
 #ifdef _WIN32
       cout << READING_SED_INPUT_EVENT_FILE << pstrChangeToForwardSlash(&m_strSedimentInputEventFile) << endl;
 
@@ -531,7 +522,7 @@ void CSimulation::AnnounceReadSedimentEventInputValuesGIS(void) const
 void CSimulation::AnnounceReadFloodLocationGIS(void) const
 {
    // Tell the user what is happening
-   if (!m_strFloodLocationShapefile.empty())
+   if (! m_strFloodLocationShapefile.empty())
 #ifdef _WIN32
       cout << READING_FLOOD_LOCATION << pstrChangeToForwardSlash(&m_strFloodLocationShapefile) << endl;
 
@@ -1165,7 +1156,7 @@ bool CSimulation::bSetUpTSFiles(void)
       // Open erosion time-series CSV file
       PlatformErosionTSStream.open(strTSFile.c_str(), ios::out | ios::trunc);
 
-      if (!PlatformErosionTSStream)
+      if (! PlatformErosionTSStream)
       {
          // Error, cannot open erosion time-series file
          cerr << ERR << "cannot open " << strTSFile << " for output" << endl;
@@ -1458,7 +1449,7 @@ void CSimulation::CalcTime(double const dRunLength)
    // Reset CPU count for last time
    DoCPUClockReset();
 
-   if (!bFPIsEqual(m_dCPUClock, -1.0, TOLERANCE))
+   if (! bFPIsEqual(m_dCPUClock, -1.0, TOLERANCE))
    {
       // Calculate CPU time in secs
       double const dDuration = m_dCPUClock / CLOCKS_PER_SEC;
@@ -2023,10 +2014,6 @@ string CSimulation::strGetErrorText(int const nErr)
       strErr = "error when searching grid for linear feature";
       break;
 
-   case RTN_ERR_TRACING_COAST:
-      strErr = "error tracing coastline on grid";
-      break;
-
    case RTN_ERR_NOCOAST:
       strErr = "no coastlines found. Is the SWL correct?";
       break;
@@ -2074,19 +2061,15 @@ string CSimulation::strGetErrorText(int const nErr)
       strErr = "hit grid edge when eroding beach";
       break;
 
-   case RTN_ERR_NO_SEAWARD_END_OF_PROFILE_1:
-      strErr = "could not locate seaward end of profile when creating Dean profile during estimation of beach erosion";
-      break;
-
-   case RTN_ERR_NO_SEAWARD_END_OF_PROFILE_2:
+   case RTN_ERR_NO_SEAWARD_END_OF_PROFILE_BEACH_EROSION:
       strErr = "could not locate seaward end of profile when creating Dean profile for beach erosion";
       break;
 
-   case RTN_ERR_NO_SEAWARD_END_OF_PROFILE_3:
+   case RTN_ERR_NO_SEAWARD_END_OF_PROFILE_UPCOAST_BEACH_DEPOSITION:
       strErr = "could not locate seaward end of profile when creating Dean profile for beach deposition (up-coast)";
       break;
 
-   case RTN_ERR_NO_SEAWARD_END_OF_PROFILE_4:
+   case RTN_ERR_NO_SEAWARD_END_OF_PROFILE_DOWNCOAST_BEACH_DEPOSITION:
       strErr = "could not locate seaward end of profile when creating Dean profile for beach deposition (down-coast)";
       break;
 
@@ -2186,6 +2169,46 @@ string CSimulation::strGetErrorText(int const nErr)
       strErr = "cliff not in polygon";
       break;
 
+   case RTN_ERR_CELL_MARKED_PROFILE_COAST_BUT_NOT_PROFILE:
+      strErr = "Cell marked as profile coast but not as profile";
+      break;
+
+   case RTN_ERR_TRACING_FLOOD:
+      strErr = "error tracing flood line on grid";
+      break;
+
+   case RTN_ERR_NO_START_FINISH_POINTS_TRACING_COAST:
+      strErr = "error tracing coastline on grid, no coast start-finish points found";
+      break;
+
+   case RTN_ERR_NO_VALID_COAST:
+      strErr = "error tracing coastline on grid, no valid coast found";
+      break;
+
+   case RTN_ERR_REPEATING_WHEN_TRACING_COAST:
+      strErr = "error tracing coastline on grid, coast search just repeats";
+      break;
+
+   case RTN_ERR_ZERO_LENGTH_COAST:
+      strErr = "error tracing coastline on grid, zero-length coast found";
+      break;
+
+   case RTN_ERR_COAST_TOO_SMALL:
+      strErr = "error tracing coastline on grid, coast below minimum permitted length";
+      break;
+
+   case RTN_ERR_IGNORING_COAST:
+      strErr = "error tracing coastline on grid, coast ignored";
+      break;
+
+   case RTN_ERR_TOO_LONG_TRACING_COAST:
+      strErr = "error tracing coastline on grid, too many times round tracing loop";
+      break;
+
+   case RTN_ERR_CELL_NOT_FOUND_IN_HIT_PROFILE_DIFFERENT_COASTS:
+      strErr = "intersection cell not found in hit profile";
+      break;
+
    case RTN_ERR_UNKNOWN:
       strErr = "unknown error";
       break;
@@ -2258,7 +2281,7 @@ void CSimulation::DoSimulationEnd(int const nRtn)
    else
    {
       // Stdout is not connected to a tty, so must be running in the background; if we have something entered for the email address, then send an email
-      if (!m_strMailAddress.empty())
+      if (! m_strMailAddress.empty())
       {
          cout << SEND_EMAIL << m_strMailAddress << endl;
 
@@ -2677,7 +2700,7 @@ bool CSimulation::bParseDate(string const* strDate, int& nDay, int& nMonth, int&
    }
 
    // Sort out day
-   if (!bIsStringValidInt(VstrTmp[0]))
+   if (! bIsStringValidInt(VstrTmp[0]))
    {
       cerr << "invalid integer for day in date '" << strDate << "'" << endl;
       return false;
@@ -2692,7 +2715,7 @@ bool CSimulation::bParseDate(string const* strDate, int& nDay, int& nMonth, int&
    }
 
    // Sort out month
-   if (!bIsStringValidInt(VstrTmp[1]))
+   if (! bIsStringValidInt(VstrTmp[1]))
    {
       cerr << "invalid integer for month in date '" << strDate << "'" << endl;
       return false;
@@ -2707,7 +2730,7 @@ bool CSimulation::bParseDate(string const* strDate, int& nDay, int& nMonth, int&
    }
 
    // Sort out year
-   if (!bIsStringValidInt(VstrTmp[2]))
+   if (! bIsStringValidInt(VstrTmp[2]))
    {
       cerr << "invalid integer for year in date '" << strDate << "'" << endl;
       return false;
@@ -2738,7 +2761,7 @@ bool CSimulation::bParseTime(string const* strTime, int& nHour, int& nMin, int& 
    }
 
    // Sort out hour
-   if (!bIsStringValidInt(VstrTmp[0]))
+   if (! bIsStringValidInt(VstrTmp[0]))
    {
       cerr << "invalid integer for hours in time '" << strTime << "'" << endl;
       return false;
@@ -2753,7 +2776,7 @@ bool CSimulation::bParseTime(string const* strTime, int& nHour, int& nMin, int& 
    }
 
    // Sort out minutes
-   if (!bIsStringValidInt(VstrTmp[1]))
+   if (! bIsStringValidInt(VstrTmp[1]))
    {
       cerr << "invalid integer for minutes in time '" << strTime << "'" << endl;
       return false;
@@ -2768,7 +2791,7 @@ bool CSimulation::bParseTime(string const* strTime, int& nHour, int& nMin, int& 
    }
 
    // Sort out seconds
-   if (!bIsStringValidInt(VstrTmp[2]))
+   if (! bIsStringValidInt(VstrTmp[2]))
    {
       cerr << "invalid integer for seconds in time '" << strTime << "'" << endl;
       return false;
@@ -2801,7 +2824,7 @@ unsigned long CSimulation::ulConvertToTimestep(string const* pstrIn) const
       // OK, this is a number of hours (a relative time, from the start of simulation)
       vector<string> VstrTmp = VstrSplit(&strDate, SPACE);
 
-      if ((VstrTmp.size() < 2) || (!bIsStringValidInt(VstrTmp[0])))
+      if ((VstrTmp.size() < 2) || (! bIsStringValidInt(VstrTmp[0])))
       {
          cerr << "Error in number of hours '" + strDate + "' for sediment input event" << endl;
          return SEDIMENT_INPUT_EVENT_ERROR;
@@ -2823,7 +2846,7 @@ unsigned long CSimulation::ulConvertToTimestep(string const* pstrIn) const
       // OK, this is a number of days (a relative time, from the start of simulation)
       vector<string> VstrTmp = VstrSplit(&strDate, SPACE);
 
-      if ((VstrTmp.size() < 2) || (!bIsStringValidInt(VstrTmp[0])))
+      if ((VstrTmp.size() < 2) || (! bIsStringValidInt(VstrTmp[0])))
       {
          cerr << "Error in number of days '" + strDate + "' for sediment input event" << endl;
          return SEDIMENT_INPUT_EVENT_ERROR;
@@ -2856,7 +2879,7 @@ unsigned long CSimulation::ulConvertToTimestep(string const* pstrIn) const
       int nSec = 0;
 
       // OK, first sort out the time
-      if (!bParseTime(&VstrTmp[0], nHour, nMin, nSec))
+      if (! bParseTime(&VstrTmp[0], nHour, nMin, nSec))
       {
          cerr << "Error in time '" + VstrTmp[0] + "' of sediment input event" << endl;
          return SEDIMENT_INPUT_EVENT_ERROR;
@@ -2867,7 +2890,7 @@ unsigned long CSimulation::ulConvertToTimestep(string const* pstrIn) const
       int nYear = 0;
 
       // Now sort out the time
-      if (!bParseDate(&VstrTmp[1], nDay, nMonth, nYear))
+      if (! bParseDate(&VstrTmp[1], nDay, nMonth, nYear))
       {
          cerr << "Error in date '" + VstrTmp[1] + "' of sediment input event" << endl;
          return SEDIMENT_INPUT_EVENT_ERROR;

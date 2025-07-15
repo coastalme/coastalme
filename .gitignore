@@ -77,9 +77,9 @@ in/Andalucia/
 in/DEM*
 in/Exmouth
 in/GMD2017/
-in/Happisburgh/jsme_wilf.dat
-in/simple*
-in/Wilf_ScenB
+#in/Happisburgh/jsme_wilf.dat
+#in/simple*
+#in/Wilf_ScenB
 libcshore.a*
 libcshore.so*
 Misc/
@@ -89,10 +89,10 @@ src/.kdev4/
 src/build
 src/Callgrind/
 src/cmake_install.cmake
-src/cppcheck*
+#src/cppcheck*
 src/Debug/
-src/do_clang-tidy.sh
-src/do_cppcheck.sh
+#src/do_clang-tidy.sh
+#src/do_cppcheck.sh
 src/gcov/
 src/Makefile
 src/Release/

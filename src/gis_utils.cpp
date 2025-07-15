@@ -1,61 +1,43 @@
 /*!
-
    \file gis_utils.cpp
    \brief Various GIS-related functions, requires GDAL
    \details Note re. coordinate systems used
 
-   1. In the raster CRS, cell[0][0] is at the top left (NW) corner of the grid.
-   Raster grid co-oordinate [0][0] is actually the top left (NW) corner of this
-   cell.
+   1. In the raster CRS, cell[0][0] is at the top left (NW) corner of the grid. Raster grid co-oordinate [0][0] is actually the top left (NW) corner of this cell.
 
-   2. We assume that the grid CRS and external CRS have parallel axes. If they
-   have not, see http://www.gdal.org/classGDALDataset.html which says that:
+   2. We assume that the grid CRS and external CRS have parallel axes. If they have not, see http://www.gdal.org/classGDALDataset.html which says that:
 
-   To convert between pixel/line (P,L) raster space, and projection coordinates
-   (Xp,Yp) space Xp = padfTransform[0] + padfTransform[1] + padfTransform[2]; Yp
+   To convert between pixel/line (P,L) raster space, and projection coordinates (Xp,Yp) space Xp = padfTransform[0] + padfTransform[1] + padfTransform[2]; Yp
    = padfTransform[3] + padfTransform[4] + padfTransform[5];
 
-   In a north-up image, padfTransform[1] is the pixel width, and
-   padfTransform[5] is the pixel height. The upper left corner of the upper left
-   pixel is at position (padfTransform[0], padfTransform[3]).
+   In a north-up image, padfTransform[1] is the pixel width, and padfTransform[5] is the pixel height. The upper left corner of the upper left pixel is at position (padfTransform[0], padfTransform[3]).
 
-   3. Usually, raster grid CRS values are integer, i.e. they refer to a point
-   which is at the centroid of a cell. They may also be -ve or greater than
-   m_nXGridSize-1 i.e. may refer to a point which lies outside any cell of the
-   raster grid.
+   3. Usually, raster grid CRS values are integer, i.e. they refer to a point which is at the centroid of a cell. They may also be -ve or greater than m_nXGridSize-1 i.e. may refer to a point which lies outside any cell of the raster grid.
 
    \author David Favis-Mortlock
    \author Andres Payo
    \date 2025
    \copyright GNU General Public License
-
 */
 
 /* ===============================================================================================================================
 
-   This file is part of CoastalME, the Coastal Modelling Environment.
+   This file is part of CoastalME, the Coastal Modelling Environment. CoastalME is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
 
-   CoastalME is free software; you can redistribute it and/or modify it under
-the terms of the GNU General Public License as published by the Free Software
-Foundation; either version 3 of the License, or (at your option) any later
-version.
+   This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-   This program is distributed in the hope that it will be useful, but WITHOUT
-ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
-
-   You should have received a copy of the GNU General Public License along with
-this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave,
-Cambridge, MA 02139, USA.
+   You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 ===============================================================================================================================*/
 #include <assert.h>
 
 #include <cstdio>
 
+#include <vector>
+using std::vector;
+
 #include <iostream>
 using std::cerr;
-// using std::cout;
 using std::endl;
 using std::ios;
 
@@ -71,7 +53,6 @@ using std::strstr;
 
 #include <gdal.h>
 #include <gdal_priv.h>
-// #include <cpl_error.h>
 #include <cpl_string.h>
 
 #include "cme.h"
@@ -92,8 +73,7 @@ double CSimulation::dGridCentroidXToExtCRSX(int const nGridX) const
 }
 
 //===============================================================================================================================
-//! Given the integer Y-axis ordinate of a cell in the raster grid CRS, returns
-//! the external CRS Y-axis ordinate of the cell's centroid
+//! Given the integer Y-axis ordinate of a cell in the raster grid CRS, returns the external CRS Y-axis ordinate of the cell's centroid
 //===============================================================================================================================
 double CSimulation::dGridCentroidYToExtCRSY(int const nGridY) const
 {
@@ -103,12 +83,9 @@ double CSimulation::dGridCentroidYToExtCRSY(int const nGridY) const
 }
 
 //===============================================================================================================================
-//! Transforms a pointer to a CGeom2DIPoint in the raster grid CRS (assumed to
-//! be the centroid of a cell) to the equivalent CGeom2DPoint in the external
-//! CRS
+//! Transforms a pointer to a CGeom2DIPoint in the raster grid CRS (assumed to be the centroid of a cell) to the equivalent CGeom2DPoint in the external CRS
 //===============================================================================================================================
-CGeom2DPoint
-CSimulation::PtGridCentroidToExt(CGeom2DIPoint const *pPtiIn) const
+CGeom2DPoint CSimulation::PtGridCentroidToExt(CGeom2DIPoint const *pPtiIn) const
 {
    // TODO 064
    double const dX = m_dGeoTransform[0] + (pPtiIn->nGetX() * m_dGeoTransform[1]) + (m_dGeoTransform[1] / 2);
@@ -118,8 +95,7 @@ CSimulation::PtGridCentroidToExt(CGeom2DIPoint const *pPtiIn) const
 }
 
 //===============================================================================================================================
-//! Given a real-valued X-axis ordinate in the raster grid CRS (i.e. not the
-//! centroid of a cell), returns the external CRS X-axis ordinate
+//! Given a real-valued X-axis ordinate in the raster grid CRS (i.e. not the centroid of a cell), returns the external CRS X-axis ordinate
 //===============================================================================================================================
 double CSimulation::dGridXToExtCRSX(double const dGridX) const
 {
@@ -149,9 +125,7 @@ double CSimulation::dExtCRSXToGridX(double const dExtCRSX) const
 }
 
 //===============================================================================================================================
-//! Transforms a Y-axis ordinate in the external CRS to the equivalent Y-axis
-//! ordinate in the raster grid CRS (the result is not rounded, and so may not
-//! be integer, and may be outside the grid)
+//! Transforms a Y-axis ordinate in the external CRS to the equivalent Y-axis ordinate in the raster grid CRS (the result is not rounded, and so may not be integer, and may be outside the grid)
 //===============================================================================================================================
 double CSimulation::dExtCRSYToGridY(double const dExtCRSY) const
 {
@@ -160,12 +134,9 @@ double CSimulation::dExtCRSYToGridY(double const dExtCRSY) const
 }
 
 //===============================================================================================================================
-//! Transforms a pointer to a CGeom2DPoint in the external CRS to the equivalent
-//! CGeom2DIPoint in the raster grid CRS (both values rounded). The result may
-//! be outside the grid
+//! Transforms a pointer to a CGeom2DPoint in the external CRS to the equivalent CGeom2DIPoint in the raster grid CRS (both values rounded). The result may be outside the grid
 //===============================================================================================================================
-CGeom2DIPoint
-CSimulation::PtiExtCRSToGridRound(CGeom2DPoint const *pPtIn) const
+CGeom2DIPoint CSimulation::PtiExtCRSToGridRound(CGeom2DPoint const *pPtIn) const
 {
    // TODO 064
    int const nX = nRound(((pPtIn->dGetX() - m_dGeoTransform[0]) / m_dGeoTransform[1]) - 1);
@@ -177,8 +148,7 @@ CSimulation::PtiExtCRSToGridRound(CGeom2DPoint const *pPtIn) const
 //===============================================================================================================================
 //! Returns the distance (in external CRS) between two points
 //===============================================================================================================================
-double CSimulation::dGetDistanceBetween(CGeom2DPoint const *Pt1,
-                                        CGeom2DPoint const *Pt2)
+double CSimulation::dGetDistanceBetween(CGeom2DPoint const *Pt1, CGeom2DPoint const *Pt2)
 {
    double const dXDist = Pt1->dGetX() - Pt2->dGetX();
    double const dYDist = Pt1->dGetY() - Pt2->dGetY();
@@ -479,11 +449,9 @@ double CSimulation::dKeepWithin360(double const dAngle)
 }
 
 //===============================================================================================================================
-//! Returns a point (external CRS) which is the average of (i.e. is midway
-//! between) two other external CRS points
+//! Returns a point (external CRS) which is the average of (i.e. is midway between) two other external CRS points
 //===============================================================================================================================
-CGeom2DPoint CSimulation::PtAverage(CGeom2DPoint const *pPt1,
-                                    CGeom2DPoint const *pPt2)
+CGeom2DPoint CSimulation::PtAverage(CGeom2DPoint const *pPt1, CGeom2DPoint const *pPt2)
 {
    double const dPt1X = pPt1->dGetX();
    double const dPt1Y = pPt1->dGetY();
@@ -495,32 +463,25 @@ CGeom2DPoint CSimulation::PtAverage(CGeom2DPoint const *pPt1,
    return CGeom2DPoint(dPtAvgX, dPtAvgY);
 }
 
-// //===============================================================================================================================
-// //! Returns an integer point (grid CRS) which is the approximate average of
-// (i.e. is midway between) two other grid CRS integer points
-// //===============================================================================================================================
-// CGeom2DIPoint CSimulation::PtiAverage(CGeom2DIPoint const* pPti1,
-// CGeom2DIPoint const* pPti2)
-// {
-// int nPti1X = pPti1->nGetX();
-// int nPti1Y = pPti1->nGetY();
-// int nPti2X = pPti2->nGetX();
-// int nPti2Y = pPti2->nGetY();
-// int nPtiAvgX = (nPti1X + nPti2X) / 2;
-// int nPtiAvgY = (nPti1Y + nPti2Y) / 2;
-//
-// return CGeom2DIPoint(nPtiAvgX, nPtiAvgY);
-// }
+//===============================================================================================================================
+//! Returns an integer point (grid CRS) which is the approximate average of (i.e. is midway between) two other grid CRS integer points
+//===============================================================================================================================
+CGeom2DIPoint CSimulation::PtiAverage(CGeom2DIPoint const* pPti1, CGeom2DIPoint const* pPti2)
+{
+   int nPti1X = pPti1->nGetX();
+   int nPti1Y = pPti1->nGetY();
+   int nPti2X = pPti2->nGetX();
+   int nPti2Y = pPti2->nGetY();
+   int nPtiAvgX = (nPti1X + nPti2X) / 2;
+   int nPtiAvgY = (nPti1Y + nPti2Y) / 2;
+
+   return CGeom2DIPoint(nPtiAvgX, nPtiAvgY);
+}
 
 //===============================================================================================================================
-//! Returns an integer point (grid CRS) which is the weighted average of two
-//! other grid CRS integer points. The weight must be <= 1, if the weight is <
-//! 0.5 then the output point is closer to the first point, if the weight is >
-//! 0.5 then the output point is closer to the second point
+//! Returns an integer point (grid CRS) which is the weighted average of two other grid CRS integer points. The weight must be <= 1, if the weight is < 0.5 then the output point is closer to the first point, if the weight is > 0.5 then the output point is closer to the second point
 //===============================================================================================================================
-CGeom2DIPoint CSimulation::PtiWeightedAverage(CGeom2DIPoint const *pPti1,
-                                              CGeom2DIPoint const *pPti2,
-                                              double const dWeight)
+CGeom2DIPoint CSimulation::PtiWeightedAverage(CGeom2DIPoint const *pPti1, CGeom2DIPoint const *pPti2, double const dWeight)
 {
    int const nPti1X = pPti1->nGetX();
    int const nPti1Y = pPti1->nGetY();
@@ -535,10 +496,9 @@ CGeom2DIPoint CSimulation::PtiWeightedAverage(CGeom2DIPoint const *pPti1,
 }
 
 //===============================================================================================================================
-//! Returns a point (external CRS) which is the average of a vector of external
-//! CRS points
+//! Returns a point (external CRS) which is the average of a vector of external CRS points
 //===============================================================================================================================
-CGeom2DPoint CSimulation::PtAverage(vector<CGeom2DPoint> *pVIn)
+CGeom2DPoint CSimulation::PtAverage(vector<CGeom2DPoint>* pVIn)
 {
    int const nSize = static_cast<int>(pVIn->size());
 
@@ -925,7 +885,7 @@ bool CSimulation::bCheckRasterGISOutputFormat(void)
       m_lGDALMaxCanWrite = UINT32_MAX;
       m_lGDALMinCanWrite = 0;
 
-      if (!m_bGDALCanWriteFloat)
+      if (! m_bGDALCanWriteFloat)
          m_GDALWriteFloatDataType = GDT_UInt32;
 
       return true;
@@ -940,7 +900,7 @@ bool CSimulation::bCheckRasterGISOutputFormat(void)
       m_lGDALMaxCanWrite = INT32_MAX;
       m_lGDALMinCanWrite = INT32_MIN;
 
-      if (!m_bGDALCanWriteFloat)
+      if (! m_bGDALCanWriteFloat)
          m_GDALWriteFloatDataType = GDT_Int32;
 
       return true;
@@ -955,7 +915,7 @@ bool CSimulation::bCheckRasterGISOutputFormat(void)
       m_lGDALMaxCanWrite = UINT16_MAX;
       m_lGDALMinCanWrite = 0;
 
-      if (!m_bGDALCanWriteFloat)
+      if (! m_bGDALCanWriteFloat)
          m_GDALWriteFloatDataType = GDT_UInt16;
 
       return true;
@@ -970,7 +930,7 @@ bool CSimulation::bCheckRasterGISOutputFormat(void)
       m_lGDALMaxCanWrite = INT16_MAX;
       m_lGDALMinCanWrite = INT16_MIN;
 
-      if (!m_bGDALCanWriteFloat)
+      if (! m_bGDALCanWriteFloat)
          m_GDALWriteFloatDataType = GDT_Int16;
 
       return true;
@@ -985,7 +945,7 @@ bool CSimulation::bCheckRasterGISOutputFormat(void)
       m_lGDALMaxCanWrite = UINT8_MAX;
       m_lGDALMinCanWrite = 0;
 
-      if (!m_bGDALCanWriteFloat)
+      if (! m_bGDALCanWriteFloat)
          m_GDALWriteFloatDataType = GDT_Byte;
 
       return true;
@@ -1001,7 +961,7 @@ bool CSimulation::bCheckRasterGISOutputFormat(void)
 }
 
 //===============================================================================================================================
-//! Checks whether the selected vector OGR driver supports file creation etc.
+//! Checks whether the selected vector GDAL/OGR driver supports file creation etc.
 //===============================================================================================================================
 bool CSimulation::bCheckVectorGISOutputFormat(void)
 {
@@ -1104,202 +1064,160 @@ bool CSimulation::bSaveAllRasterGISFiles(void)
    }
 
    if (m_bSedimentTopSurfSave)
-      if (!bWriteRasterGISFile(RASTER_PLOT_SEDIMENT_TOP_ELEVATION_ELEV,
-                               &RASTER_PLOT_SEDIMENT_TOP_ELEVATION_ELEV_TITLE))
+      if (! bWriteRasterGISFile(RASTER_PLOT_SEDIMENT_TOP_ELEVATION_ELEV, &RASTER_PLOT_SEDIMENT_TOP_ELEVATION_ELEV_TITLE))
          return false;
 
    if (m_bTopSurfSave)
-      if (!bWriteRasterGISFile(RASTER_PLOT_OVERALL_TOP_ELEVATION,
-                               &RASTER_PLOT_OVERALL_TOP_ELEVATION_TITLE))
+      if (! bWriteRasterGISFile(RASTER_PLOT_OVERALL_TOP_ELEVATION, &RASTER_PLOT_OVERALL_TOP_ELEVATION_TITLE))
          return false;
 
    if (m_bLocalSlopeSave)
-      if (!bWriteRasterGISFile(
-              RASTER_PLOT_LOCAL_SLOPE_OF_CONSOLIDATED_SEDIMENT,
-              &RASTER_PLOT_LOCAL_SLOPE_OF_CONSOLIDATED_SEDIMENT_TITLE))
+      if (! bWriteRasterGISFile(RASTER_PLOT_LOCAL_SLOPE_OF_CONSOLIDATED_SEDIMENT, &RASTER_PLOT_LOCAL_SLOPE_OF_CONSOLIDATED_SEDIMENT_TITLE))
          return false;
 
    if (m_bSlopeSave)
-      if (!bWriteRasterGISFile(RASTER_PLOT_SLOPE, &RASTER_PLOT_SLOPE_TITLE))
+      if (! bWriteRasterGISFile(RASTER_PLOT_SLOPE, &RASTER_PLOT_SLOPE_TITLE))
          return false;
 
    if (m_bCliffSave)
-      if (!bWriteRasterGISFile(RASTER_PLOT_CLIFF, &RASTER_PLOT_CLIFF_TITLE))
+      if (! bWriteRasterGISFile(RASTER_PLOT_CLIFF, &RASTER_PLOT_CLIFF_TITLE))
          return false;
 
    if (m_bSeaDepthSave)
-      if (!bWriteRasterGISFile(RASTER_PLOT_SEA_DEPTH,
-                               &RASTER_PLOT_SEA_DEPTH_TITLE))
+      if (! bWriteRasterGISFile(RASTER_PLOT_SEA_DEPTH, &RASTER_PLOT_SEA_DEPTH_TITLE))
          return false;
 
    if (m_bWaveHeightSave)
-      if (!bWriteRasterGISFile(RASTER_PLOT_WAVE_HEIGHT,
-                               &RASTER_PLOT_WAVE_HEIGHT_TITLE))
+      if (! bWriteRasterGISFile(RASTER_PLOT_WAVE_HEIGHT, &RASTER_PLOT_WAVE_HEIGHT_TITLE))
          return false;
 
    if (m_bWaveAngleSave)
-      if (!bWriteRasterGISFile(RASTER_PLOT_WAVE_ORIENTATION,
-                               &RASTER_PLOT_WAVE_ORIENTATION_TITLE))
+      if (! bWriteRasterGISFile(RASTER_PLOT_WAVE_ORIENTATION, &RASTER_PLOT_WAVE_ORIENTATION_TITLE))
          return false;
 
    // Don't write platform erosion files if there is no platform erosion
    if (m_bDoShorePlatformErosion)
    {
       if (m_bPotentialPlatformErosionSave)
-         if (!bWriteRasterGISFile(RASTER_PLOT_POTENTIAL_PLATFORM_EROSION,
-                                  &RASTER_PLOT_POTENTIAL_PLATFORM_EROSION_TITLE))
+         if (! bWriteRasterGISFile(RASTER_PLOT_POTENTIAL_PLATFORM_EROSION, &RASTER_PLOT_POTENTIAL_PLATFORM_EROSION_TITLE))
             return false;
 
       if (m_bActualPlatformErosionSave)
-         if (!bWriteRasterGISFile(RASTER_PLOT_ACTUAL_PLATFORM_EROSION,
-                                  &RASTER_PLOT_ACTUAL_PLATFORM_EROSION_TITLE))
+         if (! bWriteRasterGISFile(RASTER_PLOT_ACTUAL_PLATFORM_EROSION, &RASTER_PLOT_ACTUAL_PLATFORM_EROSION_TITLE))
             return false;
 
       if (m_bTotalPotentialPlatformErosionSave)
-         if (!bWriteRasterGISFile(
-                 RASTER_PLOT_TOTAL_POTENTIAL_PLATFORM_EROSION,
-                 &RASTER_PLOT_TOTAL_POTENTIAL_PLATFORM_EROSION_TITLE))
+         if (! bWriteRasterGISFile(RASTER_PLOT_TOTAL_POTENTIAL_PLATFORM_EROSION, &RASTER_PLOT_TOTAL_POTENTIAL_PLATFORM_EROSION_TITLE))
             return false;
 
       if (m_bTotalActualPlatformErosionSave)
-         if (!bWriteRasterGISFile(
-                 RASTER_PLOT_TOTAL_ACTUAL_PLATFORM_EROSION,
-                 &RASTER_PLOT_TOTAL_ACTUAL_PLATFORM_EROSION_TITLE))
+         if (! bWriteRasterGISFile(RASTER_PLOT_TOTAL_ACTUAL_PLATFORM_EROSION, &RASTER_PLOT_TOTAL_ACTUAL_PLATFORM_EROSION_TITLE))
             return false;
 
       if (m_bPotentialPlatformErosionMaskSave)
-         if (!bWriteRasterGISFile(
-                 RASTER_PLOT_POTENTIAL_PLATFORM_EROSION_MASK,
-                 &RASTER_PLOT_POTENTIAL_PLATFORM_EROSION_MASK_TITLE))
+         if (! bWriteRasterGISFile(RASTER_PLOT_POTENTIAL_PLATFORM_EROSION_MASK, &RASTER_PLOT_POTENTIAL_PLATFORM_EROSION_MASK_TITLE))
             return false;
 
       if (m_bBeachProtectionSave)
-         if (!bWriteRasterGISFile(RASTER_PLOT_BEACH_PROTECTION,
-                                  &RASTER_PLOT_BEACH_PROTECTION_TITLE))
+         if (! bWriteRasterGISFile(RASTER_PLOT_BEACH_PROTECTION, &RASTER_PLOT_BEACH_PROTECTION_TITLE))
             return false;
 
       if (m_bPotentialBeachErosionSave)
-         if (!bWriteRasterGISFile(RASTER_PLOT_POTENTIAL_BEACH_EROSION,
-                                  &RASTER_PLOT_POTENTIAL_BEACH_EROSION_TITLE))
+         if (! bWriteRasterGISFile(RASTER_PLOT_POTENTIAL_BEACH_EROSION, &RASTER_PLOT_POTENTIAL_BEACH_EROSION_TITLE))
             return false;
 
       if (m_bActualBeachErosionSave)
-         if (!bWriteRasterGISFile(RASTER_PLOT_ACTUAL_BEACH_EROSION,
-                                  &RASTER_PLOT_ACTUAL_BEACH_EROSION_TITLE))
+         if (! bWriteRasterGISFile(RASTER_PLOT_ACTUAL_BEACH_EROSION, &RASTER_PLOT_ACTUAL_BEACH_EROSION_TITLE))
             return false;
 
       if (m_bTotalPotentialBeachErosionSave)
-         if (!bWriteRasterGISFile(
-                 RASTER_PLOT_TOTAL_POTENTIAL_BEACH_EROSION,
-                 &RASTER_PLOT_TOTAL_POTENTIAL_BEACH_EROSION_TITLE))
+         if (! bWriteRasterGISFile(RASTER_PLOT_TOTAL_POTENTIAL_BEACH_EROSION, &RASTER_PLOT_TOTAL_POTENTIAL_BEACH_EROSION_TITLE))
             return false;
 
       if (m_bTotalActualBeachErosionSave)
-         if (!bWriteRasterGISFile(RASTER_PLOT_TOTAL_ACTUAL_BEACH_EROSION,
-                                  &RASTER_PLOT_TOTAL_ACTUAL_BEACH_EROSION_TITLE))
+         if (! bWriteRasterGISFile(RASTER_PLOT_TOTAL_ACTUAL_BEACH_EROSION, &RASTER_PLOT_TOTAL_ACTUAL_BEACH_EROSION_TITLE))
             return false;
 
       if (m_bBeachDepositionSave)
-         if (!bWriteRasterGISFile(RASTER_PLOT_BEACH_DEPOSITION,
-                                  &RASTER_PLOT_BEACH_DEPOSITION_TITLE))
+         if (! bWriteRasterGISFile(RASTER_PLOT_BEACH_DEPOSITION, &RASTER_PLOT_BEACH_DEPOSITION_TITLE))
             return false;
 
       if (m_bTotalBeachDepositionSave)
-         if (!bWriteRasterGISFile(RASTER_PLOT_TOTAL_BEACH_DEPOSITION,
-                                  &RASTER_PLOT_TOTAL_BEACH_DEPOSITION_TITLE))
+         if (! bWriteRasterGISFile(RASTER_PLOT_TOTAL_BEACH_DEPOSITION, &RASTER_PLOT_TOTAL_BEACH_DEPOSITION_TITLE))
             return false;
    }
 
    if (m_bLandformSave)
-      if (!bWriteRasterGISFile(RASTER_PLOT_LANDFORM, &RASTER_PLOT_LANDFORM_TITLE))
+      if (! bWriteRasterGISFile(RASTER_PLOT_LANDFORM, &RASTER_PLOT_LANDFORM_TITLE))
          return false;
 
    if (m_bAvgWaveHeightSave)
-      if (!bWriteRasterGISFile(RASTER_PLOT_AVG_WAVE_HEIGHT,
-                               &RASTER_PLOT_AVG_WAVE_HEIGHT_TITLE))
+      if (! bWriteRasterGISFile(RASTER_PLOT_AVG_WAVE_HEIGHT, &RASTER_PLOT_AVG_WAVE_HEIGHT_TITLE))
          return false;
 
    if (m_bAvgWaveAngleSave)
-      if (!bWriteRasterGISFile(RASTER_PLOT_AVG_WAVE_ORIENTATION,
-                               &RASTER_PLOT_AVG_WAVE_ORIENTATION_TITLE))
+      if (! bWriteRasterGISFile(RASTER_PLOT_AVG_WAVE_ORIENTATION, &RASTER_PLOT_AVG_WAVE_ORIENTATION_TITLE))
          return false;
 
    if (m_bAvgSeaDepthSave)
-      if (!bWriteRasterGISFile(RASTER_PLOT_AVG_SEA_DEPTH,
-                               &RASTER_PLOT_AVG_SEA_DEPTH_TITLE))
+      if (! bWriteRasterGISFile(RASTER_PLOT_AVG_SEA_DEPTH, &RASTER_PLOT_AVG_SEA_DEPTH_TITLE))
          return false;
 
    if (m_bSedimentInput && m_bSedimentInputEventSave)
-      if (!bWriteRasterGISFile(RASTER_PLOT_SEDIMENT_INPUT,
-                               &RASTER_PLOT_SEDIMENT_INPUT_EVENT_TITLE))
+      if (! bWriteRasterGISFile(RASTER_PLOT_SEDIMENT_INPUT, &RASTER_PLOT_SEDIMENT_INPUT_EVENT_TITLE))
          return false;
 
    // Don't write suspended sediment files if there is no fine sediment
    if (m_bHaveFineSediment)
    {
       if (m_bSuspSedSave)
-         if (!bWriteRasterGISFile(RASTER_PLOT_SUSPENDED_SEDIMENT,
-                                  &RASTER_PLOT_SUSPENDED_SEDIMENT_TITLE))
+         if (! bWriteRasterGISFile(RASTER_PLOT_SUSPENDED_SEDIMENT, &RASTER_PLOT_SUSPENDED_SEDIMENT_TITLE))
             return false;
 
       if (m_bAvgSuspSedSave)
-         if (!bWriteRasterGISFile(RASTER_PLOT_AVG_SUSPENDED_SEDIMENT,
-                                  &RASTER_PLOT_AVG_SUSPENDED_SEDIMENT_TITLE))
+         if (! bWriteRasterGISFile(RASTER_PLOT_AVG_SUSPENDED_SEDIMENT, &RASTER_PLOT_AVG_SUSPENDED_SEDIMENT_TITLE))
             return false;
    }
 
    if (m_bBasementElevSave)
-      if (!bWriteRasterGISFile(RASTER_PLOT_BASEMENT_ELEVATION,
-                               &RASTER_PLOT_BASEMENT_ELEVATION_TITLE))
+      if (! bWriteRasterGISFile(RASTER_PLOT_BASEMENT_ELEVATION, &RASTER_PLOT_BASEMENT_ELEVATION_TITLE))
          return false;
 
    for (int nLayer = 0; nLayer < m_nLayers; nLayer++)
    {
       if (m_bHaveFineSediment && m_bFineUnconsSedSave)
       {
-         if (!bWriteRasterGISFile(RASTER_PLOT_FINE_UNCONSOLIDATED_SEDIMENT,
-                                  &RASTER_PLOT_FINE_UNCONSOLIDATED_SEDIMENT_TITLE,
-                                  nLayer))
+         if (! bWriteRasterGISFile(RASTER_PLOT_FINE_UNCONSOLIDATED_SEDIMENT, &RASTER_PLOT_FINE_UNCONSOLIDATED_SEDIMENT_TITLE, nLayer))
             return false;
       }
 
       if (m_bHaveSandSediment && m_bSandUnconsSedSave)
       {
-         if (!bWriteRasterGISFile(RASTER_PLOT_SAND_UNCONSOLIDATED_SEDIMENT,
-                                  &RASTER_PLOT_SAND_UNCONSOLIDATED_SEDIMENT_TITLE,
-                                  nLayer))
+         if (! bWriteRasterGISFile(RASTER_PLOT_SAND_UNCONSOLIDATED_SEDIMENT, &RASTER_PLOT_SAND_UNCONSOLIDATED_SEDIMENT_TITLE, nLayer))
             return false;
       }
 
       if (m_bHaveCoarseSediment && m_bCoarseUnconsSedSave)
       {
-         if (!bWriteRasterGISFile(
-                 RASTER_PLOT_COARSE_UNCONSOLIDATED_SEDIMENT,
-                 &RASTER_PLOT_COARSE_UNCONSOLIDATED_SEDIMENT_TITLE, nLayer))
+         if (! bWriteRasterGISFile(RASTER_PLOT_COARSE_UNCONSOLIDATED_SEDIMENT, &RASTER_PLOT_COARSE_UNCONSOLIDATED_SEDIMENT_TITLE, nLayer))
             return false;
       }
 
       if (m_bHaveFineSediment && m_bFineConsSedSave)
       {
-         if (!bWriteRasterGISFile(RASTER_PLOT_FINE_CONSOLIDATED_SEDIMENT,
-                                  &RASTER_PLOT_FINE_CONSOLIDATED_SEDIMENT_TITLE,
-                                  nLayer))
+         if (! bWriteRasterGISFile(RASTER_PLOT_FINE_CONSOLIDATED_SEDIMENT, &RASTER_PLOT_FINE_CONSOLIDATED_SEDIMENT_TITLE, nLayer))
             return false;
       }
 
       if (m_bHaveSandSediment && m_bSandConsSedSave)
       {
-         if (!bWriteRasterGISFile(RASTER_PLOT_SAND_CONSOLIDATED_SEDIMENT,
-                                  &RASTER_PLOT_SAND_CONSOLIDATED_SEDIMENT_TITLE,
-                                  nLayer))
+         if (! bWriteRasterGISFile(RASTER_PLOT_SAND_CONSOLIDATED_SEDIMENT, &RASTER_PLOT_SAND_CONSOLIDATED_SEDIMENT_TITLE, nLayer))
             return false;
       }
 
       if (m_bHaveCoarseSediment && m_bCoarseConsSedSave)
       {
-         if (!bWriteRasterGISFile(RASTER_PLOT_COARSE_CONSOLIDATED_SEDIMENT,
-                                  &RASTER_PLOT_COARSE_CONSOLIDATED_SEDIMENT_TITLE,
-                                  nLayer))
+         if (! bWriteRasterGISFile(RASTER_PLOT_COARSE_CONSOLIDATED_SEDIMENT, &RASTER_PLOT_COARSE_CONSOLIDATED_SEDIMENT_TITLE, nLayer))
             return false;
       }
    }
@@ -1308,29 +1226,26 @@ bool CSimulation::bSaveAllRasterGISFiles(void)
    {
       for (int i = 0; i < static_cast<int>(m_VdSliceElev.size()); i++)
       {
-         if (!bWriteRasterGISFile(RASTER_PLOT_SLICE, &RASTER_PLOT_SLICE_TITLE, 0,
-                                  m_VdSliceElev[i]))
+         if (! bWriteRasterGISFile(RASTER_PLOT_SLICE, &RASTER_PLOT_SLICE_TITLE, 0, m_VdSliceElev[i]))
             return false;
       }
    }
 
    if (m_bRasterCoastlineSave)
    {
-      if (!bWriteRasterGISFile(RASTER_PLOT_COAST, &RASTER_PLOT_COAST_TITLE))
+      if (! bWriteRasterGISFile(RASTER_PLOT_COAST, &RASTER_PLOT_COAST_TITLE))
          return false;
    }
 
    if (m_bRasterNormalProfileSave)
    {
-      if (!bWriteRasterGISFile(RASTER_PLOT_NORMAL_PROFILE,
-                               &RASTER_PLOT_NORMAL_PROFILE_TITLE))
+      if (! bWriteRasterGISFile(RASTER_PLOT_NORMAL_PROFILE, &RASTER_PLOT_NORMAL_PROFILE_TITLE))
          return false;
    }
 
    if (m_bActiveZoneSave)
    {
-      if (!bWriteRasterGISFile(RASTER_PLOT_ACTIVE_ZONE,
-                               &RASTER_PLOT_ACTIVE_ZONE_TITLE))
+      if (! bWriteRasterGISFile(RASTER_PLOT_ACTIVE_ZONE, &RASTER_PLOT_ACTIVE_ZONE_TITLE))
          return false;
    }
 
@@ -1341,25 +1256,19 @@ bool CSimulation::bSaveAllRasterGISFiles(void)
       {
          if (m_bHaveFineSediment)
          {
-            if (!bWriteRasterGISFile(
-                    RASTER_PLOT_CLIFF_COLLAPSE_EROSION_FINE,
-                    &RASTER_PLOT_CLIFF_COLLAPSE_EROSION_FINE_TITLE))
+            if (! bWriteRasterGISFile(RASTER_PLOT_CLIFF_COLLAPSE_EROSION_FINE, &RASTER_PLOT_CLIFF_COLLAPSE_EROSION_FINE_TITLE))
                return false;
          }
 
          if (m_bHaveSandSediment)
          {
-            if (!bWriteRasterGISFile(
-                    RASTER_PLOT_CLIFF_COLLAPSE_EROSION_SAND,
-                    &RASTER_PLOT_CLIFF_COLLAPSE_EROSION_SAND_TITLE))
+            if (! bWriteRasterGISFile(RASTER_PLOT_CLIFF_COLLAPSE_EROSION_SAND, &RASTER_PLOT_CLIFF_COLLAPSE_EROSION_SAND_TITLE))
                return false;
          }
 
          if (m_bHaveCoarseSediment)
          {
-            if (!bWriteRasterGISFile(
-                    RASTER_PLOT_CLIFF_COLLAPSE_EROSION_COARSE,
-                    &RASTER_PLOT_CLIFF_COLLAPSE_EROSION_COARSE_TITLE))
+            if (! bWriteRasterGISFile(RASTER_PLOT_CLIFF_COLLAPSE_EROSION_COARSE, &RASTER_PLOT_CLIFF_COLLAPSE_EROSION_COARSE_TITLE))
                return false;
          }
       }
@@ -1368,25 +1277,19 @@ bool CSimulation::bSaveAllRasterGISFiles(void)
       {
          if (m_bHaveFineSediment)
          {
-            if (!bWriteRasterGISFile(
-                    RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_EROSION_FINE,
-                    &RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_EROSION_FINE_TITLE))
+            if (! bWriteRasterGISFile(RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_EROSION_FINE, &RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_EROSION_FINE_TITLE))
                return false;
          }
 
          if (m_bHaveSandSediment)
          {
-            if (!bWriteRasterGISFile(
-                    RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_EROSION_SAND,
-                    &RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_EROSION_SAND_TITLE))
+            if (! bWriteRasterGISFile(RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_EROSION_SAND, &RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_EROSION_SAND_TITLE))
                return false;
          }
 
          if (m_bHaveCoarseSediment)
          {
-            if (!bWriteRasterGISFile(
-                    RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_EROSION_COARSE,
-                    &RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_EROSION_COARSE_TITLE))
+            if (! bWriteRasterGISFile(RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_EROSION_COARSE, &RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_EROSION_COARSE_TITLE))
                return false;
          }
       }
@@ -1395,17 +1298,13 @@ bool CSimulation::bSaveAllRasterGISFiles(void)
       {
          if (m_bHaveSandSediment)
          {
-            if (!bWriteRasterGISFile(
-                    RASTER_PLOT_CLIFF_COLLAPSE_DEPOSITION_SAND,
-                    &RASTER_PLOT_CLIFF_COLLAPSE_DEPOSITION_SAND_TITLE))
+            if (! bWriteRasterGISFile(RASTER_PLOT_CLIFF_COLLAPSE_DEPOSITION_SAND, &RASTER_PLOT_CLIFF_COLLAPSE_DEPOSITION_SAND_TITLE))
                return false;
          }
 
          if (m_bHaveCoarseSediment)
          {
-            if (!bWriteRasterGISFile(
-                    RASTER_PLOT_CLIFF_COLLAPSE_DEPOSITION_COARSE,
-                    &RASTER_PLOT_CLIFF_COLLAPSE_DEPOSITION_COARSE_TITLE))
+            if (! bWriteRasterGISFile(RASTER_PLOT_CLIFF_COLLAPSE_DEPOSITION_COARSE, &RASTER_PLOT_CLIFF_COLLAPSE_DEPOSITION_COARSE_TITLE))
                return false;
          }
       }
@@ -1414,17 +1313,13 @@ bool CSimulation::bSaveAllRasterGISFiles(void)
       {
          if (m_bHaveSandSediment)
          {
-            if (!bWriteRasterGISFile(
-                    RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_DEPOSITION_SAND,
-                    &RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_DEPOSITION_SAND_TITLE))
+            if (! bWriteRasterGISFile(RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_DEPOSITION_SAND, &RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_DEPOSITION_SAND_TITLE))
                return false;
          }
 
          if (m_bHaveCoarseSediment)
          {
-            if (!bWriteRasterGISFile(
-                    RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_DEPOSITION_COARSE,
-                    &RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_DEPOSITION_COARSE_TITLE))
+            if (! bWriteRasterGISFile(RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_DEPOSITION_COARSE, &RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_DEPOSITION_COARSE_TITLE))
                return false;
          }
       }
@@ -1432,95 +1327,82 @@ bool CSimulation::bSaveAllRasterGISFiles(void)
 
    if (m_bRasterPolygonSave)
    {
-      if (!bWriteRasterGISFile(RASTER_PLOT_POLYGON, &RASTER_PLOT_POLYGON_TITLE))
+      if (! bWriteRasterGISFile(RASTER_PLOT_POLYGON, &RASTER_PLOT_POLYGON_TITLE))
          return false;
    }
 
    if (m_bSeaMaskSave)
    {
-      if (!bWriteRasterGISFile(RASTER_PLOT_INUNDATION_MASK,
-                               &RASTER_PLOT_INUNDATION_MASK_TITLE))
+      if (! bWriteRasterGISFile(RASTER_PLOT_INUNDATION_MASK, &RASTER_PLOT_INUNDATION_MASK_TITLE))
          return false;
    }
 
    if (m_bBeachMaskSave)
    {
-      if (!bWriteRasterGISFile(RASTER_PLOT_BEACH_MASK,
-                               &RASTER_PLOT_BEACH_MASK_TITLE))
+      if (! bWriteRasterGISFile(RASTER_PLOT_BEACH_MASK, &RASTER_PLOT_BEACH_MASK_TITLE))
          return false;
    }
 
    if (m_bInterventionClassSave)
    {
-      if (!bWriteRasterGISFile(RASTER_PLOT_INTERVENTION_CLASS,
-                               &RASTER_PLOT_INTERVENTION_CLASS_TITLE))
+      if (! bWriteRasterGISFile(RASTER_PLOT_INTERVENTION_CLASS, &RASTER_PLOT_INTERVENTION_CLASS_TITLE))
          return false;
    }
 
    if (m_bInterventionHeightSave)
    {
-      if (!bWriteRasterGISFile(RASTER_PLOT_INTERVENTION_HEIGHT,
-                               &RASTER_PLOT_INTERVENTION_HEIGHT_TITLE))
+      if (! bWriteRasterGISFile(RASTER_PLOT_INTERVENTION_HEIGHT, &RASTER_PLOT_INTERVENTION_HEIGHT_TITLE))
          return false;
    }
 
    if (m_bShadowZoneCodesSave)
    {
-      if (!bWriteRasterGISFile(RASTER_PLOT_SHADOW_ZONE,
-                               &RASTER_PLOT_SHADOW_ZONE_TITLE))
+      if (! bWriteRasterGISFile(RASTER_PLOT_SHADOW_ZONE, &RASTER_PLOT_SHADOW_ZONE_TITLE))
          return false;
 
-      if (!bWriteRasterGISFile(RASTER_PLOT_SHADOW_DOWNDRIFT_ZONE,
-                               &RASTER_PLOT_SHADOW_DOWNDRIFT_ZONE_TITLE))
+      if (! bWriteRasterGISFile(RASTER_PLOT_SHADOW_DOWNDRIFT_ZONE, &RASTER_PLOT_SHADOW_DOWNDRIFT_ZONE_TITLE))
          return false;
    }
 
    if (m_bDeepWaterWaveAngleSave)
    {
-      if (!bWriteRasterGISFile(RASTER_PLOT_DEEP_WATER_WAVE_ORIENTATION,
-                               &RASTER_PLOT_DEEP_WATER_WAVE_ORIENTATION_TITLE))
+      if (! bWriteRasterGISFile(RASTER_PLOT_DEEP_WATER_WAVE_ORIENTATION, &RASTER_PLOT_DEEP_WATER_WAVE_ORIENTATION_TITLE))
          return false;
    }
 
    if (m_bDeepWaterWaveHeightSave)
    {
-      if (!bWriteRasterGISFile(RASTER_PLOT_DEEP_WATER_WAVE_HEIGHT,
-                               &RASTER_PLOT_DEEP_WATER_WAVE_HEIGHT_TITLE))
+      if (! bWriteRasterGISFile(RASTER_PLOT_DEEP_WATER_WAVE_HEIGHT, &RASTER_PLOT_DEEP_WATER_WAVE_HEIGHT_TITLE))
          return false;
    }
 
    if (m_bDeepWaterWavePeriodSave)
    {
-      if (!bWriteRasterGISFile(RASTER_PLOT_DEEP_WATER_WAVE_PERIOD,
-                               &RASTER_PLOT_DEEP_WATER_WAVE_PERIOD_TITLE))
+      if (! bWriteRasterGISFile(RASTER_PLOT_DEEP_WATER_WAVE_PERIOD, &RASTER_PLOT_DEEP_WATER_WAVE_PERIOD_TITLE))
          return false;
    }
 
    if (m_bPolygonUnconsSedUpOrDownDriftSave)
    {
-      if (!bWriteRasterGISFile(RASTER_PLOT_POLYGON_UPDRIFT_OR_DOWNDRIFT,
-                               &RASTER_PLOT_POLYGON_UPDRIFT_OR_DOWNDRIFT_TITLE))
+      if (! bWriteRasterGISFile(RASTER_PLOT_POLYGON_UPDRIFT_OR_DOWNDRIFT, &RASTER_PLOT_POLYGON_UPDRIFT_OR_DOWNDRIFT_TITLE))
          return false;
    }
 
    if (m_bPolygonUnconsSedGainOrLossSave)
    {
-      if (!bWriteRasterGISFile(RASTER_PLOT_POLYGON_GAIN_OR_LOSS,
-                               &RASTER_PLOT_POLYGON_GAIN_OR_LOSS_TITLE))
+      if (! bWriteRasterGISFile(RASTER_PLOT_POLYGON_GAIN_OR_LOSS, &RASTER_PLOT_POLYGON_GAIN_OR_LOSS_TITLE))
          return false;
    }
 
    if (m_bSetupSurgeFloodMaskSave)
    {
-      if (!bWriteRasterGISFile(RASTER_PLOT_SETUP_SURGE_FLOOD_MASK,
-                               &RASTER_PLOT_SETUP_SURGE_FLOOD_MASK_TITLE))
+      if (! bWriteRasterGISFile(RASTER_PLOT_SETUP_SURGE_FLOOD_MASK, &RASTER_PLOT_SETUP_SURGE_FLOOD_MASK_TITLE))
          return false;
    }
 
    if (m_bSetupSurgeRunupFloodMaskSave)
    {
-      if (!bWriteRasterGISFile(RASTER_PLOT_SETUP_SURGE_RUNUP_FLOOD_MASK,
-                               &RASTER_PLOT_SETUP_SURGE_RUNUP_FLOOD_MASK_TITLE))
+      if (! bWriteRasterGISFile(RASTER_PLOT_SETUP_SURGE_RUNUP_FLOOD_MASK, &RASTER_PLOT_SETUP_SURGE_RUNUP_FLOOD_MASK_TITLE))
          return false;
    }
 
@@ -1536,139 +1418,121 @@ bool CSimulation::bSaveAllVectorGISFiles(void)
    // Always written
    if (m_bCoastSave)
    {
-      if (!bWriteVectorGISFile(VECTOR_PLOT_COAST, &VECTOR_PLOT_COAST_TITLE))
+      if (! bWriteVectorGISFile(VECTOR_PLOT_COAST, &VECTOR_PLOT_COAST_TITLE))
          return false;
    }
 
    if (m_bCliffEdgeSave)
    {
-      if (!bWriteVectorGISFile(VECTOR_PLOT_CLIFF_EDGE,
-                               &VECTOR_PLOT_CLIFF_EDGE_TITLE))
+      if (! bWriteVectorGISFile(VECTOR_PLOT_CLIFF_EDGE, &VECTOR_PLOT_CLIFF_EDGE_TITLE))
          return false;
    }
 
    if (m_bNormalsSave)
    {
-      if (!bWriteVectorGISFile(VECTOR_PLOT_NORMALS, &VECTOR_PLOT_NORMALS_TITLE))
+      if (! bWriteVectorGISFile(VECTOR_PLOT_NORMALS, &VECTOR_PLOT_NORMALS_TITLE))
          return false;
    }
 
    if (m_bInvalidNormalsSave)
    {
-      if (!bWriteVectorGISFile(VECTOR_PLOT_INVALID_NORMALS,
-                               &VECTOR_PLOT_INVALID_NORMALS_TITLE))
+      if (! bWriteVectorGISFile(VECTOR_PLOT_INVALID_NORMALS, &VECTOR_PLOT_INVALID_NORMALS_TITLE))
          return false;
    }
 
    if (m_bCoastCurvatureSave)
    {
-      if (!bWriteVectorGISFile(VECTOR_PLOT_COAST_CURVATURE,
-                               &VECTOR_PLOT_COAST_CURVATURE_TITLE))
+      if (! bWriteVectorGISFile(VECTOR_PLOT_COAST_CURVATURE, &VECTOR_PLOT_COAST_CURVATURE_TITLE))
          return false;
    }
 
    if (m_bWaveAngleAndHeightSave)
    {
-      if (!bWriteVectorGISFile(VECTOR_PLOT_WAVE_ANGLE_AND_HEIGHT,
-                               &VECTOR_PLOT_WAVE_ANGLE_AND_HEIGHT_TITLE))
+      if (! bWriteVectorGISFile(VECTOR_PLOT_WAVE_ANGLE_AND_HEIGHT, &VECTOR_PLOT_WAVE_ANGLE_AND_HEIGHT_TITLE))
          return false;
    }
 
    if (m_bAvgWaveAngleAndHeightSave)
    {
-      if (!bWriteVectorGISFile(VECTOR_PLOT_AVG_WAVE_ANGLE_AND_HEIGHT,
-                               &VECTOR_PLOT_AVG_WAVE_ANGLE_AND_HEIGHT_TITLE))
+      if (! bWriteVectorGISFile(VECTOR_PLOT_AVG_WAVE_ANGLE_AND_HEIGHT, &VECTOR_PLOT_AVG_WAVE_ANGLE_AND_HEIGHT_TITLE))
          return false;
    }
 
    if (m_bWaveEnergySinceCollapseSave)
    {
-      if (!bWriteVectorGISFile(VECTOR_PLOT_WAVE_ENERGY_SINCE_COLLAPSE,
-                               &VECTOR_PLOT_WAVE_ENERGY_SINCE_COLLAPSE_TITLE))
+      if (! bWriteVectorGISFile(VECTOR_PLOT_WAVE_ENERGY_SINCE_COLLAPSE, &VECTOR_PLOT_WAVE_ENERGY_SINCE_COLLAPSE_TITLE))
          return false;
    }
 
    if (m_bMeanWaveEnergySave)
    {
-      if (!bWriteVectorGISFile(VECTOR_PLOT_MEAN_WAVE_ENERGY,
-                               &VECTOR_PLOT_MEAN_WAVE_ENERGY_TITLE))
+      if (! bWriteVectorGISFile(VECTOR_PLOT_MEAN_WAVE_ENERGY, &VECTOR_PLOT_MEAN_WAVE_ENERGY_TITLE))
          return false;
    }
 
    if (m_bBreakingWaveHeightSave)
    {
-      if (!bWriteVectorGISFile(VECTOR_PLOT_BREAKING_WAVE_HEIGHT,
-                               &VECTOR_PLOT_BREAKING_WAVE_HEIGHT_TITLE))
+      if (! bWriteVectorGISFile(VECTOR_PLOT_BREAKING_WAVE_HEIGHT, &VECTOR_PLOT_BREAKING_WAVE_HEIGHT_TITLE))
          return false;
    }
 
    if (m_bPolygonNodeSave)
    {
-      if (!bWriteVectorGISFile(VECTOR_PLOT_POLYGON_NODES,
-                               &VECTOR_PLOT_POLYGON_NODES_TITLE))
+      if (! bWriteVectorGISFile(VECTOR_PLOT_POLYGON_NODES, &VECTOR_PLOT_POLYGON_NODES_TITLE))
          return false;
    }
 
    if (m_bPolygonBoundarySave)
    {
-      if (!bWriteVectorGISFile(VECTOR_PLOT_POLYGON_BOUNDARY,
-                               &VECTOR_PLOT_POLYGON_BOUNDARY_TITLE))
+      if (! bWriteVectorGISFile(VECTOR_PLOT_POLYGON_BOUNDARY, &VECTOR_PLOT_POLYGON_BOUNDARY_TITLE))
          return false;
    }
 
    if (m_bCliffNotchSave)
    {
-      if (!bWriteVectorGISFile(VECTOR_PLOT_CLIFF_NOTCH_SIZE,
-                               &VECTOR_PLOT_CLIFF_NOTCH_SIZE_TITLE))
+      if (! bWriteVectorGISFile(VECTOR_PLOT_CLIFF_NOTCH_SIZE, &VECTOR_PLOT_CLIFF_NOTCH_SIZE_TITLE))
          return false;
    }
 
    if (m_bShadowBoundarySave)
    {
-      if (!bWriteVectorGISFile(VECTOR_PLOT_SHADOW_BOUNDARY,
-                               &VECTOR_PLOT_SHADOW_BOUNDARY_TITLE))
+      if (! bWriteVectorGISFile(VECTOR_PLOT_SHADOW_BOUNDARY, &VECTOR_PLOT_SHADOW_BOUNDARY_TITLE))
          return false;
    }
 
    if (m_bShadowDowndriftBoundarySave)
    {
-      if (!bWriteVectorGISFile(VECTOR_PLOT_DOWNDRIFT_BOUNDARY,
-                               &VECTOR_PLOT_DOWNDRIFT_BOUNDARY_TITLE))
+      if (! bWriteVectorGISFile(VECTOR_PLOT_DOWNDRIFT_BOUNDARY, &VECTOR_PLOT_DOWNDRIFT_BOUNDARY_TITLE))
          return false;
    }
 
    if (m_bDeepWaterWaveAngleAndHeightSave)
    {
-      if (!bWriteVectorGISFile(
-              VECTOR_PLOT_DEEP_WATER_WAVE_ANGLE_AND_HEIGHT,
-              &VECTOR_PLOT_DEEP_WATER_WAVE_ANGLE_AND_HEIGHT_TITLE))
+      if (! bWriteVectorGISFile(VECTOR_PLOT_DEEP_WATER_WAVE_ANGLE_AND_HEIGHT, &VECTOR_PLOT_DEEP_WATER_WAVE_ANGLE_AND_HEIGHT_TITLE))
          return false;
    }
 
    if (m_bWaveSetupSave)
    {
-      if (!bWriteVectorGISFile(VECTOR_PLOT_WAVE_SETUP,
-                               &VECTOR_PLOT_WAVE_SETUP_TITLE))
+      if (! bWriteVectorGISFile(VECTOR_PLOT_WAVE_SETUP, &VECTOR_PLOT_WAVE_SETUP_TITLE))
          return false;
    }
 
    if (m_bStormSurgeSave)
    {
-      if (!bWriteVectorGISFile(VECTOR_PLOT_STORM_SURGE,
-                               &VECTOR_PLOT_STORM_SURGE_TITLE))
+      if (! bWriteVectorGISFile(VECTOR_PLOT_STORM_SURGE, &VECTOR_PLOT_STORM_SURGE_TITLE))
          return false;
    }
 
    if (m_bRunUpSave)
    {
-      if (!bWriteVectorGISFile(VECTOR_PLOT_RUN_UP, &VECTOR_PLOT_RUN_UP_TITLE))
+      if (! bWriteVectorGISFile(VECTOR_PLOT_RUN_UP, &VECTOR_PLOT_RUN_UP_TITLE))
          return false;
    }
 
    if (m_bRiverineFlooding && m_bVectorWaveFloodLineSave)
    {
-      if (!bWriteVectorGISFile(VECTOR_PLOT_FLOOD_LINE,
-                               &VECTOR_PLOT_FLOOD_SWL_SETUP_LINE_TITLE))
+      if (! bWriteVectorGISFile(VECTOR_PLOT_FLOOD_LINE, &VECTOR_PLOT_FLOOD_SWL_SETUP_LINE_TITLE))
          return false;
 
       // if (! bWriteVectorGISFile(VECTOR_PLOT_FLOOD_SWL_SETUP_SURGE_LINE,
@@ -1770,7 +1634,7 @@ void CSimulation::GetRasterOutputMinMax(int const nDataItem, double &dMin,
             break;
 
          case (RASTER_PLOT_WAVE_HEIGHT):
-            if (!m_pRasterGrid->m_Cell[nX][nY].bIsInContiguousSea())
+            if (! m_pRasterGrid->m_Cell[nX][nY].bIsInContiguousSea())
                dTmp = m_dMissingValue;
 
             else
@@ -1784,7 +1648,7 @@ void CSimulation::GetRasterOutputMinMax(int const nDataItem, double &dMin,
             break;
 
          case (RASTER_PLOT_WAVE_ORIENTATION):
-            if (!m_pRasterGrid->m_Cell[nX][nY].bIsInContiguousSea())
+            if (! m_pRasterGrid->m_Cell[nX][nY].bIsInContiguousSea())
                dTmp = m_dMissingValue;
 
             else
@@ -1800,7 +1664,7 @@ void CSimulation::GetRasterOutputMinMax(int const nDataItem, double &dMin,
          case (RASTER_PLOT_BEACH_PROTECTION):
             dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetBeachProtectionFactor();
 
-            if (!bFPIsEqual(dTmp, DBL_NODATA, TOLERANCE))
+            if (! bFPIsEqual(dTmp, DBL_NODATA, TOLERANCE))
                dTmp = 1 - dTmp; // Output the inverse, seems more intuitive
 
             break;
@@ -1970,7 +1834,7 @@ void CSimulation::GetRasterOutputMinMax(int const nDataItem, double &dMin,
             break;
          }
 
-         if (!bFPIsEqual(dTmp, DBL_NODATA, TOLERANCE))
+         if (! bFPIsEqual(dTmp, DBL_NODATA, TOLERANCE))
          {
             if (dTmp > dMax)
                dMax = dTmp;

@@ -25,7 +25,7 @@
    You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 ===============================================================================================================================*/
-#include <simulation.h>
+#include "simulation.h"
 #include "profile.h"
 #include "cell.h"
 #include "coast_landform.h"
@@ -35,7 +35,7 @@
 #include "2d_point.h"
 #include "2di_point.h"
 
-class CGeomProfile; // Forward declarations
+class CGeomProfile;           // Forward declarations
 class CACoastLandform;
 class CGeomCoastPolygon;
 
@@ -139,7 +139,7 @@ class CRWCoast
 
    // These do not have the same length as m_LCoastlineExtCRS
 
-   //! Coast-normal profile objects, in sequence of creation (which is the same as nGetCoastID() sequence)
+   //! Coast-normal profile objects, in sequence of creation (which is the same as nGetProfileID() sequence)
    vector<CGeomProfile*> m_pVProfile;
 
    //! Pointers to coastline-normal objects, in along-coastline sequence
@@ -270,7 +270,7 @@ class CRWCoast
 
    void SetPolygonNode(int const, int const);
    int nGetPolygonNode(int const) const;
-   CGeomCoastPolygon* pPolyCreatePolygon(int const, int const, int const, CGeom2DIPoint const*, CGeom2DIPoint const*, int const, int const, vector<CGeom2DPoint> const*, int const, int const, bool const, bool const);
+   CGeomCoastPolygon* pPolyCreatePolygon(int const, int const, CGeom2DIPoint const*, CGeom2DIPoint const*, int const, int const, vector<CGeom2DPoint> const*, int const, int const, bool const, bool const);
    int nGetNumPolygons(void) const;
    CGeomCoastPolygon* pGetPolygon(int const) const;
 

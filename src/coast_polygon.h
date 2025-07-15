@@ -43,9 +43,6 @@ class CGeomCoastPolygon : public CA2DShape
    //! Is this polygon at the start of the coastline?
    bool m_bCoastStartPolygon;
 
-   //! The simulation-global number of this polygon
-   int m_nGlobalID;
-
    //! This-coast-only number of this polygon
    int m_nCoastID;
 
@@ -197,7 +194,7 @@ class CGeomCoastPolygon : public CA2DShape
 
  protected:
  public:
-   CGeomCoastPolygon(int const, int const, int const, int const, int const, vector<CGeom2DPoint> const*, int const, int const, CGeom2DIPoint const*, CGeom2DIPoint const*, bool const, bool const);
+   CGeomCoastPolygon(int const, int const, int const, int const, vector<CGeom2DPoint> const*, int const, int const, CGeom2DIPoint const*, CGeom2DIPoint const*, bool const, bool const);
    ~CGeomCoastPolygon(void) override;
 
    void SetDownCoastThisIter(bool const);
@@ -208,8 +205,7 @@ class CGeomCoastPolygon : public CA2DShape
    void SetCoastStartPolygon(void);
    bool bIsCoastStartPolygon(void) const;
 
-   int nGetGlobalID(void) const;
-   int nGetCoastID(void) const;
+   int nGetPolygonCoastID(void) const;
 
    // void SetCoastNode(int const);
    int nGetNodeCoastPoint(void) const;

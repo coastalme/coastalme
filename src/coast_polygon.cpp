@@ -23,9 +23,6 @@
 ===============================================================================================================================*/
 #include <assert.h>
 
-// #include <iostream>
-// using std::cerr;
-
 #include <vector>
 using std::vector;
 
@@ -38,12 +35,11 @@ using std::find;
 #include "2di_point.h"
 
 //! Constructor with 10 parameters and initialization list
-CGeomCoastPolygon::CGeomCoastPolygon(int const nGlobalID, int const nCoastID, int const nNode, int const nProfileUpCoast, int const nProfileDownCoast, vector<CGeom2DPoint> const* pVIn, int const nLastPointUpCoast, const int nLastPointDownCoast, CGeom2DIPoint const* PtiNode, CGeom2DIPoint const* PtiAntinode, bool const bStartCoast, bool const bEndCoast)
+CGeomCoastPolygon::CGeomCoastPolygon(int const nCoastID, int const nNode, int const nProfileUpCoast, int const nProfileDownCoast, vector<CGeom2DPoint> const* pVIn, int const nLastPointUpCoast, const int nLastPointDownCoast, CGeom2DIPoint const* PtiNode, CGeom2DIPoint const* PtiAntinode, bool const bStartCoast, bool const bEndCoast)
     : // m_bIsPointedSeaward(true),
       m_bUnconsSedimentMovementDownCoastThisIter(false),
       m_bCoastEndPolygon(bEndCoast),
       m_bCoastStartPolygon(bStartCoast),
-      m_nGlobalID(nGlobalID),
       m_nCoastID(nCoastID),
       m_nCoastNode(nNode),
       m_nProfileUpCoast(nProfileUpCoast),
@@ -142,14 +138,8 @@ bool CGeomCoastPolygon::bIsCoastStartPolygon(void) const
    return m_bCoastStartPolygon;
 }
 
-//! Get the global ID
-int CGeomCoastPolygon::nGetGlobalID(void) const
-{
-   return m_nGlobalID;
-}
-
 //! Get the coast ID, this is the same as the down-coast sequence of polygons
-int CGeomCoastPolygon::nGetCoastID(void) const
+int CGeomCoastPolygon::nGetPolygonCoastID(void) const
 {
    return m_nCoastID;
 }

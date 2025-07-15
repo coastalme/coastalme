@@ -1,0 +1,126 @@
+/home/dave/coast/CoastalME/src/2d_shape.h:39:25: warning: member variable 'm_VPoints' has protected visibility [misc-non-private-member-variables-in-classes]
+   39 |    vector<CGeom2DPoint> m_VPoints;
+      |                         ^
+/home/dave/coast/CoastalME/src/2di_shape.h:38:26: warning: member variable 'm_VPoints' has protected visibility [misc-non-private-member-variables-in-classes]
+   38 |    vector<CGeom2DIPoint> m_VPoints;
+      |                          ^
+/home/dave/coast/CoastalME/src/calc_curvature.cpp:39:1: warning: included header coast.h is not used directly [misc-include-cleaner]
+   39 | #include "coast.h"
+      | ^~~~~~~~~~~~~~~~~~
+   40 | 
+/home/dave/coast/CoastalME/src/calc_shadow_zones.cpp:41:1: warning: included header coast.h is not used directly [misc-include-cleaner]
+   41 | #include "coast.h"
+      | ^~~~~~~~~~~~~~~~~~
+   42 | #include "simulation.h"
+/home/dave/coast/CoastalME/src/cme.h:1322:9: warning: member variable 'chFill' has public visibility [misc-non-private-member-variables-in-classes]
+ 1322 |    char chFill;
+      |         ^
+/home/dave/coast/CoastalME/src/cme.h:1323:8: warning: member variable 'nWidth' has public visibility [misc-non-private-member-variables-in-classes]
+ 1323 |    int nWidth;
+      |        ^
+/home/dave/coast/CoastalME/src/coast.h:31:10: warning: circular header file dependency detected while including 'coast_landform.h', please check the include path [misc-header-include-cycle]
+   31 | #include "coast_landform.h"
+      |          ^
+/home/dave/coast/CoastalME/src/coast_landform.h:30:10: note: 'coast.h' included from here
+   30 | #include "coast.h"
+      |          ^
+/home/dave/coast/CoastalME/src/coast_landform.cpp:27:10: note: 'coast_landform.h' included from here
+   27 | #include "coast_landform.h"
+      |          ^
+/home/dave/coast/CoastalME/src/coast_landform.h:30:10: warning: circular header file dependency detected while including 'coast.h', please check the include path [misc-header-include-cycle]
+   30 | #include "coast.h"
+      |          ^
+/home/dave/coast/CoastalME/src/coast.h:31:10: note: 'coast_landform.h' included from here
+   31 | #include "coast_landform.h"
+      |          ^
+/home/dave/coast/CoastalME/src/assign_landforms.cpp:37:10: note: 'coast.h' included from here
+   37 | #include "coast.h"
+      |          ^
+/home/dave/coast/CoastalME/src/coast_landform.h:39:8: warning: member variable 'm_nCoast' has protected visibility [misc-non-private-member-variables-in-classes]
+   39 |    int m_nCoast;
+      |        ^
+/home/dave/coast/CoastalME/src/coast_landform.h:42:8: warning: member variable 'm_nPointOnCoast' has protected visibility [misc-non-private-member-variables-in-classes]
+   42 |    int m_nPointOnCoast;
+      |        ^
+/home/dave/coast/CoastalME/src/coast_landform.h:45:8: warning: member variable 'm_nCategory' has protected visibility [misc-non-private-member-variables-in-classes]
+   45 |    int m_nCategory;
+      |        ^
+/home/dave/coast/CoastalME/src/coast_landform.h:48:11: warning: member variable 'm_dTotAccumWaveEnergy' has protected visibility [misc-non-private-member-variables-in-classes]
+   48 |    double m_dTotAccumWaveEnergy;
+      |           ^
+/home/dave/coast/CoastalME/src/coast_landform.h:51:14: warning: member variable 'pCoast' has protected visibility [misc-non-private-member-variables-in-classes]
+   51 |    CRWCoast* pCoast;
+      |              ^
+/home/dave/coast/CoastalME/src/init_grid.cpp:46:1: warning: included header coast.h is not used directly [misc-include-cleaner]
+   46 | #include "coast.h"
+      | ^~~~~~~~~~~~~~~~~~
+   47 | #include "simulation.h"
+/home/dave/coast/CoastalME/src/sediment_input_event.cpp:26:1: warning: included header cme.h is not used directly [misc-include-cleaner]
+   26 | #include "cme.h"
+      | ^~~~~~~~~~~~~~~~
+   27 | #include "sediment_input_event.h"
+/home/dave/coast/CoastalME/src/simulation.cpp:63:1: warning: included header coast.h is not used directly [misc-include-cleaner]
+   63 | #include "coast.h"
+      | ^~~~~~~~~~~~~~~~~~
+   64 | 
+/home/dave/coast/CoastalME/src/simulation.h:1850:13: warning: member variable 'LogStream' has public visibility [misc-non-private-member-variables-in-classes]
+ 1850 |    ofstream LogStream;
+      |             ^
+/home/dave/coast/CoastalME/src/update_grid.cpp:36:1: warning: included header coast.h is not used directly [misc-include-cleaner]
+   36 | #include "coast.h"
+      | ^~~~~~~~~~~~~~~~~~
+   37 | 
+/home/dave/coast/CoastalME/src/utils.cpp:33:1: warning: included header types.h is not used directly [misc-include-cleaner]
+   33 | #include <sys/types.h>
+      | ^~~~~~~~~~~~~~~~~~~~~~
+   34 | #include <sys/wait.h>
+/home/dave/coast/CoastalME/src/2d_shape.h:39:25: warning: member variable 'm_VPoints' has protected visibility [misc-non-private-member-variables-in-classes]
+   39 |    vector<CGeom2DPoint> m_VPoints;
+      |                         ^
+/home/dave/coast/CoastalME/src/2di_shape.h:38:26: warning: member variable 'm_VPoints' has protected visibility [misc-non-private-member-variables-in-classes]
+   38 |    vector<CGeom2DIPoint> m_VPoints;
+      |                          ^
+/home/dave/coast/CoastalME/src/cell.h:40:1: warning: included header cme.h is not used directly [misc-include-cleaner]
+   40 | #include "cme.h"
+      | ^~~~~~~~~~~~~~~~
+   41 | #include "raster_grid.h"
+/home/dave/coast/CoastalME/src/cme.h:1322:9: warning: member variable 'chFill' has public visibility [misc-non-private-member-variables-in-classes]
+ 1322 |    char chFill;
+      |         ^
+/home/dave/coast/CoastalME/src/cme.h:1323:8: warning: member variable 'nWidth' has public visibility [misc-non-private-member-variables-in-classes]
+ 1323 |    int nWidth;
+      |        ^
+/home/dave/coast/CoastalME/src/coast.h:31:10: warning: circular header file dependency detected while including 'coast_landform.h', please check the include path [misc-header-include-cycle]
+   31 | #include "coast_landform.h"
+      |          ^
+/home/dave/coast/CoastalME/src/coast_landform.h:30:10: warning: circular header file dependency detected while including 'coast.h', please check the include path [misc-header-include-cycle]
+   30 | #include "coast.h"
+      |          ^
+/home/dave/coast/CoastalME/src/coast.h:31:10: note: 'coast_landform.h' included from here
+   31 | #include "coast_landform.h"
+      |          ^
+/home/dave/coast/CoastalME/src/cliff.h:29:10: note: 'coast.h' included from here
+   29 | #include "coast.h"
+      |          ^
+/home/dave/coast/CoastalME/src/coast_landform.h:39:8: warning: member variable 'm_nCoast' has protected visibility [misc-non-private-member-variables-in-classes]
+   39 |    int m_nCoast;
+      |        ^
+/home/dave/coast/CoastalME/src/coast_landform.h:42:8: warning: member variable 'm_nPointOnCoast' has protected visibility [misc-non-private-member-variables-in-classes]
+   42 |    int m_nPointOnCoast;
+      |        ^
+/home/dave/coast/CoastalME/src/coast_landform.h:45:8: warning: member variable 'm_nCategory' has protected visibility [misc-non-private-member-variables-in-classes]
+   45 |    int m_nCategory;
+      |        ^
+/home/dave/coast/CoastalME/src/coast_landform.h:48:11: warning: member variable 'm_dTotAccumWaveEnergy' has protected visibility [misc-non-private-member-variables-in-classes]
+   48 |    double m_dTotAccumWaveEnergy;
+      |           ^
+/home/dave/coast/CoastalME/src/coast_landform.h:51:14: warning: member variable 'pCoast' has protected visibility [misc-non-private-member-variables-in-classes]
+   51 |    CRWCoast* pCoast;
+      |              ^
+/home/dave/coast/CoastalME/src/simulation.h:67:1: warning: included header i_line.h is not used directly [misc-include-cleaner]
+   67 | #include "i_line.h"
+      | ^~~~~~~~~~~~~~~~~~~
+   68 | #include "line.h"
+/home/dave/coast/CoastalME/src/simulation.h:1850:13: warning: member variable 'LogStream' has public visibility [misc-non-private-member-variables-in-classes]
+ 1850 |    ofstream LogStream;
+      |             ^

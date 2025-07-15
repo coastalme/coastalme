@@ -32,6 +32,9 @@ using std::sqrt;
 using std::atan2;
 using std::isfinite;
 
+#include <vector>
+using std::vector;
+
 #include <iostream>
 using std::cerr;
 // using std::cout;
@@ -55,6 +58,7 @@ using std::to_string;
 #include <cpl_string.h>
 
 #include "cme.h"
+#include "simulation.h"
 #include "coast.h"
 #include "2di_point.h"
 
@@ -94,14 +98,14 @@ int CSimulation::nReadRasterBasementDEM(void)
    // Initialize GDAL performance settings (only needs to be done once)
    static bool bGDALInitialized = false;
 
-   if (!bGDALInitialized)
+   if (! bGDALInitialized)
    {
       InitializeGDALPerformance();
       bGDALInitialized = true;
    }
 
    // Use GDAL to create a dataset object, which then opens the DEM file
-   GDALDataset *pGDALDataset = static_cast<GDALDataset *>(GDALOpen(m_strInitialBasementDEMFile.c_str(), GA_ReadOnly));
+   GDALDataset *pGDALDataset = static_cast<GDALDataset*>(GDALOpen(m_strInitialBasementDEMFile.c_str(), GA_ReadOnly));
 
    if (NULL == pGDALDataset)
    {
@@ -116,7 +120,7 @@ int CSimulation::nReadRasterBasementDEM(void)
    m_strGDALBasementDEMProjection = pGDALDataset->GetProjectionRef();
 
    // If we have reference units, then check that they are in metres
-   if (!m_strGDALBasementDEMProjection.empty())
+   if (! m_strGDALBasementDEMProjection.empty())
    {
       string const strTmp = strToLower(&m_strGDALBasementDEMProjection);
 
@@ -156,7 +160,7 @@ int CSimulation::nReadRasterBasementDEM(void)
    }
 
    // CoastalME can only handle rasters that are oriented N-S and W-E. (If you need to work with a raster that is oriented differently, then you must rotate it before running CoastalME). So here we check whether row rotation (m_dGeoTransform[2]) and column rotation (m_dGeoTransform[4]) are both zero. See https://gdal.org/tutorials/geotransforms_tut.html
-   if ((!bFPIsEqual(m_dGeoTransform[2], 0.0, TOLERANCE)) || (!bFPIsEqual(m_dGeoTransform[4], 0.0, TOLERANCE)))
+   if ((! bFPIsEqual(m_dGeoTransform[2], 0.0, TOLERANCE)) || (! bFPIsEqual(m_dGeoTransform[4], 0.0, TOLERANCE)))
    {
       // Error: not oriented NS and W-E
       cerr << ERR << m_strInitialBasementDEMFile << " is not oriented N-S and W-E. Row rotation = " << m_dGeoTransform[2] << " and column rotation = " << m_dGeoTransform[4] << endl;
@@ -168,7 +172,7 @@ int CSimulation::nReadRasterBasementDEM(void)
    double const dCellSideY = tAbs(m_dGeoTransform[5]);
 
    // Check that the cell is more or less square
-   if (!bFPIsEqual(dCellSideX, dCellSideY, 1e-2))
+   if (! bFPIsEqual(dCellSideX, dCellSideY, 1e-2))
    {
       // Error: cell is not square enough
       cerr << ERR << "cell is not square in " << m_strInitialBasementDEMFile << ", is " << dCellSideX << " x " << dCellSideY << endl;
@@ -214,7 +218,7 @@ int CSimulation::nReadRasterBasementDEM(void)
    double const dMissingValue = pGDALBand->GetNoDataValue(); // Will fail for some formats
    CPLPopErrorHandler();
 
-   if (!bFPIsEqual(dMissingValue, m_dMissingValue, TOLERANCE))
+   if (! bFPIsEqual(dMissingValue, m_dMissingValue, TOLERANCE))
    {
       cerr << "   " << NOTE << "NODATA value in " << m_strInitialBasementDEMFile << " is " << dMissingValue << "\n         instead using CoastalME's default floating-point NODATA value " << m_dMissingValue << endl;
    }
@@ -286,7 +290,7 @@ int CSimulation::nMarkBoundingBoxEdgeCells(void)
 
       for (int nY = 0; nY < m_nYGridSize; nY++)
       {
-         if (!m_pRasterGrid->m_Cell[nX][nY].bBasementElevIsMissingValue())
+         if (! m_pRasterGrid->m_Cell[nX][nY].bBasementElevIsMissingValue())
          {
             CGeom2DIPoint const PtiTmp(nX, nY);
             VPtiBoundingBoxCorner.push_back(PtiTmp);
@@ -296,7 +300,7 @@ int CSimulation::nMarkBoundingBoxEdgeCells(void)
       }
    }
 
-   if (!bFound)
+   if (! bFound)
    {
       if (m_nLogFileDetail >= LOG_FILE_ALL)
          LogStream << m_ulIter << ": north (top) edge of bounding box not found" << endl;
@@ -314,7 +318,7 @@ int CSimulation::nMarkBoundingBoxEdgeCells(void)
 
       for (int nX = m_nXGridSize - 1; nX >= 0; nX--)
       {
-         if (!m_pRasterGrid->m_Cell[nX][nY].bBasementElevIsMissingValue())
+         if (! m_pRasterGrid->m_Cell[nX][nY].bBasementElevIsMissingValue())
          {
             CGeom2DIPoint const PtiTmp(nX, nY);
             VPtiBoundingBoxCorner.push_back(PtiTmp);
@@ -324,7 +328,7 @@ int CSimulation::nMarkBoundingBoxEdgeCells(void)
       }
    }
 
-   if (!bFound)
+   if (! bFound)
    {
       if (m_nLogFileDetail >= LOG_FILE_ALL)
          LogStream << m_ulIter << ": east (right) edge of bounding box not found" << endl;
@@ -342,7 +346,7 @@ int CSimulation::nMarkBoundingBoxEdgeCells(void)
 
       for (int nY = m_nYGridSize - 1; nY >= 0; nY--)
       {
-         if (!m_pRasterGrid->m_Cell[nX][nY].bBasementElevIsMissingValue())
+         if (! m_pRasterGrid->m_Cell[nX][nY].bBasementElevIsMissingValue())
          {
             CGeom2DIPoint const PtiTmp(nX, nY);
             VPtiBoundingBoxCorner.push_back(PtiTmp);
@@ -352,7 +356,7 @@ int CSimulation::nMarkBoundingBoxEdgeCells(void)
       }
    }
 
-   if (!bFound)
+   if (! bFound)
    {
       if (m_nLogFileDetail >= LOG_FILE_ALL)
          LogStream << m_ulIter << ": south (bottom) edge of bounding box not found" << endl;
@@ -370,7 +374,7 @@ int CSimulation::nMarkBoundingBoxEdgeCells(void)
 
       for (int nX = 0; nX < m_nXGridSize; nX++)
       {
-         if (!m_pRasterGrid->m_Cell[nX][nY].bBasementElevIsMissingValue())
+         if (! m_pRasterGrid->m_Cell[nX][nY].bBasementElevIsMissingValue())
          {
             CGeom2DIPoint const PtiTmp(nX, nY);
             VPtiBoundingBoxCorner.push_back(PtiTmp);
@@ -380,7 +384,7 @@ int CSimulation::nMarkBoundingBoxEdgeCells(void)
       }
    }
 
-   if (!bFound)
+   if (! bFound)
    {
       if (m_nLogFileDetail >= LOG_FILE_ALL)
          LogStream << m_ulIter << ": west (left) edge of bounding box not found" << endl;
@@ -411,7 +415,7 @@ int CSimulation::nMarkBoundingBoxEdgeCells(void)
          break;
       }
 
-      if (!bFound)
+      if (! bFound)
       {
          if (m_nLogFileDetail >= LOG_FILE_MIDDLE_DETAIL)
             LogStream << m_ulIter << ": could not find a bounding box edge cell for grid column " << nX << endl;
@@ -443,7 +447,7 @@ int CSimulation::nMarkBoundingBoxEdgeCells(void)
          break;
       }
 
-      if (!bFound)
+      if (! bFound)
       {
          if (m_nLogFileDetail >= LOG_FILE_MIDDLE_DETAIL)
             LogStream << m_ulIter << ": could not find a bounding box edge cell for grid row " << nY << endl;
@@ -475,7 +479,7 @@ int CSimulation::nMarkBoundingBoxEdgeCells(void)
          break;
       }
 
-      if (!bFound)
+      if (! bFound)
       {
          if (m_nLogFileDetail >= LOG_FILE_MIDDLE_DETAIL)
             LogStream << m_ulIter << ": could not find a bounding box edge cell for grid column " << nX << endl;
@@ -506,7 +510,7 @@ int CSimulation::nMarkBoundingBoxEdgeCells(void)
          break;
       }
 
-      if (!bFound)
+      if (! bFound)
       {
          if (m_nLogFileDetail >= LOG_FILE_MIDDLE_DETAIL)
             LogStream << m_ulIter << ": could not find a bounding box edge cell for grid row " << nY << endl;
@@ -587,7 +591,7 @@ int CSimulation::nReadRasterGISFile(int const nDataItem, int const nLayer)
    if (!strGISFile.empty())
    {
       // We do have a filename, so use GDAL to create a dataset object, which then opens the GIS file
-      GDALDataset *pGDALDataset = static_cast<GDALDataset *>(GDALOpen(strGISFile.c_str(), GA_ReadOnly));
+      GDALDataset *pGDALDataset = static_cast<GDALDataset*>(GDALOpen(strGISFile.c_str(), GA_ReadOnly));
 
       if (NULL == pGDALDataset)
       {
@@ -632,7 +636,7 @@ int CSimulation::nReadRasterGISFile(int const nDataItem, int const nLayer)
 
       double dTmp = m_dGeoTransform[0] - (m_dGeoTransform[1] / 2);
 
-      if (!bFPIsEqual(dTmp, m_dNorthWestXExtCRS, TOLERANCE))
+      if (! bFPIsEqual(dTmp, m_dNorthWestXExtCRS, TOLERANCE))
       {
          // Error: different min x from DEM file
          cerr << ERR << "different min x values in " << strGISFile << " (" << dTmp << ") and " << m_strInitialBasementDEMFile << " (" << m_dNorthWestXExtCRS << ")" << endl;
@@ -641,7 +645,7 @@ int CSimulation::nReadRasterGISFile(int const nDataItem, int const nLayer)
 
       dTmp = m_dGeoTransform[3] - (m_dGeoTransform[5] / 2);
 
-      if (!bFPIsEqual(dTmp, m_dNorthWestYExtCRS, TOLERANCE))
+      if (! bFPIsEqual(dTmp, m_dNorthWestYExtCRS, TOLERANCE))
       {
          // Error: different min x from DEM file
          cerr << ERR << "different min y values in " << strGISFile << " (" << dTmp << ") and " << m_strInitialBasementDEMFile << " (" << m_dNorthWestYExtCRS << ")" << endl;
@@ -650,7 +654,7 @@ int CSimulation::nReadRasterGISFile(int const nDataItem, int const nLayer)
 
       double const dTmpResX = tAbs(dGeoTransform[1]);
 
-      if (!bFPIsEqual(dTmpResX, m_dCellSide, 1e-2))
+      if (! bFPIsEqual(dTmpResX, m_dCellSide, 1e-2))
       {
          // Error: different cell size in X direction: note that due to rounding errors in some GIS packages, must expect some discrepancies
          cerr << ERR << "cell size in X direction (" << dTmpResX << ") in " << strGISFile << " differs from cell size in of basement DEM (" << m_dCellSide << ")" << endl;
@@ -659,7 +663,7 @@ int CSimulation::nReadRasterGISFile(int const nDataItem, int const nLayer)
 
       double const dTmpResY = tAbs(dGeoTransform[5]);
 
-      if (!bFPIsEqual(dTmpResY, m_dCellSide, 1e-2))
+      if (! bFPIsEqual(dTmpResY, m_dCellSide, 1e-2))
       {
          // Error: different cell size in Y direction: note that due to rounding errors in some GIS packages, must expect some discrepancies
          cerr << ERR << "cell size in Y direction (" << dTmpResY << ") in " << strGISFile << " differs from cell size of basement DEM (" << m_dCellSide << ")" << endl;
@@ -778,7 +782,7 @@ int CSimulation::nReadRasterGISFile(int const nDataItem, int const nLayer)
          m_dGISMissingValue = pGDALBand->GetNoDataValue(); // Note will fail for some formats
          CPLPopErrorHandler();
 
-         if (!bFPIsEqual(m_dGISMissingValue, m_dMissingValue, TOLERANCE))
+         if (! bFPIsEqual(m_dGISMissingValue, m_dMissingValue, TOLERANCE))
          {
             cerr << "   " << NOTE << "NODATA value in " << strGISFile << " is " << m_dGISMissingValue << "\n         instead using CoastalME's default floating-point NODATA value " << m_dMissingValue << endl;
          }
@@ -1283,7 +1287,7 @@ bool CSimulation::bWriteRasterGISFile(int const nDataItem, string const *strPlot
    strFilePathName.append(ststrTmp.str());
 
    // Finally, maybe append the extension
-   if (!m_strGDALRasterOutputDriverExtension.empty())
+   if (! m_strGDALRasterOutputDriverExtension.empty())
    {
       strFilePathName.append(".");
       strFilePathName.append(m_strGDALRasterOutputDriverExtension);
@@ -1365,7 +1369,7 @@ bool CSimulation::bWriteRasterGISFile(int const nDataItem, string const *strPlot
    double dRangeScale = 0;
    double dDataMin = 0;
 
-   if (!m_bGDALCanWriteFloat)
+   if (! m_bGDALCanWriteFloat)
    {
       double dDataMax = 0;
 
@@ -1728,7 +1732,7 @@ bool CSimulation::bWriteRasterGISFile(int const nDataItem, string const *strPlot
             break;
 
          case (RASTER_PLOT_WAVE_FLOOD_LINE):
-            dTmp = (m_pRasterGrid->m_Cell[nX][nY].bIsFloodLine() ? 1 : 0);
+            dTmp = (m_pRasterGrid->m_Cell[nX][nY].bIsFloodline() ? 1 : 0);
             break;
          }
 
@@ -1992,7 +1996,7 @@ bool CSimulation::bWriteRasterGISFile(int const nDataItem, string const *strPlot
    pBand->SetStatistics(dMin, dMax, dMean, dStdDev);
    CPLPopErrorHandler();
 
-   if (!m_bGDALCanCreate)
+   if (! m_bGDALCanCreate)
    {
       // Since the user-selected raster driver cannot use the Create() method, we have been writing to a dataset created by the in-memory driver. So now we need to use CreateCopy() to copy this in-memory dataset to a file in the user-specified raster driver format
       GDALDriver *pOutDriver = GetGDALDriverManager()->GetDriverByName(m_strRasterGISOutFormat.c_str());
@@ -2510,21 +2514,18 @@ int CSimulation::nInterpolateAllDeepWaterWaveValues(void)
    GDALGridContextFree(pContext);
 
    // The output from GDALGridCreate() is in dHeightOut, dAngleOut and dPeriopdOut but must be reversed
-   vector<double>
-       VdHeight,
-       VdAngle,
-       VdPeriod;
+   vector<double> VdHeight;
+   vector<double> VdAngle;
+   vector<double> VdPeriod;
 
-   int
-       n = 0,
-       nValidHeight = 0,
-       nValidAngle = 0,
-       nValidPeriod = 0;
+   int n = 0;
+   int nValidHeight = 0;
+   int nValidAngle = 0;
+   int nValidPeriod = 0;
 
-   double
-       dAvgHeight = 0,
-       dAvgAngle = 0,
-       dAvgPeriod = 0;
+   double dAvgHeight = 0;
+   double dAvgAngle = 0;
+   double dAvgPeriod = 0;
 
    for (int nY = m_nYGridSize - 1; nY >= 0; nY--)
    {
