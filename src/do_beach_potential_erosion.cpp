@@ -26,10 +26,6 @@
 #include <cmath>
 #include <cfloat>
 
-// #include <iostream>
-// using std::cout;
-// using std::endl;
-
 #include <algorithm>
 using std::sort;
 

@@ -30,33 +30,19 @@ using std::sin;
 using std::cos;
 using std::pow;
 using std::fmod;
-// using std::isfinite;
-
-// #include <unistd.h>
 
 #include <string>
-// using std::stoi;
 using std::to_string;
 
 #include <iostream>
-// using std::cerr;
-// using std::cout;
 using std::endl;
 using std::ios;
 
 #include <fstream>
 using std::ifstream;
 
-// #include <iomanip>
-// using std::resetiosflags;
-// using std::setiosflags;
-// using std::setprecision;
-// using std::setw;
-
 #include <algorithm>
-// using std::remove;
 using std::reverse_copy;
-// using std::sort;
 
 #include "cme.h"
 #include "coast.h"

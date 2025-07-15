@@ -38,7 +38,6 @@ using std::vector;
 
 #include <iostream>
 using std::cerr;
-// using std::cout;
 using std::endl;
 using std::ios;
 
@@ -54,7 +53,6 @@ using std::strstr;
 
 #include <gdal.h>
 #include <gdal_priv.h>
-// #include <cpl_error.h>
 #include <cpl_string.h>
 
 #include "cme.h"

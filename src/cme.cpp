@@ -23,7 +23,6 @@
 ===============================================================================================================================*/
 #include <clocale>
 
-// #include "cme.h"
 #include "simulation.h"
 
 // #include <fenv.h>    // Include this to check for first appearance in NaN when debugging (comment out, otherwise)

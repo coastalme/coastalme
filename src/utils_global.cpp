@@ -27,7 +27,6 @@
 
 #include <cstdio>
 using std::size_t;
-// using std::sprintf;
 
 #include <sstream>
 using std::stringstream;
@@ -36,9 +35,6 @@ using std::istringstream;
 #include <ios>
 using std::fixed;
 using std::right;
-
-// #include <iomanip>
-// using std::setw;
 
 #include "cme.h"
 

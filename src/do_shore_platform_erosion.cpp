@@ -27,12 +27,8 @@
 
 #include <iostream>
 using std::cerr;
-// using std::cout;
 using std::endl;
 using std::ios;
-
-// #include <iomanip>
-// using std::setiosflags;
 
 #include <array>
 using std::array;
@@ -1012,7 +1008,6 @@ void CSimulation::DoActualPlatformErosionOnCell(int const nX, int const nY)
          }
       }
 
-      // TEST
       // assert(nPolyID < m_VCoast[0].nGetNumPolygons());
 
       // Safety check

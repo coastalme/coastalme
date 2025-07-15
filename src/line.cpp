@@ -22,12 +22,8 @@
 
 ==============================================================================================================================*/
 #include <iostream>
-// using std::cout;
-// using std::cerr;
-// using std::endl;
 using std::ios;
 
-// #include "cme.h"
 #include "2d_point.h"
 #include "line.h"
 

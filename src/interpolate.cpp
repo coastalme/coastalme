@@ -24,9 +24,6 @@
 
 #include <cfloat>
 
-// #include <iostream>
-// #include <iomanip>
-
 #include <vector>
 using std::vector;
 

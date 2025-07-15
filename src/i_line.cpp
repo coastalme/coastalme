@@ -22,12 +22,8 @@
 
 ==============================================================================================================================*/
 #include <iostream>
-// using std::cout;
-// using std::cerr;
-// using std::endl;
 using std::ios;
 
-// #include "cme.h"
 #include "i_line.h"
 
 //! Constructor

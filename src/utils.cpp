@@ -63,13 +63,10 @@ using std::cerr;
 using std::cout;
 using std::endl;
 using std::ios;
-// using std::noshowpos;
-// using std::showpos;
 
 #include <iomanip>
 using std::put_time;
 using std::resetiosflags;
-// using std::setiosflags;
 using std::setprecision;
 using std::setw;
 
@@ -80,15 +77,9 @@ using std::to_string;
 using std::stringstream;
 
 #include <algorithm>
-// using std::all_of;
 using std::transform;
 
-// #include <numeric>
-// using std::accumulate;
-// using std::inner_product;
-
 #include <gdal.h>
-// #include <gdal_priv.h>
 
 #include "cme.h"
 #include "simulation.h"

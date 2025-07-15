@@ -537,26 +537,6 @@ int CGeomProfile::nGetNumCellsInProfile(void) const
    return static_cast<int>(m_VCellInProfile.size());
 }
 
-// //! Returns the vector of points (external CRS) in the profile
-// vector<CGeom2DPoint>* CGeomProfile::pPtVGetCellsInProfileExtCRS(void)
-// {
-//    return &m_VCellInProfileExtCRS;
-// }
-//
-// //! Appends a cell (specified in the external CRS) to the profile
-// void CGeomProfile::AppendCellInProfileExtCRS(double const dX, double const dY)
-// {
-//    // In external CRS
-//    m_VCellInProfileExtCRS.push_back(CGeom2DPoint(dX, dY));
-// }
-//
-// //! Appends a cell (specified in the external CRS) to the profile (overloaded version)
-// void CGeomProfile::AppendCellInProfileExtCRS(CGeom2DPoint const* pPt)
-// {
-//    // In external CRS
-//    m_VCellInProfileExtCRS.push_back(*pPt);
-// }
-
 //! Returns the index of the cell on this profile which has a sea depth which is just less than a given depth. If every cell on the profile has a sea depth which is less than the given depth it returns INT_NODATA
 int CGeomProfile::nGetCellGivenDepth(CGeomRasterGrid const* pGrid, double const dDepthIn)
 {

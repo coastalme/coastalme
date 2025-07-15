@@ -848,13 +848,10 @@ bool CSimulation::bReadRunDataFile(void)
                   m_bRasterPolygonSave =
                   m_bShadowZoneCodesSave =
                   m_bPolygonUnconsSedUpOrDownDriftSave =
-                  m_bPolygonUnconsSedGainOrLossSave = true;
-
-                  // TEST
-                  m_bRasterNormalProfileSave = true;
+                  m_bPolygonUnconsSedGainOrLossSave =
+                  m_bRasterNormalProfileSave =
                   m_bRasterCoastlineSave = true;
                }
-
                else
                {
                   // We are not outputting either the "usual" or the "all" collections of raster GIS files, so set switches (and remove strings) for those optional files for which the user specified the code

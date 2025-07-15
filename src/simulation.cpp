@@ -34,7 +34,6 @@ using std::fixed;
 
 #include <iostream>
 using std::cerr;
-// using std::cout;
 using std::cin;
 using std::endl;
 using std::ios;
@@ -51,9 +50,6 @@ using std::to_string;
 using std::filesystem::is_directory;
 using std::filesystem::exists;
 using std::filesystem::create_directories;
-
-// #include <random>
-// using std::random_device;
 
 #include <gdal.h>
 

@@ -26,14 +26,8 @@
 #include <iostream>
 using std::endl;
 
-// #include <string>
-// using std::to_string;
-
 #include <stack>
 using std::stack;
-
-// #include <algorithm>
-// using std::remove;
 
 #include "cme.h"
 #include "simulation.h"
@@ -248,7 +242,6 @@ int CSimulation::nCreateAllPolygons(void)
             // LogStream << endl;
             // // DEBUG CODE =================================================================================
 
-            // TEST
             // assert(nPolygon < m_VCoast[nCoast].nGetNumPolygons());
 
             // Now rasterize the polygon boundaries: first, the coastline. This is necessary so that sand/coarse sediment derived from platform erosion of the coast cells is correctly added to the containing polygon's unconsolidated sediment
@@ -341,7 +334,6 @@ void CSimulation::RasterizePolygonJoiningLine(int nCoast, CGeom2DIPoint const* p
       if (! bIsWithinValidGrid(nX, nY))
          KeepWithinValidGrid(nXStart, nYStart, nX, nY);
 
-      // TEST
       // assert(nPoly < m_VCoast[0].nGetNumPolygons());
 
       // Mark this point on the raster grid

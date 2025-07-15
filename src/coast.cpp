@@ -28,9 +28,6 @@
 #include <vector>
 using std::vector;
 
-// #include <algorithm>
-// using std::sort;
-
 #include "cme.h"
 #include "simulation.h"
 #include "coast.h"

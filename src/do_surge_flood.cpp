@@ -30,19 +30,8 @@ using std::isnan;
 #include <cfloat>
 
 #include <iostream>
-// using std::cerr;
-// using std::cout;
 using std::endl;
 using std::ios;
-
-// #include <iomanip>
-// using std::resetiosflags;
-// using std::setiosflags;
-// using std::setprecision;
-// using std::setw;
-
-// #include <string>
-// using std::to_string;
 
 #include <stack>
 using std::stack;

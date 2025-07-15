@@ -33,10 +33,6 @@ using std::cerr;
 using std::endl;
 using std::ios;
 
-// #include <iomanip>
-// using std::setiosflags;
-// using std::setprecision;
-
 #include <algorithm>
 using std::find;
 using std::sort;
@@ -518,6 +514,8 @@ int CSimulation::nCreateProfile(int const nCoast, int const nCoastSize, int cons
    // LogStream << endl << "===========" << endl;
    // // DEBUG CODE =================
 
+   // assert(pProfile->nGetProfileSize() > 0);
+
    LogStream << m_ulIter << ": coast " << nCoast << " profile " << nProfile << " (nCoastID = " << pProfile->nGetProfileID() << ") created at coast point " << nProfileStartPoint << " from [" << pPtiStart->nGetX() << "][" << pPtiStart->nGetY() << "] = {" << PtStart.dGetX() << ", " << PtStart.dGetY() << "} to [" << PtiEnd.nGetX() << "][" << PtiEnd.nGetY() << "] = {" << PtEnd.dGetX() << ", " << PtEnd.dGetY() << "}" << (pProfile->bIsIntervention() ? ", from intervention" : "") << endl;
 
    return RTN_OK;
@@ -671,9 +669,8 @@ int CSimulation::nLocateAndCreateGridEdgeProfile(bool const bCoastStart, int con
 
       CGeom2DPoint const Pt(dGridCentroidXToExtCRSX(nX), dGridCentroidYToExtCRSY(nY)); // In external CRS
 
-      // Store the external coordinates in the profile object. Note that for this 'special' profile, the coordinates of the cells and the coordinates of points on the profile itself are identical, this is not the case for ordinary profiles
-      // pProfile->AppendCellInProfileExtCRS(&Pt);
-      // pProfile->AppendPointInProfile(&Pt);
+      // Store the external coordinates in the profile object. Note that for this grid-edge profile, the coordinates of the cells and the coordinates of points on the profile itself are identical, this is not the case for ordinary profiles
+      pProfile->AppendPointInProfile(&Pt);
   }
 
    int const nEndX = VPtiNormalPoints.back().nGetX();
@@ -701,6 +698,8 @@ int CSimulation::nLocateAndCreateGridEdgeProfile(bool const bCoastStart, int con
 
    if (m_nLogFileDetail >= LOG_FILE_ALL)
       LogStream << m_ulIter << ": coast " << nCoast << " grid-edge profile " << nProfile << " (nCoastID = " << pProfile->nGetProfileID() << ") created at coast " << (bCoastStart ? "start" : "end") << " point " << (bCoastStart ? 0 : nCoastSize - 1) << ", from [" << PtiProfileStart.nGetX() << "][" << PtiProfileStart.nGetY() << "] = {" << dGridCentroidXToExtCRSX(PtiProfileStart.nGetX()) << ", " << dGridCentroidYToExtCRSY(PtiProfileStart.nGetY()) << "} to [" << VPtiNormalPoints.back().nGetX() << "][" << VPtiNormalPoints.back().nGetY() << "] = {" << dGridCentroidXToExtCRSX(VPtiNormalPoints.back().nGetX()) << ", " << dGridCentroidYToExtCRSY(VPtiNormalPoints.back().nGetY()) << "} profile length = " << VPtiNormalPoints.size() << endl;
+
+   // assert(pProfile->nGetProfileSize() > 0);
 
    return RTN_OK;
 }
@@ -1019,12 +1018,10 @@ void CSimulation::CheckForIntersectingProfiles(void)
          // OK we have found a first profile. Now go along the coast in alternate directions: first down-coast (in the direction of increasing coast point numbers) then up-coast
          for (int nDirection = DIRECTION_DOWNCOAST; nDirection <= DIRECTION_UPCOAST; nDirection++)
          {
-            // TEST
             int nStartPoint;
 
             if (nDirection == DIRECTION_DOWNCOAST)
                nStartPoint = nCoastPoint + 1;
-
             else
                nStartPoint = nCoastPoint - 1;
 
@@ -1476,9 +1473,6 @@ void CSimulation::MarkProfilesOnGrid(int const nCoast, int& nValidProfiles)
 
          // Store the raster grid coordinates in the profile object
          m_VCoast[nCoast].pGetProfile(nProfile)->AppendCellInProfile(nXTmp, nYTmp);
-
-         // And also store the external coordinates in the profile object
-         // m_VCoast[nCoast].pGetProfile(nProfile)->AppendCellInProfileExtCRS(dGridCentroidXToExtCRSX(nXTmp), dGridCentroidYToExtCRSY(nYTmp));
 
          // Mark the shared (i.e. multi-line) parts of the profile (if any)
          // if (bVShared[k])
@@ -2081,7 +2075,7 @@ int CSimulation::nInsertPointIntoProfilesIfNeededThenUpdate(int const nCoast, CG
       // Do for all line segments seaward of the point of intersection
       for (int nLineSeg = nLineSegAfterIntersect[nn], nIncr = 0; nLineSeg < nNumLineSegs; nLineSeg++, nIncr++)
       {
-         // // This can happen occasionally TEST
+         // // This can happen occasionally
          // if (nThisProfile == nProfileToTruncateIntersectLineSeg)
          // {
          // LogStream << "\t*** ERROR nThisProfile = " << nThisProfile << " nProfileToTruncateIntersectLineSeg = " << nProfileToTruncateIntersectLineSeg << ", ignoring" << endl;

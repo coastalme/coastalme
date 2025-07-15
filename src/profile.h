@@ -184,10 +184,6 @@ class CGeomProfile : public CGeomMultiLine
    int nGetNumCellsInProfile(void) const;
    int nGetIndexOfCellInProfile(int const, int const);
 
-   // void AppendCellInProfileExtCRS(double const, double const);
-   // void AppendCellInProfileExtCRS(CGeom2DPoint const*);
-   // vector<CGeom2DPoint>* pPtVGetCellsInProfileExtCRS(void);
-
    int nGetCellGivenDepth(CGeomRasterGrid const*, double const);
 
    void SetProfileDeepWaterWaveHeight(double const);
