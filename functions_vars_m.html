@@ -132,7 +132,6 @@ $(function(){initNavTree('functions_vars_m.html',''); initResizable(true); });
 <li>m_bCoarseUnconsSedSave&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#a41de4ea4133cc9359a6a1685a77d2232">CSimulation</a></li>
 <li>m_bCoastCurvatureSave&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#a86ac1d9ec4e47fb9b0b648b2410adcef">CSimulation</a></li>
 <li>m_bCoastEndPolygon&#160;:&#160;<a class="el" href="df/d45/classCGeomCoastPolygon.html#a55ffb36bbf69438d5d09ea0ff07d59cd">CGeomCoastPolygon</a></li>
-<li>m_bCoastline&#160;:&#160;<a class="el" href="d1/dd9/classCGeomCell.html#afcf87d940dbd722e6263fd9f75fa1034">CGeomCell</a></li>
 <li>m_bCoastSave&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#a12624ff9b54ce49978f24674441c463e">CSimulation</a></li>
 <li>m_bCoastStartPolygon&#160;:&#160;<a class="el" href="df/d45/classCGeomCoastPolygon.html#ad9efc9da04bb5fe2e9f8d68482343b14">CGeomCoastPolygon</a></li>
 <li>m_bConsChangedThisIter&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#aee72433983f1b26c0b734ee7b0d26014">CSimulation</a></li>
@@ -241,7 +240,8 @@ $(function(){initNavTree('functions_vars_m.html',''); initResizable(true); });
 <li>m_bTotalPotentialPlatformErosionSave&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#a912932facdfc8a32e0fb5d17d4b45060">CSimulation</a></li>
 <li>m_bTotCliffCollapseDepositionSave&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#ae5251515af17d95e9fed980bd8064481">CSimulation</a></li>
 <li>m_bTotCliffCollapseSave&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#a53d144ba1a6ebebabcfd2b27a2d79337">CSimulation</a></li>
-<li>m_bTruncated&#160;:&#160;<a class="el" href="da/dae/classCGeomProfile.html#aa35d6b01070ee8910ac6ea79ceb31423">CGeomProfile</a></li>
+<li>m_bTruncatedDifferentCoast&#160;:&#160;<a class="el" href="da/dae/classCGeomProfile.html#a7b522d93dd12cc1f43bd852dbab721d8">CGeomProfile</a></li>
+<li>m_bTruncatedSameCoast&#160;:&#160;<a class="el" href="da/dae/classCGeomProfile.html#ae8505d4b8d1deebeaa2cece9a864d150">CGeomProfile</a></li>
 <li>m_bUnconsChangedThisIter&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#aa6ebdb3d36ad3cea05ec1446f20cacb8">CSimulation</a></li>
 <li>m_bUnconsSedimentMovementDownCoastThisIter&#160;:&#160;<a class="el" href="df/d45/classCGeomCoastPolygon.html#aad7342a6b464ac5dcf45b82f9b812462">CGeomCoastPolygon</a></li>
 <li>m_bVectorWaveFloodLineSave&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#afb55e7a4b9fb1f5e62924358057a736e">CSimulation</a></li>
@@ -339,9 +339,6 @@ $(function(){initNavTree('functions_vars_m.html',''); initResizable(true); });
 <li>m_dInitialMeanSWL&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#a58b6cf0c6be3c02086f0373a4dcd45cc">CSimulation</a></li>
 <li>m_dInmersedToBulkVolumetric&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#a5ce61a9c341d3eea4901fe08d084d272">CSimulation</a></li>
 <li>m_dInterventionHeight&#160;:&#160;<a class="el" href="d1/dd9/classCGeomCell.html#ad74c33fd0e7a50999b66f85bb9e48fb0">CGeomCell</a></li>
-<li>m_dInterventionInfluenceDistance&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#abefece865f4a014f3315612da53ad4f9">CSimulation</a></li>
-<li>m_dInterventionTriggerDepth&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#a45072854b75c068f78e6fbac25b51910">CSimulation</a></li>
-<li>m_dInterventionTriggerElev&#160;:&#160;<a class="el" href="d1/dd9/classCGeomCell.html#af50755f0dc74ce3d3f9b02fc253692be">CGeomCell</a></li>
 <li>m_dInvCellDiagonal&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#a415d3b30433c3202ca74b7fbeccd5aa6">CSimulation</a></li>
 <li>m_dInvCellSide&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#a82930e45dfa4d4dea6969f2e9d77338d">CSimulation</a></li>
 <li>m_dKamphuis&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#afa0e3dce4efcca5110524c11ab9f962b">CSimulation</a></li>
@@ -540,7 +537,8 @@ $(function(){initNavTree('functions_vars_m.html',''); initResizable(true); });
 <li>m_nCoast&#160;:&#160;<a class="el" href="d2/de0/classCACoastLandform.html#a9dd589536ca66abda8fcd4052bc5687a">CACoastLandform</a>, <a class="el" href="da/dae/classCGeomProfile.html#ad943aa40d4418542d5c5edbdfc2cb69c">CGeomProfile</a>, <a class="el" href="dc/d4a/classCRWCellLandform.html#ab44d708bf7f9181fd1506e7501ad5ccf">CRWCellLandform</a></li>
 <li>m_nCoastCurvatureInterval&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#a93accce15997ac6980293dcb363cf7a7">CSimulation</a></li>
 <li>m_nCoastCurvatureMovingWindowSize&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#ab2e6f9174d1b5035cf4e5834d486dffb">CSimulation</a></li>
-<li>m_nCoastID&#160;:&#160;<a class="el" href="df/d45/classCGeomCoastPolygon.html#a630812573411acb44402f0adda9b0c9c">CGeomCoastPolygon</a>, <a class="el" href="da/dae/classCGeomProfile.html#a2b2b5139601a7b2fc78986d6e65d33f1">CGeomProfile</a></li>
+<li>m_nCoastID&#160;:&#160;<a class="el" href="df/d45/classCGeomCoastPolygon.html#a630812573411acb44402f0adda9b0c9c">CGeomCoastPolygon</a></li>
+<li>m_nCoastlineID&#160;:&#160;<a class="el" href="d1/dd9/classCGeomCell.html#ae54f0d25c94c8ef86d99986847d271e8">CGeomCell</a></li>
 <li>m_nCoastlineNormal&#160;:&#160;<a class="el" href="d1/dd9/classCGeomCell.html#a401dd63f3b041bad31be22e5a8a4d252">CGeomCell</a></li>
 <li>m_nCoastMax&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#a4dcc2aa32c7428255643e881139c8d1a">CSimulation</a></li>
 <li>m_nCoastMin&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#a8e5b8513c9dac5678575de009dc4bfed">CSimulation</a></li>
@@ -557,7 +555,6 @@ $(function(){initNavTree('functions_vars_m.html',''); initResizable(true); });
 <li>m_nGISMaxSaveDigits&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#a05e91a11491b490172a0e9a8c55b29b5">CSimulation</a></li>
 <li>m_nGISMissingValue&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#a234aaee67851cdde7add42e80489d87c">CSimulation</a></li>
 <li>m_nGISSave&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#aaad2389347d7e4f2ba33262b6617e954">CSimulation</a></li>
-<li>m_nGlobalID&#160;:&#160;<a class="el" href="df/d45/classCGeomCoastPolygon.html#a73e0faad39cc1caa4c76272557cde921">CGeomCoastPolygon</a>, <a class="el" href="da/dae/classCGeomProfile.html#a2c2ac7593a12e3e06219307b6ac34720">CGeomProfile</a></li>
 <li>m_nLayers&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#a5a9c00448ca60a9db3bb48eb5c3df38f">CSimulation</a></li>
 <li>m_nLevel&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#afaaca6cfe54595e5505badd8c30936b9">CSimulation</a></li>
 <li>m_nLocationID&#160;:&#160;<a class="el" href="db/d5f/classCSedInputEvent.html#a42e198338db7e02d80482f1dde7ff1d6">CSedInputEvent</a></li>
@@ -568,8 +565,10 @@ $(function(){initNavTree('functions_vars_m.html',''); initResizable(true); });
 <li>m_nPointOnCoast&#160;:&#160;<a class="el" href="d2/de0/classCACoastLandform.html#a2c2b3f77788c0b1babf613ac7675e1ed">CACoastLandform</a>, <a class="el" href="dc/d4a/classCRWCellLandform.html#a92a443076ef58fed6e98ac283f8d768d">CRWCellLandform</a></li>
 <li>m_nPolygonCoastID&#160;:&#160;<a class="el" href="d1/dd9/classCGeomCell.html#a57575d266723af823adc5c18bfa879b1">CGeomCell</a></li>
 <li>m_nPolygonID&#160;:&#160;<a class="el" href="d1/dd9/classCGeomCell.html#aad1917bafcded7d307cc78a850b213f3">CGeomCell</a></li>
+<li>m_nProfileCoastID&#160;:&#160;<a class="el" href="d1/dd9/classCGeomCell.html#aef5b39325dacdffc06da12c4aef42e7f">CGeomCell</a></li>
 <li>m_nProfileDownCoast&#160;:&#160;<a class="el" href="df/d45/classCGeomCoastPolygon.html#a8b08aee4e18899dfbcdf22e17c6dfae0">CGeomCoastPolygon</a></li>
 <li>m_nProfileDownCoastNumPointsUsed&#160;:&#160;<a class="el" href="df/d45/classCGeomCoastPolygon.html#ac6cc51cd24d2e723b8a1d8fc90cec841">CGeomCoastPolygon</a></li>
+<li>m_nProfileID&#160;:&#160;<a class="el" href="d1/dd9/classCGeomCell.html#af971cb3c0d7d1b55f4ce3cdbd974417a">CGeomCell</a>, <a class="el" href="da/dae/classCGeomProfile.html#a2f68c7a639baa9a341be375756080345">CGeomProfile</a></li>
 <li>m_nProfileSmoothWindow&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#aeb78392a5380da7a2caca22bae4cfcc8">CSimulation</a></li>
 <li>m_nProfileUpCoast&#160;:&#160;<a class="el" href="df/d45/classCGeomCoastPolygon.html#af6c1013acc536e775227b8e613855105">CGeomCoastPolygon</a></li>
 <li>m_nProfileUpCoastNumPointsUsed&#160;:&#160;<a class="el" href="df/d45/classCGeomCoastPolygon.html#a19cd2e05a8b4ee42a737e1cbeffe24b7">CGeomCoastPolygon</a></li>
@@ -606,12 +605,12 @@ $(function(){initNavTree('functions_vars_m.html',''); initResizable(true); });
 <li>m_PtiAntinode&#160;:&#160;<a class="el" href="df/d45/classCGeomCoastPolygon.html#aa3867d247853430d29bc5d86cd587e18">CGeomCoastPolygon</a></li>
 <li>m_PtiNode&#160;:&#160;<a class="el" href="df/d45/classCGeomCoastPolygon.html#a6b5ffeec7205b08bb49c2c068924474a">CGeomCoastPolygon</a></li>
 <li>m_pUpCoastAdjacentProfile&#160;:&#160;<a class="el" href="da/dae/classCGeomProfile.html#a101a87dfb558cbd93ca91afbab37434f">CGeomProfile</a></li>
-<li>m_pVCoastPolygon&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#a35a3657b5b5a57cff4642842a5c27022">CSimulation</a></li>
+<li>m_pVCoastPolygon&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#afdf9931c6687dab00b0f48c0709d6c8a">CSimulation</a></li>
 <li>m_pVLandform&#160;:&#160;<a class="el" href="d1/dbe/classCRWCoast.html#a654225dc720e4fbdc7bbca895c853b55">CRWCoast</a></li>
 <li>m_pVNormalProfileDownAllCoastpointSeq&#160;:&#160;<a class="el" href="d1/dbe/classCRWCoast.html#acbf64508627de72083d39107e6edeb9c">CRWCoast</a></li>
 <li>m_pVProfile&#160;:&#160;<a class="el" href="d1/dbe/classCRWCoast.html#a08134ec9ca5df9707509209665808b25">CRWCoast</a></li>
 <li>m_pVProfileDownCoastSeq&#160;:&#160;<a class="el" href="d1/dbe/classCRWCoast.html#a7a7edba3707d96ec237f0019c2c13930">CRWCoast</a></li>
-<li>m_pVSedInputEvent&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#a202f2524f3339efbeebd56572fe4ce76">CSimulation</a></li>
+<li>m_pVSedInputEvent&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#a9ffa94c34ecdbcbc6d38ed8df49bd632">CSimulation</a></li>
 <li>m_Rand&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#aab026ce32dae1272a2633b41dd9217d5">CSimulation</a></li>
 <li>m_sBeachData&#160;:&#160;<a class="el" href="dc/d4a/classCRWCellLandform.html#a6f1a35a7a19e27ea5206a9010f46662d">CRWCellLandform</a></li>
 <li>m_sCliffData&#160;:&#160;<a class="el" href="dc/d4a/classCRWCellLandform.html#a5a2d4dca3a1b48a48b7cbcd741a0374f">CRWCellLandform</a></li>
@@ -638,10 +637,6 @@ $(function(){initNavTree('functions_vars_m.html',''); initResizable(true); });
 <li>m_strGDALISSDriverCode&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#a041cb11891fcc19966c43325457f2216">CSimulation</a></li>
 <li>m_strGDALISSDriverDesc&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#abe2c96fa34a7d9c95fa460483056ebeb">CSimulation</a></li>
 <li>m_strGDALISSProjection&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#a06c540c246df130ed0a4c8f940e5e2a1">CSimulation</a></li>
-<li>m_strGDALITDataType&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#a5df68b59cc7b6b26477d6f338d0011a4">CSimulation</a></li>
-<li>m_strGDALITDriverCode&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#aadaba0bebe7afb3791e10b29f5608056">CSimulation</a></li>
-<li>m_strGDALITDriverDesc&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#a7b3e2165516726ef608296b654b1c60f">CSimulation</a></li>
-<li>m_strGDALITProjection&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#acc5d43aab8a2de05c80256d07355122d">CSimulation</a></li>
 <li>m_strGDALIWDataType&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#aa8aab74e772d2d2a2f8d45941f535f4d">CSimulation</a></li>
 <li>m_strGDALIWDriverCode&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#a4bcaace37819b4af89507e8a9c75fcdb">CSimulation</a></li>
 <li>m_strGDALIWDriverDesc&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#ac7f9f45db33488ed655e91cde2c62124">CSimulation</a></li>
@@ -657,7 +652,6 @@ $(function(){initNavTree('functions_vars_m.html',''); initResizable(true); });
 <li>m_strInitialSuspSedimentFile&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#a071cd4a50bc6c768f4d9ed9ad97ed4e9">CSimulation</a></li>
 <li>m_strInterventionClassFile&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#aaae340bf9e42e613a92f4ae6ec556969">CSimulation</a></li>
 <li>m_strInterventionHeightFile&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#acbdbc3ab6337700bfc6445cca7411a8c">CSimulation</a></li>
-<li>m_strInterventionTriggerDepthFile&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#a5075133aa5cccc730f05e52aba57114c">CSimulation</a></li>
 <li>m_strLogFile&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#a6c8e6700304425504120e782dc6355d3">CSimulation</a></li>
 <li>m_strMailAddress&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#a8e7003f2351716121c6e74135a67368e">CSimulation</a></li>
 <li>m_strOGRDWWVDataType&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#ad809e956159513560e58f4928c705865">CSimulation</a></li>
@@ -703,7 +697,6 @@ $(function(){initNavTree('functions_vars_m.html',''); initResizable(true); });
 <li>m_UnconsolidatedSediment&#160;:&#160;<a class="el" href="d5/d6d/classCRWCellLayer.html#a24cd0e82a61e5d9bdb66ca12548145a8">CRWCellLayer</a></li>
 <li>m_VCellFloodLocation&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#a1f232ec3636b74ad30a52b997a83f082">CSimulation</a></li>
 <li>m_VCellInProfile&#160;:&#160;<a class="el" href="da/dae/classCGeomProfile.html#a8bb617c5c66110e2e9046113b0bc2e97">CGeomProfile</a></li>
-<li>m_VCellInProfileExtCRS&#160;:&#160;<a class="el" href="da/dae/classCGeomProfile.html#a4716f5a9913cd9ac1642fbdc19aebda8">CGeomProfile</a></li>
 <li>m_VCliffEdge&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#a6b7a60619dd419c714d4e9cf0d9dd462">CSimulation</a></li>
 <li>m_VCoast&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#a25ada8139c82ca7beab3f279cff83184">CSimulation</a></li>
 <li>m_VdAllHorizonTopElev&#160;:&#160;<a class="el" href="d1/dd9/classCGeomCell.html#aa554e65aad98979e8ce102fb396d1584">CGeomCell</a></li>
@@ -795,7 +788,7 @@ $(function(){initNavTree('functions_vars_m.html',''); initResizable(true); });
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Thu Jul 10 2025 15:42:01 for CoastalME (Coastal Modelling Environment) by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+    <li class="footer">Generated on Tue Jul 15 2025 13:52:55 for CoastalME (Coastal Modelling Environment) by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
   </ul>
 </div>
 </body>

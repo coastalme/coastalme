@@ -62,6 +62,7 @@ var dir_68267d1309a1af8e8297ef4c3efbcdba =
     [ "locate_coast.cpp", "d5/d9e/locate__coast_8cpp.html", null ],
     [ "multi_line.cpp", "db/d80/multi__line_8cpp.html", null ],
     [ "multi_line.h", "d9/d7c/multi__line_8h.html", "d9/d7c/multi__line_8h" ],
+    [ "multiple_coastlines.cpp", "d8/df0/multiple__coastlines_8cpp.html", null ],
     [ "profile.cpp", "db/dfa/profile_8cpp.html", null ],
     [ "profile.h", "de/d45/profile_8h.html", "de/d45/profile_8h" ],
     [ "raster_grid.cpp", "df/de0/raster__grid_8cpp.html", "df/de0/raster__grid_8cpp" ],

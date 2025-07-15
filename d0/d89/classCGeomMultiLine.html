@@ -121,6 +121,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ad04fbcb6021e7031d1603be6e7160d00" id="r_ad04fbcb6021e7031d1603be6e7160d00"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad04fbcb6021e7031d1603be6e7160d00">~CGeomMultiLine</a> (void) override</td></tr>
 <tr class="memdesc:ad04fbcb6021e7031d1603be6e7160d00"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <br /></td></tr>
 <tr class="separator:ad04fbcb6021e7031d1603be6e7160d00"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5691c35d3bd1e3d797d34e9e5c28af1f" id="r_a5691c35d3bd1e3d797d34e9e5c28af1f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d7/dfc/classvector.html">vector</a>&lt; <a class="el" href="../../d5/d4e/classCGeom2DPoint.html">CGeom2DPoint</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5691c35d3bd1e3d797d34e9e5c28af1f">pGetPoints</a> (void)</td></tr>
+<tr class="memdesc:a5691c35d3bd1e3d797d34e9e5c28af1f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a pointer to the points of the <a class="el" href="../../d7/dd3/classCGeomLine.html" title="Geometry class used to represent 2D vector line objects.">CGeomLine</a>.  <br /></td></tr>
+<tr class="separator:a5691c35d3bd1e3d797d34e9e5c28af1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8035bfd430d6d60af4d0c54300440c27" id="r_a8035bfd430d6d60af4d0c54300440c27"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8035bfd430d6d60af4d0c54300440c27">SetPoints</a> (<a class="el" href="../../d7/dfc/classvector.html">vector</a>&lt; <a class="el" href="../../d5/d4e/classCGeom2DPoint.html">CGeom2DPoint</a> &gt; &amp;)</td></tr>
+<tr class="memdesc:a8035bfd430d6d60af4d0c54300440c27"><td class="mdescLeft">&#160;</td><td class="mdescRight">Replaces the points of the <a class="el" href="../../d7/dd3/classCGeomLine.html" title="Geometry class used to represent 2D vector line objects.">CGeomLine</a>.  <br /></td></tr>
+<tr class="separator:a8035bfd430d6d60af4d0c54300440c27"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3f99a9c2ac66b75c432941ec88fc8538" id="r_a3f99a9c2ac66b75c432941ec88fc8538"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3f99a9c2ac66b75c432941ec88fc8538">AppendLineSegment</a> (void)</td></tr>
 <tr class="memdesc:a3f99a9c2ac66b75c432941ec88fc8538"><td class="mdescLeft">&#160;</td><td class="mdescRight">Appends a new empty line segment.  <br /></td></tr>
 <tr class="separator:a3f99a9c2ac66b75c432941ec88fc8538"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -279,7 +285,7 @@ Andres Payo </dd></dl>
 
 <p>Constructor, no parameters. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../db/d80/multi__line_8cpp_source.html#l00031">31</a> of file <a class="el" href="../../db/d80/multi__line_8cpp_source.html">multi_line.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../db/d80/multi__line_8cpp_source.html#l00029">29</a> of file <a class="el" href="../../db/d80/multi__line_8cpp_source.html">multi_line.cpp</a>.</p>
 
 </div>
 </div>
@@ -308,7 +314,7 @@ Andres Payo </dd></dl>
 
 <p>Destructor. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../db/d80/multi__line_8cpp_source.html#l00036">36</a> of file <a class="el" href="../../db/d80/multi__line_8cpp_source.html">multi_line.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../db/d80/multi__line_8cpp_source.html#l00034">34</a> of file <a class="el" href="../../db/d80/multi__line_8cpp_source.html">multi_line.cpp</a>.</p>
 
 </div>
 </div>
@@ -339,9 +345,9 @@ Andres Payo </dd></dl>
 
 <p>Adds a coincident profile to a pre-existing line segment of the <a class="el" href="../../d0/d89/classCGeomMultiLine.html" title="Geometry class used to represent co-incident lines (for profiles/polygon-to-polygon boundaries)">CGeomMultiLine</a> object. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../db/d80/multi__line_8cpp_source.html#l00145">145</a> of file <a class="el" href="../../db/d80/multi__line_8cpp_source.html">multi_line.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../db/d80/multi__line_8cpp_source.html#l00155">155</a> of file <a class="el" href="../../db/d80/multi__line_8cpp_source.html">multi_line.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../da/db2/create__profiles_8cpp_source.html#l01970">CSimulation::nInsertPointIntoProfilesIfNeededThenUpdate()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../da/db2/create__profiles_8cpp_source.html#l01960">CSimulation::nInsertPointIntoProfilesIfNeededThenUpdate()</a>.</p>
 
 </div>
 </div>
@@ -362,9 +368,9 @@ Andres Payo </dd></dl>
 
 <p>Appends a coincident profile pair to the <a class="el" href="../../d0/d89/classCGeomMultiLine.html" title="Geometry class used to represent co-incident lines (for profiles/polygon-to-polygon boundaries)">CGeomMultiLine</a> object's final line segment. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../db/d80/multi__line_8cpp_source.html#l00137">137</a> of file <a class="el" href="../../db/d80/multi__line_8cpp_source.html">multi_line.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../db/d80/multi__line_8cpp_source.html#l00147">147</a> of file <a class="el" href="../../db/d80/multi__line_8cpp_source.html">multi_line.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../da/db2/create__profiles_8cpp_source.html#l01746">CSimulation::MergeProfilesAtFinalLineSegments()</a>, <a class="el" href="../../da/db2/create__profiles_8cpp_source.html#l00452">CSimulation::nCreateProfile()</a>, and <a class="el" href="../../da/db2/create__profiles_8cpp_source.html#l00531">CSimulation::nLocateAndCreateGridEdgeProfile()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../da/db2/create__profiles_8cpp_source.html#l01736">CSimulation::MergeProfilesAtFinalLineSegments()</a>, <a class="el" href="../../da/db2/create__profiles_8cpp_source.html#l00446">CSimulation::nCreateProfile()</a>, and <a class="el" href="../../da/db2/create__profiles_8cpp_source.html#l00527">CSimulation::nLocateAndCreateGridEdgeProfile()</a>.</p>
 
 </div>
 </div>
@@ -385,7 +391,7 @@ Andres Payo </dd></dl>
 
 <p>Appends a line segment which is supplied as a parameter. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../db/d80/multi__line_8cpp_source.html#l00047">47</a> of file <a class="el" href="../../db/d80/multi__line_8cpp_source.html">multi_line.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../db/d80/multi__line_8cpp_source.html#l00057">57</a> of file <a class="el" href="../../db/d80/multi__line_8cpp_source.html">multi_line.cpp</a>.</p>
 
 </div>
 </div>
@@ -406,9 +412,9 @@ Andres Payo </dd></dl>
 
 <p>Appends a new empty line segment. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../db/d80/multi__line_8cpp_source.html#l00041">41</a> of file <a class="el" href="../../db/d80/multi__line_8cpp_source.html">multi_line.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../db/d80/multi__line_8cpp_source.html#l00051">51</a> of file <a class="el" href="../../db/d80/multi__line_8cpp_source.html">multi_line.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../da/db2/create__profiles_8cpp_source.html#l01746">CSimulation::MergeProfilesAtFinalLineSegments()</a>, <a class="el" href="../../da/db2/create__profiles_8cpp_source.html#l00452">CSimulation::nCreateProfile()</a>, <a class="el" href="../../da/db2/create__profiles_8cpp_source.html#l00531">CSimulation::nLocateAndCreateGridEdgeProfile()</a>, and <a class="el" href="../../da/db2/create__profiles_8cpp_source.html#l02148">CSimulation::TruncateProfileAndAppendNew()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../da/db2/create__profiles_8cpp_source.html#l01736">CSimulation::MergeProfilesAtFinalLineSegments()</a>, <a class="el" href="../../da/db2/create__profiles_8cpp_source.html#l00446">CSimulation::nCreateProfile()</a>, <a class="el" href="../../da/db2/create__profiles_8cpp_source.html#l00527">CSimulation::nLocateAndCreateGridEdgeProfile()</a>, and <a class="el" href="../../da/db2/create__profiles_8cpp_source.html#l02138">CSimulation::TruncateProfileAndAppendNew()</a>.</p>
 
 </div>
 </div>
@@ -430,9 +436,9 @@ Andres Payo </dd></dl>
 <p>Returns true if the given profile number is one of the coincident profiles of the a specified line segment. </p>
 <p>Returns true if the given profile number is a coincident profile of any line segment of the <a class="el" href="../../d0/d89/classCGeomMultiLine.html" title="Geometry class used to represent co-incident lines (for profiles/polygon-to-polygon boundaries)">CGeomMultiLine</a> object </p>
 
-<p class="definition">Definition at line <a class="el" href="../../db/d80/multi__line_8cpp_source.html#l00213">213</a> of file <a class="el" href="../../db/d80/multi__line_8cpp_source.html">multi_line.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../db/d80/multi__line_8cpp_source.html#l00223">223</a> of file <a class="el" href="../../db/d80/multi__line_8cpp_source.html">multi_line.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d6/d91/create__polygons_8cpp_source.html#l00047">CSimulation::nCreateAllPolygons()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d6/d91/create__polygons_8cpp_source.html#l00041">CSimulation::nCreateAllPolygons()</a>.</p>
 
 </div>
 </div>
@@ -453,9 +459,9 @@ Andres Payo </dd></dl>
 
 <p>Returns true if the given profile number is amongst the coincident profiles of the <a class="el" href="../../d0/d89/classCGeomMultiLine.html" title="Geometry class used to represent co-incident lines (for profiles/polygon-to-polygon boundaries)">CGeomMultiLine</a> object's final line segment. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../db/d80/multi__line_8cpp_source.html#l00183">183</a> of file <a class="el" href="../../db/d80/multi__line_8cpp_source.html">multi_line.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../db/d80/multi__line_8cpp_source.html#l00193">193</a> of file <a class="el" href="../../db/d80/multi__line_8cpp_source.html">multi_line.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../da/db2/create__profiles_8cpp_source.html#l01005">CSimulation::CheckForIntersectingProfiles()</a>, and <a class="el" href="../../da/db2/create__profiles_8cpp_source.html#l01524">CSimulation::CreateRasterizedProfile()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../da/db2/create__profiles_8cpp_source.html#l00992">CSimulation::CheckForIntersectingProfiles()</a>, and <a class="el" href="../../da/db2/create__profiles_8cpp_source.html#l01507">CSimulation::CreateRasterizedProfile()</a>.</p>
 
 </div>
 </div>
@@ -485,9 +491,9 @@ Andres Payo </dd></dl>
 
 <p>Finds the number of the most coastward line segment for which the two profiles are coincident, or -1 if they are not coincident. If they are coincident, also finds the line segment of the other profile. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../db/d80/multi__line_8cpp_source.html#l00233">233</a> of file <a class="el" href="../../db/d80/multi__line_8cpp_source.html">multi_line.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../db/d80/multi__line_8cpp_source.html#l00243">243</a> of file <a class="el" href="../../db/d80/multi__line_8cpp_source.html">multi_line.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d6/d91/create__polygons_8cpp_source.html#l00047">CSimulation::nCreateAllPolygons()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d6/d91/create__polygons_8cpp_source.html#l00041">CSimulation::nCreateAllPolygons()</a>.</p>
 
 </div>
 </div>
@@ -508,9 +514,9 @@ Andres Payo </dd></dl>
 
 <p>Inserts a line segment, inheriting from preceding line segments. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../db/d80/multi__line_8cpp_source.html#l00086">86</a> of file <a class="el" href="../../db/d80/multi__line_8cpp_source.html">multi_line.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../db/d80/multi__line_8cpp_source.html#l00096">96</a> of file <a class="el" href="../../db/d80/multi__line_8cpp_source.html">multi_line.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../db/dfa/profile_8cpp_source.html#l00311">CGeomProfile::bInsertIntersection()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../db/dfa/profile_8cpp_source.html#l00322">CGeomProfile::bInsertIntersection()</a>.</p>
 
 </div>
 </div>
@@ -535,9 +541,9 @@ Andres Payo </dd></dl>
 
 <p>Returns the numbers of coincident profiles. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../db/d80/multi__line_8cpp_source.html#l00159">159</a> of file <a class="el" href="../../db/d80/multi__line_8cpp_source.html">multi_line.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../db/d80/multi__line_8cpp_source.html#l00169">169</a> of file <a class="el" href="../../db/d80/multi__line_8cpp_source.html">multi_line.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d6/d91/create__polygons_8cpp_source.html#l00671">CSimulation::nDoPolygonSharedBoundaries()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d6/d91/create__polygons_8cpp_source.html#l00663">CSimulation::nDoPolygonSharedBoundaries()</a>.</p>
 
 </div>
 </div>
@@ -558,9 +564,9 @@ Andres Payo </dd></dl>
 
 <p>Returns the count of coincident profiles in a specified line segment, or -1 if the line segment does not exist. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../db/d80/multi__line_8cpp_source.html#l00173">173</a> of file <a class="el" href="../../db/d80/multi__line_8cpp_source.html">multi_line.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../db/d80/multi__line_8cpp_source.html#l00183">183</a> of file <a class="el" href="../../db/d80/multi__line_8cpp_source.html">multi_line.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../da/db2/create__profiles_8cpp_source.html#l01524">CSimulation::CreateRasterizedProfile()</a>, <a class="el" href="../../d6/d91/create__polygons_8cpp_source.html#l00671">CSimulation::nDoPolygonSharedBoundaries()</a>, and <a class="el" href="../../da/db2/create__profiles_8cpp_source.html#l02148">CSimulation::TruncateProfileAndAppendNew()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../da/db2/create__profiles_8cpp_source.html#l01507">CSimulation::CreateRasterizedProfile()</a>, <a class="el" href="../../d6/d91/create__polygons_8cpp_source.html#l00663">CSimulation::nDoPolygonSharedBoundaries()</a>, and <a class="el" href="../../da/db2/create__profiles_8cpp_source.html#l02138">CSimulation::TruncateProfileAndAppendNew()</a>.</p>
 
 </div>
 </div>
@@ -582,9 +588,9 @@ Andres Payo </dd></dl>
 <p>Appends a line segment which then inherits from the preceding line segments. </p>
 <p>Returns the <a class="el" href="../../d0/d89/classCGeomMultiLine.html" title="Geometry class used to represent co-incident lines (for profiles/polygon-to-polygon boundaries)">CGeomMultiLine</a> object's number of line segments </p>
 
-<p class="definition">Definition at line <a class="el" href="../../db/d80/multi__line_8cpp_source.html#l00074">74</a> of file <a class="el" href="../../db/d80/multi__line_8cpp_source.html">multi_line.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../db/d80/multi__line_8cpp_source.html#l00084">84</a> of file <a class="el" href="../../db/d80/multi__line_8cpp_source.html">multi_line.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../da/db2/create__profiles_8cpp_source.html#l01335">CSimulation::bCheckForIntersection()</a>, <a class="el" href="../../db/dfa/profile_8cpp_source.html#l00311">CGeomProfile::bInsertIntersection()</a>, <a class="el" href="../../da/db2/create__profiles_8cpp_source.html#l01005">CSimulation::CheckForIntersectingProfiles()</a>, <a class="el" href="../../da/db2/create__profiles_8cpp_source.html#l01524">CSimulation::CreateRasterizedProfile()</a>, <a class="el" href="../../da/db2/create__profiles_8cpp_source.html#l01970">CSimulation::nInsertPointIntoProfilesIfNeededThenUpdate()</a>, and <a class="el" href="../../da/db2/create__profiles_8cpp_source.html#l02148">CSimulation::TruncateProfileAndAppendNew()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../da/db2/create__profiles_8cpp_source.html#l01320">CSimulation::bCheckForIntersection()</a>, <a class="el" href="../../db/dfa/profile_8cpp_source.html#l00322">CGeomProfile::bInsertIntersection()</a>, <a class="el" href="../../da/db2/create__profiles_8cpp_source.html#l00992">CSimulation::CheckForIntersectingProfiles()</a>, <a class="el" href="../../da/db2/create__profiles_8cpp_source.html#l01507">CSimulation::CreateRasterizedProfile()</a>, <a class="el" href="../../da/db2/create__profiles_8cpp_source.html#l01960">CSimulation::nInsertPointIntoProfilesIfNeededThenUpdate()</a>, and <a class="el" href="../../da/db2/create__profiles_8cpp_source.html#l02138">CSimulation::TruncateProfileAndAppendNew()</a>.</p>
 
 </div>
 </div>
@@ -609,9 +615,9 @@ Andres Payo </dd></dl>
 
 <p>Returns the profile number, given a line segment and the index of the co-incident profile for that line segment. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../db/d80/multi__line_8cpp_source.html#l00259">259</a> of file <a class="el" href="../../db/d80/multi__line_8cpp_source.html">multi_line.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../db/d80/multi__line_8cpp_source.html#l00269">269</a> of file <a class="el" href="../../db/d80/multi__line_8cpp_source.html">multi_line.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../da/db2/create__profiles_8cpp_source.html#l02148">CSimulation::TruncateProfileAndAppendNew()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../da/db2/create__profiles_8cpp_source.html#l02138">CSimulation::TruncateProfileAndAppendNew()</a>.</p>
 
 </div>
 </div>
@@ -636,9 +642,30 @@ Andres Payo </dd></dl>
 
 <p>Returns the profile's own line segment, given a line segment and the index of the co-incident profile for that line segment. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../db/d80/multi__line_8cpp_source.html#l00265">265</a> of file <a class="el" href="../../db/d80/multi__line_8cpp_source.html">multi_line.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../db/d80/multi__line_8cpp_source.html#l00275">275</a> of file <a class="el" href="../../db/d80/multi__line_8cpp_source.html">multi_line.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../da/db2/create__profiles_8cpp_source.html#l02148">CSimulation::TruncateProfileAndAppendNew()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../da/db2/create__profiles_8cpp_source.html#l02138">CSimulation::TruncateProfileAndAppendNew()</a>.</p>
+
+</div>
+</div>
+<a id="a5691c35d3bd1e3d797d34e9e5c28af1f" name="a5691c35d3bd1e3d797d34e9e5c28af1f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5691c35d3bd1e3d797d34e9e5c28af1f">&#9670;&#160;</a></span>pGetPoints()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d7/dfc/classvector.html">vector</a>&lt; <a class="el" href="../../d5/d4e/classCGeom2DPoint.html">CGeom2DPoint</a> &gt; &amp; CGeomMultiLine::pGetPoints </td>
+          <td>(</td>
+          <td class="paramtype">void</td>          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns a pointer to the points of the <a class="el" href="../../d7/dd3/classCGeomLine.html" title="Geometry class used to represent 2D vector line objects.">CGeomLine</a>. </p>
+
+<p class="definition">Definition at line <a class="el" href="../../db/d80/multi__line_8cpp_source.html#l00039">39</a> of file <a class="el" href="../../db/d80/multi__line_8cpp_source.html">multi_line.cpp</a>.</p>
 
 </div>
 </div>
@@ -659,9 +686,9 @@ Andres Payo </dd></dl>
 
 <p>Returns a vector of pairs (a line segment) </p>
 
-<p class="definition">Definition at line <a class="el" href="../../db/d80/multi__line_8cpp_source.html#l00152">152</a> of file <a class="el" href="../../db/d80/multi__line_8cpp_source.html">multi_line.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../db/d80/multi__line_8cpp_source.html#l00162">162</a> of file <a class="el" href="../../db/d80/multi__line_8cpp_source.html">multi_line.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../da/db2/create__profiles_8cpp_source.html#l01746">CSimulation::MergeProfilesAtFinalLineSegments()</a>, <a class="el" href="../../da/db2/create__profiles_8cpp_source.html#l01970">CSimulation::nInsertPointIntoProfilesIfNeededThenUpdate()</a>, and <a class="el" href="../../da/db2/create__profiles_8cpp_source.html#l02148">CSimulation::TruncateProfileAndAppendNew()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../da/db2/create__profiles_8cpp_source.html#l01736">CSimulation::MergeProfilesAtFinalLineSegments()</a>, <a class="el" href="../../da/db2/create__profiles_8cpp_source.html#l01960">CSimulation::nInsertPointIntoProfilesIfNeededThenUpdate()</a>, and <a class="el" href="../../da/db2/create__profiles_8cpp_source.html#l02138">CSimulation::TruncateProfileAndAppendNew()</a>.</p>
 
 </div>
 </div>
@@ -682,9 +709,9 @@ Andres Payo </dd></dl>
 
 <p>Returns a vector of the line segments which succeed the specified line segment number. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../db/d80/multi__line_8cpp_source.html#l00120">120</a> of file <a class="el" href="../../db/d80/multi__line_8cpp_source.html">multi_line.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../db/d80/multi__line_8cpp_source.html#l00130">130</a> of file <a class="el" href="../../db/d80/multi__line_8cpp_source.html">multi_line.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../da/db2/create__profiles_8cpp_source.html#l01893">CSimulation::TruncateOneProfileRetainOtherProfile()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../da/db2/create__profiles_8cpp_source.html#l01883">CSimulation::TruncateOneProfileRetainOtherProfile()</a>.</p>
 
 </div>
 </div>
@@ -705,7 +732,28 @@ Andres Payo </dd></dl>
 
 <p>Removes a line segment. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../db/d80/multi__line_8cpp_source.html#l00131">131</a> of file <a class="el" href="../../db/d80/multi__line_8cpp_source.html">multi_line.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../db/d80/multi__line_8cpp_source.html#l00141">141</a> of file <a class="el" href="../../db/d80/multi__line_8cpp_source.html">multi_line.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a8035bfd430d6d60af4d0c54300440c27" name="a8035bfd430d6d60af4d0c54300440c27"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8035bfd430d6d60af4d0c54300440c27">&#9670;&#160;</a></span>SetPoints()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void CGeomMultiLine::SetPoints </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../d7/dfc/classvector.html">vector</a>&lt; <a class="el" href="../../d5/d4e/classCGeom2DPoint.html">CGeom2DPoint</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>pVPts</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Replaces the points of the <a class="el" href="../../d7/dd3/classCGeomLine.html" title="Geometry class used to represent 2D vector line objects.">CGeomLine</a>. </p>
+
+<p class="definition">Definition at line <a class="el" href="../../db/d80/multi__line_8cpp_source.html#l00045">45</a> of file <a class="el" href="../../db/d80/multi__line_8cpp_source.html">multi_line.cpp</a>.</p>
 
 </div>
 </div>
@@ -735,9 +783,9 @@ Andres Payo </dd></dl>
 
 <p>Sets a profile's own line segment number, given a line segment and the index of the co-incident profile for that line segment. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../db/d80/multi__line_8cpp_source.html#l00271">271</a> of file <a class="el" href="../../db/d80/multi__line_8cpp_source.html">multi_line.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../db/d80/multi__line_8cpp_source.html#l00281">281</a> of file <a class="el" href="../../db/d80/multi__line_8cpp_source.html">multi_line.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../da/db2/create__profiles_8cpp_source.html#l02148">CSimulation::TruncateProfileAndAppendNew()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../da/db2/create__profiles_8cpp_source.html#l02138">CSimulation::TruncateProfileAndAppendNew()</a>.</p>
 
 </div>
 </div>
@@ -758,9 +806,9 @@ Andres Payo </dd></dl>
 
 <p>Cuts short the number of line segments. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../db/d80/multi__line_8cpp_source.html#l00080">80</a> of file <a class="el" href="../../db/d80/multi__line_8cpp_source.html">multi_line.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../db/d80/multi__line_8cpp_source.html#l00090">90</a> of file <a class="el" href="../../db/d80/multi__line_8cpp_source.html">multi_line.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../da/db2/create__profiles_8cpp_source.html#l01524">CSimulation::CreateRasterizedProfile()</a>, and <a class="el" href="../../da/db2/create__profiles_8cpp_source.html#l02148">CSimulation::TruncateProfileAndAppendNew()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../da/db2/create__profiles_8cpp_source.html#l01507">CSimulation::CreateRasterizedProfile()</a>, and <a class="el" href="../../da/db2/create__profiles_8cpp_source.html#l02138">CSimulation::TruncateProfileAndAppendNew()</a>.</p>
 
 </div>
 </div>
@@ -789,7 +837,7 @@ Andres Payo </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../d9/d7c/multi__line_8h_source.html#l00041">41</a> of file <a class="el" href="../../d9/d7c/multi__line_8h_source.html">multi_line.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../db/d80/multi__line_8cpp_source.html#l00145">AddCoincidentProfileToExistingLineSegment()</a>, <a class="el" href="../../db/d80/multi__line_8cpp_source.html#l00137">AppendCoincidentProfileToLineSegments()</a>, <a class="el" href="../../db/d80/multi__line_8cpp_source.html#l00047">AppendLineSegment()</a>, <a class="el" href="../../db/d80/multi__line_8cpp_source.html#l00041">AppendLineSegment()</a>, <a class="el" href="../../db/d80/multi__line_8cpp_source.html#l00213">bFindProfileInCoincidentProfiles()</a>, <a class="el" href="../../db/d80/multi__line_8cpp_source.html#l00183">bFindProfileInCoincidentProfilesOfLastLineSegment()</a>, <a class="el" href="../../db/d80/multi__line_8cpp_source.html#l00233">GetMostCoastwardSharedLineSegment()</a>, <a class="el" href="../../db/d80/multi__line_8cpp_source.html#l00086">InsertLineSegment()</a>, <a class="el" href="../../db/d80/multi__line_8cpp_source.html#l00159">nGetCoincidentProfileForLineSegment()</a>, <a class="el" href="../../db/d80/multi__line_8cpp_source.html#l00173">nGetNumCoincidentProfilesInLineSegment()</a>, <a class="el" href="../../db/d80/multi__line_8cpp_source.html#l00074">nGetNumLineSegments()</a>, <a class="el" href="../../db/d80/multi__line_8cpp_source.html#l00259">nGetProf()</a>, <a class="el" href="../../db/d80/multi__line_8cpp_source.html#l00265">nGetProfsLineSeg()</a>, <a class="el" href="../../db/d80/multi__line_8cpp_source.html#l00152">pprVGetPairedCoincidentProfilesForLineSegment()</a>, <a class="el" href="../../db/d80/multi__line_8cpp_source.html#l00120">prVVGetAllLineSegAfter()</a>, <a class="el" href="../../db/d80/multi__line_8cpp_source.html#l00131">RemoveLineSegment()</a>, <a class="el" href="../../db/d80/multi__line_8cpp_source.html#l00271">SetProfsLineSeg()</a>, and <a class="el" href="../../db/d80/multi__line_8cpp_source.html#l00080">TruncateLineSegments()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../db/d80/multi__line_8cpp_source.html#l00155">AddCoincidentProfileToExistingLineSegment()</a>, <a class="el" href="../../db/d80/multi__line_8cpp_source.html#l00147">AppendCoincidentProfileToLineSegments()</a>, <a class="el" href="../../db/d80/multi__line_8cpp_source.html#l00057">AppendLineSegment()</a>, <a class="el" href="../../db/d80/multi__line_8cpp_source.html#l00051">AppendLineSegment()</a>, <a class="el" href="../../db/d80/multi__line_8cpp_source.html#l00223">bFindProfileInCoincidentProfiles()</a>, <a class="el" href="../../db/d80/multi__line_8cpp_source.html#l00193">bFindProfileInCoincidentProfilesOfLastLineSegment()</a>, <a class="el" href="../../db/d80/multi__line_8cpp_source.html#l00243">GetMostCoastwardSharedLineSegment()</a>, <a class="el" href="../../db/d80/multi__line_8cpp_source.html#l00096">InsertLineSegment()</a>, <a class="el" href="../../db/d80/multi__line_8cpp_source.html#l00169">nGetCoincidentProfileForLineSegment()</a>, <a class="el" href="../../db/d80/multi__line_8cpp_source.html#l00183">nGetNumCoincidentProfilesInLineSegment()</a>, <a class="el" href="../../db/d80/multi__line_8cpp_source.html#l00084">nGetNumLineSegments()</a>, <a class="el" href="../../db/d80/multi__line_8cpp_source.html#l00269">nGetProf()</a>, <a class="el" href="../../db/d80/multi__line_8cpp_source.html#l00275">nGetProfsLineSeg()</a>, <a class="el" href="../../db/d80/multi__line_8cpp_source.html#l00162">pprVGetPairedCoincidentProfilesForLineSegment()</a>, <a class="el" href="../../db/d80/multi__line_8cpp_source.html#l00130">prVVGetAllLineSegAfter()</a>, <a class="el" href="../../db/d80/multi__line_8cpp_source.html#l00141">RemoveLineSegment()</a>, <a class="el" href="../../db/d80/multi__line_8cpp_source.html#l00281">SetProfsLineSeg()</a>, and <a class="el" href="../../db/d80/multi__line_8cpp_source.html#l00090">TruncateLineSegments()</a>.</p>
 
 </div>
 </div>
@@ -803,7 +851,7 @@ Andres Payo </dd></dl>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../d0/d89/classCGeomMultiLine.html">CGeomMultiLine</a></li>
-    <li class="footer">Generated on Thu Jul 10 2025 15:42:01 for CoastalME (Coastal Modelling Environment) by <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+    <li class="footer">Generated on Tue Jul 15 2025 13:52:55 for CoastalME (Coastal Modelling Environment) by <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
   </ul>
 </div>
 </body>

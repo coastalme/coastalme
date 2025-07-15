@@ -50,7 +50,7 @@ var classCRWCoast =
     [ "pGetSim", "d1/dbe/classCRWCoast.html#a3d7228e529d45b4ee4724f73a319f825", null ],
     [ "pGetUpCoastProfile", "d1/dbe/classCRWCoast.html#a62337b4b833a467e699943f4a7ce13b2", null ],
     [ "pLGetCoastlineExtCRS", "d1/dbe/classCRWCoast.html#a630fe9cdd8107a28a3eea407f91cdb60", null ],
-    [ "pPolyCreatePolygon", "d1/dbe/classCRWCoast.html#a27a42c6f614f0a9e555cda458a839e1d", null ],
+    [ "pPolyCreatePolygon", "d1/dbe/classCRWCoast.html#a9e90685ff184cf84502be1ccea4c4ddf", null ],
     [ "pPtGetCoastlinePointExtCRS", "d1/dbe/classCRWCoast.html#aa534bfd3d273c69654e0dff9855c84d9", null ],
     [ "pPtiGetCellMarkedAsCoastline", "d1/dbe/classCRWCoast.html#a1355c9abbc407c875c500aa77159d08a", null ],
     [ "pVGetDetailedCurvature", "d1/dbe/classCRWCoast.html#ada082dfc373ff748cf12a0c59271f8b3", null ],
