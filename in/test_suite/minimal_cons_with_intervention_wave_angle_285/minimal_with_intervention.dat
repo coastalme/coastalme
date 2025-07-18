@@ -23,7 +23,7 @@
 ; Run information -----------------------------------------------------------------------------------------------------
 Main output/log file names                                          [omit path and extension]: minimal_cons_with_intervention
 Content of log file                       [0 = no log file, 1 = least detail, 4 = everything]: 4
-Output per-timestep results in CSV format?                                              [y/n]: n
+Output per-timestep results in CSV format?                                              [y/n]: y
 
 Simulation start date and time                                          [hh-mm-ss dd/mm/yyyy]: 00-00-00 01/01/1999
 Duration of simulation                                           [hours, days, months, years]: 365 days
@@ -84,7 +84,7 @@ Final mean still water level (m)                               [blank = same as 
 
 Deep water wave height (m)                                         [value or point shapefile]: 3
 Deep water wave height time series         [omit if deep water wave height is a single value]:
-Deep water wave orientation (degrees)         [omit if deep water wave height from shapefile]: 285   ; 349 193 225 270 355 200 265 310 190 340
+Deep water wave orientation (degrees)         [omit if deep water wave height from shapefile]: 349   ; 349 193 225 270 355 200 265 310 190 340
 Wave period (sec)                             [omit if deep water wave height from shapefile]: 10
 
 Tide data file                                                                 [may be blank]: in/test_suite/minimal_cons_with_intervention_wave_angle_285/tides.dat
@@ -163,4 +163,6 @@ Cliff edge smoothing                         [0 = none, 1 = running mean, 2 = Sa
 Cliff edge smoothing window size                                                [must be odd]: 33
 Polynomial order for Savitzky-Golay cliff edge smoothing                             [2 or 4]: 4
 Cliff slope limit for cliff toe detection                                                    : 0.3
+Intervention trigger file                                                     [path and name]: in/test_suite/minimal_cons_with_intervention_wave_angle_285/intervention_depth.tif
+Intervention trigger buffer                                                   [distance in m]: 2 
 ; END OF FILE ----------------------------------------------------------------------------------------------------------

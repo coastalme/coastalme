@@ -1,8 +1,8 @@
 #!/bin/sh
 
 # Change this to change build type
-#buildtype=Debug
-buildtype=Release
+buildtype=Debug
+#buildtype=Release
 #buildtype=Prerelease             # DO NOT run using debugger e.g. gdb
 #buildtype=RelWithDebInfo        # Not yet implemented in CMakeLists.txt
 #buildtype=MinSizeRel            # Not yet implemented in CMakeLists.txt
@@ -23,6 +23,7 @@ echo ""
 rm -f ./lib/*
 cd cshore
 if [[ $OSTYPE == 'darwin'* ]]; then
+   cshorelibrary=STATIC
    ./make_cshore_lib.sh $cshorelibrary $buildtype $cshoreinout
 else
    ./make_cshore_lib.sh

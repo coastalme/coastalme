@@ -574,6 +574,7 @@ int const SUSP_SED_RASTER = 7;
 int const LANDFORM_RASTER = 8;
 int const INTERVENTION_CLASS_RASTER = 9;
 int const INTERVENTION_HEIGHT_RASTER = 10;
+int const INTERVENTION_TRIGGER_RASTER = 11;
 
 // GIS vector data type codes
 int const VEC_FIELD_DATA_ANY = 0;
@@ -830,6 +831,8 @@ double const MIN_LENGTH_OF_SHADOW_ZONE_LINE = 10;        // Used in shadow line 
 double const MAX_LAND_LENGTH_OF_SHADOW_ZONE_LINE = 5;    // Used in shadow line tracing
 double const CLIFF_COLLAPSE_HEIGHT_INCREMENT = 0.1;      // Increment the fractional height of the cliff talus Dean profile, if we have not been able to deposit enough
 double const INTERVENTION_PROFILE_SPACING_FACTOR = 0.5;  // Profile spacing on interventions works better if it is smaller than profile spacing on coastline
+double const DEFAULT_INTERVENTION_TRIGGER_DEPTH = 2.0;   // Default depth below initial ground level at which interventions fail (m)
+double const DEFAULT_INTERVENTION_INFLUENCE_DISTANCE = 5.0; // Default distance (m) to check for undermining around interventions
 
 double const DBL_NODATA = -9999;
 
@@ -866,6 +869,7 @@ string const READING_RASTER_FILES = "  - Reading raster GIS files";
 string const READING_LANDFORM_FILE = "    - Landform class: ";
 string const READING_INTERVENTION_CLASS_FILE = "    - Intervention class: ";
 string const READING_INTERVENTION_HEIGHT_FILE = "    - Intervention height: ";
+string const READING_INTERVENTION_TRIGGER_FILE = "    - Intervention trigger depth: ";
 string const READING_SUSPENDED_SEDIMENT_FILE = "    - Suspended sediment: ";
 string const READING_UNCONS_FINE_SEDIMENT_FILE = "    - Unconsolidated fine sediment (layer ";
 string const READING_UNCONS_SAND_SEDIMENT_FILE = "    - Unconsolidated sand sediment (layer ";
