@@ -57,6 +57,7 @@ using std::filesystem::create_directories;
 #include "simulation.h"
 #include "raster_grid.h"
 #include "coast.h"
+#include "cliff_collapse_manager.h"
 
 //===============================================================================================================================
 //! The CSimulation constructor
@@ -437,7 +438,11 @@ CSimulation::CSimulation(void)
    m_tSysStartTime =
    m_tSysEndTime = 0;
 
+   // Initialize string parameters with default values
+   m_strCliffAlgorithm = "simple_notch";
+
    m_pRasterGrid = NULL;
+   m_pCliffCollapseManager = NULL;
 }
 
 //===============================================================================================================================
@@ -514,6 +519,9 @@ CSimulation::~CSimulation(void)
 
    if (m_pRasterGrid)
       delete m_pRasterGrid;
+   
+   if (m_pCliffCollapseManager)
+      delete m_pCliffCollapseManager;
 }
 
 //===============================================================================================================================
@@ -692,6 +700,9 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
 
    // Create the raster grid object
    m_pRasterGrid = new CGeomRasterGrid(this);
+   
+   // Create the cliff collapse manager object
+   m_pCliffCollapseManager = new CCliffCollapseManager(this);
 
    // Read in the basement layer (must have this file), create the raster grid, then read in the basement DEM data to the array
    AnnounceReadBasementDEM();
@@ -708,6 +719,16 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
       if (nTmp < 3)
       {
          string const strErr = ERR + "cliff deposition must have a planview width of at least three cells. The current setting of " + to_string(m_dCliffDepositionPlanviewWidth) + " m gives a planview width of " + to_string(nTmp) + " cells. Please edit " + m_strDataPathName;
+         cerr << strErr << endl;
+         LogStream << strErr << endl;
+         OutStream << strErr << endl;
+         return RTN_ERR_RUNDATA;
+      }
+      
+      // Initialize the cliff collapse manager with user-selected algorithm
+      if (!m_pCliffCollapseManager->Initialize(m_strCliffAlgorithm))
+      {
+         string const strErr = ERR + "failed to initialize cliff collapse manager with algorithm: " + m_strCliffAlgorithm;
          cerr << strErr << endl;
          LogStream << strErr << endl;
          OutStream << strErr << endl;
@@ -1291,7 +1312,9 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
       if (m_bHaveConsolidatedSediment && m_bDoCliffCollapse)
       {
          // Do all cliff collapses for this timestep (if any)
-         nRet = nDoAllWaveEnergyToCoastLandforms();
+// TEST         nRet = nDoAllWaveEnergyToCoastLandforms();
+         // Do all cliff collapses for this timestep (if any) using the cliff collapse manager
+         nRet = m_pCliffCollapseManager->ProcessAllCliffCollapse();
          if (nRet != RTN_OK)
             return nRet;
       }
