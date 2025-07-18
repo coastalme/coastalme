@@ -1,6 +1,5 @@
 var cme_8h =
 [
-    [ "string", "d5/d92/classstring.html", "d5/d92/classstring" ],
     [ "ostringstream", "d8/d79/classostringstream.html", null ],
     [ "ostream", "d0/d43/classostream.html", null ],
     [ "bFPIsEqual", "d6/d2a/cme_8h.html#a61afa8560a3b39c80657661a1d8f76ab", null ],
@@ -47,6 +46,8 @@ var cme_8h =
     [ "DEEP_WATER_WAVE_STATIONS_MAX_LAYER", "d6/d2a/cme_8h.html#ae1de77ded77706e8968237b7f22a9608", null ],
     [ "DEEP_WATER_WAVE_STATIONS_POINT_GEOMETRY", "d6/d2a/cme_8h.html#a8fde9d898ecf96dda7921a23c547de7d", null ],
     [ "DEEP_WATER_WAVE_STATIONS_VEC", "d6/d2a/cme_8h.html#a74c5ed54fcf9b27b5ab23c2f039dac1a", null ],
+    [ "DEFAULT_INTERVENTION_INFLUENCE_DISTANCE", "d6/d2a/cme_8h.html#a185cfb23b26558651408643b036b5ad0", null ],
+    [ "DEFAULT_INTERVENTION_TRIGGER_DEPTH", "d6/d2a/cme_8h.html#ab05b639ec4bc0816d33075656b108b1a", null ],
     [ "DEFAULT_PROFILE_SPACING", "d6/d2a/cme_8h.html#a2e6c3bbaab447ca955fc12ac511e36e0", null ],
     [ "DEPTH_OVER_DB_INCREMENT", "d6/d2a/cme_8h.html#a4a0172f22f9ee43c7168c4ccfb531b1a", null ],
     [ "DIRECTION_DOWNCOAST", "d6/d2a/cme_8h.html#a29fcc12f725cf70f82b391b4fd46d171", null ],
@@ -86,6 +87,7 @@ var cme_8h =
     [ "INTERVENTION_CLASS_RASTER", "d6/d2a/cme_8h.html#a8d9b72aabe736946364e97529cfffc2d", null ],
     [ "INTERVENTION_HEIGHT_RASTER", "d6/d2a/cme_8h.html#af0af8b555af7a1a65f37e4779d575e6f", null ],
     [ "INTERVENTION_PROFILE_SPACING_FACTOR", "d6/d2a/cme_8h.html#a22d88fc088ccfc7b9d303879a933845f", null ],
+    [ "INTERVENTION_TRIGGER_RASTER", "d6/d2a/cme_8h.html#a26aa83c9213fa385e38301df64d500d8", null ],
     [ "INVERSE_DEPTH_OVER_DB_INCREMENT", "d6/d2a/cme_8h.html#a8c407e987bff2e42c724c641a5f2d0e0", null ],
     [ "IO_INTERVENTION_NON_STRUCT", "d6/d2a/cme_8h.html#ab44a2a5c7677a89a7e4737bea439263d", null ],
     [ "IO_INTERVENTION_NONE", "d6/d2a/cme_8h.html#a5529d94b0b4b2b998dee5bb0088714c8", null ],
@@ -422,6 +424,7 @@ var cme_8h =
     [ "READING_FLOOD_LOCATION", "d6/d2a/cme_8h.html#acc59260bf19516903b692fefa90fe20f", null ],
     [ "READING_INTERVENTION_CLASS_FILE", "d6/d2a/cme_8h.html#a60c9a85f1f41bb9a089a2d7455d9d744", null ],
     [ "READING_INTERVENTION_HEIGHT_FILE", "d6/d2a/cme_8h.html#a93d833654964b7954b92622ad41a8cb6", null ],
+    [ "READING_INTERVENTION_TRIGGER_FILE", "d6/d2a/cme_8h.html#a60662d7074d3388dc5210783720781e6", null ],
     [ "READING_LANDFORM_FILE", "d6/d2a/cme_8h.html#a89ef116560dec357c4362e252dca11b0", null ],
     [ "READING_RASTER_FILES", "d6/d2a/cme_8h.html#a4b94b3ff65dcbaf6cbb4361e7ab6ea45", null ],
     [ "READING_RUN_DATA", "d6/d2a/cme_8h.html#ace528b82b462df7584787088164e76e6", null ],

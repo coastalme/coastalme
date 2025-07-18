@@ -121,11 +121,12 @@ $(function(){initNavTree('functions_vars_m.html',''); initResizable(true); });
 <li>m_bCliff&#160;:&#160;<a class="el" href="d1/dd9/classCGeomCell.html#a1d18a256fa048d850a95aed3eab4029b">CGeomCell</a></li>
 <li>m_bCliffCollapseDepositionSave&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#a3b32ae5db06c27e00bfb6a1010f72ade">CSimulation</a></li>
 <li>m_bCliffCollapseDepositionTSSave&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#abfdc3fe28a1bf9eceb631e669046f8dc">CSimulation</a></li>
+<li>m_bCliffCollapseEnabled&#160;:&#160;<a class="el" href="d8/d0e/classCCliffCollapseManager.html#a2b1c0c829d3d6c184e58b51b6ab5a740">CCliffCollapseManager</a></li>
 <li>m_bCliffCollapseErosionTSSave&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#af3fc81accd3d6d100c79d374bde4de1c">CSimulation</a></li>
 <li>m_bCliffCollapseNetTSSave&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#a4521744738491bf70336ae747f7f709c">CSimulation</a></li>
 <li>m_bCliffCollapseSave&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#a0224198857294a3bde783a56846f6a20">CSimulation</a></li>
 <li>m_bCliffEdgeSave&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#a2f863fc9319cc27ccf85c95d217be63d">CSimulation</a></li>
-<li>m_bCliffHasCollapsed&#160;:&#160;<a class="el" href="d9/d8b/classCRWCliff.html#a850da19bb9bd3688980b636af1e866c2">CRWCliff</a></li>
+<li>m_bCliffHasCollapsed&#160;:&#160;<a class="el" href="d9/d8b/classCRWCliff.html#a850da19bb9bd3688980b636af1e866c2">CRWCliff</a>, <a class="el" href="d7/d4b/classCRWCliffWrap.html#a16ddf2d36a0e44f1067a1ab1e3ef1037">CRWCliffWrap</a></li>
 <li>m_bCliffNotchSave&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#afb398ca00f89ddb815409f619deefeb9">CSimulation</a></li>
 <li>m_bCliffSave&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#a55d80682294feee8a1499994c8166b9f">CSimulation</a></li>
 <li>m_bCoarseConsSedSave&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#acd7a9fafd18327d2497d6fe0f1b002eb">CSimulation</a></li>
@@ -293,7 +294,7 @@ $(function(){initNavTree('functions_vars_m.html',''); initResizable(true); });
 <li>m_dCliffCollapseTalusSand&#160;:&#160;<a class="el" href="df/d45/classCGeomCoastPolygon.html#af978bd6bee98203cb5be0a991be67ac5">CGeomCoastPolygon</a></li>
 <li>m_dCliffDepositionA&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#aa35a5d1dce719b48d71f4ca4e008290b">CSimulation</a></li>
 <li>m_dCliffDepositionPlanviewWidth&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#a010ac62ee6bbb82fd71f9b2c5e3f2172">CSimulation</a></li>
-<li>m_dCliffErosionResistance&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#a7c3995b189dcff813dfbfcc7c285e205">CSimulation</a></li>
+<li>m_dCliffErosionResistance&#160;:&#160;<a class="el" href="da/db2/classCCliffAlgorithmSimpleNotch.html#a761dff3c456b3bfff668e0992f163f8d">CCliffAlgorithmSimpleNotch</a>, <a class="el" href="d1/d98/classCSimulation.html#a7c3995b189dcff813dfbfcc7c285e205">CSimulation</a></li>
 <li>m_dCliffSlopeLimit&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#adce6d5c26f9ca608d55ec2a98a808b44">CSimulation</a></li>
 <li>m_dCliffTalusMinDepositionLength&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#a3d53726bf8b2b2118c8b69c6707b304b">CSimulation</a></li>
 <li>m_dClkLast&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#af2e9a770f45a70f510b04a466cd41d1b">CSimulation</a></li>
@@ -339,6 +340,9 @@ $(function(){initNavTree('functions_vars_m.html',''); initResizable(true); });
 <li>m_dInitialMeanSWL&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#a58b6cf0c6be3c02086f0373a4dcd45cc">CSimulation</a></li>
 <li>m_dInmersedToBulkVolumetric&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#a5ce61a9c341d3eea4901fe08d084d272">CSimulation</a></li>
 <li>m_dInterventionHeight&#160;:&#160;<a class="el" href="d1/dd9/classCGeomCell.html#ad74c33fd0e7a50999b66f85bb9e48fb0">CGeomCell</a></li>
+<li>m_dInterventionInfluenceDistance&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#abefece865f4a014f3315612da53ad4f9">CSimulation</a></li>
+<li>m_dInterventionTriggerDepth&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#a45072854b75c068f78e6fbac25b51910">CSimulation</a></li>
+<li>m_dInterventionTriggerElev&#160;:&#160;<a class="el" href="d1/dd9/classCGeomCell.html#af50755f0dc74ce3d3f9b02fc253692be">CGeomCell</a></li>
 <li>m_dInvCellDiagonal&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#a415d3b30433c3202ca74b7fbeccd5aa6">CSimulation</a></li>
 <li>m_dInvCellSide&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#a82930e45dfa4d4dea6969f2e9d77338d">CSimulation</a></li>
 <li>m_dKamphuis&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#afa0e3dce4efcca5110524c11ab9f962b">CSimulation</a></li>
@@ -348,7 +352,8 @@ $(function(){initNavTree('functions_vars_m.html',''); initResizable(true); });
 <li>m_dLength&#160;:&#160;<a class="el" href="df/d45/classCGeomCoastPolygon.html#a4a7035ed6d7cada3a43116831d943bf4">CGeomCoastPolygon</a></li>
 <li>m_dLocalConsSlope&#160;:&#160;<a class="el" href="d1/dd9/classCGeomCell.html#a42e54b046641369b0be9697d49fcef26">CGeomCell</a></li>
 <li>m_dMaxBeachElevAboveSWL&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#ae370539ee749803936fdab8616543df7">CSimulation</a></li>
-<li>m_dMaxDepth&#160;:&#160;<a class="el" href="d9/d8b/classCRWCliff.html#a7090ef1a32311b92a949797659139041">CRWCliff</a></li>
+<li>m_dMaxDepth&#160;:&#160;<a class="el" href="d9/d8b/classCRWCliff.html#a7090ef1a32311b92a949797659139041">CRWCliff</a>, <a class="el" href="d7/d4b/classCRWCliffWrap.html#a837c1d17b2adaf86d6a174c51431ad4a">CRWCliffWrap</a></li>
+<li>m_dMaxNotchDepth&#160;:&#160;<a class="el" href="da/db2/classCCliffAlgorithmSimpleNotch.html#a90bed843e5ea0da426c673d087b5b269">CCliffAlgorithmSimpleNotch</a></li>
 <li>m_dMaxSWL&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#aa9cada743b73d500516d7c0182a681c8">CSimulation</a></li>
 <li>m_dMaxUserInputWaveHeight&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#ac33288c382e6c772eecd31b9dc063684">CSimulation</a></li>
 <li>m_dMaxUserInputWavePeriod&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#a2031ca722b5ff7f06d1ddc3a09eb2092">CSimulation</a></li>
@@ -358,10 +363,10 @@ $(function(){initNavTree('functions_vars_m.html',''); initResizable(true); });
 <li>m_dNorthWestXExtCRS&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#a91ecd1f19cdad1ea7f72e1b10ac7d695">CSimulation</a></li>
 <li>m_dNorthWestYExtCRS&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#a598582d5ac064f9872a00f8dda8dcbeb">CSimulation</a></li>
 <li>m_dNotchBaseBelowSWL&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#a67be223b916774e3eabb4bc5bf232eda">CSimulation</a></li>
-<li>m_dNotchBaseElev&#160;:&#160;<a class="el" href="dc/d4a/classCRWCellLandform.html#a2556a42546ce83b61a0a9534ad646dec">CRWCellLandform</a>, <a class="el" href="d9/d8b/classCRWCliff.html#a71c070efc73e32ce005c35da430a8aa6">CRWCliff</a></li>
+<li>m_dNotchBaseElev&#160;:&#160;<a class="el" href="dc/d4a/classCRWCellLandform.html#a2556a42546ce83b61a0a9534ad646dec">CRWCellLandform</a>, <a class="el" href="d9/d8b/classCRWCliff.html#a71c070efc73e32ce005c35da430a8aa6">CRWCliff</a>, <a class="el" href="d7/d4b/classCRWCliffWrap.html#a54348d0351316ffe9d819c68f805b45e">CRWCliffWrap</a></li>
 <li>m_dNotchCoarseLost&#160;:&#160;<a class="el" href="d5/dc6/classCRWCellSediment.html#aa8f3c620d02e4dc6bef695be2e29bc8f">CRWCellSediment</a></li>
-<li>m_dNotchDepth&#160;:&#160;<a class="el" href="dc/d4a/classCRWCellLandform.html#a21e5e4ac3fe410be4f9df1e7f40a4674">CRWCellLandform</a>, <a class="el" href="d9/d8b/classCRWCliff.html#a3f6938d9d8e05d00a09487a3948d79a7">CRWCliff</a></li>
-<li>m_dNotchDepthAtCollapse&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#a0dae0444cb7c9f54e4109cfaa054f6fc">CSimulation</a></li>
+<li>m_dNotchDepth&#160;:&#160;<a class="el" href="dc/d4a/classCRWCellLandform.html#a21e5e4ac3fe410be4f9df1e7f40a4674">CRWCellLandform</a>, <a class="el" href="d9/d8b/classCRWCliff.html#a3f6938d9d8e05d00a09487a3948d79a7">CRWCliff</a>, <a class="el" href="d7/d4b/classCRWCliffWrap.html#a82ef3b4a63ae1edeeaefe537dc6753ef">CRWCliffWrap</a></li>
+<li>m_dNotchDepthAtCollapse&#160;:&#160;<a class="el" href="da/db2/classCCliffAlgorithmSimpleNotch.html#a526e9f171b122b8e2b003ff7685d65cd">CCliffAlgorithmSimpleNotch</a>, <a class="el" href="d1/d98/classCSimulation.html#a0dae0444cb7c9f54e4109cfaa054f6fc">CSimulation</a></li>
 <li>m_dNotchFineLost&#160;:&#160;<a class="el" href="d5/dc6/classCRWCellSediment.html#a1864d742a8f8a422e4641216b673373a">CRWCellSediment</a></li>
 <li>m_dNotchSandLost&#160;:&#160;<a class="el" href="d5/dc6/classCRWCellSediment.html#a14b64a3a945d3480b4462ec0e9a3318b">CRWCellSediment</a></li>
 <li>m_dPlatformErosionToSuspensionFine&#160;:&#160;<a class="el" href="df/d45/classCGeomCoastPolygon.html#a75f5f271bb1ee5383a05929291ecb40a">CGeomCoastPolygon</a></li>
@@ -529,6 +534,8 @@ $(function(){initNavTree('functions_vars_m.html',''); initResizable(true); });
 <li>m_lGDALMinCanWrite&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#ab826265ecfc70057235e60ecbf391e18">CSimulation</a></li>
 <li>m_LShadowBoundary&#160;:&#160;<a class="el" href="d1/dbe/classCRWCoast.html#a70b49aa9579776b0e94b0882422c352c">CRWCoast</a></li>
 <li>m_LShadowDowndriftBoundary&#160;:&#160;<a class="el" href="d1/dbe/classCRWCoast.html#afd543bd0c9955a566237ddcae3397f9f">CRWCoast</a></li>
+<li>m_mapAccumulatedWaveEnergy&#160;:&#160;<a class="el" href="da/db2/classCCliffAlgorithmSimpleNotch.html#aa48a4b36ecde76d4ec890598bb30dbd5">CCliffAlgorithmSimpleNotch</a></li>
+<li>m_mapNotchDepth&#160;:&#160;<a class="el" href="da/db2/classCCliffAlgorithmSimpleNotch.html#ae9e16a1497a6928c85d4ba9da5e13fb0">CCliffAlgorithmSimpleNotch</a></li>
 <li>m_nBeachErosionDepositionEquation&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#a119e17f31af91d7400302244e9472789">CSimulation</a></li>
 <li>m_nBoundingBoxEdge&#160;:&#160;<a class="el" href="d1/dd9/classCGeomCell.html#a0e013c5576c2fb6f4cd6d4fbc8e7a6ff">CGeomCell</a></li>
 <li>m_nCategory&#160;:&#160;<a class="el" href="d2/de0/classCACoastLandform.html#a9d5bd4b6b0d0e736800ce2f117cc67dd">CACoastLandform</a>, <a class="el" href="dc/d4a/classCRWCellLandform.html#a109b30e9905b5a8d9c6ae57cd30421b5">CRWCellLandform</a></li>
@@ -597,11 +604,14 @@ $(function(){initNavTree('functions_vars_m.html',''); initResizable(true); });
 <li>m_nYMinBoundingBox&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#a0655fbbadd6b56a19522bcff0a93a477">CSimulation</a></li>
 <li>m_papszGDALRasterOptions&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#af7dddd331c2fff92c66434e6d6ffac8b">CSimulation</a></li>
 <li>m_papszGDALVectorOptions&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#a235af3aa66fff043baa555671b7767df">CSimulation</a></li>
+<li>m_pCliffAlgorithm&#160;:&#160;<a class="el" href="d8/d0e/classCCliffCollapseManager.html#a6eeb24d30ce527778cc6d4056f5cce46">CCliffCollapseManager</a></li>
+<li>m_pCliffCollapseManager&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#a66b378c78c9f9d17d3979894a6639cec">CSimulation</a></li>
 <li>m_pDownCoastAdjacentProfile&#160;:&#160;<a class="el" href="da/dae/classCGeomProfile.html#a4b26ae1a3993465d4ff1aec43ddce00d">CGeomProfile</a></li>
 <li>m_pGrid&#160;:&#160;<a class="el" href="d1/dd9/classCGeomCell.html#a75d3180045cab7fe18488b06d29c0685">CGeomCell</a></li>
 <li>m_pRasterGrid&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#a1312f0ac2c93a6cb2bc41c23eb01c293">CSimulation</a></li>
 <li>m_prVVLineSegment&#160;:&#160;<a class="el" href="d0/d89/classCGeomMultiLine.html#ad4d3e975f72da69900b3b469bdfea2ad">CGeomMultiLine</a></li>
 <li>m_pSim&#160;:&#160;<a class="el" href="d6/d3e/classCGeomRasterGrid.html#a90170b6ddf37bdcef5d849d45aec7d5a">CGeomRasterGrid</a>, <a class="el" href="d1/dbe/classCRWCoast.html#a754e7508ec754f15393025af64ac73b0">CRWCoast</a></li>
+<li>m_pSimulation&#160;:&#160;<a class="el" href="d8/d0e/classCCliffCollapseManager.html#adfc0c424afe2c04736c3ff890e8b0202">CCliffCollapseManager</a></li>
 <li>m_PtiAntinode&#160;:&#160;<a class="el" href="df/d45/classCGeomCoastPolygon.html#aa3867d247853430d29bc5d86cd587e18">CGeomCoastPolygon</a></li>
 <li>m_PtiNode&#160;:&#160;<a class="el" href="df/d45/classCGeomCoastPolygon.html#a6b5ffeec7205b08bb49c2c068924474a">CGeomCoastPolygon</a></li>
 <li>m_pUpCoastAdjacentProfile&#160;:&#160;<a class="el" href="da/dae/classCGeomProfile.html#a101a87dfb558cbd93ca91afbab37434f">CGeomProfile</a></li>
@@ -614,6 +624,8 @@ $(function(){initNavTree('functions_vars_m.html',''); initResizable(true); });
 <li>m_Rand&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#aab026ce32dae1272a2633b41dd9217d5">CSimulation</a></li>
 <li>m_sBeachData&#160;:&#160;<a class="el" href="dc/d4a/classCRWCellLandform.html#a6f1a35a7a19e27ea5206a9010f46662d">CRWCellLandform</a></li>
 <li>m_sCliffData&#160;:&#160;<a class="el" href="dc/d4a/classCRWCellLandform.html#a5a2d4dca3a1b48a48b7cbcd741a0374f">CRWCellLandform</a></li>
+<li>m_strAlgorithmName&#160;:&#160;<a class="el" href="dd/dd7/classCCliffAlgorithmLegacy.html#ae8aeec7262264877fc119f0513c7af15">CCliffAlgorithmLegacy</a>, <a class="el" href="da/db2/classCCliffAlgorithmSimpleNotch.html#a23441885109fb4e1b6adccd24ce3b02c">CCliffAlgorithmSimpleNotch</a>, <a class="el" href="d8/d0e/classCCliffCollapseManager.html#a20db61ab1a70f4950d936e172420b599">CCliffCollapseManager</a></li>
+<li>m_strCliffAlgorithm&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#ab6196f8414145e48cb9650cb0b2a166a">CSimulation</a></li>
 <li>m_strCMEDir&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#a7f8368cae1a6852c1ea7ff99b2d0c035">CSimulation</a></li>
 <li>m_strCMEIni&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#a0f007eb27e02ac63d313a7c53b32e7ad">CSimulation</a></li>
 <li>m_strDataPathName&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#aa36ebe5deb6ac94421b030ff6b3bbb84">CSimulation</a></li>
@@ -637,6 +649,10 @@ $(function(){initNavTree('functions_vars_m.html',''); initResizable(true); });
 <li>m_strGDALISSDriverCode&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#a041cb11891fcc19966c43325457f2216">CSimulation</a></li>
 <li>m_strGDALISSDriverDesc&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#abe2c96fa34a7d9c95fa460483056ebeb">CSimulation</a></li>
 <li>m_strGDALISSProjection&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#a06c540c246df130ed0a4c8f940e5e2a1">CSimulation</a></li>
+<li>m_strGDALITDataType&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#a5df68b59cc7b6b26477d6f338d0011a4">CSimulation</a></li>
+<li>m_strGDALITDriverCode&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#aadaba0bebe7afb3791e10b29f5608056">CSimulation</a></li>
+<li>m_strGDALITDriverDesc&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#a7b3e2165516726ef608296b654b1c60f">CSimulation</a></li>
+<li>m_strGDALITProjection&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#acc5d43aab8a2de05c80256d07355122d">CSimulation</a></li>
 <li>m_strGDALIWDataType&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#aa8aab74e772d2d2a2f8d45941f535f4d">CSimulation</a></li>
 <li>m_strGDALIWDriverCode&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#a4bcaace37819b4af89507e8a9c75fcdb">CSimulation</a></li>
 <li>m_strGDALIWDriverDesc&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#ac7f9f45db33488ed655e91cde2c62124">CSimulation</a></li>
@@ -652,6 +668,7 @@ $(function(){initNavTree('functions_vars_m.html',''); initResizable(true); });
 <li>m_strInitialSuspSedimentFile&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#a071cd4a50bc6c768f4d9ed9ad97ed4e9">CSimulation</a></li>
 <li>m_strInterventionClassFile&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#aaae340bf9e42e613a92f4ae6ec556969">CSimulation</a></li>
 <li>m_strInterventionHeightFile&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#acbdbc3ab6337700bfc6445cca7411a8c">CSimulation</a></li>
+<li>m_strInterventionTriggerDepthFile&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#a5075133aa5cccc730f05e52aba57114c">CSimulation</a></li>
 <li>m_strLogFile&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#a6c8e6700304425504120e782dc6355d3">CSimulation</a></li>
 <li>m_strMailAddress&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#a8e7003f2351716121c6e74135a67368e">CSimulation</a></li>
 <li>m_strOGRDWWVDataType&#160;:&#160;<a class="el" href="d1/d98/classCSimulation.html#ad809e956159513560e58f4928c705865">CSimulation</a></li>
@@ -788,7 +805,7 @@ $(function(){initNavTree('functions_vars_m.html',''); initResizable(true); });
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Fri Jul 18 2025 15:00:13 for CoastalME (Coastal Modelling Environment) by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+    <li class="footer">Generated on Fri Jul 18 2025 18:49:51 for CoastalME (Coastal Modelling Environment) by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
   </ul>
 </div>
 </body>

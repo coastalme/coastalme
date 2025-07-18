@@ -53,7 +53,8 @@ var NAVTREE =
         [ "All", "globals.html", "globals_dup" ],
         [ "Functions", "globals_func.html", null ],
         [ "Variables", "globals_vars.html", "globals_vars" ],
-        [ "Typedefs", "globals_type.html", null ]
+        [ "Typedefs", "globals_type.html", null ],
+        [ "Enumerations", "globals_enum.html", null ]
       ] ]
     ] ]
   ] ]
@@ -62,16 +63,17 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"d1/d98/classCSimulation.html#a45be8205006da7ffe3bb6d9493d98c10",
-"d1/d98/classCSimulation.html#a99e151456e1b599260ca76f2cfaa1e97",
-"d1/d98/classCSimulation.html#aed65b9337b0d89c819835ad22797c692",
-"d1/dd9/classCGeomCell.html#a5a292d63c8600d9485108d817f57e0b3",
-"d5/d6d/classCRWCellLayer.html#a652dda36e4a17bd84da2b79a09667c8e",
-"d6/d2a/cme_8h.html#a40b0622c1623452421e8705a3309b761",
-"d6/d2a/cme_8h.html#a98206e6dbc15be866db8c4de27ffadc4",
-"d6/d2a/cme_8h.html#af68d4389908770ef112426bdc8be0f09",
-"db/df7/gis__utils_8cpp_source.html",
-"functions.html"
+"d1/d98/classCSimulation.html#a45597177a9aecb40378ed4b9632008fd",
+"d1/d98/classCSimulation.html#a97046956fb2a262a0c5d493715067527",
+"d1/d98/classCSimulation.html#aeaa75695f5f579644ab1dc9ea37d1fea",
+"d1/dd9/classCGeomCell.html#a40f69648880407791de9d7abbd56f198",
+"d4/d6d/structCCliffData.html#a0fa5a8957b01fdba1770241869d4c8f3",
+"d6/d2a/cme_8h.html#a251108b2f1c8a6628bf83b724b495c81",
+"d6/d2a/cme_8h.html#a85db2d8081784166e9c5d2f268294557",
+"d6/d2a/cme_8h.html#ae0bdb2963ee11ea7c46b4805ad2c841f",
+"da/dae/classCGeomProfile.html#a19aac71e045a17e2c6d98f020f2319fa",
+"df/d45/classCGeomCoastPolygon.html#a29f5f3d6a85ff558997ce0497ea8ba4d",
+"globals_vars_e.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronization';
