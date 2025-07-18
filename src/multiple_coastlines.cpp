@@ -26,8 +26,11 @@
 #include <iostream>
 using std::endl;
 
+#include "cme.h"
 #include "simulation.h"
 #include "coast.h"
+#include "2di_point.h"
+#include "multi_line.h"
 
 class CRWCoast;      // Forward declaration
 
@@ -43,26 +46,26 @@ int CSimulation::nDoMultipleCoastlines(void)
       for (int n = 0; n < m_VCoast[nCoast].nGetNumProfiles(); n++)
       {
          CGeomProfile* pProfile = m_VCoast[nCoast].pGetProfileWithDownCoastSeq(n);
-         int nProfile = pProfile->nGetProfileID();
-         bool bCoastStart = pProfile->bStartOfCoast();
-         bool bCoastEnd = pProfile->bEndOfCoast();
+         int const nProfile = pProfile->nGetProfileID();
+         bool const bCoastStart = pProfile->bStartOfCoast();
+         bool const bCoastEnd = pProfile->bEndOfCoast();
 
          // Check every cell that is 'under' this profile
          for (int nCell = 0; nCell < pProfile->nGetNumCellsInProfile(); nCell++)
          {
-            CGeom2DIPoint* pCell = pProfile->pPtiGetCellInProfile(nCell);
-            int nX = pCell->nGetX();
-            int nY = pCell->nGetY();
+            CGeom2DIPoint const* pCell = pProfile->pPtiGetCellInProfile(nCell);
+            int const nX = pCell->nGetX();
+            int const nY = pCell->nGetY();
 
             // Have we hit a cell which is 'under' a coast-normal profile belonging to another coast? NOTE Is a problem if get more than two coast normals passing through this cell
             int nHitProfileCoast = m_pRasterGrid->m_Cell[nX][nY].nGetProfileCoastID();
             if ((nHitProfileCoast != INT_NODATA) && (nHitProfileCoast != nCoast))
             {
                // Yes, we have hit a profile which belongs to a different coast
-               int nHitProfile = m_pRasterGrid->m_Cell[nX][nY].nGetProfileID();
+               int const nHitProfile = m_pRasterGrid->m_Cell[nX][nY].nGetProfileID();
 
                // Truncate both profiles
-               int nRtn = nTruncateProfilesDifferentCoasts(nCoast, nProfile, nCell, nHitProfileCoast, nHitProfile, nX, nY, bCoastStart, bCoastEnd);
+               int const nRtn = nTruncateProfilesDifferentCoasts(nCoast, nProfile, nCell, nHitProfileCoast, nHitProfile, nX, nY, bCoastStart, bCoastEnd);
                if (nRtn != RTN_OK)
                   return nRtn;
             }
@@ -73,10 +76,10 @@ int CSimulation::nDoMultipleCoastlines(void)
                if ((nHitProfileCoast != INT_NODATA) && (nHitProfileCoast != nCoast))
                {
                   // Yes, we have hit a profile which belongs to a different coast
-                  int nHitProfile = m_pRasterGrid->m_Cell[nX][nY+1].nGetProfileID();
+                  int const nHitProfile = m_pRasterGrid->m_Cell[nX][nY+1].nGetProfileID();
 
                   // Truncate both profiles
-                  int nRtn = nTruncateProfilesDifferentCoasts(nCoast, nProfile, nCell, nHitProfileCoast, nHitProfile, nX, nY+1, bCoastStart, bCoastEnd);
+                  int const nRtn = nTruncateProfilesDifferentCoasts(nCoast, nProfile, nCell, nHitProfileCoast, nHitProfile, nX, nY+1, bCoastStart, bCoastEnd);
                   if (nRtn != RTN_OK)
                      return nRtn;
                }
@@ -86,11 +89,11 @@ int CSimulation::nDoMultipleCoastlines(void)
             if (m_pRasterGrid->m_Cell[nX][nY].bIsCoastline())
             {
                // Yes this is a coastline cell, as well as a coast-normal profile cell
-               int nHitCoast = m_pRasterGrid->m_Cell[nX][nY].nGetCoastline();
+               int const nHitCoast = m_pRasterGrid->m_Cell[nX][nY].nGetCoastline();
                if (nHitCoast != nCoast)
                {
                   // We have hit a different coastline, so truncate this profile
-                  int nRtn = nTruncateProfileHitDifferentCoast(nCoast, nProfile, nCell, nX, nY, bCoastStart, bCoastEnd);
+                  int const nRtn = nTruncateProfileHitDifferentCoast(nCoast, nProfile, nCell, nX, nY, bCoastStart, bCoastEnd);
                   if (nRtn != RTN_OK)
                      return nRtn;
                }
@@ -101,11 +104,11 @@ int CSimulation::nDoMultipleCoastlines(void)
                if (m_pRasterGrid->m_Cell[nX][nY+1].bIsCoastline())
                {
                   // Yes this is a coastline cell, as well as a coast-normal profile cell
-                  int nHitCoast = m_pRasterGrid->m_Cell[nX][nY+1].nGetCoastline();
+                  int const nHitCoast = m_pRasterGrid->m_Cell[nX][nY+1].nGetCoastline();
                   if (nHitCoast != nCoast)
                   {
                   // We have hit a different coastline, so truncate this profile
-                  int nRtn = nTruncateProfileHitDifferentCoast(nCoast, nProfile, nCell, nX, nY, bCoastStart, bCoastEnd);
+                  int const nRtn = nTruncateProfileHitDifferentCoast(nCoast, nProfile, nCell, nX, nY, bCoastStart, bCoastEnd);
                   if (nRtn != RTN_OK)
                      return nRtn;
                   }
@@ -135,7 +138,7 @@ int CSimulation::nTruncateProfilesDifferentCoasts(int const nCoast, int const nP
 
    // Get details of the cells in this profile
    vector<CGeom2DIPoint>* pVProfileCells = pProfile->pPtiVGetCellsInProfile();
-   int nProfileLen = static_cast<int>(pVProfileCells->size());
+   int const nProfileLen = static_cast<int>(pVProfileCells->size());
 
    // Are either of the profiles grid-edge profiles?
    bool bProfileGridEdge = false;
@@ -149,11 +152,11 @@ int CSimulation::nTruncateProfilesDifferentCoasts(int const nCoast, int const nP
    if (bProfileGridEdge && bHitProfileGridEdge)
    {
       // Yes, so we need to treat these profiles differently. Get the start point of each profile
-      CGeom2DIPoint* pPtiProfileStart = pProfile->pPtiGetStartPoint();
-      CGeom2DIPoint* pPtiHitProfileStart = pHitProfile->pPtiGetStartPoint();
+      CGeom2DIPoint const* pPtiProfileStart = pProfile->pPtiGetStartPoint();
+      CGeom2DIPoint const* pPtiHitProfileStart = pHitProfile->pPtiGetStartPoint();
 
       // And get the distance between these
-      double dDist = dGetDistanceBetween(pPtiProfileStart, pPtiHitProfileStart);
+      double const dDist = dGetDistanceBetween(pPtiProfileStart, pPtiHitProfileStart);
       nCell = static_cast<int>(dDist - GAP_BETWEEN_DIFFERENT_COAST_PROFILES);
 
       // Safety check
@@ -165,13 +168,13 @@ int CSimulation::nTruncateProfilesDifferentCoasts(int const nCoast, int const nP
    }
 
    // Calculate the truncated length of the list of cells in 'this' profile
-   int nProfileNewLen = tMax(nCell - GAP_BETWEEN_DIFFERENT_COAST_PROFILES, MIN_PROFILE_SIZE);
+   int const nProfileNewLen = tMax(nCell - GAP_BETWEEN_DIFFERENT_COAST_PROFILES, MIN_PROFILE_SIZE);
 
    // Next unmark the cells that will no longer be 'under' the profile
    for (int nn = nProfileNewLen-1; nn < nProfileLen; nn++)
    {
-      int nXThis = pVProfileCells->at(nn).nGetX();
-      int nYThis = pVProfileCells->at(nn).nGetY();
+      int const nXThis = pVProfileCells->at(nn).nGetX();
+      int const nYThis = pVProfileCells->at(nn).nGetY();
 
       if ((m_pRasterGrid->m_Cell[nXThis][nYThis].nGetProfileID() == nProfile) && (m_pRasterGrid->m_Cell[nXThis][nYThis].nGetProfileCoastID() == nCoast))
          m_pRasterGrid->m_Cell[nXThis][nYThis].SetCoastAndProfileID(INT_NODATA, INT_NODATA);
@@ -212,20 +215,20 @@ int CSimulation::nTruncateProfilesDifferentCoasts(int const nCoast, int const nP
 
    // Get details of the cells in the hit profile
    vector<CGeom2DIPoint>* pVHitProfileCells = pHitProfile->pPtiVGetCellsInProfile();
-   int nHitProfileLen = static_cast<int>(pVHitProfileCells->size());
+   int const nHitProfileLen = static_cast<int>(pVHitProfileCells->size());
 
-   int nHitCell = pHitProfile->nGetIndexOfCellInProfile(nX, nY);
+   int const nHitCell = pHitProfile->nGetIndexOfCellInProfile(nX, nY);
    if (nHitCell == INT_NODATA)
       return RTN_ERR_CELL_NOT_FOUND_IN_HIT_PROFILE_DIFFERENT_COASTS;
 
    // Calculate the truncated length of the list of cells in the hit profile
-   int nHitProfileNewLen = tMax(nHitCell - GAP_BETWEEN_DIFFERENT_COAST_PROFILES, MIN_PROFILE_SIZE);
+   int const nHitProfileNewLen = tMax(nHitCell - GAP_BETWEEN_DIFFERENT_COAST_PROFILES, MIN_PROFILE_SIZE);
 
    // Next unmark the cells that will no longer be 'under' the hit profile
    for (int nn = nHitProfileNewLen-1; nn < nHitProfileLen; nn++)
    {
-      int nXThis = pVHitProfileCells->at(nn).nGetX();
-      int nYThis = pVHitProfileCells->at(nn).nGetY();
+      int const nXThis = pVHitProfileCells->at(nn).nGetX();
+      int const nYThis = pVHitProfileCells->at(nn).nGetY();
 
       if ((m_pRasterGrid->m_Cell[nXThis][nYThis].nGetProfileID() == nHitProfile) && (m_pRasterGrid->m_Cell[nXThis][nYThis].nGetProfileCoastID() == nHitProfileCoast))
          m_pRasterGrid->m_Cell[nXThis][nYThis].SetCoastAndProfileID(INT_NODATA, INT_NODATA);
@@ -297,8 +300,8 @@ int CSimulation::nTruncateProfileHitDifferentCoast(int const nCoast, int const n
    int nProfileNewLen = tMax(nCell - GAP_BETWEEN_DIFFERENT_COAST_PROFILES, MIN_PROFILE_SIZE);
 
    // Get the lengths of the adjacent, this-coast, profiles
-   CGeomProfile* pUpCoastProfile = pProfile->pGetUpCoastAdjacentProfile();
-   CGeomProfile* pDownCoastProfile = pProfile->pGetDownCoastAdjacentProfile();
+   CGeomProfile const* pUpCoastProfile = pProfile->pGetUpCoastAdjacentProfile();
+   CGeomProfile const* pDownCoastProfile = pProfile->pGetDownCoastAdjacentProfile();
    int nUpCoastProfileLen = INT_NODATA;
    int nDownCoastProfileLen = INT_NODATA;
    if (pUpCoastProfile != NULL)
@@ -321,8 +324,8 @@ int CSimulation::nTruncateProfileHitDifferentCoast(int const nCoast, int const n
    // We have the new profile length so next unmark the cells that will no longer be 'under' the profile
    for (int nn = nProfileNewLen-1; nn < nProfileLen; nn++)
    {
-      int nXThis = pVProfileCells->at(nn).nGetX();
-      int nYThis = pVProfileCells->at(nn).nGetY();
+      int const nXThis = pVProfileCells->at(nn).nGetX();
+      int const nYThis = pVProfileCells->at(nn).nGetY();
 
       if ((m_pRasterGrid->m_Cell[nXThis][nYThis].nGetProfileID() == nProfile) && (m_pRasterGrid->m_Cell[nXThis][nYThis].nGetProfileCoastID() == nCoast))
          m_pRasterGrid->m_Cell[nXThis][nYThis].SetCoastAndProfileID(INT_NODATA, INT_NODATA);
@@ -333,11 +336,11 @@ int CSimulation::nTruncateProfileHitDifferentCoast(int const nCoast, int const n
    pProfile->SetCellsInProfile(pVProfileCells);
 
    // Set the profile's end point (grid CRS)
-   CGeom2DIPoint PtiLast = pVProfileCells->back();
+   CGeom2DIPoint const PtiLast = pVProfileCells->back();
    pProfile->SetEndPoint(&PtiLast);
 
    // Now truncate the profile's CGeomMultiLine (external CRS)
-   int nRtn = nTruncateProfileMultiLineDifferentCoasts(pProfile, nX, nY);
+   int const nRtn = nTruncateProfileMultiLineDifferentCoasts(pProfile, nX, nY);
    if (nRtn != RTN_OK)
       return nRtn;
 
@@ -391,25 +394,25 @@ int CSimulation::nTruncateProfileMultiLineDifferentCoasts(CGeomProfile* pProfile
    for (int nSeg = 0; nSeg < nProfileLineSegments; nSeg++)
    {
       // Search each segment
-      int nNumCoinc = pProfile->CGeomMultiLine::nGetNumCoincidentProfilesInLineSegment(nSeg);
+      int const nNumCoinc = pProfile->CGeomMultiLine::nGetNumCoincidentProfilesInLineSegment(nSeg);
       for (int nCoinc = 0; nCoinc < nNumCoinc; nCoinc++)
       {
          vector<CGeom2DPoint>& pVPt = pProfile->CGeomMultiLine::pGetPoints();
 
          for (int nLin = 0; nLin < static_cast<int>(pVPt.size())-1; nLin++)
          {
-            double dX1 = pVPt[nLin].dGetX();
-            double dY1 = pVPt[nLin].dGetY();
-            double dX2 = pVPt[nLin+1].dGetX();
-            double dY2 = pVPt[nLin+1].dGetY();
+            double const dX1 = pVPt[nLin].dGetX();
+            double const dY1 = pVPt[nLin].dGetY();
+            double const dX2 = pVPt[nLin+1].dGetX();
+            double const dY2 = pVPt[nLin+1].dGetY();
 
-            double dXMin = tMin(dX1, dX2);
-            double dXMax = tMax(dX1, dX2);
-            double dYMin = tMin(dY1, dY2);
-            double dYMax = tMax(dY1, dY2);
+            double const dXMin = tMin(dX1, dX2);
+            double const dXMax = tMax(dX1, dX2);
+            double const dYMin = tMin(dY1, dY2);
+            double const dYMax = tMax(dY1, dY2);
 
-            double dX = dGridXToExtCRSX(nX);
-            double dY = dGridYToExtCRSY(nY);
+            double const dX = dGridXToExtCRSX(nX);
+            double const dY = dGridYToExtCRSY(nY);
 
             if ((dX >= dXMin) && (dX <= dXMax) && (dY >= dYMin) && (dY <= dYMax))
             {

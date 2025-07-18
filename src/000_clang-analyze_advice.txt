@@ -4,31 +4,34 @@
 /home/dave/coast/CoastalME/src/2di_shape.h:38:26: warning: member variable 'm_VPoints' has protected visibility [misc-non-private-member-variables-in-classes]
    38 |    vector<CGeom2DIPoint> m_VPoints;
       |                          ^
-/home/dave/coast/CoastalME/src/calc_curvature.cpp:39:1: warning: included header coast.h is not used directly [misc-include-cleaner]
-   39 | #include "coast.h"
+/home/dave/coast/CoastalME/src/calc_curvature.cpp:36:1: warning: included header coast.h is not used directly [misc-include-cleaner]
+   36 | #include "coast.h"
       | ^~~~~~~~~~~~~~~~~~
-   40 | 
+   37 | 
 /home/dave/coast/CoastalME/src/calc_shadow_zones.cpp:41:1: warning: included header coast.h is not used directly [misc-include-cleaner]
    41 | #include "coast.h"
       | ^~~~~~~~~~~~~~~~~~
    42 | #include "simulation.h"
-/home/dave/coast/CoastalME/src/cme.h:1322:9: warning: member variable 'chFill' has public visibility [misc-non-private-member-variables-in-classes]
- 1322 |    char chFill;
+/home/dave/coast/CoastalME/src/cme.h:1333:9: warning: member variable 'chFill' has public visibility [misc-non-private-member-variables-in-classes]
+ 1333 |    char chFill;
       |         ^
-/home/dave/coast/CoastalME/src/cme.h:1323:8: warning: member variable 'nWidth' has public visibility [misc-non-private-member-variables-in-classes]
- 1323 |    int nWidth;
+/home/dave/coast/CoastalME/src/cme.h:1334:8: warning: member variable 'nWidth' has public visibility [misc-non-private-member-variables-in-classes]
+ 1334 |    int nWidth;
       |        ^
 /home/dave/coast/CoastalME/src/coast.h:31:10: warning: circular header file dependency detected while including 'coast_landform.h', please check the include path [misc-header-include-cycle]
    31 | #include "coast_landform.h"
       |          ^
-/home/dave/coast/CoastalME/src/coast_landform.h:30:10: note: 'coast.h' included from here
-   30 | #include "coast.h"
+/home/dave/coast/CoastalME/src/coast_landform.h:31:10: note: 'coast.h' included from here
+   31 | #include "coast.h"
       |          ^
 /home/dave/coast/CoastalME/src/coast_landform.cpp:27:10: note: 'coast_landform.h' included from here
    27 | #include "coast_landform.h"
       |          ^
-/home/dave/coast/CoastalME/src/coast_landform.h:30:10: warning: circular header file dependency detected while including 'coast.h', please check the include path [misc-header-include-cycle]
-   30 | #include "coast.h"
+/home/dave/coast/CoastalME/src/coast_landform.h:30:10: warning: direct self-inclusion of header file 'coast_landform.h' [misc-header-include-cycle]
+   30 | #include "coast_landform.h"
+      |          ^
+/home/dave/coast/CoastalME/src/coast_landform.h:31:10: warning: circular header file dependency detected while including 'coast.h', please check the include path [misc-header-include-cycle]
+   31 | #include "coast.h"
       |          ^
 /home/dave/coast/CoastalME/src/coast.h:31:10: note: 'coast_landform.h' included from here
    31 | #include "coast_landform.h"
@@ -36,40 +39,346 @@
 /home/dave/coast/CoastalME/src/assign_landforms.cpp:37:10: note: 'coast.h' included from here
    37 | #include "coast.h"
       |          ^
-/home/dave/coast/CoastalME/src/coast_landform.h:39:8: warning: member variable 'm_nCoast' has protected visibility [misc-non-private-member-variables-in-classes]
-   39 |    int m_nCoast;
+/home/dave/coast/CoastalME/src/coast_landform.h:40:8: warning: member variable 'm_nCoast' has protected visibility [misc-non-private-member-variables-in-classes]
+   40 |    int m_nCoast;
       |        ^
-/home/dave/coast/CoastalME/src/coast_landform.h:42:8: warning: member variable 'm_nPointOnCoast' has protected visibility [misc-non-private-member-variables-in-classes]
-   42 |    int m_nPointOnCoast;
+/home/dave/coast/CoastalME/src/coast_landform.h:43:8: warning: member variable 'm_nPointOnCoast' has protected visibility [misc-non-private-member-variables-in-classes]
+   43 |    int m_nPointOnCoast;
       |        ^
-/home/dave/coast/CoastalME/src/coast_landform.h:45:8: warning: member variable 'm_nCategory' has protected visibility [misc-non-private-member-variables-in-classes]
-   45 |    int m_nCategory;
+/home/dave/coast/CoastalME/src/coast_landform.h:46:8: warning: member variable 'm_nCategory' has protected visibility [misc-non-private-member-variables-in-classes]
+   46 |    int m_nCategory;
       |        ^
-/home/dave/coast/CoastalME/src/coast_landform.h:48:11: warning: member variable 'm_dTotAccumWaveEnergy' has protected visibility [misc-non-private-member-variables-in-classes]
-   48 |    double m_dTotAccumWaveEnergy;
+/home/dave/coast/CoastalME/src/coast_landform.h:49:11: warning: member variable 'm_dTotAccumWaveEnergy' has protected visibility [misc-non-private-member-variables-in-classes]
+   49 |    double m_dTotAccumWaveEnergy;
       |           ^
-/home/dave/coast/CoastalME/src/coast_landform.h:51:14: warning: member variable 'pCoast' has protected visibility [misc-non-private-member-variables-in-classes]
-   51 |    CRWCoast* pCoast;
+/home/dave/coast/CoastalME/src/coast_landform.h:52:14: warning: member variable 'pCoast' has protected visibility [misc-non-private-member-variables-in-classes]
+   52 |    CRWCoast* pCoast;
       |              ^
-/home/dave/coast/CoastalME/src/init_grid.cpp:46:1: warning: included header coast.h is not used directly [misc-include-cleaner]
-   46 | #include "coast.h"
+/home/dave/coast/CoastalME/src/create_profiles.cpp:1470:10: warning: variable 'nXTmp' of type 'int' can be declared 'const' [misc-const-correctness]
+ 1470 |          int nXTmp = VCellsToMark[k].nGetX();
+      |          ^
+      |              const 
+/home/dave/coast/CoastalME/src/create_profiles.cpp:1471:10: warning: variable 'nYTmp' of type 'int' can be declared 'const' [misc-const-correctness]
+ 1471 |          int nYTmp = VCellsToMark[k].nGetY();
+      |          ^
+      |              const 
+/home/dave/coast/CoastalME/src/create_profiles.cpp:1604:16: warning: variable 'nHitProfileCoast1' of type 'int' can be declared 'const' [misc-const-correctness]
+ 1604 |                int nHitProfileCoast1 = m_pRasterGrid->m_Cell[nX][nY].nGetProfileCoastID();
+      |                ^
+      |                    const 
+/home/dave/coast/CoastalME/src/create_profiles.cpp:1605:16: warning: variable 'nHitProfileCoast2' of type 'int' can be declared 'const' [misc-const-correctness]
+ 1605 |                int nHitProfileCoast2 = m_pRasterGrid->m_Cell[nX][nY+1].nGetProfileCoastID();
+      |                ^
+      |                    const 
+/home/dave/coast/CoastalME/src/gis_utils.cpp:471:4: warning: variable 'nPti1X' of type 'int' can be declared 'const' [misc-const-correctness]
+  471 |    int nPti1X = pPti1->nGetX();
+      |    ^
+      |        const 
+/home/dave/coast/CoastalME/src/gis_utils.cpp:472:4: warning: variable 'nPti1Y' of type 'int' can be declared 'const' [misc-const-correctness]
+  472 |    int nPti1Y = pPti1->nGetY();
+      |    ^
+      |        const 
+/home/dave/coast/CoastalME/src/gis_utils.cpp:473:4: warning: variable 'nPti2X' of type 'int' can be declared 'const' [misc-const-correctness]
+  473 |    int nPti2X = pPti2->nGetX();
+      |    ^
+      |        const 
+/home/dave/coast/CoastalME/src/gis_utils.cpp:474:4: warning: variable 'nPti2Y' of type 'int' can be declared 'const' [misc-const-correctness]
+  474 |    int nPti2Y = pPti2->nGetY();
+      |    ^
+      |        const 
+/home/dave/coast/CoastalME/src/gis_utils.cpp:475:4: warning: variable 'nPtiAvgX' of type 'int' can be declared 'const' [misc-const-correctness]
+  475 |    int nPtiAvgX = (nPti1X + nPti2X) / 2;
+      |    ^
+      |        const 
+/home/dave/coast/CoastalME/src/gis_utils.cpp:476:4: warning: variable 'nPtiAvgY' of type 'int' can be declared 'const' [misc-const-correctness]
+  476 |    int nPtiAvgY = (nPti1Y + nPti2Y) / 2;
+      |    ^
+      |        const 
+/home/dave/coast/CoastalME/src/init_grid.cpp:39:1: warning: included header coast.h is not used directly [misc-include-cleaner]
+   39 | #include "coast.h"
       | ^~~~~~~~~~~~~~~~~~
-   47 | #include "simulation.h"
+   40 | #include "simulation.h"
+/home/dave/coast/CoastalME/src/multi_line.cpp:39:8: warning: no header providing "CGeom2DPoint" is directly included [misc-include-cleaner]
+   27 | 
+   28 | //! Constructor, no parameters
+   29 | CGeomMultiLine::CGeomMultiLine(void)
+   30 | {
+   31 | }
+   32 | 
+   33 | //! Destructor
+   34 | CGeomMultiLine::~CGeomMultiLine(void)
+   35 | {
+   36 | }
+   37 | 
+   38 | //! Returns a pointer to the points of the CGeomLine
+   39 | vector<CGeom2DPoint>& CGeomMultiLine::pGetPoints(void)
+      |        ^
+/home/dave/coast/CoastalME/src/multi_line.cpp:41:11: warning: no header providing "CGeomLine" is directly included [misc-include-cleaner]
+   27 | 
+   28 | //! Constructor, no parameters
+   29 | CGeomMultiLine::CGeomMultiLine(void)
+   30 | {
+   31 | }
+   32 | 
+   33 | //! Destructor
+   34 | CGeomMultiLine::~CGeomMultiLine(void)
+   35 | {
+   36 | }
+   37 | 
+   38 | //! Returns a pointer to the points of the CGeomLine
+   39 | vector<CGeom2DPoint>& CGeomMultiLine::pGetPoints(void)
+   40 | {
+   41 |    return CGeomLine::m_VPoints;
+      |           ^
+/home/dave/coast/CoastalME/src/multiple_coastlines.cpp:46:10: warning: variable 'nProfile' of type 'int' can be declared 'const' [misc-const-correctness]
+   46 |          int nProfile = pProfile->nGetProfileID();
+      |          ^
+      |              const 
+/home/dave/coast/CoastalME/src/multiple_coastlines.cpp:47:10: warning: variable 'bCoastStart' of type 'bool' can be declared 'const' [misc-const-correctness]
+   47 |          bool bCoastStart = pProfile->bStartOfCoast();
+      |          ^
+      |               const 
+/home/dave/coast/CoastalME/src/multiple_coastlines.cpp:48:10: warning: variable 'bCoastEnd' of type 'bool' can be declared 'const' [misc-const-correctness]
+   48 |          bool bCoastEnd = pProfile->bEndOfCoast();
+      |          ^
+      |               const 
+/home/dave/coast/CoastalME/src/multiple_coastlines.cpp:53:13: warning: no header providing "CGeom2DIPoint" is directly included [misc-include-cleaner]
+   24 |             CGeom2DIPoint* pCell = pProfile->pPtiGetCellInProfile(nCell);
+      |             ^
+/home/dave/coast/CoastalME/src/multiple_coastlines.cpp:54:13: warning: variable 'nX' of type 'int' can be declared 'const' [misc-const-correctness]
+   54 |             int nX = pCell->nGetX();
+      |             ^
+      |                 const 
+/home/dave/coast/CoastalME/src/multiple_coastlines.cpp:55:13: warning: variable 'nY' of type 'int' can be declared 'const' [misc-const-correctness]
+   55 |             int nY = pCell->nGetY();
+      |             ^
+      |                 const 
+/home/dave/coast/CoastalME/src/multiple_coastlines.cpp:59:38: warning: no header providing "INT_NODATA" is directly included [misc-include-cleaner]
+   24 |             if ((nHitProfileCoast != INT_NODATA) && (nHitProfileCoast != nCoast))
+      |                                      ^
+/home/dave/coast/CoastalME/src/multiple_coastlines.cpp:62:16: warning: variable 'nHitProfile' of type 'int' can be declared 'const' [misc-const-correctness]
+   62 |                int nHitProfile = m_pRasterGrid->m_Cell[nX][nY].nGetProfileID();
+      |                ^
+      |                    const 
+/home/dave/coast/CoastalME/src/multiple_coastlines.cpp:65:16: warning: variable 'nRtn' of type 'int' can be declared 'const' [misc-const-correctness]
+   65 |                int nRtn = nTruncateProfilesDifferentCoasts(nCoast, nProfile, nCell, nHitProfileCoast, nHitProfile, nX, nY, bCoastStart, bCoastEnd);
+      |                ^
+      |                    const 
+/home/dave/coast/CoastalME/src/multiple_coastlines.cpp:66:28: warning: no header providing "RTN_OK" is directly included [misc-include-cleaner]
+   66 |                if (nRtn != RTN_OK)
+      |                            ^
+/home/dave/coast/CoastalME/src/multiple_coastlines.cpp:76:19: warning: variable 'nHitProfile' of type 'int' can be declared 'const' [misc-const-correctness]
+   76 |                   int nHitProfile = m_pRasterGrid->m_Cell[nX][nY+1].nGetProfileID();
+      |                   ^
+      |                       const 
+/home/dave/coast/CoastalME/src/multiple_coastlines.cpp:79:19: warning: variable 'nRtn' of type 'int' can be declared 'const' [misc-const-correctness]
+   79 |                   int nRtn = nTruncateProfilesDifferentCoasts(nCoast, nProfile, nCell, nHitProfileCoast, nHitProfile, nX, nY+1, bCoastStart, bCoastEnd);
+      |                   ^
+      |                       const 
+/home/dave/coast/CoastalME/src/multiple_coastlines.cpp:89:16: warning: variable 'nHitCoast' of type 'int' can be declared 'const' [misc-const-correctness]
+   89 |                int nHitCoast = m_pRasterGrid->m_Cell[nX][nY].nGetCoastline();
+      |                ^
+      |                    const 
+/home/dave/coast/CoastalME/src/multiple_coastlines.cpp:93:19: warning: variable 'nRtn' of type 'int' can be declared 'const' [misc-const-correctness]
+   93 |                   int nRtn = nTruncateProfileHitDifferentCoast(nCoast, nProfile, nCell, nX, nY, bCoastStart, bCoastEnd);
+      |                   ^
+      |                       const 
+/home/dave/coast/CoastalME/src/multiple_coastlines.cpp:104:19: warning: variable 'nHitCoast' of type 'int' can be declared 'const' [misc-const-correctness]
+  104 |                   int nHitCoast = m_pRasterGrid->m_Cell[nX][nY+1].nGetCoastline();
+      |                   ^
+      |                       const 
+/home/dave/coast/CoastalME/src/multiple_coastlines.cpp:108:19: warning: variable 'nRtn' of type 'int' can be declared 'const' [misc-const-correctness]
+  108 |                   int nRtn = nTruncateProfileHitDifferentCoast(nCoast, nProfile, nCell, nX, nY, bCoastStart, bCoastEnd);
+      |                   ^
+      |                       const 
+/home/dave/coast/CoastalME/src/multiple_coastlines.cpp:129:14: warning: no header providing "RTN_ERR_CELL_MARKED_PROFILE_COAST_BUT_NOT_PROFILE" is directly included [misc-include-cleaner]
+  129 |       return RTN_ERR_CELL_MARKED_PROFILE_COAST_BUT_NOT_PROFILE;
+      |              ^
+/home/dave/coast/CoastalME/src/multiple_coastlines.cpp:138:4: warning: variable 'nProfileLen' of type 'int' can be declared 'const' [misc-const-correctness]
+  138 |    int nProfileLen = static_cast<int>(pVProfileCells->size());
+      |    ^
+      |        const 
+/home/dave/coast/CoastalME/src/multiple_coastlines.cpp:156:7: warning: variable 'dDist' of type 'double' can be declared 'const' [misc-const-correctness]
+  156 |       double dDist = dGetDistanceBetween(pPtiProfileStart, pPtiHitProfileStart);
+      |       ^
+      |              const 
+/home/dave/coast/CoastalME/src/multiple_coastlines.cpp:157:40: warning: no header providing "GAP_BETWEEN_DIFFERENT_COAST_PROFILES" is directly included [misc-include-cleaner]
+  157 |       nCell = static_cast<int>(dDist - GAP_BETWEEN_DIFFERENT_COAST_PROFILES);
+      |                                        ^
+/home/dave/coast/CoastalME/src/multiple_coastlines.cpp:160:15: warning: no header providing "tMax" is directly included [misc-include-cleaner]
+  160 |       nCell = tMax(nCell, 0);
+      |               ^
+/home/dave/coast/CoastalME/src/multiple_coastlines.cpp:168:4: warning: variable 'nProfileNewLen' of type 'int' can be declared 'const' [misc-const-correctness]
+  168 |    int nProfileNewLen = tMax(nCell - GAP_BETWEEN_DIFFERENT_COAST_PROFILES, MIN_PROFILE_SIZE);
+      |    ^
+      |        const 
+/home/dave/coast/CoastalME/src/multiple_coastlines.cpp:168:76: warning: no header providing "MIN_PROFILE_SIZE" is directly included [misc-include-cleaner]
+  168 |    int nProfileNewLen = tMax(nCell - GAP_BETWEEN_DIFFERENT_COAST_PROFILES, MIN_PROFILE_SIZE);
+      |                                                                            ^
+/home/dave/coast/CoastalME/src/multiple_coastlines.cpp:173:7: warning: variable 'nXThis' of type 'int' can be declared 'const' [misc-const-correctness]
+  173 |       int nXThis = pVProfileCells->at(nn).nGetX();
+      |       ^
+      |           const 
+/home/dave/coast/CoastalME/src/multiple_coastlines.cpp:174:7: warning: variable 'nYThis' of type 'int' can be declared 'const' [misc-const-correctness]
+  174 |       int nYThis = pVProfileCells->at(nn).nGetY();
+      |       ^
+      |           const 
+/home/dave/coast/CoastalME/src/multiple_coastlines.cpp:196:28: warning: no header providing "LOG_FILE_ALL" is directly included [misc-include-cleaner]
+  196 |    if (m_nLogFileDetail >= LOG_FILE_ALL)
+      |                            ^
+/home/dave/coast/CoastalME/src/multiple_coastlines.cpp:215:4: warning: variable 'nHitProfileLen' of type 'int' can be declared 'const' [misc-const-correctness]
+  215 |    int nHitProfileLen = static_cast<int>(pVHitProfileCells->size());
+      |    ^
+      |        const 
+/home/dave/coast/CoastalME/src/multiple_coastlines.cpp:217:4: warning: variable 'nHitCell' of type 'int' can be declared 'const' [misc-const-correctness]
+  217 |    int nHitCell = pHitProfile->nGetIndexOfCellInProfile(nX, nY);
+      |    ^
+      |        const 
+/home/dave/coast/CoastalME/src/multiple_coastlines.cpp:219:14: warning: no header providing "RTN_ERR_CELL_NOT_FOUND_IN_HIT_PROFILE_DIFFERENT_COASTS" is directly included [misc-include-cleaner]
+  219 |       return RTN_ERR_CELL_NOT_FOUND_IN_HIT_PROFILE_DIFFERENT_COASTS;
+      |              ^
+/home/dave/coast/CoastalME/src/multiple_coastlines.cpp:222:4: warning: variable 'nHitProfileNewLen' of type 'int' can be declared 'const' [misc-const-correctness]
+  222 |    int nHitProfileNewLen = tMax(nHitCell - GAP_BETWEEN_DIFFERENT_COAST_PROFILES, MIN_PROFILE_SIZE);
+      |    ^
+      |        const 
+/home/dave/coast/CoastalME/src/multiple_coastlines.cpp:227:7: warning: variable 'nXThis' of type 'int' can be declared 'const' [misc-const-correctness]
+  227 |       int nXThis = pVHitProfileCells->at(nn).nGetX();
+      |       ^
+      |           const 
+/home/dave/coast/CoastalME/src/multiple_coastlines.cpp:228:7: warning: variable 'nYThis' of type 'int' can be declared 'const' [misc-const-correctness]
+  228 |       int nYThis = pVHitProfileCells->at(nn).nGetY();
+      |       ^
+      |           const 
+/home/dave/coast/CoastalME/src/multiple_coastlines.cpp:294:4: warning: variable 'nProfileLen' of type 'int' can be declared 'const' [misc-const-correctness]
+  294 |    int nProfileLen = static_cast<int>(pVProfileCells->size());
+      |    ^
+      |        const 
+/home/dave/coast/CoastalME/src/multiple_coastlines.cpp:304:27: warning: no header providing "NULL" is directly included [misc-include-cleaner]
+   26 |    if (pUpCoastProfile != NULL)
+      |                           ^
+/home/dave/coast/CoastalME/src/multiple_coastlines.cpp:319:21: warning: no header providing "tMin" is directly included [misc-include-cleaner]
+  319 |    nProfileNewLen = tMin(nProfileNewLen, nAvgAdjacentProfileLen);
+      |                     ^
+/home/dave/coast/CoastalME/src/multiple_coastlines.cpp:324:7: warning: variable 'nXThis' of type 'int' can be declared 'const' [misc-const-correctness]
+  324 |       int nXThis = pVProfileCells->at(nn).nGetX();
+      |       ^
+      |           const 
+/home/dave/coast/CoastalME/src/multiple_coastlines.cpp:325:7: warning: variable 'nYThis' of type 'int' can be declared 'const' [misc-const-correctness]
+  325 |       int nYThis = pVProfileCells->at(nn).nGetY();
+      |       ^
+      |           const 
+/home/dave/coast/CoastalME/src/multiple_coastlines.cpp:336:4: warning: variable 'PtiLast' of type 'CGeom2DIPoint' can be declared 'const' [misc-const-correctness]
+  336 |    CGeom2DIPoint PtiLast = pVProfileCells->back();
+      |    ^
+      |                  const 
+/home/dave/coast/CoastalME/src/multiple_coastlines.cpp:340:4: warning: variable 'nRtn' of type 'int' can be declared 'const' [misc-const-correctness]
+  340 |    int nRtn = nTruncateProfileMultiLineDifferentCoasts(pProfile, nX, nY);
+      |    ^
+      |        const 
+/home/dave/coast/CoastalME/src/multiple_coastlines.cpp:367:30: warning: no header providing "VECTOR_PLOT_COAST" is directly included [misc-include-cleaner]
+  367 |    if (! bWriteVectorGISFile(VECTOR_PLOT_COAST, &VECTOR_PLOT_COAST_TITLE))
+      |                              ^
+/home/dave/coast/CoastalME/src/multiple_coastlines.cpp:367:50: warning: no header providing "VECTOR_PLOT_COAST_TITLE" is directly included [misc-include-cleaner]
+  367 |    if (! bWriteVectorGISFile(VECTOR_PLOT_COAST, &VECTOR_PLOT_COAST_TITLE))
+      |                                                  ^
+/home/dave/coast/CoastalME/src/multiple_coastlines.cpp:369:30: warning: no header providing "VECTOR_PLOT_NORMALS" is directly included [misc-include-cleaner]
+  369 |    if (! bWriteVectorGISFile(VECTOR_PLOT_NORMALS, &VECTOR_PLOT_NORMALS_TITLE))
+      |                              ^
+/home/dave/coast/CoastalME/src/multiple_coastlines.cpp:369:52: warning: no header providing "VECTOR_PLOT_NORMALS_TITLE" is directly included [misc-include-cleaner]
+  369 |    if (! bWriteVectorGISFile(VECTOR_PLOT_NORMALS, &VECTOR_PLOT_NORMALS_TITLE))
+      |                                                    ^
+/home/dave/coast/CoastalME/src/multiple_coastlines.cpp:371:30: warning: no header providing "VECTOR_PLOT_INVALID_NORMALS" is directly included [misc-include-cleaner]
+  371 |    if (! bWriteVectorGISFile(VECTOR_PLOT_INVALID_NORMALS, &VECTOR_PLOT_INVALID_NORMALS_TITLE))
+      |                              ^
+/home/dave/coast/CoastalME/src/multiple_coastlines.cpp:371:60: warning: no header providing "VECTOR_PLOT_INVALID_NORMALS_TITLE" is directly included [misc-include-cleaner]
+  371 |    if (! bWriteVectorGISFile(VECTOR_PLOT_INVALID_NORMALS, &VECTOR_PLOT_INVALID_NORMALS_TITLE))
+      |                                                            ^
+/home/dave/coast/CoastalME/src/multiple_coastlines.cpp:373:30: warning: no header providing "RASTER_PLOT_NORMAL_PROFILE" is directly included [misc-include-cleaner]
+  373 |    if (! bWriteRasterGISFile(RASTER_PLOT_NORMAL_PROFILE, &RASTER_PLOT_NORMAL_PROFILE_TITLE))
+      |                              ^
+/home/dave/coast/CoastalME/src/multiple_coastlines.cpp:373:59: warning: no header providing "RASTER_PLOT_NORMAL_PROFILE_TITLE" is directly included [misc-include-cleaner]
+  373 |    if (! bWriteRasterGISFile(RASTER_PLOT_NORMAL_PROFILE, &RASTER_PLOT_NORMAL_PROFILE_TITLE))
+      |                                                           ^
+/home/dave/coast/CoastalME/src/multiple_coastlines.cpp:375:30: warning: no header providing "RASTER_PLOT_POLYGON" is directly included [misc-include-cleaner]
+  375 |    if (! bWriteRasterGISFile(RASTER_PLOT_POLYGON, &RASTER_PLOT_POLYGON_TITLE))
+      |                              ^
+/home/dave/coast/CoastalME/src/multiple_coastlines.cpp:375:52: warning: no header providing "RASTER_PLOT_POLYGON_TITLE" is directly included [misc-include-cleaner]
+  375 |    if (! bWriteRasterGISFile(RASTER_PLOT_POLYGON, &RASTER_PLOT_POLYGON_TITLE))
+      |                                                    ^
+/home/dave/coast/CoastalME/src/multiple_coastlines.cpp:390:47: warning: no header providing "CGeomMultiLine" is directly included [misc-include-cleaner]
+   24 |    int const nProfileLineSegments = pProfile->CGeomMultiLine::nGetNumLineSegments();
+      |                                               ^
+/home/dave/coast/CoastalME/src/multiple_coastlines.cpp:394:7: warning: variable 'nNumCoinc' of type 'int' can be declared 'const' [misc-const-correctness]
+  394 |       int nNumCoinc = pProfile->CGeomMultiLine::nGetNumCoincidentProfilesInLineSegment(nSeg);
+      |       ^
+      |           const 
+/home/dave/coast/CoastalME/src/multiple_coastlines.cpp:397:17: warning: no header providing "CGeom2DPoint" is directly included [misc-include-cleaner]
+   24 |          vector<CGeom2DPoint>& pVPt = pProfile->CGeomMultiLine::pGetPoints();
+      |                 ^
+/home/dave/coast/CoastalME/src/multiple_coastlines.cpp:401:13: warning: variable 'dX1' of type 'double' can be declared 'const' [misc-const-correctness]
+  401 |             double dX1 = pVPt[nLin].dGetX();
+      |             ^
+      |                    const 
+/home/dave/coast/CoastalME/src/multiple_coastlines.cpp:402:13: warning: variable 'dY1' of type 'double' can be declared 'const' [misc-const-correctness]
+  402 |             double dY1 = pVPt[nLin].dGetY();
+      |             ^
+      |                    const 
+/home/dave/coast/CoastalME/src/multiple_coastlines.cpp:403:13: warning: variable 'dX2' of type 'double' can be declared 'const' [misc-const-correctness]
+  403 |             double dX2 = pVPt[nLin+1].dGetX();
+      |             ^
+      |                    const 
+/home/dave/coast/CoastalME/src/multiple_coastlines.cpp:404:13: warning: variable 'dY2' of type 'double' can be declared 'const' [misc-const-correctness]
+  404 |             double dY2 = pVPt[nLin+1].dGetY();
+      |             ^
+      |                    const 
+/home/dave/coast/CoastalME/src/multiple_coastlines.cpp:406:13: warning: variable 'dXMin' of type 'double' can be declared 'const' [misc-const-correctness]
+  406 |             double dXMin = tMin(dX1, dX2);
+      |             ^
+      |                    const 
+/home/dave/coast/CoastalME/src/multiple_coastlines.cpp:406:28: warning: no header providing "tMin" is directly included [misc-include-cleaner]
+  406 |             double dXMin = tMin(dX1, dX2);
+      |                            ^
+/home/dave/coast/CoastalME/src/multiple_coastlines.cpp:407:13: warning: variable 'dXMax' of type 'double' can be declared 'const' [misc-const-correctness]
+  407 |             double dXMax = tMax(dX1, dX2);
+      |             ^
+      |                    const 
+/home/dave/coast/CoastalME/src/multiple_coastlines.cpp:407:28: warning: no header providing "tMax" is directly included [misc-include-cleaner]
+  407 |             double dXMax = tMax(dX1, dX2);
+      |                            ^
+/home/dave/coast/CoastalME/src/multiple_coastlines.cpp:408:13: warning: variable 'dYMin' of type 'double' can be declared 'const' [misc-const-correctness]
+  408 |             double dYMin = tMin(dY1, dY2);
+      |             ^
+      |                    const 
+/home/dave/coast/CoastalME/src/multiple_coastlines.cpp:409:13: warning: variable 'dYMax' of type 'double' can be declared 'const' [misc-const-correctness]
+  409 |             double dYMax = tMax(dY1, dY2);
+      |             ^
+      |                    const 
+/home/dave/coast/CoastalME/src/multiple_coastlines.cpp:411:13: warning: variable 'dX' of type 'double' can be declared 'const' [misc-const-correctness]
+  411 |             double dX = dGridXToExtCRSX(nX);
+      |             ^
+      |                    const 
+/home/dave/coast/CoastalME/src/multiple_coastlines.cpp:412:13: warning: variable 'dY' of type 'double' can be declared 'const' [misc-const-correctness]
+  412 |             double dY = dGridYToExtCRSY(nY);
+      |             ^
+      |                    const 
+/home/dave/coast/CoastalME/src/multiple_coastlines.cpp:433:14: warning: no header providing "RTN_ERR_POINT_NOT_FOUND_IN_MULTILINE_DIFFERENT_COASTS" is directly included [misc-include-cleaner]
+  433 |       return RTN_ERR_POINT_NOT_FOUND_IN_MULTILINE_DIFFERENT_COASTS;
+      |              ^
 /home/dave/coast/CoastalME/src/sediment_input_event.cpp:26:1: warning: included header cme.h is not used directly [misc-include-cleaner]
    26 | #include "cme.h"
       | ^~~~~~~~~~~~~~~~
    27 | #include "sediment_input_event.h"
-/home/dave/coast/CoastalME/src/simulation.cpp:63:1: warning: included header coast.h is not used directly [misc-include-cleaner]
-   63 | #include "coast.h"
+/home/dave/coast/CoastalME/src/simulation.cpp:59:1: warning: included header coast.h is not used directly [misc-include-cleaner]
+   59 | #include "coast.h"
       | ^~~~~~~~~~~~~~~~~~
-   64 | 
-/home/dave/coast/CoastalME/src/simulation.h:1850:13: warning: member variable 'LogStream' has public visibility [misc-non-private-member-variables-in-classes]
- 1850 |    ofstream LogStream;
+   60 | 
+/home/dave/coast/CoastalME/src/simulation.h:1854:13: warning: member variable 'LogStream' has public visibility [misc-non-private-member-variables-in-classes]
+ 1854 |    ofstream LogStream;
       |             ^
-/home/dave/coast/CoastalME/src/update_grid.cpp:36:1: warning: included header coast.h is not used directly [misc-include-cleaner]
-   36 | #include "coast.h"
+/home/dave/coast/CoastalME/src/update_grid.cpp:33:1: warning: included header coast.h is not used directly [misc-include-cleaner]
+   33 | #include "coast.h"
       | ^~~~~~~~~~~~~~~~~~
-   37 | 
+   34 | 
 /home/dave/coast/CoastalME/src/utils.cpp:33:1: warning: included header types.h is not used directly [misc-include-cleaner]
    33 | #include <sys/types.h>
       | ^~~~~~~~~~~~~~~~~~~~~~
@@ -80,21 +389,24 @@
 /home/dave/coast/CoastalME/src/2di_shape.h:38:26: warning: member variable 'm_VPoints' has protected visibility [misc-non-private-member-variables-in-classes]
    38 |    vector<CGeom2DIPoint> m_VPoints;
       |                          ^
-/home/dave/coast/CoastalME/src/cell.h:40:1: warning: included header cme.h is not used directly [misc-include-cleaner]
-   40 | #include "cme.h"
+/home/dave/coast/CoastalME/src/cell.h:39:1: warning: included header cme.h is not used directly [misc-include-cleaner]
+   39 | #include "cme.h"
       | ^~~~~~~~~~~~~~~~
-   41 | #include "raster_grid.h"
-/home/dave/coast/CoastalME/src/cme.h:1322:9: warning: member variable 'chFill' has public visibility [misc-non-private-member-variables-in-classes]
- 1322 |    char chFill;
+   40 | #include "raster_grid.h"
+/home/dave/coast/CoastalME/src/cme.h:1333:9: warning: member variable 'chFill' has public visibility [misc-non-private-member-variables-in-classes]
+ 1333 |    char chFill;
       |         ^
-/home/dave/coast/CoastalME/src/cme.h:1323:8: warning: member variable 'nWidth' has public visibility [misc-non-private-member-variables-in-classes]
- 1323 |    int nWidth;
+/home/dave/coast/CoastalME/src/cme.h:1334:8: warning: member variable 'nWidth' has public visibility [misc-non-private-member-variables-in-classes]
+ 1334 |    int nWidth;
       |        ^
 /home/dave/coast/CoastalME/src/coast.h:31:10: warning: circular header file dependency detected while including 'coast_landform.h', please check the include path [misc-header-include-cycle]
    31 | #include "coast_landform.h"
       |          ^
-/home/dave/coast/CoastalME/src/coast_landform.h:30:10: warning: circular header file dependency detected while including 'coast.h', please check the include path [misc-header-include-cycle]
-   30 | #include "coast.h"
+/home/dave/coast/CoastalME/src/coast_landform.h:30:10: warning: direct self-inclusion of header file 'coast_landform.h' [misc-header-include-cycle]
+   30 | #include "coast_landform.h"
+      |          ^
+/home/dave/coast/CoastalME/src/coast_landform.h:31:10: warning: circular header file dependency detected while including 'coast.h', please check the include path [misc-header-include-cycle]
+   31 | #include "coast.h"
       |          ^
 /home/dave/coast/CoastalME/src/coast.h:31:10: note: 'coast_landform.h' included from here
    31 | #include "coast_landform.h"
@@ -102,25 +414,28 @@
 /home/dave/coast/CoastalME/src/cliff.h:29:10: note: 'coast.h' included from here
    29 | #include "coast.h"
       |          ^
-/home/dave/coast/CoastalME/src/coast_landform.h:39:8: warning: member variable 'm_nCoast' has protected visibility [misc-non-private-member-variables-in-classes]
-   39 |    int m_nCoast;
+/home/dave/coast/CoastalME/src/coast_landform.h:40:8: warning: member variable 'm_nCoast' has protected visibility [misc-non-private-member-variables-in-classes]
+   40 |    int m_nCoast;
       |        ^
-/home/dave/coast/CoastalME/src/coast_landform.h:42:8: warning: member variable 'm_nPointOnCoast' has protected visibility [misc-non-private-member-variables-in-classes]
-   42 |    int m_nPointOnCoast;
+/home/dave/coast/CoastalME/src/coast_landform.h:43:8: warning: member variable 'm_nPointOnCoast' has protected visibility [misc-non-private-member-variables-in-classes]
+   43 |    int m_nPointOnCoast;
       |        ^
-/home/dave/coast/CoastalME/src/coast_landform.h:45:8: warning: member variable 'm_nCategory' has protected visibility [misc-non-private-member-variables-in-classes]
-   45 |    int m_nCategory;
+/home/dave/coast/CoastalME/src/coast_landform.h:46:8: warning: member variable 'm_nCategory' has protected visibility [misc-non-private-member-variables-in-classes]
+   46 |    int m_nCategory;
       |        ^
-/home/dave/coast/CoastalME/src/coast_landform.h:48:11: warning: member variable 'm_dTotAccumWaveEnergy' has protected visibility [misc-non-private-member-variables-in-classes]
-   48 |    double m_dTotAccumWaveEnergy;
+/home/dave/coast/CoastalME/src/coast_landform.h:49:11: warning: member variable 'm_dTotAccumWaveEnergy' has protected visibility [misc-non-private-member-variables-in-classes]
+   49 |    double m_dTotAccumWaveEnergy;
       |           ^
-/home/dave/coast/CoastalME/src/coast_landform.h:51:14: warning: member variable 'pCoast' has protected visibility [misc-non-private-member-variables-in-classes]
-   51 |    CRWCoast* pCoast;
+/home/dave/coast/CoastalME/src/coast_landform.h:52:14: warning: member variable 'pCoast' has protected visibility [misc-non-private-member-variables-in-classes]
+   52 |    CRWCoast* pCoast;
       |              ^
+/home/dave/coast/CoastalME/src/multi_line.h:48:11: warning: no header providing "CGeom2DPoint" is directly included [misc-include-cleaner]
+   28 |    vector<CGeom2DPoint>& pGetPoints(void);
+      |           ^
 /home/dave/coast/CoastalME/src/simulation.h:67:1: warning: included header i_line.h is not used directly [misc-include-cleaner]
    67 | #include "i_line.h"
       | ^~~~~~~~~~~~~~~~~~~
    68 | #include "line.h"
-/home/dave/coast/CoastalME/src/simulation.h:1850:13: warning: member variable 'LogStream' has public visibility [misc-non-private-member-variables-in-classes]
- 1850 |    ofstream LogStream;
+/home/dave/coast/CoastalME/src/simulation.h:1854:13: warning: member variable 'LogStream' has public visibility [misc-non-private-member-variables-in-classes]
+ 1854 |    ofstream LogStream;
       |             ^

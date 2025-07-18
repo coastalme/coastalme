@@ -178,7 +178,7 @@ class CGeomProfile : public CGeomMultiLine
 
    void AppendCellInProfile(CGeom2DIPoint const*);
    void AppendCellInProfile(int const, int const);
-   void SetCellsInProfile(vector<CGeom2DIPoint>*);
+   void SetCellsInProfile(vector<CGeom2DIPoint> const*);
    vector<CGeom2DIPoint>* pPtiVGetCellsInProfile(void);
    CGeom2DIPoint* pPtiGetCellInProfile(int const);
    int nGetNumCellsInProfile(void) const;
