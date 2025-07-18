@@ -836,7 +836,7 @@ double const DEFAULT_INTERVENTION_INFLUENCE_DISTANCE = 5.0; // Default distance 
 
 double const DBL_NODATA = -9999;
 
-string const PROGRAM_NAME = "Coastal Modelling Environment (CoastalME) version 1.3.26 (18 Jul 2025)";
+string const PROGRAM_NAME = "Coastal Modelling Environment (CoastalME) version 1.3.27 (18 Jul 2025)";
 string const PROGRAM_NAME_SHORT = "CME";
 string const CME_INI = "cme.ini";
 
