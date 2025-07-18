@@ -553,12 +553,12 @@ $(function(){initNavTree('db/df7/gis__utils_8cpp_source.html','../../'); initRes
 <div class="foldopen" id="foldopen00469" data-start="{" data-end="}">
 <div class="line"><a id="l00469" name="l00469"></a><span class="lineno"><a class="line" href="../../d1/d98/classCSimulation.html#a905ab4a69491944e7dd25dc53849fafc">  469</a></span><a class="code hl_class" href="../../d6/d0d/classCGeom2DIPoint.html">CGeom2DIPoint</a> <a class="code hl_function" href="../../d1/d98/classCSimulation.html#a905ab4a69491944e7dd25dc53849fafc">CSimulation::PtiAverage</a>(<a class="code hl_class" href="../../d6/d0d/classCGeom2DIPoint.html">CGeom2DIPoint</a> <span class="keyword">const</span>* pPti1, <a class="code hl_class" href="../../d6/d0d/classCGeom2DIPoint.html">CGeom2DIPoint</a> <span class="keyword">const</span>* pPti2)</div>
 <div class="line"><a id="l00470" name="l00470"></a><span class="lineno">  470</span>{</div>
-<div class="line"><a id="l00471" name="l00471"></a><span class="lineno">  471</span>   <span class="keywordtype">int</span> nPti1X = pPti1-&gt;<a class="code hl_function" href="../../d6/d0d/classCGeom2DIPoint.html#af84c687b2d0be01ab41cbcc0565f4f3f">nGetX</a>();</div>
-<div class="line"><a id="l00472" name="l00472"></a><span class="lineno">  472</span>   <span class="keywordtype">int</span> nPti1Y = pPti1-&gt;<a class="code hl_function" href="../../d6/d0d/classCGeom2DIPoint.html#a4d9c20bcca90dcb9d519b664aba09cbd">nGetY</a>();</div>
-<div class="line"><a id="l00473" name="l00473"></a><span class="lineno">  473</span>   <span class="keywordtype">int</span> nPti2X = pPti2-&gt;<a class="code hl_function" href="../../d6/d0d/classCGeom2DIPoint.html#af84c687b2d0be01ab41cbcc0565f4f3f">nGetX</a>();</div>
-<div class="line"><a id="l00474" name="l00474"></a><span class="lineno">  474</span>   <span class="keywordtype">int</span> nPti2Y = pPti2-&gt;<a class="code hl_function" href="../../d6/d0d/classCGeom2DIPoint.html#a4d9c20bcca90dcb9d519b664aba09cbd">nGetY</a>();</div>
-<div class="line"><a id="l00475" name="l00475"></a><span class="lineno">  475</span>   <span class="keywordtype">int</span> nPtiAvgX = (nPti1X + nPti2X) / 2;</div>
-<div class="line"><a id="l00476" name="l00476"></a><span class="lineno">  476</span>   <span class="keywordtype">int</span> nPtiAvgY = (nPti1Y + nPti2Y) / 2;</div>
+<div class="line"><a id="l00471" name="l00471"></a><span class="lineno">  471</span>   <span class="keywordtype">int</span> <span class="keyword">const</span> nPti1X = pPti1-&gt;<a class="code hl_function" href="../../d6/d0d/classCGeom2DIPoint.html#af84c687b2d0be01ab41cbcc0565f4f3f">nGetX</a>();</div>
+<div class="line"><a id="l00472" name="l00472"></a><span class="lineno">  472</span>   <span class="keywordtype">int</span> <span class="keyword">const</span> nPti1Y = pPti1-&gt;<a class="code hl_function" href="../../d6/d0d/classCGeom2DIPoint.html#a4d9c20bcca90dcb9d519b664aba09cbd">nGetY</a>();</div>
+<div class="line"><a id="l00473" name="l00473"></a><span class="lineno">  473</span>   <span class="keywordtype">int</span> <span class="keyword">const</span> nPti2X = pPti2-&gt;<a class="code hl_function" href="../../d6/d0d/classCGeom2DIPoint.html#af84c687b2d0be01ab41cbcc0565f4f3f">nGetX</a>();</div>
+<div class="line"><a id="l00474" name="l00474"></a><span class="lineno">  474</span>   <span class="keywordtype">int</span> <span class="keyword">const</span> nPti2Y = pPti2-&gt;<a class="code hl_function" href="../../d6/d0d/classCGeom2DIPoint.html#a4d9c20bcca90dcb9d519b664aba09cbd">nGetY</a>();</div>
+<div class="line"><a id="l00475" name="l00475"></a><span class="lineno">  475</span>   <span class="keywordtype">int</span> <span class="keyword">const</span> nPtiAvgX = (nPti1X + nPti2X) / 2;</div>
+<div class="line"><a id="l00476" name="l00476"></a><span class="lineno">  476</span>   <span class="keywordtype">int</span> <span class="keyword">const</span> nPtiAvgY = (nPti1Y + nPti2Y) / 2;</div>
 <div class="line"><a id="l00477" name="l00477"></a><span class="lineno">  477</span> </div>
 <div class="line"><a id="l00478" name="l00478"></a><span class="lineno">  478</span>   <span class="keywordflow">return</span> <a class="code hl_class" href="../../d6/d0d/classCGeom2DIPoint.html">CGeom2DIPoint</a>(nPtiAvgX, nPtiAvgY);</div>
 <div class="line"><a id="l00479" name="l00479"></a><span class="lineno">  479</span>}</div>
@@ -2488,7 +2488,7 @@ $(function(){initNavTree('db/df7/gis__utils_8cpp_source.html','../../'); initRes
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="../../db/df7/gis__utils_8cpp.html">gis_utils.cpp</a></li>
-    <li class="footer">Generated on Tue Jul 15 2025 14:01:48 for CoastalME (Coastal Modelling Environment) by <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+    <li class="footer">Generated on Fri Jul 18 2025 14:55:07 for CoastalME (Coastal Modelling Environment) by <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
   </ul>
 </div>
 </body>

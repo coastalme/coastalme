@@ -43,7 +43,7 @@ var classCGeomProfile =
     [ "pPtiGetStartPoint", "da/dae/classCGeomProfile.html#abe0557d3f6bd86e02facefb28b9fab41", null ],
     [ "pPtiVGetCellsInProfile", "da/dae/classCGeomProfile.html#ada96aa991d179ac71f4523de7a4be560", null ],
     [ "PtVGetThisPointAndAllAfter", "da/dae/classCGeomProfile.html#a72b3263ad5f64527b4c21307139b3c5f", null ],
-    [ "SetCellsInProfile", "da/dae/classCGeomProfile.html#adf92a0fb0ce4910491baeda9f00eb97f", null ],
+    [ "SetCellsInProfile", "da/dae/classCGeomProfile.html#a1dd83016ad42ce8ba6d5dadf85937902", null ],
     [ "SetCShoreProblem", "da/dae/classCGeomProfile.html#aa7a610faab536f4f0c30ca2cbc8abebb", null ],
     [ "SetDownCoastAdjacentProfile", "da/dae/classCGeomProfile.html#a95f2f276944ca8d48f6985a998d9efb6", null ],
     [ "SetEndOfCoast", "da/dae/classCGeomProfile.html#a11548359d3db93535befcaf518468f64", null ],
