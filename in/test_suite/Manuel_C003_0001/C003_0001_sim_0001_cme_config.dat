@@ -115,6 +115,7 @@ Berm height i.e. height above SWL of start of depositional Dean profile (m)     
 
 ; Cliff collapse data -----------------------------------------------------------------------------------------------------------------------------------------
 Simulate cliff collapse?                                                                     : y
+Cliff collapse representation                           ["simple_notch" or "legacy_original"]: legacy_original
 Resistance to erosion of cliff (m^(9/4)s^(3/2))                                              : 4e6        ; Note is different from coast platform erosion resistance
 Notch overhang to initiate collapse (m)                                                      : 0.50
 Notch base below still water level (m)                                                       : 0.3       ; Must be greater than zero

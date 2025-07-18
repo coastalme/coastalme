@@ -57,6 +57,7 @@ using std::filesystem::create_directories;
 #include "simulation.h"
 #include "raster_grid.h"
 #include "coast.h"
+#include "cliff_collapse_manager.h"
 
 //===============================================================================================================================
 //! The CSimulation constructor
@@ -317,7 +318,10 @@ CSimulation::CSimulation(void)
    m_dInmersedToBulkVolumetric =
    m_dDepthOfClosure =
    m_dCoastNormalSpacing =
-   m_dCoastNormalInterventionSpacing =
+   m_dCoastNormalInterventionSpacing = 0;
+   
+   m_dInterventionTriggerDepth = DEFAULT_INTERVENTION_TRIGGER_DEPTH;
+   m_dInterventionInfluenceDistance = DEFAULT_INTERVENTION_INFLUENCE_DISTANCE;
    m_dCoastNormalLength =
    m_dThisIterTotSeaDepth =
    m_dThisIterPotentialSedLostBeachErosion =
@@ -437,7 +441,11 @@ CSimulation::CSimulation(void)
    m_tSysStartTime =
    m_tSysEndTime = 0;
 
+   // Initialize string parameters with default values
+   m_strCliffAlgorithm = "simple_notch";
+
    m_pRasterGrid = NULL;
+   m_pCliffCollapseManager = NULL;
 }
 
 //===============================================================================================================================
@@ -514,6 +522,9 @@ CSimulation::~CSimulation(void)
 
    if (m_pRasterGrid)
       delete m_pRasterGrid;
+   
+   if (m_pCliffCollapseManager)
+      delete m_pCliffCollapseManager;
 }
 
 //===============================================================================================================================
@@ -692,6 +703,9 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
 
    // Create the raster grid object
    m_pRasterGrid = new CGeomRasterGrid(this);
+   
+   // Create the cliff collapse manager object
+   m_pCliffCollapseManager = new CCliffCollapseManager(this);
 
    // Read in the basement layer (must have this file), create the raster grid, then read in the basement DEM data to the array
    AnnounceReadBasementDEM();
@@ -708,6 +722,16 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
       if (nTmp < 3)
       {
          string const strErr = ERR + "cliff deposition must have a planview width of at least three cells. The current setting of " + to_string(m_dCliffDepositionPlanviewWidth) + " m gives a planview width of " + to_string(nTmp) + " cells. Please edit " + m_strDataPathName;
+         cerr << strErr << endl;
+         LogStream << strErr << endl;
+         OutStream << strErr << endl;
+         return RTN_ERR_RUNDATA;
+      }
+      
+      // Initialize the cliff collapse manager with user-selected algorithm
+      if (!m_pCliffCollapseManager->Initialize(m_strCliffAlgorithm))
+      {
+         string const strErr = ERR + "failed to initialize cliff collapse manager with algorithm: " + m_strCliffAlgorithm;
          cerr << strErr << endl;
          LogStream << strErr << endl;
          OutStream << strErr << endl;
@@ -831,6 +855,30 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
       nRet = nReadRasterGISFile(INTERVENTION_HEIGHT_RASTER, 0);
       if (nRet != RTN_OK)
          return (nRet);
+
+      // NOTE: Intervention trigger depths must be set AFTER sediment layers are loaded
+      // so that m_VdAllHorizonTopElev is populated and trigger elevations are calculated
+      // relative to the sediment surface, not the basement elevation
+      // This is handled below after all sediment data is loaded
+   }
+
+   // Now that all sediment layers are loaded, set intervention trigger depths
+   // This ensures trigger elevations are calculated relative to sediment surface
+   if (!m_strInterventionClassFile.empty())
+   {
+      if (!m_strInterventionTriggerDepthFile.empty())
+      {
+         AnnounceReadITGIS();
+         nRet = nReadRasterGISFile(INTERVENTION_TRIGGER_RASTER, 0);
+
+         if (nRet != RTN_OK)
+            return (nRet);
+      }
+      else
+      {
+         // Set default trigger depths for all intervention cells
+         SetInterventionTriggerDepths(m_dInterventionTriggerDepth);
+      }
    }
 
    // Maybe read in the tide data
@@ -1291,7 +1339,9 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
       if (m_bHaveConsolidatedSediment && m_bDoCliffCollapse)
       {
          // Do all cliff collapses for this timestep (if any)
-         nRet = nDoAllWaveEnergyToCoastLandforms();
+// TEST         nRet = nDoAllWaveEnergyToCoastLandforms();
+         // Do all cliff collapses for this timestep (if any) using the cliff collapse manager
+         nRet = m_pCliffCollapseManager->ProcessAllCliffCollapse();
          if (nRet != RTN_OK)
             return nRet;
       }

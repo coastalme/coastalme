@@ -55,6 +55,7 @@ using std::random_device;
 #include "cme.h"
 #include "sediment_input_event.h"
 #include "simulation.h"
+#include "cliff_algorithm_factory.h"
 
 //===============================================================================================================================
 //! The bReadIniFile member function reads the initialization file
@@ -2178,8 +2179,55 @@ bool CSimulation::bReadRunDataFile(void)
 
             break;
 
-         // ---------------------------------------------------- Hydrology data ------------------------------------------------
          case 33:
+            // Initial Intervention trigger depth GIS file (optional - can be blank)
+            if (!strRH.empty())
+            {
+#ifdef _WIN32
+               // For Windows, make sure has backslashes, not Unix-style slashes
+               strRH = pstrChangeToBackslash(&strRH);
+#endif
+
+               // Now check for leading slash, or leading Unix home dir symbol, or occurrence of a drive letter
+               if ((strRH[0] == PATH_SEPARATOR) || (strRH[0] == TILDE) || (strRH[1] == COLON))
+               {
+                  // It has an absolute path, so use it 'as is'
+                  m_strInterventionTriggerDepthFile = strRH;
+               }
+
+               else
+               {
+                  // It has a relative path, so prepend the CoastalME dir
+                  m_strInterventionTriggerDepthFile = m_strCMEDir;
+                  m_strInterventionTriggerDepthFile.append(strRH);
+               }
+            }
+
+            break;
+
+         case 34:
+            // Intervention influence distance for failure checking (optional - defaults to 5.0m)
+            if (!strRH.empty())
+            {
+               if (!bIsStringValidDouble(strRH))
+               {
+                  strErr = "line " + to_string(nLine) + ": invalid intervention influence distance '" + strRH + "' in " + m_strDataPathName;
+                  break;
+               }
+
+               m_dInterventionInfluenceDistance = stod(strRH);
+
+               if (m_dInterventionInfluenceDistance < 0)
+               {
+                  strErr = "line " + to_string(nLine) + ": intervention influence distance must be >= 0 in " + m_strDataPathName;
+                  break;
+               }
+            }
+
+            break;
+
+         // ---------------------------------------------------- Hydrology data ------------------------------------------------
+         case 35:
             // Wave propagation model [0 = COVE, 1 = CShore]
             if (! bIsStringValidInt(strRH))
             {
@@ -2194,7 +2242,7 @@ bool CSimulation::bReadRunDataFile(void)
 
             break;
 
-         case 34:
+         case 36:
             // Density of sea water (kg/m3), first check that this is a valid double
             if (! bIsStringValidDouble(strRH))
             {
@@ -2209,7 +2257,7 @@ bool CSimulation::bReadRunDataFile(void)
 
             break;
 
-         case 35:
+         case 37:
             // Initial mean still water level (m), first check that this is a valid double TODO 041 Make this a per-timestep SWL file
             if (! bIsStringValidDouble(strRH))
             {
@@ -2220,7 +2268,7 @@ bool CSimulation::bReadRunDataFile(void)
             m_dInitialMeanSWL = strtod(strRH.c_str(), NULL);
             break;
 
-         case 36:
+         case 38:
             // Final mean still water level (m) [blank = same as initial MSWL]
             if (strRH.empty())
                m_dFinalMeanSWL = m_dInitialMeanSWL;
@@ -2239,7 +2287,7 @@ bool CSimulation::bReadRunDataFile(void)
 
             break;
 
-         case 37:
+         case 39:
             // Deep water wave height (m) or a file of point vectors giving deep water wave height (m) and orientation (for units, see below)
             if (strRH.empty())
                strErr = "line " + to_string(nLine) + ": deep water wave height in " + m_strDataPathName + " must be either a number or a filename (filename must not start with a number)";
@@ -2291,7 +2339,7 @@ bool CSimulation::bReadRunDataFile(void)
 
             break;
 
-         case 38:
+         case 40:
             // Deep water wave height input file. Each point in m_strDeepWaterWavesInputFile is a triad of wave height, orientation and period for each time step
             if (m_bHaveWaveStationData)
             {
@@ -2323,7 +2371,7 @@ bool CSimulation::bReadRunDataFile(void)
 
             break;
 
-         case 39:
+         case 41:
             // Deep water wave orientation in input CRS: this is the oceanographic convention i.e. direction TOWARDS which the waves move (in degrees clockwise from north)
             if (! m_bHaveWaveStationData)
             {
@@ -2345,7 +2393,7 @@ bool CSimulation::bReadRunDataFile(void)
 
             break;
 
-         case 40:
+         case 42:
             // Wave period (sec)
             if (! m_bHaveWaveStationData)
             {
@@ -2364,7 +2412,7 @@ bool CSimulation::bReadRunDataFile(void)
 
             break;
 
-         case 41:
+         case 43:
             // Tide data file (can be blank). This is the change (m) from still water level for each timestep
             if (!strRH.empty())
             {
@@ -2388,7 +2436,7 @@ bool CSimulation::bReadRunDataFile(void)
 
             break;
 
-         case 42:
+         case 44:
             // Breaking wave height-to-depth ratio, check that this is a valid double
             if (! bIsStringValidDouble(strRH))
             {
@@ -2404,7 +2452,7 @@ bool CSimulation::bReadRunDataFile(void)
             break;
 
          // ----------------------------------------------------- Sediment data ------------------------------------------------
-         case 43:
+         case 45:
             // Simulate coast platform erosion?
             strRH = strToLower(&strRH);
 
@@ -2413,7 +2461,7 @@ bool CSimulation::bReadRunDataFile(void)
 
             break;
 
-         case 44:
+         case 46:
             // If simulating coast platform erosion, R (coast platform resistance to erosion) values along profile, see Walkden & Hall, 2011
             if (m_bDoShorePlatformErosion)
             {
@@ -2432,7 +2480,7 @@ bool CSimulation::bReadRunDataFile(void)
 
             break;
 
-         case 45:
+         case 47:
             // Simulate beach sediment transport?
             strRH = strToLower(&strRH);
 
@@ -2443,7 +2491,7 @@ bool CSimulation::bReadRunDataFile(void)
 
             break;
 
-         case 46:
+         case 48:
             // If simulating beach sediment transport, beach sediment transport at grid edges [0 = closed, 1 = open, 2 = re-circulate]
             if (m_bDoBeachSedimentTransport)
             {
@@ -2461,7 +2509,7 @@ bool CSimulation::bReadRunDataFile(void)
 
             break;
 
-         case 47:
+         case 49:
             // If simulating beach sediment transport, beach erosion/deposition equation [0 = CERC, 1 = Kamphuis]
             if (m_bDoBeachSedimentTransport)
             {
@@ -2479,7 +2527,7 @@ bool CSimulation::bReadRunDataFile(void)
 
             break;
 
-         case 48:
+         case 50:
             // Median size of fine sediment (mm), always needed [0 = default, only for Kamphuis eqn]. First check that this is a valid double
             if (! bIsStringValidDouble(strRH))
             {
@@ -2498,7 +2546,7 @@ bool CSimulation::bReadRunDataFile(void)
 
             break;
 
-         case 49:
+         case 51:
             // Median size of sand sediment (mm), always needed [0 = default, only for Kamphuis eqn]. First check that this is a valid double
             if (! bIsStringValidDouble(strRH))
             {
@@ -2517,7 +2565,7 @@ bool CSimulation::bReadRunDataFile(void)
 
             break;
 
-         case 50:
+         case 52:
             // Median size of coarse sediment (mm), always needed [0 = default, only for Kamphuis eqn]. First check that this is a valid double
             if (! bIsStringValidDouble(strRH))
             {
@@ -2536,7 +2584,7 @@ bool CSimulation::bReadRunDataFile(void)
 
             break;
 
-         case 51:
+         case 53:
             // Density of unconsolidated beach sediment (kg/m3)
             if (m_bDoBeachSedimentTransport)
             {
@@ -2555,7 +2603,7 @@ bool CSimulation::bReadRunDataFile(void)
 
             break;
 
-         case 52:
+         case 54:
             // Beach sediment porosity
             if (m_bDoBeachSedimentTransport)
             {
@@ -2574,7 +2622,7 @@ bool CSimulation::bReadRunDataFile(void)
 
             break;
 
-         case 53:
+         case 55:
             // Relative erodibility (0 - 1) of fine-sized sediment, always needed. First check that this is a valid double
             if (! bIsStringValidDouble(strRH))
             {
@@ -2589,7 +2637,7 @@ bool CSimulation::bReadRunDataFile(void)
 
             break;
 
-         case 54:
+         case 56:
             // Relative erodibility (0 - 1) of sand-sized sediment, always needed. First check that this is a valid double
             if (! bIsStringValidDouble(strRH))
             {
@@ -2604,7 +2652,7 @@ bool CSimulation::bReadRunDataFile(void)
 
             break;
 
-         case 55:
+         case 57:
             // Relative erodibility (0 - 1) of coarse-sized sediment, always needed. First check that this is a valid double
             if (! bIsStringValidDouble(strRH))
             {
@@ -2625,7 +2673,7 @@ bool CSimulation::bReadRunDataFile(void)
 
             break;
 
-         case 56:
+         case 58:
             // Transport parameter KLS in CERC equation
             if (m_bDoBeachSedimentTransport)
             {
@@ -2648,7 +2696,7 @@ bool CSimulation::bReadRunDataFile(void)
 
             break;
 
-         case 57:
+         case 59:
             // Transport parameter for Kamphuis equation
             if (m_bDoBeachSedimentTransport)
             {
@@ -2667,7 +2715,7 @@ bool CSimulation::bReadRunDataFile(void)
 
             break;
 
-         case 58:
+         case 60:
             // Berm height i.e. height above SWL of start of depositional Dean profile
             if (m_bDoBeachSedimentTransport)
             {
@@ -2687,7 +2735,7 @@ bool CSimulation::bReadRunDataFile(void)
             break;
 
          // ------------------------------------------------ Cliff collapse data -----------------------------------------------
-         case 59:
+         case 61:
             // Simulate cliff collapse?
             if (m_bHaveConsolidatedSediment)
             {
@@ -2700,7 +2748,31 @@ bool CSimulation::bReadRunDataFile(void)
 
             break;
 
-         case 60:
+         case 62:
+            // Cliff algorithm selection
+            if (m_bHaveConsolidatedSediment && m_bDoCliffCollapse)
+            {
+               m_strCliffAlgorithm = strTrimLeft(&strRH);
+               
+               // Validate algorithm name using factory
+               if (!CCliffAlgorithmFactory::IsValidAlgorithm(m_strCliffAlgorithm))
+               {
+                  vector<string> VstrAvailable = CCliffAlgorithmFactory::GetAvailableAlgorithms();
+                  string strAvailable = "";
+                  for (size_t ii = 0; ii < VstrAvailable.size(); ii++)
+                  {
+                     strAvailable += VstrAvailable[ii];
+                     if (ii < VstrAvailable.size() - 1)
+                        strAvailable += ", ";
+                  }
+                  
+                  strErr = "line " + to_string(nLine) + ": invalid cliff algorithm '" + m_strCliffAlgorithm + "'. Available algorithms: " + strAvailable;
+               }
+            }
+
+            break;
+
+         case 63:
             // Cliff resistance to erosion
             if (m_bHaveConsolidatedSediment && m_bDoCliffCollapse)
             {
@@ -2719,7 +2791,7 @@ bool CSimulation::bReadRunDataFile(void)
 
             break;
 
-         case 61:
+         case 64:
             // Notch overhang at collapse (m)
             if (m_bHaveConsolidatedSediment && m_bDoCliffCollapse)
             {
@@ -2738,7 +2810,7 @@ bool CSimulation::bReadRunDataFile(void)
 
             break;
 
-         case 62:
+         case 65:
             // Notch base below still water level (m)
             if (m_bHaveConsolidatedSediment && m_bDoCliffCollapse)
             {
@@ -2750,7 +2822,7 @@ bool CSimulation::bReadRunDataFile(void)
 
             break;
 
-         case 63:
+         case 66:
             // Scale parameter A for cliff deposition (m^(1/3)) [0 = auto]
             if (m_bHaveConsolidatedSediment && m_bDoCliffCollapse)
             {
@@ -2769,7 +2841,7 @@ bool CSimulation::bReadRunDataFile(void)
 
             break;
 
-         case 64:
+         case 67:
             // Approximate planview width of cliff collapse talus (in m)
             if (m_bHaveConsolidatedSediment && m_bDoCliffCollapse)
             {
@@ -2788,7 +2860,7 @@ bool CSimulation::bReadRunDataFile(void)
 
             break;
 
-         case 65:
+         case 68:
             // Planview length of cliff deposition talus (m)
             if (m_bHaveConsolidatedSediment && m_bDoCliffCollapse)
             {
@@ -2807,7 +2879,7 @@ bool CSimulation::bReadRunDataFile(void)
 
             break;
 
-         case 66:
+         case 69:
             // Minimum height of landward end of talus, as a fraction of cliff elevation
             if (m_bHaveConsolidatedSediment && m_bDoCliffCollapse)
             {
@@ -2827,7 +2899,7 @@ bool CSimulation::bReadRunDataFile(void)
             break;
 
          // -------------------------------------------------- Input events data -----------------------------------------------
-         case 67:
+         case 70:
             // Simulate riverine flooding?
             strRH = strToLower(&strRH);
 
@@ -2841,7 +2913,7 @@ bool CSimulation::bReadRunDataFile(void)
 
             break;
 
-         case 68:
+         case 71:
             // Output riverine flooding vector files
             if (m_bRiverineFlooding)
             {
@@ -2891,7 +2963,7 @@ bool CSimulation::bReadRunDataFile(void)
 
             break;
 
-         case 69:
+         case 72:
             if (m_bRiverineFlooding)
             {
                // Run-up equation?
@@ -2906,7 +2978,7 @@ bool CSimulation::bReadRunDataFile(void)
 
             break;
 
-         case 70:
+         case 73:
             if (m_bRiverineFlooding && m_bVectorWaveFloodLineSave)
             {
                // Characteristic locations for flood?
@@ -2922,7 +2994,7 @@ bool CSimulation::bReadRunDataFile(void)
 
             break;
 
-         case 71:
+         case 74:
             if (m_bRiverineFlooding)
             {
                // Path of location points file
@@ -2955,7 +3027,7 @@ bool CSimulation::bReadRunDataFile(void)
 
             break;
 
-         case 72:
+         case 75:
             // Simulate sediment input?
             strRH = strToLower(&strRH);
 
@@ -2967,7 +3039,7 @@ bool CSimulation::bReadRunDataFile(void)
 
             break;
 
-         case 73:
+         case 76:
             // Sediment input location (point or line shapefile)
             if (m_bSedimentInput)
             {
@@ -2994,7 +3066,7 @@ bool CSimulation::bReadRunDataFile(void)
 
             break;
 
-         case 74:
+         case 77:
             // Sediment input type: required if have shapefile [P = Point, C = coast block, L = line]
             if (m_bSedimentInput)
             {
@@ -3015,7 +3087,7 @@ bool CSimulation::bReadRunDataFile(void)
 
             break;
 
-         case 75:
+         case 78:
             // Sediment input details file (required if have shapefile)
             if (m_bSedimentInput)
             {
@@ -3048,7 +3120,7 @@ bool CSimulation::bReadRunDataFile(void)
             break;
 
          // ------------------------------------------------------ Other data --------------------------------------------------
-         case 76:
+         case 79:
             // Gravitational acceleration (m2/s). First check that this is a valid double
             if (! bIsStringValidDouble(strRH))
             {
@@ -3063,7 +3135,7 @@ bool CSimulation::bReadRunDataFile(void)
 
             break;
 
-         case 77:
+         case 80:
             // Spacing of coastline normals (m)
             m_dCoastNormalSpacing = strtod(strRH.c_str(), NULL);
 
@@ -3075,7 +3147,7 @@ bool CSimulation::bReadRunDataFile(void)
 
             break;
 
-         case 78:
+         case 81:
             // Random factor for spacing of normals  [0 to 1, 0 = deterministic], check that this is a valid double
             if (! bIsStringValidDouble(strRH))
             {
@@ -3093,7 +3165,7 @@ bool CSimulation::bReadRunDataFile(void)
 
             break;
 
-         case 79:
+         case 82:
             // Length of coastline normals (m), check that this is a valid double
             if (! bIsStringValidDouble(strRH))
             {
@@ -3108,7 +3180,7 @@ bool CSimulation::bReadRunDataFile(void)
 
             break;
 
-         case 80:
+         case 83:
             // Start depth for wave calcs (ratio to deep water wave height), check that this is a valid double
             if (! bIsStringValidDouble(strRH))
             {
@@ -3124,7 +3196,7 @@ bool CSimulation::bReadRunDataFile(void)
             break;
 
          // ----------------------------------------------------- Testing only -------------------------------------------------
-         case 81:
+         case 84:
             // Output profile data?
             strRH = strToLower(&strRH);
 
@@ -3145,7 +3217,7 @@ bool CSimulation::bReadRunDataFile(void)
 
             break;
 
-         case 82:
+         case 85:
             // Numbers of profiles to be saved
             if (m_bOutputProfileData)
             {
@@ -3175,7 +3247,7 @@ bool CSimulation::bReadRunDataFile(void)
 
             break;
 
-         case 83:
+         case 86:
             // Timesteps to save profiles
             if (m_bOutputProfileData)
             {
@@ -3198,7 +3270,7 @@ bool CSimulation::bReadRunDataFile(void)
 
             break;
 
-         case 84:
+         case 87:
             // Output parallel profile data?
             strRH = strToLower(&strRH);
 
@@ -3209,7 +3281,7 @@ bool CSimulation::bReadRunDataFile(void)
 
             break;
 
-         case 85:
+         case 88:
             // Output erosion potential look-up data?
             strRH = strToLower(&strRH);
 
@@ -3220,7 +3292,7 @@ bool CSimulation::bReadRunDataFile(void)
 
             break;
 
-         case 86:
+         case 89:
             // Size of moving window for coastline curvature calculation (must be odd)
             if (! bIsStringValidInt(strRH))
             {
@@ -3245,7 +3317,7 @@ bool CSimulation::bReadRunDataFile(void)
 
             break;
 
-         case 87:
+         case 90:
             // Cliff edge smoothing algorithm: 0 = none, 1 = running mean, 2 = Savitzky-Golay
             if (! bIsStringValidInt(strRH))
             {
@@ -3267,7 +3339,7 @@ bool CSimulation::bReadRunDataFile(void)
 
             break;
 
-         case 88:
+         case 91:
             // Size of cliff edge smoothing window: must be odd
             if (! bIsStringValidInt(strRH))
             {
@@ -3285,7 +3357,7 @@ bool CSimulation::bReadRunDataFile(void)
 
             break;
 
-         case 89:
+         case 92:
             // Order of cliff edge smoothing polynomial for Savitzky-Golay: usually 2 or 4, max is 6
             if (! bIsStringValidInt(strRH))
             {
@@ -3303,7 +3375,7 @@ bool CSimulation::bReadRunDataFile(void)
 
             break;
 
-         case 90:
+         case 93:
             // Cliff slope limit for cliff toe detection
             if (! bIsStringValidDouble(strRH))
             {
