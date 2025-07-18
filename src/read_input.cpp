@@ -2820,7 +2820,7 @@ bool CSimulation::bReadRunDataFile(void)
 
                m_dMinCliffTalusHeightFrac = strtod(strRH.c_str(), NULL);
 
-               if (m_dMinCliffTalusHeightFrac < 0)
+               if (m_dMinCliffTalusHeightFrac <= 0)
                   strErr = "line " + to_string(nLine) + ": minimum height of cliff collapse (as a fraction of cliff elevation) must be >= 0";
             }
 

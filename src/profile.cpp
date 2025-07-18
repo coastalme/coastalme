@@ -50,6 +50,7 @@ CGeomProfile::CGeomProfile(int const nCoast, int const nCoastPoint, int const nP
       m_bHitCoast(false),
       m_bTooShort(false),
       m_bTruncatedSameCoast(false),
+      m_bTruncatedDifferentCoast(false),
       m_bHitAnotherProfile(false),
       m_bIntervention(bIntervention),
       m_nCoast(nCoast),
@@ -506,7 +507,7 @@ void CGeomProfile::AppendCellInProfile(int const nX, int const nY)
 }
 
 //! Sets the profile's vector of cells (grid CRS)
-void CGeomProfile::SetCellsInProfile(vector<CGeom2DIPoint>* VNewPoints)
+void CGeomProfile::SetCellsInProfile(vector<CGeom2DIPoint> const* VNewPoints)
 {
    m_VCellInProfile = *VNewPoints;
 }

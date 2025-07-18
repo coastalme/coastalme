@@ -24,6 +24,10 @@
 #include <assert.h>
 
 #include "multi_line.h"
+#include "2d_point.h"
+#include "line.h"
+
+
 
 //! Constructor, no parameters
 CGeomMultiLine::CGeomMultiLine(void)
@@ -42,7 +46,7 @@ vector<CGeom2DPoint>& CGeomMultiLine::pGetPoints(void)
 }
 
 //! Replaces the points of the CGeomLine
-void CGeomMultiLine::SetPoints(vector<CGeom2DPoint>& pVPts)
+void CGeomMultiLine::SetPoints(vector<CGeom2DPoint> const& pVPts)
 {
    CGeomLine::m_VPoints = pVPts;
 }

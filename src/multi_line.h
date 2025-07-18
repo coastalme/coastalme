@@ -46,7 +46,7 @@ class CGeomMultiLine : public CGeomLine
    ~CGeomMultiLine(void) override;
 
    vector<CGeom2DPoint>& pGetPoints(void);
-   void SetPoints(vector<CGeom2DPoint>&);
+   void SetPoints(vector<CGeom2DPoint> const&);
 
    void AppendLineSegment(void);
    void AppendLineSegment(vector<pair<int, int>>*);

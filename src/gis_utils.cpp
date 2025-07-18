@@ -468,12 +468,12 @@ CGeom2DPoint CSimulation::PtAverage(CGeom2DPoint const *pPt1, CGeom2DPoint const
 //===============================================================================================================================
 CGeom2DIPoint CSimulation::PtiAverage(CGeom2DIPoint const* pPti1, CGeom2DIPoint const* pPti2)
 {
-   int nPti1X = pPti1->nGetX();
-   int nPti1Y = pPti1->nGetY();
-   int nPti2X = pPti2->nGetX();
-   int nPti2Y = pPti2->nGetY();
-   int nPtiAvgX = (nPti1X + nPti2X) / 2;
-   int nPtiAvgY = (nPti1Y + nPti2Y) / 2;
+   int const nPti1X = pPti1->nGetX();
+   int const nPti1Y = pPti1->nGetY();
+   int const nPti2X = pPti2->nGetX();
+   int const nPti2Y = pPti2->nGetY();
+   int const nPtiAvgX = (nPti1X + nPti2X) / 2;
+   int const nPtiAvgY = (nPti1Y + nPti2Y) / 2;
 
    return CGeom2DIPoint(nPtiAvgX, nPtiAvgY);
 }

@@ -119,7 +119,7 @@ Notch base below still water level (m)                                          
 Scale parameter A for cliff deposition (m^(1/3))                                   [0 = auto]: 0.1         ; For a 0.2 mm D50, will be 0.1
 Planview width of cliff deposition talus (in cells)                             [must be odd]: 11        ; was 5 7
 Planview length of cliff deposition talus (m)                                                : 50        ; was 30 15
-Minimum height of landward talus end, as fraction of cliff elevation                         : 0
+Minimum height of landward talus end, as fraction of cliff elevation                         : 0.5.5
 
 ; Input events ---------------------------------------------------------------------------------------------------------
 Flood input?                                                                                 : n

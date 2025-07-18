@@ -1467,8 +1467,8 @@ void CSimulation::MarkProfilesOnGrid(int const nCoast, int& nValidProfiles)
             continue;
 
          // Mark each cell in the raster grid
-         int nXTmp = VCellsToMark[k].nGetX();
-         int nYTmp = VCellsToMark[k].nGetY();
+         int const nXTmp = VCellsToMark[k].nGetX();
+         int const nYTmp = VCellsToMark[k].nGetY();
          m_pRasterGrid->m_Cell[nXTmp][nYTmp].SetCoastAndProfileID(nCoast, nProfile);
 
          // Store the raster grid coordinates in the profile object
@@ -1601,8 +1601,8 @@ void CSimulation::CreateRasterizedProfile(int const nCoast, CGeomProfile* pProfi
             if (m_pRasterGrid->m_Cell[nX][nY].bIsProfile() || m_pRasterGrid->m_Cell[nX][nY+1].bIsProfile())
             {
                // This cell or an adjacent cell, is 'under' a profile, so now check if the profile belongs to another coast
-               int nHitProfileCoast1 = m_pRasterGrid->m_Cell[nX][nY].nGetProfileCoastID();
-               int nHitProfileCoast2 = m_pRasterGrid->m_Cell[nX][nY+1].nGetProfileCoastID();
+               int const nHitProfileCoast1 = m_pRasterGrid->m_Cell[nX][nY].nGetProfileCoastID();
+               int const nHitProfileCoast2 = m_pRasterGrid->m_Cell[nX][nY+1].nGetProfileCoastID();
 
                if ((nHitProfileCoast1 == nCoast) || (nHitProfileCoast2 == nCoast))
                {
