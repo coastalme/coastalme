@@ -1,11 +1,5 @@
 var searchData=
 [
-  ['generatecliffkey_0',['GenerateCliffKey',['../da/db2/classCCliffAlgorithmSimpleNotch.html#a8a4cd381fbee055dc4f463f1a62a9f61',1,'CCliffAlgorithmSimpleNotch']]],
-  ['getalgorithmdescription_1',['GetAlgorithmDescription',['../df/d51/classCCliffAlgorithm.html#aabd2098f42233231a0001ea79ce77c44',1,'CCliffAlgorithm::GetAlgorithmDescription()'],['../dd/dd7/classCCliffAlgorithmLegacy.html#a60c51dd3d2510d64f44acf0b2bc2188f',1,'CCliffAlgorithmLegacy::GetAlgorithmDescription()'],['../da/db2/classCCliffAlgorithmSimpleNotch.html#a8b1069ebe78842c24fbc7ebd071e4e38',1,'CCliffAlgorithmSimpleNotch::GetAlgorithmDescription()'],['../d8/d0e/classCCliffCollapseManager.html#a897229fc32359a49e75892b364f8ff6b',1,'CCliffCollapseManager::GetAlgorithmDescription()']]],
-  ['getalgorithmenum_2',['GetAlgorithmEnum',['../dc/dac/classCCliffAlgorithmFactory.html#ae3eea245f0aa6f819d0649f9d2dd58ba',1,'CCliffAlgorithmFactory']]],
-  ['getalgorithmname_3',['GetAlgorithmName',['../df/d51/classCCliffAlgorithm.html#a87378799e805f239ede0f35adf9e67ff',1,'CCliffAlgorithm::GetAlgorithmName()'],['../dc/dac/classCCliffAlgorithmFactory.html#a799da36da7301ed7d8e5fcaf879b6ac9',1,'CCliffAlgorithmFactory::GetAlgorithmName()'],['../dd/dd7/classCCliffAlgorithmLegacy.html#aee318324242a200c6d433cbf4ec61f1b',1,'CCliffAlgorithmLegacy::GetAlgorithmName()'],['../da/db2/classCCliffAlgorithmSimpleNotch.html#a26d1281bf35e36f9c2ed669efb208333',1,'CCliffAlgorithmSimpleNotch::GetAlgorithmName()'],['../d8/d0e/classCCliffCollapseManager.html#a08a2d6d5a0e60ba1b6f79abb9a90dce3',1,'CCliffCollapseManager::GetAlgorithmName()']]],
-  ['getavailablealgorithms_4',['GetAvailableAlgorithms',['../dc/dac/classCCliffAlgorithmFactory.html#ab367125406a3f7ccdc538baeaa6e6105',1,'CCliffAlgorithmFactory::GetAvailableAlgorithms()'],['../d8/d0e/classCCliffCollapseManager.html#a97b7d1004afac4a45f8152246c9cf302',1,'CCliffCollapseManager::GetAvailableAlgorithms()']]],
-  ['getclosestpoint_5',['GetClosestPoint',['../d1/d98/classCSimulation.html#ae6a1465e21e1df121d2dbc0b5e4b06fd',1,'CSimulation']]],
-  ['getmostcoastwardsharedlinesegment_6',['GetMostCoastwardSharedLineSegment',['../d0/d89/classCGeomMultiLine.html#a6dd16a3f527b6a681fbddd8a68e9deaf',1,'CGeomMultiLine']]],
-  ['getrasteroutputminmax_7',['GetRasterOutputMinMax',['../d1/d98/classCSimulation.html#a0e2776f69ae5184b99845d8232c68808',1,'CSimulation']]]
+  ['getmostcoastwardsharedlinesegment_0',['GetMostCoastwardSharedLineSegment',['../d0/d89/classCGeomMultiLine.html#a6dd16a3f527b6a681fbddd8a68e9deaf',1,'CGeomMultiLine']]],
+  ['getrasteroutputminmax_1',['GetRasterOutputMinMax',['../d1/d98/classCSimulation.html#a0e2776f69ae5184b99845d8232c68808',1,'CSimulation']]]
 ];
