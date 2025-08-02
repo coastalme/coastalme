@@ -220,6 +220,9 @@ class CGeomCell
    //! Height of intervention structure
    double m_dInterventionHeight;
 
+   //! Trigger elevation for intervention failure (intervention fails when ground level drops below this)
+   double m_dInterventionTriggerElev;
+
    //! This cell's landform data
    CRWCellLandform m_Landform;
 
@@ -414,6 +417,11 @@ class CGeomCell
    void SetInterventionHeight(double const);
    double dGetInterventionHeight(void) const;
    double dGetInterventionTopElev(void) const;
+   void SetInterventionTriggerElev(double const);
+   double dGetInterventionTriggerElev(void) const;
+   void SetInterventionTriggerDepth(double const);
+   bool bInterventionShouldFail(void) const;
+   void RemoveIntervention(void);
 
    void SetShadowZoneNumber(int const);
    int nGetShadowZoneNumber(void) const;

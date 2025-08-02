@@ -22,7 +22,9 @@ cshoreinout=ARG
 echo ""
 rm -f ./lib/*
 cd cshore
-if [ "$OSTYPE" = "darwin"* ]; then
+
+if [[ $OSTYPE == 'darwin'* ]]; then
+   cshorelibrary=STATIC
    ./make_cshore_lib.sh $cshorelibrary $buildtype $cshoreinout
 else
    ./make_cshore_lib.sh

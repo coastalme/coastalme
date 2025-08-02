@@ -64,9 +64,12 @@ class CGeomCoastPolygon;
 class CRWCliff;
 class CSedInputEvent;
 class CRWCellLandform;
+class CCliffCollapseManager;
 
 class CSimulation
 {
+   friend class CCliffCollapseManager;  // Allow cliff collapse manager to access private members
+   
  private:
    //! Does this simulation consider fine-sized sediment?
    bool m_bHaveFineSediment;
@@ -538,7 +541,7 @@ class CSimulation
 
    //! The wave propagation model used. Possible values are WAVE_MODEL_CSHORE and WAVE_MODEL_COVE
    int m_nWavePropagationModel;
-
+   
    //! Start time of the simulation (seconds)
    int m_nSimStartSec;
 
@@ -569,7 +572,7 @@ class CSimulation
    //! TODO 007 Used in WAVESETUP + SURGE + RUNUP
    int m_nLevel;
 
-   //! WHAT IS THOS FOR?
+   //! Size of moving window for calculating coastline curvature
    int m_nCoastCurvatureMovingWindowSize;
 
    //! The data type used by GDAL for integer operations, can be GDT_Byte, GDT_Int16, GDT_UInt16, GDT_Int32, or GDT_UInt32
@@ -811,6 +814,12 @@ class CSimulation
 
    //! Average spacing of the coastline-normal profiles on interventions, in m
    double m_dCoastNormalInterventionSpacing;
+
+   //! Default trigger depth for intervention failure (m below initial ground level)
+   double m_dInterventionTriggerDepth;
+
+   //! Influence zone distance for intervention failure (m) - check nearby cells within this distance
+   double m_dInterventionInfluenceDistance;
 
    //! Length of the coastline-normal profiles, in m
    double m_dCoastNormalLength;
@@ -1142,6 +1151,9 @@ class CSimulation
    //! Name of intervention height file
    string m_strInterventionHeightFile;
 
+   //! Name of intervention trigger depth file (optional)
+   string m_strInterventionTriggerDepthFile;
+
    //! Name of initial suspended sediment file
    string m_strInitialSuspSedimentFile;
 
@@ -1208,6 +1220,18 @@ class CSimulation
    //! GDAL data type for the initial intervention height raster file
    string m_strGDALIHDataType;
 
+   //! GDAL code for the initial intervention trigger depth raster file
+   string m_strGDALITDriverCode;
+
+   //! GDAL description for the initial intervention trigger depth raster file
+   string m_strGDALITDriverDesc;
+
+   //! GDAL projection string for the initial intervention trigger depth raster file
+   string m_strGDALITProjection;
+
+   //! GDAL data type for the initial intervention trigger depth raster file
+   string m_strGDALITDataType;
+
    //! GDAL code for the initial water depth raster file
    string m_strGDALIWDriverCode;
 
@@ -1247,7 +1271,7 @@ class CSimulation
    //! GDAL code for the sediment input event locations vector file
    string m_strOGRSedInputDriverCode;
 
-   // GDAL description for the sediment input event locations vector file
+   //! GDAL description for the sediment input event locations vector file
    string m_strOGRSedInputDriverDesc;
 
    //! GDAL geometry for the sediment input event locations vector file
@@ -1259,7 +1283,7 @@ class CSimulation
    //! GDAL code for the flood input locations point or vector file
    string m_strOGRFloodDriverCode;
 
-   // GDAL description for the flood input locations point or vector file
+   //! GDAL description for the flood input locations point or vector file
    string m_strOGRFloodDriverDesc;
 
    //! GDAL geometry for the flood input locations point or vector file
@@ -1298,6 +1322,9 @@ class CSimulation
    //! The name of the flood loction events shape file
    string m_strFloodLocationShapefile;
 
+   //! Cliff algorithm selection (e.g., "simple_notch", "legacy_original")
+   string m_strCliffAlgorithm;
+
    //! System start-simulation time
    time_t m_tSysStartTime;
 
@@ -1322,8 +1349,7 @@ class CSimulation
    //! Cliff collapse deposition time series file output stream
    ofstream CliffCollapseDepositionTSStream;
 
-   //! Cliff collapse net change (erosion - deposition) time series file output
-   //! stream
+   //! Cliff collapse net change (erosion - deposition) time series file output stream
    ofstream CliffCollapseNetChangeTSStream;
 
    //! Beach sediment erosion time series file output stream
@@ -1332,8 +1358,7 @@ class CSimulation
    //! Beach sediment deposition time series file output stream
    ofstream BeachDepositionTSStream;
 
-   //! Beach sediment net change (erosion - deposition) time series file output
-   //! stream
+   //! Beach sediment net change (erosion - deposition) time series file output stream
    ofstream BeachSedimentNetChangeTSStream;
 
    //! Fine sediment in suspension time series file output stream
@@ -1447,8 +1472,7 @@ class CSimulation
    //! GDAL driver code for the initial unconsolidated fine sediment GIS data
    vector<string> m_VstrGDALIUFDriverCode;
 
-   //! GDAL driver description for the initial unconsolidated fine sediment GIS
-   //! data
+   //! GDAL driver description for the initial unconsolidated fine sediment GIS data
    vector<string> m_VstrGDALIUFDriverDesc;
 
    //! GDAL projection  for the initial unconsolidated fine sediment GIS data
@@ -1460,8 +1484,7 @@ class CSimulation
    //! GDAL driver code for the initial unconsolidated sand sediment GIS data
    vector<string> m_VstrGDALIUSDriverCode;
 
-   //! GDAL driver description for the initial unconsolidated sand sediment GIS
-   //! data
+   //! GDAL driver description for the initial unconsolidated sand sediment GIS data
    vector<string> m_VstrGDALIUSDriverDesc;
 
    //! GDAL projection for the initial unconsolidated sand sediment GIS data
@@ -1473,8 +1496,7 @@ class CSimulation
    //! GDAL driver code for the initial unconsolidated coarse sediment GIS data
    vector<string> m_VstrGDALIUCDriverCode;
 
-   //! GDAL driver description for the initial unconsolidated coarse sediment GIS
-   //! data
+   //! GDAL driver description for the initial unconsolidated coarse sediment GIS data
    vector<string> m_VstrGDALIUCDriverDesc;
 
    //! GDAL projection for the initial unconsolidated coarse sediment GIS data
@@ -1486,8 +1508,7 @@ class CSimulation
    //! GDAL driver code for the initial consolidated fine sediment GIS data
    vector<string> m_VstrGDALICFDriverCode;
 
-   //! GDAL driver description for the initial consolidated fine sediment GIS
-   //! data
+   //! GDAL driver description for the initial consolidated fine sediment GIS data
    vector<string> m_VstrGDALICFDriverDesc;
 
    //! GDAL projection for the initial consolidated fine sediment GIS data
@@ -1522,6 +1543,9 @@ class CSimulation
 
    //! Pointer to the raster grid object
    CGeomRasterGrid* m_pRasterGrid;
+   
+   //! Pointer to the cliff collapse manager object
+   CCliffCollapseManager* m_pCliffCollapseManager;
 
    //! The coastline objects
    vector<CRWCoast> m_VCoast;
@@ -1591,7 +1615,10 @@ class CSimulation
    bool bCreateErosionPotentialLookUp(vector<double>*, vector<double>*, vector<double>*);
 
    // Top-level simulation routines
-   static int nUpdateIntervention(void);
+   int nUpdateIntervention(void);
+   int nCheckInterventionFailures(void);
+   void SetInterventionTriggerDepths(double const);
+   bool bCheckInfluenceZoneFailure(int const, int const) const;
    int nCheckForSedimentInputEvent(void);
    int nCalcExternalForcing(void);
    int nInitGridAndCalcStillWaterLevel(void);
@@ -1759,6 +1786,7 @@ class CSimulation
    void AnnounceReadLGIS(void) const;
    void AnnounceReadICGIS(void) const;
    void AnnounceReadIHGIS(void) const;
+   void AnnounceReadITGIS(void) const;
    static void AnnounceInitializing(void);
    void AnnounceReadInitialSuspSedGIS(void) const;
    void AnnounceReadInitialFineUnconsSedGIS(int const) const;
@@ -1816,10 +1844,8 @@ class CSimulation
    static string strRemoveSubstr(string*, string const*);
    static vector<string>* VstrSplit(string const*, char const, vector<string>*);
    static vector<string> VstrSplit(string const*, char const);
-   // static double dCrossProduct(double const, double const, double const,
-   // double const, double const, double const); static double
-   // dGetMean(vector<double> const*); static double dGetStdDev(vector<double>
-   // const*);
+   // static double dCrossProduct(double const, double const, double const, double const, double const, double const);
+   // static double dGetMean(vector<double> const*); static double dGetStdDev(vector<double> const*);
    static void AppendEnsureNoGap(vector<CGeom2DIPoint>*, CGeom2DIPoint const*);
    // static bool bIsNumeric(string const*);
    unsigned long ulConvertToTimestep(string const*) const;
@@ -1854,8 +1880,8 @@ class CSimulation
    //! Returns this timestep's total water level
    double dGetThisIterTotWaterLevel(void) const;
 
-   // //! Returns the vertical tolerance for beach cells to be included in
-   // smoothing double dGetMaxBeachElevAboveSWL(void) const;
+   // //! Returns the vertical tolerance for beach cells to be included in smoothing
+   // double dGetMaxBeachElevAboveSWL(void) const;
 
    //! Returns the cell size
    // double dGetCellSide(void) const;

@@ -552,6 +552,11 @@ int CSimulation::nReadRasterGISFile(int const nDataItem, int const nLayer)
       strGISFile = m_strInterventionHeightFile;
       break;
 
+   case (INTERVENTION_TRIGGER_RASTER):
+      // Intervention trigger depth
+      strGISFile = m_strInterventionTriggerDepthFile;
+      break;
+
    case (SUSP_SED_RASTER):
       // Initial Suspended Sediment GIS data
       strGISFile = m_strInitialSuspSedimentFile;
@@ -701,6 +706,14 @@ int CSimulation::nReadRasterGISFile(int const nDataItem, int const nLayer)
          m_strGDALIHDriverDesc = strDriverDesc;
          m_strGDALIHProjection = strProjection;
          m_strGDALIHDataType = strDataType;
+         break;
+
+      case (INTERVENTION_TRIGGER_RASTER):
+         // Intervention trigger depth
+         m_strGDALITDriverCode = strDriverCode;
+         m_strGDALITDriverDesc = strDriverDesc;
+         m_strGDALITProjection = strProjection;
+         m_strGDALITDataType = strDataType;
          break;
 
       case (SUSP_SED_RASTER):
@@ -856,6 +869,22 @@ int CSimulation::nReadRasterGISFile(int const nDataItem, int const nLayer)
                }
 
                m_pRasterGrid->m_Cell[nX][nY].SetInterventionHeight(dTmp);
+               break;
+
+            case (INTERVENTION_TRIGGER_RASTER):
+               // Intervention trigger depth
+               dTmp = pdScanline[nX];
+
+               if ((isnan(dTmp)) || (bFPIsEqual(dTmp, m_dGISMissingValue, TOLERANCE)))
+               {
+                  dTmp = m_dMissingValue;
+                  nMissing++;
+               }
+
+               // Set trigger depth relative to current sediment surface (like intervention height)
+               // The raster value represents depth below sediment surface, not absolute elevation
+               if (dTmp > 0)
+                  m_pRasterGrid->m_Cell[nX][nY].SetInterventionTriggerDepth(dTmp);
                break;
 
             case (SUSP_SED_RASTER):
