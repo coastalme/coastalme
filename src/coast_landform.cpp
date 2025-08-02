@@ -27,7 +27,7 @@
 #include "coast_landform.h"
 #include "2di_point.h"
 
-//! Constructor with initialization list
+//! Constructor with initialisation list
 CACoastLandform::CACoastLandform(void)
     : m_nCoast(0),
       m_nPointOnCoast(0),

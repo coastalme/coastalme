@@ -87,12 +87,6 @@ class CGeomProfile : public CGeomMultiLine
    //! The wave period at the end of the profile
    double m_dDeepWaterWavePeriod;
 
-   //! The on-coast start point of the profile in grid CRS
-   CGeom2DIPoint PtiStart;
-
-   //! The seaward end point of the profile in grid CRS
-   CGeom2DIPoint PtiEnd;
-
    //! Pointer to the adjacent up-coast profile (may be an invalid profile)
    CGeomProfile* m_pUpCoastAdjacentProfile;
 
@@ -110,23 +104,21 @@ class CGeomProfile : public CGeomMultiLine
 
  protected:
  public:
-   explicit CGeomProfile(int const, int const, int const, CGeom2DIPoint const*, CGeom2DIPoint const*, bool const);
+   explicit CGeomProfile(int const, int const, int const, bool const);
    ~CGeomProfile(void) override;
 
-   int nGetCoast(void) const;
-
+   int nGetCoastID(void) const;
    int nGetProfileID(void) const;
-   int nGetProfileCoastID(void) const;
    int nGetCoastPoint(void) const;
 
    CGeom2DIPoint* pPtiGetStartPoint(void);
-   void SetEndPoint(CGeom2DIPoint const*);
    CGeom2DIPoint* pPtiGetEndPoint(void);
 
    void SetStartOfCoast(bool const);
    bool bStartOfCoast(void) const;
    void SetEndOfCoast(bool const);
    bool bEndOfCoast(void) const;
+   bool bIsGridEdge(void) const;
 
    void SetCShoreProblem(bool const);
    bool bCShoreProblem(void) const;
@@ -161,7 +153,6 @@ class CGeomProfile : public CGeomMultiLine
    // void ShowProfile(void) const;
    int nGetProfileSize(void) const;
    CGeom2DPoint* pPtGetPointInProfile(int const);
-   CGeom2DIPoint* pPtiGetLastCellInProfile(void);
    vector<CGeom2DPoint> PtVGetThisPointAndAllAfter(int const);
    // void RemoveLineSegment(int const);
    bool bIsPointInProfile(double const, double const);
@@ -183,6 +174,8 @@ class CGeomProfile : public CGeomMultiLine
    CGeom2DIPoint* pPtiGetCellInProfile(int const);
    int nGetNumCellsInProfile(void) const;
    int nGetIndexOfCellInProfile(int const, int const);
+   CGeom2DIPoint* pPtiGetLastCellInProfile(void);
+   CGeom2DIPoint* pPtiGetFirstCellInProfile(void);
 
    int nGetCellGivenDepth(CGeomRasterGrid const*, double const);
 

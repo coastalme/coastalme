@@ -39,7 +39,7 @@ CGeomLine::CGeomLine(CGeom2DPoint const* pPt1, CGeom2DPoint const* pPt2)
    m_VPoints.push_back(*pPt2);
 }
 
-//! Overloaded constructor with one parameter, this creates a given number of uninitialized points
+//! Overloaded constructor with one parameter, this creates a given number of uninitialised points
 CGeomLine::CGeomLine(int const nNum)
 {
    CGeom2DPoint const pPt;

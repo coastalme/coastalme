@@ -108,14 +108,33 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
       if (m_bSedimentInputAtPoint)
       {
          // Sediment input is at a user-specified point
+         int const nTopLayer = m_pRasterGrid->m_Cell[nPointGridX][nPointGridY].nGetTopLayerAboveBasement();
+
+         // Is this user-specified point in a polygon?
+         int const nThisPoly = m_pRasterGrid->m_Cell[nPointGridX][nPointGridY].nGetPolygonID();
+         int nThisPolyCoast = INT_NODATA;
+         if (nThisPoly != INT_NODATA)
+         {
+            // Yes we are in a polygon, so get the coast ID of the polygon for this cell
+            nThisPolyCoast = m_pRasterGrid->m_Cell[nPointGridX][nPointGridY].nGetPolygonCoastID();
+
+            // Safety check
+            if (nThisPolyCoast == INT_NODATA)
+               return RTN_ERR_CELL_IN_POLY_BUT_NO_POLY_COAST;
+         }
+
          if (m_nLogFileDetail >= LOG_FILE_MIDDLE_DETAIL)
+         {
             LogStream << m_ulIter << ": Sediment input event " << nEvent + 1 << " at point [" << nPointGridX << "][" << nPointGridY << "] = {" << dGridXToExtCRSX(nPointGridX) << ", " << dGridYToExtCRSY(nPointGridY) << "] with location ID " << nLocID;
 
-         int const nTopLayer = m_pRasterGrid->m_Cell[nPointGridX][nPointGridY].nGetTopLayerAboveBasement();
+            if (nThisPoly != INT_NODATA)
+               LogStream << " which is within coast " << nThisPolyCoast << " polygon " << nThisPoly << endl;
+            else
+               LogStream << " this is not within a polygon" << endl;
+         }
 
          // Is some fine unconsolidated sediment being input?
          double const dFineDepth = dFineSedVol / m_dCellArea;
-
          if (dFineDepth > 0)
          {
             // Yes, so add to this cell's fine unconsolidated sediment
@@ -124,13 +143,9 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
             // And update the sediment top elevation value
             m_pRasterGrid->m_Cell[nPointGridX][nPointGridY].CalcAllLayerElevsAndD50();
 
-            int const nThisPoly = m_pRasterGrid->m_Cell[nPointGridX][nPointGridY].nGetPolygonID();
-
+            // If we are in a polygon, then add to this polygon's sand sediment input total
             if (nThisPoly != INT_NODATA)
-            {
-               // Add to this polygon's fine sediment input total
-               m_pVCoastPolygon[nThisPoly]->SetSedimentInputUnconsFine(dFineDepth);
-            }
+               m_VCoast[nThisPolyCoast].pGetPolygon(nThisPoly)->SetSedimentInputUnconsFine(dFineDepth);
 
             // Add to the this-iteration total of fine sediment input
             m_dThisiterUnconsFineInput += dFineDepth;
@@ -151,13 +166,9 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
             // And update the sediment top elevation value
             m_pRasterGrid->m_Cell[nPointGridX][nPointGridY].CalcAllLayerElevsAndD50();
 
-            int const nThisPoly = m_pRasterGrid->m_Cell[nPointGridX][nPointGridY].nGetPolygonID();
-
+            // If we are in a polygon, then add to this polygon's sand sediment input total
             if (nThisPoly != INT_NODATA)
-            {
-               // Add to this polygon's sand sediment input total
-               m_pVCoastPolygon[nThisPoly]->SetSedimentInputUnconsSand(dSandDepth);
-            }
+               m_VCoast[nThisPolyCoast].pGetPolygon(nThisPoly)->SetSedimentInputUnconsSand(dSandDepth);
 
             // Add to the this-iteration total of sand sediment input
             m_dThisiterUnconsSandInput += dSandDepth;
@@ -178,13 +189,9 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
             // And update the sediment top elevation value
             m_pRasterGrid->m_Cell[nPointGridX][nPointGridY].CalcAllLayerElevsAndD50();
 
-            int const nThisPoly = m_pRasterGrid->m_Cell[nPointGridX][nPointGridY].nGetPolygonID();
-
+            // If we are in a polygon, then add to this polygon's coarse sediment input total
             if (nThisPoly != INT_NODATA)
-            {
-               // Add to this polygon's coarse sediment input total
-               m_pVCoastPolygon[nThisPoly]->SetSedimentInputUnconsCoarse(dCoarseDepth);
-            }
+               m_VCoast[nThisPolyCoast].pGetPolygon(nThisPoly)->SetSedimentInputUnconsCoarse(dCoarseDepth);
 
             // Add to the this-iteration total of coarse sediment input
             m_dThisiterUnconsCoarseInput += dCoarseDepth;
@@ -273,7 +280,6 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
                      }
                   }
                }
-
                else
                {
                   int const nCoastPointInBlockBefore = nCoastPoint - m;
@@ -512,17 +518,35 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
          return RTN_ERR_SEDIMENT_INPUT_EVENT;
       }
 
-      // OK we have an intersection of the line and coast. We will input the sediment here
-      if (m_nLogFileDetail >= LOG_FILE_MIDDLE_DETAIL)
-         LogStream << m_ulIter << ": line/coast intersection is at [" << nCoastX << "][" << nCoastY << "] = {" << dGridXToExtCRSX(nCoastX) << ", " << dGridYToExtCRSY(nCoastY) << "}" << endl;
-
-      // Get landform and top layer
+      // OK we have an intersection of the line and coast. We will input the sediment here. Get landform and top layer
       CRWCellLandform* pLandform = m_pRasterGrid->m_Cell[nCoastX][nCoastY].pGetLandform();
       int const nTopLayer = m_pRasterGrid->m_Cell[nCoastX][nCoastY].nGetTopLayerAboveBasement();
 
+      // Is this intersection point in a polygon?
+      int const nThisPoly = m_pRasterGrid->m_Cell[nCoastX][nCoastY].nGetPolygonID();
+      int nThisPolyCoast = INT_NODATA;
+      if (nThisPoly != INT_NODATA)
+      {
+         // Yes we are in a polygon, so get the coast ID of the polygon for this cell
+         nThisPolyCoast = m_pRasterGrid->m_Cell[nCoastX][nCoastY].nGetPolygonCoastID();
+
+         // Safety check
+         if (nThisPolyCoast == INT_NODATA)
+            return RTN_ERR_CELL_IN_POLY_BUT_NO_POLY_COAST;
+      }
+
+      if (m_nLogFileDetail >= LOG_FILE_MIDDLE_DETAIL)
+      {
+         LogStream << m_ulIter << ": line/coast intersection is at [" << nCoastX << "][" << nCoastY << "] = {" << dGridXToExtCRSX(nCoastX) << ", " << dGridYToExtCRSY(nCoastY) << "}";
+
+         if (nThisPoly != INT_NODATA)
+            LogStream << " which is within coast " << nThisPolyCoast << " polygon " << nThisPoly << endl;
+         else
+            LogStream << " which is not within a polygon" << endl;
+      }
+
       // Is some fine unconsolidated sediment being input?
       double const dFineDepth = dFineSedVol / m_dCellArea;
-
       if (dFineDepth > 0)
       {
          // Yes, so add to this cell's fine unconsolidated sediment
@@ -531,13 +555,9 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
          // And update the sediment top elevation value
          m_pRasterGrid->m_Cell[nCoastX][nCoastY].CalcAllLayerElevsAndD50();
 
-         int const nThisPoly = m_pRasterGrid->m_Cell[nCoastX][nCoastY].nGetPolygonID();
-
          if (nThisPoly != INT_NODATA)
-         {
             // Add to this polygon's fine sediment input total
-            m_pVCoastPolygon[nThisPoly]->SetSedimentInputUnconsFine(dFineDepth);
-         }
+           m_VCoast[nThisPolyCoast].pGetPolygon(nThisPoly)->SetSedimentInputUnconsFine(dFineDepth);
 
          // Add to the this-iteration total of fine sediment input
          m_dThisiterUnconsFineInput += dFineDepth;
@@ -549,7 +569,6 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
 
       // Is some sand-sized unconsolidated sediment being input?
       double const dSandDepth = dSandSedVol / m_dCellArea;
-
       if (dSandDepth > 0)
       {
          // Yes, so add to this cell's sand unconsolidated sediment
@@ -558,13 +577,9 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
          // And update the sediment top elevation value
          m_pRasterGrid->m_Cell[nCoastX][nCoastY].CalcAllLayerElevsAndD50();
 
-         int const nThisPoly = m_pRasterGrid->m_Cell[nCoastX][nCoastY].nGetPolygonID();
-
          if (nThisPoly != INT_NODATA)
-         {
             // Add to this polygon's sand sediment input total
-            m_pVCoastPolygon[nThisPoly]->SetSedimentInputUnconsSand(dSandDepth);
-         }
+            m_VCoast[nThisPolyCoast].pGetPolygon(nThisPoly)->SetSedimentInputUnconsSand(dSandDepth);
 
          // Add to the this-iteration total of sand sediment input
          m_dThisiterUnconsSandInput += dSandDepth;
@@ -576,7 +591,6 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
 
       // Is some coarse unconsolidated sediment being input?
       double const dCoarseDepth = dCoarseSedVol / m_dCellArea;
-
       if (dCoarseDepth > 0)
       {
          // Yes, so add to this cell's coarse unconsolidated sediment
@@ -585,13 +599,9 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
          // And update the sediment top elevation value
          m_pRasterGrid->m_Cell[nCoastX][nCoastY].CalcAllLayerElevsAndD50();
 
-         int const nThisPoly = m_pRasterGrid->m_Cell[nCoastX][nCoastY].nGetPolygonID();
-
          if (nThisPoly != INT_NODATA)
-         {
             // Add to this polygon's coarse sediment input total
-            m_pVCoastPolygon[nThisPoly]->SetSedimentInputUnconsCoarse(dCoarseDepth);
-         }
+            m_VCoast[nThisPolyCoast].pGetPolygon(nThisPoly)->SetSedimentInputUnconsCoarse(dCoarseDepth);
 
          // Add to the this-iteration total of coarse sediment input
          m_dThisiterUnconsCoarseInput += dCoarseDepth;

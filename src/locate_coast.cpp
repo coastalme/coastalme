@@ -43,14 +43,13 @@ using std::stack;
 //===============================================================================================================================
 //! First find all connected sea areas, then locate the vector coastline(s), then put these onto the raster grid
 //===============================================================================================================================
-int CSimulation::nLocateSeaAndCoasts(int& nValidCoast)
+int CSimulation::nLocateSeaAndCoasts(void)
 {
    // Find all connected sea cells
    FindAllSeaCells();
 
    // Find every coastline on the raster grid, mark raster cells, then create the vector coastline
-   int const nRet = nTraceAllCoasts(nValidCoast);
-
+   int const nRet = nTraceAllCoasts();
    if (nRet != RTN_OK)
       return nRet;
 
@@ -283,11 +282,12 @@ void CSimulation::CellByCellFillSea(int const nXStart, int const nYStart)
 //===============================================================================================================================
 //! Locates all the potential coastline start/finish points on the edges of the raster grid, then traces vector coastline(s) from these start points
 //===============================================================================================================================
-int CSimulation::nTraceAllCoasts(int& nValidCoast)
+int CSimulation::nTraceAllCoasts(void)
 {
    if (m_nLogFileDetail >= LOG_FILE_MIDDLE_DETAIL)
       LogStream << m_ulIter << ": Tracing coast" << endl;
 
+   int nValidCoast = 0;
    vector<bool> VbPossibleStartCellLHEdge;
    vector<bool> VbTraced;
    vector<int> VnSearchDirection;
@@ -327,7 +327,7 @@ int CSimulation::nTraceAllCoasts(int& nValidCoast)
             m_pRasterGrid->m_Cell[nXThis][nYThis].SetPossibleCoastStartCell();
 
             if (m_nLogFileDetail >= LOG_FILE_ALL)
-               LogStream << m_ulIter << ": Flagging [" << nXThis << "][" << nYThis << "] = {" << dGridCentroidXToExtCRSX(nXThis) << ", " << dGridCentroidYToExtCRSY(nYThis) << "} as possible coast start cell (left_handed edge)" << endl;
+               LogStream << m_ulIter << ": flagging [" << nXThis << "][" << nYThis << "] = {" << dGridCentroidXToExtCRSX(nXThis) << ", " << dGridCentroidYToExtCRSY(nYThis) << "} as possible coast start cell (left_handed edge)" << endl;
 
             // And save it
             V2DIPossibleStartCell.push_back(CGeom2DIPoint(nXThis, nYThis));
@@ -345,7 +345,7 @@ int CSimulation::nTraceAllCoasts(int& nValidCoast)
             m_pRasterGrid->m_Cell[nXNext][nYNext].SetPossibleCoastStartCell();
 
             if (m_nLogFileDetail >= LOG_FILE_ALL)
-               LogStream << m_ulIter << ": Flagging [" << nXNext << "][" << nYNext << "] = {" << dGridCentroidXToExtCRSX(nXNext) << ", " << dGridCentroidYToExtCRSY(nYNext) << "} as possible coast start cell (right_handed edge)" << endl;
+               LogStream << m_ulIter << ": flagging [" << nXNext << "][" << nYNext << "] = {" << dGridCentroidXToExtCRSX(nXNext) << ", " << dGridCentroidYToExtCRSY(nYNext) << "} as possible coast start cell (right_handed edge)" << endl;
 
             // And save it
             V2DIPossibleStartCell.push_back(CGeom2DIPoint(nXNext, nYNext));
@@ -372,7 +372,7 @@ int CSimulation::nTraceAllCoasts(int& nValidCoast)
    }
 
    // Some possible coastline start/finish points were found
-   LogStream << m_ulIter << ": " << V2DIPossibleStartCell.size() << " possible coastline start/finish points found" << endl;
+   // LogStream << m_ulIter << ": " << V2DIPossibleStartCell.size() << " possible coastline start/finish points found" << endl;
 
    // OK, so trace from each of these possible start/finish points
    for (unsigned int n = 0; n < V2DIPossibleStartCell.size(); n++)
@@ -401,11 +401,9 @@ int CSimulation::nTraceAllCoasts(int& nValidCoast)
 
    if (nValidCoast > 0)
       return RTN_OK;
-   else
-   {
-      cerr << m_ulIter << ": no valid coasts found, see " << m_strLogFile << " for more information" << endl;
-      return RTN_ERR_NO_VALID_COAST;
-   }
+
+   cerr << m_ulIter << ": no valid coasts found, see " << m_strLogFile << " for more information" << endl;
+   return RTN_ERR_NO_VALID_COAST;
 }
 
 //===============================================================================================================================
@@ -475,8 +473,7 @@ int CSimulation::nTraceCoastLine(unsigned int const nTraceFromStartCellIndex, in
       if (! bHasLeftStartEdge)
       {
          // We have not yet left the start edge
-         if (((nStartSearchDirection == SOUTH) && (nY > nStartY)) || ((nStartSearchDirection == NORTH) && (nY < nStartY)) ||
-             ((nStartSearchDirection == EAST) && (nX > nStartX)) || ((nStartSearchDirection == WEST) && (nX < nStartX)))
+         if (((nStartSearchDirection == SOUTH) && (nY > nStartY)) || ((nStartSearchDirection == NORTH) && (nY < nStartY)) || ((nStartSearchDirection == EAST) && (nX > nStartX)) || ((nStartSearchDirection == WEST) && (nX < nStartX)))
             bHasLeftStartEdge = true;
 
          // Flag this cell to ensure that it is not chosen as a coastline start cell later
@@ -496,7 +493,7 @@ int CSimulation::nTraceCoastLine(unsigned int const nTraceFromStartCellIndex, in
                if (bAtCoast && (nX == pV2DIPossibleStartCell->at(nn).nGetX()) && (nY == pV2DIPossibleStartCell->at(nn).nGetY()))
                {
                   if (m_nLogFileDetail >= LOG_FILE_HIGH_DETAIL)
-                     LogStream << m_ulIter << ": Possible coastline found, traced from [" << nStartX << "][" << nStartY << "] and hit another possible coast start cell at [" << nX << "][" << nY << "]" << endl;
+                     LogStream << m_ulIter << ": possible coastline found, traced from [" << nStartX << "][" << nStartY << "] and hit another possible coast start cell at [" << nX << "][" << nY << "]" << endl;
 
                   pVbTraced->at(nn) = true;
                   bHitStartCell = true;
@@ -530,7 +527,6 @@ int CSimulation::nTraceCoastLine(unsigned int const nTraceFromStartCellIndex, in
       switch (nHandedness)
       {
       case RIGHT_HANDED:
-
          // The sea is to the right-hand side of the coast as we traverse it. We are just inland, so we need to keep heading right to find the sea
          switch (nSearchDirection)
          {
@@ -748,7 +744,6 @@ int CSimulation::nTraceCoastLine(unsigned int const nTraceFromStartCellIndex, in
                }
             }
          }
-
          else
          {
             // The seaward cell is not a sea cell, so we will move to it next time
@@ -787,7 +782,6 @@ int CSimulation::nTraceCoastLine(unsigned int const nTraceFromStartCellIndex, in
                }
             }
          }
-
          else
          {
             // The straight-ahead cell is not a sea cell, so we will move to it next time
@@ -817,7 +811,6 @@ int CSimulation::nTraceCoastLine(unsigned int const nTraceFromStartCellIndex, in
                   // It is, so add it to the vector object
                   ILTempGridCRS.Append(&Pti);
                }
-
                else if (m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElev() >= m_dThisIterSWL)
                {
                   // The sediment top is above SWL so add it to the vector object
@@ -998,36 +991,28 @@ int CSimulation::nTraceCoastLine(unsigned int const nTraceFromStartCellIndex, in
 
    if (m_nLogFileDetail >= LOG_FILE_HIGH_DETAIL)
    {
-      LogStream << m_ulIter << ": Valid coast " << nCoast << " created, from [" << nStartX << "][" << nStartY << "] to [" << nEndX << "][" << nEndY << "] = {" << dGridCentroidXToExtCRSX(nStartX) << ", " << dGridCentroidYToExtCRSY(nStartY) << "} to {" << dGridCentroidXToExtCRSX(nEndX) << ", " << dGridCentroidYToExtCRSY(nEndY) << "} with " << nCoastSize << " points, handedness = " << (nHandedness == LEFT_HANDED ? "left" : "right") << endl;
+      LogStream << m_ulIter << ": valid coast " << nCoast << " created, from [" << nStartX << "][" << nStartY << "] to [" << nEndX << "][" << nEndY << "] = {" << dGridCentroidXToExtCRSX(nStartX) << ", " << dGridCentroidYToExtCRSY(nStartY) << "} to {" << dGridCentroidXToExtCRSX(nEndX) << ", " << dGridCentroidYToExtCRSY(nEndY) << "} with " << nCoastSize << " points, handedness = " << (nHandedness == LEFT_HANDED ? "left" : "right") << endl;
 
-      LogStream << m_ulIter << ": Smoothed coastline " << nCoast << " runs from {" << LTempExtCRS[0].dGetX() << ", " << LTempExtCRS[0].dGetY() << "} to {" << LTempExtCRS[nCoastSize - 1].dGetX() << ", " << LTempExtCRS[nCoastSize - 1].dGetY() << "} i.e. from the ";
+      LogStream << m_ulIter << ": smoothed coastline " << nCoast << " runs from {" << LTempExtCRS[0].dGetX() << ", " << LTempExtCRS[0].dGetY() << "} to {" << LTempExtCRS[nCoastSize - 1].dGetX() << ", " << LTempExtCRS[nCoastSize - 1].dGetY() << "} i.e. from the ";
 
       if (nStartEdge == NORTH)
          LogStream << "north";
-
       else if (nStartEdge == SOUTH)
          LogStream << "south";
-
       else if (nStartEdge == WEST)
          LogStream << "west";
-
       else if (nStartEdge == EAST)
          LogStream << "east";
 
       LogStream << " edge to the ";
-
       if (nEndEdge == NORTH)
          LogStream << "north";
-
       else if (nEndEdge == SOUTH)
          LogStream << "south";
-
       else if (nEndEdge == WEST)
          LogStream << "west";
-
       else if (nEndEdge == EAST)
          LogStream << "east";
-
       LogStream << " edge" << endl;
    }
 

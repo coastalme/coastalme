@@ -55,6 +55,8 @@ using std::reverse_copy;
 //===============================================================================================================================
 int CSimulation::nSetAllCoastpointDeepWaterWaveValues(void)
 {
+   LogStream << endl << m_ulIter << ": Calculating waves" << endl;
+
    // For each coastline, put a value for deep water wave height and direction at each coastline point
    for (int nCoast = 0; nCoast < static_cast<int>(m_VCoast.size()); nCoast++)
    {
@@ -112,7 +114,6 @@ int CSimulation::nSetAllCoastpointDeepWaterWaveValues(void)
 
             // LogStream << m_ulIter << ": coast point = " << nPoint << " is start of profile " << pProfile->nGetProfileID() << ", next profile is " << pNextProfile->nGetProfileID() << ", which starts at coast piint " << pNextProfile->nGetCoastPoint() << ", dThisDeepWaterWaveHeight = " << dThisDeepWaterWaveHeight << ", dThisDeepWaterWaveAngle = " << dThisDeepWaterWaveAngle << " nDistToNextProfile = " << nDistToNextProfile << endl;
          }
-
          else
          {
             // This coast point is not the start of a coastline normal, so set the deep water wave values at this coastline point to be a weighted average of those from the up-coast and down-coast profiles
@@ -173,7 +174,6 @@ int CSimulation::nDoAllPropagateWaves(void)
 
          if (bDownCoast)
             pProfile = m_VCoast[nCoast].pGetProfileWithDownCoastSeq(nn);
-
          else
             pProfile = m_VCoast[nCoast].pGetProfileWithUpCoastSeq(nn);
 
@@ -189,7 +189,6 @@ int CSimulation::nDoAllPropagateWaves(void)
                // Move on to next profile
                continue;
             }
-
             else
             {
                // A serious CShore error, so abort the run
@@ -202,7 +201,7 @@ int CSimulation::nDoAllPropagateWaves(void)
             continue;
 
          // Is this a start of coast or end of coast profile?
-         if ((! pProfile->bStartOfCoast()) && (! pProfile->bEndOfCoast()))
+         if (! pProfile->bIsGridEdge())
          {
             // It is neither a start of coast or an end of coast profile, so set switch
             bSomeNonStartOrEndOfCoastProfiles = true;
@@ -353,7 +352,6 @@ int CSimulation::nDoAllPropagateWaves(void)
    if (VbBreakingAll.empty())
    {
       LogStream << m_ulIter << ": waves off-shore for all profiles" << endl;
-
       return RTN_OK;
    }
 
@@ -429,7 +427,6 @@ int CSimulation::nDoAllPropagateWaves(void)
 
    // Find any shadow zones and then modify waves in and adjacent to them
    nRet = nDoAllShadowZones();
-
    if (nRet != RTN_OK)
       return nRet;
 
@@ -643,7 +640,7 @@ int CSimulation::nCalcWavePropertiesOnProfile(int const nCoast, int const nCoast
    if (! pProfile->bOKIncStartAndEndOfCoast())
    {
       // if (m_nLogFileDetail >= LOG_FILE_ALL)
-      // LogStream << m_ulIter << ": Coast " << nCoast << ", profile " << nProfile << " has been marked invalid, will not calc wave properties on this profile" << endl;
+      // LogStream << m_ulIter << ": coast " << nCoast << ", profile " << nProfile << " has been marked invalid, will not calc wave properties on this profile" << endl;
 
       return RTN_OK;
    }
@@ -2246,8 +2243,14 @@ void CSimulation::CalcCoastTangents(int const nCoast)
 //===============================================================================================================================
 void CSimulation::CalcD50AndFillWaveCalcHoles(void)
 {
-   vector<int> VnPolygonD50Count(m_nNumPolygonGlobal + 1, 0); // TODO 044
-   vector<double> VdPolygonD50(m_nNumPolygonGlobal + 1, 0);   // TODO 044
+   // Get the total number of polygons, all coasts
+   int nTotPolygonAllCoasts = 0;
+   for (int nCoast = 0; nCoast < static_cast<int>(m_VCoast.size()); nCoast++)
+      nTotPolygonAllCoasts +=  m_VCoast[nCoast].nGetNumPolygons();
+
+   // Vectors for D50 stuff
+   vector<int> VnPolygonD50Count(nTotPolygonAllCoasts, 0);
+   vector<double> VdPolygonD50(nTotPolygonAllCoasts, 0);
 
    for (int nX = 0; nX < m_nXGridSize; nX++)
    {
@@ -2506,7 +2509,7 @@ void CSimulation::CalcD50AndFillWaveCalcHoles(void)
       }
    }
 
-   // Calculate the average d50 for every polygon TODO 044
+   // Calculate the average d50 for every polygon
    for (int nCoast = 0; nCoast < static_cast<int>(m_VCoast.size()); nCoast++)
    {
       for (int nPoly = 0; nPoly < m_VCoast[nCoast].nGetNumPolygons(); nPoly++)

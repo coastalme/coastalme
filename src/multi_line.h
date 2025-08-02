@@ -32,6 +32,7 @@ using std::vector;
 using std::pair;
 using std::make_pair;
 
+#include "2d_point.h"
 #include "line.h"
 
 class CGeomMultiLine : public CGeomLine

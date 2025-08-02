@@ -2,21 +2,12 @@
    \mainpage
    \section intro_sec Introduction
 
-   <b>CoastalME</b> (Coastal Modelling Environment) simulates the long-term
-   behaviour of a coast. This initial version considers only simple soft cliff
-   cross-shore effects. However, development of CoastalME is ongoing. Watch this
-   space!\n\n
+   <b>CoastalME</b> (Coastal Modelling Environment) simulates the long-term behaviour of a coast. This initial version considers only simple soft cliff cross-shore effects. However, development of CoastalME is ongoing. Watch this space!\n\n
 
-   CoastalME was devised and constructed by Andres Payo Garcia (British Geological
-   Survey: agarcia@bgs.ac.uk) and David Favis-Mortlock (British Geological Survey:
-   dfm1@bgs.ac.uk). We are very grateful to the following for support, assistance,
-   and inspiration: Tom Ashby, Manuel Cobos Budia, Wilf Chun, Mark Dickson, Jim W.
-   Hall, Martin D. Hurst, Matthew Ives, Robert J. Nicholls, Ian Townend, and Mike
+   CoastalME was devised and constructed by Andres Payo Garcia (British Geological Survey: agarcia@bgs.ac.uk) and David Favis-Mortlock (British Geological Survey: dfm1@bgs.ac.uk). We are very grateful to the following for support, assistance, and inspiration: Tom Ashby, Manuel Cobos Budia, Wilf Chun, Mark Dickson, Jim W. Hall, Martin D. Hurst, Matthew Ives, Robert J. Nicholls, Ian Townend, and Mike
    J.A. Walkden.\n\n
 
-   See <a href="https://github.com/coastalme/coastalme"
-   target="_blank">https://github.com/coastalme/coastalme</a> for the stable
-   release version, and the unstable development version, of the source code.\n
+   See <a href="https://github.com/coastalme/coastalme" target="_blank">https://github.com/coastalme/coastalme</a> for the stable release version, and the unstable development version, of the source code.\n
    \n
    From Shingle Street\n
    To Orford Ness\n
@@ -31,28 +22,21 @@
    Where land runs out and nothing’s sound.\n
    Nothing lasts long on Shingle Street.\n
    \n
-   By Blake Morrison (2018). See <a
-   href="https://www.penguin.co.uk/books/419911/shingle-street-by-morrison-blake/9780701188771"
-   target="_blank">https://www.penguin.co.uk/books/419911/shingle-street-by-morrison-blake/9780701188771</a>\n
+   By Blake Morrison (2018). See <a href="https://www.penguin.co.uk/books/419911/shingle-street-by-morrison-blake/9780701188771" target="_blank">https://www.penguin.co.uk/books/419911/shingle-street-by-morrison-blake/9780701188771</a>\n
 
    \section install_sec Installing CoastalME
 
    \subsection install_step1 Obtaining the source code
 
-   CoastalME builds easily using Linux. If you wish to run CoastalME on Windows,
-   then we currently recommend using the Windows Subsystem Linux (WSL) software to
-   do this.
+   CoastalME builds easily using Linux. If you wish to run CoastalME on Windows, then we currently recommend using the Windows Subsystem Linux (WSL) software to do this.
 
-   Create a local copy of the github repository, for example by downloading a
-   zipfile, then unpacking it or cloning. We suggest unpacking it to something like
-   "/home/YOUR NAME/Projects/CoastalME/", this is then your CoastalME folder.
+   Create a local copy of the github repository, for example by downloading a zipfile, then unpacking it or cloning. We suggest unpacking it to something like "/home/YOUR NAME/Projects/CoastalME/", this is then your CoastalME folder.
 
    git clone https://github.com/coastalme/coastalme
 
    \subsection install_step2 Building CoastalME
 
-   In a terminal window (i.e. at a command-line prompt) move to the CoastalME
-   folder.
+   In a terminal window (i.e. at a command-line prompt) move to the CoastalME folder.
 
    Then move to the the src folder
 
@@ -62,19 +46,10 @@
 
    ./run_cmake.sh
 
-   If you get a "Permission denied" message:
-
-   -bash: ./run_cmake.sh: Permission denied
-
-   you will have to grant executable permission using
-
-   chmod a+x run_cmake.sh, chmod a+x cshore/make_cshore.sh and then
+   If you get a "Permission denied" message: -bash: ./run_cmake.sh: Permission denied you will have to grant executable permission using chmod a+x run_cmake.sh, chmod a+x cshore/make_cshore.sh and then
    ./run_cmake.sh
 
-   This will build CShore, look for GDAL, and write the CMake files. If you see
-   error messages about missing software (for example, telling you that CMake
-   cannot be found or is too old, or GDAL cannot be found or is too old) then you
-   need to install or update the software that is causing the problem.
+   This will build CShore, look for GDAL, and write the CMake files. If you see error messages about missing software (for example, telling you that CMake cannot be found or is too old, or GDAL cannot be found or is too old) then you need to install or update the software that is causing the problem.
 
    Next, run
 
@@ -86,8 +61,7 @@
 
    \subsection run_step1 Specifying the input file
 
-   Edit cme.ini to tell CoastalME which input file to read (for example,
-   in/test_suite/minimal_wave_angle_230/minimal.dat).
+   Edit cme.ini to tell CoastalME which input file to read (for example, in/test_suite/minimal_wave_angle_230/minimal.dat).
 
    \subsection run_step2 Running CoastalME
 
@@ -100,29 +74,20 @@
 
    \subsection run_step3 Running CoastalME's test suite
 
-   To check that your installation is running correctly, you can run a suite of
-   pre-defined tests by running the following commands:
+   To check that your installation is running correctly, you can run a suite of pre-defined tests by running the following commands:
 
    chmod a+x run_test_suite.sh
    ./run_test_suite.sh
 
-   The `chmod` comand ensures that you have permission to execute the
-   run_test_suite.sh file.
+   The `chmod` comand ensures that you have permission to execute the run_test_suite.sh file.
 
    \subsection run_step4 Managing CoastalME's output
 
-   Once you have CoastalME (CME) up and running, you can reduce the quantity of
-   output (it can be overwhelming!) in several ways.
+   Once you have CoastalME (CME) up and running, you can reduce the quantity of output (it can be overwhelming!) in several ways.
 
-   Change "Content of log file" in the CME input file for any of the test suite
-   runs (the name of this input file is listed in cme.ini, both are simple text
-   files). If you set "Content of log file" to zero, then CME won't output a log
-   file; setting it to 4 (all output) is really only useful to developers.
+   Change "Content of log file" in the CME input file for any of the test suite runs (the name of this input file is listed in cme.ini, both are simple text files). If you set "Content of log file" to zero, then CME won't output a log file; setting it to 4 (all output) is really only useful to developers.
 
-   Change "GIS vector files to output" and "GIS vector files to output" in the CME
-   input file. These are both set to "all" in the test suite files on GitHub.
-   Instead of "all" you can list the space-separated codes for only the GIS output
-   that you want to see. A list of CME GIS output codes is in codes.txt.
+   Change "GIS vector files to output" and "GIS vector files to output" in the CME input file. These are both set to "all" in the test suite files on GitHub. Instead of "all" you can list the space-separated codes for only the GIS output that you want to see. A list of CME GIS output codes is in codes.txt.
 
    Enjoy!
 
@@ -131,186 +96,112 @@
 */
 
 /*
-   NOTE Before releasing a new version, do a pre-release build to check for
-   memory leaks with -fsanitize options enabled (see CMakeLists.txt) then run
-   ./cme 2> sanitize.txt NOT UNDER DEBUG (i.e. not using gdb)
+   NOTE Before releasing a new version, do a pre-release build to check for memory leaks with -fsanitize options enabled (see CMakeLists.txt) then run ./cme 2> sanitize.txt NOT UNDER DEBUG (i.e. not using gdb)
 
    TODOLIST
  ***********************************************************************************************************
    DOCUMENTATION
    TODO 001 Add more Doxygen information about all classes
-   TODO 007 We now have setup and surge info from CShore (thanks to Manuel). But
-   what shall we do with this info? "The variable VdWaveSetupSurge() represents
-   the sea level rise due to wave effects (setup) and storm surge. CSHORE
-   calculates them together and they can’t be separated. That’s what the
-   VdWaveSetupSurge variable is. That’s why you saw my initial efforts to try to
-   separate both variables from CSHORE commented out, which is impossible. What
-   is possible is to get the RunUp from CSHORE, but since it uses an empirical
-   formula for that, I finally decided to calculate it separately. To your
-   question about whether you should remove VdStormSurge, the answer is yes. I
-   left it because I still intend at some point to extract the cross-shore
-   transport from CSHORE and balance it in CME with the longshore and
-   cross-shore transports without needing the Dean profile. From my point of
-   view, this would be even more realistic, though at first it will surely drive
-   us crazy."
+   TODO 007 We now have setup and surge info from CShore (thanks to Manuel). But what shall we do with this info? "The variable VdWaveSetupSurge() represents the sea level rise due to wave effects (setup) and storm surge. CSHORE calculates them together and they can’t be separated. That’s what the VdWaveSetupSurge variable is. That’s why you saw my initial efforts to try to separate both variables from CSHORE commented out, which is impossible. What is possible is to get the RunUp from CSHORE, but since it uses an empirical formula for that, I finally decided to calculate it separately. To your question about whether you should remove VdStormSurge, the answer is yes. I left it because I still intend at some point to extract the cross-shore transport from CSHORE and balance it in CME with the longshore and cross-shore transports without needing the Dean profile. From my point of view, this would be even more realistic, though at first it will surely drive us crazy."
 
    USER INPUT
-   TODO 000 Should user input be split in two main files: one for
-   frequently-changed things, one for rarely-changed things? If so, what should
-   go into each file ('testing only' OK, but what else?)
+   TODO 000 Should user input be split in two main files: one for frequently-changed things, one for rarely-changed things? If so, what should go into each file ('testing only' OK, but what else?)
    TODO 011 Should this constant be a user input? If so, TODO 071
    TODO 036 Read in changed deep water wave values (need TODO 071)
-   TODO 030 Do we also need to be able to input landform sub-categories? (need
-   TODO 071)
+   TODO 030 Do we also need to be able to input landform sub-categories? (need TODO 071)
    TODO 022 Get intervention update working (need TODO 071)
    TODO 042 Should we have a smallest valid input for KLS in the CERC equation?
-   TODO 045 Method of getting depth of closure value needs to be a user input
-   (need TODO 071)
-   TODO 049 Handle other command line parameters e.g. path to .ini file, path to
-   datafile
+   TODO 045 Method of getting depth of closure value needs to be a user input (need TODO 071)
+   TODO 049 Handle other command line parameters e.g. path to .ini file, path to datafile
    TODO 035 Also handle other EPSG for vector spatial reference systems
    TODO 054 Choose more files to omit from "usual" raster output
-   TODO 069 Enable ability to represent intervention structures which have their
-   foundation embedded in consolidated sediment. In other words, with the
-   elevation of the base of the intervention structure *below* the top of all
-   consolidated sediment layers. Will need some sanity checking of elevations
-   TODO 071 If the user input file format is changed, write a Python script to
-   convert from the old file format to the new
+   TODO 069 Enable ability to represent intervention structures which have their foundation embedded in consolidated sediment. In other words, with the elevation of the base of the intervention structure *below* the top of all consolidated sediment layers. Will need some sanity checking of elevations
+   TODO 071 If the user input file format is changed, write a Python script to convert from the old file format to the new
    TODO 083 Get all three kinds of sediment input events working correctly
 
    ERROR HANDLING
    TODO 038 Do better error handling if insufficient memory
-   TODO 004 Improve error handling of situation where we have a valid shadow
-   zone but cannot find a neighbouring cell which is 'under' the coastline
-   TODO 006 Check GDALGridCreate() with only start-of-coast or an end-of-coast
-   profiles
+   TODO 004 Improve error handling of situation where we have a valid shadow zone but cannot find a neighbouring cell which is 'under' the coastline
+   TODO 006 Check GDALGridCreate() with only start-of-coast or an end-of-coast profiles
    TODO 009 Decide what to do when we have eroded down to basement
-   TODO 017 Extra safety check needed, make sure that each point is within valid
-   grid
-   TODO 018 Improve situation where new landwards point on parallel profile is
-   not within the raster grid
-   TODO 019 Improve situation where Dean profile has a near-zero elevation
-   difference
-   TODO 020 Check calculation of elevation of coast point of Dean parallel
-   profile
+   TODO 017 Extra safety check needed, make sure that each point is within valid grid
+   TODO 018 Improve situation where new landwards point on parallel profile is not within the raster grid
+   TODO 019 Improve situation where Dean profile has a near-zero elevation difference
+   TODO 020 Check calculation of elevation of coast point of Dean parallel profile
    TODO 021 Improve situation where all layers have zero thickness
    TODO 025 Improve situation where this point has only zero thickness layers
    TODO 026 Check situation where cell in parallel profile is not in a polygon
    TODO 028 Give a warning if raster input layer has several bands
-   TODO 053 Improve handling of situation where landward elevation of profile is
-   -ve
+   TODO 053 Improve handling of situation where landward elevation of profile is -ve
    TODO 055 Maybe add a safety check here?
    TODO 080 Do we get -ve breaking wave heights here?
-   TODO 084 Improve handling of situation where consecutive profile points are
-   same distance from shoreline
+   TODO 084 Improve handling of situation where consecutive profile points are same distance from shoreline
 
    THEORY/EFFICIENCY
-   TODO 002 Do we really need D50 for drift landform class? What do we need for
-   drift?
-   TODO 005 Maybe give every coast point a value for end-of-profile wave height
-   and direction instead of for deep water wave height and direction
+   TODO 002 Do we really need D50 for drift landform class? What do we need for drift?
+   TODO 005 Maybe give every coast point a value for end-of-profile wave height and direction instead of for deep water wave height and direction
    TODO 010 Do we also need to update the active zone cells?
-   TODO 012 Change finding of adjacent polygons, and calculation of the length
-   of shared normals, when we make polygon seaward length determined by depth of
-   closure
-   TODO 013 Change calculation (need user input?) of coastline smoothing
-   convexity threshold
-   TODO 014 Profile spacing, could try gradually increasing the profile spacing
-   with increasing concavity, and decreasing the profile spacing with increasing
-   convexity
+   TODO 012 Change finding of adjacent polygons, and calculation of the length of shared normals, when we make polygon seaward length determined by depth of closure
+   TODO 013 Change calculation (need user input?) of coastline smoothing convexity threshold
+   TODO 014 Profile spacing, could try gradually increasing the profile spacing with increasing concavity, and decreasing the profile spacing with increasing convexity
    TODO 016 Check mass balance for recirculating unconsolidated sediment option
    TODO 023 Only calculate shore platform erosion if cell is in a polygon
    TODO 024 Should we calculate platform erosion on a profile that has hit dry
    land?
-   TODO 044 Implement estuaries. Before we can do this, we will need to deal
-   with multiple coastlines. Will need to get working where profile hits another
-   profile which belongs to a different coast object.
+   TODO 044 Implement estuaries
    TODO 051 Implement other ways of calculating depth of closure, see TODO 045
    TODO 056 Check this please Andres
    TODO 059 Implement dune landform class
    TODO 060 Remove 'magic numbers' from code here
    TODO 061 Is this safety check to depth of breaking a reasonable thing to do?
    TODO 066 Should this be for all layers? Check
-   TODO 067 Suspended fine sediment never decreases i.e. no suspended fine
-   sediment ever leaves the grid. Is this OK?
-   TODO 070 Change CShore to use allocatable arrays
-   (https://fortran-lang.org/en/learn/best_practices/allocatable_arrays/) so
-   that the number of points in the CShore output profiles can either be a user
-   input, or determined by e.g. the physical length of the profile. At present,
-   max is NN = 1000 in cshore_wrapper.f03
+   TODO 067 Suspended fine sediment never decreases i.e. no suspended fine sediment ever leaves the grid. Is this OK?
+   TODO 070 Change CShore to use allocatable arrays (https://fortran-lang.org/en/learn/best_practices/allocatable_arrays/) so that the number of points in the CShore output profiles can either be a user input, or determined by e.g. the physical length of the profile. At present, max is NN = 1000 in cshore_wrapper.f03
    TODO 075 What if bedrock sticks above Dean profile?
-   TODO 076 When doing parallel profiles, start from the profile which is
-   closest to a right angle with the coast
-   TODO 077 As traverse between the bounding profiles creating parallel
-   profiles, gradually change the parallel profile orientation based on distance
-   weighting of two bounding profiles
-   TODO 078 At present, we don't allow cliff collapse onto interventions. Is
-   this realistic? Should it be different for different types on intervention?
+   TODO 076 When doing parallel profiles, start from the profile which is closest to a right angle with the coast
+   TODO 077 As traverse between the bounding profiles creating parallel profiles, gradually change the parallel profile orientation based on distance weighting of two bounding profiles
+   TODO 078 At present, we don't allow cliff collapse onto interventions. Is this realistic? Should it be different for different types on intervention?
    TODO 089 Why do we get patches of sediment in the sea?
-   TODO 086 Try these as a more efficient replacement for GDALGridCreate():
-   https://github.com/delfrrr/delaunator-cpp
-   https://www.cs.cmu.edu/~quake/triangle.html
-   https://github.com/greenm01/poly2tri
-   https://gts.sourceforge.net/index.html
-   TODO 088 In (almost) all whole-grid loops, immediately continue if cell is
-   hinterland (but not when calculating cliff collapse)
+   TODO 086 Try these as a more efficient replacement for GDALGridCreate(): https://github.com/delfrrr/delaunator-cpp https://www.cs.cmu.edu/~quake/triangle.html https://github.com/greenm01/poly2tri https://gts.sourceforge.net/index.html
+   TODO 088 In (almost) all whole-grid loops, immediately continue if cell is hinterland (but not when calculating cliff collapse)
+   TODO 090 At present, sediment cannot move from a given coastline polygon to a polygon belonging to another coastline. Is this always true?
 
    OUTPUT
-   TODO 065 Get GPKG output working: GDAL 3.9.1 does not yet implement this
-   correctly. Currently is OK for vector output (but is very slow), not yet
-   working for raster output
+   TODO 065 Get GPKG output working: GDAL 3.9.1 does not yet implement this correctly. Currently is OK for vector output (but is very slow), not yet working for raster output
    TODO 063 Add NetCDF support, see https://trac.osgeo.org/gdal/wiki/NetCDF
-   TODO 064 Add support for grids that are not oriented N-S and W-E, but which
-   are still rectangular. See
-   https://gdal.org/en/stable/tutorials/geotransforms_tut.html
+   TODO 064 Add support for grids that are not oriented N-S and W-E, but which are still rectangular. See https://gdal.org/en/stable/tutorials/geotransforms_tut.html
    TODO 031 Get raster slice output working with multiple slices
    TODO 032 Improve output scaling for DBL_NODATA situation
-   TODO 033 Also test and configure (e.g. by passing open() options) other
-   vector output file formats
-   TODO 034 Also test and configure (e.g. by passing open() options) other
-   raster output file formats
-   TODO 043 When outputting profiles, how do we deal with randomness of profile
-   spacing (since profile location is determined by curvature)?
+   TODO 033 Also test and configure (e.g. by passing open() options) other vector output file formats
+   TODO 034 Also test and configure (e.g. by passing open() options) other raster output file formats
+   TODO 043 When outputting profiles, how do we deal with randomness of profile spacing (since profile location is determined by curvature)?
    TODO 052 Improve saving of profiles and parallel profiles
    TODO 062 Show end-of-iteration number of cells with sediment somewhere
-   TODO 068 Only show output in log file that is relevant to processes being
-   simulated
-   TODO 074 Output history of what landforms are on a particular cell or cells.
-   User inputs cell(s), how?
+   TODO 068 Only show output in log file that is relevant to processes being simulated
+   TODO 074 Output history of what landforms are on a particular cell or cells. User inputs cell(s), how?
    TODO 082 Also show m_dStartIterUnconsFineAllCells etc. in log file
 
-   089 is max
+   090 is max
 
    COMPLETED
-   TODO 003 Make coastline curvature moving window size a user input DONE
-   in 1.1.22
-   TODO 046 Why is cliff collapse eroded during deposition (three size classes)
-   no longer calculated? DONE IN 1.1.22
+   TODO 003 Make coastline curvature moving window size a user input DONE in 1.1.22
+   TODO 046 Why is cliff collapse eroded during deposition (three size classes) no longer calculated? DONE IN 1.1.22
    TODO 058 Dave to check this DONE in 1.1.22
-   TODO 039 Rewrite reading of multiple random number seeds DONE in 1.2.1, 8 Nov
-   2024
+   TODO 039 Rewrite reading of multiple random number seeds DONE in 1.2.1, 8 Nov 2024
    TODO 041 Read in SWL per-timestep
    BUG 002 Useless output e.g. clay layers even if no clay input DONE in 1.1.21
-   BUG 003 Use mean SWL for elevations of Dean profiles DONE in 1.2.1, 27 Nov
-   2024 BUG 004 Don't smooth intervention coastline DONE 1.2.1, 27 Nov 2024
-   TODO 073 If output dir does not exist, then create it (ask user first)
-   DONE 1.2.2, 28 Nov 2024
-   TODO 047 Where is the GDAL description for the deep water wave stations
-   vector file? DONE 1.2.3, 2 Dec 2024
-   TODO 048 Where is the GDAL description for the flood input locations point or
-   vector file? DONE 1.2.3, 2 Dec 2024
-   TODO 027 Sort out GDAL problem with raster reference units DONE 1.2.3, 2 Dec
-   2024
+   BUG 003 Use mean SWL for elevations of Dean profiles DONE in 1.2.1, 27 Nov 2024
+   BUG 004 Don't smooth intervention coastline DONE 1.2.1, 27 Nov 2024
+   TODO 073 If output dir does not exist, then create it (ask user first) DONE 1.2.2, 28 Nov 2024
+   TODO 047 Where is the GDAL description for the deep water wave stations vector file? DONE 1.2.3, 2 Dec 2024
+   TODO 048 Where is the GDAL description for the flood input locations point or vector file? DONE 1.2.3, 2 Dec 2024
+   TODO 027 Sort out GDAL problem with raster reference units DONE 1.2.3, 2 Dec 2024
    TODO 079 Do sanity checking on wave and tide input DONE 1.2.3, 2 Dec 2024
-   TODO 072 CShore crashes occasionally, is it because of -ve Z values here?
-   DONE 1.2.3, 2 Dec 2024
+   TODO 072 CShore crashes occasionally, is it because of -ve Z values here? DONE 1.2.3, 2 Dec 2024
    TODO 050 Update for recent versions of Windows DONE 1.2.3, 2 Dec 2024
-   TODO 037 Need more info on nFindIndex() DONE 1.2.3, 2 Dec 2024
-   Improve coast normals DONE 1.2.3, 20 Dec 2024
+   TODO 037 Need more info on nFindIndex() DONE 1.2.3, 2 Dec 2024 Improve coast normals DONE 1.2.3, 20 Dec 2024
    TODO 057 Check this please Manuel DONE 1.2.4, 4 Jan 2025
-   TODO 087 Is there a problem if profile is not long enough for user-input
-   depth of closure? DONE 1.3.0 2 Feb 2025
-
+   TODO 087 Is there a problem if profile is not long enough for user-input depth of closure? DONE 1.3.0 2 Feb 2025
 */
 
 #ifndef CME_H
@@ -770,6 +661,8 @@ int const RTN_ERR_IGNORING_COAST = 78;
 int const RTN_ERR_TOO_LONG_TRACING_COAST = 79;
 int const RTN_ERR_CELL_NOT_FOUND_IN_HIT_PROFILE_DIFFERENT_COASTS = 80;
 int const RTN_ERR_POINT_NOT_FOUND_IN_MULTILINE_DIFFERENT_COASTS = 81;
+int const RTN_ERR_CELL_NOT_FOUND_IN_HIT_PROFILE = 82;
+int const RTN_ERR_CELL_IN_POLY_BUT_NO_POLY_COAST = 83;
 int const RTN_ERR_UNKNOWN = 999;
 
 // Elevation and 'slice' codes
@@ -797,7 +690,7 @@ int const UNCONS_SEDIMENT_EQUATION_KAMPHUIS = 1;
 
 int const CLIFF_COLLAPSE_LENGTH_INCREMENT = 10;          // Increment the planview length of the cliff talus Dean profile, if we have not been able to deposit enough
 int const PROFILE_CHECK_DIST_FROM_COAST = 3;             // Used in checking shoreline-normal profiles for intersection
-int const GAP_BETWEEN_DIFFERENT_COAST_PROFILES = 20;     // In cells, is the gap between profile ends bekonging to different coasts
+int const GAP_BETWEEN_DIFFERENT_COAST_PROFILES = 30;     // In cells, is the gap between profile ends belonging to different coasts
 
 unsigned long const MASK = 0xfffffffful;
 unsigned long const SEDIMENT_INPUT_EVENT_ERROR = -1;
@@ -833,7 +726,7 @@ double const INTERVENTION_PROFILE_SPACING_FACTOR = 0.5;  // Profile spacing on i
 
 double const DBL_NODATA = -9999;
 
-string const PROGRAM_NAME = "Coastal Modelling Environment (CoastalME) version 1.3.26 (18 Jul 2025)";
+string const PROGRAM_NAME = "Coastal Modelling Environment (CoastalME) version 1.3.26 (02 Aug 2025)";
 string const PROGRAM_NAME_SHORT = "CME";
 string const CME_INI = "cme.ini";
 

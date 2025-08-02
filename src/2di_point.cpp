@@ -24,7 +24,7 @@
 #include "2di_point.h"
 #include "cme.h"
 
-//! Constructor with no parameters (the X and Y coordinates of the new CGeom2DIPoint object are set to zero in an initialization list)
+//! Constructor with no parameters (the X and Y coordinates of the new CGeom2DIPoint object are set to zero in an initialisation list)
 CGeom2DIPoint::CGeom2DIPoint(void)
     : nX(0),
       nY(0)

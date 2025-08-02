@@ -62,14 +62,12 @@ using std::strstr;
 #include "2di_point.h"
 
 //===============================================================================================================================
-//! Given the integer X-axis ordinate of a cell in the raster grid CRS, returns
-//! the external CRS X-axis ordinate of the cell's centroid
+//! Given the integer X-axis ordinate of a cell in the raster grid CRS, returns the external CRS X-axis ordinate of the cell's centroid
 //===============================================================================================================================
 double CSimulation::dGridCentroidXToExtCRSX(int const nGridX) const
 {
    // TODO 064
-   return (m_dGeoTransform[0] + (nGridX * m_dGeoTransform[1]) +
-           (m_dGeoTransform[1] / 2));
+   return (m_dGeoTransform[0] + (nGridX * m_dGeoTransform[1]) + (m_dGeoTransform[1] / 2));
 }
 
 //===============================================================================================================================
@@ -78,8 +76,7 @@ double CSimulation::dGridCentroidXToExtCRSX(int const nGridX) const
 double CSimulation::dGridCentroidYToExtCRSY(int const nGridY) const
 {
    // TODO 064
-   return (m_dGeoTransform[3] + (nGridY * m_dGeoTransform[5]) +
-           (m_dGeoTransform[5] / 2));
+   return (m_dGeoTransform[3] + (nGridY * m_dGeoTransform[5]) + (m_dGeoTransform[5] / 2));
 }
 
 //===============================================================================================================================
@@ -104,8 +101,7 @@ double CSimulation::dGridXToExtCRSX(double const dGridX) const
 }
 
 //===============================================================================================================================
-//! Given a real-valued Y-axis ordinate in the raster grid CRS (i.e. not the
-//! centroid of a cell), returns the external CRS Y-axis ordinate
+//! Given a real-valued Y-axis ordinate in the raster grid CRS (i.e. not the centroid of a cell), returns the external CRS Y-axis ordinate
 //===============================================================================================================================
 double CSimulation::dGridYToExtCRSY(double const dGridY) const
 {
@@ -114,9 +110,7 @@ double CSimulation::dGridYToExtCRSY(double const dGridY) const
 }
 
 //===============================================================================================================================
-//! Transforms an X-axis ordinate in the external CRS to the equivalent X-axis
-//! ordinate in the raster grid CRS (the result is not rounded, and so may not
-//! be integer, and may be outside the grid)
+//! Transforms an X-axis ordinate in the external CRS to the equivalent X-axis ordinate in the raster grid CRS (the result is not rounded, and so may not be integer, and may be outside the grid)
 //===============================================================================================================================
 double CSimulation::dExtCRSXToGridX(double const dExtCRSX) const
 {
@@ -136,7 +130,7 @@ double CSimulation::dExtCRSYToGridY(double const dExtCRSY) const
 //===============================================================================================================================
 //! Transforms a pointer to a CGeom2DPoint in the external CRS to the equivalent CGeom2DIPoint in the raster grid CRS (both values rounded). The result may be outside the grid
 //===============================================================================================================================
-CGeom2DIPoint CSimulation::PtiExtCRSToGridRound(CGeom2DPoint const *pPtIn) const
+CGeom2DIPoint CSimulation::PtiExtCRSToGridRound(CGeom2DPoint const* pPtIn) const
 {
    // TODO 064
    int const nX = nRound(((pPtIn->dGetX() - m_dGeoTransform[0]) / m_dGeoTransform[1]) - 1);
@@ -148,7 +142,7 @@ CGeom2DIPoint CSimulation::PtiExtCRSToGridRound(CGeom2DPoint const *pPtIn) const
 //===============================================================================================================================
 //! Returns the distance (in external CRS) between two points
 //===============================================================================================================================
-double CSimulation::dGetDistanceBetween(CGeom2DPoint const *Pt1, CGeom2DPoint const *Pt2)
+double CSimulation::dGetDistanceBetween(CGeom2DPoint const* Pt1, CGeom2DPoint const* Pt2)
 {
    double const dXDist = Pt1->dGetX() - Pt2->dGetX();
    double const dYDist = Pt1->dGetY() - Pt2->dGetY();
@@ -157,10 +151,9 @@ double CSimulation::dGetDistanceBetween(CGeom2DPoint const *Pt1, CGeom2DPoint co
 }
 
 //===============================================================================================================================
-//! Returns the distance (in grid units) between two grid cell points
+//! Returns the distance (in external CRS) between two points
 //===============================================================================================================================
-double CSimulation::dGetDistanceBetween(CGeom2DIPoint const *Pti1,
-                                        CGeom2DIPoint const *Pti2)
+double CSimulation::dGetDistanceBetween(CGeom2DIPoint const* Pti1, CGeom2DIPoint const* Pti2)
 {
    double const dXDist = Pti1->nGetX() - Pti2->nGetX();
    double const dYDist = Pti1->nGetY() - Pti2->nGetY();
@@ -169,19 +162,26 @@ double CSimulation::dGetDistanceBetween(CGeom2DIPoint const *Pti1,
 }
 
 //===============================================================================================================================
-//! Returns twice the signed area of a triangle
+//! Returns the distance (in external CRS) between two points
 //===============================================================================================================================
-double CSimulation::dTriangleAreax2(CGeom2DPoint const *pPtA,
-                                    CGeom2DPoint const *pPtB,
-                                    CGeom2DPoint const *pPtC)
+double CSimulation::dGetDistanceBetween(double const dX1, double const dY1, double const dX2, double const dY2)
 {
-   return (pPtB->dGetX() - pPtA->dGetX()) * (pPtC->dGetY() - pPtA->dGetY()) -
-          (pPtB->dGetY() - pPtA->dGetY()) * (pPtC->dGetX() - pPtA->dGetX());
+   double const dXDist = dX1 - dX2;
+   double const dYDist = dY1 - dY2;
+
+   return hypot(dXDist, dYDist);
 }
 
 //===============================================================================================================================
-//! Checks whether the supplied point (an x-y pair, in the grid CRS) is within
-//! the raster grid, and is a valid cell (i.e. the basement DEM is not NODATA)
+//! Returns twice the signed area of a triangle, defined by three points
+//===============================================================================================================================
+double CSimulation::dTriangleAreax2(CGeom2DPoint const* pPtA, CGeom2DPoint const* pPtB, CGeom2DPoint const* pPtC)
+{
+   return (pPtB->dGetX() - pPtA->dGetX()) * (pPtC->dGetY() - pPtA->dGetY()) - (pPtB->dGetY() - pPtA->dGetY()) * (pPtC->dGetX() - pPtA->dGetX());
+}
+
+//===============================================================================================================================
+//! Checks whether the supplied point (an x-y pair, in the grid CRS) is within the raster grid, and is a valid cell (i.e. the basement DEM is not NODATA)
 //===============================================================================================================================
 bool CSimulation::bIsWithinValidGrid(int const nX, int const nY) const
 {
@@ -198,11 +198,9 @@ bool CSimulation::bIsWithinValidGrid(int const nX, int const nY) const
 }
 
 //===============================================================================================================================
-//! Checks whether the supplied point (a reference to a CGeom2DIPoint, in the
-//! grid CRS) is within the raster grid, and is a valid cell (i.e. the basement
-//! DEM is not NODATA)
+//! Checks whether the supplied point (a reference to a CGeom2DIPoint, in the  grid CRS) is within the raster grid, and is a valid cell (i.e. the basement DEM is not NODATA)
 //===============================================================================================================================
-bool CSimulation::bIsWithinValidGrid(CGeom2DIPoint const *Pti) const
+bool CSimulation::bIsWithinValidGrid(CGeom2DIPoint const* Pti) const
 {
    int const nX = Pti->nGetX();
    int const nY = Pti->nGetY();
@@ -211,10 +209,9 @@ bool CSimulation::bIsWithinValidGrid(CGeom2DIPoint const *Pti) const
 }
 
 //===============================================================================================================================
-//! Constrains the supplied point (in the grid CRS) to be a valid cell within
-//! the raster grid
+//! Constrains the supplied point (in the grid CRS) to be a valid cell within the raster grid
 //===============================================================================================================================
-void CSimulation::KeepWithinValidGrid(int &nX, int &nY) const
+void CSimulation::KeepWithinValidGrid(int& nX, int& nY) const
 {
    nX = tMax(nX, 0);
    nX = tMin(nX, m_nXGridSize - 1);
@@ -224,27 +221,18 @@ void CSimulation::KeepWithinValidGrid(int &nX, int &nY) const
 }
 
 //===============================================================================================================================
-//! Constrains the second supplied point (both are CGeom2DIPoints, in the grid
-//! CRS) to be a valid cell within the raster grid
+//! Constrains the second supplied point (both are CGeom2DIPoints, in the grid CRS) to be a valid cell within the raster grid
 //===============================================================================================================================
-void CSimulation::KeepWithinValidGrid(CGeom2DIPoint const *Pti0,
-                                      CGeom2DIPoint *Pti1) const
+void CSimulation::KeepWithinValidGrid(CGeom2DIPoint const* Pti0, CGeom2DIPoint* Pti1) const
 {
-   KeepWithinValidGrid(Pti0->nGetX(), Pti0->nGetY(), *Pti1->pnGetX(),
-                       *Pti1->pnGetY());
+   KeepWithinValidGrid(Pti0->nGetX(), Pti0->nGetY(), *Pti1->pnGetX(), *Pti1->pnGetY());
 }
 
 //===============================================================================================================================
-//! Given two points in the grid CRS (the points assumed not to be coincident),
-//! this routine modifies the value of the second point so that it is on a line
-//! joining the original two points and is a valid cell within the raster grid.
-//! However in some cases (e.g. if the first point is at the edge of the valid
-//! part of the raster grid) then the second cell will be coincident with the
-//! first cell, and the line joining them is thus of zero length. The calling
-//! routine has to be able to handle this
+//! Given two points in the grid CRS (the points assumed not to be coincident), this routine modifies the value of the second point so that it is on a line joining the original two points and is a valid cell within the raster grid. However in some cases (e.g. if the first point is at the edge of the valid part of the raster grid) then the second cell will be coincident with the
+//! first cell, and the line joining them is thus of zero length. The calling routine has to be able to handle this
 //===============================================================================================================================
-void CSimulation::KeepWithinValidGrid(int nX0, int nY0, int &nX1,
-                                      int &nY1) const
+void CSimulation::KeepWithinValidGrid(int nX0, int nY0, int& nX1, int& nY1) const
 {
    // Safety check: make sure that the first point is within the valid grid
    if (nX0 >= m_nXGridSize)
@@ -265,8 +253,7 @@ void CSimulation::KeepWithinValidGrid(int nX0, int nY0, int &nX1,
 
    if (nDiffX == 0)
    {
-      // The two points have the same x coordinates, so we just need to constrain
-      // the y co-ord
+      // The two points have the same x coordinates, so we just need to constrain the y co-ord
       if (nY1 < nY0)
       {
          nY1 = -1;
@@ -294,8 +281,7 @@ void CSimulation::KeepWithinValidGrid(int nX0, int nY0, int &nX1,
 
    else if (nDiffY == 0)
    {
-      // The two points have the same y coordinates, so we just need to constrain
-      // the x co-ord
+      // The two points have the same y coordinates, so we just need to constrain the x co-ord
       if (nX1 < nX0)
       {
          nX1 = -1;
@@ -323,12 +309,7 @@ void CSimulation::KeepWithinValidGrid(int nX0, int nY0, int &nX1,
 
    else
    {
-      // The two points have different x coordinates and different y coordinates,
-      // so we have to work harder. First find which of the coordinates is the
-      // greatest distance outside the grid, and constrain that co-ord for
-      // efficiency (since this will reduce the number of times round the loop).
-      // Note that both may be inside the grid, if the incorrect co-ord is in the
-      // invalid margin, in which case arbitrarily contrain the x co-ord
+      // The two points have different x coordinates and different y coordinates, so we have to work harder. First find which of the coordinates is the greatest distance outside the grid, and constrain that co-ord for efficiency (since this will reduce the number of times round the loop). Note that both may be inside the grid, if the incorrect co-ord is in the invalid margin, in which case arbitrarily contrain the x co-ord
       int nXDistanceOutside = 0;
       int nYDistanceOutside = 0;
 
@@ -349,38 +330,30 @@ void CSimulation::KeepWithinValidGrid(int nX0, int nY0, int &nX1,
          // Constrain the x co-ord
          if (nX1 < nX0)
          {
-            // The incorrect x co-ord is less than the correct x co-ord: constrain
-            // it and find the y co-ord
+            // The incorrect x co-ord is less than the correct x co-ord: constrain it and find the y co-ord
             nX1 = -1;
 
             do
             {
                nX1++;
 
-               nY1 = nY0 +
-                     nRound(((nX1 - nX0) * nDiffY) / static_cast<double>(nDiffX));
-            } while (
-                (nY1 < 0) || (nY1 >= m_nYGridSize) ||
-                (m_pRasterGrid->m_Cell[nX1][nY1].bBasementElevIsMissingValue()));
+               nY1 = nY0 + nRound(((nX1 - nX0) * nDiffY) / static_cast<double>(nDiffX));
+            } while ((nY1 < 0) || (nY1 >= m_nYGridSize) || (m_pRasterGrid->m_Cell[nX1][nY1].bBasementElevIsMissingValue()));
 
             return;
          }
 
          else
          {
-            // The incorrect x co-ord is greater than the correct x-co-ord:
-            // constrain it and find the y co-ord
+            // The incorrect x co-ord is greater than the correct x-co-ord: constrain it and find the y co-ord
             nX1 = m_nXGridSize;
 
             do
             {
                nX1--;
 
-               nY1 = nY0 +
-                     nRound(((nX1 - nX0) * nDiffY) / static_cast<double>(nDiffX));
-            } while (
-                (nY1 < 0) || (nY1 >= m_nYGridSize) ||
-                (m_pRasterGrid->m_Cell[nX1][nY1].bBasementElevIsMissingValue()));
+               nY1 = nY0 + nRound(((nX1 - nX0) * nDiffY) / static_cast<double>(nDiffX));
+            } while ((nY1 < 0) || (nY1 >= m_nYGridSize) || (m_pRasterGrid->m_Cell[nX1][nY1].bBasementElevIsMissingValue()));
 
             return;
          }
@@ -391,27 +364,22 @@ void CSimulation::KeepWithinValidGrid(int nX0, int nY0, int &nX1,
          // Constrain the y co-ord
          if (nY1 < nY0)
          {
-            // The incorrect y co-ord is less than the correct y-co-ord: constrain
-            // it and find the x co-ord
+            // The incorrect y co-ord is less than the correct y-co-ord: constrain it and find the x co-ord
             nY1 = -1;
 
             do
             {
                nY1++;
 
-               nX1 = nX0 +
-                     nRound(((nY1 - nY0) * nDiffX) / static_cast<double>(nDiffY));
-            } while (
-                (nX1 < 0) || (nX1 >= m_nXGridSize) ||
-                (m_pRasterGrid->m_Cell[nX1][nY1].bBasementElevIsMissingValue()));
+               nX1 = nX0 + nRound(((nY1 - nY0) * nDiffX) / static_cast<double>(nDiffY));
+            } while ((nX1 < 0) || (nX1 >= m_nXGridSize) || (m_pRasterGrid->m_Cell[nX1][nY1].bBasementElevIsMissingValue()));
 
             return;
          }
 
          else
          {
-            // The incorrect y co-ord is greater than the correct y co-ord:
-            // constrain it and find the x co-ord
+            // The incorrect y co-ord is greater than the correct y co-ord: constrain it and find the x co-ord
             nY1 = m_nYGridSize;
 
             do
@@ -420,9 +388,7 @@ void CSimulation::KeepWithinValidGrid(int nX0, int nY0, int &nX1,
 
                nX1 = nX0 +
                      nRound(((nY1 - nY0) * nDiffX) / static_cast<double>(nDiffY));
-            } while (
-                (nX1 < 0) || (nX1 >= m_nXGridSize) ||
-                (m_pRasterGrid->m_Cell[nX1][nY1].bBasementElevIsMissingValue()));
+            } while ((nX1 < 0) || (nX1 >= m_nXGridSize) || (m_pRasterGrid->m_Cell[nX1][nY1].bBasementElevIsMissingValue()));
 
             return;
          }
@@ -451,7 +417,7 @@ double CSimulation::dKeepWithin360(double const dAngle)
 //===============================================================================================================================
 //! Returns a point (external CRS) which is the average of (i.e. is midway between) two other external CRS points
 //===============================================================================================================================
-CGeom2DPoint CSimulation::PtAverage(CGeom2DPoint const *pPt1, CGeom2DPoint const *pPt2)
+CGeom2DPoint CSimulation::PtAverage(CGeom2DPoint const* pPt1, CGeom2DPoint const* pPt2)
 {
    double const dPt1X = pPt1->dGetX();
    double const dPt1Y = pPt1->dGetY();
@@ -481,7 +447,7 @@ CGeom2DIPoint CSimulation::PtiAverage(CGeom2DIPoint const* pPti1, CGeom2DIPoint 
 //===============================================================================================================================
 //! Returns an integer point (grid CRS) which is the weighted average of two other grid CRS integer points. The weight must be <= 1, if the weight is < 0.5 then the output point is closer to the first point, if the weight is > 0.5 then the output point is closer to the second point
 //===============================================================================================================================
-CGeom2DIPoint CSimulation::PtiWeightedAverage(CGeom2DIPoint const *pPti1, CGeom2DIPoint const *pPti2, double const dWeight)
+CGeom2DIPoint CSimulation::PtiWeightedAverage(CGeom2DIPoint const* pPti1, CGeom2DIPoint const* pPti2, double const dWeight)
 {
    int const nPti1X = pPti1->nGetX();
    int const nPti1Y = pPti1->nGetY();
@@ -521,8 +487,7 @@ CGeom2DPoint CSimulation::PtAverage(vector<CGeom2DPoint>* pVIn)
 }
 
 // //===============================================================================================================================
-// //! Returns a point (grid CRS) which is the average of a vector of grid CRS
-// points
+// //! Returns a point (grid CRS) which is the average of a vector of grid CRS points
 // //===============================================================================================================================
 // CGeom2DIPoint CSimulation::PtiAverage(vector<CGeom2DIPoint>* pVIn)
 // {
@@ -546,11 +511,9 @@ CGeom2DPoint CSimulation::PtAverage(vector<CGeom2DPoint>* pVIn)
 // }
 
 //===============================================================================================================================
-//! Returns an integer point (grid CRS) which is the centroid of a polygon,
-//! given by a vector of grid CRS points. From
-//! https://stackoverflow.com/questions/2792443/finding-the-centroid-of-a-polygon
+//! Returns an integer point (grid CRS) which is the centroid of a polygon, given by a vector of grid CRS points. From https://stackoverflow.com/questions/2792443/finding-the-centroid-of-a-polygon
 //===============================================================================================================================
-CGeom2DIPoint CSimulation::PtiPolygonCentroid(vector<CGeom2DIPoint> *pVIn)
+CGeom2DIPoint CSimulation::PtiPolygonCentroid(vector<CGeom2DIPoint>* pVIn)
 {
    CGeom2DIPoint PtiCentroid(0, 0);
    int const nSize = static_cast<int>(pVIn->size());
@@ -575,8 +538,7 @@ CGeom2DIPoint CSimulation::PtiPolygonCentroid(vector<CGeom2DIPoint> *pVIn)
       PtiCentroid.AddXAddY((nX0 + nX1) * dA, (nY0 + nY1) * dA);
    }
 
-   // Do last vertex separately to avoid performing an expensive modulus
-   // operation in each iteration
+   // Do last vertex separately to avoid performing an expensive modulus operation in each iteration
    nX0 = pVIn->at(nSize - 1).nGetX();
    nY0 = pVIn->at(nSize - 1).nGetY();
    nX1 = pVIn->at(0).nGetX();
@@ -592,11 +554,9 @@ CGeom2DIPoint CSimulation::PtiPolygonCentroid(vector<CGeom2DIPoint> *pVIn)
    return PtiCentroid;
 }
 
-/* ==============================================================================================================================
-
-   Returns a vector which is perpendicular to an existing vector
-
-===============================================================================================================================*/
+//===============================================================================================================================
+//   Returns a vector which is perpendicular to an existing vector
+//===============================================================================================================================
 // vector<CGeom2DPoint> CSimulation::VGetPerpendicular(CGeom2DPoint const*
 // PtStart, CGeom2DPoint const* PtNext, double const dDesiredLength, int const
 // nHandedness)
@@ -630,14 +590,9 @@ CGeom2DIPoint CSimulation::PtiPolygonCentroid(vector<CGeom2DIPoint> *pVIn)
 // }
 
 //===============================================================================================================================
-//! Returns a CGeom2DPoint which is the 'other' point of a two-point vector
-//! passing through PtStart, and which is perpendicular to the two-point vector
-//! from PtStart to PtNext
+//! Returns a CGeom2DPoint which is the 'other' point of a two-point vector passing through PtStart, and which is perpendicular to the two-point vector from PtStart to PtNext
 //===============================================================================================================================
-CGeom2DPoint CSimulation::PtGetPerpendicular(CGeom2DPoint const *PtStart,
-                                             CGeom2DPoint const *PtNext,
-                                             double const dDesiredLength,
-                                             int const nHandedness)
+CGeom2DPoint CSimulation::PtGetPerpendicular(CGeom2DPoint const* PtStart, CGeom2DPoint const* PtNext, double const dDesiredLength, int const nHandedness)
 {
    double const dXLen = PtNext->dGetX() - PtStart->dGetX();
    double const dYLen = PtNext->dGetY() - PtStart->dGetY();
@@ -654,8 +609,7 @@ CGeom2DPoint CSimulation::PtGetPerpendicular(CGeom2DPoint const *PtStart,
 
    double const dScaleFactor = dDesiredLength / dLength;
 
-   // The difference vector is (dXLen, dYLen), so the perpendicular difference
-   // vector is (-dYLen, dXLen) or (dYLen, -dXLen)
+   // The difference vector is (dXLen, dYLen), so the perpendicular difference vector is (-dYLen, dXLen) or (dYLen, -dXLen)
    CGeom2DPoint EndPt;
 
    if (nHandedness == RIGHT_HANDED)
@@ -674,14 +628,9 @@ CGeom2DPoint CSimulation::PtGetPerpendicular(CGeom2DPoint const *PtStart,
 }
 
 //===============================================================================================================================
-//! Returns a CGeom2DIPoint (grid CRS) which is the 'other' point of a two-point
-//! vector passing through PtiStart, and which is perpendicular to the two-point
-//! vector from PtiStart to PtiNext
+//! Returns a CGeom2DIPoint (grid CRS) which is the 'other' point of a two-point vector passing through PtiStart, and which is perpendicular to the two-point vector from PtiStart to PtiNext
 //===============================================================================================================================
-CGeom2DIPoint CSimulation::PtiGetPerpendicular(CGeom2DIPoint const *PtiStart,
-                                               CGeom2DIPoint const *PtiNext,
-                                               double const dDesiredLength,
-                                               int const nHandedness)
+CGeom2DIPoint CSimulation::PtiGetPerpendicular(CGeom2DIPoint const* PtiStart, CGeom2DIPoint const* PtiNext, double const dDesiredLength, int const nHandedness)
 {
    double const dXLen = PtiNext->nGetX() - PtiStart->nGetX();
    double const dYLen = PtiNext->nGetY() - PtiStart->nGetY();
@@ -698,8 +647,7 @@ CGeom2DIPoint CSimulation::PtiGetPerpendicular(CGeom2DIPoint const *PtiStart,
 
    double const dScaleFactor = dDesiredLength / dLength;
 
-   // The difference vector is (dXLen, dYLen), so the perpendicular difference
-   // vector is (-dYLen, dXLen) or (dYLen, -dXLen)
+   // The difference vector is (dXLen, dYLen), so the perpendicular difference vector is (-dYLen, dXLen) or (dYLen, -dXLen)
    CGeom2DIPoint EndPti;
 
    if (nHandedness == RIGHT_HANDED)
@@ -718,13 +666,9 @@ CGeom2DIPoint CSimulation::PtiGetPerpendicular(CGeom2DIPoint const *PtiStart,
 }
 
 //===============================================================================================================================
-//! Returns a CGeom2DIPoint (grid CRS) which is the 'other' point of a two-point
-//! vector passing through [nStartX][nStartY], and which is perpendicular to the
-//! two-point vector from [nStartX][nStartY] to [nNextX][nNextY]
+//! Returns a CGeom2DIPoint (grid CRS) which is the 'other' point of a two-point vector passing through [nStartX][nStartY], and which is perpendicular to the two-point vector from [nStartX][nStartY] to [nNextX][nNextY]
 //===============================================================================================================================
-CGeom2DIPoint CSimulation::PtiGetPerpendicular(
-    int const nStartX, int const nStartY, int const nNextX, int const nNextY,
-    double const dDesiredLength, int const nHandedness)
+CGeom2DIPoint CSimulation::PtiGetPerpendicular(int const nStartX, int const nStartY, int const nNextX, int const nNextY, double const dDesiredLength, int const nHandedness)
 {
    double const dXLen = nNextX - nStartX;
    double const dYLen = nNextY - nStartY;
@@ -741,8 +685,7 @@ CGeom2DIPoint CSimulation::PtiGetPerpendicular(
 
    double const dScaleFactor = dDesiredLength / dLength;
 
-   // The difference vector is (dXLen, dYLen), so the perpendicular difference
-   // vector is (-dYLen, dXLen) or (dYLen, -dXLen)
+   // The difference vector is (dXLen, dYLen), so the perpendicular difference vector is (-dYLen, dXLen) or (dYLen, -dXLen)
    CGeom2DIPoint EndPti;
 
    if (nHandedness == RIGHT_HANDED)
@@ -761,13 +704,9 @@ CGeom2DIPoint CSimulation::PtiGetPerpendicular(
 }
 
 //===============================================================================================================================
-//! Returns the signed angle BAC (in radians) subtended between three
-//! CGeom2DIPoints B A C. From
-//! http://stackoverflow.com/questions/3057448/angle-between-3-vertices
+//! Returns the signed angle BAC (in radians) subtended between three CGeom2DIPoints B A C. From http://stackoverflow.com/questions/3057448/angle-between-3-vertices
 //===============================================================================================================================
-double CSimulation::dAngleSubtended(CGeom2DIPoint const *pPtiA,
-                                    CGeom2DIPoint const *pPtiB,
-                                    CGeom2DIPoint const *pPtiC)
+double CSimulation::dAngleSubtended(CGeom2DIPoint const* pPtiA, CGeom2DIPoint const* pPtiB, CGeom2DIPoint const* pPtiC)
 {
    double const dXDistBtoA = pPtiB->nGetX() - pPtiA->nGetX();
    double const dYDistBtoA = pPtiB->nGetY() - pPtiA->nGetY();
@@ -781,28 +720,24 @@ double CSimulation::dAngleSubtended(CGeom2DIPoint const *pPtiA,
 }
 
 //===============================================================================================================================
-//! Checks whether the selected raster GDAL driver supports file creation,
-//! 32-bit doubles, etc.
+//! Checks whether the selected raster GDAL driver supports file creation, 32-bit doubles, etc.
 //===============================================================================================================================
 bool CSimulation::bCheckRasterGISOutputFormat(void)
 {
    // Register all available GDAL raster and vector drivers (GDAL 2)
    GDALAllRegister();
 
-   // If the user hasn't specified a GIS output format, assume that we will use
-   // the same GIS format as the input basement DEM
+   // If the user hasn't specified a GIS output format, assume that we will use the same GIS format as the input basement DEM
    if (m_strRasterGISOutFormat.empty())
       m_strRasterGISOutFormat = m_strGDALBasementDEMDriverCode;
 
    // Load the raster GDAL driver
-   GDALDriver *pDriver =
-       GetGDALDriverManager()->GetDriverByName(m_strRasterGISOutFormat.c_str());
+   GDALDriver *pDriver = GetGDALDriverManager()->GetDriverByName(m_strRasterGISOutFormat.c_str());
 
    if (NULL == pDriver)
    {
       // Can't load raster GDAL driver. Incorrectly specified?
-      cerr << ERR << "Unknown raster GIS output format '"
-           << m_strRasterGISOutFormat << "'." << endl;
+      cerr << ERR << "Unknown raster GIS output format '" << m_strRasterGISOutFormat << "'." << endl;
       return false;
    }
 
@@ -817,18 +752,14 @@ bool CSimulation::bCheckRasterGISOutputFormat(void)
    if (!CSLFetchBoolean(papszMetadata, GDAL_DCAP_RASTER, false))
    {
       // This is not a raster driver
-      cerr << ERR << "GDAL driver '" << m_strRasterGISOutFormat
-           << "' is not a raster driver. Choose another format." << endl;
+      cerr << ERR << "GDAL driver '" << m_strRasterGISOutFormat << "' is not a raster driver. Choose another format." << endl;
       return false;
    }
 
    // This driver is OK, so store its longname and the default file extension
    string strTmp = CSLFetchNameValue(papszMetadata, "DMD_LONGNAME");
    m_strGDALRasterOutputDriverLongname = strTrim(&strTmp);
-   strTmp = CSLFetchNameValue(
-       papszMetadata,
-       "DMD_EXTENSIONS"); // Note DMD_EXTENSION (no S, is a single value) appears
-                          // not to be implemented for newer drivers
+   strTmp = CSLFetchNameValue(papszMetadata, "DMD_EXTENSIONS");      // Note DMD_EXTENSION (no S, is a single value) appears not to be implemented for newer drivers
    strTmp = strTrim(&strTmp);
 
    // We have a space-separated list of one or more file extensions: use the first extension in the list
@@ -855,11 +786,7 @@ bool CSimulation::bCheckRasterGISOutputFormat(void)
       // This raster driver does not support the Create() method, does it support CreateCopy()?
       if (!CSLFetchBoolean(papszMetadata, GDAL_DCAP_CREATECOPY, false))
       {
-         cerr << ERR << "Cannot write using raster GDAL driver '"
-              << m_strRasterGISOutFormat
-              << " since neither Create() or CreateCopy() are supported'. Choose "
-                 "another GDAL raster format."
-              << endl;
+         cerr << ERR << "Cannot write using raster GDAL driver '" << m_strRasterGISOutFormat << " since neither Create() or CreateCopy() are supported'. Choose another GDAL raster format." << endl;
          return false;
       }
 
@@ -867,17 +794,14 @@ bool CSimulation::bCheckRasterGISOutputFormat(void)
       m_bGDALCanCreate = false;
    }
 
-   // Next, test to see what data types the driver can write and from this, work
-   // out the largest int and float we can write
-   if (strstr(CSLFetchNameValue(papszMetadata, "DMD_CREATIONDATATYPES"),
-              "Float"))
+   // Next, test to see what data types the driver can write and from this, work out the largest int and float we can write
+   if (strstr(CSLFetchNameValue(papszMetadata, "DMD_CREATIONDATATYPES"), "Float"))
    {
       m_bGDALCanWriteFloat = true;
       m_GDALWriteFloatDataType = GDT_Float32;
    }
 
-   if (strstr(CSLFetchNameValue(papszMetadata, "DMD_CREATIONDATATYPES"),
-              "UInt32"))
+   if (strstr(CSLFetchNameValue(papszMetadata, "DMD_CREATIONDATATYPES"), "UInt32"))
    {
       m_bGDALCanWriteInt32 = true;
 
@@ -891,8 +815,7 @@ bool CSimulation::bCheckRasterGISOutputFormat(void)
       return true;
    }
 
-   if (strstr(CSLFetchNameValue(papszMetadata, "DMD_CREATIONDATATYPES"),
-              "Int32"))
+   if (strstr(CSLFetchNameValue(papszMetadata, "DMD_CREATIONDATATYPES"), "Int32"))
    {
       m_bGDALCanWriteInt32 = true;
 
@@ -906,8 +829,7 @@ bool CSimulation::bCheckRasterGISOutputFormat(void)
       return true;
    }
 
-   if (strstr(CSLFetchNameValue(papszMetadata, "DMD_CREATIONDATATYPES"),
-              "UInt16"))
+   if (strstr(CSLFetchNameValue(papszMetadata, "DMD_CREATIONDATATYPES"), "UInt16"))
    {
       m_bGDALCanWriteInt32 = false;
 
@@ -921,8 +843,7 @@ bool CSimulation::bCheckRasterGISOutputFormat(void)
       return true;
    }
 
-   if (strstr(CSLFetchNameValue(papszMetadata, "DMD_CREATIONDATATYPES"),
-              "Int16"))
+   if (strstr(CSLFetchNameValue(papszMetadata, "DMD_CREATIONDATATYPES"), "Int16"))
    {
       m_bGDALCanWriteInt32 = false;
 
@@ -936,8 +857,7 @@ bool CSimulation::bCheckRasterGISOutputFormat(void)
       return true;
    }
 
-   if (strstr(CSLFetchNameValue(papszMetadata, "DMD_CREATIONDATATYPES"),
-              "Byte"))
+   if (strstr(CSLFetchNameValue(papszMetadata, "DMD_CREATIONDATATYPES"), "Byte"))
    {
       m_bGDALCanWriteInt32 = false;
 
@@ -952,11 +872,7 @@ bool CSimulation::bCheckRasterGISOutputFormat(void)
    }
 
    // This driver does not even support byte output
-   cerr << ERR << "Cannot write using raster GDAL driver '"
-        << m_strRasterGISOutFormat
-        << ", not even byte output is supported'. Choose another GIS raster "
-           "format."
-        << endl;
+   cerr << ERR << "Cannot write using raster GDAL driver '" << m_strRasterGISOutFormat << ", not even byte output is supported'. Choose another GIS raster format." << endl;
    return false;
 }
 
@@ -965,16 +881,13 @@ bool CSimulation::bCheckRasterGISOutputFormat(void)
 //===============================================================================================================================
 bool CSimulation::bCheckVectorGISOutputFormat(void)
 {
-   // Load the vector GDAL driver (this assumes that GDALAllRegister() has
-   // already been called)
-   GDALDriver *pDriver =
-       GetGDALDriverManager()->GetDriverByName(m_strVectorGISOutFormat.c_str());
+   // Load the vector GDAL driver (this assumes that GDALAllRegister() has already been called)
+   GDALDriver *pDriver = GetGDALDriverManager()->GetDriverByName(m_strVectorGISOutFormat.c_str());
 
    if (NULL == pDriver)
    {
       // Can't load vector GDAL driver. Incorrectly specified?
-      cerr << ERR << "Unknown vector GIS output format '"
-           << m_strVectorGISOutFormat << "'." << endl;
+      cerr << ERR << "Unknown vector GIS output format '" << m_strVectorGISOutFormat << "'." << endl;
       return false;
    }
 
@@ -985,25 +898,21 @@ bool CSimulation::bCheckVectorGISOutputFormat(void)
    if (!CSLFetchBoolean(papszMetadata, GDAL_DCAP_VECTOR, false))
    {
       // This is not a vector driver
-      cerr << ERR << "GDAL driver '" << m_strVectorGISOutFormat
-           << "' is not a vector driver. Choose another format." << endl;
+      cerr << ERR << "GDAL driver '" << m_strVectorGISOutFormat << "' is not a vector driver. Choose another format." << endl;
       return false;
    }
 
    if (!CSLFetchBoolean(papszMetadata, GDAL_DCAP_CREATE, false))
    {
       // Driver does not support create() method
-      cerr << ERR << "Cannot write vector GIS files using GDAL driver '"
-           << m_strRasterGISOutFormat << "'. Choose another format." << endl;
+      cerr << ERR << "Cannot write vector GIS files using GDAL driver '" << m_strRasterGISOutFormat << "'. Choose another format." << endl;
       return false;
    }
 
    // Driver is OK, now set some options for individual drivers
    if (m_strVectorGISOutFormat == "ESRI Shapefile")
    {
-      // Set this, so that just a single dataset-with-one-layer shapefile is
-      // created, rather than a directory (see
-      // http://www.gdal.org/ogr/drv_shapefile.html)
+      // Set this, so that just a single dataset-with-one-layer shapefile is created, rather than a directory (see http://www.gdal.org/ogr/drv_shapefile.html)
       m_strOGRVectorOutputExtension = ".shp";
    }
 
@@ -1023,8 +932,7 @@ bool CSimulation::bCheckVectorGISOutputFormat(void)
 }
 
 //===============================================================================================================================
-//! The bSaveAllRasterGISFiles member function saves the raster GIS files using
-//! values from the RasterGrid array
+//! The bSaveAllRasterGISFiles member function saves the raster GIS files using values from the RasterGrid array
 //===============================================================================================================================
 bool CSimulation::bSaveAllRasterGISFiles(void)
 {
@@ -1047,8 +955,7 @@ bool CSimulation::bSaveAllRasterGISFiles(void)
 
       else
       {
-         // Finished user-defined times, switch to regular interval using last
-         // value as interval
+         // Finished user-defined times, switch to regular interval using last value as interval
          double dLastInterval;
 
          if (m_nUSave > 1)
@@ -1410,8 +1317,7 @@ bool CSimulation::bSaveAllRasterGISFiles(void)
 }
 
 //===============================================================================================================================
-//! The bSaveAllvectorGISFiles member function saves the vector GIS files TODO
-//! 081 Choose more files to omit from "usual" vector output
+//! The bSaveAllvectorGISFiles member function saves the vector GIS files TODO 081 Choose more files to omit from "usual" vector output
 //===============================================================================================================================
 bool CSimulation::bSaveAllVectorGISFiles(void)
 {
@@ -1546,12 +1452,9 @@ bool CSimulation::bSaveAllVectorGISFiles(void)
 }
 
 //===============================================================================================================================
-//! Finds the max and min values in order to scale raster output if we cannot
-//! write doubles
+//! Finds the max and min values in order to scale raster output if we cannot write doubles
 //===============================================================================================================================
-void CSimulation::GetRasterOutputMinMax(int const nDataItem, double &dMin,
-                                        double &dMax, int const nLayer,
-                                        double const dElev)
+void CSimulation::GetRasterOutputMinMax(int const nDataItem, double& dMin, double& dMax, int const nLayer, double const dElev)
 {
    // If this is a binary mask layer, we already know the max and min values
    if ((nDataItem == RASTER_PLOT_POTENTIAL_PLATFORM_EROSION_MASK) ||
@@ -1595,8 +1498,7 @@ void CSimulation::GetRasterOutputMinMax(int const nDataItem, double &dMin,
             dTmp = INT_NODATA;
 
             if (bIsInterventionCell(nX, nY))
-               dTmp =
-                   m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->nGetLFSubCategory();
+               dTmp = m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->nGetLFSubCategory();
 
             break;
 
@@ -1629,22 +1531,19 @@ void CSimulation::GetRasterOutputMinMax(int const nDataItem, double &dMin,
             break;
 
          case (RASTER_PLOT_AVG_SEA_DEPTH):
-            dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetTotSeaDepth() /
-                   static_cast<double>(m_ulIter);
+            dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetTotSeaDepth() / static_cast<double>(m_ulIter);
             break;
 
          case (RASTER_PLOT_WAVE_HEIGHT):
             if (! m_pRasterGrid->m_Cell[nX][nY].bIsInContiguousSea())
                dTmp = m_dMissingValue;
-
             else
                dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetWaveHeight();
 
             break;
 
          case (RASTER_PLOT_AVG_WAVE_HEIGHT):
-            dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetTotWaveHeight() /
-                   static_cast<double>(m_ulIter);
+            dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetTotWaveHeight() / static_cast<double>(m_ulIter);
             break;
 
          case (RASTER_PLOT_WAVE_ORIENTATION):
@@ -1657,15 +1556,14 @@ void CSimulation::GetRasterOutputMinMax(int const nDataItem, double &dMin,
             break;
 
          case (RASTER_PLOT_AVG_WAVE_ORIENTATION):
-            dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetTotWaveAngle() /
-                   static_cast<double>(m_ulIter);
+            dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetTotWaveAngle() / static_cast<double>(m_ulIter);
             break;
 
          case (RASTER_PLOT_BEACH_PROTECTION):
             dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetBeachProtectionFactor();
 
             if (! bFPIsEqual(dTmp, DBL_NODATA, TOLERANCE))
-               dTmp = 1 - dTmp; // Output the inverse, seems more intuitive
+               dTmp = 1 - dTmp;     // Output the inverse, seems more intuitive
 
             break;
 
@@ -1719,60 +1617,39 @@ void CSimulation::GetRasterOutputMinMax(int const nDataItem, double &dMin,
             break;
 
          case (RASTER_PLOT_FINE_UNCONSOLIDATED_SEDIMENT):
-            dTmp = m_pRasterGrid->m_Cell[nX][nY]
-                       .pGetLayerAboveBasement(nLayer)
-                       ->pGetUnconsolidatedSediment()
-                       ->dGetFineDepth();
+            dTmp = m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nLayer)->pGetUnconsolidatedSediment()->dGetFineDepth();
             break;
 
          case (RASTER_PLOT_SAND_UNCONSOLIDATED_SEDIMENT):
-            dTmp = m_pRasterGrid->m_Cell[nX][nY]
-                       .pGetLayerAboveBasement(nLayer)
-                       ->pGetUnconsolidatedSediment()
-                       ->dGetSandDepth();
+            dTmp = m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nLayer)->pGetUnconsolidatedSediment()->dGetSandDepth();
             break;
 
          case (RASTER_PLOT_COARSE_UNCONSOLIDATED_SEDIMENT):
-            dTmp = m_pRasterGrid->m_Cell[nX][nY]
-                       .pGetLayerAboveBasement(nLayer)
-                       ->pGetUnconsolidatedSediment()
-                       ->dGetCoarseDepth();
+            dTmp = m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nLayer)->pGetUnconsolidatedSediment()->dGetCoarseDepth();
             break;
 
          case (RASTER_PLOT_FINE_CONSOLIDATED_SEDIMENT):
-            dTmp = m_pRasterGrid->m_Cell[nX][nY]
-                       .pGetLayerAboveBasement(nLayer)
-                       ->pGetConsolidatedSediment()
-                       ->dGetFineDepth();
+            dTmp = m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nLayer)->pGetConsolidatedSediment()->dGetFineDepth();
             break;
 
          case (RASTER_PLOT_SAND_CONSOLIDATED_SEDIMENT):
-            dTmp = m_pRasterGrid->m_Cell[nX][nY]
-                       .pGetLayerAboveBasement(nLayer)
-                       ->pGetConsolidatedSediment()
-                       ->dGetSandDepth();
+            dTmp = m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nLayer)->pGetConsolidatedSediment()->dGetSandDepth();
             break;
 
          case (RASTER_PLOT_COARSE_CONSOLIDATED_SEDIMENT):
-            dTmp = m_pRasterGrid->m_Cell[nX][nY]
-                       .pGetLayerAboveBasement(nLayer)
-                       ->pGetConsolidatedSediment()
-                       ->dGetCoarseDepth();
+            dTmp = m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nLayer)->pGetConsolidatedSediment()->dGetCoarseDepth();
             break;
 
          case (RASTER_PLOT_CLIFF_COLLAPSE_EROSION_FINE):
-            dTmp = m_pRasterGrid->m_Cell[nX][nY]
-                       .dGetThisIterCliffCollapseErosionFine();
+            dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetThisIterCliffCollapseErosionFine();
             break;
 
          case (RASTER_PLOT_CLIFF_COLLAPSE_EROSION_SAND):
-            dTmp = m_pRasterGrid->m_Cell[nX][nY]
-                       .dGetThisIterCliffCollapseErosionSand();
+            dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetThisIterCliffCollapseErosionSand();
             break;
 
          case (RASTER_PLOT_CLIFF_COLLAPSE_EROSION_COARSE):
-            dTmp = m_pRasterGrid->m_Cell[nX][nY]
-                       .dGetThisIterCliffCollapseErosionCoarse();
+            dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetThisIterCliffCollapseErosionCoarse();
             break;
 
          case (RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_EROSION_FINE):
@@ -1788,13 +1665,11 @@ void CSimulation::GetRasterOutputMinMax(int const nDataItem, double &dMin,
             break;
 
          case (RASTER_PLOT_CLIFF_COLLAPSE_DEPOSITION_SAND):
-            dTmp = m_pRasterGrid->m_Cell[nX][nY]
-                       .dGetThisIterCliffCollapseSandTalusDeposition();
+            dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetThisIterCliffCollapseSandTalusDeposition();
             break;
 
          case (RASTER_PLOT_CLIFF_COLLAPSE_DEPOSITION_COARSE):
-            dTmp = m_pRasterGrid->m_Cell[nX][nY]
-                       .dGetThisIterCliffCollapseCoarseTalusDeposition();
+            dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetThisIterCliffCollapseCoarseTalusDeposition();
             break;
 
          case (RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_DEPOSITION_SAND):
@@ -1823,13 +1698,12 @@ void CSimulation::GetRasterOutputMinMax(int const nDataItem, double &dMin,
 
          case (RASTER_PLOT_POLYGON_GAIN_OR_LOSS):
             int const nPoly = m_pRasterGrid->m_Cell[nX][nY].nGetPolygonID();
+            int const nPolyCoast = m_pRasterGrid->m_Cell[nX][nY].nGetPolygonCoastID();
 
             if (nPoly == INT_NODATA)
                dTmp = m_dMissingValue;
-
             else
-               dTmp = m_pVCoastPolygon[nPoly]
-                          ->dGetBeachDepositionAndSuspensionAllUncons();
+               dTmp = m_VCoast[nPolyCoast].pGetPolygon(nPoly)->dGetBeachDepositionAndSuspensionAllUncons();
 
             break;
          }
@@ -1858,76 +1732,50 @@ void CSimulation::SetRasterFileCreationDefaults(void)
    if (strDriver == "aaigrid")
    {
    }
-
    else if (strDriver == "bmp")
    {
    }
-
    else if (strDriver == "gtiff")
    {
       if (m_bWorldFile)
-         m_papszGDALRasterOptions =
-             CSLSetNameValue(m_papszGDALRasterOptions, "TFW", "YES");
+         m_papszGDALRasterOptions = CSLSetNameValue(m_papszGDALRasterOptions, "TFW", "YES");
 
-      m_papszGDALRasterOptions =
-          CSLSetNameValue(m_papszGDALRasterOptions, "NUM_THREADS", "ALL_CPUS");
-      m_papszGDALRasterOptions =
-          CSLSetNameValue(m_papszGDALRasterOptions, "COMPRESS", "LZW");
+      m_papszGDALRasterOptions = CSLSetNameValue(m_papszGDALRasterOptions, "NUM_THREADS", "ALL_CPUS");
+      m_papszGDALRasterOptions = CSLSetNameValue(m_papszGDALRasterOptions, "COMPRESS", "LZW");
    }
-
    else if (strDriver == "hfa")
    {
-      m_papszGDALRasterOptions =
-          CSLSetNameValue(m_papszGDALRasterOptions, "NBITS", "4");
+      m_papszGDALRasterOptions = CSLSetNameValue(m_papszGDALRasterOptions, "NBITS", "4");
    }
-
    else if (strDriver == "jpeg")
    {
-      m_papszGDALRasterOptions = CSLSetNameValue(m_papszGDALRasterOptions,
-                                                 "COMMENT", strComment.c_str());
-      m_papszGDALRasterOptions =
-          CSLSetNameValue(m_papszGDALRasterOptions, "QUALITY", "95");
+      m_papszGDALRasterOptions = CSLSetNameValue(m_papszGDALRasterOptions, "COMMENT", strComment.c_str());
+      m_papszGDALRasterOptions = CSLSetNameValue(m_papszGDALRasterOptions, "QUALITY", "95");
    }
-
    else if (strDriver == "png")
    {
       if (m_bWorldFile)
-         m_papszGDALRasterOptions =
-             CSLSetNameValue(m_papszGDALRasterOptions, "WORLDFILE", "YES");
+         m_papszGDALRasterOptions = CSLSetNameValue(m_papszGDALRasterOptions, "WORLDFILE", "YES");
 
-      // m_papszGDALRasterOptions = CSLSetNameValue(m_papszGDALRasterOptions,
-      // "TITLE", "This is the title"); m_papszGDALRasterOptions =
-      // CSLSetNameValue(m_papszGDALRasterOptions, "DESCRIPTION", "This is a
-      // description"); m_papszGDALRasterOptions =
-      // CSLSetNameValue(m_papszGDALRasterOptions, "COPYRIGHT", "This is some
-      // copyright statement");
-      m_papszGDALRasterOptions = CSLSetNameValue(m_papszGDALRasterOptions,
-                                                 "COMMENT", strComment.c_str());
-      m_papszGDALRasterOptions =
-          CSLSetNameValue(m_papszGDALRasterOptions, "NBITS", "4");
+      // m_papszGDALRasterOptions = CSLSetNameValue(m_papszGDALRasterOptions, "TITLE", "This is the title"); m_papszGDALRasterOptions = CSLSetNameValue(m_papszGDALRasterOptions, "DESCRIPTION", "This is a description");
+      // m_papszGDALRasterOptions = CSLSetNameValue(m_papszGDALRasterOptions, "COPYRIGHT", "This is some copyright statement");
+      m_papszGDALRasterOptions = CSLSetNameValue(m_papszGDALRasterOptions, "COMMENT", strComment.c_str());
+      m_papszGDALRasterOptions = CSLSetNameValue(m_papszGDALRasterOptions, "NBITS", "4");
    }
-
    else if (strDriver == "rst")
    {
-      m_papszGDALRasterOptions = CSLSetNameValue(m_papszGDALRasterOptions,
-                                                 "COMMENT", strComment.c_str());
+      m_papszGDALRasterOptions = CSLSetNameValue(m_papszGDALRasterOptions, "COMMENT", strComment.c_str());
    }
-
    else if (strDriver == "geojson")
    {
-      // m_papszGDALRasterOptions = CSLSetNameValue(m_papszGDALRasterOptions,
-      // "COMMENT", strComment.c_str());
+      // m_papszGDALRasterOptions = CSLSetNameValue(m_papszGDALRasterOptions, "COMMENT", strComment.c_str());
    }
-
    else if (strDriver == "gpkg")
    {
       // TODO 065 Does GDAL support overwriting raster gpkg files yet?
-      m_papszGDALRasterOptions =
-          CSLSetNameValue(m_papszGDALRasterOptions, "OVERWRITE", "YES");
-      m_papszGDALRasterOptions =
-          CSLSetNameValue(m_papszGDALRasterOptions, "USE_TILE_EXTENT", "YES");
+      m_papszGDALRasterOptions = CSLSetNameValue(m_papszGDALRasterOptions, "OVERWRITE", "YES");
+      m_papszGDALRasterOptions = CSLSetNameValue(m_papszGDALRasterOptions, "USE_TILE_EXTENT", "YES");
    }
-
    else if (strDriver == "netcdf")
    {
    }
@@ -1970,21 +1818,17 @@ int CSimulation::nGetOppositeDirection(int const nDirection)
 }
 
 // //===============================================================================================================================
-// //! Given two integer points, calculates the slope and intercept of the line
-// passing through the points
+// //! Given two integer points, calculates the slope and intercept of the line passing through the points
 // //===============================================================================================================================
-// void CSimulation::GetSlopeAndInterceptFromPoints(CGeom2DIPoint const* pPti1,
-// CGeom2DIPoint const* pPti2, double& dSlope, double& dIntercept)
+// void CSimulation::GetSlopeAndInterceptFromPoints(CGeom2DIPoint const* pPti1, CGeom2DIPoint const* pPti2, double& dSlope, double& dIntercept)
 // {
-// int
-// nX1 = pPti1->nGetX(),
-// nY1 = pPti1->nGetY(),
-// nX2 = pPti2->nGetX(),
-// nY2 = pPti2->nGetY();
+// int nX1 = pPti1->nGetX();
+// int nY1 = pPti1->nGetY();
+// int nX2 = pPti2->nGetX();
+// int nY2 = pPti2->nGetY();
 //
-// double
-// dXDiff = nX1 - nX2,
-// dYDiff = nY1 - nY2;
+// double dXDiff = nX1 - nX2;
+// double dYDiff = nY1 - nY2;
 //
 // if (bFPIsEqual(dXDiff, 0.0, TOLERANCE))
 // dSlope = 0;
@@ -1997,8 +1841,7 @@ int CSimulation::nGetOppositeDirection(int const nDirection)
 //===============================================================================================================================
 //! Finds the closest point on any coastline to a given point
 //===============================================================================================================================
-CGeom2DIPoint CSimulation::PtiFindClosestCoastPoint(int const nX,
-                                                    int const nY)
+CGeom2DIPoint CSimulation::PtiFindClosestCoastPoint(int const nX, int const nY)
 {
    unsigned int nMinSqDist = UINT_MAX;
    CGeom2DIPoint PtiCoastPoint;
@@ -2036,4 +1879,34 @@ CGeom2DIPoint CSimulation::PtiFindClosestCoastPoint(int const nX,
 int CSimulation::nConvertMetresToNumCells(double const dLen) const
 {
    return nRound(dLen / m_dCellSide);
+}
+
+//===============================================================================================================================
+//! Given a line between two points and another point, this finds the closest point on the line to the other point. From https://cboard.cprogramming.com/c-programming/155809-find-closest-point-line.html
+//===============================================================================================================================
+void CSimulation::GetClosestPoint(double const dAx, double const dAy, double const dBx, double const dBy, double const dPx, double const dPy, double& dXRet, double& dYRet)
+{
+  double const dAPx = dPx - dAx;
+  double const dAPy = dPy - dAy;
+  double const dABx = dBx - dAx;
+  double const dABy = dBy - dAy;
+  double const dMagAB2 = (dABx * dABx) + (dABy * dABy);
+  double const dABdotAP = (dABx * dAPx) + (dABy * dAPy);
+  double const dT = dABdotAP / dMagAB2;
+
+  if ( dT < 0)
+  {
+      dXRet = dAx;
+      dYRet = dAy;
+  }
+  else if (dT > 1)
+  {
+      dXRet = dBx;
+      dYRet = dBy;
+  }
+  else
+  {
+      dXRet = dAx + (dABx * dT);
+      dYRet = dAy + (dABy * dT);
+  }
 }

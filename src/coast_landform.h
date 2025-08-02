@@ -27,7 +27,6 @@
 ===============================================================================================================================*/
 
 #include "2di_point.h"
-#include "coast_landform.h"
 #include "coast.h"
 
 class CRWCoast; // Forward declaration

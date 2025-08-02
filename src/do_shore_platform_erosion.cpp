@@ -882,6 +882,7 @@ void CSimulation::DoActualPlatformErosionOnCell(int const nX, int const nY)
 
       // Add eroded sand/coarse sediment for this cell to the polygon that contains the cell, ready for redistribution during beach erosion/deposition (fine sediment has already been dealt with)
       int nPolyID = m_pRasterGrid->m_Cell[nX][nY].nGetPolygonID();
+      int nPolyCoastID = m_pRasterGrid->m_Cell[nX][nY].nGetPolygonCoastID();
 
       if (nPolyID == INT_NODATA)
       {
@@ -904,7 +905,10 @@ void CSimulation::DoActualPlatformErosionOnCell(int const nX, int const nY)
                   nPolyID = m_pRasterGrid->m_Cell[nXAdj][nYAdj].nGetPolygonID();
 
                   if (nPolyID != INT_NODATA)
+                  {
+                     nPolyCoastID = m_pRasterGrid->m_Cell[nXAdj][nYAdj].nGetPolygonCoastID();
                      break;
+                  }
                }
             }
 
@@ -918,7 +922,10 @@ void CSimulation::DoActualPlatformErosionOnCell(int const nX, int const nY)
                   nPolyID = m_pRasterGrid->m_Cell[nXAdj][nYAdj].nGetPolygonID();
 
                   if (nPolyID != INT_NODATA)
+                  {
+                     nPolyCoastID = m_pRasterGrid->m_Cell[nXAdj][nYAdj].nGetPolygonCoastID();
                      break;
+                  }
                }
             }
 
@@ -932,7 +939,10 @@ void CSimulation::DoActualPlatformErosionOnCell(int const nX, int const nY)
                   nPolyID = m_pRasterGrid->m_Cell[nXAdj][nYAdj].nGetPolygonID();
 
                   if (nPolyID != INT_NODATA)
+                  {
+                     nPolyCoastID = m_pRasterGrid->m_Cell[nXAdj][nYAdj].nGetPolygonCoastID();
                      break;
+                  }
                }
             }
 
@@ -946,7 +956,10 @@ void CSimulation::DoActualPlatformErosionOnCell(int const nX, int const nY)
                   nPolyID = m_pRasterGrid->m_Cell[nXAdj][nYAdj].nGetPolygonID();
 
                   if (nPolyID != INT_NODATA)
+                  {
+                     nPolyCoastID = m_pRasterGrid->m_Cell[nXAdj][nYAdj].nGetPolygonCoastID();
                      break;
+                  }
                }
             }
 
@@ -960,7 +973,10 @@ void CSimulation::DoActualPlatformErosionOnCell(int const nX, int const nY)
                   nPolyID = m_pRasterGrid->m_Cell[nXAdj][nYAdj].nGetPolygonID();
 
                   if (nPolyID != INT_NODATA)
+                  {
+                     nPolyCoastID = m_pRasterGrid->m_Cell[nXAdj][nYAdj].nGetPolygonCoastID();
                      break;
+                  }
                }
             }
 
@@ -974,7 +990,10 @@ void CSimulation::DoActualPlatformErosionOnCell(int const nX, int const nY)
                   nPolyID = m_pRasterGrid->m_Cell[nXAdj][nYAdj].nGetPolygonID();
 
                   if (nPolyID != INT_NODATA)
+                  {
+                     nPolyCoastID = m_pRasterGrid->m_Cell[nXAdj][nYAdj].nGetPolygonCoastID();
                      break;
+                  }
                }
             }
 
@@ -988,7 +1007,10 @@ void CSimulation::DoActualPlatformErosionOnCell(int const nX, int const nY)
                   nPolyID = m_pRasterGrid->m_Cell[nXAdj][nYAdj].nGetPolygonID();
 
                   if (nPolyID != INT_NODATA)
+                  {
+                     nPolyCoastID = m_pRasterGrid->m_Cell[nXAdj][nYAdj].nGetPolygonCoastID();
                      break;
+                  }
                }
             }
 
@@ -1002,7 +1024,10 @@ void CSimulation::DoActualPlatformErosionOnCell(int const nX, int const nY)
                   nPolyID = m_pRasterGrid->m_Cell[nXAdj][nYAdj].nGetPolygonID();
 
                   if (nPolyID != INT_NODATA)
+                  {
+                     nPolyCoastID = m_pRasterGrid->m_Cell[nXAdj][nYAdj].nGetPolygonCoastID();
                      break;
+                  }
                }
             }
          }
@@ -1025,8 +1050,8 @@ void CSimulation::DoActualPlatformErosionOnCell(int const nX, int const nY)
       }
 
       // All OK, so add this to the polygon's total of unconsolidated sand/coarse sediment, to be deposited or moved later. These values are +ve (deposition)
-      m_pVCoastPolygon[nPolyID]->AddPlatformErosionUnconsSand(dSandEroded);
-      m_pVCoastPolygon[nPolyID]->AddPlatformErosionUnconsCoarse(dCoarseEroded);
+      m_VCoast[nPolyCoastID].pGetPolygon(nPolyID)->AddPlatformErosionUnconsSand(dSandEroded);
+      m_VCoast[nPolyCoastID].pGetPolygon(nPolyID)->AddPlatformErosionUnconsCoarse(dCoarseEroded);
    }
 }
 
@@ -1143,7 +1168,7 @@ void CSimulation::FillInBeachProtectionHoles(void)
       {
          if ((m_pRasterGrid->m_Cell[nX][nY].bIsInContiguousSea()) && (bFPIsEqual(m_pRasterGrid->m_Cell[nX][nY].dGetBeachProtectionFactor(), DBL_NODATA, TOLERANCE)))
          {
-            // This is a sea cell, and it has an initialized beach protection value. So look at its N-S and W-E neighbours
+            // This is a sea cell, and it has an initialised beach protection value. So look at its N-S and W-E neighbours
             int nXTmp;
             int nYTmp;
             int nAdjacent = 0;
@@ -1189,7 +1214,7 @@ void CSimulation::FillInBeachProtectionHoles(void)
                dBeachProtection += m_pRasterGrid->m_Cell[nXTmp][nYTmp].dGetBeachProtectionFactor();
             }
 
-            // If this sea cell has four neighbours with initialized beach protection values, then assume that it should not have an uninitialized beach protection value. Set it to the average of its neighbours
+            // If this sea cell has four neighbours with initialised beach protection values, then assume that it should not have an uninitialised beach protection value. Set it to the average of its neighbours
             if (nAdjacent == 4)
             {
                m_pRasterGrid->m_Cell[nX][nY].SetBeachProtectionFactor(dBeachProtection / 4);

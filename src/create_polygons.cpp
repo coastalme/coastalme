@@ -40,8 +40,7 @@ using std::stack;
 //===============================================================================================================================
 int CSimulation::nCreateAllPolygons(void)
 {
-   // Global polygon count TODO 044
-   m_nNumPolygonGlobal = 0;
+   LogStream << endl << m_ulIter << ": Creating polygons" << endl;
 
    // Do this for each coast
    for (int nCoast = 0; nCoast < static_cast<int>(m_VCoast.size()); nCoast++)
@@ -49,11 +48,6 @@ int CSimulation::nCreateAllPolygons(void)
       int nNode = -1;
       int nNextProfile = -1;
       int nPolygon = -1;
-
-      for (int i = 0; i < static_cast<int>(m_pVCoastPolygon.size()); i++)
-         delete m_pVCoastPolygon[i];
-
-      m_pVCoastPolygon.clear();
 
       // Do this for every point on the coastline (except the last point)
       int const nCoastSize = m_VCoast[nCoast].nGetCoastlineSize();
@@ -123,11 +117,6 @@ int CSimulation::nCreateAllPolygons(void)
 
             // Get the grid CRS coordinates of the coast node
             CGeom2DIPoint const PtiNode = *m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(nNodePoint);
-
-            // // DEBUG CODE ===================
-            // if ((m_ulIter == 18) && (nThisProfile == 29))
-            // std::cerr << endl;
-            // // DEBUG CODE ===================
 
             // Get some defaults (assuming for now that this polygon is not approximately triangular i.e. both normals do not meet)
             int nNextProfileEnd = pNextProfile->nGetProfileSize() - 1;
@@ -204,7 +193,6 @@ int CSimulation::nCreateAllPolygons(void)
 
             if (bMeetsAtAPoint)
                PtiAntiNode = PtiExtCRSToGridRound(&PtCoastwardTip);
-
             else
             {
                CGeom2DPoint const PtAvg = PtAverage(pThisProfile->pPtGetPointInProfile(nThisProfileEnd), pNextProfile->pPtGetPointInProfile(nNextProfileEnd));
@@ -221,11 +209,8 @@ int CSimulation::nCreateAllPolygons(void)
             if (pNextProfile->bEndOfCoast())
                bEndCoast = true;
 
-            // Create the coast polygon object and get a pointer to it. TODO 044 the first parameter (global ID) will need to change when considering multiple coasts
-            CGeomCoastPolygon* pPolygon = m_VCoast[nCoast].pPolyCreatePolygon(nPolygon, nNodePoint, &PtiNode, &PtiAntiNode, nThisProfile, nNextProfile, &PtVBoundary, nThisProfileEnd + 1, nNextProfileEnd + 1, bStartCoast, bEndCoast);
-
-            // And store this pointer for simulation-wide access, in along-coast sequence
-            m_pVCoastPolygon.push_back(pPolygon);
+            // Create the coast polygon object, store it, and get a pointer to it
+            CGeomCoastPolygon* pPolygon = m_VCoast[nCoast].pPolyCreateAndAppendPolygon(nPolygon, nNodePoint, &PtiNode, &PtiAntiNode, nThisProfile, nNextProfile, &PtVBoundary, nThisProfileEnd + 1, nNextProfileEnd + 1, bStartCoast, bEndCoast);
 
             // Save the profile-end vertices (but omit the last one if the profiles meet at a point)
             pPolygon->AppendVertex(pThisProfile->pPtiGetStartPoint());
@@ -236,7 +221,7 @@ int CSimulation::nCreateAllPolygons(void)
                pPolygon->AppendVertex(pNextProfile->pPtiGetEndPoint());
 
             // // DEBUG CODE =================================================================================
-            // LogStream << m_ulIter << ": vertices for polygon = " << nPolygon << " (m_nNumPolygonGlobal = " << m_nNumPolygonGlobal << ")" << endl;
+            // LogStream << m_ulIter << ": vertices for coast " << nCoast << " polygon = " << nPolygon << endl;
             // for (int n = 0; n < pPolygon->nGetNumVertices(); n++)
             // LogStream << "[" << pPolygon->PtiGetVertex(n).nGetX() << "][" << pPolygon->PtiGetVertex(n).nGetY() << "]\t";
             // LogStream << endl;
@@ -284,8 +269,6 @@ int CSimulation::nCreateAllPolygons(void)
 
             // nNextProfile = nThisProfile;
             nCoastPoint = nNextProfileCoastPoint - 1;
-
-            m_nNumPolygonGlobal++;
 
             if (bEndCoast)
                break;
@@ -433,7 +416,7 @@ void CSimulation::MarkPolygonCells(void)
          double dSedimentInputCoarse = 0;
 
          CGeomCoastPolygon* pPolygon = m_VCoast[nCoast].pGetPolygon(nPoly);
-         int const nPolyID = pPolygon->nGetPolygonCoastID(); // TODO 044
+         int const nPolyID = pPolygon->nGetPolygonCoastID();
 
          // LogStream << m_ulIter << ": in MarkPolygonCells() nPoly = " << nPoly << " nPolyID = " << nPolyID << endl;
 

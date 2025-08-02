@@ -1,5 +1,4 @@
 /*!
-
    \class CSimulation
    \brief This class runs CoastalME simulations
    \details TODO 001 This is a more detailed description of the CSimulation
@@ -10,7 +9,6 @@
    \copyright GNU General Public License
    \file simulation.h
    \brief Contains CSimulation definitions
-
 */
 
 #ifndef SIMULATION_H
@@ -19,18 +17,11 @@
 
    This file is part of CoastalME, the Coastal Modelling Environment.
 
-   CoastalME is free software; you can redistribute it and/or modify it under
-the terms of the GNU General Public License as published by the Free Software
-Foundation; either version 3 of the License, or (at your option) any later
-version.
+   CoastalME is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
 
-   This program is distributed in the hope that it will be useful, but WITHOUT
-ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+   This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-   You should have received a copy of the GNU General Public License along with
-this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave,
-Cambridge, MA 02139, USA.
+   You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 ===============================================================================================================================*/
 #include <vector>
@@ -64,7 +55,6 @@ using ::GDALDataType;
 #include "2di_point.h"
 #include "line.h"
 #include "cme.h"
-#include "i_line.h"
 #include "line.h"
 
 class CGeomRasterGrid; // Forward declarations
@@ -264,7 +254,7 @@ class CSimulation
    //! Save GIS files at regular intervals?
    bool m_bSaveRegular;
 
-   //! Save
+   //! Save coastline as vector GIS file?
    bool m_bCoastSave;
 
    //! Save cliff edge vector GIS files?
@@ -447,6 +437,9 @@ class CSimulation
    //! Does this simulation consider consolidated sediment, or is it an unconsolidated sediment only simulation?>
    bool m_bHaveConsolidatedSediment;
 
+   //! GDAL optimisations enabled?
+   bool m_bGDALOptimisations;
+
    //! Options for GDAL when handling raster files
    char **m_papszGDALRasterOptions;
 
@@ -518,9 +511,6 @@ class CSimulation
 
    // NOT USED
    // int m_nNTotCliffCollapse;
-
-   //! Number of global (all coasts) polygons
-   int m_nNumPolygonGlobal;
 
    //! How sediment which moves off an edge of the grid is handled. Possible values are GRID_EDGE_CLOSED, GRID_EDGE_OPEN, GRID_EDGE_RECIRCULATE
    int m_nUnconsSedimentHandlingAtGridEdges;
@@ -1545,9 +1535,6 @@ class CSimulation
    //! TODO 007 Info needed
    vector<CRWCoast> m_VFloodWaveSetupSurgeRunup;
 
-   //! Pointers to coast polygon objects, in down-coast sequence TODO 044 Will need to use global polygon ID here to support multiple coastlines
-   vector<CGeomCoastPolygon*> m_pVCoastPolygon;
-
    //! Edge cells
    vector<CGeom2DIPoint> m_VEdgeCell;
 
@@ -1608,7 +1595,7 @@ class CSimulation
    int nCheckForSedimentInputEvent(void);
    int nCalcExternalForcing(void);
    int nInitGridAndCalcStillWaterLevel(void);
-   int nLocateSeaAndCoasts(int&);
+   int nLocateSeaAndCoasts(void);
    int nLocateFloodAndCoasts(void);
    int nAssignLandformsForAllCoasts(void);
    int nAssignLandformsForAllCells(void);
@@ -1634,7 +1621,7 @@ class CSimulation
    void CellByCellFillSea(int const, int const);
    void FloodFillLand(int const, int const);
    int nTraceCoastLine(unsigned int const, int const, int const, vector<bool>*, vector<CGeom2DIPoint> const*);
-   int nTraceAllCoasts(int&);
+   int nTraceAllCoasts(void);
    int nTraceFloodCoastLine(unsigned int const, int const, int const, vector<bool>*, vector<CGeom2DIPoint> const*);
    int nTraceAllFloodCoasts(void);
    void DoCoastCurvature(int const, int const);
@@ -1650,7 +1637,7 @@ class CSimulation
    void TruncateOneProfileRetainOtherProfile(int const, CGeomProfile*, CGeomProfile*, double, double, int, int, bool const);
    int nInsertPointIntoProfilesIfNeededThenUpdate(int const, CGeomProfile*, double const, double const, int const, CGeomProfile*, int const, bool const);
    void TruncateProfileAndAppendNew(int const, CGeomProfile*, int const, vector<CGeom2DPoint> const*, vector<vector<pair<int, int>>> const*);
-   void CreateRasterizedProfile(int const, CGeomProfile*, vector<CGeom2DIPoint>*, vector<bool>*, bool&, bool&, bool&, bool&, bool&, bool&); // TODO 044
+   void CreateRasterizedProfile(int const, CGeomProfile*, vector<CGeom2DIPoint>*, vector<bool>*, bool&, bool&, bool&, bool&, bool&, bool&);
    static void CalcDeanProfile(vector<double>*, double const, double const, double const, bool const, int const, double const);
    static double dSubtractProfiles(vector<double> const*, vector<double> const*, vector<bool> const*);
    void RasterizeCliffCollapseProfile(vector<CGeom2DPoint> const*, vector<CGeom2DIPoint>*) const;
@@ -1708,9 +1695,9 @@ class CSimulation
    bool bElevAboveDeanElev(int const, int const, double const, CRWCellLandform const*);
    // void CreatePolygonIndexIDSeq(int const);
    int nDoMultipleCoastlines(void);
-   int nTruncateProfilesDifferentCoasts(int const, int const, int, int const, int const, int, int, bool const, bool const);
-   int nTruncateProfileHitDifferentCoast(int const, int const, int const, int const, int const, bool const, bool const);
-   int nTruncateProfileMultiLineDifferentCoasts(CGeomProfile*, int const, int const);
+   int nTruncateProfilesDifferentCoasts(int const, int const, int const, int const, int const, int const);
+   int nTruncateProfileHitDifferentCoast(int const, int const, int const, int const);
+   int nTruncateProfileMultiLineDifferentCoasts(CGeomProfile*, double const, double const);
 
    // GIS utility routines
    int nMarkBoundingBoxEdgeCells(void);
@@ -1732,6 +1719,7 @@ class CSimulation
    double dExtCRSYToGridY(double const) const;
    static double dGetDistanceBetween(CGeom2DPoint const*, CGeom2DPoint const*);
    static double dGetDistanceBetween(CGeom2DIPoint const*, CGeom2DIPoint const*);
+   static double dGetDistanceBetween(double const, double const, double const, double const);
    static double dTriangleAreax2(CGeom2DPoint const*, CGeom2DPoint const*, CGeom2DPoint const*);
    void KeepWithinValidGrid(int&, int&) const;
    void KeepWithinValidGrid(int, int, int&, int&) const;
@@ -1835,19 +1823,20 @@ class CSimulation
    static void AppendEnsureNoGap(vector<CGeom2DIPoint>*, CGeom2DIPoint const*);
    // static bool bIsNumeric(string const*);
    unsigned long ulConvertToTimestep(string const*) const;
-   void WritePolygonInfoTable(int const);
-   void WritePolygonPreExistingSedimentTable(int const);
-   void WritePolygonSedimentInputEventTable(int const);
-   void WritePolygonShorePlatformErosion(int const);
-   void WritePolygonCliffCollapseErosion(int const);
-   void WritePolygonSedimentBeforeMovement(int const);
-   void WritePolygonPotentialErosion(int const);
+   void WritePolygonInfoTable(void);
+   void WritePolygonPreExistingSedimentTable(void);
+   void WritePolygonSedimentInputEventTable(void);
+   void WritePolygonShorePlatformErosion(void);
+   void WritePolygonCliffCollapseErosion(void);
+   void WritePolygonSedimentBeforeMovement(void);
+   void WritePolygonPotentialErosion(void);
    // void WritePolygonUnconsErosion(int const);
-   void WritePolygonUnsortedSequence(int const, vector<vector<int>>&);
-   void WritePolygonSortedSequence(int const, vector<vector<int>>&);
-   void WritePolygonEstimatedMovement(int const, vector<vector<int>>&);
-   void WritePolygonActualMovement(int const, vector<vector<int>> const&);
+   void WritePolygonUnsortedSequence(vector<vector<vector<int>>>&);
+   void WritePolygonSortedSequence(vector<vector<vector<int>>>&);
+   void WritePolygonActualMovement(vector<vector<vector<int>>>&);
    void DoEndOfRunDeletes(void);
+   void GetClosestPoint(double const, double const, double const, double const, double const, double const, double&, double&);
+
 
  protected:
  public:
@@ -1855,15 +1844,6 @@ class CSimulation
 
    CSimulation(void);
    ~CSimulation(void);
-
-   //! Returns the size of the coast polygon vector
-   int nGetCoastPolygonSize(void) const;
-
-   //! Returns a pointer to a coast polygon, in down-coast sequence
-   CGeomCoastPolygon* pGetPolygon(int const) const;
-
-   //! Appends a pointer to a coast polygon to the coast polygon vector
-   void AppendPolygon(CGeomCoastPolygon*);
 
    //! Returns the NODATA value
    double dGetMissingValue(void) const;

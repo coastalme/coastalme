@@ -14,18 +14,11 @@
 
    This file is part of CoastalME, the Coastal Modelling Environment.
 
-   CoastalME is free software; you can redistribute it and/or modify it under
-the terms of the GNU General Public License as published by the Free Software
-Foundation; either version 3 of the License, or (at your option) any later
-version.
+   CoastalME is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
 
-   This program is distributed in the hope that it will be useful, but WITHOUT
-ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+   This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-   You should have received a copy of the GNU General Public License along with
-this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave,
-Cambridge, MA 02139, USA.
+   You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 ===============================================================================================================================*/
 #include <vector>
@@ -40,7 +33,7 @@ using std::vector;
 #include "cell_layer.h"
 #include "cell_sediment.h"
 
-//! Constructor with initialization list
+//! Constructor with initialisation list
 CGeomCell::CGeomCell()
    : m_bInContiguousSea(false),
      m_bInContiguousFlood(false),
@@ -300,11 +293,11 @@ bool CGeomCell::bIsProfile(void) const
    return true;
 }
 
-//! Sets the coast ID number of the coast-normal profile which this cell is 'under'
-void CGeomCell::SetProfileCoastID(int const nCoast)
-{
-   m_nProfileCoastID = nCoast;
-}
+// //! Sets the coast ID number of the coast-normal profile which this cell is 'under'
+// void CGeomCell::SetProfileCoastID(int const nCoast)
+// {
+//    m_nProfileCoastID = nCoast;
+// }
 
 //! Gets the coast ID number of the coast-normal profile which this cell is 'under', or returns INT_NODATA
 int CGeomCell::nGetProfileCoastID(void) const
@@ -319,11 +312,17 @@ void CGeomCell::SetCoastAndProfileID(int const nProfileCoastID, int const nProfi
    m_nProfileID = nProfile;
 }
 
-//! Sets the global ID number of the polygon which 'contains' this cell
-void CGeomCell::SetPolygonID(int const nPolyID) { m_nPolygonID = nPolyID; }
+//! Sets the coast ID number of the polygon which 'contains' this cell
+void CGeomCell::SetPolygonID(int const nPolyID)
+{
+   m_nPolygonID = nPolyID;
+}
 
-//! Returns the global ID number of the polygon which 'contains' this cell (returns INT_NODATA if the cell is not 'in' a polygon)
-int CGeomCell::nGetPolygonID(void) const { return m_nPolygonID; }
+//! Returns the coast ID number of the polygon which 'contains' this cell (returns INT_NODATA if the cell is not 'in' a polygon)
+int CGeomCell::nGetPolygonID(void) const
+{
+   return m_nPolygonID;
+}
 
 //! Sets the coast number of the polygon which 'contains' this cell
 void CGeomCell::SetPolygonCoastID(int const nPolyCoastID)
@@ -351,7 +350,10 @@ void CGeomCell::SetShadowZoneNumber(int const nCode)
 }
 
 //! Gets the number of the shadow zone that this cell is in
-int CGeomCell::nGetShadowZoneNumber(void) const { return m_nShadowZoneNumber; }
+int CGeomCell::nGetShadowZoneNumber(void) const
+{
+   return m_nShadowZoneNumber;
+}
 
 //! Returns true if this cell is in the shadow zone with number given by the parameter, false otherwise
 bool CGeomCell::bIsinThisShadowZone(int const nZone) const
@@ -372,7 +374,10 @@ bool CGeomCell::bIsinAnyShadowZone(void) const
 }
 
 //! Set this cell as flooded by swl + surge + setup + runup
-void CGeomCell::SetWaveFlood(void) { m_bWaveFlood = true; }
+void CGeomCell::SetWaveFlood(void)
+{
+   m_bWaveFlood = true;
+}
 
 // void CGeomCell::SetWaveSetup(int const dWaveSetup)
 // {

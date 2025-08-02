@@ -30,7 +30,6 @@
 #elif defined __GNUG__
 #include <sys/resource.h>  // Needed for CalcProcessStats()
 #include <unistd.h>        // For isatty()
-#include <sys/types.h>
 #include <sys/wait.h>
 #endif
 
@@ -1931,7 +1930,7 @@ string CSimulation::strGetErrorText(int const nErr)
       break;
 
    case RTN_ERR_INI:
-      strErr = "error reading initialization file";
+      strErr = "error reading initialisation file";
       break;
 
    case RTN_ERR_CMEDIR:
@@ -2066,11 +2065,11 @@ string CSimulation::strGetErrorText(int const nErr)
       break;
 
    case RTN_ERR_NO_SEAWARD_END_OF_PROFILE_UPCOAST_BEACH_DEPOSITION:
-      strErr = "could not locate seaward end of profile when creating Dean profile for beach deposition (up-coast)";
+      strErr = "could not locate seaward end of profile when creating Dean profile for up-coast beach deposition";
       break;
 
    case RTN_ERR_NO_SEAWARD_END_OF_PROFILE_DOWNCOAST_BEACH_DEPOSITION:
-      strErr = "could not locate seaward end of profile when creating Dean profile for beach deposition (down-coast)";
+      strErr = "could not locate seaward end of profile when creating Dean profile for down-coast beach deposition";
       break;
 
    case RTN_ERR_LANDFORM_TO_GRID:
@@ -2209,13 +2208,25 @@ string CSimulation::strGetErrorText(int const nErr)
       strErr = "intersection cell not found in hit profile";
       break;
 
+   case RTN_ERR_POINT_NOT_FOUND_IN_MULTILINE_DIFFERENT_COASTS:
+      strErr = "point not found when truncating multiline for different coasts";
+      break;
+
+   case RTN_ERR_CELL_NOT_FOUND_IN_HIT_PROFILE:
+      strErr = "cell not found in hit profile";
+      break;
+
+   case RTN_ERR_CELL_IN_POLY_BUT_NO_POLY_COAST:
+      strErr = "cell marked as in polygon, but does not have polygon's coast";
+      break;
+
    case RTN_ERR_UNKNOWN:
       strErr = "unknown error";
       break;
 
    default:
       // should never get here
-      strErr = "totally unknown error";
+      strErr = " error";
    }
 
    return strErr;
@@ -2960,40 +2971,11 @@ bool CSimulation::bIsInterventionCell(int const nX, int const nY) const
 }
 
 //===============================================================================================================================
-//! Returns the size of the coast polygon vector
-//===============================================================================================================================
-int CSimulation::nGetCoastPolygonSize(void) const
-{
-   return static_cast<int>(m_pVCoastPolygon.size());
-}
-
-//===============================================================================================================================
-//! Returns a pointer to a coast polygon, in down-coast sequence
-//===============================================================================================================================
-CGeomCoastPolygon* CSimulation::pGetPolygon(int const nPoly) const
-{
-   // TODO 055 No check to see if nPoly < m_pVCoastPolygon.size()
-   return m_pVCoastPolygon[nPoly];
-}
-
-//===============================================================================================================================
-//! Appends a pointer to a coast polygon, to the down-coast coast polygon vector
-//===============================================================================================================================
-void CSimulation::AppendPolygon(CGeomCoastPolygon* pPolygon)
-{
-   m_pVCoastPolygon.push_back(pPolygon);
-}
-
-//===============================================================================================================================
 //! Do end-of-run memory clearance
 //===============================================================================================================================
 void CSimulation::DoEndOfRunDeletes(void)
 {
    // Clear all vector coastlines, profiles, and polygons
-   for (int i = 0; i < static_cast<int>(m_pVCoastPolygon.size()); i++)
-      delete m_pVCoastPolygon[i];
-
-   m_pVCoastPolygon.clear();
    m_VCoast.clear();
 
    // m_VFloodWaveSetup.clear();

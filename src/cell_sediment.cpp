@@ -25,7 +25,7 @@
 
 #include "cell_sediment.h"
 
-//! CRWCellSediment constructor, initialization list sets all internal values to zero
+//! CRWCellSediment constructor, initialisation list sets all internal values to zero
 CRWCellSediment::CRWCellSediment(void)
     : m_dFine(0),
       m_dNotchFineLost(0),

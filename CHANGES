@@ -2,7 +2,10 @@ CoastalME CHANGELOG
 
 1.0      Initial release
 
-1.1      Revised unconsolidated sediment transport algorithm, improved logfile output, bug fix to cliff collapse, many other bug fixes (24 Aug 2023)
+1.1      Revised unconsolidated sediment transport algorithm
+         Improved logfile output
+         Bug fix to cliff collapse
+         Many other bug fixes (24 Aug 2023)
 
 1.1.01   Bug fixes in CME and CShore (26 Aug 2023)
 
@@ -10,9 +13,13 @@ CoastalME CHANGELOG
 
 1.1.03   Bug fixes (2 Sep 2023)
 
-1.1.04   Changed cliff collapse deposition, fixed wave bugs, removed un-needed OGR error messages (7 Sep 2023)
+1.1.04   Changed cliff collapse deposition
+         Fixed wave bugs
+         Removed un-needed OGR error messages (7 Sep 2023)
 
-1.1.05   More changes to cliff collapse deposition, fixed -Wfloat-equal warnings, added more safety checks to CME and CShore (13 Sep 2023)
+1.1.05   More changes to cliff collapse deposition
+         Fixed -Wfloat-equal warnings
+         Added more safety checks to CME and CShore (13 Sep 2023)
 
 1.1.06   Tidying (14 Sep 2023)
 
@@ -28,11 +35,14 @@ CoastalME CHANGELOG
 
 1.1.12   Ditto (26 Oct 2023)
 
-1.1.13   Removed dummy estuaries routine, more Doxygen documentation (27 Oct 2023)
+1.1.13   Removed dummy estuaries routine
+         More Doxygen documentation (27 Oct 2023)
 
 1.1.14   More Doxygen documentation (3 Nov 2023)
 
-1.1.15   Code tidying, more Doxygen documentation, cppcheck (6 Nov 2023)
+1.1.15   Code tidying
+         More Doxygen documentation
+         Cppcheck (6 Nov 2023)
 
 1.1.16   Ditto (10 Nov 2023)
 
@@ -44,9 +54,13 @@ CoastalME CHANGELOG
 
 1.1.20   Code tidying, comments re. Manuel info needed (18 Feb 2025)
 
-1.1.21   Organised buglist and todo-list, both are now in cme.h. New 'usual' options to reduce number of raster and vector GIS output files. Other code tidying (20 May 2025)
+1.1.21   Organised buglist and todo-list, both are now in cme.h
+         New 'usual' options to reduce number of raster and vector GIS output files
+         Other code tidying (20 May 2025)
 
-1.1.22   Changed CMakeLists.txt to no longer use deprecated exec_program(). Began use of gcc -fsanitize options to show any runtime problems: as a result, made several changes especially to cliff collapse deposition routines (3 Jul 2025)
+1.1.22   Changed CMakeLists.txt to no longer use deprecated exec_program()
+         Began use of gcc -fsanitize options to show any runtime problems
+         Several changes especially to cliff collapse deposition routines (3 Jul 2025)
 
 1.2.0    Used DMD_EXTENSIONS in GDAL instead of DMD_EXTENSION, which is not implemented for newer drivers
          Changes to calculation of erosion during Dean profile deposition (DDPD)
@@ -207,5 +221,8 @@ CoastalME CHANGELOG
          Code simplification and tidying
 
 1.3.26   Ongoing changes to permit multiple coastlines
+         Polygon objects now have coast as parent
+         Bug fix re. shadow zone tracing
+         Improved logfile output
          Code tidying
 

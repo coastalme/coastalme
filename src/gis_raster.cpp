@@ -76,7 +76,8 @@ void CSimulation::InitializeGDALPerformance(void)
 #endif
 
    // Optimize GDAL memory usage and caching
-   CPLSetConfigOption("GDAL_CACHEMAX", "1024");                // 1GB cache for large grids
+   // CPLSetConfigOption("GDAL_CACHEMAX", "1024");                // 1GB cache for large grids
+   CPLSetConfigOption("GDAL_CACHEMAX", "2048");                // 2GB cache for large grids
    CPLSetConfigOption("GDAL_DISABLE_READDIR_ON_OPEN", "TRUE"); // Faster file access
    CPLSetConfigOption("VSI_CACHE", "TRUE");                    // Enable virtual file system cache
    CPLSetConfigOption("VSI_CACHE_SIZE", "256000000");          // 256MB VSI cache
@@ -87,7 +88,7 @@ void CSimulation::InitializeGDALPerformance(void)
    // Disable GDAL warnings for cleaner output (optional)
    // CPLSetConfigOption("CPL_LOG", "/dev/null");
 
-   LogStream << "GDAL performance optimizations enabled" << endl;
+   m_bGDALOptimisations = true;
 }
 
 //===============================================================================================================================
@@ -1388,10 +1389,10 @@ bool CSimulation::bWriteRasterGISFile(int const nDataItem, string const *strPlot
    }
 
    // Fill the array
-   int
-       n = 0,
-       nPoly = 0,
-       nTopLayer = 0;
+   int n = 0;
+   int nPoly = 0;
+   int nPolyCoast = 0;
+   int nTopLayer = 0;
    double dTmp = 0;
 
    for (int nY = 0; nY < m_nYGridSize; nY++)
@@ -1435,7 +1436,6 @@ bool CSimulation::bWriteRasterGISFile(int const nDataItem, string const *strPlot
          case (RASTER_PLOT_WAVE_HEIGHT):
             if (m_pRasterGrid->m_Cell[nX][nY].bIsInundated())
                dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetWaveHeight();
-
             else
                dTmp = 0;
 
@@ -1444,7 +1444,6 @@ bool CSimulation::bWriteRasterGISFile(int const nDataItem, string const *strPlot
          case (RASTER_PLOT_AVG_WAVE_HEIGHT):
             if (m_pRasterGrid->m_Cell[nX][nY].bIsInundated())
                dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetTotWaveHeight() / static_cast<double>(m_ulIter);
-
             else
                dTmp = 0;
 
@@ -1453,7 +1452,6 @@ bool CSimulation::bWriteRasterGISFile(int const nDataItem, string const *strPlot
          case (RASTER_PLOT_WAVE_ORIENTATION):
             if (m_pRasterGrid->m_Cell[nX][nY].bIsInundated())
                dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetWaveAngle();
-
             else
                dTmp = 0;
 
@@ -1462,7 +1460,6 @@ bool CSimulation::bWriteRasterGISFile(int const nDataItem, string const *strPlot
          case (RASTER_PLOT_AVG_WAVE_ORIENTATION):
             if (m_pRasterGrid->m_Cell[nX][nY].bIsInundated())
                dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetTotWaveAngle() / static_cast<double>(m_ulIter);
-
             else
                dTmp = 0;
 
@@ -1473,7 +1470,6 @@ bool CSimulation::bWriteRasterGISFile(int const nDataItem, string const *strPlot
 
             if (bFPIsEqual(dTmp, DBL_NODATA, TOLERANCE))
                dTmp = m_dMissingValue;
-
             else
                dTmp = 1 - dTmp; // Output the inverse, seems more intuitive
 
@@ -1598,7 +1594,6 @@ bool CSimulation::bWriteRasterGISFile(int const nDataItem, string const *strPlot
          case (RASTER_PLOT_DEEP_WATER_WAVE_ORIENTATION):
             if (m_pRasterGrid->m_Cell[nX][nY].bIsInundated())
                dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetCellDeepWaterWaveAngle();
-
             else
                dTmp = 0;
 
@@ -1607,7 +1602,6 @@ bool CSimulation::bWriteRasterGISFile(int const nDataItem, string const *strPlot
          case (RASTER_PLOT_DEEP_WATER_WAVE_HEIGHT):
             if (m_pRasterGrid->m_Cell[nX][nY].bIsInundated())
                dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetCellDeepWaterWaveHeight();
-
             else
                dTmp = 0;
 
@@ -1616,7 +1610,6 @@ bool CSimulation::bWriteRasterGISFile(int const nDataItem, string const *strPlot
          case (RASTER_PLOT_DEEP_WATER_WAVE_PERIOD):
             if (m_pRasterGrid->m_Cell[nX][nY].bIsInundated())
                dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetCellDeepWaterWavePeriod();
-
             else
                dTmp = 0;
 
@@ -1624,6 +1617,7 @@ bool CSimulation::bWriteRasterGISFile(int const nDataItem, string const *strPlot
 
          case (RASTER_PLOT_POLYGON_GAIN_OR_LOSS):
             nPoly = m_pRasterGrid->m_Cell[nX][nY].nGetPolygonID();
+            nPolyCoast = m_pRasterGrid->m_Cell[nX][nY].nGetPolygonCoastID();
 
             if (nPoly == INT_NODATA)
                dTmp = m_dMissingValue;
@@ -1631,7 +1625,7 @@ bool CSimulation::bWriteRasterGISFile(int const nDataItem, string const *strPlot
             else
             {
                // Get total volume (all sediment size classes) of change in sediment for this polygon for this timestep (-ve erosion, +ve deposition)
-               dTmp = m_pVCoastPolygon[nPoly]->dGetBeachDepositionAndSuspensionAllUncons() * m_dCellArea;
+               dTmp = m_VCoast[nPolyCoast].pGetPolygon(nPoly)->dGetBeachDepositionAndSuspensionAllUncons() * m_dCellArea;
 
                // Calculate the rate in m^3 / sec
                dTmp /= (m_dTimeStep * 3600);
@@ -1704,13 +1698,14 @@ bool CSimulation::bWriteRasterGISFile(int const nDataItem, string const *strPlot
 
          case (RASTER_PLOT_POLYGON_UPDRIFT_OR_DOWNDRIFT):
             nPoly = m_pRasterGrid->m_Cell[nX][nY].nGetPolygonID();
+            nPolyCoast = m_pRasterGrid->m_Cell[nX][nY].nGetPolygonCoastID();
 
             if (nPoly == INT_NODATA)
                dTmp = m_nMissingValue;
 
             else
             {
-               if (m_pVCoastPolygon[nPoly]->bDownCoastThisIter())
+               if (m_VCoast[nPolyCoast].pGetPolygon(nPoly)->bDownCoastThisIter())
                   dTmp = 1;
 
                else

@@ -1099,7 +1099,7 @@ bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const* strPlot
 
                // Set the feature's attributes
                pOGRFeature->SetField(strFieldValue1.c_str(), j);
-               pOGRFeature->SetField(strFieldValue2.c_str(), pProfile->nGetCoast());
+               pOGRFeature->SetField(strFieldValue2.c_str(), pProfile->nGetCoastID());
                pOGRFeature->SetField(strFieldValue3.c_str(), pProfile->bStartOfCoast());
                pOGRFeature->SetField(strFieldValue4.c_str(), pProfile->bEndOfCoast());
                pOGRFeature->SetField(strFieldValue5.c_str(), pProfile->bHitLand());
@@ -1453,16 +1453,16 @@ bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const* strPlot
 
    case (VECTOR_PLOT_POLYGON_BOUNDARY):
    {
-      // The layer has been created, so create two integer-numbered values (the number of the polygon object, and the number of the coast point which is the polygon's node) for the polygon
-      string const strFieldValue1 = "Polygon";
-      string const strFieldValue2 = "CoastNode";
-      string const strFieldValue3 = "TotSedChng";
-      string const strFieldValue4 = "FinSedChng";
-      string const strFieldValue5 = "SndSedChng";
-      string const strFieldValue6 = "CrsSedChng";
+      // The layer has been created, so create seven integer-numbered values for the polygon
+      string const strFieldValue1 = "Coast";
+      string const strFieldValue2 = "Polygon";
+      string const strFieldValue3 = "CoastNode";
+      string const strFieldValue4 = "TotSedChng";
+      string const strFieldValue5 = "FinSedChng";
+      string const strFieldValue6 = "SndSedChng";
+      string const strFieldValue7 = "CrsSedChng";
 
       OGRFieldDefn const OGRField1(strFieldValue1.c_str(), OFTInteger);
-
       if (pOGRLayer->CreateField(&OGRField1) != OGRERR_NONE)
       {
          cerr << ERR << "cannot create " << strType << " attribute field 1 '" << strFieldValue1 << "' in " << strFilePathName << endl << CPLGetLastErrorMsg() << endl;
@@ -1470,7 +1470,6 @@ bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const* strPlot
       }
 
       OGRFieldDefn const OGRField2(strFieldValue2.c_str(), OFTInteger);
-
       if (pOGRLayer->CreateField(&OGRField2) != OGRERR_NONE)
       {
          cerr << ERR << "cannot create " << strType << " attribute field 2 '" << strFieldValue2 << "' in " << strFilePathName << endl << CPLGetLastErrorMsg() << endl;
@@ -1478,7 +1477,6 @@ bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const* strPlot
       }
 
       OGRFieldDefn const OGRField3(strFieldValue3.c_str(), OFTReal);
-
       if (pOGRLayer->CreateField(&OGRField3) != OGRERR_NONE)
       {
          cerr << ERR << "cannot create " << strType << " attribute field 3 '" << strFieldValue3 << "' in " << strFilePathName << endl << CPLGetLastErrorMsg() << endl;
@@ -1486,7 +1484,6 @@ bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const* strPlot
       }
 
       OGRFieldDefn const OGRField4(strFieldValue4.c_str(), OFTReal);
-
       if (pOGRLayer->CreateField(&OGRField4) != OGRERR_NONE)
       {
          cerr << ERR << "cannot create " << strType << " attribute field 4 '" << strFieldValue4 << "' in " << strFilePathName << endl << CPLGetLastErrorMsg() << endl;
@@ -1494,7 +1491,6 @@ bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const* strPlot
       }
 
       OGRFieldDefn const OGRField5(strFieldValue5.c_str(), OFTReal);
-
       if (pOGRLayer->CreateField(&OGRField5) != OGRERR_NONE)
       {
          cerr << ERR << "cannot create " << strType << " attribute field 5 '" << strFieldValue5 << "' in " << strFilePathName << endl << CPLGetLastErrorMsg() << endl;
@@ -1502,10 +1498,16 @@ bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const* strPlot
       }
 
       OGRFieldDefn const OGRField6(strFieldValue6.c_str(), OFTReal);
-
       if (pOGRLayer->CreateField(&OGRField6) != OGRERR_NONE)
       {
          cerr << ERR << "cannot create " << strType << " attribute field 6 '" << strFieldValue6 << "' in " << strFilePathName << endl << CPLGetLastErrorMsg() << endl;
+         return false;
+      }
+
+      OGRFieldDefn const OGRField7(strFieldValue7.c_str(), OFTReal);
+      if (pOGRLayer->CreateField(&OGRField7) != OGRERR_NONE)
+      {
+         cerr << ERR << "cannot create " << strType << " attribute field 7 '" << strFieldValue6 << "' in " << strFilePathName << endl << CPLGetLastErrorMsg() << endl;
          return false;
       }
 
@@ -1522,12 +1524,13 @@ bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const* strPlot
             CGeomCoastPolygon* pPolygon = m_VCoast[i].pGetPolygon(j);
 
             // Set the feature's attributes
-            pOGRFeature->SetField(strFieldValue1.c_str(), j);
-            pOGRFeature->SetField(strFieldValue2.c_str(), pPolygon->nGetNodeCoastPoint());
-            pOGRFeature->SetField(strFieldValue3.c_str(), pPolygon->dGetBeachDepositionAndSuspensionAllUncons());
-            pOGRFeature->SetField(strFieldValue4.c_str(), pPolygon->dGetSuspensionUnconsFine());
-            pOGRFeature->SetField(strFieldValue5.c_str(), pPolygon->dGetBeachDepositionUnconsSand());
-            pOGRFeature->SetField(strFieldValue6.c_str(), pPolygon->dGetBeachDepositionUnconsCoarse());
+            pOGRFeature->SetField(strFieldValue1.c_str(), i);
+            pOGRFeature->SetField(strFieldValue2.c_str(), j);
+            pOGRFeature->SetField(strFieldValue3.c_str(), pPolygon->nGetNodeCoastPoint());
+            pOGRFeature->SetField(strFieldValue4.c_str(), pPolygon->dGetBeachDepositionAndSuspensionAllUncons());
+            pOGRFeature->SetField(strFieldValue5.c_str(), pPolygon->dGetSuspensionUnconsFine());
+            pOGRFeature->SetField(strFieldValue6.c_str(), pPolygon->dGetBeachDepositionUnconsSand());
+            pOGRFeature->SetField(strFieldValue7.c_str(), pPolygon->dGetBeachDepositionUnconsCoarse());
 
             // Now attach a geometry to the feature object
             for (int n = 0; n < pPolygon->nGetBoundarySize(); n++)

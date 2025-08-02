@@ -34,7 +34,7 @@ using std::find;
 #include "2d_point.h"
 #include "2di_point.h"
 
-//! Constructor with 10 parameters and initialization list
+//! Constructor with 10 parameters and initialisation list
 CGeomCoastPolygon::CGeomCoastPolygon(int const nCoastID, int const nNode, int const nProfileUpCoast, int const nProfileDownCoast, vector<CGeom2DPoint> const* pVIn, int const nLastPointUpCoast, const int nLastPointDownCoast, CGeom2DIPoint const* PtiNode, CGeom2DIPoint const* PtiAntinode, bool const bStartCoast, bool const bEndCoast)
     : // m_bIsPointedSeaward(true),
       m_bUnconsSedimentMovementDownCoastThisIter(false),
@@ -310,7 +310,7 @@ void CGeomCoastPolygon::AddToSuspensionUnconsFine(double const dDepth)
    m_dSuspensionUnconsFine += dDepth;
 }
 
-// //! Re-initializes this timestep's to-suspension movement of unconsolidated fine sediment on this polygon
+// //! Re-initialises this timestep's to-suspension movement of unconsolidated fine sediment on this polygon
 // void CGeomCoastPolygon::SetZeroSuspensionUnconsFine(void)
 // {
 // m_dSuspensionUnconsFine = 0;
@@ -346,7 +346,7 @@ double CGeomCoastPolygon::dGetBeachDepositionUnconsCoarse(void) const
    return m_dBeachDepositionUnconsCoarse;
 }
 
-//! Re-initializes this timestep's still-to-do deposition of unconsolidated sand sediment (from beach redistribution only) on this polygon
+//! Re-initialises this timestep's still-to-do deposition of unconsolidated sand sediment (from beach redistribution only) on this polygon
 void CGeomCoastPolygon::SetZeroToDoDepositionUnconsSand(void)
 {
    m_dToDoBeachDepositionUnconsSand = 0;
@@ -364,7 +364,7 @@ double CGeomCoastPolygon::dGetToDoBeachDepositionUnconsSand(void) const
    return m_dToDoBeachDepositionUnconsSand;
 }
 
-//! Re-initializes this timestep's still-to-do deposition of unconsolidated coarse sediment (from beach redistribution only) on this polygon
+//! Re-initialises this timestep's still-to-do deposition of unconsolidated coarse sediment (from beach redistribution only) on this polygon
 void CGeomCoastPolygon::SetZeroToDoDepositionUnconsCoarse(void)
 {
    m_dToDoBeachDepositionUnconsCoarse = 0;

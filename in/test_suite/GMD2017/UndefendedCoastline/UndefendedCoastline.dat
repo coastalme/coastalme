@@ -137,9 +137,9 @@ Sediment input details file                                      [required if ha
 Gravitational acceleration (m2/s)                                                            : 9.81
 
 ; MOVE THESE?
-Typical spacing of coastline normals (m)                                        [0 = default]: 40
+Typical spacing of coastline normals (m)                                        [0 = default]: 30
 Random factor for spacing of normals                              [0 to 1, 0 = deterministic]: 0.25
-Length of coastline normals (m)                                                              : 300       ; was 600 800
+Length of coastline normals (m)                                                              : 250       ; was 300 600 800
 Start depth for wave calcs (ratio to deep water wave height)                                 : 30        ; was 10 30 15
 
 ; For testing only --------------------------------------------------------------------------------------------------------------------------------------------

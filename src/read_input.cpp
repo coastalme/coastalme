@@ -57,7 +57,7 @@ using std::random_device;
 #include "simulation.h"
 
 //===============================================================================================================================
-//! The bReadIniFile member function reads the initialization file
+//! The bReadIniFile member function reads the initialisation file
 //===============================================================================================================================
 bool CSimulation::bReadIniFile(void)
 {
@@ -237,7 +237,7 @@ bool CSimulation::bReadIniFile(void)
 }
 
 //===============================================================================================================================
-//! Reads the run details input file and does some initialization
+//! Reads the run details input file and does some initialisation
 // TODO 000 Should user input be split in two main files: one for frequently-changed things, one for rarely-changed things? If so, what should go into each file ('testing only' OK, but what else?)
 //===============================================================================================================================
 bool CSimulation::bReadRunDataFile(void)
@@ -3828,7 +3828,7 @@ int CSimulation::nReadWaveStationInputFile(int const nWaveStations)
       return RTN_ERR_READING_DEEP_WATER_WAVE_DATA;
    }
 
-   // All is OK, so we can now initialize the vectors that will store this timestep's deep water wave values
+   // All is OK, so we can now initialise the vectors that will store this timestep's deep water wave values
    for (int j = 0; j < nExpectedStations; j++)
    {
       m_VdThisIterDeepWaterWaveStationHeight.push_back(DBL_NODATA);

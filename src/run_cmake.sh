@@ -22,7 +22,7 @@ cshoreinout=ARG
 echo ""
 rm -f ./lib/*
 cd cshore
-if [[ $OSTYPE == 'darwin'* ]]; then
+if [ "$OSTYPE" = "darwin"* ]; then
    ./make_cshore_lib.sh $cshorelibrary $buildtype $cshoreinout
 else
    ./make_cshore_lib.sh
@@ -37,7 +37,7 @@ echo "================================================================="
 echo ""
 
 # On Mac, switch to gcc15 to ensure openMP compatability
-if [[ $OSTYPE == 'darwin'* ]]; then
+if [ "$OSTYPE" = "darwin"* ]; then
    export CC=gcc-15
    export CXX=g++-15
    CMAKE_COMPILER_ARGS="-DCMAKE_C_COMPILER=gcc-15 -DCMAKE_CXX_COMPILER=g++-15"

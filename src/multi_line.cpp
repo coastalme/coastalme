@@ -27,8 +27,6 @@
 #include "2d_point.h"
 #include "line.h"
 
-
-
 //! Constructor, no parameters
 CGeomMultiLine::CGeomMultiLine(void)
 {
