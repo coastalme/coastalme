@@ -16,7 +16,5 @@ var searchData=
   ['profile_5fcheck_5fdist_5ffrom_5fcoast_13',['PROFILE_CHECK_DIST_FROM_COAST',['../d6/d2a/cme_8h.html#a8f6a3504fb8861c1f92c19af69ea2250',1,'cme.h']]],
   ['program_5fname_14',['PROGRAM_NAME',['../d6/d2a/cme_8h.html#a9136af1e87b27520ba2fda67c3a184e1',1,'cme.h']]],
   ['program_5fname_5fshort_15',['PROGRAM_NAME_SHORT',['../d6/d2a/cme_8h.html#ad37e22683ddc3d03276375197ad72255',1,'cme.h']]],
-  ['ptiend_16',['PtiEnd',['../da/dae/classCGeomProfile.html#a795a8a35fcc952ea8558c87c04c6f37c',1,'CGeomProfile']]],
-  ['ptistart_17',['PtiStart',['../da/dae/classCGeomProfile.html#a83b7c4c478afa30f52270493c6a7e294',1,'CGeomProfile']]],
-  ['ptr_18',['ptr',['../dd/d67/classunique__ptr.html#adae741234450c126c1260d389e1720b9',1,'unique_ptr']]]
+  ['ptr_16',['ptr',['../dd/d67/classunique__ptr.html#adae741234450c126c1260d389e1720b9',1,'unique_ptr']]]
 ];

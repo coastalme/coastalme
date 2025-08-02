@@ -72,13 +72,12 @@ var searchData=
   ['appendlayers_69',['AppendLayers',['../d1/dd9/classCGeomCell.html#a556db5cb0e1b09d8e3f799f9e66138c0',1,'CGeomCell']]],
   ['appendlinesegment_70',['AppendLineSegment',['../d0/d89/classCGeomMultiLine.html#a3f99a9c2ac66b75c432941ec88fc8538',1,'CGeomMultiLine::AppendLineSegment(void)'],['../d0/d89/classCGeomMultiLine.html#afdbe517c9f47370fe67557d46eb309c1',1,'CGeomMultiLine::AppendLineSegment(vector&lt; pair&lt; int, int &gt; &gt; *)']]],
   ['appendpointinprofile_71',['AppendPointInProfile',['../da/dae/classCGeomProfile.html#a19aac71e045a17e2c6d98f020f2319fa',1,'CGeomProfile::AppendPointInProfile(double const, double const)'],['../da/dae/classCGeomProfile.html#a2f6e2d73bb6e8182b5ee5f21ff022f79',1,'CGeomProfile::AppendPointInProfile(CGeom2DPoint const *)']]],
-  ['appendpolygon_72',['AppendPolygon',['../d1/d98/classCSimulation.html#afb96ad0745af2cba5ebb50ec12e2831b',1,'CSimulation']]],
-  ['appendprofile_73',['AppendProfile',['../d1/dbe/classCRWCoast.html#a52d4892ab1ec17743c0629d72360b79e',1,'CRWCoast']]],
-  ['appendshadowboundary_74',['AppendShadowBoundary',['../d1/dbe/classCRWCoast.html#a05e4e1d133a98f98a3f24e9702876d1a',1,'CRWCoast']]],
-  ['appendshadowdowndriftboundary_75',['AppendShadowDowndriftBoundary',['../d1/dbe/classCRWCoast.html#abebe946e16816646e095992342948444',1,'CRWCoast']]],
-  ['appendvertex_76',['AppendVertex',['../df/d45/classCGeomCoastPolygon.html#ac3bc44b934d49de03631ea8ae2bdec0a',1,'CGeomCoastPolygon']]],
-  ['applycliffresults_77',['ApplyCliffResults',['../d8/d0e/classCCliffCollapseManager.html#a8c2d296d5149f7665b4df32ef48571c1',1,'CCliffCollapseManager']]],
-  ['applycollapsedeposition_78',['ApplyCollapseDeposition',['../d8/d0e/classCCliffCollapseManager.html#a8b742ac9582d9659e75313bd5d3882b5',1,'CCliffCollapseManager']]],
-  ['array_79',['array',['../d2/d41/classarray.html',1,'']]],
-  ['assign_5flandforms_2ecpp_80',['assign_landforms.cpp',['../da/d3d/assign__landforms_8cpp.html',1,'']]]
+  ['appendprofile_72',['AppendProfile',['../d1/dbe/classCRWCoast.html#a52d4892ab1ec17743c0629d72360b79e',1,'CRWCoast']]],
+  ['appendshadowboundary_73',['AppendShadowBoundary',['../d1/dbe/classCRWCoast.html#a05e4e1d133a98f98a3f24e9702876d1a',1,'CRWCoast']]],
+  ['appendshadowdowndriftboundary_74',['AppendShadowDowndriftBoundary',['../d1/dbe/classCRWCoast.html#abebe946e16816646e095992342948444',1,'CRWCoast']]],
+  ['appendvertex_75',['AppendVertex',['../df/d45/classCGeomCoastPolygon.html#ac3bc44b934d49de03631ea8ae2bdec0a',1,'CGeomCoastPolygon']]],
+  ['applycliffresults_76',['ApplyCliffResults',['../d8/d0e/classCCliffCollapseManager.html#a8c2d296d5149f7665b4df32ef48571c1',1,'CCliffCollapseManager']]],
+  ['applycollapsedeposition_77',['ApplyCollapseDeposition',['../d8/d0e/classCCliffCollapseManager.html#a8b742ac9582d9659e75313bd5d3882b5',1,'CCliffCollapseManager']]],
+  ['array_78',['array',['../d2/d41/classarray.html',1,'']]],
+  ['assign_5flandforms_2ecpp_79',['assign_landforms.cpp',['../da/d3d/assign__landforms_8cpp.html',1,'']]]
 ];

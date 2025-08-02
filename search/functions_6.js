@@ -5,6 +5,7 @@ var searchData=
   ['getalgorithmenum_2',['GetAlgorithmEnum',['../dc/dac/classCCliffAlgorithmFactory.html#ae3eea245f0aa6f819d0649f9d2dd58ba',1,'CCliffAlgorithmFactory']]],
   ['getalgorithmname_3',['GetAlgorithmName',['../df/d51/classCCliffAlgorithm.html#a87378799e805f239ede0f35adf9e67ff',1,'CCliffAlgorithm::GetAlgorithmName()'],['../dc/dac/classCCliffAlgorithmFactory.html#a799da36da7301ed7d8e5fcaf879b6ac9',1,'CCliffAlgorithmFactory::GetAlgorithmName()'],['../dd/dd7/classCCliffAlgorithmLegacy.html#aee318324242a200c6d433cbf4ec61f1b',1,'CCliffAlgorithmLegacy::GetAlgorithmName()'],['../da/db2/classCCliffAlgorithmSimpleNotch.html#a26d1281bf35e36f9c2ed669efb208333',1,'CCliffAlgorithmSimpleNotch::GetAlgorithmName()'],['../d8/d0e/classCCliffCollapseManager.html#a08a2d6d5a0e60ba1b6f79abb9a90dce3',1,'CCliffCollapseManager::GetAlgorithmName()']]],
   ['getavailablealgorithms_4',['GetAvailableAlgorithms',['../dc/dac/classCCliffAlgorithmFactory.html#ab367125406a3f7ccdc538baeaa6e6105',1,'CCliffAlgorithmFactory::GetAvailableAlgorithms()'],['../d8/d0e/classCCliffCollapseManager.html#a97b7d1004afac4a45f8152246c9cf302',1,'CCliffCollapseManager::GetAvailableAlgorithms()']]],
-  ['getmostcoastwardsharedlinesegment_5',['GetMostCoastwardSharedLineSegment',['../d0/d89/classCGeomMultiLine.html#a6dd16a3f527b6a681fbddd8a68e9deaf',1,'CGeomMultiLine']]],
-  ['getrasteroutputminmax_6',['GetRasterOutputMinMax',['../d1/d98/classCSimulation.html#a0e2776f69ae5184b99845d8232c68808',1,'CSimulation']]]
+  ['getclosestpoint_5',['GetClosestPoint',['../d1/d98/classCSimulation.html#ae6a1465e21e1df121d2dbc0b5e4b06fd',1,'CSimulation']]],
+  ['getmostcoastwardsharedlinesegment_6',['GetMostCoastwardSharedLineSegment',['../d0/d89/classCGeomMultiLine.html#a6dd16a3f527b6a681fbddd8a68e9deaf',1,'CGeomMultiLine']]],
+  ['getrasteroutputminmax_7',['GetRasterOutputMinMax',['../d1/d98/classCSimulation.html#a0e2776f69ae5184b99845d8232c68808',1,'CSimulation']]]
 ];

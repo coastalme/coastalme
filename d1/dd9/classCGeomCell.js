@@ -135,7 +135,6 @@ var classCGeomCell =
     [ "SetPossibleFloodStartCell", "d1/dd9/classCGeomCell.html#a98041541e2fd3d6202c30b5451e39082", null ],
     [ "SetPotentialBeachErosion", "d1/dd9/classCGeomCell.html#a5ff6283ce0766d95af4cf7e3877ff39c", null ],
     [ "SetPotentialPlatformErosion", "d1/dd9/classCGeomCell.html#a961fbff61a3e1655927367f90a5111ed", null ],
-    [ "SetProfileCoastID", "d1/dd9/classCGeomCell.html#a1e0dced727f8221c1c6c1ca402a13200", null ],
     [ "SetProfileID", "d1/dd9/classCGeomCell.html#ac98c2eb6b702ab4b5d34dd60637d17c0", null ],
     [ "SetSeaDepth", "d1/dd9/classCGeomCell.html#ab445c2aab1f807824fc4dc432fabfb72", null ],
     [ "SetShadowZoneBoundary", "d1/dd9/classCGeomCell.html#aca6ca09523f23efe7077ecaaedbfce5d", null ],
