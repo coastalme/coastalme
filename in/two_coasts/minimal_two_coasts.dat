@@ -79,7 +79,7 @@ Wave propagation model                                                 [0 = COVE
 
 Density of sea water (kg/m3)                                                                 : 1029
 
-Initial mean still water level (m), or per-timestep SWL file                                 : 90
+Initial mean still water level (m), or per-timestep SWL file                                 : 95
 Final mean still water level (m)                               [blank = same as initial MSWL]:
 
 Deep water wave height (m)                                         [value or point shapefile]: 3
@@ -145,7 +145,7 @@ Gravitational acceleration (m2/s)                                               
 ; MOVE THESE?
 Typical spacing of coastline normals (m)                                        [0 = default]: 20
 Random factor for spacing of normals                              [0 to 1, 0 = deterministic]: 0.1
-Length of coastline normals (m)                                                              : 100
+Length of coastline normals (m)                                                              : 50
 
 Start depth for wave calcs (ratio to deep water wave height)                                 : 30         ; was 10 30 15
 

@@ -77,10 +77,11 @@ void CSimulation::InitializeGDALPerformance(void)
 
    // Optimize GDAL memory usage and caching
    // CPLSetConfigOption("GDAL_CACHEMAX", "1024");                // 1GB cache for large grids
-   CPLSetConfigOption("GDAL_CACHEMAX", "2048");                // 2GB cache for large grids
+   CPLSetConfigOption("GDAL_CACHEMAX", "2GB");                 // 2GB cache for large grids
    CPLSetConfigOption("GDAL_DISABLE_READDIR_ON_OPEN", "TRUE"); // Faster file access
    CPLSetConfigOption("VSI_CACHE", "TRUE");                    // Enable virtual file system cache
-   CPLSetConfigOption("VSI_CACHE_SIZE", "256000000");          // 256MB VSI cache
+   // CPLSetConfigOption("VSI_CACHE_SIZE", "256000000");          // 256MB VSI cache
+   CPLSetConfigOption("VSI_CACHE_SIZE", "256MB");              // 256MB VSI cache
 
    // Optimize grid creation performance
    CPLSetConfigOption("GDAL_GRID_MAX_POINTS_PER_QUADTREE_LEAF", "512"); // Faster spatial indexing
