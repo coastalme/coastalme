@@ -38,7 +38,7 @@ CGeomCell::CGeomCell()
    : m_bInContiguousSea(false),
      m_bInContiguousFlood(false),
      m_bIsInActiveZone(false),
-     m_bCliff(false),
+     m_bCliffToe(false),
      m_bFloodLine(false),
      m_bWaveFlood(false),
      // m_bCheckCell(false),
@@ -114,7 +114,7 @@ bool CGeomCell::bIsBoundingBoxEdge(void) const
    return (m_nBoundingBoxEdge != NO_DIRECTION);
 }
 
-//! Set this cell as a sea cell
+//! Set this cell to be a sea cell
 void CGeomCell::SetInContiguousSea(void)
 {
    m_bInContiguousSea = true;
@@ -210,11 +210,11 @@ void CGeomCell::SetPossibleFloodStartCell(void)
    m_bPossibleFloodStartCell = true;
 }
 
-//! Returns a flag which shows whether this cell has been flagged as a possible start point for runup flooding
-bool CGeomCell::bIsPossibleFloodStartCell(void) const
-{
-   return m_bPossibleFloodStartCell;
-}
+// //! Returns a flag which shows whether this cell has been flagged as a possible start point for runup flooding
+// bool CGeomCell::bIsPossibleFloodStartCell(void) const
+// {
+//    return m_bPossibleFloodStartCell;
+// }
 
 //! Returns true if this cell has had potential erosion this timestep
 bool CGeomCell::bPotentialPlatformErosion(void) const
@@ -248,35 +248,35 @@ int CGeomCell::nGetCoastline(void) const
    return m_nCoastlineID;
 }
 
-//! Marks this cell as a cliff cell
-void CGeomCell::SetAsCliff(bool const bNewFlag)
+//! Marks this cell as a cliff toe cell
+void CGeomCell::SetAsCliffToe(bool const bNewFlag)
 {
-   m_bCliff = bNewFlag;
+   m_bCliffToe = bNewFlag;
 }
 
-//! Returns true if this cell is marked as a cliff
-bool CGeomCell::bIsCliff(void) const
+//! Returns true if this cell is marked as a cliff toe
+bool CGeomCell::bIsCliffToe(void) const
 {
-   return m_bCliff;
+   return m_bCliffToe;
 }
 
-//! Marks this cell is flood line
+//! Marks this cell as a flood line
 void CGeomCell::SetAsFloodline(bool const bNewFlag)
 {
    m_bFloodLine = bNewFlag;
 }
 
-//! Returns true if the cell is flood line
+//! Returns true if the cell is a flood line
 bool CGeomCell::bIsFloodline(void) const
 {
    return m_bFloodLine;
 }
 
-//! Sets the ID number of the coast-normal profile which this cell is 'under'
-void CGeomCell::SetProfileID(int const nProfile)
-{
-   m_nProfileID = nProfile;
-}
+// //! Sets the ID number of the coast-normal profile which this cell is 'under'
+// void CGeomCell::SetProfileID(int const nProfile)
+// {
+//    m_nProfileID = nProfile;
+// }
 
 //! Gets the ID number of the coast-normal profile which this cell is 'under', or returns INT_NODATA
 int CGeomCell::nGetProfileID(void) const
@@ -312,11 +312,11 @@ void CGeomCell::SetCoastAndProfileID(int const nProfileCoastID, int const nProfi
    m_nProfileID = nProfile;
 }
 
-//! Sets the coast ID number of the polygon which 'contains' this cell
-void CGeomCell::SetPolygonID(int const nPolyID)
-{
-   m_nPolygonID = nPolyID;
-}
+// //! Sets the coast ID number of the polygon which 'contains' this cell
+// void CGeomCell::SetPolygonID(int const nPolyID)
+// {
+//    m_nPolygonID = nPolyID;
+// }
 
 //! Returns the coast ID number of the polygon which 'contains' this cell (returns INT_NODATA if the cell is not 'in' a polygon)
 int CGeomCell::nGetPolygonID(void) const
@@ -324,11 +324,11 @@ int CGeomCell::nGetPolygonID(void) const
    return m_nPolygonID;
 }
 
-//! Sets the coast number of the polygon which 'contains' this cell
-void CGeomCell::SetPolygonCoastID(int const nPolyCoastID)
-{
-   m_nPolygonCoastID = nPolyCoastID;
-}
+// //! Sets the coast number of the polygon which 'contains' this cell
+// void CGeomCell::SetPolygonCoastID(int const nPolyCoastID)
+// {
+//    m_nPolygonCoastID = nPolyCoastID;
+// }
 
 //! Returns the coast number of the polygon which 'contains' this cell (returns INT_NODATA if the cell is not 'in' a polygon)
 int CGeomCell::nGetPolygonCoastID(void) const
@@ -373,11 +373,11 @@ bool CGeomCell::bIsinAnyShadowZone(void) const
    return false;
 }
 
-//! Set this cell as flooded by swl + surge + setup + runup
-void CGeomCell::SetWaveFlood(void)
-{
-   m_bWaveFlood = true;
-}
+// //! Set this cell as flooded by swl + surge + setup + runup
+// void CGeomCell::SetWaveFlood(void)
+// {
+//    m_bWaveFlood = true;
+// }
 
 // void CGeomCell::SetWaveSetup(int const dWaveSetup)
 // {
@@ -411,14 +411,14 @@ bool CGeomCell::bIsElevLessThanWaterLevel(void) const
    return ((m_VdAllHorizonTopElev.back() + m_dInterventionHeight) < (m_pGrid->pGetSim()->dGetThisIterTotWaterLevel() + m_pGrid->pGetSim()->dGetThisIterSWL()));
 }
 
-// //! Set this cell as checked TODO What is this used for?
+// //! Set this cell as checked TODO 007 Finish surge and runup stuff
 // void CGeomCell::SetCheckCell(void)
 // {
 // m_bCheckCell = true;
 // }
 
-// //! Returns true if this cell is checked, false otherwise TODO 007 What is
-// this used for? bool CGeomCell::bIsCellCheck(void) const
+// //! Returns true if this cell is checked, false otherwise TODO 007 Finish surge and runup stuff
+// bool CGeomCell::bIsCellCheck(void) const
 // {
 // return m_bCheckCell;
 // }
@@ -466,7 +466,7 @@ void CGeomCell::SetLocalConsSlope(double const dNewSlope)
 }
 
 //! Returns the local slope of the consolidated sediment only
-double CGeomCell::dGetLocalConsSlope(void) const
+double CGeomCell::dGetConsSedSlope(void) const
 {
    return m_dLocalConsSlope;
 }
@@ -483,16 +483,16 @@ double CGeomCell::dGetBasementElev(void) const
    return (m_dBasementElevation);
 }
 
-//! Sets this cell's slope
-void CGeomCell::SetSlope(double const dNewSlope)
+//! Sets this cell's slope for cliff toe locating
+void CGeomCell::SetSlopeForCliffToe(double const dNewSlope)
 {
-   m_dSlope = dNewSlope;
+   m_dSlopeForCliffToe = dNewSlope;
 }
 
-//! Returns this cell's slope
-double CGeomCell::dGetSlope(void) const
+//! Returns this cell's slope for cliff toe locationg
+double CGeomCell::dGetSlopeForCliffToe(void) const
 {
-   return (m_dSlope);
+   return (m_dSlopeForCliffToe);
 }
 
 //! Returns true if this cells's basement data is NODATA, is needed for irregularly-shaped DEMs
@@ -571,7 +571,7 @@ int CGeomCell::nGetTopLayerAboveBasement(void) const
 }
 
 //! Returns the elevation of the top of the consolidated sediment only, for a given layer (layer 0 being the one just above basement)
-double CGeomCell::dGetConsSedTopForLayerAboveBasement(int const nLayer) const
+double CGeomCell::dGetConsSedTopElevForLayerAboveBasement(int const nLayer) const
 {
    // Note no check to see if nLayer < m_VLayerAboveBasement.size()
    double dTopElev = m_dBasementElevation;
@@ -609,37 +609,37 @@ CRWCellLayer *CGeomCell::pGetLayerAboveBasement(int const nLayer)
 // return dTopElev;
 // }
 
-//! Returns the true elevation of the sediment's top surface for this cell (if there is a cliff notch, ignore the missing volume)
+//! Returns the elevation of the top surface of sediment (both consolidated and unconsolidated) for this cell. If there is a cliff notch, ignore the missing volume
 double CGeomCell::dGetSedimentTopElev(void) const
 {
    return m_VdAllHorizonTopElev.back();
 }
 
-//! Returns the true elevation of the sediment's top surface for this cell (if there is a cliff notch, ignore the missing volume) plus the height of any intervention
+//! Returns the elevation of the top surface of sediment (both consolidated and unconsolidated) for this cell, plus the height of any intervention. If there is a cliff notch, ignore the missing volume
 double CGeomCell::dGetSedimentPlusInterventionTopElev(void) const
 {
    return m_VdAllHorizonTopElev.back() + m_dInterventionHeight;
 }
 
-//! Returns the highest elevation of the cell, which is either the sediment top elevation plus intervention height, or the sea surface elevation
+//! Returns the highest elevation of the cell, which is either the sediment top elevation (both consolidated and unconsolidated) plus intervention height, or the sea surface elevation
 double CGeomCell::dGetOverallTopElev(void) const
 {
    return m_VdAllHorizonTopElev.back() + m_dInterventionHeight + m_dSeaDepth;
 }
 
-//! Returns true if the elevation of the sediment top surface for this cell (plus any intervention) is less than the grid's this-timestep still water elevation
+//! Returns true if the elevation of the sediment top surface (both consolidated and unconsolidated) for this cell, plus any intervention, is less than the grid's this-timestep still water elevation
 bool CGeomCell::bIsInundated(void) const
 {
    return ((m_VdAllHorizonTopElev.back() + m_dInterventionHeight) < m_pGrid->pGetSim()->CSimulation::dGetThisIterSWL());
 }
 
-//! Returns the sea surface elevation at current iteration
+//! Returns the sea surface elevation at the current iteration
 double CGeomCell::dGetThisIterSWL(void) const
 {
    return m_pGrid->pGetSim()->CSimulation::dGetThisIterSWL();
 }
 
-//! Returns the total water level at current iteration
+//! Returns the total water level at the current iteration
 double CGeomCell::dGetThisIterTotWaterLevel(void) const
 {
    return m_pGrid->pGetSim()->CSimulation::dGetThisIterTotWaterLevel();
@@ -815,9 +815,7 @@ void CGeomCell::CalcAllLayerElevsAndD50(void)
          double const dCoarseProp = pUnconsSedLayer->dGetCoarseDepth() / dUnconsThick;
 
          // Calculate d50 for the unconsolidated sediment
-         m_dUnconsD50 = (dFineProp * m_pGrid->pGetSim()->dGetD50Fine()) +
-                        (dSandProp * m_pGrid->pGetSim()->dGetD50Sand()) +
-                        (dCoarseProp * m_pGrid->pGetSim()->dGetD50Coarse());
+         m_dUnconsD50 = (dFineProp * m_pGrid->pGetSim()->dGetD50Fine()) + (dSandProp * m_pGrid->pGetSim()->dGetD50Sand()) + (dCoarseProp * m_pGrid->pGetSim()->dGetD50Coarse());
 
          break;
       }
@@ -1229,7 +1227,6 @@ void CGeomCell::SetInterventionClass(int const nSubCatCode)
 
       if (nSubCatCode == IO_INTERVENTION_STRUCT)
          this->m_Landform.SetLFSubCategory(LF_SUBCAT_INTERVENTION_STRUCT);
-
       else if (nSubCatCode == IO_INTERVENTION_NON_STRUCT)
          this->m_Landform.SetLFSubCategory(LF_SUBCAT_INTERVENTION_NON_STRUCT);
    }
@@ -1244,9 +1241,7 @@ int CGeomCell::nGetInterventionClass(void) const
    {
       if (this->m_Landform.nGetLFSubCategory() == LF_SUBCAT_INTERVENTION_STRUCT)
          nTmp = IO_INTERVENTION_STRUCT;
-
-      else if (this->m_Landform.nGetLFSubCategory() ==
-               LF_SUBCAT_INTERVENTION_NON_STRUCT)
+      else if (this->m_Landform.nGetLFSubCategory() == LF_SUBCAT_INTERVENTION_NON_STRUCT)
          nTmp = IO_INTERVENTION_NON_STRUCT;
    }
 

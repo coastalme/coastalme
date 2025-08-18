@@ -119,7 +119,12 @@ Berm height i.e. height above SWL of start of depositional Dean profile (m)     
 
 ; Cliff collapse data --------------------------------------------------------------------------------------------------
 Simulate cliff collapse?                                                                     : y
-Resistance to erosion of cliff (m^(9/4)s^(3/2))                                              : 3.5e8        ; Differs from coast platform erosion resistance
+Cliff detection approach                                        [0 = original, 1 = cliff toe]: 1
+Cliff edge smoothing     [0 = none, 1 = running mean, 2 = Savitzky-Golay, only for cliff toe]: 1
+Cliff edge smoothing window size                            [must be odd, only for cliff toe]: 33
+Polynomial order for Savitzky-Golay cliff edge smoothing         [2 or 4, only for cliff toe]: 4
+Cliff slope limit for cliff toe detection                                [only for cliff toe]: 0.3
+Resistance to erosion of cliff (m^(9/4)s^(3/2))                                              : 5e8        ; Differs from coast platform erosion resistance
 Notch overhang to initiate collapse (m)                                                      : 0.5
 Notch base below still water level (m)                                                       : 0.3
 Scale parameter A for cliff deposition (m^(1/3))                                   [0 = auto]: 0          ; For a 0.2 mm D50, will be 0.1
@@ -156,10 +161,4 @@ Timesteps to save profile(s)                                                    
 Save parallel profiles?                                                                      : n
 Output erosion potential look-up values                                                      : n
 
-; MOVE THESE?
-Size of moving window for calculating coastline curvature (must be odd)                      : 11
-Cliff edge smoothing                         [0 = none, 1 = running mean, 2 = Savitzky-Golay]: 1
-Cliff edge smoothing window size                                                [must be odd]: 33
-Polynomial order for Savitzky-Golay cliff edge smoothing                             [2 or 4]: 4
-Cliff slope limit for cliff toe detection                                                    : 0.3
 ; END OF FILE ----------------------------------------------------------------------------------------------------------

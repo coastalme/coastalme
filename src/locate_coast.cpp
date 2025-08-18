@@ -57,7 +57,7 @@ int CSimulation::nLocateSeaAndCoasts(void)
    if (m_VCoast.empty())
    {
       cerr << m_ulIter << ": " << ERR << "no coastline located: this iteration SWL = " << m_dThisIterSWL << ", maximum DEM top surface elevation = " << m_dThisIterTopElevMax << ", minimum DEM top surface elevation = " << m_dThisIterTopElevMin << endl;
-      return RTN_ERR_NOCOAST;
+      return RTN_ERR_NO_COAST;
    }
 
    return RTN_OK;
@@ -1055,7 +1055,7 @@ int CSimulation::nLocateFloodAndCoasts(void)
       if (m_VFloodWaveSetupSurge.empty())
       {
          cerr << m_ulIter << ": " << ERR << "no flood coastline located: this iteration SWL = " << m_dThisIterSWL << ", maximum DEM top surface elevation = " << m_dThisIterTopElevMax << ", minimum DEM top surface elevation = " << m_dThisIterTopElevMin << endl;
-         return RTN_ERR_NOCOAST;
+         return RTN_ERR_NO_COAST;
       }
 
       break;
@@ -1066,7 +1066,7 @@ int CSimulation::nLocateFloodAndCoasts(void)
       if (m_VFloodWaveSetupSurgeRunup.empty())
       {
          cerr << m_ulIter << ": " << ERR << "no flood coastline located: this iteration SWL = " << m_dThisIterSWL << ", maximum DEM top surface elevation = " << m_dThisIterTopElevMax << ", minimum DEM top surface elevation = " << m_dThisIterTopElevMin << endl;
-         return RTN_ERR_NOCOAST;
+         return RTN_ERR_NO_COAST;
       }
 
       break;
@@ -1109,7 +1109,7 @@ int CSimulation::FindAllInundatedCells(void)
       int const nX = m_VEdgeCell[n].nGetX();
       int const nY = m_VEdgeCell[n].nGetY();
 
-      if ((!m_pRasterGrid->m_Cell[nX][nY].bIsCellFloodCheck()) && (m_pRasterGrid->m_Cell[nX][nY].bIsInundated()))
+      if ((! m_pRasterGrid->m_Cell[nX][nY].bIsCellFloodCheck()) && (m_pRasterGrid->m_Cell[nX][nY].bIsInundated()))
       {
          // This edge cell is below SWL and sea depth remains set to zero
          FloodFillLand(nX, nY);

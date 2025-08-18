@@ -12,11 +12,11 @@
    39 | #include "coast.h"
       | ^~~~~~~~~~~~~~~~~~
    40 | #include "simulation.h"
-/home/dave/coast/CoastalME/src/cme.h:1226:9: warning: member variable 'chFill' has public visibility [misc-non-private-member-variables-in-classes]
- 1226 |    char chFill;
+/home/dave/coast/CoastalME/src/cme.h:1228:9: warning: member variable 'chFill' has public visibility [misc-non-private-member-variables-in-classes]
+ 1228 |    char chFill;
       |         ^
-/home/dave/coast/CoastalME/src/cme.h:1227:8: warning: member variable 'nWidth' has public visibility [misc-non-private-member-variables-in-classes]
- 1227 |    int nWidth;
+/home/dave/coast/CoastalME/src/cme.h:1229:8: warning: member variable 'nWidth' has public visibility [misc-non-private-member-variables-in-classes]
+ 1229 |    int nWidth;
       |        ^
 /home/dave/coast/CoastalME/src/coast.h:31:10: warning: circular header file dependency detected while including 'coast_landform.h', please check the include path [misc-header-include-cycle]
    31 | #include "coast_landform.h"
@@ -33,8 +33,8 @@
 /home/dave/coast/CoastalME/src/coast.h:31:10: note: 'coast_landform.h' included from here
    31 | #include "coast_landform.h"
       |          ^
-/home/dave/coast/CoastalME/src/assign_landforms.cpp:37:10: note: 'coast.h' included from here
-   37 | #include "coast.h"
+/home/dave/coast/CoastalME/src/assign_landforms.cpp:35:10: note: 'coast.h' included from here
+   35 | #include "coast.h"
       |          ^
 /home/dave/coast/CoastalME/src/coast_landform.h:39:8: warning: member variable 'm_nCoast' has protected visibility [misc-non-private-member-variables-in-classes]
    39 |    int m_nCoast;
@@ -63,9 +63,9 @@
    59 | #include "coast.h"
       | ^~~~~~~~~~~~~~~~~~
    60 | 
-/home/dave/coast/CoastalME/src/simulation.h:1838:80: warning: member variable 'LogStream' has public visibility [misc-non-private-member-variables-in-classes]
- 1838 |    void GetClosestPoint(double const, double const, double const, double const, double const, double const, double&, double&);
-      |                                                                                ^
+/home/dave/coast/CoastalME/src/simulation.h:1843:13: warning: member variable 'LogStream' has public visibility [misc-non-private-member-variables-in-classes]
+ 1843 |    ofstream LogStream;
+      |             ^
 /home/dave/coast/CoastalME/src/update_grid.cpp:33:1: warning: included header coast.h is not used directly [misc-include-cleaner]
    33 | #include "coast.h"
       | ^~~~~~~~~~~~~~~~~~
@@ -80,15 +80,15 @@
 /home/dave/coast/CoastalME/src/2di_shape.h:38:26: warning: member variable 'm_VPoints' has protected visibility [misc-non-private-member-variables-in-classes]
    38 |    vector<CGeom2DIPoint> m_VPoints;
       |                          ^
-/home/dave/coast/CoastalME/src/cell.h:39:1: warning: included header cme.h is not used directly [misc-include-cleaner]
-   39 | #include "cme.h"
+/home/dave/coast/CoastalME/src/cell.h:32:1: warning: included header cme.h is not used directly [misc-include-cleaner]
+   32 | #include "cme.h"
       | ^~~~~~~~~~~~~~~~
-   40 | #include "raster_grid.h"
-/home/dave/coast/CoastalME/src/cme.h:1226:9: warning: member variable 'chFill' has public visibility [misc-non-private-member-variables-in-classes]
- 1226 |    char chFill;
+   33 | #include "raster_grid.h"
+/home/dave/coast/CoastalME/src/cme.h:1228:9: warning: member variable 'chFill' has public visibility [misc-non-private-member-variables-in-classes]
+ 1228 |    char chFill;
       |         ^
-/home/dave/coast/CoastalME/src/cme.h:1227:8: warning: member variable 'nWidth' has public visibility [misc-non-private-member-variables-in-classes]
- 1227 |    int nWidth;
+/home/dave/coast/CoastalME/src/cme.h:1229:8: warning: member variable 'nWidth' has public visibility [misc-non-private-member-variables-in-classes]
+ 1229 |    int nWidth;
       |        ^
 /home/dave/coast/CoastalME/src/coast.h:31:10: warning: circular header file dependency detected while including 'coast_landform.h', please check the include path [misc-header-include-cycle]
    31 | #include "coast_landform.h"

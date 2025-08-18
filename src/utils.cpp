@@ -65,7 +65,7 @@ using std::ios;
 
 #include <iomanip>
 using std::put_time;
-using std::resetiosflags;
+// using std::resetiosflags;
 using std::setprecision;
 using std::setw;
 
@@ -322,7 +322,7 @@ int CSimulation::nDoSimulationTimeMultiplier(string const* strIn)
    switch (nTimeUnits)
    {
    case TIME_UNKNOWN:
-      return RTN_ERR_TIMEUNITS;
+      return RTN_ERR_TIME_UNITS;
       break;
 
    case TIME_HOURS:
@@ -644,10 +644,10 @@ void CSimulation::AnnounceReadSCAPEShapeFunctionFile(void)
 //===============================================================================================================================
 //! Tells the user that we are now initializing
 //===============================================================================================================================
-void CSimulation::AnnounceInitializing(void)
+void CSimulation::AnnounceFinalInitialization(void)
 {
    // Tell the user what is happening
-   cout << INITIALIZING << endl;
+   cout << INITIALIZING_FINAL << endl;
 }
 
 //===============================================================================================================================
@@ -803,9 +803,9 @@ string CSimulation::strListRasterFiles(void) const
       strTmp.append(", ");
    }
 
-   if (m_bLocalSlopeSave)
+   if (m_bSlopeConsSedSave)
    {
-      strTmp.append(RASTER_LOCAL_SLOPE_CODE);
+      strTmp.append(RASTER_SLOPE_OF_CONSOLIDATED_SEDIMENT_CODE);
       strTmp.append(", ");
    }
 
@@ -987,19 +987,19 @@ string CSimulation::strListVectorFiles(void) const
 
    if (m_bCliffNotchSave)
    {
-      strTmp.append(VECTOR_CLIFF_NOTCH_SIZE_CODE);
+      strTmp.append(VECTOR_CLIFF_NOTCH_ACTIVE_CODE);
       strTmp.append(", ");
    }
 
    if (m_bShadowBoundarySave)
    {
-      strTmp.append(VECTOR_SHADOW_BOUNDARY_CODE);
+      strTmp.append(VECTOR_SHADOW_ZONE_BOUNDARY_CODE);
       strTmp.append(", ");
    }
 
    if (m_bShadowDowndriftBoundarySave)
    {
-      strTmp.append(VECTOR_DOWNDRIFT_BOUNDARY_CODE);
+      strTmp.append(VECTOR_DOWNDRIFT_ZONE_BOUNDARY_CODE);
       strTmp.append(", ");
    }
 
@@ -1029,9 +1029,9 @@ string CSimulation::strListTSFiles(void) const
       strTmp.append(", ");
    }
 
-   if (m_bStillWaterLevelTSSave)
+   if (m_bSWLTSSave)
    {
-      strTmp.append(TIME_SERIES_STILL_WATER_LEVEL_CODE);
+      strTmp.append(TIME_SERIES_SWL_CODE);
       strTmp.append(", ");
    }
 
@@ -1095,6 +1095,12 @@ string CSimulation::strListTSFiles(void) const
       strTmp.append(", ");
    }
 
+   if (m_bCliffNotchElevTSSave)
+   {
+      strTmp.append(TIME_SERIES_CLIFF_NOTCH_ELEV_CODE);
+      strTmp.append(", ");
+   }
+
    // Remove the trailing comma and space
    if (strTmp.size() > 2)
       strTmp.resize(strTmp.size() - 2);
@@ -1103,7 +1109,7 @@ string CSimulation::strListTSFiles(void) const
 }
 
 //===============================================================================================================================
-//! The bSetUpTSFiles member function sets up the time series files
+//! This member function intialises the time series files
 //===============================================================================================================================
 bool CSimulation::bSetUpTSFiles(void)
 {
@@ -1116,10 +1122,9 @@ bool CSimulation::bSetUpTSFiles(void)
       strTSFile.append(TIME_SERIES_SEA_AREA_NAME);
       strTSFile.append(CSVEXT);
 
-      // Open wetted time-series CSV file
+      // Open sea area time-series CSV file
       SeaAreaTSStream.open(strTSFile.c_str(), ios::out | ios::trunc);
-
-      if (!SeaAreaTSStream)
+      if (! SeaAreaTSStream)
       {
          // Error, cannot open wetted area  time-series file
          cerr << ERR << "cannot open " << strTSFile << " for output" << endl;
@@ -1127,19 +1132,18 @@ bool CSimulation::bSetUpTSFiles(void)
       }
    }
 
-   if (m_bStillWaterLevelTSSave)
+   if (m_bSWLTSSave)
    {
-      // Now still water level
+      // Now SWL
       strTSFile = m_strOutPath;
-      strTSFile.append(TIME_SERIES_STILL_WATER_LEVEL_NAME);
+      strTSFile.append(TIME_SERIES_SWL_NAME);
       strTSFile.append(CSVEXT);
 
-      // Open still water level time-series CSV file
-      StillWaterLevelTSStream.open(strTSFile.c_str(), ios::out | ios::trunc);
-
-      if (!StillWaterLevelTSStream)
+      // Open SWL time-series CSV file
+      SWLTSStream.open(strTSFile.c_str(), ios::out | ios::trunc);
+      if (! SWLTSStream)
       {
-         // Error, cannot open still water level time-series file
+         // Error, cannot open SWL time-series file
          cerr << ERR << "cannot open " << strTSFile << " for output" << endl;
          return false;
       }
@@ -1154,7 +1158,6 @@ bool CSimulation::bSetUpTSFiles(void)
 
       // Open erosion time-series CSV file
       PlatformErosionTSStream.open(strTSFile.c_str(), ios::out | ios::trunc);
-
       if (! PlatformErosionTSStream)
       {
          // Error, cannot open erosion time-series file
@@ -1172,8 +1175,7 @@ bool CSimulation::bSetUpTSFiles(void)
 
       // Open cliff collapse erosion time-series CSV file
       CliffCollapseErosionTSStream.open(strTSFile.c_str(), ios::out | ios::trunc);
-
-      if (!CliffCollapseErosionTSStream)
+      if (! CliffCollapseErosionTSStream)
       {
          // Error, cannot open cliff collapse erosion time-series file
          cerr << ERR << "cannot open " << strTSFile << " for output" << endl;
@@ -1190,8 +1192,7 @@ bool CSimulation::bSetUpTSFiles(void)
 
       // Open cliff collapse deposition time-series CSV file
       CliffCollapseDepositionTSStream.open(strTSFile.c_str(), ios::out | ios::trunc);
-
-      if (!CliffCollapseDepositionTSStream)
+      if (! CliffCollapseDepositionTSStream)
       {
          // Error, cannot open cliff collapse deposition time-series file
          cerr << ERR << "cannot open " << strTSFile << " for output" << endl;
@@ -1208,8 +1209,7 @@ bool CSimulation::bSetUpTSFiles(void)
 
       // Open net cliff collapse time-series CSV file
       CliffCollapseNetChangeTSStream.open(strTSFile.c_str(), ios::out | ios::trunc);
-
-      if (!CliffCollapseNetChangeTSStream)
+      if (! CliffCollapseNetChangeTSStream)
       {
          // Error, cannot open net cliff collapse time-series file
          cerr << ERR << "cannot open " << strTSFile << " for output" << endl;
@@ -1226,8 +1226,7 @@ bool CSimulation::bSetUpTSFiles(void)
 
       // Open beach erosion time-series CSV file
       BeachErosionTSStream.open(strTSFile.c_str(), ios::out | ios::trunc);
-
-      if (!BeachErosionTSStream)
+      if (! BeachErosionTSStream)
       {
          // Error, cannot open beach erosion time-series file
          cerr << ERR << "cannot open " << strTSFile << " for output" << endl;
@@ -1244,8 +1243,7 @@ bool CSimulation::bSetUpTSFiles(void)
 
       // Open beach deposition time-series CSV file
       BeachDepositionTSStream.open(strTSFile.c_str(), ios::out | ios::trunc);
-
-      if (!BeachDepositionTSStream)
+      if (! BeachDepositionTSStream)
       {
          // Error, cannot open beach deposition time-series file
          cerr << ERR << "cannot open " << strTSFile << " for output" << endl;
@@ -1262,8 +1260,7 @@ bool CSimulation::bSetUpTSFiles(void)
 
       // Open net beach sediment change time-series CSV file
       BeachSedimentNetChangeTSStream.open(strTSFile.c_str(), ios::out | ios::trunc);
-
-      if (!BeachSedimentNetChangeTSStream)
+      if (! BeachSedimentNetChangeTSStream)
       {
          // Error, cannot open beach sediment change time-series file
          cerr << ERR << "cannot open " << strTSFile << " for output" << endl;
@@ -1280,8 +1277,7 @@ bool CSimulation::bSetUpTSFiles(void)
 
       // Open sediment load time-series CSV file
       FineSedSuspensionTSStream.open(strTSFile.c_str(), ios::out | ios::trunc);
-
-      if (!FineSedSuspensionTSStream)
+      if (! FineSedSuspensionTSStream)
       {
          // Error, cannot open sediment load time-series file
          cerr << ERR << "cannot open " << strTSFile << " for output" << endl;
@@ -1298,8 +1294,7 @@ bool CSimulation::bSetUpTSFiles(void)
 
       // Open sediment load time-series CSV file
       FloodSetupSurgeTSStream.open(strTSFile.c_str(), ios::out | ios::trunc);
-
-      if (!FloodSetupSurgeTSStream)
+      if (! FloodSetupSurgeTSStream)
       {
          // Error, cannot open sediment load time-series file
          cerr << ERR << "cannot open " << strTSFile << " for output" << endl;
@@ -1316,10 +1311,26 @@ bool CSimulation::bSetUpTSFiles(void)
 
       // Open sediment load time-series CSV file
       FloodSetupSurgeRunupTSStream.open(strTSFile.c_str(), ios::out | ios::trunc);
-
-      if (!FloodSetupSurgeRunupTSStream)
+      if (! FloodSetupSurgeRunupTSStream)
       {
          // Error, cannot open sediment load time-series file
+         cerr << ERR << "cannot open " << strTSFile << " for output" << endl;
+         return false;
+      }
+   }
+
+   if (m_bCliffNotchElevTSSave)
+   {
+      // Elevation of cliff notch
+      strTSFile = m_strOutPath;
+      strTSFile.append(TIME_SERIES_CLIFF_NOTCH_ELEV_NAME);
+      strTSFile.append(CSVEXT);
+
+      // Open cliff notch elevation time-series CSV file
+      CliffNotchElevTSStream.open(strTSFile.c_str(), ios::out | ios::trunc);
+      if (! CliffNotchElevTSStream)
+      {
+         // Error, cannot open cliff notch elevation time-series file
          cerr << ERR << "cannot open " << strTSFile << " for output" << endl;
          return false;
       }
@@ -1436,85 +1447,84 @@ void CSimulation::DoCPUClockReset(void)
 //===============================================================================================================================
 void CSimulation::AnnounceSimEnd(void)
 {
-   cout << endl
-        << FINAL_OUTPUT << endl;
+   cout << endl << FINAL_OUTPUT << endl;
 }
 
-//===============================================================================================================================
-//! Calculates and displays time elapsed in terms of CPU time and real time, also calculates time per timestep in terms of both CPU time and real time
-//===============================================================================================================================
-void CSimulation::CalcTime(double const dRunLength)
-{
-   // Reset CPU count for last time
-   DoCPUClockReset();
-
-   if (! bFPIsEqual(m_dCPUClock, -1.0, TOLERANCE))
-   {
-      // Calculate CPU time in secs
-      double const dDuration = m_dCPUClock / CLOCKS_PER_SEC;
-
-      // And write CPU time out to OutStream and LogStream
-      OutStream << "CPU time elapsed: " << strDispTime(dDuration, false, true);
-      LogStream << "CPU time elapsed: " << strDispTime(dDuration, false, true);
-
-      // Calculate CPU time per timestep
-      double const dPerTimestep = dDuration / static_cast<double>(m_ulTotTimestep);
-
-      // And write CPU time per timestep to OutStream and LogStream
-      OutStream << fixed << setprecision(4) << " (" << dPerTimestep << " per timestep)" << endl;
-      LogStream << fixed << setprecision(4) << " (" << dPerTimestep << " per timestep)" << endl;
-
-      // Calculate ratio of CPU time to time simulated
-      OutStream << resetiosflags(ios::floatfield);
-      OutStream << fixed << setprecision(0) << "In terms of CPU time, this is ";
-      LogStream << resetiosflags(ios::floatfield);
-      LogStream << fixed << setprecision(0) << "In terms of CPU time, this is ";
-
-      if (dDuration > dRunLength)
-      {
-         OutStream << dDuration / dRunLength << " x slower than reality" << endl;
-         LogStream << dDuration / dRunLength << " x slower than reality" << endl;
-      }
-
-      else
-      {
-         OutStream << dRunLength / dDuration << " x faster than reality" << endl;
-         LogStream << dRunLength / dDuration << " x faster than reality" << endl;
-      }
-   }
-
-   // Calculate run time
-   double const dDuration = difftime(m_tSysEndTime, m_tSysStartTime);
-
-   // And write run time out to OutStream and LogStream
-   OutStream << "Run time elapsed: " << strDispTime(dDuration, false, false);
-   LogStream << "Run time elapsed: " << strDispTime(dDuration, false, false);
-
-   // Calculate run time per timestep
-   double const dPerTimestep = dDuration / static_cast<double>(m_ulTotTimestep);
-
-   // And write run time per timestep to OutStream and LogStream
-   OutStream << resetiosflags(ios::floatfield);
-   OutStream << " (" << fixed << setprecision(4) << dPerTimestep << " per timestep)" << endl;
-   LogStream << resetiosflags(ios::floatfield);
-   LogStream << " (" << fixed << setprecision(4) << dPerTimestep << " per timestep)" << endl;
-
-   // Calculate ratio of run time to time simulated
-   OutStream << fixed << setprecision(0) << "In terms of run time, this is ";
-   LogStream << fixed << setprecision(0) << "In terms of run time, this is ";
-
-   if (dDuration > dRunLength)
-   {
-      OutStream << dDuration / dRunLength << " x slower than reality" << endl;
-      LogStream << dDuration / dRunLength << " x slower than reality" << endl;
-   }
-
-   else
-   {
-      OutStream << dRunLength / dDuration << " x faster than reality" << endl;
-      LogStream << dRunLength / dDuration << " x faster than reality" << endl;
-   }
-}
+// //===============================================================================================================================
+// //! Calculates and displays time elapsed in terms of CPU time and real time, also calculates time per timestep in terms of both CPU time and real time
+// //===============================================================================================================================
+// void CSimulation::CalcTime(double const dRunLength)
+// {
+//    // Reset CPU count for last time
+//    DoCPUClockReset();
+//
+//    if (! bFPIsEqual(m_dCPUClock, -1.0, TOLERANCE))
+//    {
+//       // Calculate CPU time in secs
+//       double const dDuration = m_dCPUClock / CLOCKS_PER_SEC;
+//
+//       // And write CPU time out to OutStream and LogStream
+//       OutStream << "CPU time elapsed: " << strDispTime(dDuration, false, true);
+//       LogStream << "CPU time elapsed: " << strDispTime(dDuration, false, true);
+//
+//       // Calculate CPU time per timestep
+//       double const dPerTimestep = dDuration / static_cast<double>(m_ulTotTimestep);
+//
+//       // And write CPU time per timestep to OutStream and LogStream
+//       OutStream << fixed << setprecision(4) << " (" << dPerTimestep << " per timestep)" << endl;
+//       LogStream << fixed << setprecision(4) << " (" << dPerTimestep << " per timestep)" << endl;
+//
+//       // Calculate ratio of CPU time to time simulated
+//       OutStream << resetiosflags(ios::floatfield);
+//       OutStream << fixed << setprecision(0) << "In terms of CPU time, this is ";
+//       LogStream << resetiosflags(ios::floatfield);
+//       LogStream << fixed << setprecision(0) << "In terms of CPU time, this is ";
+//
+//       if (dDuration > dRunLength)
+//       {
+//          OutStream << dDuration / dRunLength << " x slower than reality" << endl;
+//          LogStream << dDuration / dRunLength << " x slower than reality" << endl;
+//       }
+//
+//       else
+//       {
+//          OutStream << dRunLength / dDuration << " x faster than reality" << endl;
+//          LogStream << dRunLength / dDuration << " x faster than reality" << endl;
+//       }
+//    }
+//
+//    // Calculate run time
+//    double const dDuration = difftime(m_tSysEndTime, m_tSysStartTime);
+//
+//    // And write run time out to OutStream and LogStream
+//    OutStream << "Run time elapsed: " << strDispTime(dDuration, false, false);
+//    LogStream << "Run time elapsed: " << strDispTime(dDuration, false, false);
+//
+//    // Calculate run time per timestep
+//    double const dPerTimestep = dDuration / static_cast<double>(m_ulTotTimestep);
+//
+//    // And write run time per timestep to OutStream and LogStream
+//    OutStream << resetiosflags(ios::floatfield);
+//    OutStream << " (" << fixed << setprecision(4) << dPerTimestep << " per timestep)" << endl;
+//    LogStream << resetiosflags(ios::floatfield);
+//    LogStream << " (" << fixed << setprecision(4) << dPerTimestep << " per timestep)" << endl;
+//
+//    // Calculate ratio of run time to time simulated
+//    OutStream << fixed << setprecision(0) << "In terms of run time, this is ";
+//    LogStream << fixed << setprecision(0) << "In terms of run time, this is ";
+//
+//    if (dDuration > dRunLength)
+//    {
+//       OutStream << dDuration / dRunLength << " x slower than reality" << endl;
+//       LogStream << dDuration / dRunLength << " x slower than reality" << endl;
+//    }
+//
+//    else
+//    {
+//       OutStream << dRunLength / dDuration << " x faster than reality" << endl;
+//       LogStream << dRunLength / dDuration << " x faster than reality" << endl;
+//    }
+// }
 
 //===============================================================================================================================
 //! strDispSimTime returns a string formatted as year Julian_day hour, given a parameter in hours
@@ -1539,7 +1549,6 @@ string CSimulation::strDispSimTime(const double dTimeIn)
       strTime = to_string(static_cast<int>(dYears));
       strTime.append("y ");
    }
-
    else
       strTime = "0y ";
 
@@ -1554,7 +1563,6 @@ string CSimulation::strDispSimTime(const double dTimeIn)
       strTime.append(ststrTmp.str());
       strTime.append("d ");
    }
-
    else
       strTime.append("000d ");
 
@@ -1593,7 +1601,6 @@ string CSimulation::strDispTime(const double dTimeIn, const bool bRound, const b
       strTime = to_string(ulHours);
       strTime.append(":");
    }
-
    else
       strTime = "0:";
 
@@ -1609,7 +1616,6 @@ string CSimulation::strDispTime(const double dTimeIn, const bool bRound, const b
       strTime.append(ststrTmp.str());
       strTime.append(":");
    }
-
    else
       strTime.append("00:");
 
@@ -1674,10 +1680,8 @@ void CSimulation::AnnounceProgress(void)
       // Add a 'marker' for GIS saves etc.
       if (m_bSaveGISThisIter)
          cout << setw(9) << "GIS" + to_string(m_nGISSave);
-
       else if (m_bSedimentInputThisIter)
          cout << setw(9) << "SED INPUT";
-
       else
          cout << setw(9) << SPACE;
 
@@ -2009,19 +2013,19 @@ string CSimulation::strGetErrorText(int const nErr)
       strErr = "no sea cells found";
       break;
 
-   case RTN_ERR_GRIDTOLINE:
+   case RTN_ERR_GRID_TO_LINE:
       strErr = "error when searching grid for linear feature";
       break;
 
-   case RTN_ERR_NOCOAST:
+   case RTN_ERR_NO_COAST:
       strErr = "no coastlines found. Is the SWL correct?";
       break;
 
-   case RTN_ERR_PROFILEWRITE:
+   case RTN_ERR_PROFILE_WRITE:
       strErr = "error writing coastline-normal profiles";
       break;
 
-   case RTN_ERR_TIMEUNITS:
+   case RTN_ERR_TIME_UNITS:
       strErr = "error in time units";
       break;
 
@@ -2029,22 +2033,19 @@ string CSimulation::strGetErrorText(int const nErr)
       strErr = "no solution when finding end point for coastline-normal line";
       break;
 
-   // case RTN_ERR_PROFILE_ENDPOINT_AT_GRID_EDGE:
-   // strErr = "end point for coastline-normal line is at the grid edge";
-   // break;
    case RTN_ERR_PROFILE_ENDPOINT_IS_INLAND:
       strErr = "end point for coastline-normal line is not in the contiguous sea";
       break;
 
-   case RTN_ERR_CLIFFNOTCH:
+   case RTN_ERR_CLIFF_NOTCH:
       strErr = "cliff notch is above sediment top elevation";
       break;
 
-   case RTN_ERR_CLIFFDEPOSIT:
-      strErr = "unable to deposit sediment from cliff collapse";
+   case RTN_ERR_CLIFF_CANNOT_DEPOSIT_ALL:
+      strErr = "unable to deposit enough unconsolidated sediment (talus) from cliff collapse";
       break;
 
-   case RTN_ERR_PROFILESPACING:
+   case RTN_ERR_PROFILE_SPACING:
       strErr = "coastline-normal profiles are too closely spaced";
       break;
 
@@ -2254,7 +2255,7 @@ void CSimulation::DoSimulationEnd(int const nRtn)
 
    default:
       // Aborting because of some error
-      cerr << RUN_END_NOTICE << "iteration " << m_ulIter << ERROR_NOTICE << nRtn << " (" << strGetErrorText(nRtn) << ") on " << put_time(localtime(&m_tSysEndTime), "%T %A %d %B %Y") << endl;
+      cerr << RUN_END_NOTICE << "iteration " << m_ulIter << ERROR_NOTICE << nRtn << ": \"" << strGetErrorText(nRtn) << "\", " << put_time(localtime(&m_tSysEndTime), "%T %A %d %B %Y") << endl;
 
       if (m_ulIter > 1)
       {
@@ -2280,7 +2281,6 @@ void CSimulation::DoSimulationEnd(int const nRtn)
    }
 
 #ifdef __GNUG__
-
    if (isatty(fileno(stdout)))
    {
       // Stdout is connected to a tty, so not running as a background job
@@ -2316,7 +2316,6 @@ void CSimulation::DoSimulationEnd(int const nRtn)
             strCmd.append(": normal completion\" ");
             strCmd.append(m_strMailAddress);
          }
-
          else
          {
             // Error, so give some information to help debugging
@@ -2346,7 +2345,6 @@ void CSimulation::DoSimulationEnd(int const nRtn)
             cerr << ERR << EMAIL_ERROR << endl;
       }
    }
-
 #endif
 }
 

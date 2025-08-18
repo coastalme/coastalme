@@ -64,7 +64,7 @@ void CSimulation::DoCoastCurvature(int const nCoast, int const nHandedness)
    m_VCoast[nCoast].SetDetailedCurvature(nCoastSize - 1, dTemp);
 
    // Now create the smoothed curvature
-   int const nHalfWindow = m_nCoastCurvatureMovingWindowSize / 2;
+   int const nHalfWindow = m_nCoastSmoothingWindowSize / 2;
 
    // Apply a running mean smoothing filter, with a variable window size at both ends of the coastline
    for (int i = 0; i < nCoastSize; i++)
@@ -72,7 +72,7 @@ void CSimulation::DoCoastCurvature(int const nCoast, int const nHandedness)
       int nTmpWindow = 0;
       double dWindowTot = 0;
 
-      for (int j = -nHalfWindow; j < m_nCoastCurvatureMovingWindowSize - nHalfWindow; j++)
+      for (int j = -nHalfWindow; j < m_nCoastSmoothingWindowSize - nHalfWindow; j++)
       {
          // For points at both ends of the coastline, use a smaller window
          int const k = i + j;

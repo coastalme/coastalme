@@ -1,5 +1,4 @@
 /*!
-
    \file calc_external_forcing.cpp
    \brief Calculates external forcings
    \details TODO 001 A more detailed description of these routines.
@@ -7,7 +6,6 @@
    \author Andres Payo
    \date 2025
    \copyright GNU General Public License
-
 */
 
 /* ==============================================================================================================================
@@ -43,7 +41,6 @@ int CSimulation::nCalcExternalForcing(void)
       // No tide data
       m_dThisIterSWL = m_dThisIterMeanSWL;
    }
-
    else
    {
       // We have tide data
@@ -82,7 +79,6 @@ int CSimulation::nCalcExternalForcing(void)
          m_dAllCellsDeepWaterWaveAngle = m_VdTSDeepWaterWaveStationAngle[snWaveStationDataCount];
          m_dAllCellsDeepWaterWavePeriod = m_VdTSDeepWaterWaveStationPeriod[snWaveStationDataCount];
       }
-
       else
       {
          // More than one wave station, so update this time step's deep water wave values for use in the nInterpolateAllDeepWaterWaveValues() routine. Note that the order on the vector is determined by the points ID i.e. to ensure that stations match with time series

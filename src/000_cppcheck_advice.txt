@@ -1,93 +1,9 @@
-/home/dave/coast/CoastalME/src/2d_shape.cpp:44:0: style: The function 'Clear' is never used. [unusedFunction]
-void CA2DShape::Clear(void)
+2di_shape.cpp:57:0: style: The function 'Clear' is never used. [unusedFunction]
+void CA2DIShape::Clear(void)
 ^
-/home/dave/coast/CoastalME/src/cell.cpp:221:0: style: The function 'bIsPossibleFloodStartCell' is never used. [unusedFunction]
-bool CGeomCell::bIsPossibleFloodStartCell(void) const
-^
-/home/dave/coast/CoastalME/src/cell.cpp:283:0: style: The function 'SetProfileID' is never used. [unusedFunction]
-void CGeomCell::SetProfileID(int const nProfile)
-^
-/home/dave/coast/CoastalME/src/cell.cpp:323:0: style: The function 'SetPolygonID' is never used. [unusedFunction]
-void CGeomCell::SetPolygonID(int const nPolyID)
-^
-/home/dave/coast/CoastalME/src/cell.cpp:335:0: style: The function 'SetPolygonCoastID' is never used. [unusedFunction]
-void CGeomCell::SetPolygonCoastID(int const nPolyCoastID)
-^
-/home/dave/coast/CoastalME/src/cell.cpp:384:0: style: The function 'SetWaveFlood' is never used. [unusedFunction]
-void CGeomCell::SetWaveFlood(void)
-^
-/home/dave/coast/CoastalME/src/cell_sediment.cpp:94:0: style: The function 'AddFineDepth' is never used. [unusedFunction]
-void CRWCellSediment::AddFineDepth(double const dSedDepthToAdd)
-^
-/home/dave/coast/CoastalME/src/cme.h:1177:0: style: The function 'bIsBetween' is never used. [unusedFunction]
-bool bIsBetween(T a, T b, T c)
-^
-/home/dave/coast/CoastalME/src/coast.cpp:397:0: style: The function 'dGetSmoothCurvatureMean' is never used. [unusedFunction]
-double CRWCoast::dGetSmoothCurvatureMean(void) const
-^
-/home/dave/coast/CoastalME/src/coast.cpp:409:0: style: The function 'dGetSmoothCurvatureSTD' is never used. [unusedFunction]
-double CRWCoast::dGetSmoothCurvatureSTD(void) const
-^
-/home/dave/coast/CoastalME/src/coast.cpp:422:0: style: The function 'pGetLastProfile' is never used. [unusedFunction]
-CGeomProfile* CRWCoast::pGetLastProfile(void)
-^
-/home/dave/coast/CoastalME/src/coast.cpp:472:0: style: The function 'pGetDownCoastProfile' is never used. [unusedFunction]
-CGeomProfile* CRWCoast::pGetDownCoastProfile(CGeomProfile const* pProfile)
-^
-/home/dave/coast/CoastalME/src/coast.cpp:478:0: style: The function 'pGetDownCoastProfileNotIncLastProfile' is never used. [unusedFunction]
-CGeomProfile* CRWCoast::pGetDownCoastProfileNotIncLastProfile(CGeomProfile const* pProfile)
-^
-/home/dave/coast/CoastalME/src/coast.cpp:489:0: style: The function 'pGetUpCoastProfile' is never used. [unusedFunction]
-CGeomProfile* CRWCoast::pGetUpCoastProfile(CGeomProfile const* pProfile)
-^
-/home/dave/coast/CoastalME/src/coast_polygon.cpp:118:0: style: The function 'SetCoastEndPolygon' is never used. [unusedFunction]
-void CGeomCoastPolygon::SetCoastEndPolygon(void)
-^
-/home/dave/coast/CoastalME/src/coast_polygon.cpp:130:0: style: The function 'SetCoastStartPolygon' is never used. [unusedFunction]
-void CGeomCoastPolygon::SetCoastStartPolygon(void)
-^
-/home/dave/coast/CoastalME/src/coast_polygon.cpp:308:0: style: The function 'AddToSuspensionUnconsFine' is never used. [unusedFunction]
-void CGeomCoastPolygon::AddToSuspensionUnconsFine(double const dDepth)
-^
-/home/dave/coast/CoastalME/src/coast_polygon.cpp:633:0: style: The function 'AddPlatformErosionToSuspensionUnconsFine' is never used. [unusedFunction]
-void CGeomCoastPolygon::AddPlatformErosionToSuspensionUnconsFine(double const dDepth)
-^
-/home/dave/coast/CoastalME/src/coast_polygon.cpp:639:0: style: The function 'dGetPlatformErosionToSuspensionUnconsFine' is never used. [unusedFunction]
-double CGeomCoastPolygon::dGetPlatformErosionToSuspensionUnconsFine(void) const
-^
-/home/dave/coast/CoastalME/src/coast_polygon.cpp:783:0: style: The function 'nGetNumVertices' is never used. [unusedFunction]
-int CGeomCoastPolygon::nGetNumVertices(void) const
-^
-/home/dave/coast/CoastalME/src/coast_polygon.cpp:789:0: style: The function 'PtiGetVertex' is never used. [unusedFunction]
-CGeom2DIPoint CGeomCoastPolygon::PtiGetVertex(int const nIndex) const
-^
-/home/dave/coast/CoastalME/src/create_polygons.cpp:996:0: style: The function 'PtFindPointInPolygon' is never used. [unusedFunction]
-CGeom2DPoint CSimulation::PtFindPointInPolygon(vector<CGeom2DPoint> const* pPtPoints, int const nStartPoint)
-^
-/home/dave/coast/CoastalME/src/gis_utils.cpp:435:0: style: The function 'PtiAverage' is never used. [unusedFunction]
-CGeom2DIPoint CSimulation::PtiAverage(CGeom2DIPoint const* pPti1, CGeom2DIPoint const* pPti2)
-^
-/home/dave/coast/CoastalME/src/gis_utils.cpp:595:0: style: The function 'PtGetPerpendicular' is never used. [unusedFunction]
-CGeom2DPoint CSimulation::PtGetPerpendicular(CGeom2DPoint const* PtStart, CGeom2DPoint const* PtNext, double const dDesiredLength, int const nHandedness)
-^
-/home/dave/coast/CoastalME/src/multi_line.cpp:49:0: style: The function 'SetPoints' is never used. [unusedFunction]
-void CGeomMultiLine::SetPoints(vector<CGeom2DPoint> const& pVPts)
-^
-/home/dave/coast/CoastalME/src/multi_line.cpp:145:0: style: The function 'RemoveLineSegment' is never used. [unusedFunction]
-void CGeomMultiLine::RemoveLineSegment(int const nSegment)
-^
-/home/dave/coast/CoastalME/src/profile.cpp:618:0: style: The function 'nGetIndexOfCellInProfile' is never used. [unusedFunction]
-int CGeomProfile::nGetIndexOfCellInProfile(int const nX, int const nY)
-^
-/home/dave/coast/CoastalME/src/utils.cpp:1446:0: style: The function 'CalcTime' is never used. [unusedFunction]
-void CSimulation::CalcTime(double const dRunLength)
-^
-/home/dave/coast/CoastalME/src/utils.cpp:2356:0: style: The function 'pstrChangeToBackslash' is never used. [unusedFunction]
+utils.cpp:2349:0: style: The function 'pstrChangeToBackslash' is never used. [unusedFunction]
 string CSimulation::pstrChangeToBackslash(string const* strIn)
 ^
-/home/dave/coast/CoastalME/src/utils.cpp:2366:0: style: The function 'pstrChangeToForwardSlash' is never used. [unusedFunction]
+utils.cpp:2359:0: style: The function 'pstrChangeToForwardSlash' is never used. [unusedFunction]
 string CSimulation::pstrChangeToForwardSlash(string const* strIn)
-^
-/home/dave/coast/CoastalME/src/utils_global.cpp:112:0: style: The function 'strDbl' is never used. [unusedFunction]
-string strDbl(double const dX, int const nDigits)
 ^

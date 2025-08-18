@@ -150,8 +150,7 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
             // Add to the this-iteration total of fine sediment input
             m_dThisiterUnconsFineInput += dFineDepth;
 
-            // And assign the cell's landform
-            pLandform->SetLFCategory(LF_CAT_SEDIMENT_INPUT);
+            // And assign the cell's landform category and subcategory
             pLandform->SetLFSubCategory(LF_SUBCAT_SEDIMENT_INPUT_UNCONSOLIDATED);
          }
 
@@ -173,8 +172,7 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
             // Add to the this-iteration total of sand sediment input
             m_dThisiterUnconsSandInput += dSandDepth;
 
-            // And assign the cell's landform
-            pLandform->SetLFCategory(LF_CAT_SEDIMENT_INPUT);
+            // And assign the cell's landform category and subcategory
             pLandform->SetLFSubCategory(LF_SUBCAT_SEDIMENT_INPUT_UNCONSOLIDATED);
          }
 
@@ -196,8 +194,7 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
             // Add to the this-iteration total of coarse sediment input
             m_dThisiterUnconsCoarseInput += dCoarseDepth;
 
-            // And assign the cell's landform
-            pLandform->SetLFCategory(LF_CAT_SEDIMENT_INPUT);
+            // And assign the cell's landform category and subcategory
             pLandform->SetLFSubCategory(LF_SUBCAT_SEDIMENT_INPUT_UNCONSOLIDATED);
          }
 
@@ -562,8 +559,7 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
          // Add to the this-iteration total of fine sediment input
          m_dThisiterUnconsFineInput += dFineDepth;
 
-         // And assign the cell's landform
-         pLandform->SetLFCategory(LF_CAT_SEDIMENT_INPUT);
+         // And assign the cell's landform category and subcategory
          pLandform->SetLFSubCategory(LF_SUBCAT_SEDIMENT_INPUT_UNCONSOLIDATED);
       }
 
@@ -584,8 +580,7 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
          // Add to the this-iteration total of sand sediment input
          m_dThisiterUnconsSandInput += dSandDepth;
 
-         // And assign the cell's landform
-         pLandform->SetLFCategory(LF_CAT_SEDIMENT_INPUT);
+         // And assign the cell's landform category and subcategory
          pLandform->SetLFSubCategory(LF_SUBCAT_SEDIMENT_INPUT_UNCONSOLIDATED);
       }
 
@@ -606,8 +601,7 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
          // Add to the this-iteration total of coarse sediment input
          m_dThisiterUnconsCoarseInput += dCoarseDepth;
 
-         // And assign the cell's landform
-         pLandform->SetLFCategory(LF_CAT_SEDIMENT_INPUT);
+         // And assign the cell's landform category and subcategory
          pLandform->SetLFSubCategory(LF_SUBCAT_SEDIMENT_INPUT_UNCONSOLIDATED);
       }
 

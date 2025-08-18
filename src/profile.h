@@ -163,7 +163,7 @@ class CGeomProfile : public CGeomMultiLine
    // bool bPointShared(int const) const;
 
    void SetUpCoastAdjacentProfile(CGeomProfile*);
-   CGeomProfile* pGetUpCoastAdjacentProfile(void) const;
+   // CGeomProfile* pGetUpCoastAdjacentProfile(void) const;
    void SetDownCoastAdjacentProfile(CGeomProfile*);
    CGeomProfile* pGetDownCoastAdjacentProfile(void) const;
 
@@ -173,7 +173,7 @@ class CGeomProfile : public CGeomMultiLine
    vector<CGeom2DIPoint>* pPtiVGetCellsInProfile(void);
    CGeom2DIPoint* pPtiGetCellInProfile(int const);
    int nGetNumCellsInProfile(void) const;
-   int nGetIndexOfCellInProfile(int const, int const);
+   // int nGetIndexOfCellInProfile(int const, int const);
    CGeom2DIPoint* pPtiGetLastCellInProfile(void);
    CGeom2DIPoint* pPtiGetFirstCellInProfile(void);
 

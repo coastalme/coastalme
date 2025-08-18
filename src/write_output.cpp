@@ -457,7 +457,7 @@ void CSimulation::WriteStartRunDetails(void)
       if (m_bRiverineFlooding)
       {
          OutStream << " Riverine flooding shapefile                               \t: " << m_strFloodLocationShapefile << endl;
-         OutStream << " Riverine flood location?                                  \t: " << (m_bFloodLocation ? "Y" : "N") << endl;
+         OutStream << " Riverine flood location?                                  \t: " << (m_bFloodLocationSave ? "Y" : "N") << endl;
          OutStream << " Riverine flood save?                                      \t: " << (m_bVectorWaveFloodLineSave ? "Y" : "N") << endl;
          OutStream << " GDAL/OGR riverine flooding event shapefile driver code    \t: " << m_strOGRFloodDriverCode << endl;
          OutStream << " GDAL/OGR riverine flooding shapefile driver desc          \t: " << m_strOGRFloodDriverDesc << endl;
@@ -567,6 +567,12 @@ void CSimulation::WriteStartRunDetails(void)
    if (m_bHaveConsolidatedSediment)
    {
       OutStream << " Do cliff collapse?                                        \t: " << (m_bDoCliffCollapse ? "Y" : "N") << endl;
+      OutStream << " Cliff algorithm                                           |t: ";
+      if (m_nCliffToeLocate == CLIFF_TOE_LOCATION_NONE)
+         OutStream << "original";
+      else if (m_nCliffToeLocate == CLIFF_TOE_LOCATION_SLOPE)
+         OutStream << "Wilf's";
+      OutStream << endl;
       OutStream << resetiosflags(ios::floatfield);
       OutStream << scientific << setprecision(2);
       OutStream << " Cliff resistance to erosion                               \t: " << m_dCliffErosionResistance << endl;
@@ -593,9 +599,9 @@ void CSimulation::WriteStartRunDetails(void)
    if (m_bRiverineFlooding)
    {
       // TODO 007 Need more info on this
-      OutStream << " FloodSWLSetupLine                                         \t: " << (m_bFloodSWLSetupLine ? "Y" : "N") << endl;
+      OutStream << " FloodSWLSetupLine                                         \t: " << (m_bFloodSWLSetupLineSave ? "Y" : "N") << endl;
       OutStream << " FloodSWLSetupSurgeLine                                    \t: " << (m_bFloodSWLSetupSurgeLine ? "Y" : "N") << endl;
-      OutStream << " m_bFloodSWLSetupSurgeRunupLine                            \t: " << (m_bFloodSWLSetupSurgeRunupLine ? "Y" : "N") << endl;
+      OutStream << " m_bFloodSWLSetupSurgeRunupLineSave                            \t: " << (m_bFloodSWLSetupSurgeRunupLineSave ? "Y" : "N") << endl;
    }
 
    OutStream << " Gravitational acceleration                                \t: " << resetiosflags(ios::floatfield) << fixed << m_dG << " m^2/s" << endl;
@@ -634,11 +640,7 @@ void CSimulation::WriteStartRunDetails(void)
    if (m_bOutputErosionPotentialData)
       OutStream << " (see " << m_strOutPath << EROSION_POTENTIAL_LOOKUP_FILE << ")";
 
-   OutStream << endl;
-   OutStream << " Size of moving window for calculating coastline curvature \t: " << m_nCoastCurvatureMovingWindowSize << endl;
-
-   OutStream << endl
-             << endl;
+   OutStream << endl << endl;
 
    // -------------------------------------------------- Per-iteration output ----------------------------------------------------
    OutStream << fixed << setprecision(3);
@@ -652,7 +654,6 @@ void CSimulation::WriteStartRunDetails(void)
       OutStream << "# GISn = GIS files saved as <filename>n." << endl;
       OutStream << PER_ITER_CSV_HEAD << endl;
    }
-
    else
    {
       // Fixed-width format headers
@@ -846,7 +847,6 @@ bool CSimulation::bWritePerTimestepResultsFixedWidth(void)
 
    if (m_ulThisIterNumBeachDepositionCells > 0)
       OutStream << setw(7) << 1000 * dThisIterBeachDeposition / static_cast<double>(m_ulThisIterNumBeachDepositionCells);
-
    else
       OutStream << setw(7) << SPACE;
 
@@ -855,13 +855,11 @@ bool CSimulation::bWritePerTimestepResultsFixedWidth(void)
 
    if (m_dThisIterBeachDepositionSand > 0)
       OutStream << setw(5) << 1000 * m_dThisIterBeachDepositionSand / static_cast<double>(m_ulThisIterNumSeaCells);
-
    else
       OutStream << setw(5) << SPACE;
 
    if (m_dThisIterBeachDepositionCoarse > 0)
       OutStream << setw(4) << 1000 * m_dThisIterBeachDepositionCoarse / static_cast<double>(m_ulThisIterNumSeaCells);
-
    else
       OutStream << setw(4) << SPACE;
 
@@ -870,19 +868,16 @@ bool CSimulation::bWritePerTimestepResultsFixedWidth(void)
 
    if (m_dThisiterUnconsFineInput > 0)
       OutStream << setw(5) << m_dThisiterUnconsFineInput;
-
    else
       OutStream << setw(5) << SPACE;
 
    if (m_dThisiterUnconsSandInput > 0)
       OutStream << setw(4) << m_dThisiterUnconsSandInput;
-
    else
       OutStream << setw(4) << SPACE;
 
    if (m_dThisiterUnconsCoarseInput > 0)
       OutStream << setw(4) << m_dThisiterUnconsCoarseInput;
-
    else
       OutStream << setw(4) << SPACE;
 
@@ -891,39 +886,33 @@ bool CSimulation::bWritePerTimestepResultsFixedWidth(void)
 
    if ((m_dThisIterCliffCollapseErosionFineUncons + m_dThisIterCliffCollapseErosionFineCons) > 0)
       OutStream << setw(5) << 1000 * (m_dThisIterCliffCollapseErosionFineUncons + m_dThisIterCliffCollapseErosionFineCons) / static_cast<double>(m_ulThisIterNumCoastCells);
-
    else
       OutStream << setw(5) << SPACE;
 
    if ((m_dThisIterCliffCollapseErosionSandUncons + m_dThisIterCliffCollapseErosionSandCons) > 0)
       OutStream << setw(4) << 1000 * (m_dThisIterCliffCollapseErosionSandUncons + m_dThisIterCliffCollapseErosionSandCons) / static_cast<double>(m_ulThisIterNumCoastCells);
-
    else
       OutStream << setw(4) << SPACE;
 
    if ((m_dThisIterCliffCollapseErosionCoarseUncons + m_dThisIterCliffCollapseErosionCoarseCons) > 0)
       OutStream << setw(4) << 1000 * (m_dThisIterCliffCollapseErosionCoarseUncons + m_dThisIterCliffCollapseErosionCoarseCons) / static_cast<double>(m_ulThisIterNumCoastCells);
-
    else
       OutStream << setw(4) << SPACE;
 
    // Per-iteration cliff collapse deposition in m (average for all sea cells) ==================================================
    if (m_dThisIterUnconsSandCliffDeposition > 0)
       OutStream << setw(5) << 1000 * m_dThisIterUnconsSandCliffDeposition / static_cast<double>(m_ulThisIterNumSeaCells);
-
    else
       OutStream << setw(5) << SPACE;
 
    if (m_dThisIterUnconsCoarseCliffDeposition > 0)
       OutStream << setw(4) << 1000 * m_dThisIterUnconsCoarseCliffDeposition / static_cast<double>(m_ulThisIterNumSeaCells);
-
    else
       OutStream << setw(4) << SPACE;
 
    // Output per-timestep fine sediment going to suspension, in m (average for all sea cells) ==================================
    if (m_dThisIterFineSedimentToSuspension > 0)
       OutStream << setw(7) << 1000 * m_dThisIterFineSedimentToSuspension / static_cast<double>(m_ulThisIterNumSeaCells);
-
    else
       OutStream << setw(7) << SPACE;
 
@@ -964,7 +953,6 @@ bool CSimulation::bWritePerTimestepResultsCSV(void)
 
    if (m_ulThisIterNumPotentialPlatformErosionCells > 0)
       OutStream << 1000 * m_dThisIterPotentialPlatformErosion / static_cast<double>(m_ulThisIterNumPotentialPlatformErosionCells) << ",";
-
    else
       OutStream << ",";
 
@@ -975,26 +963,22 @@ bool CSimulation::bWritePerTimestepResultsCSV(void)
 
    if (m_ulThisIterNumActualPlatformErosionCells > 0)
       OutStream << 1000 * dThisIterActualPlatformErosion / static_cast<double>(m_ulThisIterNumActualPlatformErosionCells) << ",";
-
    else
       OutStream << ",";
 
    // Platform erosion by sediment type
    if (m_dThisIterActualPlatformErosionFineCons > 0)
       OutStream << 1000 * m_dThisIterActualPlatformErosionFineCons / static_cast<double>(m_ulThisIterNumSeaCells) << ",";
-
    else
       OutStream << ",";
 
    if (m_dThisIterActualPlatformErosionSandCons > 0)
       OutStream << 1000 * m_dThisIterActualPlatformErosionSandCons / static_cast<double>(m_ulThisIterNumSeaCells) << ",";
-
    else
       OutStream << ",";
 
    if (m_dThisIterActualPlatformErosionCoarseCons > 0)
       OutStream << 1000 * m_dThisIterActualPlatformErosionCoarseCons / static_cast<double>(m_ulThisIterNumSeaCells) << ",";
-
    else
       OutStream << ",";
 
@@ -1009,7 +993,6 @@ bool CSimulation::bWritePerTimestepResultsCSV(void)
       dTmp = 1000 * m_dThisIterPotentialBeachErosion / static_cast<double>(m_ulThisIterNumPotentialBeachErosionCells);
       OutStream << dTmp << ",";
    }
-
    else
       OutStream << ",";
 
@@ -1020,26 +1003,22 @@ bool CSimulation::bWritePerTimestepResultsCSV(void)
 
    if (m_ulThisIterNumActualBeachErosionCells > 0)
       OutStream << 1000 * dThisIterActualBeachErosion / static_cast<double>(m_ulThisIterNumActualBeachErosionCells) << ",";
-
    else
       OutStream << ",";
 
    // Beach erosion by sediment type
    if (m_dThisIterBeachErosionFine > 0)
       OutStream << 1000 * m_dThisIterBeachErosionFine / static_cast<double>(m_ulThisIterNumSeaCells) << ",";
-
    else
       OutStream << ",";
 
    if (m_dThisIterBeachErosionSand > 0)
       OutStream << 1000 * m_dThisIterBeachErosionSand / static_cast<double>(m_ulThisIterNumSeaCells) << ",";
-
    else
       OutStream << ",";
 
    if (m_dThisIterBeachErosionCoarse > 0)
       OutStream << 1000 * m_dThisIterBeachErosionCoarse / static_cast<double>(m_ulThisIterNumSeaCells) << ",";
-
    else
       OutStream << ",";
 
@@ -1051,78 +1030,66 @@ bool CSimulation::bWritePerTimestepResultsCSV(void)
 
    if (m_ulThisIterNumBeachDepositionCells > 0)
       OutStream << 1000 * dThisIterBeachDeposition / static_cast<double>(m_ulThisIterNumBeachDepositionCells) << ",";
-
    else
       OutStream << ",";
 
    // Beach deposition by sediment type
    if (m_dThisIterBeachDepositionSand > 0)
       OutStream << 1000 * m_dThisIterBeachDepositionSand / static_cast<double>(m_ulThisIterNumSeaCells) << ",";
-
    else
       OutStream << ",";
 
    if (m_dThisIterBeachDepositionCoarse > 0)
       OutStream << 1000 * m_dThisIterBeachDepositionCoarse / static_cast<double>(m_ulThisIterNumSeaCells) << ",";
-
    else
       OutStream << ",";
 
    // Sediment input data
    if (m_dThisiterUnconsFineInput > 0)
       OutStream << m_dThisiterUnconsFineInput << ",";
-
    else
       OutStream << ",";
 
    if (m_dThisiterUnconsSandInput > 0)
       OutStream << m_dThisiterUnconsSandInput << ",";
-
    else
       OutStream << ",";
 
    if (m_dThisiterUnconsCoarseInput > 0)
       OutStream << m_dThisiterUnconsCoarseInput << ",";
-
    else
       OutStream << ",";
 
    // Cliff collapse erosion data
    if ((m_dThisIterCliffCollapseErosionFineUncons + m_dThisIterCliffCollapseErosionFineCons) > 0)
       OutStream << 1000 * (m_dThisIterCliffCollapseErosionFineUncons + m_dThisIterCliffCollapseErosionFineCons) / static_cast<double>(m_ulThisIterNumCoastCells) << ",";
-
    else
       OutStream << ",";
 
    if ((m_dThisIterCliffCollapseErosionSandUncons + m_dThisIterCliffCollapseErosionSandCons) > 0)
       OutStream << 1000 * (m_dThisIterCliffCollapseErosionSandUncons + m_dThisIterCliffCollapseErosionSandCons) / static_cast<double>(m_ulThisIterNumCoastCells) << ",";
-
    else
       OutStream << ",";
 
    if ((m_dThisIterCliffCollapseErosionCoarseUncons + m_dThisIterCliffCollapseErosionCoarseCons) > 0)
       OutStream << 1000 * (m_dThisIterCliffCollapseErosionCoarseUncons + m_dThisIterCliffCollapseErosionCoarseCons) / static_cast<double>(m_ulThisIterNumCoastCells) << ",";
-
    else
       OutStream << ",";
 
    // Cliff collapse deposition data
    if (m_dThisIterUnconsSandCliffDeposition > 0)
       OutStream << 1000 * m_dThisIterUnconsSandCliffDeposition / static_cast<double>(m_ulThisIterNumSeaCells) << ",";
-
    else
       OutStream << ",";
 
    if (m_dThisIterUnconsCoarseCliffDeposition > 0)
       OutStream << 1000 * m_dThisIterUnconsCoarseCliffDeposition / static_cast<double>(m_ulThisIterNumSeaCells) << ",";
-
    else
       OutStream << ",";
 
    // Suspended sediment data
    if (m_dThisIterFineSedimentToSuspension > 0)
       OutStream << 1000 * m_dThisIterFineSedimentToSuspension / static_cast<double>(m_ulThisIterNumSeaCells) << ",";
-
    else
       OutStream << ",";
 
@@ -1156,13 +1123,13 @@ bool CSimulation::bWriteTSFiles(void)
    }
 
    // Still water level
-   if (m_bStillWaterLevelTSSave)
+   if (m_bSWLTSSave)
    {
       // Output as is (m)
-      StillWaterLevelTSStream << m_dSimElapsed << "\t,\t" << m_dThisIterSWL << "\t,\t" << m_dThisIterMeanSWL << endl;
+      SWLTSStream << m_dSimElapsed << "\t,\t" << m_dThisIterSWL << "\t,\t" << m_dThisIterMeanSWL << endl;
 
       // Did a time series file write error occur?
-      if (StillWaterLevelTSStream.fail())
+      if (SWLTSStream.fail())
          return false;
    }
 
@@ -1273,6 +1240,17 @@ bool CSimulation::bWriteTSFiles(void)
          return false;
    }
 
+   // Cliff notch elevation
+   if (m_bCliffNotchElevTSSave)
+   {
+      // Output as is (m depth equivalent)
+      CliffNotchElevTSStream << m_dSimElapsed << "\t,\t" << m_dThisIterNotchBaseElev << endl;
+
+      // Did a time series file write error occur?
+      if (CliffNotchElevTSStream.fail())
+         return false;
+   }
+
    return true;
 }
 
@@ -1322,7 +1300,7 @@ int CSimulation::nSaveProfile(int const nCoast, CGeomProfile const* pProfile, in
          if ((m_ulIter == m_VulProfileTimestep[i]) && (nProfile == m_VnProfileToSave[j]))
          {
             if (! bWriteProfileData(nCoast, pProfile, nProfSize, pdVDistXY, pdVZ, pdVDepthOverDB, pdVErosionPotentialFunc, pdVSlope, pdVRecessionXY, pdVChangeElevZ, pPtVGridProfile, pdVScapeXY))
-               return RTN_ERR_PROFILEWRITE;
+               return RTN_ERR_PROFILE_WRITE;
          }
       }
    }
@@ -1392,7 +1370,7 @@ int CSimulation::nSaveParProfile(int const nCoast, CGeomProfile const* pProfile,
          if ((m_ulIter == m_VulProfileTimestep[i]) && (nProfile == m_VnProfileToSave[j]))
          {
             if (! bWriteParProfileData(nCoast, nProfile, nParProfSize, nDirection, nDistFromProfile, pdVDistXY, pdVZ, pdVDepthOverDB, pdVErosionPotentialFunc, pdVSlope, pdVRecessionXY, pdVChangeElevZ, pPtVGridProfile, pdVScapeXY))
-               return RTN_ERR_PROFILEWRITE;
+               return RTN_ERR_PROFILE_WRITE;
          }
       }
    }
@@ -1480,8 +1458,7 @@ int CSimulation::nWriteEndRunDetails(void)
    OutStream << PER_ITER_HEAD5 << endl;
 
    OutStream << fixed << setprecision(3);
-   OutStream << endl
-             << endl;
+   OutStream << endl << endl;
 
    // Write out hydrology grand totals etc.
    OutStream << ENDHYDROLOGYHEAD << endl;
@@ -1490,12 +1467,10 @@ int CSimulation::nWriteEndRunDetails(void)
    OutStream << endl;
 
    // Now write out sediment movement grand totals etc.
-   OutStream << ENDSEDIMENTHEAD << endl
-             << endl;
+   OutStream << ENDSEDIMENTHEAD << endl << endl;
 
    OutStream << "TOTAL PLATFORM EROSION" << endl;
-   OutStream << "Potential platform erosion, all size classes           = " << m_ldGTotPotentialPlatformErosion * m_dCellArea << " m^3" << endl
-             << endl;
+   OutStream << "Potential platform erosion, all size classes           = " << m_ldGTotPotentialPlatformErosion * m_dCellArea << " m^3" << endl << endl;
    OutStream << "Actual platform erosion, fine                          = " << m_ldGTotFineActualPlatformErosion * m_dCellArea << " m^3" << endl;
    OutStream << "Actual platform erosion, sand                          = " << m_ldGTotSandActualPlatformErosion * m_dCellArea << " m^3" << endl;
    OutStream << "Actual platform erosion, coarse                        = " << m_ldGTotCoarseActualPlatformErosion * m_dCellArea << " m^3" << endl;
@@ -1618,8 +1593,7 @@ int CSimulation::nWriteEndRunDetails(void)
       else if (m_nUnconsSedimentHandlingAtGridEdges == GRID_EDGE_RECIRCULATE)
          OutStream << "RE-CIRCULATING.";
 
-      OutStream << endl
-                << endl;
+      OutStream << endl << endl;
    }
 
    // Finally calculate performance details
@@ -1628,9 +1602,8 @@ int CSimulation::nWriteEndRunDetails(void)
    // Get the time that the run ended
    m_tSysEndTime = time(nullptr);
 
-   OutStream << "Run ended at " << put_time(localtime(&m_tSysEndTime), "%T on %A %d %B %Y") << endl;
-   OutStream << "Time simulated: " << strDispSimTime(m_dSimDuration) << endl
-             << endl;
+   OutStream << RUN_END_NOTICE << put_time(localtime(&m_tSysEndTime), "%T on %A %d %B %Y") << endl;
+   OutStream << "Time simulated: " << strDispSimTime(m_dSimDuration) << endl << endl;
 
    // Write to log file
    LogStream << "END OF RUN TOTALS =================================================================================================================================================" << endl
@@ -1656,10 +1629,8 @@ int CSimulation::nWriteEndRunDetails(void)
 
       if (m_nUnconsSedimentHandlingAtGridEdges == GRID_EDGE_CLOSED)
          LogStream << "CLOSED.";
-
       else if (m_nUnconsSedimentHandlingAtGridEdges == GRID_EDGE_OPEN)
          LogStream << "OPEN.";
-
       else if (m_nUnconsSedimentHandlingAtGridEdges == GRID_EDGE_RECIRCULATE)
          LogStream << "RE-CIRCULATING.";
 
@@ -1674,6 +1645,7 @@ int CSimulation::nWriteEndRunDetails(void)
 
    // Calculate statistics re. memory usage etc.
    CalcProcessStats();
+   // CalcTime();
    OutStream << endl << "END OF RUN" << endl;
    LogStream << endl << "END OF RUN" << endl;
 

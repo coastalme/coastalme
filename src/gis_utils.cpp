@@ -265,7 +265,6 @@ void CSimulation::KeepWithinValidGrid(int nX0, int nY0, int& nX1, int& nY1) cons
 
          return;
       }
-
       else
       {
          nY1 = m_nYGridSize;
@@ -278,7 +277,6 @@ void CSimulation::KeepWithinValidGrid(int nX0, int nY0, int& nX1, int& nY1) cons
          return;
       }
    }
-
    else if (nDiffY == 0)
    {
       // The two points have the same y coordinates, so we just need to constrain the x co-ord
@@ -293,7 +291,6 @@ void CSimulation::KeepWithinValidGrid(int nX0, int nY0, int& nX1, int& nY1) cons
 
          return;
       }
-
       else
       {
          nX1 = m_nXGridSize;
@@ -306,7 +303,6 @@ void CSimulation::KeepWithinValidGrid(int nX0, int nY0, int& nX1, int& nY1) cons
          return;
       }
    }
-
    else
    {
       // The two points have different x coordinates and different y coordinates, so we have to work harder. First find which of the coordinates is the greatest distance outside the grid, and constrain that co-ord for efficiency (since this will reduce the number of times round the loop). Note that both may be inside the grid, if the incorrect co-ord is in the invalid margin, in which case arbitrarily contrain the x co-ord
@@ -315,13 +311,11 @@ void CSimulation::KeepWithinValidGrid(int nX0, int nY0, int& nX1, int& nY1) cons
 
       if (nX1 < 0)
          nXDistanceOutside = -nX1;
-
       else if (nX1 >= m_nXGridSize)
          nXDistanceOutside = nX1 - m_nXGridSize + 1;
 
       if (nY1 < 0)
          nYDistanceOutside = -nY1;
-
       else if (nY1 >= m_nYGridSize)
          nXDistanceOutside = nY1 - m_nYGridSize + 1;
 
@@ -342,7 +336,6 @@ void CSimulation::KeepWithinValidGrid(int nX0, int nY0, int& nX1, int& nY1) cons
 
             return;
          }
-
          else
          {
             // The incorrect x co-ord is greater than the correct x-co-ord: constrain it and find the y co-ord
@@ -358,7 +351,6 @@ void CSimulation::KeepWithinValidGrid(int nX0, int nY0, int& nX1, int& nY1) cons
             return;
          }
       }
-
       else
       {
          // Constrain the y co-ord
@@ -376,7 +368,6 @@ void CSimulation::KeepWithinValidGrid(int nX0, int nY0, int& nX1, int& nY1) cons
 
             return;
          }
-
          else
          {
             // The incorrect y co-ord is greater than the correct y co-ord: constrain it and find the x co-ord
@@ -429,20 +420,20 @@ CGeom2DPoint CSimulation::PtAverage(CGeom2DPoint const* pPt1, CGeom2DPoint const
    return CGeom2DPoint(dPtAvgX, dPtAvgY);
 }
 
-//===============================================================================================================================
-//! Returns an integer point (grid CRS) which is the approximate average of (i.e. is midway between) two other grid CRS integer points
-//===============================================================================================================================
-CGeom2DIPoint CSimulation::PtiAverage(CGeom2DIPoint const* pPti1, CGeom2DIPoint const* pPti2)
-{
-   int const nPti1X = pPti1->nGetX();
-   int const nPti1Y = pPti1->nGetY();
-   int const nPti2X = pPti2->nGetX();
-   int const nPti2Y = pPti2->nGetY();
-   int const nPtiAvgX = (nPti1X + nPti2X) / 2;
-   int const nPtiAvgY = (nPti1Y + nPti2Y) / 2;
-
-   return CGeom2DIPoint(nPtiAvgX, nPtiAvgY);
-}
+// //===============================================================================================================================
+// //! Returns an integer point (grid CRS) which is the approximate average of (i.e. is midway between) two other grid CRS integer points
+// //===============================================================================================================================
+// CGeom2DIPoint CSimulation::PtiAverage(CGeom2DIPoint const* pPti1, CGeom2DIPoint const* pPti2)
+// {
+//    int const nPti1X = pPti1->nGetX();
+//    int const nPti1Y = pPti1->nGetY();
+//    int const nPti2X = pPti2->nGetX();
+//    int const nPti2Y = pPti2->nGetY();
+//    int const nPtiAvgX = (nPti1X + nPti2X) / 2;
+//    int const nPtiAvgY = (nPti1Y + nPti2Y) / 2;
+//
+//    return CGeom2DIPoint(nPtiAvgX, nPtiAvgY);
+// }
 
 //===============================================================================================================================
 //! Returns an integer point (grid CRS) which is the weighted average of two other grid CRS integer points. The weight must be <= 1, if the weight is < 0.5 then the output point is closer to the first point, if the weight is > 0.5 then the output point is closer to the second point
@@ -589,43 +580,40 @@ CGeom2DIPoint CSimulation::PtiPolygonCentroid(vector<CGeom2DIPoint>* pVIn)
 // return VNew;
 // }
 
-//===============================================================================================================================
-//! Returns a CGeom2DPoint which is the 'other' point of a two-point vector passing through PtStart, and which is perpendicular to the two-point vector from PtStart to PtNext
-//===============================================================================================================================
-CGeom2DPoint CSimulation::PtGetPerpendicular(CGeom2DPoint const* PtStart, CGeom2DPoint const* PtNext, double const dDesiredLength, int const nHandedness)
-{
-   double const dXLen = PtNext->dGetX() - PtStart->dGetX();
-   double const dYLen = PtNext->dGetY() - PtStart->dGetY();
-   double dLength;
-
-   if (bFPIsEqual(dXLen, 0.0, TOLERANCE))
-      dLength = dYLen;
-
-   else if (bFPIsEqual(dYLen, 0.0, TOLERANCE))
-      dLength = dXLen;
-
-   else
-      dLength = hypot(dXLen, dYLen);
-
-   double const dScaleFactor = dDesiredLength / dLength;
-
-   // The difference vector is (dXLen, dYLen), so the perpendicular difference vector is (-dYLen, dXLen) or (dYLen, -dXLen)
-   CGeom2DPoint EndPt;
-
-   if (nHandedness == RIGHT_HANDED)
-   {
-      EndPt.SetX(PtStart->dGetX() + (dScaleFactor * dYLen));
-      EndPt.SetY(PtStart->dGetY() - (dScaleFactor * dXLen));
-   }
-
-   else
-   {
-      EndPt.SetX(PtStart->dGetX() - (dScaleFactor * dYLen));
-      EndPt.SetY(PtStart->dGetY() + (dScaleFactor * dXLen));
-   }
-
-   return EndPt;
-}
+// //===============================================================================================================================
+// //! Returns a CGeom2DPoint which is the 'other' point of a two-point vector passing through PtStart, and which is perpendicular to the two-point vector from PtStart to PtNext
+// //===============================================================================================================================
+// CGeom2DPoint CSimulation::PtGetPerpendicular(CGeom2DPoint const* PtStart, CGeom2DPoint const* PtNext, double const dDesiredLength, int const nHandedness)
+// {
+//    double const dXLen = PtNext->dGetX() - PtStart->dGetX();
+//    double const dYLen = PtNext->dGetY() - PtStart->dGetY();
+//    double dLength;
+//
+//    if (bFPIsEqual(dXLen, 0.0, TOLERANCE))
+//       dLength = dYLen;
+//    else if (bFPIsEqual(dYLen, 0.0, TOLERANCE))
+//       dLength = dXLen;
+//    else
+//       dLength = hypot(dXLen, dYLen);
+//
+//    double const dScaleFactor = dDesiredLength / dLength;
+//
+//    // The difference vector is (dXLen, dYLen), so the perpendicular difference vector is (-dYLen, dXLen) or (dYLen, -dXLen)
+//    CGeom2DPoint EndPt;
+//
+//    if (nHandedness == RIGHT_HANDED)
+//    {
+//       EndPt.SetX(PtStart->dGetX() + (dScaleFactor * dYLen));
+//       EndPt.SetY(PtStart->dGetY() - (dScaleFactor * dXLen));
+//    }
+//    else
+//    {
+//       EndPt.SetX(PtStart->dGetX() - (dScaleFactor * dYLen));
+//       EndPt.SetY(PtStart->dGetY() + (dScaleFactor * dXLen));
+//    }
+//
+//    return EndPt;
+// }
 
 //===============================================================================================================================
 //! Returns a CGeom2DIPoint (grid CRS) which is the 'other' point of a two-point vector passing through PtiStart, and which is perpendicular to the two-point vector from PtiStart to PtiNext
@@ -944,7 +932,6 @@ bool CSimulation::bSaveAllRasterGISFiles(void)
    {
       m_dRegularSaveTime += m_dRegularSaveInterval;
    }
-
    else
    {
       if (m_nThisSave < m_nUSave - 1)
@@ -952,7 +939,6 @@ bool CSimulation::bSaveAllRasterGISFiles(void)
          // Still have user-defined save times remaining
          m_nThisSave++;
       }
-
       else
       {
          // Finished user-defined times, switch to regular interval using last value as interval
@@ -960,7 +946,6 @@ bool CSimulation::bSaveAllRasterGISFiles(void)
 
          if (m_nUSave > 1)
             dLastInterval = m_dUSaveTime[m_nUSave - 1] - m_dUSaveTime[m_nUSave - 2];
-
          else
             dLastInterval = m_dUSaveTime[m_nUSave - 1];
 
@@ -971,23 +956,23 @@ bool CSimulation::bSaveAllRasterGISFiles(void)
    }
 
    if (m_bSedimentTopSurfSave)
-      if (! bWriteRasterGISFile(RASTER_PLOT_SEDIMENT_TOP_ELEVATION_ELEV, &RASTER_PLOT_SEDIMENT_TOP_ELEVATION_ELEV_TITLE))
+      if (! bWriteRasterGISFile(RASTER_PLOT_SEDIMENT_TOP_ELEVATION, &RASTER_PLOT_SEDIMENT_TOP_ELEVATION_TITLE))
          return false;
 
    if (m_bTopSurfSave)
       if (! bWriteRasterGISFile(RASTER_PLOT_OVERALL_TOP_ELEVATION, &RASTER_PLOT_OVERALL_TOP_ELEVATION_TITLE))
          return false;
 
-   if (m_bLocalSlopeSave)
-      if (! bWriteRasterGISFile(RASTER_PLOT_LOCAL_SLOPE_OF_CONSOLIDATED_SEDIMENT, &RASTER_PLOT_LOCAL_SLOPE_OF_CONSOLIDATED_SEDIMENT_TITLE))
+   if (m_bSlopeConsSedSave)
+      if (! bWriteRasterGISFile(RASTER_PLOT_SLOPE_OF_CONSOLIDATED_SEDIMENT, &RASTER_PLOT_SLOPE_OF_CONSOLIDATED_SEDIMENT_TITLE))
          return false;
 
-   if (m_bSlopeSave)
-      if (! bWriteRasterGISFile(RASTER_PLOT_SLOPE, &RASTER_PLOT_SLOPE_TITLE))
+   if (m_bSlopeSaveForCliffToe)
+      if (! bWriteRasterGISFile(RASTER_PLOT_SLOPE_FOR_CLIFF_TOE, &RASTER_PLOT_SLOPE_FOR_CLIFF_TOE_TITLE))
          return false;
 
-   if (m_bCliffSave)
-      if (! bWriteRasterGISFile(RASTER_PLOT_CLIFF, &RASTER_PLOT_CLIFF_TITLE))
+   if (m_bCliffToeSave)
+      if (! bWriteRasterGISFile(RASTER_PLOT_CLIFF_TOE, &RASTER_PLOT_CLIFF_TOE_TITLE))
          return false;
 
    if (m_bSeaDepthSave)
@@ -1178,6 +1163,12 @@ bool CSimulation::bSaveAllRasterGISFiles(void)
             if (! bWriteRasterGISFile(RASTER_PLOT_CLIFF_COLLAPSE_EROSION_COARSE, &RASTER_PLOT_CLIFF_COLLAPSE_EROSION_COARSE_TITLE))
                return false;
          }
+
+         if (m_bCliffNotchAllSave)
+         {
+            if (! bWriteRasterGISFile(RASTER_PLOT_CLIFF_NOTCH_ALL, &RASTER_PLOT_CLIFF_NOTCH_ALL_TITLE))
+            return false;
+         }
       }
 
       if (m_bTotCliffCollapseSave)
@@ -1301,18 +1292,18 @@ bool CSimulation::bSaveAllRasterGISFiles(void)
          return false;
    }
 
-   if (m_bSetupSurgeFloodMaskSave)
-   {
-      if (! bWriteRasterGISFile(RASTER_PLOT_SETUP_SURGE_FLOOD_MASK, &RASTER_PLOT_SETUP_SURGE_FLOOD_MASK_TITLE))
-         return false;
-   }
+   // if (m_bSetupSurgeFloodMaskSave)
+   // {
+   //    if (! bWriteRasterGISFile(RASTER_PLOT_SETUP_SURGE_FLOOD_MASK, &RASTER_PLOT_SETUP_SURGE_FLOOD_MASK_TITLE))
+   //       return false;
+   // }
 
-   if (m_bSetupSurgeRunupFloodMaskSave)
-   {
-      if (! bWriteRasterGISFile(RASTER_PLOT_SETUP_SURGE_RUNUP_FLOOD_MASK, &RASTER_PLOT_SETUP_SURGE_RUNUP_FLOOD_MASK_TITLE))
-         return false;
-   }
-
+   // if (m_bSetupSurgeRunupFloodMaskSave)
+   // {
+   //    if (! bWriteRasterGISFile(RASTER_PLOT_SETUP_SURGE_RUNUP_FLOOD_MASK, &RASTER_PLOT_SETUP_SURGE_RUNUP_FLOOD_MASK_TITLE))
+   //       return false;
+   // }
+   //
    return true;
 }
 
@@ -1396,19 +1387,19 @@ bool CSimulation::bSaveAllVectorGISFiles(void)
 
    if (m_bCliffNotchSave)
    {
-      if (! bWriteVectorGISFile(VECTOR_PLOT_CLIFF_NOTCH_SIZE, &VECTOR_PLOT_CLIFF_NOTCH_SIZE_TITLE))
+      if (! bWriteVectorGISFile(VECTOR_PLOT_CLIFF_NOTCH_ACTIVE, &VECTOR_PLOT_CLIFF_NOTCH_ACTIVE_TITLE))
          return false;
    }
 
    if (m_bShadowBoundarySave)
    {
-      if (! bWriteVectorGISFile(VECTOR_PLOT_SHADOW_BOUNDARY, &VECTOR_PLOT_SHADOW_BOUNDARY_TITLE))
+      if (! bWriteVectorGISFile(VECTOR_PLOT_SHADOW_ZONE_BOUNDARY, &VECTOR_PLOT_SHADOW_ZONE_BOUNDARY_TITLE))
          return false;
    }
 
    if (m_bShadowDowndriftBoundarySave)
    {
-      if (! bWriteVectorGISFile(VECTOR_PLOT_DOWNDRIFT_BOUNDARY, &VECTOR_PLOT_DOWNDRIFT_BOUNDARY_TITLE))
+      if (! bWriteVectorGISFile(VECTOR_PLOT_DOWNDRIFT_ZONE_BOUNDARY, &VECTOR_PLOT_DOWNDRIFT_ZONE_BOUNDARY_TITLE))
          return false;
    }
 
@@ -1418,35 +1409,35 @@ bool CSimulation::bSaveAllVectorGISFiles(void)
          return false;
    }
 
-   if (m_bWaveSetupSave)
-   {
-      if (! bWriteVectorGISFile(VECTOR_PLOT_WAVE_SETUP, &VECTOR_PLOT_WAVE_SETUP_TITLE))
-         return false;
-   }
-
-   if (m_bStormSurgeSave)
-   {
-      if (! bWriteVectorGISFile(VECTOR_PLOT_STORM_SURGE, &VECTOR_PLOT_STORM_SURGE_TITLE))
-         return false;
-   }
-
-   if (m_bRunUpSave)
-   {
-      if (! bWriteVectorGISFile(VECTOR_PLOT_RUN_UP, &VECTOR_PLOT_RUN_UP_TITLE))
-         return false;
-   }
-
-   if (m_bRiverineFlooding && m_bVectorWaveFloodLineSave)
-   {
-      if (! bWriteVectorGISFile(VECTOR_PLOT_FLOOD_LINE, &VECTOR_PLOT_FLOOD_SWL_SETUP_LINE_TITLE))
-         return false;
-
-      // if (! bWriteVectorGISFile(VECTOR_PLOT_FLOOD_SWL_SETUP_SURGE_LINE,
-      // &VECTOR_PLOT_FLOOD_SWL_SETUP_SURGE_LINE_TITLE)) return false;
-
-      // if (! bWriteVectorGISFile(VECTOR_PLOT_FLOOD_SWL_SETUP_SURGE_RUNUP_LINE,
-      // &VECTOR_PLOT_FLOOD_SWL_SETUP_SURGE_RUNUP_LINE_TITLE)) return false;
-   }
+   // if (m_bWaveSetupSave)
+   // {
+   //    if (! bWriteVectorGISFile(VECTOR_PLOT_WAVE_SETUP, &VECTOR_PLOT_WAVE_SETUP_TITLE))
+   //       return false;
+   // }
+   //
+   // if (m_bStormSurgeSave)
+   // {
+   //    if (! bWriteVectorGISFile(VECTOR_PLOT_STORM_SURGE, &VECTOR_PLOT_STORM_SURGE_TITLE))
+   //       return false;
+   // }
+   //
+   // if (m_bRunUpSave)
+   // {
+   //    if (! bWriteVectorGISFile(VECTOR_PLOT_RUN_UP, &VECTOR_PLOT_RUN_UP_TITLE))
+   //       return false;
+   // }
+   //
+   // if (m_bRiverineFlooding && m_bVectorWaveFloodLineSave)
+   // {
+   //    if (! bWriteVectorGISFile(VECTOR_PLOT_FLOOD_LINE, &VECTOR_PLOT_FLOOD_SWL_SETUP_LINE_TITLE))
+   //       return false;
+   //
+   //    // if (! bWriteVectorGISFile(VECTOR_PLOT_FLOOD_SWL_SETUP_SURGE_LINE,
+   //    // &VECTOR_PLOT_FLOOD_SWL_SETUP_SURGE_LINE_TITLE)) return false;
+   //
+   //    // if (! bWriteVectorGISFile(VECTOR_PLOT_FLOOD_SWL_SETUP_SURGE_RUNUP_LINE,
+   //    // &VECTOR_PLOT_FLOOD_SWL_SETUP_SURGE_RUNUP_LINE_TITLE)) return false;
+   // }
 
    return true;
 }
@@ -1514,7 +1505,7 @@ void CSimulation::GetRasterOutputMinMax(int const nDataItem, double& dMin, doubl
             dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetBasementElev();
             break;
 
-         case (RASTER_PLOT_SEDIMENT_TOP_ELEVATION_ELEV):
+         case (RASTER_PLOT_SEDIMENT_TOP_ELEVATION):
             dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElev();
             break;
 
@@ -1522,8 +1513,8 @@ void CSimulation::GetRasterOutputMinMax(int const nDataItem, double& dMin, doubl
             dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetOverallTopElev();
             break;
 
-         case (RASTER_PLOT_LOCAL_SLOPE_OF_CONSOLIDATED_SEDIMENT):
-            dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetLocalConsSlope();
+         case (RASTER_PLOT_SLOPE_OF_CONSOLIDATED_SEDIMENT):
+            dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetConsSedSlope();
             break;
 
          case (RASTER_PLOT_SEA_DEPTH):

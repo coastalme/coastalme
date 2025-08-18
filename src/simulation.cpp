@@ -95,8 +95,8 @@ CSimulation::CSimulation(void)
    m_bBeachDepositionSave =
    m_bTotalBeachDepositionSave =
    m_bLandformSave =
-   m_bLocalSlopeSave =
-   m_bSlopeSave =
+   m_bSlopeConsSedSave =
+   m_bSlopeSaveForCliffToe =
    m_bInterventionClassSave =
    m_bInterventionHeightSave =
    m_bSuspSedSave =
@@ -135,9 +135,9 @@ CSimulation::CSimulation(void)
    m_bDeepWaterWavePeriodSave =
    m_bPolygonUnconsSedUpOrDownDriftSave =
    m_bPolygonUnconsSedGainOrLossSave =
-   m_bCliffSave =
+   m_bCliffToeSave =
    m_bSeaAreaTSSave =
-   m_bStillWaterLevelTSSave =
+   m_bSWLTSSave =
    m_bActualPlatformErosionTSSave =
    m_bSuspSedTSSave =
    m_bFloodSetupSurgeTSSave =
@@ -148,6 +148,7 @@ CSimulation::CSimulation(void)
    m_bBeachErosionTSSave =
    m_bBeachDepositionTSSave =
    m_bBeachSedimentChangeNetTSSave =
+   m_bCliffNotchElevTSSave =
    m_bSaveGISThisIter =
    m_bOutputProfileData =
    m_bOutputParallelProfileData =
@@ -179,10 +180,10 @@ CSimulation::CSimulation(void)
    m_bSetupSurgeRunupFloodMaskSave =
    m_bRasterWaveFloodLineSave =
    m_bVectorWaveFloodLineSave =
-   m_bFloodLocation =
-   m_bFloodSWLSetupLine =
+   m_bFloodLocationSave =
+   m_bFloodSWLSetupLineSave =
    m_bFloodSWLSetupSurgeLine =
-   m_bFloodSWLSetupSurgeRunupLine =
+   m_bFloodSWLSetupSurgeRunupLineSave =
    m_bGISSaveDigitsSequential =
    m_bHaveConsolidatedSediment =
    m_bGDALOptimisations = false;
@@ -227,7 +228,7 @@ CSimulation::CSimulation(void)
    m_nLogFileDetail =
    m_nRunUpEquation =
    m_nLevel =
-   m_nCoastCurvatureMovingWindowSize = 0;
+   m_nCliffToeLocate = 0;
 
    // TODO 011 May wish to make this a user-supplied value
    m_nGISMissingValue =
@@ -344,6 +345,7 @@ CSimulation::CSimulation(void)
    m_dMaxBeachElevAboveSWL =
    m_dCliffErosionResistance =
    m_dNotchDepthAtCollapse =
+   m_dThisIterNotchBaseElev =
    m_dNotchBaseBelowSWL =
    m_dCliffDepositionA =
    m_dCliffDepositionPlanviewWidth =
@@ -390,7 +392,7 @@ CSimulation::CSimulation(void)
    m_dTotalFineConsInPolygons =
    m_dTotalSandConsInPolygons =
    m_dTotalCoarseConsInPolygons =
-   m_dCliffSlopeLimit = 0;
+   m_dSlopeThresholdForCliffToe = 0;
 
    m_dMinSWL = DBL_MAX;
    m_dMaxSWL = DBL_MIN;
@@ -464,10 +466,10 @@ CSimulation::~CSimulation(void)
       SeaAreaTSStream.close();
    }
 
-   if (StillWaterLevelTSStream && StillWaterLevelTSStream.is_open())
+   if (SWLTSStream && SWLTSStream.is_open())
    {
-      StillWaterLevelTSStream.flush();
-      StillWaterLevelTSStream.close();
+      SWLTSStream.flush();
+      SWLTSStream.close();
    }
 
    if (PlatformErosionTSStream && PlatformErosionTSStream.is_open())
@@ -510,6 +512,12 @@ CSimulation::~CSimulation(void)
    {
       FloodSetupSurgeRunupTSStream.flush();
       FloodSetupSurgeRunupTSStream.close();
+   }
+
+   if (CliffNotchElevTSStream && CliffNotchElevTSStream.is_open())
+   {
+      CliffNotchElevTSStream.flush();
+      CliffNotchElevTSStream.close();
    }
 
    if (m_pRasterGrid)
@@ -704,7 +712,6 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
    if (m_bDoCliffCollapse)
    {
       int const nTmp = nConvertMetresToNumCells(m_dCliffDepositionPlanviewWidth);
-
       if (nTmp < 3)
       {
          string const strErr = ERR + "cliff deposition must have a planview width of at least three cells. The current setting of " + to_string(m_dCliffDepositionPlanviewWidth) + " m gives a planview width of " + to_string(nTmp) + " cells. Please edit " + m_strDataPathName;
@@ -735,7 +742,6 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
    // If we are using the default cell spacing, then now that we know the size of the raster cells, we can set the size of profile spacing in m
    if (bFPIsEqual(m_dCoastNormalSpacing, 0.0, TOLERANCE))
       m_dCoastNormalSpacing = DEFAULT_PROFILE_SPACING * m_dCellSide;
-
    else
    {
       // The user specified a profile spacing, is this too small?
@@ -747,7 +753,7 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
 
          LogStream << ERR << "profile spacing was specified as " << m_dCoastNormalSpacing << " m, which is " << m_nCoastNormalSpacing << " cells. Polygon creation works poorly if profile spacing is less than " << DEFAULT_PROFILE_SPACING << " cells, i.e. " << DEFAULT_PROFILE_SPACING * m_dCellSide << " m" << endl;
 
-         return RTN_ERR_PROFILESPACING;
+         return RTN_ERR_PROFILE_SPACING;
       }
    }
 
@@ -767,48 +773,70 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
 
    for (int nLayer = 0; nLayer < m_nLayers; nLayer++)
    {
-      // Read in the initial fine unconsolidated sediment depth file(s)
-      AnnounceReadInitialFineUnconsSedGIS(nLayer);
-      nRet = nReadRasterGISFile(FINE_UNCONS_RASTER, nLayer);
-      if (nRet != RTN_OK)
-         return (nRet);
+      if (! m_VstrInitialFineUnconsSedimentFile[nLayer].empty())
+      {
+         // Read in the initial fine unconsolidated sediment depth file(s)
+         AnnounceReadInitialFineUnconsSedGIS(nLayer);
+         nRet = nReadRasterGISFile(FINE_UNCONS_RASTER, nLayer);
+         if (nRet != RTN_OK)
+            return (nRet);
+      }
 
-      // Read in the initial sand unconsolidated sediment depth file
-      AnnounceReadInitialSandUnconsSedGIS(nLayer);
-      nRet = nReadRasterGISFile(SAND_UNCONS_RASTER, nLayer);
-      if (nRet != RTN_OK)
-         return (nRet);
+      if (! m_VstrInitialSandUnconsSedimentFile[nLayer].empty())
+      {
+         // Read in the initial sand unconsolidated sediment depth file
+         AnnounceReadInitialSandUnconsSedGIS(nLayer);
+         nRet = nReadRasterGISFile(SAND_UNCONS_RASTER, nLayer);
+         if (nRet != RTN_OK)
+            return (nRet);
+      }
 
-      // Read in the initial coarse unconsolidated sediment depth file
-      AnnounceReadInitialCoarseUnconsSedGIS(nLayer);
-      nRet = nReadRasterGISFile(COARSE_UNCONS_RASTER, nLayer);
-      if (nRet != RTN_OK)
-         return (nRet);
+      if (! m_VstrInitialCoarseUnconsSedimentFile[nLayer].empty())
+      {
+         // Read in the initial coarse unconsolidated sediment depth file
+         AnnounceReadInitialCoarseUnconsSedGIS(nLayer);
+         nRet = nReadRasterGISFile(COARSE_UNCONS_RASTER, nLayer);
+         if (nRet != RTN_OK)
+            return (nRet);
+      }
 
-      // Read in the initial fine consolidated sediment depth file
-      AnnounceReadInitialFineConsSedGIS(nLayer);
-      nRet = nReadRasterGISFile(FINE_CONS_RASTER, nLayer);
-      if (nRet != RTN_OK)
-         return (nRet);
+      if (! m_VstrInitialFineConsSedimentFile[nLayer].empty())
+      {
+         // Read in the initial fine consolidated sediment depth file
+         AnnounceReadInitialFineConsSedGIS(nLayer);
+         nRet = nReadRasterGISFile(FINE_CONS_RASTER, nLayer);
+         if (nRet != RTN_OK)
+            return (nRet);
+      }
 
-      // Read in the initial sand consolidated sediment depth file
-      AnnounceReadInitialSandConsSedGIS(nLayer);
-      nRet = nReadRasterGISFile(SAND_CONS_RASTER, nLayer);
-      if (nRet != RTN_OK)
-         return (nRet);
+      if (! m_VstrInitialSandConsSedimentFile[nLayer].empty())
+      {
+         // Read in the initial sand consolidated sediment depth file
+         AnnounceReadInitialSandConsSedGIS(nLayer);
+         nRet = nReadRasterGISFile(SAND_CONS_RASTER, nLayer);
+         if (nRet != RTN_OK)
+            return (nRet);
+      }
 
-      // Read in the initial coarse consolidated sediment depth file
-      AnnounceReadInitialCoarseConsSedGIS(nLayer);
-      nRet = nReadRasterGISFile(COARSE_CONS_RASTER, nLayer);
+      if (! m_VstrInitialCoarseConsSedimentFile[nLayer].empty())
+      {
+         // Read in the initial coarse consolidated sediment depth file
+         AnnounceReadInitialCoarseConsSedGIS(nLayer);
+         nRet = nReadRasterGISFile(COARSE_CONS_RASTER, nLayer);
+         if (nRet != RTN_OK)
+            return (nRet);
+      }
+   }
+
+   if (! m_strInitialSuspSedimentFile.empty())
+   {
+      // Read in the initial suspended sediment depth file
+      AnnounceReadInitialSuspSedGIS();
+      nRet = nReadRasterGISFile(SUSP_SED_RASTER, 0);
       if (nRet != RTN_OK)
          return (nRet);
    }
 
-   // Read in the initial suspended sediment depth file
-   AnnounceReadInitialSuspSedGIS();
-   nRet = nReadRasterGISFile(SUSP_SED_RASTER, 0);
-   if (nRet != RTN_OK)
-      return (nRet);
 
    // Maybe read in the landform class data, otherwise calculate this during the first timestep using identification rules
    if (! m_strInitialLandformFile.empty())
@@ -896,7 +924,7 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
    }
 
    // Maybe read in flood input location
-   if (m_bFloodLocation)
+   if (m_bFloodLocationSave)
    {
       // We are reading sediment input event data
       AnnounceReadFloodLocationGIS();
@@ -920,14 +948,14 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
    // Write beginning-of-run information to Out and Log files
    WriteStartRunDetails();
 
-   // Start initializing
-   AnnounceInitializing();
+   // Final stage of initialization
+   AnnounceFinalInitialization();
 
    // Misc initialisation calcs
    m_nCoastMax = COAST_LENGTH_MAX * tMax(m_nXGridSize, m_nYGridSize);                           // Arbitrary but probably OK
-   m_nCoastMin = tMin(m_nXGridSize, m_nYGridSize);                                              // In some cases the following rule doesn't work TODO 007 Info needed
-   // nRound(COAST_LENGTH_MIN_X_PROF_SPACE * m_dCoastNormalSpacing / m_dCellSide);              // TODO 007 Info needed
-   m_nCoastCurvatureInterval = tMax(nRound(m_dCoastNormalSpacing / (m_dCellSide * 2)), 2);      // TODO 007 Info needed
+   m_nCoastMin = tMin(m_nXGridSize, m_nYGridSize);                                              // In some cases the following rule doesn't work TODO 007 Finish surge and runup stuff
+   // nRound(COAST_LENGTH_MIN_X_PROF_SPACE * m_dCoastNormalSpacing / m_dCellSide);              // TODO 007 Finish surge and runup stuff
+   m_nCoastCurvatureInterval = tMax(nRound(m_dCoastNormalSpacing / (m_dCellSide * 2)), 2);      // TODO 007 Finish surge and runup stuff
 
    // For beach erosion/deposition, conversion from immersed weight to bulk volumetric (sand and voids) transport rate (Leo Van Rijn) TODO 007 need full reference
    m_dInmersedToBulkVolumetric = 1 / ((m_dBeachSedimentDensity - m_dSeaWaterDensity) * (1 - m_dBeachSedimentPorosity) * m_dG);
@@ -994,10 +1022,13 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
 
       // Locate estuaries TODO someday...
 
-      // Locate and trace cliff toe
-      nRet = nLocateCliffToe();
-      if (nRet != RTN_OK)
-         return nRet;
+      if (m_bHaveConsolidatedSediment && m_bDoCliffCollapse && (m_nCliffToeLocate == CLIFF_TOE_LOCATION_SLOPE))
+      {
+         // Locate and trace cliff toe
+         nRet = nLocateCliffToe();
+         if (nRet != RTN_OK)
+            return nRet;
+      }
 
       // For all cells, use classification rules to assign sea and hinterland landform categories
       nRet = nAssignLandformsForAllCells();
@@ -1221,17 +1252,18 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
       if (m_nLogFileDetail >= LOG_FILE_MIDDLE_DETAIL)
          WritePolygonShorePlatformErosion();
 
+      // Are we considering cliff collapse?
       if (m_bHaveConsolidatedSediment && m_bDoCliffCollapse)
       {
          // Do all cliff collapses for this timestep (if any)
          nRet = nDoAllWaveEnergyToCoastLandforms();
          if (nRet != RTN_OK)
             return nRet;
-      }
 
-      // Output cliff collapse table to log file
-      if (m_bHaveConsolidatedSediment && m_bDoCliffCollapse && (m_nLogFileDetail >= LOG_FILE_MIDDLE_DETAIL))
-         WritePolygonCliffCollapseErosion();
+         // Output cliff collapse table to log file
+         if (m_nLogFileDetail >= LOG_FILE_MIDDLE_DETAIL)
+            WritePolygonCliffCollapseErosion();
+      }
 
       // Tell the user how the simulation is progressing
       AnnounceProgress();
@@ -1346,9 +1378,9 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
             return nRet;
       }
 
-      if (m_bFloodSWLSetupSurgeRunupLine || m_bSetupSurgeRunupFloodMaskSave)
+      if (m_bFloodSWLSetupSurgeRunupLineSave || m_bSetupSurgeRunupFloodMaskSave)
       {
-         // TODO 007 Info needed
+         // TODO 007 Finish surge and runup stuff
          m_nLevel = 1;
 
          nRet = nLocateFloodAndCoasts();

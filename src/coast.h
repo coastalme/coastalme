@@ -202,21 +202,21 @@ class CRWCoast
    void SetDetailedCurvatureSTD(double const);
    // double dGetDetailedCurvatureSTD(void) const;
    void SetSmoothCurvatureMean(double const);
-   double dGetSmoothCurvatureMean(void) const;
+   // double dGetSmoothCurvatureMean(void) const;
    void SetSmoothCurvatureSTD(double const);
-   double dGetSmoothCurvatureSTD(void) const;
+   // double dGetSmoothCurvatureSTD(void) const;
 
    void AppendProfile(CGeomProfile*);
    CGeomProfile* pGetProfile(int const);
-   CGeomProfile* pGetLastProfile(void);
+   // CGeomProfile* pGetLastProfile(void);
    // void ReplaceProfile(int const, vector<CGeom2DPoint> const*);
    int nGetNumProfiles(void) const;
    void CreateProfileDownCoastIndex(void);
    void InsertProfilesInProfileCoastPointIndex(void);
 
-   CGeomProfile* pGetDownCoastProfile(CGeomProfile const* pProfile);
-   CGeomProfile* pGetDownCoastProfileNotIncLastProfile(CGeomProfile const* pProfile);
-   CGeomProfile* pGetUpCoastProfile(CGeomProfile const* pProfile);
+   // CGeomProfile* pGetDownCoastProfile(CGeomProfile const* pProfile);
+   // CGeomProfile* pGetDownCoastProfileNotIncLastProfile(CGeomProfile const* pProfile);
+   // CGeomProfile* pGetUpCoastProfile(CGeomProfile const* pProfile);
 
    void CreateProfilesAtCoastPoints(void);
    void SetProfileAtCoastPoint(int const, CGeomProfile* const);

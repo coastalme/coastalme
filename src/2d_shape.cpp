@@ -40,11 +40,11 @@ CGeom2DPoint& CA2DShape::operator[](int const n)
    return m_VPoints[n];
 }
 
-//! Clears this 2D shape
-void CA2DShape::Clear(void)
-{
-   m_VPoints.clear();
-}
+// //! Clears this 2D shape
+// void CA2DShape::Clear(void)
+// {
+//    m_VPoints.clear();
+// }
 
 //! Resizes the vector which represents this 2D shape
 void CA2DShape::Resize(int const nSize)

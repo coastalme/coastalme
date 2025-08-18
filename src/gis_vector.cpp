@@ -514,24 +514,24 @@ bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const* strPlot
 
       break;
 
-   case (VECTOR_PLOT_CLIFF_NOTCH_SIZE):
-      strFilePathName.append(VECTOR_CLIFF_NOTCH_SIZE_NAME);
+   case (VECTOR_PLOT_CLIFF_NOTCH_ACTIVE):
+      strFilePathName.append(VECTOR_CLIFF_NOTCH_ACTIVE_NAME);
 
       eGType = wkbPoint;
       strType = "point";
 
       break;
 
-   case (VECTOR_PLOT_SHADOW_BOUNDARY):
-      strFilePathName.append(VECTOR_SHADOW_BOUNDARY_NAME);
+   case (VECTOR_PLOT_SHADOW_ZONE_BOUNDARY):
+      strFilePathName.append(VECTOR_SHADOW_ZONE_BOUNDARY_NAME);
 
       eGType = wkbLineString;
       strType = "line";
 
       break;
 
-   case (VECTOR_PLOT_DOWNDRIFT_BOUNDARY):
-      strFilePathName.append(VECTOR_DOWNDRIFT_BOUNDARY_NAME);
+   case (VECTOR_PLOT_DOWNDRIFT_ZONE_BOUNDARY):
+      strFilePathName.append(VECTOR_DOWNDRIFT_ZONE_BOUNDARY_NAME);
 
       eGType = wkbLineString;
       strType = "line";
@@ -866,7 +866,7 @@ bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const* strPlot
          }
       }
 
-      if (m_bFloodSWLSetupSurgeRunupLine)
+      if (m_bFloodSWLSetupSurgeRunupLineSave)
       {
          // Create a feature object, one per coast
          OGRFeature* pOGR4Feature = OGRFeature::CreateFeature(pOGRLayer->GetLayerDefn());
@@ -947,7 +947,7 @@ bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const* strPlot
       // OK, now do features
       OGRLineString OGRls;
 
-      for (int i = 0; i < static_cast<int>(m_VCliffEdge.size()); i++)
+      for (int i = 0; i < static_cast<int>(m_VCliffToe.size()); i++)
       {
          // Create a feature object, one per cliff edge
          OGRFeature* pOGRFeature = OGRFeature::CreateFeature(pOGRLayer->GetLayerDefn());
@@ -956,10 +956,10 @@ bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const* strPlot
          pOGRFeature->SetField(strFieldValue1.c_str(), i);
 
          // Now attach a geometry to the feature object
-         for (int j = 0; j < m_VCliffEdge[i].nGetSize(); j++)
+         for (int j = 0; j < m_VCliffToe[i].nGetSize(); j++)
          {
             // Use external CRS coordinates directly (already smoothed)
-            OGRls.addPoint(m_VCliffEdge[i].dGetXAt(j), m_VCliffEdge[i].dGetYAt(j));
+            OGRls.addPoint(m_VCliffToe[i].dGetXAt(j), m_VCliffToe[i].dGetYAt(j));
          }
 
          pOGRFeature->SetGeometry(&OGRls);
@@ -1140,7 +1140,7 @@ bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const* strPlot
    case (VECTOR_PLOT_MEAN_WAVE_ENERGY):
    case (VECTOR_PLOT_BREAKING_WAVE_HEIGHT):
    case (VECTOR_PLOT_POLYGON_NODES):
-   case (VECTOR_PLOT_CLIFF_NOTCH_SIZE):
+   case (VECTOR_PLOT_CLIFF_NOTCH_ACTIVE):
    case (VECTOR_PLOT_WAVE_SETUP):
    case (VECTOR_PLOT_STORM_SURGE):
    case (VECTOR_PLOT_RUN_UP):
@@ -1163,7 +1163,7 @@ bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const* strPlot
       else if (nDataItem == VECTOR_PLOT_POLYGON_NODES)
          strFieldValue1 = "Node";
 
-      else if (nDataItem == VECTOR_PLOT_CLIFF_NOTCH_SIZE)
+      else if (nDataItem == VECTOR_PLOT_CLIFF_NOTCH_ACTIVE)
          strFieldValue1 = "Notch";
 
       else if (nDataItem == VECTOR_PLOT_WAVE_SETUP)
@@ -1275,7 +1275,7 @@ bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const* strPlot
                pOGRFeature->SetField(strFieldValue1.c_str(), nNode);
             }
 
-            else if (nDataItem == VECTOR_PLOT_CLIFF_NOTCH_SIZE)
+            else if (nDataItem == VECTOR_PLOT_CLIFF_NOTCH_ACTIVE)
             {
                CACoastLandform* pCoastLandform = m_VCoast[i].pGetCoastLandform(j);
 
@@ -1555,7 +1555,7 @@ bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const* strPlot
       break;
    }
 
-   case (VECTOR_PLOT_SHADOW_BOUNDARY):
+   case (VECTOR_PLOT_SHADOW_ZONE_BOUNDARY):
    {
       // Create an integer-numbered value (the number of the shadow boundary line object) for the multi-line
       string const strFieldValue1 = "ShadowLine";
@@ -1604,7 +1604,7 @@ bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const* strPlot
       break;
    }
 
-   case (VECTOR_PLOT_DOWNDRIFT_BOUNDARY):
+   case (VECTOR_PLOT_DOWNDRIFT_ZONE_BOUNDARY):
    {
       // Create an integer-numbered value (the number of the downdrift boundary line object) for the multi-line
       string const strFieldValue1 = "DdriftLine";

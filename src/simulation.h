@@ -86,11 +86,11 @@ class CSimulation
    //! Save fop surface (sediment and sea) raster DEMs?
    bool m_bTopSurfSave;
 
-   //! Save slope raster grids?
-   bool m_bSlopeSave;
+   //! Save slope raster grids (used for cliff toe location)?
+   bool m_bSlopeSaveForCliffToe;
 
-   //! Save cliff region raster grids?
-   bool m_bCliffSave;
+   //! Save cliff toe raster grids?
+   bool m_bCliffToeSave;
 
    //! Save slices?
    bool m_bSliceSave;
@@ -167,8 +167,8 @@ class CSimulation
    //! Save coast landform raster GIS files?
    bool m_bLandformSave;
 
-   //! Save local slope raster GIS files?
-   bool m_bLocalSlopeSave;
+   //! Save slope of consolidated sediment raster GIS files?
+   bool m_bSlopeConsSedSave;
 
    //! Save intervention class raster GIS files?
    bool m_bInterventionClassSave;
@@ -287,8 +287,8 @@ class CSimulation
    //! Save the sea area time series file?
    bool m_bSeaAreaTSSave;
 
-   //! Save the still water level time series file?
-   bool m_bStillWaterLevelTSSave;
+   //! Save the SWL (still water level) time series file?
+   bool m_bSWLTSSave;
 
    //! Save the actual (supply-limited) shore platform erosion time series file?
    bool m_bActualPlatformErosionTSSave;
@@ -314,11 +314,14 @@ class CSimulation
    //! Save the suspended sediment time series file?
    bool m_bSuspSedTSSave;
 
-   //! Save the flood setup surge time series file? TODO 007 Does this work correctly?
+   //! Save the flood setup surge time series file? TODO 007 Finish surge and runup stuff
    bool m_bFloodSetupSurgeTSSave;
 
-   //! Save the flood setup surge runup time series file? TODO 007 Does this work correctly?
+   //! Save the flood setup surge runup time series file? TODO 007 Finish surge and runup stuff
    bool m_bFloodSetupSurgeRunupTSSave;
+
+   //! Save the cliff notch elevation time series file?
+   bool m_bCliffNotchElevTSSave;
 
    //! Save GIS files this iteration?
    bool m_bSaveGISThisIter;
@@ -395,41 +398,44 @@ class CSimulation
    //! Do we have a sediment input event this iteration?
    bool m_bSedimentInputThisIter;
 
-   //! Are we doing flooding? TODO 007
+   //! Are we doing riverine flooding?
    bool m_bRiverineFlooding;
 
-   //! Are we saving the wave setup? TODO 007
+   //! Are we saving the wave setup? TODO 007 Finish surge and runup stuff
    bool m_bWaveSetupSave;
 
-   //! Are we saving the storm surge? TODO 007
+   //! Are we saving the storm surge? TODO 007 Finish surge and runup stuff
    bool m_bStormSurgeSave;
 
-   //! Are we saving runup? TODO 007
+   //! Are we saving runup? TODO 007 Finish surge and runup stuff
    bool m_bRunUpSave;
 
-   //! Are we saving the setup surge flood mask? TODO 007
+   //! Are we saving the setup surge flood mask? TODO 007 Finish surge and runup stuff
    bool m_bSetupSurgeFloodMaskSave;
 
-   //! Are we saving the setup surge runup flood mask? TODO 007
+   //! Are we saving the setup surge runup flood mask? TODO 007 Finish surge and runup stuff
    bool m_bSetupSurgeRunupFloodMaskSave;
 
-   //! Are we saving the raster wave flood line? TODO 007
+   //! Are we saving the raster wave flood line? TODO 007 Finish surge and runup stuff
    bool m_bRasterWaveFloodLineSave;
 
-   //! Are we saving the vector wave flood line? TODO 007
+   //! Are we saving the vector wave flood line? TODO 007 Finish surge and runup stuff
    bool m_bVectorWaveFloodLineSave;
 
-   //! Are we saving the flood location? TODO 007
-   bool m_bFloodLocation;
+   //! Are we saving the flood location? TODO 007 Finish surge and runup stuff
+   bool m_bFloodLocationSave;
 
-   //! Are we saving the flood still water level setup line? TODO 007
-   bool m_bFloodSWLSetupLine;
+   //! Are we saving the flood still water level setup line? TODO 007 Finish surge and runup stuff
+   bool m_bFloodSWLSetupLineSave;
 
-   //! Are we saving the flood still water level setup surge line? TODO 007
+   //! Are we saving the flood still water level setup surge line? TODO 007 Finish surge and runup stuff
    bool m_bFloodSWLSetupSurgeLine;
 
-   //! Are we saving the flood still water level setup surge runup line? TODO 007
-   bool m_bFloodSWLSetupSurgeRunupLine;
+   //! Are we saving all cliff notches?
+   bool m_bCliffNotchAllSave;
+
+   //! Are we saving the flood still water level setup surge runup line? TODO 007 Finish surge and runup stuff
+   bool m_bFloodSWLSetupSurgeRunupLineSave;
 
    //! Are the GIS save digits (which are part of each GIS file name) sequential, or are they the iteration number?
    bool m_bGISSaveDigitsSequential;
@@ -474,7 +480,7 @@ class CSimulation
    int m_nSavGolCliffEdgePoly;
 
    //! Slope limit for cliff toe detection
-   double m_dCliffSlopeLimit;
+   double m_dSlopeThresholdForCliffToe;
 
    //! The size of the window used for running-mean coast-normal profile smoothing (must be odd)
    int m_nProfileSmoothWindow;
@@ -563,14 +569,14 @@ class CSimulation
    //! The level of detail in the log file output. Can be LOG_FILE_LOW_DETAIL, LOG_FILE_MIDDLE_DETAIL, LOG_FILE_HIGH_DETAIL, or LOG_FILE_ALL
    int m_nLogFileDetail;
 
-   //! The run-up equation used TODO 007
+   //! The run-up equation used TODO 007 Finish surge and runup stuff
    int m_nRunUpEquation;
 
-   //! TODO 007 Used in WAVESETUP + SURGE + RUNUP
+   //! TODO 007 Used in WAVESETUP + SURGE + RUNUP Finish surge and runup stuff
    int m_nLevel;
 
-   //! WHAT IS THOS FOR?
-   int m_nCoastCurvatureMovingWindowSize;
+   //! Cliff algorithm
+   int m_nCliffToeLocate;
 
    //! The data type used by GDAL for integer operations, can be GDT_Byte, GDT_Int16, GDT_UInt16, GDT_Int32, or GDT_UInt32
    GDALDataType m_GDALWriteIntDataType;
@@ -713,16 +719,16 @@ class CSimulation
    //! Maximum still water level
    double m_dMaxSWL;
 
-   //! TODO 007 Info needed
+   //! TODO 007 Finish surge and runup stuff
    double m_dThisIterDiffTotWaterLevel;
 
-   //! TODO 007 Info needed
+   //! TODO 007 Finish surge and runup stuff
    double m_dThisIterDiffWaveSetupWaterLevel;
 
-   //! TODO 007 Info needed
+   //! TODO 007 Finish surge and runup stuff
    double m_dThisIterDiffWaveSetupSurgeWaterLevel;
 
-   //! TODO 007 Info needed
+   //! TODO 007 Finish surge and runup stuff
    double m_dThisIterDiffWaveSetupSurgeRunupWaterLevel;
 
    //! The height of breaking waves (m)
@@ -899,7 +905,10 @@ class CSimulation
    //! Notch overhang (i.e. length of horizontal incision) to initiate collapse (m)
    double m_dNotchDepthAtCollapse;
 
-   //! Notch base below SWL (m)
+   //! This-iteration notch elevation (m)
+   double m_dThisIterNotchBaseElev;
+
+   //! Distance of notch base below SWL (m)
    double m_dNotchBaseBelowSWL;
 
    //! Scale parameter A for cliff deposition (m^(1/3)), may be zero for auto-calculation
@@ -1311,7 +1320,7 @@ class CSimulation
    ofstream SeaAreaTSStream;
 
    //! SWL time series file output stream
-   ofstream StillWaterLevelTSStream;
+   ofstream SWLTSStream;
 
    //! Shore platform erosion time series file output stream
    ofstream PlatformErosionTSStream;
@@ -1322,8 +1331,7 @@ class CSimulation
    //! Cliff collapse deposition time series file output stream
    ofstream CliffCollapseDepositionTSStream;
 
-   //! Cliff collapse net change (erosion - deposition) time series file output
-   //! stream
+   //! Cliff collapse net change (erosion - deposition) time series file output stream
    ofstream CliffCollapseNetChangeTSStream;
 
    //! Beach sediment erosion time series file output stream
@@ -1332,8 +1340,7 @@ class CSimulation
    //! Beach sediment deposition time series file output stream
    ofstream BeachDepositionTSStream;
 
-   //! Beach sediment net change (erosion - deposition) time series file output
-   //! stream
+   //! Beach sediment net change (erosion - deposition) time series file output stream
    ofstream BeachSedimentNetChangeTSStream;
 
    //! Fine sediment in suspension time series file output stream
@@ -1344,6 +1351,9 @@ class CSimulation
 
    //! Flood setup surge runup time series file output stream
    ofstream FloodSetupSurgeRunupTSStream;
+
+   //! Cliff notch elevation time series file output stream
+   ofstream CliffNotchElevTSStream;
 
    //! One element per layer: has the consolidated sediment of this layer been changed during this iteration?
    vector<bool> m_bConsChangedThisIter;
@@ -1527,12 +1537,12 @@ class CSimulation
    vector<CRWCoast> m_VCoast;
 
    //! The traced cliff edge lines (in external CRS)
-   vector<CGeomLine> m_VCliffEdge;
+   vector<CGeomLine> m_VCliffToe;
 
-   //! TODO 007 Info needed
+   //! TODO 007 Finish surge and runup stuff
    vector<CRWCoast> m_VFloodWaveSetupSurge;
 
-   //! TODO 007 Info needed
+   //! TODO 007 Finish surge and runup stuff
    vector<CRWCoast> m_VFloodWaveSetupSurgeRunup;
 
    //! Edge cells
@@ -1606,7 +1616,7 @@ class CSimulation
    int nDoCliffCollapseDeposition(int const, CRWCliff const*, double const, double const, double const, double const);
    int nUpdateGrid(void);
 
-   // Cliff finder
+   // For cliff toe location
    int nLocateCliffToe(void);
    void nCalcSlopeAtAllCells(void);
    void nLocateCliffCell(void);
@@ -1675,8 +1685,8 @@ class CSimulation
    void ProcessShadowZoneCell(int const, int const, int const, CGeom2DIPoint const*, int const, int const, int const);
    int nCreateAllPolygons(void);
    void RasterizePolygonJoiningLine(int const, CGeom2DIPoint const*, CGeom2DIPoint const*, int const);
-   static bool bIsWithinPolygon(CGeom2DPoint const*, vector<CGeom2DPoint> const*);
-   static CGeom2DPoint PtFindPointInPolygon(vector<CGeom2DPoint> const*, int const);
+   // static bool bIsWithinPolygon(CGeom2DPoint const*, vector<CGeom2DPoint> const*);
+   // static CGeom2DPoint PtFindPointInPolygon(vector<CGeom2DPoint> const*, int const);
    void MarkPolygonCells(void);
    int nDoPolygonSharedBoundaries(void);
    void DoAllPotentialBeachErosion(void);
@@ -1727,12 +1737,12 @@ class CSimulation
    static double dKeepWithin360(double const);
    // vector<CGeom2DPoint> VGetPerpendicular(CGeom2DPoint const*, CGeom2DPoint
    // const*, double const, int const);
-   static CGeom2DPoint PtGetPerpendicular(CGeom2DPoint const*, CGeom2DPoint const*, double const, int const);
+   // static CGeom2DPoint PtGetPerpendicular(CGeom2DPoint const*, CGeom2DPoint const*, double const, int const);
    static CGeom2DIPoint PtiGetPerpendicular(CGeom2DIPoint const*, CGeom2DIPoint const*, double const, int const);
    static CGeom2DIPoint PtiGetPerpendicular(int const, int const, int const, int const, double const, int const);
    static CGeom2DPoint PtAverage(CGeom2DPoint const*, CGeom2DPoint const*);
    static CGeom2DPoint PtAverage(vector<CGeom2DPoint>*);
-   static CGeom2DIPoint PtiAverage(CGeom2DIPoint const*, CGeom2DIPoint const*);
+   // static CGeom2DIPoint PtiAverage(CGeom2DIPoint const*, CGeom2DIPoint const*);
    // static CGeom2DIPoint PtiAverage(vector<CGeom2DIPoint>*);
    static CGeom2DIPoint PtiWeightedAverage(CGeom2DIPoint const*, CGeom2DIPoint const*, double const);
    static CGeom2DIPoint PtiPolygonCentroid(vector<CGeom2DIPoint>*);
@@ -1759,7 +1769,7 @@ class CSimulation
    void AnnounceReadLGIS(void) const;
    void AnnounceReadICGIS(void) const;
    void AnnounceReadIHGIS(void) const;
-   static void AnnounceInitializing(void);
+   static void AnnounceFinalInitialization(void);
    void AnnounceReadInitialSuspSedGIS(void) const;
    void AnnounceReadInitialFineUnconsSedGIS(int const) const;
    void AnnounceReadInitialSandUnconsSedGIS(int const) const;
@@ -1787,7 +1797,7 @@ class CSimulation
    static string strGetBuild(void);
    static string strGetComputerName(void);
    void DoCPUClockReset(void);
-   void CalcTime(double const);
+   // void CalcTime(double const);
    static string strDispTime(double const, bool const, bool const);
    static string strDispSimTime(double const);
    void AnnounceProgress(void);

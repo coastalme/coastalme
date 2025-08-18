@@ -41,7 +41,7 @@ class CA2DShape
    CA2DShape(void);
    virtual ~CA2DShape(void);
 
-   void Clear(void);
+   // void Clear(void);
 
    // void InsertAtFront(double const, double const);
    // void SetPoints(const vector<CGeom2DPoint>*);

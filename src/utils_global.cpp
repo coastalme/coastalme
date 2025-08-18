@@ -106,17 +106,17 @@ ostream& operator<<(ostream& ostr, const FillToWidth& args)
    return ostr;
 }
 
-//===============================================================================================================================
-//! Converts double to string with specified number of places after the decimal. From https://stackoverflow.com/questions/14765155/how-can-i-easily-format-my-data-table-in-c
-//===============================================================================================================================
-string strDbl(double const dX, int const nDigits)
-{
-   stringstream ss;
-   ss << fixed;
-   ss.precision(nDigits); // Set the number of places after decimal
-   ss << dX;
-   return ss.str();
-}
+// //===============================================================================================================================
+// //! Converts double to string with specified number of places after the decimal. From https://stackoverflow.com/questions/14765155/how-can-i-easily-format-my-data-table-in-c
+// //===============================================================================================================================
+// string strDbl(double const dX, int const nDigits)
+// {
+//    stringstream ss;
+//    ss << fixed;
+//    ss.precision(nDigits); // Set the number of places after decimal
+//    ss << dX;
+//    return ss.str();
+// }
 
 //===============================================================================================================================
 //! Converts double to string with specified number of decimal places, within a field of given width, pads with blank spaces to enforce right alignment. Modified from https://stackoverflow.com/questions/14765155/how-can-i-easily-format-my-data-table-in-c

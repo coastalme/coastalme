@@ -1907,7 +1907,7 @@ void CSimulation::ModifyBreakingWavePropertiesWithinShadowZoneToCoastline(int co
       // This coast point is in the active zone, so set breaking wave height, breaking wave angle, and depth of breaking for the coast point TODO 007 Where does the 0.78 come from? TODO 011 Should it be an input variable or a named constant?
       if (dThisBreakingWaveHeight > dThisBreakingDepth * 0.78)
       {
-         dThisBreakingWaveHeight = dThisBreakingDepth * 0.78; // Likely CShore output wave height is not adequately reproduced due to input profile and wave properties. TODO 007 Info needed. Does something need to be changed then?
+         dThisBreakingWaveHeight = dThisBreakingDepth * 0.78; // Likely CShore output wave height is not adequately reproduced due to input profile and wave properties. TODO 007 Finish surge and runup stuff. Does something need to be changed then?
       }
 
       // assert(dThisBreakingWaveHeight >= 0);

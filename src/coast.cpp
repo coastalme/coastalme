@@ -393,11 +393,11 @@ void CRWCoast::SetSmoothCurvatureMean(double const dMean)
    m_dCurvatureSmoothMean = dMean;
 }
 
-//! Gets the mean of the coast's smoothed curvature
-double CRWCoast::dGetSmoothCurvatureMean(void) const
-{
-   return m_dCurvatureSmoothMean;
-}
+// //! Gets the mean of the coast's smoothed curvature
+// double CRWCoast::dGetSmoothCurvatureMean(void) const
+// {
+//    return m_dCurvatureSmoothMean;
+// }
 
 //! Sets the standard deviation of the coast's smoothed curvature
 void CRWCoast::SetSmoothCurvatureSTD(double const dSTD)
@@ -405,11 +405,11 @@ void CRWCoast::SetSmoothCurvatureSTD(double const dSTD)
    m_dCurvatureSmoothSTD = dSTD;
 }
 
-//! Gets the standard deviation of the coast's smoothed curvature
-double CRWCoast::dGetSmoothCurvatureSTD(void) const
-{
-   return m_dCurvatureSmoothSTD;
-}
+// //! Gets the standard deviation of the coast's smoothed curvature
+// double CRWCoast::dGetSmoothCurvatureSTD(void) const
+// {
+//    return m_dCurvatureSmoothSTD;
+// }
 
 //! Returns a pointer to a profile, in polygon-ID number sequence
 CGeomProfile* CRWCoast::pGetProfile(int const nProfile)
@@ -418,12 +418,12 @@ CGeomProfile* CRWCoast::pGetProfile(int const nProfile)
    return m_pVProfile[nProfile];
 }
 
-//! Returns a pointer to the last profile, in polygon-ID number sequence
-CGeomProfile* CRWCoast::pGetLastProfile(void)
-{
-   // TODO 055 Maybe add a safety check? that nProfile < m_pVProfile.size()
-   return m_pVProfile.back();
-}
+// //! Returns a pointer to the last profile, in polygon-ID number sequence
+// CGeomProfile* CRWCoast::pGetLastProfile(void)
+// {
+//    // TODO 055 Maybe add a safety check? that nProfile < m_pVProfile.size()
+//    return m_pVProfile.back();
+// }
 
 //! Appends a coastline-normal profile
 void CRWCoast::AppendProfile(CGeomProfile* pProfile)
@@ -468,28 +468,28 @@ CGeomProfile* CRWCoast::pGetProfileWithUpCoastSeq(int const nProf) const
    return m_pVProfileDownCoastSeq[nSize - (nProf + 1)];
 }
 
-//! Returns a pointer to the profile which is adjacent to and down-coast from the given profile pointer. It returns NULL if there is no valid down-coast profile
-CGeomProfile* CRWCoast::pGetDownCoastProfile(CGeomProfile const* pProfile)
-{
-   return pProfile->pGetDownCoastAdjacentProfile();
-}
+// //! Returns a pointer to the profile which is adjacent to and down-coast from the given profile pointer. It returns NULL if there is no valid down-coast profile
+// CGeomProfile* CRWCoast::pGetDownCoastProfile(CGeomProfile const* pProfile)
+// {
+//    return pProfile->pGetDownCoastAdjacentProfile();
+// }
 
-//! Returns a pointer to the profile which is adjacent to and down-coast from the specified profile; however this profile must not be the last (coast-end) profile. It returns NULL if there is no valid down-coast profile
-CGeomProfile* CRWCoast::pGetDownCoastProfileNotIncLastProfile(CGeomProfile const* pProfile)
-{
-   CGeomProfile* pDownCoastProfile = pProfile->pGetDownCoastAdjacentProfile();
+// //! Returns a pointer to the profile which is adjacent to and down-coast from the specified profile; however this profile must not be the last (coast-end) profile. It returns NULL if there is no valid down-coast profile
+// CGeomProfile* CRWCoast::pGetDownCoastProfileNotIncLastProfile(CGeomProfile const* pProfile)
+// {
+//    CGeomProfile* pDownCoastProfile = pProfile->pGetDownCoastAdjacentProfile();
+//
+//    if ((pDownCoastProfile != NULL) && (pDownCoastProfile->bEndOfCoast()))
+//       return NULL;
+//
+//    return pDownCoastProfile;
+// }
 
-   if ((pDownCoastProfile != NULL) && (pDownCoastProfile->bEndOfCoast()))
-      return NULL;
-
-   return pDownCoastProfile;
-}
-
-//! Returns a pointer to the profile which is adjacent to and up-coast from the specified profile. It returns NULL if there is no valid up-coast profile
-CGeomProfile* CRWCoast::pGetUpCoastProfile(CGeomProfile const* pProfile)
-{
-   return pProfile->pGetUpCoastAdjacentProfile();
-}
+// //! Returns a pointer to the profile which is adjacent to and up-coast from the specified profile. It returns NULL if there is no valid up-coast profile
+// CGeomProfile* CRWCoast::pGetUpCoastProfile(CGeomProfile const* pProfile)
+// {
+//    return pProfile->pGetUpCoastAdjacentProfile();
+// }
 
 //! Creates a coast polygon and returns a pointer to it
 CGeomCoastPolygon* CRWCoast::pPolyCreateAndAppendPolygon(int const nCoastID, int const nCoastPoint, CGeom2DIPoint const* pPtiNode, CGeom2DIPoint const* pPtiAntiNode, int const nProfileUpCoast, int const nProfileDownCoast, vector<CGeom2DPoint> const* pVIn, int const nNumPointsUpCoastProfile, int const nNumPointsDownCoastProfile, bool const bStartCoast, bool const bEndCoast)

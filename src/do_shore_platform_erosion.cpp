@@ -244,7 +244,7 @@ int CSimulation::nCalcPotentialPlatformErosionOnProfile(int const nCoast, CGeomP
          return RTN_OK;
 
       // Get the elevation for consolidated sediment only on this cell
-      dVConsProfileZ[i] = m_pRasterGrid->m_Cell[nX][nY].dGetConsSedTopForLayerAboveBasement(nTopLayer);
+      dVConsProfileZ[i] = m_pRasterGrid->m_Cell[nX][nY].dGetConsSedTopElevForLayerAboveBasement(nTopLayer);
 
       // Get the elevation for both consolidated and unconsolidated sediment on this cell
       VdProfileZ[i] = m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElev();
@@ -560,7 +560,7 @@ int CSimulation::nCalcPotentialPlatformErosionBetweenProfiles(int const nCoast, 
             return RTN_OK;
 
          // Get the elevation for consolidated sediment only on this cell
-         dVParConsProfileZ[i] = m_pRasterGrid->m_Cell[nXPar][nYPar].dGetConsSedTopForLayerAboveBasement(nTopLayer);
+         dVParConsProfileZ[i] = m_pRasterGrid->m_Cell[nXPar][nYPar].dGetConsSedTopElevForLayerAboveBasement(nTopLayer);
 
          // Get the elevation for both consolidated and unconsolidated sediment on this cell
          dVParProfileZ[i] = m_pRasterGrid->m_Cell[nXPar][nYPar].dGetSedimentTopElev();

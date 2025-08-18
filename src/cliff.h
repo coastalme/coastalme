@@ -54,7 +54,7 @@ class CRWCliff : public CACoastLandform
 
    void SetNotchBaseElev(double const);
    double dGetNotchBaseElev(void) const;
-   double dGetRemaining(void) const;
+   // double dGetRemaining(void) const;
    // void SetNotchDepth(double const);
    double dGetNotchDepth(void) const;
 

@@ -48,7 +48,6 @@ CRWCliff::CRWCliff(CRWCoast* pCoastIn, int const nCoast, int const nPointOnCoast
    m_dNotchDepth = dNotchDepthIn;
    m_dNotchBaseElev = dNotchElevIn;
    m_dTotAccumWaveEnergy = dAccumWaveEnergyIn;
-   // assert(m_dRemaining >=0);
 }
 
 //! Destructor
@@ -80,11 +79,11 @@ void CRWCliff::SetNotchBaseElev(double const dNewElev)
    m_dNotchBaseElev = dNewElev;
 }
 
-//! Returns the length (in external CRS units) of the cliff's remaining sediment 'behind' the erosional notch
-double CRWCliff::dGetRemaining(void) const
-{
-   return (m_dMaxDepth - m_dNotchDepth);
-}
+// //! Returns the length (in external CRS units) of the cliff's remaining sediment 'behind' the erosional notch
+// double CRWCliff::dGetRemaining(void) const
+// {
+//    return (m_dMaxDepth - m_dNotchDepth);
+// }
 
 // //! Sets the horizontal depth of the cliff's erosional notch
 // void CRWCliff::SetNotchDepth(double const dLenIn)
@@ -101,9 +100,8 @@ double CRWCliff::dGetNotchDepth(void) const
 //! Returns true if the horizontal depth of the erosional notch exceeds the critical notch overhang
 bool CRWCliff::bReadyToCollapse(double const dThresholdNotchDepth) const
 {
-   if (m_dNotchDepth >= dThresholdNotchDepth)
+   if (m_dNotchDepth > dThresholdNotchDepth)
       return true;
-
    else
       return false;
 }

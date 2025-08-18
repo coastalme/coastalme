@@ -956,78 +956,78 @@ int CSimulation::nDoPolygonSharedBoundaries(void)
    return RTN_OK;
 }
 
-//===============================================================================================================================
-//! Determines whether a point is within a polygon: however if the point is exactly on the edge of the polygon, then the result is indeterminate. Modified from code at http://alienryderflex.com/polygon/, our thanks to Darel Rex Finley (DarelRex@gmail.com)
-//===============================================================================================================================
-bool CSimulation::bIsWithinPolygon(CGeom2DPoint const* pPtStart, vector<CGeom2DPoint> const* pPtPoints)
-{
-   bool bOddNodes = false;
+// //===============================================================================================================================
+// //! Determines whether a point is within a polygon: however if the point is exactly on the edge of the polygon, then the result is indeterminate. Modified from code at http://alienryderflex.com/polygon/, our thanks to Darel Rex Finley (DarelRex@gmail.com)
+// //===============================================================================================================================
+// bool CSimulation::bIsWithinPolygon(CGeom2DPoint const* pPtStart, vector<CGeom2DPoint> const* pPtPoints)
+// {
+//    bool bOddNodes = false;
+//
+//    int const nPolyCorners = static_cast<int>(pPtPoints->size());
+//    int j = nPolyCorners - 1;
+//
+//    double const dX = pPtStart->dGetX();
+//    double const dY = pPtStart->dGetY();
+//
+//    for (int i = 0; i < nPolyCorners; i++)
+//    {
+//       double const dCorneriX = pPtPoints->at(i).dGetX();
+//       double const dCorneriY = pPtPoints->at(i).dGetY();
+//       double const dCornerjX = pPtPoints->at(j).dGetX();
+//       double const dCornerjY = pPtPoints->at(j).dGetY();
+//
+//       if ((dCorneriY < dY && dCornerjY >= dY) || (dCornerjY < dY && dCorneriY >= dY))
+//       {
+//          if (dCorneriX + (dY - dCorneriY) / (dCornerjY - dCorneriY) * (dCornerjX - dCorneriX) < dX)
+//          {
+//             bOddNodes = ! bOddNodes;
+//          }
+//       }
+//
+//       j = i;
+//    }
+//
+//    return bOddNodes;
+// }
 
-   int const nPolyCorners = static_cast<int>(pPtPoints->size());
-   int j = nPolyCorners - 1;
-
-   double const dX = pPtStart->dGetX();
-   double const dY = pPtStart->dGetY();
-
-   for (int i = 0; i < nPolyCorners; i++)
-   {
-      double const dCorneriX = pPtPoints->at(i).dGetX();
-      double const dCorneriY = pPtPoints->at(i).dGetY();
-      double const dCornerjX = pPtPoints->at(j).dGetX();
-      double const dCornerjY = pPtPoints->at(j).dGetY();
-
-      if ((dCorneriY < dY && dCornerjY >= dY) || (dCornerjY < dY && dCorneriY >= dY))
-      {
-         if (dCorneriX + (dY - dCorneriY) / (dCornerjY - dCorneriY) * (dCornerjX - dCorneriX) < dX)
-         {
-            bOddNodes = ! bOddNodes;
-         }
-      }
-
-      j = i;
-   }
-
-   return bOddNodes;
-}
-
-//===============================================================================================================================
-//! Finds a point in a polygon: is guaranteed to succeed, as every strictly closed polygon has at least one triangle that is completely contained within the polygon. Derived from an algorithm at http://stackoverflow.com/questions/9797448/get-a-point-inside-the-polygon
-//===============================================================================================================================
-CGeom2DPoint CSimulation::PtFindPointInPolygon(vector<CGeom2DPoint> const* pPtPoints, int const nStartPoint)
-{
-   int const nPolySize = static_cast<int>(pPtPoints->size());
-   int nOffSet = 0;
-   CGeom2DPoint PtStart;
-
-   do
-   {
-      // Choose three consecutive points from the polygon
-      vector<CGeom2DPoint> nVTestPoints;
-
-      for (int n = 0; n < 3; n++)
-      {
-         int nIndex = n + nStartPoint + nOffSet;
-
-         if (nIndex > nPolySize - 1)
-            nIndex -= nPolySize;
-
-         // Safety check
-         if (nIndex < 0)
-            return CGeom2DPoint(DBL_NODATA, DBL_NODATA);
-
-         nVTestPoints.push_back(pPtPoints->at(nIndex));
-      }
-
-      // Increment ready for next time
-      nOffSet++;
-
-      // Safety check
-      if (nOffSet >= (nPolySize + 3))
-         return CGeom2DPoint(DBL_NODATA, DBL_NODATA);
-
-      // Check if the halfway point between the first and the third point is inside the polygon
-      PtStart = PtAverage(&nVTestPoints[0], &nVTestPoints[2]);
-   } while (! bIsWithinPolygon(&PtStart, pPtPoints));
-
-   return PtStart;
-}
+// //===============================================================================================================================
+// //! Finds a point in a polygon: is guaranteed to succeed, as every strictly closed polygon has at least one triangle that is completely contained within the polygon. Derived from an algorithm at http://stackoverflow.com/questions/9797448/get-a-point-inside-the-polygon
+// //===============================================================================================================================
+// CGeom2DPoint CSimulation::PtFindPointInPolygon(vector<CGeom2DPoint> const* pPtPoints, int const nStartPoint)
+// {
+//    int const nPolySize = static_cast<int>(pPtPoints->size());
+//    int nOffSet = 0;
+//    CGeom2DPoint PtStart;
+//
+//    do
+//    {
+//       // Choose three consecutive points from the polygon
+//       vector<CGeom2DPoint> nVTestPoints;
+//
+//       for (int n = 0; n < 3; n++)
+//       {
+//          int nIndex = n + nStartPoint + nOffSet;
+//
+//          if (nIndex > nPolySize - 1)
+//             nIndex -= nPolySize;
+//
+//          // Safety check
+//          if (nIndex < 0)
+//             return CGeom2DPoint(DBL_NODATA, DBL_NODATA);
+//
+//          nVTestPoints.push_back(pPtPoints->at(nIndex));
+//       }
+//
+//       // Increment ready for next time
+//       nOffSet++;
+//
+//       // Safety check
+//       if (nOffSet >= (nPolySize + 3))
+//          return CGeom2DPoint(DBL_NODATA, DBL_NODATA);
+//
+//       // Check if the halfway point between the first and the third point is inside the polygon
+//       PtStart = PtAverage(&nVTestPoints[0], &nVTestPoints[2]);
+//    } while (! bIsWithinPolygon(&PtStart, pPtPoints));
+//
+//    return PtStart;
+// }

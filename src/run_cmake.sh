@@ -1,9 +1,9 @@
 #!/bin/sh
 
 # Change this to change build type
-buildtype=Debug
-#buildtype=Release
-#buildtype=Prerelease             # DO NOT run using debugger e.g. gdb
+#buildtype=Debug
+buildtype=Release
+#buildtype=Prerelease
 #buildtype=RelWithDebInfo        # Not yet implemented in CMakeLists.txt
 #buildtype=MinSizeRel            # Not yet implemented in CMakeLists.txt
 #buildtype=gcov
@@ -60,4 +60,58 @@ echo ""
 echo "Finished CMake ($buildtype build, $cshorelibrary CShore library, CShore input/output method=$cshoreinout)"
 echo ""
 echo "================================================================="
+
+echo ""
+echo "Now build and install, by running:"
+echo ""
+echo "   make install"
+echo "   cd .."
+echo ""
+
+# Some extra messages
+if [ "$buildtype" = "Callgrind" ]; then
+   echo "When the build has finished, use valgrind/callgrind as follows:"
+   echo ""
+   echo "To check for memory leaks:"
+   echo ""
+   echo "   valgrind --leak-check=yes --suppressions=system-libs.supp --track-origins=yes ./cme &> valgrind.txt"
+   echo ""
+   echo "Then look at valgrind.txt"
+   echo ""
+   echo "Or to check coverage:"
+   echo ""
+   echo "   valgrind --tool=callgrind ./cme"
+   echo ""
+   echo "Then run:"
+   echo ""
+   echo "   callgrind_annotate --auto=yes callgrind.out.XXXXX > ./profile/callgrind/callgrind.txt"
+   echo ""
+   echo "where XXXXX is the number of the callgrind.out.XXXXX that was produced by valgrind. Then look at ./profile/callgrind.txt"
+   echo ""
+fi
+
+if [ "$buildtype" = "gcov" ]; then
+   echo "When the build has finished, use gcov/lcov as follows:"
+   echo ""
+   echo "   ./cme"
+   echo "   lcov --capture --directory ./src/CMakeFiles/cme.dir/ --output-file ./profile/lcov_output/coverage.info"
+   echo "   cd ./profile/lcov_output"
+   echo "   genhtml coverage.info"
+   echo ""
+   echo "Then look at index.html in your browser"
+   echo ""
+fi
+
+if [ "$buildtype" = "Prerelease" ]; then
+   echo "When the build has finished:"
+   echo ""
+   echo "   ./cme 2> sanitize.log"
+   echo ""
+   echo "Then look at sanitize.log"
+   echo "DO NOT run using debugger e.g. gdb"
+   echo "Note that we get a large number of GDAL leaks since sanitize-blacklist is not supported by gcc"
+   echo ""
+fi
+
+#########################################################################################
 

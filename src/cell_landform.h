@@ -59,9 +59,6 @@ class CRWCellLandform
 
          //! Cliff notch incised depth
          double m_dNotchDepth;
-
-         //! Cliff notch depth remaining
-         double m_dRemaining;
       } m_sCliffData;
 
    } m_uLFData;
@@ -85,7 +82,7 @@ class CRWCellLandform
    double dGetCliffNotchBaseElev(void) const;
    void SetCliffNotchDepth(double const);
    double dGetCliffNotchDepth(void) const;
-   void SetCliffRemaining(double const);
+   // void SetCliffRemaining(double const);
    // double dGetCliffRemaining(void) const;
 };
 #endif // CELL_LANDFORM_H

@@ -210,10 +210,11 @@ CoastalME CHANGELOG
 1.3.24   Ongoing changes to permit multiple coastlines
          Added clang-tidy configuration
          Const-correctness etc. enforced via clang-tidy
-         Wilf's cliff toe tracing added
+         Wilf's cliff toe tracing added (incomplete)
          Code tidying
 
 1.3.25   Ongoing changes to permit multiple coastlines
+         Removed Wilf cliff-toe tracing (problems)
          Bug fixes re. multiple coastlines
          Tidied logfile output
          Added -Og flag for prerelrease debug builds
@@ -226,5 +227,12 @@ CoastalME CHANGELOG
          Improved logfile output
          Code tidying
 
-1.3.27
+1.3.27   Again added Wilf's cliff-toe tracing (problems)
+         Changes to cliff deposition
+         Changes to cliff notch elevation calculation
+         Extra output for prerelease and valgrind builds
+         Replace suppressions file for valgrind/callgrind
+         Added cliff notch elevation time series output
+         Added all cliff notch raster output
+         Code tidying
 

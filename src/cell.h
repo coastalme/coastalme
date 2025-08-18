@@ -48,19 +48,19 @@ class CGeomCell
    //! Switch to indicate that this cell is in the active zone
    bool m_bIsInActiveZone;
 
-   //! Is this cell a cliff?
-   bool m_bCliff;
+   //! Is this cell a cliff toe?
+   bool m_bCliffToe;
 
-   //! Switch to indicate that this cell is 'under' a runup flood line
+   //! Switch to indicate that this cell is 'under' a runup flood line TODO 007 Finish surge and runup stuff
    bool m_bFloodLine;
 
-   //! Switch to indicate that this cell is 'under' a runup wave flood line
+   //! Switch to indicate that this cell is 'under' a runup wave flood line TODO 007 Finish surge and runup stuff
    bool m_bWaveFlood;
 
-   // //! TODO 007 What is this used for?
+   // //! TODO 007 Finish surge and runup stuff
    // bool m_bCheckCell;
 
-   //! TODO 007 What is this used for?
+   //! TODO 007 Finish surge and runup stuff
    bool m_bCheckFloodCell;
 
    //! Switch to show this cell is 'under' a shadow boundary
@@ -69,13 +69,13 @@ class CGeomCell
    //! Switch to show that this cell could be the start of a coastline
    bool m_bPossibleCoastStartCell;
 
-   //! TODO 007 What is this used for?
+   //! TODO 007 Finish surge and runup stuff
    bool m_bPossibleFloodStartCell;
 
-   //! TODO 007 What is this used for?
+   //! TODO 007 Finish surge and runup stuff
    bool m_bFloodBySetupSurge;
 
-   //! TODO 007 What is this used for?
+   //! TODO 007 Finish surge and runup stuff
    bool m_bFloodBySetupSurgeRunup;
 
    //! If this cell is an edge (or bounding box) cell, this specifies the edge
@@ -112,7 +112,7 @@ class CGeomCell
    double m_dBasementElevation;
 
    //! Slope at this cell (degrees or unitless)
-   double m_dSlope;
+   double m_dSlopeForCliffToe;
 
    //! Depth of still water (m), is zero if not inundated
    double m_dSeaDepth;
@@ -259,10 +259,10 @@ class CGeomCell
    void SetAsFloodline(bool const);
    bool bIsFloodline(void) const;
 
-   void SetAsCliff(bool const);
-   bool bIsCliff(void) const;
+   void SetAsCliffToe(bool const);
+   bool bIsCliffToe(void) const;
 
-   void SetProfileID(int const);
+   // void SetProfileID(int const);
    int nGetProfileID(void) const;
    bool bIsProfile(void) const;
    // void SetProfileCoastID(int const);
@@ -280,17 +280,17 @@ class CGeomCell
    bool bIsPossibleCoastStartCell(void) const;
 
    void SetPossibleFloodStartCell(void);
-   bool bIsPossibleFloodStartCell(void) const;
+   // bool bIsPossibleFloodStartCell(void) const;
 
-   void SetPolygonID(int const);
+   // void SetPolygonID(int const);
    int nGetPolygonID(void) const;
-   void SetPolygonCoastID(int const);
+   // void SetPolygonCoastID(int const);
    int nGetPolygonCoastID(void) const;
    void SetCoastAndPolygonID(int const, int const);
 
    CRWCellLandform* pGetLandform(void);
 
-   void SetWaveFlood(void);
+   // void SetWaveFlood(void);
    bool bIsElevLessThanWaterLevel(void) const;
 
    void SetCheckCell(void);
@@ -301,14 +301,14 @@ class CGeomCell
    bool bIsCellFloodCheck(void) const;
 
    void SetLocalConsSlope(double const);
-   double dGetLocalConsSlope(void) const;
+   double dGetConsSedSlope(void) const;
 
    void SetBasementElev(double const);
    double dGetBasementElev(void) const;
    bool bBasementElevIsMissingValue(void) const;
 
-   void SetSlope(double const);
-   double dGetSlope(void) const;
+   void SetSlopeForCliffToe(double const);
+   double dGetSlopeForCliffToe(void) const;
 
    // double dGetVolEquivSedTopElev(void) const;
    double dGetSedimentTopElev(void) const;
@@ -351,7 +351,7 @@ class CGeomCell
    int nGetTopNonZeroLayerAboveBasement(void) const;
    int nGetTopLayerAboveBasement(void) const;
 
-   double dGetConsSedTopForLayerAboveBasement(int const) const;
+   double dGetConsSedTopElevForLayerAboveBasement(int const) const;
    CRWCellLayer *pGetLayerAboveBasement(int const);
    void AppendLayers(int const);
    void CalcAllLayerElevsAndD50(void);

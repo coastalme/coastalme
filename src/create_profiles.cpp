@@ -696,102 +696,132 @@ int CSimulation::nLocateAndCreateGridEdgeProfile(bool const bCoastStart, int con
 }
 
 //===============================================================================================================================
-//! Finds the end point of a coastline-normal line, given the start point on the vector coastline. All coordinates are in the external CRS
+//! Finds the end point of a coastline-normal line, given the start point on the vector coastline. If however the start point is on the grid edge (only applicable to cliff collapse [rofiles), then the end point is also on the grid edge, and the line joining the start and end points is not necessarily normal to the vector coast. All input coordinates are in the external CRS
 //===============================================================================================================================
 int CSimulation::nGetCoastNormalEndPoint(int const nCoast, int const nStartCoastPoint, int const nCoastSize, CGeom2DPoint const* pPtStart, double const dLineLength, CGeom2DPoint* pPtEnd, CGeom2DIPoint* pPtiEnd, bool const bIntervention)
 {
    int const AVGSIZE = 21; // TODO 011 This should be a user input
+
+   double dXEnd1 = 0;
+   double dXEnd2 = 0;
+   double dYEnd1 = 0;
+   double dYEnd2 = 0;
 
    CGeom2DPoint PtBefore;
    CGeom2DPoint PtAfter;
 
    if (bIntervention)
    {
-      // This is an intervention profile, so just use one point on either side (coordinates in external CRS). Note this this assumes that this intervention profile is not at the start or end of the coastline
+      // This is an intervention profile, so just use one point on either side (coordinates in external CRS). TODO Note this this assumes that this intervention profile is not at the start or end of the coastline
       PtBefore = *m_VCoast[nCoast].pPtGetCoastlinePointExtCRS(nStartCoastPoint - 1);
       PtAfter = *m_VCoast[nCoast].pPtGetCoastlinePointExtCRS(nStartCoastPoint + 1);
    }
-
    else
    {
-      // This is not an intervention, so put a maximum of AVGSIZE points before the start point into a vector
-      vector<CGeom2DPoint> PtBeforeToAverage;
+      // This is not an intervention profile. It could be a cliff collapse profile, which could be a grid-edge profile
+      double dXStart = pPtStart->dGetX();
+      double dYStart = pPtStart->dGetY();
 
-      for (int n = 1; n <= AVGSIZE; n++)
+      int nXStart = nRound(dExtCRSXToGridX(dXStart));
+      int nYStart = nRound(dExtCRSYToGridY(dYStart));
+      int nLineLength = nConvertMetresToNumCells(dLineLength);
+
+      // LogStream << nXStart << ", " << nYStart << endl;
+      if ((nXStart == 0) || (nXStart == m_nXGridSize-1))
       {
-         int const nPoint = nStartCoastPoint - n;
+         // Yes it is a grid-edge profile
+         dXEnd1 = dGridXToExtCRSX(nXStart);
+         dXEnd2 = dXEnd1;
 
-         if (nPoint < 0)
-            break;
-
-         PtBeforeToAverage.push_back(*m_VCoast[nCoast].pPtGetCoastlinePointExtCRS(nPoint));
+         dYEnd1 = dGridYToExtCRSY(nYStart + nLineLength);
+         dYEnd2 = dGridYToExtCRSY(nYStart - nLineLength);
       }
-
-      // Put a maximum of AVGSIZE points after the start point into a vector
-      vector<CGeom2DPoint> PtAfterToAverage;
-
-      for (int n = 1; n <= AVGSIZE; n++)
+      else if ((nYStart == 0) || (nYStart == m_nYGridSize-1))
       {
-         int const nPoint = nStartCoastPoint + n;
+         // Yes it is a grid-edge profile
+         dYEnd1 = dGridYToExtCRSY(nYStart);
+         dYEnd2 = dYEnd1;
 
-         if (nPoint > nCoastSize - 1)
-            break;
-
-         PtAfterToAverage.push_back(*m_VCoast[nCoast].pPtGetCoastlinePointExtCRS(nPoint));
+         dXEnd1 = dGridXToExtCRSX(nXStart + nLineLength);
+         dXEnd2 = dGridXToExtCRSX(nXStart - nLineLength);
       }
-
-      // Now average each of these vectors of points: results are in PtBefore and PtAfter (coordinates in external CRS)
-      PtBefore = PtAverage(&PtBeforeToAverage);
-      PtAfter = PtAverage(&PtAfterToAverage);
-   }
-
-   // Get the y = a * x + b equation of the straight line linking the coastline points before and after 'this' coastline point. For this linking line, slope a = (y2 - y1) / (x2 - x1)
-   double const dYDiff = PtAfter.dGetY() - PtBefore.dGetY();
-   double const dXDiff = PtAfter.dGetX() - PtBefore.dGetX();
-
-   double dXEnd1 = 0, dXEnd2 = 0, dYEnd1 = 0, dYEnd2 = 0;
-
-   if (bFPIsEqual(dYDiff, 0.0, TOLERANCE))
-   {
-      // The linking line runs W-E or E-W, so a straight line at right angles to this runs N-S or S-N. Calculate the two possible end points for this coastline-normal profile
-      dXEnd1 = dXEnd2 = pPtStart->dGetX();
-      dYEnd1 = pPtStart->dGetY() + dLineLength;
-      dYEnd2 = pPtStart->dGetY() - dLineLength;
-   }
-   else if (bFPIsEqual(dXDiff, 0.0, TOLERANCE))
-   {
-      // The linking line runs N-S or S-N, so a straight line at right angles to this runs W-E or E-W. Calculate the two possible end points for this coastline-normal profile
-      dYEnd1 = dYEnd2 = pPtStart->dGetY();
-      dXEnd1 = pPtStart->dGetX() + dLineLength;
-      dXEnd2 = pPtStart->dGetX() - dLineLength;
-   }
-   else
-   {
-      // The linking line runs neither W-E nor N-S so we have to work a bit harder to find the end-point of the coastline-normal profile
-      double const dA = dYDiff / dXDiff;
-
-      // Now calculate the equation of the straight line which is perpendicular to this linking line
-      double const dAPerp = -1 / dA;
-      double const dBPerp = pPtStart->dGetY() - (dAPerp * pPtStart->dGetX());
-
-      // Calculate the end point of the profile: first do some substitution then rearrange as a quadratic equation i.e. in the form Ax^2 + Bx + C = 0 (see http://math.stackexchange.com/questions/228841/how-do-i-calculate-the-intersections-of-a-straight-line-and-a-circle)
-      double const dQuadA = 1 + (dAPerp * dAPerp);
-      double const dQuadB = 2 * ((dBPerp * dAPerp) - (dAPerp * pPtStart->dGetY()) - pPtStart->dGetX());
-      double const dQuadC = ((pPtStart->dGetX() * pPtStart->dGetX()) + (pPtStart->dGetY() * pPtStart->dGetY()) + (dBPerp * dBPerp) - (2 * pPtStart->dGetY() * dBPerp) - (dLineLength * dLineLength));
-
-      // Solve for x and y using the quadratic formula x = (−B ± sqrt(B^2 − 4AC)) / 2A
-      double const dDiscriminant = (dQuadB * dQuadB) - (4 * dQuadA * dQuadC);
-
-      if (dDiscriminant < 0)
+      else
       {
-         LogStream << ERR << "timestep " << m_ulIter << ": discriminant < 0 when finding profile end point on coastline " << nCoast << ", from coastline point " << nStartCoastPoint << "), ignored" << endl;
-         return RTN_ERR_NO_SOLUTION_FOR_ENDPOINT;
-      }
+         // This is not a grid-edge profile, so put a maximum of AVGSIZE points before the start point into a vector
+         vector<CGeom2DPoint> VPtBeforeToAverage;
 
-      dXEnd1 = (-dQuadB + sqrt(dDiscriminant)) / (2 * dQuadA);
-      dYEnd1 = (dAPerp * dXEnd1) + dBPerp;
-      dXEnd2 = (-dQuadB - sqrt(dDiscriminant)) / (2 * dQuadA);
-      dYEnd2 = (dAPerp * dXEnd2) + dBPerp;
+         for (int n = 1; n <= AVGSIZE; n++)
+         {
+            int const nPoint = nStartCoastPoint - n;
+            if (nPoint < 0)
+               break;
+
+            VPtBeforeToAverage.push_back(*m_VCoast[nCoast].pPtGetCoastlinePointExtCRS(nPoint));
+         }
+
+         // Put a maximum of AVGSIZE points after the start point into a vector
+         vector<CGeom2DPoint> VPtAfterToAverage;
+
+         for (int n = 1; n <= AVGSIZE; n++)
+         {
+            int const nPoint = nStartCoastPoint + n;
+            if (nPoint > nCoastSize - 1)
+               break;
+
+            VPtAfterToAverage.push_back(*m_VCoast[nCoast].pPtGetCoastlinePointExtCRS(nPoint));
+         }
+
+         // Now average each of these vectors of points: results are in PtBefore and PtAfter (coordinates in external CRS)
+         PtBefore = PtAverage(&VPtBeforeToAverage);
+         PtAfter = PtAverage(&VPtAfterToAverage);
+
+         // Get the y = a * x + b equation of the straight line linking the coastline points before and after 'this' coastline point. For this linking line, slope a = (y2 - y1) / (x2 - x1)
+         double const dYDiff = PtAfter.dGetY() - PtBefore.dGetY();
+         double const dXDiff = PtAfter.dGetX() - PtBefore.dGetX();
+
+         if (bFPIsEqual(dYDiff, 0.0, TOLERANCE))
+         {
+            // The linking line runs W-E or E-W, so a straight line at right angles to this runs N-S or S-N. Calculate the two possible end points for this coastline-normal profile
+            dXEnd1 = dXEnd2 = pPtStart->dGetX();
+            dYEnd1 = pPtStart->dGetY() + dLineLength;
+            dYEnd2 = pPtStart->dGetY() - dLineLength;
+         }
+         else if (bFPIsEqual(dXDiff, 0.0, TOLERANCE))
+         {
+            // The linking line runs N-S or S-N, so a straight line at right angles to this runs W-E or E-W. Calculate the two possible end points for this coastline-normal profile
+            dYEnd1 = dYEnd2 = pPtStart->dGetY();
+            dXEnd1 = pPtStart->dGetX() + dLineLength;
+            dXEnd2 = pPtStart->dGetX() - dLineLength;
+         }
+         else
+         {
+            // The linking line runs neither W-E nor N-S so we have to work a bit harder to find the end-point of the coastline-normal profile
+            double const dA = dYDiff / dXDiff;
+
+            // Now calculate the equation of the straight line which is perpendicular to this linking line
+            double const dAPerp = -1 / dA;
+            double const dBPerp = pPtStart->dGetY() - (dAPerp * pPtStart->dGetX());
+
+            // Calculate the end point of the profile: first do some substitution then rearrange as a quadratic equation i.e. in the form Ax^2 + Bx + C = 0 (see http://math.stackexchange.com/questions/228841/how-do-i-calculate-the-intersections-of-a-straight-line-and-a-circle)
+            double const dQuadA = 1 + (dAPerp * dAPerp);
+            double const dQuadB = 2 * ((dBPerp * dAPerp) - (dAPerp * pPtStart->dGetY()) - pPtStart->dGetX());
+            double const dQuadC = ((pPtStart->dGetX() * pPtStart->dGetX()) + (pPtStart->dGetY() * pPtStart->dGetY()) + (dBPerp * dBPerp) - (2 * pPtStart->dGetY() * dBPerp) - (dLineLength * dLineLength));
+
+            // Solve for x and y using the quadratic formula x = (−B ± sqrt(B^2 − 4AC)) / 2A
+            double const dDiscriminant = (dQuadB * dQuadB) - (4 * dQuadA * dQuadC);
+
+            if (dDiscriminant < 0)
+            {
+               LogStream << ERR << "timestep " << m_ulIter << ": discriminant < 0 when finding profile end point on coastline " << nCoast << ", from coastline point " << nStartCoastPoint << "), ignored" << endl;
+               return RTN_ERR_NO_SOLUTION_FOR_ENDPOINT;
+            }
+
+            dXEnd1 = (-dQuadB + sqrt(dDiscriminant)) / (2 * dQuadA);
+            dYEnd1 = (dAPerp * dXEnd1) + dBPerp;
+            dXEnd2 = (-dQuadB - sqrt(dDiscriminant)) / (2 * dQuadA);
+            dYEnd2 = (dAPerp * dXEnd2) + dBPerp;
+         }
+      }
    }
 
    // We have two possible solutions, so decide which of the two endpoints to use then create the profile end-point (coordinates in external CRS)
@@ -812,9 +842,7 @@ int CSimulation::nGetCoastNormalEndPoint(int const nCoast, int const nStartCoast
       pPtEnd->SetX(dGridCentroidXToExtCRSX(pPtiEnd->nGetX()));
       pPtEnd->SetY(dGridCentroidYToExtCRSY(pPtiEnd->nGetY()));
 
-      // LogStream << m_ulIter << ": profile endpoint is now within the grid [" << pPtiEnd->nGetX() << "][" << pPtiEnd->nGetY() << "] = {" << pPtEnd->dGetX() << ", " << pPtEnd->dGetY() << "}. The profile starts at coastline point " << nStartCoastPoint << " = {" << pPtStart->dGetX() << ", " << pPtStart->dGetY() << "}" << endl;
-
-      // return RTN_ERR_PROFILE_ENDPOINT_AT_GRID_EDGE;
+      LogStream << m_ulIter << ": profile endpoint constrained to be within grid, is now [" << pPtiEnd->nGetX() << "][" << pPtiEnd->nGetY() << "] = {" << pPtEnd->dGetX() << ", " << pPtEnd->dGetY() << "}. The profile starts at coastline point " << nStartCoastPoint << " = {" << pPtStart->dGetX() << ", " << pPtStart->dGetY() << "}" << endl;
    }
 
    return RTN_OK;
@@ -1053,7 +1081,6 @@ void CSimulation::CheckForIntersectingProfiles(void)
                         // Truncate the first profile, since it is an intervention profile
                         TruncateOneProfileRetainOtherProfile(nCoast, pFirstProfile, pSecondProfile, dIntersectX, dIntersectY, nProf1LineSeg, nProf2LineSeg, false);
                      }
-
                      else if (pSecondProfile->bIsIntervention())
                      {
                         LogStream << m_ulIter << ": profiles " << nFirstProfile << " and " << nSecondProfile << " intersect, truncate " << nSecondProfile << " since it is an intervention profile" << endl;
@@ -1061,7 +1088,6 @@ void CSimulation::CheckForIntersectingProfiles(void)
                         // Truncate the second profile, since it is an intervention profile
                         TruncateOneProfileRetainOtherProfile(nCoast, pSecondProfile, pFirstProfile, dIntersectX, dIntersectY, nProf2LineSeg, nProf1LineSeg, false);
                      }
-
                      // Is the point of intersection already present in the first profile (i.e. because there has already been an intersection at this point between the first profile and some other profile)?
                      else if (pFirstProfile->bIsPointInProfile(dIntersectX, dIntersectY, nPoint))
                      {
@@ -1070,7 +1096,6 @@ void CSimulation::CheckForIntersectingProfiles(void)
                         // Truncate the second profile and merge it with the first profile
                         TruncateOneProfileRetainOtherProfile(nCoast, pSecondProfile, pFirstProfile, dIntersectX, dIntersectY, nProf2LineSeg, nProf1LineSeg, true);
                      }
-
                      // Is the point of intersection already present in the second profile?
                      else if (pSecondProfile->bIsPointInProfile(dIntersectX, dIntersectY, nPoint))
                      {
@@ -1079,7 +1104,6 @@ void CSimulation::CheckForIntersectingProfiles(void)
                         // Truncate the first profile and merge it with the second profile
                         TruncateOneProfileRetainOtherProfile(nCoast, pFirstProfile, pSecondProfile, dIntersectX, dIntersectY, nProf1LineSeg, nProf2LineSeg, true);
                      }
-
                      else
                      {
                         // The point of intersection is not already present in either profile, so get the number of line segments of each profile

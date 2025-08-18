@@ -525,16 +525,15 @@ int CSimulation::nMarkBoundingBoxEdgeCells(void)
 }
 
 //===============================================================================================================================
-//! Reads all other raster GIS datafiles into the RasterGrid array
+//! Reads raster GIS datafiles into the RasterGrid array
 //===============================================================================================================================
 int CSimulation::nReadRasterGISFile(int const nDataItem, int const nLayer)
 {
-   string
-       strGISFile,
-       strDriverCode,
-       strDriverDesc,
-       strProjection,
-       strDataType;
+   string strGISFile;
+   string strDriverCode;
+   string strDriverDesc;
+   string strProjection;
+   string strDataType;
 
    switch (nDataItem)
    {
@@ -589,381 +588,367 @@ int CSimulation::nReadRasterGISFile(int const nDataItem, int const nLayer)
       break;
    }
 
-   // Do we have a filename for this data item? If we don't then just return
-   if (!strGISFile.empty())
+   // Use GDAL to create a dataset object, which then opens the GIS file
+   GDALDataset *pGDALDataset = static_cast<GDALDataset*>(GDALOpen(strGISFile.c_str(), GA_ReadOnly));
+
+   if (NULL == pGDALDataset)
    {
-      // We do have a filename, so use GDAL to create a dataset object, which then opens the GIS file
-      GDALDataset *pGDALDataset = static_cast<GDALDataset*>(GDALOpen(strGISFile.c_str(), GA_ReadOnly));
+      // Can't open file (note will already have sent GDAL error message to stdout)
+      cerr << ERR << "cannot open " << strGISFile << " for input: " << CPLGetLastErrorMsg() << endl;
+      return (RTN_ERR_RASTER_FILE_READ);
+   }
 
-      if (NULL == pGDALDataset)
+   // Opened OK, so get dataset information
+   strDriverCode = pGDALDataset->GetDriver()->GetDescription();
+   strDriverDesc = pGDALDataset->GetDriver()->GetMetadataItem(GDAL_DMD_LONGNAME);
+   strProjection = pGDALDataset->GetProjectionRef();
+
+   // Get geotransformation info
+   double dGeoTransform[6];
+   if (CE_Failure == pGDALDataset->GetGeoTransform(dGeoTransform))
+   {
+      // Can't get geotransformation (note will already have sent GDAL error message to stdout)
+      cerr << ERR << CPLGetLastErrorMsg() << " in " << strGISFile << endl;
+      return (RTN_ERR_RASTER_FILE_READ);
+   }
+
+   // Now get dataset size, and do some checks
+   int const nTmpXSize = pGDALDataset->GetRasterXSize();
+   if (nTmpXSize != m_nXGridSize)
+   {
+      // Error: incorrect number of columns specified
+      cerr << ERR << "different number of columns in " << strGISFile << " (" << nTmpXSize << ") and " << m_strInitialBasementDEMFile << "(" << m_nXGridSize << ")" << endl;
+      return (RTN_ERR_RASTER_FILE_READ);
+   }
+
+   int const nTmpYSize = pGDALDataset->GetRasterYSize();
+   if (nTmpYSize != m_nYGridSize)
+   {
+      // Error: incorrect number of rows specified
+      cerr << ERR << "different number of rows in " << strGISFile << " (" << nTmpYSize << ") and " << m_strInitialBasementDEMFile << " (" << m_nYGridSize << ")" << endl;
+      return (RTN_ERR_RASTER_FILE_READ);
+   }
+
+   double dTmp = m_dGeoTransform[0] - (m_dGeoTransform[1] / 2);
+   if (! bFPIsEqual(dTmp, m_dNorthWestXExtCRS, TOLERANCE))
+   {
+      // Error: different min x from DEM file
+      cerr << ERR << "different min x values in " << strGISFile << " (" << dTmp << ") and " << m_strInitialBasementDEMFile << " (" << m_dNorthWestXExtCRS << ")" << endl;
+      return (RTN_ERR_RASTER_FILE_READ);
+   }
+
+   dTmp = m_dGeoTransform[3] - (m_dGeoTransform[5] / 2);
+   if (! bFPIsEqual(dTmp, m_dNorthWestYExtCRS, TOLERANCE))
+   {
+      // Error: different min x from DEM file
+      cerr << ERR << "different min y values in " << strGISFile << " (" << dTmp << ") and " << m_strInitialBasementDEMFile << " (" << m_dNorthWestYExtCRS << ")" << endl;
+      return (RTN_ERR_RASTER_FILE_READ);
+   }
+
+   double const dTmpResX = tAbs(dGeoTransform[1]);
+   if (! bFPIsEqual(dTmpResX, m_dCellSide, 1e-2))
+   {
+      // Error: different cell size in X direction: note that due to rounding errors in some GIS packages, must expect some discrepancies
+      cerr << ERR << "cell size in X direction (" << dTmpResX << ") in " << strGISFile << " differs from cell size in of basement DEM (" << m_dCellSide << ")" << endl;
+      return (RTN_ERR_RASTER_FILE_READ);
+   }
+
+   double const dTmpResY = tAbs(dGeoTransform[5]);
+   if (! bFPIsEqual(dTmpResY, m_dCellSide, 1e-2))
+   {
+      // Error: different cell size in Y direction: note that due to rounding errors in some GIS packages, must expect some discrepancies
+      cerr << ERR << "cell size in Y direction (" << dTmpResY << ") in " << strGISFile << " differs from cell size of basement DEM (" << m_dCellSide << ")" << endl;
+      return (RTN_ERR_RASTER_FILE_READ);
+   }
+
+   // Now get GDAL raster band information
+   GDALRasterBand *pGDALBand = pGDALDataset->GetRasterBand(1); // TODO 028 Give a message if there are several bands
+   int nBlockXSize = 0, nBlockYSize = 0;
+   pGDALBand->GetBlockSize(&nBlockXSize, &nBlockYSize);
+   strDataType = GDALGetDataTypeName(pGDALBand->GetRasterDataType());
+
+   switch (nDataItem)
+   {
+   case (LANDFORM_RASTER):
+      // Initial Landform Class GIS data
+      m_strGDALLDriverCode = strDriverCode;
+      m_strGDALLDriverDesc = strDriverDesc;
+      m_strGDALLProjection = strProjection;
+      m_strGDALLDataType = strDataType;
+      break;
+
+   case (INTERVENTION_CLASS_RASTER):
+      // Intervention class
+      m_strGDALICDriverCode = strDriverCode;
+      m_strGDALICDriverDesc = strDriverDesc;
+      m_strGDALICProjection = strProjection;
+      m_strGDALICDataType = strDataType;
+      break;
+
+   case (INTERVENTION_HEIGHT_RASTER):
+      // Intervention height
+      m_strGDALIHDriverCode = strDriverCode;
+      m_strGDALIHDriverDesc = strDriverDesc;
+      m_strGDALIHProjection = strProjection;
+      m_strGDALIHDataType = strDataType;
+      break;
+
+   case (SUSP_SED_RASTER):
+      // Initial Suspended Sediment GIS data
+      m_strGDALISSDriverCode = strDriverCode;
+      m_strGDALISSDriverDesc = strDriverDesc;
+      m_strGDALISSProjection = strProjection;
+      m_strGDALISSDataType = strDataType;
+      break;
+
+   case (FINE_UNCONS_RASTER):
+      // Initial Unconsolidated Fine Sediment GIS data
+      m_VstrGDALIUFDriverCode[nLayer] = strDriverCode;
+      m_VstrGDALIUFDriverDesc[nLayer] = strDriverDesc;
+      m_VstrGDALIUFProjection[nLayer] = strProjection;
+      m_VstrGDALIUFDataType[nLayer] = strDataType;
+      break;
+
+   case (SAND_UNCONS_RASTER):
+      // Initial Unconsolidated Sand Sediment GIS data
+      m_VstrGDALIUSDriverCode[nLayer] = strDriverCode;
+      m_VstrGDALIUSDriverDesc[nLayer] = strDriverDesc;
+      m_VstrGDALIUSProjection[nLayer] = strProjection;
+      m_VstrGDALIUSDataType[nLayer] = strDataType;
+      break;
+
+   case (COARSE_UNCONS_RASTER):
+      // Initial Unconsolidated Coarse Sediment GIS data
+      m_VstrGDALIUCDriverCode[nLayer] = strDriverCode;
+      m_VstrGDALIUCDriverDesc[nLayer] = strDriverDesc;
+      m_VstrGDALIUCProjection[nLayer] = strProjection;
+      m_VstrGDALIUCDataType[nLayer] = strDataType;
+      break;
+
+   case (FINE_CONS_RASTER):
+      // Initial Consolidated Fine Sediment GIS data
+      m_VstrGDALICFDriverCode[nLayer] = strDriverCode;
+      m_VstrGDALICFDriverDesc[nLayer] = strDriverDesc;
+      m_VstrGDALICFProjection[nLayer] = strProjection;
+      m_VstrGDALICFDataType[nLayer] = strDataType;
+      break;
+
+   case (SAND_CONS_RASTER):
+      // Initial Consolidated Sand Sediment GIS data
+      m_VstrGDALICSDriverCode[nLayer] = strDriverCode;
+      m_VstrGDALICSDriverDesc[nLayer] = strDriverDesc;
+      m_VstrGDALICSProjection[nLayer] = strProjection;
+      m_VstrGDALICSDataType[nLayer] = strDataType;
+      break;
+
+   case (COARSE_CONS_RASTER):
+      // Initial Consolidated Coarse Sediment GIS data
+      m_VstrGDALICCDriverCode[nLayer] = strDriverCode;
+      m_VstrGDALICCDriverDesc[nLayer] = strDriverDesc;
+      m_VstrGDALICCProjection[nLayer] = strProjection;
+      m_VstrGDALICCDataType[nLayer] = strDataType;
+      break;
+   }
+
+   // If present, get the missing value setting
+   string const strTmp = strToLower(&strDataType);
+   if (strTmp.find("int") != string::npos)
+   {
+      // This is an integer layer
+      CPLPushErrorHandler(CPLQuietErrorHandler);                          // Needed to get next line to fail silently, if it fails
+      m_nGISMissingValue = static_cast<int>(pGDALBand->GetNoDataValue()); // Note will fail for some formats
+      CPLPopErrorHandler();
+
+      if (m_nGISMissingValue != m_nMissingValue)
       {
-         // Can't open file (note will already have sent GDAL error message to stdout)
-         cerr << ERR << "cannot open " << strGISFile << " for input: " << CPLGetLastErrorMsg() << endl;
-         return (RTN_ERR_RASTER_FILE_READ);
+         cerr << "   " << NOTE << "NODATA value in " << strGISFile << " is " << m_nGISMissingValue << "\n         instead using CoatalME's default integer NODATA value " << m_nMissingValue << endl;
       }
+   }
+   else
+   {
+      // This is a floating point layer
+      CPLPushErrorHandler(CPLQuietErrorHandler);        // Needed to get next line to fail silently, if it fails
+      m_dGISMissingValue = pGDALBand->GetNoDataValue(); // Note will fail for some formats
+      CPLPopErrorHandler();
 
-      // Opened OK, so get dataset information
-      strDriverCode = pGDALDataset->GetDriver()->GetDescription();
-      strDriverDesc = pGDALDataset->GetDriver()->GetMetadataItem(GDAL_DMD_LONGNAME);
-      strProjection = pGDALDataset->GetProjectionRef();
-
-      // Get geotransformation info
-      double dGeoTransform[6];
-
-      if (CE_Failure == pGDALDataset->GetGeoTransform(dGeoTransform))
+      if (! bFPIsEqual(m_dGISMissingValue, m_dMissingValue, TOLERANCE))
       {
-         // Can't get geotransformation (note will already have sent GDAL error message to stdout)
+         cerr << "   " << NOTE << "NODATA value in " << strGISFile << " is " << m_dGISMissingValue << "\n         instead using CoastalME's default floating-point NODATA value " << m_dMissingValue << endl;
+      }
+   }
+
+   // Allocate memory for a 1D array, to hold the scan line for GDAL
+   double *pdScanline = new double[m_nXGridSize];
+   if (NULL == pdScanline)
+   {
+      // Error, can't allocate memory
+      cerr << ERR << "cannot allocate memory for " << m_nXGridSize << " x 1D array" << endl;
+      return (RTN_ERR_MEMALLOC);
+   }
+
+   // Now read in the data
+   int nMissing = 0;
+
+   for (int nY = 0; nY < m_nYGridSize; nY++)
+   {
+      // Read scanline
+      if (CE_Failure == pGDALBand->RasterIO(GF_Read, 0, nY, m_nXGridSize, 1, pdScanline, m_nXGridSize, 1, GDT_Float64, 0, 0, NULL))
+      {
+         // Error while reading scanline
          cerr << ERR << CPLGetLastErrorMsg() << " in " << strGISFile << endl;
          return (RTN_ERR_RASTER_FILE_READ);
       }
 
-      // Now get dataset size, and do some checks
-      int const nTmpXSize = pGDALDataset->GetRasterXSize();
-
-      if (nTmpXSize != m_nXGridSize)
+      // All OK, so read scanline into cells (including any missing values)
+      for (int nX = 0; nX < m_nXGridSize; nX++)
       {
-         // Error: incorrect number of columns specified
-         cerr << ERR << "different number of columns in " << strGISFile << " (" << nTmpXSize << ") and " << m_strInitialBasementDEMFile << "(" << m_nXGridSize << ")" << endl;
-         return (RTN_ERR_RASTER_FILE_READ);
-      }
+         int nTmp;
 
-      int const nTmpYSize = pGDALDataset->GetRasterYSize();
-
-      if (nTmpYSize != m_nYGridSize)
-      {
-         // Error: incorrect number of rows specified
-         cerr << ERR << "different number of rows in " << strGISFile << " (" << nTmpYSize << ") and " << m_strInitialBasementDEMFile << " (" << m_nYGridSize << ")" << endl;
-         return (RTN_ERR_RASTER_FILE_READ);
-      }
-
-      double dTmp = m_dGeoTransform[0] - (m_dGeoTransform[1] / 2);
-
-      if (! bFPIsEqual(dTmp, m_dNorthWestXExtCRS, TOLERANCE))
-      {
-         // Error: different min x from DEM file
-         cerr << ERR << "different min x values in " << strGISFile << " (" << dTmp << ") and " << m_strInitialBasementDEMFile << " (" << m_dNorthWestXExtCRS << ")" << endl;
-         return (RTN_ERR_RASTER_FILE_READ);
-      }
-
-      dTmp = m_dGeoTransform[3] - (m_dGeoTransform[5] / 2);
-
-      if (! bFPIsEqual(dTmp, m_dNorthWestYExtCRS, TOLERANCE))
-      {
-         // Error: different min x from DEM file
-         cerr << ERR << "different min y values in " << strGISFile << " (" << dTmp << ") and " << m_strInitialBasementDEMFile << " (" << m_dNorthWestYExtCRS << ")" << endl;
-         return (RTN_ERR_RASTER_FILE_READ);
-      }
-
-      double const dTmpResX = tAbs(dGeoTransform[1]);
-
-      if (! bFPIsEqual(dTmpResX, m_dCellSide, 1e-2))
-      {
-         // Error: different cell size in X direction: note that due to rounding errors in some GIS packages, must expect some discrepancies
-         cerr << ERR << "cell size in X direction (" << dTmpResX << ") in " << strGISFile << " differs from cell size in of basement DEM (" << m_dCellSide << ")" << endl;
-         return (RTN_ERR_RASTER_FILE_READ);
-      }
-
-      double const dTmpResY = tAbs(dGeoTransform[5]);
-
-      if (! bFPIsEqual(dTmpResY, m_dCellSide, 1e-2))
-      {
-         // Error: different cell size in Y direction: note that due to rounding errors in some GIS packages, must expect some discrepancies
-         cerr << ERR << "cell size in Y direction (" << dTmpResY << ") in " << strGISFile << " differs from cell size of basement DEM (" << m_dCellSide << ")" << endl;
-         return (RTN_ERR_RASTER_FILE_READ);
-      }
-
-      // Now get GDAL raster band information
-      GDALRasterBand *pGDALBand = pGDALDataset->GetRasterBand(1); // TODO 028 Give a message if there are several bands
-      int nBlockXSize = 0, nBlockYSize = 0;
-      pGDALBand->GetBlockSize(&nBlockXSize, &nBlockYSize);
-      strDataType = GDALGetDataTypeName(pGDALBand->GetRasterDataType());
-
-      switch (nDataItem)
-      {
-      case (LANDFORM_RASTER):
-         // Initial Landform Class GIS data
-         m_strGDALLDriverCode = strDriverCode;
-         m_strGDALLDriverDesc = strDriverDesc;
-         m_strGDALLProjection = strProjection;
-         m_strGDALLDataType = strDataType;
-         break;
-
-      case (INTERVENTION_CLASS_RASTER):
-         // Intervention class
-         m_strGDALICDriverCode = strDriverCode;
-         m_strGDALICDriverDesc = strDriverDesc;
-         m_strGDALICProjection = strProjection;
-         m_strGDALICDataType = strDataType;
-         break;
-
-      case (INTERVENTION_HEIGHT_RASTER):
-         // Intervention height
-         m_strGDALIHDriverCode = strDriverCode;
-         m_strGDALIHDriverDesc = strDriverDesc;
-         m_strGDALIHProjection = strProjection;
-         m_strGDALIHDataType = strDataType;
-         break;
-
-      case (SUSP_SED_RASTER):
-         // Initial Suspended Sediment GIS data
-         m_strGDALISSDriverCode = strDriverCode;
-         m_strGDALISSDriverDesc = strDriverDesc;
-         m_strGDALISSProjection = strProjection;
-         m_strGDALISSDataType = strDataType;
-         break;
-
-      case (FINE_UNCONS_RASTER):
-         // Initial Unconsolidated Fine Sediment GIS data
-         m_VstrGDALIUFDriverCode[nLayer] = strDriverCode;
-         m_VstrGDALIUFDriverDesc[nLayer] = strDriverDesc;
-         m_VstrGDALIUFProjection[nLayer] = strProjection;
-         m_VstrGDALIUFDataType[nLayer] = strDataType;
-         break;
-
-      case (SAND_UNCONS_RASTER):
-         // Initial Unconsolidated Sand Sediment GIS data
-         m_VstrGDALIUSDriverCode[nLayer] = strDriverCode;
-         m_VstrGDALIUSDriverDesc[nLayer] = strDriverDesc;
-         m_VstrGDALIUSProjection[nLayer] = strProjection;
-         m_VstrGDALIUSDataType[nLayer] = strDataType;
-         break;
-
-      case (COARSE_UNCONS_RASTER):
-         // Initial Unconsolidated Coarse Sediment GIS data
-         m_VstrGDALIUCDriverCode[nLayer] = strDriverCode;
-         m_VstrGDALIUCDriverDesc[nLayer] = strDriverDesc;
-         m_VstrGDALIUCProjection[nLayer] = strProjection;
-         m_VstrGDALIUCDataType[nLayer] = strDataType;
-         break;
-
-      case (FINE_CONS_RASTER):
-         // Initial Consolidated Fine Sediment GIS data
-         m_VstrGDALICFDriverCode[nLayer] = strDriverCode;
-         m_VstrGDALICFDriverDesc[nLayer] = strDriverDesc;
-         m_VstrGDALICFProjection[nLayer] = strProjection;
-         m_VstrGDALICFDataType[nLayer] = strDataType;
-         break;
-
-      case (SAND_CONS_RASTER):
-         // Initial Consolidated Sand Sediment GIS data
-         m_VstrGDALICSDriverCode[nLayer] = strDriverCode;
-         m_VstrGDALICSDriverDesc[nLayer] = strDriverDesc;
-         m_VstrGDALICSProjection[nLayer] = strProjection;
-         m_VstrGDALICSDataType[nLayer] = strDataType;
-         break;
-
-      case (COARSE_CONS_RASTER):
-         // Initial Consolidated Coarse Sediment GIS data
-         m_VstrGDALICCDriverCode[nLayer] = strDriverCode;
-         m_VstrGDALICCDriverDesc[nLayer] = strDriverDesc;
-         m_VstrGDALICCProjection[nLayer] = strProjection;
-         m_VstrGDALICCDataType[nLayer] = strDataType;
-         break;
-      }
-
-      // If present, get the missing value setting
-      string const strTmp = strToLower(&strDataType);
-
-      if (strTmp.find("int") != string::npos)
-      {
-         // This is an integer layer
-         CPLPushErrorHandler(CPLQuietErrorHandler);                          // Needed to get next line to fail silently, if it fails
-         m_nGISMissingValue = static_cast<int>(pGDALBand->GetNoDataValue()); // Note will fail for some formats
-         CPLPopErrorHandler();
-
-         if (m_nGISMissingValue != m_nMissingValue)
+         switch (nDataItem)
          {
-            cerr << "   " << NOTE << "NODATA value in " << strGISFile << " is " << m_nGISMissingValue << "\n         instead using CoatalME's default integer NODATA value " << m_nMissingValue << endl;
-         }
-      }
+         case (LANDFORM_RASTER):
+            // Initial Landform Class GIS data, is integer TODO 030 Do we also need a landform sub-category input?
+            nTmp = static_cast<int>(pdScanline[nX]);
 
-      else
-      {
-         // This is a floating point layer
-         CPLPushErrorHandler(CPLQuietErrorHandler);        // Needed to get next line to fail silently, if it fails
-         m_dGISMissingValue = pGDALBand->GetNoDataValue(); // Note will fail for some formats
-         CPLPopErrorHandler();
-
-         if (! bFPIsEqual(m_dGISMissingValue, m_dMissingValue, TOLERANCE))
-         {
-            cerr << "   " << NOTE << "NODATA value in " << strGISFile << " is " << m_dGISMissingValue << "\n         instead using CoastalME's default floating-point NODATA value " << m_dMissingValue << endl;
-         }
-      }
-
-      // Allocate memory for a 1D array, to hold the scan line for GDAL
-      double *pdScanline = new double[m_nXGridSize];
-
-      if (NULL == pdScanline)
-      {
-         // Error, can't allocate memory
-         cerr << ERR << "cannot allocate memory for " << m_nXGridSize << " x 1D array" << endl;
-         return (RTN_ERR_MEMALLOC);
-      }
-
-      // Now read in the data
-      int nMissing = 0;
-
-      for (int nY = 0; nY < m_nYGridSize; nY++)
-      {
-         // Read scanline
-         if (CE_Failure == pGDALBand->RasterIO(GF_Read, 0, nY, m_nXGridSize, 1, pdScanline, m_nXGridSize, 1, GDT_Float64, 0, 0, NULL))
-         {
-            // Error while reading scanline
-            cerr << ERR << CPLGetLastErrorMsg() << " in " << strGISFile << endl;
-            return (RTN_ERR_RASTER_FILE_READ);
-         }
-
-         // All OK, so read scanline into cells (including any missing values)
-         for (int nX = 0; nX < m_nXGridSize; nX++)
-         {
-            int nTmp;
-
-            switch (nDataItem)
+            if ((isnan(nTmp)) || (nTmp == m_nGISMissingValue))
             {
-            case (LANDFORM_RASTER):
-               // Initial Landform Class GIS data, is integer TODO 030 Do we also need a landform sub-category input?
-               nTmp = static_cast<int>(pdScanline[nX]);
-
-               if ((isnan(nTmp)) || (nTmp == m_nGISMissingValue))
-               {
-                  nTmp = m_nMissingValue;
-                  nMissing++;
-               }
-
-               m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->SetLFCategory(nTmp);
-               break;
-
-            case (INTERVENTION_CLASS_RASTER):
-               // Intervention class, is integer
-               nTmp = static_cast<int>(pdScanline[nX]);
-
-               if ((isnan(nTmp)) || (nTmp == m_nGISMissingValue))
-               {
-                  nTmp = m_nMissingValue;
-                  nMissing++;
-               }
-
-               m_pRasterGrid->m_Cell[nX][nY].SetInterventionClass(nTmp);
-               break;
-
-            case (INTERVENTION_HEIGHT_RASTER):
-               // Intervention height
-               dTmp = pdScanline[nX];
-
-               if ((isnan(dTmp)) || (bFPIsEqual(dTmp, m_dGISMissingValue, TOLERANCE)))
-               {
-                  dTmp = m_dMissingValue;
-                  nMissing++;
-               }
-
-               m_pRasterGrid->m_Cell[nX][nY].SetInterventionHeight(dTmp);
-               break;
-
-            case (SUSP_SED_RASTER):
-               // Initial Suspended Sediment GIS data
-               dTmp = pdScanline[nX];
-
-               if ((isnan(dTmp)) || (bFPIsEqual(dTmp, m_dGISMissingValue, TOLERANCE)))
-               {
-                  dTmp = m_dMissingValue;
-                  nMissing++;
-               }
-
-               m_pRasterGrid->m_Cell[nX][nY].SetSuspendedSediment(dTmp);
-               break;
-
-            case (FINE_UNCONS_RASTER):
-               // Initial Unconsolidated Fine Sediment GIS data
-               dTmp = pdScanline[nX];
-
-               if ((isnan(dTmp)) || (bFPIsEqual(dTmp, m_dGISMissingValue, TOLERANCE)))
-               {
-                  dTmp = m_dMissingValue;
-                  nMissing++;
-               }
-
-               m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nLayer)->pGetUnconsolidatedSediment()->SetFineDepth(dTmp);
-               break;
-
-            case (SAND_UNCONS_RASTER):
-               // Initial Unconsolidated Sand Sediment GIS data
-               dTmp = pdScanline[nX];
-
-               if ((isnan(dTmp)) || (bFPIsEqual(dTmp, m_dGISMissingValue, TOLERANCE)))
-               {
-                  dTmp = m_dMissingValue;
-                  nMissing++;
-               }
-
-               m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nLayer)->pGetUnconsolidatedSediment()->SetSandDepth(dTmp);
-               break;
-
-            case (COARSE_UNCONS_RASTER):
-               // Initial Unconsolidated Coarse Sediment GIS data
-               dTmp = pdScanline[nX];
-
-               if ((isnan(dTmp)) || (bFPIsEqual(dTmp, m_dGISMissingValue, TOLERANCE)))
-               {
-                  dTmp = m_dMissingValue;
-                  nMissing++;
-               }
-
-               m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nLayer)->pGetUnconsolidatedSediment()->SetCoarseDepth(dTmp);
-               break;
-
-            case (FINE_CONS_RASTER):
-               // Initial Consolidated Fine Sediment GIS data
-               dTmp = pdScanline[nX];
-
-               if ((isnan(dTmp)) || (bFPIsEqual(dTmp, m_dGISMissingValue, TOLERANCE)))
-               {
-                  dTmp = m_dMissingValue;
-                  nMissing++;
-               }
-
-               m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nLayer)->pGetConsolidatedSediment()->SetFineDepth(dTmp);
-               break;
-
-            case (SAND_CONS_RASTER):
-               // Initial Consolidated Sand Sediment GIS data
-               dTmp = pdScanline[nX];
-
-               if ((isnan(dTmp)) || (bFPIsEqual(dTmp, m_dGISMissingValue, TOLERANCE)))
-               {
-                  dTmp = m_dMissingValue;
-                  nMissing++;
-               }
-
-               m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nLayer)->pGetConsolidatedSediment()->SetSandDepth(dTmp);
-               break;
-
-            case (COARSE_CONS_RASTER):
-               // Initial Consolidated Coarse Sediment GIS data
-               dTmp = pdScanline[nX];
-
-               if ((isnan(dTmp)) || (bFPIsEqual(dTmp, m_dGISMissingValue, TOLERANCE)))
-               {
-                  dTmp = m_dMissingValue;
-                  nMissing++;
-               }
-
-               m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nLayer)->pGetConsolidatedSediment()->SetCoarseDepth(dTmp);
-               break;
+               nTmp = m_nMissingValue;
+               nMissing++;
             }
+
+            m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->SetLFCategory(nTmp);
+            break;
+
+         case (INTERVENTION_CLASS_RASTER):
+            // Intervention class, is integer
+            nTmp = static_cast<int>(pdScanline[nX]);
+
+            if ((isnan(nTmp)) || (nTmp == m_nGISMissingValue))
+            {
+               nTmp = m_nMissingValue;
+               nMissing++;
+            }
+
+            m_pRasterGrid->m_Cell[nX][nY].SetInterventionClass(nTmp);
+            break;
+
+         case (INTERVENTION_HEIGHT_RASTER):
+            // Intervention height
+            dTmp = pdScanline[nX];
+
+            if ((isnan(dTmp)) || (bFPIsEqual(dTmp, m_dGISMissingValue, TOLERANCE)))
+            {
+               dTmp = m_dMissingValue;
+               nMissing++;
+            }
+
+            m_pRasterGrid->m_Cell[nX][nY].SetInterventionHeight(dTmp);
+            break;
+
+         case (SUSP_SED_RASTER):
+            // Initial Suspended Sediment GIS data
+            dTmp = pdScanline[nX];
+
+            if ((isnan(dTmp)) || (bFPIsEqual(dTmp, m_dGISMissingValue, TOLERANCE)))
+            {
+               dTmp = m_dMissingValue;
+               nMissing++;
+            }
+
+            m_pRasterGrid->m_Cell[nX][nY].SetSuspendedSediment(dTmp);
+            break;
+
+         case (FINE_UNCONS_RASTER):
+            // Initial Unconsolidated Fine Sediment GIS data
+            dTmp = pdScanline[nX];
+
+            if ((isnan(dTmp)) || (bFPIsEqual(dTmp, m_dGISMissingValue, TOLERANCE)))
+            {
+               dTmp = m_dMissingValue;
+               nMissing++;
+            }
+
+            m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nLayer)->pGetUnconsolidatedSediment()->SetFineDepth(dTmp);
+            break;
+
+         case (SAND_UNCONS_RASTER):
+            // Initial Unconsolidated Sand Sediment GIS data
+            dTmp = pdScanline[nX];
+
+            if ((isnan(dTmp)) || (bFPIsEqual(dTmp, m_dGISMissingValue, TOLERANCE)))
+            {
+               dTmp = m_dMissingValue;
+               nMissing++;
+            }
+
+            m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nLayer)->pGetUnconsolidatedSediment()->SetSandDepth(dTmp);
+            break;
+
+         case (COARSE_UNCONS_RASTER):
+            // Initial Unconsolidated Coarse Sediment GIS data
+            dTmp = pdScanline[nX];
+
+            if ((isnan(dTmp)) || (bFPIsEqual(dTmp, m_dGISMissingValue, TOLERANCE)))
+            {
+               dTmp = m_dMissingValue;
+               nMissing++;
+            }
+
+            m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nLayer)->pGetUnconsolidatedSediment()->SetCoarseDepth(dTmp);
+            break;
+
+         case (FINE_CONS_RASTER):
+            // Initial Consolidated Fine Sediment GIS data
+            dTmp = pdScanline[nX];
+
+            if ((isnan(dTmp)) || (bFPIsEqual(dTmp, m_dGISMissingValue, TOLERANCE)))
+            {
+               dTmp = m_dMissingValue;
+               nMissing++;
+            }
+
+            m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nLayer)->pGetConsolidatedSediment()->SetFineDepth(dTmp);
+            break;
+
+         case (SAND_CONS_RASTER):
+            // Initial Consolidated Sand Sediment GIS data
+            dTmp = pdScanline[nX];
+
+            if ((isnan(dTmp)) || (bFPIsEqual(dTmp, m_dGISMissingValue, TOLERANCE)))
+            {
+               dTmp = m_dMissingValue;
+               nMissing++;
+            }
+
+            m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nLayer)->pGetConsolidatedSediment()->SetSandDepth(dTmp);
+            break;
+
+         case (COARSE_CONS_RASTER):
+            // Initial Consolidated Coarse Sediment GIS data
+            dTmp = pdScanline[nX];
+
+            if ((isnan(dTmp)) || (bFPIsEqual(dTmp, m_dGISMissingValue, TOLERANCE)))
+            {
+               dTmp = m_dMissingValue;
+               nMissing++;
+            }
+
+            m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nLayer)->pGetConsolidatedSediment()->SetCoarseDepth(dTmp);
+            break;
          }
       }
+   }
 
-      // Finished, so get rid of dataset object
-      GDALClose(pGDALDataset);
+   // Finished, so get rid of dataset object
+   GDALClose(pGDALDataset);
 
-      // Get rid of memory allocated to this array
-      delete[] pdScanline;
+   // Get rid of memory allocated to this array
+   delete[] pdScanline;
 
-      if (nMissing > 0)
-      {
-         cerr << WARN << nMissing << " missing values in " << strGISFile << endl;
-         LogStream << WARN << nMissing << " missing values in " << strGISFile << endl;
-      }
+   if (nMissing > 0)
+   {
+      cerr << WARN << nMissing << " missing values in " << strGISFile << endl;
+      LogStream << WARN << nMissing << " missing values in " << strGISFile << endl;
    }
 
    return RTN_OK;
@@ -977,9 +962,8 @@ bool CSimulation::bWriteRasterGISFile(int const nDataItem, string const *strPlot
    bool bIsInteger = false;
 
    // Begin constructing the file name for this save
-   string
-       strFilePathName(m_strOutPath),
-       strLayer = "_layer_";
+   string strFilePathName(m_strOutPath);
+   string strLayer = "_layer_";
 
    stringstream ststrTmp;
 
@@ -991,24 +975,24 @@ bool CSimulation::bWriteRasterGISFile(int const nDataItem, string const *strPlot
       strFilePathName.append(RASTER_BASEMENT_ELEVATION_NAME);
       break;
 
-   case (RASTER_PLOT_SEDIMENT_TOP_ELEVATION_ELEV):
-      strFilePathName.append(RASTER_SEDIMENT_TOP_NAME);
+   case (RASTER_PLOT_SEDIMENT_TOP_ELEVATION):
+      strFilePathName.append(RASTER_SEDIMENT_TOP_ELEVATION_NAME);
       break;
 
    case (RASTER_PLOT_OVERALL_TOP_ELEVATION):
-      strFilePathName.append(RASTER_TOP_NAME);
+      strFilePathName.append(RASTER_OVERALL_TOP_ELEVATION_NAME);
       break;
 
-   case (RASTER_PLOT_LOCAL_SLOPE_OF_CONSOLIDATED_SEDIMENT):
-      strFilePathName.append(RASTER_LOCAL_SLOPE_NAME);
+   case (RASTER_PLOT_SLOPE_OF_CONSOLIDATED_SEDIMENT):
+      strFilePathName.append(RASTER_SLOPE_OF_CONSOLIDATED_SEDIMENT_NAME);
       break;
 
-   case (RASTER_PLOT_SLOPE):
-      strFilePathName.append(RASTER_SLOPE_NAME);
+   case (RASTER_PLOT_SLOPE_FOR_CLIFF_TOE):
+      strFilePathName.append(RASTER_SLOPE_FOR_CLIFF_TOE_NAME);
       break;
 
-   case (RASTER_PLOT_CLIFF):
-      strFilePathName.append(RASTER_CLIFF_NAME);
+   case (RASTER_PLOT_CLIFF_TOE):
+      strFilePathName.append(RASTER_CLIFF_TOE_NAME);
       break;
 
    case (RASTER_PLOT_SEA_DEPTH):
@@ -1157,6 +1141,10 @@ bool CSimulation::bWriteRasterGISFile(int const nDataItem, string const *strPlot
       strFilePathName.append(RASTER_TOTAL_CLIFF_COLLAPSE_DEPOSITION_COARSE_NAME);
       break;
 
+   case (RASTER_PLOT_CLIFF_NOTCH_ALL):
+      strFilePathName.append(RASTER_CLIFF_NOTCH_ALL_NAME);
+      break;
+
    case (RASTER_PLOT_INTERVENTION_HEIGHT):
       strFilePathName.append(RASTER_INTERVENTION_HEIGHT_NAME);
       break;
@@ -1279,7 +1267,6 @@ bool CSimulation::bWriteRasterGISFile(int const nDataItem, string const *strPlot
       // Save number is m_bGISSaveDigitsSequential
       ststrTmp << FillToWidth('0', m_nGISMaxSaveDigits) << m_nGISSave;
    }
-
    else
    {
       // Save number is iteration
@@ -1311,13 +1298,11 @@ bool CSimulation::bWriteRasterGISFile(int const nDataItem, string const *strPlot
       {
          pDataSet = pDriver->Create(strFilePathName.c_str(), m_nXGridSize, m_nYGridSize, 1, GDT_Int16, m_papszGDALRasterOptions);
       }
-
       else if (m_strRasterGISOutFormat == "gpkg")
       {
          // TODO 065 Floating point exception here
          pDataSet = pDriver->Create(strFilePathName.c_str(), m_nXGridSize, m_nYGridSize, 1, GDT_Byte, m_papszGDALRasterOptions);
       }
-
       else
       {
          pDataSet = pDriver->Create(strFilePathName.c_str(), m_nXGridSize, m_nYGridSize, 1, m_GDALWriteFloatDataType, m_papszGDALRasterOptions);
@@ -1359,7 +1344,6 @@ bool CSimulation::bWriteRasterGISFile(int const nDataItem, string const *strPlot
 
    // Allocate memory for a 1D array, to hold the floating point raster band data for GDAL
    double *pdRaster = new double[m_ulNumCells];
-
    if (NULL == pdRaster)
    {
       // Error, can't allocate memory
@@ -1406,7 +1390,7 @@ bool CSimulation::bWriteRasterGISFile(int const nDataItem, string const *strPlot
             dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetBasementElev();
             break;
 
-         case (RASTER_PLOT_SEDIMENT_TOP_ELEVATION_ELEV):
+         case (RASTER_PLOT_SEDIMENT_TOP_ELEVATION):
             dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElev();
             break;
 
@@ -1414,16 +1398,16 @@ bool CSimulation::bWriteRasterGISFile(int const nDataItem, string const *strPlot
             dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetSedimentPlusInterventionTopElev();
             break;
 
-         case (RASTER_PLOT_LOCAL_SLOPE_OF_CONSOLIDATED_SEDIMENT):
-            dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetLocalConsSlope();
+         case (RASTER_PLOT_SLOPE_OF_CONSOLIDATED_SEDIMENT):
+            dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetConsSedSlope();
             break;
 
-         case (RASTER_PLOT_SLOPE):
-            dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetSlope();
+         case (RASTER_PLOT_SLOPE_FOR_CLIFF_TOE):
+            dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetSlopeForCliffToe();
             break;
 
-         case (RASTER_PLOT_CLIFF):
-            dTmp = static_cast<double>(m_pRasterGrid->m_Cell[nX][nY].bIsCliff());
+         case (RASTER_PLOT_CLIFF_TOE):
+            dTmp = static_cast<double>(m_pRasterGrid->m_Cell[nX][nY].bIsCliffToe());
             break;
 
          case (RASTER_PLOT_SEA_DEPTH):
@@ -1588,6 +1572,10 @@ bool CSimulation::bWriteRasterGISFile(int const nDataItem, string const *strPlot
             dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetTotCoarseTalusDeposition();
             break;
 
+         case (RASTER_PLOT_CLIFF_NOTCH_ALL):
+            dTmp = m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->dGetCliffNotchDepth();
+            break;
+
          case (RASTER_PLOT_INTERVENTION_HEIGHT):
             dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetInterventionHeight();
             break;
@@ -1703,12 +1691,10 @@ bool CSimulation::bWriteRasterGISFile(int const nDataItem, string const *strPlot
 
             if (nPoly == INT_NODATA)
                dTmp = m_nMissingValue;
-
             else
             {
                if (m_VCoast[nPolyCoast].pGetPolygon(nPoly)->bDownCoastThisIter())
                   dTmp = 1;
-
                else
                   dTmp = 0;
             }
@@ -1737,7 +1723,6 @@ bool CSimulation::bWriteRasterGISFile(int const nDataItem, string const *strPlot
          {
             if (bFPIsEqual(dTmp, DBL_NODATA, TOLERANCE))
                dTmp = 0; // TODO 032 Improve this
-
             else
                dTmp = dRound(static_cast<double>(m_lGDALMinCanWrite) + (dRangeScale * (dTmp - dDataMin)));
          }
@@ -1753,7 +1738,6 @@ bool CSimulation::bWriteRasterGISFile(int const nDataItem, string const *strPlot
    // And fill it with the NODATA value
    if (bIsInteger)
       pBand->Fill(m_nMissingValue);
-
    else
       pBand->Fill(m_dMissingValue);
 
@@ -1763,7 +1747,7 @@ bool CSimulation::bWriteRasterGISFile(int const nDataItem, string const *strPlot
    switch (nDataItem)
    {
    case (RASTER_PLOT_BASEMENT_ELEVATION):
-   case (RASTER_PLOT_SEDIMENT_TOP_ELEVATION_ELEV):
+   case (RASTER_PLOT_SEDIMENT_TOP_ELEVATION):
    case (RASTER_PLOT_OVERALL_TOP_ELEVATION):
    case (RASTER_PLOT_SEA_DEPTH):
    case (RASTER_PLOT_AVG_SEA_DEPTH):
@@ -1800,10 +1784,11 @@ bool CSimulation::bWriteRasterGISFile(int const nDataItem, string const *strPlot
    case (RASTER_PLOT_INTERVENTION_HEIGHT):
    case (RASTER_PLOT_DEEP_WATER_WAVE_HEIGHT):
    case (RASTER_PLOT_SEDIMENT_INPUT):
+   case (RASTER_PLOT_CLIFF_NOTCH_ALL):
       strUnits = "m";
       break;
 
-   case (RASTER_PLOT_LOCAL_SLOPE_OF_CONSOLIDATED_SEDIMENT):
+   case (RASTER_PLOT_SLOPE_OF_CONSOLIDATED_SEDIMENT):
       strUnits = "m/m";
       break;
 

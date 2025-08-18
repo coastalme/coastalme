@@ -477,11 +477,11 @@ void CGeomProfile::SetUpCoastAdjacentProfile(CGeomProfile* pProfile)
    m_pUpCoastAdjacentProfile = pProfile;
 }
 
-//! Returns the up-coast adjacent profile, returns NULL if there is no up-coast adjacent profile
-CGeomProfile* CGeomProfile::pGetUpCoastAdjacentProfile(void) const
-{
-   return m_pUpCoastAdjacentProfile;
-}
+// //! Returns the up-coast adjacent profile, returns NULL if there is no up-coast adjacent profile
+// CGeomProfile* CGeomProfile::pGetUpCoastAdjacentProfile(void) const
+// {
+//    return m_pUpCoastAdjacentProfile;
+// }
 
 //! Sets the down-coast adjacent profile
 void CGeomProfile::SetDownCoastAdjacentProfile(CGeomProfile* pProfile)
@@ -614,15 +614,15 @@ bool CGeomProfile::bIsIntervention(void) const
    return m_bIntervention;
 }
 
-//! Returns the index of a given cell in the vector of profile cells; returns INT_NODATA if not found
-int CGeomProfile::nGetIndexOfCellInProfile(int const nX, int const nY)
-{
-   for (unsigned int n = 0; n < m_VCellInProfile.size(); n++)
-   {
-      if ((m_VCellInProfile[n].nGetX() == nX) && (m_VCellInProfile[n].nGetY() == nY))
-         return n;
-   }
-
-   return INT_NODATA;
-}
+// //! Returns the index of a given cell in the vector of profile cells; returns INT_NODATA if not found
+// int CGeomProfile::nGetIndexOfCellInProfile(int const nX, int const nY)
+// {
+//    for (unsigned int n = 0; n < m_VCellInProfile.size(); n++)
+//    {
+//       if ((m_VCellInProfile[n].nGetX() == nX) && (m_VCellInProfile[n].nGetY() == nY))
+//          return n;
+//    }
+//
+//    return INT_NODATA;
+// }
 
