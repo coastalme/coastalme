@@ -124,7 +124,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a5350a7ac48d1eef3a78bef9bcf041b45"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the landform category.  <br /></td></tr>
 <tr class="separator:a5350a7ac48d1eef3a78bef9bcf041b45"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af53d3fe69c297cfb0b41d03e55ed6467" id="r_af53d3fe69c297cfb0b41d03e55ed6467"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af53d3fe69c297cfb0b41d03e55ed6467">SetLFSubCategory</a> (int const)</td></tr>
-<tr class="memdesc:af53d3fe69c297cfb0b41d03e55ed6467"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the both the landform sub-category, and the landform category.  <br /></td></tr>
+<tr class="memdesc:af53d3fe69c297cfb0b41d03e55ed6467"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the both the landform sub-category, and the landform category (includes some rules to ensure category/subcategory consistency)  <br /></td></tr>
 <tr class="separator:af53d3fe69c297cfb0b41d03e55ed6467"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a97cc978043b02b47d7bdd7c10bb270f8" id="r_a97cc978043b02b47d7bdd7c10bb270f8"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a97cc978043b02b47d7bdd7c10bb270f8">nGetLFSubCategory</a> (void) const</td></tr>
 <tr class="memdesc:a97cc978043b02b47d7bdd7c10bb270f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the landform sub-category.  <br /></td></tr>
@@ -159,9 +159,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a60866ad9fb29fa6ab20988a4729aa91d" id="r_a60866ad9fb29fa6ab20988a4729aa91d"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a60866ad9fb29fa6ab20988a4729aa91d">dGetCliffNotchDepth</a> (void) const</td></tr>
 <tr class="memdesc:a60866ad9fb29fa6ab20988a4729aa91d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the cliff notch overhang which remains on this cell.  <br /></td></tr>
 <tr class="separator:a60866ad9fb29fa6ab20988a4729aa91d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa8d4d835b4b0a0d9d8f067ae41aa04a9" id="r_aa8d4d835b4b0a0d9d8f067ae41aa04a9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa8d4d835b4b0a0d9d8f067ae41aa04a9">SetCliffRemaining</a> (double const)</td></tr>
-<tr class="memdesc:aa8d4d835b4b0a0d9d8f067ae41aa04a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the cliff depth remaining on this cell.  <br /></td></tr>
-<tr class="separator:aa8d4d835b4b0a0d9d8f067ae41aa04a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
@@ -197,9 +194,6 @@ Private Attributes</h2></td></tr>
 <tr class="memitem:af033a7f1f7465295ddd3dbd5aeadd84f" id="r_af033a7f1f7465295ddd3dbd5aeadd84f"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;double&#160;&#160;&#160;<a class="el" href="#a21e5e4ac3fe410be4f9df1e7f40a4674">m_dNotchDepth</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
 <tr class="memdesc:af033a7f1f7465295ddd3dbd5aeadd84f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cliff notch incised depth.  <a href="#a21e5e4ac3fe410be4f9df1e7f40a4674">More...</a><br /></td></tr>
 <tr class="separator:af033a7f1f7465295ddd3dbd5aeadd84f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a55b9a9fa8d31cde7eda96267616a08a0" id="r_a55b9a9fa8d31cde7eda96267616a08a0"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;double&#160;&#160;&#160;<a class="el" href="#ad605311c6b949c11cdf7a6b112db81fb">m_dRemaining</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
-<tr class="memdesc:a55b9a9fa8d31cde7eda96267616a08a0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cliff notch depth remaining.  <a href="#ad605311c6b949c11cdf7a6b112db81fb">More...</a><br /></td></tr>
-<tr class="separator:a55b9a9fa8d31cde7eda96267616a08a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac5c1bebd514c1a613ed6a117ee4083c7" id="r_ac5c1bebd514c1a613ed6a117ee4083c7"><td class="memItemLeft" valign="top">&#160;&#160;&#160;}&#160;&#160;&#160;<a class="el" href="#a5a2d4dca3a1b48a48b7cbcd741a0374f">m_sCliffData</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
 <tr class="separator:ac5c1bebd514c1a613ed6a117ee4083c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9820039620dc7d87162e894663c4be5e" id="r_a9820039620dc7d87162e894663c4be5e"><td class="memItemLeft" valign="top">}&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9820039620dc7d87162e894663c4be5e">m_uLFData</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
@@ -254,7 +248,7 @@ Andres Payo </dd></dl>
 
 <p>Destructor. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d0/d02/cell__landform_8cpp_source.html#l00038">38</a> of file <a class="el" href="../../d0/d02/cell__landform_8cpp_source.html">cell_landform.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d0/d02/cell__landform_8cpp_source.html#l00040">40</a> of file <a class="el" href="../../d0/d02/cell__landform_8cpp_source.html">cell_landform.cpp</a>.</p>
 
 </div>
 </div>
@@ -276,7 +270,7 @@ Andres Payo </dd></dl>
 
 <p>Get accumulated wave energy. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d0/d02/cell__landform_8cpp_source.html#l00103">103</a> of file <a class="el" href="../../d0/d02/cell__landform_8cpp_source.html">cell_landform.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d0/d02/cell__landform_8cpp_source.html#l00106">106</a> of file <a class="el" href="../../d0/d02/cell__landform_8cpp_source.html">cell_landform.cpp</a>.</p>
 
 </div>
 </div>
@@ -297,7 +291,7 @@ Andres Payo </dd></dl>
 
 <p>Get cliff notch base elevation. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d0/d02/cell__landform_8cpp_source.html#l00115">115</a> of file <a class="el" href="../../d0/d02/cell__landform_8cpp_source.html">cell_landform.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d0/d02/cell__landform_8cpp_source.html#l00118">118</a> of file <a class="el" href="../../d0/d02/cell__landform_8cpp_source.html">cell_landform.cpp</a>.</p>
 
 </div>
 </div>
@@ -318,7 +312,7 @@ Andres Payo </dd></dl>
 
 <p>Get the cliff notch overhang which remains on this cell. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d0/d02/cell__landform_8cpp_source.html#l00127">127</a> of file <a class="el" href="../../d0/d02/cell__landform_8cpp_source.html">cell_landform.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d0/d02/cell__landform_8cpp_source.html#l00130">130</a> of file <a class="el" href="../../d0/d02/cell__landform_8cpp_source.html">cell_landform.cpp</a>.</p>
 
 </div>
 </div>
@@ -339,7 +333,7 @@ Andres Payo </dd></dl>
 
 <p>Get the coast number. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d0/d02/cell__landform_8cpp_source.html#l00079">79</a> of file <a class="el" href="../../d0/d02/cell__landform_8cpp_source.html">cell_landform.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d0/d02/cell__landform_8cpp_source.html#l00082">82</a> of file <a class="el" href="../../d0/d02/cell__landform_8cpp_source.html">cell_landform.cpp</a>.</p>
 
 </div>
 </div>
@@ -360,9 +354,9 @@ Andres Payo </dd></dl>
 
 <p>Get the landform category. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d0/d02/cell__landform_8cpp_source.html#l00049">49</a> of file <a class="el" href="../../d0/d02/cell__landform_8cpp_source.html">cell_landform.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d0/d02/cell__landform_8cpp_source.html#l00051">51</a> of file <a class="el" href="../../d0/d02/cell__landform_8cpp_source.html">cell_landform.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../df/dda/do__beach__within__polygon_8cpp_source.html#l01883">CSimulation::bElevAboveDeanElev()</a>, <a class="el" href="../../da/d3d/assign__landforms_8cpp_source.html#l00492">CSimulation::bSurroundedByDriftCells()</a>, <a class="el" href="../../d5/d9e/locate__coast_8cpp_source.html#l00099">CSimulation::CellByCellFillSea()</a>, <a class="el" href="../../da/d3d/assign__landforms_8cpp_source.html#l00368">CSimulation::nAssignLandformsForAllCells()</a>, <a class="el" href="../../d1/d93/do__cliff__collapse_8cpp_source.html#l00526">CSimulation::nDoCliffCollapseDeposition()</a>, <a class="el" href="../../df/dda/do__beach__within__polygon_8cpp_source.html#l00502">CSimulation::nDoParallelProfileUnconsErosion()</a>, and <a class="el" href="../../df/dda/do__beach__within__polygon_8cpp_source.html#l00769">CSimulation::nDoUnconsDepositionOnPolygon()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../df/dda/do__beach__within__polygon_8cpp_source.html#l01855">CSimulation::bElevAboveDeanElev()</a>, <a class="el" href="../../da/d3d/assign__landforms_8cpp_source.html#l00469">CSimulation::bSurroundedByDriftCells()</a>, <a class="el" href="../../d5/d9e/locate__coast_8cpp_source.html#l00098">CSimulation::CellByCellFillSea()</a>, <a class="el" href="../../da/d3d/assign__landforms_8cpp_source.html#l00352">CSimulation::nAssignLandformsForAllCells()</a>, <a class="el" href="../../d1/d93/do__cliff__collapse_8cpp_source.html#l00531">CSimulation::nDoCliffCollapseDeposition()</a>, <a class="el" href="../../df/dda/do__beach__within__polygon_8cpp_source.html#l00492">CSimulation::nDoParallelProfileUnconsErosion()</a>, and <a class="el" href="../../df/dda/do__beach__within__polygon_8cpp_source.html#l00759">CSimulation::nDoUnconsDepositionOnPolygon()</a>.</p>
 
 </div>
 </div>
@@ -383,7 +377,7 @@ Andres Payo </dd></dl>
 
 <p>Get the landform sub-category. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d0/d02/cell__landform_8cpp_source.html#l00067">67</a> of file <a class="el" href="../../d0/d02/cell__landform_8cpp_source.html">cell_landform.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d0/d02/cell__landform_8cpp_source.html#l00070">70</a> of file <a class="el" href="../../d0/d02/cell__landform_8cpp_source.html">cell_landform.cpp</a>.</p>
 
 </div>
 </div>
@@ -404,7 +398,7 @@ Andres Payo </dd></dl>
 
 <p>Set the number of the point on the coastline. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d0/d02/cell__landform_8cpp_source.html#l00091">91</a> of file <a class="el" href="../../d0/d02/cell__landform_8cpp_source.html">cell_landform.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d0/d02/cell__landform_8cpp_source.html#l00094">94</a> of file <a class="el" href="../../d0/d02/cell__landform_8cpp_source.html">cell_landform.cpp</a>.</p>
 
 </div>
 </div>
@@ -425,7 +419,7 @@ Andres Payo </dd></dl>
 
 <p>Set accumulated wave energy. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d0/d02/cell__landform_8cpp_source.html#l00097">97</a> of file <a class="el" href="../../d0/d02/cell__landform_8cpp_source.html">cell_landform.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d0/d02/cell__landform_8cpp_source.html#l00100">100</a> of file <a class="el" href="../../d0/d02/cell__landform_8cpp_source.html">cell_landform.cpp</a>.</p>
 
 </div>
 </div>
@@ -446,7 +440,7 @@ Andres Payo </dd></dl>
 
 <p>Set cliff notch base elevation. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d0/d02/cell__landform_8cpp_source.html#l00109">109</a> of file <a class="el" href="../../d0/d02/cell__landform_8cpp_source.html">cell_landform.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d0/d02/cell__landform_8cpp_source.html#l00112">112</a> of file <a class="el" href="../../d0/d02/cell__landform_8cpp_source.html">cell_landform.cpp</a>.</p>
 
 </div>
 </div>
@@ -467,28 +461,7 @@ Andres Payo </dd></dl>
 
 <p>Set the cliff notch overhang which remains on this cell. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d0/d02/cell__landform_8cpp_source.html#l00121">121</a> of file <a class="el" href="../../d0/d02/cell__landform_8cpp_source.html">cell_landform.cpp</a>.</p>
-
-</div>
-</div>
-<a id="aa8d4d835b4b0a0d9d8f067ae41aa04a9" name="aa8d4d835b4b0a0d9d8f067ae41aa04a9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa8d4d835b4b0a0d9d8f067ae41aa04a9">&#9670;&#160;</a></span>SetCliffRemaining()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void CRWCellLandform::SetCliffRemaining </td>
-          <td>(</td>
-          <td class="paramtype">double const</td>          <td class="paramname"><span class="paramname"><em>dLenIn</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Set the cliff depth remaining on this cell. </p>
-
-<p class="definition">Definition at line <a class="el" href="../../d0/d02/cell__landform_8cpp_source.html#l00133">133</a> of file <a class="el" href="../../d0/d02/cell__landform_8cpp_source.html">cell_landform.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d0/d02/cell__landform_8cpp_source.html#l00124">124</a> of file <a class="el" href="../../d0/d02/cell__landform_8cpp_source.html">cell_landform.cpp</a>.</p>
 
 </div>
 </div>
@@ -509,7 +482,7 @@ Andres Payo </dd></dl>
 
 <p>Set the coast number. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d0/d02/cell__landform_8cpp_source.html#l00073">73</a> of file <a class="el" href="../../d0/d02/cell__landform_8cpp_source.html">cell_landform.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d0/d02/cell__landform_8cpp_source.html#l00076">76</a> of file <a class="el" href="../../d0/d02/cell__landform_8cpp_source.html">cell_landform.cpp</a>.</p>
 
 </div>
 </div>
@@ -530,9 +503,9 @@ Andres Payo </dd></dl>
 
 <p>Set the landform category. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d0/d02/cell__landform_8cpp_source.html#l00043">43</a> of file <a class="el" href="../../d0/d02/cell__landform_8cpp_source.html">cell_landform.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d0/d02/cell__landform_8cpp_source.html#l00045">45</a> of file <a class="el" href="../../d0/d02/cell__landform_8cpp_source.html">cell_landform.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d5/d9e/locate__coast_8cpp_source.html#l00099">CSimulation::CellByCellFillSea()</a>, <a class="el" href="../../da/d3d/assign__landforms_8cpp_source.html#l00368">CSimulation::nAssignLandformsForAllCells()</a>, and <a class="el" href="../../d5/db0/do__sediment__input__event_8cpp_source.html#l00071">CSimulation::nDoSedimentInputEvent()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d5/d9e/locate__coast_8cpp_source.html#l00098">CSimulation::CellByCellFillSea()</a>, and <a class="el" href="../../da/d3d/assign__landforms_8cpp_source.html#l00352">CSimulation::nAssignLandformsForAllCells()</a>.</p>
 
 </div>
 </div>
@@ -551,11 +524,11 @@ Andres Payo </dd></dl>
       </table>
 </div><div class="memdoc">
 
-<p>Set the both the landform sub-category, and the landform category. </p>
+<p>Set the both the landform sub-category, and the landform category (includes some rules to ensure category/subcategory consistency) </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d0/d02/cell__landform_8cpp_source.html#l00055">55</a> of file <a class="el" href="../../d0/d02/cell__landform_8cpp_source.html">cell_landform.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d0/d02/cell__landform_8cpp_source.html#l00057">57</a> of file <a class="el" href="../../d0/d02/cell__landform_8cpp_source.html">cell_landform.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../da/d3d/assign__landforms_8cpp_source.html#l00368">CSimulation::nAssignLandformsForAllCells()</a>, <a class="el" href="../../d1/d93/do__cliff__collapse_8cpp_source.html#l00526">CSimulation::nDoCliffCollapseDeposition()</a>, <a class="el" href="../../df/dda/do__beach__within__polygon_8cpp_source.html#l00502">CSimulation::nDoParallelProfileUnconsErosion()</a>, <a class="el" href="../../d5/db0/do__sediment__input__event_8cpp_source.html#l00071">CSimulation::nDoSedimentInputEvent()</a>, and <a class="el" href="../../df/dda/do__beach__within__polygon_8cpp_source.html#l00769">CSimulation::nDoUnconsDepositionOnPolygon()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../da/d3d/assign__landforms_8cpp_source.html#l00352">CSimulation::nAssignLandformsForAllCells()</a>, <a class="el" href="../../d1/d93/do__cliff__collapse_8cpp_source.html#l00531">CSimulation::nDoCliffCollapseDeposition()</a>, <a class="el" href="../../df/dda/do__beach__within__polygon_8cpp_source.html#l00492">CSimulation::nDoParallelProfileUnconsErosion()</a>, <a class="el" href="../../d5/db0/do__sediment__input__event_8cpp_source.html#l00071">CSimulation::nDoSedimentInputEvent()</a>, and <a class="el" href="../../df/dda/do__beach__within__polygon_8cpp_source.html#l00759">CSimulation::nDoUnconsDepositionOnPolygon()</a>.</p>
 
 </div>
 </div>
@@ -576,7 +549,7 @@ Andres Payo </dd></dl>
 
 <p>Set the number of the point on the coastline. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d0/d02/cell__landform_8cpp_source.html#l00085">85</a> of file <a class="el" href="../../d0/d02/cell__landform_8cpp_source.html">cell_landform.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d0/d02/cell__landform_8cpp_source.html#l00088">88</a> of file <a class="el" href="../../d0/d02/cell__landform_8cpp_source.html">cell_landform.cpp</a>.</p>
 
 </div>
 </div>
@@ -605,7 +578,7 @@ Andres Payo </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../df/d51/cell__landform_8h_source.html#l00044">44</a> of file <a class="el" href="../../df/d51/cell__landform_8h_source.html">cell_landform.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d0/d02/cell__landform_8cpp_source.html#l00028">CRWCellLandform()</a>, <a class="el" href="../../d0/d02/cell__landform_8cpp_source.html#l00103">dGetAccumWaveEnergy()</a>, and <a class="el" href="../../d0/d02/cell__landform_8cpp_source.html#l00097">SetAccumWaveEnergy()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d0/d02/cell__landform_8cpp_source.html#l00028">CRWCellLandform()</a>, <a class="el" href="../../d0/d02/cell__landform_8cpp_source.html#l00106">dGetAccumWaveEnergy()</a>, and <a class="el" href="../../d0/d02/cell__landform_8cpp_source.html#l00100">SetAccumWaveEnergy()</a>.</p>
 
 </div>
 </div>
@@ -645,24 +618,6 @@ Andres Payo </dd></dl>
 
 </div>
 </div>
-<a id="ad605311c6b949c11cdf7a6b112db81fb" name="ad605311c6b949c11cdf7a6b112db81fb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad605311c6b949c11cdf7a6b112db81fb">&#9670;&#160;</a></span>m_dRemaining</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">double CRWCellLandform::m_dRemaining</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Cliff notch depth remaining. </p>
-
-<p class="definition">Definition at line <a class="el" href="../../df/d51/cell__landform_8h_source.html#l00064">64</a> of file <a class="el" href="../../df/d51/cell__landform_8h_source.html">cell_landform.h</a>.</p>
-
-</div>
-</div>
 <a id="a109b30e9905b5a8d9c6ae57cd30421b5" name="a109b30e9905b5a8d9c6ae57cd30421b5"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a109b30e9905b5a8d9c6ae57cd30421b5">&#9670;&#160;</a></span>m_nCategory</h2>
 
@@ -687,7 +642,7 @@ Andres Payo </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../df/d51/cell__landform_8h_source.html#l00032">32</a> of file <a class="el" href="../../df/d51/cell__landform_8h_source.html">cell_landform.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d0/d02/cell__landform_8cpp_source.html#l00028">CRWCellLandform()</a>, <a class="el" href="../../d0/d02/cell__landform_8cpp_source.html#l00049">nGetLFCategory()</a>, <a class="el" href="../../d0/d02/cell__landform_8cpp_source.html#l00043">SetLFCategory()</a>, and <a class="el" href="../../d0/d02/cell__landform_8cpp_source.html#l00055">SetLFSubCategory()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d0/d02/cell__landform_8cpp_source.html#l00028">CRWCellLandform()</a>, <a class="el" href="../../d0/d02/cell__landform_8cpp_source.html#l00051">nGetLFCategory()</a>, <a class="el" href="../../d0/d02/cell__landform_8cpp_source.html#l00045">SetLFCategory()</a>, and <a class="el" href="../../d0/d02/cell__landform_8cpp_source.html#l00057">SetLFSubCategory()</a>.</p>
 
 </div>
 </div>
@@ -715,7 +670,7 @@ Andres Payo </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../df/d51/cell__landform_8h_source.html#l00038">38</a> of file <a class="el" href="../../df/d51/cell__landform_8h_source.html">cell_landform.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d0/d02/cell__landform_8cpp_source.html#l00028">CRWCellLandform()</a>, <a class="el" href="../../d0/d02/cell__landform_8cpp_source.html#l00079">nGetCoast()</a>, and <a class="el" href="../../d0/d02/cell__landform_8cpp_source.html#l00073">SetCoast()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d0/d02/cell__landform_8cpp_source.html#l00028">CRWCellLandform()</a>, <a class="el" href="../../d0/d02/cell__landform_8cpp_source.html#l00082">nGetCoast()</a>, and <a class="el" href="../../d0/d02/cell__landform_8cpp_source.html#l00076">SetCoast()</a>.</p>
 
 </div>
 </div>
@@ -761,7 +716,7 @@ Andres Payo </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../df/d51/cell__landform_8h_source.html#l00041">41</a> of file <a class="el" href="../../df/d51/cell__landform_8h_source.html">cell_landform.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d0/d02/cell__landform_8cpp_source.html#l00028">CRWCellLandform()</a>, <a class="el" href="../../d0/d02/cell__landform_8cpp_source.html#l00091">nGetPointOnCoast()</a>, and <a class="el" href="../../d0/d02/cell__landform_8cpp_source.html#l00085">SetPointOnCoast()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d0/d02/cell__landform_8cpp_source.html#l00028">CRWCellLandform()</a>, <a class="el" href="../../d0/d02/cell__landform_8cpp_source.html#l00094">nGetPointOnCoast()</a>, and <a class="el" href="../../d0/d02/cell__landform_8cpp_source.html#l00088">SetPointOnCoast()</a>.</p>
 
 </div>
 </div>
@@ -789,7 +744,7 @@ Andres Payo </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../df/d51/cell__landform_8h_source.html#l00035">35</a> of file <a class="el" href="../../df/d51/cell__landform_8h_source.html">cell_landform.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d0/d02/cell__landform_8cpp_source.html#l00028">CRWCellLandform()</a>, <a class="el" href="../../d0/d02/cell__landform_8cpp_source.html#l00067">nGetLFSubCategory()</a>, and <a class="el" href="../../d0/d02/cell__landform_8cpp_source.html#l00055">SetLFSubCategory()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d0/d02/cell__landform_8cpp_source.html#l00028">CRWCellLandform()</a>, <a class="el" href="../../d0/d02/cell__landform_8cpp_source.html#l00070">nGetLFSubCategory()</a>, and <a class="el" href="../../d0/d02/cell__landform_8cpp_source.html#l00057">SetLFSubCategory()</a>.</p>
 
 </div>
 </div>
@@ -835,7 +790,7 @@ Andres Payo </dd></dl>
 
 <p>The m_uLFData will hold landform data: currently, only cliffs are considered. </p>
 
-<p class="reference">Referenced by <a class="el" href="../../d0/d02/cell__landform_8cpp_source.html#l00115">dGetCliffNotchBaseElev()</a>, <a class="el" href="../../d0/d02/cell__landform_8cpp_source.html#l00127">dGetCliffNotchDepth()</a>, <a class="el" href="../../d0/d02/cell__landform_8cpp_source.html#l00109">SetCliffNotchBaseElev()</a>, <a class="el" href="../../d0/d02/cell__landform_8cpp_source.html#l00121">SetCliffNotchDepth()</a>, and <a class="el" href="../../d0/d02/cell__landform_8cpp_source.html#l00133">SetCliffRemaining()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d0/d02/cell__landform_8cpp_source.html#l00028">CRWCellLandform()</a>, <a class="el" href="../../d0/d02/cell__landform_8cpp_source.html#l00118">dGetCliffNotchBaseElev()</a>, <a class="el" href="../../d0/d02/cell__landform_8cpp_source.html#l00130">dGetCliffNotchDepth()</a>, <a class="el" href="../../d0/d02/cell__landform_8cpp_source.html#l00112">SetCliffNotchBaseElev()</a>, and <a class="el" href="../../d0/d02/cell__landform_8cpp_source.html#l00124">SetCliffNotchDepth()</a>.</p>
 
 </div>
 </div>
@@ -849,7 +804,7 @@ Andres Payo </dd></dl>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../dc/d4a/classCRWCellLandform.html">CRWCellLandform</a></li>
-    <li class="footer">Generated on Sat Aug 2 2025 10:59:23 for CoastalME (Coastal Modelling Environment) by <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+    <li class="footer">Generated on Mon Aug 18 2025 20:13:32 for CoastalME (Coastal Modelling Environment) by <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
   </ul>
 </div>
 </body>

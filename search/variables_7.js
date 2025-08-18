@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['initializing_0',['INITIALIZING',['../d6/d2a/cme_8h.html#a76950589a8cb258c21b24cab7aac4262',1,'cme.h']]],
+  ['initializing_5ffinal_0',['INITIALIZING_FINAL',['../d6/d2a/cme_8h.html#ac7846fb78f9e49975756756a04844d23',1,'cme.h']]],
   ['initializing_5fnotice_1',['INITIALIZING_NOTICE',['../d6/d2a/cme_8h.html#a478db25cd56680e23b4b8f302f06cca2',1,'cme.h']]],
   ['int_5fnodata_2',['INT_NODATA',['../d6/d2a/cme_8h.html#a01aa8b423260b337ddff2016107b51a0',1,'cme.h']]],
   ['intervention_5fclass_5fraster_3',['INTERVENTION_CLASS_RASTER',['../d6/d2a/cme_8h.html#a8d9b72aabe736946364e97529cfffc2d',1,'cme.h']]],

@@ -134,13 +134,12 @@ $(function(){initNavTree('da/dfd/2d__shape_8cpp_source.html','../../'); initResi
 <div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>   <span class="keywordflow">return</span> <a class="code hl_variable" href="../../d9/d0e/classCA2DShape.html#a070febdc96942442edb3553f2c4b87c9">m_VPoints</a>[n];</div>
 <div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>}</div>
 </div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span></div>
-<div class="foldopen" id="foldopen00044" data-start="{" data-end="}">
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno"><a class="line" href="../../d9/d0e/classCA2DShape.html#a5c24b8a8da79177d564356fbf3679601">   44</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="../../d9/d0e/classCA2DShape.html#a5c24b8a8da79177d564356fbf3679601">CA2DShape::Clear</a>(<span class="keywordtype">void</span>)</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>{</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>   <a class="code hl_variable" href="../../d9/d0e/classCA2DShape.html#a070febdc96942442edb3553f2c4b87c9">m_VPoints</a>.clear();</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>}</div>
-</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span> </div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span><span class="comment">// //! Clears this 2D shape</span></div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="comment">// void CA2DShape::Clear(void)</span></div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="comment">// {</span></div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span><span class="comment">//    m_VPoints.clear();</span></div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span><span class="comment">// }</span></div>
 <div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span></div>
 <div class="foldopen" id="foldopen00050" data-start="{" data-end="}">
 <div class="line"><a id="l00050" name="l00050"></a><span class="lineno"><a class="line" href="../../d9/d0e/classCA2DShape.html#ac764ca3a47555ac461c8c21b25d8984d">   50</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="../../d9/d0e/classCA2DShape.html#ac764ca3a47555ac461c8c21b25d8984d">CA2DShape::Resize</a>(<span class="keywordtype">int</span> <span class="keyword">const</span> nSize)</div>
@@ -278,7 +277,6 @@ $(function(){initNavTree('da/dfd/2d__shape_8cpp_source.html','../../'); initResi
 <div class="ttc" id="aclassCA2DShape_html_a089f43fb767f120e2bffbfc40b8dc0ac"><div class="ttname"><a href="../../d9/d0e/classCA2DShape.html#a089f43fb767f120e2bffbfc40b8dc0ac">CA2DShape::Append</a></div><div class="ttdeci">void Append(CGeom2DPoint const *)</div><div class="ttdoc">Appends a point to this 2D shape.</div><div class="ttdef"><b>Definition</b> <a href="#l00067">2d_shape.cpp:67</a></div></div>
 <div class="ttc" id="aclassCA2DShape_html_a20acae762de7cf6769eb938621f6a842"><div class="ttname"><a href="../../d9/d0e/classCA2DShape.html#a20acae762de7cf6769eb938621f6a842">CA2DShape::pPtVGetPoints</a></div><div class="ttdeci">vector&lt; CGeom2DPoint &gt; * pPtVGetPoints(void)</div><div class="ttdoc">Returns the address of the vector which represents this 2D shape.</div><div class="ttdef"><b>Definition</b> <a href="#l00130">2d_shape.cpp:130</a></div></div>
 <div class="ttc" id="aclassCA2DShape_html_a54eb0a2ab77aa22b8d1af5f8f1f40383"><div class="ttname"><a href="../../d9/d0e/classCA2DShape.html#a54eb0a2ab77aa22b8d1af5f8f1f40383">CA2DShape::Reverse</a></div><div class="ttdeci">void Reverse(void)</div><div class="ttdoc">Reverses the sequence of points in the vector which represents this 2D polygon.</div><div class="ttdef"><b>Definition</b> <a href="#l00166">2d_shape.cpp:166</a></div></div>
-<div class="ttc" id="aclassCA2DShape_html_a5c24b8a8da79177d564356fbf3679601"><div class="ttname"><a href="../../d9/d0e/classCA2DShape.html#a5c24b8a8da79177d564356fbf3679601">CA2DShape::Clear</a></div><div class="ttdeci">void Clear(void)</div><div class="ttdoc">Clears this 2D shape.</div><div class="ttdef"><b>Definition</b> <a href="#l00044">2d_shape.cpp:44</a></div></div>
 <div class="ttc" id="aclassCA2DShape_html_a5ecd98dd5f5d8f1705c1d060f6652f42"><div class="ttname"><a href="../../d9/d0e/classCA2DShape.html#a5ecd98dd5f5d8f1705c1d060f6652f42">CA2DShape::CA2DShape</a></div><div class="ttdeci">CA2DShape(void)</div><div class="ttdoc">Constructor.</div><div class="ttdef"><b>Definition</b> <a href="#l00027">2d_shape.cpp:27</a></div></div>
 <div class="ttc" id="aclassCA2DShape_html_a7f8d2942affd69f8de65e36f9c6acd3c"><div class="ttname"><a href="../../d9/d0e/classCA2DShape.html#a7f8d2942affd69f8de65e36f9c6acd3c">CA2DShape::pPtBack</a></div><div class="ttdeci">CGeom2DPoint * pPtBack(void)</div><div class="ttdoc">Returns the last element of this 2D shape.</div><div class="ttdef"><b>Definition</b> <a href="#l00091">2d_shape.cpp:91</a></div></div>
 <div class="ttc" id="aclassCA2DShape_html_aaa15397a5761d17635afdaddbec35c8a"><div class="ttname"><a href="../../d9/d0e/classCA2DShape.html#aaa15397a5761d17635afdaddbec35c8a">CA2DShape::AppendIfNotAlready</a></div><div class="ttdeci">void AppendIfNotAlready(double const, double const)</div><div class="ttdoc">Appends a point to this 2D shape only if it isn&#39;t already in the shape vector.</div><div class="ttdef"><b>Definition</b> <a href="#l00079">2d_shape.cpp:79</a></div></div>
@@ -293,7 +291,7 @@ $(function(){initNavTree('da/dfd/2d__shape_8cpp_source.html','../../'); initResi
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="../../da/dfd/2d__shape_8cpp.html">2d_shape.cpp</a></li>
-    <li class="footer">Generated on Sat Aug 2 2025 10:59:22 for CoastalME (Coastal Modelling Environment) by <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+    <li class="footer">Generated on Mon Aug 18 2025 20:13:31 for CoastalME (Coastal Modelling Environment) by <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
   </ul>
 </div>
 </body>
