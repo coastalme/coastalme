@@ -219,11 +219,10 @@ int CSimulation::nCalcPotentialPlatformErosionOnProfile(int const nCoast, CGeomP
    // Next calculate the average distance between profile points, again in external CRS units. Assume that the sample points are equally spaced along the profile (not quite true)
    double const dSpacingXY = dProfileLenXY / (nProfSize - 1);
 
-   // Set up vectors for the coastline-normal profile elevations. The length of this vector line is given by the number of cells 'under' the profile. Thus each point on the vector relates to a single cell in the grid. This assumes that all points on the profile vector are equally spaced (not quite true, depends on the orientation of the line segments which comprise the profile)
-   // The elevation of each of these profile points is the elevation of the centroid of the cell that is 'under' the point. However we cannot always be confident that this is the 'true' elevation of the point on the vector since (unless the profile runs planview N-S or W-E) the vector does not always run exactly through the centroid of the cell
-   vector<double> VdProfileZ(nProfSize, 0);      // Initial (pre-erosion) elevation of both consolidated and unconsolidated sediment for cells 'under' the profile
-   vector<double> VdProfileDistXY(nProfSize, 0); // Along-profile distance measured from the coast, in external CRS units
-   vector<double> dVConsProfileZ(nProfSize, 0);  // Initial (pre-erosion) elevation of consolidated sediment only for cells 'under' the profile
+   // Set up vectors for the coastline-normal profile elevations. The length of this vector line is given by the number of cells 'under' the profile. Thus each point on the vector relates to a single cell in the grid. This assumes that all points on the profile vector are equally spaced (not quite true, depends on the orientation of the line segments which comprise the profile). The elevation of each of these profile points is the elevation of the centroid of the cell that is 'under' the point. However we cannot always be confident that this is the 'true' elevation of the point on the vector since (unless the profile runs planview N-S or W-E) the vector does not always run exactly through the centroid of the cell
+   vector<double> VdProfileZ(nProfSize, 0);              // Initial (pre-erosion) elevation of both consolidated and unconsolidated sediment for cells 'under' the profile
+   vector<double> VdProfileDistXY(nProfSize, 0);         // Along-profile distance measured from the coast, in external CRS units
+   vector<double> dVConsProfileZ(nProfSize, 0);          // Initial (pre-erosion) elevation of consolidated sediment only for cells 'under' the profile
    vector<double> dVConsZDiff(nProfSize, 0);
    vector<double> dVConsSlope(nProfSize, 0);
 
@@ -389,8 +388,8 @@ int CSimulation::nCalcPotentialPlatformErosionOnProfile(int const nCoast, CGeomP
       m_pRasterGrid->m_Cell[nX][nY].SetBeachProtectionFactor(dBeachProtectionFactor);
    }
 
-   // If desired, save this coastline-normal profile data for checking purposes
-   if (m_bOutputProfileData)
+   // If desired, save this coastline-normal consolidated-only profile data for checking purposes
+   if (m_bOutputConsolidatedProfileData)
    {
       int const nRet = nSaveProfile(nCoast, pProfile, nProfSize, &VdProfileDistXY, &dVConsProfileZ, &dVProfileDepthOverDB, &dVProfileErosionPotential, &dVConsSlope, &dVRecessionXY, &dVChangeElevZ, pProfile->pPtiVGetCellsInProfile(), &dVSCAPEXY);
 

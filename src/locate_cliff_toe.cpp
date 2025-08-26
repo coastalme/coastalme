@@ -57,7 +57,6 @@ using std::pair;
 ===============================================================================================================================*/
 int CSimulation::nLocateCliffToe(void)
 {
-   // First step: calculate top surface slope for all cells
    nCalcSlopeAtAllCells();
    nLocateCliffCell();
    nRemoveSmallCliffIslands(50);
@@ -116,9 +115,6 @@ void CSimulation::nLocateCliffCell(void)
 ===============================================================================================================================*/
 void CSimulation::nRemoveSmallCliffIslands(int const dMinCliffCellThreshold)
 {
-   // unsigned int m_nXGridSize = static_cast<unsigned int>(m_nXGridSize);
-   // unsigned int m_nYGridSize = static_cast<unsigned int>(m_nYGridSize);
-
    // Create a 2D array to track which cells have been visited during flood fill
    vector<vector<bool>> bVisited(static_cast<unsigned int>(m_nXGridSize), vector<bool>(static_cast<unsigned int>(m_nYGridSize), false));
 

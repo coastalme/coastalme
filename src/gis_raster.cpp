@@ -1,5 +1,4 @@
 /*!
-
    \file gis_raster.cpp
    \brief These functions use GDAL (at least version 2) to read and write raster GIS files in several formats
    \details TODO 001 A more detailed description of these routines.
@@ -7,11 +6,9 @@
    \author Andres Payo
    \date 2025
    \copyright GNU General Public License
-
 */
 
 /* ===============================================================================================================================
-
    This file is part of CoastalME, the Coastal Modelling Environment.
 
    CoastalME is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
@@ -19,7 +16,6 @@
    This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
    You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-
 ===============================================================================================================================*/
 #include <assert.h>
 
@@ -37,7 +33,6 @@ using std::vector;
 
 #include <iostream>
 using std::cerr;
-// using std::cout;
 using std::endl;
 using std::ios;
 
@@ -76,15 +71,13 @@ void CSimulation::InitializeGDALPerformance(void)
 #endif
 
    // Optimize GDAL memory usage and caching
-   // CPLSetConfigOption("GDAL_CACHEMAX", "1024");                // 1GB cache for large grids
-   CPLSetConfigOption("GDAL_CACHEMAX", "2GB");                 // 2GB cache for large grids
-   CPLSetConfigOption("GDAL_DISABLE_READDIR_ON_OPEN", "TRUE"); // Faster file access
-   CPLSetConfigOption("VSI_CACHE", "TRUE");                    // Enable virtual file system cache
-   // CPLSetConfigOption("VSI_CACHE_SIZE", "256000000");          // 256MB VSI cache
-   CPLSetConfigOption("VSI_CACHE_SIZE", "256MB");              // 256MB VSI cache
+   CPLSetConfigOption("GDAL_CACHEMAX", "2GB");                             // 2GB cache for large grids (was 1GB)
+   CPLSetConfigOption("GDAL_DISABLE_READDIR_ON_OPEN", "TRUE");             // Faster file access
+   CPLSetConfigOption("VSI_CACHE", "TRUE");                                // Enable virtual file system cache
+   CPLSetConfigOption("VSI_CACHE_SIZE", "256MB");                          // 256MB VSI cache
 
    // Optimize grid creation performance
-   CPLSetConfigOption("GDAL_GRID_MAX_POINTS_PER_QUADTREE_LEAF", "512"); // Faster spatial indexing
+   CPLSetConfigOption("GDAL_GRID_MAX_POINTS_PER_QUADTREE_LEAF", "512");    // Faster spatial indexing
 
    // Disable GDAL warnings for cleaner output (optional)
    // CPLSetConfigOption("CPL_LOG", "/dev/null");
@@ -121,7 +114,7 @@ int CSimulation::nReadRasterBasementDEM(void)
    m_strGDALBasementDEMDriverDesc = pGDALDataset->GetDriver()->GetMetadataItem(GDAL_DMD_LONGNAME);
    m_strGDALBasementDEMProjection = pGDALDataset->GetProjectionRef();
 
-   // If we have reference units, then check that they are in metres
+   // If we have reference units, then check that they are in metres (note US spelling)
    if (! m_strGDALBasementDEMProjection.empty())
    {
       string const strTmp = strToLower(&m_strGDALBasementDEMProjection);
@@ -960,6 +953,7 @@ int CSimulation::nReadRasterGISFile(int const nDataItem, int const nLayer)
 bool CSimulation::bWriteRasterGISFile(int const nDataItem, string const *strPlotTitle, int const nLayer, double const dElev)
 {
    bool bIsInteger = false;
+   bool bIsUnsignedLong = false;
 
    // Begin constructing the file name for this save
    string strFilePathName(m_strOutPath);
@@ -1141,6 +1135,10 @@ bool CSimulation::bWriteRasterGISFile(int const nDataItem, string const *strPlot
       strFilePathName.append(RASTER_TOTAL_CLIFF_COLLAPSE_DEPOSITION_COARSE_NAME);
       break;
 
+   case (RASTER_PLOT_CLIFF_COLLAPSE_TIMESTEP):
+      strFilePathName.append(RASTER_CLIFF_COLLAPSE_TIMESTEP_NAME);
+      break;
+
    case (RASTER_PLOT_CLIFF_NOTCH_ALL):
       strFilePathName.append(RASTER_CLIFF_NOTCH_ALL_NAME);
       break;
@@ -1294,9 +1292,14 @@ bool CSimulation::bWriteRasterGISFile(int const nDataItem, string const *strPlot
       // The user-requested raster driver supports the Create() method
       pDriver = GetGDALDriverManager()->GetDriverByName(m_strRasterGISOutFormat.c_str());
 
-      if ((nDataItem == RASTER_PLOT_INUNDATION_MASK) || (nDataItem == RASTER_PLOT_SETUP_SURGE_FLOOD_MASK) || (nDataItem == RASTER_PLOT_SETUP_SURGE_RUNUP_FLOOD_MASK))
+      if (bIsInteger)
       {
          pDataSet = pDriver->Create(strFilePathName.c_str(), m_nXGridSize, m_nYGridSize, 1, GDT_Int16, m_papszGDALRasterOptions);
+      }
+      else if (bIsUnsignedLong)
+      {
+         pDataSet = pDriver->Create(strFilePathName.c_str(), m_nXGridSize, m_nYGridSize, 1, GDT_UInt32, m_papszGDALRasterOptions);
+
       }
       else if (m_strRasterGISOutFormat == "gpkg")
       {
@@ -1316,7 +1319,6 @@ bool CSimulation::bWriteRasterGISFile(int const nDataItem, string const *strPlot
          return false;
       }
    }
-
    else
    {
       // The user-requested raster driver does not support the Create() method, so we must first create a memory-file dataset
@@ -1339,8 +1341,7 @@ bool CSimulation::bWriteRasterGISFile(int const nDataItem, string const *strPlot
 
    // Set geotransformation info for output dataset (will be same as was read in from DEM)
    if (CE_Failure == pDataSet->SetGeoTransform(m_dGeoTransform))
-      LogStream << WARN << "cannot write geotransformation information to " << m_strRasterGISOutFormat << " file named " << strFilePathName << endl
-                << CPLGetLastErrorMsg() << endl;
+      LogStream << WARN << "cannot write geotransformation information to " << m_strRasterGISOutFormat << " file named " << strFilePathName << endl << CPLGetLastErrorMsg() << endl;
 
    // Allocate memory for a 1D array, to hold the floating point raster band data for GDAL
    double *pdRaster = new double[m_ulNumCells];
@@ -1423,7 +1424,6 @@ bool CSimulation::bWriteRasterGISFile(int const nDataItem, string const *strPlot
                dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetWaveHeight();
             else
                dTmp = 0;
-
             break;
 
          case (RASTER_PLOT_AVG_WAVE_HEIGHT):
@@ -1431,7 +1431,6 @@ bool CSimulation::bWriteRasterGISFile(int const nDataItem, string const *strPlot
                dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetTotWaveHeight() / static_cast<double>(m_ulIter);
             else
                dTmp = 0;
-
             break;
 
          case (RASTER_PLOT_WAVE_ORIENTATION):
@@ -1439,7 +1438,6 @@ bool CSimulation::bWriteRasterGISFile(int const nDataItem, string const *strPlot
                dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetWaveAngle();
             else
                dTmp = 0;
-
             break;
 
          case (RASTER_PLOT_AVG_WAVE_ORIENTATION):
@@ -1447,7 +1445,6 @@ bool CSimulation::bWriteRasterGISFile(int const nDataItem, string const *strPlot
                dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetTotWaveAngle() / static_cast<double>(m_ulIter);
             else
                dTmp = 0;
-
             break;
 
          case (RASTER_PLOT_BEACH_PROTECTION):
@@ -1457,7 +1454,6 @@ bool CSimulation::bWriteRasterGISFile(int const nDataItem, string const *strPlot
                dTmp = m_dMissingValue;
             else
                dTmp = 1 - dTmp; // Output the inverse, seems more intuitive
-
             break;
 
          case (RASTER_PLOT_POTENTIAL_PLATFORM_EROSION):
@@ -1576,6 +1572,11 @@ bool CSimulation::bWriteRasterGISFile(int const nDataItem, string const *strPlot
             dTmp = m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->dGetCliffNotchDepth();
             break;
 
+         case (RASTER_PLOT_CLIFF_COLLAPSE_TIMESTEP):
+            dTmp = static_cast<double>(m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->ulGetCliffCollapseTimestep());
+            bIsUnsignedLong = true;
+            break;
+
          case (RASTER_PLOT_INTERVENTION_HEIGHT):
             dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetInterventionHeight();
             break;
@@ -1585,7 +1586,6 @@ bool CSimulation::bWriteRasterGISFile(int const nDataItem, string const *strPlot
                dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetCellDeepWaterWaveAngle();
             else
                dTmp = 0;
-
             break;
 
          case (RASTER_PLOT_DEEP_WATER_WAVE_HEIGHT):
@@ -1593,7 +1593,6 @@ bool CSimulation::bWriteRasterGISFile(int const nDataItem, string const *strPlot
                dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetCellDeepWaterWaveHeight();
             else
                dTmp = 0;
-
             break;
 
          case (RASTER_PLOT_DEEP_WATER_WAVE_PERIOD):
@@ -1601,7 +1600,6 @@ bool CSimulation::bWriteRasterGISFile(int const nDataItem, string const *strPlot
                dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetCellDeepWaterWavePeriod();
             else
                dTmp = 0;
-
             break;
 
          case (RASTER_PLOT_POLYGON_GAIN_OR_LOSS):
@@ -1610,7 +1608,6 @@ bool CSimulation::bWriteRasterGISFile(int const nDataItem, string const *strPlot
 
             if (nPoly == INT_NODATA)
                dTmp = m_dMissingValue;
-
             else
             {
                // Get total volume (all sediment size classes) of change in sediment for this polygon for this timestep (-ve erosion, +ve deposition)
@@ -1619,7 +1616,6 @@ bool CSimulation::bWriteRasterGISFile(int const nDataItem, string const *strPlot
                // Calculate the rate in m^3 / sec
                dTmp /= (m_dTimeStep * 3600);
             }
-
             break;
 
          case (RASTER_PLOT_POTENTIAL_PLATFORM_EROSION_MASK):
@@ -1650,6 +1646,7 @@ bool CSimulation::bWriteRasterGISFile(int const nDataItem, string const *strPlot
 
          case (RASTER_PLOT_LANDFORM):
             dTmp = m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->nGetLFCategory();
+            bIsInteger = true;
 
             if ((static_cast<int>(dTmp) == LF_CAT_DRIFT) || (static_cast<int>(dTmp) == LF_CAT_CLIFF))
                dTmp = m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->nGetLFSubCategory();
@@ -1658,6 +1655,7 @@ bool CSimulation::bWriteRasterGISFile(int const nDataItem, string const *strPlot
 
          case (RASTER_PLOT_INTERVENTION_CLASS):
             dTmp = m_pRasterGrid->m_Cell[nX][nY].nGetInterventionClass();
+            bIsInteger = true;
             break;
 
          case (RASTER_PLOT_COAST):
@@ -1667,6 +1665,7 @@ bool CSimulation::bWriteRasterGISFile(int const nDataItem, string const *strPlot
          case (RASTER_PLOT_NORMAL_PROFILE):
             // dTmp = (m_pRasterGrid->m_Cell[nX][nY].bIsProfile() ? 1 : 0);
             dTmp = m_pRasterGrid->m_Cell[nX][nY].nGetProfileID();
+            bIsInteger = true;
             break;
 
          case (RASTER_PLOT_ACTIVE_ZONE):
@@ -1675,19 +1674,23 @@ bool CSimulation::bWriteRasterGISFile(int const nDataItem, string const *strPlot
 
          case (RASTER_PLOT_POLYGON):
             dTmp = m_pRasterGrid->m_Cell[nX][nY].nGetPolygonID();
+            bIsInteger = true;
             break;
 
          case (RASTER_PLOT_SHADOW_ZONE):
             dTmp = m_pRasterGrid->m_Cell[nX][nY].nGetShadowZoneNumber();
+            bIsInteger = true;
             break;
 
          case (RASTER_PLOT_SHADOW_DOWNDRIFT_ZONE):
             dTmp = m_pRasterGrid->m_Cell[nX][nY].nGetDownDriftZoneNumber();
+            bIsInteger = true;
             break;
 
          case (RASTER_PLOT_POLYGON_UPDRIFT_OR_DOWNDRIFT):
             nPoly = m_pRasterGrid->m_Cell[nX][nY].nGetPolygonID();
             nPolyCoast = m_pRasterGrid->m_Cell[nX][nY].nGetPolygonCoastID();
+            bIsInteger = true;
 
             if (nPoly == INT_NODATA)
                dTmp = m_nMissingValue;
@@ -1698,7 +1701,6 @@ bool CSimulation::bWriteRasterGISFile(int const nDataItem, string const *strPlot
                else
                   dTmp = 0;
             }
-
             break;
 
          case (RASTER_PLOT_SEDIMENT_INPUT):
@@ -1738,6 +1740,8 @@ bool CSimulation::bWriteRasterGISFile(int const nDataItem, string const *strPlot
    // And fill it with the NODATA value
    if (bIsInteger)
       pBand->Fill(m_nMissingValue);
+   else if (bIsUnsignedLong)
+      pBand->Fill(static_cast<double>(m_ulMissingValue));
    else
       pBand->Fill(m_dMissingValue);
 
@@ -1821,22 +1825,24 @@ bool CSimulation::bWriteRasterGISFile(int const nDataItem, string const *strPlot
    case (RASTER_PLOT_SETUP_SURGE_FLOOD_MASK):
    case (RASTER_PLOT_SETUP_SURGE_RUNUP_FLOOD_MASK):
    case (RASTER_PLOT_WAVE_FLOOD_LINE):
+   case (RASTER_PLOT_CLIFF_COLLAPSE_TIMESTEP):
       strUnits = "none";
       break;
    }
 
-   CPLPushErrorHandler(CPLQuietErrorHandler); // Needed to get next line to fail silently, if it fails
-   pBand->SetUnitType(strUnits.c_str());      // Not supported for some GIS formats
+   CPLPushErrorHandler(CPLQuietErrorHandler);            // Needed to get next line to fail silently, if it fails
+   pBand->SetUnitType(strUnits.c_str());                 // Not supported for some GIS formats
    CPLPopErrorHandler();
 
    // Tell the output dataset about NODATA (missing values)
-   CPLPushErrorHandler(CPLQuietErrorHandler); // Needed to get next line to fail silently, if it fails
+   CPLPushErrorHandler(CPLQuietErrorHandler);            // Needed to get next line to fail silently, if it fails
 
    if (bIsInteger)
-      pBand->SetNoDataValue(m_nMissingValue); // Will fail for some formats
-
+      pBand->SetNoDataValue(m_nMissingValue);            // Will fail for some formats
+   if (bIsUnsignedLong)
+      pBand->SetNoDataValueAsUInt64(m_ulMissingValue);   // Will fail for some formats
    else
-      pBand->SetNoDataValue(m_dMissingValue); // Will fail for some formats
+      pBand->SetNoDataValue(m_dMissingValue);            // Will fail for some formats
 
    CPLPopErrorHandler();
 
@@ -2279,7 +2285,6 @@ int CSimulation::nInterpolateWavesToPolygonCells(vector<double> const *pVdX, vec
                double const dDeepWaterWaveAngle = m_pRasterGrid->m_Cell[nActualX][nActualY].dGetCellDeepWaterWaveAngle();
                m_pRasterGrid->m_Cell[nActualX][nActualY].SetWaveAngle(dDeepWaterWaveAngle);
             }
-
             else
             {
                // This is in a polygon so is not a deep water sea cell
@@ -2289,13 +2294,11 @@ int CSimulation::nInterpolateWavesToPolygonCells(vector<double> const *pVdX, vec
                // Safety checks
                if ((isnan(VdOutX[n])) || (bFPIsEqual(VdOutX[n], m_dMissingValue, TOLERANCE)))
                   dWaveHeightX = dXAvg;
-
                else
                   dWaveHeightX = VdOutX[n];
 
                if ((isnan(VdOutY[n])) || (bFPIsEqual(VdOutY[n], m_dMissingValue, TOLERANCE)))
                   dWaveHeightY = dYAvg;
-
                else
                   dWaveHeightY = VdOutY[n];
 

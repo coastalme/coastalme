@@ -9,7 +9,6 @@
 */
 
 /* ===============================================================================================================================
-
    This file is part of CoastalME, the Coastal Modelling Environment.
 
    CoastalME is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
@@ -17,7 +16,6 @@
    This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
    You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-
 ===============================================================================================================================*/
 #include <assert.h>
 
@@ -98,7 +96,7 @@ int CSimulation::nAssignLandformsForAllCoasts(void)
             if (bConsSedAtSWL)
             {
                // First timestep: we have consolidated sediment at SWL, so this is a cliff cell. Set some initial values for the cliff object's attributes
-               LogStream << m_ulIter << ": initialisation, cliff created at [" << nX << "][" << nY << "] m_dThisIterNotchBaseElev = " << m_dThisIterNotchBaseElev << " m_dThisIterSWL = " << m_dThisIterSWL << endl;
+               // LogStream << m_ulIter << ": initialisation, cliff created at [" << nX << "][" << nY << "] m_dThisIterNotchBaseElev = " << m_dThisIterNotchBaseElev << " m_dThisIterSWL = " << m_dThisIterSWL << endl;
 
                m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->SetLFSubCategory(LF_SUBCAT_CLIFF_ON_COASTLINE);
                m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->SetCliffNotchBaseElev(m_dThisIterNotchBaseElev);
@@ -144,7 +142,7 @@ int CSimulation::nAssignLandformsForAllCoasts(void)
                   dNotchDepth = m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->dGetCliffNotchDepth();
                   dNotchElev = m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->dGetCliffNotchBaseElev();
 
-                  LogStream << m_ulIter << ": continues to be a cliff at [" << nX << "][" << nY << "] notch base elevation = " << dNotchElev << " notch depth = " << dNotchDepth << " this-iteration SWL = " << m_dThisIterSWL << endl;
+                  // LogStream << m_ulIter << ": continues to be a cliff at [" << nX << "][" << nY << "] notch base elevation = " << dNotchElev << " notch depth = " << dNotchDepth << " this-iteration SWL = " << m_dThisIterSWL << endl;
                }
                else
                {
@@ -152,11 +150,11 @@ int CSimulation::nAssignLandformsForAllCoasts(void)
                   m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->SetLFSubCategory(LF_SUBCAT_CLIFF_ON_COASTLINE);
                   dAccumWaveEnergy = m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->dGetAccumWaveEnergy();
                   dNotchDepth = 0;
-                  m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->SetCliffNotchDepth(dNotchDepth);
+                  m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->SetCliffNotchDepth(dNotchDepth);      // Note that this is permanent i.e. stored for the remainder of the simulation
                   dNotchElev = m_dThisIterNotchBaseElev;
                   m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->SetCliffNotchBaseElev(dNotchElev);
 
-                  LogStream << m_ulIter << ": cliff created at [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "}" << " notch base elevation = " << dNotchElev << " this-iteration SWL = " << m_dThisIterSWL << endl;
+                  // LogStream << m_ulIter << ": cliff created at [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "}" << " notch base elevation = " << dNotchElev << " this-iteration SWL = " << m_dThisIterSWL << endl;
                }
 
                // Create a cliff object on the vector coastline with these attributes

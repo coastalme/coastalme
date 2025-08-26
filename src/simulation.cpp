@@ -114,6 +114,8 @@ CSimulation::CSimulation(void)
    m_bTotCliffCollapseSave =
    m_bCliffCollapseDepositionSave =
    m_bTotCliffCollapseDepositionSave =
+   m_bCliffNotchAllSave =
+   m_bCliffCollapseTimestepSave =
    m_bRasterPolygonSave =
    m_bPotentialPlatformErosionMaskSave =
    m_bSeaMaskSave =
@@ -150,7 +152,7 @@ CSimulation::CSimulation(void)
    m_bBeachSedimentChangeNetTSSave =
    m_bCliffNotchElevTSSave =
    m_bSaveGISThisIter =
-   m_bOutputProfileData =
+   m_bOutputConsolidatedProfileData =
    m_bOutputParallelProfileData =
    m_bOutputErosionPotentialData =
    m_bOmitSearchNorthEdge =
@@ -186,7 +188,10 @@ CSimulation::CSimulation(void)
    m_bFloodSWLSetupSurgeRunupLineSave =
    m_bGISSaveDigitsSequential =
    m_bHaveConsolidatedSediment =
-   m_bGDALOptimisations = false;
+   m_bGDALOptimisations =
+   m_bCliffToeLocate =
+   m_bHighestSWLSoFar =
+   m_bLowestSWLSoFar = false;
 
    m_bGDALCanCreate = true;
    m_bCSVPerTimestepResults = true; // Default to CSV output format
@@ -227,8 +232,7 @@ CSimulation::CSimulation(void)
    m_nDeepWaterWaveDataNumTimeSteps =
    m_nLogFileDetail =
    m_nRunUpEquation =
-   m_nLevel =
-   m_nCliffToeLocate = 0;
+   m_nLevel = 0;
 
    // TODO 011 May wish to make this a user-supplied value
    m_nGISMissingValue =
@@ -260,6 +264,8 @@ CSimulation::CSimulation(void)
    m_ulThisIterNumCoastCells =
    m_ulThisIterNumPotentialPlatformErosionCells =
    m_ulThisIterNumActualPlatformErosionCells = 0;
+
+   m_ulMissingValue = UNSIGNED_LONG_NODATA;
 
    for (int i = 0; i < NUMBER_OF_RNGS; i++)
       m_ulRandSeed[i] = 0;
@@ -394,8 +400,8 @@ CSimulation::CSimulation(void)
    m_dTotalCoarseConsInPolygons =
    m_dSlopeThresholdForCliffToe = 0;
 
-   m_dMinSWL = DBL_MAX;
-   m_dMaxSWL = DBL_MIN;
+   m_dMinSWLSoFar = DBL_MAX;
+   m_dMaxSWLSoFar = DBL_MIN;
 
    for (int i = 0; i < 6; i++)
       m_dGeoTransform[i] = 0;
@@ -651,7 +657,6 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
          if ((ch == 'y') || (ch == 'Y'))
             bCreateDir = true;
       }
-
       else
       {
          // Running with stdout or stderr not a tty, so create output dir rather than abort
@@ -664,7 +669,6 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
          create_directories(m_strOutPath.c_str());
          cerr << m_strOutPath << " created" << endl << endl;
       }
-
       else
          // Nope, just end the run
          return RTN_USER_ABORT;
@@ -1022,7 +1026,7 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
 
       // Locate estuaries TODO someday...
 
-      if (m_bHaveConsolidatedSediment && m_bDoCliffCollapse && (m_nCliffToeLocate == CLIFF_TOE_LOCATION_SLOPE))
+      if (m_bHaveConsolidatedSediment && m_bDoCliffCollapse && m_bCliffToeLocate)
       {
          // Locate and trace cliff toe
          nRet = nLocateCliffToe();
@@ -1273,7 +1277,7 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
          // Next simulate beach erosion and deposition i.e. simulate alongshore transport of unconsolidated sediment (longshore drift) between polygons. First calculate potential sediment movement between polygons
          DoAllPotentialBeachErosion();
 
-         // Do within-sediment redistribution of unconsolidated sediment, constraining potential sediment movement to give actual (i.e. supply-limited) sediment movement to/from each polygon in three size clases
+         // Do within-sediment redistribution of unconsolidated sediment, constraining potential sediment movement to give actual (i.e. supply-limited) sediment movement to/from each polygon in three size classes
          nRet = nDoAllActualBeachErosionAndDeposition();
          if (nRet != RTN_OK)
             return nRet;

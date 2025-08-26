@@ -28,7 +28,7 @@ Output per-timestep results in CSV format?                                      
 Simulation start date and time                                          [hh-mm-ss dd/mm/yyyy]: 00-00-00 01/01/1999
 Duration of simulation                                           [hours, days, months, years]: 10 years
 Timestep (hours or days)                                                                     : 6 hours
-Save times                                                       [hours, days, months, years]: 1 month
+Save times                                                       [hours, days, months, years]: 6 months
 
 Random number seed(s)                                                                        : 280764
 
@@ -97,7 +97,7 @@ Simulate coast platform erosion?                                                
 Resistance to erosion of coast platform (m^(9/4)s^(3/2))                                     : 2e6        ; [2-6]e6 to produce 0.6 m/yr recession (Walkden & Hall, 2011)
 
 Simulate beach sediment transport?                                                           : y
-Beach sediment transport at grid edges                [0 = closed, 1 = open, 2 = recirculate]: 1
+Beach sediment transport at grid edges                [0 = closed, 1 = open, 2 = recirculate]: 2
 
 Beach potential erosion/deposition equation                          [0 = CERC, 1 = Kamphuis]: 0
 
@@ -157,10 +157,10 @@ Timesteps to save profile(s)                                                    
 Save parallel profiles?                                                                      : n
 Output erosion potential look-up values                                                      : n
 
-; MOVE THESE?
-Size of moving window for calculating coastline curvature (must be odd)                      : 11
-Cliff edge smoothing     [0 = none, 1 = running mean, 2 = Savitzky-Golay, only for cliff toe]: 1
-Cliff edge smoothing window size                            [must be odd, only for cliff toe]: 33
-Polynomial order for Savitzky-Golay cliff edge smoothing         [2 or 4, only for cliff toe]: 4
-Cliff slope limit for cliff toe detection                                [only for cliff toe]: 0.3
+Cliff toe location?                                                                          : n
+   Cliff edge smoothing  [0 = none, 1 = running mean, 2 = Savitzky-Golay, only for cliff toe]: 1
+   Cliff edge smoothing window size                         [must be odd, only for cliff toe]: 33
+   Polynomial order for Savitzky-Golay cliff edge smoothing      [2 or 4, only for cliff toe]: 4
+   Cliff slope limit for cliff toe detection                             [only for cliff toe]: 0.3
+
 ; END OF FILE ----------------------------------------------------------------------------------------------------------

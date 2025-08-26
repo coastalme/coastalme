@@ -511,6 +511,9 @@ int CSimulation::nDoCliffCollapse(int const nCoast, CRWCliff* pCliff, double& dF
    m_dThisIterCliffCollapseErosionCoarseUncons += dCoarseUnconsLost;
    m_dThisIterCliffCollapseErosionCoarseCons += dCoarseConsLost;
 
+   // Save the timestep at which cliff collapse occurred
+   m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->SetCliffCollapseTimestep(m_ulIter);
+
    // Reset cell cliff info
    m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->SetCliffNotchDepth(m_dCellSide);
 

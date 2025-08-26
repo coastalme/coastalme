@@ -236,3 +236,10 @@ CoastalME CHANGELOG
          Added all cliff notch raster output
          Code tidying
 
+1.3.28   Added raster output to show cliff collapse by timestep
+         Added vector output to show coast at highest and lowest SWL
+         Improved error messages for coast tracing
+         Fixed regression bug in coast tracing
+         Moved cliff toe tracing to testing
+         Enable Linux clang builds
+         Code tidying

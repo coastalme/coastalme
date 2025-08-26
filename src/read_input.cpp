@@ -804,7 +804,8 @@ bool CSimulation::bReadRunDataFile(void)
                   m_bDeepWaterWavePeriodSave =
                   m_bPolygonUnconsSedUpOrDownDriftSave =
                   m_bPolygonUnconsSedGainOrLossSave =
-                  m_bCliffNotchAllSave = true;
+                  m_bCliffNotchAllSave =
+                  m_bCliffCollapseTimestepSave = true;
                }
                else if (strRH.find(RASTER_USUAL_OUTPUT_CODE) != string::npos)
                {
@@ -850,7 +851,8 @@ bool CSimulation::bReadRunDataFile(void)
                   m_bPolygonUnconsSedGainOrLossSave =
                   m_bRasterNormalProfileSave =
                   m_bRasterCoastlineSave =
-                  m_bCliffNotchAllSave = true;
+                  m_bCliffNotchAllSave =
+                  m_bCliffCollapseTimestepSave = true;
                }
                else
                {
@@ -1213,6 +1215,12 @@ bool CSimulation::bReadRunDataFile(void)
                   {
                      m_bCliffNotchAllSave = true;
                      strRH = strRemoveSubstr(&strRH, &RASTER_CLIFF_NOTCH_ALL_CODE);
+                  }
+
+                  if (strRH.find(RASTER_CLIFF_COLLAPSE_TIMESTEP_CODE) != string::npos)
+                  {
+                     m_bCliffCollapseTimestepSave = true;
+                     strRH = strRemoveSubstr(&strRH, &RASTER_CLIFF_COLLAPSE_TIMESTEP_CODE);
                   }
 
                   // Check to see if all codes have been removed
@@ -2690,107 +2698,6 @@ bool CSimulation::bReadRunDataFile(void)
             break;
 
          case 60:
-            // Cliff toe location approach [0 = none, 1 = by slope threshold]
-            if (m_bHaveConsolidatedSediment && m_bDoCliffCollapse)
-            {
-               if (! bIsStringValidInt(strRH))
-               {
-                  strErr = "line " + to_string(nLine) + ": invalid integer for cliff toe location approach '" + strRH + "' in " + m_strDataPathName;
-                  break;
-               }
-
-               m_nCliffToeLocate = stoi(strRH);
-
-               if ((m_nCliffToeLocate != CLIFF_TOE_LOCATION_NONE) && (m_nCliffToeLocate != CLIFF_TOE_LOCATION_SLOPE))
-                  strErr = "line " + to_string(nLine) + ": cliff toe location must be " + to_string(CLIFF_TOE_LOCATION_NONE) + " or " + to_string(CLIFF_TOE_LOCATION_SLOPE);
-
-               if (m_nCliffToeLocate == CLIFF_TOE_LOCATION_SLOPE)
-               {
-                  m_bCliffToeSave = true;
-                  m_bSlopeSaveForCliffToe = true;
-               }
-            }
-
-            break;
-
-         case 61:
-            // Cliff edge smoothing algorithm: 0 = none, 1 = running mean, 2 = Savitzky-Golay
-            if (m_bHaveConsolidatedSediment && m_bDoCliffCollapse && (m_nCliffToeLocate == CLIFF_TOE_LOCATION_SLOPE))
-            {
-               if (! bIsStringValidInt(strRH))
-               {
-                  strErr = "line ";
-                  strErr += to_string(nLine);
-                  strErr += ": invalid integer for cliff edge smoothing algorithm '";
-                  strErr += strRH;
-                  strErr += "' in " + m_strDataPathName;
-
-                  break;
-               }
-
-               m_nCliffEdgeSmooth = stoi(strRH);
-
-               if ((m_nCliffEdgeSmooth < SMOOTH_NONE) || (m_nCliffEdgeSmooth > SMOOTH_SAVITZKY_GOLAY))
-                  strErr = "line " + to_string(nLine) + ": cliff edge smoothing algorithm must be " + to_string(SMOOTH_NONE) + ", " + to_string(SMOOTH_RUNNING_MEAN) + ", or " + to_string(SMOOTH_SAVITZKY_GOLAY);
-            }
-
-            break;
-
-         case 62:
-            // Size of cliff edge smoothing window: must be odd
-            if (m_bHaveConsolidatedSediment && m_bDoCliffCollapse && (m_nCliffToeLocate == CLIFF_TOE_LOCATION_SLOPE))
-            {
-               if (! bIsStringValidInt(strRH))
-               {
-                  strErr = "line " + to_string(nLine) + ": invalid integer for cliff edge smoothing window '" + strRH + "' in " + m_strDataPathName;
-                  break;
-               }
-
-               m_nCliffEdgeSmoothWindow = stoi(strRH);
-
-               if ((m_nCliffEdgeSmoothWindow <= 0) || ! (m_nCliffEdgeSmoothWindow % 2))
-                  strErr = "line " + to_string(nLine) + ": size of cliff edge smoothing window (must be > 0 and odd)";
-            }
-
-            break;
-
-         case 63:
-            // Order of cliff edge smoothing polynomial for Savitzky-Golay: usually 2 or 4, max is 6
-            if (m_bHaveConsolidatedSediment && m_bDoCliffCollapse && (m_nCliffToeLocate == CLIFF_TOE_LOCATION_SLOPE))
-            {
-               if (! bIsStringValidInt(strRH))
-               {
-                  strErr = "line " + to_string(nLine) + ": invalid integer for Savitzky-Golay polynomial for cliff edge smoothing '" + strRH + "' in " + m_strDataPathName;
-                  break;
-               }
-
-               m_nSavGolCliffEdgePoly = stoi(strRH);
-
-               if ((m_nSavGolCliffEdgePoly < 2) || (m_nSavGolCliffEdgePoly > 6) || (m_nSavGolCliffEdgePoly % 2))
-                  strErr = "line " + to_string(nLine) + ": order of Savitzky-Golay polynomial for cliff edge smoothing (must be 2, 4 or 6)";
-            }
-
-            break;
-
-         case 64:
-            // Slope limit for cliff toe detection
-            if (m_bHaveConsolidatedSediment && m_bDoCliffCollapse && (m_nCliffToeLocate == CLIFF_TOE_LOCATION_SLOPE))
-            {
-               if (! bIsStringValidDouble(strRH))
-               {
-                  strErr = "line " + to_string(nLine) + ": invalid number for cliff toe slope limit '" + strRH + "' in " + m_strDataPathName;
-                  break;
-               }
-
-               m_dSlopeThresholdForCliffToe = stod(strRH);
-
-               if (m_dSlopeThresholdForCliffToe <= 0)
-                  strErr = "line " + to_string(nLine) + ": cliff toe slope limit must be > 0";
-            }
-
-            break;
-
-         case 65:
             // Cliff resistance to erosion
             if (m_bHaveConsolidatedSediment && m_bDoCliffCollapse)
             {
@@ -2809,7 +2716,7 @@ bool CSimulation::bReadRunDataFile(void)
 
             break;
 
-         case 66:
+         case 61:
             // Notch overhang at collapse (m)
             if (m_bHaveConsolidatedSediment && m_bDoCliffCollapse)
             {
@@ -2828,7 +2735,7 @@ bool CSimulation::bReadRunDataFile(void)
 
             break;
 
-         case 67:
+         case 62:
             // Notch base below still water level (m)
             if (m_bHaveConsolidatedSediment && m_bDoCliffCollapse)
             {
@@ -2840,7 +2747,7 @@ bool CSimulation::bReadRunDataFile(void)
 
             break;
 
-         case 68:
+         case 63:
             // Scale parameter A for cliff deposition (m^(1/3)) [0 = auto]
             if (m_bHaveConsolidatedSediment && m_bDoCliffCollapse)
             {
@@ -2859,7 +2766,7 @@ bool CSimulation::bReadRunDataFile(void)
 
             break;
 
-         case 69:
+         case 64:
             // Approximate planview width of cliff collapse talus (in m)
             if (m_bHaveConsolidatedSediment && m_bDoCliffCollapse)
             {
@@ -2878,7 +2785,7 @@ bool CSimulation::bReadRunDataFile(void)
 
             break;
 
-         case 70:
+         case 65:
             // Planview length of cliff deposition talus (m)
             if (m_bHaveConsolidatedSediment && m_bDoCliffCollapse)
             {
@@ -2897,7 +2804,7 @@ bool CSimulation::bReadRunDataFile(void)
 
             break;
 
-         case 71:
+         case 66:
             // Minimum height of landward end of talus, as a fraction of cliff elevation
             if (m_bHaveConsolidatedSediment && m_bDoCliffCollapse)
             {
@@ -2917,7 +2824,7 @@ bool CSimulation::bReadRunDataFile(void)
             break;
 
          // -------------------------------------------------- Input events data -----------------------------------------------
-         case 72:
+         case 67:
             // Simulate riverine flooding?
             strRH = strToLower(&strRH);
 
@@ -2931,7 +2838,7 @@ bool CSimulation::bReadRunDataFile(void)
 
             break;
 
-         case 73:
+         case 68:
             // Output riverine flooding vector files
             if (m_bRiverineFlooding)
             {
@@ -2974,14 +2881,13 @@ bool CSimulation::bReadRunDataFile(void)
                         strErr = "line " + to_string(nLine) + ": unknown code '" + strRH + "' in list of riverine flooding output codes";
                   }
                }
-
                else
                   strErr = "line " + to_string(nLine) + ": if simulating riverine flooding, must contain '" + VECTOR_ALL_RIVER_FLOOD_OUTPUT_CODE + "' or at least one vector GIS output code for riverine flooding";
             }
 
             break;
 
-         case 74:
+         case 69:
             if (m_bRiverineFlooding)
             {
                // Run-up equation?
@@ -2996,7 +2902,7 @@ bool CSimulation::bReadRunDataFile(void)
 
             break;
 
-         case 75:
+         case 70:
             if (m_bRiverineFlooding && m_bVectorWaveFloodLineSave)
             {
                // Characteristic locations for flood?
@@ -3012,7 +2918,7 @@ bool CSimulation::bReadRunDataFile(void)
 
             break;
 
-         case 76:
+         case 71:
             if (m_bRiverineFlooding)
             {
                // Path of location points file
@@ -3045,7 +2951,7 @@ bool CSimulation::bReadRunDataFile(void)
 
             break;
 
-         case 77:
+         case 72:
             // Simulate sediment input?
             strRH = strToLower(&strRH);
 
@@ -3057,7 +2963,7 @@ bool CSimulation::bReadRunDataFile(void)
 
             break;
 
-         case 78:
+         case 73:
             // Sediment input location (point or line shapefile)
             if (m_bSedimentInput)
             {
@@ -3084,7 +2990,7 @@ bool CSimulation::bReadRunDataFile(void)
 
             break;
 
-         case 79:
+         case 74:
             // Sediment input type: required if have shapefile [P = Point, C = coast block, L = line]
             if (m_bSedimentInput)
             {
@@ -3105,7 +3011,7 @@ bool CSimulation::bReadRunDataFile(void)
 
             break;
 
-         case 80:
+         case 75:
             // Sediment input details file (required if have shapefile)
             if (m_bSedimentInput)
             {
@@ -3138,7 +3044,7 @@ bool CSimulation::bReadRunDataFile(void)
             break;
 
          // ------------------------------------------------------ Other data --------------------------------------------------
-         case 81:
+         case 76:
             // Gravitational acceleration (m2/s). First check that this is a valid double
             if (! bIsStringValidDouble(strRH))
             {
@@ -3153,7 +3059,7 @@ bool CSimulation::bReadRunDataFile(void)
 
             break;
 
-         case 82:
+         case 77:
             // Spacing of coastline normals (m)
             m_dCoastNormalSpacing = strtod(strRH.c_str(), NULL);
 
@@ -3165,7 +3071,7 @@ bool CSimulation::bReadRunDataFile(void)
 
             break;
 
-         case 83:
+         case 78:
             // Random factor for spacing of normals  [0 to 1, 0 = deterministic], check that this is a valid double
             if (! bIsStringValidDouble(strRH))
             {
@@ -3177,13 +3083,12 @@ bool CSimulation::bReadRunDataFile(void)
 
             if (m_dCoastNormalRandSpacingFactor < 0)
                strErr = "line " + to_string(nLine) + ": random factor for spacing of coastline normals must be >= 0";
-
             else if (m_dCoastNormalRandSpacingFactor > 1)
                strErr = "line " + to_string(nLine) + ": random factor for spacing of coastline normals must be < 1";
 
             break;
 
-         case 84:
+         case 79:
             // Length of coastline normals (m), check that this is a valid double
             if (! bIsStringValidDouble(strRH))
             {
@@ -3198,7 +3103,7 @@ bool CSimulation::bReadRunDataFile(void)
 
             break;
 
-         case 85:
+         case 80:
             // Start depth for wave calcs (ratio to deep water wave height), check that this is a valid double
             if (! bIsStringValidDouble(strRH))
             {
@@ -3214,15 +3119,15 @@ bool CSimulation::bReadRunDataFile(void)
             break;
 
          // ----------------------------------------------------- Testing only -------------------------------------------------
-         case 86:
+         case 81:
             // Output profile data?
             strRH = strToLower(&strRH);
 
-            m_bOutputProfileData = false;
+            m_bOutputConsolidatedProfileData = false;
 
             if (strRH.find('y') != string::npos)
             {
-               m_bOutputProfileData = true;
+               m_bOutputConsolidatedProfileData = true;
 
                if (! m_bDoShorePlatformErosion)
                {
@@ -3235,9 +3140,9 @@ bool CSimulation::bReadRunDataFile(void)
 
             break;
 
-         case 87:
+         case 82:
             // Numbers of profiles to be saved
-            if (m_bOutputProfileData)
+            if (m_bOutputConsolidatedProfileData)
             {
                VstrTmp = VstrSplit(&strRH, SPACE);
 
@@ -3265,9 +3170,9 @@ bool CSimulation::bReadRunDataFile(void)
 
             break;
 
-         case 88:
+         case 83:
             // Timesteps to save profiles
-            if (m_bOutputProfileData)
+            if (m_bOutputConsolidatedProfileData)
             {
                VstrTmp = VstrSplit(&strRH, SPACE);
 
@@ -3288,7 +3193,7 @@ bool CSimulation::bReadRunDataFile(void)
 
             break;
 
-         case 89:
+         case 84:
             // Output parallel profile data?
             strRH = strToLower(&strRH);
 
@@ -3299,7 +3204,7 @@ bool CSimulation::bReadRunDataFile(void)
 
             break;
 
-         case 90:
+         case 85:
             // Output erosion potential look-up data?
             strRH = strToLower(&strRH);
 
@@ -3307,6 +3212,101 @@ bool CSimulation::bReadRunDataFile(void)
 
             if (strRH.find('y') != string::npos)
                m_bOutputErosionPotentialData = true;
+
+            break;
+
+         case 86:
+            // Cliff toe location? approach [0 = none, 1 = by slope threshold]
+            if (m_bHaveConsolidatedSediment && m_bDoCliffCollapse)
+            {
+               strRH = strToLower(&strRH);
+
+               m_bCliffToeLocate = false;
+
+               if (strRH.find('y') != string::npos)
+               {
+                  m_bCliffToeLocate = true;
+                  m_bCliffToeSave = true;
+                  m_bSlopeSaveForCliffToe = true;
+               }
+            }
+
+            break;
+
+         case 87:
+            // Cliff edge smoothing algorithm: 0 = none, 1 = running mean, 2 = Savitzky-Golay
+            if (m_bHaveConsolidatedSediment && m_bDoCliffCollapse && m_bCliffToeLocate)
+            {
+               if (! bIsStringValidInt(strRH))
+               {
+                  strErr = "line ";
+                  strErr += to_string(nLine);
+                  strErr += ": invalid integer for cliff edge smoothing algorithm '";
+                  strErr += strRH;
+                  strErr += "' in " + m_strDataPathName;
+
+                  break;
+               }
+
+               m_nCliffEdgeSmooth = stoi(strRH);
+
+               if ((m_nCliffEdgeSmooth < SMOOTH_NONE) || (m_nCliffEdgeSmooth > SMOOTH_SAVITZKY_GOLAY))
+                  strErr = "line " + to_string(nLine) + ": cliff edge smoothing algorithm must be " + to_string(SMOOTH_NONE) + ", " + to_string(SMOOTH_RUNNING_MEAN) + ", or " + to_string(SMOOTH_SAVITZKY_GOLAY);
+            }
+
+            break;
+
+         case 88:
+            // Size of cliff edge smoothing window: must be odd
+            if (m_bHaveConsolidatedSediment && m_bDoCliffCollapse && m_bCliffToeLocate)
+            {
+               if (! bIsStringValidInt(strRH))
+               {
+                  strErr = "line " + to_string(nLine) + ": invalid integer for cliff edge smoothing window '" + strRH + "' in " + m_strDataPathName;
+                  break;
+               }
+
+               m_nCliffEdgeSmoothWindow = stoi(strRH);
+
+               if ((m_nCliffEdgeSmoothWindow <= 0) || ! (m_nCliffEdgeSmoothWindow % 2))
+                  strErr = "line " + to_string(nLine) + ": size of cliff edge smoothing window (must be > 0 and odd)";
+            }
+
+            break;
+
+         case 89:
+            // Order of cliff edge smoothing polynomial for Savitzky-Golay: usually 2 or 4, max is 6
+            if (m_bHaveConsolidatedSediment && m_bDoCliffCollapse && m_bCliffToeLocate)
+            {
+               if (! bIsStringValidInt(strRH))
+               {
+                  strErr = "line " + to_string(nLine) + ": invalid integer for Savitzky-Golay polynomial for cliff edge smoothing '" + strRH + "' in " + m_strDataPathName;
+                  break;
+               }
+
+               m_nSavGolCliffEdgePoly = stoi(strRH);
+
+               if ((m_nSavGolCliffEdgePoly < 2) || (m_nSavGolCliffEdgePoly > 6) || (m_nSavGolCliffEdgePoly % 2))
+                  strErr = "line " + to_string(nLine) + ": order of Savitzky-Golay polynomial for cliff edge smoothing (must be 2, 4 or 6)";
+            }
+
+            break;
+
+         case 90:
+            // Slope limit for cliff toe detection
+            if (m_bHaveConsolidatedSediment && m_bDoCliffCollapse && m_bCliffToeLocate)
+            {
+               if (! bIsStringValidDouble(strRH))
+               {
+                  strErr = "line " + to_string(nLine) + ": invalid number for cliff toe slope limit '" + strRH + "' in " + m_strDataPathName;
+                  break;
+               }
+
+               m_dSlopeThresholdForCliffToe = stod(strRH);
+
+               if (m_dSlopeThresholdForCliffToe <= 0)
+                  strErr = "line " + to_string(nLine) + ": cliff toe slope limit must be > 0";
+            }
 
             break;
          }

@@ -327,7 +327,7 @@ class CSimulation
    bool m_bSaveGISThisIter;
 
    //! Output profile data?
-   bool m_bOutputProfileData;
+   bool m_bOutputConsolidatedProfileData;
 
    //! Output parallel profile data?
    bool m_bOutputParallelProfileData;
@@ -434,6 +434,9 @@ class CSimulation
    //! Are we saving all cliff notches?
    bool m_bCliffNotchAllSave;
 
+   //! Are we saving the timestep at which each cliff occurred?
+   bool m_bCliffCollapseTimestepSave;
+
    //! Are we saving the flood still water level setup surge runup line? TODO 007 Finish surge and runup stuff
    bool m_bFloodSWLSetupSurgeRunupLineSave;
 
@@ -445,6 +448,15 @@ class CSimulation
 
    //! GDAL optimisations enabled?
    bool m_bGDALOptimisations;
+
+   //! Cliff to location?
+   bool m_bCliffToeLocate;
+
+   //! Do we have the highest SWL so far?
+   bool m_bHighestSWLSoFar;
+
+   //! Do we have the lowest SWL so far?
+   bool m_bLowestSWLSoFar;
 
    //! Options for GDAL when handling raster files
    char **m_papszGDALRasterOptions;
@@ -575,9 +587,6 @@ class CSimulation
    //! TODO 007 Used in WAVESETUP + SURGE + RUNUP Finish surge and runup stuff
    int m_nLevel;
 
-   //! Cliff algorithm
-   int m_nCliffToeLocate;
-
    //! The data type used by GDAL for integer operations, can be GDT_Byte, GDT_Int16, GDT_UInt16, GDT_Int32, or GDT_UInt32
    GDALDataType m_GDALWriteIntDataType;
 
@@ -631,6 +640,9 @@ class CSimulation
 
    //! The number of basement cells marked with as missing value
    unsigned long m_ulMissingValueBasementCells;
+
+   //! Used by CoastalME for unsigned long integer missing values
+   unsigned long m_ulMissingValue;
 
    //! Multiplier for duration units, to convert to hours
    double m_dDurationUnitsMult;
@@ -714,10 +726,10 @@ class CSimulation
    double m_dAccumulatedSeaLevelChange;
 
    //! Minimum still water level
-   double m_dMinSWL;
+   double m_dMinSWLSoFar;
 
    //! Maximum still water level
-   double m_dMaxSWL;
+   double m_dMaxSWLSoFar;
 
    //! TODO 007 Finish surge and runup stuff
    double m_dThisIterDiffTotWaterLevel;
@@ -1536,7 +1548,13 @@ class CSimulation
    //! The coastline objects
    vector<CRWCoast> m_VCoast;
 
-   //! The traced cliff edge lines (in external CRS)
+   //! Coastline (external CRS) at the highest SWL so far during this simulation
+   vector<CGeomLine> m_VHighestSWLCoastLine;
+
+   //! Coastline (external CRS) at the lowest SWL so far during this simulation
+   vector<CGeomLine> m_VLowestSWLCoastLine;
+
+   //! The traced cliff toe lines (in external CRS)
    vector<CGeomLine> m_VCliffToe;
 
    //! TODO 007 Finish surge and runup stuff

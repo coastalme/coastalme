@@ -1169,6 +1169,12 @@ bool CSimulation::bSaveAllRasterGISFiles(void)
             if (! bWriteRasterGISFile(RASTER_PLOT_CLIFF_NOTCH_ALL, &RASTER_PLOT_CLIFF_NOTCH_ALL_TITLE))
             return false;
          }
+
+         if (m_bCliffCollapseTimestepSave)
+         {
+            if (! bWriteRasterGISFile(RASTER_PLOT_CLIFF_COLLAPSE_TIMESTEP, &RASTER_PLOT_CLIFF_COLLAPSE_TIMESTEP_TITLE))
+            return false;
+         }
       }
 
       if (m_bTotCliffCollapseSave)
@@ -1316,6 +1322,12 @@ bool CSimulation::bSaveAllVectorGISFiles(void)
    if (m_bCoastSave)
    {
       if (! bWriteVectorGISFile(VECTOR_PLOT_COAST, &VECTOR_PLOT_COAST_TITLE))
+         return false;
+
+      if (! bWriteVectorGISFile(VECTOR_PLOT_COAST_SWL_HIGHEST, &VECTOR_PLOT_COAST_SWL_HIGHEST_TITLE))
+         return false;
+
+      if (! bWriteVectorGISFile(VECTOR_PLOT_COAST_SWL_LOWEST, &VECTOR_PLOT_COAST_SWL_LOWEST_TITLE))
          return false;
    }
 

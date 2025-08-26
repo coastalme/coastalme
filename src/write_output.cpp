@@ -1,5 +1,4 @@
 /*!
-
    \file write_output.cpp
    \brief Writes non-GIS output files
    \details TODO 001 A more detailed description of this routine.
@@ -7,11 +6,9 @@
    \author Andres Payo
    \date 2025
    \copyright GNU General Public License
-
 */
 
 /* ==============================================================================================================================
-
    This file is part of CoastalME, the Coastal Modelling Environment.
 
    CoastalME is free software; you can redistribute it and/or modify it under the terms of the GNU General Public  License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
@@ -19,7 +16,6 @@
    This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
    You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-
 ==============================================================================================================================*/
 #include <assert.h>
 
@@ -79,7 +75,7 @@ void CSimulation::WriteStartRunDetails(void)
    LogStream << m_strRunName << " run started at " << put_time(localtime(&m_tSysStartTime), "%T on %A %d %B %Y") << endl
              << endl;
 
-   // Contine with Out file
+   // Continue with Out file
    OutStream << " Initialization file                                       \t: "
 #ifdef _WIN32
              << pstrChangeToForwardSlash(&m_strCMEIni) << endl;
@@ -440,10 +436,8 @@ void CSimulation::WriteStartRunDetails(void)
 
          if (m_bSedimentInputAtPoint)
             OutStream << "point";
-
          else if (m_bSedimentInputAtCoast)
             OutStream << "coast block";
-
          else if (m_bSedimentInputAlongLine)
             OutStream << "line";
 
@@ -475,7 +469,6 @@ void CSimulation::WriteStartRunDetails(void)
 
    if (m_nWavePropagationModel == WAVE_MODEL_COVE)
       OutStream << "COVE";
-
    else if (m_nWavePropagationModel == WAVE_MODEL_CSHORE)
       OutStream << "CShore (output arrays have " << CSHOREARRAYOUTSIZE << " points)";
 
@@ -490,7 +483,6 @@ void CSimulation::WriteStartRunDetails(void)
       OutStream << " Deep water wave orientation                               \t: " << m_dAllCellsDeepWaterWaveAngle << " degrees" << endl;
       OutStream << " Wave period                                               \t: " << m_dAllCellsDeepWaterWavePeriod << " s" << endl;
    }
-
    else
    {
       OutStream << " Maximum User input Deep water wave height                 \t: " << m_dMaxUserInputWaveHeight << " m" << endl;
@@ -511,10 +503,8 @@ void CSimulation::WriteStartRunDetails(void)
 
    if (m_nUnconsSedimentHandlingAtGridEdges == GRID_EDGE_CLOSED)
       OutStream << "closed";
-
    else if (m_nUnconsSedimentHandlingAtGridEdges == GRID_EDGE_OPEN)
       OutStream << "open";
-
    else if (m_nUnconsSedimentHandlingAtGridEdges == GRID_EDGE_RECIRCULATE)
       OutStream << "recirculate";
 
@@ -523,7 +513,6 @@ void CSimulation::WriteStartRunDetails(void)
 
    if (m_nBeachErosionDepositionEquation == UNCONS_SEDIMENT_EQUATION_CERC)
       OutStream << "CERC";
-
    else if (m_nBeachErosionDepositionEquation == UNCONS_SEDIMENT_EQUATION_KAMPHUIS)
       OutStream << "Kamphuis";
 
@@ -553,10 +542,8 @@ void CSimulation::WriteStartRunDetails(void)
 
       if (m_bSedimentInputAtPoint)
          OutStream << "point";
-
       else if (m_bSedimentInputAtCoast)
          OutStream << "block on coast";
-
       else if (m_bSedimentInputAlongLine)
          OutStream << "line intersection with coast";
 
@@ -567,12 +554,6 @@ void CSimulation::WriteStartRunDetails(void)
    if (m_bHaveConsolidatedSediment)
    {
       OutStream << " Do cliff collapse?                                        \t: " << (m_bDoCliffCollapse ? "Y" : "N") << endl;
-      OutStream << " Cliff algorithm                                           |t: ";
-      if (m_nCliffToeLocate == CLIFF_TOE_LOCATION_NONE)
-         OutStream << "original";
-      else if (m_nCliffToeLocate == CLIFF_TOE_LOCATION_SLOPE)
-         OutStream << "Wilf's";
-      OutStream << endl;
       OutStream << resetiosflags(ios::floatfield);
       OutStream << scientific << setprecision(2);
       OutStream << " Cliff resistance to erosion                               \t: " << m_dCliffErosionResistance << endl;
@@ -584,7 +565,6 @@ void CSimulation::WriteStartRunDetails(void)
 
       if (bFPIsEqual(m_dCliffDepositionA, 0.0, TOLERANCE))
          OutStream << "auto";
-
       else
          OutStream << m_dCliffDepositionA << "  m^(1/3)";
 
@@ -621,7 +601,7 @@ void CSimulation::WriteStartRunDetails(void)
    // ------------------------------------------------------ Testing only --------------------------------------------------------
    OutStream << "Testing only" << endl;
 
-   OutStream << " Output profile data?                                      \t: " << (m_bOutputProfileData ? "Y" : "N") << endl;
+   OutStream << " Output profile data?                                      \t: " << (m_bOutputConsolidatedProfileData ? "Y" : "N") << endl;
    OutStream << " Profile numbers to be saved                               \t: ";
 
    for (unsigned int i = 0; i < m_VnProfileToSave.size(); i++)
@@ -676,14 +656,9 @@ void CSimulation::WriteStartRunDetails(void)
 bool CSimulation::bWritePerTimestepResults(void)
 {
    if (m_bCSVPerTimestepResults)
-   {
       return bWritePerTimestepResultsCSV();
-   }
-
    else
-   {
       return bWritePerTimestepResultsFixedWidth();
-   }
 }
 
 //===============================================================================================================================
@@ -772,7 +747,6 @@ bool CSimulation::bWritePerTimestepResultsFixedWidth(void)
       OutStream << setw(6) << scientific << setprecision(0) << dTmp;
       OutStream << fixed;
    }
-
    else
       OutStream << setw(6) << dTmp;
 
@@ -788,11 +762,9 @@ bool CSimulation::bWritePerTimestepResultsFixedWidth(void)
          OutStream << setw(6) << scientific << setprecision(0) << dTmp;
          OutStream << fixed;
       }
-
       else
          OutStream << setw(6) << dTmp;
    }
-
    else
       OutStream << setw(6) << SPACE;
 
@@ -809,7 +781,6 @@ bool CSimulation::bWritePerTimestepResultsFixedWidth(void)
 
    if (m_ulThisIterNumActualBeachErosionCells > 0)
       OutStream << setw(7) << 1000 * dThisIterActualBeachErosion / static_cast<double>(m_ulThisIterNumActualBeachErosionCells);
-
    else
       OutStream << setw(7) << SPACE;
 
@@ -818,19 +789,16 @@ bool CSimulation::bWritePerTimestepResultsFixedWidth(void)
 
    if (m_dThisIterBeachErosionFine > 0)
       OutStream << setw(4) << 1000 * m_dThisIterBeachErosionFine / static_cast<double>(m_ulThisIterNumSeaCells);
-
    else
       OutStream << setw(4) << SPACE;
 
    if (m_dThisIterBeachErosionSand > 0)
       OutStream << setw(4) << 1000 * m_dThisIterBeachErosionSand / static_cast<double>(m_ulThisIterNumSeaCells);
-
    else
       OutStream << setw(4) << SPACE;
 
    if (m_dThisIterBeachErosionCoarse > 0)
       OutStream << setw(4) << 1000 * m_dThisIterBeachErosionCoarse / static_cast<double>(m_ulThisIterNumSeaCells);
-
    else
       OutStream << setw(4) << SPACE;
 
@@ -1462,8 +1430,8 @@ int CSimulation::nWriteEndRunDetails(void)
 
    // Write out hydrology grand totals etc.
    OutStream << ENDHYDROLOGYHEAD << endl;
-   OutStream << "Minimum still water level = " << m_dMinSWL << endl;
-   OutStream << "Maximum still water level = " << m_dMaxSWL << endl;
+   OutStream << "Minimum still water level = " << m_dMinSWLSoFar << endl;
+   OutStream << "Maximum still water level = " << m_dMaxSWLSoFar << endl;
    OutStream << endl;
 
    // Now write out sediment movement grand totals etc.
@@ -1586,10 +1554,8 @@ int CSimulation::nWriteEndRunDetails(void)
 
       if (m_nUnconsSedimentHandlingAtGridEdges == GRID_EDGE_CLOSED)
          OutStream << "CLOSED.";
-
       else if (m_nUnconsSedimentHandlingAtGridEdges == GRID_EDGE_OPEN)
          OutStream << "OPEN.";
-
       else if (m_nUnconsSedimentHandlingAtGridEdges == GRID_EDGE_RECIRCULATE)
          OutStream << "RE-CIRCULATING.";
 
@@ -1606,8 +1572,7 @@ int CSimulation::nWriteEndRunDetails(void)
    OutStream << "Time simulated: " << strDispSimTime(m_dSimDuration) << endl << endl;
 
    // Write to log file
-   LogStream << "END OF RUN TOTALS =================================================================================================================================================" << endl
-             << endl;
+   LogStream << "END OF RUN TOTALS =================================================================================================================================================" << endl << endl;
 
    LogStream << "ALL-PROCESS TOTALS (all size classes)" << endl;
    LogStream << "Sediment added                                           = " << (m_ldGTotFineSedimentInput + m_ldGTotSandSedimentInput + m_ldGTotCoarseSedimentInput) * m_dCellArea << " m^3" << endl;

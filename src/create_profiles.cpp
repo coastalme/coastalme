@@ -29,7 +29,6 @@
 
 #include <iostream>
 using std::cerr;
-// using std::cout;
 using std::endl;
 using std::ios;
 
@@ -719,12 +718,12 @@ int CSimulation::nGetCoastNormalEndPoint(int const nCoast, int const nStartCoast
    else
    {
       // This is not an intervention profile. It could be a cliff collapse profile, which could be a grid-edge profile
-      double dXStart = pPtStart->dGetX();
-      double dYStart = pPtStart->dGetY();
+      double const dXStart = pPtStart->dGetX();
+      double const dYStart = pPtStart->dGetY();
 
-      int nXStart = nRound(dExtCRSXToGridX(dXStart));
-      int nYStart = nRound(dExtCRSYToGridY(dYStart));
-      int nLineLength = nConvertMetresToNumCells(dLineLength);
+      int const nXStart = nRound(dExtCRSXToGridX(dXStart));
+      int const nYStart = nRound(dExtCRSYToGridY(dYStart));
+      int const nLineLength = nConvertMetresToNumCells(dLineLength);
 
       // LogStream << nXStart << ", " << nYStart << endl;
       if ((nXStart == 0) || (nXStart == m_nXGridSize-1))

@@ -9,7 +9,6 @@
 */
 
 /* ==============================================================================================================================
-
    This file is part of CoastalME, the Coastal Modelling Environment.
 
    CoastalME is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
@@ -17,7 +16,6 @@
    This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
    You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-
 ==============================================================================================================================*/
 
 #include "cme.h"
@@ -35,7 +33,6 @@ int CSimulation::nCalcExternalForcing(void)
    m_dThisIterMeanSWL = m_dInitialMeanSWL + m_dAccumulatedSeaLevelChange;
 
    int const nSize = static_cast<int>(m_VdTideData.size());
-
    if (nSize == 0)
    {
       // No tide data
@@ -56,9 +53,21 @@ int CSimulation::nCalcExternalForcing(void)
       snTideDataCount++;
    }
 
-   // Update min and max still water levels
-   m_dMaxSWL = tMax(m_dThisIterSWL, m_dMaxSWL);
-   m_dMinSWL = tMin(m_dThisIterSWL, m_dMinSWL);
+   m_bHighestSWLSoFar = false;
+   m_bLowestSWLSoFar = false;
+
+   // Maybe update min and max still water levels so far during this simulation
+   if (m_dThisIterSWL > m_dMaxSWLSoFar)
+   {
+      m_bHighestSWLSoFar = true;
+      m_dMaxSWLSoFar = m_dThisIterSWL;
+   }
+
+   if (m_dThisIterSWL < m_dMinSWLSoFar)
+   {
+      m_bLowestSWLSoFar = true;
+      m_dMinSWLSoFar = m_dThisIterSWL;
+   }
 
    // Update the wave height, orientation and period for this time step and start again with the first record if we do not have enough
    if (m_bHaveWaveStationData)

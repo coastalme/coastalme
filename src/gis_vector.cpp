@@ -27,7 +27,6 @@
 
 #include <iostream>
 using std::cerr;
-// using std::cout;
 using std::endl;
 using std::ios;
 
@@ -424,6 +423,24 @@ bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const* strPlot
 
       break;
 
+   case (VECTOR_PLOT_COAST_SWL_HIGHEST):
+      strFilePathName.append(VECTOR_COAST_SWL_HIGHEST_NAME);
+      strstrFileName << VECTOR_COAST_SWL_HIGHEST_NAME;
+
+      eGType = wkbLineString;
+      strType = "line";
+
+      break;
+
+   case (VECTOR_PLOT_COAST_SWL_LOWEST):
+      strFilePathName.append(VECTOR_COAST_SWL_LOWEST_NAME);
+      strstrFileName << VECTOR_COAST_SWL_LOWEST_NAME;
+
+      eGType = wkbLineString;
+      strType = "line";
+
+      break;
+
    case (VECTOR_PLOT_CLIFF_EDGE):
       strFilePathName.append(VECTOR_CLIFF_EDGE_NAME);
       strstrFileName << VECTOR_CLIFF_EDGE_NAME;
@@ -714,6 +731,97 @@ bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const* strPlot
 
       break;
    }
+
+   case (VECTOR_PLOT_COAST_SWL_HIGHEST):
+   {
+      // The layer has been created, so create an integer-numbered value (the number of the coast object) for the multi-line
+      string const strFieldValue1 = "Coast";
+      OGRFieldDefn const OGRField1(strFieldValue1.c_str(), OFTInteger);
+
+      if (pOGRLayer->CreateField(&OGRField1) != OGRERR_NONE)
+      {
+         cerr << ERR << "cannot create " << strType << " attribute field 1 '" << strFieldValue1 << "' in " << strFilePathName << endl << CPLGetLastErrorMsg() << endl;
+         return false;
+      }
+
+      // OK, now do features
+      OGRLineString OGRls;
+
+      for (int i = 0; i < static_cast<int>(m_VCoast.size()); i++)
+      {
+         // Create a feature object, one per coast
+         OGRFeature* pOGRFeature = OGRFeature::CreateFeature(pOGRLayer->GetLayerDefn());
+
+         // Set the feature's attribute (the coast number)
+         pOGRFeature->SetField(strFieldValue1.c_str(), i);
+
+         // Now attach a geometry to the feature object
+         for (int j = 0; j < m_VHighestSWLCoastLine[i].nGetSize(); j++)
+            // In external CRS
+            OGRls.addPoint(m_VHighestSWLCoastLine[i].dGetXAt(j), m_VHighestSWLCoastLine[i].dGetYAt(j));
+
+         pOGRFeature->SetGeometry(&OGRls);
+
+         // Create the feature in the output layer
+         if (pOGRLayer->CreateFeature(pOGRFeature) != OGRERR_NONE)
+         {
+            cerr << ERR << "cannot create  " << strType << " feature " << strPlotTitle << " for highest SWL coast " << i << " in " << strFilePathName << endl << CPLGetLastErrorMsg() << endl;
+            return false;
+         }
+
+         // Tidy up: empty the line string and get rid of the feature object
+         OGRls.empty();
+         OGRFeature::DestroyFeature(pOGRFeature);
+      }
+
+      break;
+   }
+
+   case (VECTOR_PLOT_COAST_SWL_LOWEST):
+   {
+      // The layer has been created, so create an integer-numbered value (the number of the coast object) for the multi-line
+      string const strFieldValue1 = "Coast";
+      OGRFieldDefn const OGRField1(strFieldValue1.c_str(), OFTInteger);
+
+      if (pOGRLayer->CreateField(&OGRField1) != OGRERR_NONE)
+      {
+         cerr << ERR << "cannot create " << strType << " attribute field 1 '" << strFieldValue1 << "' in " << strFilePathName << endl << CPLGetLastErrorMsg() << endl;
+         return false;
+      }
+
+      // OK, now do features
+      OGRLineString OGRls;
+
+      for (int i = 0; i < static_cast<int>(m_VCoast.size()); i++)
+      {
+         // Create a feature object, one per coast
+         OGRFeature* pOGRFeature = OGRFeature::CreateFeature(pOGRLayer->GetLayerDefn());
+
+         // Set the feature's attribute (the coast number)
+         pOGRFeature->SetField(strFieldValue1.c_str(), i);
+
+         // Now attach a geometry to the feature object
+         for (int j = 0; j < m_VLowestSWLCoastLine[i].nGetSize(); j++)
+            // In external CRS
+            OGRls.addPoint(m_VLowestSWLCoastLine[i].dGetXAt(j), m_VLowestSWLCoastLine[i].dGetYAt(j));
+
+         pOGRFeature->SetGeometry(&OGRls);
+
+         // Create the feature in the output layer
+         if (pOGRLayer->CreateFeature(pOGRFeature) != OGRERR_NONE)
+         {
+            cerr << ERR << "cannot create  " << strType << " feature " << strPlotTitle << " for lowest SWL coast " << i << " in " << strFilePathName << endl << CPLGetLastErrorMsg() << endl;
+            return false;
+         }
+
+         // Tidy up: empty the line string and get rid of the feature object
+         OGRls.empty();
+         OGRFeature::DestroyFeature(pOGRFeature);
+      }
+
+      break;
+   }
+
 
    case (VECTOR_PLOT_FLOOD_LINE):
    {
@@ -1150,28 +1258,20 @@ bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const* strPlot
 
       if (nDataItem == VECTOR_PLOT_COAST_CURVATURE)
          strFieldValue1 = "Curve";
-
       else if (nDataItem == VECTOR_PLOT_WAVE_ENERGY_SINCE_COLLAPSE)
          strFieldValue1 = "SC_Energy";
-
       else if (nDataItem == VECTOR_PLOT_MEAN_WAVE_ENERGY)
          strFieldValue1 = "MeanEnergy";
-
       else if (nDataItem == VECTOR_PLOT_BREAKING_WAVE_HEIGHT)
          strFieldValue1 = "Height";
-
       else if (nDataItem == VECTOR_PLOT_POLYGON_NODES)
          strFieldValue1 = "Node";
-
       else if (nDataItem == VECTOR_PLOT_CLIFF_NOTCH_ACTIVE)
          strFieldValue1 = "Notch";
-
       else if (nDataItem == VECTOR_PLOT_WAVE_SETUP)
          strFieldValue1 = "Wavesetup";
-
       else if (nDataItem == VECTOR_PLOT_STORM_SURGE)
          strFieldValue1 = "Stormsurge";
-
       else if (nDataItem == VECTOR_PLOT_RUN_UP)
          strFieldValue1 = "Runup";
 
@@ -1216,7 +1316,6 @@ bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const* strPlot
                // Set the feature's attribute
                if (m_VCoast[i].pGetCoastLandform(j) == NULL)
                   pOGRFeature->SetField(strFieldValue1.c_str(), DBL_NODATA);
-
                else
                   pOGRFeature->SetField(strFieldValue1.c_str(), m_VCoast[i].pGetCoastLandform(j)->dGetTotAccumWaveEnergy());
             }
@@ -1226,7 +1325,6 @@ bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const* strPlot
                // Set the feature's attribute
                if (m_VCoast[i].pGetCoastLandform(j) == NULL)
                   pOGRFeature->SetField(strFieldValue1.c_str(), DBL_NODATA);
-
                else
                {
                   double dEnergy = m_VCoast[i].pGetCoastLandform(j)->dGetTotAccumWaveEnergy();
@@ -1236,14 +1334,12 @@ bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const* strPlot
                   pOGRFeature->SetField(strFieldValue1.c_str(), dEnergy);
                }
             }
-
             else if (nDataItem == VECTOR_PLOT_BREAKING_WAVE_HEIGHT)
             {
                // Set the feature's attribute
                double const dHeight = m_VCoast[i].dGetBreakingWaveHeight(j);
                pOGRFeature->SetField(strFieldValue1.c_str(), dHeight);
             }
-
             else if (nDataItem == VECTOR_PLOT_WAVE_SETUP)
             {
                // Set the feature's attribute
@@ -1263,7 +1359,6 @@ bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const* strPlot
                double const dRunUp = m_VCoast[i].dGetRunUp(j);
                pOGRFeature->SetField(strFieldValue1.c_str(), dRunUp);
             }
-
             else if (nDataItem == VECTOR_PLOT_POLYGON_NODES)
             {
                int const nNode = m_VCoast[i].nGetPolygonNode(j);
@@ -1274,14 +1369,12 @@ bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const* strPlot
                // Set the feature's attribute
                pOGRFeature->SetField(strFieldValue1.c_str(), nNode);
             }
-
             else if (nDataItem == VECTOR_PLOT_CLIFF_NOTCH_ACTIVE)
             {
                CACoastLandform* pCoastLandform = m_VCoast[i].pGetCoastLandform(j);
 
                if (pCoastLandform == NULL)
                   pOGRFeature->SetField(strFieldValue1.c_str(), DBL_NODATA);
-
                else
                {
                   int const nCategory = pCoastLandform->nGetLandFormCategory();
@@ -1292,7 +1385,10 @@ bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const* strPlot
                      CRWCliff const* pCliff = reinterpret_cast<CRWCliff*>(pCoastLandform);
 
                      // Get attribute values from the cliff object
-                     dNotchDepth = pCliff->dGetNotchDepth();
+                     if (pCliff->bHasCollapsed())
+                        dNotchDepth = m_dCellSide;
+                     else
+                        dNotchDepth = pCliff->dGetNotchDepth();
                   }
 
                   // Set the feature's attribute

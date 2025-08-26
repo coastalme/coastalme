@@ -96,7 +96,7 @@ Simulate coast platform erosion?                                                
 Resistance to erosion of coast platform (m^(9/4)s^(3/2))                                     : 2e6        ; [2-6]e6 to produce 0.6 m/yr recession (Walkden & Hall, 2011)
 
 Simulate beach sediment transport?                                                           : y
-Beach sediment transport at grid edges                [0 = closed, 1 = open, 2 = recirculate]: 1
+Beach sediment transport at grid edges                [0 = closed, 1 = open, 2 = recirculate]: 2
 
 Beach potential erosion/deposition equation                          [0 = CERC, 1 = Kamphuis]: 0
 
@@ -119,11 +119,6 @@ Berm height i.e. height above SWL of start of depositional Dean profile (m)     
 
 ; Cliff collapse data --------------------------------------------------------------------------------------------------
 Simulate cliff collapse?                                                                     : y
-Cliff detection approach                                        [0 = original, 1 = cliff toe]: 1
-Cliff edge smoothing     [0 = none, 1 = running mean, 2 = Savitzky-Golay, only for cliff toe]: 1
-Cliff edge smoothing window size                            [must be odd, only for cliff toe]: 33
-Polynomial order for Savitzky-Golay cliff edge smoothing         [2 or 4, only for cliff toe]: 4
-Cliff slope limit for cliff toe detection                                [only for cliff toe]: 0.3
 Resistance to erosion of cliff (m^(9/4)s^(3/2))                                              : 7e7        ; Differs from coast platform erosion resistance
 Notch overhang to initiate collapse (m)                                                      : 0.5
 Notch base below still water level (m)                                                       : 0.3
@@ -160,6 +155,12 @@ Profile number(s) to save                                                       
 Timesteps to save profile(s)                                                                 :
 Save parallel profiles?                                                                      : n
 Output erosion potential look-up values                                                      : n
+
+Cliff toe location?                                                                          : n
+   Cliff edge smoothing  [0 = none, 1 = running mean, 2 = Savitzky-Golay, only for cliff toe]: 1
+   Cliff edge smoothing window size                         [must be odd, only for cliff toe]: 33
+   Polynomial order for Savitzky-Golay cliff edge smoothing      [2 or 4, only for cliff toe]: 4
+   Cliff slope limit for cliff toe detection                             [only for cliff toe]: 0.3
 
 ; END OF FILE ----------------------------------------------------------------------------------------------------------
 
