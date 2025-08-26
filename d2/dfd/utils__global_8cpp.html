@@ -127,7 +127,7 @@ Functions</h2></td></tr>
 <tr class="memdesc:a129796f62c254914a851a7d95786b8a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Correctly rounds doubles.  <br /></td></tr>
 <tr class="separator:a129796f62c254914a851a7d95786b8a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a20842d0a19d0ca952c91f3e1eb175fee" id="r_a20842d0a19d0ca952c91f3e1eb175fee"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a20842d0a19d0ca952c91f3e1eb175fee">nRound</a> (double const d)</td></tr>
-<tr class="memdesc:a20842d0a19d0ca952c91f3e1eb175fee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Version of the above that returns an int.  <br /></td></tr>
+<tr class="memdesc:a20842d0a19d0ca952c91f3e1eb175fee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Correctly rounds doubles, returns an int.  <br /></td></tr>
 <tr class="separator:a20842d0a19d0ca952c91f3e1eb175fee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af4a882def7109de491a8c1da04a3f5bd" id="r_af4a882def7109de491a8c1da04a3f5bd"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af4a882def7109de491a8c1da04a3f5bd">bIsStringValidDouble</a> (<a class="el" href="../../d5/d92/classstring.html">string</a> &amp;str)</td></tr>
 <tr class="memdesc:af4a882def7109de491a8c1da04a3f5bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks to see if a string can be read as a valid double number. Does not find trailing (i.e.post-number) rubbish, but then neither does strtod(). From <a href="https://stackoverflow.com/questions/392981/how-can-i-convert-string-to-double-in-c">https://stackoverflow.com/questions/392981/how-can-i-convert-string-to-double-in-c</a>.  <br /></td></tr>
@@ -193,7 +193,7 @@ Andres Payo </dd></dl>
 
 <p>Checks to see if a string can be read as a valid double number. Does not find trailing (i.e.post-number) rubbish, but then neither does strtod(). From <a href="https://stackoverflow.com/questions/392981/how-can-i-convert-string-to-double-in-c">https://stackoverflow.com/questions/392981/how-can-i-convert-string-to-double-in-c</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d2/dfd/utils__global_8cpp_source.html#l00068">68</a> of file <a class="el" href="../../d2/dfd/utils__global_8cpp_source.html">utils_global.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d2/dfd/utils__global_8cpp_source.html#l00064">64</a> of file <a class="el" href="../../d2/dfd/utils__global_8cpp_source.html">utils_global.cpp</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="../../d0/dcf/read__input_8cpp_source.html#l00243">CSimulation::bReadRunDataFile()</a>, <a class="el" href="../../d0/dcf/read__input_8cpp_source.html#l03847">CSimulation::nReadSedimentInputEventFile()</a>, <a class="el" href="../../d0/dcf/read__input_8cpp_source.html#l03406">CSimulation::nReadShapeFunctionFile()</a>, <a class="el" href="../../d0/dcf/read__input_8cpp_source.html#l03354">CSimulation::nReadTideDataFile()</a>, and <a class="el" href="../../d0/dcf/read__input_8cpp_source.html#l03515">CSimulation::nReadWaveStationInputFile()</a>.</p>
 
@@ -216,9 +216,9 @@ Andres Payo </dd></dl>
 
 <p>Checks to see if a string can be read as a valid integer, from <a href="https://stackoverflow.com/questions/2844817/how-do-i-check-if-a-c-string-is-an-int">https://stackoverflow.com/questions/2844817/how-do-i-check-if-a-c-string-is-an-int</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d2/dfd/utils__global_8cpp_source.html#l00082">82</a> of file <a class="el" href="../../d2/dfd/utils__global_8cpp_source.html">utils_global.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d2/dfd/utils__global_8cpp_source.html#l00078">78</a> of file <a class="el" href="../../d2/dfd/utils__global_8cpp_source.html">utils_global.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../de/d06/utils_8cpp_source.html#l02701">CSimulation::bParseDate()</a>, <a class="el" href="../../de/d06/utils_8cpp_source.html#l02762">CSimulation::bParseTime()</a>, <a class="el" href="../../d0/dcf/read__input_8cpp_source.html#l00243">CSimulation::bReadRunDataFile()</a>, <a class="el" href="../../d0/dcf/read__input_8cpp_source.html#l03847">CSimulation::nReadSedimentInputEventFile()</a>, <a class="el" href="../../d0/dcf/read__input_8cpp_source.html#l03515">CSimulation::nReadWaveStationInputFile()</a>, and <a class="el" href="../../de/d06/utils_8cpp_source.html#l02823">CSimulation::ulConvertToTimestep()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../de/d06/utils_8cpp_source.html#l02696">CSimulation::bParseDate()</a>, <a class="el" href="../../de/d06/utils_8cpp_source.html#l02757">CSimulation::bParseTime()</a>, <a class="el" href="../../d0/dcf/read__input_8cpp_source.html#l00243">CSimulation::bReadRunDataFile()</a>, <a class="el" href="../../d0/dcf/read__input_8cpp_source.html#l03847">CSimulation::nReadSedimentInputEventFile()</a>, <a class="el" href="../../d0/dcf/read__input_8cpp_source.html#l03515">CSimulation::nReadWaveStationInputFile()</a>, and <a class="el" href="../../de/d06/utils_8cpp_source.html#l02818">CSimulation::ulConvertToTimestep()</a>.</p>
 
 </div>
 </div>
@@ -239,9 +239,9 @@ Andres Payo </dd></dl>
 
 <p>Correctly rounds doubles. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d2/dfd/utils__global_8cpp_source.html#l00044">44</a> of file <a class="el" href="../../d2/dfd/utils__global_8cpp_source.html">utils_global.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d2/dfd/utils__global_8cpp_source.html#l00040">40</a> of file <a class="el" href="../../d2/dfd/utils__global_8cpp_source.html">utils_global.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../de/d06/utils_8cpp_source.html#l01345">CSimulation::bTimeToQuit()</a>, <a class="el" href="../../d1/dfb/gis__raster_8cpp_source.html#l00960">CSimulation::bWriteRasterGISFile()</a>, <a class="el" href="../../de/d06/utils_8cpp_source.html#l01581">CSimulation::strDispTime()</a>, and <a class="el" href="../../de/d06/utils_8cpp_source.html#l02823">CSimulation::ulConvertToTimestep()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../de/d06/utils_8cpp_source.html#l01340">CSimulation::bTimeToQuit()</a>, <a class="el" href="../../d1/dfb/gis__raster_8cpp_source.html#l00953">CSimulation::bWriteRasterGISFile()</a>, <a class="el" href="../../de/d06/utils_8cpp_source.html#l01576">CSimulation::strDispTime()</a>, and <a class="el" href="../../de/d06/utils_8cpp_source.html#l02818">CSimulation::ulConvertToTimestep()</a>.</p>
 
 </div>
 </div>
@@ -260,11 +260,11 @@ Andres Payo </dd></dl>
       </table>
 </div><div class="memdoc">
 
-<p>Version of the above that returns an int. </p>
+<p>Correctly rounds doubles, returns an int. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d2/dfd/utils__global_8cpp_source.html#l00053">53</a> of file <a class="el" href="../../d2/dfd/utils__global_8cpp_source.html">utils_global.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d2/dfd/utils__global_8cpp_source.html#l00049">49</a> of file <a class="el" href="../../d2/dfd/utils__global_8cpp_source.html">utils_global.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d8/dc5/2di__point_8cpp_source.html#l00106">CGeom2DIPoint::AddXAddY()</a>, <a class="el" href="../../de/d06/utils_8cpp_source.html#l02535">CSimulation::AppendEnsureNoGap()</a>, <a class="el" href="../../da/db2/create__profiles_8cpp_source.html#l01498">CSimulation::CreateRasterizedProfile()</a>, <a class="el" href="../../d8/dc5/2di__point_8cpp_source.html#l00113">CGeom2DIPoint::DivXDivY()</a>, <a class="el" href="../../d8/dce/calc__shadow__zones_8cpp_source.html#l00812">CSimulation::DoShadowZoneAndDownDriftZone()</a>, <a class="el" href="../../d2/d24/calc__waves_8cpp_source.html#l01939">CSimulation::InterpolateWavePropertiesBetweenProfiles()</a>, <a class="el" href="../../db/df7/gis__utils_8cpp_source.html#l00235">CSimulation::KeepWithinValidGrid()</a>, <a class="el" href="../../db/df7/gis__utils_8cpp_source.html#l01870">CSimulation::nConvertMetresToNumCells()</a>, <a class="el" href="../../d8/dce/calc__shadow__zones_8cpp_source.html#l00141">CSimulation::nDoAllShadowZones()</a>, <a class="el" href="../../d5/db0/do__sediment__input__event_8cpp_source.html#l00071">CSimulation::nDoSedimentInputEvent()</a>, <a class="el" href="../../d2/d93/simulation_8cpp_source.html#l00610">CSimulation::nDoSimulation()</a>, <a class="el" href="../../da/db2/create__profiles_8cpp_source.html#l00701">CSimulation::nGetCoastNormalEndPoint()</a>, <a class="el" href="../../da/db2/create__profiles_8cpp_source.html#l00520">CSimulation::nLocateAndCreateGridEdgeProfile()</a>, <a class="el" href="../../d8/df0/multiple__coastlines_8cpp_source.html#l00322">CSimulation::nTruncateProfileHitDifferentCoast()</a>, <a class="el" href="../../d8/df0/multiple__coastlines_8cpp_source.html#l00181">CSimulation::nTruncateProfilesDifferentCoasts()</a>, <a class="el" href="../../db/df7/gis__utils_8cpp_source.html#l00133">CSimulation::PtiExtCRSToGridRound()</a>, <a class="el" href="../../df/d30/coast__polygon_8cpp_source.html#l00795">CGeomCoastPolygon::PtiGetFillStartPoint()</a>, <a class="el" href="../../db/df7/gis__utils_8cpp_source.html#l00621">CSimulation::PtiGetPerpendicular()</a>, <a class="el" href="../../db/df7/gis__utils_8cpp_source.html#l00659">CSimulation::PtiGetPerpendicular()</a>, <a class="el" href="../../db/df7/gis__utils_8cpp_source.html#l00441">CSimulation::PtiWeightedAverage()</a>, <a class="el" href="../../d1/d93/do__cliff__collapse_8cpp_source.html#l01157">CSimulation::RasterizeCliffCollapseProfile()</a>, and <a class="el" href="../../d6/d91/create__polygons_8cpp_source.html#l00285">CSimulation::RasterizePolygonJoiningLine()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d8/dc5/2di__point_8cpp_source.html#l00102">CGeom2DIPoint::AddXAddY()</a>, <a class="el" href="../../de/d06/utils_8cpp_source.html#l02530">CSimulation::AppendEnsureNoGap()</a>, <a class="el" href="../../da/db2/create__profiles_8cpp_source.html#l01497">CSimulation::CreateRasterizedProfile()</a>, <a class="el" href="../../d8/dc5/2di__point_8cpp_source.html#l00109">CGeom2DIPoint::DivXDivY()</a>, <a class="el" href="../../d8/dce/calc__shadow__zones_8cpp_source.html#l00809">CSimulation::DoShadowZoneAndDownDriftZone()</a>, <a class="el" href="../../d2/d24/calc__waves_8cpp_source.html#l01935">CSimulation::InterpolateWavePropertiesBetweenProfiles()</a>, <a class="el" href="../../db/df7/gis__utils_8cpp_source.html#l00235">CSimulation::KeepWithinValidGrid()</a>, <a class="el" href="../../db/df7/gis__utils_8cpp_source.html#l01882">CSimulation::nConvertMetresToNumCells()</a>, <a class="el" href="../../d8/dce/calc__shadow__zones_8cpp_source.html#l00138">CSimulation::nDoAllShadowZones()</a>, <a class="el" href="../../d5/db0/do__sediment__input__event_8cpp_source.html#l00070">CSimulation::nDoSedimentInputEvent()</a>, <a class="el" href="../../d2/d93/simulation_8cpp_source.html#l00616">CSimulation::nDoSimulation()</a>, <a class="el" href="../../da/db2/create__profiles_8cpp_source.html#l00700">CSimulation::nGetCoastNormalEndPoint()</a>, <a class="el" href="../../da/db2/create__profiles_8cpp_source.html#l00519">CSimulation::nLocateAndCreateGridEdgeProfile()</a>, <a class="el" href="../../d8/df0/multiple__coastlines_8cpp_source.html#l00322">CSimulation::nTruncateProfileHitDifferentCoast()</a>, <a class="el" href="../../d8/df0/multiple__coastlines_8cpp_source.html#l00181">CSimulation::nTruncateProfilesDifferentCoasts()</a>, <a class="el" href="../../db/df7/gis__utils_8cpp_source.html#l00133">CSimulation::PtiExtCRSToGridRound()</a>, <a class="el" href="../../df/d30/coast__polygon_8cpp_source.html#l00795">CGeomCoastPolygon::PtiGetFillStartPoint()</a>, <a class="el" href="../../db/df7/gis__utils_8cpp_source.html#l00621">CSimulation::PtiGetPerpendicular()</a>, <a class="el" href="../../db/df7/gis__utils_8cpp_source.html#l00659">CSimulation::PtiGetPerpendicular()</a>, <a class="el" href="../../db/df7/gis__utils_8cpp_source.html#l00441">CSimulation::PtiWeightedAverage()</a>, <a class="el" href="../../d1/d93/do__cliff__collapse_8cpp_source.html#l01160">CSimulation::RasterizeCliffCollapseProfile()</a>, and <a class="el" href="../../d6/d91/create__polygons_8cpp_source.html#l00285">CSimulation::RasterizePolygonJoiningLine()</a>.</p>
 
 </div>
 </div>
@@ -289,7 +289,7 @@ Andres Payo </dd></dl>
 
 <p>Operator that inserts a given fill character, to a given width, into an output stream. From <a href="http://stackoverflow.com/questions/2839592/equivalent-of-02d-with-stdstringstream">http://stackoverflow.com/questions/2839592/equivalent-of-02d-with-stdstringstream</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d2/dfd/utils__global_8cpp_source.html#l00101">101</a> of file <a class="el" href="../../d2/dfd/utils__global_8cpp_source.html">utils_global.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d2/dfd/utils__global_8cpp_source.html#l00097">97</a> of file <a class="el" href="../../d2/dfd/utils__global_8cpp_source.html">utils_global.cpp</a>.</p>
 
 </div>
 </div>
@@ -314,9 +314,9 @@ Andres Payo </dd></dl>
 
 <p>Centre-aligns char array within a field of given width, pads with blank spaces to enforce alignment. From <a href="https://stackoverflow.com/questions/14765155/how-can-i-easily-format-my-data-table-in-c">https://stackoverflow.com/questions/14765155/how-can-i-easily-format-my-data-table-in-c</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d2/dfd/utils__global_8cpp_source.html#l00167">167</a> of file <a class="el" href="../../d2/dfd/utils__global_8cpp_source.html">utils_global.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d2/dfd/utils__global_8cpp_source.html#l00163">163</a> of file <a class="el" href="../../d2/dfd/utils__global_8cpp_source.html">utils_global.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l02261">CSimulation::DoEndOfTimestepTotals()</a>, <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l02162">CSimulation::WritePolygonActualMovement()</a>, <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01830">CSimulation::WritePolygonCliffCollapseErosion()</a>, <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01662">CSimulation::WritePolygonInfoTable()</a>, <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01941">CSimulation::WritePolygonPotentialErosion()</a>, <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01687">CSimulation::WritePolygonPreExistingSedimentTable()</a>, <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01900">CSimulation::WritePolygonSedimentBeforeMovement()</a>, <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01753">CSimulation::WritePolygonSedimentInputEventTable()</a>, <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01794">CSimulation::WritePolygonShorePlatformErosion()</a>, <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l02086">CSimulation::WritePolygonSortedSequence()</a>, and <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l02015">CSimulation::WritePolygonUnsortedSequence()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l02226">CSimulation::DoEndOfTimestepTotals()</a>, <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l02127">CSimulation::WritePolygonActualMovement()</a>, <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01795">CSimulation::WritePolygonCliffCollapseErosion()</a>, <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01627">CSimulation::WritePolygonInfoTable()</a>, <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01906">CSimulation::WritePolygonPotentialErosion()</a>, <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01652">CSimulation::WritePolygonPreExistingSedimentTable()</a>, <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01865">CSimulation::WritePolygonSedimentBeforeMovement()</a>, <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01718">CSimulation::WritePolygonSedimentInputEventTable()</a>, <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01759">CSimulation::WritePolygonShorePlatformErosion()</a>, <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l02051">CSimulation::WritePolygonSortedSequence()</a>, and <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01980">CSimulation::WritePolygonUnsortedSequence()</a>.</p>
 
 </div>
 </div>
@@ -341,7 +341,7 @@ Andres Payo </dd></dl>
 
 <p>Centre-aligns string within a field of given width, pads with blank spaces to enforce alignment. From <a href="https://stackoverflow.com/questions/14765155/how-can-i-easily-format-my-data-table-in-c">https://stackoverflow.com/questions/14765155/how-can-i-easily-format-my-data-table-in-c</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d2/dfd/utils__global_8cpp_source.html#l00187">187</a> of file <a class="el" href="../../d2/dfd/utils__global_8cpp_source.html">utils_global.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d2/dfd/utils__global_8cpp_source.html#l00183">183</a> of file <a class="el" href="../../d2/dfd/utils__global_8cpp_source.html">utils_global.cpp</a>.</p>
 
 </div>
 </div>
@@ -376,9 +376,9 @@ Andres Payo </dd></dl>
 
 <p>Converts double to string with specified number of decimal places, within a field of given width, pads with blank spaces to enforce right alignment. Modified from <a href="https://stackoverflow.com/questions/14765155/how-can-i-easily-format-my-data-table-in-c">https://stackoverflow.com/questions/14765155/how-can-i-easily-format-my-data-table-in-c</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d2/dfd/utils__global_8cpp_source.html#l00124">124</a> of file <a class="el" href="../../d2/dfd/utils__global_8cpp_source.html">utils_global.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d2/dfd/utils__global_8cpp_source.html#l00120">120</a> of file <a class="el" href="../../d2/dfd/utils__global_8cpp_source.html">utils_global.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l02261">CSimulation::DoEndOfTimestepTotals()</a>, <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l02162">CSimulation::WritePolygonActualMovement()</a>, <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01830">CSimulation::WritePolygonCliffCollapseErosion()</a>, <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01662">CSimulation::WritePolygonInfoTable()</a>, <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01941">CSimulation::WritePolygonPotentialErosion()</a>, <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01687">CSimulation::WritePolygonPreExistingSedimentTable()</a>, <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01900">CSimulation::WritePolygonSedimentBeforeMovement()</a>, <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01753">CSimulation::WritePolygonSedimentInputEventTable()</a>, and <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01794">CSimulation::WritePolygonShorePlatformErosion()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l02226">CSimulation::DoEndOfTimestepTotals()</a>, <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l02127">CSimulation::WritePolygonActualMovement()</a>, <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01795">CSimulation::WritePolygonCliffCollapseErosion()</a>, <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01627">CSimulation::WritePolygonInfoTable()</a>, <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01906">CSimulation::WritePolygonPotentialErosion()</a>, <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01652">CSimulation::WritePolygonPreExistingSedimentTable()</a>, <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01865">CSimulation::WritePolygonSedimentBeforeMovement()</a>, <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01718">CSimulation::WritePolygonSedimentInputEventTable()</a>, and <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01759">CSimulation::WritePolygonShorePlatformErosion()</a>.</p>
 
 </div>
 </div>
@@ -403,9 +403,9 @@ Andres Payo </dd></dl>
 
 <p>Converts int to string within a field of given width, pads with blank spaces to enforce alignment.. From <a href="https://stackoverflow.com/questions/14765155/how-can-i-easily-format-my-data-table-in-c">https://stackoverflow.com/questions/14765155/how-can-i-easily-format-my-data-table-in-c</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d2/dfd/utils__global_8cpp_source.html#l00153">153</a> of file <a class="el" href="../../d2/dfd/utils__global_8cpp_source.html">utils_global.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d2/dfd/utils__global_8cpp_source.html#l00149">149</a> of file <a class="el" href="../../d2/dfd/utils__global_8cpp_source.html">utils_global.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l02162">CSimulation::WritePolygonActualMovement()</a>, <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01830">CSimulation::WritePolygonCliffCollapseErosion()</a>, <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01662">CSimulation::WritePolygonInfoTable()</a>, <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01941">CSimulation::WritePolygonPotentialErosion()</a>, <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01687">CSimulation::WritePolygonPreExistingSedimentTable()</a>, <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01900">CSimulation::WritePolygonSedimentBeforeMovement()</a>, <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01753">CSimulation::WritePolygonSedimentInputEventTable()</a>, <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01794">CSimulation::WritePolygonShorePlatformErosion()</a>, <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l02086">CSimulation::WritePolygonSortedSequence()</a>, and <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l02015">CSimulation::WritePolygonUnsortedSequence()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l02127">CSimulation::WritePolygonActualMovement()</a>, <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01795">CSimulation::WritePolygonCliffCollapseErosion()</a>, <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01627">CSimulation::WritePolygonInfoTable()</a>, <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01906">CSimulation::WritePolygonPotentialErosion()</a>, <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01652">CSimulation::WritePolygonPreExistingSedimentTable()</a>, <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01865">CSimulation::WritePolygonSedimentBeforeMovement()</a>, <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01718">CSimulation::WritePolygonSedimentInputEventTable()</a>, <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01759">CSimulation::WritePolygonShorePlatformErosion()</a>, <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l02051">CSimulation::WritePolygonSortedSequence()</a>, and <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01980">CSimulation::WritePolygonUnsortedSequence()</a>.</p>
 
 </div>
 </div>
@@ -430,7 +430,7 @@ Andres Payo </dd></dl>
 
 <p>Left-aligns char array within a field of given width, pads with blank spaces to enforce alignment. From <a href="https://stackoverflow.com/questions/14765155/how-can-i-easily-format-my-data-table-in-c">https://stackoverflow.com/questions/14765155/how-can-i-easily-format-my-data-table-in-c</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d2/dfd/utils__global_8cpp_source.html#l00254">254</a> of file <a class="el" href="../../d2/dfd/utils__global_8cpp_source.html">utils_global.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d2/dfd/utils__global_8cpp_source.html#l00250">250</a> of file <a class="el" href="../../d2/dfd/utils__global_8cpp_source.html">utils_global.cpp</a>.</p>
 
 </div>
 </div>
@@ -455,9 +455,9 @@ Andres Payo </dd></dl>
 
 <p>Left-aligns string within a field of given width, pads with blank spaces to enforce alignment. From <a href="https://stackoverflow.com/questions/14765155/how-can-i-easily-format-my-data-table-in-c">https://stackoverflow.com/questions/14765155/how-can-i-easily-format-my-data-table-in-c</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d2/dfd/utils__global_8cpp_source.html#l00239">239</a> of file <a class="el" href="../../d2/dfd/utils__global_8cpp_source.html">utils_global.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d2/dfd/utils__global_8cpp_source.html#l00235">235</a> of file <a class="el" href="../../d2/dfd/utils__global_8cpp_source.html">utils_global.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l02261">CSimulation::DoEndOfTimestepTotals()</a>, and <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l02162">CSimulation::WritePolygonActualMovement()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l02226">CSimulation::DoEndOfTimestepTotals()</a>, and <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l02127">CSimulation::WritePolygonActualMovement()</a>.</p>
 
 </div>
 </div>
@@ -482,7 +482,7 @@ Andres Payo </dd></dl>
 
 <p>Right-aligns char array within a field of given width, pads with blank spaces to enforce alignment. From <a href="https://stackoverflow.com/questions/14765155/how-can-i-easily-format-my-data-table-in-c">https://stackoverflow.com/questions/14765155/how-can-i-easily-format-my-data-table-in-c</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d2/dfd/utils__global_8cpp_source.html#l00222">222</a> of file <a class="el" href="../../d2/dfd/utils__global_8cpp_source.html">utils_global.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d2/dfd/utils__global_8cpp_source.html#l00218">218</a> of file <a class="el" href="../../d2/dfd/utils__global_8cpp_source.html">utils_global.cpp</a>.</p>
 
 </div>
 </div>
@@ -507,9 +507,9 @@ Andres Payo </dd></dl>
 
 <p>Right-aligns string within a field of given width, pads with blank spaces to enforce alignment. From <a href="https://stackoverflow.com/questions/14765155/how-can-i-easily-format-my-data-table-in-c">https://stackoverflow.com/questions/14765155/how-can-i-easily-format-my-data-table-in-c</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d2/dfd/utils__global_8cpp_source.html#l00206">206</a> of file <a class="el" href="../../d2/dfd/utils__global_8cpp_source.html">utils_global.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d2/dfd/utils__global_8cpp_source.html#l00202">202</a> of file <a class="el" href="../../d2/dfd/utils__global_8cpp_source.html">utils_global.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l02086">CSimulation::WritePolygonSortedSequence()</a>, and <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l02015">CSimulation::WritePolygonUnsortedSequence()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l02051">CSimulation::WritePolygonSortedSequence()</a>, and <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l01980">CSimulation::WritePolygonUnsortedSequence()</a>.</p>
 
 </div>
 </div>
@@ -549,9 +549,9 @@ Andres Payo </dd></dl>
 
 <p>Calculates a percentage from two numbers then, if the result is non-zero, right-aligns the result as a string within a field of given width, pads with blank spaces to enforce alignment. Modified from <a href="https://stackoverflow.com/questions/14765155/how-can-i-easily-format-my-data-table-in-c">https://stackoverflow.com/questions/14765155/how-can-i-easily-format-my-data-table-in-c</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d2/dfd/utils__global_8cpp_source.html#l00270">270</a> of file <a class="el" href="../../d2/dfd/utils__global_8cpp_source.html">utils_global.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d2/dfd/utils__global_8cpp_source.html#l00266">266</a> of file <a class="el" href="../../d2/dfd/utils__global_8cpp_source.html">utils_global.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l02261">CSimulation::DoEndOfTimestepTotals()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d4/d6c/write__output_8cpp_source.html#l02226">CSimulation::DoEndOfTimestepTotals()</a>.</p>
 
 </div>
 </div>
@@ -561,7 +561,7 @@ Andres Payo </dd></dl>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="../../d2/dfd/utils__global_8cpp.html">utils_global.cpp</a></li>
-    <li class="footer">Generated on Mon Aug 18 2025 20:25:51 for CoastalME (Coastal Modelling Environment) by <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+    <li class="footer">Generated on Tue Aug 26 2025 07:53:58 for CoastalME (Coastal Modelling Environment) by <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
   </ul>
 </div>
 </body>

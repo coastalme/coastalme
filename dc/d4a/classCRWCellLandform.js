@@ -10,12 +10,14 @@ var classCRWCellLandform =
     [ "nGetLFSubCategory", "dc/d4a/classCRWCellLandform.html#a97cc978043b02b47d7bdd7c10bb270f8", null ],
     [ "nGetPointOnCoast", "dc/d4a/classCRWCellLandform.html#ad77dd2473ef3394e8f9ac60a50d42586", null ],
     [ "SetAccumWaveEnergy", "dc/d4a/classCRWCellLandform.html#abd409068ef909c26ff8ede3d7125b94d", null ],
+    [ "SetCliffCollapseTimestep", "dc/d4a/classCRWCellLandform.html#a5faa4c5359b35140d6ddb8e5c9be4ef4", null ],
     [ "SetCliffNotchBaseElev", "dc/d4a/classCRWCellLandform.html#a6877301af94f663f342249dfec1b93b5", null ],
     [ "SetCliffNotchDepth", "dc/d4a/classCRWCellLandform.html#a9eecd0367bd286468c979af86a932d73", null ],
     [ "SetCoast", "dc/d4a/classCRWCellLandform.html#a3690af9ff283365f80221e193438d1ad", null ],
     [ "SetLFCategory", "dc/d4a/classCRWCellLandform.html#aaf631af6cb530503a8fc676d4296ac79", null ],
     [ "SetLFSubCategory", "dc/d4a/classCRWCellLandform.html#af53d3fe69c297cfb0b41d03e55ed6467", null ],
     [ "SetPointOnCoast", "dc/d4a/classCRWCellLandform.html#ab3563c3cc3cd8bee90bfbb4ff558310c", null ],
+    [ "ulGetCliffCollapseTimestep", "dc/d4a/classCRWCellLandform.html#a44b5d7888b607e15713d87b81c05372b", null ],
     [ "m_dAccumWaveEnergy", "dc/d4a/classCRWCellLandform.html#a28ef604e689eb572438fcfb2cc4d4d73", null ],
     [ "m_dNotchBaseElev", "dc/d4a/classCRWCellLandform.html#a2556a42546ce83b61a0a9534ad646dec", null ],
     [ "m_dNotchDepth", "dc/d4a/classCRWCellLandform.html#a21e5e4ac3fe410be4f9df1e7f40a4674", null ],
@@ -26,5 +28,6 @@ var classCRWCellLandform =
     [ "m_nSubCategory", "dc/d4a/classCRWCellLandform.html#a639bc1bde200abf222dfd2422bd66894", null ],
     [ "m_sBeachData", "dc/d4a/classCRWCellLandform.html#a6f1a35a7a19e27ea5206a9010f46662d", null ],
     [ "m_sCliffData", "dc/d4a/classCRWCellLandform.html#a5a2d4dca3a1b48a48b7cbcd741a0374f", null ],
+    [ "m_ulCollapseTimestep", "dc/d4a/classCRWCellLandform.html#a6fd2d0ec6a8b1a0ea7a57d251c0d505f", null ],
     [ "m_uLFData", "dc/d4a/classCRWCellLandform.html#a9820039620dc7d87162e894663c4be5e", null ]
 ];
