@@ -547,9 +547,9 @@ int CSimulation::nDoCliffCollapseDeposition(int const nCoast, CRWCliff const* pC
    int const nXCliff = pCliff->pPtiGetCellMarkedAsCliff()->nGetX();
    int const nYCliff = pCliff->pPtiGetCellMarkedAsCliff()->nGetY();
 
-   // And get the cliff cell's ext crs coords
-   double const dXCliff = dGridXToExtCRSX(nXCliff);
-   double const dYCliff = dGridYToExtCRSY(nYCliff);
+   // // And get the cliff cell's ext crs coords
+   // double const dXCliff = dGridXToExtCRSX(nXCliff);
+   // double const dYCliff = dGridYToExtCRSY(nYCliff);
 
    // Get this cell's polygon
    int const nPoly = m_pRasterGrid->m_Cell[nXCliff][nYCliff].nGetPolygonID();
@@ -779,15 +779,15 @@ int CSimulation::nDoCliffCollapseDeposition(int const nCoast, CRWCliff const* pC
                   continue;
                }
             }
-            // else
-            // {
-            //    // The cliff height fraction is not at its limit, so increment it
-            //    dCliffHeightFraction += CLIFF_COLLAPSE_HEIGHT_INCREMENT;
-            //
-            //    // LogStream << "Cliff height fraction increased: talus length = " << nTalusProfileLenInCells << " cells, seaward offset = " << nSeawardOffset << ", cliff height fraction = " <<  dCliffHeightFraction << endl;
-            //
-            //    continue;
-            // }
+            else
+            {
+               // The cliff height fraction is not at its limit, so increment it
+               dCliffHeightFraction += CLIFF_COLLAPSE_HEIGHT_INCREMENT;
+
+               // LogStream << "Cliff height fraction increased: talus length = " << nTalusProfileLenInCells << " cells, seaward offset = " << nSeawardOffset << ", cliff height fraction = " <<  dCliffHeightFraction << endl;
+
+               continue;
+            }
          }
          else
          {

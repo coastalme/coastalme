@@ -2805,21 +2805,21 @@ bool CSimulation::bReadRunDataFile(void)
             break;
 
          case 66:
-            // // Minimum height of landward end of talus, as a fraction of cliff elevation
-            // if (m_bHaveConsolidatedSediment && m_bDoCliffCollapse)
-            // {
-            //    // First check that this is a valid double
-            //    if (! bIsStringValidDouble(strRH))
-            //    {
-            //       strErr = "line " + to_string(nLine) + ": invalid floating point number for height of cliff collapse (as a fraction of cliff elevation) '" + strRH + "' in " + m_strDataPathName;
-            //       break;
-            //    }
-            //
-            //    m_dMinCliffTalusHeightFrac = strtod(strRH.c_str(), NULL);
-            //
-            //    if (m_dMinCliffTalusHeightFrac <= 0)
-            //       strErr = "line " + to_string(nLine) + ": minimum height of cliff collapse (as a fraction of cliff elevation) must be >= 0";
-            // }
+            // Minimum height of landward end of talus, as a fraction of cliff elevation
+            if (m_bHaveConsolidatedSediment && m_bDoCliffCollapse)
+            {
+               // First check that this is a valid double
+               if (! bIsStringValidDouble(strRH))
+               {
+                  strErr = "line " + to_string(nLine) + ": invalid floating point number for height of cliff collapse (as a fraction of cliff elevation) '" + strRH + "' in " + m_strDataPathName;
+                  break;
+               }
+
+               m_dMinCliffTalusHeightFrac = strtod(strRH.c_str(), NULL);
+
+               if (m_dMinCliffTalusHeightFrac <= 0)
+                  strErr = "line " + to_string(nLine) + ": minimum height of cliff collapse (as a fraction of cliff elevation) must be >= 0";
+            }
 
             break;
 
