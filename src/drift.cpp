@@ -34,7 +34,7 @@ CRWDrift::CRWDrift(CRWCoast* pCoastIn, int const nCoast, int const nPointOnCoast
    pCoast = pCoastIn;
 
    m_nCoast = nCoast;
-   m_nPointOnCoast = nPointOnCoast;
+   m_nPointOnCoastline = nPointOnCoast;
    m_nCategory = LF_CAT_DRIFT;
 }
 

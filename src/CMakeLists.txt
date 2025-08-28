@@ -21,9 +21,8 @@ if (UNIX)
       set (LINUX TRUE)
       message ("Creating Linux-Unix Makefile for CoastalME")
 
-      # Choose the Linuyx compiler
+      # Choose the Linux compiler
       string (TOLOWER "${COMPILER}" COMPILER_LC )
-
       if (COMPILER_LC STREQUAL "gnu")
          set(CMAKE_C_COMPILER gcc)
          set(CMAKE_CXX_COMPILER g++)

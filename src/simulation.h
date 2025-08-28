@@ -587,6 +587,12 @@ class CSimulation
    //! TODO 007 Used in WAVESETUP + SURGE + RUNUP Finish surge and runup stuff
    int m_nLevel;
 
+   //! The default planview width of cliff collapse talus, in cells
+   int m_nDefaultTalusWidthInCells;
+
+   // The minimum planview length (in cells) of the Dean profile formed by the cliff collapse Talus
+   int m_nTalusProfileMinLenInCells;
+
    //! The data type used by GDAL for integer operations, can be GDT_Byte, GDT_Int16, GDT_UInt16, GDT_Int32, or GDT_UInt32
    GDALDataType m_GDALWriteIntDataType;
 
@@ -1143,10 +1149,8 @@ class CSimulation
    //! Folder in which the CME data file is found
    string m_strDataPathName;
 
-   //! Base name for CME raster GIS output files
+   //! Raster GIS output format
    string m_strRasterGISOutFormat;
-
-   //! Base name for CME vector GIS output files
 
    //! Vector GIS output format
    string m_strVectorGISOutFormat;
@@ -1469,8 +1473,7 @@ class CSimulation
    //! GDAL driver code for the initial unconsolidated fine sediment GIS data
    vector<string> m_VstrGDALIUFDriverCode;
 
-   //! GDAL driver description for the initial unconsolidated fine sediment GIS
-   //! data
+   //! GDAL driver description for the initial unconsolidated fine sediment GIS data
    vector<string> m_VstrGDALIUFDriverDesc;
 
    //! GDAL projection  for the initial unconsolidated fine sediment GIS data
@@ -1482,8 +1485,7 @@ class CSimulation
    //! GDAL driver code for the initial unconsolidated sand sediment GIS data
    vector<string> m_VstrGDALIUSDriverCode;
 
-   //! GDAL driver description for the initial unconsolidated sand sediment GIS
-   //! data
+   //! GDAL driver description for the initial unconsolidated sand sediment GIS data
    vector<string> m_VstrGDALIUSDriverDesc;
 
    //! GDAL projection for the initial unconsolidated sand sediment GIS data
@@ -1495,8 +1497,7 @@ class CSimulation
    //! GDAL driver code for the initial unconsolidated coarse sediment GIS data
    vector<string> m_VstrGDALIUCDriverCode;
 
-   //! GDAL driver description for the initial unconsolidated coarse sediment GIS
-   //! data
+   //! GDAL driver description for the initial unconsolidated coarse sediment GIS data
    vector<string> m_VstrGDALIUCDriverDesc;
 
    //! GDAL projection for the initial unconsolidated coarse sediment GIS data
@@ -1508,8 +1509,7 @@ class CSimulation
    //! GDAL driver code for the initial consolidated fine sediment GIS data
    vector<string> m_VstrGDALICFDriverCode;
 
-   //! GDAL driver description for the initial consolidated fine sediment GIS
-   //! data
+   //! GDAL driver description for the initial consolidated fine sediment GIS data
    vector<string> m_VstrGDALICFDriverDesc;
 
    //! GDAL projection for the initial consolidated fine sediment GIS data

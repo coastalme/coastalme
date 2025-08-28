@@ -1,17 +1,17 @@
-#!/bin/sh
+#!/bin/bash
 
 # Change this to change build type
-#buildtype=Debug
-buildtype=Release
-#buildtype=Prerelease
-#buildtype=RelWithDebInfo        # Not yet implemented in CMakeLists.txt
-#buildtype=MinSizeRel            # Not yet implemented in CMakeLists.txt
-#buildtype=gcov
-#buildtype=Callgrind
+buildtype=DEBUG
+#buildtype=RELEASE
+#buildtype=PRERELEASE
+#buildtype=RELWITHDEBINFO        # Not yet implemented in CMakeLists.txt
+#buildtype=MINSIZEREL            # Not yet implemented in CMakeLists.txt
+#buildtype=GCOV
+#buildtype=CALLGRIND
 
 # Change this to select the Linux compiler
-#compiler=gnu
-compiler=clang
+compiler=GNU
+#compiler=CLANG
 
 # Change this to select the CShore library type
 #cshorelibrary=STATIC
@@ -46,8 +46,8 @@ if [ "$OSTYPE" = "darwin"* ]; then
    export CXX=g++-15
    CMAKE_COMPILER_ARGS="-DCMAKE_C_COMPILER=gcc-15 -DCMAKE_CXX_COMPILER=g++-15"
 else
-   echo "Using default compiler, OpenMP may not be available"
-   echo "For OpenMP support, install GCC or install libomp for Clang"
+#    echo "Using $compiler compiler, OpenMP may not be available"
+#    echo "For OpenMP support, install GCC or install libomp for Clang"
    CMAKE_COMPILER_ARGS=""
 fi
 echo ""
@@ -61,7 +61,13 @@ echo ""
 echo "================================================================="
 echo ""
 
-echo "Finished CMake ($buildtype build, $cshorelibrary CShore library, CShore input/output method=$cshoreinout)"
+# Convert to upper case. Note that this requires bash 4 or greater
+build_uc="${buildtype^^}"
+compiler_uc="${compiler^^}"
+cshorelibrary_uc="${cshorelibrary^^}"
+cshoreinout_uc="${cshoreinout^^}"
+
+echo "Finished CMake (Compiler=$compiler_uc, Build type=$build_uc, CShore library=$cshorelibrary_uc, CShore input/output method=$cshoreinout_uc)"
 echo ""
 echo "================================================================="
 
@@ -73,7 +79,7 @@ echo "   cd .."
 echo ""
 
 # Some extra messages
-if [ "$buildtype" = "Callgrind" ]; then
+if [ "$buildtype" = "CALLGRIND" ]; then
    echo "When the build has finished, use valgrind/callgrind as follows:"
    echo ""
    echo "To check for memory leaks:"
@@ -94,7 +100,7 @@ if [ "$buildtype" = "Callgrind" ]; then
    echo ""
 fi
 
-if [ "$buildtype" = "gcov" ]; then
+if [ "$buildtype" = "GCOV" ]; then
    echo "When the build has finished, use gcov/lcov as follows:"
    echo ""
    echo "   ./cme"
@@ -106,7 +112,7 @@ if [ "$buildtype" = "gcov" ]; then
    echo ""
 fi
 
-if [ "$buildtype" = "Prerelease" ]; then
+if [ "$buildtype" = "PRERELEASE" ]; then
    echo "When the build has finished:"
    echo ""
    echo "   ./cme 2> sanitize.log"

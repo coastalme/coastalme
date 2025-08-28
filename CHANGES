@@ -243,3 +243,5 @@ CoastalME CHANGELOG
          Moved cliff toe tracing to testing
          Enable Linux clang builds
          Code tidying
+
+1.4.0

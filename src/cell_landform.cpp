@@ -25,7 +25,7 @@ CRWCellLandform::CRWCellLandform()
     : m_nCategory(LF_NONE),
       m_nSubCategory(LF_NONE),
       m_nCoast(-1),
-      m_nPointOnCoast(-1),
+      m_nPointOnCoastline(-1),
       m_dAccumWaveEnergy(0)
 {
    m_uLFData.m_sCliffData.m_dNotchBaseElev = DBL_NODATA;
@@ -84,13 +84,13 @@ int CRWCellLandform::nGetCoast(void) const
 //! Set the number of the point on the coastline
 void CRWCellLandform::SetPointOnCoast(int const nPointOnCoastIn)
 {
-   m_nPointOnCoast = nPointOnCoastIn;
+   m_nPointOnCoastline = nPointOnCoastIn;
 }
 
 //! Set the number of the point on the coastline
 int CRWCellLandform::nGetPointOnCoast(void) const
 {
-   return m_nPointOnCoast;
+   return m_nPointOnCoastline;
 }
 
 //! Set accumulated wave energy

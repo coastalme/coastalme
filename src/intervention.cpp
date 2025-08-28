@@ -36,7 +36,7 @@ CRWIntervention::CRWIntervention(CRWCoast* pCoastIn, int const nCoast, int const
    pCoast = pCoastIn;
 
    m_nCoast = nCoast;
-   m_nPointOnCoast = nPointOnCoast;
+   m_nPointOnCoastline = nPointOnCoast;
    m_nCategory = LF_CAT_INTERVENTION;
 }
 

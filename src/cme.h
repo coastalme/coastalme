@@ -229,91 +229,109 @@ using std::ostream;
 
 //===================================================== platform-specific stuff =================================================
 #ifdef _WIN32
-#define access _access
-#define F_OK 0 // Test for file existence
+   #define access _access
+   #define F_OK 0 // Test for file existence
 #endif
 
 #ifdef _MSC_VER
-// MS Visual C++, byte order is IEEE little-endian, 32-bit
-#ifdef _DEBUG
-#include <crtdbg.h> // useful
-#endif
+   // MS Visual C++ compiler, byte order is IEEE little-endian
+   #ifdef _DEBUG
+      #include <crtdbg.h> // useful
+   #endif
 
-// clock_t is a signed long: see <time.h>
-long const CLOCK_T_MIN = LONG_MIN;
-double const CLOCK_T_RANGE =
-    static_cast<double>(LONG_MAX) - static_cast<double>(CLOCK_T_MIN);
-#ifdef _M_ALPHA
-string const PLATFORM = "Alpha/MS Visual C++";
-#elif defined _M_IX86
-string const PLATFORM = "Intel x86/MS Visual C++";
-#elif defined _M_MPPC
-string const PLATFORM = "Power PC/MS Visual C++";
-#elif defined _M_MRX000
-string const PLATFORM = "MIPS/MS Visual C++";
-#else
-string const PLATFORM = "Other/MS Visual C++";
-#endif
+   // clock_t is a signed long: see <time.h>
+   long const CLOCK_T_MIN = LONG_MIN;
+   double const CLOCK_T_RANGE = static_cast<double>(LONG_MAX) - static_cast<double>(CLOCK_T_MIN);
+
+   #ifdef _M_ALPHA
+      string const PLATFORM = "MS Visual C++ for Alpha";
+   #elif defined _M_IX86
+      string const PLATFORM = "MS Visual C++ for Intel x86";
+   #elif defined _M_MPPC
+      string const PLATFORM = "MS Visual C++ for Power PC";
+   #elif defined _M_MRX000
+      string const PLATFORM = "MS Visual C++ for MIPS";
+   #else
+      string const PLATFORM = "MS Visual C++ for unknown CPU";
+   #endif
 #endif
 
 #ifdef __GNUG__
-// GNU C++
-#ifndef CPU
-#error CPU not defined
-#else
-#ifdef x86
-// Intel x86, byte order is little-endian, 32-bit
-string const PLATFORM = "Intel x86/GNU C++";
-// clock_t is an unsigned long: see <time.h>
-unsigned long const CLOCK_T_MIN = 0;
-double const CLOCK_T_RANGE = static_cast<double>(ULONG_MAX);
+   // GNU compiler
+   #ifndef CPU
+      #error "CPU not defined"
+   #else
+      #ifdef x86
+         // Intel x86, byte order is little-endian
+         string const PLATFORM = "GNU Compiler for Intel x86";
+         // clock_t is an unsigned long: see <time.h>
+         unsigned long const CLOCK_T_MIN = 0;
+         double const CLOCK_T_RANGE = static_cast<double>(ULONG_MAX);
+      #elif defined rs6000
+         // IBM RS-6000, byte order is big-endian
+         string const PLATFORM = "GNU complier for IBM RS-6000";
+         // clock_t is a signed long: see <time.h> NEED TO CHECK
+         long const CLOCK_T_MIN = LONG_MIN;
+         double const CLOCK_T_RANGE =
+         static_cast<double>(LONG_MAX) - static_cast<double>(CLOCK_T_MIN);
+      #elif defined ultrasparc
+         // Sun UltraSparc, byte order is big-endian
+         string const PLATFORM = "GNU compiler for Sun UltraSPARC";
+         // clock_t is a signed long: see <time.h>
+         long const CLOCK_T_MIN = LONG_MIN;
+         double const CLOCK_T_RANGE =
+         static_cast<double>(LONG_MAX) - static_cast<double>(CLOCK_T_MIN);
+      #else
+         // Something else
+         string const PLATFORM = "GNU compiler for unknown CPU";
+         // clock_t is a signed long: NEED TO CHECK <time.h>
+         long const CLOCK_T_MIN = LONG_MIN;
+         double const CLOCK_T_RANGE =
+         static_cast<double>(LONG_MAX) - static_cast<double>(CLOCK_T_MIN);
+      #endif
+   #endif
+#endif
 
-#elif defined rs6000
-// IBM RS-6000, byte order is big-endian, 32-bit
-string const PLATFORM = "IBM RS-6000/GNU C++";
-// clock_t is a signed long: see <time.h> NEED TO CHECK
-long const CLOCK_T_MIN = LONG_MIN;
-double const CLOCK_T_RANGE =
-    static_cast<double>(LONG_MAX) - static_cast<double>(CLOCK_T_MIN);
-#elif defined ultrasparc
-// Sun UltraSparc, byte order is big-endian, 32-bit
-string const PLATFORM = "Sun UltraSPARC/GNU C++";
-// clock_t is a signed long: see <time.h>
-long const CLOCK_T_MIN = LONG_MIN;
-double const CLOCK_T_RANGE =
-    static_cast<double>(LONG_MAX) - static_cast<double>(CLOCK_T_MIN);
-#else
-// Something else, assume 32-bit
-string const PLATFORM = "Other/GNU C++";
-// clock_t is a signed long: NEED TO CHECK <time.h>
-long const CLOCK_T_MIN = LONG_MIN;
-double const CLOCK_T_RANGE =
-    static_cast<double>(LONG_MAX) - static_cast<double>(CLOCK_T_MIN);
-#endif
-#endif
+#ifdef __clang__
+   // Clang compiler
+   #ifndef CPU
+      #error "CPU not defined"
+   #else
+      #ifdef x86
+         // Intel x86, byte order is little-endian
+         string const PLATFORM = "Clang compiler for Intel x86";
+         // clock_t is an unsigned long: see <time.h>
+         unsigned long const CLOCK_T_MIN = 0;
+         double const CLOCK_T_RANGE = static_cast<double>(ULONG_MAX);
+      #else
+         // Something else
+         string const PLATFORM = "Clang compiler for unknown CPU";
+         // clock_t is a signed long: NEED TO CHECK <time.h>
+         long const CLOCK_T_MIN = LONG_MIN;
+         double const CLOCK_T_RANGE =
+         static_cast<double>(LONG_MAX) - static_cast<double>(CLOCK_T_MIN);
+      #endif
+   #endif
 #endif
 
 #ifdef __MINGW32__
-// Minimalist GNU for Windows
-//   #define __USE_MINGW_ANSI_STDIO 1        // Fix long doubles output problem,
-//   see
-//   http://stackoverflow.com/questions/7134547/gcc-printf-and-long-double-leads-to-wrong-output-c-type-conversion-messes-u
-
-#define WEXITSTATUS(x) ((x) & 0xff)
+   // Minimalist GNU for Windows
+   //   #define __USE_MINGW_ANSI_STDIO 1        // Fix long doubles output problem,
+   //   see http://stackoverflow.com/questions/7134547/gcc-printf-and-long-double-leads-to-wrong-output-c-type-conversion-messes-u
+   #define WEXITSTATUS(x) ((x) & 0xff)
 #endif
 
 #ifdef __HP_aCC
-// HP-UX aCC, byte order is big-endian, can be either 32-bit or 64-bit
-string const PLATFORM = "HP-UX aC++";
-// clock_t is an unsigned long: see <time.h>
-unsigned long const CLOCK_T_MIN = 0;
-#ifdef __ia64
-// However, clock_t is a 32-bit unsigned long and we are using 64-bit unsigned
-// longs here
-double const CLOCK_T_RANGE = 4294967295UL; // crude, improve
-#else
-double const CLOCK_T_RANGE = static_cast<double>(ULONG_MAX);
-#endif
+   // HP-UX aCC, byte order is big-endian, can be either 32-bit or 64-bit
+   string const PLATFORM = "HP-UX aC++";
+   // clock_t is an unsigned long: see <time.h>
+   unsigned long const CLOCK_T_MIN = 0;
+   #ifdef __ia64
+      // However, clock_t is a 32-bit unsigned long and we are using 64-bit unsigned longs here
+      double const CLOCK_T_RANGE = 4294967295UL; // crude, improve
+   #else
+      double const CLOCK_T_RANGE = static_cast<double>(ULONG_MAX);
+   #endif
 #endif
 
 // TODO: Check
@@ -345,35 +363,35 @@ char const TILDE = '~';
 
 // TESTING options
 bool const ACCEPT_TRUNCATED_PROFILES = true;
-bool const CREATE_SHADOW_ZONE_IF_HITS_GRID_EDGE = true; // If shadow line tracing hits grid edge, create shadow zone?
-bool const SAVE_CSHORE_OUTPUT = true;                   // #ifdef CSHORE_FILE_INOUT || CSHORE_BOTH, append all CShore output files to a whole-run master
-bool const USE_DEEP_WATER_FOR_SHADOW_LINE = true;       // Use deep water wave orientation in determining shadow line orientation?
+bool const CREATE_SHADOW_ZONE_IF_HITS_GRID_EDGE = true;  // If shadow line tracing hits grid edge, create shadow zone?
+bool const SAVE_CSHORE_OUTPUT = true;                    // #ifdef CSHORE_FILE_INOUT || CSHORE_BOTH, append all CShore output files to a whole-run master
+bool const USE_DEEP_WATER_FOR_SHADOW_LINE = true;        // Use deep water wave orientation in determining shadow line orientation?
 
 // Not likely that user will need to change these
-int const NUMBER_OF_RNGS = 2;                 // Number of random number generators
-int const SAVEMAX = 100000;                   // Maximum number of saves of spatial output
-int const BUF_SIZE = 2048;                    // Max length (inc. terminating NULL) of any C-type string
-int const CAPE_POINT_MIN_SPACING = 10;        // In cells: for shadow zone stuff, cape points must not be closer than this
-int const CLOCK_CHECK_ITERATION = 5000;       // If have done this many timesteps then reset the CPU time running total
-int const COAST_LENGTH_MAX = 10;              // For safety check when tracing coast
-int const COAST_LENGTH_MIN_X_PROF_SPACE = 20; // Ignore very short coasts less than this x profile spacing
+int const NUMBER_OF_RNGS = 2;                            // Number of random number generators
+int const SAVEMAX = 100000;                              // Maximum number of saves of spatial output
+int const BUF_SIZE = 2048;                               // Max length (inc. terminating NULL) of any C-type string
+int const CAPE_POINT_MIN_SPACING = 10;                   // In cells: for shadow zone stuff, cape points must not be closer than this
+int const CLOCK_CHECK_ITERATION = 5000;                  // If have done this many timesteps then reset the CPU time running total
+int const COAST_LENGTH_MAX = 10;                         // For safety check when tracing coast
+int const COAST_LENGTH_MIN_X_PROF_SPACE = 20;            // Ignore very short coasts less than this x profile spacing
 
-//! The size of the arrays output by CShore. If you change this, then you must also set the same value on line 12 of cshore_wrapper.f03 (integer, parameter :: NN = 1000, NL = 1) and recompile CShore. Eventually we should move to dynamically allocated arrays TODO 070
+//! The size of the arrays output by CShore. If this is changed, then must also set the same value on line 12 of cshore_wrapper.f03 (integer, parameter :: NN = 1000, NL = 1) and recompile CShore. Eventually we should move to dynamically allocated arrays TODO 070
 int const CSHOREARRAYOUTSIZE = 1000;
 
-int const FLOOD_FILL_START_OFFSET = 2;            // In cells: cell-by-cell fill starts this distance inside polygon
-int const GRID_MARGIN = 10;                       // Ignore this many along-coast grid-edge points re. shadow zone calcs
-int const INT_NODATA = -9999;                     // CME's internal NODATA value for ints
-int const MAX_CLIFF_TALUS_LENGTH = 100;           // In cells: maximum length of the Dean  profile for cliff collapse talus TEST
-int const MAX_SEAWARD_OFFSET_FOR_CLIFF_TALUS = 30; // In cells: maximum distance that the Dean profile for cliff collapse talus can be offset from the coast TEST
-int const MAX_LEN_SHADOW_LINE_TO_IGNORE = 200;    // In cells: if can't find cell-by-cell fill start point, continue if short shadow line
-int const MAX_NUM_PREV_ORIENTATION_VALUES = 10;   // Max length of deque used in tracing shadow boundary
-int const MAX_NUM_SHADOW_ZONES = 10;              // Consider at most this number of shadow zones
-int const MIN_INLAND_OFFSET_UNCONS_EROSION = 5;   // Used in estimation of beach erosion
-int const MIN_PARALLEL_PROFILE_SIZE = 3;          // In cells: min size for valid unconsolidated sediment parallel profile
-int const MIN_PROFILE_SIZE = 3;                   // In cells: min size for valid unconsolidated sediment profile
-int const DEFAULT_PROFILE_SPACING = 15;           // In cells: profile creation does not work well if profiles are too closely spaced
-int const SAVGOL_POLYNOMIAL_MAX_ORDER = 6;        // Maximum order of Savitzky-Golay smoothing polynomial
+int const FLOOD_FILL_START_OFFSET = 2;                   // In cells: cell-by-cell fill starts this distance inside polygon
+int const GRID_MARGIN = 10;                              // Ignore this many along-coast grid-edge points re. shadow zone calcs
+int const INT_NODATA = -9999;                            // CME's internal NODATA value for ints
+int const MAX_CLIFF_TALUS_LENGTH = 100;                  // In cells: maximum length of the Dean  profile for cliff collapse talus
+int const MAX_SEAWARD_OFFSET_FOR_CLIFF_TALUS = 30;       // In cells: maximum distance that the Dean profile for cliff collapse talus can be offset from the coast
+int const MAX_LEN_SHADOW_LINE_TO_IGNORE = 200;           // In cells: if can't find cell-by-cell fill start point, continue if short shadow line
+int const MAX_NUM_PREV_ORIENTATION_VALUES = 10;          // Max length of deque used in tracing shadow boundary
+int const MAX_NUM_SHADOW_ZONES = 10;                     // Consider at most this number of shadow zones
+int const MIN_INLAND_OFFSET_UNCONS_EROSION = 5;          // Used in estimation of beach erosion
+int const MIN_PARALLEL_PROFILE_SIZE = 3;                 // In cells: min size for valid unconsolidated sediment parallel profile
+int const MIN_PROFILE_SIZE = 3;                          // In cells: min size for valid unconsolidated sediment profile
+int const DEFAULT_PROFILE_SPACING = 15;                  // In cells: profile creation does not work well if profiles are too closely spaced
+int const SAVGOL_POLYNOMIAL_MAX_ORDER = 6;               // Maximum order of Savitzky-Golay smoothing polynomial
 
 // Log file detail level
 int const NO_LOG_FILE = 0;
@@ -730,7 +748,7 @@ double const INTERVENTION_PROFILE_SPACING_FACTOR = 0.5;     // Profile spacing o
 
 double const DBL_NODATA = -9999;
 
-string const PROGRAM_NAME = "Coastal Modelling Environment (CoastalME) version 1.3.28 (25 Aug 2025)";
+string const PROGRAM_NAME = "Coastal Modelling Environment (CoastalME) version 1.3.29 (26 Aug 2025)";
 string const PROGRAM_NAME_SHORT = "CME";
 string const CME_INI = "cme.ini";
 

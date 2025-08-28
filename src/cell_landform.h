@@ -34,7 +34,7 @@ class CRWCellLandform
    int m_nCoast;
 
    //! Point on coast on which this landform sits (if any)
-   int m_nPointOnCoast;
+   int m_nPointOnCoastline;
 
    //! Accumulate wave energy for this landform on this cell
    double m_dAccumWaveEnergy;
