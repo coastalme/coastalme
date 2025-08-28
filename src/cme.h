@@ -748,7 +748,7 @@ double const INTERVENTION_PROFILE_SPACING_FACTOR = 0.5;     // Profile spacing o
 
 double const DBL_NODATA = -9999;
 
-string const PROGRAM_NAME = "Coastal Modelling Environment (CoastalME) version 1.3.29 (26 Aug 2025)";
+string const PROGRAM_NAME = "Coastal Modelling Environment (CoastalME) version 1.4.0 (28 Aug 2025)";
 string const PROGRAM_NAME_SHORT = "CME";
 string const CME_INI = "cme.ini";
 
