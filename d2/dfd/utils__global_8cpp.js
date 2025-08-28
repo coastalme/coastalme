@@ -8,6 +8,7 @@ var utils__global_8cpp =
     [ "operator<<", "d2/dfd/utils__global_8cpp.html#ae0262af7d3f446a8eb6115d0cc71dee7", null ],
     [ "strCentre", "d2/dfd/utils__global_8cpp.html#aae182dc09c092ac41e15899872fa4ee8", null ],
     [ "strCentre", "d2/dfd/utils__global_8cpp.html#ae21b74034f2abc7764eb5856a7fd2dfc", null ],
+    [ "strDbl", "d2/dfd/utils__global_8cpp.html#a8f88a744034352a47b281e19a073d29d", null ],
     [ "strDblRight", "d2/dfd/utils__global_8cpp.html#a30c103b43ca783607fdf8352fcfde74f", null ],
     [ "strIntRight", "d2/dfd/utils__global_8cpp.html#afb51c4899554112321f96dddf480fcfb", null ],
     [ "strLeft", "d2/dfd/utils__global_8cpp.html#acd93d88e5ae6bbaee39c1812e33a86c3", null ],

@@ -7,6 +7,7 @@ var classCRWCliff =
     [ "DeepenErosionalNotch", "d9/d8b/classCRWCliff.html#a6ded2d94f7a674e8a6d8315e5f301a6f", null ],
     [ "dGetNotchBaseElev", "d9/d8b/classCRWCliff.html#a70151d708b933a25eb7836d63cea7f8b", null ],
     [ "dGetNotchDepth", "d9/d8b/classCRWCliff.html#aa5b22689c3aeb51ec82713f1f93f2539", null ],
+    [ "dGetRemaining", "d9/d8b/classCRWCliff.html#abdce12006e217f4d250bf00a95026264", null ],
     [ "Display", "d9/d8b/classCRWCliff.html#a6a783476fea6db3eb163214d2a24279d", null ],
     [ "SetCliffCollapsed", "d9/d8b/classCRWCliff.html#ab7084345058193f7084d7fcaecb9ea1b", null ],
     [ "SetNotchBaseElev", "d9/d8b/classCRWCliff.html#a73acc82455562b794d027455c1b8c3d5", null ],

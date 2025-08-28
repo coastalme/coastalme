@@ -10,7 +10,7 @@ var searchData=
   ['init_5fgrid_2ecpp_7',['init_grid.cpp',['../da/d3c/init__grid_8cpp.html',1,'']]],
   ['initcell_8',['InitCell',['../d1/dd9/classCGeomCell.html#a23ee007a2e5cfae10b8c36e5008e5a0e',1,'CGeomCell']]],
   ['initializegdalperformance_9',['InitializeGDALPerformance',['../d1/d98/classCSimulation.html#a38b6222457659711a3c8d0d95ef8ec2b',1,'CSimulation']]],
-  ['initializing_5ffinal_10',['INITIALIZING_FINAL',['../d6/d2a/cme_8h.html#ac7846fb78f9e49975756756a04844d23',1,'cme.h']]],
+  ['initializing_10',['INITIALIZING',['../d6/d2a/cme_8h.html#a76950589a8cb258c21b24cab7aac4262',1,'cme.h']]],
   ['initializing_5fnotice_11',['INITIALIZING_NOTICE',['../d6/d2a/cme_8h.html#a478db25cd56680e23b4b8f302f06cca2',1,'cme.h']]],
   ['initthisitersedimentinputall_12',['InitThisIterSedimentInputAll',['../d5/dc6/classCRWCellSediment.html#a8768fd259ff989b8af4616420f4ef09d',1,'CRWCellSediment']]],
   ['input_20file_13',['Specifying the input file',['../index.html#run_step1',1,'']]],

@@ -27,8 +27,8 @@ var searchData=
   ['south_5fwest_24',['SOUTH_WEST',['../d6/d2a/cme_8h.html#a7a3b237ac891f748a20b4614bf7fc437',1,'cme.h']]],
   ['space_25',['SPACE',['../d6/d2a/cme_8h.html#aff09a9868303fc55a863e0553987dd25',1,'cme.h']]],
   ['start_5fnotice_26',['START_NOTICE',['../d6/d2a/cme_8h.html#aebe57b91dc83faa0475e661581f84292',1,'cme.h']]],
-  ['straight_5fcoast_5fmax_5fdetailed_5fcurvature_27',['STRAIGHT_COAST_MAX_DETAILED_CURVATURE',['../d6/d2a/cme_8h.html#a6cb854f212433408f9e33d08b3587c29',1,'cme.h']]],
-  ['straight_5fcoast_5fmax_5fsmooth_5fcurvature_28',['STRAIGHT_COAST_MAX_SMOOTH_CURVATURE',['../d6/d2a/cme_8h.html#a9736ac958127bedd49f08282d64b4b8c',1,'cme.h']]],
-  ['susp_5fsed_5fraster_29',['SUSP_SED_RASTER',['../d6/d2a/cme_8h.html#ad14e0dc7b394b6bdd9dbd3ebd0b745ab',1,'cme.h']]],
-  ['swltsstream_30',['SWLTSStream',['../d1/d98/classCSimulation.html#a93d12467bacf0991a033787f80a620bf',1,'CSimulation']]]
+  ['stillwaterleveltsstream_27',['StillWaterLevelTSStream',['../d1/d98/classCSimulation.html#a76d7c47f29a82dac60e7d90197e65e1b',1,'CSimulation']]],
+  ['straight_5fcoast_5fmax_5fdetailed_5fcurvature_28',['STRAIGHT_COAST_MAX_DETAILED_CURVATURE',['../d6/d2a/cme_8h.html#a6cb854f212433408f9e33d08b3587c29',1,'cme.h']]],
+  ['straight_5fcoast_5fmax_5fsmooth_5fcurvature_29',['STRAIGHT_COAST_MAX_SMOOTH_CURVATURE',['../d6/d2a/cme_8h.html#a9736ac958127bedd49f08282d64b4b8c',1,'cme.h']]],
+  ['susp_5fsed_5fraster_30',['SUSP_SED_RASTER',['../d6/d2a/cme_8h.html#ad14e0dc7b394b6bdd9dbd3ebd0b745ab',1,'cme.h']]]
 ];

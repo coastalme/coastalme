@@ -18,6 +18,8 @@ var classCGeomMultiLine =
     [ "pGetPoints", "d0/d89/classCGeomMultiLine.html#a5691c35d3bd1e3d797d34e9e5c28af1f", null ],
     [ "pprVGetPairedCoincidentProfilesForLineSegment", "d0/d89/classCGeomMultiLine.html#ab0146cd34539f41588924571dbfb2054", null ],
     [ "prVVGetAllLineSegAfter", "d0/d89/classCGeomMultiLine.html#a66541bcbd102c19829637e60f8fe7860", null ],
+    [ "RemoveLineSegment", "d0/d89/classCGeomMultiLine.html#a5dd8429e85926cd127b0397ef61efecb", null ],
+    [ "SetPoints", "d0/d89/classCGeomMultiLine.html#a8035bfd430d6d60af4d0c54300440c27", null ],
     [ "SetProfsLineSeg", "d0/d89/classCGeomMultiLine.html#aaf7c0ab9f64c31133be98ac87b114072", null ],
     [ "TruncateLineSegments", "d0/d89/classCGeomMultiLine.html#a5b5c8a7d272d53dd98279480f7a6a976", null ],
     [ "m_prVVLineSegment", "d0/d89/classCGeomMultiLine.html#ad4d3e975f72da69900b3b469bdfea2ad", null ]
