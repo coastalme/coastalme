@@ -67,55 +67,6 @@ int CSimulation::nDoCliffCollapseDepositionOriginal(int const nCoast, CRWCliff c
 
    CGeomCoastPolygon* pPolygon = m_VCoast[nCoast].pGetPolygon(nPoly);
 
-
-   // bool bAllDeposited = false;
-   //
-   // // Assume planview semicircle of talus
-   // do
-   // {
-   //    double dFanRadius = 25; // In m, read this in
-   //    int nFanRadius = nConvertMetresToNumCells(dFanRadius);
-   //
-   //    // Now draw first depositional profile normal to the average coast
-   //    CGeom2DPoint PtStart(dXCliff, dYCliff);      // In external CRS
-   //
-   //    CGeom2DPoint PtEnd;        // In external CRS
-   //    CGeom2DIPoint PtiEnd;      // In grid CRS
-   //
-   //    int const nRet = nGetCoastNormalEndPoint(nCoast, nStartPoint, nCoastSize, &PtStart, dFanRadius, &PtEnd, &PtiEnd, false);
-   //    if (nRet == RTN_ERR_NO_SOLUTION_FOR_ENDPOINT)
-   //    {
-   //       // Could not solve end-point equation, so give up
-   //       return nRet;
-   //    }
-   //
-   //    int const nXEnd = PtiEnd.nGetX();
-   //    int const nYEnd = PtiEnd.nGetY();
-   //
-   //    // Safety check: is the end point in the contiguous sea?
-   //    if (! m_pRasterGrid->m_Cell[nXEnd][nYEnd].bIsInContiguousSea())
-   //    {
-   //       // if (m_nLogFileDetail >= LOG_FILE_ALL)
-   //       // LogStream << m_ulIter << ": coast " << nCoast << ", possible profile with start point " << nProfileStartPoint << " has inland end point at [" << nXEnd << "][" << nYEnd << "] = {" << dGridCentroidXToExtCRSX(nXEnd) << ", " << dGridCentroidYToExtCRSY(nYEnd) << "}, ignoring" << endl;
-   //
-   //       return RTN_ERR_PROFILE_ENDPOINT_IS_INLAND;
-   //    }
-   //
-   //
-   //    //, then draw other on either side parallel to this (so forming a semicircle)
-   //
-   //    // 3. Each profile is given a quota to deposit "under" a Dean profile starting at the coastline (i.e. so that all points are below SWL)
-   //    // 4. Try to deposit this quota (ignore pre-existing lumps higher than the Dean profile)
-   //    // 5. If can't deposit quota for a given profile then extend the start point of the Dean profile outwards (i.e. seawards) just below SWL until can deposit quota, or until hit max extension (we then pass on undeposited sediment to the next profile)
-   //    // 6. If still can't deposit all talus after the final parallel profile, then go back to 1. and increase the radius of the semicircle
-   //
-   //
-   // } while (! bAllDeposited);
-   //
-
-
-
-
    // OK, now set up the planview sequence talus deposition. First we deposit a volume of talus which fits "under" a Dean profile starting from the coast (i.e. the cliff collapse cell). Then we deposit along the two profiles which start from the coast cells on either side of the cliff collapse cell, and then on two more profiles starting on either side of the last two coast cells, and so on. This holds the valid coast start points for each cliff collapse Dean profile
    vector<int> VnTalusProfileCoastStartPoint(nCoastSize);
 
@@ -753,5 +704,50 @@ void CSimulation::RasterizeCliffCollapseProfile(vector<CGeom2DPoint> const* pVPo
 //===============================================================================================================================
 int CSimulation::nDoCliffCollapseDepositionNew(void)
 {
+   // bool bAllDeposited = false;
+   //
+   // // Assume planview semicircle of talus
+   // do
+   // {
+   //    double dFanRadius = 25; // In m, read this in
+   //    int nFanRadius = nConvertMetresToNumCells(dFanRadius);
+   //
+   //    // Now draw first depositional profile normal to the average coast
+   //    CGeom2DPoint PtStart(dXCliff, dYCliff);      // In external CRS
+   //
+   //    CGeom2DPoint PtEnd;        // In external CRS
+   //    CGeom2DIPoint PtiEnd;      // In grid CRS
+   //
+   //    int const nRet = nGetCoastNormalEndPoint(nCoast, nStartPoint, nCoastSize, &PtStart, dFanRadius, &PtEnd, &PtiEnd, false);
+   //    if (nRet == RTN_ERR_NO_SOLUTION_FOR_ENDPOINT)
+   //    {
+   //       // Could not solve end-point equation, so give up
+   //       return nRet;
+   //    }
+   //
+   //    int const nXEnd = PtiEnd.nGetX();
+   //    int const nYEnd = PtiEnd.nGetY();
+   //
+   //    // Safety check: is the end point in the contiguous sea?
+   //    if (! m_pRasterGrid->m_Cell[nXEnd][nYEnd].bIsInContiguousSea())
+   //    {
+   //       // if (m_nLogFileDetail >= LOG_FILE_ALL)
+   //       // LogStream << m_ulIter << ": coast " << nCoast << ", possible profile with start point " << nProfileStartPoint << " has inland end point at [" << nXEnd << "][" << nYEnd << "] = {" << dGridCentroidXToExtCRSX(nXEnd) << ", " << dGridCentroidYToExtCRSY(nYEnd) << "}, ignoring" << endl;
+   //
+   //       return RTN_ERR_PROFILE_ENDPOINT_IS_INLAND;
+   //    }
+   //
+   //
+   //    //, then draw other on either side parallel to this (so forming a semicircle)
+   //
+   //    // 3. Each profile is given a quota to deposit "under" a Dean profile starting at the coastline (i.e. so that all points are below SWL)
+   //    // 4. Try to deposit this quota (ignore pre-existing lumps higher than the Dean profile)
+   //    // 5. If can't deposit quota for a given profile then extend the start point of the Dean profile outwards (i.e. seawards) just below SWL until can deposit quota, or until hit max extension (we then pass on undeposited sediment to the next profile)
+   //    // 6. If still can't deposit all talus after the final parallel profile, then go back to 1. and increase the radius of the semicircle
+   //
+   //
+   // } while (! bAllDeposited);
+   //
+
    return RTN_OK;
 }
