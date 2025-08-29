@@ -3309,6 +3309,30 @@ bool CSimulation::bReadRunDataFile(void)
             }
 
             break;
+
+         case 91:
+            // Cliff talus deposition: 0 = original, 1 = new
+            if (m_bHaveConsolidatedSediment && m_bDoCliffCollapse)
+            {
+               if (! bIsStringValidInt(strRH))
+               {
+                  strErr = "line ";
+                  strErr += to_string(nLine);
+                  strErr += ": invalid integer for cliff talus deposition approach '";
+                  strErr += strRH;
+                  strErr += "' in " + m_strDataPathName;
+
+                  break;
+               }
+
+               m_nCliffTalusDepositionApproach  = stoi(strRH);
+
+               if ((m_nCliffTalusDepositionApproach  < 0) || (m_nCliffTalusDepositionApproach  > 1))
+                  strErr = "line " + to_string(nLine) + ": cliff talus deposition approach must be 0 or 1";
+            }
+
+            break;
+
          }
 
          // Did an error occur?

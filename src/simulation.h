@@ -593,6 +593,9 @@ class CSimulation
    // The minimum planview length (in cells) of the Dean profile formed by the cliff collapse Talus
    int m_nTalusProfileMinLenInCells;
 
+   //! The approach used to represent cliff talus deposition
+   int m_nCliffTalusDepositionApproach;
+
    //! The data type used by GDAL for integer operations, can be GDT_Byte, GDT_Int16, GDT_UInt16, GDT_Int32, or GDT_UInt32
    GDALDataType m_GDALWriteIntDataType;
 
@@ -1631,7 +1634,8 @@ class CSimulation
    int nDoAllShorePlatFormErosion(void);
    int nDoAllWaveEnergyToCoastLandforms(void);
    int nDoCliffCollapse(int const, CRWCliff *, double&, double&, double&, double&, double&);
-   int nDoCliffCollapseDeposition(int const, CRWCliff const*, double const, double const, double const, double const);
+   int nDoCliffCollapseDepositionOriginal(int const, CRWCliff const*, double const, double const, double const, double const);
+   int nDoCliffCollapseDepositionNew(void);
    int nUpdateGrid(void);
 
    // For cliff toe location

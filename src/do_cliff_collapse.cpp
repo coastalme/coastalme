@@ -176,8 +176,11 @@ int CSimulation::nDoAllWaveEnergyToCoastLandforms(void)
                      LogStream << m_ulIter << ": " << WARN << "problem with cliff collapse, continuing however" << endl;
                }
 
-               // Deposit all sand and/or coarse sediment derived from this cliff collapse as unconsolidated sediment (talus)
-               nRet = nDoCliffCollapseDeposition(nCoast, pCliff, dSandCollapse, dCoarseCollapse, dCliffElevPreCollapse, dCliffElevPostCollapse);
+               // Deposit all sand and/or coarse sediment derived from this cliff collapse as unconsolidated sediment (talus). Use either the original approach or the new experimental approach
+               if (m_nCliffTalusDepositionApproach == 0)
+                  nRet = nDoCliffCollapseDepositionOriginal(nCoast, pCliff, dSandCollapse, dCoarseCollapse, dCliffElevPreCollapse, dCliffElevPostCollapse);
+               else
+                  nRet = nDoCliffCollapseDepositionNew();
 
                if (nRet != RTN_OK)
                   return nRet;

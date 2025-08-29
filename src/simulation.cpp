@@ -234,7 +234,8 @@ CSimulation::CSimulation(void)
    m_nRunUpEquation =
    m_nLevel =
    m_nDefaultTalusWidthInCells =
-   m_nTalusProfileMinLenInCells = 0;
+   m_nTalusProfileMinLenInCells =
+   m_nCliffTalusDepositionApproach = 0;
 
    // TODO 011 May wish to make this a user-supplied value
    m_nGISMissingValue =
