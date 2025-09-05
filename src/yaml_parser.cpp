@@ -260,6 +260,7 @@ bool CYamlParser::bParseLine(string const& strLine, string& strKey, string& strV
       bIsSequence = true;
       strKey.clear();
       strValue = strTrim(strTrimmed.substr(1));
+      strValue = strRemoveQuotes(strValue);
       return true;
    }
    
@@ -274,7 +275,28 @@ bool CYamlParser::bParseLine(string const& strLine, string& strKey, string& strV
    else
       strValue.clear();
    
+   // Remove quotes from string values
+   strValue = strRemoveQuotes(strValue);
+   
    return true;
+}
+
+string CYamlParser::strRemoveQuotes(string const& strValue) const
+{
+   string result = strValue;
+   
+   // Remove surrounding double quotes
+   if (result.length() >= 2 && result.front() == '"' && result.back() == '"')
+   {
+      result = result.substr(1, result.length() - 2);
+   }
+   // Remove surrounding single quotes
+   else if (result.length() >= 2 && result.front() == '\'' && result.back() == '\'')
+   {
+      result = result.substr(1, result.length() - 2);
+   }
+   
+   return result;
 }
 
 CYamlNode CYamlParser::ParseSection(ifstream& fileStream, int nBaseIndent)

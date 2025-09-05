@@ -1580,6 +1580,7 @@ class CSimulation
    bool bDetectFileFormat(string const& strFileName, bool& bIsYaml);
    bool bConfigureFromDatFile(CConfiguration& config);
    bool bConfigureFromYamlFile(CConfiguration& config);
+   bool bApplyConfiguration(CConfiguration const& config);
    bool bOpenLogFile(void);
    bool bSetUpTSFiles(void);
    void WriteStartRunDetails(void);

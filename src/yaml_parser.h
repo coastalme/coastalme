@@ -82,6 +82,7 @@ private:
    bool bIsComment(string const& strLine) const;
    bool bIsEmpty(string const& strLine) const;
    bool bParseLine(string const& strLine, string& strKey, string& strValue, bool& bIsSequence) const;
+   string strRemoveQuotes(string const& strValue) const;
    CYamlNode ParseSection(ifstream& fileStream, int nBaseIndent);
 
 public:
