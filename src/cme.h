@@ -856,6 +856,7 @@ string const USAGE2 = "  --about            Information about this program";
 string const USAGE3 = "  --help             Display this text";
 string const USAGE4 = "  --home=DIRECTORY   Specify the location of the .ini file etc.";
 string const USAGE5 = "  --datafile=FILE    Specify the location and name of the main datafile";
+string const USAGE6 = "  --yaml             Use YAML format for the main datafile";
 
 string const START_NOTICE = "- Started on ";
 string const INITIALIZING_NOTICE = "- Initializing";

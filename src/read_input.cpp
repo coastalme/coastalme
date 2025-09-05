@@ -29,6 +29,7 @@ using std::atol;
 
 #include <cctype>
 using std::isdigit;
+using std::tolower;
 
 #include <cmath>
 using std::floor;
@@ -48,6 +49,7 @@ using std::to_string;
 #include <algorithm>
 using std::find;
 using std::sort;
+using std::transform;
 
 #include <random>
 using std::random_device;
@@ -55,6 +57,8 @@ using std::random_device;
 #include "cme.h"
 #include "sediment_input_event.h"
 #include "simulation.h"
+#include "yaml_parser.h"
+#include "configuration.h"
 
 //===============================================================================================================================
 //! The bReadIniFile member function reads the initialization file
@@ -237,24 +241,78 @@ bool CSimulation::bReadIniFile(void)
 }
 
 //===============================================================================================================================
+//! Detects whether the input file is in YAML or .dat format
+//===============================================================================================================================
+bool CSimulation::bDetectFileFormat(string const& strFileName, bool& bIsYaml)
+{
+   bIsYaml = false;
+   
+   // First check command-line flag
+   if (m_bYamlInputFormat)
+   {
+      bIsYaml = true;
+      return true;
+   }
+   
+   // Check file extension
+   size_t nDotPos = strFileName.find_last_of('.');
+   if (nDotPos != string::npos)
+   {
+      string strExt = strFileName.substr(nDotPos + 1);
+      std::transform(strExt.begin(), strExt.end(), strExt.begin(), ::tolower);
+      
+      if (strExt == "yaml" || strExt == "yml")
+      {
+         bIsYaml = true;
+         return true;
+      }
+      else if (strExt == "dat")
+      {
+         bIsYaml = false;
+         return true;
+      }
+   }
+   
+   // Default to .dat format if extension is ambiguous
+   bIsYaml = false;
+   return true;
+}
+
+//===============================================================================================================================
 //! Reads the run details input file and does some initialization
 // TODO 000 Should user input be split in two main files: one for frequently-changed things, one for rarely-changed things? If so, what should go into each file ('testing only' OK, but what else?)
 //===============================================================================================================================
 bool CSimulation::bReadRunDataFile(void)
 {
-   // Create an ifstream object
-   ifstream InStream;
-
-   // Try to open run details file for input
-   InStream.open(m_strDataPathName.c_str(), ios::in);
-
-   // Did it open OK?
-   if (!InStream.is_open())
+   // Detect file format
+   bool bIsYaml;
+   if (!bDetectFileFormat(m_strDataPathName, bIsYaml))
    {
-      // Error: cannot open run details file for input
-      cerr << ERR << "cannot open " << m_strDataPathName << " for input" << endl;
+      cerr << ERR << "failed to detect file format for " << m_strDataPathName << endl;
       return false;
    }
+   
+   // Use appropriate parser based on format
+   if (bIsYaml)
+   {
+      return bReadYamlFile();
+   }
+   else
+   {
+      // Continue with original .dat file parsing
+      // Create an ifstream object
+      ifstream InStream;
+
+      // Try to open run details file for input
+      InStream.open(m_strDataPathName.c_str(), ios::in);
+
+      // Did it open OK?
+      if (!InStream.is_open())
+      {
+         // Error: cannot open run details file for input
+         cerr << ERR << "cannot open " << m_strDataPathName << " for input" << endl;
+         return false;
+      }
 
    int nLine = 0;
    int i = 0;
@@ -3355,6 +3413,7 @@ bool CSimulation::bReadRunDataFile(void)
    }
 
    return true;
+   } // End of else block for .dat file parsing
 }
 
 //===============================================================================================================================
@@ -4059,4 +4118,127 @@ int CSimulation::nReadSedimentInputEventFile(void)
    InStream.close();
 
    return RTN_OK;
+}
+
+//===============================================================================================================================
+//! Reads YAML configuration file
+//===============================================================================================================================
+bool CSimulation::bReadYamlFile(void)
+{
+   CConfiguration config;
+   if (!bConfigureFromYamlFile(config))
+      return false;
+   
+   // Apply configuration to simulation object - this will be implemented when updating bReadRunDataFile
+   // For now, return success if YAML parsing worked
+   return true;
+}
+
+//===============================================================================================================================
+//! Configures simulation from YAML file
+//===============================================================================================================================
+bool CSimulation::bConfigureFromYamlFile(CConfiguration& config)
+{
+   CYamlParser parser;
+   
+   if (!parser.bParseFile(m_strDataPathName))
+   {
+      cerr << ERR << "Failed to parse YAML file " << m_strDataPathName << ": " << parser.GetError() << endl;
+      return false;
+   }
+   
+   CYamlNode root = parser.GetRoot();
+   
+   try
+   {
+      // Run Information
+      if (root.HasChild("run_information"))
+      {
+         CYamlNode runInfo = root.GetChild("run_information");
+         if (runInfo.HasChild("output_file_names"))
+            config.SetRunName(runInfo.GetChild("output_file_names").GetValue());
+         if (runInfo.HasChild("log_file_detail"))
+            config.SetLogFileDetail(runInfo.GetChild("log_file_detail").GetIntValue());
+         if (runInfo.HasChild("csv_per_timestep_results"))
+            config.SetCSVPerTimestepResults(runInfo.GetChild("csv_per_timestep_results").GetBoolValue());
+      }
+      
+      // Simulation
+      if (root.HasChild("simulation"))
+      {
+         CYamlNode sim = root.GetChild("simulation");
+         if (sim.HasChild("start_date_time"))
+            config.SetStartDateTime(sim.GetChild("start_date_time").GetValue());
+         if (sim.HasChild("duration"))
+            config.SetDuration(sim.GetChild("duration").GetValue());
+         if (sim.HasChild("timestep"))
+            config.SetTimestep(sim.GetChild("timestep").GetValue());
+         if (sim.HasChild("save_times"))
+         {
+            CYamlNode saveTimes = sim.GetChild("save_times");
+            if (saveTimes.IsSequence())
+               config.SetSaveTimes(saveTimes.GetStringSequence());
+         }
+         if (sim.HasChild("random_seed"))
+            config.SetRandomSeed(sim.GetChild("random_seed").GetIntValue());
+      }
+      
+      // GIS Output
+      if (root.HasChild("gis_output"))
+      {
+         CYamlNode gis = root.GetChild("gis_output");
+         if (gis.HasChild("max_save_digits"))
+            config.SetMaxSaveDigits(gis.GetChild("max_save_digits").GetIntValue());
+         if (gis.HasChild("save_digits_mode"))
+            config.SetSaveDigitsMode(gis.GetChild("save_digits_mode").GetValue());
+         if (gis.HasChild("raster_files"))
+         {
+            CYamlNode rasterFiles = gis.GetChild("raster_files");
+            if (rasterFiles.IsSequence())
+               config.SetRasterFiles(rasterFiles.GetStringSequence());
+         }
+         if (gis.HasChild("raster_format"))
+            config.SetRasterFormat(gis.GetChild("raster_format").GetValue());
+         if (gis.HasChild("world_file"))
+            config.SetWorldFile(gis.GetChild("world_file").GetBoolValue());
+         if (gis.HasChild("scale_values"))
+            config.SetScaleValues(gis.GetChild("scale_values").GetBoolValue());
+      }
+      
+      // Hydrology
+      if (root.HasChild("hydrology"))
+      {
+         CYamlNode hydro = root.GetChild("hydrology");
+         if (hydro.HasChild("wave_propagation_model"))
+         {
+            string strModel = hydro.GetChild("wave_propagation_model").GetValue();
+            if (strModel == "COVE")
+               config.SetWavePropagationModel(0);
+            else if (strModel == "CShore")
+               config.SetWavePropagationModel(1);
+         }
+         if (hydro.HasChild("seawater_density"))
+            config.SetSeawaterDensity(hydro.GetChild("seawater_density").GetDoubleValue());
+         if (hydro.HasChild("initial_water_level"))
+            config.SetInitialWaterLevel(hydro.GetChild("initial_water_level").GetDoubleValue());
+         if (hydro.HasChild("wave_height"))
+            config.SetDeepWaterWaveHeight(hydro.GetChild("wave_height").GetDoubleValue());
+         if (hydro.HasChild("wave_orientation"))
+            config.SetDeepWaterWaveOrientation(hydro.GetChild("wave_orientation").GetDoubleValue());
+         if (hydro.HasChild("wave_period"))
+            config.SetWavePeriod(hydro.GetChild("wave_period").GetDoubleValue());
+         if (hydro.HasChild("tide_data_file"))
+            config.SetTideDataFile(hydro.GetChild("tide_data_file").GetValue());
+      }
+      
+      // Add more sections as needed...
+      
+   }
+   catch (const std::exception& e)
+   {
+      cerr << ERR << "Error processing YAML configuration: " << e.what() << endl;
+      return false;
+   }
+   
+   return true;
 }

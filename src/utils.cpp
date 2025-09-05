@@ -139,7 +139,13 @@ int CSimulation::nHandleCommandLineParams(int nArg, char const* pcArgv[])
 
          else
          {
-            if (strArg.find("--home") != string::npos)
+            if (strArg.find("--yaml") != string::npos)
+            {
+               // User wants to use YAML format for input datafile
+               m_bYamlInputFormat = true;
+            }
+            
+            else if (strArg.find("--home") != string::npos)
             {
                // Read in user defined runtime directory
                // string strTmp;
@@ -173,6 +179,7 @@ int CSimulation::nHandleCommandLineParams(int nArg, char const* pcArgv[])
                cout << USAGE3 << endl;
                cout << USAGE4 << endl;
                cout << USAGE5 << endl;
+               cout << USAGE6 << endl;
 
                return (RTN_HELP_ONLY);
             }
