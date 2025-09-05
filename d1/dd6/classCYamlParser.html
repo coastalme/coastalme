@@ -141,6 +141,8 @@ Private Member Functions</h2></td></tr>
 <tr class="separator:afb4df858e4ebac272256e87eac53c7a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a772318bed81980ef0d5966a4b4338f99" id="r_a772318bed81980ef0d5966a4b4338f99"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a772318bed81980ef0d5966a4b4338f99">bParseLine</a> (<a class="el" href="../../d5/d92/classstring.html">string</a> const &amp;strLine, <a class="el" href="../../d5/d92/classstring.html">string</a> &amp;strKey, <a class="el" href="../../d5/d92/classstring.html">string</a> &amp;strValue, bool &amp;bIsSequence) const</td></tr>
 <tr class="separator:a772318bed81980ef0d5966a4b4338f99"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a15f874a8c6e2196e1b9f304cb81f143a" id="r_a15f874a8c6e2196e1b9f304cb81f143a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d5/d92/classstring.html">string</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a15f874a8c6e2196e1b9f304cb81f143a">strRemoveQuotes</a> (<a class="el" href="../../d5/d92/classstring.html">string</a> const &amp;strValue) const</td></tr>
+<tr class="separator:a15f874a8c6e2196e1b9f304cb81f143a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac09fa62798f7d8f6d7512667d5b1cfec" id="r_ac09fa62798f7d8f6d7512667d5b1cfec"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d7/dab/classCYamlNode.html">CYamlNode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac09fa62798f7d8f6d7512667d5b1cfec">ParseSection</a> (<a class="el" href="../../d0/d68/classifstream.html">ifstream</a> &amp;fileStream, int nBaseIndent)</td></tr>
 <tr class="separator:ac09fa62798f7d8f6d7512667d5b1cfec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -243,7 +245,7 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="../../d1/d34/yaml__parser_8cpp_source.html#l00241">241</a> of file <a class="el" href="../../d1/d34/yaml__parser_8cpp_source.html">yaml_parser.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d1/d34/yaml__parser_8cpp_source.html#l00280">ParseSection()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d1/d34/yaml__parser_8cpp_source.html#l00302">ParseSection()</a>.</p>
 
 </div>
 </div>
@@ -272,7 +274,7 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="../../d1/d34/yaml__parser_8cpp_source.html#l00247">247</a> of file <a class="el" href="../../d1/d34/yaml__parser_8cpp_source.html">yaml_parser.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d1/d34/yaml__parser_8cpp_source.html#l00280">ParseSection()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d1/d34/yaml__parser_8cpp_source.html#l00302">ParseSection()</a>.</p>
 
 </div>
 </div>
@@ -336,7 +338,7 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="../../d1/d34/yaml__parser_8cpp_source.html#l00252">252</a> of file <a class="el" href="../../d1/d34/yaml__parser_8cpp_source.html">yaml_parser.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d1/d34/yaml__parser_8cpp_source.html#l00280">ParseSection()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d1/d34/yaml__parser_8cpp_source.html#l00302">ParseSection()</a>.</p>
 
 </div>
 </div>
@@ -407,7 +409,7 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="../../d1/d34/yaml__parser_8cpp_source.html#l00205">205</a> of file <a class="el" href="../../d1/d34/yaml__parser_8cpp_source.html">yaml_parser.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d1/d34/yaml__parser_8cpp_source.html#l00280">ParseSection()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d1/d34/yaml__parser_8cpp_source.html#l00302">ParseSection()</a>.</p>
 
 </div>
 </div>
@@ -438,9 +440,38 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../d1/d34/yaml__parser_8cpp_source.html#l00280">280</a> of file <a class="el" href="../../d1/d34/yaml__parser_8cpp_source.html">yaml_parser.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d1/d34/yaml__parser_8cpp_source.html#l00302">302</a> of file <a class="el" href="../../d1/d34/yaml__parser_8cpp_source.html">yaml_parser.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d1/d34/yaml__parser_8cpp_source.html#l00163">bParseFile()</a>, and <a class="el" href="../../d1/d34/yaml__parser_8cpp_source.html#l00280">ParseSection()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d1/d34/yaml__parser_8cpp_source.html#l00163">bParseFile()</a>, and <a class="el" href="../../d1/d34/yaml__parser_8cpp_source.html#l00302">ParseSection()</a>.</p>
+
+</div>
+</div>
+<a id="a15f874a8c6e2196e1b9f304cb81f143a" name="a15f874a8c6e2196e1b9f304cb81f143a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a15f874a8c6e2196e1b9f304cb81f143a">&#9670;&#160;</a></span>strRemoveQuotes()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d5/d92/classstring.html">string</a> CYamlParser::strRemoveQuotes </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../d5/d92/classstring.html">string</a> const &amp;</td>          <td class="paramname"><span class="paramname"><em>strValue</em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="../../d1/d34/yaml__parser_8cpp_source.html#l00284">284</a> of file <a class="el" href="../../d1/d34/yaml__parser_8cpp_source.html">yaml_parser.cpp</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="../../d1/d34/yaml__parser_8cpp_source.html#l00252">bParseLine()</a>.</p>
 
 </div>
 </div>
@@ -554,7 +585,7 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="../../d0/d18/yaml__parser_8h_source.html#l00074">74</a> of file <a class="el" href="../../d0/d18/yaml__parser_8h_source.html">yaml_parser.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d1/d34/yaml__parser_8cpp_source.html#l00163">bParseFile()</a>, <a class="el" href="../../d1/d34/yaml__parser_8cpp_source.html#l00155">CYamlParser()</a>, and <a class="el" href="../../d1/d34/yaml__parser_8cpp_source.html#l00280">ParseSection()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d1/d34/yaml__parser_8cpp_source.html#l00163">bParseFile()</a>, <a class="el" href="../../d1/d34/yaml__parser_8cpp_source.html#l00155">CYamlParser()</a>, and <a class="el" href="../../d1/d34/yaml__parser_8cpp_source.html#l00302">ParseSection()</a>.</p>
 
 </div>
 </div>
@@ -646,7 +677,7 @@ Private Attributes</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../d1/dd6/classCYamlParser.html">CYamlParser</a></li>
-    <li class="footer">Generated on Fri Sep 5 2025 10:49:30 for CoastalME (Coastal Modelling Environment) by <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+    <li class="footer">Generated on Fri Sep 5 2025 16:15:45 for CoastalME (Coastal Modelling Environment) by <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
   </ul>
 </div>
 </body>

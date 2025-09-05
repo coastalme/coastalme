@@ -11,6 +11,7 @@ var classCYamlParser =
     [ "GetRoot", "d1/dd6/classCYamlParser.html#afa64322775d2174676bdc8db89d82be9", null ],
     [ "nGetIndentLevel", "d1/dd6/classCYamlParser.html#af6849e07e24c8ec3b073b0f265c3028d", null ],
     [ "ParseSection", "d1/dd6/classCYamlParser.html#ac09fa62798f7d8f6d7512667d5b1cfec", null ],
+    [ "strRemoveQuotes", "d1/dd6/classCYamlParser.html#a15f874a8c6e2196e1b9f304cb81f143a", null ],
     [ "strTrim", "d1/dd6/classCYamlParser.html#a459762fee0b390a49c893ae7f29a8039", null ],
     [ "strTrimLeft", "d1/dd6/classCYamlParser.html#aad391c2aa9858f96d623fb4f06a1446f", null ],
     [ "strTrimRight", "d1/dd6/classCYamlParser.html#a62fb2ba32565b34ba21277bc932f1150", null ],

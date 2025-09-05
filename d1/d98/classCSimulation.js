@@ -31,6 +31,7 @@ var classCSimulation =
     [ "AnnounceStart", "d1/d98/classCSimulation.html#a93438216195d53f4d6da056bd8a5b9f2", null ],
     [ "AppendEnsureNoGap", "d1/d98/classCSimulation.html#ad63ccb95ae85ca79a6f511f3777a6fda", null ],
     [ "AppendPolygon", "d1/d98/classCSimulation.html#afb96ad0745af2cba5ebb50ec12e2831b", null ],
+    [ "bApplyConfiguration", "d1/d98/classCSimulation.html#aa8f5d82a4f428c6c09467744880fe576", null ],
     [ "bCheckForIntersection", "d1/d98/classCSimulation.html#a9332a150a41ac2a38157b22fe3483f15", null ],
     [ "bCheckRasterGISOutputFormat", "d1/d98/classCSimulation.html#a0b40f1158fcf0634cc10c4a57304bcd7", null ],
     [ "bCheckVectorGISOutputFormat", "d1/d98/classCSimulation.html#a6f83b389985b0abe80ebad67c89c1d6f", null ],
