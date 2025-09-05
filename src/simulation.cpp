@@ -188,6 +188,7 @@ CSimulation::CSimulation(void)
 
    m_bGDALCanCreate = true;
    m_bCSVPerTimestepResults = true; // Default to CSV output format
+   m_bYamlInputFormat = false;      // Default to .dat format
 
    m_papszGDALRasterOptions =
    m_papszGDALVectorOptions = NULL;
