@@ -22,7 +22,9 @@ var searchData=
   ['coast_5flandform_2eh_19',['coast_landform.h',['../dd/d6c/coast__landform_8h.html',1,'']]],
   ['coast_5fpolygon_2ecpp_20',['coast_polygon.cpp',['../df/d30/coast__polygon_8cpp.html',1,'']]],
   ['coast_5fpolygon_2eh_21',['coast_polygon.h',['../d6/db2/coast__polygon_8h.html',1,'']]],
-  ['create_5fpolygons_2ecpp_22',['create_polygons.cpp',['../d6/d91/create__polygons_8cpp.html',1,'']]],
-  ['create_5fprofiles_2ecpp_23',['create_profiles.cpp',['../da/db2/create__profiles_8cpp.html',1,'']]],
-  ['cshore_2fcshore_2eh_24',['cshore.h',['../d8/db0/cshore_2cshore_8h.html',1,'']]]
+  ['configuration_2ecpp_22',['configuration.cpp',['../df/d22/configuration_8cpp.html',1,'']]],
+  ['configuration_2eh_23',['configuration.h',['../d2/d2c/configuration_8h.html',1,'']]],
+  ['create_5fpolygons_2ecpp_24',['create_polygons.cpp',['../d6/d91/create__polygons_8cpp.html',1,'']]],
+  ['create_5fprofiles_2ecpp_25',['create_profiles.cpp',['../da/db2/create__profiles_8cpp.html',1,'']]],
+  ['cshore_2fcshore_2eh_26',['cshore.h',['../d8/db0/cshore_2cshore_8h.html',1,'']]]
 ];

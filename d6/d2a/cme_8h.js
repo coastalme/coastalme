@@ -586,6 +586,7 @@ var cme_8h =
     [ "USAGE3", "d6/d2a/cme_8h.html#a0685c3d4ea202320133061d205fb5a6a", null ],
     [ "USAGE4", "d6/d2a/cme_8h.html#a3793b0cc177c1ac54fdcb5f366f8e7ba", null ],
     [ "USAGE5", "d6/d2a/cme_8h.html#a8441d26299cb6180b9f6f3edc2fcd972", null ],
+    [ "USAGE6", "d6/d2a/cme_8h.html#a21adcdfb00befa0e3d3cf4113d616563", null ],
     [ "USE_DEEP_WATER_FOR_SHADOW_LINE", "d6/d2a/cme_8h.html#a0a2754ef0a03d818d29b2bdf9201eb59", null ],
     [ "VEC_FIELD_DATA_ANY", "d6/d2a/cme_8h.html#a67327dad8d88a0aabff21e055234bcda", null ],
     [ "VEC_FIELD_DATA_INT", "d6/d2a/cme_8h.html#a625f9ac8226d82bc9076e00b2a273b9d", null ],
