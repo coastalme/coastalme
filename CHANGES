@@ -244,4 +244,9 @@ CoastalME CHANGELOG
          Enable Linux clang builds
          Code tidying
 
-1.4.0
+1.4.0_cliff_collapse
+         Calculates mean high water (MHW) level
+         Outputs MHW time series
+         Cliff notch apex now above or at MHW
+         Code tidying
+

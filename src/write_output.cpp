@@ -560,7 +560,7 @@ void CSimulation::WriteStartRunDetails(void)
       OutStream << resetiosflags(ios::floatfield);
       OutStream << fixed << setprecision(1);
       OutStream << " Notch overhang to initiate collapse                       \t: " << m_dNotchDepthAtCollapse << " m" << endl;
-      OutStream << " Notch base below SWL                                      \t: " << m_dNotchBaseBelowSWL << " m" << endl;
+      OutStream << " Notch base below SWL                                      \t: " << m_dNotchApexAboveMHW << " m" << endl;
       OutStream << " Scale parameter A for cliff deposition                    \t: ";
 
       if (bFPIsEqual(m_dCliffDepositionA, 0.0, TOLERANCE))
@@ -1079,7 +1079,7 @@ bool CSimulation::bWritePerTimestepResultsCSV(void)
 //===============================================================================================================================
 bool CSimulation::bWriteTSFiles(void)
 {
-   // Sea area
+   // This-iteration sea area
    if (m_bSeaAreaTSSave)
    {
       // Output in external CRS units
@@ -1090,18 +1090,18 @@ bool CSimulation::bWriteTSFiles(void)
          return false;
    }
 
-   // Still water level
+   // This-iteration SWL, mean SWL, and MHW
    if (m_bSWLTSSave)
    {
       // Output as is (m)
-      SWLTSStream << m_dSimElapsed << "\t,\t" << m_dThisIterSWL << "\t,\t" << m_dThisIterMeanSWL << endl;
+      SWLTSStream << m_dSimElapsed << "\t,\t" << m_dThisIterSWL << "\t,\t" << m_dThisIterMeanSWL << "\t,\t" << m_dThisIterMHWElev << endl;
 
       // Did a time series file write error occur?
       if (SWLTSStream.fail())
          return false;
    }
 
-   // Actual platform erosion (fine, sand, and coarse)
+   // This-iteration actual platform erosion (fine, sand, and coarse)
    if (m_bActualPlatformErosionTSSave)
    {
       // Output as is (m depth equivalent)
@@ -1112,7 +1112,7 @@ bool CSimulation::bWriteTSFiles(void)
          return false;
    }
 
-   // Cliff collapse erosion (fine, sand, and coarse)
+   // This-iteration cliff collapse erosion (fine, sand, and coarse)
    if (m_bCliffCollapseErosionTSSave)
    {
       // Output as is (m depth equivalent)
@@ -1123,7 +1123,18 @@ bool CSimulation::bWriteTSFiles(void)
          return false;
    }
 
-   // Cliff collapse deposition (sand and coarse)
+   // This-iteration cliff notch apex elevation
+   if (m_bCliffNotchElevTSSave)
+   {
+      // Output as is (m depth equivalent)
+      CliffNotchElevTSStream << m_dSimElapsed << "\t,\t" << m_dThisIterNotchApexElev << endl;
+
+      // Did a time series file write error occur?
+      if (CliffNotchElevTSStream.fail())
+         return false;
+   }
+
+   // This-iteration cliff collapse deposition (sand and coarse)
    if (m_bCliffCollapseDepositionTSSave)
    {
       // Output as is (m depth equivalent)
@@ -1134,7 +1145,7 @@ bool CSimulation::bWriteTSFiles(void)
          return false;
    }
 
-   // Cliff collapse net
+   // This-iteration cliff collapse net
    if (m_bCliffCollapseNetTSSave)
    {
       // Output as is (m depth equivalent)
@@ -1145,7 +1156,7 @@ bool CSimulation::bWriteTSFiles(void)
          return false;
    }
 
-   // Beach erosion (fine, sand, and coarse)
+   // This-iteration beach erosion (fine, sand, and coarse)
    if (m_bBeachErosionTSSave)
    {
       // Output as is (m depth equivalent)
@@ -1156,7 +1167,7 @@ bool CSimulation::bWriteTSFiles(void)
          return false;
    }
 
-   // Beach deposition (sand and coarse)
+   // This-iteration beach deposition (sand and coarse)
    if (m_bBeachDepositionTSSave)
    {
       // Output as is (m depth equivalent)
@@ -1167,7 +1178,7 @@ bool CSimulation::bWriteTSFiles(void)
          return false;
    }
 
-   // Net change in beach sediment
+   // This iteration net change in beach sediment
    if (m_bBeachSedimentChangeNetTSSave)
    {
       // Output as is (m depth equivalent)
@@ -1178,6 +1189,7 @@ bool CSimulation::bWriteTSFiles(void)
          return false;
    }
 
+   // This-iteration suspended sediment to suspension
    if (m_bSuspSedTSSave)
    {
       // Output as is (m depth equivalent)
@@ -1188,6 +1200,7 @@ bool CSimulation::bWriteTSFiles(void)
          return false;
    }
 
+   // This-iteration setup surge water level
    if (m_bFloodSetupSurgeTSSave)
    {
       // Output as is (m depth equivalent)
@@ -1198,6 +1211,7 @@ bool CSimulation::bWriteTSFiles(void)
          return false;
    }
 
+   // This-iteration setup surge runup
    if (m_bFloodSetupSurgeRunupTSSave)
    {
       // Output as is (m depth equivalent)
@@ -1205,17 +1219,6 @@ bool CSimulation::bWriteTSFiles(void)
 
       // Did a time series file write error occur?
       if (FloodSetupSurgeRunupTSStream.fail())
-         return false;
-   }
-
-   // Cliff notch elevation
-   if (m_bCliffNotchElevTSSave)
-   {
-      // Output as is (m depth equivalent)
-      CliffNotchElevTSStream << m_dSimElapsed << "\t,\t" << m_dThisIterNotchBaseElev << endl;
-
-      // Did a time series file write error occur?
-      if (CliffNotchElevTSStream.fail())
          return false;
    }
 

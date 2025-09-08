@@ -37,6 +37,8 @@
 
 #include <cstdlib>
 
+#include <float.h>
+
 #include <cctype>
 using std::tolower;
 
@@ -79,6 +81,86 @@ using std::transform;
 #include "simulation.h"
 #include "coast.h"
 #include "2di_point.h"
+
+//===============================================================================================================================
+//! Returns the double Missing Value code
+//===============================================================================================================================
+double CSimulation::dGetMissingValue(void) const
+{
+   return m_dMissingValue;
+}
+
+//===============================================================================================================================
+//! Returns the still water level (SWL)
+//===============================================================================================================================
+double CSimulation::dGetThisIterSWL(void) const
+{
+   return m_dThisIterSWL;
+}
+
+//===============================================================================================================================
+//! Returns the this-iteration total water level
+//===============================================================================================================================
+double CSimulation::dGetThisIterTotWaterLevel(void) const
+{
+   return m_dThisIterDiffTotWaterLevel;
+}
+
+// //===============================================================================================================================
+// //! Returns the max elevation of the beach above SWL
+// //===============================================================================================================================
+// double CSimulation::dGetMaxBeachElevAboveSWL (void) const
+// {
+// return m_dMaxBeachElevAboveSWL;
+// }
+
+//===============================================================================================================================
+// Returns the cell side length
+//===============================================================================================================================
+// double CSimulation::dGetCellSide(void) const
+// {
+// return m_dCellSide;
+// }
+
+//===============================================================================================================================
+//! Returns X grid max
+//===============================================================================================================================
+int CSimulation::nGetGridXMax(void) const
+{
+   return m_nXGridSize;
+}
+
+//===============================================================================================================================
+//! Returns Y grid max
+//===============================================================================================================================
+int CSimulation::nGetGridYMax(void) const
+{
+   return m_nYGridSize;
+}
+
+//===============================================================================================================================
+//! Returns D50 for fine sediment
+//===============================================================================================================================
+double CSimulation::dGetD50Fine(void) const
+{
+   return m_dD50Fine;
+}
+
+//===============================================================================================================================
+//! Returns D50 for sand sediment
+//===============================================================================================================================
+double CSimulation::dGetD50Sand(void) const
+{
+   return m_dD50Sand;
+}
+
+//===============================================================================================================================
+//! Returns D50 for coarse sediment
+//===============================================================================================================================
+double CSimulation::dGetD50Coarse(void) const
+{
+   return m_dD50Coarse;
+}
 
 //===============================================================================================================================
 //! Handles command-line parameters
@@ -2974,4 +3056,49 @@ void CSimulation::DoEndOfRunDeletes(void)
    // m_VFloodWaveSetup.clear();
    m_VFloodWaveSetupSurge.clear();
    m_VFloodWaveSetupSurgeRunup.clear();
+}
+
+//===============================================================================================================================
+//! Calculate Mean High Water (MHW) elevation. This is a tidal datum determined from the arithmetic mean of the high water heights observed each tidal day
+//===============================================================================================================================
+void CSimulation::CalcMHWElevation(int const nTideDataCount)
+{
+   // Calculate the number of tide values to read
+   int nTidevaluesPerDay = tMax(nRound(24 / m_dTimeStep), 1);
+   int nTideValuesToRead = nTidevaluesPerDay * NUM_DAYS_FOR_MEAN_HIGH_WATER_CALC;
+
+   int nNumTideValues = static_cast<int>(m_VdTideData.size());
+
+   // Now read the tide data (note that this assumes that the first line of the tide data is the first tide reading of the day)
+   int nThisCount = nTideDataCount;
+   double dTotMaxTide = 0;
+   for (int n = 0; n < nTideValuesToRead; n++)
+   {
+      // Read in this days's tide data
+      double dDayMaxTide = -DBL_MAX;
+      for (int m = 0; m < nTidevaluesPerDay; m++)
+      {
+         // If necessary, wrap the tide data, i.e. start again with the first line of the tide data if we do not have enough
+         if (nThisCount > nNumTideValues - 1)
+            nThisCount = 0;
+
+         double dThisTideData = m_VdTideData[nThisCount];
+
+         if (dThisTideData > dDayMaxTide)
+            dDayMaxTide = dThisTideData;
+
+         nThisCount++;
+      }
+
+      // We have the max tide for the day, so increment the total of highest daily tides
+      dTotMaxTide += dDayMaxTide;
+   }
+
+   // Now calculate the average max tide for the next NUM_DAYS_FOR_MEAN_HIGH_WATER_CALC days
+   double dMaxTideAvg = dTotMaxTide / NUM_DAYS_FOR_MEAN_HIGH_WATER_CALC;
+
+   // Finally, calculate MHW for this iteration (includes long-term SWL change)
+   m_dThisIterMHWElev = m_dThisIterMeanSWL + dMaxTideAvg;
+
+   // LogStream << m_ulIter << ": this-iteration MHW elevation = " << m_dThisIterMHWElev << endl;
 }

@@ -87,8 +87,8 @@ int CSimulation::nAssignLandformsForAllCoasts(void)
          if (dConsSedTop >= m_dThisIterSWL)
             bConsSedAtSWL = true;
 
-         // Set cliff notch base elevation. Note that this varies with both tide (relatively quickly) and any long-term change in sea level (slowly)
-         m_dThisIterNotchBaseElev = m_dThisIterSWL - m_dNotchBaseBelowSWL;
+         // Set cliff notch apex elevation at or slightly above MHW level
+         m_dThisIterNotchApexElev = m_dThisIterMHWElev + m_dNotchApexAboveMHW;
 
          if (m_ulIter == 1)
          {
@@ -96,14 +96,14 @@ int CSimulation::nAssignLandformsForAllCoasts(void)
             if (bConsSedAtSWL)
             {
                // First timestep: we have consolidated sediment at SWL, so this is a cliff cell. Set some initial values for the cliff object's attributes
-               // LogStream << m_ulIter << ": initialisation, cliff created at [" << nX << "][" << nY << "] m_dThisIterNotchBaseElev = " << m_dThisIterNotchBaseElev << " m_dThisIterSWL = " << m_dThisIterSWL << endl;
+               // LogStream << m_ulIter << ": initialisation, cliff created at [" << nX << "][" << nY << "] m_dThisIterNotchApexElev = " << m_dThisIterNotchApexElev << " m_dThisIterSWL = " << m_dThisIterSWL << endl;
 
                m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->SetLFSubCategory(LF_SUBCAT_CLIFF_ON_COASTLINE);
-               m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->SetCliffNotchBaseElev(m_dThisIterNotchBaseElev);
+               m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->SetCliffNotchBaseElev(m_dThisIterNotchApexElev);
                m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->SetCliffNotchDepth(0);
 
                // Create a cliff object on the vector coastline with these attributes
-               CACoastLandform* pCliff = new CRWCliff(&m_VCoast[nCoast], nCoast, j, m_dCellSide, 0, m_dThisIterNotchBaseElev, 0);
+               CACoastLandform* pCliff = new CRWCliff(&m_VCoast[nCoast], nCoast, j, m_dCellSide, 0, m_dThisIterNotchApexElev, 0);
                m_VCoast[nCoast].AppendCoastLandform(pCliff);
 
                // LogStream << m_ulIter << ": CLIFF CREATED [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "}" << endl;
@@ -151,14 +151,14 @@ int CSimulation::nAssignLandformsForAllCoasts(void)
                   dAccumWaveEnergy = m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->dGetAccumWaveEnergy();
                   dNotchDepth = 0;
                   m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->SetCliffNotchDepth(dNotchDepth);      // Note that this is permanent i.e. stored for the remainder of the simulation
-                  dNotchElev = m_dThisIterNotchBaseElev;
+                  dNotchElev = m_dThisIterNotchApexElev;
                   m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->SetCliffNotchBaseElev(dNotchElev);
 
                   // LogStream << m_ulIter << ": cliff created at [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "}" << " notch base elevation = " << dNotchElev << " this-iteration SWL = " << m_dThisIterSWL << endl;
                }
 
                // Create a cliff object on the vector coastline with these attributes
-               CACoastLandform* pCliff = new CRWCliff(&m_VCoast[nCoast], nCoast, j, m_dCellSide, dNotchDepth, m_dThisIterNotchBaseElev, dAccumWaveEnergy);
+               CACoastLandform* pCliff = new CRWCliff(&m_VCoast[nCoast], nCoast, j, m_dCellSide, dNotchDepth, m_dThisIterNotchApexElev, dAccumWaveEnergy);
                m_VCoast[nCoast].AppendCoastLandform(pCliff);
             }
             else

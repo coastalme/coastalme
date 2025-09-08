@@ -74,7 +74,7 @@ int CSimulation::nDoAllWaveEnergyToCoastLandforms(void)
             CRWCliff const* pCliff = reinterpret_cast<CRWCliff*>(pCoastLandform);
             double const dNotchElev = pCliff->dGetNotchBaseElev();
 
-            // Is the notch elevation above this iteration's SWL, or is the notch elevation above the top surface of the sediment?
+            // Is the elevation of the notch base above this iteration's SWL, or is the notch elevation above the top surface of the sediment?
             if ((dNotchElev > m_dThisIterSWL) || (dNotchElev > dTopElev))
             {
                // It is, so do nothing here
@@ -286,7 +286,7 @@ int CSimulation::nDoCliffCollapse(int const nCoast, CRWCliff* pCliff, double& dF
    }
    else if (nNotchLayer < 0)
    {
-      LogStream << m_ulIter << ": " << WARN << "in nDoCliffCollapse(), [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "} notch layer = " << nNotchLayer << ", dNotchElev = " << dNotchElev << " m_dNotchBaseBelowSWL = " << m_dNotchBaseBelowSWL << " dOrigCliffTopElev = " << dOrigCliffTopElev << endl;
+      LogStream << m_ulIter << ": " << WARN << "in nDoCliffCollapse(), [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "} notch layer = " << nNotchLayer << ", dNotchElev = " << dNotchElev << " m_dNotchApexAboveMHW = " << m_dNotchApexAboveMHW << " dOrigCliffTopElev = " << dOrigCliffTopElev << endl;
       return RTN_ERR_CLIFF_NOTCH;
    }
 

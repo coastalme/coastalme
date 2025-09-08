@@ -354,8 +354,8 @@ CSimulation::CSimulation(void)
    m_dMaxBeachElevAboveSWL =
    m_dCliffErosionResistance =
    m_dNotchDepthAtCollapse =
-   m_dThisIterNotchBaseElev =
-   m_dNotchBaseBelowSWL =
+   m_dThisIterNotchApexElev =
+   m_dNotchApexAboveMHW =
    m_dCliffDepositionA =
    m_dCliffDepositionPlanviewWidth =
    m_dCliffTalusMinDepositionLength =
@@ -401,7 +401,8 @@ CSimulation::CSimulation(void)
    m_dTotalFineConsInPolygons =
    m_dTotalSandConsInPolygons =
    m_dTotalCoarseConsInPolygons =
-   m_dSlopeThresholdForCliffToe = 0;
+   m_dSlopeThresholdForCliffToe =
+   m_dThisIterMHWElev = 0;
 
    m_dMinSWLSoFar = DBL_MAX;
    m_dMaxSWLSoFar = DBL_MIN;
@@ -534,86 +535,6 @@ CSimulation::~CSimulation(void)
 }
 
 //===============================================================================================================================
-//! Returns the double Missing Value code
-//===============================================================================================================================
-double CSimulation::dGetMissingValue(void) const
-{
-   return m_dMissingValue;
-}
-
-//===============================================================================================================================
-//! Returns the still water level (SWL)
-//===============================================================================================================================
-double CSimulation::dGetThisIterSWL(void) const
-{
-   return m_dThisIterSWL;
-}
-
-//===============================================================================================================================
-//! Returns the this-iteration total water level
-//===============================================================================================================================
-double CSimulation::dGetThisIterTotWaterLevel(void) const
-{
-   return m_dThisIterDiffTotWaterLevel;
-}
-
-// //===============================================================================================================================
-// //! Returns the max elevation of the beach above SWL
-// //===============================================================================================================================
-// double CSimulation::dGetMaxBeachElevAboveSWL (void) const
-// {
-// return m_dMaxBeachElevAboveSWL;
-// }
-
-//===============================================================================================================================
-// Returns the cell side length
-//===============================================================================================================================
-// double CSimulation::dGetCellSide(void) const
-// {
-// return m_dCellSide;
-// }
-
-//===============================================================================================================================
-//! Returns X grid max
-//===============================================================================================================================
-int CSimulation::nGetGridXMax(void) const
-{
-   return m_nXGridSize;
-}
-
-//===============================================================================================================================
-//! Returns Y grid max
-//===============================================================================================================================
-int CSimulation::nGetGridYMax(void) const
-{
-   return m_nYGridSize;
-}
-
-//===============================================================================================================================
-//! Returns D50 for fine sediment
-//===============================================================================================================================
-double CSimulation::dGetD50Fine(void) const
-{
-   return m_dD50Fine;
-}
-
-//===============================================================================================================================
-//! Returns D50 for sand sediment
-//===============================================================================================================================
-double CSimulation::dGetD50Sand(void) const
-{
-   return m_dD50Sand;
-}
-
-//===============================================================================================================================
-//! Returns D50 for coarse sediment
-//===============================================================================================================================
-double CSimulation::dGetD50Coarse(void) const
-{
-   return m_dD50Coarse;
-}
-
-//===============================================================================================================================
 //! The nDoSimulation member function of CSimulation sets up and runs the simulation
 //===============================================================================================================================
 int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
@@ -715,9 +636,10 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
    if (nRet != RTN_OK)
       return nRet;
 
-   // If we are simulating cliff collapse: then now that we have a value for m_dCellSide, we can check some more input parameters. Talus must be more than one cell wide, and since the number of cells must be odd, three cells is the minimum width
+   // Are we simulating cliff collapse?
    if (m_bDoCliffCollapse)
    {
+      // We are: now that we have a value for m_dCellSide, we can check some more input parameters. Talus must be more than one cell wide, and since the number of cells must be odd, three cells is the minimum width
       int const nTmp = nConvertMetresToNumCells(m_dCliffDepositionPlanviewWidth);
       if (nTmp < 3)
       {

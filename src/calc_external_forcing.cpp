@@ -22,14 +22,14 @@
 #include "simulation.h"
 
 //===============================================================================================================================
-//! Calculate external forcings: change in still water level, tide level and deep water waves height, orientation and period
+//! Calculate external forcings: change in still water level, tide level and deep water waves height, orientation and period. If we are considering cliff collapse, then also calculate mean high water elevation
 //===============================================================================================================================
 int CSimulation::nCalcExternalForcing(void)
 {
-   // Increment SWL (note that increment may be zero)
+   // Increment long-term SWL change (increment may be zero)
    m_dAccumulatedSeaLevelChange += m_dDeltaSWLPerTimestep;
 
-   // This-iteration mean SWL includes only long-term SWL change
+   // Increment this-iteration mean SWL with long-term SWL change
    m_dThisIterMeanSWL = m_dInitialMeanSWL + m_dAccumulatedSeaLevelChange;
 
    int const nSize = static_cast<int>(m_VdTideData.size());
@@ -37,21 +37,27 @@ int CSimulation::nCalcExternalForcing(void)
    {
       // No tide data
       m_dThisIterSWL = m_dThisIterMeanSWL;
+      m_dThisIterMHWElev = m_dThisIterMeanSWL;
    }
    else
    {
       // We have tide data
       static int snTideDataCount = 0;
 
-      // Wrap the tide data, i.e. start again with the first record if we do not have enough
+      // Wrap the tide data, i.e. start again with the first line of the tide data if we do not have enough
       if (snTideDataCount > nSize - 1)
          snTideDataCount = 0;
 
       // This-iteration SWL includes both tidal change and long-term SWL change
-      m_dThisIterSWL = m_dInitialMeanSWL + m_VdTideData[snTideDataCount];
+      m_dThisIterSWL = m_dThisIterMeanSWL + m_VdTideData[snTideDataCount];
+
+      if (m_bDoCliffCollapse)
+         CalcMHWElevation(snTideDataCount);
 
       snTideDataCount++;
    }
+
+   // LogStream << m_ulIter << ": this-iteration mean SWL = " << m_dThisIterMeanSWL << " this-iteration SWL = " << m_dThisIterSWL << std::endl;
 
    m_bHighestSWLSoFar = false;
    m_bLowestSWLSoFar = false;

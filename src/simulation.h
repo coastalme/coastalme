@@ -927,10 +927,10 @@ class CSimulation
    double m_dNotchDepthAtCollapse;
 
    //! This-iteration notch elevation (m)
-   double m_dThisIterNotchBaseElev;
+   double m_dThisIterNotchApexElev;
 
    //! Distance of notch base below SWL (m)
-   double m_dNotchBaseBelowSWL;
+   double m_dNotchApexAboveMHW;
 
    //! Scale parameter A for cliff deposition (m^(1/3)), may be zero for auto-calculation
    double m_dCliffDepositionA;
@@ -1045,6 +1045,9 @@ class CSimulation
 
    //! Depth of unconsolidated coarse sediment that could not be deposited during the last iteration, carried forward to this iteration
    double m_dUnconsCoarseNotDepositedLastIter;
+
+   //! This iteration's Mean High Water (MHW) elevation, calculated using a moving time window TODO What if we have no tide data?
+   double m_dThisIterMHWElev;
 
    // These grand totals are all long doubles. The aim is to minimize rounding errors when many very small numbers are added to a single much larger number, see e.g. http://www.ddj.com/cpp/184403224
    //! All-simulation total of potential platform erosion (m), all size classes
@@ -1620,6 +1623,7 @@ class CSimulation
 
    // Initialization
    bool bCreateErosionPotentialLookUp(vector<double>*, vector<double>*, vector<double>*);
+   void CalcMHWElevation(int const);
 
    // Top-level simulation routines
    static int nUpdateIntervention(void);

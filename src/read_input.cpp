@@ -465,7 +465,7 @@ bool CSimulation::bReadRunDataFile(void)
                break;
             }
 
-            // we have the multiplier, now calculate the timestep in hours: look for the whitespace between the number and unit
+            // We have the multiplier, now calculate the timestep in hours: look for the whitespace between the number and unit
             nPos = strRH.rfind(SPACE);
 
             if (nPos == string::npos)
@@ -474,10 +474,10 @@ bool CSimulation::bReadRunDataFile(void)
                break;
             }
 
-            // cut off rh bit of string
+            // Cut off rh bit of string
             strRH.resize(nPos);
 
-            // remove trailing spaces
+            // Remove trailing spaces
             strRH = strTrimRight(&strRH);
 
             // Check that this is a valid double
@@ -2736,13 +2736,13 @@ bool CSimulation::bReadRunDataFile(void)
             break;
 
          case 62:
-            // Notch base below still water level (m)
+            // Notch apex above mean high water (MHW) level (m)
             if (m_bHaveConsolidatedSediment && m_bDoCliffCollapse)
             {
-               m_dNotchBaseBelowSWL = strtod(strRH.c_str(), NULL);
+               m_dNotchApexAboveMHW = strtod(strRH.c_str(), NULL);
 
-               if (m_dNotchBaseBelowSWL < 0)
-                  strErr = "line " + to_string(nLine) + ": cliff notch base below still water level must be > 0";
+               if (m_dNotchApexAboveMHW < 0)
+                  strErr = "line " + to_string(nLine) + ": distance of cliff notch apex above MHW level must be >= 0";
             }
 
             break;
@@ -3711,7 +3711,6 @@ int CSimulation::nReadWaveStationInputFile(int const nWaveStations)
                break;
 
             case 3:
-
                // Read the number of stations
                if (! bIsStringValidInt(strRH))
                {
@@ -3733,7 +3732,6 @@ int CSimulation::nReadWaveStationInputFile(int const nWaveStations)
                break;
 
             case 4:
-
                // Read the expected number of time steps in the file
                if (! bIsStringValidInt(strRH))
                {
@@ -3753,7 +3751,6 @@ int CSimulation::nReadWaveStationInputFile(int const nWaveStations)
                break;
             }
          }
-
          else
          {
             // This is not a header line
