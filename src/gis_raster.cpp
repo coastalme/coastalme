@@ -1569,7 +1569,7 @@ bool CSimulation::bWriteRasterGISFile(int const nDataItem, string const *strPlot
             break;
 
          case (RASTER_PLOT_CLIFF_NOTCH_ALL):
-            dTmp = m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->dGetCliffNotchDepth();
+            dTmp = m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->dGetCliffNotchIncisionDepth();
             break;
 
          case (RASTER_PLOT_CLIFF_COLLAPSE_TIMESTEP):

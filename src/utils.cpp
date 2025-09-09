@@ -3059,13 +3059,13 @@ void CSimulation::DoEndOfRunDeletes(void)
 }
 
 //===============================================================================================================================
-//! Calculate Mean High Water (MHW) elevation. This is a tidal datum determined from the arithmetic mean of the high water heights observed each tidal day
+//! Calculate Mean High Water (MHW) elevation for a given duration (in days). This is a tidal datum determined from the arithmetic mean of the high water heights observed each tidal day
 //===============================================================================================================================
 void CSimulation::CalcMHWElevation(int const nTideDataCount)
 {
    // Calculate the number of tide values to read
-   int nTidevaluesPerDay = tMax(nRound(24 / m_dTimeStep), 1);
-   int nTideValuesToRead = nTidevaluesPerDay * NUM_DAYS_FOR_MEAN_HIGH_WATER_CALC;
+   int const nTidevaluesPerDay = tMax(nRound(24 / m_dTimeStep), 1);
+   int const nTideValuesToRead = nTidevaluesPerDay * NUM_DAYS_FOR_MEAN_HIGH_WATER_CALC;
 
    int nNumTideValues = static_cast<int>(m_VdTideData.size());
 
@@ -3082,7 +3082,7 @@ void CSimulation::CalcMHWElevation(int const nTideDataCount)
          if (nThisCount > nNumTideValues - 1)
             nThisCount = 0;
 
-         double dThisTideData = m_VdTideData[nThisCount];
+         double const dThisTideData = m_VdTideData[nThisCount];
 
          if (dThisTideData > dDayMaxTide)
             dDayMaxTide = dThisTideData;
@@ -3095,10 +3095,13 @@ void CSimulation::CalcMHWElevation(int const nTideDataCount)
    }
 
    // Now calculate the average max tide for the next NUM_DAYS_FOR_MEAN_HIGH_WATER_CALC days
-   double dMaxTideAvg = dTotMaxTide / NUM_DAYS_FOR_MEAN_HIGH_WATER_CALC;
+   double const dMaxTideAvg = dTotMaxTide / NUM_DAYS_FOR_MEAN_HIGH_WATER_CALC;
 
    // Finally, calculate MHW for this iteration (includes long-term SWL change)
    m_dThisIterMHWElev = m_dThisIterMeanSWL + dMaxTideAvg;
 
-   // LogStream << m_ulIter << ": this-iteration MHW elevation = " << m_dThisIterMHWElev << endl;
+   // And set the apex elevation of any new cliff notches (i.e. cliff notches which will be created during this trimestep) to be at or slightly above MHW level
+   m_dThisIterNewNotchApexElev = m_dThisIterMHWElev + m_dNotchApexAboveMHW;
+
+   LogStream << m_ulIter << ": this-iteration MHW elevation = " << m_dThisIterMHWElev << " elevation of apex of new cliff notches = " << m_dThisIterNewNotchApexElev << endl;
 }

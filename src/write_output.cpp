@@ -559,7 +559,7 @@ void CSimulation::WriteStartRunDetails(void)
       OutStream << " Cliff resistance to erosion                               \t: " << m_dCliffErosionResistance << endl;
       OutStream << resetiosflags(ios::floatfield);
       OutStream << fixed << setprecision(1);
-      OutStream << " Notch overhang to initiate collapse                       \t: " << m_dNotchDepthAtCollapse << " m" << endl;
+      OutStream << " Notch overhang to initiate collapse                       \t: " << m_dNotchIncisionDepthAtCollapse << " m" << endl;
       OutStream << " Notch base below SWL                                      \t: " << m_dNotchApexAboveMHW << " m" << endl;
       OutStream << " Scale parameter A for cliff deposition                    \t: ";
 
@@ -1127,7 +1127,7 @@ bool CSimulation::bWriteTSFiles(void)
    if (m_bCliffNotchElevTSSave)
    {
       // Output as is (m depth equivalent)
-      CliffNotchElevTSStream << m_dSimElapsed << "\t,\t" << m_dThisIterNotchApexElev << endl;
+      CliffNotchElevTSStream << m_dSimElapsed << "\t,\t" << m_dThisIterNewNotchApexElev << endl;
 
       // Did a time series file write error occur?
       if (CliffNotchElevTSStream.fail())

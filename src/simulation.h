@@ -924,10 +924,10 @@ class CSimulation
    double m_dCliffErosionResistance;
 
    //! Notch overhang (i.e. length of horizontal incision) to initiate collapse (m)
-   double m_dNotchDepthAtCollapse;
+   double m_dNotchIncisionDepthAtCollapse;
 
-   //! This-iteration notch elevation (m)
-   double m_dThisIterNotchApexElev;
+   //! Elevation (m) of the apex of any cliff notches created during this iteration
+   double m_dThisIterNewNotchApexElev;
 
    //! Distance of notch base below SWL (m)
    double m_dNotchApexAboveMHW;
@@ -1046,7 +1046,7 @@ class CSimulation
    //! Depth of unconsolidated coarse sediment that could not be deposited during the last iteration, carried forward to this iteration
    double m_dUnconsCoarseNotDepositedLastIter;
 
-   //! This iteration's Mean High Water (MHW) elevation, calculated using a moving time window TODO What if we have no tide data?
+   //! This iteration's Mean High Water (MHW) elevation, calculated using a moving time window. If we have no tide data, this is set to mean SWL
    double m_dThisIterMHWElev;
 
    // These grand totals are all long doubles. The aim is to minimize rounding errors when many very small numbers are added to a single much larger number, see e.g. http://www.ddj.com/cpp/184403224
@@ -1734,6 +1734,7 @@ class CSimulation
    int nTruncateProfilesDifferentCoasts(int const, int const, int const, int const, int const, int const);
    int nTruncateProfileHitDifferentCoast(int const, int const, int const, int const);
    int nTruncateProfileMultiLineDifferentCoasts(CGeomProfile*, double const, double const);
+   void DoCliffNotchIncision(CRWCliff*, double const);
 
    // GIS utility routines
    int nMarkBoundingBoxEdgeCells(void);

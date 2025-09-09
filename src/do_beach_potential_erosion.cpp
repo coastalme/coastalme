@@ -142,7 +142,6 @@ void CSimulation::DoAllPotentialBeachErosion(void)
 
             if (nSeaHand == RIGHT_HANDED)
                dNormalOrientation = dKeepWithin360(dAvgFluxOrientation - 90);
-
             else
                dNormalOrientation = dKeepWithin360(dAvgFluxOrientation + 90);
 
@@ -151,7 +150,6 @@ void CSimulation::DoAllPotentialBeachErosion(void)
 
             if (dThetaBr > 270)
                dThetaBr = dAvgBreakingWaveAngle + 360.0 - dNormalOrientation;
-
             else if (dThetaBr < -270)
                dThetaBr = dNormalOrientation + 360.0 - dAvgBreakingWaveAngle;
 
@@ -174,29 +172,24 @@ void CSimulation::DoAllPotentialBeachErosion(void)
 
             if (m_nBeachErosionDepositionEquation == UNCONS_SEDIMENT_EQUATION_CERC)
             {
-               /*
-                  Use the CERC equation (Komar and Inman, 1970; USACE, 1984), this describes the immersive weight transport of sand (i.e. sand transport in suspension). Depth-integrated alongshore volumetric sediment transport is a function of breaking wave height Hb and angle αb:
+               // Use the CERC equation (Komar and Inman, 1970; USACE, 1984), this describes the immersive weight transport of sand (i.e. sand transport in suspension). Depth-integrated alongshore volumetric sediment transport is a function of breaking wave height Hb and angle αb:
+               //
+               //    Qls = Kls * Hb^(5/2) * sin(2 * αb)
+               //
+               // where Kls is a transport coefficient which varies between 0.4 to 0.79
 
-                  Qls = Kls * Hb^(5/2) * sin(2 * αb)
-
-                  where Kls is a transport coefficient which varies between 0.4 to 0.79
-               */
                dImmersedWeightTransport = m_dKLS / (16 * pow(m_dBreakingWaveHeightDepthRatio, 0.5)) * m_dSeaWaterDensity * pow(m_dG, 1.5) * pow(dAvgBreakingWaveHeight, 2.5) * sin((PI / 180) * 2 * dThetaBr);
             }
-
             else if (m_nBeachErosionDepositionEquation == UNCONS_SEDIMENT_EQUATION_KAMPHUIS)
             {
-               /*
-                  Use the Kamphuis (1990) equation to estimate the immersive weight transport of sand in kg/s:
-
-                  Qls = 2.33 * (Tp^(1.5)) * (tanBeta^(0.75)) * (d50^(-0.25)) * (Hb^2) * (sin(2 * αb)^(0.6))
-
-                  where:
-
-                  Tp = peak wave period
-                  tanBeta = beach slope, defined as the ratio of the water depth at the breaker line and the distance from the still water beach line to the breaker line
-                  d50 = median particle size in surf zone (m)
-               */
+               // Use the Kamphuis (1990) equation to estimate the immersive weight transport of sand in kg/s:
+               //
+               //    Qls = 2.33 * (Tp^(1.5)) * (tanBeta^(0.75)) * (d50^(-0.25)) * (Hb^2) * (sin(2 * αb)^(0.6))
+               //
+               // where:
+               // Tp = peak wave period
+               // tanBeta = beach slope, defined as the ratio of the water depth at the breaker line and the distance from the still water beach line to the breaker line
+               // d50 = median particle size in surf zone (m)
 
                if (dAvgBreakingDist > 0)
                {

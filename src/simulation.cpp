@@ -353,8 +353,8 @@ CSimulation::CSimulation(void)
    m_dProfileMaxSlope =
    m_dMaxBeachElevAboveSWL =
    m_dCliffErosionResistance =
-   m_dNotchDepthAtCollapse =
-   m_dThisIterNotchApexElev =
+   m_dNotchIncisionDepthAtCollapse =
+   m_dThisIterNewNotchApexElev =
    m_dNotchApexAboveMHW =
    m_dCliffDepositionA =
    m_dCliffDepositionPlanviewWidth =

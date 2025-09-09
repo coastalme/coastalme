@@ -35,10 +35,10 @@ class CRWCliff : public CACoastLandform
    double m_dMaxDepth;
 
    //! The horizontal depth (in external CRS units) of the erosional notch, measured inland from the side of the cell that touches the sea
-   double m_dNotchDepth;
+   double m_dNotchIncisionDepth;
 
    //! Z-plane elevation (in external CRS units) of the base of the erosional notch. The notch is assumed to extend across the whole width of the coast cell, along the side of the cell that touches the sea
-   double m_dNotchBaseElev;
+   double m_dNotchApexElev;
 
  protected:
  public:
@@ -48,8 +48,8 @@ class CRWCliff : public CACoastLandform
    void SetCliffCollapsed(void);
    bool bHasCollapsed(void) const;
 
-   void SetNotchBaseElev(double const);
-   double dGetNotchBaseElev(void) const;
+   void SetNotchApexElev(double const);
+   double dGetNotchApexElev(void) const;
    // double dGetRemaining(void) const;
    // void SetNotchDepth(double const);
    double dGetNotchDepth(void) const;

@@ -51,10 +51,10 @@ class CRWCellLandform
       struct
       {
          //! Cliff notch base elevation
-         double m_dNotchBaseElev;
+         double m_dNotchApexElev;
 
          //! Cliff notch, horizontal depth of incision
-         double m_dNotchDepth;
+         double m_dNotchIncisionDepth;
 
          //! Timestep at which cliff collapse occurred
          unsigned long m_ulCollapseTimestep;
@@ -77,10 +77,10 @@ class CRWCellLandform
    int nGetPointOnCoast(void) const;
    void SetAccumWaveEnergy(double const);
    double dGetAccumWaveEnergy(void) const;
-   void SetCliffNotchBaseElev(double const);
-   double dGetCliffNotchBaseElev(void) const;
-   void SetCliffNotchDepth(double const);
-   double dGetCliffNotchDepth(void) const;
+   void SetCliffNotchApexElev(double const);
+   double dGetCliffNotchApexElev(void) const;
+   void SetCliffNotchIncisionDepth(double const);
+   double dGetCliffNotchIncisionDepth(void) const;
    // void SetCliffRemaining(double const);
    // double dGetCliffRemaining(void) const;
    void SetCliffCollapseTimestep(unsigned long const);
