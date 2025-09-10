@@ -1171,7 +1171,6 @@ int CSimulation::nCalcWavePropertiesOnProfile(int const nCoast, int const nCoast
 
          if (nSeaHand == LEFT_HANDED)
             VdWaveDirection[nProfilePoint] = dKeepWithin360(dAlpha + 90 + dFluxOrientationThis);
-
          else
             VdWaveDirection[nProfilePoint] = dKeepWithin360(dAlpha + 270 + dFluxOrientationThis);
 
@@ -1199,11 +1198,8 @@ int CSimulation::nCalcWavePropertiesOnProfile(int const nCoast, int const nCoast
       }
 
       if (dProfileBreakingWaveHeight >= dProfileDeepWaterWaveHeight)
-      {
-         dProfileBreakingWaveHeight = DBL_NODATA; // checking poorly conditions profiles problems for cshore
-      }
+         dProfileBreakingWaveHeight = DBL_NODATA;     // Checking poorly conditioned profiles problems for CShore
    }
-
    else if (m_nWavePropagationModel == WAVE_MODEL_COVE)
    {
       // We are using COVE's linear wave theory to propagate the waves
@@ -1227,7 +1223,6 @@ int CSimulation::nCalcWavePropertiesOnProfile(int const nCoast, int const nCoast
             dProfileWaveHeight = dProfileDeepWaterWaveHeight;
             dProfileWaveAngle = dProfileDeepWaterWaveAngle;
          }
-
          else
          {
             if (! bBreaking)
@@ -1255,7 +1250,6 @@ int CSimulation::nCalcWavePropertiesOnProfile(int const nCoast, int const nCoast
                   dProfileBreakingWaveAngle = dProfileWaveAngle;
                }
             }
-
             else
             {
                // It does
@@ -1332,14 +1326,9 @@ int CSimulation::nCalcWavePropertiesOnProfile(int const nCoast, int const nCoast
    for (int nPoint = 0; nPoint < static_cast<int>(VdWaveHeight.size()); nPoint++)
    {
       if (VdWaveHeight[nPoint] > 1e-4)
-      {
          nValidPointsWaveHeight += 1;
-      }
-
       else
-      {
          break;
-      }
    }
 
    nValidPointsWaveHeight -= 1;
@@ -1347,14 +1336,9 @@ int CSimulation::nCalcWavePropertiesOnProfile(int const nCoast, int const nCoast
    for (int nPoint = 0; nPoint < static_cast<int>(VdWaveSetupSurge.size()); nPoint++)
    {
       if (tAbs(VdWaveSetupSurge[nPoint]) < 1) // limiting the absolute value of setup + surge if cshore run fails
-      {
          nValidPointsWaveSetup += 1;
-      }
-
       else
-      {
          break;
-      }
    }
 
    nValidPointsWaveSetup -= 1;
@@ -1363,11 +1347,9 @@ int CSimulation::nCalcWavePropertiesOnProfile(int const nCoast, int const nCoast
 
    // Safety checks
    if ((nValidPointsWaveHeight >= 0) && (! bFPIsEqual(VdWaveHeight[nValidPointsWaveHeight], DBL_NODATA, TOLERANCE)))
-   {
       dWaveHeight = VdWaveHeight[nValidPointsWaveHeight];
-   }
 
-   // TODO 060 Remove these 'magic numbers'
+   // TODO 060 Remove the following 'magic numbers'
    double dRunUp = 0;
 
    if (m_nRunUpEquation == 0)
@@ -1375,14 +1357,12 @@ int CSimulation::nCalcWavePropertiesOnProfile(int const nCoast, int const nCoast
       // Compute the run-up using Nielsen & Hanslow (1991) & DHI (2004)
       dRunUp = 0.36 * pow(9.81, 0.5) * dtanBeta * pow(dWaveHeight, 0.5) * dDeepWaterWavePeriod;
    }
-
    else if (m_nRunUpEquation == 1)
    {
       // Compute the run-up using MASE 1989
       double const dS0 = 2 * PI * dWaveHeight / (9.81 * dDeepWaterWavePeriod * dDeepWaterWavePeriod);
       dRunUp = 1.86 * dWaveHeight * pow(pow(dtanBeta / dS0, 0.5), 0.71);
    }
-
    else if (m_nRunUpEquation == 2)
    {
       // Compute the run-up using STOCKDON (2006)
@@ -1396,22 +1376,16 @@ int CSimulation::nCalcWavePropertiesOnProfile(int const nCoast, int const nCoast
    }
 
    if ((tAbs(dRunUp) < 1e-4) || (isnan(dRunUp)))
-   {
       dRunUp = 0;
-   }
 
    double dWaveSetupSurge = 0;
 
    // Safety checks
    if ((nValidPointsWaveSetup >= 0) && (! bFPIsEqual(VdWaveSetupSurge[nValidPointsWaveSetup], DBL_NODATA, TOLERANCE)))
-   {
       dWaveSetupSurge = VdWaveSetupSurge[nValidPointsWaveSetup];
-   }
 
    if ((tAbs(dWaveSetupSurge) < 1e-4) || (isnan(dWaveSetupSurge)))
-   {
       dWaveSetupSurge = 0;
-   }
 
    // Update wave attributes along the coastline object. Wave height at the coast is always calculated (i.e. whether or not waves are breaking)
    // cout << "Wave Height at the coast is " << VdWaveHeight[nProfileSize - 1] << endl;
@@ -1865,7 +1839,7 @@ void CSimulation::ModifyBreakingWavePropertiesWithinShadowZoneToCoastline(int co
    int const nThisCoastPoint = pProfile->nGetCoastPoint();
    int const nProfileSize = pProfile->nGetNumCellsInProfile();
    int nThisBreakingDist = m_VCoast[nCoast].nGetBreakingDistance(nThisCoastPoint);
-   double dThisBreakingWaveHeight = m_VCoast[nCoast].dGetBreakingWaveHeight(nThisCoastPoint); // This could be DBL_NODATA
+   double dThisBreakingWaveHeight = m_VCoast[nCoast].dGetBreakingWaveHeight(nThisCoastPoint);      // This could be DBL_NODATA
    double dThisBreakingWaveAngle = m_VCoast[nCoast].dGetBreakingWaveAngle(nThisCoastPoint);
    double dThisBreakingDepth = m_VCoast[nCoast].dGetDepthOfBreaking(nThisCoastPoint);
 
@@ -1944,7 +1918,7 @@ void CSimulation::InterpolateWavePropertiesBetweenProfiles(int const nCoast, int
 
    // For the breaking wave stuff, to go into the in-between coastline points
    int const nThisBreakingDist = m_VCoast[nCoast].nGetBreakingDistance(nThisCoastPoint);
-   double const dThisBreakingWaveHeight = m_VCoast[nCoast].dGetBreakingWaveHeight(nThisCoastPoint); // This could be DBL_NODATA
+   double const dThisBreakingWaveHeight = m_VCoast[nCoast].dGetBreakingWaveHeight(nThisCoastPoint);      // This could be DBL_NODATA
    double const dThisBreakingWaveAngle = m_VCoast[nCoast].dGetBreakingWaveAngle(nThisCoastPoint);
    double const dThisBreakingDepth = m_VCoast[nCoast].dGetDepthOfBreaking(nThisCoastPoint);
    double const dThisWaveSetupSurge = m_VCoast[nCoast].dGetWaveSetupSurge(nThisCoastPoint);
@@ -1985,7 +1959,7 @@ void CSimulation::InterpolateWavePropertiesBetweenProfiles(int const nCoast, int
       return;
 
    int const nNextBreakingDist = m_VCoast[nCoast].nGetBreakingDistance(nNextCoastPoint);
-   double const dNextBreakingWaveHeight = m_VCoast[nCoast].dGetBreakingWaveHeight(nNextCoastPoint); // This could be DBL_NODATA
+   double const dNextBreakingWaveHeight = m_VCoast[nCoast].dGetBreakingWaveHeight(nNextCoastPoint);      // This could be DBL_NODATA
    double const dNextBreakingWaveAngle = m_VCoast[nCoast].dGetBreakingWaveAngle(nNextCoastPoint);
    double const dNextBreakingDepth = m_VCoast[nCoast].dGetDepthOfBreaking(nNextCoastPoint);
    double const dNextWaveSetupSurge = m_VCoast[nCoast].dGetWaveSetupSurge(nNextCoastPoint);

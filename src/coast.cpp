@@ -117,7 +117,7 @@ void CRWCoast::SetCoastlineExtCRS(CGeomLine const* pLCoast)
    m_VdDeepWaterWaveAngle = vector<double>(nLen, DBL_NODATA);
    m_VdDeepWaterWavePeriod = vector<double>(nLen, DBL_NODATA);
    m_VdBreakingWaveHeight = vector<double>(nLen, DBL_NODATA);
-   m_VdWaveSetupSurge = vector<double>(nLen, 0); // it is better to initiate with DBL_NODATA but some values are outside of range in the interpolation
+   m_VdWaveSetupSurge = vector<double>(nLen, 0);               // it is better to initiate with DBL_NODATA but some values are outside of range in the interpolation
    // m_VdStormSurge = vector<double>(nLen, DBL_NODATA);
    m_VdRunUp = vector<double>(nLen, 0);
    m_VdCoastWaveHeight = vector<double>(nLen, DBL_NODATA);
@@ -617,11 +617,11 @@ double CRWCoast::dGetLevel(int const nCoastPoint, int const level) const
 {
    switch (level)
    {
-   case 0: // WAVESETUPSURGE:
+   case 0:     // WAVESETUPSURGE:
       return m_VdWaveSetupSurge[nCoastPoint];
       break;
 
-   case 1: // WAVESETUPSURGE + RUNUP:
+   case 1:     // WAVESETUPSURGE + RUNUP:
       return m_VdWaveSetupSurge[nCoastPoint] + m_VdRunUp[nCoastPoint];
       break;
 

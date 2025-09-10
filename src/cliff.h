@@ -21,7 +21,6 @@
 
    You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ===============================================================================================================================*/
-
 #include "coast.h"
 #include "coast_landform.h"
 
@@ -37,7 +36,7 @@ class CRWCliff : public CACoastLandform
    //! The horizontal depth (in external CRS units) of the erosional notch, measured inland from the side of the cell that touches the sea
    double m_dNotchIncisionDepth;
 
-   //! Z-plane elevation (in external CRS units) of the base of the erosional notch. The notch is assumed to extend across the whole width of the coast cell, along the side of the cell that touches the sea
+   //! Elevation (in external CRS units) of the apex of the notch (in CoastalME, the mid point between the top and bottom of the notch). The notch is assumed to extend across the whole width of the coast cell, along the side of the cell that touches the sea
    double m_dNotchApexElev;
 
  protected:

@@ -57,7 +57,7 @@ int CSimulation::nCalcExternalForcing(void)
       snTideDataCount++;
    }
 
-   // LogStream << m_ulIter << ": this-iteration mean SWL = " << m_dThisIterMeanSWL << " this-iteration SWL = " << m_dThisIterSWL << std::endl;
+   LogStream << m_ulIter << ": SWL = " << m_dThisIterSWL << std::endl;
 
    m_bHighestSWLSoFar = false;
    m_bLowestSWLSoFar = false;

@@ -222,14 +222,14 @@ int CSimulation::nDoCliffCollapseDepositionOriginal(int const nCoast, CRWCliff c
                   // The talus length is also at this limit. So there is nothing more we can increase on this profile. Just deposit what we can and move on to the next profile
                   bJustDepositWhatWeCan = true;
 
-                  LogStream << m_ulIter << ": just deposit what we can: talus length = " << nTalusProfileLenInCells << " cells, seaward offset = " << nSeawardOffset << ", cliff height fraction = " <<  dCliffHeightFraction << endl;
+                  // LogStream << m_ulIter << ": \tjust deposit what we can: talus length = " << nTalusProfileLenInCells << " cells, seaward offset = " << nSeawardOffset << ", cliff height fraction = " <<  dCliffHeightFraction << endl;
                }
                else
                {
                   // The talus length is not at its arbitrary limit, so extend it
                   nTalusProfileLenInCells += CLIFF_COLLAPSE_LENGTH_INCREMENT;
 
-                  LogStream << m_ulIter << ": talus length increased: talus length = " << nTalusProfileLenInCells << " cells, seaward offset = " << nSeawardOffset << ", cliff height fraction = " <<  dCliffHeightFraction << endl;
+                  // LogStream << m_ulIter << ": \ttalus length increased: talus length = " << nTalusProfileLenInCells << " cells, seaward offset = " << nSeawardOffset << ", cliff height fraction = " <<  dCliffHeightFraction << endl;
 
                   continue;
                }
@@ -249,7 +249,7 @@ int CSimulation::nDoCliffCollapseDepositionOriginal(int const nCoast, CRWCliff c
             // The seaward offset is not at its maximum, so extend it
             nSeawardOffset++;
 
-            LogStream << m_ulIter << ": seaward offset increased: talus length = " << nTalusProfileLenInCells << " cells, seaward offset = " << nSeawardOffset << ", cliff height fraction = " <<  dCliffHeightFraction << endl;
+            // LogStream << m_ulIter << ": \tseaward offset increased: talus length = " << nTalusProfileLenInCells << " cells, seaward offset = " << nSeawardOffset << ", cliff height fraction = " <<  dCliffHeightFraction << endl;
 
             continue;
          }
@@ -607,7 +607,7 @@ int CSimulation::nDoCliffCollapseDepositionOriginal(int const nCoast, CRWCliff c
          break;
       } while (true); // The seaward offset etc. loop
 
-      LogStream << m_ulIter << ": left seaward offset loop for cliff collapse at [" << nXCliff << "][" << nYCliff << "] nStartPoint = " << nStartPoint << " nThisPoint = " << nThisPoint << endl << "\tnSeawardOffset = " << nSeawardOffset << " dCliffHeightFraction = " << dCliffHeightFraction << " nDepProfile = " << nDepProfile << " bJustDepositWhatWeCan = " << bJustDepositWhatWeCan << endl << "\tdTargetSandToDepositOnThisProfile = " << dTargetSandToDepositOnThisProfile << " dSandDepositedOnThisProfile = " << dSandDepositedOnThisProfile << " dTotSandToDepositAllProfiles = " << dTotSandToDepositAllProfiles << " dTotSandDepositedAllProfiles = " << dTotSandDepositedAllProfiles << endl << "\tdTargetCoarseToDepositOnThisProfile = " << dTargetCoarseToDepositOnThisProfile << " dCoarseDepositedOnThisProfile = " << dCoarseDepositedOnThisProfile << " dTotCoarseToDepositAllProfiles = " <<  dTotCoarseToDepositAllProfiles << " dTotCoarseDepositedAllProfiles = " << dTotCoarseDepositedAllProfiles << endl;
+      // LogStream << m_ulIter << ": \tleft seaward offset loop for cliff collapse at [" << nXCliff << "][" << nYCliff << "] nStartPoint = " << nStartPoint << " nThisPoint = " << nThisPoint << endl << "\tnSeawardOffset = " << nSeawardOffset << " dCliffHeightFraction = " << dCliffHeightFraction << " nDepProfile = " << nDepProfile << " bJustDepositWhatWeCan = " << bJustDepositWhatWeCan << endl << "\tdTargetSandToDepositOnThisProfile = " << dTargetSandToDepositOnThisProfile << " dSandDepositedOnThisProfile = " << dSandDepositedOnThisProfile << " dTotSandToDepositAllProfiles = " << dTotSandToDepositAllProfiles << " dTotSandDepositedAllProfiles = " << dTotSandDepositedAllProfiles << endl << "\tdTargetCoarseToDepositOnThisProfile = " << dTargetCoarseToDepositOnThisProfile << " dCoarseDepositedOnThisProfile = " << dCoarseDepositedOnThisProfile << " dTotCoarseToDepositAllProfiles = " <<  dTotCoarseToDepositAllProfiles << " dTotCoarseDepositedAllProfiles = " << dTotCoarseDepositedAllProfiles << endl;
 
       // Have we deposited enough for this cliff collapse?
       if (bDoSandDepositionOnThisProfile)

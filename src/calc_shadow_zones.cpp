@@ -291,7 +291,7 @@ int CSimulation::nDoAllShadowZones(void)
       if (VnPossibleShadowBoundaryCoastPoint.size() == 0)
       {
          if (m_nLogFileDetail >= LOG_FILE_HIGH_DETAIL)
-            LogStream << m_ulIter << ": no shadow boundary start points found" << endl;
+            LogStream << m_ulIter << ": \tno shadow boundary start points found" << endl;
 
          return RTN_OK;
       }

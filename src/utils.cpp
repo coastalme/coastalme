@@ -3095,7 +3095,7 @@ void CSimulation::CalcMHWElevation(int const nTideDataCount)
    }
 
    // Now calculate the average max tide for the next NUM_DAYS_FOR_MEAN_HIGH_WATER_CALC days
-   double const dMaxTideAvg = dTotMaxTide / NUM_DAYS_FOR_MEAN_HIGH_WATER_CALC;
+   double const dMaxTideAvg = dTotMaxTide / nTideValuesToRead;
 
    // Finally, calculate MHW for this iteration (includes long-term SWL change)
    m_dThisIterMHWElev = m_dThisIterMeanSWL + dMaxTideAvg;
@@ -3103,5 +3103,5 @@ void CSimulation::CalcMHWElevation(int const nTideDataCount)
    // And set the apex elevation of any new cliff notches (i.e. cliff notches which will be created during this trimestep) to be at or slightly above MHW level
    m_dThisIterNewNotchApexElev = m_dThisIterMHWElev + m_dNotchApexAboveMHW;
 
-   LogStream << m_ulIter << ": this-iteration MHW elevation = " << m_dThisIterMHWElev << " elevation of apex of new cliff notches = " << m_dThisIterNewNotchApexElev << endl;
+   // LogStream << m_ulIter << ": this-iteration MHW elevation = " << m_dThisIterMHWElev << " elevation of apex of new cliff notches = " << m_dThisIterNewNotchApexElev << endl;
 }

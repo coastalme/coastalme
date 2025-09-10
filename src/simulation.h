@@ -731,13 +731,13 @@ class CSimulation
    //! The mean still water level for this timestep (does not include tidal changes, but includes any long-term SWL change)
    double m_dThisIterMeanSWL;
 
-   //! If long-term SWL changes, the total change so far since the start of simulation
+   //! If long-term SWL changes, the total change (m) so far since the start of simulation
    double m_dAccumulatedSeaLevelChange;
 
-   //! Minimum still water level
+   //! Minimum still water level (m)
    double m_dMinSWLSoFar;
 
-   //! Maximum still water level
+   //! Maximum still water level (m)
    double m_dMaxSWLSoFar;
 
    //! TODO 007 Finish surge and runup stuff

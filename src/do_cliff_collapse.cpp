@@ -33,7 +33,8 @@ using std::ios;
 #include "2d_point.h"
 
 //===============================================================================================================================
-//! Update accumulated wave energy in coastal landform objects
+//! Update accumulated wave energy in coastal landform objects. If the object is a cliff, then deepen the incised notch. If the notch is sufficiently deep, cliff collapse occurs.
+//! CoastalME's representation of notch incision is based on Trenhaile, A.S. (2015). Coastal notches: Their morphology, formation, and function. Earth-Science Reviews 150, 285-304
 //===============================================================================================================================
 int CSimulation::nDoAllWaveEnergyToCoastLandforms(void)
 {
@@ -186,7 +187,7 @@ int CSimulation::nDoAllWaveEnergyToCoastLandforms(void)
    }
 
    if (m_nLogFileDetail >= LOG_FILE_ALL)
-      LogStream << m_ulIter << ": total cliff collapse (m^3) = " << (m_dThisIterCliffCollapseErosionFineUncons + m_dThisIterCliffCollapseErosionFineCons + m_dThisIterCliffCollapseErosionSandUncons + m_dThisIterCliffCollapseErosionSandCons + m_dThisIterCliffCollapseErosionCoarseUncons + m_dThisIterCliffCollapseErosionCoarseCons) * m_dCellArea << " (fine = " << (m_dThisIterCliffCollapseErosionFineUncons + m_dThisIterCliffCollapseErosionFineCons) * m_dCellArea << ", sand = " << (m_dThisIterCliffCollapseErosionSandUncons + m_dThisIterCliffCollapseErosionSandCons) * m_dCellArea << ", coarse = " << (m_dThisIterCliffCollapseErosionCoarseUncons + m_dThisIterCliffCollapseErosionCoarseCons) * m_dCellArea << "), talus deposition (m^3) = " << (m_dThisIterUnconsSandCliffDeposition + m_dThisIterUnconsCoarseCliffDeposition) * m_dCellArea << " (sand = " << m_dThisIterUnconsSandCliffDeposition * m_dCellArea << ", coarse = " << m_dThisIterUnconsSandCliffDeposition * m_dCellArea << ")" << endl;
+      LogStream << m_ulIter << ": \ttotal cliff collapse (m^3) = " << (m_dThisIterCliffCollapseErosionFineUncons + m_dThisIterCliffCollapseErosionFineCons + m_dThisIterCliffCollapseErosionSandUncons + m_dThisIterCliffCollapseErosionSandCons + m_dThisIterCliffCollapseErosionCoarseUncons + m_dThisIterCliffCollapseErosionCoarseCons) * m_dCellArea << " (fine = " << (m_dThisIterCliffCollapseErosionFineUncons + m_dThisIterCliffCollapseErosionFineCons) * m_dCellArea << ", sand = " << (m_dThisIterCliffCollapseErosionSandUncons + m_dThisIterCliffCollapseErosionSandCons) * m_dCellArea << ", coarse = " << (m_dThisIterCliffCollapseErosionCoarseUncons + m_dThisIterCliffCollapseErosionCoarseCons) * m_dCellArea << "), talus deposition (m^3) = " << (m_dThisIterUnconsSandCliffDeposition + m_dThisIterUnconsCoarseCliffDeposition) * m_dCellArea << " (sand = " << m_dThisIterUnconsSandCliffDeposition * m_dCellArea << ", coarse = " << m_dThisIterUnconsSandCliffDeposition * m_dCellArea << ")" << endl << endl;
 
    return RTN_OK;
 }
@@ -196,7 +197,7 @@ int CSimulation::nDoAllWaveEnergyToCoastLandforms(void)
 //===============================================================================================================================
 int CSimulation::nDoCliffCollapse(int const nCoast, CRWCliff* pCliff, double& dFineCollapse, double& dSandCollapse, double& dCoarseCollapse, double& dPreCollapseCliffElev, double& dPostCollapseCliffElev)
 {
-   LogStream << m_ulIter << ": IN CLIFF COLLAPSE &&&&&&&&&&&&&&&&&&&&&&" << endl;
+   // LogStream << m_ulIter << ": IN CLIFF COLLAPSE &&&&&&&&&&&&&&&&&&&&&&" << endl;
 
    // Get the cliff cell's grid coords
    int const nX = pCliff->pPtiGetCellMarkedAsCliff()->nGetX();
@@ -484,23 +485,30 @@ int CSimulation::nDoCliffCollapse(int const nCoast, CRWCliff* pCliff, double& dF
 //===============================================================================================================================
 void CSimulation::DoCliffNotchIncision(CRWCliff* pCliff, double const dWaveEnergy)
 {
-   // Get the apex elevation of the cliff notch
+   // Get the apex elevation of the cliff notch, and the cut-off elevation (if thi-iteration SWL is below this, there is no incision)
    double const dNotchElev = pCliff->dGetNotchApexElev();
-
    double const dCutoffElev = dNotchElev - CLIFF_NOTCH_CUTOFF_DISTANCE;
 
-   if (m_dThisIterSWL < dCutoffElev )
+   // Get the coast number, and the coastline point, of the cliff
+   int nCoast = pCliff->nGetCoast();
+   int nCoastPoint = pCliff->nGetPointOnCoast();
+
+   // And get the wave runup at this point
+   double dRunup = m_VCoast[nCoast].dGetRunUp(nCoastPoint);
+   double dWaveElev = m_dThisIterSWL + dRunup;
+
+   if (dWaveElev < dCutoffElev )
       // SWL is below the cutoff elevation, so no notch incision
       return;
 
    // We have some notch incision
    double dWeight;
-   if (m_dThisIterSWL > dNotchElev)
+   if (dWaveElev > dNotchElev)
       // Should not happen: safety check
       dWeight = 1;
    else
       // Assume a linear decrease in incision with distance downwards from notch apex
-      dWeight = 1 - ((dNotchElev - m_dThisIterSWL) / CLIFF_NOTCH_CUTOFF_DISTANCE);
+      dWeight = 1 - ((dNotchElev - dWaveElev) / CLIFF_NOTCH_CUTOFF_DISTANCE);
 
    // Calculate this-timestep cliff notch erosion (is a length in external CRS units). Note that only consolidated sediment can have a cliff notch
    double const dNotchIncision = dWeight * dWaveEnergy / m_dCliffErosionResistance;
@@ -508,6 +516,6 @@ void CSimulation::DoCliffNotchIncision(CRWCliff* pCliff, double const dWaveEnerg
    // Deepen the cliff object's erosional notch as a result of wave energy during this timestep. Note that notch deepening may be constrained, since this-timestep notch extension cannot exceed the length (i.e. cellside minus notch depth) of sediment remaining on the cell
    pCliff->DeepenErosionalNotch(dNotchIncision);
 
-   // LogStream << m_ulIter << ": dWeight = " << dWeight << " dNotchIncision = " << dNotchIncision << endl;
+   LogStream << m_ulIter << ": dRunup = " << dRunup << " dWaveElev = " << dWaveElev << " dWeight = " << dWeight << " dNotchIncision = " << dNotchIncision << endl;
 }
 

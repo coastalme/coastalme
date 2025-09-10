@@ -2892,13 +2892,15 @@ bool CSimulation::bReadRunDataFile(void)
             {
                // Run-up equation?
                if (bIsStringValidInt(strRH))
-               {
                   m_nRunUpEquation = stoi(strRH);
-               }
-
                else
                   strErr = "line " + to_string(nLine) + ": invalid code for run-up equation used in simulating floods";
             }
+
+            // TEST
+            m_nRunUpEquation = 0;      // Nielsen & Hanslow (1991) & DHI (2004)
+            // m_nRunUpEquation = 1;      // MASE 1989
+            // m_nRunUpEquation = 2;      // STOCKDON (2006)
 
             break;
 
@@ -2911,9 +2913,7 @@ bool CSimulation::bReadRunDataFile(void)
                m_bFloodLocationSave = false;
 
                if (strRH.find('y') != string::npos)
-               {
                   m_bFloodLocationSave = true;
-               }
             }
 
             break;

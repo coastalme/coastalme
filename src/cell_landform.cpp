@@ -111,19 +111,19 @@ void CRWCellLandform::SetCliffNotchApexElev(double const dElevIn)
    m_uLFData.m_sCliffData.m_dNotchApexElev = dElevIn;
 }
 
-//! Get cliff notch apex elevation
+//! Get cliff notch apex elevation: this is the elevation of the most deeply incised horizontal plane within the notch, see Figure 3 in Trenhaile, A.S. (2015). Coastal notches: Their morphology, formation, and function. Earth-Science Reviews 150, 285-304. In CoastalME, where the notch is assumed to have the same depth of incision on all horizonal planes within the notch, the apex is assumed to be the vertical mid-point between the upper and lower edges of the notch
 double CRWCellLandform::dGetCliffNotchApexElev(void) const
 {
    return m_uLFData.m_sCliffData.m_dNotchApexElev;
 }
 
-//! Set the horizontal depth of cliff notch incision for this cell
+//! Set the horizontal depth of cliff notch incision for this cell. This is the horizontal distance from the edge of the cell to the incised back of the notch
 void CRWCellLandform::SetCliffNotchIncisionDepth(double const dLenIn)
 {
    m_uLFData.m_sCliffData.m_dNotchIncisionDepth = dLenIn;
 }
 
-//! Get the horizontal depth of cliff notch incision for this cell
+//! Get the horizontal depth of cliff notch incision for this cell. This is the horizontal distance from the edge of the cell to the incised back of the notch
 double CRWCellLandform::dGetCliffNotchIncisionDepth(void) const
 {
    return m_uLFData.m_sCliffData.m_dNotchIncisionDepth;
