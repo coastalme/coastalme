@@ -130,7 +130,7 @@ Minimum height of landward talus end, as fraction of cliff elevation            
 ; Input events ---------------------------------------------------------------------------------------------------------
 Flood input?                                                                                 : n
 Flood coastline to output                                                                    : 
-Run-up equation                                                                              :
+
 Characteristic locations of flood                                                            : 
 Flood input location                                                                         : 
 
@@ -163,6 +163,8 @@ Cliff toe location?                                                             
    Cliff slope limit for cliff toe detection                             [only for cliff toe]: 0.3
 
 Cliff talus deposition approach                                       [0 = original, 1 = new]: 0
+
+Runup equation                [0 = none, 1 = Nielsen & Hanslow & DHI, 2 = MASE, 3 = Stockdon): 1
 
 ; END OF FILE ----------------------------------------------------------------------------------------------------------
 

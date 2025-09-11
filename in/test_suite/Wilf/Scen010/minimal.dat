@@ -129,7 +129,7 @@ Minimum height of landward talus end, as fraction of cliff elevation            
 ; Input events ---------------------------------------------------------------------------------------------------------
 Flood input?                                                                                 : n
 Flood coastline to output                                                                    : 
-Run-up equation                                                                              :
+
 Characteristic locations of flood                                                            : 
 Flood input location                                                                         : 
 

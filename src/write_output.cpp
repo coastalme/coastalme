@@ -620,6 +620,16 @@ void CSimulation::WriteStartRunDetails(void)
    if (m_bOutputErosionPotentialData)
       OutStream << " (see " << m_strOutPath << EROSION_POTENTIAL_LOOKUP_FILE << ")";
 
+   OutStream << " Runup equation                                            \t: ";
+   if (m_nRunUpEquation == 0)
+      OutStream << "none";
+   else if (m_nRunUpEquation == RUNUP_EQUATION_N_AND_H_AND_DHI)
+      OutStream << "Nielsen & Hanslow (1991) & DHI (2004)";
+   else if (m_nRunUpEquation == RUNUP_EQUATION_MASE)
+      OutStream << "MASE (1989)";
+   else if (m_nRunUpEquation == RUNUP_EQUATION_STOCKDON)
+      OutStream << "Stockdon (2006)";
+
    OutStream << endl << endl;
 
    // -------------------------------------------------- Per-iteration output ----------------------------------------------------

@@ -2851,8 +2851,8 @@ bool CSimulation::bReadRunDataFile(void)
                   if (strRH.find(VECTOR_ALL_RIVER_FLOOD_OUTPUT_CODE) != string::npos)
                   {
                      m_bFloodSWLSetupLineSave =
-                         m_bFloodSWLSetupSurgeLine =
-                             m_bFloodSWLSetupSurgeRunupLineSave = true;
+                     m_bFloodSWLSetupSurgeLine =
+                     m_bFloodSWLSetupSurgeRunupLineSave = true;
                   }
 
                   else
@@ -2888,23 +2888,6 @@ bool CSimulation::bReadRunDataFile(void)
             break;
 
          case 69:
-            if (m_bRiverineFlooding)
-            {
-               // Run-up equation?
-               if (bIsStringValidInt(strRH))
-                  m_nRunUpEquation = stoi(strRH);
-               else
-                  strErr = "line " + to_string(nLine) + ": invalid code for run-up equation used in simulating floods";
-            }
-
-            // TEST
-            m_nRunUpEquation = 0;      // Nielsen & Hanslow (1991) & DHI (2004)
-            // m_nRunUpEquation = 1;      // MASE 1989
-            // m_nRunUpEquation = 2;      // STOCKDON (2006)
-
-            break;
-
-         case 70:
             if (m_bRiverineFlooding && m_bVectorWaveFloodLineSave)
             {
                // Characteristic locations for flood?
@@ -2918,7 +2901,7 @@ bool CSimulation::bReadRunDataFile(void)
 
             break;
 
-         case 71:
+         case 70:
             if (m_bRiverineFlooding)
             {
                // Path of location points file
@@ -2951,7 +2934,7 @@ bool CSimulation::bReadRunDataFile(void)
 
             break;
 
-         case 72:
+         case 71:
             // Simulate sediment input?
             strRH = strToLower(&strRH);
 
@@ -2963,7 +2946,7 @@ bool CSimulation::bReadRunDataFile(void)
 
             break;
 
-         case 73:
+         case 72:
             // Sediment input location (point or line shapefile)
             if (m_bSedimentInput)
             {
@@ -2990,7 +2973,7 @@ bool CSimulation::bReadRunDataFile(void)
 
             break;
 
-         case 74:
+         case 73:
             // Sediment input type: required if have shapefile [P = Point, C = coast block, L = line]
             if (m_bSedimentInput)
             {
@@ -3011,7 +2994,7 @@ bool CSimulation::bReadRunDataFile(void)
 
             break;
 
-         case 75:
+         case 74:
             // Sediment input details file (required if have shapefile)
             if (m_bSedimentInput)
             {
@@ -3044,7 +3027,7 @@ bool CSimulation::bReadRunDataFile(void)
             break;
 
          // ------------------------------------------------------ Other data --------------------------------------------------
-         case 76:
+         case 75:
             // Gravitational acceleration (m2/s). First check that this is a valid double
             if (! bIsStringValidDouble(strRH))
             {
@@ -3059,7 +3042,7 @@ bool CSimulation::bReadRunDataFile(void)
 
             break;
 
-         case 77:
+         case 76:
             // Spacing of coastline normals (m)
             m_dCoastNormalSpacing = strtod(strRH.c_str(), NULL);
 
@@ -3071,7 +3054,7 @@ bool CSimulation::bReadRunDataFile(void)
 
             break;
 
-         case 78:
+         case 77:
             // Random factor for spacing of normals  [0 to 1, 0 = deterministic], check that this is a valid double
             if (! bIsStringValidDouble(strRH))
             {
@@ -3088,7 +3071,7 @@ bool CSimulation::bReadRunDataFile(void)
 
             break;
 
-         case 79:
+         case 78:
             // Length of coastline normals (m), check that this is a valid double
             if (! bIsStringValidDouble(strRH))
             {
@@ -3103,7 +3086,7 @@ bool CSimulation::bReadRunDataFile(void)
 
             break;
 
-         case 80:
+         case 79:
             // Start depth for wave calcs (ratio to deep water wave height), check that this is a valid double
             if (! bIsStringValidDouble(strRH))
             {
@@ -3119,7 +3102,7 @@ bool CSimulation::bReadRunDataFile(void)
             break;
 
          // ----------------------------------------------------- Testing only -------------------------------------------------
-         case 81:
+         case 80:
             // Output profile data?
             strRH = strToLower(&strRH);
 
@@ -3140,7 +3123,7 @@ bool CSimulation::bReadRunDataFile(void)
 
             break;
 
-         case 82:
+         case 81:
             // Numbers of profiles to be saved
             if (m_bOutputConsolidatedProfileData)
             {
@@ -3170,7 +3153,7 @@ bool CSimulation::bReadRunDataFile(void)
 
             break;
 
-         case 83:
+         case 82:
             // Timesteps to save profiles
             if (m_bOutputConsolidatedProfileData)
             {
@@ -3193,7 +3176,7 @@ bool CSimulation::bReadRunDataFile(void)
 
             break;
 
-         case 84:
+         case 83:
             // Output parallel profile data?
             strRH = strToLower(&strRH);
 
@@ -3204,7 +3187,7 @@ bool CSimulation::bReadRunDataFile(void)
 
             break;
 
-         case 85:
+         case 84:
             // Output erosion potential look-up data?
             strRH = strToLower(&strRH);
 
@@ -3215,7 +3198,7 @@ bool CSimulation::bReadRunDataFile(void)
 
             break;
 
-         case 86:
+         case 85:
             // Cliff toe location? approach [0 = none, 1 = by slope threshold]
             if (m_bHaveConsolidatedSediment && m_bDoCliffCollapse)
             {
@@ -3233,7 +3216,7 @@ bool CSimulation::bReadRunDataFile(void)
 
             break;
 
-         case 87:
+         case 86:
             // Cliff edge smoothing algorithm: 0 = none, 1 = running mean, 2 = Savitzky-Golay
             if (m_bHaveConsolidatedSediment && m_bDoCliffCollapse && m_bCliffToeLocate)
             {
@@ -3256,7 +3239,7 @@ bool CSimulation::bReadRunDataFile(void)
 
             break;
 
-         case 88:
+         case 87:
             // Size of cliff edge smoothing window: must be odd
             if (m_bHaveConsolidatedSediment && m_bDoCliffCollapse && m_bCliffToeLocate)
             {
@@ -3274,7 +3257,7 @@ bool CSimulation::bReadRunDataFile(void)
 
             break;
 
-         case 89:
+         case 88:
             // Order of cliff edge smoothing polynomial for Savitzky-Golay: usually 2 or 4, max is 6
             if (m_bHaveConsolidatedSediment && m_bDoCliffCollapse && m_bCliffToeLocate)
             {
@@ -3292,7 +3275,7 @@ bool CSimulation::bReadRunDataFile(void)
 
             break;
 
-         case 90:
+         case 89:
             // Slope limit for cliff toe detection
             if (m_bHaveConsolidatedSediment && m_bDoCliffCollapse && m_bCliffToeLocate)
             {
@@ -3310,7 +3293,7 @@ bool CSimulation::bReadRunDataFile(void)
 
             break;
 
-         case 91:
+         case 90:
             // Cliff talus deposition: 0 = original, 1 = new
             if (m_bHaveConsolidatedSediment && m_bDoCliffCollapse)
             {
@@ -3330,6 +3313,18 @@ bool CSimulation::bReadRunDataFile(void)
                if ((m_nCliffTalusDepositionApproach  < 0) || (m_nCliffTalusDepositionApproach  > 1))
                   strErr = "line " + to_string(nLine) + ": cliff talus deposition approach must be 0 or 1";
             }
+
+            break;
+
+         case 91:
+            // Run-up equation?
+            if (bIsStringValidInt(strRH))
+               m_nRunUpEquation = stoi(strRH);
+            else
+               strErr = "line " + to_string(nLine) + ": invalid code for run-up equation used in simulating floods";
+
+            if ((m_nRunUpEquation < 0) || (m_nRunUpEquation > 3))
+               strErr = "line " + to_string(nLine) + ": runup equation code must be between 0 and 3";
 
             break;
 
@@ -3704,6 +3699,9 @@ int CSimulation::nReadWaveStationInputFile(int const nWaveStations)
 
                if (dThisIter <= 0)
                   strErr = "line " + to_string(nLine) + ": timestep must be > 0";
+
+               if (dThisIter >= 24)
+                  strErr = "line " + to_string(nLine) + ": timestep must be < 24 hours";
 
                if (! bFPIsEqual(dThisIter, m_dTimeStep, TOLERANCE))
                   strErr = "line " + to_string(nLine) + ": timestep must be the same as the simulation timestep";

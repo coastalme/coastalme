@@ -250,5 +250,8 @@ CoastalME CHANGELOG
          Cliff notch apex now at or above MHW
          Incision of cliff notch now decreases linearly with distance of SWL below notch apex
          Variable and function renaming
+         Timestep must be less than 24 hours
+         Now using Manuel's runup calcs
+         User chooses runup equation
          Code tidying
 

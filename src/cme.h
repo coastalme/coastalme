@@ -716,6 +716,11 @@ int const GAP_BETWEEN_DIFFERENT_COAST_PROFILES = 30;        // In cells, is the 
 
 int const NUM_DAYS_FOR_MEAN_HIGH_WATER_CALC = 30;           // Number of days to average daily high water elevation
 
+int const NO_RUNUP_EQUATION = 0;                            // Runup not considered
+int const RUNUP_EQUATION_N_AND_H_AND_DHI = 1;               // Runup equation is Nielsen & Hanslow (1991) & DHI (2004)
+int const RUNUP_EQUATION_MASE = 2;                          // Runup equation is MASE (1989)
+int const RUNUP_EQUATION_STOCKDON = 3;                      // Runup equation is Stockdon (2006)
+
 unsigned long const MASK = 0xfffffffful;
 unsigned long const SEDIMENT_INPUT_EVENT_ERROR = -1;
 unsigned long const UNSIGNED_LONG_NODATA = 9999;
@@ -752,7 +757,7 @@ double const CLIFF_NOTCH_CUTOFF_DISTANCE = 2;               // Cut-off SWL dista
 
 double const DBL_NODATA = -9999;
 
-string const PROGRAM_NAME = "Coastal Modelling Environment (CoastalME) version 1.4.0 (10 Sep 2025)";
+string const PROGRAM_NAME = "Coastal Modelling Environment (CoastalME) version 1.4.0 (11 Sep 2025)";
 string const PROGRAM_NAME_SHORT = "CME";
 string const CME_INI = "cme.ini";
 

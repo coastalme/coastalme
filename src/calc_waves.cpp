@@ -1352,20 +1352,20 @@ int CSimulation::nCalcWavePropertiesOnProfile(int const nCoast, int const nCoast
    // TODO 060 Remove the following 'magic numbers'
    double dRunUp = 0;
 
-   if (m_nRunUpEquation == 0)
+   if (m_nRunUpEquation == RUNUP_EQUATION_N_AND_H_AND_DHI)
    {
       // Compute the run-up using Nielsen & Hanslow (1991) & DHI (2004)
       dRunUp = 0.36 * pow(9.81, 0.5) * dtanBeta * pow(dWaveHeight, 0.5) * dDeepWaterWavePeriod;
    }
-   else if (m_nRunUpEquation == 1)
+   else if (m_nRunUpEquation == RUNUP_EQUATION_MASE)
    {
       // Compute the run-up using MASE 1989
       double const dS0 = 2 * PI * dWaveHeight / (9.81 * dDeepWaterWavePeriod * dDeepWaterWavePeriod);
       dRunUp = 1.86 * dWaveHeight * pow(pow(dtanBeta / dS0, 0.5), 0.71);
    }
-   else if (m_nRunUpEquation == 2)
+   else if (m_nRunUpEquation == RUNUP_EQUATION_STOCKDON)
    {
-      // Compute the run-up using STOCKDON (2006)
+      // Compute the run-up using Stockdon (2006)
       double const dS0 = 2 * PI * dWaveHeight / (9.81 * dDeepWaterWavePeriod * dDeepWaterWavePeriod);
       // dRunUp = 1.1 * ((0.35 * dWaveHeight * (pow((1 / dS0) * dWaveHeight * dWaveHeight, 0.5))) + (((((1 / dS0) * dWaveHeight * dWaveHeight) * (0.563 * dWaveHeight * dWaveHeight + 0.0004)), 0.5)) / 2);
 
