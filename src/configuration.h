@@ -33,9 +33,9 @@ Cambridge, MA 02139, USA.
 #define CONFIGURATION_H
 
 #include <algorithm>
+#include <cctype>
 #include <string>
 #include <vector>
-#include <cctype>
 
 using std::string;
 using std::vector;
@@ -279,7 +279,6 @@ class CConfiguration
    {
       m_dMaxBeachElevation = d;
    }
-
    void SetNumLayers(int n)
    {
       m_nNumLayers = n;
@@ -617,10 +616,7 @@ class CConfiguration
    {
       return m_strSaveDigitsMode;
    }
-   vector<string> GetRasterFiles() const
-   {
-      return m_vecRasterFiles;
-   }
+   vector<string> GetRasterFiles() const;
    string GetRasterFormat() const
    {
       return m_strRasterFormat;
@@ -637,10 +633,7 @@ class CConfiguration
    {
       return m_vecSliceElevations;
    }
-   vector<string> GetVectorFiles() const
-   {
-      return m_vecVectorFiles;
-   }
+   vector<string> GetVectorFiles() const;
    string GetVectorFormat() const
    {
       return m_strVectorFormat;
@@ -662,13 +655,7 @@ class CConfiguration
    {
       return m_nPolynomialOrder;
    }
-   string GetOmitGridEdges() const
-   {
-      // This needs to be lower case
-      std::string my_text{m_strOmitGridEdges};
-      std::transform(my_text.begin(), my_text.end(), my_text.begin(), ::tolower);
-      return my_text;
-   }
+   string GetOmitGridEdges() const;
    int GetProfileSmoothingWindow() const
    {
       return m_nProfileSmoothingWindow;
@@ -776,183 +763,149 @@ class CConfiguration
       return m_dBreakingWaveRatio;
    }
 
-   // Missing getters for Sediment and Erosion parameters
+   // Sediment and Erosion parameters
    bool GetCoastPlatformErosion() const
    {
-      // TODO: Implement getter for coast platform erosion flag
       return m_bCoastPlatformErosion;
    }
    double GetPlatformErosionResistance() const
    {
-      // TODO: Implement getter for platform erosion resistance
       return m_dPlatformErosionResistance;
    }
    bool GetBeachSedimentTransport() const
    {
-      // TODO: Implement getter for beach sediment transport flag
       return m_bBeachSedimentTransport;
    }
    int GetBeachTransportAtEdges() const
    {
-      // TODO: Implement getter for beach transport at edges setting
       return m_nBeachTransportAtEdges;
    }
    int GetBeachErosionEquation() const
    {
-      // TODO: Implement getter for beach erosion equation type
       return m_nBeachErosionEquation;
    }
    double GetFineMedianSize() const
    {
-      // TODO: Implement getter for fine sediment median size
       return m_dFineMedianSize;
    }
    double GetSandMedianSize() const
    {
-      // TODO: Implement getter for sand median size
       return m_dSandMedianSize;
    }
    double GetCoarseMedianSize() const
    {
-      // TODO: Implement getter for coarse sediment median size
       return m_dCoarseMedianSize;
    }
    double GetSedimentDensity() const
    {
-      // TODO: Implement getter for sediment density
       return m_dSedimentDensity;
    }
    double GetBeachSedimentPorosity() const
    {
-      // TODO: Implement getter for beach sediment porosity
       return m_dBeachSedimentPorosity;
    }
    double GetFineErosivity() const
    {
-      // TODO: Implement getter for fine sediment erosivity
       return m_dFineErosivity;
    }
    double GetSandErosivity() const
    {
-      // TODO: Implement getter for sand erosivity
       return m_dSandErosivity;
    }
    double GetCoarseErosivity() const
    {
-      // TODO: Implement getter for coarse sediment erosivity
       return m_dCoarseErosivity;
    }
    double GetTransportKLS() const
    {
-      // TODO: Implement getter for transport KLS parameter
       return m_dTransportKLS;
    }
    double GetKamphuis() const
    {
-      // TODO: Implement getter for Kamphuis parameter
       return m_dKamphuis;
    }
    double GetBermHeight() const
    {
-      // TODO: Implement getter for berm height
       return m_dBermHeight;
    }
 
-   // Missing getters for Cliff parameters
+   // Cliff parameters
    bool GetCliffCollapse() const
    {
-      // TODO: Implement getter for cliff collapse flag
       return m_bCliffCollapse;
    }
    double GetCliffErosionResistance() const
    {
-      // TODO: Implement getter for cliff erosion resistance
       return m_dCliffErosionResistance;
    }
    double GetNotchOverhang() const
    {
-      // TODO: Implement getter for notch overhang distance
       return m_dNotchOverhang;
    }
    double GetNotchBase() const
    {
-      // TODO: Implement getter for notch base elevation
       return m_dNotchBase;
    }
    double GetCliffDepositionA() const
    {
-      // TODO: Implement getter for cliff deposition coefficient A
       return m_dCliffDepositionA;
    }
    double GetTalusWidth() const
    {
-      // TODO: Implement getter for talus width
       return m_dTalusWidth;
    }
    double GetMinTalusLength() const
    {
-      // TODO: Implement getter for minimum talus length
       return m_dMinTalusLength;
    }
    double GetMinTalusHeight() const
    {
-      // TODO: Implement getter for minimum talus height
       return m_dMinTalusHeight;
    }
 
-   // Missing getters for Flood parameters
+   // Flood parameters
    bool GetFloodInput() const
    {
-      // TODO: Implement getter for flood input flag
       return m_bFloodInput;
    }
    string GetFloodCoastline() const
    {
-      // TODO: Implement getter for flood coastline file
       return m_strFloodCoastline;
    }
    string GetRunupEquation() const
    {
-      // TODO: Implement getter for runup equation type
       return m_strRunupEquation;
    }
    string GetFloodLocations() const
    {
-      // TODO: Implement getter for flood locations file
       return m_strFloodLocations;
    }
    string GetFloodInputLocation() const
    {
-      // TODO: Implement getter for flood input location
       return m_strFloodInputLocation;
    }
 
-   // Missing getters for Sediment Input parameters
+   // Sediment Input parameters
    bool GetSedimentInput() const
    {
-      // TODO: Implement getter for sediment input flag
       return m_bSedimentInput;
    }
    string GetSedimentInputLocation() const
    {
-      // TODO: Implement getter for sediment input location
       return m_strSedimentInputLocation;
    }
    string GetSedimentInputType() const
    {
-      // TODO: Implement getter for sediment input type
       return m_strSedimentInputType;
    }
    string GetSedimentInputDetails() const
    {
-      // TODO: Implement getter for sediment input details
       return m_strSedimentInputDetails;
    }
 
-   // Missing getters for Physics and Geometry
+   // Physics and Geometry parameters
    double GetGravitationalAcceleration() const
    {
-      // TODO: Implement getter for gravitational acceleration
       return m_dGravitationalAcceleration;
    }
    double GetNormalSpacing() const
@@ -961,76 +914,61 @@ class CConfiguration
    }
    double GetRandomFactor() const
    {
-      // TODO: Implement getter for random factor
       return m_dRandomFactor;
    }
    double GetNormalLength() const
    {
-      // TODO: Implement getter for normal length
       return m_dNormalLength;
    }
    double GetStartDepthRatio() const
    {
-      // TODO: Implement getter for start depth ratio
       return m_dStartDepthRatio;
    }
 
-   // Missing getters for Profile and Output Options
+   // Profile and Output Options
    bool GetSaveProfileData() const
    {
-      // TODO: Implement getter for save profile data flag
       return m_bSaveProfileData;
    }
    vector<int> GetProfileNumbers() const
    {
-      // TODO: Implement getter for profile numbers
       return m_vecProfileNumbers;
    }
    vector<int> GetProfileTimesteps() const
    {
-      // TODO: Implement getter for profile timesteps
       return m_vecProfileTimesteps;
    }
    bool GetSaveParallelProfiles() const
    {
-      // TODO: Implement getter for save parallel profiles flag
       return m_bSaveParallelProfiles;
    }
    bool GetOutputErosionPotential() const
    {
-      // TODO: Implement getter for output erosion potential flag
       return m_bOutputErosionPotential;
    }
    int GetCurvatureWindow() const
    {
-      // TODO: Implement getter for curvature window size
       return m_nCurvatureWindow;
    }
 
-   // Missing getters for Cliff Edge Processing
+   // Cliff Edge Processing
    int GetCliffEdgeSmoothing() const
    {
-      // TODO: Implement getter for cliff edge smoothing iterations
       return m_nCliffEdgeSmoothing;
    }
    int GetCliffEdgeSmoothingWindow() const
    {
-      // TODO: Implement getter for cliff edge smoothing window size
       return m_nCliffEdgeSmoothingWindow;
    }
    int GetCliffEdgePolynomialOrder() const
    {
-      // TODO: Implement getter for cliff edge polynomial order
       return m_nCliffEdgePolynomialOrder;
    }
    double GetCliffSlopeLimit() const
    {
-      // TODO: Implement getter for cliff slope limit
       return m_dCliffSlopeLimit;
    }
-
    // Initialize with default values
    void InitializeDefaults();
 };
-
-#endif      // CONFIGURATION_H
+#endif      //CONFIGURATION_H

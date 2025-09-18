@@ -5443,7 +5443,168 @@ bool CSimulation::bApplyConfiguration(CConfiguration const &config)
    }
 
    // Case 11: Raster GIS files to output
-   // TODO: Migrate from bReadRunDataFile()
+   vector<string> rasterFiles = config.GetRasterFiles();
+   if (! rasterFiles.empty())
+   {
+      // Reset all raster output flags
+      m_bSuspSedSave = false;
+      m_bAvgSuspSedSave = false;
+      m_bFineUnconsSedSave = false;
+      m_bFineConsSedSave = false;
+      m_bSandUnconsSedSave = false;
+      m_bSandConsSedSave = false;
+      m_bCoarseUnconsSedSave = false;
+      m_bCoarseConsSedSave = false;
+      m_bSedimentTopSurfSave = false;
+      m_bTopSurfSave = false;
+      m_bSeaDepthSave = false;
+      m_bWaveHeightSave = false;
+      m_bWaveAngleSave = false;
+      m_bPotentialPlatformErosionSave = false;
+      m_bActualPlatformErosionSave = false;
+      m_bTotalPotentialPlatformErosionSave = false;
+      m_bTotalActualPlatformErosionSave = false;
+      m_bPotentialBeachErosionSave = false;
+      m_bActualBeachErosionSave = false;
+      m_bTotalPotentialBeachErosionSave = false;
+      m_bTotalActualBeachErosionSave = false;
+      m_bBeachDepositionSave = false;
+      m_bTotalBeachDepositionSave = false;
+      m_bLandformSave = false;
+      m_bLocalSlopeSave = false;
+      m_bSlopeSave = false;
+      m_bCliffSave = false;
+      m_bAvgSeaDepthSave = false;
+      m_bAvgWaveHeightSave = false;
+      m_bAvgWaveAngleSave = false;
+      m_bBeachProtectionSave = false;
+      m_bBasementElevSave = false;
+      m_bRasterCoastlineSave = false;
+      m_bRasterNormalProfileSave = false;
+      m_bActiveZoneSave = false;
+      m_bCliffCollapseSave = false;
+      m_bTotCliffCollapseSave = false;
+      m_bCliffCollapseDepositionSave = false;
+      m_bTotCliffCollapseDepositionSave = false;
+      m_bRasterPolygonSave = false;
+      m_bPotentialPlatformErosionMaskSave = false;
+      m_bSeaMaskSave = false;
+      m_bBeachMaskSave = false;
+      m_bShadowZoneCodesSave = false;
+      m_bDeepWaterWaveAngleSave = false;
+      m_bDeepWaterWaveHeightSave = false;
+      m_bDeepWaterWavePeriodSave = false;
+      m_bPolygonUnconsSedUpOrDownDriftSave = false;
+      m_bPolygonUnconsSedGainOrLossSave = false;
+
+      // Set flags based on raster file codes (Case 11 implementation)
+      for (string const &rasterCode : rasterFiles)
+      {
+         string code = rasterCode;
+         std::transform(code.begin(), code.end(), code.begin(), ::tolower);
+
+         if (code == "suspended_sediment")
+            m_bSuspSedSave = true;
+         else if (code == "avg_suspended_sediment")
+            m_bAvgSuspSedSave = true;
+         else if (code == "fine_uncons")
+            m_bFineUnconsSedSave = true;
+         else if (code == "fine_cons")
+            m_bFineConsSedSave = true;
+         else if (code == "sand_uncons")
+            m_bSandUnconsSedSave = true;
+         else if (code == "sand_cons")
+            m_bSandConsSedSave = true;
+         else if (code == "coarse_uncons")
+            m_bCoarseUnconsSedSave = true;
+         else if (code == "coarse_cons")
+            m_bCoarseConsSedSave = true;
+         else if (code == "sediment_top_elevation")
+            m_bSedimentTopSurfSave = true;
+         else if (code == "top_elevation")
+            m_bTopSurfSave = true;
+         else if (code == "sea_depth")
+            m_bSeaDepthSave = true;
+         else if (code == "wave_height")
+            m_bWaveHeightSave = true;
+         else if (code == "wave_orientation")
+            m_bWaveAngleSave = true;
+         else if (code == "wave_period")
+            m_bDeepWaterWavePeriodSave = true;
+         else if (code == "potential_platform_erosion")
+            m_bPotentialPlatformErosionSave = true;
+         else if (code == "actual_platform_erosion")
+            m_bActualPlatformErosionSave = true;
+         else if (code == "total_potential_platform_erosion")
+            m_bTotalPotentialPlatformErosionSave = true;
+         else if (code == "total_actual_platform_erosion")
+            m_bTotalActualPlatformErosionSave = true;
+         else if (code == "potential_beach_erosion")
+            m_bPotentialBeachErosionSave = true;
+         else if (code == "actual_beach_erosion")
+            m_bActualBeachErosionSave = true;
+         else if (code == "total_potential_beach_erosion")
+            m_bTotalPotentialBeachErosionSave = true;
+         else if (code == "total_actual_beach_erosion")
+            m_bTotalActualBeachErosionSave = true;
+         else if (code == "beach_deposition")
+            m_bBeachDepositionSave = true;
+         else if (code == "total_beach_deposition")
+            m_bTotalBeachDepositionSave = true;
+         else if (code == "landform")
+            m_bLandformSave = true;
+         else if (code == "local_cons_sediment_slope")
+            m_bLocalSlopeSave = true;
+         else if (code == "slope")
+            m_bSlopeSave = true;
+         else if (code == "cliff")
+            m_bCliffSave = true;
+         else if (code == "avg_sea_depth")
+            m_bAvgSeaDepthSave = true;
+         else if (code == "avg_wave_height")
+            m_bAvgWaveHeightSave = true;
+         else if (code == "avg_wave_orientation")
+            m_bAvgWaveAngleSave = true;
+         else if (code == "beach_protection")
+            m_bBeachProtectionSave = true;
+         else if (code == "basement_elevation")
+            m_bBasementElevSave = true;
+         else if (code == "coastline")
+            m_bRasterCoastlineSave = true;
+         else if (code == "coast_normal")
+            m_bRasterNormalProfileSave = true;
+         else if (code == "active_zone")
+            m_bActiveZoneSave = true;
+         else if (code == "cliff_collapse")
+            m_bCliffCollapseSave = true;
+         else if (code == "total_cliff_collapse")
+            m_bTotCliffCollapseSave = true;
+         else if (code == "cliff_collapse_deposition")
+            m_bCliffCollapseDepositionSave = true;
+         else if (code == "total_cliff_collapse_deposition")
+            m_bTotCliffCollapseDepositionSave = true;
+         else if (code == "polygon")
+            m_bRasterPolygonSave = true;
+         else if (code == "potential_platform_erosion_mask")
+            m_bPotentialPlatformErosionMaskSave = true;
+         else if (code == "sea_mask")
+            m_bSeaMaskSave = true;
+         else if (code == "beach_mask")
+            m_bBeachMaskSave = true;
+         else if (code == "shadow_zone_codes")
+            m_bShadowZoneCodesSave = true;
+         else if (code == "deep_water_wave_angle")
+            m_bDeepWaterWaveAngleSave = true;
+         else if (code == "deep_water_wave_height")
+            m_bDeepWaterWaveHeightSave = true;
+         else if (code == "deep_water_wave_period")
+            m_bDeepWaterWavePeriodSave = true;
+         else if (code == "polygon_uncons_sediment_up_or_down_drift")
+            m_bPolygonUnconsSedUpOrDownDriftSave = true;
+         else if (code == "polygon_uncons_sediment_gain_or_loss")
+            m_bPolygonUnconsSedGainOrLossSave = true;
+      }
+   }
 
    // Case 12 & 13: GIS output format for raster and vector files
    m_strRasterGISOutFormat = config.GetRasterFormat();
@@ -5456,7 +5617,79 @@ bool CSimulation::bApplyConfiguration(CConfiguration const &config)
    // TODO: Migrate from bReadRunDataFile()
 
    // Case 16: Vector GIS files to output
-   // TODO: Migrate from bReadRunDataFile()
+   vector<string> vectorFiles = config.GetVectorFiles();
+   if (! vectorFiles.empty())
+   {
+      // Reset all vector output flags
+      m_bCoastSave = false;
+      m_bCliffEdgeSave = false;
+      m_bWaveAngleAndHeightSave = false;
+      m_bNormalsSave = false;
+      m_bInvalidNormalsSave = false;
+      m_bAvgWaveAngleAndHeightSave = false;
+      m_bWaveEnergySinceCollapseSave = false;
+      m_bMeanWaveEnergySave = false;
+      m_bBreakingWaveHeightSave = false;
+      m_bCoastCurvatureSave = false;
+      m_bPolygonNodeSave = false;
+      m_bPolygonBoundarySave = false;
+      m_bCliffNotchSave = false;
+      m_bShadowBoundarySave = false;
+      m_bShadowDowndriftBoundarySave = false;
+      m_bDeepWaterWaveAngleAndHeightSave = false;
+      m_bWaveSetupSave = false;
+      m_bStormSurgeSave = false;
+      m_bRunUpSave = false;
+      m_bVectorWaveFloodLineSave = false;
+
+      // Set flags based on vector file codes (Case 16 implementation)
+      for (string const &vectorCode : vectorFiles)
+      {
+         string code = vectorCode;
+         std::transform(code.begin(), code.end(), code.begin(), ::tolower);
+
+         if (code == "coast")
+            m_bCoastSave = true;
+         else if (code == "cliff_edge")
+            m_bCliffEdgeSave = true;
+         else if (code == "wave_angle")
+            m_bWaveAngleAndHeightSave = true;
+         else if (code == "normals")
+            m_bNormalsSave = true;
+         else if (code == "invalid_normals")
+            m_bInvalidNormalsSave = true;
+         else if (code == "avg_wave_angle")
+            m_bAvgWaveAngleAndHeightSave = true;
+         else if (code == "wave_energy")
+            m_bWaveEnergySinceCollapseSave = true;
+         else if (code == "mean_wave_energy")
+            m_bMeanWaveEnergySave = true;
+         else if (code == "breaking_wave_height")
+            m_bBreakingWaveHeightSave = true;
+         else if (code == "coast_curvature")
+            m_bCoastCurvatureSave = true;
+         else if (code == "polygon_node")
+            m_bPolygonNodeSave = true;
+         else if (code == "polygon")
+            m_bPolygonBoundarySave = true;
+         else if (code == "cliff_notch")
+            m_bCliffNotchSave = true;
+         else if (code == "shadow_boundary")
+            m_bShadowBoundarySave = true;
+         else if (code == "downdrift_boundary")
+            m_bShadowDowndriftBoundarySave = true;
+         else if (code == "deep_water_wave_angle")
+            m_bDeepWaterWaveAngleAndHeightSave = true;
+         else if (code == "wave_setup")
+            m_bWaveSetupSave = true;
+         else if (code == "storm_surge")
+            m_bStormSurgeSave = true;
+         else if (code == "run_up")
+            m_bRunUpSave = true;
+         else if (code == "flood_line")
+            m_bVectorWaveFloodLineSave = true;
+      }
+   }
 
    // Case 17: Vector GIS output format (note must retain original case)
    // TODO: Migrate from bReadRunDataFile()
@@ -5551,11 +5784,18 @@ bool CSimulation::bApplyConfiguration(CConfiguration const &config)
    // Cases 28: Initial sediment thickness files (unconsolidated and
    // consolidated)
    m_VstrInitialFineUnconsSedimentFile = config.GetUnconsFineFiles();
+   m_bHaveFineSediment = true;
    m_VstrInitialSandUnconsSedimentFile = config.GetUnconsSandFiles();
+   m_bHaveSandSediment = true;
    m_VstrInitialCoarseUnconsSedimentFile = config.GetUnconsCoarseFiles();
+   m_bHaveCoarseSediment = true;
    m_VstrInitialFineConsSedimentFile = config.GetConsFineFiles();
+   m_bHaveConsolidatedSediment = true;
+   m_bHaveFineSediment = true;
    m_VstrInitialSandConsSedimentFile = config.GetConsSandFiles();
+   m_bHaveSandSediment = true;
    m_VstrInitialCoarseConsSedimentFile = config.GetConsCoarseFiles();
+   m_bHaveCoarseSediment = true;
 
    // Case 29: Initial suspended sediment depth GIS file (can be blank)
    string strSuspendedSed = config.GetSuspendedSedFile();
@@ -5627,52 +5867,55 @@ bool CSimulation::bApplyConfiguration(CConfiguration const &config)
    m_dBreakingWaveHeightDepthRatio = config.GetBreakingWaveRatio();
 
    // Case 43: Simulate coast platform erosion?
-   // TODO: Migrate from bReadRunDataFile()
+   m_bDoShorePlatformErosion = config.GetCoastPlatformErosion();
 
    // Case 44: If simulating coast platform erosion, R (coast platform resistance
    // to erosion) values along profile, see Walkden & Hall, 2011
-   // TODO: Migrate from bReadRunDataFile()
+   if (m_bDoShorePlatformErosion)
+   {
+      m_dR = config.GetPlatformErosionResistance();
+   }
 
    // Case 45: Simulate beach sediment transport?
-   // TODO: Migrate from bReadRunDataFile()
+   m_bDoBeachSedimentTransport = config.GetBeachSedimentTransport();
 
    // Case 46: If simulating beach sediment transport, beach sediment transport
    // at grid edges [0 = closed, 1 = open, 2 = re-circulate]
-   // TODO: Migrate from bReadRunDataFile()
+   m_nUnconsSedimentHandlingAtGridEdges = config.GetBeachTransportAtEdges();
 
    // Case 47: If simulating beach sediment transport, beach erosion/deposition
    // equation [0 = CERC, 1 = Kamphuis]
-   // TODO: Migrate from bReadRunDataFile()
+   m_nBeachErosionDepositionEquation = config.GetBeachErosionEquation();
 
    // Case 48: Median size of fine sediment (mm), always needed [0 = default,
    // only for Kamphuis eqn]. First check that this is a valid double
-   // TODO: Migrate from bReadRunDataFile()
+   m_dD50Fine = config.GetFineMedianSize();
 
    // Case 49: Median size of sand sediment (mm), always needed [0 = default,
    // only for Kamphuis eqn]. First check that this is a valid double
-   // TODO: Migrate from bReadRunDataFile()
+   m_dD50Sand = config.GetSandMedianSize();
 
    // Case 50: Median size of coarse sediment (mm), always needed [0 = default,
    // only for Kamphuis eqn]. First check that this is a valid double
-   // TODO: Migrate from bReadRunDataFile()
+   m_dD50Coarse = config.GetCoarseMedianSize();
 
    // Case 51: Density of unconsolidated beach sediment (kg/m3)
-   // TODO: Migrate from bReadRunDataFile()
+   m_dBeachSedimentDensity = config.GetSedimentDensity();
 
    // Case 52: Beach sediment porosity
-   // TODO: Migrate from bReadRunDataFile()
+   m_dBeachSedimentPorosity = config.GetBeachSedimentPorosity();
 
    // Case 53: Relative erodibility (0 - 1) of fine-sized sediment, always
    // needed. First check that this is a valid double
-   // TODO: Migrate from bReadRunDataFile()
+   m_dFineErodibility = config.GetFineErosivity();
 
    // Case 54: Relative erodibility (0 - 1) of sand-sized sediment, always
    // needed. First check that this is a valid double
-   // TODO: Migrate from bReadRunDataFile()
+   m_dSandErodibility = config.GetSandErosivity();
 
    // Case 55: Relative erodibility (0 - 1) of coarse-sized sediment, always
    // needed. First check that this is a valid double
-   // TODO: Migrate from bReadRunDataFile()
+   m_dCoarseErodibility = config.GetCoarseErosivity();
 
    // Case 56: Transport parameter KLS in CERC equation
    // TODO: Migrate from bReadRunDataFile()
