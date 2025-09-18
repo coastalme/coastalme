@@ -71,8 +71,8 @@ var NAVTREEINDEX =
 "d6/d2a/cme_8h.html#a90a6da78ec6514d5c6b178f4d7567245",
 "d6/d2a/cme_8h.html#aebb9a2cdd23b9c1e9e19e69f54ac5ff1",
 "da/dae/classCGeomProfile.html#abaf88697019588a2b0901bd19044aee4",
-"dc/d01/classCConfiguration.html#acac3f8c466c9d32b53fe2d72ff745832",
-"df/d45/classCGeomCoastPolygon.html#ab219b0486c117c4bf946d58fab51763e"
+"dc/d01/classCConfiguration.html#aabafba61ecdebdf400d633127372516e",
+"df/d45/classCGeomCoastPolygon.html#a6b5ffeec7205b08bb49c2c068924474a"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronization';
