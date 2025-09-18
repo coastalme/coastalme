@@ -125,12 +125,8 @@ int CSimulation::nDoAllWaveEnergyToCoastLandforms(void)
                      LogStream << m_ulIter << ": " << WARN << "problem with cliff collapse, continuing however" << endl;
                }
 
-               // Deposit all sand and/or coarse sediment derived from this cliff collapse as unconsolidated sediment (talus). Use either the original approach or the new experimental approach
-               if (m_nCliffTalusDepositionApproach == 0)
-                  nRet = nDoCliffCollapseDepositionOriginal(nCoast, pCliff, dSandCollapse, dCoarseCollapse, dCliffElevPreCollapse, dCliffElevPostCollapse);
-               else
-                  nRet = nDoCliffCollapseDepositionNew();
-
+               // Deposit all sand and/or coarse sediment derived from this cliff collapse as unconsolidated sediment (talus)
+               nRet = nDoCliffCollapseTalusDeposition(nCoast, pCliff, dSandCollapse, dCoarseCollapse, dCliffElevPreCollapse, dCliffElevPostCollapse);
                if (nRet != RTN_OK)
                   return nRet;
 
@@ -516,6 +512,6 @@ void CSimulation::DoCliffNotchIncision(CRWCliff* pCliff, double const dWaveEnerg
    // Deepen the cliff object's erosional notch as a result of wave energy during this timestep. Note that notch deepening may be constrained, since this-timestep notch extension cannot exceed the length (i.e. cellside minus notch depth) of sediment remaining on the cell
    pCliff->DeepenErosionalNotch(dNotchIncision);
 
-   LogStream << m_ulIter << ": dRunup = " << dRunup << " dWaveElev = " << dWaveElev << " dWeight = " << dWeight << " dNotchIncision = " << dNotchIncision << endl;
+   // LogStream << m_ulIter << ": dRunup = " << dRunup << " dWaveElev = " << dWaveElev << " dWeight = " << dWeight << " dNotchIncision = " << dNotchIncision << endl;
 }
 

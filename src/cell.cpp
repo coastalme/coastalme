@@ -896,39 +896,39 @@ void CGeomCell::SetSeaDepth(void)
 //! Initialise values for this cell
 void CGeomCell::InitCell(void)
 {
-   m_bInContiguousSea =
-   m_bInContiguousFlood =
-   m_bFloodLine =
-   m_bIsInActiveZone =
-   // m_bEstimated =
-   m_bShadowBoundary =
-   m_bPossibleCoastStartCell =
-   m_bPossibleFloodStartCell =
-   m_bWaveFlood =
-   // m_bCheckCell =
+   m_bInContiguousSea = false;
+   m_bInContiguousFlood = false;
+   m_bFloodLine = false;
+   m_bIsInActiveZone = false;
+   // m_bEstimated = false;
+   m_bShadowBoundary = false;
+   m_bPossibleCoastStartCell = false;
+   m_bPossibleFloodStartCell = false;
+   m_bWaveFlood = false;
+   // m_bCheckCell = false;
    m_bCheckFloodCell = false;
 
-   m_nCoastlineID =
-   m_nPolygonID =
-   m_nPolygonCoastID =
+   m_nCoastlineID = INT_NODATA;
+   m_nPolygonID = INT_NODATA;
+   m_nPolygonCoastID = INT_NODATA;
    m_nProfileID = INT_NODATA;
 
-   m_nShadowZoneNumber =
+   m_nShadowZoneNumber = 0;
    m_nDownDriftZoneNumber = 0;
 
-   m_dLocalConsSlope =
-   m_dPotentialPlatformErosionThisIter =
-   m_dActualPlatformErosionThisIter =
-   m_dCliffCollapseFineThisIter =
-   m_dCliffCollapseSandThisIter =
-   m_dCliffCollapseCoarseThisIter =
-   m_dTalusSandDepositionThisIter =
-   m_dTalusCoarseDepositionThisIter =
-   m_dPotentialBeachErosionThisIter =
-   m_dActualBeachErosionThisIter =
-   m_dBeachDepositionThisIter =
-   m_dSeaDepth =
-   m_dWaveHeight =
+   m_dLocalConsSlope = 0;
+   m_dPotentialPlatformErosionThisIter = 0;
+   m_dActualPlatformErosionThisIter = 0;
+   m_dCliffCollapseFineThisIter = 0;
+   m_dCliffCollapseSandThisIter = 0;
+   m_dCliffCollapseCoarseThisIter = 0;
+   m_dTalusSandDepositionThisIter = 0;
+   m_dTalusCoarseDepositionThisIter = 0;
+   m_dPotentialBeachErosionThisIter = 0;
+   m_dActualBeachErosionThisIter = 0;
+   m_dBeachDepositionThisIter = 0;
+   m_dSeaDepth = 0;
+   m_dWaveHeight = 0;
    m_dWaveAngle = 0;
 
    m_dBeachProtectionFactor = DBL_NODATA;

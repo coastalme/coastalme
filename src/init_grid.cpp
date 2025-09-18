@@ -58,41 +58,41 @@ int CSimulation::nInitGridAndCalcStillWaterLevel(void)
    m_nYMinBoundingBox = INT_MAX;
    m_nYMaxBoundingBox = INT_MIN;
 
-   m_ulThisIterNumSeaCells =
-   m_ulThisIterNumCoastCells =
-   m_ulThisIterNumPotentialPlatformErosionCells =
+   m_ulThisIterNumSeaCells = 0;
+   m_ulThisIterNumCoastCells = 0;
+   m_ulThisIterNumPotentialPlatformErosionCells = 0;
    m_ulThisIterNumActualPlatformErosionCells = 0;
 
-   m_ulThisIterNumPotentialBeachErosionCells =
-   m_ulThisIterNumActualBeachErosionCells =
+   m_ulThisIterNumPotentialBeachErosionCells = 0;
+   m_ulThisIterNumActualBeachErosionCells = 0;
    m_ulThisIterNumBeachDepositionCells = 0;
 
-   m_dThisIterTotSeaDepth =
-   m_dThisIterPotentialPlatformErosion =
-   m_dThisIterPotentialBeachErosion =
-   m_dThisIterBeachErosionFine =
-   m_dThisIterBeachErosionSand =
-   m_dThisIterBeachErosionCoarse =
-   m_dThisIterBeachDepositionSand =
-   m_dThisIterBeachDepositionCoarse =
-   m_dThisIterPotentialSedLostBeachErosion =
-   m_dThisIterFineSedimentToSuspension =
-   m_dThisIterCliffCollapseErosionFineUncons =
-   m_dThisIterCliffCollapseErosionSandUncons =
-   m_dThisIterCliffCollapseErosionCoarseUncons =
-   m_dThisIterUnconsSandCliffDeposition =
-   m_dThisIterUnconsCoarseCliffDeposition =
-   m_dThisIterCliffCollapseErosionFineCons =
-   m_dThisIterCliffCollapseErosionSandCons =
-   m_dThisIterCliffCollapseErosionCoarseCons =
-   m_dThisIterActualPlatformErosionFineCons =
-   m_dThisIterActualPlatformErosionSandCons =
-   m_dThisIterActualPlatformErosionCoarseCons =
-   m_dThisIterLeftGridUnconsFine = // TODO 067 Suspended fine sediment never decreases i.e. no suspended fine sediment ever leaves the grid. Is this OK?
-   m_dThisIterLeftGridUnconsSand =
-   m_dThisIterLeftGridUnconsCoarse =
-   m_dThisiterUnconsFineInput =
-   m_dThisiterUnconsSandInput =
+   m_dThisIterTotSeaDepth = 0;
+   m_dThisIterPotentialPlatformErosion = 0;
+   m_dThisIterPotentialBeachErosion = 0;
+   m_dThisIterBeachErosionFine = 0;
+   m_dThisIterBeachErosionSand = 0;
+   m_dThisIterBeachErosionCoarse = 0;
+   m_dThisIterBeachDepositionSand = 0;
+   m_dThisIterBeachDepositionCoarse = 0;
+   m_dThisIterPotentialSedLostBeachErosion = 0;
+   m_dThisIterFineSedimentToSuspension = 0;
+   m_dThisIterCliffCollapseErosionFineUncons = 0;
+   m_dThisIterCliffCollapseErosionSandUncons = 0;
+   m_dThisIterCliffCollapseErosionCoarseUncons = 0;
+   m_dThisIterUnconsSandCliffDeposition = 0;
+   m_dThisIterUnconsCoarseCliffDeposition = 0;
+   m_dThisIterCliffCollapseErosionFineCons = 0;
+   m_dThisIterCliffCollapseErosionSandCons = 0;
+   m_dThisIterCliffCollapseErosionCoarseCons = 0;
+   m_dThisIterActualPlatformErosionFineCons = 0;
+   m_dThisIterActualPlatformErosionSandCons = 0;
+   m_dThisIterActualPlatformErosionCoarseCons = 0;
+   m_dThisIterLeftGridUnconsFine = 0; // TODO 067 Suspended fine sediment never decreases i.e. no suspended fine sediment ever leaves the grid. Is this OK?
+   m_dThisIterLeftGridUnconsSand = 0;
+   m_dThisIterLeftGridUnconsCoarse = 0;
+   m_dThisiterUnconsFineInput = 0;
+   m_dThisiterUnconsSandInput = 0;
    m_dThisiterUnconsCoarseInput = 0;
 
    for (int n = 0; n < m_nLayers; n++)
@@ -106,13 +106,13 @@ int CSimulation::nInitGridAndCalcStillWaterLevel(void)
 
    int nZeroThickness = 0;
 
-   m_dStartIterSuspFineAllCells =
-   m_dStartIterSuspFineInPolygons =
-   m_dStartIterUnconsFineAllCells =
-   m_dStartIterUnconsSandAllCells =
-   m_dStartIterUnconsCoarseAllCells =
-   m_dStartIterConsFineAllCells =
-   m_dStartIterConsSandAllCells =
+   m_dStartIterSuspFineAllCells = 0;
+   m_dStartIterSuspFineInPolygons = 0;
+   m_dStartIterUnconsFineAllCells = 0;
+   m_dStartIterUnconsSandAllCells = 0;
+   m_dStartIterUnconsCoarseAllCells = 0;
+   m_dStartIterConsFineAllCells = 0;
+   m_dStartIterConsSandAllCells = 0;
    m_dStartIterConsCoarseAllCells = 0;
 
    // And go through all cells in the RasterGrid array

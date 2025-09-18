@@ -79,7 +79,7 @@ Wave propagation model                                                 [0 = COVE
 
 Density of sea water (kg/m3)                                                                 : 1029
 
-Initial mean still water level (m), or per-timestep SWL file                                 : 28
+Initial mean still water level (m), or per-timestep SWL file                                 : 30
 Final mean still water level (m)                               [blank = same as initial MSWL]:
 
 Deep water wave height (m)                                         [value or point shapefile]: in/test_suite/Wilf/Scen007/w_station.shp
@@ -93,7 +93,7 @@ Breaking wave height to water depth ratio (non dimensional)                     
 
 ; Sediment data --------------------------------------------------------------------------------------------------------
 Simulate coast platform erosion?                                                             : y
-Resistance to erosion of coast platform (m^(9/4)s^(3/2))                                     : 4e6        ; [2-6]e6 to produce 0.6 m/yr recession (Walkden & Hall, 2011)
+Resistance to erosion of coast platform (m^(9/4)s^(3/2))                                     : 7e6        ; [2-6]e6 to produce 0.6 m/yr recession (Walkden & Hall, 2011)
 
 Simulate beach sediment transport?                                                           : y
 Beach sediment transport at grid edges                [0 = closed, 1 = open, 2 = recirculate]: 2

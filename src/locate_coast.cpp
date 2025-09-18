@@ -1,5 +1,4 @@
 /*!
-
    \file locate_coast.cpp
    \brief Finds the coastline on the raster grid
    \details TODO 001 A more detailed description of these routines.
@@ -7,11 +6,9 @@
    \author Andres Payo
    \date 2025
    \copyright GNU General Public License
-
 */
 
 /* ==============================================================================================================================
-
    This file is part of CoastalME, the Coastal Modelling Environment.
 
    CoastalME is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
@@ -19,7 +16,6 @@
    This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
    You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-
 ==============================================================================================================================*/
 #include <assert.h>
 #include <cfloat>
@@ -395,7 +391,33 @@ int CSimulation::nTraceAllCoasts(void)
    // Some possible coastline start/finish points were found
    // LogStream << m_ulIter << ": " << V2DIPossibleStartCell.size() << " possible coastline start/finish points found" << endl;
 
-   // OK, so trace from each of these possible start/finish points
+   // Are any of the possible start/finsh points adjacent?
+   vector<bool> VbToRemove(V2DIPossibleStartCell.size(), false);
+   for (int nThisPoint = 0; nThisPoint < static_cast<int>(V2DIPossibleStartCell.size()); nThisPoint++)
+   {
+      for (int nOtherPoint = 0; nOtherPoint < static_cast<int>(V2DIPossibleStartCell.size()); nOtherPoint++)
+      {
+         if ((nThisPoint == nOtherPoint) || VbToRemove[nThisPoint] || VbToRemove[nOtherPoint])
+            continue;
+
+         if (bIsAdjacentEdgeCell(&V2DIPossibleStartCell[nThisPoint], &V2DIPossibleStartCell[nOtherPoint]))
+            VbToRemove[nOtherPoint] = true;
+      }
+   }
+
+   // Remove each start/finish point which has been flagged as adjcent
+   for (int nPoint = 0; nPoint < static_cast<int>(VbToRemove.size()); nPoint++)
+   {
+      if (VbToRemove[nPoint])
+      {
+         V2DIPossibleStartCell.erase(V2DIPossibleStartCell.begin() + nPoint);
+         VbPossibleStartCellLHEdge.erase(VbPossibleStartCellLHEdge.begin() + nPoint);
+         VnSearchDirection.erase(VnSearchDirection.begin() + nPoint);
+         VbTraced.erase(VbTraced.begin() + nPoint);
+      }
+   }
+
+   // All OK, so trace from each of these possible start/finish points
    for (unsigned int n = 0; n < V2DIPossibleStartCell.size(); n++)
    {
       if (! VbTraced[n])
@@ -468,7 +490,7 @@ int CSimulation::nTraceCoastLine(unsigned int const nTraceFromStartCellIndex, in
       {
          bTooLong = true;
 
-         LogStream << m_ulIter << ": abandoning coastline tracing from [" << nStartX << "][" << nStartY << "] = {" << dGridCentroidXToExtCRSX(nStartX) << ", " << dGridCentroidYToExtCRSY(nStartY) << "}, exceeded maximum search length (" << m_nCoastMax << ")" << endl;
+         LogStream << m_ulIter << ": \tabandoning possible coastline, traced from [" << nStartX << "][" << nStartY << "] = {" << dGridCentroidXToExtCRSX(nStartX) << ", " << dGridCentroidYToExtCRSY(nStartY) << "}, exceeded maximum search length (" << m_nCoastMax << ")" << endl;
 
          // for (int n = 0; n < ILTempGridCRS.nGetSize(); n++)
          // LogStream << "[" << ILTempGridCRS[n].nGetX() << "][" << ILTempGridCRS[n].nGetY() << "] = {" << dGridCentroidXToExtCRSX(ILTempGridCRS[n].nGetX()) << ", " << dGridCentroidYToExtCRSY(ILTempGridCRS[n].nGetY()) << "}" << endl;
@@ -483,7 +505,7 @@ int CSimulation::nTraceCoastLine(unsigned int const nTraceFromStartCellIndex, in
          // We've been 10 times round the loop but the coast is still less than 2 coastline points in length, so we must be repeating
          bRepeating = true;
 
-         LogStream << m_ulIter << ": abandoning coastline tracing from [" << nStartX << "][" << nStartY << "] = {" << dGridCentroidXToExtCRSX(nStartX) << ", " << dGridCentroidYToExtCRSY(nStartY) << "}, is looping" << endl;
+         LogStream << m_ulIter << ": \tabandoning possible coastline, traced from [" << nStartX << "][" << nStartY << "] = {" << dGridCentroidXToExtCRSX(nStartX) << ", " << dGridCentroidYToExtCRSY(nStartY) << "}, is looping" << endl;
 
          break;
       }
@@ -883,7 +905,7 @@ int CSimulation::nTraceCoastLine(unsigned int const nTraceFromStartCellIndex, in
       // Around loop too many times, so abandon this coastline
       if (m_nLogFileDetail >= LOG_FILE_ALL)
       {
-         LogStream << m_ulIter << ": abandoning possible coastline from [" << nStartX << "][" << nStartY << "] = {" << dGridCentroidXToExtCRSX(nStartX) << ", " << dGridCentroidYToExtCRSY(nStartY) << "} since round loop " << nRoundLoop << " times (m_nCoastMax = " << m_nCoastMax << "), coastline size is " << nCoastSize;
+         LogStream << m_ulIter << ": \tabandoning possible coastline from [" << nStartX << "][" << nStartY << "] = {" << dGridCentroidXToExtCRSX(nStartX) << ", " << dGridCentroidYToExtCRSY(nStartY) << "} since round loop " << nRoundLoop << " times (m_nCoastMax = " << m_nCoastMax << "), coastline size is " << nCoastSize;
 
          if (nCoastSize > 0)
             LogStream << ", it ended at [" << ILTempGridCRS[nCoastSize - 1].nGetX() << "][" << ILTempGridCRS[nCoastSize - 1].nGetY() << "] = {" << dGridCentroidXToExtCRSX(ILTempGridCRS[nCoastSize - 1].nGetX()) << ", " << dGridCentroidYToExtCRSY(ILTempGridCRS[nCoastSize - 1].nGetY()) << "}";
@@ -922,7 +944,7 @@ int CSimulation::nTraceCoastLine(unsigned int const nTraceFromStartCellIndex, in
    {
       // The vector coastline is too small, so abandon it
       if (m_nLogFileDetail >= LOG_FILE_HIGH_DETAIL)
-         LogStream << m_ulIter << ": abandoning possible coastline from [" << nStartX << "][" << nStartY << "] = {" << dGridCentroidXToExtCRSX(nStartX) << ", " << dGridCentroidYToExtCRSY(nStartY) << "} to [" << ILTempGridCRS[nCoastSize - 1].nGetX() << "][" << ILTempGridCRS[nCoastSize - 1].nGetY() << "] = {" << dGridCentroidXToExtCRSX(ILTempGridCRS[nCoastSize - 1].nGetX()) << ", " << dGridCentroidYToExtCRSY(ILTempGridCRS[nCoastSize - 1].nGetY()) << "} since size (" << nCoastSize << ") is less than minimum (" << m_nCoastMin << ")" << endl;
+         LogStream << m_ulIter << ": \tabandoning possible coastline from [" << nStartX << "][" << nStartY << "] = {" << dGridCentroidXToExtCRSX(nStartX) << ", " << dGridCentroidYToExtCRSY(nStartY) << "} to [" << ILTempGridCRS[nCoastSize - 1].nGetX() << "][" << ILTempGridCRS[nCoastSize - 1].nGetY() << "] = {" << dGridCentroidXToExtCRSX(ILTempGridCRS[nCoastSize - 1].nGetX()) << ", " << dGridCentroidYToExtCRSY(ILTempGridCRS[nCoastSize - 1].nGetY()) << "} since size (" << nCoastSize << ") is less than minimum (" << m_nCoastMin << ")" << endl;
 
       return RTN_ERR_COAST_TOO_SMALL;
    }

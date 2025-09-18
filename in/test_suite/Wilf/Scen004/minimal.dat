@@ -93,7 +93,7 @@ Breaking wave height to water depth ratio (non dimensional)                     
 
 ; Sediment data --------------------------------------------------------------------------------------------------------
 Simulate coast platform erosion?                                                             : y
-Resistance to erosion of coast platform (m^(9/4)s^(3/2))                                     : 4e6        ; [2-6]e6 to produce 0.6 m/yr recession (Walkden & Hall, 2011)
+Resistance to erosion of coast platform (m^(9/4)s^(3/2))                                     : 7e6        ; [2-6]e6 to produce 0.6 m/yr recession (Walkden & Hall, 2011)
 
 Simulate beach sediment transport?                                                           : y
 Beach sediment transport at grid edges                [0 = closed, 1 = open, 2 = recirculate]: 2
@@ -145,7 +145,7 @@ Gravitational acceleration (m2/s)                                               
 ; MOVE THESE?
 Spacing of coastline normals (m)                                        [0 = default minimum]: 20
 Random factor for spacing of normals                              [0 to 1, 0 = deterministic]: 0         ; *** 0.1
-Length of coastline normals (m)                                                              : 130
+Length of coastline normals (m)                                                              : 140
 
 Start depth for wave calcs (ratio to deep water wave height)                                 : 30         ; was 10 30 15
 

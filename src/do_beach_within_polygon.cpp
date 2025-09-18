@@ -205,7 +205,7 @@ int CSimulation::nDoUnconsErosionOnPolygon(int const nCoast, CGeomCoastPolygon* 
             if (nInlandOffset > (pUpCoastProfile->nGetNumCellsInProfile() - 1))
             {
                if (m_nLogFileDetail >= LOG_FILE_HIGH_DETAIL)
-                  LogStream << m_ulIter << ": reached end of up-coast profile " << nUpCoastProfile << " during down-coast erosion of unconsolidated " + strTexture + " sediment for coast " << nCoast << " polygon " << pPolygon->nGetPolygonCoastID() << " (nCoastPoint = " << nCoastPoint << " nInlandOffset = " << nInlandOffset << ")" << endl;
+                  LogStream << m_ulIter << ": \tcoast " << nCoast << " reached end of up-coast profile " << nUpCoastProfile << " during down-coast erosion of unconsolidated " + strTexture + " sediment for coast " << nCoast << " polygon " << pPolygon->nGetPolygonCoastID() << " (nCoastPoint = " << nCoastPoint << " nInlandOffset = " << nInlandOffset << ")" << endl;
 
                bEndProfile = true;
                break;
@@ -234,9 +234,8 @@ int CSimulation::nDoUnconsErosionOnPolygon(int const nCoast, CGeomCoastPolygon* 
             // CGeom2DIPoint PtiThisUpCoastStart(nXUpCoastThisStart, nYUpCoastThisStart);
 
             // Calculate the coordinates of a possible new landwards cell for the parallel profile
-            int
-                nXParNew = nXUpCoastThisStart + nXOffset,
-                nYParNew = nYUpCoastThisStart + nYOffset;
+            int nXParNew = nXUpCoastThisStart + nXOffset;
+            int nYParNew = nYUpCoastThisStart + nYOffset;
 
             // Safety check
             if (! bIsWithinValidGrid(nXParNew, nYParNew))
@@ -825,7 +824,6 @@ int CSimulation::nDoUnconsDepositionOnPolygon(int const nCoast, CGeomCoastPolygo
       for (int nCoastPoint = nUpCoastProfileCoastPoint; nCoastPoint <= nDownCoastProfileCoastPoint; nCoastPoint++)
          nVCoastPoint.push_back(nCoastPoint);
    }
-
    else
    {
       // This is not the final down-coast polygon, so do not include the polygon's down-coast boundary
@@ -1167,7 +1165,6 @@ int CSimulation::nDoUnconsDepositionOnPolygon(int const nCoast, CGeomCoastPolygo
 
                         // LogStream << m_ulIter << ": nPoly = " << nPoly << " texture = " << strTexture << " dToDepositHere = " << dToDepositHere << " at [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " <<  dGridCentroidYToExtCRSY(nY) << "} nCoastPoint = " << nCoastPoint << " nSeawardFromCoast = " << nSeawardFromCoast << endl;
                      }
-
                      else if (nTexture == TEXTURE_COARSE)
                      {
                         double const dCoarseNow = m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nTopLayer)->pGetUnconsolidatedSediment()->dGetCoarseDepth();
@@ -1227,7 +1224,6 @@ int CSimulation::nDoUnconsDepositionOnPolygon(int const nCoast, CGeomCoastPolygo
                      m_dThisIterBeachDepositionCoarse += dToDepositHere;
                }
             }
-
             else if (bElevAboveDeanElev(nX, nY, dElevDiff, pLandform))
             {
                // The current elevation is higher than the Dean elevation, so we have potential beach erosion (i.e. not constrained by availability of unconsolidated sediment) here
@@ -1273,7 +1269,6 @@ int CSimulation::nDoUnconsDepositionOnPolygon(int const nCoast, CGeomCoastPolygo
                      // Store the this-polygon depth of sand sediment eroded during Dean profile deposition of beach unconsolidated sediment
                      pPolygon->AddBeachSandErodedDeanProfile(dSandRemoved);
                   }
-
                   else if (nTexture == TEXTURE_COARSE)
                   {
                      double dCoarseRemoved = 0;
@@ -1359,7 +1354,6 @@ int CSimulation::nDoUnconsDepositionOnPolygon(int const nCoast, CGeomCoastPolygo
          for (int nCoastPoint = nUpCoastProfileCoastPoint; nCoastPoint <= nDownCoastProfileCoastPoint; nCoastPoint++)
             nVCoastPoint.push_back(nCoastPoint);
       }
-
       else
       {
          // This is not the final down-coast polygon, so do not include the polygon's down-coast boundary
@@ -1664,7 +1658,6 @@ int CSimulation::nDoUnconsDepositionOnPolygon(int const nCoast, CGeomCoastPolygo
 
                            // LogStream << m_ulIter << ": nPoly = " << nPoly << " texture = " << strTexture << " dToDepositHere = " << dToDepositHere << " at [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " <<  dGridCentroidYToExtCRSY(nY) << "} nCoastPoint = " << nCoastPoint << " nSeawardFromCoast = " << nSeawardFromCoast << endl;
                         }
-
                         else if (nTexture == TEXTURE_COARSE)
                         {
                            double const dCoarseNow = m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nTopLayer)->pGetUnconsolidatedSediment()->dGetCoarseDepth();
@@ -1718,7 +1711,6 @@ int CSimulation::nDoUnconsDepositionOnPolygon(int const nCoast, CGeomCoastPolygo
                         m_dThisIterBeachDepositionCoarse += dToDepositHere;
                   }
                }
-
                else if (bElevAboveDeanElev(nX, nY, dElevDiff, pLandform))
                {
                   // The current elevation is higher than the Dean elevation, so we could have beach erosion here
@@ -1764,7 +1756,6 @@ int CSimulation::nDoUnconsDepositionOnPolygon(int const nCoast, CGeomCoastPolygo
                         // Store the this-polygon depth of sand sediment eroded during Dean profile deposition of beach unconsolidated sediment
                         pPolygon->AddBeachSandErodedDeanProfile(dSandRemoved);
                      }
-
                      else if (nTexture == TEXTURE_COARSE)
                      {
                         double dCoarseRemoved = 0;
@@ -1810,11 +1801,10 @@ int CSimulation::nDoUnconsDepositionOnPolygon(int const nCoast, CGeomCoastPolygo
       // Check mass balance for sand deposited
       if (m_nLogFileDetail >= LOG_FILE_MIDDLE_DETAIL)
          if (! bFPIsEqual(pPolygon->dGetToDoBeachDepositionUnconsSand(), dDepositedOnPoly, MASS_BALANCE_TOLERANCE))
-            LogStream << m_ulIter << ": polygon " << pPolygon->nGetPolygonCoastID() << " NOT equal SAND dGetToDoBeachDepositionUnconsSand() = " << pPolygon->dGetToDoBeachDepositionUnconsSand() << " dDepositedOnPoly = " << dDepositedOnPoly << endl;
+            LogStream << m_ulIter << ": \tcoast " << nCoast << " polygon " << pPolygon->nGetPolygonCoastID() << " NOT equal SAND dGetToDoBeachDepositionUnconsSand() = " << pPolygon->dGetToDoBeachDepositionUnconsSand() << " dDepositedOnPoly = " << dDepositedOnPoly << endl;
 
       pPolygon->SetZeroToDoDepositionUnconsSand();
    }
-
    else if (nTexture == TEXTURE_COARSE)
    {
       pPolygon->SetBeachDepositionUnconsCoarse(dDepositedOnPoly);
@@ -1822,7 +1812,7 @@ int CSimulation::nDoUnconsDepositionOnPolygon(int const nCoast, CGeomCoastPolygo
       // Check mass balance for coarse deposited
       if (m_nLogFileDetail >= LOG_FILE_MIDDLE_DETAIL)
          if (! bFPIsEqual(pPolygon->dGetToDoBeachDepositionUnconsCoarse(), dDepositedOnPoly, MASS_BALANCE_TOLERANCE))
-            LogStream << m_ulIter << ": polygon " << pPolygon->nGetPolygonCoastID() << " NOT equal COARSE dGetToDoBeachDepositionUnconsCoarse() = " << pPolygon->dGetToDoBeachDepositionUnconsCoarse() << " dDepositedOnPoly = " << dDepositedOnPoly << endl;
+            LogStream << m_ulIter << ": \tcoast " << nCoast << " polygon " << pPolygon->nGetPolygonCoastID() << " NOT equal COARSE dGetToDoBeachDepositionUnconsCoarse() = " << pPolygon->dGetToDoBeachDepositionUnconsCoarse() << " dDepositedOnPoly = " << dDepositedOnPoly << endl;
 
       pPolygon->SetZeroToDoDepositionUnconsCoarse();
    }
@@ -1849,7 +1839,7 @@ int CSimulation::nDoUnconsDepositionOnPolygon(int const nCoast, CGeomCoastPolygo
 }
 
 //===============================================================================================================================
-//! Return true if the given elevation is higher than the Dean elevation (and other conditions are met), which means that we could have beach erosion
+//! Return true if the given elevation is higher than the Dean elevation (and other land use conditions are met), which means that we could have beach erosion on this cell
 //===============================================================================================================================
 bool CSimulation::bElevAboveDeanElev(int const nX, int const nY, double const dElevDiff, CRWCellLandform const* pLandform)
 {

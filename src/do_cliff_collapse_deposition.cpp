@@ -35,7 +35,7 @@ using std::ios;
 //===============================================================================================================================
 //! The original approach: redistributes the sand-sized and coarse-sized sediment from a cliff collapse onto the foreshore, as unconsolidated talus. The talus is added to the existing beach volume (i.e. to the unconsolidated sediment). The shoreline is iteratively advanced seaward until all this volume is accommodated under a Dean equilibrium profile. This equilibrium beach profile is h(y) = A * y^(2/3) where h(y) is the water depth at a distance y from the shoreline and A is a sediment-dependent scale parameter
 //===============================================================================================================================
-int CSimulation::nDoCliffCollapseDepositionOriginal(int const nCoast, CRWCliff const* pCliff, double const dSandFromCollapse, double const dCoarseFromCollapse, double const dPreCollapseCliffElev, double const dPostCollapseCliffElev)
+int CSimulation::nDoCliffCollapseTalusDeposition(int const nCoast, CRWCliff const* pCliff, double const dSandFromCollapse, double const dCoarseFromCollapse, double const dPreCollapseCliffElev, double const dPostCollapseCliffElev)
 {
    // Check: is there some sand- or coarse-sized sediment to deposit?
    if ((dSandFromCollapse + dCoarseFromCollapse) < SEDIMENT_ELEV_TOLERANCE)
@@ -699,55 +699,3 @@ void CSimulation::RasterizeCliffCollapseProfile(vector<CGeom2DPoint> const* pVPo
    }
 }
 
-//===============================================================================================================================
-//! The new approach: redistributes the sand-sized and coarse-sized sediment from a cliff collapse onto the foreshore, as unconsolidated talus TODO
-//===============================================================================================================================
-int CSimulation::nDoCliffCollapseDepositionNew(void)
-{
-   // bool bAllDeposited = false;
-   //
-   // // Assume planview semicircle of talus
-   // do
-   // {
-   //    double dFanRadius = 25; // In m, read this in
-   //    int nFanRadius = nConvertMetresToNumCells(dFanRadius);
-   //
-   //    // Now draw first depositional profile normal to the average coast
-   //    CGeom2DPoint PtStart(dXCliff, dYCliff);      // In external CRS
-   //
-   //    CGeom2DPoint PtEnd;        // In external CRS
-   //    CGeom2DIPoint PtiEnd;      // In grid CRS
-   //
-   //    int const nRet = nGetCoastNormalEndPoint(nCoast, nStartPoint, nCoastSize, &PtStart, dFanRadius, &PtEnd, &PtiEnd, false);
-   //    if (nRet == RTN_ERR_NO_SOLUTION_FOR_ENDPOINT)
-   //    {
-   //       // Could not solve end-point equation, so give up
-   //       return nRet;
-   //    }
-   //
-   //    int const nXEnd = PtiEnd.nGetX();
-   //    int const nYEnd = PtiEnd.nGetY();
-   //
-   //    // Safety check: is the end point in the contiguous sea?
-   //    if (! m_pRasterGrid->m_Cell[nXEnd][nYEnd].bIsInContiguousSea())
-   //    {
-   //       // if (m_nLogFileDetail >= LOG_FILE_ALL)
-   //       // LogStream << m_ulIter << ": coast " << nCoast << ", possible profile with start point " << nProfileStartPoint << " has inland end point at [" << nXEnd << "][" << nYEnd << "] = {" << dGridCentroidXToExtCRSX(nXEnd) << ", " << dGridCentroidYToExtCRSY(nYEnd) << "}, ignoring" << endl;
-   //
-   //       return RTN_ERR_PROFILE_ENDPOINT_IS_INLAND;
-   //    }
-   //
-   //
-   //    //, then draw other on either side parallel to this (so forming a semicircle)
-   //
-   //    // 3. Each profile is given a quota to deposit "under" a Dean profile starting at the coastline (i.e. so that all points are below SWL)
-   //    // 4. Try to deposit this quota (ignore pre-existing lumps higher than the Dean profile)
-   //    // 5. If can't deposit quota for a given profile then extend the start point of the Dean profile outwards (i.e. seawards) just below SWL until can deposit quota, or until hit max extension (we then pass on undeposited sediment to the next profile)
-   //    // 6. If still can't deposit all talus after the final parallel profile, then go back to 1. and increase the radius of the semicircle
-   //
-   //
-   // } while (! bAllDeposited);
-   //
-
-   return RTN_OK;
-}

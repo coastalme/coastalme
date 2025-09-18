@@ -623,12 +623,12 @@ void CSimulation::WriteStartRunDetails(void)
    OutStream << " Runup equation                                            \t: ";
    if (m_nRunUpEquation == 0)
       OutStream << "none";
-   else if (m_nRunUpEquation == RUNUP_EQUATION_N_AND_H_AND_DHI)
-      OutStream << "Nielsen & Hanslow (1991) & DHI (2004)";
+   else if (m_nRunUpEquation == RUNUP_EQUATION_NIELSEN_HANSLOW)
+      OutStream << "Nielsen and Hanslow (1991)";
    else if (m_nRunUpEquation == RUNUP_EQUATION_MASE)
-      OutStream << "MASE (1989)";
+      OutStream << "Mase (1989)";
    else if (m_nRunUpEquation == RUNUP_EQUATION_STOCKDON)
-      OutStream << "Stockdon (2006)";
+      OutStream << "Stockdon et al. (2006)";
 
    OutStream << endl << endl;
 
@@ -1669,11 +1669,11 @@ void CSimulation::WritePolygonPreExistingSedimentTable(void)
    double dTmpSandTot = 0;
    double dTmpCoarseTot = 0;
 
-   m_dTotalFineConsInPolygons =
-   m_dTotalSandConsInPolygons =
-   m_dTotalCoarseConsInPolygons =
-   m_dTotalFineUnconsInPolygons =
-   m_dTotalSandUnconsInPolygons =
+   m_dTotalFineConsInPolygons = 0;
+   m_dTotalSandConsInPolygons = 0;
+   m_dTotalCoarseConsInPolygons = 0;
+   m_dTotalFineUnconsInPolygons = 0;
+   m_dTotalSandUnconsInPolygons = 0;
    m_dTotalCoarseUnconsInPolygons = 0;
 
    // TODO 082 Also show m_dStartIterUnconsFineAllCells etc.
@@ -2481,9 +2481,9 @@ void CSimulation::DoEndOfTimestepTotals(void)
       LogStream << endl;
 
       // Now look at unconsolidated sediment
-      dFineTmp =
-          dSandTmp =
-              dCoarseTmp = 0;
+      dFineTmp = 0;
+      dSandTmp = 0;
+      dCoarseTmp = 0;
 
       LogStream << m_ulIter << ": Unconsolidated sediment budget, all m^3." << endl;
 

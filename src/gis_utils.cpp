@@ -1913,3 +1913,28 @@ void CSimulation::GetClosestPoint(double const dAx, double const dAy, double con
       dYRet = dAy + (dABy * dT);
   }
 }
+
+//===============================================================================================================================
+//! Given two different edge cells, returns true if they are adjacent
+//===============================================================================================================================
+bool CSimulation::bIsAdjacentEdgeCell(CGeom2DIPoint const* pPt1, CGeom2DIPoint const* pPt2)
+{
+   int nX1 = pPt1->nGetX();
+   int nY1 = pPt1->nGetY();
+   int nX2 = pPt2->nGetX();
+   int nY2 = pPt2->nGetY();
+
+   if (nX1 == nX2)
+   {
+      if ((nY1 == nY2 + 1) || (nY1 == nY2 - 1))
+         return true;
+   }
+
+   if (nY1 == nY2)
+   {
+      if ((nX1 == nX2 + 1) || (nX1 == nX2 - 1))
+         return true;
+   }
+
+   return false;
+}

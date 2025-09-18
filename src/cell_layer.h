@@ -22,20 +22,23 @@
    You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ===============================================================================================================================*/
 #include "cell_sediment.h"
+#include "cell_talus.h"
 
 class CRWCellLayer
 {
  private:
-   // double
-   // m_VdolSedFraction,
-   // m_dMechResistance,
-   // m_dConsolidationStatus;
+   // double m_VdolSedFraction;
+   // double m_dMechResistance;
+   // double m_dConsolidationStatus;
 
    //! This cell's unconsolidated sediment object
    CRWCellSediment m_UnconsolidatedSediment;
 
    //! This cell's consolidated sediment object
    CRWCellSediment m_ConsolidatedSediment;
+
+   //! This cell's talus (derived from cliff collapse)
+   CRWCellTalus m_Talus;
 
  protected:
  public:

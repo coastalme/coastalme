@@ -272,22 +272,19 @@ using std::ostream;
          string const PLATFORM = "GNU complier for IBM RS-6000";
          // clock_t is a signed long: see <time.h> NEED TO CHECK
          long const CLOCK_T_MIN = LONG_MIN;
-         double const CLOCK_T_RANGE =
-         static_cast<double>(LONG_MAX) - static_cast<double>(CLOCK_T_MIN);
+         double const CLOCK_T_RANGE = static_cast<double>(LONG_MAX) - static_cast<double>(CLOCK_T_MIN);
       #elif defined ultrasparc
          // Sun UltraSparc, byte order is big-endian
          string const PLATFORM = "GNU compiler for Sun UltraSPARC";
          // clock_t is a signed long: see <time.h>
          long const CLOCK_T_MIN = LONG_MIN;
-         double const CLOCK_T_RANGE =
-         static_cast<double>(LONG_MAX) - static_cast<double>(CLOCK_T_MIN);
+         double const CLOCK_T_RANGE = static_cast<double>(LONG_MAX) - static_cast<double>(CLOCK_T_MIN);
       #else
          // Something else
          string const PLATFORM = "GNU compiler for unknown CPU";
          // clock_t is a signed long: NEED TO CHECK <time.h>
          long const CLOCK_T_MIN = LONG_MIN;
-         double const CLOCK_T_RANGE =
-         static_cast<double>(LONG_MAX) - static_cast<double>(CLOCK_T_MIN);
+         double const CLOCK_T_RANGE = static_cast<double>(LONG_MAX) - static_cast<double>(CLOCK_T_MIN);
       #endif
    #endif
 #endif
@@ -308,8 +305,7 @@ using std::ostream;
          string const PLATFORM = "Clang compiler for unknown CPU";
          // clock_t is a signed long: NEED TO CHECK <time.h>
          long const CLOCK_T_MIN = LONG_MIN;
-         double const CLOCK_T_RANGE =
-         static_cast<double>(LONG_MAX) - static_cast<double>(CLOCK_T_MIN);
+         double const CLOCK_T_RANGE = static_cast<double>(LONG_MAX) - static_cast<double>(CLOCK_T_MIN);
       #endif
    #endif
 #endif
@@ -711,15 +707,15 @@ int const UNCONS_SEDIMENT_EQUATION_CERC = 0;
 int const UNCONS_SEDIMENT_EQUATION_KAMPHUIS = 1;
 
 int const CLIFF_COLLAPSE_LENGTH_INCREMENT = 10;             // Increment the planview length of the cliff talus Dean profile, if we have not been able to deposit enough
-int const PROFILE_CHECK_DIST_FROM_COAST = 3;                // Used in checking shoreline-normal profiles for intersection
+int const PROFILE_CHECK_DIST_FROM_COAST = 20;               // TEST Used in checking shoreline-normal profiles for intersection
 int const GAP_BETWEEN_DIFFERENT_COAST_PROFILES = 30;        // In cells, is the gap between profile ends belonging to different coasts
 
 int const NUM_DAYS_FOR_MEAN_HIGH_WATER_CALC = 30;           // Number of days to average daily high water elevation
 
 int const NO_RUNUP_EQUATION = 0;                            // Runup not considered
-int const RUNUP_EQUATION_N_AND_H_AND_DHI = 1;               // Runup equation is Nielsen & Hanslow (1991) & DHI (2004)
-int const RUNUP_EQUATION_MASE = 2;                          // Runup equation is MASE (1989)
-int const RUNUP_EQUATION_STOCKDON = 3;                      // Runup equation is Stockdon (2006)
+int const RUNUP_EQUATION_NIELSEN_HANSLOW = 1;               // Runup equation is Nielsen, P. & Hanslow, D. J. 1991. Wave Runup Distributions on Natural Beaches. Journal of Coastal Research, 7, 1139-1152.  *** & DHI (2004) ???
+int const RUNUP_EQUATION_MASE = 2;                          // Runup equation is Mase, H. 1989. Random Wave Runup Height on Gentle Slope. Journal of Waterway, Port, Coastal, and Ocean Engineering, 115, 649-661.
+int const RUNUP_EQUATION_STOCKDON = 3;                      // Runup equation is Stockdon, H. F., Holman, R. A., Howd, P. A. & Sallenger JR, A. H. 2006. Empirical parameterization of setup, swash, and runup. Coastal Engineering, 53, 573-588.
 
 unsigned long const MASK = 0xfffffffful;
 unsigned long const SEDIMENT_INPUT_EVENT_ERROR = -1;
@@ -757,7 +753,7 @@ double const CLIFF_NOTCH_CUTOFF_DISTANCE = 2;               // Cut-off SWL dista
 
 double const DBL_NODATA = -9999;
 
-string const PROGRAM_NAME = "Coastal Modelling Environment (CoastalME) version 1.4.0 (11 Sep 2025)";
+string const PROGRAM_NAME = "Coastal Modelling Environment (CoastalME) version 1.4.0 (18 Sep 2025)";
 string const PROGRAM_NAME_SHORT = "CME";
 string const CME_INI = "cme.ini";
 

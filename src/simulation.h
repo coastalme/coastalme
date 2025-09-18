@@ -593,9 +593,6 @@ class CSimulation
    // The minimum planview length (in cells) of the Dean profile formed by the cliff collapse Talus
    int m_nTalusProfileMinLenInCells;
 
-   //! The approach used to represent cliff talus deposition
-   int m_nCliffTalusDepositionApproach;
-
    //! The data type used by GDAL for integer operations, can be GDT_Byte, GDT_Int16, GDT_UInt16, GDT_Int32, or GDT_UInt32
    GDALDataType m_GDALWriteIntDataType;
 
@@ -1638,8 +1635,7 @@ class CSimulation
    int nDoAllShorePlatFormErosion(void);
    int nDoAllWaveEnergyToCoastLandforms(void);
    int nDoCliffCollapse(int const, CRWCliff *, double&, double&, double&, double&, double&);
-   int nDoCliffCollapseDepositionOriginal(int const, CRWCliff const*, double const, double const, double const, double const);
-   int nDoCliffCollapseDepositionNew(void);
+   int nDoCliffCollapseTalusDeposition(int const, CRWCliff const*, double const, double const, double const, double const);
    int nUpdateGrid(void);
 
    // For cliff toe location
@@ -1705,7 +1701,7 @@ class CSimulation
    static bool bOnOrOffShoreAndUpOrDownCoast(double const, double const, int const, bool&);
    static CGeom2DIPoint PtiFollowWaveAngle(CGeom2DIPoint const*, double const, double&);
    // int nFindAllShadowZones(void);
-   int nFloodFillShadowZone(int const, CGeom2DIPoint const*, CGeom2DIPoint const*, CGeom2DIPoint const*);
+   int nCellByCellFillShadowZone(int const, int const, CGeom2DIPoint const*, CGeom2DIPoint const*, CGeom2DIPoint const*);
    void DoShadowZoneAndDownDriftZone(int const, int const, int const, int const);
    void ProcessDownDriftCell(int const, int const, int const, double const, int const);
    void ProcessShadowZoneCell(int const, int const, int const, CGeom2DIPoint const*, int const, int const, int const);
@@ -1779,6 +1775,7 @@ class CSimulation
    // CGeom2DIPoint const*, double&, double&);
    CGeom2DIPoint PtiFindClosestCoastPoint(int const, int const);
    int nConvertMetresToNumCells(double const) const;
+   bool bIsAdjacentEdgeCell(CGeom2DIPoint const*, CGeom2DIPoint const*);
 
    // Interpolation routines
    double dGetInterpolatedValue(vector<double> const*, vector<double> const*, double, bool);
