@@ -30,10 +30,10 @@
 using std::cerr;
 using std::endl;
 using std::getline;
-using std::stringstream;
-using std::stoi;
-using std::stod;
 using std::isspace;
+using std::stod;
+using std::stoi;
+using std::stringstream;
 
 //===============================================================================================================================
 // CYamlNode implementation
@@ -77,7 +77,7 @@ CYamlNode CYamlNode::GetChild(string const& strKey) const
    auto it = m_mapChildren.find(strKey);
    if (it != m_mapChildren.end())
       return it->second;
-   return CYamlNode(); // Return empty node if not found
+   return CYamlNode();      // Return empty node if not found
 }
 
 vector<CYamlNode> CYamlNode::GetSequence() const
@@ -99,7 +99,7 @@ int CYamlNode::GetIntValue(int nDefault) const
 {
    try
    {
-      if (!m_strValue.empty())
+      if (! m_strValue.empty())
          return stoi(m_strValue);
    }
    catch (...)
@@ -113,7 +113,7 @@ double CYamlNode::GetDoubleValue(double dDefault) const
 {
    try
    {
-      if (!m_strValue.empty())
+      if (! m_strValue.empty())
          return stod(m_strValue);
    }
    catch (...)
@@ -127,22 +127,22 @@ bool CYamlNode::GetBoolValue(bool bDefault) const
 {
    if (m_strValue.empty())
       return bDefault;
-      
+
    string strLower = m_strValue;
    std::transform(strLower.begin(), strLower.end(), strLower.begin(), ::tolower);
-   
+
    if (strLower == "true" || strLower == "yes" || strLower == "y" || strLower == "1")
       return true;
    else if (strLower == "false" || strLower == "no" || strLower == "n" || strLower == "0")
       return false;
-   
+
    return bDefault;
 }
 
 vector<string> CYamlNode::GetStringSequence() const
 {
    vector<string> vecResult;
-   for (const auto& node : m_vecChildren)
+   for (auto const& node : m_vecChildren)
    {
       vecResult.push_back(node.GetValue());
    }
@@ -165,24 +165,24 @@ bool CYamlParser::bParseFile(string const& strFileName)
    m_strFileName = strFileName;
    m_nCurrentLine = 0;
    m_strError.clear();
-   
+
    ifstream fileStream(strFileName);
-   if (!fileStream.is_open())
+   if (! fileStream.is_open())
    {
       m_strError = "Cannot open file: " + strFileName;
       return false;
    }
-   
+
    try
    {
       m_RootNode = ParseSection(fileStream, -1);
    }
-   catch (const std::exception& e)
+   catch (std::exception const& e)
    {
       m_strError = "Parse error at line " + std::to_string(m_nCurrentLine) + ": " + e.what();
       return false;
    }
-   
+
    fileStream.close();
    return true;
 }
@@ -199,7 +199,7 @@ string CYamlParser::GetError() const
 
 bool CYamlParser::bHasError() const
 {
-   return !m_strError.empty();
+   return ! m_strError.empty();
 }
 
 int CYamlParser::nGetIndentLevel(string const& strLine) const
@@ -210,7 +210,7 @@ int CYamlParser::nGetIndentLevel(string const& strLine) const
       if (c == ' ')
          nIndent++;
       else if (c == '\t')
-         nIndent += 4; // Treat tab as 4 spaces
+         nIndent += 4;      // Treat tab as 4 spaces
       else
          break;
    }
@@ -253,7 +253,7 @@ bool CYamlParser::bParseLine(string const& strLine, string& strKey, string& strV
 {
    string strTrimmed = strTrimLeft(strLine);
    bIsSequence = false;
-   
+
    // Check for sequence item
    if (strTrimmed.length() > 0 && strTrimmed[0] == '-')
    {
@@ -263,28 +263,28 @@ bool CYamlParser::bParseLine(string const& strLine, string& strKey, string& strV
       strValue = strRemoveQuotes(strValue);
       return true;
    }
-   
+
    // Look for key-value pair
    size_t nColonPos = strTrimmed.find(':');
    if (nColonPos == string::npos)
       return false;
-   
+
    strKey = strTrim(strTrimmed.substr(0, nColonPos));
    if (nColonPos + 1 < strTrimmed.length())
       strValue = strTrim(strTrimmed.substr(nColonPos + 1));
    else
       strValue.clear();
-   
+
    // Remove quotes from string values
    strValue = strRemoveQuotes(strValue);
-   
+
    return true;
 }
 
 string CYamlParser::strRemoveQuotes(string const& strValue) const
 {
    string result = strValue;
-   
+
    // Remove surrounding double quotes
    if (result.length() >= 2 && result.front() == '"' && result.back() == '"')
    {
@@ -295,7 +295,7 @@ string CYamlParser::strRemoveQuotes(string const& strValue) const
    {
       result = result.substr(1, result.length() - 2);
    }
-   
+
    return result;
 }
 
@@ -303,17 +303,17 @@ CYamlNode CYamlParser::ParseSection(ifstream& fileStream, int nBaseIndent)
 {
    CYamlNode currentNode;
    string strLine;
-   
+
    while (getline(fileStream, strLine))
    {
       m_nCurrentLine++;
-      
+
       // Skip comments and empty lines
       if (bIsComment(strLine) || bIsEmpty(strLine))
          continue;
-      
+
       int nIndent = nGetIndentLevel(strLine);
-      
+
       // If we've gone back to a lower indentation level, we're done with this section
       if (nBaseIndent >= 0 && nIndent <= nBaseIndent)
       {
@@ -322,17 +322,17 @@ CYamlNode CYamlParser::ParseSection(ifstream& fileStream, int nBaseIndent)
          m_nCurrentLine--;
          break;
       }
-      
+
       string strKey, strValue;
       bool bIsSequence;
-      
+
       if (bParseLine(strLine, strKey, strValue, bIsSequence))
       {
          if (bIsSequence)
          {
             // Handle sequence item
             CYamlNode itemNode;
-            if (!strValue.empty())
+            if (! strValue.empty())
             {
                itemNode.SetValue(strValue);
             }
@@ -347,7 +347,7 @@ CYamlNode CYamlParser::ParseSection(ifstream& fileStream, int nBaseIndent)
          {
             // Handle key-value pair
             CYamlNode childNode;
-            if (!strValue.empty())
+            if (! strValue.empty())
             {
                childNode.SetValue(strValue);
             }
@@ -360,6 +360,6 @@ CYamlNode CYamlParser::ParseSection(ifstream& fileStream, int nBaseIndent)
          }
       }
    }
-   
+
    return currentNode;
 }

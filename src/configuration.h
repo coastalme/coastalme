@@ -2,7 +2,8 @@
 
    \file configuration.h
    \brief Unified configuration class for CoastalME simulation parameters
-   \details Provides a single interface for accessing simulation parameters regardless of input format (.dat or YAML)
+   \details Provides a single interface for accessing simulation parameters
+   regardless of input format (.dat or YAML)
    \author David Favis-Mortlock
    \author Andres Payo
    \date 2025
@@ -14,18 +15,27 @@
 
    This file is part of CoastalME, the Coastal Modelling Environment.
 
-   CoastalME is free software; you can redistribute it and/or modify it under the terms of the GNU General Public  License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
+   CoastalME is free software; you can redistribute it and/or modify it under
+the terms of the GNU General Public  License as published by the Free Software
+Foundation; either version 3 of the License, or (at your option) any later
+version.
 
-   This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+   This program is distributed in the hope that it will be useful, but WITHOUT
+ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-   You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+   You should have received a copy of the GNU General Public License along with
+this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave,
+Cambridge, MA 02139, USA.
 
 ==============================================================================================================================*/
 #ifndef CONFIGURATION_H
 #define CONFIGURATION_H
 
+#include <algorithm>
 #include <string>
 #include <vector>
+#include <cctype>
 
 using std::string;
 using std::vector;
@@ -162,7 +172,7 @@ class CConfiguration
    ~CConfiguration();
 
    // Setters for all parameters
-   void SetRunName(string const& str)
+   void SetRunName(string const &str)
    {
       m_strRunName = str;
    }
@@ -174,19 +184,19 @@ class CConfiguration
    {
       m_bCSVPerTimestepResults = b;
    }
-   void SetStartDateTime(string const& str)
+   void SetStartDateTime(string const &str)
    {
       m_strStartDateTime = str;
    }
-   void SetDuration(string const& str)
+   void SetDuration(string const &str)
    {
       m_strDuration = str;
    }
-   void SetTimestep(string const& str)
+   void SetTimestep(string const &str)
    {
       m_strTimestep = str;
    }
-   void SetSaveTimes(vector<string> const& vec)
+   void SetSaveTimes(vector<string> const &vec)
    {
       m_vecSaveTimes = vec;
    }
@@ -197,22 +207,22 @@ class CConfiguration
    }
    void UseSystemTimeForSeed()
    {
-      m_bUseSystemTimeForSeed = true;
+      m_bUseSystemTimeForSeed = false;
    }
 
    void SetMaxSaveDigits(int n)
    {
       m_nMaxSaveDigits = n;
    }
-   void SetSaveDigitsMode(string const& str)
+   void SetSaveDigitsMode(string const &str)
    {
       m_strSaveDigitsMode = str;
    }
-   void SetRasterFiles(vector<string> const& vec)
+   void SetRasterFiles(vector<string> const &vec)
    {
       m_vecRasterFiles = vec;
    }
-   void SetRasterFormat(string const& str)
+   void SetRasterFormat(string const &str)
    {
       m_strRasterFormat = str;
    }
@@ -224,19 +234,19 @@ class CConfiguration
    {
       m_bScaleValues = b;
    }
-   void SetSliceElevations(vector<double> const& vec)
+   void SetSliceElevations(vector<double> const &vec)
    {
       m_vecSliceElevations = vec;
    }
-   void SetVectorFiles(vector<string> const& vec)
+   void SetVectorFiles(vector<string> const &vec)
    {
       m_vecVectorFiles = vec;
    }
-   void SetVectorFormat(string const& str)
+   void SetVectorFormat(string const &str)
    {
       m_strVectorFormat = str;
    }
-   void SetTimeSeriesFiles(vector<string> const& vec)
+   void SetTimeSeriesFiles(vector<string> const &vec)
    {
       m_vecTimeSeriesFiles = vec;
    }
@@ -253,7 +263,7 @@ class CConfiguration
    {
       m_nPolynomialOrder = n;
    }
-   void SetOmitGridEdges(string const& str)
+   void SetOmitGridEdges(string const &str)
    {
       m_strOmitGridEdges = str;
    }
@@ -274,47 +284,47 @@ class CConfiguration
    {
       m_nNumLayers = n;
    }
-   void SetBasementDEMFile(string const& str)
+   void SetBasementDEMFile(string const &str)
    {
       m_strBasementDEMFile = str;
    }
-   void SetUnconsFineFiles(vector<string> const& vec)
+   void SetUnconsFineFiles(vector<string> const &vec)
    {
       m_vecUnconsFineFiles = vec;
    }
-   void SetUnconsSandFiles(vector<string> const& vec)
+   void SetUnconsSandFiles(vector<string> const &vec)
    {
       m_vecUnconsSandFiles = vec;
    }
-   void SetUnconsCoarseFiles(vector<string> const& vec)
+   void SetUnconsCoarseFiles(vector<string> const &vec)
    {
       m_vecUnconsCoarseFiles = vec;
    }
-   void SetConsFineFiles(vector<string> const& vec)
+   void SetConsFineFiles(vector<string> const &vec)
    {
       m_vecConsFineFiles = vec;
    }
-   void SetConsSandFiles(vector<string> const& vec)
+   void SetConsSandFiles(vector<string> const &vec)
    {
       m_vecConsSandFiles = vec;
    }
-   void SetConsCoarseFiles(vector<string> const& vec)
+   void SetConsCoarseFiles(vector<string> const &vec)
    {
       m_vecConsCoarseFiles = vec;
    }
-   void SetSuspendedSedFile(string const& str)
+   void SetSuspendedSedFile(string const &str)
    {
       m_strSuspendedSedFile = str;
    }
-   void SetLandformFile(string const& str)
+   void SetLandformFile(string const &str)
    {
       m_strLandformFile = str;
    }
-   void SetInterventionClassFile(string const& str)
+   void SetInterventionClassFile(string const &str)
    {
       m_strInterventionClassFile = str;
    }
-   void SetInterventionHeightFile(string const& str)
+   void SetInterventionHeightFile(string const &str)
    {
       m_strInterventionHeightFile = str;
    }
@@ -340,7 +350,7 @@ class CConfiguration
    {
       m_dDeepWaterWaveHeight = d;
    }
-   void SetWaveHeightTimeSeries(string const& str)
+   void SetWaveHeightTimeSeries(string const &str)
    {
       m_strWaveHeightTimeSeries = str;
    }
@@ -352,7 +362,7 @@ class CConfiguration
    {
       m_dWavePeriod = d;
    }
-   void SetTideDataFile(string const& str)
+   void SetTideDataFile(string const &str)
    {
       m_strTideDataFile = str;
    }
@@ -464,19 +474,19 @@ class CConfiguration
    {
       m_bFloodInput = b;
    }
-   void SetFloodCoastline(string const& str)
+   void SetFloodCoastline(string const &str)
    {
       m_strFloodCoastline = str;
    }
-   void SetRunupEquation(string const& str)
+   void SetRunupEquation(string const &str)
    {
       m_strRunupEquation = str;
    }
-   void SetFloodLocations(string const& str)
+   void SetFloodLocations(string const &str)
    {
       m_strFloodLocations = str;
    }
-   void SetFloodInputLocation(string const& str)
+   void SetFloodInputLocation(string const &str)
    {
       m_strFloodInputLocation = str;
    }
@@ -485,15 +495,15 @@ class CConfiguration
    {
       m_bSedimentInput = b;
    }
-   void SetSedimentInputLocation(string const& str)
+   void SetSedimentInputLocation(string const &str)
    {
       m_strSedimentInputLocation = str;
    }
-   void SetSedimentInputType(string const& str)
+   void SetSedimentInputType(string const &str)
    {
       m_strSedimentInputType = str;
    }
-   void SetSedimentInputDetails(string const& str)
+   void SetSedimentInputDetails(string const &str)
    {
       m_strSedimentInputDetails = str;
    }
@@ -523,11 +533,11 @@ class CConfiguration
    {
       m_bSaveProfileData = b;
    }
-   void SetProfileNumbers(vector<int> const& vec)
+   void SetProfileNumbers(vector<int> const &vec)
    {
       m_vecProfileNumbers = vec;
    }
-   void SetProfileTimesteps(vector<int> const& vec)
+   void SetProfileTimesteps(vector<int> const &vec)
    {
       m_vecProfileTimesteps = vec;
    }
@@ -654,7 +664,10 @@ class CConfiguration
    }
    string GetOmitGridEdges() const
    {
-      return m_strOmitGridEdges;
+      // This needs to be lower case
+      std::string my_text{m_strOmitGridEdges};
+      std::transform(my_text.begin(), my_text.end(), my_text.begin(), ::tolower);
+      return my_text;
    }
    int GetProfileSmoothingWindow() const
    {
@@ -761,6 +774,259 @@ class CConfiguration
    double GetBreakingWaveRatio() const
    {
       return m_dBreakingWaveRatio;
+   }
+
+   // Missing getters for Sediment and Erosion parameters
+   bool GetCoastPlatformErosion() const
+   {
+      // TODO: Implement getter for coast platform erosion flag
+      return m_bCoastPlatformErosion;
+   }
+   double GetPlatformErosionResistance() const
+   {
+      // TODO: Implement getter for platform erosion resistance
+      return m_dPlatformErosionResistance;
+   }
+   bool GetBeachSedimentTransport() const
+   {
+      // TODO: Implement getter for beach sediment transport flag
+      return m_bBeachSedimentTransport;
+   }
+   int GetBeachTransportAtEdges() const
+   {
+      // TODO: Implement getter for beach transport at edges setting
+      return m_nBeachTransportAtEdges;
+   }
+   int GetBeachErosionEquation() const
+   {
+      // TODO: Implement getter for beach erosion equation type
+      return m_nBeachErosionEquation;
+   }
+   double GetFineMedianSize() const
+   {
+      // TODO: Implement getter for fine sediment median size
+      return m_dFineMedianSize;
+   }
+   double GetSandMedianSize() const
+   {
+      // TODO: Implement getter for sand median size
+      return m_dSandMedianSize;
+   }
+   double GetCoarseMedianSize() const
+   {
+      // TODO: Implement getter for coarse sediment median size
+      return m_dCoarseMedianSize;
+   }
+   double GetSedimentDensity() const
+   {
+      // TODO: Implement getter for sediment density
+      return m_dSedimentDensity;
+   }
+   double GetBeachSedimentPorosity() const
+   {
+      // TODO: Implement getter for beach sediment porosity
+      return m_dBeachSedimentPorosity;
+   }
+   double GetFineErosivity() const
+   {
+      // TODO: Implement getter for fine sediment erosivity
+      return m_dFineErosivity;
+   }
+   double GetSandErosivity() const
+   {
+      // TODO: Implement getter for sand erosivity
+      return m_dSandErosivity;
+   }
+   double GetCoarseErosivity() const
+   {
+      // TODO: Implement getter for coarse sediment erosivity
+      return m_dCoarseErosivity;
+   }
+   double GetTransportKLS() const
+   {
+      // TODO: Implement getter for transport KLS parameter
+      return m_dTransportKLS;
+   }
+   double GetKamphuis() const
+   {
+      // TODO: Implement getter for Kamphuis parameter
+      return m_dKamphuis;
+   }
+   double GetBermHeight() const
+   {
+      // TODO: Implement getter for berm height
+      return m_dBermHeight;
+   }
+
+   // Missing getters for Cliff parameters
+   bool GetCliffCollapse() const
+   {
+      // TODO: Implement getter for cliff collapse flag
+      return m_bCliffCollapse;
+   }
+   double GetCliffErosionResistance() const
+   {
+      // TODO: Implement getter for cliff erosion resistance
+      return m_dCliffErosionResistance;
+   }
+   double GetNotchOverhang() const
+   {
+      // TODO: Implement getter for notch overhang distance
+      return m_dNotchOverhang;
+   }
+   double GetNotchBase() const
+   {
+      // TODO: Implement getter for notch base elevation
+      return m_dNotchBase;
+   }
+   double GetCliffDepositionA() const
+   {
+      // TODO: Implement getter for cliff deposition coefficient A
+      return m_dCliffDepositionA;
+   }
+   double GetTalusWidth() const
+   {
+      // TODO: Implement getter for talus width
+      return m_dTalusWidth;
+   }
+   double GetMinTalusLength() const
+   {
+      // TODO: Implement getter for minimum talus length
+      return m_dMinTalusLength;
+   }
+   double GetMinTalusHeight() const
+   {
+      // TODO: Implement getter for minimum talus height
+      return m_dMinTalusHeight;
+   }
+
+   // Missing getters for Flood parameters
+   bool GetFloodInput() const
+   {
+      // TODO: Implement getter for flood input flag
+      return m_bFloodInput;
+   }
+   string GetFloodCoastline() const
+   {
+      // TODO: Implement getter for flood coastline file
+      return m_strFloodCoastline;
+   }
+   string GetRunupEquation() const
+   {
+      // TODO: Implement getter for runup equation type
+      return m_strRunupEquation;
+   }
+   string GetFloodLocations() const
+   {
+      // TODO: Implement getter for flood locations file
+      return m_strFloodLocations;
+   }
+   string GetFloodInputLocation() const
+   {
+      // TODO: Implement getter for flood input location
+      return m_strFloodInputLocation;
+   }
+
+   // Missing getters for Sediment Input parameters
+   bool GetSedimentInput() const
+   {
+      // TODO: Implement getter for sediment input flag
+      return m_bSedimentInput;
+   }
+   string GetSedimentInputLocation() const
+   {
+      // TODO: Implement getter for sediment input location
+      return m_strSedimentInputLocation;
+   }
+   string GetSedimentInputType() const
+   {
+      // TODO: Implement getter for sediment input type
+      return m_strSedimentInputType;
+   }
+   string GetSedimentInputDetails() const
+   {
+      // TODO: Implement getter for sediment input details
+      return m_strSedimentInputDetails;
+   }
+
+   // Missing getters for Physics and Geometry
+   double GetGravitationalAcceleration() const
+   {
+      // TODO: Implement getter for gravitational acceleration
+      return m_dGravitationalAcceleration;
+   }
+   double GetNormalSpacing() const
+   {
+      return m_dNormalSpacing;
+   }
+   double GetRandomFactor() const
+   {
+      // TODO: Implement getter for random factor
+      return m_dRandomFactor;
+   }
+   double GetNormalLength() const
+   {
+      // TODO: Implement getter for normal length
+      return m_dNormalLength;
+   }
+   double GetStartDepthRatio() const
+   {
+      // TODO: Implement getter for start depth ratio
+      return m_dStartDepthRatio;
+   }
+
+   // Missing getters for Profile and Output Options
+   bool GetSaveProfileData() const
+   {
+      // TODO: Implement getter for save profile data flag
+      return m_bSaveProfileData;
+   }
+   vector<int> GetProfileNumbers() const
+   {
+      // TODO: Implement getter for profile numbers
+      return m_vecProfileNumbers;
+   }
+   vector<int> GetProfileTimesteps() const
+   {
+      // TODO: Implement getter for profile timesteps
+      return m_vecProfileTimesteps;
+   }
+   bool GetSaveParallelProfiles() const
+   {
+      // TODO: Implement getter for save parallel profiles flag
+      return m_bSaveParallelProfiles;
+   }
+   bool GetOutputErosionPotential() const
+   {
+      // TODO: Implement getter for output erosion potential flag
+      return m_bOutputErosionPotential;
+   }
+   int GetCurvatureWindow() const
+   {
+      // TODO: Implement getter for curvature window size
+      return m_nCurvatureWindow;
+   }
+
+   // Missing getters for Cliff Edge Processing
+   int GetCliffEdgeSmoothing() const
+   {
+      // TODO: Implement getter for cliff edge smoothing iterations
+      return m_nCliffEdgeSmoothing;
+   }
+   int GetCliffEdgeSmoothingWindow() const
+   {
+      // TODO: Implement getter for cliff edge smoothing window size
+      return m_nCliffEdgeSmoothingWindow;
+   }
+   int GetCliffEdgePolynomialOrder() const
+   {
+      // TODO: Implement getter for cliff edge polynomial order
+      return m_nCliffEdgePolynomialOrder;
+   }
+   double GetCliffSlopeLimit() const
+   {
+      // TODO: Implement getter for cliff slope limit
+      return m_dCliffSlopeLimit;
    }
 
    // Initialize with default values
