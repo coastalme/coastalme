@@ -316,7 +316,6 @@ class CGeomCell
    bool bIsInundated(void) const;
    double dGetThisIterSWL(void) const;
    double dGetThisIterTotWaterLevel(void) const;
-   // bool bIsSeaIncBeach(void) const;
    void SetSeaDepth(void);
    double dGetSeaDepth(void) const;
    void InitCell(void);
@@ -356,16 +355,16 @@ class CGeomCell
    int nGetLayerAtElev(double const) const;
    double dCalcLayerElev(const int);
 
-   double dGetTotConsFineThickConsiderNotch(void) const;
-   double dGetTotUnconsFine(void) const;
-   double dGetTotConsSandThickConsiderNotch(void) const;
-   double dGetTotUnconsSand(void) const;
-   double dGetTotConsCoarseThickConsiderNotch(void) const;
-   double dGetTotUnconsCoarse(void) const;
+   double dGetConsFineDepthAllLayers(void) const;
+   double dGetUnconsFineDepthAllLayers(void) const;
+   double dGetConsSandDepthAllLayers(void) const;
+   double dGetUnconsSandDepthAllLayers(void) const;
+   double dGetConsCoarseDepthAllLayers(void) const;
+   double dGetUnconsCoarseDepthAllLayers(void) const;
 
-   double dGetTotConsThickness(void) const;
-   double dGetTotUnconsThickness(void) const;
-   double dGetTotAllSedThickness(void) const;
+   double dGetAllConsDepthAllLayers(void) const;
+   double dGetAllUnconsDepthAllLayers(void) const;
+   double dGetAllSedDepthAllLayers(void) const;
 
    void SetPotentialPlatformErosion(double const);
    double dGetPotentialPlatformErosion(void) const;

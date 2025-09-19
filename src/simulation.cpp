@@ -352,7 +352,7 @@ CSimulation::CSimulation(void)
    m_dProfileMaxSlope = 0;
    m_dMaxBeachElevAboveSWL = 0;
    m_dCliffErosionResistance = 0;
-   m_dNotchIncisionDepthAtCollapse = 0;
+   m_dNotchIncisionAtCollapse = 0;
    m_dThisIterNewNotchApexElev = 0;
    m_dNotchApexAboveMHW = 0;
    m_dCliffDepositionA = 0;

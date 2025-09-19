@@ -161,8 +161,6 @@ Cliff toe location?                                                             
    Polynomial order for Savitzky-Golay cliff edge smoothing      [2 or 4, only for cliff toe]: 4
    Cliff slope limit for cliff toe detection                             [only for cliff toe]: 0.3
 
-Cliff talus deposition approach                                       [0 = original, 1 = new]: 0
-
 Runup equation                      [0 = none, 1 = Nielsen & Hanslow, 2 = Mase, 3 = Stockdon): 3
 
 

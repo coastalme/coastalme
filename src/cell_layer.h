@@ -47,15 +47,15 @@ class CRWCellLayer
    CRWCellSediment* pGetUnconsolidatedSediment(void);
    CRWCellSediment* pGetConsolidatedSediment(void);
 
-   double dGetFineUnconsolidatedThickness(void) const;
-   double dGetFineConsolidatedThickness(void) const;
-   double dGetSandUnconsolidatedThickness(void) const;
-   double dGetSandConsolidatedThickness(void) const;
-   double dGetCoarseUnconsolidatedThickness(void) const;
-   double dGetCoarseConsolidatedThickness(void) const;
+   double dGetUnconsFineDepth(void) const;
+   double dGetConsFineDepth(void) const;
+   double dGetUnconsSandDepth(void) const;
+   double dGetConsSandDepth(void) const;
+   double dGetUnconsCoarseDepth(void) const;
+   double dGetConsCoarseDepth(void) const;
 
-   double dGetUnconsolidatedThickness(void) const;
-   double dGetConsolidatedThickness(void) const;
+   double dGetAllUnconsDepth(void) const;
+   double dGetAllConsDepth(void) const;
    double dGetTotalThickness(void) const;
 
    // double dGetNotchUnconsolidatedLost(void) const;

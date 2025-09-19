@@ -1388,7 +1388,7 @@ bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const* strPlot
                      if (pCliff->bHasCollapsed())
                         dNotchDepth = m_dCellSide;
                      else
-                        dNotchDepth = pCliff->dGetNotchDepth();
+                        dNotchDepth = pCliff->dGetNotchIncision();
                   }
 
                   // Set the feature's attribute

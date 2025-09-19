@@ -133,7 +133,7 @@ int CSimulation::nInitGridAndCalcStillWaterLevel(void)
          if (m_ulIter == 1)
          {
             // For the first timestep only, check to see that all cells have some sediment on them
-            double const dSedThickness = m_pRasterGrid->m_Cell[nX][nY].dGetTotAllSedThickness();
+            double const dSedThickness = m_pRasterGrid->m_Cell[nX][nY].dGetAllSedDepthAllLayers();
 
             if (dSedThickness <= 0)
             {
@@ -155,14 +155,14 @@ int CSimulation::nInitGridAndCalcStillWaterLevel(void)
          }
 
          // Note that these totals include sediment which is both within and outside the polygons (because we have not yet defined polygons for this iteration, duh!)
-         m_dStartIterConsFineAllCells += m_pRasterGrid->m_Cell[nX][nY].dGetTotConsFineThickConsiderNotch();
-         m_dStartIterConsSandAllCells += m_pRasterGrid->m_Cell[nX][nY].dGetTotConsSandThickConsiderNotch();
-         m_dStartIterConsCoarseAllCells += m_pRasterGrid->m_Cell[nX][nY].dGetTotConsCoarseThickConsiderNotch();
+         m_dStartIterConsFineAllCells += m_pRasterGrid->m_Cell[nX][nY].dGetConsFineDepthAllLayers();
+         m_dStartIterConsSandAllCells += m_pRasterGrid->m_Cell[nX][nY].dGetConsSandDepthAllLayers();
+         m_dStartIterConsCoarseAllCells += m_pRasterGrid->m_Cell[nX][nY].dGetConsCoarseDepthAllLayers();
 
          m_dStartIterSuspFineAllCells += m_pRasterGrid->m_Cell[nX][nY].dGetSuspendedSediment();
-         m_dStartIterUnconsFineAllCells += m_pRasterGrid->m_Cell[nX][nY].dGetTotUnconsFine();
-         m_dStartIterUnconsSandAllCells += m_pRasterGrid->m_Cell[nX][nY].dGetTotUnconsSand();
-         m_dStartIterUnconsCoarseAllCells += m_pRasterGrid->m_Cell[nX][nY].dGetTotUnconsCoarse();
+         m_dStartIterUnconsFineAllCells += m_pRasterGrid->m_Cell[nX][nY].dGetUnconsFineDepthAllLayers();
+         m_dStartIterUnconsSandAllCells += m_pRasterGrid->m_Cell[nX][nY].dGetUnconsSandDepthAllLayers();
+         m_dStartIterUnconsCoarseAllCells += m_pRasterGrid->m_Cell[nX][nY].dGetUnconsCoarseDepthAllLayers();
 
          if (m_bSingleDeepWaterWaveValues)
          {

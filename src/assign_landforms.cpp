@@ -127,7 +127,7 @@ int CSimulation::nAssignLandformsForAllCoasts(void)
             {
                // We have consolidated sediment at SWL, so this is a cliff cell. Set some default values
                double dAccumWaveEnergy;
-               double dNotchDepth;
+               double dNotchIncision;
                double dNotchElev;
 
                // Get the existing landform category of this cell
@@ -136,18 +136,18 @@ int CSimulation::nAssignLandformsForAllCoasts(void)
                   // This cell was a cliff in a previous timestep, so get the data stored in the cell, this will be stored in the cliff object on the vector coastline
                   m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->SetLFSubCategory(LF_SUBCAT_CLIFF_ON_COASTLINE);
                   dAccumWaveEnergy = m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->dGetAccumWaveEnergy();
-                  dNotchDepth = m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->dGetCliffNotchIncisionDepth();
+                  dNotchIncision = m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->dGetCliffNotchIncisionDepth();
                   // dNotchElev = m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->dGetCliffNotchApexElev();
 
-                  // LogStream << m_ulIter << ": continues to be a cliff at [" << nX << "][" << nY << "] notch base elevation = " << dNotchElev << " notch depth = " << dNotchDepth << " this-iteration SWL = " << m_dThisIterSWL << endl;
+                  // LogStream << m_ulIter << ": continues to be a cliff at [" << nX << "][" << nY << "] notch base elevation = " << dNotchElev << " notch depth = " << dNotchIncision << " this-iteration SWL = " << m_dThisIterSWL << endl;
                }
                else
                {
                   // This cell was not a cliff object in a previous timestep. Mark it as one now and set the cell with the default values for the cliff object's attributes
                   m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->SetLFSubCategory(LF_SUBCAT_CLIFF_ON_COASTLINE);
                   dAccumWaveEnergy = m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->dGetAccumWaveEnergy();
-                  dNotchDepth = 0;
-                  m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->SetCliffNotchIncisionDepth(dNotchDepth);      // Note that this is permanent i.e. stored for the remainder of the simulation
+                  dNotchIncision = 0;
+                  m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->SetCliffNotchIncisionDepth(dNotchIncision);      // Note that this is permanent i.e. stored for the remainder of the simulation
                   dNotchElev = m_dThisIterNewNotchApexElev;
                   m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->SetCliffNotchApexElev(dNotchElev);
 
@@ -155,7 +155,7 @@ int CSimulation::nAssignLandformsForAllCoasts(void)
                }
 
                // Create a cliff object on the vector coastline with these attributes
-               CACoastLandform* pCliff = new CRWCliff(&m_VCoast[nCoast], nCoast, j, m_dCellSide, dNotchDepth, m_dThisIterNewNotchApexElev, dAccumWaveEnergy);
+               CACoastLandform* pCliff = new CRWCliff(&m_VCoast[nCoast], nCoast, j, m_dCellSide, dNotchIncision, m_dThisIterNewNotchApexElev, dAccumWaveEnergy);
                m_VCoast[nCoast].AppendCoastLandform(pCliff);
             }
             else
@@ -292,12 +292,12 @@ int CSimulation::nLandformToGrid(int const nCoast, int const nPoint)
       // {
       //    // The cliff has not collapsed. Get attribute values from the cliff object
       //    double const dNotchBaseElev = pCliff->dGetNotchApexElev();
-      //    double const dNotchDepth = pCliff->dGetNotchDepth();
+      //    double const dNotchIncision = pCliff->dGetNotchIncision();
       //
       //    // And store some attribute values in the cliff cell
       //    m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->SetLFSubCategory(LF_SUBCAT_CLIFF_ON_COASTLINE);
       //    m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->SetCliffNotchApexElev(dNotchBaseElev);
-      //    m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->SetCliffNotchIncisionDepth(dNotchDepth);
+      //    m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->SetCliffNotchIncisionDepth(dNotchIncision);
       // }
       // else
       // {

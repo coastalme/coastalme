@@ -29,7 +29,7 @@ CRWCellLandform::CRWCellLandform()
       m_dAccumWaveEnergy(0)
 {
    m_uLFData.m_sCliffData.m_dNotchApexElev = DBL_NODATA;
-   m_uLFData.m_sCliffData.m_dNotchIncisionDepth = DBL_NODATA;
+   m_uLFData.m_sCliffData.m_dNotchIncision = DBL_NODATA;
    m_uLFData.m_sCliffData.m_ulCollapseTimestep = UNSIGNED_LONG_NODATA;
 }
 
@@ -120,13 +120,13 @@ double CRWCellLandform::dGetCliffNotchApexElev(void) const
 //! Set the horizontal depth of cliff notch incision for this cell. This is the horizontal distance from the edge of the cell to the incised back of the notch
 void CRWCellLandform::SetCliffNotchIncisionDepth(double const dLenIn)
 {
-   m_uLFData.m_sCliffData.m_dNotchIncisionDepth = dLenIn;
+   m_uLFData.m_sCliffData.m_dNotchIncision = dLenIn;
 }
 
 //! Get the horizontal depth of cliff notch incision for this cell. This is the horizontal distance from the edge of the cell to the incised back of the notch
 double CRWCellLandform::dGetCliffNotchIncisionDepth(void) const
 {
-   return m_uLFData.m_sCliffData.m_dNotchIncisionDepth;
+   return m_uLFData.m_sCliffData.m_dNotchIncision;
 }
 
 // //! Set the cliff depth remaining on this cell

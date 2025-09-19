@@ -2725,9 +2725,9 @@ bool CSimulation::bReadRunDataFile(void)
                   break;
                }
 
-               m_dNotchIncisionDepthAtCollapse = strtod(strRH.c_str(), NULL);
+               m_dNotchIncisionAtCollapse = strtod(strRH.c_str(), NULL);
 
-               if (m_dNotchIncisionDepthAtCollapse <= 0)
+               if (m_dNotchIncisionAtCollapse <= 0)
                   strErr = "line " + to_string(nLine) + ": cliff notch overhang at collapse must be > 0";
             }
 

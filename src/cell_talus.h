@@ -57,41 +57,23 @@ class CRWCellTalus
  protected:
  public:
    CRWCellTalus(void);
-   // CRWCellSediment(CRWCellSediment const&); // Copy constructor defined explicitly, to stop cppcheck from complaining
-   //
-   // CRWCellSediment& operator=(const CRWCellSediment&);
-   //
-   // void SetFineDepth(double const);
-   // double dGetFineDepth(void) const;
-   // // void AddFineDepth(double const);
-   //
-   // void SetSandDepth(double const);
-   // double dGetSandDepth(void) const;
-   // void AddSandDepth(double const);
-   //
-   // void SetCoarseDepth(double const);
-   // double dGetCoarseDepth(void) const;
-   // void AddCoarseDepth(double const);
-   //
-   // void SetNotchFineLost(double const);
-   // // void IncrNotchFineLost(double const);
-   // double dGetNotchFineLost(void) const;
-   //
-   // void SetNotchSandLost(double const);
-   // // void IncrNotchSandLost(double const);
-   // double dGetNotchSandLost(void) const;
-   //
-   // void SetNotchCoarseLost(double const);
-   // // void IncrNotchCoarseLost(double const);
-   // double dGetNotchCoarseLost(void) const;
-   //
-   // void AddFineSedimentInputDepth(double const);
-   // void AddSandSedimentInputDepth(double const);
-   // void AddCoarseSedimentInputDepth(double const);
-   // double dGetFineSedimentInputDepth(void) const;
-   // double dGetSandSedimentInputDepth(void) const;
-   // double dGetCoarseSedimentInputDepth(void) const;
-   // double dGetTotAllSedimentInputDepth(void) const;
-   // void InitThisIterSedimentInputAll(void);
+
+   void SetSandDepth(double const);
+   double dGetSandDepth(void) const;
+   void AddSandDepth(double const);
+
+   void SetCoarseDepth(double const);
+   double dGetCoarseDepth(void) const;
+   void AddCoarseDepth(double const);
+
+   double dGetSandAddedThisIter(void) const;
+   double dGetTotSandAdded(void) const;
+   double dGetSandLostThisIter(void) const;
+   double dGetTotSandLost(void) const;
+
+   double dGetCoarseAddedThisIter(void) const;
+   double dGetTotCoarseAdded(void) const;
+   double dGetCoarseLostThisIter(void) const;
+   double dGetTotCoarseLost(void) const;
 };
 #endif // TALUS_H

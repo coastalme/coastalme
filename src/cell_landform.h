@@ -54,7 +54,7 @@ class CRWCellLandform
          double m_dNotchApexElev;
 
          //! Cliff notch, horizontal depth of incision
-         double m_dNotchIncisionDepth;
+         double m_dNotchIncision;
 
          //! Timestep at which cliff collapse occurred
          unsigned long m_ulCollapseTimestep;

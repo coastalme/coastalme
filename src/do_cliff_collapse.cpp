@@ -75,11 +75,11 @@ int CSimulation::nDoAllWaveEnergyToCoastLandforms(void)
             // It is, so get the cliff object
             CRWCliff* pCliff = reinterpret_cast<CRWCliff*>(pCoastLandform);
 
-            // And do the notch incision, if any
-            DoCliffNotchIncision(pCliff, dWaveEnergy);
+            // And do the notch incision, if any. Note that at this time, we consider sediment eroded due to notch incision to be still in place i.e. this sediment is not now moved from the notch. If the notch is eventually uncised sufficiently to cause cliff collapse, then the sediment from the notch volume is included with the resyt of the talus
+            IncreaseCliffNotchIncision(pCliff, dWaveEnergy);
 
             // OK, is the notch now extended enough to cause collapse (either because the overhang is greater than the threshold overhang, or because there is no sediment remaining)?
-            if (pCliff->bReadyToCollapse(m_dNotchIncisionDepthAtCollapse))
+            if (pCliff->bReadyToCollapse(m_dNotchIncisionAtCollapse))
             {
                // // DEBUG CODE ============================================================================================================================================
                // // Get total depths of sand consolidated and unconsolidated for every cell
@@ -91,9 +91,9 @@ int CSimulation::nDoAllWaveEnergyToCoastLandforms(void)
                // {
                // for (int nY1 = 0; nY1 < m_nYGridSize; nY1++)
                // {
-               // dTmpSandCons += m_pRasterGrid->m_Cell[nX1][nY1].dGetTotConsSandThickConsiderNotch();
+               // dTmpSandCons += m_pRasterGrid->m_Cell[nX1][nY1].dGetConsSandDepthAllLayers();
                //
-               // dTmpSandUncons += m_pRasterGrid->m_Cell[nX1][nY1].dGetTotUnconsSand();
+               // dTmpSandUncons += m_pRasterGrid->m_Cell[nX1][nY1].dGetUnconsSandDepthAllLayers();
                // }
                // }
                //
@@ -140,9 +140,9 @@ int CSimulation::nDoAllWaveEnergyToCoastLandforms(void)
                // {
                // for (int nY1 = 0; nY1 < m_nYGridSize; nY1++)
                // {
-               // dTmpSandCons += m_pRasterGrid->m_Cell[nX1][nY1].dGetTotConsSandThickConsiderNotch();
+               // dTmpSandCons += m_pRasterGrid->m_Cell[nX1][nY1].dGetConsSandDepthAllLayers();
                //
-               // dTmpSandUncons += m_pRasterGrid->m_Cell[nX1][nY1].dGetTotUnconsSand();
+               // dTmpSandUncons += m_pRasterGrid->m_Cell[nX1][nY1].dGetUnconsSandDepthAllLayers();
                // }
                // }
                //
@@ -220,15 +220,17 @@ int CSimulation::nDoCliffCollapse(int const nCoast, CRWCliff* pCliff, double& dF
    // Get the index of the layer containing the notch (layer 0 being just above basement)
    int const nNotchLayer = m_pRasterGrid->m_Cell[nX][nY].nGetLayerAtElev(dNotchElev);
 
+   // Is the notch elevation above the top of the sediment? If so, do no more
+   if (nNotchLayer == ELEV_ABOVE_SEDIMENT_TOP)
+   {
+      LogStream << m_ulIter << ": in nDoCliffCollapse(), [" << nX << "][" << nY << "] has nNotchLayer above sediment top" << endl;
+      return RTN_OK;
+   }
+
    // Safety checks
    if (nNotchLayer == ELEV_IN_BASEMENT)
    {
       LogStream << m_ulIter << ": " << WARN << "in nDoCliffCollapse(), [" << nX << "][" << nY << "] nNotchLayer is in basement" << endl;
-      return RTN_ERR_CLIFF_NOTCH;
-   }
-   else if (nNotchLayer == ELEV_ABOVE_SEDIMENT_TOP)
-   {
-      LogStream << m_ulIter << ": " << WARN << "in nDoCliffCollapse(), [" << nX << "][" << nY << "] has nNotchLayer above sediment top" << endl;
       return RTN_ERR_CLIFF_NOTCH;
    }
    else if (nNotchLayer < 0)
@@ -250,7 +252,7 @@ int CSimulation::nDoCliffCollapse(int const nCoast, CRWCliff* pCliff, double& dF
       return RTN_ERR_NO_TOP_LAYER;
    }
 
-   // Set the base of the collapse (see above)
+   // Set the apex elevation of the collapse (see above)
    pCliff->SetNotchApexElev(dNotchElev);
 
    // Set flags to say that the top layer has changed
@@ -479,7 +481,7 @@ int CSimulation::nDoCliffCollapse(int const nCoast, CRWCliff* pCliff, double& dF
 //===============================================================================================================================
 //! Calculate the incision (if any) of a cliff notch, assuming a linear decrease in incision with distance downwards from notch apex. Then do the incision
 //===============================================================================================================================
-void CSimulation::DoCliffNotchIncision(CRWCliff* pCliff, double const dWaveEnergy)
+void CSimulation::IncreaseCliffNotchIncision(CRWCliff* pCliff, double const dWaveEnergy)
 {
    // Get the apex elevation of the cliff notch, and the cut-off elevation (if thi-iteration SWL is below this, there is no incision)
    double const dNotchElev = pCliff->dGetNotchApexElev();
@@ -510,7 +512,7 @@ void CSimulation::DoCliffNotchIncision(CRWCliff* pCliff, double const dWaveEnerg
    double const dNotchIncision = dWeight * dWaveEnergy / m_dCliffErosionResistance;
 
    // Deepen the cliff object's erosional notch as a result of wave energy during this timestep. Note that notch deepening may be constrained, since this-timestep notch extension cannot exceed the length (i.e. cellside minus notch depth) of sediment remaining on the cell
-   pCliff->DeepenErosionalNotch(dNotchIncision);
+   pCliff->IncreaseNotchIncision(dNotchIncision);
 
    // LogStream << m_ulIter << ": dRunup = " << dRunup << " dWaveElev = " << dWaveElev << " dWeight = " << dWeight << " dNotchIncision = " << dNotchIncision << endl;
 }

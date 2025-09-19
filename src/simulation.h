@@ -921,7 +921,7 @@ class CSimulation
    double m_dCliffErosionResistance;
 
    //! Notch overhang (i.e. length of horizontal incision) to initiate collapse (m)
-   double m_dNotchIncisionDepthAtCollapse;
+   double m_dNotchIncisionAtCollapse;
 
    //! Elevation (m) of the apex of any cliff notches created during this iteration
    double m_dThisIterNewNotchApexElev;
@@ -1730,7 +1730,7 @@ class CSimulation
    int nTruncateProfilesDifferentCoasts(int const, int const, int const, int const, int const, int const);
    int nTruncateProfileHitDifferentCoast(int const, int const, int const, int const);
    int nTruncateProfileMultiLineDifferentCoasts(CGeomProfile*, double const, double const);
-   void DoCliffNotchIncision(CRWCliff*, double const);
+   void IncreaseCliffNotchIncision(CRWCliff*, double const);
 
    // GIS utility routines
    int nMarkBoundingBoxEdgeCells(void);

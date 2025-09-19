@@ -574,11 +574,11 @@ double CGeomCell::dGetConsSedTopElevForLayerAboveBasement(int const nLayer) cons
 
    for (int n = 0; n < nLayer; n++)
    {
-      dTopElev += m_VLayerAboveBasement[n].dGetUnconsolidatedThickness();
-      dTopElev += m_VLayerAboveBasement[n].dGetConsolidatedThickness();
+      dTopElev += m_VLayerAboveBasement[n].dGetAllUnconsDepth();
+      dTopElev += m_VLayerAboveBasement[n].dGetAllConsDepth();
    }
 
-   dTopElev += m_VLayerAboveBasement[nLayer].dGetConsolidatedThickness();
+   dTopElev += m_VLayerAboveBasement[nLayer].dGetAllConsDepth();
 
    return dTopElev;
 }
@@ -596,9 +596,9 @@ CRWCellLayer *CGeomCell::pGetLayerAboveBasement(int const nLayer)
 // double dTopElev = m_dBasementElevation;
 // for (unsigned int n = 0; n < m_VLayerAboveBasement.size(); n++)
 // {
-// dTopElev += (m_VLayerAboveBasement[n].dGetUnconsolidatedThickness() -
+// dTopElev += (m_VLayerAboveBasement[n].dGetAllUnconsDepth() -
 // m_VLayerAboveBasement[n].dGetNotchUnconsolidatedLost()); dTopElev +=
-// (m_VLayerAboveBasement[n].dGetConsolidatedThickness() -
+// (m_VLayerAboveBasement[n].dGetAllConsDepth() -
 // m_VLayerAboveBasement[n].dGetNotchConsolidatedLost());
 // }
 //
@@ -641,139 +641,98 @@ double CGeomCell::dGetThisIterTotWaterLevel(void) const
    return m_pGrid->pGetSim()->CSimulation::dGetThisIterTotWaterLevel();
 }
 
-// //! Returns true if the elevation of the sediment top surface for this cell
-// is greater than or equal to the grid's this-timestep still water elevation.
-// Also returns true if the cell has unconsolidated sediment on it and the
-// elevation of the sediment top surface, minus a tolerance value, is less than
-// the grid's this-timestep still water elevation bool
-// CGeomCell::bIsSeaIncBeach(void) const
-// {
-// if (m_bInContiguousSea)
-//       // Sea
-// return true;
-//
-// double
-// dWaterLevel = m_pGrid->pGetSim()->CSimulation::dGetThisIterSWL(),
-// dSedTop = m_VdAllHorizonTopElev.back();
-//
-//    // Beach
-// if ((m_VLayerAboveBasement.back().dGetUnconsolidatedThickness() > 0) &&
-// ((dSedTop - m_pGrid->pGetSim()->CSimulation::dGetMaxBeachElevAboveSWL()) <
-// dWaterLevel)) return true;
-//
-// return false;
-// }
-
-//! Returns the total thickness of fine consolidated sediment on this cell, minus the depth-equivalent of any cliff notch
-double CGeomCell::dGetTotConsFineThickConsiderNotch(void) const
+//! Returns the total (all layers) depth (in external CRS units) of fine consolidated sediment on this cell
+double CGeomCell::dGetConsFineDepthAllLayers(void) const
 {
-   double dTotThick = 0;
+   double dTotDepth = 0;
 
    for (unsigned int n = 0; n < m_VLayerAboveBasement.size(); n++)
-   {
-      CRWCellLayer m_Layer = m_VLayerAboveBasement[n];
-      double const dLayerThick = m_Layer.dGetFineConsolidatedThickness();
-      double const dNotchEquiv = m_Layer.pGetConsolidatedSediment()->dGetNotchFineLost();
+      dTotDepth += m_VLayerAboveBasement[n].dGetConsFineDepth();
 
-      dTotThick += (dLayerThick - dNotchEquiv);
-   }
-
-   return dTotThick;
+   return dTotDepth;
 }
 
-//! Returns the total thickness of fine unconsolidated sediment on this cell
-double CGeomCell::dGetTotUnconsFine(void) const
+//! Returns the total (all layers) depth (in external CRS units) of fine unconsolidated sediment on this cell
+double CGeomCell::dGetUnconsFineDepthAllLayers(void) const
 {
-   double dTotThick = 0;
+   double dTotDepth = 0;
 
    for (unsigned int n = 0; n < m_VLayerAboveBasement.size(); n++)
-      dTotThick += m_VLayerAboveBasement[n].dGetFineUnconsolidatedThickness();
+      dTotDepth += m_VLayerAboveBasement[n].dGetUnconsFineDepth();
 
-   return dTotThick;
+   return dTotDepth;
 }
 
-//! Returns the total thickness of sand-sized consolidated sediment on this cell, minus the depth-equivalent of any cliff notch
-double CGeomCell::dGetTotConsSandThickConsiderNotch(void) const
+//! Returns the total (all layers) depth (in external CRS units) of sand-sized consolidated sediment on this cell
+double CGeomCell::dGetConsSandDepthAllLayers(void) const
 {
-   double dTotThick = 0;
+   double dTotDepth = 0;
 
    for (unsigned int n = 0; n < m_VLayerAboveBasement.size(); n++)
-   {
-      CRWCellLayer m_Layer = m_VLayerAboveBasement[n];
-      double const dLayerThick = m_Layer.dGetSandConsolidatedThickness();
-      double const dNotchEquiv = m_Layer.pGetConsolidatedSediment()->dGetNotchSandLost();
+      dTotDepth += m_VLayerAboveBasement[n].dGetConsSandDepth();
 
-      dTotThick += (dLayerThick - dNotchEquiv);
-   }
-
-   return dTotThick;
+   return dTotDepth;
 }
 
-//! Returns the total thickness of sand-sized unconsolidated sediment on this cell
-double CGeomCell::dGetTotUnconsSand(void) const
+//! Returns the total (all layers) depth (in external CRS units) of sand-sized unconsolidated sediment on this cell
+double CGeomCell::dGetUnconsSandDepthAllLayers(void) const
 {
-   double dTotThick = 0;
+   double dTotDepth = 0;
 
    for (unsigned int n = 0; n < m_VLayerAboveBasement.size(); n++)
-      dTotThick += m_VLayerAboveBasement[n].dGetSandUnconsolidatedThickness();
+      dTotDepth += m_VLayerAboveBasement[n].dGetUnconsSandDepth();
 
-   return dTotThick;
+   return dTotDepth;
 }
 
-//! Returns the total thickness of coarse consolidated sediment on this cell, minus the depth-equivalent of any cliff notch
-double CGeomCell::dGetTotConsCoarseThickConsiderNotch(void) const
+//! Returns the total (all layers) depth (in external CRS units) of coarse consolidated sediment on this cell
+double CGeomCell::dGetConsCoarseDepthAllLayers(void) const
 {
-   double dTotThick = 0;
+   double dTotDepth = 0;
 
    for (unsigned int n = 0; n < m_VLayerAboveBasement.size(); n++)
-   {
-      CRWCellLayer m_Layer = m_VLayerAboveBasement[n];
-      double const dLayerThick = m_Layer.dGetCoarseConsolidatedThickness();
-      double const dNotchEquiv = m_Layer.pGetConsolidatedSediment()->dGetNotchCoarseLost();
+      dTotDepth += m_VLayerAboveBasement[n].dGetConsCoarseDepth();
 
-      dTotThick += (dLayerThick - dNotchEquiv);
-   }
-
-   return dTotThick;
+   return dTotDepth;
 }
 
-//! Returns the total thickness of coarse unconsolidated sediment on this cell
-double CGeomCell::dGetTotUnconsCoarse(void) const
+//! Returns the total (all layers) depth (in external CRS units) of coarse unconsolidated sediment on this cell
+double CGeomCell::dGetUnconsCoarseDepthAllLayers(void) const
 {
-   double dTotThick = 0;
+   double dTotDepth = 0;
 
    for (unsigned int n = 0; n < m_VLayerAboveBasement.size(); n++)
-      dTotThick += m_VLayerAboveBasement[n].dGetCoarseUnconsolidatedThickness();
+      dTotDepth += m_VLayerAboveBasement[n].dGetUnconsCoarseDepth();
 
-   return dTotThick;
+   return dTotDepth;
 }
 
-//! Returns the total thickness of consolidated sediment (all size classes) on this cell
-double CGeomCell::dGetTotConsThickness(void) const
+//! Returns the total (all layers) depth (in external CRS units) of consolidated sediment (all size classes) on this cell
+double CGeomCell::dGetAllConsDepthAllLayers(void) const
 {
-   double dTotThick = 0;
+   double dTotDepth = 0;
 
    for (unsigned int n = 0; n < m_VLayerAboveBasement.size(); n++)
-      dTotThick += m_VLayerAboveBasement[n].dGetConsolidatedThickness();
+      dTotDepth += m_VLayerAboveBasement[n].dGetAllConsDepth();
 
-   return dTotThick;
+   return dTotDepth;
 }
 
-//! Returns the total thickness of unconsolidated sediment (all size classes) on this cell
-double CGeomCell::dGetTotUnconsThickness(void) const
+//! Returns the total (all layers) depth (in external CRS units) of unconsolidated sediment (all size classes) on this cell
+double CGeomCell::dGetAllUnconsDepthAllLayers(void) const
 {
-   double dTotThick = 0;
+   double dTotDepth = 0;
 
    for (unsigned int n = 0; n < m_VLayerAboveBasement.size(); n++)
-      dTotThick += m_VLayerAboveBasement[n].dGetUnconsolidatedThickness();
+      dTotDepth += m_VLayerAboveBasement[n].dGetAllUnconsDepth();
 
-   return dTotThick;
+   return dTotDepth;
 }
 
-//! Returns the total thickness of all sediment (all size classes) on this cell
-double CGeomCell::dGetTotAllSedThickness(void) const
+//! Returns the total (all layers) depth (in external CRS units) of all sediment (all size classes, both consolidated and unconsolidated) on this cell
+double CGeomCell::dGetAllSedDepthAllLayers(void) const
 {
-   return (this->dGetTotUnconsThickness() + this->dGetTotConsThickness());
+   return (this->dGetAllUnconsDepthAllLayers() + this->dGetAllConsDepthAllLayers());
 }
 
 //! Appends sediment layers
@@ -800,7 +759,7 @@ void CGeomCell::CalcAllLayerElevsAndD50(void)
 
    for (int n = static_cast<int>(m_VLayerAboveBasement.size()) - 1; n >= 0; n--)
    {
-      double const dUnconsThick = m_VLayerAboveBasement[n].dGetUnconsolidatedThickness();
+      double const dUnconsThick = m_VLayerAboveBasement[n].dGetAllUnconsDepth();
 
       if (dUnconsThick > 0)
       {

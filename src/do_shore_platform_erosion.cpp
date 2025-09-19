@@ -1144,7 +1144,7 @@ double CSimulation::dCalcBeachProtectionFactor(int const nX, int const nY, doubl
       return 0;
 
    // In SCAPE, 0.23 * the significant breaking wave height is assumed to be the maximum depth of beach that waves can penetrate to erode a platform. For depths less than this, the beach protective ability is assumed to vary linearly
-   double const dBeachDepth = m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nThisLayer)->dGetUnconsolidatedThickness();
+   double const dBeachDepth = m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nThisLayer)->dGetAllUnconsDepth();
    double const dMaxPenetrationDepth = BEACH_PROTECTION_HB_RATIO * dBreakingWaveHeight;
    double dFactor = 0;
 
