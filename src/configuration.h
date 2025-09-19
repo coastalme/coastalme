@@ -105,6 +105,12 @@ class CConfiguration
    string m_strTideDataFile;
    double m_dBreakingWaveRatio;
 
+   // Wave data configuration (Cases 37-40)
+   string m_strWaveHeightInput;
+   string m_strWaveStationDataFile;
+   bool m_bHaveWaveStationData;
+   bool m_bSingleDeepWaterWaveValues;
+
    // Sediment and Erosion
    bool m_bCoastPlatformErosion;
    double m_dPlatformErosionResistance;
@@ -368,6 +374,16 @@ class CConfiguration
    void SetBreakingWaveRatio(double d)
    {
       m_dBreakingWaveRatio = d;
+   }
+
+   // Wave data configuration setters (Cases 37-40)
+   void SetWaveHeightInput(string const &str)
+   {
+      m_strWaveHeightInput = str;
+   }
+   void SetWaveStationDataFile(string const &str)
+   {
+      m_strWaveStationDataFile = str;
    }
 
    // Additional setters for comprehensive YAML support
@@ -762,6 +778,15 @@ class CConfiguration
    {
       return m_dBreakingWaveRatio;
    }
+
+   // Wave data configuration getters (Cases 37-40)
+   string GetWaveHeightInput() const { return m_strWaveHeightInput; }
+   string GetWaveStationDataFile() const { return m_strWaveStationDataFile; }
+   bool HasWaveStationData() const { return m_bHaveWaveStationData; }
+   bool HasSingleDeepWaterWaveValues() const { return m_bSingleDeepWaterWaveValues; }
+
+   // Wave configuration analysis method
+   void AnalyzeWaveConfiguration();
 
    // Sediment and Erosion parameters
    bool GetCoastPlatformErosion() const

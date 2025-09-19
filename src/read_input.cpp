@@ -4930,6 +4930,14 @@ bool CSimulation::bConfigureFromYamlFile(CConfiguration &config)
          if (hydro.HasChild("breaking_wave_ratio"))
             config.SetBreakingWaveRatio(
                hydro.GetChild("breaking_wave_ratio").GetDoubleValue());
+
+         // Cases 37-40: Wave data configuration
+         if (hydro.HasChild("wave_height_input"))
+            config.SetWaveHeightInput(
+               hydro.GetChild("wave_height_input").GetValue());
+         if (hydro.HasChild("wave_station_data_file"))
+            config.SetWaveStationDataFile(
+               hydro.GetChild("wave_station_data_file").GetValue());
       }
 
       // Grid and Coastline
@@ -5692,14 +5700,13 @@ bool CSimulation::bApplyConfiguration(CConfiguration const &config)
    }
 
    // Case 17: Vector GIS output format (note must retain original case)
-   // TODO: Migrate from bReadRunDataFile()
+   m_strVectorGISOutFormat = config.GetVectorFormat();
 
    // Case 18: Time series files to output
    // TODO: Migrate from bReadRunDataFile()
 
    // Case 19: Vector coastline smoothing algorithm: 0 = none, 1 = running mean,
    // 2 = Savitzky-Golay
-   // TODO: Migrate from bReadRunDataFile()
    m_nCoastSmooth = config.GetCoastlineSmoothing();
 
    // Case 20: Size of coastline smoothing window: must be odd
@@ -5707,7 +5714,7 @@ bool CSimulation::bApplyConfiguration(CConfiguration const &config)
 
    // Case 21: Order of coastline profile smoothing polynomial for
    // Savitzky-Golay: usually 2 or 4, max is 6
-   // TODO: Migrate from bReadRunDataFile()
+   m_nSavGolCoastPoly = config.GetPolynomialOrder();
 
    // Case 22: Omit grid edges from search (north/south/east/west)
    std::string strRH = config.GetOmitGridEdges();
@@ -5918,54 +5925,91 @@ bool CSimulation::bApplyConfiguration(CConfiguration const &config)
    m_dCoarseErodibility = config.GetCoarseErosivity();
 
    // Case 56: Transport parameter KLS in CERC equation
-   // TODO: Migrate from bReadRunDataFile()
+   m_dKLS = config.GetTransportKLS();
 
    // Case 57: Transport parameter for Kamphuis equation
-   // TODO: Migrate from bReadRunDataFile()
+   m_dKamphuis = config.GetKamphuis();
 
    // Case 58: Berm height i.e. height above SWL of start of depositional Dean
    // profile
-   // TODO: Migrate from bReadRunDataFile()
+   m_dDeanProfileStartAboveSWL = config.GetBermHeight();
 
    // Case 59: Simulate cliff collapse?
-   // TODO: Migrate from bReadRunDataFile()
+   m_dDeanProfileStartAboveSWL = config.GetCliffCollapse();
 
    // Case 60: Cliff resistance to erosion
-   // TODO: Migrate from bReadRunDataFile()
+   if (m_bHaveConsolidatedSediment && m_bDoCliffCollapse)
+   {
+      m_dCliffErosionResistance = config.GetCliffErosionResistance();
+   }
 
    // Case 61: Notch overhang at collapse (m)
-   // TODO: Migrate from bReadRunDataFile()
+   if (m_bHaveConsolidatedSediment && m_bDoCliffCollapse)
+   {
+      m_dNotchDepthAtCollapse = config.GetNotchOverhang();
+   }
 
    // Case 62: Notch base below still water level (m)
-   // TODO: Migrate from bReadRunDataFile()
+   if (m_bHaveConsolidatedSediment && m_bDoCliffCollapse)
+   {
+      m_dNotchBaseBelowSWL = config.GetNotchBase();
+   }
 
    // Case 63: Scale parameter A for cliff deposition (m^(1/3)) [0 = auto]
-   // TODO: Migrate from bReadRunDataFile()
+   if (m_bHaveConsolidatedSediment && m_bDoCliffCollapse)
+   {
+      m_dCliffDepositionA = config.GetScaleValues();
+   }
 
-   // Case 63: Approximate planview width of cliff collapse talus (in m)
-   // TODO: Migrate from bReadRunDataFile()
+   // Case 64: Approximate planview width of cliff collapse talus (in m)
+   if (m_bHaveConsolidatedSediment && m_bDoCliffCollapse)
+   {
+      m_dCliffDepositionPlanviewWidth = config.GetTalusWidth();
+   }
 
    // Case 65: Planview length of cliff deposition talus (m)
-   // TODO: Migrate from bReadRunDataFile()
+   if (m_bHaveConsolidatedSediment && m_bDoCliffCollapse)
+   {
+      m_dCliffTalusMinDepositionLength = config.GetMinTalusLength();
+   }
 
    // Case 66: Minimum height of landward end of talus, as a fraction of cliff
    // elevation
-   // TODO: Migrate from bReadRunDataFile()
+   if (m_bHaveConsolidatedSediment && m_bDoCliffCollapse)
+   {
+      m_dMinCliffTalusHeightFrac = config.GetMinTalusHeight();
+   }
 
    // Case 67: Simulate riverine flooding?
-   // TODO: Migrate from bReadRunDataFile()
+   if (config.GetFloodInput())
+   {
+      m_bRiverineFlooding = true;
+      m_bSetupSurgeFloodMaskSave = true;
+      m_bSetupSurgeRunupFloodMaskSave = true;
+      m_bRasterWaveFloodLineSave = true;
+   }
 
    // Case 68: Output riverine flooding vector files
    // TODO: Migrate from bReadRunDataFile()
 
    // Case 69: Somthing unknown relating to riverine flooding
    // TODO: Migrate from bReadRunDataFile()
+   if (m_bRiverineFlooding)
+   {
+      // m_nRunUpEquation = config.GetRunupEquation();
+   }
 
    // Case 70: Somthing unknown relating to riverine flooding
    // TODO: Migrate from bReadRunDataFile()
+   if (m_bRiverineFlooding)
+   {
+   }
 
    // Case 71: Somthing unknown relating to riverine flooding
    // TODO: Migrate from bReadRunDataFile()
+   if (m_bRiverineFlooding)
+   {
+   }
 
    // Case 72: Simulate sediment input?
    // TODO: Migrate from bReadRunDataFile()
@@ -6001,42 +6045,86 @@ bool CSimulation::bApplyConfiguration(CConfiguration const &config)
 
    // Case 80: Start depth for wave calcs (ratio to deep water wave height)check
    // that this is a valid double
-   // TODO: Migrate from bReadRunDataFile()
    m_dWaveDepthRatioForWaveCalcs = config.GetBreakingWaveRatio();
 
    // Case 81: Output profile data?
-   // TODO: Migrate from bReadRunDataFile()
    m_bOutputProfileData = config.GetSaveProfileData();
 
    // Case 82: Numbers of profiles to be saved
-   // TODO: Migrate from bReadRunDataFile()
+   if (m_bOutputProfileData)
+   {
+      m_VnProfileToSave = config.GetProfileNumbers();
+   }
 
    // Case 83: Timesteps to save profiles
-   // TODO: Migrate from bReadRunDataFile()
+   if (m_bOutputProfileData)
+   {
+      // m_VulProfileTimestep = config.GetProfileTimesteps();
+      // TODO: Migrate from bReadRunDataFile()
+   }
 
    // Case 84: Output parallel profile data?
-   // TODO: Migrate from bReadRunDataFile()
+   m_bOutputParallelProfileData = config.GetSaveParallelProfiles();
 
    // Case 85: Output erosion potential look-up data?
-   // TODO: Migrate from bReadRunDataFile()
+   m_bOutputErosionPotentialData = config.GetOutputErosionPotential();
 
    // Case 86: Size of moving window for coastline curvature calculation (must be
    // odd)
-   // TODO: Migrate from bReadRunDataFile()
+   m_nCoastCurvatureMovingWindowSize = config.GetCurvatureWindow();
 
    // Case 87: Cliff edge smoothing algorithm: 0 = none, 1 = running mean, 2 =
    // Savitzky-Golay
-   // TODO: Migrate from bReadRunDataFile()
+   m_nCliffEdgeSmooth = config.GetCliffEdgeSmoothing();
 
    // Case 88: Size of cliff edge smoothing window: must be odd
-   // TODO: Migrate from bReadRunDataFile()
+   m_nCliffEdgeSmoothWindow = config.GetCliffEdgeSmoothingWindow();
 
    // Case 89: Order of cliff edge smoothing polynomial for Savitzky-Golay:
    // usually 2 or 4, max is 6
-   // TODO: Migrate from bReadRunDataFile()
+   m_nSavGolCliffEdgePoly = config.GetCliffEdgePolynomialOrder();
 
    // Case 90: Cliff slope limit for cliff toe detection
-   // TODO: Migrate from bReadRunDataFile()
+   m_dCliffSlopeLimit = config.GetCliffSlopeLimit();
+
+   // Cases 37-40: Wave data configuration
+   // Case 37: Deep water wave height (m) or file of point vectors
+   string strWaveHeightInput = config.GetWaveHeightInput();
+   if (!strWaveHeightInput.empty())
+   {
+      if (std::isdigit(strWaveHeightInput.at(0)))
+      {
+         // Single value mode
+         m_bSingleDeepWaterWaveValues = true;
+         m_bHaveWaveStationData = false;
+         m_dAllCellsDeepWaterWaveHeight = std::stod(strWaveHeightInput);
+      }
+      else
+      {
+         // Wave station data file mode
+         m_bHaveWaveStationData = true;
+         m_bSingleDeepWaterWaveValues = false;
+         m_strDeepWaterWaveStationsShapefile = strWaveHeightInput;
+      }
+   }
+
+   // Case 38: Deep water wave time series data file
+   if (config.HasWaveStationData())
+   {
+      m_strDeepWaterWavesInputFile = config.GetWaveStationDataFile();
+   }
+
+   // Case 39: Deep water wave orientation (only for single values mode)
+   if (!config.HasWaveStationData())
+   {
+      m_dAllCellsDeepWaterWaveAngle = config.GetDeepWaterWaveOrientation();
+   }
+
+   // Case 40: Wave period (only for single values mode)
+   if (!config.HasWaveStationData())
+   {
+      m_dAllCellsDeepWaterWavePeriod = config.GetWavePeriod();
+   }
 
    return true;
 }
