@@ -98,18 +98,17 @@ class CConfiguration
    double m_dInitialWaterLevel;
    double m_dFinalWaterLevel;
    bool m_bHasFinalWaterLevel;
-   double m_dDeepWaterWaveHeight;
+
+   // Waves
    string m_strWaveHeightTimeSeries;
+   string m_strWaveStationDataFile;
+   double m_dDeepWaterWaveHeight;
    double m_dDeepWaterWaveOrientation;
    double m_dWavePeriod;
+
+   // tides
    string m_strTideDataFile;
    double m_dBreakingWaveRatio;
-
-   // Wave data configuration (Cases 37-40)
-   string m_strWaveHeightInput;
-   string m_strWaveStationDataFile;
-   bool m_bHaveWaveStationData;
-   bool m_bSingleDeepWaterWaveValues;
 
    // Sediment and Erosion
    bool m_bCoastPlatformErosion;
@@ -351,13 +350,19 @@ class CConfiguration
       m_dFinalWaterLevel = d;
       m_bHasFinalWaterLevel = true;
    }
-   void SetDeepWaterWaveHeight(double d)
-   {
-      m_dDeepWaterWaveHeight = d;
-   }
+
+   // Wave height Data
    void SetWaveHeightTimeSeries(string const &str)
    {
       m_strWaveHeightTimeSeries = str;
+   }
+   void SetWaveStationDataFile(string const &str)
+   {
+      m_strWaveStationDataFile = str;
+   }
+   void SetDeepWaterWaveHeight(double d)
+   {
+      m_dDeepWaterWaveHeight = d;
    }
    void SetDeepWaterWaveOrientation(double d)
    {
@@ -367,6 +372,7 @@ class CConfiguration
    {
       m_dWavePeriod = d;
    }
+
    void SetTideDataFile(string const &str)
    {
       m_strTideDataFile = str;
@@ -374,16 +380,6 @@ class CConfiguration
    void SetBreakingWaveRatio(double d)
    {
       m_dBreakingWaveRatio = d;
-   }
-
-   // Wave data configuration setters (Cases 37-40)
-   void SetWaveHeightInput(string const &str)
-   {
-      m_strWaveHeightInput = str;
-   }
-   void SetWaveStationDataFile(string const &str)
-   {
-      m_strWaveStationDataFile = str;
    }
 
    // Additional setters for comprehensive YAML support
@@ -754,13 +750,19 @@ class CConfiguration
    {
       return m_bHasFinalWaterLevel;
    }
-   double GetDeepWaterWaveHeight() const
-   {
-      return m_dDeepWaterWaveHeight;
-   }
+
+   // Wave data configuration getters (Cases 37-40)
    string GetWaveHeightTimeSeries() const
    {
       return m_strWaveHeightTimeSeries;
+   }
+   string GetWaveStationDataFile() const
+   {
+      return m_strWaveStationDataFile;
+   }
+   double GetDeepWaterWaveHeight() const
+   {
+      return m_dDeepWaterWaveHeight;
    }
    double GetDeepWaterWaveOrientation() const
    {
@@ -770,6 +772,7 @@ class CConfiguration
    {
       return m_dWavePeriod;
    }
+
    string GetTideDataFile() const
    {
       return m_strTideDataFile;
@@ -778,15 +781,6 @@ class CConfiguration
    {
       return m_dBreakingWaveRatio;
    }
-
-   // Wave data configuration getters (Cases 37-40)
-   string GetWaveHeightInput() const { return m_strWaveHeightInput; }
-   string GetWaveStationDataFile() const { return m_strWaveStationDataFile; }
-   bool HasWaveStationData() const { return m_bHaveWaveStationData; }
-   bool HasSingleDeepWaterWaveValues() const { return m_bSingleDeepWaterWaveValues; }
-
-   // Wave configuration analysis method
-   void AnalyzeWaveConfiguration();
 
    // Sediment and Erosion parameters
    bool GetCoastPlatformErosion() const

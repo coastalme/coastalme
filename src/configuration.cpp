@@ -49,14 +49,14 @@ CConfiguration::~CConfiguration()
 void CConfiguration::InitializeDefaults()
 {
    // Run Information
-   m_strRunName = "";
+   m_strRunName = "cme";
    m_nLogFileDetail = 1;
    m_bCSVPerTimestepResults = true;
 
    // Simulation timing
    m_strStartDateTime = "00-00-00 01/01/2000";
-   m_strDuration = "365 days";
-   m_strTimestep = "1 day";
+   m_strDuration = "1 hour";
+   m_strTimestep = "1 hour";
    m_vecSaveTimes.clear();
    m_nRandomSeed = 0;
    m_bUseSystemTimeForSeed = true;
@@ -65,16 +65,16 @@ void CConfiguration::InitializeDefaults()
    m_nMaxSaveDigits = 3;
    m_strSaveDigitsMode = "sequential";
    m_vecRasterFiles.clear();
-   m_vecRasterFiles.push_back("usual");
+   m_vecRasterFiles.push_back("");
    m_strRasterFormat = "";
    m_bWorldFile = false;
    m_bScaleValues = false;
    m_vecSliceElevations.clear();
    m_vecVectorFiles.clear();
-   m_vecVectorFiles.push_back("all");
+   m_vecVectorFiles.push_back("");
    m_strVectorFormat = "ESRI Shapefile";
    m_vecTimeSeriesFiles.clear();
-   m_vecTimeSeriesFiles.push_back("all");
+   m_vecTimeSeriesFiles.push_back("");
 
    // Grid and Coastline
    m_nCoastlineSmoothing = 0;
@@ -103,20 +103,17 @@ void CConfiguration::InitializeDefaults()
    m_nWavePropagationModel = 1;      // CShore
    m_dSeawaterDensity = 1029.0;
    m_dInitialWaterLevel = 0.0;
-   m_dFinalWaterLevel = 0.0;
+   // m_dFinalWaterLevel = 0.0;
    m_bHasFinalWaterLevel = false;
-   m_dDeepWaterWaveHeight = 1.0;
+
    m_strWaveHeightTimeSeries = "";
+   m_strWaveStationDataFile = "";
+   m_dDeepWaterWaveHeight = 1.0;
    m_dDeepWaterWaveOrientation = 270.0;
    m_dWavePeriod = 10.0;
+
    m_strTideDataFile = "";
    m_dBreakingWaveRatio = 0.8;
-
-   // Wave data configuration (Cases 37-40)
-   m_strWaveHeightInput = "";
-   m_strWaveStationDataFile = "";
-   m_bHaveWaveStationData = false;
-   m_bSingleDeepWaterWaveValues = false;
 
    // Sediment and Erosion
    m_bCoastPlatformErosion = true;
@@ -302,7 +299,7 @@ vector<string> CConfiguration::GetRasterFiles() const
                                "coarse_uncons",
                                "coarse_cons"});
       }
-      else if (fileSpecLower == "Cmetools")
+      else if (fileSpecLower == "cmetools")
       {
          // Add usual/standard raster outputs (Case 11 "usual" mode)
          expandedFiles.insert(expandedFiles.end(),
@@ -328,6 +325,10 @@ vector<string> CConfiguration::GetRasterFiles() const
                                "polygon",
                                "coast_normal",
                                "coastline"});
+      }
+      else if (fileSpecLower == "" or fileSpecLower == "none")
+      {
+         return expandedFiles;
       }
       else
       {
@@ -368,6 +369,10 @@ vector<string> CConfiguration::GetVectorFiles() const
              "breaking_wave_height", "polygon", "cliff_notch",
              "shadow_boundary", "downdrift_boundary", "deep_water_wave_angle"});
       }
+      else if (fileSpecLower == "" or fileSpecLower == "none")
+      {
+         return expandedFiles;
+      }
       else
       {
          // Regular file specification - add as-is
@@ -384,42 +389,4 @@ string CConfiguration::GetOmitGridEdges() const
    std::string my_text{m_strOmitGridEdges};
    std::transform(my_text.begin(), my_text.end(), my_text.begin(), ::tolower);
    return my_text;
-}
-
-//===============================================================================================================================
-//! Analyze wave configuration and set appropriate flags (Cases 37-40 logic)
-//===============================================================================================================================
-void CConfiguration::AnalyzeWaveConfiguration()
-{
-   // Case 37 logic: Determine if wave height input is a single value or filename
-   if (!m_strWaveHeightInput.empty())
-   {
-      if (std::isdigit(m_strWaveHeightInput.at(0)))
-      {
-         // Starts with a number - single value mode
-         m_bSingleDeepWaterWaveValues = true;
-         m_bHaveWaveStationData = false;
-
-         // Convert to numeric value
-         m_dDeepWaterWaveHeight = std::stod(m_strWaveHeightInput);
-      }
-      else
-      {
-         // Starts with text - wave station data file mode
-         m_bHaveWaveStationData = true;
-         m_bSingleDeepWaterWaveValues = false;
-      }
-   }
-
-   // Case 38 logic: Wave station data file is only used if we have wave station data
-   if (m_bHaveWaveStationData && !m_strWaveStationDataFile.empty())
-   {
-      // Store the wave station data file for time series processing
-      m_strWaveHeightTimeSeries = m_strWaveStationDataFile;
-   }
-
-   // Cases 39-40 logic: Single wave orientation and period are only used
-   // if we don't have wave station data (i.e., single values mode)
-   // These are handled directly via the existing SetDeepWaterWaveOrientation()
-   // and SetWavePeriod() methods when in single values mode
 }
