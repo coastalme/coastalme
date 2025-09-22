@@ -103,10 +103,9 @@ var searchData=
   ['getvalue_100',['GetValue',['../d7/dab/classCYamlNode.html#a4095a0d89f514c4ed0efd08a9f1bf875',1,'CYamlNode']]],
   ['getvectorfiles_101',['GetVectorFiles',['../dc/d01/classCConfiguration.html#ae83f4ea3065a09c524604467a2d2c437',1,'CConfiguration']]],
   ['getvectorformat_102',['GetVectorFormat',['../dc/d01/classCConfiguration.html#a93c142e815e1c68c54fcb7e48937894d',1,'CConfiguration']]],
-  ['getwaveheightinput_103',['GetWaveHeightInput',['../dc/d01/classCConfiguration.html#a82f8982ffca71bae0f5502e4b1649e57',1,'CConfiguration']]],
-  ['getwaveheighttimeseries_104',['GetWaveHeightTimeSeries',['../dc/d01/classCConfiguration.html#af61f151f912bb70999f0ab4bf9b0babc',1,'CConfiguration']]],
-  ['getwaveperiod_105',['GetWavePeriod',['../dc/d01/classCConfiguration.html#ad3a868bb8b28ec297a9fdcdd232fb346',1,'CConfiguration']]],
-  ['getwavepropagationmodel_106',['GetWavePropagationModel',['../dc/d01/classCConfiguration.html#a8f45b1a7648123660d6722e1db9602b2',1,'CConfiguration']]],
-  ['getwavestationdatafile_107',['GetWaveStationDataFile',['../dc/d01/classCConfiguration.html#a3a576b3c2d651b278923419833b0860a',1,'CConfiguration']]],
-  ['getworldfile_108',['GetWorldFile',['../dc/d01/classCConfiguration.html#a7ceae5f47f41b79a9ab754228e03259b',1,'CConfiguration']]]
+  ['getwaveheighttimeseries_103',['GetWaveHeightTimeSeries',['../dc/d01/classCConfiguration.html#af61f151f912bb70999f0ab4bf9b0babc',1,'CConfiguration']]],
+  ['getwaveperiod_104',['GetWavePeriod',['../dc/d01/classCConfiguration.html#ad3a868bb8b28ec297a9fdcdd232fb346',1,'CConfiguration']]],
+  ['getwavepropagationmodel_105',['GetWavePropagationModel',['../dc/d01/classCConfiguration.html#a8f45b1a7648123660d6722e1db9602b2',1,'CConfiguration']]],
+  ['getwavestationdatafile_106',['GetWaveStationDataFile',['../dc/d01/classCConfiguration.html#a3a576b3c2d651b278923419833b0860a',1,'CConfiguration']]],
+  ['getworldfile_107',['GetWorldFile',['../dc/d01/classCConfiguration.html#a7ceae5f47f41b79a9ab754228e03259b',1,'CConfiguration']]]
 ];
