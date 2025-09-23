@@ -18,12 +18,18 @@
    You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ===============================================================================================================================*/
 #include <assert.h>
+#include <cstddef>
 
 #include "cell_layer.h"
 #include "cell_sediment.h"
 
 //! Constructor
 CRWCellLayer::CRWCellLayer(void)
+{
+}
+
+//! Destructor
+CRWCellLayer::~CRWCellLayer(void)
 {
 }
 
@@ -134,3 +140,9 @@ double CRWCellLayer::dGetTotalThickness(void) const
 // {
 // m_dConsolidationStatus = dNewConsolidationStatus;
 // }
+
+//! Returns a pointer to the layer's talus object
+CRWCellTalus* CRWCellLayer::pGetTalus(void)
+{
+   return &m_Talus;
+}

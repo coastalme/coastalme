@@ -90,7 +90,9 @@ CGeomCell::CGeomCell()
 }
 
 //! Destructor
-CGeomCell::~CGeomCell(void) {}
+CGeomCell::~CGeomCell(void)
+{
+}
 
 //! Set the edge number if this cell is an edge bounding-box cell
 void CGeomCell::SetBoundingBoxEdge(int const nDirection)
@@ -584,7 +586,7 @@ double CGeomCell::dGetConsSedTopElevForLayerAboveBasement(int const nLayer) cons
 }
 
 //! Return a reference to the Nth sediment layer (layer 0 being just above basement)
-CRWCellLayer *CGeomCell::pGetLayerAboveBasement(int const nLayer)
+CRWCellLayer* CGeomCell::pGetLayerAboveBasement(int const nLayer)
 {
    // TODO 055 No check that nLayer < size()
    return &m_VLayerAboveBasement[nLayer];

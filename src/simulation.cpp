@@ -218,8 +218,8 @@ CSimulation::CSimulation(void)
    m_nYGridSize = 0;
    m_nCoastMax = 0;
    m_nCoastMin = 0;
-   //m_nNThisIterCliffCollapse = 0;
-   //m_nNTotCliffCollapse = 0;
+   m_nNThisIterCliffCollapse = 0;
+   m_nNTotCliffCollapse = 0;
    m_nUnconsSedimentHandlingAtGridEdges = 0;
    m_nBeachErosionDepositionEquation = 0;
    m_nWavePropagationModel = 0;

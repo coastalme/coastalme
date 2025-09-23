@@ -349,7 +349,7 @@ class CGeomCell
    int nGetTopLayerAboveBasement(void) const;
 
    double dGetConsSedTopElevForLayerAboveBasement(int const) const;
-   CRWCellLayer *pGetLayerAboveBasement(int const);
+   CRWCellLayer* pGetLayerAboveBasement(int const);
    void AppendLayers(int const);
    void CalcAllLayerElevsAndD50(void);
    int nGetLayerAtElev(double const) const;

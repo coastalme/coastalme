@@ -1,17 +1,32 @@
-assign_landforms.cpp:140:30: style: Variable 'dNotchElev' is assigned a value that is never used. [unreadVariable]
-                  dNotchElev = m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->dGetCliffNotchApexElev();
-                             ^
-locate_coast.cpp:517:20: style: Condition 'bAtCoast' is always true [knownConditionTrueFalse]
-               if (bAtCoast && (nX == nXPoss) && (nY == nYPoss))
-                   ^
-locate_coast.cpp:505:32: note: Assuming that condition 'bAtCoast' is not redundant
-      if (bHasLeftStartEdge && bAtCoast)
-                               ^
-locate_coast.cpp:517:20: note: Condition 'bAtCoast' is always true
-               if (bAtCoast && (nX == nXPoss) && (nY == nYPoss))
-                   ^
 2di_shape.cpp:53:0: style: The function 'Clear' is never used. [unusedFunction]
 void CA2DIShape::Clear(void)
+^
+cell_landform.cpp:115:0: style: The function 'dGetCliffNotchApexElev' is never used. [unusedFunction]
+double CRWCellLandform::dGetCliffNotchApexElev(void) const
+^
+cell_talus.cpp:76:0: style: The function 'dGetSandAddedThisIter' is never used. [unusedFunction]
+double CRWCellTalus::dGetSandAddedThisIter(void) const
+^
+cell_talus.cpp:82:0: style: The function 'dGetSandLostThisIter' is never used. [unusedFunction]
+double CRWCellTalus::dGetSandLostThisIter(void) const
+^
+cell_talus.cpp:88:0: style: The function 'dGetTotSandAdded' is never used. [unusedFunction]
+double CRWCellTalus::dGetTotSandAdded(void) const
+^
+cell_talus.cpp:94:0: style: The function 'dGetTotSandLost' is never used. [unusedFunction]
+double CRWCellTalus::dGetTotSandLost(void) const
+^
+cell_talus.cpp:100:0: style: The function 'dGetCoarseAddedThisIter' is never used. [unusedFunction]
+double CRWCellTalus::dGetCoarseAddedThisIter(void) const
+^
+cell_talus.cpp:106:0: style: The function 'dGetCoarseLostThisIter' is never used. [unusedFunction]
+double CRWCellTalus::dGetCoarseLostThisIter(void) const
+^
+cell_talus.cpp:112:0: style: The function 'dGetTotCoarseAdded' is never used. [unusedFunction]
+double CRWCellTalus::dGetTotCoarseAdded(void) const
+^
+cell_talus.cpp:118:0: style: The function 'dGetTotCoarseLost' is never used. [unusedFunction]
+double CRWCellTalus::dGetTotCoarseLost(void) const
 ^
 utils.cpp:2431:0: style: The function 'pstrChangeToBackslash' is never used. [unusedFunction]
 string CSimulation::pstrChangeToBackslash(string const* strIn)

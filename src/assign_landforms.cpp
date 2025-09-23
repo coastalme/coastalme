@@ -128,7 +128,6 @@ int CSimulation::nAssignLandformsForAllCoasts(void)
                // We have consolidated sediment at SWL, so this is a cliff cell. Set some default values
                double dAccumWaveEnergy;
                double dNotchIncision;
-               double dNotchElev;
 
                // Get the existing landform category of this cell
                if (m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->nGetLFCategory() == LF_CAT_CLIFF)
@@ -137,7 +136,6 @@ int CSimulation::nAssignLandformsForAllCoasts(void)
                   m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->SetLFSubCategory(LF_SUBCAT_CLIFF_ON_COASTLINE);
                   dAccumWaveEnergy = m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->dGetAccumWaveEnergy();
                   dNotchIncision = m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->dGetCliffNotchIncisionDepth();
-                  // dNotchElev = m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->dGetCliffNotchApexElev();
 
                   // LogStream << m_ulIter << ": continues to be a cliff at [" << nX << "][" << nY << "] notch base elevation = " << dNotchElev << " notch depth = " << dNotchIncision << " this-iteration SWL = " << m_dThisIterSWL << endl;
                }
@@ -148,7 +146,7 @@ int CSimulation::nAssignLandformsForAllCoasts(void)
                   dAccumWaveEnergy = m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->dGetAccumWaveEnergy();
                   dNotchIncision = 0;
                   m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->SetCliffNotchIncisionDepth(dNotchIncision);      // Note that this is permanent i.e. stored for the remainder of the simulation
-                  dNotchElev = m_dThisIterNewNotchApexElev;
+                  double const dNotchElev = m_dThisIterNewNotchApexElev;
                   m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->SetCliffNotchApexElev(dNotchElev);
 
                   // LogStream << m_ulIter << ": cliff created at [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "}" << " notch base elevation = " << dNotchElev << " this-iteration SWL = " << m_dThisIterSWL << endl;

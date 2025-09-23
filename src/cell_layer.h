@@ -43,6 +43,7 @@ class CRWCellLayer
  protected:
  public:
    CRWCellLayer(void);
+   ~CRWCellLayer(void);
 
    CRWCellSediment* pGetUnconsolidatedSediment(void);
    CRWCellSediment* pGetConsolidatedSediment(void);
@@ -67,5 +68,7 @@ class CRWCellLayer
    // void SetMechResistance(double const);
    // double dGetConsolidationStatus(void) const;
    // void SetConsolidationStatus(double const);
+
+   CRWCellTalus* pGetTalus(void);
 };
 #endif // CELL_LAYER_H

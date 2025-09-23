@@ -72,8 +72,7 @@ void CSimulation::WriteStartRunDetails(void)
    OutStream << " Run started                                               \t: " << put_time(localtime(&m_tSysStartTime), "%T %A %d %B %Y") << endl;
 
    // Same info. for Log file
-   LogStream << m_strRunName << " run started at " << put_time(localtime(&m_tSysStartTime), "%T on %A %d %B %Y") << endl
-             << endl;
+   LogStream << m_strRunName << " run started at " << put_time(localtime(&m_tSysStartTime), "%T on %A %d %B %Y") << endl << endl;
 
    // Continue with Out file
    OutStream << " Initialization file                                       \t: "
@@ -1125,7 +1124,10 @@ bool CSimulation::bWriteTSFiles(void)
    // This-iteration cliff collapse erosion (fine, sand, and coarse)
    if (m_bCliffCollapseErosionTSSave)
    {
-      // Output as is (m depth equivalent)
+      // Output the number of cells with cliff collapse this iteration
+      CliffCollapseErosionTSStream << m_nNThisIterCliffCollapse << "\t,\t";
+
+      // Now output how much was eroded via cliff collapse, as is (m depth equivalent)
       CliffCollapseErosionTSStream << m_dSimElapsed << "\t,\t" << m_dThisIterCliffCollapseErosionFineUncons << ",\t" << m_dThisIterCliffCollapseErosionSandUncons << ",\t" << m_dThisIterCliffCollapseErosionCoarseUncons << endl;
 
       // Did a time series file write error occur?
@@ -1144,7 +1146,7 @@ bool CSimulation::bWriteTSFiles(void)
          return false;
    }
 
-   // This-iteration cliff collapse deposition (sand and coarse)
+   // This-iteration cliff talus collapse deposition (sand and coarse)
    if (m_bCliffCollapseDepositionTSSave)
    {
       // Output as is (m depth equivalent)
@@ -1557,8 +1559,7 @@ int CSimulation::nWriteEndRunDetails(void)
    OutStream << "                                                       = " << 24 * ldTotalLost * m_dCellArea / m_dSimDuration << " m^3/day" << endl;
    OutStream << "                                                       = " << ldTotalLost * m_dCellArea / m_dSimDuration << " m^3/hour" << endl;
    OutStream << fixed << setprecision(6);
-   OutStream << "                                                       = " << ldTotalLost * m_dCellArea / (m_dSimDuration * 3600) << " m^3/sec" << endl
-             << endl;
+   OutStream << "                                                       = " << ldTotalLost * m_dCellArea / (m_dSimDuration * 3600) << " m^3/sec" << endl << endl;
    OutStream << fixed << setprecision(3);
 
    if (m_nLogFileDetail >= LOG_FILE_MIDDLE_DETAIL)

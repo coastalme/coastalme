@@ -174,7 +174,6 @@ int CSimulation::nDoAllPropagateWaves(void)
             pProfile = m_VCoast[nCoast].pGetProfileWithUpCoastSeq(nn);
 
          int const nRet = nCalcWavePropertiesOnProfile(nCoast, nCoastSize, pProfile, &VdX, &VdY, &VdHeightX, &VdHeightY, &VbBreaking);
-
          if (nRet != RTN_OK)
          {
             if (nRet == RTN_ERR_CSHORE_ERROR)
@@ -660,7 +659,6 @@ int CSimulation::nCalcWavePropertiesOnProfile(int const nCoast, int const nCoast
       dFluxOrientationPrev = dFluxOrientationThis;
       dFluxOrientationNext = m_VCoast[nCoast].dGetFluxOrientation(1);
    }
-
    else if (nCoastPoint == nCoastSize - 1)
    {
       dFluxOrientationPrev = m_VCoast[nCoast].dGetFluxOrientation(nCoastPoint - 2);
@@ -1088,10 +1086,9 @@ int CSimulation::nCalcWavePropertiesOnProfile(int const nCoast, int const nCoast
             break;
          }
 
-         strErr += "\n";
-
          // OK, give up for this profile
-         // return RTN_ERR_CSHORE_ERROR;
+         LogStream << m_ulIter << ": " << strErr << endl;
+         return RTN_ERR_CSHORE_ERROR;
       }
 
       // LogStream << m_ulIter << ": interpolating profile " << nProfile << endl;
@@ -1356,17 +1353,16 @@ int CSimulation::nCalcWavePropertiesOnProfile(int const nCoast, int const nCoast
    }
    else if (m_nRunUpEquation == RUNUP_EQUATION_STOCKDON)
    {
-      // Compute the run-up using Stockdon, H. F., Holman, R. A., Howd, P. A. & Sallenger JR, A. H. 2006. Empirical parameterization of setup, swash, and runup. Coastal Engineering, 53, 573-588, this version is by Tom Ashby
+      // Compute the run-up using Stockdon, H. F., Holman, R. A., Howd, P. A. & Sallenger JR, A. H. 2006. Empirical parameterization of setup, swash, and runup. Coastal Engineering, 53, 573-588. This version coded  by Tom Ashby
       double const dS0 = 2 * PI * dWaveHeight / (9.81 * dDeepWaterWavePeriod * dDeepWaterWavePeriod);
-      dRunUp = 1.1 * (    (0.35 * dtanBeta * pow((1.0 / dS0) * dWaveHeight * dWaveHeight, 0.5)) + (0.5 * pow((1.0 / dS0) * dWaveHeight * dWaveHeight * (0.563 * dtanBeta * dtanBeta + 0.004), 0.5)));
+      dRunUp = 1.1 * ((0.35 * dtanBeta * pow((1.0 / dS0) * dWaveHeight * dWaveHeight, 0.5)) + (0.5 * pow((1.0 / dS0) * dWaveHeight * dWaveHeight * (0.563 * dtanBeta * dtanBeta + 0.004), 0.5)));
 
       // double const dS0 = 2 * PI * dWaveHeight / (9.81 * dDeepWaterWavePeriod * dDeepWaterWavePeriod);
-      // // dRunUp = 1.1 * ((0.35 * dWaveHeight * (pow((1 / dS0) * dWaveHeight * dWaveHeight, 0.5))) + (((((1 / dS0) * dWaveHeight * dWaveHeight) * (0.563 * dWaveHeight * dWaveHeight + 0.0004)), 0.5)) / 2);
-
-      double const dH0OverL0 = (1 / dS0) * dWaveHeight;
-      double const dTmp1 = 0.35 * dWaveHeight * pow(dH0OverL0, 0.5);
-      double const dTmp2 = pow(dH0OverL0 * ((0.563 * dWaveHeight * dWaveHeight) + 0.0004), 0.5);
-      dRunUp = 1.1 * (dTmp1 + (dTmp2 / 2));
+      // dRunUp = 1.1 * ((0.35 * dWaveHeight * (pow((1 / dS0) * dWaveHeight * dWaveHeight, 0.5))) + (((((1 / dS0) * dWaveHeight * dWaveHeight) * (0.563 * dWaveHeight * dWaveHeight + 0.0004)), 0.5)) / 2);
+      // double const dH0OverL0 = (1 / dS0) * dWaveHeight;
+      // double const dTmp1 = 0.35 * dWaveHeight * pow(dH0OverL0, 0.5);
+      // double const dTmp2 = pow(dH0OverL0 * ((0.563 * dWaveHeight * dWaveHeight) + 0.0004), 0.5);
+      // dRunUp = 1.1 * (dTmp1 + (dTmp2 / 2));
    }
 
    if ((tAbs(dRunUp) < 1e-4) || (isnan(dRunUp)))

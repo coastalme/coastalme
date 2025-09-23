@@ -1919,10 +1919,10 @@ void CSimulation::GetClosestPoint(double const dAx, double const dAy, double con
 //===============================================================================================================================
 bool CSimulation::bIsAdjacentEdgeCell(CGeom2DIPoint const* pPt1, CGeom2DIPoint const* pPt2)
 {
-   int nX1 = pPt1->nGetX();
-   int nY1 = pPt1->nGetY();
-   int nX2 = pPt2->nGetX();
-   int nY2 = pPt2->nGetY();
+   int const nX1 = pPt1->nGetX();
+   int const nY1 = pPt1->nGetY();
+   int const nX2 = pPt2->nGetX();
+   int const nY2 = pPt2->nGetY();
 
    if (nX1 == nX2)
    {

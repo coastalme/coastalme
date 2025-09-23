@@ -524,11 +524,11 @@ class CSimulation
    //! Minimum valid coast length when searching for coasts
    int m_nCoastMin;
 
-   // NOT USED
-   // int m_nNThisIterCliffCollapse;
+   //! The number of cells with cliff collapse this iteration
+   int m_nNThisIterCliffCollapse;
 
-   // NOT USED
-   // int m_nNTotCliffCollapse;
+   //! The total number of cells with cliff collapse since the start of the simulation
+   int m_nNTotCliffCollapse;
 
    //! How sediment which moves off an edge of the grid is handled. Possible values are GRID_EDGE_CLOSED, GRID_EDGE_OPEN, GRID_EDGE_RECIRCULATE
    int m_nUnconsSedimentHandlingAtGridEdges;

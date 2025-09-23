@@ -3067,7 +3067,7 @@ void CSimulation::CalcMHWElevation(int const nTideDataCount)
    int const nTidevaluesPerDay = tMax(nRound(24 / m_dTimeStep), 1);
    int const nTideValuesToRead = nTidevaluesPerDay * NUM_DAYS_FOR_MEAN_HIGH_WATER_CALC;
 
-   int nNumTideValues = static_cast<int>(m_VdTideData.size());
+   int const nNumTideValues = static_cast<int>(m_VdTideData.size());
 
    // Now read the tide data (note that this assumes that the first line of the tide data is the first tide reading of the day)
    int nThisCount = nTideDataCount;

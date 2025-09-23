@@ -21,7 +21,7 @@
 
 #include "cell_talus.h"
 
-//! CRWCellTalus constructor, initialisation list sets all internal values to zero
+//! CRWCellTalus constructor with initialisation list
 CRWCellTalus::CRWCellTalus(void)
     : m_dSand(0),
       m_dCoarse(0),
