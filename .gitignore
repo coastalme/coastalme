@@ -55,10 +55,10 @@ Makefile
 Testing
 
 # Ninja output
-/build*/
-/build.ninja
-/ninja
-/ninja.bootstrap
+build*/
+build.ninja
+ninja
+ninja.bootstrap
 .ninja_deps
 .ninja_log
 
