@@ -1631,7 +1631,7 @@ void CSimulation::CreateRasterizedProfile(int const nCoast, CGeomProfile* pProfi
                   bHitLand = true;
                   pProfile->SetHitLand(true);
 
-                  LogStream << m_ulIter << ": \tcoast " << nCoast << " profile " << nProfile << " HIT LAND at [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "}, elevation = " << m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElev() << ", SWL = " << m_dThisIterSWL << endl;
+                  LogStream << m_ulIter << ": \tcoast " << nCoast << " profile " << nProfile << " HIT LAND at [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "}, elevation = " << m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElevOmitTalus() << ", SWL = " << m_dThisIterSWL << endl;
 
                   return;
                }
@@ -1642,7 +1642,7 @@ void CSimulation::CreateRasterizedProfile(int const nCoast, CGeomProfile* pProfi
                   bHitIntervention = true;
                   pProfile->SetHitIntervention(true);
 
-                  LogStream << m_ulIter << ": \tcoast " << nCoast << " profile " << nProfile << " HIT INTERVENTION at [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "}, elevation = " << m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElev() << ", SWL = " << m_dThisIterSWL << endl;
+                  LogStream << m_ulIter << ": \tcoast " << nCoast << " profile " << nProfile << " HIT INTERVENTION at [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "}, elevation = " << m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElevOmitTalus() << ", SWL = " << m_dThisIterSWL << endl;
 
                   return;
                }

@@ -37,8 +37,8 @@ class CRWCellLayer
    //! This cell's consolidated sediment object
    CRWCellSediment m_ConsolidatedSediment;
 
-   //! This cell's talus (derived from cliff collapse)
-   CRWCellTalus m_Talus;
+   //! Pointer to this cell layer's talus (unconsolidated sediment derived from cliff collapse), if any
+   CRWCellTalus* m_pTalus;
 
  protected:
  public:
@@ -70,5 +70,6 @@ class CRWCellLayer
    // void SetConsolidationStatus(double const);
 
    CRWCellTalus* pGetTalus(void);
+   CRWCellTalus* pGetOrCreateTalus(void);
 };
 #endif // CELL_LAYER_H

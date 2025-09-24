@@ -17,6 +17,8 @@
 
    You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ===============================================================================================================================*/
+#include <cstddef>
+
 #include <vector>
 using std::vector;
 
@@ -28,6 +30,7 @@ using std::vector;
 #include "cell.h"
 #include "cell_layer.h"
 #include "cell_sediment.h"
+#include "cell_talus.h"
 
 //! Constructor with initialisation list
 CGeomCell::CGeomCell()
@@ -208,22 +211,23 @@ void CGeomCell::SetPossibleFloodStartCell(void)
    m_bPossibleFloodStartCell = true;
 }
 
-// //! Returns a flag which shows whether this cell has been flagged as a possible start point for runup flooding
-// bool CGeomCell::bIsPossibleFloodStartCell(void) const
-// {
-//    return m_bPossibleFloodStartCell;
-// }
+//! Returns a flag which shows whether this cell has been flagged as a possible start point for runup flooding
+bool CGeomCell::bIsPossibleFloodStartCell(void) const
+{
+   return m_bPossibleFloodStartCell;
+}
 
-//! Returns true if this cell has had potential erosion this timestep
+//! Returns true if this cell has had potential platform erosion on this cell this timestep
 bool CGeomCell::bPotentialPlatformErosion(void) const
 {
    return (m_dPotentialPlatformErosionThisIter > 0);
 }
 
-// bool CGeomCell::bActualPlatformErosion(void) const
-// {
-//    return (m_dActualPlatformErosionThisIter > 0);
-// }
+//! Returns true if we have had actual platform erosion on this cell during this timestep
+bool CGeomCell::bActualPlatformErosion(void) const
+{
+   return (m_dActualPlatformErosionThisIter > 0);
+}
 
 //! Marks this cell with a coastline ID nunber
 void CGeomCell::SetAsCoastline(int const nCoast)
@@ -270,12 +274,6 @@ bool CGeomCell::bIsFloodline(void) const
    return m_bFloodLine;
 }
 
-// //! Sets the ID number of the coast-normal profile which this cell is 'under'
-// void CGeomCell::SetProfileID(int const nProfile)
-// {
-//    m_nProfileID = nProfile;
-// }
-
 //! Gets the ID number of the coast-normal profile which this cell is 'under', or returns INT_NODATA
 int CGeomCell::nGetProfileID(void) const
 {
@@ -291,12 +289,6 @@ bool CGeomCell::bIsProfile(void) const
    return true;
 }
 
-// //! Sets the coast ID number of the coast-normal profile which this cell is 'under'
-// void CGeomCell::SetProfileCoastID(int const nCoast)
-// {
-//    m_nProfileCoastID = nCoast;
-// }
-
 //! Gets the coast ID number of the coast-normal profile which this cell is 'under', or returns INT_NODATA
 int CGeomCell::nGetProfileCoastID(void) const
 {
@@ -310,23 +302,11 @@ void CGeomCell::SetCoastAndProfileID(int const nProfileCoastID, int const nProfi
    m_nProfileID = nProfile;
 }
 
-// //! Sets the coast ID number of the polygon which 'contains' this cell
-// void CGeomCell::SetPolygonID(int const nPolyID)
-// {
-//    m_nPolygonID = nPolyID;
-// }
-
 //! Returns the coast ID number of the polygon which 'contains' this cell (returns INT_NODATA if the cell is not 'in' a polygon)
 int CGeomCell::nGetPolygonID(void) const
 {
    return m_nPolygonID;
 }
-
-// //! Sets the coast number of the polygon which 'contains' this cell
-// void CGeomCell::SetPolygonCoastID(int const nPolyCoastID)
-// {
-//    m_nPolygonCoastID = nPolyCoastID;
-// }
 
 //! Returns the coast number of the polygon which 'contains' this cell (returns INT_NODATA if the cell is not 'in' a polygon)
 int CGeomCell::nGetPolygonCoastID(void) const
@@ -371,11 +351,30 @@ bool CGeomCell::bIsinAnyShadowZone(void) const
    return false;
 }
 
-// //! Set this cell as flooded by swl + surge + setup + runup
-// void CGeomCell::SetWaveFlood(void)
-// {
-//    m_bWaveFlood = true;
-// }
+//! Returns the depth of any talus that is on this cell, in any layer
+double CGeomCell::dGetTalusDepth(void)
+{
+   double dTotTalusDepth = 0;
+
+   for (int nLayer = 0; nLayer < static_cast<int>(m_VLayerAboveBasement.size()); nLayer++)
+   {
+      CRWCellTalus const* pTalus = m_VLayerAboveBasement[nLayer].pGetTalus();
+      if (pTalus != NULL)
+      {
+         // There is some talus on this layer
+         double const dThisTalusDepth = pTalus->dGetSandDepth() + pTalus->dGetCoarseDepth();
+         dTotTalusDepth += dThisTalusDepth;
+      }
+   }
+
+   return dTotTalusDepth;
+}
+
+//! Set this cell as flooded by swl + surge + setup + runup
+void CGeomCell::SetWaveFlood(void)
+{
+   m_bWaveFlood = true;
+}
 
 // void CGeomCell::SetWaveSetup(int const dWaveSetup)
 // {
@@ -403,10 +402,14 @@ bool CGeomCell::bIsinAnyShadowZone(void) const
 // return m_dTotLevel;
 // }
 
-//! Returns true if the top elevation of this cell (sediment plus any intervention) is less than this iteration's total water level
-bool CGeomCell::bIsElevLessThanWaterLevel(void) const
+//! Returns true if the top elevation (sediment and talus, plus any intervention) of this cell is less than this iteration's SWL
+bool CGeomCell::bElevLessThanSWL(void) const
 {
-   return ((m_VdAllHorizonTopElev.back() + m_dInterventionHeight) < (m_pGrid->pGetSim()->dGetThisIterTotWaterLevel() + m_pGrid->pGetSim()->dGetThisIterSWL()));
+   // // Note that m_pGrid->pGetSim()->dGetThisIterTotWaterLevel() is zero, since TODO 007 Finish surge and runup stuff
+   // return ((m_VdAllHorizonTopElev.back() + m_dInterventionHeight) < (m_pGrid->pGetSim()->dGetThisIterTotWaterLevel() + m_pGrid->pGetSim()->dGetThisIterSWL()));
+
+   // Will need to change this (see above) once surge and runup stuff is working
+   return ((m_VdAllHorizonTopElev.back() + m_dInterventionHeight) < m_pGrid->pGetSim()->dGetThisIterSWL());
 }
 
 // //! Set this cell as checked TODO 007 Finish surge and runup stuff
@@ -608,27 +611,27 @@ CRWCellLayer* CGeomCell::pGetLayerAboveBasement(int const nLayer)
 // }
 
 //! Returns the elevation of the top surface of sediment (both consolidated and unconsolidated) for this cell. If there is a cliff notch, ignore the missing volume
-double CGeomCell::dGetSedimentTopElev(void) const
+double CGeomCell::dGetSedimentTopElevOmitTalus(void) const
 {
    return m_VdAllHorizonTopElev.back();
 }
 
-//! Returns the elevation of the top surface of sediment (both consolidated and unconsolidated) for this cell, plus the height of any intervention. If there is a cliff notch, ignore the missing volume
-double CGeomCell::dGetSedimentPlusInterventionTopElev(void) const
+//! Returns the elevation of the top surface of sediment (both consolidated and unconsolidated) plus talus for this cell. If there is a cliff notch, ignore the missing volume
+double CGeomCell::dGetSedimentTopElevIncTalus(void)
 {
-   return m_VdAllHorizonTopElev.back() + m_dInterventionHeight;
+   return m_VdAllHorizonTopElev.back() + this->dGetTalusDepth();
 }
 
-//! Returns the highest elevation of the cell, which is either the sediment top elevation (both consolidated and unconsolidated) plus intervention height, or the sea surface elevation
-double CGeomCell::dGetOverallTopElev(void) const
+//! Returns the topmost elevation of the cell, including sea (sediment top elevation (both consolidated and unconsolidated), plus the depth of any talus, plus the height of any intervention, plus the sea depth)
+double CGeomCell::dGetTopElevIncSea(void)
 {
-   return m_VdAllHorizonTopElev.back() + m_dInterventionHeight + m_dSeaDepth;
+   return m_VdAllHorizonTopElev.back() + this->dGetTalusDepth() + m_dInterventionHeight + m_dSeaDepth;
 }
 
-//! Returns true if the elevation of the sediment top surface (both consolidated and unconsolidated) for this cell, plus any intervention, is less than the grid's this-timestep still water elevation
-bool CGeomCell::bIsInundated(void) const
+//! Returns true if the elevation of the sediment top surface (both consolidated and unconsolidated, and any talus) for this cell, plus any intervention, is less than the grid's this-timestep still water elevation
+bool CGeomCell::bIsInundated(void)
 {
-   return ((m_VdAllHorizonTopElev.back() + m_dInterventionHeight) < m_pGrid->pGetSim()->CSimulation::dGetThisIterSWL());
+   return ((m_VdAllHorizonTopElev.back() + m_dInterventionHeight + this->dGetTalusDepth()) < m_pGrid->pGetSim()->CSimulation::dGetThisIterSWL());
 }
 
 //! Returns the sea surface elevation at the current iteration
@@ -637,7 +640,7 @@ double CGeomCell::dGetThisIterSWL(void) const
    return m_pGrid->pGetSim()->CSimulation::dGetThisIterSWL();
 }
 
-//! Returns the total water level at the current iteration
+//! Returns the total water level for the current iteration  TODO 007 Finish surge and runup stuff
 double CGeomCell::dGetThisIterTotWaterLevel(void) const
 {
    return m_pGrid->pGetSim()->CSimulation::dGetThisIterTotWaterLevel();

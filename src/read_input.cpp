@@ -763,8 +763,9 @@ bool CSimulation::bReadRunDataFile(void)
                   m_bSandConsSedSave = true;
                   m_bCoarseUnconsSedSave = true;
                   m_bCoarseConsSedSave = true;
-                  m_bSedimentTopSurfSave = true;
-                  m_bTopSurfSave = true;
+                  m_bSedIncTalusTopSurfSave = true;
+                  m_bTopSurfIncSeaSave = true;
+                  m_bTalusSave = true;
                   m_bSeaDepthSave = true;
                   m_bWaveHeightSave = true;
                   m_bWaveAngleSave = true;
@@ -818,8 +819,9 @@ bool CSimulation::bReadRunDataFile(void)
                   m_bSandConsSedSave = true;
                   m_bCoarseUnconsSedSave = true;
                   m_bCoarseConsSedSave = true;
-                  m_bSedimentTopSurfSave = true;
-                  m_bTopSurfSave = true;
+                  m_bSedIncTalusTopSurfSave = true;
+                  m_bTopSurfIncSeaSave = true;
+                  m_bTalusSave = true;
                   m_bSeaDepthSave = true;
                   m_bWaveHeightSave = true;
                   m_bWaveAngleSave = true;
@@ -859,14 +861,20 @@ bool CSimulation::bReadRunDataFile(void)
                   // We are not outputting either the "usual" or the "all" collections of raster GIS files, so set switches (and remove strings) for those optional files for which the user specified the code
                   if (strRH.find(RASTER_SEDIMENT_TOP_CODE) != string::npos)
                   {
-                     m_bSedimentTopSurfSave = true;
+                     m_bSedIncTalusTopSurfSave = true;
                      strRH = strRemoveSubstr(&strRH, &RASTER_SEDIMENT_TOP_CODE);
                   }
 
-                  if (strRH.find(RASTER_TOP_CODE) != string::npos)
+                  if (strRH.find(RASTER_TOP_ELEVATION_INC_SEA_CODE) != string::npos)
                   {
-                     m_bTopSurfSave = true;
-                     strRH = strRemoveSubstr(&strRH, &RASTER_TOP_CODE);
+                     m_bTopSurfIncSeaSave = true;
+                     strRH = strRemoveSubstr(&strRH, &RASTER_TOP_ELEVATION_INC_SEA_CODE);
+                  }
+
+                  if (strRH.find(RASTER_TALUS_CODE) != string::npos)
+                  {
+                     m_bTalusSave = true;
+                     strRH = strRemoveSubstr(&strRH, &RASTER_TALUS_CODE);
                   }
 
                   if (strRH.find(RASTER_SEA_DEPTH_CODE) != string::npos)

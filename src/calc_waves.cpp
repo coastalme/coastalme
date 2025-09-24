@@ -1535,7 +1535,7 @@ int CSimulation::nGetThisProfileElevationsForCShore(int const nCoast, CGeomProfi
          return RTN_OK;
 
       // Get the elevation for both consolidated and unconsolidated sediment on this cell
-      double const dTopElev = m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElev() + m_pRasterGrid->m_Cell[nX][nY].dGetInterventionHeight();
+      double const dTopElev = m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElevOmitTalus() + m_pRasterGrid->m_Cell[nX][nY].dGetInterventionHeight();
       double const VdProfileZ = dTopElev - m_dThisIterSWL;
 
       // Check that landward elevation is greater than SWL

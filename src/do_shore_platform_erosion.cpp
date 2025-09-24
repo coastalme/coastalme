@@ -246,7 +246,7 @@ int CSimulation::nCalcPotentialPlatformErosionOnProfile(int const nCoast, CGeomP
       dVConsProfileZ[i] = m_pRasterGrid->m_Cell[nX][nY].dGetConsSedTopElevForLayerAboveBasement(nTopLayer);
 
       // Get the elevation for both consolidated and unconsolidated sediment on this cell
-      VdProfileZ[i] = m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElev();
+      VdProfileZ[i] = m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElevOmitTalus();
 
       // And store the X-Y plane distance from the start of the profile
       VdProfileDistXY[i] = i * dSpacingXY;
@@ -562,7 +562,7 @@ int CSimulation::nCalcPotentialPlatformErosionBetweenProfiles(int const nCoast, 
          dVParConsProfileZ[i] = m_pRasterGrid->m_Cell[nXPar][nYPar].dGetConsSedTopElevForLayerAboveBasement(nTopLayer);
 
          // Get the elevation for both consolidated and unconsolidated sediment on this cell
-         dVParProfileZ[i] = m_pRasterGrid->m_Cell[nXPar][nYPar].dGetSedimentTopElev();
+         dVParProfileZ[i] = m_pRasterGrid->m_Cell[nXPar][nYPar].dGetSedimentTopElevOmitTalus();
 
          // And store the X-Y plane distance from the start of the profile
          dVParProfileDistXY[i] = i * dParSpacingXY;

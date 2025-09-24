@@ -30,7 +30,6 @@ using std::ios;
 #include "simulation.h"
 #include "cliff.h"
 #include "coast_landform.h"
-#include "2d_point.h"
 
 //===============================================================================================================================
 //! Update accumulated wave energy in coastal landform objects. If the object is a cliff, then deepen the incised notch. If the notch is sufficiently deep, cliff collapse occurs.
@@ -67,7 +66,7 @@ int CSimulation::nDoAllWaveEnergyToCoastLandforms(void)
          // int const nX = m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(nCoastPoint)->nGetX();
          // int const nY = m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(nCoastPoint)->nGetY();
          int const nCat = pCoastLandform->nGetLandFormCategory();
-         // double const dTopElev = m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElev();
+         // double const dTopElev = m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElevOmitTalus();
 
          // Is this a cliff?
          if ((nCat == LF_CAT_CLIFF) || (nCat == LF_SUBCAT_CLIFF_ON_COASTLINE) || (nCat == LF_SUBCAT_CLIFF_INLAND))
@@ -111,6 +110,7 @@ int CSimulation::nDoAllWaveEnergyToCoastLandforms(void)
                // // DEBUG CODE ============================================================================================================================================
 
                // It is ready to collapse
+               int nNotchLayer;
                double dCliffElevPreCollapse = 0;
                double dCliffElevPostCollapse = 0;
                double dFineCollapse = 0;
@@ -118,15 +118,15 @@ int CSimulation::nDoAllWaveEnergyToCoastLandforms(void)
                double dCoarseCollapse = 0;
 
                // So do the cliff collapse
-               nRet = nDoCliffCollapse(nCoast, pCliff, dFineCollapse, dSandCollapse, dCoarseCollapse, dCliffElevPreCollapse, dCliffElevPostCollapse);
+               nRet = nDoCliffCollapse(nCoast, pCliff, dFineCollapse, dSandCollapse, dCoarseCollapse, nNotchLayer, dCliffElevPreCollapse, dCliffElevPostCollapse);
                if (nRet != RTN_OK)
                {
                   if (m_nLogFileDetail >= LOG_FILE_MIDDLE_DETAIL)
                      LogStream << m_ulIter << ": " << WARN << "problem with cliff collapse, continuing however" << endl;
                }
 
-               // Deposit all sand and/or coarse sediment derived from this cliff collapse as unconsolidated talus
-               nRet = nDoCliffCollapseTalusDeposition(nCoast, pCliff, dSandCollapse, dCoarseCollapse, dCliffElevPreCollapse, dCliffElevPostCollapse);
+               // Deposit all sand and/or coarse sediment derived from this cliff collapse as talus, on the cell on which collapse occurred
+               nRet = nDoCliffCollapseTalusDeposition(nCoast, pCliff, dSandCollapse, dCoarseCollapse, nNotchLayer);
                if (nRet != RTN_OK)
                   return nRet;
 
@@ -191,7 +191,7 @@ int CSimulation::nDoAllWaveEnergyToCoastLandforms(void)
 //===============================================================================================================================
 //! Simulates cliff collapse on a single cell. Collapse happens when when a notch which is incised into the cell's consolidated sediment layer exceeds a critical horizontal incision. This routine updates the cliff object, the cell 'under' the cliff object, and the polygon which contains the cliff object
 //===============================================================================================================================
-int CSimulation::nDoCliffCollapse(int const nCoast, CRWCliff* pCliff, double& dFineCollapse, double& dSandCollapse, double& dCoarseCollapse, double& dPreCollapseCellElev, double& dPostCollapseCellElevNoTalus)
+int CSimulation::nDoCliffCollapse(int const nCoast, CRWCliff* pCliff, double& dFineCollapse, double& dSandCollapse, double& dCoarseCollapse, int& nNotchLayer, double& dPreCollapseCellElev, double& dPostCollapseCellElevNoTalus)
 {
    // Get the cliff cell's grid coords
    int const nX = pCliff->pPtiGetCellMarkedAsCliff()->nGetX();
@@ -203,7 +203,6 @@ int CSimulation::nDoCliffCollapse(int const nCoast, CRWCliff* pCliff, double& dF
    {
       // This cell isn't in a polygon
       LogStream << m_ulIter << ": " << WARN << "in nDoCliffCollapse(), [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "} is not in a polygon" << endl;
-
       return RTN_ERR_CLIFF_NOT_IN_POLYGON;
    }
 
@@ -214,7 +213,7 @@ int CSimulation::nDoCliffCollapse(int const nCoast, CRWCliff* pCliff, double& dF
    double const dNotchElev = pCliff->dGetNotchApexElev();
 
    // Get the index of the layer containing the notch (layer 0 being just above basement)
-   int const nNotchLayer = m_pRasterGrid->m_Cell[nX][nY].nGetLayerAtElev(dNotchElev);
+   nNotchLayer = m_pRasterGrid->m_Cell[nX][nY].nGetLayerAtElev(dNotchElev);
 
    // Safety check: is the notch elevation above the top of the sediment? If so, do no more
    if (nNotchLayer == ELEV_ABOVE_SEDIMENT_TOP)
@@ -248,12 +247,15 @@ int CSimulation::nDoCliffCollapse(int const nCoast, CRWCliff* pCliff, double& dF
       return RTN_ERR_NO_TOP_LAYER;
    }
 
-   // Set flags to say that the top layer has changed
-   m_bConsChangedThisIter[nTopLayer] = true;
-   m_bUnconsChangedThisIter[nTopLayer] = true;
+   // Set flags to say that the notch layer, and all layers above it, have changed
+   for (int nLayer = nNotchLayer; nLayer <= nTopLayer; nLayer++)
+   {
+      m_bConsChangedThisIter[nLayer] = true;
+      m_bUnconsChangedThisIter[nLayer] = true;
+   }
 
    // Get the pre-collapse cliff elevation
-   dPreCollapseCellElev = m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElev();
+   dPreCollapseCellElev = m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElevOmitTalus();
 
    // Now calculate the vertical depth of sediment lost in this cliff collapse, note that this includes the sediment which filled the notch before any incision took place
    double dAvailable = 0;
@@ -422,7 +424,7 @@ int CSimulation::nDoCliffCollapse(int const nCoast, CRWCliff* pCliff, double& dF
    m_pRasterGrid->m_Cell[nX][nY].CalcAllLayerElevsAndD50();
 
    // Get the post-collapse cell elevation (talus will be deposited above this)
-   dPostCollapseCellElevNoTalus = m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElev();
+   dPostCollapseCellElevNoTalus = m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElevOmitTalus();
 
    if (m_nLogFileDetail >= LOG_FILE_MIDDLE_DETAIL)
       LogStream << m_ulIter << ": cliff collapse at [" << nX << "][" << nY << "], before talus deposition: original cell elevation = " << dPreCollapseCellElev << ", new cell elevation = " << dPostCollapseCellElevNoTalus << ", change in elevation = " << dPreCollapseCellElev - dPostCollapseCellElevNoTalus << endl;
@@ -430,7 +432,7 @@ int CSimulation::nDoCliffCollapse(int const nCoast, CRWCliff* pCliff, double& dF
    // And update the cell's sea depth
    // m_pRasterGrid->m_Cell[nX][nY].SetSeaDepth();
 
-   // LogStream << m_ulIter << ": cell [" << nX << "][" << nY << "] after removing sediment, dGetVolEquivSedTopElev() = " << m_pRasterGrid->m_Cell[nX][nY].dGetVolEquivSedTopElev() << ", dGetSedimentTopElev() = " << m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElev() << endl << endl;
+   // LogStream << m_ulIter << ": cell [" << nX << "][" << nY << "] after removing sediment, dGetVolEquivSedTopElev() = " << m_pRasterGrid->m_Cell[nX][nY].dGetVolEquivSedTopElev() << ", dGetSedimentTopElevOmitTalus() = " << m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElevOmitTalus() << endl << endl;
 
    // Update this-polygon totals: add to the depths of cliff collapse erosion for this polygon
    pPolygon->AddCliffCollapseErosionFine(dFineCollapse);
@@ -460,9 +462,6 @@ int CSimulation::nDoCliffCollapse(int const nCoast, CRWCliff* pCliff, double& dF
 
    // Reset cell cliff info
    m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->SetCliffNotchIncisionDepth(m_dCellSide);
-
-   // // And update the cell's sea depth
-   // m_pRasterGrid->m_Cell[nX][nY].SetSeaDepth();
 
    // Final safety check
    int const nNewTopLayer = m_pRasterGrid->m_Cell[nX][nY].nGetTopLayerAboveBasement();
@@ -511,3 +510,30 @@ void CSimulation::IncreaseCliffNotchIncision(CRWCliff* pCliff, double const dWav
    // LogStream << m_ulIter << ": dRunup = " << dRunup << " dWaveElev = " << dWaveElev << " dWeight = " << dWeight << " dNotchIncision = " << dNotchIncision << endl;
 }
 
+//===============================================================================================================================
+//! Deposit the unconsolidated sediment from cliff collapse as talus on the cell on which collapse occurred.
+//===============================================================================================================================
+int CSimulation::nDoCliffCollapseTalusDeposition(int const nCoast, CRWCliff const* pCliff, double const dSandFromCollapse, double const dCoarseFromCollapse, int const nNotchLayer)
+{
+   // Check: is there some sand- or coarse-sized sediment to deposit?
+   if ((dSandFromCollapse + dCoarseFromCollapse) < SEDIMENT_ELEV_TOLERANCE)
+      return RTN_OK;
+
+   LogStream << m_ulIter << "; coast " << nCoast << " in nDoCliffCollapseTalusDeposition() dSandFromCollapse = " << dSandFromCollapse << " dCoarseFromCollapse = " << dCoarseFromCollapse << endl;
+
+   // Get the cliff cell's grid coords
+   int const nX = pCliff->pPtiGetCellMarkedAsCliff()->nGetX();
+   int const nY = pCliff->pPtiGetCellMarkedAsCliff()->nGetY();
+
+   // Get a pointer to the layer in which the notch was incised
+   CRWCellLayer* pLayer = m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nNotchLayer);
+
+   // And get a pointer to the cell layer's talus object
+   CRWCellTalus* pTalus = pLayer->pGetOrCreateTalus();
+
+   // Add the sediment from the collapse to the talus object for this layer
+   pTalus->AddSandDepth(dSandFromCollapse);
+   pTalus->AddCoarseDepth(dCoarseFromCollapse);
+
+   return RTN_OK;
+}

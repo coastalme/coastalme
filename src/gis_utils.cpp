@@ -955,16 +955,20 @@ bool CSimulation::bSaveAllRasterGISFiles(void)
       }
    }
 
-   if (m_bSedimentTopSurfSave)
-      if (! bWriteRasterGISFile(RASTER_PLOT_SEDIMENT_TOP_ELEVATION, &RASTER_PLOT_SEDIMENT_TOP_ELEVATION_TITLE))
+   if (m_bSedIncTalusTopSurfSave)
+      if (! bWriteRasterGISFile(RASTER_PLOT_SED_TOP_INC_TALUS_ELEV, &RASTER_PLOT_SED_TOP_INC_TALUS_ELEV_TITLE))
          return false;
 
-   if (m_bTopSurfSave)
-      if (! bWriteRasterGISFile(RASTER_PLOT_OVERALL_TOP_ELEVATION, &RASTER_PLOT_OVERALL_TOP_ELEVATION_TITLE))
+   if (m_bTopSurfIncSeaSave)
+      if (! bWriteRasterGISFile(RASTER_PLOT_TOP_ELEV_INC_SEA, &RASTER_PLOT_TOP_ELEV_INC_SEA_TITLE))
+         return false;
+
+   if (m_bTalusSave)
+      if (! bWriteRasterGISFile(RASTER_PLOT_TALUS, &RASTER_PLOT_TALUS_TITLE))
          return false;
 
    if (m_bSlopeConsSedSave)
-      if (! bWriteRasterGISFile(RASTER_PLOT_SLOPE_OF_CONSOLIDATED_SEDIMENT, &RASTER_PLOT_SLOPE_OF_CONSOLIDATED_SEDIMENT_TITLE))
+      if (! bWriteRasterGISFile(RASTER_PLOT_CONS_SED_SLOPE, &RASTER_PLOT_CONS_SED_SLOPE_TITLE))
          return false;
 
    if (m_bSlopeSaveForCliffToe)
@@ -1517,15 +1521,19 @@ void CSimulation::GetRasterOutputMinMax(int const nDataItem, double& dMin, doubl
             dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetBasementElev();
             break;
 
-         case (RASTER_PLOT_SEDIMENT_TOP_ELEVATION):
-            dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElev();
+         case (RASTER_PLOT_SED_TOP_INC_TALUS_ELEV):
+            dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElevOmitTalus();
             break;
 
-         case (RASTER_PLOT_OVERALL_TOP_ELEVATION):
-            dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetOverallTopElev();
+         case (RASTER_PLOT_TALUS):
+            dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetTalusDepth();
             break;
 
-         case (RASTER_PLOT_SLOPE_OF_CONSOLIDATED_SEDIMENT):
+         case (RASTER_PLOT_TOP_ELEV_INC_SEA):
+            dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetTopElevIncSea();
+            break;
+
+         case (RASTER_PLOT_CONS_SED_SLOPE):
             dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetConsSedSlope();
             break;
 

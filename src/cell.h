@@ -223,7 +223,7 @@ class CGeomCell
 
    // Initialize these as empty vectors
 
-   //! Number of layers NOT including the basement. Layer 0 is the lowest
+   //! Cell sediment layers NOT including the basement. Layer 0 is the lowest
    vector<CRWCellLayer> m_VLayerAboveBasement;
 
    //! Number of layer-top elevations (inc. that of the basement, which is m_VdAllHorizonTopElev[0]) size 1 greater than size of m_VLayerAboveBasement
@@ -250,7 +250,7 @@ class CGeomCell
    void SetInActiveZone(bool const);
    bool bIsInActiveZone(void) const;
    bool bPotentialPlatformErosion(void) const;
-   // bool bActualPlatformErosion(void) const;
+   bool bActualPlatformErosion(void) const;
    void SetAsCoastline(int const);
    bool bIsCoastline(void) const;
    int nGetCoastline(void) const;
@@ -260,10 +260,8 @@ class CGeomCell
    void SetAsCliffToe(bool const);
    bool bIsCliffToe(void) const;
 
-   // void SetProfileID(int const);
    int nGetProfileID(void) const;
    bool bIsProfile(void) const;
-   // void SetProfileCoastID(int const);
    int nGetProfileCoastID(void) const;
    void SetCoastAndProfileID(int const, int const);
 
@@ -278,18 +276,16 @@ class CGeomCell
    bool bIsPossibleCoastStartCell(void) const;
 
    void SetPossibleFloodStartCell(void);
-   // bool bIsPossibleFloodStartCell(void) const;
+   bool bIsPossibleFloodStartCell(void) const;
 
-   // void SetPolygonID(int const);
    int nGetPolygonID(void) const;
-   // void SetPolygonCoastID(int const);
    int nGetPolygonCoastID(void) const;
    void SetCoastAndPolygonID(int const, int const);
 
    CRWCellLandform* pGetLandform(void);
 
-   // void SetWaveFlood(void);
-   bool bIsElevLessThanWaterLevel(void) const;
+   void SetWaveFlood(void);
+   bool bElevLessThanSWL(void) const;
 
    void SetCheckCell(void);
    bool bIsCellCheck(void) const;
@@ -308,14 +304,16 @@ class CGeomCell
    void SetSlopeForCliffToe(double const);
    double dGetSlopeForCliffToe(void) const;
 
-   // double dGetVolEquivSedTopElev(void) const;
-   double dGetSedimentTopElev(void) const;
-   double dGetSedimentPlusInterventionTopElev(void) const;
-   double dGetOverallTopElev(void) const;
+   double dGetTalusDepth(void);
 
-   bool bIsInundated(void) const;
+   // double dGetVolEquivSedTopElev(void) const;
+   double dGetSedimentTopElevOmitTalus(void) const;
+   double dGetSedimentTopElevIncTalus(void);
+   double dGetTopElevIncSea(void);
+
+   bool bIsInundated(void);
    double dGetThisIterSWL(void) const;
-   double dGetThisIterTotWaterLevel(void) const;
+   double dGetThisIterTotWaterLevel(void) const;      // Not used TODO 007 Finish surge and runup stuff
    void SetSeaDepth(void);
    double dGetSeaDepth(void) const;
    void InitCell(void);

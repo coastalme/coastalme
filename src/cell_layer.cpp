@@ -22,15 +22,19 @@
 
 #include "cell_layer.h"
 #include "cell_sediment.h"
+#include "cell_talus.h"
 
 //! Constructor
 CRWCellLayer::CRWCellLayer(void)
 {
+   m_pTalus = NULL;
 }
 
 //! Destructor
 CRWCellLayer::~CRWCellLayer(void)
 {
+   if (m_pTalus != NULL)
+      delete m_pTalus;
 }
 
 //! Returns a pointer to the cell's unconsolidated sediment object
@@ -141,8 +145,21 @@ double CRWCellLayer::dGetTotalThickness(void) const
 // m_dConsolidationStatus = dNewConsolidationStatus;
 // }
 
-//! Returns a pointer to the layer's talus object
+//! Returns a pointer to the layer's talus object, or NULL if there is no talus object
 CRWCellTalus* CRWCellLayer::pGetTalus(void)
 {
-   return &m_Talus;
+   return m_pTalus;
 }
+
+//! Returns a pointer to the layer's talus object. If there is no talus object, then create one
+CRWCellTalus* CRWCellLayer::pGetOrCreateTalus(void)
+{
+   if (m_pTalus == NULL)
+   {
+      // No talus object here, so create one
+      m_pTalus = new CRWCellTalus();
+   }
+
+   return m_pTalus;
+}
+

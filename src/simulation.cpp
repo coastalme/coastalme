@@ -68,8 +68,9 @@ CSimulation::CSimulation(void)
    m_bHaveSandSediment = false;
    m_bHaveCoarseSediment = false;
    m_bBasementElevSave = false;
-   m_bSedimentTopSurfSave = false;
-   m_bTopSurfSave = false;
+   m_bSedIncTalusTopSurfSave = false;
+   m_bTopSurfIncSeaSave = false;
+   m_bTalusSave = false;
    m_bSliceSave = false;
    m_bSeaDepthSave = false;
    m_bAvgSeaDepthSave = false;
@@ -388,7 +389,7 @@ CSimulation::CSimulation(void)
    m_dStartIterConsFineAllCells = 0;
    m_dStartIterConsSandAllCells = 0;
    m_dStartIterConsCoarseAllCells = 0;
-   m_dThisIterDiffTotWaterLevel = 0;
+   m_dThisIterDiffTotWaterLevel = 0;         // Used in surge stuff TODO 007 Finish surge and runup stuff
    m_dThisIterDiffWaveSetupWaterLevel = 0;
    m_dThisIterDiffWaveSetupSurgeWaterLevel = 0;
    m_dThisIterDiffWaveSetupSurgeRunupWaterLevel = 0;

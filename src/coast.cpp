@@ -756,7 +756,7 @@ CGeomProfile* CRWCoast::pGetProfileAtCoastPoint(int const nCoastPoint) const
    return m_pVNormalProfileDownAllCoastpointSeq[nCoastPoint];
 }
 
-//! Appends a coastal landform to this coast
+//! Appends a coastal landform to the vector of coast landform objects
 void CRWCoast::AppendCoastLandform(CACoastLandform* pCoastLandform)
 {
    m_pVLandform.push_back(pCoastLandform);

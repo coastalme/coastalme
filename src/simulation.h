@@ -80,11 +80,14 @@ class CSimulation
    //! Save basement raster DEMs?
    bool m_bBasementElevSave;
 
-   //! Save sediment top surface raster DEMs?
-   bool m_bSedimentTopSurfSave;
+   //! Save sediment (inc talus) top surface raster DEMs?
+   bool m_bSedIncTalusTopSurfSave;
 
-   //! Save fop surface (sediment and sea) raster DEMs?
-   bool m_bTopSurfSave;
+   //! Save top surface (sediment, talus, and sea) raster DEMs?
+   bool m_bTopSurfIncSeaSave;
+
+   //! Save talus depth?
+   bool m_bTalusSave;
 
    //! Save slope raster grids (used for cliff toe location)?
    bool m_bSlopeSaveForCliffToe;
@@ -1634,8 +1637,8 @@ class CSimulation
    int nDoAllPropagateWaves(void);
    int nDoAllShorePlatFormErosion(void);
    int nDoAllWaveEnergyToCoastLandforms(void);
-   int nDoCliffCollapse(int const, CRWCliff *, double&, double&, double&, double&, double&);
-   int nDoCliffCollapseTalusDeposition(int const, CRWCliff const*, double const, double const, double const, double const);
+   int nDoCliffCollapse(int const, CRWCliff *, double&, double&, double&, int&, double&, double&);
+   int nDoCliffCollapseTalusDeposition(int const, CRWCliff const*, double const, double const, int const);
    int nUpdateGrid(void);
 
    // For cliff toe location
@@ -1672,7 +1675,6 @@ class CSimulation
    void CreateRasterizedProfile(int const, CGeomProfile*, vector<CGeom2DIPoint>*, vector<bool>*, bool&, bool&, bool&, bool&, bool&, bool&);
    static void CalcDeanProfile(vector<double>*, double const, double const, double const, bool const, int const, double const);
    static double dSubtractProfiles(vector<double> const*, vector<double> const*, vector<bool> const*);
-   void RasterizeCliffCollapseProfile(vector<CGeom2DPoint> const*, vector<CGeom2DIPoint>*) const;
    int nCalcPotentialPlatformErosionOnProfile(int const, CGeomProfile*);
    int nCalcPotentialPlatformErosionBetweenProfiles(int const, CGeomProfile*, int const);
    void ConstructParallelProfile(int const, int const, int const, int const, int const, vector<CGeom2DIPoint>* const, vector<CGeom2DIPoint>*, vector<CGeom2DPoint> *);
@@ -1882,14 +1884,14 @@ class CSimulation
    //! Returns the NODATA value
    double dGetMissingValue(void) const;
 
-   //! Returns this timestep's still water level
+   //! Returns this timestep's SWL
    double dGetThisIterSWL(void) const;
 
-   //! Returns this timestep's total water level
+   //! Returns this timestep's total water level TODO 007 Finish surge and runup stuff
    double dGetThisIterTotWaterLevel(void) const;
 
-   // //! Returns the vertical tolerance for beach cells to be included in
-   // smoothing double dGetMaxBeachElevAboveSWL(void) const;
+   // //! Returns the vertical tolerance for beach cells to be included in smoothing
+   // double dGetMaxBeachElevAboveSWL(void) const;
 
    //! Returns the cell size
    // double dGetCellSide(void) const;

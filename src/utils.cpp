@@ -83,7 +83,7 @@ using std::transform;
 #include "2di_point.h"
 
 //===============================================================================================================================
-//! Returns the double Missing Value code
+//! Returns the missing value code for double precision
 //===============================================================================================================================
 double CSimulation::dGetMissingValue(void) const
 {
@@ -99,7 +99,7 @@ double CSimulation::dGetThisIterSWL(void) const
 }
 
 //===============================================================================================================================
-//! Returns the this-iteration total water level
+//! Returns the this-iteration total water level TODO 007 Finish surge and runup stuff
 //===============================================================================================================================
 double CSimulation::dGetThisIterTotWaterLevel(void) const
 {
@@ -748,21 +748,27 @@ string CSimulation::strListRasterFiles(void) const
       strTmp.append(", ");
    }
 
-   if (m_bSedimentTopSurfSave)
+   if (m_bSedIncTalusTopSurfSave)
    {
       strTmp.append(RASTER_SEDIMENT_TOP_CODE);
       strTmp.append(", ");
    }
 
-   if (m_bTopSurfSave)
+   if (m_bTopSurfIncSeaSave)
    {
-      strTmp.append(RASTER_TOP_CODE);
+      strTmp.append(RASTER_TOP_ELEVATION_INC_SEA_CODE);
+      strTmp.append(", ");
+   }
+
+   if (m_bTalusSave)
+   {
+      strTmp.append(RASTER_TALUS_CODE);
       strTmp.append(", ");
    }
 
    if (m_bSeaDepthSave)
    {
-      strTmp.append(RASTER_SEA_DEPTH_NAME);
+      strTmp.append(RASTER_SEA_DEPTH_CODE);
       strTmp.append(", ");
    }
 

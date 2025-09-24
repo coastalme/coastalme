@@ -63,9 +63,21 @@ int CSimulation::nAssignLandformsForAllCoasts(void)
             continue;
          }
 
-         // OK this landform is something other than an intervention. So check what we have at SWL on this cell: is it unconsolidated or consolidated sediment? Note that layer 0 is the first layer above basement
-         int const nLayer = m_pRasterGrid->m_Cell[nX][nY].nGetLayerAtElev(m_dThisIterSWL);
+         // OK this landform is something other than an intervention
+         if (m_pRasterGrid->m_Cell[nX][nY]. dGetTalusDepth() > 0)
+         {
+            // This is a talus cell
+            m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->SetLFCategory(LF_CAT_DRIFT);
+            m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->SetLFSubCategory(LF_SUBCAT_DRIFT_TALUS);
 
+            CACoastLandform* pDrift = new CRWDrift(&m_VCoast[nCoast], nCoast, j);
+            m_VCoast[nCoast].AppendCoastLandform(pDrift);
+
+            continue;
+         }
+
+         // Check what we have at SWL on this cell: is it unconsolidated or consolidated sediment? Note that layer 0 is the first layer above basement
+         int const nLayer = m_pRasterGrid->m_Cell[nX][nY].nGetLayerAtElev(m_dThisIterSWL);
          if (nLayer == ELEV_IN_BASEMENT)
          {
             // Should never happen
@@ -76,7 +88,7 @@ int CSimulation::nAssignLandformsForAllCoasts(void)
          else if (nLayer == ELEV_ABOVE_SEDIMENT_TOP)
          {
             // Again, should never happen
-            LogStream << m_ulIter << ": SWL (" << m_dThisIterSWL << ") is above sediment-top elevation (" << m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElev() << ") on cell [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "}, cannot assign coastal landform for coastline " << nCoast << endl;
+            LogStream << m_ulIter << ": SWL (" << m_dThisIterSWL << ") is above sediment-top elevation (" << m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElevOmitTalus() << ") on cell [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "}, cannot assign coastal landform for coastline " << nCoast << endl;
 
             return RTN_ERR_CANNOT_ASSIGN_COASTAL_LANDFORM;
          }
@@ -385,7 +397,7 @@ int CSimulation::nAssignLandformsForAllCells(void)
             {
                nAction = 3; // Set to beach
             }
-            else if (m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElev() > m_dThisIterSWL)
+            else if (m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElevOmitTalus() > m_dThisIterSWL)
             {
                nAction = 4; // Set to island
             }
