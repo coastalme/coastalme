@@ -563,7 +563,7 @@ int CSimulation::nMoveTalusToUnconsolidated(void)
             double dTalusCoarse = pTalus->dGetCoarseDepth();
             double dThisTopElev = m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElevIncTalus();
             double dAdjElev;
-            double dTotElevDiff;
+            double dTotElevDiff = 0;
             vector<double> VdAdjElevDiff;
             vector<CGeom2DIPoint> VptAdj;
 
