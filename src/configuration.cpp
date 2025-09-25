@@ -146,7 +146,7 @@ void CConfiguration::InitializeDefaults()
    // Flood parameters
    m_bFloodInput = false;
    m_strFloodCoastline = "";
-   m_strRunupEquation = "";
+   m_strRunupEquation = 0;
    m_strFloodLocations = "";
    m_strFloodInputLocation = "";
 

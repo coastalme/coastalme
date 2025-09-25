@@ -29,37 +29,38 @@
 #include <vector>
 #include <fstream>
 
-using std::string;
-using std::map;
-using std::vector;
 using std::ifstream;
+using std::map;
+using std::string;
+using std::vector;
 
 //! Simple YAML node class to represent parsed values
 class CYamlNode
 {
-private:
+   private:
    string m_strValue;
    map<string, CYamlNode> m_mapChildren;
    vector<CYamlNode> m_vecChildren;
    bool m_bIsSequence;
 
-public:
+   public:
    CYamlNode();
    ~CYamlNode();
-   
+
    void SetValue(string const& strValue);
    void AddChild(string const& strKey, CYamlNode const& node);
    void AddSequenceItem(CYamlNode const& node);
-   
+
    string GetValue() const;
    bool HasChild(string const& strKey) const;
    CYamlNode GetChild(string const& strKey) const;
    vector<CYamlNode> GetSequence() const;
    bool IsSequence() const;
    int GetSequenceSize() const;
-   
+
    // Convenience methods for common types
    int GetIntValue(int nDefault = 0) const;
+   unsigned long GetULongValue(unsigned long nDefault = 0) const;
    double GetDoubleValue(double dDefault = 0.0) const;
    bool GetBoolValue(bool bDefault = false) const;
    vector<string> GetStringSequence() const;
@@ -68,7 +69,7 @@ public:
 //! Simple YAML parser class
 class CYamlParser
 {
-private:
+   private:
    CYamlNode m_RootNode;
    string m_strFileName;
    int m_nCurrentLine;
@@ -85,14 +86,14 @@ private:
    string strRemoveQuotes(string const& strValue) const;
    CYamlNode ParseSection(ifstream& fileStream, int nBaseIndent);
 
-public:
+   public:
    CYamlParser();
    ~CYamlParser();
-   
+
    bool bParseFile(string const& strFileName);
    CYamlNode GetRoot() const;
    string GetError() const;
    bool bHasError() const;
 };
 
-#endif // YAML_PARSER_H
+#endif      // YAML_PARSER_H

@@ -5213,10 +5213,10 @@ bool CSimulation::bConfigureFromYamlFile(CConfiguration &config)
             CYamlNode profileTimes = profile.GetChild("profile_timesteps");
             if (profileTimes.IsSequence())
             {
-               vector<int> vecTimes;
+               vector<unsigned long> vecTimes;
                vector<CYamlNode> seq = profileTimes.GetSequence();
                for (auto const &node : seq)
-                  vecTimes.push_back(node.GetIntValue());
+                  vecTimes.push_back(node.GetULongValue());
                config.SetProfileTimesteps(vecTimes);
             }
          }

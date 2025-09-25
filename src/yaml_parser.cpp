@@ -109,6 +109,20 @@ int CYamlNode::GetIntValue(int nDefault) const
    return nDefault;
 }
 
+unsigned long CYamlNode::GetULongValue(unsigned long nDefault) const
+{
+   try
+   {
+      if (! m_strValue.empty())
+         return stoul(m_strValue);
+   }
+   catch (...)
+   {
+      // Return default on conversion error
+   }
+   return nDefault;
+}
+
 double CYamlNode::GetDoubleValue(double dDefault) const
 {
    try
