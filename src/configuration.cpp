@@ -382,6 +382,71 @@ vector<string> CConfiguration::GetVectorFiles() const
 
    return expandedFiles;
 }
+//===============================================================================================================================
+
+//! Get time series files with keyword expansion support
+//===============================================================================================================================
+vector<string> CConfiguration::GetTimeSeriesFiles() const
+{
+   // Case 18: Timeseries files to output - expand "all" and "usual" keywords
+   vector<string> expandedFiles;
+
+   for (string const &fileSpec : m_vecVectorFiles)
+   {
+      string fileSpecLower = fileSpec;
+      std::transform(fileSpecLower.begin(), fileSpecLower.end(),
+                     fileSpecLower.begin(), ::tolower);
+
+      if (fileSpecLower == "all")
+      {
+         // Add all possible vector outputs (Case 16 "all" mode)
+         expandedFiles.insert(expandedFiles.end(), {"wave_setup", "wave_runup", "beach_change_net", "beach_deposition", "beach_erosion", "cliff_collapse_deposition", "cliff_collapse_erosion", "cliff_collapse_net", "platform_erosion", "sea_area", "suspended", "water_level"});
+      }
+      else if (fileSpecLower == "" or fileSpecLower == "none")
+      {
+         return expandedFiles;
+      }
+      else
+      {
+         // Regular file specification - add as-is
+         expandedFiles.push_back(fileSpec);
+      }
+   }
+
+   return expandedFiles;
+}
+
+//! Get time series files with keyword expansion support
+//===============================================================================================================================
+vector<string> CConfiguration::GetFloodFiles() const
+{
+   // Case 18: Timeseries files to output - expand "all" and "usual" keywords
+   vector<string> expandedFiles;
+
+   for (string const &fileSpec : m_vecVectorFiles)
+   {
+      string fileSpecLower = fileSpec;
+      std::transform(fileSpecLower.begin(), fileSpecLower.end(),
+                     fileSpecLower.begin(), ::tolower);
+
+      if (fileSpecLower == "all")
+      {
+         // Add all possible vector outputs (Case 16 "all" mode)
+         expandedFiles.insert(expandedFiles.end(), {});
+      }
+      else if (fileSpecLower == "" or fileSpecLower == "none")
+      {
+         return expandedFiles;
+      }
+      else
+      {
+         // Regular file specification - add as-is
+         expandedFiles.push_back(fileSpec);
+      }
+   }
+
+   return expandedFiles;
+}
 
 string CConfiguration::GetOmitGridEdges() const
 {

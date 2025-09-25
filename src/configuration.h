@@ -141,9 +141,10 @@ class CConfiguration
    // Flood parameters
    bool m_bFloodInput;
    string m_strFloodCoastline;
-   string m_strRunupEquation;
+   int m_strRunupEquation;
    string m_strFloodLocations;
    string m_strFloodInputLocation;
+   vector<string> m_vecFloodFiles;
 
    // Sediment input parameters
    bool m_bSedimentInput;
@@ -161,7 +162,7 @@ class CConfiguration
    // Profile and Output Options
    bool m_bSaveProfileData;
    vector<int> m_vecProfileNumbers;
-   vector<int> m_vecProfileTimesteps;
+   vector<unsigned long> m_vecProfileTimesteps;
    bool m_bSaveParallelProfiles;
    bool m_bOutputErosionPotential;
    int m_nCurvatureWindow;
@@ -485,13 +486,17 @@ class CConfiguration
    {
       m_bFloodInput = b;
    }
+   void SetFloodFiles(vector<string> v)
+   {
+      m_vecFloodFiles = v;
+   }
    void SetFloodCoastline(string const &str)
    {
       m_strFloodCoastline = str;
    }
    void SetRunupEquation(string const &str)
    {
-      m_strRunupEquation = str;
+      m_strRunupEquation = std::stoi(str);
    }
    void SetFloodLocations(string const &str)
    {
@@ -548,7 +553,7 @@ class CConfiguration
    {
       m_vecProfileNumbers = vec;
    }
-   void SetProfileTimesteps(vector<int> const &vec)
+   void SetProfileTimesteps(vector<unsigned long> const &vec)
    {
       m_vecProfileTimesteps = vec;
    }
@@ -650,10 +655,7 @@ class CConfiguration
    {
       return m_strVectorFormat;
    }
-   vector<string> GetTimeSeriesFiles() const
-   {
-      return m_vecTimeSeriesFiles;
-   }
+   vector<string> GetTimeSeriesFiles() const;
 
    int GetCoastlineSmoothing() const
    {
@@ -887,11 +889,13 @@ class CConfiguration
    {
       return m_bFloodInput;
    }
+   vector<string> GetFloodFiles() const;
+
    string GetFloodCoastline() const
    {
       return m_strFloodCoastline;
    }
-   string GetRunupEquation() const
+   int GetRunupEquation() const
    {
       return m_strRunupEquation;
    }
@@ -953,7 +957,7 @@ class CConfiguration
    {
       return m_vecProfileNumbers;
    }
-   vector<int> GetProfileTimesteps() const
+   vector<unsigned long> GetProfileTimesteps() const
    {
       return m_vecProfileTimesteps;
    }

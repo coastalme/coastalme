@@ -1720,16 +1720,18 @@ bool CSimulation::bReadRunDataFile(void)
                   // First check for "all"
                   if (strRH.find(RASTER_ALL_OUTPUT_CODE) != string::npos)
                   {
-                     m_bSeaAreaTSSave = m_bStillWaterLevelTSSave =
-                        m_bActualPlatformErosionTSSave = m_bCliffCollapseErosionTSSave =
-                           m_bCliffCollapseDepositionTSSave =
-                              m_bCliffCollapseNetTSSave = m_bBeachErosionTSSave =
-                                 m_bBeachDepositionTSSave =
-                                    m_bBeachSedimentChangeNetTSSave =
-                                       m_bSuspSedTSSave =
-                                          m_bFloodSetupSurgeTSSave =
-                                             m_bFloodSetupSurgeRunupTSSave =
-                                                true;
+                     m_bSeaAreaTSSave = true;
+                     m_bStillWaterLevelTSSave = true;
+                     m_bActualPlatformErosionTSSave = true;
+                     m_bCliffCollapseErosionTSSave = true;
+                     m_bCliffCollapseDepositionTSSave = true;
+                     m_bCliffCollapseNetTSSave = true;
+                     m_bBeachErosionTSSave = true;
+                     m_bBeachDepositionTSSave = true;
+                     m_bBeachSedimentChangeNetTSSave = true;
+                     m_bSuspSedTSSave = true;
+                     m_bFloodSetupSurgeTSSave = true;
+                     m_bFloodSetupSurgeRunupTSSave = true;
                   }
 
                   else
@@ -5631,13 +5633,17 @@ bool CSimulation::bApplyConfiguration(CConfiguration const &config)
    m_strRasterGISOutFormat = config.GetRasterFormat();
 
    // Case 13: If needed, scale GIS raster output values
-   // TODO: Migrate from bReadRunDataFile()
+   m_bScaleRasterOutput = config.GetScaleValues();
 
    // Case 14: If needed, also output GIS raster world file
-   // TODO: Migrate from bReadRunDataFile()
+   m_bWorldFile = config.GetWorldFile();
 
    // Case 15: Elevations for raster slice output, if desired
-   // TODO: Migrate from bReadRunDataFile()
+   if (! config.GetSliceElevations().empty())
+   {
+      m_bSliceSave = true;
+      m_VdSliceElev = config.GetSliceElevations();
+   }
 
    // Case 16: Vector GIS files to output
    vector<string> vectorFiles = config.GetVectorFiles();
@@ -5719,6 +5725,40 @@ bool CSimulation::bApplyConfiguration(CConfiguration const &config)
 
    // Case 18: Time series files to output
    // TODO: Migrate from bReadRunDataFile()
+   vector<string> timeseriesFiles = config.GetTimeSeriesFiles();
+   if (! timeseriesFiles.empty())
+   {
+      for (string const &timeseriesCode : timeseriesFiles)
+      {
+         string code = timeseriesCode;
+         std::transform(code.begin(), code.end(), code.begin(), ::tolower);
+
+         if (code == "sea_area")
+            m_bSeaAreaTSSave = true;
+         if (code == "water_level")
+            m_bStillWaterLevelTSSave = true;
+         if (code == "platform_erosion")
+            m_bActualPlatformErosionTSSave = true;
+         if (code == "cliff_collapse_erosion")
+            m_bCliffCollapseErosionTSSave = true;
+         if (code == "cliff_collapse_deposition")
+            m_bCliffCollapseDepositionTSSave = true;
+         if (code == "cliff_collapse_net")
+            m_bCliffCollapseNetTSSave = true;
+         if (code == "beach_erosion")
+            m_bBeachErosionTSSave = true;
+         if (code == "beach_deposition")
+            m_bBeachDepositionTSSave = true;
+         if (code == "beach_change_net")
+            m_bBeachSedimentChangeNetTSSave = true;
+         if (code == "suspended")
+            m_bSuspSedTSSave = true;
+         if (code == "wave_setup")
+            m_bFloodSetupSurgeTSSave = true;
+         if (code == "wave_runup")
+            m_bFloodSetupSurgeRunupTSSave = true;
+      }
+   }
 
    // Case 19: Vector coastline smoothing algorithm: 0 = none, 1 = running mean,
    // 2 = Savitzky-Golay
@@ -6015,39 +6055,77 @@ bool CSimulation::bApplyConfiguration(CConfiguration const &config)
    }
 
    // Case 68: Output riverine flooding vector files
-   // TODO: Migrate from bReadRunDataFile()
-
-   // Case 69: Somthing unknown relating to riverine flooding
-   // TODO: Migrate from bReadRunDataFile()
-   if (m_bRiverineFlooding)
+   if (config.GetFloodInput())
    {
-      // m_nRunUpEquation = config.GetRunupEquation();
+      // TODO: This is a guess, please check
+      vector<string> floodFiles = config.GetFloodFiles();
+      if (! floodFiles.empty())
+      {
+         for (string const &floodCode : floodFiles)
+         {
+            string code = floodCode;
+            std::transform(code.begin(), code.end(), code.begin(), ::tolower);
+
+            if (code == "sea_area")
+               m_bSeaAreaTSSave = true;
+         }
+      }
+   }
+
+   // Case 69: Flooding runup equation?
+   if (config.GetFloodInput())
+   {
+      // TODO: This is a guess, please check
+      m_nRunUpEquation = config.GetRunupEquation();
    }
 
    // Case 70: Somthing unknown relating to riverine flooding
-   // TODO: Migrate from bReadRunDataFile()
-   if (m_bRiverineFlooding)
+   if (m_bRiverineFlooding && m_bVectorWaveFloodLineSave)
    {
+      // TODO: This is a guess, please check
+      m_bFloodLocation = ! config.GetFloodInputLocation().empty();
    }
 
    // Case 71: Somthing unknown relating to riverine flooding
-   // TODO: Migrate from bReadRunDataFile()
    if (m_bRiverineFlooding)
    {
+      // TODO: This is a guess, please check
+      m_strFloodLocationShapefile = config.GetFloodLocations();
    }
 
    // Case 72: Simulate sediment input?
-   // TODO: Migrate from bReadRunDataFile()
+   if (config.GetSedimentInput())
+   {
+      m_bSedimentInput = true;
+      m_bSedimentInputEventSave = true;
+   }
 
    // Case 73: Sediment input location (point or line shapefile)
-   // TODO: Migrate from bReadRunDataFile()
+   if (m_bSedimentInput)
+   {
+      m_strSedimentInputEventShapefile = config.GetSedimentInputLocation();
+   }
 
    // Case 74: Sediment input type: required if have shapefile [P = Point, C =
    // coast block, L = line]
-   // TODO: Migrate from bReadRunDataFile()
+   if (m_bSedimentInput)
+   {
+      strRH = config.GetSedimentInputType();
+      if (strRH.find('p') != string::npos)
+         m_bSedimentInputAtPoint = true;
+
+      else if (strRH.find('c') != string::npos)
+         m_bSedimentInputAtCoast = true;
+
+      else if (strRH.find('l') != string::npos)
+         m_bSedimentInputAlongLine = true;
+   }
 
    // Case 75: Sediment input details file (required if have shapefile)
-   // TODO: Migrate from bReadRunDataFile()
+   if (m_bSedimentInput)
+   {
+      m_strSedimentInputEventFile = config.GetSedimentInputLocation();
+   }
 
    // Case 76: Gravitational acceleration (m2/s). First check that this is a
    // valid double
@@ -6084,8 +6162,7 @@ bool CSimulation::bApplyConfiguration(CConfiguration const &config)
    // Case 83: Timesteps to save profiles
    if (m_bOutputProfileData)
    {
-      // m_VulProfileTimestep = config.GetProfileTimesteps();
-      // TODO: Migrate from bReadRunDataFile()
+      m_VulProfileTimestep = config.GetProfileTimesteps();
    }
 
    // Case 84: Output parallel profile data?
