@@ -391,31 +391,31 @@ int CSimulation::nTraceAllCoasts(void)
    // Some possible coastline start/finish points were found
    // LogStream << m_ulIter << ": " << V2DIPossibleStartCell.size() << " possible coastline start/finish points found" << endl;
 
-   // Are any of the possible start/finsh points adjacent?
-   vector<bool> VbToRemove(V2DIPossibleStartCell.size(), false);
-   for (int nThisPoint = 0; nThisPoint < static_cast<int>(V2DIPossibleStartCell.size()); nThisPoint++)
-   {
-      for (int nOtherPoint = 0; nOtherPoint < static_cast<int>(V2DIPossibleStartCell.size()); nOtherPoint++)
-      {
-         if ((nThisPoint == nOtherPoint) || VbToRemove[nThisPoint] || VbToRemove[nOtherPoint])
-            continue;
+   // // Are any of the possible start/finsh points adjacent?
+   // vector<bool> VbToRemove(V2DIPossibleStartCell.size(), false);
+   // for (int nThisPoint = 0; nThisPoint < static_cast<int>(V2DIPossibleStartCell.size()); nThisPoint++)
+   // {
+   //    for (int nOtherPoint = 0; nOtherPoint < static_cast<int>(V2DIPossibleStartCell.size()); nOtherPoint++)
+   //    {
+   //       if ((nThisPoint == nOtherPoint) || VbToRemove[nThisPoint] || VbToRemove[nOtherPoint])
+   //          continue;
+   //
+   //       if (bIsAdjacentEdgeCell(&V2DIPossibleStartCell[nThisPoint], &V2DIPossibleStartCell[nOtherPoint]))
+   //          VbToRemove[nOtherPoint] = true;
+   //    }
+   // }
 
-         if (bIsAdjacentEdgeCell(&V2DIPossibleStartCell[nThisPoint], &V2DIPossibleStartCell[nOtherPoint]))
-            VbToRemove[nOtherPoint] = true;
-      }
-   }
-
-   // Remove each start/finish point which has been flagged as adjcent
-   for (int nPoint = 0; nPoint < static_cast<int>(VbToRemove.size()); nPoint++)
-   {
-      if (VbToRemove[nPoint])
-      {
-         V2DIPossibleStartCell.erase(V2DIPossibleStartCell.begin() + nPoint);
-         VbPossibleStartCellLHEdge.erase(VbPossibleStartCellLHEdge.begin() + nPoint);
-         VnSearchDirection.erase(VnSearchDirection.begin() + nPoint);
-         VbTraced.erase(VbTraced.begin() + nPoint);
-      }
-   }
+   // // Remove each start/finish point which has been flagged as adjacent
+   // for (int nPoint = 0; nPoint < static_cast<int>(VbToRemove.size()); nPoint++)
+   // {
+   //    if (VbToRemove[nPoint])
+   //    {
+   //       V2DIPossibleStartCell.erase(V2DIPossibleStartCell.begin() + nPoint);
+   //       VbPossibleStartCellLHEdge.erase(VbPossibleStartCellLHEdge.begin() + nPoint);
+   //       VnSearchDirection.erase(VnSearchDirection.begin() + nPoint);
+   //       VbTraced.erase(VbTraced.begin() + nPoint);
+   //    }
+   // }
 
    // All OK, so trace from each of these possible start/finish points
    for (unsigned int n = 0; n < V2DIPossibleStartCell.size(); n++)

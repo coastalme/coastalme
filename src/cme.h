@@ -754,7 +754,7 @@ double const CLIFF_NOTCH_CUTOFF_DISTANCE = 2;               // Cut-off SWL dista
 
 double const DBL_NODATA = -9999;
 
-string const PROGRAM_NAME = "Coastal Modelling Environment (CoastalME) version 1.4.0 (24 Sep 2025)";
+string const PROGRAM_NAME = "Coastal Modelling Environment (CoastalME) version 1.4.0 (25 Sep 2025)";
 string const PROGRAM_NAME_SHORT = "CME";
 string const CME_INI = "cme.ini";
 
