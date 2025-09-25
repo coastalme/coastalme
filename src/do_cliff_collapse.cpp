@@ -30,6 +30,7 @@ using std::ios;
 #include "simulation.h"
 #include "cliff.h"
 #include "coast_landform.h"
+#include "2di_point.h"
 
 //===============================================================================================================================
 //! Update accumulated wave energy in coastal landform objects. If the object is a cliff, then deepen the incised notch. If the notch is sufficiently deep, cliff collapse occurs.
@@ -238,7 +239,7 @@ int CSimulation::nDoCliffCollapse(int const nCoast, CRWCliff* pCliff, double& dF
    // Notch layer is OK, so flag the coastline cliff object as having collapsed
    pCliff->SetCliffCollapsed();
 
-   int const nTopLayer = m_pRasterGrid->m_Cell[nX][nY].nGetTopLayerAboveBasement();
+   int const nTopLayer = m_pRasterGrid->m_Cell[nX][nY].nGetNumOfTopLayerAboveBasement();
 
    // Safety check
    if (nTopLayer == INT_NODATA)
@@ -464,7 +465,7 @@ int CSimulation::nDoCliffCollapse(int const nCoast, CRWCliff* pCliff, double& dF
    m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->SetCliffNotchIncisionDepth(m_dCellSide);
 
    // Final safety check
-   int const nNewTopLayer = m_pRasterGrid->m_Cell[nX][nY].nGetTopLayerAboveBasement();
+   int const nNewTopLayer = m_pRasterGrid->m_Cell[nX][nY].nGetNumOfTopLayerAboveBasement();
    if (nNewTopLayer == INT_NODATA)
       return RTN_ERR_NO_TOP_LAYER;
 
@@ -534,6 +535,269 @@ int CSimulation::nDoCliffCollapseTalusDeposition(int const nCoast, CRWCliff cons
    // Add the sediment from the collapse to the talus object for this layer
    pTalus->AddSandDepth(dSandFromCollapse);
    pTalus->AddCoarseDepth(dCoarseFromCollapse);
+
+   return RTN_OK;
+}
+
+//===============================================================================================================================
+//! Move talus from cliff collapse to unconsolidated sediment
+//===============================================================================================================================
+int CSimulation::nMoveTalusToUnconsolidated(void)
+{
+   for (int nX = 0; nX < m_nXGridSize; nX++)
+   {
+      for (int nY = 0; nY < m_nYGridSize; nY++)
+      {
+         int nLayers = m_pRasterGrid->m_Cell[nX][nY].nGetNumLayers();
+         for (int nLayer = 0; nLayer < nLayers; nLayer++)
+         {
+            // Is there talus on this cell layer?
+            CRWCellTalus* pTalus = m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nLayer)->pGetTalus();
+
+            if (pTalus == NULL)
+               // No talus
+               continue;
+
+            // OK we have some talus to redistribute, so determine the cells to which it will be moved. Find all surrounding cells with a top elevation (including talus) which is less than the top elevation (including talus) of this cell
+            double dTalusSand = pTalus->dGetSandDepth();
+            double dTalusCoarse = pTalus->dGetCoarseDepth();
+            double dThisTopElev = m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElevIncTalus();
+            double dAdjElev;
+            double dTotElevDiff;
+            vector<double> VdAdjElevDiff;
+            vector<CGeom2DIPoint> VptAdj;
+
+            for (int nSearchDirection = NORTH; nSearchDirection <= NORTH_WEST; nSearchDirection++)
+            {
+               int nXAdj;
+               int nYAdj;
+
+               switch (nSearchDirection)
+               {
+               case NORTH:
+                  nXAdj = nX - 1;
+                  nYAdj = nY;
+
+                  if (bIsWithinValidGrid(nXAdj, nYAdj))
+                  {
+                     dAdjElev = m_pRasterGrid->m_Cell[nXAdj][nYAdj].dGetSedimentTopElevIncTalus();
+                     if (dAdjElev < dThisTopElev)
+                     {
+                        VptAdj.push_back(CGeom2DIPoint(nXAdj, nYAdj));
+                        VdAdjElevDiff.push_back(dAdjElev);
+                        dTotElevDiff += dAdjElev;
+                     }
+                  }
+
+                  break;
+
+               case NORTH_EAST:
+                  nXAdj = nX;
+                  nYAdj = nY - 1;
+
+                  if (bIsWithinValidGrid(nXAdj, nYAdj))
+                  {
+                     dAdjElev = m_pRasterGrid->m_Cell[nXAdj][nYAdj].dGetSedimentTopElevIncTalus();
+                     if (dAdjElev < dThisTopElev)
+                     {
+                        VptAdj.push_back(CGeom2DIPoint(nXAdj, nYAdj));
+                        VdAdjElevDiff.push_back(dAdjElev);
+                        dTotElevDiff += dAdjElev;
+                     }
+                  }
+
+                  break;
+
+               case EAST:
+                  nXAdj = nX;
+                  nYAdj = nY - 1;
+
+                  if (bIsWithinValidGrid(nXAdj, nYAdj))
+                  {
+                     dAdjElev = m_pRasterGrid->m_Cell[nXAdj][nYAdj].dGetSedimentTopElevIncTalus();
+                     if (dAdjElev < dThisTopElev)
+                     {
+                        VptAdj.push_back(CGeom2DIPoint(nXAdj, nYAdj));
+                        VdAdjElevDiff.push_back(dAdjElev);
+                        dTotElevDiff += dAdjElev;
+                     }
+                  }
+
+                  break;
+
+               case SOUTH_EAST:
+                  nXAdj = nX + 1;
+                  nYAdj = nY;
+
+                  if (bIsWithinValidGrid(nXAdj, nYAdj))
+                  {
+                     dAdjElev = m_pRasterGrid->m_Cell[nXAdj][nYAdj].dGetSedimentTopElevIncTalus();
+                     if (dAdjElev < dThisTopElev)
+                     {
+                        VptAdj.push_back(CGeom2DIPoint(nXAdj, nYAdj));
+                        VdAdjElevDiff.push_back(dAdjElev);
+                        dTotElevDiff += dAdjElev;
+                     }
+                  }
+
+                  break;
+
+               case SOUTH:
+                  nXAdj = nX + 1;
+                  nYAdj = nY;
+
+                  if (bIsWithinValidGrid(nXAdj, nYAdj))
+                  {
+                     dAdjElev = m_pRasterGrid->m_Cell[nXAdj][nYAdj].dGetSedimentTopElevIncTalus();
+                     if (dAdjElev < dThisTopElev)
+                     {
+                        VptAdj.push_back(CGeom2DIPoint(nXAdj, nYAdj));
+                        VdAdjElevDiff.push_back(dAdjElev);
+                        dTotElevDiff += dAdjElev;
+                     }
+                  }
+
+                  break;
+
+               case SOUTH_WEST:
+                  nXAdj = nX + 1;
+                  nYAdj = nY;
+
+                  if (bIsWithinValidGrid(nXAdj, nYAdj))
+                  {
+                     dAdjElev = m_pRasterGrid->m_Cell[nXAdj][nYAdj].dGetSedimentTopElevIncTalus();
+                     if (dAdjElev < dThisTopElev)
+                     {
+                        VptAdj.push_back(CGeom2DIPoint(nXAdj, nYAdj));
+                        VdAdjElevDiff.push_back(dAdjElev);
+                        dTotElevDiff += dAdjElev;
+                     }
+                  }
+
+                  break;
+
+               case WEST:
+                  nXAdj = nX;
+                  nYAdj = nY + 1;
+
+                  if (bIsWithinValidGrid(nXAdj, nYAdj))
+                  {
+                     dAdjElev = m_pRasterGrid->m_Cell[nXAdj][nYAdj].dGetSedimentTopElevIncTalus();
+                     if (dAdjElev < dThisTopElev)
+                     {
+                        VptAdj.push_back(CGeom2DIPoint(nXAdj, nYAdj));
+                        VdAdjElevDiff.push_back(dAdjElev);
+                        dTotElevDiff += dAdjElev;
+                     }
+                  }
+
+                  break;
+
+               case NORTH_WEST:
+                  nXAdj = nX;
+                  nYAdj = nY + 1;
+
+                  if (bIsWithinValidGrid(nXAdj, nYAdj))
+                  {
+                     dAdjElev = m_pRasterGrid->m_Cell[nXAdj][nYAdj].dGetSedimentTopElevIncTalus();
+                     if (dAdjElev < dThisTopElev)
+                     {
+                        VptAdj.push_back(CGeom2DIPoint(nXAdj, nYAdj));
+                        VdAdjElevDiff.push_back(dAdjElev);
+                        dTotElevDiff += dAdjElev;
+                     }
+                  }
+
+                  break;
+               }
+            }
+
+            int nLower = static_cast<int>(VptAdj.size());
+            if (nLower == 0)
+               // None of the adjacent cells are lower
+               continue;
+
+            // OK, at least one adjacent cell is lower. Move talus to each adjacent cell in proportion to the elevation difference
+            vector<double> VdPropToMove(nLower);
+            for (int n = 0; n < nLower; n++)
+               VdPropToMove[n] = VdAdjElevDiff[n] / dTotElevDiff;
+
+            // TEST TODO PROPERLY LATER
+            double dRemovalRate = 0.01;      // external CRS units per hour e.g. metres depth per hour (since timestep is in hours)
+            for (int n = 0; n < nLower; n++)
+            {
+               if (dTalusSand > 0)
+               {
+                  // We will deposit some talus sand onto the top layer of this adjacent cell
+                  int nXAdj = VptAdj[n].nGetX();
+                  int nYAdj = VptAdj[n].nGetY();
+
+                  int nTopLayer = m_pRasterGrid->m_Cell[nXAdj][nYAdj].nGetNumOfTopLayerAboveBasement();
+                  double const dSandNow = m_pRasterGrid->m_Cell[nXAdj][nYAdj].pGetLayerAboveBasement(nTopLayer)->pGetUnconsolidatedSediment()->dGetSandDepth();
+
+                  double dToDepositHere = tMin(dTalusSand, dTalusSand * dRemovalRate * VdPropToMove[n] * m_dTimeStep);
+
+                  m_pRasterGrid->m_Cell[nXAdj][nYAdj].pGetLayerAboveBasement(nTopLayer)->pGetUnconsolidatedSediment()->SetSandDepth(dSandNow + dToDepositHere);
+
+                  // Set the changed-this-timestep switch
+                  m_bUnconsChangedThisIter[nTopLayer] = true;
+
+                  // Now remove the depth deposited from the sand talus total
+                  dTalusSand -= dToDepositHere;
+
+                  // Safety check
+                  dTalusSand = tMax(dTalusSand, 0.0);
+
+                  // Update the cell layer's sand talus value
+                  pTalus->SetSandDepth(dTalusSand);
+
+                  LogStream << m_ulIter << ": " << dToDepositHere << " depth of talus sand deposited at [" << nXAdj << "][" << nYAdj << ", on [" << nX << "][" << nY << "] " << dTalusSand << " depth of talus sand still to deposit" << endl;
+
+                  // TODO Update the cell's talus deposition, and total talus deposition, values
+                  // m_pRasterGrid->m_Cell[nX][nY].IncrBeachDeposition(dToDepositHere);
+               }
+
+               if (dTalusCoarse > 0)
+               {
+                  // We will deposit some talus coarse onto the top layer of this adjacent cell
+                  int nXAdj = VptAdj[n].nGetX();
+                  int nYAdj = VptAdj[n].nGetY();
+
+                  int nTopLayer = m_pRasterGrid->m_Cell[nXAdj][nYAdj].nGetNumOfTopLayerAboveBasement();
+                  double const dCoarseNow = m_pRasterGrid->m_Cell[nXAdj][nYAdj].pGetLayerAboveBasement(nTopLayer)->pGetUnconsolidatedSediment()->dGetCoarseDepth();
+
+                  double dToDepositHere = tMin(dTalusCoarse, dTalusCoarse * dRemovalRate * VdPropToMove[n] * m_dTimeStep);
+
+                  m_pRasterGrid->m_Cell[nXAdj][nYAdj].pGetLayerAboveBasement(nTopLayer)->pGetUnconsolidatedSediment()->SetCoarseDepth(dCoarseNow + dToDepositHere);
+
+                  // Set the changed-this-timestep switch
+                  m_bUnconsChangedThisIter[nTopLayer] = true;
+
+                  // Now remove the depth deposited from the coarse talus total
+                  dTalusCoarse -= dToDepositHere;
+
+                  // Safety check
+                  dTalusCoarse = tMax(dTalusCoarse, 0.0);
+
+                  // Update the cell layer's coarse talus value
+                  pTalus->SetCoarseDepth(dTalusCoarse);
+
+                  LogStream << m_ulIter << ": " << dToDepositHere << " depth of talus coarse deposited at [" << nXAdj << "][" << nYAdj << ", on [" << nX << "][" << nY << "] " << dTalusCoarse << " depth of talus coarse still to deposit" << endl;
+
+                  // TODO Update the cell's talus deposition, and total talus deposition, values
+                  // m_pRasterGrid->m_Cell[nX][nY].IncrBeachDeposition(dToDepositHere);
+               }
+            }
+
+            // Has all the talus gone from this layer? If so, then delete it
+            if (bFPIsEqual(dTalusSand + dTalusCoarse, 0.0, TOLERANCE))
+            {
+               LogStream << m_ulIter << ": deleting talus object at [" << nX << "][" << nY << "]" << endl;
+               m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nLayer)->DeleteTalus();
+            }
+         }
+      }
+   }
 
    return RTN_OK;
 }

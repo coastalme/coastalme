@@ -327,7 +327,7 @@ int CSimulation::nLandformToGrid(int const nCoast, int const nPoint)
       //    // if (nY > m_nYMaxBoundingBox)
       //    //    m_nYMaxBoundingBox = nY;
       //
-      //    int const nTopLayer = m_pRasterGrid->m_Cell[nX][nY].nGetTopLayerAboveBasement();
+      //    int const nTopLayer = m_pRasterGrid->m_Cell[nX][nY].nGetNumOfTopLayerAboveBasement();
       //
       //    // Safety check
       //    if (nTopLayer == INT_NODATA)

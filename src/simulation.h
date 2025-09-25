@@ -14,7 +14,6 @@
 #ifndef SIMULATION_H
 #define SIMULATION_H
 /* ===============================================================================================================================
-
    This file is part of CoastalME, the Coastal Modelling Environment.
 
    CoastalME is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
@@ -22,7 +21,6 @@
    This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
    You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-
 ===============================================================================================================================*/
 #include <vector>
 using std::vector;
@@ -62,7 +60,7 @@ class CRWCoast;
 class CGeomProfile;
 class CGeomCoastPolygon;
 class CRWCliff;
-class CSedInputEvent;
+class CRWSedInputEvent;
 class CRWCellLandform;
 
 class CSimulation
@@ -689,7 +687,7 @@ class CSimulation
    //! Duration of simulation, in hours
    double m_dSimDuration;
 
-   //! The length of an iteration (a time step) in hours
+   //! The length of an iteration (a timestep) in hours
    double m_dTimeStep;
 
    //! Time simulated so far, in hours
@@ -1579,7 +1577,7 @@ class CSimulation
    vector<int> m_VCellFloodLocation;
 
    //! Sediment input events
-   vector<CSedInputEvent*> m_pVSedInputEvent;
+   vector<CRWSedInputEvent*> m_pVSedInputEvent;
 
    //! The c++11 random number generators
    default_random_engine m_Rand[NUMBER_OF_RNGS];
@@ -1639,6 +1637,7 @@ class CSimulation
    int nDoAllWaveEnergyToCoastLandforms(void);
    int nDoCliffCollapse(int const, CRWCliff *, double&, double&, double&, int&, double&, double&);
    int nDoCliffCollapseTalusDeposition(int const, CRWCliff const*, double const, double const, int const);
+   int nMoveTalusToUnconsolidated(void);
    int nUpdateGrid(void);
 
    // For cliff toe location

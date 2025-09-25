@@ -344,8 +344,9 @@ class CGeomCell
    double dGetTotSuspendedSediment(void) const;
 
    int nGetTopNonZeroLayerAboveBasement(void) const;
-   int nGetTopLayerAboveBasement(void) const;
+   int nGetNumOfTopLayerAboveBasement(void) const;
 
+   int nGetNumLayers(void) const;
    double dGetConsSedTopElevForLayerAboveBasement(int const) const;
    CRWCellLayer* pGetLayerAboveBasement(int const);
    void AppendLayers(int const);

@@ -71,5 +71,6 @@ class CRWCellLayer
 
    CRWCellTalus* pGetTalus(void);
    CRWCellTalus* pGetOrCreateTalus(void);
+   void DeleteTalus(void);
 };
 #endif // CELL_LAYER_H

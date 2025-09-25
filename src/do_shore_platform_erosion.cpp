@@ -1,5 +1,4 @@
 /*!
-
    \file do_shore_platform_erosion.cpp
    \brief Erodes the consolidated sediment of the shore platform. Eroded sediment from the shore platform becomes unconsolidated sediment stored in coastal polygons
    \details TODO 001 A more detailed description of these routines.
@@ -7,11 +6,9 @@
    \author Andres Payo
    \date 2025
    \copyright GNU General Public License
-
 */
 
 /* ==============================================================================================================================
-
    This file is part of CoastalME, the Coastal Modelling Environment.
 
    CoastalME is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
@@ -19,7 +16,6 @@
    This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
    You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-
 ==============================================================================================================================*/
 #include <assert.h>
 
@@ -108,12 +104,10 @@ int CSimulation::nDoAllShorePlatFormErosion(void)
 
          if (bDownCoast)
             pProfile = m_VCoast[nCoast].pGetProfileWithDownCoastSeq(nn);
-
          else
             pProfile = m_VCoast[nCoast].pGetProfileWithUpCoastSeq(nn);
 
          int const nRet = nCalcPotentialPlatformErosionOnProfile(nCoast, pProfile);
-
          if (nRet != RTN_OK)
             return nRet;
       }
@@ -125,12 +119,10 @@ int CSimulation::nDoAllShorePlatFormErosion(void)
 
          // Calculate potential erosion for sea cells between this profile and the next profile (or up to the edge of the grid) on these cells
          int nRet = nCalcPotentialPlatformErosionBetweenProfiles(nCoast, pProfile, DIRECTION_DOWNCOAST);
-
          if (nRet != RTN_OK)
             return nRet;
 
          nRet = nCalcPotentialPlatformErosionBetweenProfiles(nCoast, pProfile, DIRECTION_UPCOAST);
-
          if (nRet != RTN_OK)
             return nRet;
       }
@@ -220,9 +212,9 @@ int CSimulation::nCalcPotentialPlatformErosionOnProfile(int const nCoast, CGeomP
    double const dSpacingXY = dProfileLenXY / (nProfSize - 1);
 
    // Set up vectors for the coastline-normal profile elevations. The length of this vector line is given by the number of cells 'under' the profile. Thus each point on the vector relates to a single cell in the grid. This assumes that all points on the profile vector are equally spaced (not quite true, depends on the orientation of the line segments which comprise the profile). The elevation of each of these profile points is the elevation of the centroid of the cell that is 'under' the point. However we cannot always be confident that this is the 'true' elevation of the point on the vector since (unless the profile runs planview N-S or W-E) the vector does not always run exactly through the centroid of the cell
-   vector<double> VdProfileZ(nProfSize, 0);              // Initial (pre-erosion) elevation of both consolidated and unconsolidated sediment for cells 'under' the profile
-   vector<double> VdProfileDistXY(nProfSize, 0);         // Along-profile distance measured from the coast, in external CRS units
-   vector<double> dVConsProfileZ(nProfSize, 0);          // Initial (pre-erosion) elevation of consolidated sediment only for cells 'under' the profile
+   vector<double> VdProfileZ(nProfSize, 0);                    // Initial (pre-erosion) elevation of both consolidated and unconsolidated sediment for cells 'under' the profile
+   vector<double> VdProfileDistXY(nProfSize, 0);               // Along-profile distance measured from the coast, in external CRS units
+   vector<double> dVConsProfileZ(nProfSize, 0);                // Initial (pre-erosion) elevation of consolidated sediment only for cells 'under' the profile
    vector<double> dVConsZDiff(nProfSize, 0);
    vector<double> dVConsSlope(nProfSize, 0);
 
@@ -270,8 +262,8 @@ int CSimulation::nCalcPotentialPlatformErosionOnProfile(int const nCoast, CGeomP
       dVConsSlope = dVSmoothProfileSlope(&dVConsSlope);
    }
 
-   vector<double> dVProfileDepthOverDB(nProfSize, 0);      // Depth over wave breaking depth at the coastline-normal sample points
-   vector<double> dVProfileErosionPotential(nProfSize, 0); // Erosion potential at the coastline-normal sample points
+   vector<double> dVProfileDepthOverDB(nProfSize, 0);          // Depth over wave breaking depth at the coastline-normal sample points
+   vector<double> dVProfileErosionPotential(nProfSize, 0);     // Erosion potential at the coastline-normal sample points
 
    // Calculate the erosion potential along this profile using the shape function
    double dTotalErosionPotential = 0;
@@ -341,9 +333,7 @@ int CSimulation::nCalcPotentialPlatformErosionOnProfile(int const nCoast, CGeomP
 
       // Safety check: if thickness model has some jumps, dVConsProfileZ might be very high, limiting dSCAPESlope to 0 because all time erode a high fix quantity
       if (dSCAPESlope > 1)
-      {
          dDeltaZ = 0;
-      }
 
       int const nX = pProfile->pPtiVGetCellsInProfile()->at(i).nGetX();
       int const nY = pProfile->pPtiVGetCellsInProfile()->at(i).nGetY();
@@ -374,9 +364,7 @@ int CSimulation::nCalcPotentialPlatformErosionOnProfile(int const nCoast, CGeomP
 
          // Update this-timestep totals
          m_ulThisIterNumPotentialPlatformErosionCells++;
-         m_dThisIterPotentialPlatformErosion -= dDeltaZ; // Since dDeltaZ is a -ve value
-                                                         // assert(isfinite(m_dThisIterPotentialPlatformErosion));
-                                                         // assert(m_dThisIterPotentialPlatformErosion >= 0);
+         m_dThisIterPotentialPlatformErosion -= dDeltaZ;       // Since dDeltaZ is a -ve value
 
          // Increment the check values
          m_ulTotPotentialPlatformErosionOnProfiles++;
@@ -392,7 +380,6 @@ int CSimulation::nCalcPotentialPlatformErosionOnProfile(int const nCoast, CGeomP
    if (m_bOutputConsolidatedProfileData)
    {
       int const nRet = nSaveProfile(nCoast, pProfile, nProfSize, &VdProfileDistXY, &dVConsProfileZ, &dVProfileDepthOverDB, &dVProfileErosionPotential, &dVConsSlope, &dVRecessionXY, &dVChangeElevZ, pProfile->pPtiVGetCellsInProfile(), &dVSCAPEXY);
-
       if (nRet != RTN_OK)
          return nRet;
    }
@@ -429,7 +416,6 @@ int CSimulation::nCalcPotentialPlatformErosionBetweenProfiles(int const nCoast, 
 
       if (nDirection == DIRECTION_DOWNCOAST)
          nThisPointOnCoast += nDistFromProfile;
-
       else
          nThisPointOnCoast -= nDistFromProfile;
 
@@ -437,7 +423,6 @@ int CSimulation::nCalcPotentialPlatformErosionBetweenProfiles(int const nCoast, 
       if ((nDirection == DIRECTION_UPCOAST) && (nThisPointOnCoast < 0))
       {
          // LogStream << m_ulIter << ": LEAVING LOOP since hit nThisPointOnCoast = " << nThisPointOnCoast << " while doing potential platform erosion " << (nDirection == DIRECTION_DOWNCOAST ? "down" : "up") << "-coast from profile = " << nProfile << ", dist from profile = " <<  nDistFromProfile << endl;
-
          break;
       }
 
@@ -445,7 +430,6 @@ int CSimulation::nCalcPotentialPlatformErosionBetweenProfiles(int const nCoast, 
       if ((nDirection == DIRECTION_DOWNCOAST) && (nThisPointOnCoast >= nCoastMax))
       {
          // LogStream << m_ulIter << ": LEAVING LOOP since hit nThisPointOnCoast = " << nThisPointOnCoast << " while doing potential platform erosion " << (nDirection == DIRECTION_DOWNCOAST ? "down" : "up") << "-coast from profile = " << nProfile << ", dist from profile = " <<  nDistFromProfile << endl;
-
          break;
       }
 
@@ -458,7 +442,6 @@ int CSimulation::nCalcPotentialPlatformErosionBetweenProfiles(int const nCoast, 
          // This parallel profile is not in the active zone, so no platform erosion here. Move on to the next point along the coastline in this direction
          // if (m_nLogFileDetail == LOG_FILE_ALL)
          // LogStream << m_ulIter << ": not in active zone at coastline " << nCoast << " coast point " << nThisPointOnCoast << " when constructing parallel profile for potential platform erosion. Working from profile " << pProfile->nGetProfileID() << ", " << (nDirection == DIRECTION_DOWNCOAST ? "down" : "up") << "-coast, dist from profile = " << nDistFromProfile << endl;
-
          continue;
       }
 
@@ -671,9 +654,7 @@ int CSimulation::nCalcPotentialPlatformErosionBetweenProfiles(int const nCoast, 
 
          // Safety check: if thickness model has some jumps, dVConsProfileZ might be very high, limiting dSCAPESlope to 0 because all time erode a high fix quantity
          if (dSCAPESlope > 1)
-         {
             dDeltaZ = 0;
-         }
 
          int const nXPar = PtiVGridParProfile[i].nGetX();
          int const nYPar = PtiVGridParProfile[i].nGetY();
@@ -910,7 +891,6 @@ void CSimulation::DoActualPlatformErosionOnCell(int const nX, int const nY)
                   }
                }
             }
-
             else if (nDirection[n] == NORTH_EAST)
             {
                nXAdj = nX + 1;
@@ -927,7 +907,6 @@ void CSimulation::DoActualPlatformErosionOnCell(int const nX, int const nY)
                   }
                }
             }
-
             else if (nDirection[n] == EAST)
             {
                nXAdj = nX + 1;
@@ -944,7 +923,6 @@ void CSimulation::DoActualPlatformErosionOnCell(int const nX, int const nY)
                   }
                }
             }
-
             else if (nDirection[n] == SOUTH_EAST)
             {
                nXAdj = nX + 1;
@@ -961,7 +939,6 @@ void CSimulation::DoActualPlatformErosionOnCell(int const nX, int const nY)
                   }
                }
             }
-
             else if (nDirection[n] == SOUTH)
             {
                nXAdj = nX;
@@ -978,7 +955,6 @@ void CSimulation::DoActualPlatformErosionOnCell(int const nX, int const nY)
                   }
                }
             }
-
             else if (nDirection[n] == SOUTH_WEST)
             {
                nXAdj = nX - 1;
@@ -995,7 +971,6 @@ void CSimulation::DoActualPlatformErosionOnCell(int const nX, int const nY)
                   }
                }
             }
-
             else if (nDirection[n] == WEST)
             {
                nXAdj = nX - 1;
@@ -1012,7 +987,6 @@ void CSimulation::DoActualPlatformErosionOnCell(int const nX, int const nY)
                   }
                }
             }
-
             else if (nDirection[n] == NORTH_WEST)
             {
                nXAdj = nX - 1;
@@ -1083,11 +1057,13 @@ bool CSimulation::bCreateErosionPotentialLookUp(vector<double> *VdDepthOverDBIn,
    int nLastVal = -1;
 
    for (int n = 1; n < nSize - 1; n++)
+   {
       if (m_VdErosionPotential[n] > 0)
       {
          nLastVal = n;
          break;
       }
+   }
 
    if (nLastVal > 0)
    {

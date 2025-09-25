@@ -1,5 +1,4 @@
 /*!
-
   \file locate_cliff_toe.cpp
   \brief Locates and traces the cliff toe on the raster grid
   \details TODO 001 A more detailed description of these routines.
@@ -8,7 +7,6 @@
   \author Andres Payo
   \date 2025
   \copyright GNU General Public License
-
 */
 
 /* ==============================================================================================================================

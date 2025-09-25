@@ -545,6 +545,13 @@ double CGeomCell::dGetTotSuspendedSediment(void) const
    return (m_dTotSuspendedSediment);
 }
 
+//! Returns the number of sediment layers on the cell (some could have zero thickness)
+int CGeomCell::nGetNumLayers(void) const
+{
+   return static_cast<int>(m_VLayerAboveBasement.size());
+}
+
+
 //! Returns the index of the topmost sediment layer (layer 0 being the one just above basement) with non-zero thickness. If there is no such layer, it returns NO_NONZERO_THICKNESS_LAYERS
 int CGeomCell::nGetTopNonZeroLayerAboveBasement(void) const
 {
@@ -562,8 +569,8 @@ int CGeomCell::nGetTopNonZeroLayerAboveBasement(void) const
    return nTop;
 }
 
-//! Returns the index of the topmost sediment layer (layer 0 being the one just above basement), which could have zero thickness
-int CGeomCell::nGetTopLayerAboveBasement(void) const
+//! Returns the index of the topmost sediment layer (layer 0 being the one just above basement). Note that this layer could have zero thickness
+int CGeomCell::nGetNumOfTopLayerAboveBasement(void) const
 {
    if (m_VLayerAboveBasement.empty())
       return INT_NODATA;

@@ -163,3 +163,10 @@ CRWCellTalus* CRWCellLayer::pGetOrCreateTalus(void)
    return m_pTalus;
 }
 
+// Deletes this layer's talus object and resets the pointer
+void CRWCellLayer::DeleteTalus(void)
+{
+   delete m_pTalus;
+   m_pTalus = NULL;
+}
+
