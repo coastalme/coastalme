@@ -106,3 +106,5 @@ src/Makefile
 src/Release/
 utils/
 valgrind*
+
+**/.DS_Store
