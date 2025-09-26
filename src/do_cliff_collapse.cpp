@@ -17,6 +17,7 @@
 
    You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ==============================================================================================================================*/
+#include <cstddef>
 #include <assert.h>
 
 #include <cmath>
@@ -29,6 +30,7 @@ using std::ios;
 #include "cme.h"
 #include "simulation.h"
 #include "cliff.h"
+#include "cell_talus.h"
 #include "coast_landform.h"
 #include "2di_point.h"
 
@@ -548,7 +550,7 @@ int CSimulation::nMoveTalusToUnconsolidated(void)
    {
       for (int nY = 0; nY < m_nYGridSize; nY++)
       {
-         int nLayers = m_pRasterGrid->m_Cell[nX][nY].nGetNumLayers();
+         int const nLayers = m_pRasterGrid->m_Cell[nX][nY].nGetNumLayers();
          for (int nLayer = 0; nLayer < nLayers; nLayer++)
          {
             // Is there talus on this cell layer?
@@ -561,7 +563,7 @@ int CSimulation::nMoveTalusToUnconsolidated(void)
             // OK we have some talus to redistribute, so determine the cells to which it will be moved. Find all surrounding cells with a top elevation (including talus) which is less than the top elevation (including talus) of this cell
             double dTalusSand = pTalus->dGetSandDepth();
             double dTalusCoarse = pTalus->dGetCoarseDepth();
-            double dThisTopElev = m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElevIncTalus();
+            double const dThisTopElev = m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElevIncTalus();
             double dAdjElev;
             double dTotElevDiff = 0;
             vector<double> VdAdjElevDiff;
@@ -712,7 +714,7 @@ int CSimulation::nMoveTalusToUnconsolidated(void)
                }
             }
 
-            int nLower = static_cast<int>(VptAdj.size());
+            int const nLower = static_cast<int>(VptAdj.size());
             if (nLower == 0)
                // None of the adjacent cells are lower
                continue;
@@ -722,28 +724,34 @@ int CSimulation::nMoveTalusToUnconsolidated(void)
             for (int n = 0; n < nLower; n++)
                VdPropToMove[n] = VdAdjElevDiff[n] / dTotElevDiff;
 
-            // TEST TODO PROPERLY LATER
-            double dRemovalRate = 0.01;      // external CRS units per hour e.g. metres depth per hour (since timestep is in hours)
+            // TODO Removal rate:
+            // * to be different for sand and coarse
+            // * to include talus erodibility (this to be average of cons and uncons erodibilities?)
+            // * must depend on SWL and runup.
+            // Note we are ignoring subaerial processes.
+            double const dRemovalRate = 100;      // TEST external CRS units per hour e.g. metres depth per hour (since timestep is in hours)
             for (int n = 0; n < nLower; n++)
             {
                if (dTalusSand > 0)
                {
                   // We will deposit some talus sand onto the top layer of this adjacent cell
-                  int nXAdj = VptAdj[n].nGetX();
-                  int nYAdj = VptAdj[n].nGetY();
+                  int const nXAdj = VptAdj[n].nGetX();
+                  int const nYAdj = VptAdj[n].nGetY();
 
-                  int nTopLayer = m_pRasterGrid->m_Cell[nXAdj][nYAdj].nGetNumOfTopLayerAboveBasement();
+                  int const nTopLayer = m_pRasterGrid->m_Cell[nXAdj][nYAdj].nGetNumOfTopLayerAboveBasement();
                   double const dSandNow = m_pRasterGrid->m_Cell[nXAdj][nYAdj].pGetLayerAboveBasement(nTopLayer)->pGetUnconsolidatedSediment()->dGetSandDepth();
 
-                  double dToDepositHere = tMin(dTalusSand, dTalusSand * dRemovalRate * VdPropToMove[n] * m_dTimeStep);
+                  double const dPotentialDepthToMove = dTalusSand * dRemovalRate * VdPropToMove[n] * m_dTimeStep;
 
-                  m_pRasterGrid->m_Cell[nXAdj][nYAdj].pGetLayerAboveBasement(nTopLayer)->pGetUnconsolidatedSediment()->SetSandDepth(dSandNow + dToDepositHere);
+                  double const dActualDepthToMove = tMin(dTalusSand, dPotentialDepthToMove);
+
+                  m_pRasterGrid->m_Cell[nXAdj][nYAdj].pGetLayerAboveBasement(nTopLayer)->pGetUnconsolidatedSediment()->SetSandDepth(dSandNow + dActualDepthToMove);
 
                   // Set the changed-this-timestep switch
                   m_bUnconsChangedThisIter[nTopLayer] = true;
 
                   // Now remove the depth deposited from the sand talus total
-                  dTalusSand -= dToDepositHere;
+                  dTalusSand -= dActualDepthToMove;
 
                   // Safety check
                   dTalusSand = tMax(dTalusSand, 0.0);
@@ -751,30 +759,32 @@ int CSimulation::nMoveTalusToUnconsolidated(void)
                   // Update the cell layer's sand talus value
                   pTalus->SetSandDepth(dTalusSand);
 
-                  LogStream << m_ulIter << ": " << dToDepositHere << " depth of talus sand deposited at [" << nXAdj << "][" << nYAdj << ", on [" << nX << "][" << nY << "] " << dTalusSand << " depth of talus sand still to deposit" << endl;
+                  LogStream << m_ulIter << ": " << dActualDepthToMove << " depth of talus sand deposited at [" << nXAdj << "][" << nYAdj << ", on [" << nX << "][" << nY << "] " << dTalusSand << " depth of talus sand still to deposit" << endl;
 
                   // TODO Update the cell's talus deposition, and total talus deposition, values
-                  // m_pRasterGrid->m_Cell[nX][nY].IncrBeachDeposition(dToDepositHere);
+                  // m_pRasterGrid->m_Cell[nX][nY].IncrBeachDeposition(dActualDepthToMove);
                }
 
                if (dTalusCoarse > 0)
                {
                   // We will deposit some talus coarse onto the top layer of this adjacent cell
-                  int nXAdj = VptAdj[n].nGetX();
-                  int nYAdj = VptAdj[n].nGetY();
+                  int const nXAdj = VptAdj[n].nGetX();
+                  int const nYAdj = VptAdj[n].nGetY();
 
-                  int nTopLayer = m_pRasterGrid->m_Cell[nXAdj][nYAdj].nGetNumOfTopLayerAboveBasement();
+                  int const nTopLayer = m_pRasterGrid->m_Cell[nXAdj][nYAdj].nGetNumOfTopLayerAboveBasement();
                   double const dCoarseNow = m_pRasterGrid->m_Cell[nXAdj][nYAdj].pGetLayerAboveBasement(nTopLayer)->pGetUnconsolidatedSediment()->dGetCoarseDepth();
 
-                  double dToDepositHere = tMin(dTalusCoarse, dTalusCoarse * dRemovalRate * VdPropToMove[n] * m_dTimeStep);
+                  double const dPotentialDepthToMove = dTalusCoarse * dRemovalRate * VdPropToMove[n] * m_dTimeStep;
 
-                  m_pRasterGrid->m_Cell[nXAdj][nYAdj].pGetLayerAboveBasement(nTopLayer)->pGetUnconsolidatedSediment()->SetCoarseDepth(dCoarseNow + dToDepositHere);
+                  double const dActualDepthToMove = tMin(dTalusCoarse, dPotentialDepthToMove);
+
+                  m_pRasterGrid->m_Cell[nXAdj][nYAdj].pGetLayerAboveBasement(nTopLayer)->pGetUnconsolidatedSediment()->SetSandDepth(dCoarseNow + dActualDepthToMove);
 
                   // Set the changed-this-timestep switch
                   m_bUnconsChangedThisIter[nTopLayer] = true;
 
                   // Now remove the depth deposited from the coarse talus total
-                  dTalusCoarse -= dToDepositHere;
+                  dTalusCoarse -= dActualDepthToMove;
 
                   // Safety check
                   dTalusCoarse = tMax(dTalusCoarse, 0.0);
@@ -782,10 +792,10 @@ int CSimulation::nMoveTalusToUnconsolidated(void)
                   // Update the cell layer's coarse talus value
                   pTalus->SetCoarseDepth(dTalusCoarse);
 
-                  LogStream << m_ulIter << ": " << dToDepositHere << " depth of talus coarse deposited at [" << nXAdj << "][" << nYAdj << ", on [" << nX << "][" << nY << "] " << dTalusCoarse << " depth of talus coarse still to deposit" << endl;
+                  LogStream << m_ulIter << ": " << dActualDepthToMove << " depth of talus coarse deposited at [" << nXAdj << "][" << nYAdj << ", on [" << nX << "][" << nY << "] " << dTalusCoarse << " depth of talus coarse still to deposit" << endl;
 
                   // TODO Update the cell's talus deposition, and total talus deposition, values
-                  // m_pRasterGrid->m_Cell[nX][nY].IncrBeachDeposition(dToDepositHere);
+                  // m_pRasterGrid->m_Cell[nX][nY].IncrBeachDeposition(dActualDepthToMove);
                }
             }
 

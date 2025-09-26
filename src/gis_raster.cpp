@@ -114,16 +114,35 @@ int CSimulation::nReadRasterBasementDEM(void)
    m_strGDALBasementDEMDriverDesc = pGDALDataset->GetDriver()->GetMetadataItem(GDAL_DMD_LONGNAME);
    m_strGDALBasementDEMProjection = pGDALDataset->GetProjectionRef();
 
-   // If we have reference units, then check that they are in metres (note US spelling)
-   if (! m_strGDALBasementDEMProjection.empty())
+   if (m_strGDALBasementDEMProjection.empty())
    {
-      string const strTmp = strToLower(&m_strGDALBasementDEMProjection);
+      // TODO
+      m_strGDALBasementDEMProjection = "";
+      // pGDALDataset->SetProjectionRef(m_strGDALBasementDEMProjection);
 
-      if ((strTmp.find("meter") == string::npos) && (strTmp.find("metre") == string::npos))
+// ENGCRS["Plane",
+//     EDATUM["Unknown engineering datum"],
+//     CS[Cartesian,2],
+//         AXIS["(E)",east,
+//             ORDER[1],
+//             LENGTHUNIT["Meter",1]],
+//         AXIS["(N)",north,
+//             ORDER[2],
+//             LENGTHUNIT["Meter",1]]]
+   }
+   else
+   {
+      // We have reference units, so check that they are in metres (note US spelling)
+      if (! m_strGDALBasementDEMProjection.empty())
       {
-         // error: x-y values must be in metres
-         cerr << ERR << "GIS file x-y values (" << m_strGDALBasementDEMProjection << ") in " << m_strInitialBasementDEMFile << " must be in metres" << endl;
-         return RTN_ERR_DEMFILE;
+         string const strTmp = strToLower(&m_strGDALBasementDEMProjection);
+
+         if ((strTmp.find("meter") == string::npos) && (strTmp.find("metre") == string::npos))
+         {
+            // error: x-y values must be in metres
+            cerr << ERR << "GIS file x-y values (" << m_strGDALBasementDEMProjection << ") in " << m_strInitialBasementDEMFile << " must be in metres" << endl;
+            return RTN_ERR_DEMFILE;
+         }
       }
    }
 

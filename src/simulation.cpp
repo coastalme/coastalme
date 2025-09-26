@@ -1201,6 +1201,8 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
 
          // Move some cliff collapse talus to unconsolidated sediment
          nRet = nMoveTalusToUnconsolidated();
+         if (nRet != RTN_OK)
+            return nRet;
       }
 
       // Tell the user how the simulation is progressing

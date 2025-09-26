@@ -1,6 +1,24 @@
-cell.cpp:361:21: style: Variable 'pTalus' can be declared as pointer to const [constVariablePointer]
-      CRWCellTalus* pTalus = m_VLayerAboveBasement[nLayer].pGetTalus();
-                    ^
+do_cliff_collapse.cpp:131:25: style: Condition 'nRet!=RTN_OK' is always false [knownConditionTrueFalse]
+               if (nRet != RTN_OK)
+                        ^
+do_cliff_collapse.cpp:130:54: note: Calling function 'nDoCliffCollapseTalusDeposition' returns 0
+               nRet = nDoCliffCollapseTalusDeposition(nCoast, pCliff, dSandCollapse, dCoarseCollapse, nNotchLayer);
+                                                     ^
+do_cliff_collapse.cpp:130:54: note: Assignment 'nRet=nDoCliffCollapseTalusDeposition(nCoast,pCliff,dSandCollapse,dCoarseCollapse,nNotchLayer)', assigned value is 0
+               nRet = nDoCliffCollapseTalusDeposition(nCoast, pCliff, dSandCollapse, dCoarseCollapse, nNotchLayer);
+                                                     ^
+do_cliff_collapse.cpp:131:25: note: Condition 'nRet!=RTN_OK' is always false
+               if (nRet != RTN_OK)
+                        ^
+simulation.cpp:1305:12: style: Variable 'nRet' is reassigned a value before the old one has been used. [redundantAssignment]
+      nRet = nUpdateGrid();
+           ^
+simulation.cpp:1203:15: note: nRet is assigned
+         nRet = nMoveTalusToUnconsolidated();
+              ^
+simulation.cpp:1305:12: note: nRet is overwritten
+      nRet = nUpdateGrid();
+           ^
 2di_shape.cpp:53:0: style: The function 'Clear' is never used. [unusedFunction]
 void CA2DIShape::Clear(void)
 ^
@@ -13,10 +31,10 @@ bool CGeomCell::bActualPlatformErosion(void) const
 cell.cpp:374:0: style: The function 'SetWaveFlood' is never used. [unusedFunction]
 void CGeomCell::SetWaveFlood(void)
 ^
-cell.cpp:1060:0: style: The function 'AddSandTalusDeposition' is never used. [unusedFunction]
+cell.cpp:1067:0: style: The function 'AddSandTalusDeposition' is never used. [unusedFunction]
 void CGeomCell::AddSandTalusDeposition(double const dDepth)
 ^
-cell.cpp:1067:0: style: The function 'AddCoarseTalusDeposition' is never used. [unusedFunction]
+cell.cpp:1074:0: style: The function 'AddCoarseTalusDeposition' is never used. [unusedFunction]
 void CGeomCell::AddCoarseTalusDeposition(double const dDepth)
 ^
 cell_landform.cpp:115:0: style: The function 'dGetCliffNotchApexElev' is never used. [unusedFunction]
@@ -49,17 +67,20 @@ double CRWCellTalus::dGetTotCoarseLost(void) const
 cliff.cpp:70:0: style: The function 'SetNotchApexElev' is never used. [unusedFunction]
 void CRWCliff::SetNotchApexElev(double const dNewElev)
 ^
-coast_polygon.cpp:585:0: style: The function 'AddCliffCollapseUnconsSandDeposition' is never used. [unusedFunction]
+coast_polygon.cpp:581:0: style: The function 'AddCliffCollapseUnconsSandDeposition' is never used. [unusedFunction]
 void CGeomCoastPolygon::AddCliffCollapseUnconsSandDeposition(double const dDepth)
 ^
-coast_polygon.cpp:597:0: style: The function 'AddCliffCollapseUnconsCoarseDeposition' is never used. [unusedFunction]
+coast_polygon.cpp:593:0: style: The function 'AddCliffCollapseUnconsCoarseDeposition' is never used. [unusedFunction]
 void CGeomCoastPolygon::AddCliffCollapseUnconsCoarseDeposition(double const dDepth)
 ^
-coast_polygon.cpp:609:0: style: The function 'AddCliffCollapseSandErodedDeanProfile' is never used. [unusedFunction]
+coast_polygon.cpp:605:0: style: The function 'AddCliffCollapseSandErodedDeanProfile' is never used. [unusedFunction]
 void CGeomCoastPolygon::AddCliffCollapseSandErodedDeanProfile(double const dDepth)
 ^
-coast_polygon.cpp:621:0: style: The function 'AddCliffCollapseCoarseErodedDeanProfile' is never used. [unusedFunction]
+coast_polygon.cpp:617:0: style: The function 'AddCliffCollapseCoarseErodedDeanProfile' is never used. [unusedFunction]
 void CGeomCoastPolygon::AddCliffCollapseCoarseErodedDeanProfile(double const dDepth)
+^
+gis_utils.cpp:1926:0: style: The function 'bIsAdjacentEdgeCell' is never used. [unusedFunction]
+bool CSimulation::bIsAdjacentEdgeCell(CGeom2DIPoint const* pPt1, CGeom2DIPoint const* pPt2)
 ^
 utils.cpp:2437:0: style: The function 'pstrChangeToBackslash' is never used. [unusedFunction]
 string CSimulation::pstrChangeToBackslash(string const* strIn)
