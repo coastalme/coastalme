@@ -27,7 +27,6 @@
 ===============================================================================================================================*/
 
 #include "2di_point.h"
-#include "coast_landform.h"
 #include "coast.h"
 
 class CRWCoast; // Forward declaration
@@ -40,7 +39,7 @@ class CACoastLandform
    int m_nCoast;
 
    //! The point on the coast on which this coast landform sits
-   int m_nPointOnCoast;
+   int m_nPointOnCoastline;
 
    //! Landform category code
    int m_nCategory;
@@ -59,7 +58,7 @@ class CACoastLandform
    int nGetPointOnCoast(void) const;
    // void SetLandFormCategory(int const);
    int nGetLandFormCategory(void) const;
-   CGeom2DIPoint* pPtiGetCellMarkedAsLF(void) const;
+   CGeom2DIPoint* pPtiGetCellMarkedAsCliff(void) const;
    // void SetTotAccumWaveEnergy(double const);
    void IncTotAccumWaveEnergy(double const);
    double dGetTotAccumWaveEnergy(void) const;

@@ -1,5 +1,4 @@
 /*!
-
    \file do_cliff_collapse.cpp
    \brief Collapses cliffs if a critical notch depth is exceeded. Then distributes both consolidated and unconsolidated sediment from the collapse onto the shore polygons as unconsolidated talus
    \details TODO 001 A more detailed description of these routines.
@@ -7,7 +6,6 @@
    \author Andres Payo
    \date 2025
    \copyright GNU General Public License
-
 */
 
 /* ==============================================================================================================================
@@ -27,7 +25,6 @@
 
 #include <iostream>
 using std::cerr;
-// using std::cout;
 using std::endl;
 using std::ios;
 
@@ -47,45 +44,43 @@ int CSimulation::nDoAllWaveEnergyToCoastLandforms(void)
 
    int nRet;
 
-   // First go along each coastline and update the total wave energy which it has experienced
-   for (int i = 0; i < static_cast<int>(m_VCoast.size()); i++)
+   // First go along each coastline and at each point on the coastline, update the total wave energy which it has experienced
+   for (int nCoast = 0; nCoast < static_cast<int>(m_VCoast.size()); nCoast++)
    {
-      for (int j = 0; j < m_VCoast[i].nGetCoastlineSize(); j++)
+      for (int nCoastPoint = 0; nCoastPoint < m_VCoast[nCoast].nGetCoastlineSize(); nCoastPoint++)
       {
-         CACoastLandform* pCoastLandform = m_VCoast[i].pGetCoastLandform(j);
+         CACoastLandform* pCoastLandform = m_VCoast[nCoast].pGetCoastLandform(nCoastPoint);
 
          // First get wave energy for the coastal landform object
-         double const dWaveHeightAtCoast = m_VCoast[i].dGetCoastWaveHeight(j);
+         double const dWaveHeightAtCoast = m_VCoast[nCoast].dGetCoastWaveHeight(nCoastPoint);
 
          // If the waves at this point are off-shore, then do nothing, just move to next coast point
          if (bFPIsEqual(dWaveHeightAtCoast, DBL_NODATA, TOLERANCE))
             continue;
 
          // OK we have on-shore waves so get the previously-calculated wave energy
-         double const dWaveEnergy = m_VCoast[i].dGetWaveEnergyAtBreaking(j);
+         double const dWaveEnergy = m_VCoast[nCoast].dGetWaveEnergyAtBreaking(nCoastPoint);
          // assert(isfinite(dWaveEnergy));
 
          // And save the accumulated value
          pCoastLandform->IncTotAccumWaveEnergy(dWaveEnergy);
 
          // Now, check the notch elevation
-         int const nX = m_VCoast[i].pPtiGetCellMarkedAsCoastline(j)->nGetX();
-         int const nY = m_VCoast[i].pPtiGetCellMarkedAsCoastline(j)->nGetY();
+         int const nX = m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(nCoastPoint)->nGetX();
+         int const nY = m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(nCoastPoint)->nGetY();
          int const nCat = pCoastLandform->nGetLandFormCategory();
          double const dTopElev = m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElev();
 
          if ((nCat == LF_CAT_CLIFF) || (nCat == LF_SUBCAT_CLIFF_ON_COASTLINE) || (nCat == LF_SUBCAT_CLIFF_INLAND))
          {
-            CRWCliff* pCliff = reinterpret_cast<CRWCliff*>(pCoastLandform);
+            CRWCliff const* pCliff = reinterpret_cast<CRWCliff*>(pCoastLandform);
             double const dNotchElev = pCliff->dGetNotchBaseElev();
 
-            // Is the notch elevation above the top surface of the sediment?
-            if (dNotchElev > dTopElev)
+            // Is the notch elevation above this iteration's SWL, or is the notch elevation above the top surface of the sediment?
+            if ((dNotchElev > m_dThisIterSWL) || (dNotchElev > dTopElev))
             {
-               // It is, so reduce the notch elevation, to be the same as the sediment top surface
-               LogStream << m_ulIter << ": cliff notch elevation reduced at [" << nX << "][" << nY << "], sediment top elevation = " << dTopElev << ", dNotchElev was " << dNotchElev << ", dNotchElev is now " << dTopElev - m_dNotchBaseBelowSWL << endl;
-
-               pCliff->SetNotchBaseElev(dTopElev - m_dNotchBaseBelowSWL);
+               // It is, so do nothing here
+               continue;
             }
          }
 
@@ -156,8 +151,8 @@ int CSimulation::nDoAllWaveEnergyToCoastLandforms(void)
                // }
                //
                //    // Get the cliff cell's grid coords
-               // int nXCliff = pCliff->pPtiGetCellMarkedAsLF()->nGetX();
-               // int nYCliff = pCliff->pPtiGetCellMarkedAsLF()->nGetY();
+               // int nXCliff = pCliff->pPtiGetCellMarkedAsCliff()->nGetX();
+               // int nYCliff = pCliff->pPtiGetCellMarkedAsCliff()->nGetY();
                //
                //    // Get this cell's polygon
                // int nPoly = m_pRasterGrid->m_Cell[nXCliff][nYCliff].nGetPolygonID();
@@ -176,8 +171,7 @@ int CSimulation::nDoAllWaveEnergyToCoastLandforms(void)
                double dCoarseCollapse = 0;
 
                // So do the cliff collapse
-               nRet = nDoCliffCollapse(i, pCliff, dFineCollapse, dSandCollapse, dCoarseCollapse, dCliffElevPreCollapse, dCliffElevPostCollapse);
-
+               nRet = nDoCliffCollapse(nCoast, pCliff, dFineCollapse, dSandCollapse, dCoarseCollapse, dCliffElevPreCollapse, dCliffElevPostCollapse);
                if (nRet != RTN_OK)
                {
                   if (m_nLogFileDetail >= LOG_FILE_MIDDLE_DETAIL)
@@ -185,7 +179,7 @@ int CSimulation::nDoAllWaveEnergyToCoastLandforms(void)
                }
 
                // Deposit all sand and/or coarse sediment derived from this cliff collapse as unconsolidated sediment (talus)
-               nRet = nDoCliffCollapseDeposition(i, pCliff, dSandCollapse, dCoarseCollapse, dCliffElevPreCollapse, dCliffElevPostCollapse);
+               nRet = nDoCliffCollapseDeposition(nCoast, pCliff, dSandCollapse, dCoarseCollapse, dCliffElevPreCollapse, dCliffElevPostCollapse);
 
                if (nRet != RTN_OK)
                   return nRet;
@@ -207,8 +201,8 @@ int CSimulation::nDoAllWaveEnergyToCoastLandforms(void)
                // }
                //
                //    // Get the cliff cell's grid coords
-               // int nXCliff = pCliff->pPtiGetCellMarkedAsLF()->nGetX();
-               // int nYCliff = pCliff->pPtiGetCellMarkedAsLF()->nGetY();
+               // int nXCliff = pCliff->pPtiGetCellMarkedAsCliff()->nGetX();
+               // int nYCliff = pCliff->pPtiGetCellMarkedAsCliff()->nGetY();
                //
                //    // Get this cell's polygon
                // int nPoly = m_pRasterGrid->m_Cell[nXCliff][nYCliff].nGetPolygonID();
@@ -254,8 +248,8 @@ int CSimulation::nDoAllWaveEnergyToCoastLandforms(void)
 int CSimulation::nDoCliffCollapse(int const nCoast, CRWCliff* pCliff, double& dFineCollapse, double& dSandCollapse, double& dCoarseCollapse, double& dPreCollapseCliffElev, double& dPostCollapseCliffElev)
 {
    // Get the cliff cell's grid coords
-   int const nX = pCliff->pPtiGetCellMarkedAsLF()->nGetX();
-   int const nY = pCliff->pPtiGetCellMarkedAsLF()->nGetY();
+   int const nX = pCliff->pPtiGetCellMarkedAsCliff()->nGetX();
+   int const nY = pCliff->pPtiGetCellMarkedAsCliff()->nGetY();
 
    // Get this cell's polygon
    int const nPoly = m_pRasterGrid->m_Cell[nX][nY].nGetPolygonID();
@@ -282,17 +276,17 @@ int CSimulation::nDoCliffCollapse(int const nCoast, CRWCliff* pCliff, double& dF
    if (nNotchLayer == ELEV_IN_BASEMENT)
    {
       LogStream << m_ulIter << ": " << WARN << "in nDoCliffCollapse(), [" << nX << "][" << nY << "] nNotchLayer is in basement" << endl;
-      return RTN_ERR_CLIFFNOTCH;
+      return RTN_ERR_CLIFF_NOTCH;
    }
    else if (nNotchLayer == ELEV_ABOVE_SEDIMENT_TOP)
    {
       LogStream << m_ulIter << ": " << WARN << "in nDoCliffCollapse(), [" << nX << "][" << nY << "] has nNotchLayer above sediment top" << endl;
-      return RTN_ERR_CLIFFNOTCH;
+      return RTN_ERR_CLIFF_NOTCH;
    }
    else if (nNotchLayer < 0)
    {
       LogStream << m_ulIter << ": " << WARN << "in nDoCliffCollapse(), [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "} notch layer = " << nNotchLayer << ", dNotchElev = " << dNotchElev << " m_dNotchBaseBelowSWL = " << m_dNotchBaseBelowSWL << " dOrigCliffTopElev = " << dOrigCliffTopElev << endl;
-      return RTN_ERR_CLIFFNOTCH;
+      return RTN_ERR_CLIFF_NOTCH;
    }
 
    // Notch layer is OK, so flag the coastline cliff object as having collapsed
@@ -517,6 +511,20 @@ int CSimulation::nDoCliffCollapse(int const nCoast, CRWCliff* pCliff, double& dF
    m_dThisIterCliffCollapseErosionCoarseUncons += dCoarseUnconsLost;
    m_dThisIterCliffCollapseErosionCoarseCons += dCoarseConsLost;
 
+   // Save the timestep at which cliff collapse occurred
+   m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->SetCliffCollapseTimestep(m_ulIter);
+
+   // Reset cell cliff info
+   m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->SetCliffNotchDepth(m_dCellSide);
+
+   // And update the cell's sea depth
+   m_pRasterGrid->m_Cell[nX][nY].SetSeaDepth();
+
+   // Final safety check
+   int const nNewTopLayer = m_pRasterGrid->m_Cell[nX][nY].nGetTopLayerAboveBasement();
+   if (nNewTopLayer == INT_NODATA)
+      return RTN_ERR_NO_TOP_LAYER;
+
    return RTN_OK;
 }
 
@@ -536,12 +544,15 @@ int CSimulation::nDoCliffCollapseDeposition(int const nCoast, CRWCliff const* pC
    int const nCoastSize = m_VCoast[nCoast].nGetCoastlineSize();
 
    // Get the cliff cell's grid coords
-   int const nXCliff = pCliff->pPtiGetCellMarkedAsLF()->nGetX();
-   int const nYCliff = pCliff->pPtiGetCellMarkedAsLF()->nGetY();
+   int const nXCliff = pCliff->pPtiGetCellMarkedAsCliff()->nGetX();
+   int const nYCliff = pCliff->pPtiGetCellMarkedAsCliff()->nGetY();
+
+   // // And get the cliff cell's ext crs coords
+   // double const dXCliff = dGridXToExtCRSX(nXCliff);
+   // double const dYCliff = dGridYToExtCRSY(nYCliff);
 
    // Get this cell's polygon
    int const nPoly = m_pRasterGrid->m_Cell[nXCliff][nYCliff].nGetPolygonID();
-
    if (nPoly == INT_NODATA)
    {
       // This cell isn't in a polygon
@@ -552,14 +563,56 @@ int CSimulation::nDoCliffCollapseDeposition(int const nCoast, CRWCliff const* pC
 
    CGeomCoastPolygon* pPolygon = m_VCoast[nCoast].pGetPolygon(nPoly);
 
-   // OK, now set up the planview sequence talus deposition. First we deposit to create a Dean profile starting from the cliff collapse cell. Then we deposit along two profiles which start from the coast cells on either side of the cliff collapse cell, and then on two profiles starting on the next two "outside" coast cells, etc. However, we do have a "preferred" talus width
-   int nTalusWidthInCells = nConvertMetresToNumCells(m_dCliffDepositionPlanviewWidth);
 
-   // The default talus collapse width must be an odd number of cells in width i.e. centred on the cliff collapse cell (but only if we are not at the end of the coast)
-   if ((nTalusWidthInCells % 2) == 0)
-      nTalusWidthInCells++;
+   // bool bAllDeposited = false;
+   //
+   // // Assume planview semicircle of talus
+   // do
+   // {
+   //    double dFanRadius = 25; // In m, read this in
+   //    int nFanRadius = nConvertMetresToNumCells(dFanRadius);
+   //
+   //    // Now draw first depositional profile normal to the average coast
+   //    CGeom2DPoint PtStart(dXCliff, dYCliff);      // In external CRS
+   //
+   //    CGeom2DPoint PtEnd;        // In external CRS
+   //    CGeom2DIPoint PtiEnd;      // In grid CRS
+   //
+   //    int const nRet = nGetCoastNormalEndPoint(nCoast, nStartPoint, nCoastSize, &PtStart, dFanRadius, &PtEnd, &PtiEnd, false);
+   //    if (nRet == RTN_ERR_NO_SOLUTION_FOR_ENDPOINT)
+   //    {
+   //       // Could not solve end-point equation, so give up
+   //       return nRet;
+   //    }
+   //
+   //    int const nXEnd = PtiEnd.nGetX();
+   //    int const nYEnd = PtiEnd.nGetY();
+   //
+   //    // Safety check: is the end point in the contiguous sea?
+   //    if (! m_pRasterGrid->m_Cell[nXEnd][nYEnd].bIsInContiguousSea())
+   //    {
+   //       // if (m_nLogFileDetail >= LOG_FILE_ALL)
+   //       // LogStream << m_ulIter << ": coast " << nCoast << ", possible profile with start point " << nProfileStartPoint << " has inland end point at [" << nXEnd << "][" << nYEnd << "] = {" << dGridCentroidXToExtCRSX(nXEnd) << ", " << dGridCentroidYToExtCRSY(nYEnd) << "}, ignoring" << endl;
+   //
+   //       return RTN_ERR_PROFILE_ENDPOINT_IS_INLAND;
+   //    }
+   //
+   //
+   //    //, then draw other on either side parallel to this (so forming a semicircle)
+   //
+   //    // 3. Each profile is given a quota to deposit "under" a Dean profile starting at the coastline (i.e. so that all points are below SWL)
+   //    // 4. Try to deposit this quota (ignore pre-existing lumps higher than the Dean profile)
+   //    // 5. If can't deposit quota for a given profile then extend the start point of the Dean profile outwards (i.e. seawards) just below SWL until can deposit quota, or until hit max extension (we then pass on undeposited sediment to the next profile)
+   //    // 6. If still can't deposit all talus after the final parallel profile, then go back to 1. and increase the radius of the semicircle
+   //
+   //
+   // } while (! bAllDeposited);
+   //
 
-   // This holds the valid coast start points for each cliff collapse Dean profile
+
+
+
+   // OK, now set up the planview sequence talus deposition. First we deposit a volume of talus which fits "under" a Dean profile starting from the coast (i.e. the cliff collapse cell). Then we deposit along the two profiles which start from the coast cells on either side of the cliff collapse cell, and then on two more profiles starting on either side of the last two coast cells, and so on. This holds the valid coast start points for each cliff collapse Dean profile
    vector<int> VnTalusProfileCoastStartPoint(nCoastSize);
 
    // This is the coast start point for the first Dean profile
@@ -580,7 +633,7 @@ int CSimulation::nDoCliffCollapseDeposition(int const nCoast, CRWCliff const* pC
          nSigned++;
       }
 
-      // Is this start point valid?
+      // Is this coast start point valid?
       if ((nTmpPoint < 0) || (nTmpPoint > (nCoastSize - 1)))
       {
          // No, it is outside the grid, so find another
@@ -604,7 +657,7 @@ int CSimulation::nDoCliffCollapseDeposition(int const nCoast, CRWCliff const* pC
    double dTotSandDepositedAllProfiles = 0;
    double dTotCoarseDepositedAllProfiles = 0;
 
-   // Process each deposition profile
+   // Process each cliff collapse deposition profile
    for (int nDepProfile = 0; nDepProfile < nCoastSize; nDepProfile++)
    {
       bool bDoSandDepositionOnThisProfile = false;
@@ -612,10 +665,10 @@ int CSimulation::nDoCliffCollapseDeposition(int const nCoast, CRWCliff const* pC
       bool bDoCoarseDepositionOnThisProfile = false;
       bool bCoarseDepositionCompletedOnThisProfile = false;
 
-      int const nRemainingProfiles = tMax(1, nTalusWidthInCells - nDepProfile);
+      int const nRemainingProfiles = tMax(1, m_nDefaultTalusWidthInCells - nDepProfile);
 
-      // This is the minimum planview length (in cells) of the Dean profile. The initial length will be increased later if we can't deposit sufficient talus
-      int nTalusProfileLenInCells = nConvertMetresToNumCells(m_dCliffTalusMinDepositionLength);
+      // This is the minimum planview length (in cells) of the Dean profile. The initial length will be increased if we can't deposit sufficient talus
+      int nTalusProfileLenInCells = m_nTalusProfileMinLenInCells;
 
       // Calculate the target amount to be deposited on each talus profile, assuming the "preferred" talus width
       double dTargetSandToDepositOnThisProfile = (dTotSandToDepositAllProfiles - dTotSandDepositedAllProfiles) / nRemainingProfiles;
@@ -641,7 +694,6 @@ int CSimulation::nDoCliffCollapseDeposition(int const nCoast, CRWCliff const* pC
          if (bFPIsEqual(dTotSandToDepositAllProfiles - dTotSandDepositedAllProfiles, 0.0, MASS_BALANCE_TOLERANCE))
             bSandDepositionCompletedOnThisProfile = true;
       }
-
       else
          bSandDepositionCompletedOnThisProfile = true;
 
@@ -652,13 +704,12 @@ int CSimulation::nDoCliffCollapseDeposition(int const nCoast, CRWCliff const* pC
          if (bFPIsEqual(dTotCoarseToDepositAllProfiles - dTotCoarseDepositedAllProfiles, 0.0, MASS_BALANCE_TOLERANCE))
             bCoarseDepositionCompletedOnThisProfile = true;
       }
-
       else
          bCoarseDepositionCompletedOnThisProfile = true;
 
       if (bSandDepositionCompletedOnThisProfile && bCoarseDepositionCompletedOnThisProfile)
       {
-         // LogStream << m_ulIter << ": break 2 for cliff collapse at [" << nXCliff << "][" << nYCliff << "] nStartPoint = " << nStartPoint << " nDepProfile = " << nDepProfile << endl << "\tdTargetSandToDepositOnThisProfile = " << dTargetSandToDepositOnThisProfile << " dSandDepositedOnThisProfile = " << dSandDepositedOnThisProfile << " dTotSandToDepositAllProfiles = " << dTotSandToDepositAllProfiles << " dTotSandDepositedAllProfiles = " << dTotSandDepositedAllProfiles << endl << "\tdTargetCoarseToDepositOnThisProfile = " << dTargetCoarseToDepositOnThisProfile << " dCoarseDepositedOnThisProfile = " << dCoarseDepositedOnThisProfile << " dTotCoarseToDepositAllProfiles = " <<  dTotCoarseToDepositAllProfiles << " dTotCoarseDepositedAllProfiles = " << dTotCoarseDepositedAllProfiles << endl;
+         LogStream << m_ulIter << ": break 2 for cliff collapse at [" << nXCliff << "][" << nYCliff << "] nStartPoint = " << nStartPoint << " nDepProfile = " << nDepProfile << endl << "\tdTargetSandToDepositOnThisProfile = " << dTargetSandToDepositOnThisProfile << " dSandDepositedOnThisProfile = " << dSandDepositedOnThisProfile << " dTotSandToDepositAllProfiles = " << dTotSandToDepositAllProfiles << " dTotSandDepositedAllProfiles = " << dTotSandDepositedAllProfiles << endl << "\tdTargetCoarseToDepositOnThisProfile = " << dTargetCoarseToDepositOnThisProfile << " dCoarseDepositedOnThisProfile = " << dCoarseDepositedOnThisProfile << " dTotCoarseToDepositAllProfiles = " <<  dTotCoarseToDepositAllProfiles << " dTotCoarseDepositedAllProfiles = " << dTotCoarseDepositedAllProfiles << endl;
 
          break;
       }
@@ -681,7 +732,7 @@ int CSimulation::nDoCliffCollapseDeposition(int const nCoast, CRWCliff const* pC
       PtStart.SetY(dGridCentroidYToExtCRSY(m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(nThisPoint)->nGetY()));
 
       // Set the initial fraction of cliff height, this will be increased (max is one) if we can't deposit sufficient talus
-      double dCliffHeightFrac = m_dMinCliffTalusHeightFrac;
+      double dCliffHeightFraction = m_dMinCliffTalusHeightFrac;
 
       bool bJustDepositWhatWeCan = false;
 
@@ -693,55 +744,67 @@ int CSimulation::nDoCliffCollapseDeposition(int const nCoast, CRWCliff const* pC
       {
          if (bJustDepositWhatWeCan || (bSandDepositionCompletedOnThisProfile && bCoarseDepositionCompletedOnThisProfile))
          {
-            // LogStream << m_ulIter << ": break 3 for cliff collapse at [" << nXCliff << "][" << nYCliff << "] nStartPoint = " << nStartPoint << " nThisPoint = " << nThisPoint << endl << "\tnSeawardOffset = " << nSeawardOffset << " dCliffHeightFrac = " << dCliffHeightFrac << " nDepProfile = " << nDepProfile << endl << "\tbJustDepositWhatWeCan = " << bJustDepositWhatWeCan << "\tdTargetSandToDepositOnThisProfile = " << dTargetSandToDepositOnThisProfile << " dSandDepositedOnThisProfile = " << dSandDepositedOnThisProfile << " dTotSandToDepositAllProfiles = " << dTotSandToDepositAllProfiles << " dTotSandDepositedAllProfiles = " << dTotSandDepositedAllProfiles << endl << "\tdTargetCoarseToDepositOnThisProfile = " << dTargetCoarseToDepositOnThisProfile << " dCoarseDepositedOnThisProfile = " << dCoarseDepositedOnThisProfile << " dTotCoarseToDepositAllProfiles = " <<  dTotCoarseToDepositAllProfiles << " dTotCoarseDepositedAllProfiles = " << dTotCoarseDepositedAllProfiles << endl;
+            LogStream << m_ulIter << ": break 3 for cliff collapse at [" << nXCliff << "][" << nYCliff << "] nStartPoint = " << nStartPoint << " nThisPoint = " << nThisPoint << endl << "\tnSeawardOffset = " << nSeawardOffset << " dCliffHeightFraction = " << dCliffHeightFraction << " nDepProfile = " << nDepProfile << endl << "\tbJustDepositWhatWeCan = " << bJustDepositWhatWeCan << "\tdTargetSandToDepositOnThisProfile = " << dTargetSandToDepositOnThisProfile << " dSandDepositedOnThisProfile = " << dSandDepositedOnThisProfile << " dTotSandToDepositAllProfiles = " << dTotSandToDepositAllProfiles << " dTotSandDepositedAllProfiles = " << dTotSandDepositedAllProfiles << endl << "\tdTargetCoarseToDepositOnThisProfile = " << dTargetCoarseToDepositOnThisProfile << " dCoarseDepositedOnThisProfile = " << dCoarseDepositedOnThisProfile << " dTotCoarseToDepositAllProfiles = " <<  dTotCoarseToDepositAllProfiles << " dTotCoarseDepositedAllProfiles = " << dTotCoarseDepositedAllProfiles << endl;
 
             break;
          }
 
-         // Need to deposit more on this profile: increase the seaward offset each time round the loop
-         nSeawardOffset++;
-
          // Has the seaward offset reached the arbitrary limit?
          if (nSeawardOffset >= MAX_SEAWARD_OFFSET_FOR_CLIFF_TALUS)
          {
-            // It has, so if cliff height is not at the maximum, then try again with a larger fraction of cliff height
-            if (dCliffHeightFrac < 1)
-            {
-               dCliffHeightFrac += CLIFF_COLLAPSE_HEIGHT_INCREMENT;
+            // It has, so constrain it as a safety check
+            nSeawardOffset = MAX_SEAWARD_OFFSET_FOR_CLIFF_TALUS;
 
-               // Reset seaward offset
-               nSeawardOffset = 1;
-            }
-
-            else
+            // Has the cliff height fraction reached the max value?
+            if (dCliffHeightFraction >= 0.99)
             {
-               // Cliff height has reached the limit, is the talus length also at its arbitrary limit?
+               // It has, so constrain it as a safety check
+               dCliffHeightFraction = 1;
+
+               // Is the talus length also at its arbitrary limit?
                if (nTalusProfileLenInCells >= MAX_CLIFF_TALUS_LENGTH)
                {
-                  // The talus length is also at this limit, so there is nothing more we can increase on this profile. Just deposit what we can and move on to the next profile
+                  // The talus length is also at this limit. So there is nothing more we can increase on this profile. Just deposit what we can and move on to the next profile
                   bJustDepositWhatWeCan = true;
-               }
 
+                  LogStream << m_ulIter << ": just deposit what we can: talus length = " << nTalusProfileLenInCells << " cells, seaward offset = " << nSeawardOffset << ", cliff height fraction = " <<  dCliffHeightFraction << endl;
+               }
                else
                {
-                  // The talus length is not at its limit, so try again with an increased talus length
+                  // The talus length is not at its arbitrary limit, so extend it
                   nTalusProfileLenInCells += CLIFF_COLLAPSE_LENGTH_INCREMENT;
 
-                  // Reset seaward offset
-                  nSeawardOffset = 1;
+                  LogStream << m_ulIter << ": talus length increased: talus length = " << nTalusProfileLenInCells << " cells, seaward offset = " << nSeawardOffset << ", cliff height fraction = " <<  dCliffHeightFraction << endl;
 
-                  // Set cliff height to exactly one
-                  dCliffHeightFrac = 1;
+                  continue;
                }
             }
+            else
+            {
+               // The cliff height fraction is not at its limit, so increment it
+               dCliffHeightFraction += CLIFF_COLLAPSE_HEIGHT_INCREMENT;
+
+               // LogStream << "Cliff height fraction increased: talus length = " << nTalusProfileLenInCells << " cells, seaward offset = " << nSeawardOffset << ", cliff height fraction = " <<  dCliffHeightFraction << endl;
+
+               continue;
+            }
+         }
+         else
+         {
+            // The seaward offset is not at its maximum, so extend it
+            nSeawardOffset++;
+
+            LogStream << m_ulIter << ": seaward offset increased: talus length = " << nTalusProfileLenInCells << " cells, seaward offset = " << nSeawardOffset << ", cliff height fraction = " <<  dCliffHeightFraction << endl;
+
+            continue;
          }
 
          if (bHitFirstCoastPoint && bHitLastCoastPoint)
          {
             // Uh-oh, we've reached both ends of the coast (!) and we can't increase anything any more
-            LogStream << m_ulIter << ": unable to deposit sufficient unconsolidated talus from cliff collapse at [" << nXCliff << "][" << nYCliff << "] nStartPoint = " << nStartPoint << " nThisPoint = " << nThisPoint << endl << "\tnSeawardOffset = " << nSeawardOffset << " dCliffHeightFrac = " << dCliffHeightFrac << " nDepProfile = " << nDepProfile << endl << "\tdTargetSandToDepositOnThisProfile = " << dTargetSandToDepositOnThisProfile << " dSandDepositedOnThisProfile = " << dSandDepositedOnThisProfile << " dTotSandToDepositAllProfiles = " << dTotSandToDepositAllProfiles << " dTotSandDepositedAllProfiles = " << dTotSandDepositedAllProfiles << endl << "\tdTargetCoarseToDepositOnThisProfile = " << dTargetCoarseToDepositOnThisProfile << " dCoarseDepositedOnThisProfile = " << dCoarseDepositedOnThisProfile << " dTotCoarseToDepositAllProfiles = " << dTotCoarseToDepositAllProfiles << " dTotCoarseDepositedAllProfiles = " << dTotCoarseDepositedAllProfiles << endl;
+            LogStream << m_ulIter << ": unable to deposit enough unconsolidated sediment (talus) from cliff collapse at [" << nXCliff << "][" << nYCliff << "] nStartPoint = " << nStartPoint << " nThisPoint = " << nThisPoint << endl << "\tnSeawardOffset = " << nSeawardOffset << " dCliffHeightFraction = " << dCliffHeightFraction << " nDepProfile = " << nDepProfile << endl << "\tdTargetSandToDepositOnThisProfile = " << dTargetSandToDepositOnThisProfile << " dSandDepositedOnThisProfile = " << dSandDepositedOnThisProfile << " dTotSandToDepositAllProfiles = " << dTotSandToDepositAllProfiles << " dTotSandDepositedAllProfiles = " << dTotSandDepositedAllProfiles << endl << "\tdTargetCoarseToDepositOnThisProfile = " << dTargetCoarseToDepositOnThisProfile << " dCoarseDepositedOnThisProfile = " << dCoarseDepositedOnThisProfile << " dTotCoarseToDepositAllProfiles = " << dTotCoarseToDepositAllProfiles << " dTotCoarseDepositedAllProfiles = " << dTotCoarseDepositedAllProfiles << endl;
 
-            return RTN_ERR_CLIFFDEPOSIT;
+            return RTN_ERR_CLIFF_CANNOT_DEPOSIT_ALL;
          }
 
          // Now construct a deposition collapse profile from the start point, it is one cell longer than the specified length because it includes the cliff point in the profile. Calculate its length in external CRS units, the way it is done here is approximate but probably OK
@@ -754,7 +817,7 @@ int CSimulation::nDoCliffCollapseDeposition(int const nCoast, CRWCliff const* pC
          // Safety check
          if (nRtn == RTN_ERR_NO_SOLUTION_FOR_ENDPOINT)
          {
-            LogStream << m_ulIter << ": unable to deposit sufficient unconsolidated talus from cliff collapse, could not find a solution for the end point of the Dean profile" << endl;
+            LogStream << m_ulIter << ": could not find a solution for the end point of the Dean profile at {" << PtStart.dGetX() << ", " << PtStart.dGetY() << "}" << endl;
 
             return nRtn;
          }
@@ -763,6 +826,7 @@ int CSimulation::nDoCliffCollapseDeposition(int const nCoast, CRWCliff const* pC
          if (PtStart == PtEnd)
          {
             // This would give a zero-length profile, and a zero-divide error during rasterization. So just move on to the next profile
+            LogStream << "Zero length" << endl;
             break;
          }
 
@@ -785,7 +849,6 @@ int CSimulation::nDoCliffCollapseDeposition(int const nCoast, CRWCliff const* pC
             // Can't do anything with this very short profile, since (nRasterProfileLength - nSeawardOffset - 2) later will give zero or -ve dInc. So just move on to the next profile
             break;
          }
-
          else if (nRasterProfileLength - nSeawardOffset == 3)
          {
             // Can't increase offset any more, or get zero divide with (nRasterProfileLength - nSeawardOffset - 2) later. So just deposit what we can and then move on to the next profile
@@ -795,7 +858,7 @@ int CSimulation::nDoCliffCollapseDeposition(int const nCoast, CRWCliff const* pC
          vector<double> dVProfileNow(nRasterProfileLength, 0);
          vector<bool> bVProfileValid(nRasterProfileLength, true);
 
-         // LogStream << m_ulIter << ": for cliff collapse at [" << nXCliff << "][" << nYCliff << "] nStartPoint = " << nStartPoint << " nDepProfile = " << nDepProfile << endl << "\tnRasterProfileLength = " << nRasterProfileLength << " nSeawardOffset = " << nSeawardOffset << " nRasterProfileLength - nSeawardOffset - 2 = " << nRasterProfileLength - nSeawardOffset - 2 << endl;
+         LogStream << m_ulIter << ": for cliff collapse at [" << nXCliff << "][" << nYCliff << "] nStartPoint = " << nStartPoint << " nDepProfile = " << nDepProfile << endl << "\tnRasterProfileLength = " << nRasterProfileLength << " nSeawardOffset = " << nSeawardOffset << " nRasterProfileLength - nSeawardOffset - 2 = " << nRasterProfileLength - nSeawardOffset - 2 << endl;
 
          // Calculate the existing elevation for all points along the deposition profile
          for (int n = 0; n < nRasterProfileLength; n++)
@@ -812,7 +875,7 @@ int CSimulation::nDoCliffCollapseDeposition(int const nCoast, CRWCliff const* pC
 
          // Now calculate the elevation of the talus top at the shoreline
          double const dCliffHeight = dPreCollapseCliffElev - dPostCollapseCliffElev;
-         double const dTalusTopElev = dPostCollapseCliffElev + (dCliffHeight * dCliffHeightFrac);
+         double const dTalusTopElev = dPostCollapseCliffElev + (dCliffHeight * dCliffHeightFraction);
 
          // LogStream << "Elevations: cliff top = " << dPreCollapseCliffElev << " cliff base = " << dPostCollapseCliffElev << " talus top = " << dTalusTopElev << endl;
 
@@ -827,7 +890,6 @@ int CSimulation::nDoCliffCollapseDeposition(int const nCoast, CRWCliff const* pC
 
          if (bFPIsEqual(m_dCliffDepositionA, 0.0, TOLERANCE))
             dA = m_dCliffDepositionA;
-
          else
             dA = (dTalusTopElev - dVProfileNow[nRasterProfileLength - 1]) / pow(dTalusSlopeLength, DEAN_POWER);
 
@@ -873,7 +935,7 @@ int CSimulation::nDoCliffCollapseDeposition(int const nCoast, CRWCliff const* pC
          if (! bJustDepositWhatWeCan && (dTotElevDiff < (dTargetSandToDepositOnThisProfile + dTargetCoarseToDepositOnThisProfile)))
          {
             // No it doesn't, so try again with a larger seaward offset and/or a longer Dean profile length
-            // LogStream << m_ulIter << ": bJustDepositWhatWeCan = " << bJustDepositWhatWeCan << " nSeawardOffset = " << nSeawardOffset << " dTotElevDiff = " << dTotElevDiff << endl;
+            LogStream << m_ulIter << ": bJustDepositWhatWeCan = " << bJustDepositWhatWeCan << " nSeawardOffset = " << nSeawardOffset << " dTotElevDiff = " << dTotElevDiff << endl;
 
             continue;
          }
@@ -886,7 +948,6 @@ int CSimulation::nDoCliffCollapseDeposition(int const nCoast, CRWCliff const* pC
             {
                if (bFPIsEqual(dTargetSandToDepositOnThisProfile - dSandDepositedOnThisProfile, 0.0, MASS_BALANCE_TOLERANCE))
                   bSandDepositionCompletedOnThisProfile = true;
-
                else
                   bSandDepositionCompletedOnThisProfile = false;
             }
@@ -896,7 +957,6 @@ int CSimulation::nDoCliffCollapseDeposition(int const nCoast, CRWCliff const* pC
             {
                if (bFPIsEqual(dTargetCoarseToDepositOnThisProfile - dCoarseDepositedOnThisProfile, 0.0, MASS_BALANCE_TOLERANCE))
                   bCoarseDepositionCompletedOnThisProfile = true;
-
                else
                   bCoarseDepositionCompletedOnThisProfile = false;
             }
@@ -904,7 +964,7 @@ int CSimulation::nDoCliffCollapseDeposition(int const nCoast, CRWCliff const* pC
             // If we have deposited enough, then break out of the loop
             if (bSandDepositionCompletedOnThisProfile && bCoarseDepositionCompletedOnThisProfile)
             {
-               // LogStream << m_ulIter << ": break 1 for cliff collapse at [" << nXCliff << "][" << nYCliff << "] nStartPoint = " << nStartPoint << " nThisPoint = " << nThisPoint << endl << "\tbJustDepositWhatWeCan = " << bJustDepositWhatWeCan << " nSeawardOffset = " << nSeawardOffset << " dCliffHeightFrac = " << dCliffHeightFrac << " nDepProfile = " << nDepProfile << endl << "\tdTargetSandToDepositOnThisProfile = " << dTargetSandToDepositOnThisProfile << " dSandDepositedOnThisProfile = " << dSandDepositedOnThisProfile << " dTotSandToDepositAllProfiles = " << dTotSandToDepositAllProfiles << " dTotSandDepositedAllProfiles = " << dTotSandDepositedAllProfiles << endl << "\tdTargetCoarseToDepositOnThisProfile = " << dTargetCoarseToDepositOnThisProfile << " dCoarseDepositedOnThisProfile = " << dCoarseDepositedOnThisProfile << " dTotCoarseToDepositAllProfiles = " <<  dTotCoarseToDepositAllProfiles << " dTotCoarseDepositedAllProfiles = " << dTotCoarseDepositedAllProfiles << endl;
+               LogStream << m_ulIter << ": break 1 for cliff collapse at [" << nXCliff << "][" << nYCliff << "] nStartPoint = " << nStartPoint << " nThisPoint = " << nThisPoint << endl << "\tbJustDepositWhatWeCan = " << bJustDepositWhatWeCan << " nSeawardOffset = " << nSeawardOffset << " dCliffHeightFraction = " << dCliffHeightFraction << " nDepProfile = " << nDepProfile << endl << "\tdTargetSandToDepositOnThisProfile = " << dTargetSandToDepositOnThisProfile << " dSandDepositedOnThisProfile = " << dSandDepositedOnThisProfile << " dTotSandToDepositAllProfiles = " << dTotSandToDepositAllProfiles << " dTotSandDepositedAllProfiles = " << dTotSandDepositedAllProfiles << endl << "\tdTargetCoarseToDepositOnThisProfile = " << dTargetCoarseToDepositOnThisProfile << " dCoarseDepositedOnThisProfile = " << dCoarseDepositedOnThisProfile << " dTotCoarseToDepositAllProfiles = " <<  dTotCoarseToDepositAllProfiles << " dTotCoarseDepositedAllProfiles = " << dTotCoarseDepositedAllProfiles << endl;
 
                break;
             }
@@ -926,8 +986,8 @@ int CSimulation::nDoCliffCollapseDeposition(int const nCoast, CRWCliff const* pC
             if (nTopLayer == NO_NONZERO_THICKNESS_LAYERS)
             {
                // TODO 021 Improve this
-               cerr << "All layers have zero thickness" << endl;
-               return RTN_ERR_CLIFFDEPOSIT;
+               cerr << m_ulIter << ": all layers have zero thickness" << endl;
+               return RTN_ERR_CLIFF_CANNOT_DEPOSIT_ALL;
             }
 
             // Only do deposition on this cell if its elevation is below the Dean elevation
@@ -983,7 +1043,6 @@ int CSimulation::nDoCliffCollapseDeposition(int const nCoast, CRWCliff const* pC
                if ((nCat != LF_CAT_SEDIMENT_INPUT) && (nCat != LF_CAT_SEDIMENT_INPUT_SUBMERGED) && (nCat != LF_CAT_SEDIMENT_INPUT_NOT_SUBMERGED))
                   pLandform->SetLFSubCategory(LF_SUBCAT_DRIFT_TALUS);
             }
-
             else if (dVDeanProfile[n] < dVProfileNow[n])
             {
                // Here, the Dean profile is lower than the existing profile, so we must remove some sediment from this cell  TODO 075 What if bedrock sticks above Dean profile?
@@ -1093,7 +1152,7 @@ int CSimulation::nDoCliffCollapseDeposition(int const nCoast, CRWCliff const* pC
          break;
       } while (true); // The seaward offset etc. loop
 
-      // LogStream << m_ulIter << ": left seaward offset loop for cliff collapse at [" << nXCliff << "][" << nYCliff << "] nStartPoint = " << nStartPoint << " nThisPoint = " << nThisPoint << endl << "\tnSeawardOffset = " << nSeawardOffset << " dCliffHeightFrac = " << dCliffHeightFrac << " nDepProfile = " << nDepProfile << " bJustDepositWhatWeCan = " << bJustDepositWhatWeCan << endl << "\tdTargetSandToDepositOnThisProfile = " << dTargetSandToDepositOnThisProfile << " dSandDepositedOnThisProfile = " << dSandDepositedOnThisProfile << " dTotSandToDepositAllProfiles = " << dTotSandToDepositAllProfiles << " dTotSandDepositedAllProfiles = " << dTotSandDepositedAllProfiles << endl << "\tdTargetCoarseToDepositOnThisProfile = " << dTargetCoarseToDepositOnThisProfile << " dCoarseDepositedOnThisProfile = " << dCoarseDepositedOnThisProfile << " dTotCoarseToDepositAllProfiles = " <<  dTotCoarseToDepositAllProfiles << " dTotCoarseDepositedAllProfiles = " << dTotCoarseDepositedAllProfiles << endl;
+      LogStream << m_ulIter << ": left seaward offset loop for cliff collapse at [" << nXCliff << "][" << nYCliff << "] nStartPoint = " << nStartPoint << " nThisPoint = " << nThisPoint << endl << "\tnSeawardOffset = " << nSeawardOffset << " dCliffHeightFraction = " << dCliffHeightFraction << " nDepProfile = " << nDepProfile << " bJustDepositWhatWeCan = " << bJustDepositWhatWeCan << endl << "\tdTargetSandToDepositOnThisProfile = " << dTargetSandToDepositOnThisProfile << " dSandDepositedOnThisProfile = " << dSandDepositedOnThisProfile << " dTotSandToDepositAllProfiles = " << dTotSandToDepositAllProfiles << " dTotSandDepositedAllProfiles = " << dTotSandDepositedAllProfiles << endl << "\tdTargetCoarseToDepositOnThisProfile = " << dTargetCoarseToDepositOnThisProfile << " dCoarseDepositedOnThisProfile = " << dCoarseDepositedOnThisProfile << " dTotCoarseToDepositAllProfiles = " <<  dTotCoarseToDepositAllProfiles << " dTotCoarseDepositedAllProfiles = " << dTotCoarseDepositedAllProfiles << endl;
 
       // Have we deposited enough for this cliff collapse?
       if (bDoSandDepositionOnThisProfile)
@@ -1110,7 +1169,7 @@ int CSimulation::nDoCliffCollapseDeposition(int const nCoast, CRWCliff const* pC
 
       if (bSandDepositionCompletedOnThisProfile && bCoarseDepositionCompletedOnThisProfile)
       {
-         // LogStream << m_ulIter << ": bSandDepositionCompletedOnThisProfile && bCoarseDepositionCompletedOnThisProfile for cliff collapse at [" << nXCliff << "][" << nYCliff << "] nStartPoint = " << nStartPoint << " nThisPoint = " << nThisPoint << endl << "\tnbJustDepositWhatWeCan = " << bJustDepositWhatWeCan << " SeawardOffset = " << nSeawardOffset << " dCliffHeightFrac = " << dCliffHeightFrac << " nDepProfile = " << nDepProfile << endl << "\tdTargetSandToDepositOnThisProfile = " << dTargetSandToDepositOnThisProfile << " dSandDepositedOnThisProfile = " << dSandDepositedOnThisProfile << " dTotSandToDepositAllProfiles = " << dTotSandToDepositAllProfiles << " dTotSandDepositedAllProfiles = " << dTotSandDepositedAllProfiles << endl << "\tdTargetCoarseToDepositOnThisProfile = " << dTargetCoarseToDepositOnThisProfile << " dCoarseDepositedOnThisProfile = " << dCoarseDepositedOnThisProfile << " dTotCoarseToDepositAllProfiles = " <<  dTotCoarseToDepositAllProfiles << " dTotCoarseDepositedAllProfiles = " << dTotCoarseDepositedAllProfiles << endl;
+         LogStream << m_ulIter << ": bSandDepositionCompletedOnThisProfile && bCoarseDepositionCompletedOnThisProfile for cliff collapse at [" << nXCliff << "][" << nYCliff << "] nStartPoint = " << nStartPoint << " nThisPoint = " << nThisPoint << endl << "\tnbJustDepositWhatWeCan = " << bJustDepositWhatWeCan << " SeawardOffset = " << nSeawardOffset << " dCliffHeightFraction = " << dCliffHeightFraction << " nDepProfile = " << nDepProfile << endl << "\tdTargetSandToDepositOnThisProfile = " << dTargetSandToDepositOnThisProfile << " dSandDepositedOnThisProfile = " << dSandDepositedOnThisProfile << " dTotSandToDepositAllProfiles = " << dTotSandToDepositAllProfiles << " dTotSandDepositedAllProfiles = " << dTotSandDepositedAllProfiles << endl << "\tdTargetCoarseToDepositOnThisProfile = " << dTargetCoarseToDepositOnThisProfile << " dCoarseDepositedOnThisProfile = " << dCoarseDepositedOnThisProfile << " dTotCoarseToDepositAllProfiles = " <<  dTotCoarseToDepositAllProfiles << " dTotCoarseDepositedAllProfiles = " << dTotCoarseDepositedAllProfiles << endl;
       }
    } // Process each deposition profile
 

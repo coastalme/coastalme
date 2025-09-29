@@ -1,5 +1,4 @@
 /*!
-
    \file calc_waves.cpp
    \brief Simulates wave propagation using CShore or the COVE approach
    \details TODO 001 A more detailed description of these routines.
@@ -7,11 +6,9 @@
    \author Andres Payo
    \date 2025
    \copyright GNU General Public License
-
 */
 
 /* ==============================================================================================================================
-
    This file is part of CoastalME, the Coastal Modelling Environment.
 
    CoastalME is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
@@ -19,7 +16,6 @@
    This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
    You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-
 ==============================================================================================================================*/
 #include <assert.h>
 
@@ -55,6 +51,8 @@ using std::reverse_copy;
 //===============================================================================================================================
 int CSimulation::nSetAllCoastpointDeepWaterWaveValues(void)
 {
+   LogStream << endl << m_ulIter << ": Calculating waves" << endl;
+
    // For each coastline, put a value for deep water wave height and direction at each coastline point
    for (int nCoast = 0; nCoast < static_cast<int>(m_VCoast.size()); nCoast++)
    {
@@ -112,7 +110,6 @@ int CSimulation::nSetAllCoastpointDeepWaterWaveValues(void)
 
             // LogStream << m_ulIter << ": coast point = " << nPoint << " is start of profile " << pProfile->nGetProfileID() << ", next profile is " << pNextProfile->nGetProfileID() << ", which starts at coast piint " << pNextProfile->nGetCoastPoint() << ", dThisDeepWaterWaveHeight = " << dThisDeepWaterWaveHeight << ", dThisDeepWaterWaveAngle = " << dThisDeepWaterWaveAngle << " nDistToNextProfile = " << nDistToNextProfile << endl;
          }
-
          else
          {
             // This coast point is not the start of a coastline normal, so set the deep water wave values at this coastline point to be a weighted average of those from the up-coast and down-coast profiles
@@ -173,7 +170,6 @@ int CSimulation::nDoAllPropagateWaves(void)
 
          if (bDownCoast)
             pProfile = m_VCoast[nCoast].pGetProfileWithDownCoastSeq(nn);
-
          else
             pProfile = m_VCoast[nCoast].pGetProfileWithUpCoastSeq(nn);
 
@@ -189,7 +185,6 @@ int CSimulation::nDoAllPropagateWaves(void)
                // Move on to next profile
                continue;
             }
-
             else
             {
                // A serious CShore error, so abort the run
@@ -202,7 +197,7 @@ int CSimulation::nDoAllPropagateWaves(void)
             continue;
 
          // Is this a start of coast or end of coast profile?
-         if ((! pProfile->bStartOfCoast()) && (! pProfile->bEndOfCoast()))
+         if (! pProfile->bIsGridEdge())
          {
             // It is neither a start of coast or an end of coast profile, so set switch
             bSomeNonStartOrEndOfCoastProfiles = true;
@@ -353,7 +348,6 @@ int CSimulation::nDoAllPropagateWaves(void)
    if (VbBreakingAll.empty())
    {
       LogStream << m_ulIter << ": waves off-shore for all profiles" << endl;
-
       return RTN_OK;
    }
 
@@ -429,7 +423,6 @@ int CSimulation::nDoAllPropagateWaves(void)
 
    // Find any shadow zones and then modify waves in and adjacent to them
    nRet = nDoAllShadowZones();
-
    if (nRet != RTN_OK)
       return nRet;
 
@@ -643,7 +636,7 @@ int CSimulation::nCalcWavePropertiesOnProfile(int const nCoast, int const nCoast
    if (! pProfile->bOKIncStartAndEndOfCoast())
    {
       // if (m_nLogFileDetail >= LOG_FILE_ALL)
-      // LogStream << m_ulIter << ": Coast " << nCoast << ", profile " << nProfile << " has been marked invalid, will not calc wave properties on this profile" << endl;
+      // LogStream << m_ulIter << ": coast " << nCoast << ", profile " << nProfile << " has been marked invalid, will not calc wave properties on this profile" << endl;
 
       return RTN_OK;
    }
@@ -1910,7 +1903,7 @@ void CSimulation::ModifyBreakingWavePropertiesWithinShadowZoneToCoastline(int co
       // This coast point is in the active zone, so set breaking wave height, breaking wave angle, and depth of breaking for the coast point TODO 007 Where does the 0.78 come from? TODO 011 Should it be an input variable or a named constant?
       if (dThisBreakingWaveHeight > dThisBreakingDepth * 0.78)
       {
-         dThisBreakingWaveHeight = dThisBreakingDepth * 0.78; // Likely CShore output wave height is not adequately reproduced due to input profile and wave properties. TODO 007 Info needed. Does something need to be changed then?
+         dThisBreakingWaveHeight = dThisBreakingDepth * 0.78; // Likely CShore output wave height is not adequately reproduced due to input profile and wave properties. TODO 007 Finish surge and runup stuff. Does something need to be changed then?
       }
 
       // assert(dThisBreakingWaveHeight >= 0);
@@ -2246,8 +2239,14 @@ void CSimulation::CalcCoastTangents(int const nCoast)
 //===============================================================================================================================
 void CSimulation::CalcD50AndFillWaveCalcHoles(void)
 {
-   vector<int> VnPolygonD50Count(m_nNumPolygonGlobal + 1, 0); // TODO 044
-   vector<double> VdPolygonD50(m_nNumPolygonGlobal + 1, 0);   // TODO 044
+   // Get the total number of polygons, all coasts
+   int nTotPolygonAllCoasts = 0;
+   for (int nCoast = 0; nCoast < static_cast<int>(m_VCoast.size()); nCoast++)
+      nTotPolygonAllCoasts +=  m_VCoast[nCoast].nGetNumPolygons();
+
+   // Vectors for D50 stuff
+   vector<int> VnPolygonD50Count(nTotPolygonAllCoasts, 0);
+   vector<double> VdPolygonD50(nTotPolygonAllCoasts, 0);
 
    for (int nX = 0; nX < m_nXGridSize; nX++)
    {
@@ -2506,7 +2505,7 @@ void CSimulation::CalcD50AndFillWaveCalcHoles(void)
       }
    }
 
-   // Calculate the average d50 for every polygon TODO 044
+   // Calculate the average d50 for every polygon
    for (int nCoast = 0; nCoast < static_cast<int>(m_VCoast.size()); nCoast++)
    {
       for (int nPoly = 0; nPoly < m_VCoast[nCoast].nGetNumPolygons(); nPoly++)

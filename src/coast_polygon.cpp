@@ -34,7 +34,7 @@ using std::find;
 #include "2d_point.h"
 #include "2di_point.h"
 
-//! Constructor with 10 parameters and initialization list
+//! Constructor with 10 parameters and initialisation list
 CGeomCoastPolygon::CGeomCoastPolygon(int const nCoastID, int const nNode, int const nProfileUpCoast, int const nProfileDownCoast, vector<CGeom2DPoint> const* pVIn, int const nLastPointUpCoast, const int nLastPointDownCoast, CGeom2DIPoint const* PtiNode, CGeom2DIPoint const* PtiAntinode, bool const bStartCoast, bool const bEndCoast)
     : // m_bIsPointedSeaward(true),
       m_bUnconsSedimentMovementDownCoastThisIter(false),
@@ -114,11 +114,11 @@ bool CGeomCoastPolygon::bDownCoastThisIter(void) const
    return m_bUnconsSedimentMovementDownCoastThisIter;
 }
 
-//! Set this coast polygon as the coast-end polygon
-void CGeomCoastPolygon::SetCoastEndPolygon(void)
-{
-   m_bCoastEndPolygon = true;
-}
+// //! Set this coast polygon as the coast-end polygon
+// void CGeomCoastPolygon::SetCoastEndPolygon(void)
+// {
+//    m_bCoastEndPolygon = true;
+// }
 
 //! Is this polygon the coast-end polygon?
 bool CGeomCoastPolygon::bIsCoastEndPolygon(void) const
@@ -126,11 +126,11 @@ bool CGeomCoastPolygon::bIsCoastEndPolygon(void) const
    return m_bCoastEndPolygon;
 }
 
-//! Set this coast polygon as the coast-start polygon
-void CGeomCoastPolygon::SetCoastStartPolygon(void)
-{
-   m_bCoastStartPolygon = true;
-}
+// //! Set this coast polygon as the coast-start polygon
+// void CGeomCoastPolygon::SetCoastStartPolygon(void)
+// {
+//    m_bCoastStartPolygon = true;
+// }
 
 //! Is this polygon the coast-start polygon?
 bool CGeomCoastPolygon::bIsCoastStartPolygon(void) const
@@ -304,13 +304,13 @@ double CGeomCoastPolygon::dGeBeachErosionAllUncons(void) const
    return m_dBeachErosionUnconsFine + m_dBeachErosionUnconsSand + m_dBeachErosionUnconsCoarse;
 }
 
-//! Adds a depth (in m) of fine-sized unconsolidated sediment to this timestep's to-suspension movement of unconsolidated coarse sediment on this polygon
-void CGeomCoastPolygon::AddToSuspensionUnconsFine(double const dDepth)
-{
-   m_dSuspensionUnconsFine += dDepth;
-}
+// //! Adds a depth (in m) of fine-sized unconsolidated sediment to this timestep's to-suspension movement of unconsolidated coarse sediment on this polygon
+// void CGeomCoastPolygon::AddToSuspensionUnconsFine(double const dDepth)
+// {
+//    m_dSuspensionUnconsFine += dDepth;
+// }
 
-// //! Re-initializes this timestep's to-suspension movement of unconsolidated fine sediment on this polygon
+// //! Re-initialises this timestep's to-suspension movement of unconsolidated fine sediment on this polygon
 // void CGeomCoastPolygon::SetZeroSuspensionUnconsFine(void)
 // {
 // m_dSuspensionUnconsFine = 0;
@@ -346,7 +346,7 @@ double CGeomCoastPolygon::dGetBeachDepositionUnconsCoarse(void) const
    return m_dBeachDepositionUnconsCoarse;
 }
 
-//! Re-initializes this timestep's still-to-do deposition of unconsolidated sand sediment (from beach redistribution only) on this polygon
+//! Re-initialises this timestep's still-to-do deposition of unconsolidated sand sediment (from beach redistribution only) on this polygon
 void CGeomCoastPolygon::SetZeroToDoDepositionUnconsSand(void)
 {
    m_dToDoBeachDepositionUnconsSand = 0;
@@ -364,7 +364,7 @@ double CGeomCoastPolygon::dGetToDoBeachDepositionUnconsSand(void) const
    return m_dToDoBeachDepositionUnconsSand;
 }
 
-//! Re-initializes this timestep's still-to-do deposition of unconsolidated coarse sediment (from beach redistribution only) on this polygon
+//! Re-initialises this timestep's still-to-do deposition of unconsolidated coarse sediment (from beach redistribution only) on this polygon
 void CGeomCoastPolygon::SetZeroToDoDepositionUnconsCoarse(void)
 {
    m_dToDoBeachDepositionUnconsCoarse = 0;
@@ -629,17 +629,17 @@ double CGeomCoastPolygon::dGetCliffCollapseCoarseErodedDeanProfile(void) const
    return m_dCliffCollapseCoarseErodedDeanProfile;
 }
 
-//! Add to the this-iteration total of unconsolidated fine sediment moved to suspension and derived from shore platform erosion on this polygon
-void CGeomCoastPolygon::AddPlatformErosionToSuspensionUnconsFine(double const dDepth)
-{
-   m_dPlatformErosionToSuspensionFine += dDepth;
-}
+// //! Add to the this-iteration total of unconsolidated fine sediment moved to suspension and derived from shore platform erosion on this polygon
+// void CGeomCoastPolygon::AddPlatformErosionToSuspensionUnconsFine(double const dDepth)
+// {
+//    m_dPlatformErosionToSuspensionFine += dDepth;
+// }
 
-//! Get the this-iteration total of unconsolidated sand sediment moved to suspension derived from shore platform erosion on this polygon
-double CGeomCoastPolygon::dGetPlatformErosionToSuspensionUnconsFine(void) const
-{
-   return m_dPlatformErosionToSuspensionFine;
-}
+// //! Get the this-iteration total of unconsolidated sand sediment moved to suspension derived from shore platform erosion on this polygon
+// double CGeomCoastPolygon::dGetPlatformErosionToSuspensionUnconsFine(void) const
+// {
+//    return m_dPlatformErosionToSuspensionFine;
+// }
 
 //! Add to the this-iteration total of unconsolidated sand sediment derived from shore platform erosion on this polygon
 void CGeomCoastPolygon::AddPlatformErosionUnconsSand(double const dDepth)
@@ -779,18 +779,18 @@ void CGeomCoastPolygon::AppendVertex(CGeom2DIPoint const* pPti)
    m_VPtiVertices.push_back(*pPti);
 }
 
-//! Returns the number of vertices for this polygon
-int CGeomCoastPolygon::nGetNumVertices(void) const
-{
-   return static_cast<int>(m_VPtiVertices.size());
-}
+// //! Returns the number of vertices for this polygon
+// int CGeomCoastPolygon::nGetNumVertices(void) const
+// {
+//    return static_cast<int>(m_VPtiVertices.size());
+// }
 
-//! Returns the point coordinates (grid CRS) for a single vertex of this polygon
-CGeom2DIPoint CGeomCoastPolygon::PtiGetVertex(int const nIndex) const
-{
-   // Note no check to see if nUndex < m_VPtiVertices.size()
-   return m_VPtiVertices[nIndex];
-}
+// //! Returns the point coordinates (grid CRS) for a single vertex of this polygon
+// CGeom2DIPoint CGeomCoastPolygon::PtiGetVertex(int const nIndex) const
+// {
+//    // Note no check to see if nUndex < m_VPtiVertices.size()
+//    return m_VPtiVertices[nIndex];
+// }
 
 CGeom2DIPoint CGeomCoastPolygon::PtiGetFillStartPoint(void)
 {

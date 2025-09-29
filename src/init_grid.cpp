@@ -41,63 +41,59 @@ using std::endl;
 #include "raster_grid.h"
 
 //===============================================================================================================================
-//! At the beginning of each timestep: clear vector coasts, profiles, and polygons, initialize the raster grid, and initialize some per-timestep accounting variables
+//! At the beginning of each timestep: clear vector coasts, profiles, and polygons, initialise the raster grid, and initialise some per-timestep accounting variables
 //===============================================================================================================================
 int CSimulation::nInitGridAndCalcStillWaterLevel(void)
 {
    // Clear all vector coastlines, profiles, and polygons
-   for (int i = 0; i < static_cast<int>(m_pVCoastPolygon.size()); i++)
-      delete m_pVCoastPolygon[i];
-
-   m_pVCoastPolygon.clear();
    m_VCoast.clear();
 
    // m_VFloodWaveSetup.clear();
    m_VFloodWaveSetupSurge.clear();
    m_VFloodWaveSetupSurgeRunup.clear();
 
-   // Do some every-timestep initialization
+   // Do some every-timestep initialisation
    m_nXMinBoundingBox = INT_MAX;
    m_nXMaxBoundingBox = INT_MIN;
    m_nYMinBoundingBox = INT_MAX;
    m_nYMaxBoundingBox = INT_MIN;
 
    m_ulThisIterNumSeaCells =
-       m_ulThisIterNumCoastCells =
-           m_ulThisIterNumPotentialPlatformErosionCells =
-               m_ulThisIterNumActualPlatformErosionCells = 0;
+   m_ulThisIterNumCoastCells =
+   m_ulThisIterNumPotentialPlatformErosionCells =
+   m_ulThisIterNumActualPlatformErosionCells = 0;
 
    m_ulThisIterNumPotentialBeachErosionCells =
-       m_ulThisIterNumActualBeachErosionCells =
-           m_ulThisIterNumBeachDepositionCells = 0;
+   m_ulThisIterNumActualBeachErosionCells =
+   m_ulThisIterNumBeachDepositionCells = 0;
 
    m_dThisIterTotSeaDepth =
-       m_dThisIterPotentialPlatformErosion =
-           m_dThisIterPotentialBeachErosion =
-               m_dThisIterBeachErosionFine =
-                   m_dThisIterBeachErosionSand =
-                       m_dThisIterBeachErosionCoarse =
-                           m_dThisIterBeachDepositionSand =
-                               m_dThisIterBeachDepositionCoarse =
-                                   m_dThisIterPotentialSedLostBeachErosion =
-                                       m_dThisIterFineSedimentToSuspension =
-                                           m_dThisIterCliffCollapseErosionFineUncons =
-                                               m_dThisIterCliffCollapseErosionSandUncons =
-                                                   m_dThisIterCliffCollapseErosionCoarseUncons =
-                                                       m_dThisIterUnconsSandCliffDeposition =
-                                                           m_dThisIterUnconsCoarseCliffDeposition =
-                                                               m_dThisIterCliffCollapseErosionFineCons =
-                                                                   m_dThisIterCliffCollapseErosionSandCons =
-                                                                       m_dThisIterCliffCollapseErosionCoarseCons =
-                                                                           m_dThisIterActualPlatformErosionFineCons =
-                                                                               m_dThisIterActualPlatformErosionSandCons =
-                                                                                   m_dThisIterActualPlatformErosionCoarseCons =
-                                                                                       m_dThisIterLeftGridUnconsFine = // TODO 067 Suspended fine sediment never decreases i.e. no suspended fine sediment ever leaves the grid. Is this OK?
-       m_dThisIterLeftGridUnconsSand =
-           m_dThisIterLeftGridUnconsCoarse =
-               m_dThisiterUnconsFineInput =
-                   m_dThisiterUnconsSandInput =
-                       m_dThisiterUnconsCoarseInput = 0;
+   m_dThisIterPotentialPlatformErosion =
+   m_dThisIterPotentialBeachErosion =
+   m_dThisIterBeachErosionFine =
+   m_dThisIterBeachErosionSand =
+   m_dThisIterBeachErosionCoarse =
+   m_dThisIterBeachDepositionSand =
+   m_dThisIterBeachDepositionCoarse =
+   m_dThisIterPotentialSedLostBeachErosion =
+   m_dThisIterFineSedimentToSuspension =
+   m_dThisIterCliffCollapseErosionFineUncons =
+   m_dThisIterCliffCollapseErosionSandUncons =
+   m_dThisIterCliffCollapseErosionCoarseUncons =
+   m_dThisIterUnconsSandCliffDeposition =
+   m_dThisIterUnconsCoarseCliffDeposition =
+   m_dThisIterCliffCollapseErosionFineCons =
+   m_dThisIterCliffCollapseErosionSandCons =
+   m_dThisIterCliffCollapseErosionCoarseCons =
+   m_dThisIterActualPlatformErosionFineCons =
+   m_dThisIterActualPlatformErosionSandCons =
+   m_dThisIterActualPlatformErosionCoarseCons =
+   m_dThisIterLeftGridUnconsFine = // TODO 067 Suspended fine sediment never decreases i.e. no suspended fine sediment ever leaves the grid. Is this OK?
+   m_dThisIterLeftGridUnconsSand =
+   m_dThisIterLeftGridUnconsCoarse =
+   m_dThisiterUnconsFineInput =
+   m_dThisiterUnconsSandInput =
+   m_dThisiterUnconsCoarseInput = 0;
 
    for (int n = 0; n < m_nLayers; n++)
    {
@@ -111,13 +107,13 @@ int CSimulation::nInitGridAndCalcStillWaterLevel(void)
    int nZeroThickness = 0;
 
    m_dStartIterSuspFineAllCells =
-       m_dStartIterSuspFineInPolygons =
-           m_dStartIterUnconsFineAllCells =
-               m_dStartIterUnconsSandAllCells =
-                   m_dStartIterUnconsCoarseAllCells =
-                       m_dStartIterConsFineAllCells =
-                           m_dStartIterConsSandAllCells =
-                               m_dStartIterConsCoarseAllCells = 0;
+   m_dStartIterSuspFineInPolygons =
+   m_dStartIterUnconsFineAllCells =
+   m_dStartIterUnconsSandAllCells =
+   m_dStartIterUnconsCoarseAllCells =
+   m_dStartIterConsFineAllCells =
+   m_dStartIterConsSandAllCells =
+   m_dStartIterConsCoarseAllCells = 0;
 
    // And go through all cells in the RasterGrid array
    // Use OpenMP parallel loop with reduction clauses for thread-safe accumulation
@@ -131,7 +127,7 @@ int CSimulation::nInitGridAndCalcStillWaterLevel(void)
    {
       for (int nY = 0; nY < m_nYGridSize; nY++)
       {
-         // Re-initialize values for this cell
+         // Re-initialise values for this cell
          m_pRasterGrid->m_Cell[nX][nY].InitCell();
 
          if (m_ulIter == 1)

@@ -1,5 +1,4 @@
 /*!
-
    \file cell_landform.cpp
    \brief CRWCellLandform routines
    \details TODO 001 A more detailed description of these routines.
@@ -7,11 +6,9 @@
    \author Andres Payo
    \date 2025
    \copyright GNU General Public License
-
 */
 
 /* ===============================================================================================================================
-
    This file is part of CoastalME, the Coastal Modelling Environment.
 
    CoastalME is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
@@ -19,7 +16,6 @@
    This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
    You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-
 ===============================================================================================================================*/
 #include "cme.h"
 #include "cell_landform.h"
@@ -29,9 +25,12 @@ CRWCellLandform::CRWCellLandform()
     : m_nCategory(LF_NONE),
       m_nSubCategory(LF_NONE),
       m_nCoast(-1),
-      m_nPointOnCoast(-1),
+      m_nPointOnCoastline(-1),
       m_dAccumWaveEnergy(0)
 {
+   m_uLFData.m_sCliffData.m_dNotchBaseElev = DBL_NODATA;
+   m_uLFData.m_sCliffData.m_dNotchDepth = DBL_NODATA;
+   m_uLFData.m_sCliffData.m_ulCollapseTimestep = UNSIGNED_LONG_NODATA;
 }
 
 //! Destructor
@@ -51,16 +50,17 @@ int CRWCellLandform::nGetLFCategory(void) const
    return m_nCategory;
 }
 
-//! Set the both the landform sub-category, and the landform category
+//! Set the both the landform sub-category, and the landform category (includes some rules to ensure category/subcategory consistency)
 void CRWCellLandform::SetLFSubCategory(int const nClassIn)
 {
    m_nSubCategory = nClassIn;
 
    if ((nClassIn == LF_SUBCAT_CLIFF_ON_COASTLINE) || (nClassIn == LF_SUBCAT_CLIFF_INLAND))
       m_nCategory = LF_CAT_CLIFF;
-
    else if ((nClassIn == LF_SUBCAT_DRIFT_TALUS) || (nClassIn == LF_SUBCAT_DRIFT_BEACH) || (nClassIn == LF_SUBCAT_DRIFT_MIXED))
       m_nCategory = LF_CAT_DRIFT;
+   else if ((nClassIn == LF_SUBCAT_SEDIMENT_INPUT_UNCONSOLIDATED) || (nClassIn == LF_SUBCAT_SEDIMENT_INPUT_CONSOLIDATED))
+      m_nCategory = LF_CAT_SEDIMENT_INPUT;
 }
 
 //! Get the landform sub-category
@@ -84,13 +84,13 @@ int CRWCellLandform::nGetCoast(void) const
 //! Set the number of the point on the coastline
 void CRWCellLandform::SetPointOnCoast(int const nPointOnCoastIn)
 {
-   m_nPointOnCoast = nPointOnCoastIn;
+   m_nPointOnCoastline = nPointOnCoastIn;
 }
 
 //! Set the number of the point on the coastline
 int CRWCellLandform::nGetPointOnCoast(void) const
 {
-   return m_nPointOnCoast;
+   return m_nPointOnCoastline;
 }
 
 //! Set accumulated wave energy
@@ -117,26 +117,33 @@ double CRWCellLandform::dGetCliffNotchBaseElev(void) const
    return m_uLFData.m_sCliffData.m_dNotchBaseElev;
 }
 
-//! Set the cliff notch overhang which remains on this cell
+//! Set the horizontal depth of cliff notch incision for this cell
 void CRWCellLandform::SetCliffNotchDepth(double const dLenIn)
 {
    m_uLFData.m_sCliffData.m_dNotchDepth = dLenIn;
 }
 
-//! Get the cliff notch overhang which remains on this cell
+//! Get the horizontal depth of cliff notch incision for this cell
 double CRWCellLandform::dGetCliffNotchDepth(void) const
 {
    return m_uLFData.m_sCliffData.m_dNotchDepth;
 }
 
-//! Set the cliff depth remaining on this cell
-void CRWCellLandform::SetCliffRemaining(double const dLenIn)
+// //! Set the cliff depth remaining on this cell
+// void CRWCellLandform::SetCliffRemaining(double const dLenIn)
+// {
+//    m_uLFData.m_sCliffData.m_dRemaining = dLenIn;
+// }
+
+//! Set the timestep at which cliff collapse occurred
+void CRWCellLandform::SetCliffCollapseTimestep(unsigned long const ulTimestep)
 {
-   m_uLFData.m_sCliffData.m_dRemaining = dLenIn;
+   m_uLFData.m_sCliffData.m_ulCollapseTimestep = ulTimestep;
 }
 
-// //! Get the cliff depth remaining on this cell
-// double CRWCellLandform::dGetCliffRemaining(void) const
-// {
-// return m_uLFData.m_sCliffData.m_dRemaining;
-// }
+//! Returns the timestep at which cliff collapse occurred
+unsigned long CRWCellLandform::ulGetCliffCollapseTimestep(void) const
+{
+   return m_uLFData.m_sCliffData.m_ulCollapseTimestep;
+}
+

@@ -46,7 +46,7 @@ using std::stack;
 #include "2di_point.h"
 
 //===============================================================================================================================
-//! Use the sealevel, wave set-up and run-up to evaluate flood hydraulically connected TODO 007 Not clear why we need this. We already have a cell-by-cell fill sea routine: every cell that isn't sea is land
+//! Use the sealevel, wave set-up and run-up to evaluate flood hydraulically connected TODO 007 Finish surge and runup stuff
 //===============================================================================================================================
 void CSimulation::FloodFillLand(int const nXStart, int const nYStart)
 {
@@ -81,7 +81,6 @@ void CSimulation::FloodFillLand(int const nXStart, int const nYStart)
 
       if (pointCounter > 0)
          dDiffTotWaterLevel /= pointCounter;
-
       else
          dDiffTotWaterLevel = 0;
    }

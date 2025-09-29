@@ -24,9 +24,6 @@
 #include <assert.h>
 
 #include <iostream>
-// using std::cout;
-// using std::cerr;
-// using std::endl;
 using std::ios;
 
 #include "cme.h"
@@ -39,7 +36,7 @@ CRWIntervention::CRWIntervention(CRWCoast* pCoastIn, int const nCoast, int const
    pCoast = pCoastIn;
 
    m_nCoast = nCoast;
-   m_nPointOnCoast = nPointOnCoast;
+   m_nPointOnCoastline = nPointOnCoast;
    m_nCategory = LF_CAT_INTERVENTION;
 }
 

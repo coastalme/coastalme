@@ -40,8 +40,8 @@ using std::find;
 #include "raster_grid.h"
 #include "profile.h"
 
-//! Constructor with initialization list, requires one parameter (the coast point at which the profile starts)
-CGeomProfile::CGeomProfile(int const nCoast, int const nCoastPoint, int const nProfileID, CGeom2DIPoint const* pPtiStart, CGeom2DIPoint const* pPtiEnd, bool const bIntervention)
+//! Constructor with initialisation list
+CGeomProfile::CGeomProfile(int const nCoast, int const nCoastPoint, int const nProfileID, bool const bIntervention)
     : m_bStartOfCoast(false),
       m_bEndOfCoast(false),
       m_bCShoreProblem(false),
@@ -50,6 +50,7 @@ CGeomProfile::CGeomProfile(int const nCoast, int const nCoastPoint, int const nP
       m_bHitCoast(false),
       m_bTooShort(false),
       m_bTruncatedSameCoast(false),
+      m_bTruncatedDifferentCoast(false),
       m_bHitAnotherProfile(false),
       m_bIntervention(bIntervention),
       m_nCoast(nCoast),
@@ -58,8 +59,6 @@ CGeomProfile::CGeomProfile(int const nCoast, int const nCoastPoint, int const nP
       m_dDeepWaterWaveHeight(0),
       m_dDeepWaterWaveAngle(0),
       m_dDeepWaterWavePeriod(0),
-      PtiStart(*pPtiStart),
-      PtiEnd(*pPtiEnd),
       m_pUpCoastAdjacentProfile(NULL),
       m_pDownCoastAdjacentProfile(NULL)
 {
@@ -70,8 +69,8 @@ CGeomProfile::~CGeomProfile(void)
 {
 }
 
-//! Returns this profile's coast
-int CGeomProfile::nGetCoast(void) const
+//! Returns this profile's coast ID
+int CGeomProfile::nGetCoastID(void) const
 {
    return m_nCoast;
 }
@@ -91,19 +90,13 @@ int CGeomProfile::nGetCoastPoint(void) const
 //! Returns a pointer to the location of the cell (grid CRS) on which the profile starts
 CGeom2DIPoint* CGeomProfile::pPtiGetStartPoint(void)
 {
-   return &PtiStart;
-}
-
-//! Sets the the location of the cell (grid CRS) on which the profile ends
-void CGeomProfile::SetEndPoint(CGeom2DIPoint const* pPtiEnd)
-{
-   PtiEnd = *pPtiEnd;
+   return &m_VCellInProfile.front();
 }
 
 //! Returns a pointer to the location of the cell (grid CRS) on which the profile ends
 CGeom2DIPoint* CGeomProfile::pPtiGetEndPoint(void)
 {
-   return &PtiEnd;
+   return &m_VCellInProfile.back();
 }
 
 //! Sets a switch to indicate whether this is a start-of-coast profile
@@ -128,6 +121,15 @@ void CGeomProfile::SetEndOfCoast(bool const bFlag)
 bool CGeomProfile::bEndOfCoast(void) const
 {
    return m_bEndOfCoast;
+}
+
+//! Returns true if this is a start-of-coast or an end-of-coast profile
+bool CGeomProfile::bIsGridEdge(void) const
+{
+   if (m_bStartOfCoast || m_bEndOfCoast)
+      return true;
+
+   return false;
 }
 
 //! Sets a switch to indicate whether this profile has a CShore problem
@@ -475,11 +477,11 @@ void CGeomProfile::SetUpCoastAdjacentProfile(CGeomProfile* pProfile)
    m_pUpCoastAdjacentProfile = pProfile;
 }
 
-//! Returns the up-coast adjacent profile, returns NULL if there is no up-coast adjacent profile
-CGeomProfile* CGeomProfile::pGetUpCoastAdjacentProfile(void) const
-{
-   return m_pUpCoastAdjacentProfile;
-}
+// //! Returns the up-coast adjacent profile, returns NULL if there is no up-coast adjacent profile
+// CGeomProfile* CGeomProfile::pGetUpCoastAdjacentProfile(void) const
+// {
+//    return m_pUpCoastAdjacentProfile;
+// }
 
 //! Sets the down-coast adjacent profile
 void CGeomProfile::SetDownCoastAdjacentProfile(CGeomProfile* pProfile)
@@ -506,7 +508,7 @@ void CGeomProfile::AppendCellInProfile(int const nX, int const nY)
 }
 
 //! Sets the profile's vector of cells (grid CRS)
-void CGeomProfile::SetCellsInProfile(vector<CGeom2DIPoint>* VNewPoints)
+void CGeomProfile::SetCellsInProfile(vector<CGeom2DIPoint> const* VNewPoints)
 {
    m_VCellInProfile = *VNewPoints;
 }
@@ -529,6 +531,13 @@ CGeom2DIPoint* CGeomProfile::pPtiGetLastCellInProfile(void)
 {
    // In grid CRS
    return &m_VCellInProfile.back();
+}
+
+//! Returns the first cell (grid CRS) in the profile
+CGeom2DIPoint* CGeomProfile::pPtiGetFirstCellInProfile(void)
+{
+   // In grid CRS
+   return &m_VCellInProfile.front();
 }
 
 //! Returns the number of cells in the profile
@@ -605,15 +614,15 @@ bool CGeomProfile::bIsIntervention(void) const
    return m_bIntervention;
 }
 
-//! Returns the index of a given cell in the vector of profile cells; returns INT_NODATA if not found
-int CGeomProfile::nGetIndexOfCellInProfile(int const nX, int const nY)
-{
-   for (unsigned int n = 0; n < m_VCellInProfile.size(); n++)
-   {
-      if ((m_VCellInProfile[n].nGetX() == nX) && (m_VCellInProfile[n].nGetY() == nY))
-         return n;
-   }
-
-   return INT_NODATA;
-}
+// //! Returns the index of a given cell in the vector of profile cells; returns INT_NODATA if not found
+// int CGeomProfile::nGetIndexOfCellInProfile(int const nX, int const nY)
+// {
+//    for (unsigned int n = 0; n < m_VCellInProfile.size(); n++)
+//    {
+//       if ((m_VCellInProfile[n].nGetX() == nX) && (m_VCellInProfile[n].nGetY() == nY))
+//          return n;
+//    }
+//
+//    return INT_NODATA;
+// }
 

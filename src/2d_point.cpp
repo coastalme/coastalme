@@ -1,5 +1,4 @@
 /*!
-
    \file 2d_point.cpp
    \brief Geometry class used to represent 2D point objects with floating-point coordinates
    \details The CGeom2DPoint class is used to represent 2D points where the x and y coordinates are floating-point values
@@ -7,7 +6,6 @@
    \author Andres Payo
    \date 2025
    \copyright GNU General Public License
-
 */
 
 /* ===============================================================================================================================

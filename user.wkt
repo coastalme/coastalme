@@ -1,0 +1,9 @@
+ENGCRS["Plane",
+    EDATUM["Unknown engineering datum"],
+    CS[Cartesian,2],
+        AXIS["(E)",east,
+            ORDER[1],
+            LENGTHUNIT["Meter",1]],
+        AXIS["(N)",north,
+            ORDER[2],
+            LENGTHUNIT["Meter",1]]]

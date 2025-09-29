@@ -24,6 +24,8 @@
 #include <assert.h>
 
 #include "multi_line.h"
+#include "2d_point.h"
+#include "line.h"
 
 //! Constructor, no parameters
 CGeomMultiLine::CGeomMultiLine(void)
@@ -41,11 +43,11 @@ vector<CGeom2DPoint>& CGeomMultiLine::pGetPoints(void)
    return CGeomLine::m_VPoints;
 }
 
-//! Replaces the points of the CGeomLine
-void CGeomMultiLine::SetPoints(vector<CGeom2DPoint>& pVPts)
-{
-   CGeomLine::m_VPoints = pVPts;
-}
+// //! Replaces the points of the CGeomLine
+// void CGeomMultiLine::SetPoints(vector<CGeom2DPoint> const& pVPts)
+// {
+//    CGeomLine::m_VPoints = pVPts;
+// }
 
 //! Appends a new empty line segment
 void CGeomMultiLine::AppendLineSegment(void)
@@ -137,11 +139,11 @@ vector<vector<pair<int, int>>> CGeomMultiLine::prVVGetAllLineSegAfter(int const 
    return prVTmp;
 }
 
-//! Removes a line segment
-void CGeomMultiLine::RemoveLineSegment(int const nSegment)
-{
-   m_prVVLineSegment.erase(m_prVVLineSegment.begin() + nSegment);
-}
+// //! Removes a line segment
+// void CGeomMultiLine::RemoveLineSegment(int const nSegment)
+// {
+//    m_prVVLineSegment.erase(m_prVVLineSegment.begin() + nSegment);
+// }
 
 //! Appends a coincident profile pair to the CGeomMultiLine object's final line segment
 void CGeomMultiLine::AppendCoincidentProfileToLineSegments(pair<int, int> const prIn)

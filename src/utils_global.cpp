@@ -1,5 +1,4 @@
 /*!
-
    \file utils_global.cpp
    \brief Globally-available utility routines
    \details TODO 001 A more detailed description of these routines.
@@ -7,11 +6,9 @@
    \author Andres Payo
    \date 2025
    \copyright GNU General Public License
-
 */
 
 /* ==============================================================================================================================
-
    This file is part of CoastalME, the Coastal Modelling Environment.
 
    CoastalME is free software; you can redistribute it and/or modify it under the terms of the GNU General Public  License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
@@ -19,7 +16,6 @@
    This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
    You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-
 ==============================================================================================================================*/
 #include <cmath>
 
@@ -48,7 +44,7 @@ double dRound(double const d)
 }
 
 //===============================================================================================================================
-//! Version of the above that returns an int
+//! Correctly rounds doubles, returns an int
 //===============================================================================================================================
 int nRound(double const d)
 {
@@ -70,7 +66,7 @@ bool bIsStringValidDouble(string& str)
    istringstream iStr(str);
    double dDummy;
 
-   if (!(iStr >> dDummy))
+   if (! (iStr >> dDummy))
       return false;
 
    return true;
@@ -106,17 +102,17 @@ ostream& operator<<(ostream& ostr, const FillToWidth& args)
    return ostr;
 }
 
-//===============================================================================================================================
-//! Converts double to string with specified number of places after the decimal. From https://stackoverflow.com/questions/14765155/how-can-i-easily-format-my-data-table-in-c
-//===============================================================================================================================
-string strDbl(double const dX, int const nDigits)
-{
-   stringstream ss;
-   ss << fixed;
-   ss.precision(nDigits); // Set the number of places after decimal
-   ss << dX;
-   return ss.str();
-}
+// //===============================================================================================================================
+// //! Converts double to string with specified number of places after the decimal. From https://stackoverflow.com/questions/14765155/how-can-i-easily-format-my-data-table-in-c
+// //===============================================================================================================================
+// string strDbl(double const dX, int const nDigits)
+// {
+//    stringstream ss;
+//    ss << fixed;
+//    ss.precision(nDigits);     // Set the number of places after decimal
+//    ss << dX;
+//    return ss.str();
+// }
 
 //===============================================================================================================================
 //! Converts double to string with specified number of decimal places, within a field of given width, pads with blank spaces to enforce right alignment. Modified from https://stackoverflow.com/questions/14765155/how-can-i-easily-format-my-data-table-in-c
@@ -139,11 +135,11 @@ string strDblRight(double const dX, int const nDigits, int const nWidth, bool co
 
    else
    {
-      ss.precision(nDigits); // Set number of places after decimal
+      ss.precision(nDigits);  // Set number of places after decimal
       ss << dX;
    }
 
-   ss << " "; // Add a final space
+   ss << " ";                 // Add a final space
    return ss.str();
 }
 
@@ -154,8 +150,8 @@ string strIntRight(int const nX, int const nWidth)
 {
    stringstream ss;
    ss << fixed << right;
-   ss.fill(' ');         // Fill space around displayed number
-   ss.width(nWidth - 1); // Set width around displayed number
+   ss.fill(' ');              // Fill space around displayed number
+   ss.width(nWidth - 1);      // Set width around displayed number
    ss << nX;
    ss << " "; // Add a final space
    return ss.str();
@@ -284,7 +280,6 @@ string strRightPerCent(double const d1, double const d2, int const nWidth, int c
       else
          ss << SPACE;
    }
-
    else
    {
       // Non-zero, so calculate the percentage

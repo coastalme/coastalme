@@ -32,6 +32,7 @@ using std::vector;
 using std::pair;
 using std::make_pair;
 
+#include "2d_point.h"
 #include "line.h"
 
 class CGeomMultiLine : public CGeomLine
@@ -46,7 +47,7 @@ class CGeomMultiLine : public CGeomLine
    ~CGeomMultiLine(void) override;
 
    vector<CGeom2DPoint>& pGetPoints(void);
-   void SetPoints(vector<CGeom2DPoint>&);
+   // void SetPoints(vector<CGeom2DPoint> const&);
 
    void AppendLineSegment(void);
    void AppendLineSegment(vector<pair<int, int>>*);
@@ -55,7 +56,7 @@ class CGeomMultiLine : public CGeomLine
    void TruncateLineSegments(int const);
    void InsertLineSegment(int const);
    vector<vector<pair<int, int>>> prVVGetAllLineSegAfter(int const);
-   void RemoveLineSegment(int const);
+   // void RemoveLineSegment(int const);
 
    void AppendCoincidentProfileToLineSegments(pair<int, int> const);
    void AddCoincidentProfileToExistingLineSegment(int const, int const, int const);

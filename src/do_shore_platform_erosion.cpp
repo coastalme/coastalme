@@ -219,11 +219,10 @@ int CSimulation::nCalcPotentialPlatformErosionOnProfile(int const nCoast, CGeomP
    // Next calculate the average distance between profile points, again in external CRS units. Assume that the sample points are equally spaced along the profile (not quite true)
    double const dSpacingXY = dProfileLenXY / (nProfSize - 1);
 
-   // Set up vectors for the coastline-normal profile elevations. The length of this vector line is given by the number of cells 'under' the profile. Thus each point on the vector relates to a single cell in the grid. This assumes that all points on the profile vector are equally spaced (not quite true, depends on the orientation of the line segments which comprise the profile)
-   // The elevation of each of these profile points is the elevation of the centroid of the cell that is 'under' the point. However we cannot always be confident that this is the 'true' elevation of the point on the vector since (unless the profile runs planview N-S or W-E) the vector does not always run exactly through the centroid of the cell
-   vector<double> VdProfileZ(nProfSize, 0);      // Initial (pre-erosion) elevation of both consolidated and unconsolidated sediment for cells 'under' the profile
-   vector<double> VdProfileDistXY(nProfSize, 0); // Along-profile distance measured from the coast, in external CRS units
-   vector<double> dVConsProfileZ(nProfSize, 0);  // Initial (pre-erosion) elevation of consolidated sediment only for cells 'under' the profile
+   // Set up vectors for the coastline-normal profile elevations. The length of this vector line is given by the number of cells 'under' the profile. Thus each point on the vector relates to a single cell in the grid. This assumes that all points on the profile vector are equally spaced (not quite true, depends on the orientation of the line segments which comprise the profile). The elevation of each of these profile points is the elevation of the centroid of the cell that is 'under' the point. However we cannot always be confident that this is the 'true' elevation of the point on the vector since (unless the profile runs planview N-S or W-E) the vector does not always run exactly through the centroid of the cell
+   vector<double> VdProfileZ(nProfSize, 0);              // Initial (pre-erosion) elevation of both consolidated and unconsolidated sediment for cells 'under' the profile
+   vector<double> VdProfileDistXY(nProfSize, 0);         // Along-profile distance measured from the coast, in external CRS units
+   vector<double> dVConsProfileZ(nProfSize, 0);          // Initial (pre-erosion) elevation of consolidated sediment only for cells 'under' the profile
    vector<double> dVConsZDiff(nProfSize, 0);
    vector<double> dVConsSlope(nProfSize, 0);
 
@@ -244,7 +243,7 @@ int CSimulation::nCalcPotentialPlatformErosionOnProfile(int const nCoast, CGeomP
          return RTN_OK;
 
       // Get the elevation for consolidated sediment only on this cell
-      dVConsProfileZ[i] = m_pRasterGrid->m_Cell[nX][nY].dGetConsSedTopForLayerAboveBasement(nTopLayer);
+      dVConsProfileZ[i] = m_pRasterGrid->m_Cell[nX][nY].dGetConsSedTopElevForLayerAboveBasement(nTopLayer);
 
       // Get the elevation for both consolidated and unconsolidated sediment on this cell
       VdProfileZ[i] = m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElev();
@@ -389,8 +388,8 @@ int CSimulation::nCalcPotentialPlatformErosionOnProfile(int const nCoast, CGeomP
       m_pRasterGrid->m_Cell[nX][nY].SetBeachProtectionFactor(dBeachProtectionFactor);
    }
 
-   // If desired, save this coastline-normal profile data for checking purposes
-   if (m_bOutputProfileData)
+   // If desired, save this coastline-normal consolidated-only profile data for checking purposes
+   if (m_bOutputConsolidatedProfileData)
    {
       int const nRet = nSaveProfile(nCoast, pProfile, nProfSize, &VdProfileDistXY, &dVConsProfileZ, &dVProfileDepthOverDB, &dVProfileErosionPotential, &dVConsSlope, &dVRecessionXY, &dVChangeElevZ, pProfile->pPtiVGetCellsInProfile(), &dVSCAPEXY);
 
@@ -560,7 +559,7 @@ int CSimulation::nCalcPotentialPlatformErosionBetweenProfiles(int const nCoast, 
             return RTN_OK;
 
          // Get the elevation for consolidated sediment only on this cell
-         dVParConsProfileZ[i] = m_pRasterGrid->m_Cell[nXPar][nYPar].dGetConsSedTopForLayerAboveBasement(nTopLayer);
+         dVParConsProfileZ[i] = m_pRasterGrid->m_Cell[nXPar][nYPar].dGetConsSedTopElevForLayerAboveBasement(nTopLayer);
 
          // Get the elevation for both consolidated and unconsolidated sediment on this cell
          dVParProfileZ[i] = m_pRasterGrid->m_Cell[nXPar][nYPar].dGetSedimentTopElev();
@@ -882,6 +881,7 @@ void CSimulation::DoActualPlatformErosionOnCell(int const nX, int const nY)
 
       // Add eroded sand/coarse sediment for this cell to the polygon that contains the cell, ready for redistribution during beach erosion/deposition (fine sediment has already been dealt with)
       int nPolyID = m_pRasterGrid->m_Cell[nX][nY].nGetPolygonID();
+      int nPolyCoastID = m_pRasterGrid->m_Cell[nX][nY].nGetPolygonCoastID();
 
       if (nPolyID == INT_NODATA)
       {
@@ -904,7 +904,10 @@ void CSimulation::DoActualPlatformErosionOnCell(int const nX, int const nY)
                   nPolyID = m_pRasterGrid->m_Cell[nXAdj][nYAdj].nGetPolygonID();
 
                   if (nPolyID != INT_NODATA)
+                  {
+                     nPolyCoastID = m_pRasterGrid->m_Cell[nXAdj][nYAdj].nGetPolygonCoastID();
                      break;
+                  }
                }
             }
 
@@ -918,7 +921,10 @@ void CSimulation::DoActualPlatformErosionOnCell(int const nX, int const nY)
                   nPolyID = m_pRasterGrid->m_Cell[nXAdj][nYAdj].nGetPolygonID();
 
                   if (nPolyID != INT_NODATA)
+                  {
+                     nPolyCoastID = m_pRasterGrid->m_Cell[nXAdj][nYAdj].nGetPolygonCoastID();
                      break;
+                  }
                }
             }
 
@@ -932,7 +938,10 @@ void CSimulation::DoActualPlatformErosionOnCell(int const nX, int const nY)
                   nPolyID = m_pRasterGrid->m_Cell[nXAdj][nYAdj].nGetPolygonID();
 
                   if (nPolyID != INT_NODATA)
+                  {
+                     nPolyCoastID = m_pRasterGrid->m_Cell[nXAdj][nYAdj].nGetPolygonCoastID();
                      break;
+                  }
                }
             }
 
@@ -946,7 +955,10 @@ void CSimulation::DoActualPlatformErosionOnCell(int const nX, int const nY)
                   nPolyID = m_pRasterGrid->m_Cell[nXAdj][nYAdj].nGetPolygonID();
 
                   if (nPolyID != INT_NODATA)
+                  {
+                     nPolyCoastID = m_pRasterGrid->m_Cell[nXAdj][nYAdj].nGetPolygonCoastID();
                      break;
+                  }
                }
             }
 
@@ -960,7 +972,10 @@ void CSimulation::DoActualPlatformErosionOnCell(int const nX, int const nY)
                   nPolyID = m_pRasterGrid->m_Cell[nXAdj][nYAdj].nGetPolygonID();
 
                   if (nPolyID != INT_NODATA)
+                  {
+                     nPolyCoastID = m_pRasterGrid->m_Cell[nXAdj][nYAdj].nGetPolygonCoastID();
                      break;
+                  }
                }
             }
 
@@ -974,7 +989,10 @@ void CSimulation::DoActualPlatformErosionOnCell(int const nX, int const nY)
                   nPolyID = m_pRasterGrid->m_Cell[nXAdj][nYAdj].nGetPolygonID();
 
                   if (nPolyID != INT_NODATA)
+                  {
+                     nPolyCoastID = m_pRasterGrid->m_Cell[nXAdj][nYAdj].nGetPolygonCoastID();
                      break;
+                  }
                }
             }
 
@@ -988,7 +1006,10 @@ void CSimulation::DoActualPlatformErosionOnCell(int const nX, int const nY)
                   nPolyID = m_pRasterGrid->m_Cell[nXAdj][nYAdj].nGetPolygonID();
 
                   if (nPolyID != INT_NODATA)
+                  {
+                     nPolyCoastID = m_pRasterGrid->m_Cell[nXAdj][nYAdj].nGetPolygonCoastID();
                      break;
+                  }
                }
             }
 
@@ -1002,7 +1023,10 @@ void CSimulation::DoActualPlatformErosionOnCell(int const nX, int const nY)
                   nPolyID = m_pRasterGrid->m_Cell[nXAdj][nYAdj].nGetPolygonID();
 
                   if (nPolyID != INT_NODATA)
+                  {
+                     nPolyCoastID = m_pRasterGrid->m_Cell[nXAdj][nYAdj].nGetPolygonCoastID();
                      break;
+                  }
                }
             }
          }
@@ -1025,8 +1049,8 @@ void CSimulation::DoActualPlatformErosionOnCell(int const nX, int const nY)
       }
 
       // All OK, so add this to the polygon's total of unconsolidated sand/coarse sediment, to be deposited or moved later. These values are +ve (deposition)
-      m_pVCoastPolygon[nPolyID]->AddPlatformErosionUnconsSand(dSandEroded);
-      m_pVCoastPolygon[nPolyID]->AddPlatformErosionUnconsCoarse(dCoarseEroded);
+      m_VCoast[nPolyCoastID].pGetPolygon(nPolyID)->AddPlatformErosionUnconsSand(dSandEroded);
+      m_VCoast[nPolyCoastID].pGetPolygon(nPolyID)->AddPlatformErosionUnconsCoarse(dCoarseEroded);
    }
 }
 
@@ -1143,7 +1167,7 @@ void CSimulation::FillInBeachProtectionHoles(void)
       {
          if ((m_pRasterGrid->m_Cell[nX][nY].bIsInContiguousSea()) && (bFPIsEqual(m_pRasterGrid->m_Cell[nX][nY].dGetBeachProtectionFactor(), DBL_NODATA, TOLERANCE)))
          {
-            // This is a sea cell, and it has an initialized beach protection value. So look at its N-S and W-E neighbours
+            // This is a sea cell, and it has an initialised beach protection value. So look at its N-S and W-E neighbours
             int nXTmp;
             int nYTmp;
             int nAdjacent = 0;
@@ -1189,7 +1213,7 @@ void CSimulation::FillInBeachProtectionHoles(void)
                dBeachProtection += m_pRasterGrid->m_Cell[nXTmp][nYTmp].dGetBeachProtectionFactor();
             }
 
-            // If this sea cell has four neighbours with initialized beach protection values, then assume that it should not have an uninitialized beach protection value. Set it to the average of its neighbours
+            // If this sea cell has four neighbours with initialised beach protection values, then assume that it should not have an uninitialised beach protection value. Set it to the average of its neighbours
             if (nAdjacent == 4)
             {
                m_pRasterGrid->m_Cell[nX][nY].SetBeachProtectionFactor(dBeachProtection / 4);

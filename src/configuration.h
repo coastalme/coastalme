@@ -496,7 +496,14 @@ class CConfiguration
    }
    void SetRunupEquation(string const &str)
    {
-      m_strRunupEquation = std::stoi(str);
+      if (str == "" or str == " ")
+      {
+         m_strRunupEquation = 0;
+      }
+      else
+      {
+         m_strRunupEquation = std::stoi(str);
+      }
    }
    void SetFloodLocations(string const &str)
    {

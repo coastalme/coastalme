@@ -200,9 +200,9 @@ class CGeomCoastPolygon : public CA2DShape
    void SetDownCoastThisIter(bool const);
    bool bDownCoastThisIter(void) const;
 
-   void SetCoastEndPolygon(void);
+   // void SetCoastEndPolygon(void);
    bool bIsCoastEndPolygon(void) const;
-   void SetCoastStartPolygon(void);
+   // void SetCoastStartPolygon(void);
    bool bIsCoastStartPolygon(void) const;
 
    int nGetPolygonCoastID(void) const;
@@ -251,7 +251,7 @@ class CGeomCoastPolygon : public CA2DShape
    void SetBeachDepositionUnconsCoarse(double const);
    double dGetBeachDepositionUnconsCoarse(void) const;
 
-   void AddToSuspensionUnconsFine(double const);
+   // void AddToSuspensionUnconsFine(double const);
    // void SetZeroSuspensionUnconsFine(void);
    double dGetSuspensionUnconsFine(void) const;
 
@@ -316,8 +316,8 @@ class CGeomCoastPolygon : public CA2DShape
    void AddCliffCollapseCoarseErodedDeanProfile(double const);
    double dGetCliffCollapseCoarseErodedDeanProfile(void) const;
 
-   void AddPlatformErosionToSuspensionUnconsFine(double const);
-   double dGetPlatformErosionToSuspensionUnconsFine(void) const;
+   // void AddPlatformErosionToSuspensionUnconsFine(double const);
+   // double dGetPlatformErosionToSuspensionUnconsFine(void) const;
    void AddPlatformErosionUnconsSand(double const);
    double dGetPlatformErosionUnconsSand(void) const;
    void AddPlatformErosionUnconsCoarse(double const);
@@ -345,8 +345,8 @@ class CGeomCoastPolygon : public CA2DShape
    double dGetSedimentInputUnconsCoarse(void) const;
 
    void AppendVertex(CGeom2DIPoint const*);
-   int nGetNumVertices(void) const;
-   CGeom2DIPoint PtiGetVertex(int const) const;
+   // int nGetNumVertices(void) const;
+   // CGeom2DIPoint PtiGetVertex(int const) const;
 
    CGeom2DIPoint PtiGetFillStartPoint(void);
 };
