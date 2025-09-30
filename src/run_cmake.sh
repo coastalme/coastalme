@@ -97,11 +97,11 @@ echo ""
 echo "================================================================="
 echo ""
 
-# Convert to upper case. Note that this requires bash 4 or greater
-build_uc="${buildtype^^}"
-compiler_uc="${compiler^^}"
-cshorelibrary_uc="${cshorelibrary^^}"
-cshoreinout_uc="${cshoreinout^^}"
+# Convert to upper case.
+build_uc=$(echo $buildtype | tr 'a-z' 'A-Z')
+compiler_uc=$(echo $compiler | tr 'a-z' 'A-Z')
+cshorelibrary_uc=$(echo $cshorelibrary | tr 'a-z' 'A-Z')
+cshoreinout_uc=$(echo $cshoreinout | tr 'a-z' 'A-Z')
 
 echo "Finished CMake (Compiler=$compiler_uc, Build type=$build_uc, CShore library=$cshorelibrary_uc, CShore input/output method=$cshoreinout_uc)"
 echo ""
