@@ -77,7 +77,6 @@ else
 fi
 echo ""
 
-rm -f CMakeCache.txt
 if [ "$cflag" = "true" ]; then
 	make clean
 	rm -f CMakeCache.txt
@@ -106,13 +105,6 @@ cshoreinout_uc=$(echo $cshoreinout | tr 'a-z' 'A-Z')
 echo "Finished CMake (Compiler=$compiler_uc, Build type=$build_uc, CShore library=$cshorelibrary_uc, CShore input/output method=$cshoreinout_uc)"
 echo ""
 echo "================================================================="
-
-echo ""
-echo "Now build and install, by running:"
-echo ""
-echo "   make install"
-echo "   cd .."
-echo ""
 
 # Some extra messages
 if [ "$buildtype" = "CALLGRIND" ]; then
