@@ -88,14 +88,15 @@ message("Checking compiler")
 # We are using C++
 enable_language(CXX)
 
-# We need c++17(for filesystem stuff, not that important howerver), so first set the flag(note that later on we check the compiler for c++17 capability)
+# We need c++17(for filesystem stuff, not that important howerver),
+# so first set the flag
+# (note that later on we check the compiler for c++17 capability)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17")
 
-# Set the CoastalME CPU flag TODO Need to change this for different CPU architectures
+# Set the CoastalME CPU flag
+# TODO Need to change this for different CPU architectures
 if(APPLE)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DCPU -Dxarm64")
-elseif(LINUX)
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DCPU -Dx86")
 else()
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DCPU -Dx86")
 endif()
@@ -169,29 +170,25 @@ endif()
 # Sort out compiler flags for various build types
 if(CMAKE_BUILD_TYPE_LC STREQUAL "debug")
   set(CSHORE_BUILD "DEBUG")
-  set(CSHORE_BUILDTYPE "DEBUG")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS_DEBUG} ${CMAKE_CXX_FLAGS}")
   set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -g")
   set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CME_BINARY_DIR}/Debug CACHE PATH "Directory for Debug builds" FORCE)
   # For Debug builds on any platform, add the model's "internal" debug flag(used for extra logging) etc.
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D_DEBUG")
-endif()
 
-if(CMAKE_BUILD_TYPE_LC STREQUAL "release")
+elseif(CMAKE_BUILD_TYPE_LC STREQUAL "release")
   set(CSHORE_BUILD "RELEASE")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS_RELEASE} ${CMAKE_CXX_FLAGS}")
   set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CME_BINARY_DIR}/Release CACHE PATH "Directory for Release builds" FORCE)
-endif()
 
-if(CMAKE_BUILD_TYPE_LC STREQUAL "gcov")
+elseif(CMAKE_BUILD_TYPE_LC STREQUAL "gcov")
   set(CSHORE_BUILD "DEBUG")
   #   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS_RELEASE} ${CMAKE_CXX_FLAGS}")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS_DEBUG} ${CMAKE_CXX_FLAGS}")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0 --coverage")
   set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CME_BINARY_DIR}/gcov CACHE PATH "Directory for gcov builds" FORCE)
-endif()
 
-if(CMAKE_BUILD_TYPE_LC STREQUAL "valgrind")
+elseif(CMAKE_BUILD_TYPE_LC STREQUAL "valgrind")
   set(CSHORE_BUILD "DEBUG")
   #   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS_RELEASE} ${CMAKE_CXX_FLAGS}")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS_DEBUG} ${CMAKE_CXX_FLAGS}")
@@ -216,105 +213,11 @@ if(OpenMP_CXX_FOUND)
   set(LIBS ${LIBS} OpenMP::OpenMP_CXX)
   message(STATUS "OpenMP enabled for parallel grid operations")
 else()
-  # Standard detection failed, try manual detection based on compiler
-  message(STATUS "Standard OpenMP detection failed, attempting manual detection...")
-
-  if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-    # Test if GCC supports OpenMP
-    message(STATUS "Testing GCC OpenMP support...")
-    include(CheckCXXSourceCompiles)
-    set(CMAKE_REQUIRED_FLAGS "-fopenmp")
-    set(CMAKE_REQUIRED_LIBRARIES "-fopenmp")
-    check_cxx_source_compiles("
-         #include <omp.h>
-         int main() {
-            #pragma omp parallel
-            {
-               int tid = omp_get_thread_num();
-            }
-            return 0;
-         }"
-         OPENMP_TEST_COMPILE
-      )
-
-    if(OPENMP_TEST_COMPILE)
-      message(STATUS "GCC OpenMP support confirmed, adding -fopenmp flags")
-      set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp")
-      set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fopenmp")
-      set(OPENMP_ENABLED TRUE)
-    else()
-      message(STATUS "GCC does not support OpenMP")
-      set(OPENMP_ENABLED FALSE)
-    endif()
-  elseif(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-    # Test Clang OpenMP support(may need libomp)
-    message(STATUS "Testing Clang OpenMP support...")
-    include(CheckCXXSourceCompiles)
-
-    # Try with -fopenmp first
-    set(CMAKE_REQUIRED_FLAGS "-fopenmp")
-    set(CMAKE_REQUIRED_LIBRARIES "-fopenmp")
-    check_cxx_source_compiles("
-         #include <omp.h>
-         int main() {
-            #pragma omp parallel
-            {
-               int tid = omp_get_thread_num();
-            }
-            return 0;
-         }"
-         CLANG_OPENMP_FOPENMP
-      )
-
-    if(CLANG_OPENMP_FOPENMP)
-      message(STATUS "Clang OpenMP support confirmed with -fopenmp")
-      set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp")
-      set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fopenmp")
-      set(OPENMP_ENABLED TRUE)
-    else()
-      # Try with -fopenmp=libomp(for Homebrew clang)
-      set(CMAKE_REQUIRED_FLAGS "-fopenmp=libomp")
-      set(CMAKE_REQUIRED_LIBRARIES "-fopenmp=libomp")
-      check_cxx_source_compiles("
-            #include <omp.h>
-            int main() {
-               #pragma omp parallel
-               {
-                  int tid = omp_get_thread_num();
-               }
-               return 0;
-            }"
-            CLANG_OPENMP_LIBOMP
-         )
-
-      if(CLANG_OPENMP_LIBOMP)
-        message(STATUS "Clang OpenMP support confirmed with -fopenmp=libomp")
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp=libomp")
-        set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fopenmp=libomp")
-        set(OPENMP_ENABLED TRUE)
-      else()
-        message(STATUS "Clang does not support OpenMP")
-        set(OPENMP_ENABLED FALSE)
-      endif()
-    endif()
-  else()
-    message(STATUS "Unknown compiler, attempting generic OpenMP detection")
-    set(OPENMP_ENABLED FALSE)
-  endif()
 
   # Reset CMAKE_REQUIRED variables
   unset(CMAKE_REQUIRED_FLAGS)
   unset(CMAKE_REQUIRED_LIBRARIES)
-
-  if(NOT OPENMP_ENABLED)
-    message(WARNING "OpenMP not found - grid operations will run sequentially")
-    message(STATUS "To enable OpenMP on macOS:")
-    message(STATUS "  1. Install GCC: brew install gcc")
-    message(STATUS "  2. Use GCC for compilation: CC=gcc-15 CXX=g++-15 cmake ...")
-    message(STATUS "  3. Or install libomp for Clang: brew install libomp")
-  else()
-    message(STATUS "OpenMP enabled for parallel grid operations")
-  endif()
+  message(WARNING "OpenMP not found - grid operations will run sequentially")
 endif()
 
 ################################################################################
@@ -375,7 +278,7 @@ else()
   set(EXT "a")
 endif()
 
-set(CSHORE_FILE "${CMAKE_SOURCE_DIR}/lib/libcshore.${EXT}.${CSHORE_BUILDTYPE}.${SYSTEM}.${CSHORE_LINKTYPE}")
+set(CSHORE_FILE "${CMAKE_SOURCE_DIR}/lib/libcshore.${EXT}.${CSHORE_BUILD}.${SYSTEM}.${CSHORE_LINKTYPE}")
 message(STATUS "CSHORE_FILE=${CSHORE_FILE}")
 execute_process(COMMAND ln -s -f "${CSHORE_FILE}" "${CMAKE_SOURCE_DIR}/lib/libcshore.${EXT}")
 
