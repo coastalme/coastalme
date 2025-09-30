@@ -1,4 +1,22 @@
 #!/bin/bash
+verbose='false'
+cflag="false"
+iflag="false"
+while getopts 'civh' flag; do
+	case "${flag}" in
+	c) cflag="true" ;;
+	i) iflag="true" ;;
+	v) verbose='true' ;;
+	h)
+		printf "Usage: %s: [-c: clean] [-i: install] args\n" $0
+		exit 2
+		;;
+	*)
+		printf "Usage: %s [-c: clean] [-i: install] args\n" $0
+		exit 2
+		;;
+	esac
+done
 
 # Change this to change build type
 buildtype=DEBUG
@@ -24,8 +42,15 @@ cshoreinout=ARG
 
 # Always build CShore
 echo ""
-rm -f ./lib/*
+if [ "$cflag" = "true" ]; then
+	rm -f ./lib/*
+fi
 cd cshore
+
+if [ "$cflag" = "true" ]; then
+	make clean
+fi
+
 if [ "$OSTYPE" = "darwin"* ]; then
 	./make_cshore_lib.sh $cshorelibrary $buildtype $cshoreinout
 else
@@ -53,12 +78,20 @@ fi
 echo ""
 
 rm -f CMakeCache.txt
+if [ "$cflag" = "true" ]; then
+	make clean
+	rm -f CMakeCache.txt
+fi
 cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=$buildtype -DCOMPILER=$compiler -DCSHORE_LIBRARY=$cshorelibrary -DCSHORE_INOUT=$cshoreinout $CMAKE_COMPILER_ARGS .
 #cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=$buildtype -DCOMPILER=$compiler -DCSHORE_LIBRARY=$cshorelibrary -DCSHORE_INOUT=$cshoreinout -DCMAKE_VERBOSE_MAKEFILE=ON $CMAKE_COMPILER_ARGS .
 #cmake -DCMAKE_BUILD_TYPE=$buildtype -DCOMPILER=$compiler -DCSHORE_LIBRARY=$cshorelibrary -DCSHORE_INOUT=$cshoreinout $CMAKE_COMPILER_ARGS . -G"CodeBlocks - Unix Makefiles"
 # Or Ninja?
 # cmake -G Ninja -DCMAKE_BUILD_TYPE=$buildtype -DCSHORE_LIBRARY=$cshorelibrary -DCSHORE_INOUT=$cshoreinout $CMAKE_COMPILER_ARGS .
-# ninja
+
+if [ "$iflag" = "true" ]; then
+	make install
+	# ninja install
+fi
 
 echo ""
 echo "================================================================="
