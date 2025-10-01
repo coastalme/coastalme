@@ -16,9 +16,9 @@ endif()
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 ################################################################################
-# Detect the build environment
+# Detect the build system
 if(UNIX)
-  if(UNIX AND NOT APPLE AND NOT CYGWIN)
+  if(NOT APPLE AND NOT CYGWIN)
     set(LINUX TRUE)
     set(SYSTEM "LINUX")
     message("Creating Linux-Unix Makefile for CoastalME")
@@ -34,27 +34,23 @@ if(UNIX)
     else()
       message(FATAL_ERROR "Linux compiler not specified")
     endif()
-  endif()
 
-  if(CYGWIN)
+  elseif(CYGWIN)
     message("Creating Cygwin Makefile for CoastalME")
-  endif()
 
-  if(APPLE)
+  elseif(APPLE)
     set(MACOS TRUE)
     set(SYSTEM "MACOS")
     message("Creating macOS-Unix Makefile for CoastalME")
   endif()
-endif()
 
-if(WIN32)
+elseif(WIN32)
   message(
   FATAL_ERROR
   "CoastalME cannot be built using the Visual Studio compiler"
   )
-endif()
 
-if(MINGW)
+elseif(MINGW)
   message(
   FATAL_ERROR
   "CoastalME cannot be builtusing the MinGW compiler"
@@ -75,6 +71,10 @@ set(CMAKE_INSTALL_DIR "${CMAKE_SOURCE_DIR}/..")
 # set(CMAKE_SOURCE_DIR "$ENV{HOME}/coast/CoastalME/src")
 # set(CMAKE_INSTALL_DIR "$ENV{HOME}/coast/CoastalME")
 
+# We are using C++
+enable_language(CXX)
+
+# find all of the cpp files
 file(GLOB CME_SOURCE_FILES *.cpp)
 set(CME_EXECUTABLE cme)
 
@@ -85,24 +85,22 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules/")
 # Detect the compiler and set compiler-specific flags etc.
 message("Checking compiler")
 
-# We are using C++
-enable_language(CXX)
-
 # We need c++17(for filesystem stuff, not that important howerver),
 # so first set the flag
 # (note that later on we check the compiler for c++17 capability)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17")
+add_compile_options(-std=c++17)
+
+# Use 64-bit libraries
+set(FIND_LIBRARY_USE_LIB64_PATHS true)
 
 # Set the CoastalME CPU flag
 # TODO Need to change this for different CPU architectures
 if(APPLE)
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DCPU -Dxarm64")
+  # assume only apple silicon exitists
+  add_compile_options(-DCPU -Dxarm64)
 else()
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DCPU -Dx86")
+  add_compile_options(-DCPU -Dx86)
 endif()
-
-# Use 64-bit libraries
-set(FIND_LIBRARY_USE_LIB64_PATHS true)
 
 # Convert build type string to lower case
 string(TOLOWER "${CMAKE_BUILD_TYPE}" CMAKE_BUILD_TYPE_LC)
@@ -258,10 +256,10 @@ endif()
 if(CMAKE_BUILD_TYPE_LC STREQUAL "debug")
   set(CSHORE_BUILD "DEBUG")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS_DEBUG} ${CMAKE_CXX_FLAGS}")
-  set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -g")
+  add_link_options(-g)
   set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CME_BINARY_DIR}/Debug CACHE PATH "Directory for Debug builds" FORCE)
   # For Debug builds on any platform, add the model's "internal" debug flag(used for extra logging) etc.
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D_DEBUG")
+  add_compile_options(-D_DEBUG)
 
 elseif(CMAKE_BUILD_TYPE_LC STREQUAL "release")
   set(CSHORE_BUILD "RELEASE")
@@ -272,15 +270,15 @@ elseif(CMAKE_BUILD_TYPE_LC STREQUAL "gcov")
   set(CSHORE_BUILD "DEBUG")
   #   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS_RELEASE} ${CMAKE_CXX_FLAGS}")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS_DEBUG} ${CMAKE_CXX_FLAGS}")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0 --coverage")
+  add_compile_options(-O0 --coverage)
   set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CME_BINARY_DIR}/gcov CACHE PATH "Directory for gcov builds" FORCE)
 
 elseif(CMAKE_BUILD_TYPE_LC STREQUAL "valgrind")
   set(CSHORE_BUILD "DEBUG")
   #   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS_RELEASE} ${CMAKE_CXX_FLAGS}")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS_DEBUG} ${CMAKE_CXX_FLAGS}")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pg")
-  set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -pg -v")
+  add_compile_options(-pg)
+  add_link_options(-pg -v)
   set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -pg -v")
   set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CME_BINARY_DIR}/Callgrind CACHE PATH "Directory for Callgrind builds" FORCE)
 endif()
@@ -296,7 +294,6 @@ find_package(OpenMP)
 
 if(OpenMP_CXX_FOUND)
   message(STATUS "OpenMP found via find_package: ${OpenMP_CXX_VERSION}")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
   set(LIBS ${LIBS} OpenMP::OpenMP_CXX)
   message(STATUS "OpenMP enabled for parallel grid operations")
 else()
@@ -346,13 +343,13 @@ endif()
 
 if(CSHORE_INOUT_LC STREQUAL "file")
   set(CSHORE_LINKTYPE "FILEINOUT")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DCSHORE_FILE_INOUT")
+  add_compile_options(-DCSHORE_FILE_INOUT)
 elseif(CSHORE_INOUT_LC STREQUAL "arg")
   set(CSHORE_LINKTYPE "ARGINOUT")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DCSHORE_ARG_INOUT")
+  add_compile_options(-DCSHORE_ARG_INOUT)
 elseif(CSHORE_INOUT_LC STREQUAL "both")
   set(CSHORE_LINKTYPE "ARGINBOTHOUT")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DCSHORE_BOTH")
+  add_compile_options(-DCSHORE_BOTH)
 else()
   message(FATAL_ERROR "Invalid value specified for communication with the CShore library: ${CSHORE_INOUT}")
 endif()
@@ -368,13 +365,6 @@ endif()
 set(CSHORE_FILE "${CMAKE_SOURCE_DIR}/lib/libcshore.${EXT}.${CSHORE_BUILD}.${SYSTEM}.${CSHORE_LINKTYPE}")
 message(STATUS "CSHORE_FILE=${CSHORE_FILE}")
 execute_process(COMMAND ln -s -f "${CSHORE_FILE}" "${CMAKE_SOURCE_DIR}/lib/libcshore.${EXT}")
-
-# if(CSHORE_LIBRARY_LC STREQUAL "shared")
-#   execute_process(COMMAND ln -s -f "${CMAKE_SOURCE_DIR}/lib/libcshore.so.${BUILDTYPE}.${SYSTEM}.${LINKTYPE}" "${CMAKE_SOURCE_DIR}/lib/libcshore.so")
-# else()
-#   execute_process(COMMAND ln -s -f "${CMAKE_SOURCE_DIR}/lib/libcshore.a.${BUILDTYPE}.${SYSTEM}.${LINKTYPE}" "${CMAKE_SOURCE_DIR}/lib/libcshore.a")
-# endif()
-
 
 if(WIN32)
   # TODO
