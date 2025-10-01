@@ -21,19 +21,19 @@ done
 # Change this to change build type
 buildtype=DEBUG
 #buildtype=RELEASE
-#buildtype=PRERELEASE
+# buildtype=PRERELEASE
 #buildtype=RELWITHDEBINFO        # Not yet implemented in CMakeLists.txt
 #buildtype=MINSIZEREL            # Not yet implemented in CMakeLists.txt
 #buildtype=GCOV
 #buildtype=CALLGRIND
 
 # Change this to select the Linux compiler
-compiler=GNU
-#compiler=CLANG
+# compiler=GNU
+compiler=CLANG
 
 # Change this to select the CShore library type
-#cshorelibrary=STATIC
-cshorelibrary=SHARED
+cshorelibrary=STATIC
+# cshorelibrary=SHARED
 
 # Change this to select CShore input/output method
 #cshoreinout=FILE
@@ -42,20 +42,13 @@ cshoreinout=ARG
 
 # Always build CShore
 echo ""
-if [ "$cflag" = "true" ]; then
-	rm -f ./lib/*
-fi
 cd cshore
-
 if [ "$cflag" = "true" ]; then
+	rm -f ../lib/*
 	make clean
 fi
 
-if [ "$OSTYPE" = "darwin"* ]; then
-	./make_cshore_lib.sh $cshorelibrary $buildtype $cshoreinout
-else
-	./make_cshore_lib.sh
-fi
+./make_cshore_lib.sh
 cd ..
 # Note: The cshore Makefile now correctly names libraries for MacOS automatically
 echo ""
@@ -66,30 +59,36 @@ echo "================================================================="
 echo ""
 
 # On Mac, switch to gcc15 to ensure openMP compatability
-if [ "$OSTYPE" = "darwin"* ]; then
-	export CC=gcc-15
-	export CXX=g++-15
-	CMAKE_COMPILER_ARGS="-DCMAKE_C_COMPILER=gcc-15 -DCMAKE_CXX_COMPILER=g++-15"
-else
-	#    echo "Using $compiler compiler, OpenMP may not be available"
-	#    echo "For OpenMP support, install GCC or install libomp for Clang"
-	CMAKE_COMPILER_ARGS=""
-fi
+# if [ "$OSTYPE" = "darwin"* ]; then
+# 	# export CC=gcc-15
+# 	# export CXX=g++-15
+# 	# CMAKE_COMPILER_ARGS="-DCMAKE_C_COMPILER=gcc-15 -DCMAKE_CXX_COMPILER=g++-15"
+# else
+# 	#    echo "Using $compiler compiler, OpenMP may not be available"
+# 	#    echo "For OpenMP support, install GCC or install libomp for Clang"
+# 	CMAKE_COMPILER_ARGS=""
+# fi
 echo ""
 
 if [ "$cflag" = "true" ]; then
 	make clean
 	rm -f CMakeCache.txt
 fi
-cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=$buildtype -DCOMPILER=$compiler -DCSHORE_LIBRARY=$cshorelibrary -DCSHORE_INOUT=$cshoreinout $CMAKE_COMPILER_ARGS .
+# CMAKE_COMPILER_ARGS="PKG_CPPFLAGS='-Xclang -fopenmp' PKG_LIBS=-lomp"
+# cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=$buildtype -DCOMPILER=$compiler -DCSHORE_LIBRARY=$cshorelibrary -DCSHORE_INOUT=$cshoreinout $CMAKE_COMPILER_ARGS .
 #cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=$buildtype -DCOMPILER=$compiler -DCSHORE_LIBRARY=$cshorelibrary -DCSHORE_INOUT=$cshoreinout -DCMAKE_VERBOSE_MAKEFILE=ON $CMAKE_COMPILER_ARGS .
 #cmake -DCMAKE_BUILD_TYPE=$buildtype -DCOMPILER=$compiler -DCSHORE_LIBRARY=$cshorelibrary -DCSHORE_INOUT=$cshoreinout $CMAKE_COMPILER_ARGS . -G"CodeBlocks - Unix Makefiles"
 # Or Ninja?
-# cmake -G Ninja -DCMAKE_BUILD_TYPE=$buildtype -DCSHORE_LIBRARY=$cshorelibrary -DCSHORE_INOUT=$cshoreinout $CMAKE_COMPILER_ARGS .
+cmake -G Ninja -DCMAKE_BUILD_TYPE=$buildtype -DCSHORE_LIBRARY=$cshorelibrary -DCSHORE_INOUT=$cshoreinout $CMAKE_COMPILER_ARGS .
 
 if [ "$iflag" = "true" ]; then
-	make install
-	# ninja install
+	# make install
+	ninja install #>output.txt
+	if [[ $OSTYPE == 'darwin'* ]]; then
+		# Let's sign to enable profiling
+		codesign -s - -f --entitlements ../debug.plist ../cme
+		echo "signed to enable profiling"
+	fi
 fi
 
 echo ""

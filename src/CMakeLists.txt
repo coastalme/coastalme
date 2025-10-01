@@ -130,7 +130,6 @@ if(CMAKE_BUILD_TYPE_LC STREQUAL "debug")
       -Wformat
       -Wformat-overflow
       -Wformat-signedness
-      -Wuseless-cast
       -Wempty-body
       -Wfloat-equal
   )
@@ -141,6 +140,7 @@ if(CMAKE_BUILD_TYPE_LC STREQUAL "debug")
     # time, see
     # https://best.openssf.org/Compiler-Hardening-Guides/Compiler-Options-Hardening-Guide-for-C-and-C++.html
     # ==========================================================================
+    add_compile_options(-Wuseless-cast)
     if(CMAKE_CXX_COMPILER_VERSION VERSION_GREATER "13.0")
       add_compile_options(
         -Wformat
