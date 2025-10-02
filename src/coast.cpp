@@ -498,9 +498,9 @@ CGeomCoastPolygon* CRWCoast::pPolyCreateAndAppendPolygon(int const nCoastID, int
 }
 
 //! Returns the number of coast polygons
-int CRWCoast::nGetNumPolygons(void) const
+std::size_t CRWCoast::nGetNumPolygons(void) const
 {
-   return static_cast<int>(m_pVCoastPolygon.size());
+   return m_pVCoastPolygon.size();
 }
 
 //! Returns a pointer to a coast polygon, specified by down-coast (i.e. along the coast in the direction of increasing coastline point numbers) sequence
