@@ -25,9 +25,10 @@
    You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 ===============================================================================================================================*/
+#include <vector>
 
-class CGeomCell;   // Forward declaration
-class CSimulation; // Ditto
+class CGeomCell;        // Forward declaration
+class CSimulation;      // Ditto
 
 class CGeomRasterGrid
 {
@@ -37,7 +38,7 @@ class CGeomRasterGrid
    //! The CGeomProfile class is a friend of the CGeomRasterGrid class
    friend class CGeomProfile;
 
- private:
+   private:
    //! The d50 of fine-sized  sediment
    double m_dD50Fine;
 
@@ -50,16 +51,44 @@ class CGeomRasterGrid
    //! A pointer to the CSimulation object
    CSimulation* m_pSim;
 
-   //! The 2D array of m_Cell objects. A c-style 2D array seems to be faster than using 2D STL vectors
-   CGeomCell** m_Cell;
+   //! The 1D array of m_Cell objects stored as a flat vector for optimal cache performance
+   std::vector<CGeomCell> m_Cell;
 
- protected:
- public:
+   //! Grid dimensions
+   int m_nXSize;
+   int m_nYSize;
+
+   protected:
+   public:
    explicit CGeomRasterGrid(CSimulation*);
    ~CGeomRasterGrid(void);
 
    CSimulation* pGetSim(void);
    // CGeomCell* pGetCell(int const, int const);
    int nCreateGrid(void);
+
+   //! Inline accessor for backward compatibility - compiler will optimize to zero overhead
+   inline CGeomCell& Cell(int const nX, int const nY)
+   {
+      return m_Cell[nY * m_nXSize + nX];
+   }
+
+   //! Const accessor for read-only access
+   inline CGeomCell const& Cell(int const nX, int const nY) const
+   {
+      return m_Cell[nY * m_nXSize + nX];
+   }
+
+   //! Direct pointer access for hot loops
+   inline CGeomCell* CellData(void)
+   {
+      return m_Cell.data();
+   }
+
+   //! Calculate 1D index from 2D coordinates
+   inline int nGetIndex(int const nX, int const nY) const
+   {
+      return nY * m_nXSize + nX;
+   }
 };
-#endif // RASTERGRID_H
+#endif      // RASTERGRID_H

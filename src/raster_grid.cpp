@@ -39,20 +39,15 @@ CGeomRasterGrid::CGeomRasterGrid(CSimulation* pSimIn)
       m_dD50Sand(0),
       m_dD50Coarse(0),
       m_pSim(pSimIn),
-      m_Cell(NULL)
+      m_nXSize(0),
+      m_nYSize(0)
 {
 }
 
 //! Destructor
 CGeomRasterGrid::~CGeomRasterGrid(void)
 {
-   int const nXMax = m_pSim->nGetGridXMax();
-
-   // Free the m_Cell memory
-   for (int nX = 0; nX < nXMax; nX++)
-      delete[] m_Cell[nX];
-
-   delete[] m_Cell;
+   // Vector automatically deallocates memory - no manual cleanup needed
 }
 
 //! Returns a pointer to the simulation object
@@ -66,20 +61,21 @@ CSimulation* CGeomRasterGrid::pGetSim(void)
 // return &m_Cell[nX][nY];
 // }
 
-//! Creates the 2D CGeomCell array
+//! Creates the 1D CGeomCell array (stored as flat vector for optimal cache performance)
 int CGeomRasterGrid::nCreateGrid(void)
 {
-   // Create the 2D CGeomCell array (this is faster than using 2D STL vectors)
    int const nXMax = m_pSim->nGetGridXMax();
    int const nYMax = m_pSim->nGetGridYMax();
+
+   // Store dimensions
+   m_nXSize = nXMax;
+   m_nYSize = nYMax;
 
    // TODO 038 Do better error handling if insufficient memory
    try
    {
-      m_Cell = new CGeomCell*[nXMax];
-
-      for (int nX = 0; nX < nXMax; nX++)
-         m_Cell[nX] = new CGeomCell[nYMax];
+      // Single allocation for entire grid - much better for cache locality
+      m_Cell.resize(nXMax * nYMax);
    }
 
    catch (bad_alloc&)

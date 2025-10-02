@@ -244,9 +244,9 @@ int CSimulation::nDoAllPropagateWaves(void)
 
    for (int nX = 0; nX < m_nXGridSize; nX++)
    {
-      if (m_pRasterGrid->Cell(nX, 0).bIsInContiguousSea())
+      if (m_pRasterGrid->m_Cell[nX][0].bIsInContiguousSea())
       {
-         int const nPolyID = m_pRasterGrid->Cell(nX, 0).nGetPolygonID();
+         int const nPolyID = m_pRasterGrid->m_Cell[nX][0].nGetPolygonID();
 
          if (nPolyID == INT_NODATA)
          {
@@ -257,8 +257,8 @@ int CSimulation::nDoAllPropagateWaves(void)
             if (! m_bSingleDeepWaterWaveValues)
             {
                // Not using the same value of deep water height and angle for all cells, so get this cell's deep water height and angle values
-               dDeepWaterWaveX = m_pRasterGrid->Cell(nX, 0).dGetCellDeepWaterWaveHeight() * sin(m_pRasterGrid->Cell(nX, 0).dGetCellDeepWaterWaveAngle() * PI / 180);
-               dDeepWaterWaveY = m_pRasterGrid->Cell(nX, 0).dGetCellDeepWaterWaveHeight() * cos(m_pRasterGrid->Cell(nX, 0).dGetCellDeepWaterWaveAngle() * PI / 180);
+               dDeepWaterWaveX = m_pRasterGrid->m_Cell[nX][0].dGetCellDeepWaterWaveHeight() * sin(m_pRasterGrid->m_Cell[nX][0].dGetCellDeepWaterWaveAngle() * PI / 180);
+               dDeepWaterWaveY = m_pRasterGrid->m_Cell[nX][0].dGetCellDeepWaterWaveHeight() * cos(m_pRasterGrid->m_Cell[nX][0].dGetCellDeepWaterWaveAngle() * PI / 180);
             }
 
             VdHeightXAll.push_back(dDeepWaterWaveX);
@@ -266,9 +266,9 @@ int CSimulation::nDoAllPropagateWaves(void)
          }
       }
 
-      if (m_pRasterGrid->Cell(nX, m_nYGridSize - 1).bIsInContiguousSea())
+      if (m_pRasterGrid->m_Cell[nX][m_nYGridSize - 1].bIsInContiguousSea())
       {
-         int const nPolyID = m_pRasterGrid->Cell(nX, m_nYGridSize - 1).nGetPolygonID();
+         int const nPolyID = m_pRasterGrid->m_Cell[nX][m_nYGridSize - 1].nGetPolygonID();
 
          if (nPolyID == INT_NODATA)
          {
@@ -279,8 +279,8 @@ int CSimulation::nDoAllPropagateWaves(void)
             if (! m_bSingleDeepWaterWaveValues)
             {
                // Not using the same value of deep water height and angle for all cells, so get this cell's deep water height and angle values
-               dDeepWaterWaveX = m_pRasterGrid->Cell(nX, m_nYGridSize - 1).dGetCellDeepWaterWaveHeight() * sin(m_pRasterGrid->Cell(nX, m_nYGridSize - 1).dGetCellDeepWaterWaveAngle() * PI / 180);
-               dDeepWaterWaveY = m_pRasterGrid->Cell(nX, m_nYGridSize - 1).dGetCellDeepWaterWaveHeight() * cos(m_pRasterGrid->Cell(nX, m_nYGridSize - 1).dGetCellDeepWaterWaveAngle() * PI / 180);
+               dDeepWaterWaveX = m_pRasterGrid->m_Cell[nX][m_nYGridSize - 1].dGetCellDeepWaterWaveHeight() * sin(m_pRasterGrid->m_Cell[nX][m_nYGridSize - 1].dGetCellDeepWaterWaveAngle() * PI / 180);
+               dDeepWaterWaveY = m_pRasterGrid->m_Cell[nX][m_nYGridSize - 1].dGetCellDeepWaterWaveHeight() * cos(m_pRasterGrid->m_Cell[nX][m_nYGridSize - 1].dGetCellDeepWaterWaveAngle() * PI / 180);
             }
 
             VdHeightXAll.push_back(dDeepWaterWaveX);
@@ -291,9 +291,9 @@ int CSimulation::nDoAllPropagateWaves(void)
 
    for (int nY = 0; nY < m_nYGridSize; nY++)
    {
-      if (m_pRasterGrid->Cell(0, nY).bIsInContiguousSea())
+      if (m_pRasterGrid->m_Cell[0][nY].bIsInContiguousSea())
       {
-         int const nPolyID = m_pRasterGrid->Cell(0, nY).nGetPolygonID();
+         int const nPolyID = m_pRasterGrid->m_Cell[0][nY].nGetPolygonID();
 
          if (nPolyID == INT_NODATA)
          {
@@ -304,8 +304,8 @@ int CSimulation::nDoAllPropagateWaves(void)
             if (! m_bSingleDeepWaterWaveValues)
             {
                // Not using the same value of deep water height and angle for all cells, so get this cell's deep water height and angle values
-               dDeepWaterWaveX = m_pRasterGrid->Cell(0, nY).dGetCellDeepWaterWaveHeight() * sin(m_pRasterGrid->Cell(0, nY).dGetCellDeepWaterWaveAngle() * PI / 180);
-               dDeepWaterWaveY = m_pRasterGrid->Cell(0, nY).dGetCellDeepWaterWaveHeight() * cos(m_pRasterGrid->Cell(0, nY).dGetCellDeepWaterWaveAngle() * PI / 180);
+               dDeepWaterWaveX = m_pRasterGrid->m_Cell[0][nY].dGetCellDeepWaterWaveHeight() * sin(m_pRasterGrid->m_Cell[0][nY].dGetCellDeepWaterWaveAngle() * PI / 180);
+               dDeepWaterWaveY = m_pRasterGrid->m_Cell[0][nY].dGetCellDeepWaterWaveHeight() * cos(m_pRasterGrid->m_Cell[0][nY].dGetCellDeepWaterWaveAngle() * PI / 180);
             }
 
             VdHeightXAll.push_back(dDeepWaterWaveX);
@@ -313,9 +313,9 @@ int CSimulation::nDoAllPropagateWaves(void)
          }
       }
 
-      if (m_pRasterGrid->Cell(m_nXGridSize - 1, nY).bIsInContiguousSea())
+      if (m_pRasterGrid->m_Cell[m_nXGridSize - 1][nY].bIsInContiguousSea())
       {
-         int const nPolyID = m_pRasterGrid->Cell(m_nXGridSize - 1, nY).nGetPolygonID();
+         int const nPolyID = m_pRasterGrid->m_Cell[m_nXGridSize - 1][nY].nGetPolygonID();
 
          if (nPolyID == INT_NODATA)
          {
@@ -326,8 +326,8 @@ int CSimulation::nDoAllPropagateWaves(void)
             if (! m_bSingleDeepWaterWaveValues)
             {
                // Not using the same value of deep water height and angle for all cells, so get this cell's deep water height and angle values
-               dDeepWaterWaveX = m_pRasterGrid->Cell(m_nXGridSize - 1, nY).dGetCellDeepWaterWaveHeight() * sin(m_pRasterGrid->Cell(m_nXGridSize - 1, nY).dGetCellDeepWaterWaveAngle() * PI / 180);
-               dDeepWaterWaveY = m_pRasterGrid->Cell(m_nXGridSize - 1, nY).dGetCellDeepWaterWaveHeight() * cos(m_pRasterGrid->Cell(m_nXGridSize - 1, nY).dGetCellDeepWaterWaveAngle() * PI / 180);
+               dDeepWaterWaveX = m_pRasterGrid->m_Cell[m_nXGridSize - 1][nY].dGetCellDeepWaterWaveHeight() * sin(m_pRasterGrid->m_Cell[m_nXGridSize - 1][nY].dGetCellDeepWaterWaveAngle() * PI / 180);
+               dDeepWaterWaveY = m_pRasterGrid->m_Cell[m_nXGridSize - 1][nY].dGetCellDeepWaterWaveHeight() * cos(m_pRasterGrid->m_Cell[m_nXGridSize - 1][nY].dGetCellDeepWaterWaveAngle() * PI / 180);
             }
 
             VdHeightXAll.push_back(dDeepWaterWaveX);
@@ -375,7 +375,7 @@ int CSimulation::nDoAllPropagateWaves(void)
    // {
    // for (int nX = 0; nX < m_nXGridSize; nX++)
    // {
-   // pdRaster[nn++] = m_pRasterGrid->Cell(nX, nY).dGetWaveHeight();
+   // pdRaster[nn++] = m_pRasterGrid->m_Cell[nX][nY].dGetWaveHeight();
    // }
    // }
    //
@@ -407,7 +407,7 @@ int CSimulation::nDoAllPropagateWaves(void)
    // {
    // for (int nX = 0; nX < m_nXGridSize; nX++)
    // {
-   // pdRaster[nn++] = m_pRasterGrid->Cell(nX, nY).dGetWaveAngle();
+   // pdRaster[nn++] = m_pRasterGrid->m_Cell[nX][nY].dGetWaveAngle();
    // }
    // }
    //
@@ -447,7 +447,7 @@ int CSimulation::nDoAllPropagateWaves(void)
    // {
    // for (int nX = 0; nX < m_nXGridSize; nX++)
    // {
-   // pdRaster[nn++] = m_pRasterGrid->Cell(nX, nY).dGetWaveHeight();
+   // pdRaster[nn++] = m_pRasterGrid->m_Cell[nX][nY].dGetWaveHeight();
    // }
    // }
    //
@@ -479,7 +479,7 @@ int CSimulation::nDoAllPropagateWaves(void)
    // {
    // for (int nX = 0; nX < m_nXGridSize; nX++)
    // {
-   // pdRaster[nn++] = m_pRasterGrid->Cell(nX, nY).dGetWaveAngle();
+   // pdRaster[nn++] = m_pRasterGrid->m_Cell[nX][nY].dGetWaveAngle();
    // }
    // }
    //
@@ -520,7 +520,7 @@ int CSimulation::nDoAllPropagateWaves(void)
    // {
    // for (int nX = 0; nX < m_nXGridSize; nX++)
    // {
-   // pdRaster[nn++] = m_pRasterGrid->Cell(nX, nY).dGetWaveHeight();
+   // pdRaster[nn++] = m_pRasterGrid->m_Cell[nX][nY].dGetWaveHeight();
    // }
    // }
    //
@@ -552,7 +552,7 @@ int CSimulation::nDoAllPropagateWaves(void)
    // {
    // for (int nX = 0; nX < m_nXGridSize; nX++)
    // {
-   // pdRaster[nn++] = m_pRasterGrid->Cell(nX, nY).dGetWaveAngle();
+   // pdRaster[nn++] = m_pRasterGrid->m_Cell[nX][nY].dGetWaveAngle();
    // }
    // }
    //
@@ -1184,13 +1184,13 @@ int CSimulation::nCalcWavePropertiesOnProfile(int const nCoast, int const nCoast
          }
 
          // if ((VdFractionBreakingWaves[nProfilePoint] >= 0.10) && (! bBreaking)) // Sometimes is possible that waves break again
-         if ((VdFractionBreakingWaves[nProfilePoint] >= 0.10) && (m_dDepthOfClosure >= m_pRasterGrid->Cell(nX, nY).dGetSeaDepth()) && (! bBreaking))
+         if ((VdFractionBreakingWaves[nProfilePoint] >= 0.10) && (m_dDepthOfClosure >= m_pRasterGrid->m_Cell[nX][nY].dGetSeaDepth()) && (! bBreaking))
          {
             bBreaking = true;
             // assert(VdWaveHeight[nProfilePoint] >= 0);
             dProfileBreakingWaveHeight = VdWaveHeight[nProfilePoint];
             dProfileBreakingWaveAngle = VdWaveDirection[nProfilePoint];
-            dProfileBreakingDepth = m_pRasterGrid->Cell(nX, nY).dGetSeaDepth();      // Water depth for the cell 'under' this point in the profile
+            dProfileBreakingDepth = m_pRasterGrid->m_Cell[nX][nY].dGetSeaDepth();      // Water depth for the cell 'under' this point in the profile
             nProfileBreakingDist = nProfilePoint + 1;                                  // At the nearest point nProfilePoint = 0, so, plus one
 
             // LogStream << m_ulIter << ": CShore breaking at [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "} nProfile = " << nProfile << ", nProfilePoint = " << nProfilePoint << ", dBreakingWaveHeight = " << dBreakingWaveHeight << ", dBreakingWaveAngle = " << dBreakingWaveAngle << ", dProfileBreakingDepth = " << dProfileBreakingDepth << ", nProfileBreakingDist = " << nProfileBreakingDist << endl;
@@ -1217,10 +1217,10 @@ int CSimulation::nCalcWavePropertiesOnProfile(int const nCoast, int const nCoast
          int const nY = pProfile->pPtiGetCellInProfile(nProfilePoint)->nGetY();
 
          // Safety check
-         if (! m_pRasterGrid->Cell(nX, nY).bIsInContiguousSea())
+         if (! m_pRasterGrid->m_Cell[nX][nY].bIsInContiguousSea())
             continue;
 
-         double const dSeaDepth = m_pRasterGrid->Cell(nX, nY).dGetSeaDepth();      // Water depth for the cell 'under' this point in the profile
+         double const dSeaDepth = m_pRasterGrid->m_Cell[nX][nY].dGetSeaDepth();      // Water depth for the cell 'under' this point in the profile
 
          if (dSeaDepth > dDepthLookupMax)
          {
@@ -1286,7 +1286,7 @@ int CSimulation::nCalcWavePropertiesOnProfile(int const nCoast, int const nCoast
       int nY = pProfile->pPtiGetCellInProfile(nProfilePoint)->nGetY();
 
       // Safety check
-      if (! m_pRasterGrid->Cell(nX, nY).bIsInContiguousSea())
+      if (! m_pRasterGrid->m_Cell[nX][nY].bIsInContiguousSea())
          continue;
 
       // Get the wave attributes calculated for this profile: wave height, wave angle, and whether is in the active zone
@@ -1324,7 +1324,7 @@ int CSimulation::nCalcWavePropertiesOnProfile(int const nCoast, int const nCoast
    double const dDiffProfileDistXY = hypot(dXDist, dYDist);
 
    // Compute the beach slope
-   double const dtanBeta = tan(tAbs(m_pRasterGrid->Cell(nX1, nY1).dGetSeaDepth() - m_pRasterGrid->Cell(nX, nY).dGetSeaDepth()) / dDiffProfileDistXY);
+   double const dtanBeta = tan(tAbs(m_pRasterGrid->m_Cell[nX1][nY1].dGetSeaDepth() - m_pRasterGrid->m_Cell[nX][nY].dGetSeaDepth()) / dDiffProfileDistXY);
 
    // Compute the wave run-up using NIELSEN & HANSLOW (1991) & DHI (2004)
    int nValidPointsWaveHeight = 0;
@@ -1561,7 +1561,7 @@ int CSimulation::nGetThisProfileElevationsForCShore(int const nCoast, CGeomProfi
       nY1 = nY;
 
       // Get the number of the highest layer with non-zero thickness
-      int const nTopLayer = m_pRasterGrid->Cell(nX, nY).nGetTopNonZeroLayerAboveBasement();
+      int const nTopLayer = m_pRasterGrid->m_Cell[nX][nY].nGetTopNonZeroLayerAboveBasement();
 
       // Safety checks
       if (nTopLayer == INT_NODATA)
@@ -1572,7 +1572,7 @@ int CSimulation::nGetThisProfileElevationsForCShore(int const nCoast, CGeomProfi
          return RTN_OK;
 
       // Get the elevation for both consolidated and unconsolidated sediment on this cell
-      double const dTopElev = m_pRasterGrid->Cell(nX, nY).dGetSedimentTopElev() + m_pRasterGrid->Cell(nX, nY).dGetInterventionHeight();
+      double const dTopElev = m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElev() + m_pRasterGrid->m_Cell[nX][nY].dGetInterventionHeight();
       double const VdProfileZ = dTopElev - m_dThisIterSWL;
 
       // Check that landward elevation is greater than SWL
@@ -1601,7 +1601,7 @@ int CSimulation::nGetThisProfileElevationsForCShore(int const nCoast, CGeomProfi
       VdDistXY->push_back(dProfileDistXY);
 
       // Get the landform type at each point along the profile
-      double const dInterventionHeight = m_pRasterGrid->Cell(nX, nY).dGetInterventionHeight();
+      double const dInterventionHeight = m_pRasterGrid->m_Cell[nX][nY].dGetInterventionHeight();
 
       // Modify default friction factor if a structural intervention is found, otherwise use the default
       if (dInterventionHeight > 0 || bIsBehindIntervention)
@@ -1877,12 +1877,12 @@ void CSimulation::ModifyBreakingWavePropertiesWithinShadowZoneToCoastline(int co
       int const nY = pProfile->pPtiGetCellInProfile(nProfilePoint)->nGetY();
 
       // If there is any cell profile  within the shadow zone and waves are breaking then modify wave breaking properties otherwise continue
-      if (m_pRasterGrid->Cell(nX, nY).bIsinAnyShadowZone())
+      if (m_pRasterGrid->m_Cell[nX][nY].bIsinAnyShadowZone())
       {
          bProfileIsinShadowZone = true;
 
          // Check if the new wave height is breaking
-         double const dWaveHeight = m_pRasterGrid->Cell(nX, nY).dGetWaveHeight();
+         double const dWaveHeight = m_pRasterGrid->m_Cell[nX][nY].dGetWaveHeight();
 
          // Check that wave height at the given point is lower than maximum real wave height. If breaking wave height is expected that no good wave height are obtained, so, do not take it
          if (dWaveHeight > (m_dDepthOfClosure * m_dBreakingWaveHeightDepthRatio) && (! bModfiedWaveHeightisBreaking) && (! bFPIsEqual(dThisBreakingWaveHeight, DBL_NODATA, TOLERANCE)))
@@ -1891,7 +1891,7 @@ void CSimulation::ModifyBreakingWavePropertiesWithinShadowZoneToCoastline(int co
             bModfiedWaveHeightisBreaking = true;
 
             dThisBreakingWaveHeight = m_dDepthOfClosure * m_dBreakingWaveHeightDepthRatio;
-            dThisBreakingWaveAngle = m_pRasterGrid->Cell(nX, nY).dGetWaveAngle();
+            dThisBreakingWaveAngle = m_pRasterGrid->m_Cell[nX][nY].dGetWaveAngle();
             dThisBreakingDepth = m_dDepthOfClosure;
             nThisBreakingDist = nProfilePoint;
          }
@@ -2253,18 +2253,18 @@ void CSimulation::CalcD50AndFillWaveCalcHoles(void)
    {
       for (int nY = 0; nY < m_nYGridSize; nY++)
       {
-         if (m_pRasterGrid->Cell(nX, nY).bIsInContiguousSea())
+         if (m_pRasterGrid->m_Cell[nX][nY].bIsInContiguousSea())
          {
             // This is a sea cell, first get polygon ID
-            int const nPolyID = m_pRasterGrid->Cell(nX, nY).nGetPolygonID();
+            int const nPolyID = m_pRasterGrid->m_Cell[nX][nY].nGetPolygonID();
 
             // Is it in the active zone?
-            bool const bActive = m_pRasterGrid->Cell(nX, nY).bIsInActiveZone();
+            bool const bActive = m_pRasterGrid->m_Cell[nX][nY].bIsInActiveZone();
 
             if (bActive)
             {
                // It is in the active zone. Does it have unconsolidated sediment on it? Test this using the UnconD50 value: if dGetUnconsD50() returns DBL_NODATA, there is no unconsolidated sediment
-               double const dTmpd50 = m_pRasterGrid->Cell(nX, nY).dGetUnconsD50();
+               double const dTmpd50 = m_pRasterGrid->m_Cell[nX][nY].dGetUnconsD50();
 
                if (! bFPIsEqual(dTmpd50, DBL_NODATA, TOLERANCE))
                {
@@ -2278,16 +2278,16 @@ void CSimulation::CalcD50AndFillWaveCalcHoles(void)
             }
 
             //             // Now fill in wave calc holes
-            // if (m_pRasterGrid->Cell(nX, nY).dGetWaveHeight() == 0)
+            // if (m_pRasterGrid->m_Cell[nX][nY].dGetWaveHeight() == 0)
             // {
             // if (nID == INT_NODATA)
-            // m_pRasterGrid->Cell(nX, nY).SetWaveHeight(m_dAllCellsDeepWaterWaveHeight);
+            // m_pRasterGrid->m_Cell[nX][nY].SetWaveHeight(m_dAllCellsDeepWaterWaveHeight);
             // }
             //
-            // if (m_pRasterGrid->Cell(nX, nY).dGetWaveAngle() == 0)
+            // if (m_pRasterGrid->m_Cell[nX][nY].dGetWaveAngle() == 0)
             // {
             // if (nID == INT_NODATA)
-            // m_pRasterGrid->Cell(nX, nY).SetWaveAngle(m_dAllCellsDeepWaterWaveAngle);
+            // m_pRasterGrid->m_Cell[nX][nY].SetWaveAngle(m_dAllCellsDeepWaterWaveAngle);
             // }
 
             // Next look at the cell's N-S and W-E neighbours
@@ -2309,16 +2309,16 @@ void CSimulation::CalcD50AndFillWaveCalcHoles(void)
 
             if (bIsWithinValidGrid(nXTmp, nYTmp))
             {
-               if (m_pRasterGrid->Cell(nXTmp, nYTmp).bIsInContiguousSea())
+               if (m_pRasterGrid->m_Cell[nXTmp][nYTmp].bIsInContiguousSea())
                {
                   nRead++;
-                  dWaveHeight += m_pRasterGrid->Cell(nXTmp, nYTmp).dGetWaveHeight();
-                  dWaveAngle += (m_pRasterGrid->Cell(nXTmp, nYTmp).dGetWaveAngle());
+                  dWaveHeight += m_pRasterGrid->m_Cell[nXTmp][nYTmp].dGetWaveHeight();
+                  dWaveAngle += (m_pRasterGrid->m_Cell[nXTmp][nYTmp].dGetWaveAngle());
 
-                  if (m_pRasterGrid->Cell(nXTmp, nYTmp).bIsInActiveZone())
+                  if (m_pRasterGrid->m_Cell[nXTmp][nYTmp].bIsInActiveZone())
                      nActive++;
 
-                  int nTmp = m_pRasterGrid->Cell(nXTmp, nYTmp).nGetShadowZoneNumber();
+                  int nTmp = m_pRasterGrid->m_Cell[nXTmp][nYTmp].nGetShadowZoneNumber();
 
                   if (nTmp != 0)
                   {
@@ -2326,7 +2326,7 @@ void CSimulation::CalcD50AndFillWaveCalcHoles(void)
                      nShadowNum = nTmp;
                   }
 
-                  nTmp = m_pRasterGrid->Cell(nXTmp, nYTmp).nGetDownDriftZoneNumber();
+                  nTmp = m_pRasterGrid->m_Cell[nXTmp][nYTmp].nGetDownDriftZoneNumber();
 
                   if (nTmp > 0)
                   {
@@ -2345,16 +2345,16 @@ void CSimulation::CalcD50AndFillWaveCalcHoles(void)
 
             if (bIsWithinValidGrid(nXTmp, nYTmp))
             {
-               if (m_pRasterGrid->Cell(nXTmp, nYTmp).bIsInContiguousSea())
+               if (m_pRasterGrid->m_Cell[nXTmp][nYTmp].bIsInContiguousSea())
                {
                   nRead++;
-                  dWaveHeight += m_pRasterGrid->Cell(nXTmp, nYTmp).dGetWaveHeight();
-                  dWaveAngle += (m_pRasterGrid->Cell(nXTmp, nYTmp).dGetWaveAngle());
+                  dWaveHeight += m_pRasterGrid->m_Cell[nXTmp][nYTmp].dGetWaveHeight();
+                  dWaveAngle += (m_pRasterGrid->m_Cell[nXTmp][nYTmp].dGetWaveAngle());
 
-                  if (m_pRasterGrid->Cell(nXTmp, nYTmp).bIsInActiveZone())
+                  if (m_pRasterGrid->m_Cell[nXTmp][nYTmp].bIsInActiveZone())
                      nActive++;
 
-                  int nTmp = m_pRasterGrid->Cell(nXTmp, nYTmp).nGetShadowZoneNumber();
+                  int nTmp = m_pRasterGrid->m_Cell[nXTmp][nYTmp].nGetShadowZoneNumber();
 
                   if (nTmp != 0)
                   {
@@ -2362,7 +2362,7 @@ void CSimulation::CalcD50AndFillWaveCalcHoles(void)
                      nShadowNum = nTmp;
                   }
 
-                  nTmp = m_pRasterGrid->Cell(nXTmp, nYTmp).nGetDownDriftZoneNumber();
+                  nTmp = m_pRasterGrid->m_Cell[nXTmp][nYTmp].nGetDownDriftZoneNumber();
 
                   if (nTmp > 0)
                   {
@@ -2381,16 +2381,16 @@ void CSimulation::CalcD50AndFillWaveCalcHoles(void)
 
             if (bIsWithinValidGrid(nXTmp, nYTmp))
             {
-               if (m_pRasterGrid->Cell(nXTmp, nYTmp).bIsInContiguousSea())
+               if (m_pRasterGrid->m_Cell[nXTmp][nYTmp].bIsInContiguousSea())
                {
                   nRead++;
-                  dWaveHeight += m_pRasterGrid->Cell(nXTmp, nYTmp).dGetWaveHeight();
-                  dWaveAngle += (m_pRasterGrid->Cell(nXTmp, nYTmp).dGetWaveAngle());
+                  dWaveHeight += m_pRasterGrid->m_Cell[nXTmp][nYTmp].dGetWaveHeight();
+                  dWaveAngle += (m_pRasterGrid->m_Cell[nXTmp][nYTmp].dGetWaveAngle());
 
-                  if (m_pRasterGrid->Cell(nXTmp, nYTmp).bIsInActiveZone())
+                  if (m_pRasterGrid->m_Cell[nXTmp][nYTmp].bIsInActiveZone())
                      nActive++;
 
-                  int nTmp = m_pRasterGrid->Cell(nXTmp, nYTmp).nGetShadowZoneNumber();
+                  int nTmp = m_pRasterGrid->m_Cell[nXTmp][nYTmp].nGetShadowZoneNumber();
 
                   if (nTmp != 0)
                   {
@@ -2398,7 +2398,7 @@ void CSimulation::CalcD50AndFillWaveCalcHoles(void)
                      nShadowNum = nTmp;
                   }
 
-                  nTmp = m_pRasterGrid->Cell(nXTmp, nYTmp).nGetDownDriftZoneNumber();
+                  nTmp = m_pRasterGrid->m_Cell[nXTmp][nYTmp].nGetDownDriftZoneNumber();
 
                   if (nTmp > 0)
                   {
@@ -2417,16 +2417,16 @@ void CSimulation::CalcD50AndFillWaveCalcHoles(void)
 
             if (bIsWithinValidGrid(nXTmp, nYTmp))
             {
-               if (m_pRasterGrid->Cell(nXTmp, nYTmp).bIsInContiguousSea())
+               if (m_pRasterGrid->m_Cell[nXTmp][nYTmp].bIsInContiguousSea())
                {
                   nRead++;
-                  dWaveHeight += m_pRasterGrid->Cell(nXTmp, nYTmp).dGetWaveHeight();
-                  dWaveAngle += (m_pRasterGrid->Cell(nXTmp, nYTmp).dGetWaveAngle());
+                  dWaveHeight += m_pRasterGrid->m_Cell[nXTmp][nYTmp].dGetWaveHeight();
+                  dWaveAngle += (m_pRasterGrid->m_Cell[nXTmp][nYTmp].dGetWaveAngle());
 
-                  if (m_pRasterGrid->Cell(nXTmp, nYTmp).bIsInActiveZone())
+                  if (m_pRasterGrid->m_Cell[nXTmp][nYTmp].bIsInActiveZone())
                      nActive++;
 
-                  int nTmp = m_pRasterGrid->Cell(nXTmp, nYTmp).nGetShadowZoneNumber();
+                  int nTmp = m_pRasterGrid->m_Cell[nXTmp][nYTmp].nGetShadowZoneNumber();
 
                   if (nTmp != 0)
                   {
@@ -2434,7 +2434,7 @@ void CSimulation::CalcD50AndFillWaveCalcHoles(void)
                      nShadowNum = nTmp;
                   }
 
-                  nTmp = m_pRasterGrid->Cell(nXTmp, nYTmp).nGetDownDriftZoneNumber();
+                  nTmp = m_pRasterGrid->m_Cell[nXTmp][nYTmp].nGetDownDriftZoneNumber();
 
                   if (nTmp > 0)
                   {
@@ -2457,49 +2457,49 @@ void CSimulation::CalcD50AndFillWaveCalcHoles(void)
                // If this sea cell has four active-zone neighbours, then it must also be in the active zone: give it wave height and orientation which is the average of its neighbours
                if (nActive == 4)
                {
-                  m_pRasterGrid->Cell(nX, nY).SetInActiveZone(true);
-                  m_pRasterGrid->Cell(nX, nY).SetWaveHeight(dWaveHeight);
-                  m_pRasterGrid->Cell(nX, nY).SetWaveAngle(dWaveAngle);
+                  m_pRasterGrid->m_Cell[nX][nY].SetInActiveZone(true);
+                  m_pRasterGrid->m_Cell[nX][nY].SetWaveHeight(dWaveHeight);
+                  m_pRasterGrid->m_Cell[nX][nY].SetWaveAngle(dWaveAngle);
                }
 
                // If this sea cell has a wave height which is the same as its deep-water wave height, but its neighbours have a different average wave height, then give it the average of its neighbours
-               double const dDeepWaterWaveHeight = m_pRasterGrid->Cell(nX, nY).dGetCellDeepWaterWaveHeight();
+               double const dDeepWaterWaveHeight = m_pRasterGrid->m_Cell[nX][nY].dGetCellDeepWaterWaveHeight();
 
-               if ((bFPIsEqual(m_pRasterGrid->Cell(nX, nY).dGetWaveHeight(), dDeepWaterWaveHeight, TOLERANCE)) && (! bFPIsEqual(dDeepWaterWaveHeight, dWaveHeight, TOLERANCE)))
+               if ((bFPIsEqual(m_pRasterGrid->m_Cell[nX][nY].dGetWaveHeight(), dDeepWaterWaveHeight, TOLERANCE)) && (! bFPIsEqual(dDeepWaterWaveHeight, dWaveHeight, TOLERANCE)))
                {
-                  m_pRasterGrid->Cell(nX, nY).SetWaveHeight(dWaveHeight);
+                  m_pRasterGrid->m_Cell[nX][nY].SetWaveHeight(dWaveHeight);
                }
 
                // If this sea cell has a wave orientation which is the same as its deep-water wave orientation, but its neighbours have a different average wave orientation, then give it the average of its neighbours
-               double const dDeepWaterWaveAngle = m_pRasterGrid->Cell(nX, nY).dGetCellDeepWaterWaveAngle();
+               double const dDeepWaterWaveAngle = m_pRasterGrid->m_Cell[nX][nY].dGetCellDeepWaterWaveAngle();
 
-               if ((bFPIsEqual(m_pRasterGrid->Cell(nX, nY).dGetWaveAngle(), dDeepWaterWaveAngle, TOLERANCE)) && (! bFPIsEqual(dDeepWaterWaveAngle, dWaveAngle, TOLERANCE)))
+               if ((bFPIsEqual(m_pRasterGrid->m_Cell[nX][nY].dGetWaveAngle(), dDeepWaterWaveAngle, TOLERANCE)) && (! bFPIsEqual(dDeepWaterWaveAngle, dWaveAngle, TOLERANCE)))
                {
-                  m_pRasterGrid->Cell(nX, nY).SetWaveAngle(dWaveAngle);
+                  m_pRasterGrid->m_Cell[nX][nY].SetWaveAngle(dWaveAngle);
                }
 
                // Is this sea cell is not already marked as in a shadow zone (note could be marked as in a shadow zone but not yet processed: a -ve number)?
-               int const nShadowZoneCode = m_pRasterGrid->Cell(nX, nY).nGetShadowZoneNumber();
+               int const nShadowZoneCode = m_pRasterGrid->m_Cell[nX][nY].nGetShadowZoneNumber();
 
                if (nShadowZoneCode <= 0)
                {
                   // If the cell has four neighbours which are all in a shadow zone, or four neighbours some of which are shadow zone and the remainder downdrift zone, or four neighbours some of which are shadow zone and the remainder coast; then it should also be in the shadow zone: give it the average of its neighbours
                   if ((nShadow == 4) || (nShadow + nDownDrift == 4) || (nShadow + nCoast == 4))
                   {
-                     m_pRasterGrid->Cell(nX, nY).SetShadowZoneNumber(nShadowNum);
-                     m_pRasterGrid->Cell(nX, nY).SetWaveHeight(dWaveHeight);
-                     m_pRasterGrid->Cell(nX, nY).SetWaveAngle(dWaveAngle);
+                     m_pRasterGrid->m_Cell[nX][nY].SetShadowZoneNumber(nShadowNum);
+                     m_pRasterGrid->m_Cell[nX][nY].SetWaveHeight(dWaveHeight);
+                     m_pRasterGrid->m_Cell[nX][nY].SetWaveAngle(dWaveAngle);
                   }
                }
 
                // If this sea cell is not marked as in a downdrift zone but has four neighbours which are in a downdrift zone, then it should also be in the downdrift zone: give it the average of its neighbours
-               int const nDownDriftZoneCode = m_pRasterGrid->Cell(nX, nY).nGetDownDriftZoneNumber();
+               int const nDownDriftZoneCode = m_pRasterGrid->m_Cell[nX][nY].nGetDownDriftZoneNumber();
 
                if ((nDownDriftZoneCode == 0) && (nDownDrift == 4))
                {
-                  m_pRasterGrid->Cell(nX, nY).SetDownDriftZoneNumber(nDownDriftNum);
-                  m_pRasterGrid->Cell(nX, nY).SetWaveHeight(dWaveHeight);
-                  m_pRasterGrid->Cell(nX, nY).SetWaveAngle(dWaveAngle);
+                  m_pRasterGrid->m_Cell[nX][nY].SetDownDriftZoneNumber(nDownDriftNum);
+                  m_pRasterGrid->m_Cell[nX][nY].SetWaveHeight(dWaveHeight);
+                  m_pRasterGrid->m_Cell[nX][nY].SetWaveAngle(dWaveAngle);
                }
             }
          }

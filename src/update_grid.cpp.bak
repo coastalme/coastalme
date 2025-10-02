@@ -53,16 +53,16 @@ int CSimulation::nUpdateGrid(void)
    {
       for (int nY = 0; nY < m_nYGridSize; nY++)
       {
-         if (m_pRasterGrid->Cell(nX, nY).bIsCoastline())
+         if (m_pRasterGrid->m_Cell[nX][nY].bIsCoastline())
             m_ulThisIterNumCoastCells++;
 
-         if (m_pRasterGrid->Cell(nX, nY).bIsInContiguousSea())
+         if (m_pRasterGrid->m_Cell[nX][nY].bIsInContiguousSea())
          {
             // Is a sea cell
-            m_dThisIterTotSeaDepth += m_pRasterGrid->Cell(nX, nY).dGetSeaDepth();
+            m_dThisIterTotSeaDepth += m_pRasterGrid->m_Cell[nX][nY].dGetSeaDepth();
          }
 
-         double const dTopElev = m_pRasterGrid->Cell(nX, nY).dGetOverallTopElev();
+         double const dTopElev = m_pRasterGrid->m_Cell[nX][nY].dGetOverallTopElev();
 
          // Get highest and lowest elevations of the top surface of the DEM
          if (dTopElev > m_dThisIterTopElevMax)
@@ -90,8 +90,8 @@ int CSimulation::nUpdateGrid(void)
    {
       for (int nY = 0; nY < m_nYGridSize; nY++)
       {
-         if (m_pRasterGrid->Cell(nX, nY).bIsInContiguousSea())
-            m_pRasterGrid->Cell(nX, nY).AddSuspendedSediment(dSuspPerSeaCell);
+         if (m_pRasterGrid->m_Cell[nX][nY].bIsInContiguousSea())
+            m_pRasterGrid->m_Cell[nX][nY].AddSuspendedSediment(dSuspPerSeaCell);
       }
    }
 

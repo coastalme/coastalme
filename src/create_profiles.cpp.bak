@@ -374,8 +374,8 @@ void CSimulation::LocateAndCreateProfiles(int const nCoast, int& nProfile, vecto
          // LogStream << m_ulIter << ": coast " << nCoast << " profile " << nProfile << " created at coast point " << nNormalPoint << " [" << PtiThis.nGetX() << "][" << PtiThis.nGetY() << "] = {" << PtThis.dGetX() << ", " << PtThis.dGetY() << "} (smoothed curvature = " << m_VCoast[nCoast].dGetSmoothCurvature(nNormalPoint) << ", detailed curvature = " << m_VCoast[nCoast].dGetDetailedCurvature(nNormalPoint) << ")" << endl;
 
          // // DEBUG CODE =================================================================================
-         // if (m_pRasterGrid->Cell(PtiThis.nGetX(), PtiThis.nGetY()).bIsCoastline())
-         // LogStream << m_ulIter << ": cell[" << PtiThis.nGetX() << "][" << PtiThis.nGetY() << "] IS coastline, coast number = " << m_pRasterGrid->Cell(PtiThis.nGetX(), PtiThis.nGetY()).nGetCoastline() << endl;
+         // if (m_pRasterGrid->m_Cell[PtiThis.nGetX()][PtiThis.nGetY()].bIsCoastline())
+         // LogStream << m_ulIter << ": cell[" << PtiThis.nGetX() << "][" << PtiThis.nGetY() << "] IS coastline, coast number = " << m_pRasterGrid->m_Cell[PtiThis.nGetX()][PtiThis.nGetY()].nGetCoastline() << endl;
          // else
          // LogStream << m_ulIter << ": ******* cell[" << PtiThis.nGetX() << "][" << PtiThis.nGetY() << "] IS NOT coastline" << endl;
          // // DEBUG CODE =================================================================================
@@ -456,7 +456,7 @@ int CSimulation::nCreateProfile(int const nCoast, int const nCoastSize, int cons
    int const nYEnd = PtiEnd.nGetY();
 
    // Safety check: is the end point in the contiguous sea?
-   if (! m_pRasterGrid->Cell(nXEnd, nYEnd).bIsInContiguousSea())
+   if (! m_pRasterGrid->m_Cell[nXEnd][nYEnd].bIsInContiguousSea())
    {
       // if (m_nLogFileDetail >= LOG_FILE_ALL)
       // LogStream << m_ulIter << ": coast " << nCoast << ", possible profile with start point " << nProfileStartPoint << " has inland end point at [" << nXEnd << "][" << nYEnd << "] = {" << dGridCentroidXToExtCRSX(nXEnd) << ", " << dGridCentroidYToExtCRSY(nYEnd) << "}, ignoring" << endl;
@@ -465,7 +465,7 @@ int CSimulation::nCreateProfile(int const nCoast, int const nCoastSize, int cons
    }
 
    // Safety check: is the water depth at the end point less than the depth of closure?
-   if (m_pRasterGrid->Cell(nXEnd, nYEnd).dGetSeaDepth() < m_dDepthOfClosure)
+   if (m_pRasterGrid->m_Cell[nXEnd][nYEnd].dGetSeaDepth() < m_dDepthOfClosure)
    {
       // if (m_nLogFileDetail >= LOG_FILE_ALL)
       // LogStream << m_ulIter << ": coast " << nCoast << ", possible profile with start point " << nProfileStartPoint << " is too short for depth of closure " << m_dDepthOfClosure << " at end point [" << nXEnd << "][" << nYEnd << "] = {" << dGridCentroidXToExtCRSX(nXEnd) << ", " << dGridCentroidYToExtCRSY(nYEnd) << "}, ignoring" << endl;
@@ -654,7 +654,7 @@ int CSimulation::nLocateAndCreateGridEdgeProfile(bool const bCoastStart, int con
       int const nY = VPtiNormalPoints[n].nGetY();
 
       // Mark each cell in the raster grid
-      m_pRasterGrid->Cell(nX, nY).SetCoastAndProfileID(nCoast, nProfile);
+      m_pRasterGrid->m_Cell[nX][nY].SetCoastAndProfileID(nCoast, nProfile);
 
       // Store the raster grid coordinates in the profile object
       pProfile->AppendCellInProfile(nX, nY);
@@ -669,9 +669,9 @@ int CSimulation::nLocateAndCreateGridEdgeProfile(bool const bCoastStart, int con
    int const nEndY = VPtiNormalPoints.back().nGetY();
 
    // Get the deep water wave height and orientation values at the end of the profile
-   double const dDeepWaterWaveHeight = m_pRasterGrid->Cell(nEndX, nEndY).dGetCellDeepWaterWaveHeight();
-   double const dDeepWaterWaveAngle = m_pRasterGrid->Cell(nEndX, nEndY).dGetCellDeepWaterWaveAngle();
-   double const dDeepWaterWavePeriod = m_pRasterGrid->Cell(nEndX, nEndY).dGetCellDeepWaterWavePeriod();
+   double const dDeepWaterWaveHeight = m_pRasterGrid->m_Cell[nEndX][nEndY].dGetCellDeepWaterWaveHeight();
+   double const dDeepWaterWaveAngle = m_pRasterGrid->m_Cell[nEndX][nEndY].dGetCellDeepWaterWaveAngle();
+   double const dDeepWaterWavePeriod = m_pRasterGrid->m_Cell[nEndX][nEndY].dGetCellDeepWaterWavePeriod();
 
    // And store them in this profile
    pProfile->SetProfileDeepWaterWaveHeight(dDeepWaterWaveHeight);
@@ -1234,7 +1234,7 @@ int CSimulation::nCheckAndMarkAllProfiles(void)
             nXEnd = tMax(nXEnd, 0);
             nYEnd = tMax(nYEnd, 0);
 
-            if (m_pRasterGrid->Cell(nXEnd, nYEnd).dGetSeaDepth() < m_dDepthOfClosure)
+            if (m_pRasterGrid->m_Cell[nXEnd][nYEnd].dGetSeaDepth() < m_dDepthOfClosure)
             {
                if (m_nLogFileDetail >= LOG_FILE_MIDDLE_DETAIL)
                   LogStream << m_ulIter << ": coast " << nCoast << ", profile " << nProfile << " is invalid, is too short for depth of closure " << m_dDepthOfClosure << " at end point [" << nXEnd << "][" << nYEnd << "] = {" << pPtEnd->dGetX() << ", " << pPtEnd->dGetY() << "}, flagging as too short" << endl;
@@ -1275,13 +1275,13 @@ int CSimulation::nCheckAndMarkAllProfiles(void)
       // {
       // for (int nX = 0; nX < m_nXGridSize; nX++)
       // {
-      // if (m_pRasterGrid->Cell(nX, nY).bIsCoastline())
+      // if (m_pRasterGrid->m_Cell[nX][nY].bIsCoastline())
       // pdRaster[nn] = -1;
       // else
       // {
       //
-      // //         pdRaster[nn] = m_pRasterGrid->Cell(nX, nY).nGetPolygonID();
-      // pdRaster[nn] = m_pRasterGrid->Cell(nX, nY).nGetProfileID();
+      // //         pdRaster[nn] = m_pRasterGrid->m_Cell[nX][nY].nGetPolygonID();
+      // pdRaster[nn] = m_pRasterGrid->m_Cell[nX][nY].nGetProfileID();
       // }
       //
       // nn++;
@@ -1459,7 +1459,7 @@ void CSimulation::MarkProfilesOnGrid(int const nCoast, int& nValidProfiles)
          // Mark each cell in the raster grid
          int const nXTmp = VCellsToMark[k].nGetX();
          int const nYTmp = VCellsToMark[k].nGetY();
-         m_pRasterGrid->Cell(nXTmp, nYTmp).SetCoastAndProfileID(nCoast, nProfile);
+         m_pRasterGrid->m_Cell[nXTmp][nYTmp].SetCoastAndProfileID(nCoast, nProfile);
 
          // Store the raster grid coordinates in the profile object
          m_VCoast[nCoast].pGetProfile(nProfile)->AppendCellInProfile(nXTmp, nYTmp);
@@ -1478,9 +1478,9 @@ void CSimulation::MarkProfilesOnGrid(int const nCoast, int& nValidProfiles)
       }
 
       // Get the deep water wave height and orientation values at the end of the profile
-      double const dDeepWaterWaveHeight = m_pRasterGrid->Cell(VCellsToMark.back().nGetX(), VCellsToMark.back().nGetY()).dGetCellDeepWaterWaveHeight();
-      double const dDeepWaterWaveAngle = m_pRasterGrid->Cell(VCellsToMark.back().nGetX(), VCellsToMark.back().nGetY()).dGetCellDeepWaterWaveAngle();
-      double const dDeepWaterWavePeriod = m_pRasterGrid->Cell(VCellsToMark.back().nGetX(), VCellsToMark.back().nGetY()).dGetCellDeepWaterWavePeriod();
+      double const dDeepWaterWaveHeight = m_pRasterGrid->m_Cell[VCellsToMark.back().nGetX()][VCellsToMark.back().nGetY()].dGetCellDeepWaterWaveHeight();
+      double const dDeepWaterWaveAngle = m_pRasterGrid->m_Cell[VCellsToMark.back().nGetX()][VCellsToMark.back().nGetY()].dGetCellDeepWaterWaveAngle();
+      double const dDeepWaterWavePeriod = m_pRasterGrid->m_Cell[VCellsToMark.back().nGetX()][VCellsToMark.back().nGetY()].dGetCellDeepWaterWavePeriod();
 
       // And store them for this profile
       m_VCoast[nCoast].pGetProfile(nProfile)->SetProfileDeepWaterWaveHeight(dDeepWaterWaveHeight);
@@ -1593,11 +1593,11 @@ void CSimulation::CreateRasterizedProfile(int const nCoast, CGeomProfile* pProfi
             if (nY+1 >= m_nYGridSize)
                nYTmp = nY-1;
 
-            if (m_pRasterGrid->Cell(nX, nY).bIsProfile() || m_pRasterGrid->Cell(nX, nYTmp).bIsProfile())
+            if (m_pRasterGrid->m_Cell[nX][nY].bIsProfile() || m_pRasterGrid->m_Cell[nX][nYTmp].bIsProfile())
             {
                // This cell or an adjacent cell, is 'under' a profile, so now check if the profile belongs to another coast
-               int const nHitProfileCoast1 = m_pRasterGrid->Cell(nX, nY).nGetProfileCoastID();
-               int const nHitProfileCoast2 = m_pRasterGrid->Cell(nX, nYTmp).nGetProfileCoastID();
+               int const nHitProfileCoast1 = m_pRasterGrid->m_Cell[nX][nY].nGetProfileCoastID();
+               int const nHitProfileCoast2 = m_pRasterGrid->m_Cell[nX][nYTmp].nGetProfileCoastID();
 
                if ((nHitProfileCoast1 == nCoast) || (nHitProfileCoast2 == nCoast))
                {
@@ -1612,12 +1612,12 @@ void CSimulation::CreateRasterizedProfile(int const nCoast, CGeomProfile* pProfi
             if (m > PROFILE_CHECK_DIST_FROM_COAST)
             {
                // Check this cell. Two diagonal(ish) raster lines can cross each other without any intersection, so must also test an adjacent cell for intersection (does not matter which adjacent cell)
-               if ((m_pRasterGrid->Cell(nX, nY).bIsCoastline()) || (bIsWithinValidGrid(nX, nY + 1) && m_pRasterGrid->Cell(nX, nY + 1).bIsCoastline()))
+               if ((m_pRasterGrid->m_Cell[nX][nY].bIsCoastline()) || (bIsWithinValidGrid(nX, nY + 1) && m_pRasterGrid->m_Cell[nX][nY + 1].bIsCoastline()))
                {
                   // We've hit a coastline so set a switch and mark the profile, then quit
                   bHitCoast = true;
                   pProfile->SetHitCoast(true);
-                  int const nHitCoast = m_pRasterGrid->Cell(nX, nY).nGetCoastline();
+                  int const nHitCoast = m_pRasterGrid->m_Cell[nX][nY].nGetCoastline();
 
                   if (m_nLogFileDetail >= LOG_FILE_ALL)
                      LogStream << m_ulIter << ": coast " << nCoast << " profile " << nProfile << " is invalid, hit coast " << nHitCoast << " at [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "}" << endl;
@@ -1625,35 +1625,35 @@ void CSimulation::CreateRasterizedProfile(int const nCoast, CGeomProfile* pProfi
                   return;
                }
 
-               if (! m_pRasterGrid->Cell(nX, nY).bIsInContiguousSea())
+               if (! m_pRasterGrid->m_Cell[nX][nY].bIsInContiguousSea())
                {
                   // We've hit dry land, so set a switch and mark the profile
                   bHitLand = true;
                   pProfile->SetHitLand(true);
 
-                  LogStream << m_ulIter << ": profile " << nProfile << " HIT LAND at [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "}, elevation = " << m_pRasterGrid->Cell(nX, nY).dGetSedimentTopElev() << ", SWL = " << m_dThisIterSWL << endl;
+                  LogStream << m_ulIter << ": profile " << nProfile << " HIT LAND at [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "}, elevation = " << m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElev() << ", SWL = " << m_dThisIterSWL << endl;
 
                   return;
                }
 
-               if (m_pRasterGrid->Cell(nX, nY).nGetInterventionClass() != INT_NODATA)
+               if (m_pRasterGrid->m_Cell[nX][nY].nGetInterventionClass() != INT_NODATA)
                {
                   // We've hit an intervention, so set a switch and mark the profile
                   bHitIntervention = true;
                   pProfile->SetHitIntervention(true);
 
-                  LogStream << m_ulIter << ": profile " << nProfile << " HIT INTERVENTION at [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "}, elevation = " << m_pRasterGrid->Cell(nX, nY).dGetSedimentTopElev() << ", SWL = " << m_dThisIterSWL << endl;
+                  LogStream << m_ulIter << ": profile " << nProfile << " HIT INTERVENTION at [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "}, elevation = " << m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElev() << ", SWL = " << m_dThisIterSWL << endl;
 
                   return;
                }
             }
 
             // Now check to see if we hit another profile which is not a coincident normal to this normal
-            if (m_pRasterGrid->Cell(nX, nY).bIsProfile())
+            if (m_pRasterGrid->m_Cell[nX][nY].bIsProfile())
             {
                // We've hit a raster cell which is already marked as 'under' a normal profile. Get the number of the profile which marked this cell, and the coast to hich this profile belongs
-               int const nHitProfile = m_pRasterGrid->Cell(nX, nY).nGetProfileID();
-               int const nHitProfileCoast = m_pRasterGrid->Cell(nX, nY).nGetProfileCoastID();
+               int const nHitProfile = m_pRasterGrid->m_Cell[nX][nY].nGetProfileID();
+               int const nHitProfileCoast = m_pRasterGrid->m_Cell[nX][nY].nGetProfileCoastID();
 
                // Do both profiles belong to the same coast?
                if (nCoast == nHitProfileCoast)

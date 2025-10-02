@@ -128,12 +128,12 @@ int CSimulation::nInitGridAndCalcStillWaterLevel(void)
       for (int nY = 0; nY < m_nYGridSize; nY++)
       {
          // Re-initialise values for this cell
-         m_pRasterGrid->Cell(nX, nY).InitCell();
+         m_pRasterGrid->m_Cell[nX][nY].InitCell();
 
          if (m_ulIter == 1)
          {
             // For the first timestep only, check to see that all cells have some sediment on them
-            double const dSedThickness = m_pRasterGrid->Cell(nX, nY).dGetTotAllSedThickness();
+            double const dSedThickness = m_pRasterGrid->m_Cell[nX][nY].dGetTotAllSedThickness();
 
             if (dSedThickness <= 0)
             {
@@ -151,25 +151,25 @@ int CSimulation::nInitGridAndCalcStillWaterLevel(void)
             }
 
             // For the first timestep only, calculate the elevation of all this cell's layers. During the rest of the simulation, each cell's elevation is re-calculated just after any change occurs on that cell
-            m_pRasterGrid->Cell(nX, nY).CalcAllLayerElevsAndD50();
+            m_pRasterGrid->m_Cell[nX][nY].CalcAllLayerElevsAndD50();
          }
 
          // Note that these totals include sediment which is both within and outside the polygons (because we have not yet defined polygons for this iteration, duh!)
-         m_dStartIterConsFineAllCells += m_pRasterGrid->Cell(nX, nY).dGetTotConsFineThickConsiderNotch();
-         m_dStartIterConsSandAllCells += m_pRasterGrid->Cell(nX, nY).dGetTotConsSandThickConsiderNotch();
-         m_dStartIterConsCoarseAllCells += m_pRasterGrid->Cell(nX, nY).dGetTotConsCoarseThickConsiderNotch();
+         m_dStartIterConsFineAllCells += m_pRasterGrid->m_Cell[nX][nY].dGetTotConsFineThickConsiderNotch();
+         m_dStartIterConsSandAllCells += m_pRasterGrid->m_Cell[nX][nY].dGetTotConsSandThickConsiderNotch();
+         m_dStartIterConsCoarseAllCells += m_pRasterGrid->m_Cell[nX][nY].dGetTotConsCoarseThickConsiderNotch();
 
-         m_dStartIterSuspFineAllCells += m_pRasterGrid->Cell(nX, nY).dGetSuspendedSediment();
-         m_dStartIterUnconsFineAllCells += m_pRasterGrid->Cell(nX, nY).dGetTotUnconsFine();
-         m_dStartIterUnconsSandAllCells += m_pRasterGrid->Cell(nX, nY).dGetTotUnconsSand();
-         m_dStartIterUnconsCoarseAllCells += m_pRasterGrid->Cell(nX, nY).dGetTotUnconsCoarse();
+         m_dStartIterSuspFineAllCells += m_pRasterGrid->m_Cell[nX][nY].dGetSuspendedSediment();
+         m_dStartIterUnconsFineAllCells += m_pRasterGrid->m_Cell[nX][nY].dGetTotUnconsFine();
+         m_dStartIterUnconsSandAllCells += m_pRasterGrid->m_Cell[nX][nY].dGetTotUnconsSand();
+         m_dStartIterUnconsCoarseAllCells += m_pRasterGrid->m_Cell[nX][nY].dGetTotUnconsCoarse();
 
          if (m_bSingleDeepWaterWaveValues)
          {
             // If we have just a single measurement for deep water waves (either given by the user, or from a single wave station) then set all cells, even dry land cells, to the same value for deep water wave height, deep water wave orientation, and deep water period
-            m_pRasterGrid->Cell(nX, nY).SetCellDeepWaterWaveHeight(m_dAllCellsDeepWaterWaveHeight);
-            m_pRasterGrid->Cell(nX, nY).SetCellDeepWaterWaveAngle(m_dAllCellsDeepWaterWaveAngle);
-            m_pRasterGrid->Cell(nX, nY).SetCellDeepWaterWavePeriod(m_dAllCellsDeepWaterWavePeriod);
+            m_pRasterGrid->m_Cell[nX][nY].SetCellDeepWaterWaveHeight(m_dAllCellsDeepWaterWaveHeight);
+            m_pRasterGrid->m_Cell[nX][nY].SetCellDeepWaterWaveAngle(m_dAllCellsDeepWaterWaveAngle);
+            m_pRasterGrid->m_Cell[nX][nY].SetCellDeepWaterWavePeriod(m_dAllCellsDeepWaterWavePeriod);
          }
       }
    }
@@ -222,7 +222,7 @@ int CSimulation::nInitGridAndCalcStillWaterLevel(void)
    // for (int nX = 0; nX < m_nXGridSize; nX++)
    // {
    //          // Write this value to the array
-   // pdRaster[nn] = m_pRasterGrid->Cell(nX, nY).dGetCellDeepWaterWaveHeight();
+   // pdRaster[nn] = m_pRasterGrid->m_Cell[nX][nY].dGetCellDeepWaterWaveHeight();
    // nn++;
    // }
    // }
@@ -251,7 +251,7 @@ int CSimulation::nInitGridAndCalcStillWaterLevel(void)
    // for (int nX = 0; nX < m_nXGridSize; nX++)
    // {
    //          // Write this value to the array
-   // pdRaster[nn] = m_pRasterGrid->Cell(nX, nY).dGetCellDeepWaterWaveAngle();
+   // pdRaster[nn] = m_pRasterGrid->m_Cell[nX][nY].dGetCellDeepWaterWaveAngle();
    // nn++;
    // }
    // }
@@ -280,7 +280,7 @@ int CSimulation::nInitGridAndCalcStillWaterLevel(void)
    // for (int nX = 0; nX < m_nXGridSize; nX++)
    // {
    //          // Write this value to the array
-   // pdRaster[nn] = m_pRasterGrid->Cell(nX, nY).dGetWaveAngle();
+   // pdRaster[nn] = m_pRasterGrid->m_Cell[nX][nY].dGetWaveAngle();
    // nn++;
    // }
    // }
@@ -309,7 +309,7 @@ int CSimulation::nInitGridAndCalcStillWaterLevel(void)
    // for (int nX = 0; nX < m_nXGridSize; nX++)
    // {
    //          // Write this value to the array
-   // pdRaster[nn] = m_pRasterGrid->Cell(nX, nY).dGetWaveHeight();
+   // pdRaster[nn] = m_pRasterGrid->m_Cell[nX][nY].dGetWaveHeight();
    // nn++;
    // }
    // }

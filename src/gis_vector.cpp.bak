@@ -1445,7 +1445,7 @@ bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const* strPlot
          for (int nY = 0; nY < m_nYGridSize; nY++)
          {
             // Only output a value if the cell is a sea cell which is not in the active zone (wave height and angle values are meaningless if in the active zone)
-            if ((m_pRasterGrid->Cell(nX, nY).bIsInContiguousSea()) && (!m_pRasterGrid->Cell(nX, nY).bIsInActiveZone()))
+            if ((m_pRasterGrid->m_Cell[nX][nY].bIsInContiguousSea()) && (!m_pRasterGrid->m_Cell[nX][nY].bIsInActiveZone()))
             {
                // Create a feature object, one per sea cell
                OGRFeature* pOGRFeature = OGRFeature::CreateFeature(pOGRLayer->GetLayerDefn());
@@ -1455,8 +1455,8 @@ bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const* strPlot
                OGRPt.setY(dGridCentroidYToExtCRSY(nY));
                pOGRFeature->SetGeometry(&OGRPt);
 
-               double const dOrientation = m_pRasterGrid->Cell(nX, nY).dGetWaveAngle();
-               double const dHeight = m_pRasterGrid->Cell(nX, nY).dGetWaveHeight();
+               double const dOrientation = m_pRasterGrid->m_Cell[nX][nY].dGetWaveAngle();
+               double const dHeight = m_pRasterGrid->m_Cell[nX][nY].dGetWaveHeight();
 
                if (bFPIsEqual(dHeight, DBL_NODATA, TOLERANCE) || bFPIsEqual(dOrientation, DBL_NODATA, TOLERANCE))
                   continue;
@@ -1522,8 +1522,8 @@ bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const* strPlot
             OGRPt.setY(dGridCentroidYToExtCRSY(nY));
             pOGRFeature->SetGeometry(&OGRPt);
 
-            double const dOrientation = m_pRasterGrid->Cell(nX, nY).dGetTotWaveAngle() / static_cast<double>(m_ulIter);
-            double const dHeight = m_pRasterGrid->Cell(nX, nY).dGetWaveHeight() / static_cast<double>(m_ulIter);
+            double const dOrientation = m_pRasterGrid->m_Cell[nX][nY].dGetTotWaveAngle() / static_cast<double>(m_ulIter);
+            double const dHeight = m_pRasterGrid->m_Cell[nX][nY].dGetWaveHeight() / static_cast<double>(m_ulIter);
 
             if (bFPIsEqual(dHeight, DBL_NODATA, TOLERANCE) || bFPIsEqual(dOrientation, DBL_NODATA, TOLERANCE))
                continue;
@@ -1790,10 +1790,10 @@ bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const* strPlot
             OGRPt.setY(dGridCentroidYToExtCRSY(nY));
             pOGRFeature->SetGeometry(&OGRPt);
 
-            double const dOrientation = m_pRasterGrid->Cell(nX, nY).dGetCellDeepWaterWaveAngle();
-            double const dHeight = m_pRasterGrid->Cell(nX, nY).dGetCellDeepWaterWaveHeight();
+            double const dOrientation = m_pRasterGrid->m_Cell[nX][nY].dGetCellDeepWaterWaveAngle();
+            double const dHeight = m_pRasterGrid->m_Cell[nX][nY].dGetCellDeepWaterWaveHeight();
 
-            if (bFPIsEqual(dHeight, DBL_NODATA, TOLERANCE) || bFPIsEqual(dOrientation, DBL_NODATA, TOLERANCE) || (!m_pRasterGrid->Cell(nX, nY).bIsInContiguousSea()))
+            if (bFPIsEqual(dHeight, DBL_NODATA, TOLERANCE) || bFPIsEqual(dOrientation, DBL_NODATA, TOLERANCE) || (!m_pRasterGrid->m_Cell[nX][nY].bIsInContiguousSea()))
                continue;
 
             // Set the feature's attributes
