@@ -116,61 +116,67 @@ int CSimulation::nInitGridAndCalcStillWaterLevel(void)
    m_dStartIterConsCoarseAllCells = 0;
 
    // And go through all cells in the RasterGrid array
+   // HOT LOOP OPTIMIZATION: Use direct pointer access for better performance
+   CGeomCell* pCells = m_pRasterGrid->CellData();
+   int const nXSize = m_nXGridSize;
+   int const nYSize = m_nYGridSize;
+   int const nTotalCells = nXSize * nYSize;
+
    // Use OpenMP parallel loop with reduction clauses for thread-safe accumulation
 #ifdef _OPENMP
-#pragma omp parallel for collapse(2) reduction(+ : nZeroThickness)                                            \
+#pragma omp parallel for reduction(+ : nZeroThickness)                                                        \
     reduction(+ : m_dStartIterConsFineAllCells, m_dStartIterConsSandAllCells, m_dStartIterConsCoarseAllCells) \
     reduction(+ : m_dStartIterSuspFineAllCells, m_dStartIterUnconsFineAllCells, m_dStartIterUnconsSandAllCells, m_dStartIterUnconsCoarseAllCells)
 #endif
-
-   for (int nX = 0; nX < m_nXGridSize; nX++)
+   for (int nIdx = 0; nIdx < nTotalCells; nIdx++)
    {
-      for (int nY = 0; nY < m_nYGridSize; nY++)
+      CGeomCell& cell = pCells[nIdx];
+
+      // Re-initialise values for this cell
+      cell.InitCell();
+
+      if (m_ulIter == 1)
       {
-         // Re-initialise values for this cell
-         m_pRasterGrid->Cell(nX, nY).InitCell();
+         // For the first timestep only, check to see that all cells have some sediment on them
+         double const dSedThickness = cell.dGetTotAllSedThickness();
 
-         if (m_ulIter == 1)
+         if (dSedThickness <= 0)
          {
-            // For the first timestep only, check to see that all cells have some sediment on them
-            double const dSedThickness = m_pRasterGrid->Cell(nX, nY).dGetTotAllSedThickness();
+            nZeroThickness++;
 
-            if (dSedThickness <= 0)
+            // Note: Logging from parallel regions can cause race conditions, but this is for debugging only
+            // In production, consider collecting problematic cells and logging after the parallel region
+            if (m_nLogFileDetail >= LOG_FILE_MIDDLE_DETAIL)
             {
-               nZeroThickness++;
-
-               // Note: Logging from parallel regions can cause race conditions, but this is for debugging only
-               // In production, consider collecting problematic cells and logging after the parallel region
-               if (m_nLogFileDetail >= LOG_FILE_MIDDLE_DETAIL)
-               {
+               int const nX = nIdx % nXSize;
+               int const nY = nIdx / nXSize;
 #ifdef _OPENMP
 #pragma omp critical(logging)
 #endif
-                  LogStream << m_ulIter << ": " << WARN << "total sediment thickness is " << dSedThickness << " at [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "}" << endl;
-               }
+               LogStream << m_ulIter << ": " << WARN << "total sediment thickness is " << dSedThickness << " at [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "}" << endl;
             }
-
-            // For the first timestep only, calculate the elevation of all this cell's layers. During the rest of the simulation, each cell's elevation is re-calculated just after any change occurs on that cell
-            m_pRasterGrid->Cell(nX, nY).CalcAllLayerElevsAndD50();
          }
 
-         // Note that these totals include sediment which is both within and outside the polygons (because we have not yet defined polygons for this iteration, duh!)
-         m_dStartIterConsFineAllCells += m_pRasterGrid->Cell(nX, nY).dGetTotConsFineThickConsiderNotch();
-         m_dStartIterConsSandAllCells += m_pRasterGrid->Cell(nX, nY).dGetTotConsSandThickConsiderNotch();
-         m_dStartIterConsCoarseAllCells += m_pRasterGrid->Cell(nX, nY).dGetTotConsCoarseThickConsiderNotch();
+         // For the first timestep only, calculate the elevation of all this cell's layers. During the rest of the simulation, each cell's elevation is re-calculated just after any change occurs on that cell
+         cell.CalcAllLayerElevsAndD50();
+      }
 
-         m_dStartIterSuspFineAllCells += m_pRasterGrid->Cell(nX, nY).dGetSuspendedSediment();
-         m_dStartIterUnconsFineAllCells += m_pRasterGrid->Cell(nX, nY).dGetTotUnconsFine();
-         m_dStartIterUnconsSandAllCells += m_pRasterGrid->Cell(nX, nY).dGetTotUnconsSand();
-         m_dStartIterUnconsCoarseAllCells += m_pRasterGrid->Cell(nX, nY).dGetTotUnconsCoarse();
+      // Note that these totals include sediment which is both within and outside the polygons (because we have not yet defined polygons for this iteration, duh!)
+      m_dStartIterConsFineAllCells += cell.dGetTotConsFineThickConsiderNotch();
+      m_dStartIterConsSandAllCells += cell.dGetTotConsSandThickConsiderNotch();
+      m_dStartIterConsCoarseAllCells += cell.dGetTotConsCoarseThickConsiderNotch();
 
-         if (m_bSingleDeepWaterWaveValues)
-         {
-            // If we have just a single measurement for deep water waves (either given by the user, or from a single wave station) then set all cells, even dry land cells, to the same value for deep water wave height, deep water wave orientation, and deep water period
-            m_pRasterGrid->Cell(nX, nY).SetCellDeepWaterWaveHeight(m_dAllCellsDeepWaterWaveHeight);
-            m_pRasterGrid->Cell(nX, nY).SetCellDeepWaterWaveAngle(m_dAllCellsDeepWaterWaveAngle);
-            m_pRasterGrid->Cell(nX, nY).SetCellDeepWaterWavePeriod(m_dAllCellsDeepWaterWavePeriod);
-         }
+      m_dStartIterSuspFineAllCells += cell.dGetSuspendedSediment();
+      m_dStartIterUnconsFineAllCells += cell.dGetTotUnconsFine();
+      m_dStartIterUnconsSandAllCells += cell.dGetTotUnconsSand();
+      m_dStartIterUnconsCoarseAllCells += cell.dGetTotUnconsCoarse();
+
+      if (m_bSingleDeepWaterWaveValues)
+      {
+         // If we have just a single measurement for deep water waves (either given by the user, or from a single wave station) then set all cells, even dry land cells, to the same value for deep water wave height, deep water wave orientation, and deep water period
+         cell.SetCellDeepWaterWaveHeight(m_dAllCellsDeepWaterWaveHeight);
+         cell.SetCellDeepWaterWaveAngle(m_dAllCellsDeepWaterWaveAngle);
+         cell.SetCellDeepWaterWavePeriod(m_dAllCellsDeepWaterWavePeriod);
       }
    }
 

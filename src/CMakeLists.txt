@@ -114,24 +114,24 @@ if(CMAKE_BUILD_TYPE_LC STREQUAL "debug")
   add_compile_options(
       -march=native
       -O2
-      -W
-      -Wall
-      -Wextra
-      -Wpointer-arith
-      -Wconversion
-      -Wcast-qual
-      -Wcast-align
-      -Wwrite-strings
-      -Wredundant-decls
-      -Wno-strict-overflow
-      -Wshadow
-      -Wuninitialized
-      -Wnull-dereference
-      -Wformat
-      -Wformat-overflow
-      -Wformat-signedness
-      -Wempty-body
-      -Wfloat-equal
+      # -W
+      # -Wall
+      # -Wextra
+      # -Wpointer-arith
+      # -Wconversion
+      # -Wcast-qual
+      # -Wcast-align
+      # -Wwrite-strings
+      # -Wredundant-decls
+      # -Wno-strict-overflow
+      # -Wshadow
+      # -Wuninitialized
+      # -Wnull-dereference
+      # -Wformat
+      # -Wformat-overflow
+      # -Wformat-signedness
+      # -Wempty-body
+      # -Wfloat-equal
   )
   if(CMAKE_CXX_COMPILER_ID MATCHES "^(GNU|LCC|QCC)$")
     message("Applying additional ${CMAKE_BUILD_TYPE_LC} flags for gcc")
@@ -143,6 +143,7 @@ if(CMAKE_BUILD_TYPE_LC STREQUAL "debug")
     add_compile_options(-Wuseless-cast)
     if(CMAKE_CXX_COMPILER_VERSION VERSION_GREATER "13.0")
       add_compile_options(
+        -g
         -Wformat
         -Wformat=2
         -Wimplicit-fallthrough
@@ -172,6 +173,21 @@ if(CMAKE_BUILD_TYPE_LC STREQUAL "debug")
   elseif(CMAKE_CXX_COMPILER_ID MATCHES "^(Apple)?Clang$")
     message("Applying additional ${CMAKE_BUILD_TYPE_LC} flags for Clang")
   endif()
+
+elseif(CMAKE_BUILD_TYPE_LC STREQUAL "relwithdebinfo")
+  message("Applying universal release with debug info flags")
+  add_compile_options(
+      -march=native
+      -O0                             # No optimization for clearest profiling
+      -Wall
+      -g3                             # Full debug symbols (remove -gline-tables-only)
+      -gdwarf-4                       # Use DWARF 4 format for better compatibility
+      -fno-omit-frame-pointer         # Essential for stack unwinding
+      -fno-inline                     # Disable ALL inlining
+      -fno-optimize-sibling-calls     # Keep function call boundaries
+  )
+  # Ensure linker preserves debug info
+  add_link_options(-g)
 
 elseif(CMAKE_BUILD_TYPE_LC STREQUAL "prerelease")
   if(CMAKE_CXX_COMPILER_ID MATCHES "^(GNU|LCC|QCC)$")
@@ -260,6 +276,13 @@ if(CMAKE_BUILD_TYPE_LC STREQUAL "debug")
   set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CME_BINARY_DIR}/Debug CACHE PATH "Directory for Debug builds" FORCE)
   # For Debug builds on any platform, add the model's "internal" debug flag(used for extra logging) etc.
   add_compile_options(-D_DEBUG)
+
+elseif(CMAKE_BUILD_TYPE_LC STREQUAL "relwithdebinfo")
+  set(CSHORE_BUILD "DEBUG")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS_DEBUG} ${CMAKE_CXX_FLAGS}")
+  add_link_options(-g)
+  set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CME_BINARY_DIR}/Debug CACHE PATH "Directory for Debug builds" FORCE)
+  # For Debug builds on any platform, add the model's "internal" debug flag(used for extra logging) etc.
 
 elseif(CMAKE_BUILD_TYPE_LC STREQUAL "release")
   set(CSHORE_BUILD "RELEASE")
