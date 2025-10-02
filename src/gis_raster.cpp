@@ -2242,21 +2242,6 @@ int CSimulation::nInterpolateWavesToPolygonCells(
     // Call GDALGridCreate() TODO 086
     int nRet;
 
-    if (nDirection == 0) {
-      nRet = GDALGridCreate(GGA_Linear, pOptions, nPoints, pVdX->data(),
-                            pVdY->data(), pVdHeightX->data(),
-                            m_nXMinBoundingBox, m_nXMaxBoundingBox,
-                            m_nYMinBoundingBox, m_nYMaxBoundingBox, nXSize,
-                            nYSize, GDT_Float64, VdOutX.data(), NULL, NULL);
-    }
-
-    else {
-      nRet = GDALGridCreate(GGA_Linear, pOptions, nPoints, pVdX->data(),
-                            pVdY->data(), pVdHeightY->data(),
-                            m_nXMinBoundingBox, m_nXMaxBoundingBox,
-                            m_nYMinBoundingBox, m_nYMaxBoundingBox, nXSize,
-                            nYSize, GDT_Float64, VdOutY.data(), NULL, NULL);
-    }
 
     // int nRet;
     // if (nDirection == 0)
@@ -2297,31 +2282,62 @@ int CSimulation::nInterpolateWavesToPolygonCells(
           dXAvg += VdOutX[n];
           nXValid++;
         }
+   vector<double> VdOutX(nGridSize, 0);
+   vector<double> VdOutY(nGridSize, 0);
+
+   // Prepare point cloud for spatial interpolation
+   std::vector<Point2D> points;
+   points.reserve(nPoints);
+   for (unsigned int i = 0; i < nPoints; i++)
+   {
+      points.emplace_back((*pVdX)[i], (*pVdY)[i]);
+   }
+
+   // Create interpolators for X and Y directions
+   SpatialInterpolator interpX(points, *pVdHeightX, 12, 2.0);
+   SpatialInterpolator interpY(points, *pVdHeightY, 12, 2.0);
+
+   // Build query points for the grid
+   std::vector<Point2D> query_points;
+   query_points.reserve(nGridSize);
+   for (int nY = m_nYMinBoundingBox; nY <= m_nYMaxBoundingBox; nY++)
+   {
+      for (int nX = m_nXMinBoundingBox; nX <= m_nXMaxBoundingBox; nX++)
+      {
+         query_points.emplace_back(static_cast<double>(nX), static_cast<double>(nY));
+      }
+   }
+
+   // Perform batch interpolation for both directions
+   interpX.Interpolate(query_points, VdOutX);
+   interpY.Interpolate(query_points, VdOutY);
+
+   // Validate interpolated results for X and Y directions
+   for (int nDirection = 0; nDirection < 2; nDirection++)
+   {
+      if (nDirection == 0)
+      {
+         int nXValid = 0;
+
+         // Safety check: validate interpolated values for NaNs and extreme values
+         for (unsigned int n = 0; n < VdOutX.size(); n++)
+         {
+            if (isnan(VdOutX[n]))
+               VdOutX[n] = m_dMissingValue;
+
+            else if (tAbs(VdOutX[n]) > 1e10)
+               VdOutX[n] = m_dMissingValue;
+
+            else
+            {
+               dXAvg += VdOutX[n];
+               nXValid++;
+            }
+         }
+
+         dXAvg /= nXValid;
       }
 
-      dXAvg /= nXValid;
-    }
-
-    else {
-      int nYValid = 0;
-
-      // Safety check: unfortunately, GDALGridCreate(() outputs NaNs and other
-      // crazy values when the polygon are far from regular. So check for these
-      for (unsigned int n = 0; n < VdOutY.size(); n++) {
-        if (isnan(VdOutY[n]))
-          VdOutY[n] = m_dMissingValue;
-
-        else if (tAbs(VdOutY[n]) > 1e10)
-          VdOutY[n] = m_dMissingValue;
-
-        else {
-          dYAvg += VdOutY[n];
-          nYValid++;
-        }
-      }
-
-      dYAvg /= nYValid;
-    }
 
     // // DEBUG CODE
     // ===========================================================================================================
