@@ -2215,9 +2215,8 @@ int CSimulation::nInterpolateWavesToPolygonCells(
     points.emplace_back((*pVdX)[i], (*pVdY)[i]);
   }
 
-  // Create interpolators for X and Y directions
-  SpatialInterpolator interpX(points, *pVdHeightX, 12, 2.0);
-  SpatialInterpolator interpY(points, *pVdHeightY, 12, 2.0);
+  // Create optimized dual interpolator (shares k-d tree, uses OpenMP)
+  DualSpatialInterpolator interp(points, *pVdHeightX, *pVdHeightY, 12, 2.0);
 
   // Build query points for the grid
   std::vector<Point2D> query_points;
@@ -2229,9 +2228,8 @@ int CSimulation::nInterpolateWavesToPolygonCells(
     }
   }
 
-  // Perform batch interpolation for both directions
-  interpX.Interpolate(query_points, VdOutX);
-  interpY.Interpolate(query_points, VdOutY);
+  // Perform batch interpolation for both directions simultaneously
+  interp.Interpolate(query_points, VdOutX, VdOutY);
 
   // Validate interpolated results and calculate averages
   int nXValid = 0;

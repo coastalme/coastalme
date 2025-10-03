@@ -62,14 +62,62 @@ class SpatialInterpolator
    void Interpolate(std::vector<Point2D> const& query_points,
                     std::vector<double>& results) const;
 
+   // Get the k-d tree (for sharing between interpolators)
+   KDTree const* GetKDTree() const { return m_kdtree; }
+
+   // Get the point cloud (for sharing between interpolators)
+   PointCloud const& GetPointCloud() const { return m_cloud; }
+
    private:
    PointCloud m_cloud;
    std::vector<double> m_values;
    KDTree* m_kdtree;
    int m_k_neighbors;
    double m_power;
+   bool m_owns_kdtree;
 
    static constexpr double EPSILON = 1e-10;
+
+   // Private constructor for sharing k-d tree
+   friend class DualSpatialInterpolator;
+   SpatialInterpolator(PointCloud const& cloud,
+                       KDTree* kdtree,
+                       std::vector<double> const& values,
+                       int k_neighbors,
+                       double power);
+};
+
+// Optimized dual interpolator for X and Y values sharing same spatial points
+class DualSpatialInterpolator
+{
+   public:
+   DualSpatialInterpolator(std::vector<Point2D> const& points,
+                           std::vector<double> const& values_x,
+                           std::vector<double> const& values_y,
+                           int k_neighbors = 12,
+                           double power = 2.0);
+
+   ~DualSpatialInterpolator();
+
+   // Interpolate both X and Y at multiple points (parallel optimized)
+   void Interpolate(std::vector<Point2D> const& query_points,
+                    std::vector<double>& results_x,
+                    std::vector<double>& results_y) const;
+
+   private:
+   PointCloud m_cloud;
+   std::vector<double> m_values_x;
+   std::vector<double> m_values_y;
+   KDTree* m_kdtree;
+   int m_k_neighbors;
+   double m_power;
+
+   static constexpr double EPSILON = 1e-10;
+
+   // Helper for single point interpolation
+   void InterpolatePoint(double x, double y, double& result_x, double& result_y,
+                         std::vector<unsigned int>& indices,
+                         std::vector<double>& sq_dists) const;
 };
 
 #endif      // SPATIAL_INTERPOLATION_H
