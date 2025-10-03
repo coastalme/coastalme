@@ -19,10 +19,10 @@ while getopts 'civh' flag; do
 done
 
 # Change this to change build type
-buildtype=DEBUG
+# buildtype=DEBUG
 #buildtype=RELEASE
 # buildtype=PRERELEASE
-#buildtype=RELWITHDEBINFO        # Not yet implemented in CMakeLists.txt
+buildtype=RELWITHDEBINFO # Not yet implemented in CMakeLists.txt
 #buildtype=MINSIZEREL            # Not yet implemented in CMakeLists.txt
 #buildtype=GCOV
 #buildtype=CALLGRIND

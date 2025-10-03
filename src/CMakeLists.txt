@@ -173,6 +173,25 @@ if(CMAKE_BUILD_TYPE_LC STREQUAL "debug")
     message("Applying additional ${CMAKE_BUILD_TYPE_LC} flags for Clang")
   endif()
 
+elseif(CMAKE_BUILD_TYPE_LC STREQUAL "relwithdebinfo")
+  # Production build
+  add_compile_options(
+      -march=native
+      -O3
+      # -Wall
+      -fno-delete-null-pointer-checks
+      -fno-strict-overflow
+      -fno-strict-aliasing
+      -ftrivial-auto-var-init=zero
+  )
+  if(CMAKE_CXX_COMPILER_ID MATCHES "^(GNU|LCC|QCC)$")
+    # Production build using gcc
+    message("Applying additional ${CMAKE_BUILD_TYPE_LC} flags for gcc")
+
+  elseif(CMAKE_CXX_COMPILER_ID MATCHES "^(Apple)?Clang$")
+    message("Applying additional ${CMAKE_BUILD_TYPE_LC} flags for Clang")
+  endif()
+
 elseif(CMAKE_BUILD_TYPE_LC STREQUAL "prerelease")
   if(CMAKE_CXX_COMPILER_ID MATCHES "^(GNU|LCC|QCC)$")
     message("Applying additional ${CMAKE_BUILD_TYPE_LC} flags for gcc")
@@ -254,6 +273,14 @@ endif()
 
 # Sort out compiler flags for various build types
 if(CMAKE_BUILD_TYPE_LC STREQUAL "debug")
+  set(CSHORE_BUILD "DEBUG")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS_DEBUG} ${CMAKE_CXX_FLAGS}")
+  add_link_options(-g)
+  set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CME_BINARY_DIR}/Debug CACHE PATH "Directory for Debug builds" FORCE)
+  # For Debug builds on any platform, add the model's "internal" debug flag(used for extra logging) etc.
+  add_compile_options(-D_DEBUG)
+
+elseif(CMAKE_BUILD_TYPE_LC STREQUAL "relwithdebinfo")
   set(CSHORE_BUILD "DEBUG")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS_DEBUG} ${CMAKE_CXX_FLAGS}")
   add_link_options(-g)
