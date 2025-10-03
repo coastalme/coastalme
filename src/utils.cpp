@@ -194,8 +194,13 @@ void CSimulation::AnnounceStart(void)
   #ifdef _OPENMP
    cout << "OpenMP is ENABLED" << endl;
    cout << "Max threads available: " << omp_get_max_threads() << endl;
+    #pragma omp parallel
+    {
+        #pragma omp single
+        std::cout << "Actually running with " << omp_get_num_threads() << " threads" << std::endl;
+    }
   #else
-   cout << "OpenMP doesnt appear to be enabled" << endl;
+    std::cout << "OpenMP is NOT ENABLED - code will run serially!" << std::endl;
   #endif // !_OPENMP
 }
 
