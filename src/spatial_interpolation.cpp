@@ -103,7 +103,7 @@ void SpatialInterpolator::Interpolate(std::vector<Point2D> const& query_points,
       std::vector<unsigned int> indices(k);
       std::vector<double> sq_dists(k);
 
-      #pragma omp for schedule(dynamic, 64)
+      #pragma omp for schedule(guided, 128) nowait
       for (size_t i = 0; i < query_points.size(); i++)
       {
          double const query_pt[2] = {query_points[i].x, query_points[i].y};
@@ -252,18 +252,24 @@ void DualSpatialInterpolator::Interpolate(std::vector<Point2D> const& query_poin
                                           std::vector<double>& results_x,
                                           std::vector<double>& results_y) const
 {
-   results_x.resize(query_points.size());
-   results_y.resize(query_points.size());
+   size_t const n = query_points.size();
+   results_x.resize(n);
+   results_y.resize(n);
+
+   // Early exit for empty query
+   if (n == 0) return;
+
    size_t const k = std::min((size_t) m_k_neighbors, m_cloud.pts.size());
 
 #ifdef _OPENMP
+   // Use guided scheduling to reduce overhead
    #pragma omp parallel
    {
       // Thread-local storage
       std::vector<unsigned int> indices(k);
       std::vector<double> sq_dists(k);
 
-      #pragma omp for schedule(dynamic, 64)
+      #pragma omp for schedule(guided, 128) nowait
       for (size_t i = 0; i < query_points.size(); i++)
       {
          InterpolatePoint(query_points[i].x, query_points[i].y,
