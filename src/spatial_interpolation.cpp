@@ -103,7 +103,7 @@ void SpatialInterpolator::Interpolate(std::vector<Point2D> const& query_points,
       std::vector<unsigned int> indices(k);
       std::vector<double> sq_dists(k);
 
-      #pragma omp for schedule(static)
+      #pragma omp for schedule(dynamic, 64)
       for (size_t i = 0; i < query_points.size(); i++)
       {
          double const query_pt[2] = {query_points[i].x, query_points[i].y};
@@ -263,7 +263,7 @@ void DualSpatialInterpolator::Interpolate(std::vector<Point2D> const& query_poin
       std::vector<unsigned int> indices(k);
       std::vector<double> sq_dists(k);
 
-      #pragma omp for schedule(static)
+      #pragma omp for schedule(dynamic, 64)
       for (size_t i = 0; i < query_points.size(); i++)
       {
          InterpolatePoint(query_points[i].x, query_points[i].y,
