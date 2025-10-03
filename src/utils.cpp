@@ -191,6 +191,12 @@ void CSimulation::AnnounceStart(void)
 {
    cout << endl
         << PROGRAM_NAME << " for " << PLATFORM << " " << strGetBuild() << endl;
+  #ifdef _OPENMP
+   cout << "OpenMP is ENABLED" << endl;
+   cout << "Max threads available: " << omp_get_max_threads() << endl;
+  #else
+   cout << "OpenMP doesnt appear to be enabled" << endl;
+  #endif // !_OPENMP
 }
 
 //===============================================================================================================================
