@@ -64,6 +64,7 @@ class CGeomCoastPolygon;
 class CRWCliff;
 class CRWSedInputEvent;
 class CRWCellLandform;
+class CGeomCell;
 
 class CSimulation
 {
@@ -1694,7 +1695,7 @@ class CSimulation
    double dCalcBeachProtectionFactor(int const, int const, double const);
    void FillInBeachProtectionHolesAndRemoveLegacyCliffs(void);
    void FillPotentialPlatformErosionHoles(void);
-   void DoActualPlatformErosionOnCell(int const, int const);
+   void DoActualPlatformErosionOnCell(int const, int const, CGeomCell&);
    double dLookUpErosionPotential(double const);
    static CGeom2DPoint PtChooseEndPoint(int const, CGeom2DPoint const*, CGeom2DPoint const*, double const, double const, double const, double const);
    int nGetCoastNormalEndPoint(int const, int const, int const, CGeom2DPoint const*, double const, CGeom2DPoint *, CGeom2DIPoint *, bool const);
@@ -1712,6 +1713,9 @@ class CSimulation
    void ModifyBreakingWavePropertiesWithinShadowZoneToCoastline(int const, int const);
    static double dCalcCurvature(int const, CGeom2DPoint const*, CGeom2DPoint const*, CGeom2DPoint const*);
    void CalcD50AndFillWaveCalcHoles(void);
+   void CalcD50(void);
+   void FillWaveCalcHoles(void);
+   void ProcessNeighborForWaveCalc(int const, int const, int&, int&, int&, int&, int&, int&, int&, double&, double&);
    int nDoAllShadowZones(void);
    static bool bOnOrOffShoreAndUpOrDownCoast(double const, double const, int const, bool&);
    static CGeom2DIPoint PtiFollowWaveAngle(CGeom2DIPoint const*, double const, double&);
