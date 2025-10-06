@@ -162,6 +162,7 @@ void CConfiguration::InitializeDefaults()
    m_dRandomFactor = 0.25;
    m_dNormalLength = 130.0;
    m_dStartDepthRatio = 30.0;
+   m_dSyntheticTransectSpacing = 5.0;
 
    // Profile and Output Options
    m_bSaveProfileData = false;
@@ -357,7 +358,7 @@ vector<string> CConfiguration::GetVectorFiles() const
       if (fileSpecLower == "all")
       {
          // Add all possible vector outputs (Case 16 "all" mode)
-         expandedFiles.insert(expandedFiles.end(), {"coast", "cliff_edge", "wave_angle", "normals", "invalid_normals", "avg_wave_angle", "wave_energy", "mean_wave_energy", "breaking_wave_height", "coast_curvature", "polygon_node", "polygon", "cliff_notch", "shadow_boundary", "downdrift_boundary", "deep_water_wave_angle", "wave_setup", "storm_surge", "run_up", "flood_line"});
+         expandedFiles.insert(expandedFiles.end(), {"coast", "cliff_edge", "wave_angle", "normals", "invalid_normals", "avg_wave_angle", "wave_energy", "mean_wave_energy", "breaking_wave_height", "coast_curvature", "polygon_node", "polygon", "cliff_notch", "wave_transect_points", "shadow_boundary", "downdrift_boundary", "deep_water_wave_angle", "wave_setup", "storm_surge", "run_up", "flood_line"});
       }
       else if (fileSpecLower == "usual")
       {
