@@ -1,3 +1,39 @@
+//===============================================================================================================================
+//! Spatial Interpolation Using k-Nearest Neighbors and Inverse Distance Weighting
+//!
+//! This header defines classes for fast spatial interpolation using:
+//! - k-d tree spatial indexing (nanoflann library)
+//! - Inverse Distance Weighting (IDW)
+//! - OpenMP parallelization
+//!
+//! CLASSES:
+//! --------
+//! - Point2D: Simple 2D point structure
+//! - PointCloud: k-d tree adaptor for nanoflann
+//! - SpatialInterpolator: Single-value interpolation
+//! - DualSpatialInterpolator: Optimized paired X/Y interpolation (recommended for wave data)
+//!
+//! QUICK START:
+//! ------------
+//! std::vector<Point2D> points = {{0,0}, {10,0}, {5,10}};
+//! std::vector<double> values_x = {1.0, 2.0, 1.5};
+//! std::vector<double> values_y = {0.5, 1.0, 0.8};
+//! DualSpatialInterpolator interp(points, values_x, values_y, 12, 2.0);
+//! std::vector<Point2D> query = {{5,5}};
+//! std::vector<double> result_x, result_y;
+//! interp.Interpolate(query, result_x, result_y);
+//!
+//! TUNING PARAMETERS:
+//! -----------------
+//! - k_neighbors (default 12): Number of nearest points to use
+//!   * Increase for smoother results
+//!   * Decrease for more local detail
+//! - power (default 2.0): IDW power exponent
+//!   * Increase for sharper transitions (nearby points dominate)
+//!   * Decrease for smoother transitions (distant points have more influence)
+//!
+//===============================================================================================================================
+
 #ifndef SPATIAL_INTERPOLATION_H
 #define SPATIAL_INTERPOLATION_H
 
@@ -6,7 +42,9 @@
 #include <algorithm>
 #include "nanoflann.hpp"
 
-// Simple 2D point structure
+//===============================================================================================================================
+//! Simple 2D point structure
+//===============================================================================================================================
 struct Point2D
 {
    double x, y;

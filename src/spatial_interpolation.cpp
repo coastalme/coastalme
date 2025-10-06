@@ -1,3 +1,45 @@
+//===============================================================================================================================
+//! Spatial Interpolation Using k-Nearest Neighbors and Inverse Distance Weighting
+//!
+//! This file implements fast spatial interpolation using:
+//! 1. k-d tree for efficient nearest neighbor search (O(log n) per query)
+//! 2. Inverse Distance Weighting (IDW) for smooth interpolation
+//! 3. OpenMP parallelization for batch operations
+//!
+//! ALGORITHM OVERVIEW:
+//! ------------------
+//! For each query point (grid cell):
+//!   1. Find k nearest input points using k-d tree
+//!   2. Calculate weights based on inverse distance: w_i = 1 / dist_i^power
+//!   3. Interpolated value = Σ(w_i * value_i) / Σ(w_i)
+//!
+//! KEY PARAMETERS TO TUNE:
+//! ----------------------
+//! - k_neighbors: Number of nearest points to use (typically 8-20)
+//!   * Higher = smoother, more averaging
+//!   * Lower = follows local variations more closely
+//!
+//! - power: Exponent for inverse distance weighting (typically 1.0-4.0)
+//!   * Higher = nearby points have more influence (sharper transitions)
+//!   * Lower = distant points have more influence (smoother transitions)
+//!   * power=2.0 is optimized for performance (avoids pow() function)
+//!
+//! PERFORMANCE OPTIMIZATIONS:
+//! -------------------------
+//! - Special fast path for power=2.0 (uses squared distance directly, avoids sqrt/pow)
+//! - OpenMP parallelization with guided scheduling
+//! - Thread-local buffers to avoid allocation overhead
+//! - Shared k-d tree between X and Y interpolation (DualSpatialInterpolator)
+//!
+//! USAGE EXAMPLE:
+//! --------------
+//! std::vector<Point2D> input_points = {{0,0}, {10,0}, {5,10}};
+//! std::vector<double> input_values = {1.0, 2.0, 1.5};
+//! SpatialInterpolator interp(input_points, input_values, 12, 2.0);
+//! double result = interp.Interpolate(5.0, 5.0);  // Interpolate at (5,5)
+//!
+//===============================================================================================================================
+
 #include "spatial_interpolation.h"
 #include <stdexcept>
 
@@ -5,6 +47,14 @@
 #include <omp.h>
 #endif
 
+//===============================================================================================================================
+//! Constructor: Build interpolator from points and values
+//!
+//! @param points      Input point coordinates (x, y)
+//! @param values      Values at those points
+//! @param k_neighbors Number of nearest neighbors to use (default: 12)
+//! @param power       IDW power parameter (default: 2.0)
+//===============================================================================================================================
 SpatialInterpolator::SpatialInterpolator(std::vector<Point2D> const& points,
                                          std::vector<double> const& values,
                                          int k_neighbors,
@@ -17,10 +67,11 @@ SpatialInterpolator::SpatialInterpolator(std::vector<Point2D> const& points,
    if (points.empty())
       throw std::invalid_argument("Cannot create interpolator with empty data");
 
-   // Copy points
+   // Copy input points into point cloud structure
    m_cloud.pts = points;
 
-   // Build k-d tree
+   // Build k-d tree for fast spatial queries
+   // max_leaf_size=10 is a good balance between build time and query speed
    m_kdtree = new KDTree(2, m_cloud, {10 /* max leaf size */});
    m_kdtree->buildIndex();
 }
@@ -40,15 +91,31 @@ SpatialInterpolator::~SpatialInterpolator()
       delete m_kdtree;
 }
 
+//===============================================================================================================================
+//! Interpolate at a single query point
+//!
+//! ALGORITHM:
+//! 1. Find k nearest neighbors using k-d tree
+//! 2. Calculate weight for each: w_i = 1 / distance_i^power
+//! 3. Return weighted average: Σ(w_i * value_i) / Σ(w_i)
+//!
+//! SPECIAL CASES:
+//! - If query point coincides with input point (dist < EPSILON): return exact value
+//! - If power=2.0: optimized path using squared distances (faster)
+//!
+//! @param x  X coordinate of query point
+//! @param y  Y coordinate of query point
+//! @return Interpolated value
+//===============================================================================================================================
 double SpatialInterpolator::Interpolate(double x, double y) const
 {
-   // Prepare query
+   // Prepare query point
    double const query_pt[2] = {x, y};
 
-   // Find k nearest neighbors
+   // Find k nearest neighbors (or all points if fewer than k exist)
    size_t const k = std::min((size_t) m_k_neighbors, m_cloud.pts.size());
    std::vector<unsigned int> indices(k);
-   std::vector<double> sq_dists(k);
+   std::vector<double> sq_dists(k);  // Squared distances (faster than actual distances)
 
    unsigned int num_found = m_kdtree->knnSearch(query_pt, k,
                                                  indices.data(),
@@ -57,17 +124,22 @@ double SpatialInterpolator::Interpolate(double x, double y) const
    if (num_found == 0)
       throw std::runtime_error("knnSearch found no neighbors");
 
-   // Check if we're exactly on a data point
+   // SPECIAL CASE: Query point coincides with an input point
+   // Return exact value to avoid division by zero
    if (sq_dists[0] < EPSILON)
       return m_values[indices[0]];
 
-   // Inverse Distance Weighting (IDW) - optimized for power=2.0
+   // Inverse Distance Weighting (IDW)
+   // Formula: result = Σ(w_i * v_i) / Σ(w_i) where w_i = 1/dist_i^power
    double sum_weights = 0.0;
    double sum_weighted_values = 0.0;
 
    if (m_power == 2.0)
    {
-      // Optimized path: use squared distances directly, avoid sqrt and pow
+      // *** OPTIMIZED PATH for power=2.0 ***
+      // Since weight = 1/dist^2 and we have sq_dist = dist^2,
+      // we can use: weight = 1/sq_dist
+      // This avoids both sqrt() and pow() calls
       for (size_t i = 0; i < num_found; i++)
       {
          double weight = 1.0 / sq_dists[i];  // 1/dist^2 = 1/sq_dist
@@ -77,7 +149,8 @@ double SpatialInterpolator::Interpolate(double x, double y) const
    }
    else
    {
-      // General case
+      // *** GENERAL CASE for arbitrary power ***
+      // Need to calculate actual distance and apply pow()
       for (size_t i = 0; i < num_found; i++)
       {
          double dist = std::sqrt(sq_dists[i]);
@@ -164,7 +237,32 @@ void SpatialInterpolator::Interpolate(std::vector<Point2D> const& query_points,
 #endif
 }
 
-// DualSpatialInterpolator implementation
+//===============================================================================================================================
+//! DualSpatialInterpolator: Optimized interpolation for paired X/Y values
+//!
+//! This class is optimized for interpolating wave properties that have both X and Y components
+//! (e.g., wave height X and wave height Y). It's more efficient than using two separate
+//! interpolators because:
+//! 1. Builds only ONE k-d tree (shared for both X and Y)
+//! 2. Does ONE nearest neighbor search per query point (not two)
+//! 3. Interpolates both components simultaneously
+//!
+//! USAGE:
+//! ------
+//! DualSpatialInterpolator interp(points, values_x, values_y, 12, 2.0);
+//! interp.Interpolate(query_points, results_x, results_y);
+//!
+//===============================================================================================================================
+
+//===============================================================================================================================
+//! Constructor: Build dual interpolator for X and Y values
+//!
+//! @param points      Input point coordinates (x, y)
+//! @param values_x    X-component values at those points
+//! @param values_y    Y-component values at those points
+//! @param k_neighbors Number of nearest neighbors to use (default: 12)
+//! @param power       IDW power parameter (default: 2.0)
+//===============================================================================================================================
 DualSpatialInterpolator::DualSpatialInterpolator(std::vector<Point2D> const& points,
                                                  std::vector<double> const& values_x,
                                                  std::vector<double> const& values_y,
@@ -178,10 +276,10 @@ DualSpatialInterpolator::DualSpatialInterpolator(std::vector<Point2D> const& poi
    if (points.empty())
       throw std::invalid_argument("Cannot create interpolator with empty data");
 
-   // Copy points
+   // Copy input points
    m_cloud.pts = points;
 
-   // Build k-d tree (shared for both X and Y)
+   // Build k-d tree (shared for both X and Y interpolation)
    m_kdtree = new KDTree(2, m_cloud, {10 /* max leaf size */});
    m_kdtree->buildIndex();
 }
