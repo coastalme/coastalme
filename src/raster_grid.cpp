@@ -39,20 +39,17 @@ CGeomRasterGrid::CGeomRasterGrid(CSimulation* pSimIn)
       m_dD50Sand(0),
       m_dD50Coarse(0),
       m_pSim(pSimIn),
-      m_Cell(NULL)
+      m_nXSize(0),
+      m_nYSize(0),
+      m_CellData(NULL)
 {
 }
 
 //! Destructor
 CGeomRasterGrid::~CGeomRasterGrid(void)
 {
-   int const nXMax = m_pSim->nGetGridXMax();
-
-   // Free the m_Cell memory
-   for (int nX = 0; nX < nXMax; nX++)
-      delete[] m_Cell[nX];
-
-   delete[] m_Cell;
+   // Free the single contiguous cell array
+   delete[] m_CellData;
 }
 
 //! Returns a pointer to the simulation object
@@ -61,25 +58,22 @@ CSimulation* CGeomRasterGrid::pGetSim(void)
    return m_pSim;
 }
 
-// CGeomCell* CGeomRasterGrid::pGetCell(int const nX, int const nY)
-// {
-// return &m_Cell[nX][nY];
-// }
-
-//! Creates the 2D CGeomCell array
+//! Creates a single contiguous CGeomCell array for optimal cache performance
 int CGeomRasterGrid::nCreateGrid(void)
 {
-   // Create the 2D CGeomCell array (this is faster than using 2D STL vectors)
-   int const nXMax = m_pSim->nGetGridXMax();
-   int const nYMax = m_pSim->nGetGridYMax();
+   // Store grid dimensions
+   m_nXSize = m_pSim->nGetGridXMax();
+   m_nYSize = m_pSim->nGetGridYMax();
+
+   // Calculate total cells needed
+   int const nTotalCells = m_nXSize * m_nYSize;
 
    // TODO 038 Do better error handling if insufficient memory
    try
    {
-      m_Cell = new CGeomCell*[nXMax];
-
-      for (int nX = 0; nX < nXMax; nX++)
-         m_Cell[nX] = new CGeomCell[nYMax];
+      // Single contiguous allocation - much faster than array-of-arrays
+      // Memory layout: all cells in a single block, indexed as [nX * m_nYSize + nY]
+      m_CellData = new CGeomCell[nTotalCells];
    }
 
    catch (bad_alloc&)

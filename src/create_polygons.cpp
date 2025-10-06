@@ -233,7 +233,7 @@ int CSimulation::nCreateAllPolygons(void)
             for (int i = nCoastPoint; i <= nNextProfileCoastPoint; i++)
             {
                CGeom2DIPoint const PtiToMark = *m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(i);
-               m_pRasterGrid->m_Cell[PtiToMark.nGetX()][PtiToMark.nGetY()].SetCoastAndPolygonID(nCoast, nPolygon);
+               m_pRasterGrid->Cell(PtiToMark.nGetX(), PtiToMark.nGetY()).SetCoastAndPolygonID(nCoast, nPolygon);
             }
 
             // Do the down-coast normal profile (does the whole length, including any shared line segments. So some cells are marked twice, however this is not a problem)
@@ -242,7 +242,7 @@ int CSimulation::nCreateAllPolygons(void)
             for (int i = 0; i < nCellsInProfile; i++)
             {
                CGeom2DIPoint const PtiToMark = *pNextProfile->pPtiGetCellInProfile(i);
-               m_pRasterGrid->m_Cell[PtiToMark.nGetX()][PtiToMark.nGetY()].SetCoastAndPolygonID(nCoast, nPolygon);
+               m_pRasterGrid->Cell(PtiToMark.nGetX(), PtiToMark.nGetY()).SetCoastAndPolygonID(nCoast, nPolygon);
             }
 
             // Do this normal profile (again does the whole length, including any shared line segments)
@@ -251,7 +251,7 @@ int CSimulation::nCreateAllPolygons(void)
             for (int i = 0; i < nCellsInProfile; i++)
             {
                CGeom2DIPoint const PtiToMark = *pThisProfile->pPtiGetCellInProfile(i);
-               m_pRasterGrid->m_Cell[PtiToMark.nGetX()][PtiToMark.nGetY()].SetCoastAndPolygonID(nCoast, nPolygon);
+               m_pRasterGrid->Cell(PtiToMark.nGetX(), PtiToMark.nGetY()).SetCoastAndPolygonID(nCoast, nPolygon);
             }
 
             // If the polygon doesn't meet at a point at its seaward end, also need to rasterize the 'joining line'
@@ -320,7 +320,7 @@ void CSimulation::RasterizePolygonJoiningLine(int nCoast, CGeom2DIPoint const* p
       // assert(nPoly < m_VCoast[0].nGetNumPolygons());
 
       // Mark this point on the raster grid
-      m_pRasterGrid->m_Cell[nX][nY].SetCoastAndPolygonID(nCoast, nPoly);
+      m_pRasterGrid->Cell(nX, nY).SetCoastAndPolygonID(nCoast, nPoly);
 
       // And increment for next time
       dX += dXInc;
@@ -489,7 +489,7 @@ void CSimulation::MarkPolygonCells(void)
             int nX = Pti.nGetX();
             int const nY = Pti.nGetY();
 
-            while ((nX >= 0) && (m_pRasterGrid->m_Cell[nX][nY].nGetPolygonID() == INT_NODATA))
+            while ((nX >= 0) && (m_pRasterGrid->Cell(nX, nY).nGetPolygonID() == INT_NODATA))
                nX--;
 
             nX++;
@@ -497,67 +497,67 @@ void CSimulation::MarkPolygonCells(void)
             bool bSpanAbove = false;
             bool bSpanBelow = false;
 
-            while ((nX < m_nXGridSize) && (m_pRasterGrid->m_Cell[nX][nY].nGetPolygonID() == INT_NODATA))
+            while ((nX < m_nXGridSize) && (m_pRasterGrid->Cell(nX, nY).nGetPolygonID() == INT_NODATA))
             {
                // assert(nPolyID < m_VCoast[nCoast].nGetNumPolygons());
 
                // Mark the cell as being in this polygon and this coast
-               m_pRasterGrid->m_Cell[nX][nY].SetCoastAndPolygonID(nCoast, nPolyID);
+               m_pRasterGrid->Cell(nX, nY).SetCoastAndPolygonID(nCoast, nPolyID);
 
                // LogStream << "Marked [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "}" << endl;
 
                // Increment the running totals for this polygon
-               // dCliffCollapseErosionFine += m_pRasterGrid->m_Cell[nX][nY].dGetThisIterCliffCollapseErosionFine();
-               // dCliffCollapseErosionSand += m_pRasterGrid->m_Cell[nX][nY].dGetThisIterCliffCollapseErosionSand();
-               // dCliffCollapseErosionCoarse += m_pRasterGrid->m_Cell[nX][nY].dGetThisIterCliffCollapseErosionCoarse();
-               // dCliffCollapseTalusSand += m_pRasterGrid->m_Cell[nX][nY].dGetThisIterCliffCollapseSandTalusDeposition();
-               // dCliffCollapseTalusCoarse += m_pRasterGrid->m_Cell[nX][nY].dGetThisIterCliffCollapseCoarseTalusDeposition();
+               // dCliffCollapseErosionFine += m_pRasterGrid->Cell(nX, nY).dGetThisIterCliffCollapseErosionFine();
+               // dCliffCollapseErosionSand += m_pRasterGrid->Cell(nX, nY).dGetThisIterCliffCollapseErosionSand();
+               // dCliffCollapseErosionCoarse += m_pRasterGrid->Cell(nX, nY).dGetThisIterCliffCollapseErosionCoarse();
+               // dCliffCollapseTalusSand += m_pRasterGrid->Cell(nX, nY).dGetThisIterCliffCollapseSandTalusDeposition();
+               // dCliffCollapseTalusCoarse += m_pRasterGrid->Cell(nX, nY).dGetThisIterCliffCollapseCoarseTalusDeposition();
 
                // Get the number of the highest layer with non-zero thickness
-               int const nThisLayer = m_pRasterGrid->m_Cell[nX][nY].nGetTopNonZeroLayerAboveBasement();
+               int const nThisLayer = m_pRasterGrid->Cell(nX, nY).nGetTopNonZeroLayerAboveBasement();
 
                // Safety check
                if ((nThisLayer != NO_NONZERO_THICKNESS_LAYERS) && (nThisLayer != INT_NODATA))
                {
                   // Increment some more running totals for this polygon TODO 066 should this be for ALL layers above the basement?
-                  dStoredUnconsFine += m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nThisLayer)->pGetUnconsolidatedSediment()->dGetFineDepth();
-                  dStoredUnconsSand += m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nThisLayer)->pGetUnconsolidatedSediment()->dGetSandDepth();
-                  dStoredUnconsCoarse += m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nThisLayer)->pGetUnconsolidatedSediment()->dGetCoarseDepth();
+                  dStoredUnconsFine += m_pRasterGrid->Cell(nX, nY).pGetLayerAboveBasement(nThisLayer)->pGetUnconsolidatedSediment()->dGetFineDepth();
+                  dStoredUnconsSand += m_pRasterGrid->Cell(nX, nY).pGetLayerAboveBasement(nThisLayer)->pGetUnconsolidatedSediment()->dGetSandDepth();
+                  dStoredUnconsCoarse += m_pRasterGrid->Cell(nX, nY).pGetLayerAboveBasement(nThisLayer)->pGetUnconsolidatedSediment()->dGetCoarseDepth();
 
-                  dStoredConsFine += m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nThisLayer)->pGetConsolidatedSediment()->dGetFineDepth();
-                  dStoredConsSand += m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nThisLayer)->pGetConsolidatedSediment()->dGetSandDepth();
-                  dStoredConsCoarse += m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nThisLayer)->pGetConsolidatedSediment()->dGetCoarseDepth();
+                  dStoredConsFine += m_pRasterGrid->Cell(nX, nY).pGetLayerAboveBasement(nThisLayer)->pGetConsolidatedSediment()->dGetFineDepth();
+                  dStoredConsSand += m_pRasterGrid->Cell(nX, nY).pGetLayerAboveBasement(nThisLayer)->pGetConsolidatedSediment()->dGetSandDepth();
+                  dStoredConsCoarse += m_pRasterGrid->Cell(nX, nY).pGetLayerAboveBasement(nThisLayer)->pGetConsolidatedSediment()->dGetCoarseDepth();
 
                   // Add to the start-iteration total of suspended fine sediment within polygons
-                  m_dStartIterSuspFineInPolygons += m_pRasterGrid->m_Cell[nX][nY].dGetSuspendedSediment();
+                  m_dStartIterSuspFineInPolygons += m_pRasterGrid->Cell(nX, nY).dGetSuspendedSediment();
 
                   // Add to the total of sediment derived from sediment input events
-                  dSedimentInputFine += m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nThisLayer)->pGetUnconsolidatedSediment()->dGetFineSedimentInputDepth();
-                  dSedimentInputSand += m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nThisLayer)->pGetUnconsolidatedSediment()->dGetSandSedimentInputDepth();
-                  dSedimentInputCoarse += m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nThisLayer)->pGetUnconsolidatedSediment()->dGetCoarseSedimentInputDepth();
+                  dSedimentInputFine += m_pRasterGrid->Cell(nX, nY).pGetLayerAboveBasement(nThisLayer)->pGetUnconsolidatedSediment()->dGetFineSedimentInputDepth();
+                  dSedimentInputSand += m_pRasterGrid->Cell(nX, nY).pGetLayerAboveBasement(nThisLayer)->pGetUnconsolidatedSediment()->dGetSandSedimentInputDepth();
+                  dSedimentInputCoarse += m_pRasterGrid->Cell(nX, nY).pGetLayerAboveBasement(nThisLayer)->pGetUnconsolidatedSediment()->dGetCoarseSedimentInputDepth();
                }
 
                nCellsInPolygon++;
-               dTotDepth += m_pRasterGrid->m_Cell[nX][nY].dGetSeaDepth();
+               dTotDepth += m_pRasterGrid->Cell(nX, nY).dGetSeaDepth();
 
-               if ((! bSpanAbove) && (nY > 0) && (m_pRasterGrid->m_Cell[nX][nY - 1].nGetPolygonID() == INT_NODATA))
+               if ((! bSpanAbove) && (nY > 0) && (m_pRasterGrid->Cell(nX, nY - 1).nGetPolygonID() == INT_NODATA))
                {
                   PtiStack.push(CGeom2DIPoint(nX, nY - 1));
                   bSpanAbove = true;
                }
 
-               else if (bSpanAbove && (nY > 0) && (m_pRasterGrid->m_Cell[nX][nY - 1].nGetPolygonID() != INT_NODATA))
+               else if (bSpanAbove && (nY > 0) && (m_pRasterGrid->Cell(nX, nY - 1).nGetPolygonID() != INT_NODATA))
                {
                   bSpanAbove = false;
                }
 
-               if ((! bSpanBelow) && (nY < m_nYGridSize - 1) && (m_pRasterGrid->m_Cell[nX][nY + 1].nGetPolygonID() == INT_NODATA))
+               if ((! bSpanBelow) && (nY < m_nYGridSize - 1) && (m_pRasterGrid->Cell(nX, nY + 1).nGetPolygonID() == INT_NODATA))
                {
                   PtiStack.push(CGeom2DIPoint(nX, nY + 1));
                   bSpanBelow = true;
                }
 
-               else if (bSpanBelow && (nY < m_nYGridSize - 1) && (m_pRasterGrid->m_Cell[nX][nY + 1].nGetPolygonID() != INT_NODATA))
+               else if (bSpanBelow && (nY < m_nYGridSize - 1) && (m_pRasterGrid->Cell(nX, nY + 1).nGetPolygonID() != INT_NODATA))
                {
                   bSpanBelow = false;
                }
@@ -613,7 +613,7 @@ void CSimulation::MarkPolygonCells(void)
    // {
    // for (int nX = 0; nX < m_nXGridSize; nX++)
    // {
-   // int nID = m_pRasterGrid->m_Cell[nX][nY].nGetPolygonID();
+   // int nID = m_pRasterGrid->Cell(nX, nY).nGetPolygonID();
    // if (nID == INT_NODATA)
    // nNotInPoly++;
    // else

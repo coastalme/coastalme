@@ -313,7 +313,7 @@ int CSimulation::nReadRasterBasementDEM(void) {
       if ((isnan(dTmp)) || (bFPIsEqual(dTmp, m_dGISMissingValue, TOLERANCE)))
         dTmp = m_dMissingValue;
 
-      m_pRasterGrid->m_Cell[i][j].SetBasementElev(dTmp);
+      m_pRasterGrid->Cell(i, j).SetBasementElev(dTmp);
     }
   }
 
@@ -347,7 +347,7 @@ int CSimulation::nMarkBoundingBoxEdgeCells(void) {
       break;
 
     for (int nY = 0; nY < m_nYGridSize; nY++) {
-      if (!m_pRasterGrid->m_Cell[nX][nY].bBasementElevIsMissingValue()) {
+      if (!m_pRasterGrid->Cell(nX, nY).bBasementElevIsMissingValue()) {
         CGeom2DIPoint const PtiTmp(nX, nY);
         VPtiBoundingBoxCorner.push_back(PtiTmp);
         bFound = true;
@@ -372,7 +372,7 @@ int CSimulation::nMarkBoundingBoxEdgeCells(void) {
       break;
 
     for (int nX = m_nXGridSize - 1; nX >= 0; nX--) {
-      if (!m_pRasterGrid->m_Cell[nX][nY].bBasementElevIsMissingValue()) {
+      if (!m_pRasterGrid->Cell(nX, nY).bBasementElevIsMissingValue()) {
         CGeom2DIPoint const PtiTmp(nX, nY);
         VPtiBoundingBoxCorner.push_back(PtiTmp);
         bFound = true;
@@ -397,7 +397,7 @@ int CSimulation::nMarkBoundingBoxEdgeCells(void) {
       break;
 
     for (int nY = m_nYGridSize - 1; nY >= 0; nY--) {
-      if (!m_pRasterGrid->m_Cell[nX][nY].bBasementElevIsMissingValue()) {
+      if (!m_pRasterGrid->Cell(nX, nY).bBasementElevIsMissingValue()) {
         CGeom2DIPoint const PtiTmp(nX, nY);
         VPtiBoundingBoxCorner.push_back(PtiTmp);
         bFound = true;
@@ -422,7 +422,7 @@ int CSimulation::nMarkBoundingBoxEdgeCells(void) {
       break;
 
     for (int nX = 0; nX < m_nXGridSize; nX++) {
-      if (!m_pRasterGrid->m_Cell[nX][nY].bBasementElevIsMissingValue()) {
+      if (!m_pRasterGrid->Cell(nX, nY).bBasementElevIsMissingValue()) {
         CGeom2DIPoint const PtiTmp(nX, nY);
         VPtiBoundingBoxCorner.push_back(PtiTmp);
         bFound = true;
@@ -447,13 +447,13 @@ int CSimulation::nMarkBoundingBoxEdgeCells(void) {
     bFound = false;
 
     for (int nY = VPtiBoundingBoxCorner[0].nGetY(); nY < m_nYGridSize; nY++) {
-      if (m_pRasterGrid->m_Cell[nX][nY].bBasementElevIsMissingValue()) {
+      if (m_pRasterGrid->Cell(nX, nY).bBasementElevIsMissingValue()) {
         m_ulMissingValueBasementCells++;
         continue;
       }
 
       // Found a bounding box edge cell
-      m_pRasterGrid->m_Cell[nX][nY].SetBoundingBoxEdge(NORTH);
+      m_pRasterGrid->Cell(nX, nY).SetBoundingBoxEdge(NORTH);
 
       m_VEdgeCell.push_back(CGeom2DIPoint(nX, nY));
       m_VEdgeCellEdge.push_back(NORTH);
@@ -479,13 +479,13 @@ int CSimulation::nMarkBoundingBoxEdgeCells(void) {
     bFound = false;
 
     for (int nX = VPtiBoundingBoxCorner[1].nGetX(); nX >= 0; nX--) {
-      if (m_pRasterGrid->m_Cell[nX][nY].bBasementElevIsMissingValue()) {
+      if (m_pRasterGrid->Cell(nX, nY).bBasementElevIsMissingValue()) {
         m_ulMissingValueBasementCells++;
         continue;
       }
 
       // Found a bounding box edge cell
-      m_pRasterGrid->m_Cell[nX][nY].SetBoundingBoxEdge(EAST);
+      m_pRasterGrid->Cell(nX, nY).SetBoundingBoxEdge(EAST);
 
       m_VEdgeCell.push_back(CGeom2DIPoint(nX, nY));
       m_VEdgeCellEdge.push_back(EAST);
@@ -510,13 +510,13 @@ int CSimulation::nMarkBoundingBoxEdgeCells(void) {
     bFound = false;
 
     for (int nY = VPtiBoundingBoxCorner[2].nGetY(); nY >= 0; nY--) {
-      if (m_pRasterGrid->m_Cell[nX][nY].bBasementElevIsMissingValue()) {
+      if (m_pRasterGrid->Cell(nX, nY).bBasementElevIsMissingValue()) {
         m_ulMissingValueBasementCells++;
         continue;
       }
 
       // Found a bounding box edge cell
-      m_pRasterGrid->m_Cell[nX][nY].SetBoundingBoxEdge(SOUTH);
+      m_pRasterGrid->Cell(nX, nY).SetBoundingBoxEdge(SOUTH);
 
       m_VEdgeCell.push_back(CGeom2DIPoint(nX, nY));
       m_VEdgeCellEdge.push_back(SOUTH);
@@ -543,13 +543,13 @@ int CSimulation::nMarkBoundingBoxEdgeCells(void) {
     // for (int nX = VPtiBoundingBoxCorner[3].nGetX(); nX <
     // VPtiBoundingBoxCorner[3].nGetX(); nX++)
     {
-      if (m_pRasterGrid->m_Cell[nX][nY].bBasementElevIsMissingValue()) {
+      if (m_pRasterGrid->Cell(nX, nY).bBasementElevIsMissingValue()) {
         m_ulMissingValueBasementCells++;
         continue;
       }
 
       // Found a bounding box edge cell
-      m_pRasterGrid->m_Cell[nX][nY].SetBoundingBoxEdge(WEST);
+      m_pRasterGrid->Cell(nX, nY).SetBoundingBoxEdge(WEST);
 
       m_VEdgeCell.push_back(CGeom2DIPoint(nX, nY));
       m_VEdgeCellEdge.push_back(WEST);
@@ -876,7 +876,7 @@ int CSimulation::nReadRasterGISFile(int const nDataItem, int const nLayer) {
           nMissing++;
         }
 
-        m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->SetLFCategory(nTmp);
+        m_pRasterGrid->Cell(nX, nY).pGetLandform()->SetLFCategory(nTmp);
         break;
 
       case (INTERVENTION_CLASS_RASTER):
@@ -888,7 +888,7 @@ int CSimulation::nReadRasterGISFile(int const nDataItem, int const nLayer) {
           nMissing++;
         }
 
-        m_pRasterGrid->m_Cell[nX][nY].SetInterventionClass(nTmp);
+        m_pRasterGrid->Cell(nX, nY).SetInterventionClass(nTmp);
         break;
 
       case (INTERVENTION_HEIGHT_RASTER):
@@ -901,7 +901,7 @@ int CSimulation::nReadRasterGISFile(int const nDataItem, int const nLayer) {
           nMissing++;
         }
 
-        m_pRasterGrid->m_Cell[nX][nY].SetInterventionHeight(dTmp);
+        m_pRasterGrid->Cell(nX, nY).SetInterventionHeight(dTmp);
         break;
 
       case (SUSP_SED_RASTER):
@@ -914,7 +914,7 @@ int CSimulation::nReadRasterGISFile(int const nDataItem, int const nLayer) {
           nMissing++;
         }
 
-        m_pRasterGrid->m_Cell[nX][nY].SetSuspendedSediment(dTmp);
+        m_pRasterGrid->Cell(nX, nY).SetSuspendedSediment(dTmp);
         break;
 
       case (FINE_UNCONS_RASTER):
@@ -927,7 +927,7 @@ int CSimulation::nReadRasterGISFile(int const nDataItem, int const nLayer) {
           nMissing++;
         }
 
-        m_pRasterGrid->m_Cell[nX][nY]
+        m_pRasterGrid->Cell(nX, nY)
             .pGetLayerAboveBasement(nLayer)
             ->pGetUnconsolidatedSediment()
             ->SetFineDepth(dTmp);
@@ -943,7 +943,7 @@ int CSimulation::nReadRasterGISFile(int const nDataItem, int const nLayer) {
           nMissing++;
         }
 
-        m_pRasterGrid->m_Cell[nX][nY]
+        m_pRasterGrid->Cell(nX, nY)
             .pGetLayerAboveBasement(nLayer)
             ->pGetUnconsolidatedSediment()
             ->SetSandDepth(dTmp);
@@ -959,7 +959,7 @@ int CSimulation::nReadRasterGISFile(int const nDataItem, int const nLayer) {
           nMissing++;
         }
 
-        m_pRasterGrid->m_Cell[nX][nY]
+        m_pRasterGrid->Cell(nX, nY)
             .pGetLayerAboveBasement(nLayer)
             ->pGetUnconsolidatedSediment()
             ->SetCoarseDepth(dTmp);
@@ -975,7 +975,7 @@ int CSimulation::nReadRasterGISFile(int const nDataItem, int const nLayer) {
           nMissing++;
         }
 
-        m_pRasterGrid->m_Cell[nX][nY]
+        m_pRasterGrid->Cell(nX, nY)
             .pGetLayerAboveBasement(nLayer)
             ->pGetConsolidatedSediment()
             ->SetFineDepth(dTmp);
@@ -991,7 +991,7 @@ int CSimulation::nReadRasterGISFile(int const nDataItem, int const nLayer) {
           nMissing++;
         }
 
-        m_pRasterGrid->m_Cell[nX][nY]
+        m_pRasterGrid->Cell(nX, nY)
             .pGetLayerAboveBasement(nLayer)
             ->pGetConsolidatedSediment()
             ->SetSandDepth(dTmp);
@@ -1007,7 +1007,7 @@ int CSimulation::nReadRasterGISFile(int const nDataItem, int const nLayer) {
           nMissing++;
         }
 
-        m_pRasterGrid->m_Cell[nX][nY]
+        m_pRasterGrid->Cell(nX, nY)
             .pGetLayerAboveBasement(nLayer)
             ->pGetConsolidatedSediment()
             ->SetCoarseDepth(dTmp);
@@ -1481,71 +1481,71 @@ bool CSimulation::bWriteRasterGISFile(int const nDataItem,
     for (int nX = 0; nX < m_nXGridSize; nX++) {
       switch (nDataItem) {
       case (RASTER_PLOT_BASEMENT_ELEVATION):
-        dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetBasementElev();
+        dTmp = m_pRasterGrid->Cell(nX, nY).dGetBasementElev();
         break;
 
       case (RASTER_PLOT_SEDIMENT_TOP_ELEVATION):
-        dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElev();
+        dTmp = m_pRasterGrid->Cell(nX, nY).dGetSedimentTopElev();
         break;
 
       case (RASTER_PLOT_OVERALL_TOP_ELEVATION):
         dTmp =
-            m_pRasterGrid->m_Cell[nX][nY].dGetSedimentPlusInterventionTopElev();
+            m_pRasterGrid->Cell(nX, nY).dGetSedimentPlusInterventionTopElev();
         break;
 
       case (RASTER_PLOT_SLOPE_OF_CONSOLIDATED_SEDIMENT):
-        dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetConsSedSlope();
+        dTmp = m_pRasterGrid->Cell(nX, nY).dGetConsSedSlope();
         break;
 
       case (RASTER_PLOT_SLOPE_FOR_CLIFF_TOE):
-        dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetSlopeForCliffToe();
+        dTmp = m_pRasterGrid->Cell(nX, nY).dGetSlopeForCliffToe();
         break;
 
       case (RASTER_PLOT_CLIFF_TOE):
-        dTmp = static_cast<double>(m_pRasterGrid->m_Cell[nX][nY].bIsCliffToe());
+        dTmp = static_cast<double>(m_pRasterGrid->Cell(nX, nY).bIsCliffToe());
         break;
 
       case (RASTER_PLOT_SEA_DEPTH):
-        dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetSeaDepth();
+        dTmp = m_pRasterGrid->Cell(nX, nY).dGetSeaDepth();
         break;
 
       case (RASTER_PLOT_AVG_SEA_DEPTH):
-        dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetTotSeaDepth() /
+        dTmp = m_pRasterGrid->Cell(nX, nY).dGetTotSeaDepth() /
                static_cast<double>(m_ulIter);
         break;
 
       case (RASTER_PLOT_WAVE_HEIGHT):
-        if (m_pRasterGrid->m_Cell[nX][nY].bIsInundated())
-          dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetWaveHeight();
+        if (m_pRasterGrid->Cell(nX, nY).bIsInundated())
+          dTmp = m_pRasterGrid->Cell(nX, nY).dGetWaveHeight();
         else
           dTmp = 0;
         break;
 
       case (RASTER_PLOT_AVG_WAVE_HEIGHT):
-        if (m_pRasterGrid->m_Cell[nX][nY].bIsInundated())
-          dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetTotWaveHeight() /
+        if (m_pRasterGrid->Cell(nX, nY).bIsInundated())
+          dTmp = m_pRasterGrid->Cell(nX, nY).dGetTotWaveHeight() /
                  static_cast<double>(m_ulIter);
         else
           dTmp = 0;
         break;
 
       case (RASTER_PLOT_WAVE_ORIENTATION):
-        if (m_pRasterGrid->m_Cell[nX][nY].bIsInundated())
-          dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetWaveAngle();
+        if (m_pRasterGrid->Cell(nX, nY).bIsInundated())
+          dTmp = m_pRasterGrid->Cell(nX, nY).dGetWaveAngle();
         else
           dTmp = 0;
         break;
 
       case (RASTER_PLOT_AVG_WAVE_ORIENTATION):
-        if (m_pRasterGrid->m_Cell[nX][nY].bIsInundated())
-          dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetTotWaveAngle() /
+        if (m_pRasterGrid->Cell(nX, nY).bIsInundated())
+          dTmp = m_pRasterGrid->Cell(nX, nY).dGetTotWaveAngle() /
                  static_cast<double>(m_ulIter);
         else
           dTmp = 0;
         break;
 
       case (RASTER_PLOT_BEACH_PROTECTION):
-        dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetBeachProtectionFactor();
+        dTmp = m_pRasterGrid->Cell(nX, nY).dGetBeachProtectionFactor();
 
         if (bFPIsEqual(dTmp, DBL_NODATA, TOLERANCE))
           dTmp = m_dMissingValue;
@@ -1554,181 +1554,181 @@ bool CSimulation::bWriteRasterGISFile(int const nDataItem,
         break;
 
       case (RASTER_PLOT_POTENTIAL_PLATFORM_EROSION):
-        dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetPotentialPlatformErosion();
+        dTmp = m_pRasterGrid->Cell(nX, nY).dGetPotentialPlatformErosion();
         break;
 
       case (RASTER_PLOT_ACTUAL_PLATFORM_EROSION):
-        dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetActualPlatformErosion();
+        dTmp = m_pRasterGrid->Cell(nX, nY).dGetActualPlatformErosion();
         break;
 
       case (RASTER_PLOT_TOTAL_POTENTIAL_PLATFORM_EROSION):
-        dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetTotPotentialPlatformErosion();
+        dTmp = m_pRasterGrid->Cell(nX, nY).dGetTotPotentialPlatformErosion();
         break;
 
       case (RASTER_PLOT_TOTAL_ACTUAL_PLATFORM_EROSION):
-        dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetTotActualPlatformErosion();
+        dTmp = m_pRasterGrid->Cell(nX, nY).dGetTotActualPlatformErosion();
         break;
 
       case (RASTER_PLOT_POTENTIAL_BEACH_EROSION):
-        dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetPotentialBeachErosion();
+        dTmp = m_pRasterGrid->Cell(nX, nY).dGetPotentialBeachErosion();
         break;
 
       case (RASTER_PLOT_ACTUAL_BEACH_EROSION):
-        dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetActualBeachErosion();
+        dTmp = m_pRasterGrid->Cell(nX, nY).dGetActualBeachErosion();
         break;
 
       case (RASTER_PLOT_TOTAL_POTENTIAL_BEACH_EROSION):
-        dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetTotPotentialBeachErosion();
+        dTmp = m_pRasterGrid->Cell(nX, nY).dGetTotPotentialBeachErosion();
         break;
 
       case (RASTER_PLOT_TOTAL_ACTUAL_BEACH_EROSION):
-        dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetTotActualBeachErosion();
+        dTmp = m_pRasterGrid->Cell(nX, nY).dGetTotActualBeachErosion();
         break;
 
       case (RASTER_PLOT_BEACH_DEPOSITION):
-        dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetBeachDeposition();
+        dTmp = m_pRasterGrid->Cell(nX, nY).dGetBeachDeposition();
         break;
 
       case (RASTER_PLOT_TOTAL_BEACH_DEPOSITION):
-        dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetTotBeachDeposition();
+        dTmp = m_pRasterGrid->Cell(nX, nY).dGetTotBeachDeposition();
         break;
 
       case (RASTER_PLOT_SUSPENDED_SEDIMENT):
-        dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetSuspendedSediment();
+        dTmp = m_pRasterGrid->Cell(nX, nY).dGetSuspendedSediment();
         break;
 
       case (RASTER_PLOT_AVG_SUSPENDED_SEDIMENT):
-        dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetTotSuspendedSediment() /
+        dTmp = m_pRasterGrid->Cell(nX, nY).dGetTotSuspendedSediment() /
                static_cast<double>(m_ulIter);
         break;
 
       case (RASTER_PLOT_FINE_UNCONSOLIDATED_SEDIMENT):
-        dTmp = m_pRasterGrid->m_Cell[nX][nY]
+        dTmp = m_pRasterGrid->Cell(nX, nY)
                    .pGetLayerAboveBasement(nLayer)
                    ->pGetUnconsolidatedSediment()
                    ->dGetFineDepth();
         break;
 
       case (RASTER_PLOT_SAND_UNCONSOLIDATED_SEDIMENT):
-        dTmp = m_pRasterGrid->m_Cell[nX][nY]
+        dTmp = m_pRasterGrid->Cell(nX, nY)
                    .pGetLayerAboveBasement(nLayer)
                    ->pGetUnconsolidatedSediment()
                    ->dGetSandDepth();
         break;
 
       case (RASTER_PLOT_COARSE_UNCONSOLIDATED_SEDIMENT):
-        dTmp = m_pRasterGrid->m_Cell[nX][nY]
+        dTmp = m_pRasterGrid->Cell(nX, nY)
                    .pGetLayerAboveBasement(nLayer)
                    ->pGetUnconsolidatedSediment()
                    ->dGetCoarseDepth();
         break;
 
       case (RASTER_PLOT_FINE_CONSOLIDATED_SEDIMENT):
-        dTmp = m_pRasterGrid->m_Cell[nX][nY]
+        dTmp = m_pRasterGrid->Cell(nX, nY)
                    .pGetLayerAboveBasement(nLayer)
                    ->pGetConsolidatedSediment()
                    ->dGetFineDepth();
         break;
 
       case (RASTER_PLOT_SAND_CONSOLIDATED_SEDIMENT):
-        dTmp = m_pRasterGrid->m_Cell[nX][nY]
+        dTmp = m_pRasterGrid->Cell(nX, nY)
                    .pGetLayerAboveBasement(nLayer)
                    ->pGetConsolidatedSediment()
                    ->dGetSandDepth();
         break;
 
       case (RASTER_PLOT_COARSE_CONSOLIDATED_SEDIMENT):
-        dTmp = m_pRasterGrid->m_Cell[nX][nY]
+        dTmp = m_pRasterGrid->Cell(nX, nY)
                    .pGetLayerAboveBasement(nLayer)
                    ->pGetConsolidatedSediment()
                    ->dGetCoarseDepth();
         break;
 
       case (RASTER_PLOT_CLIFF_COLLAPSE_EROSION_FINE):
-        dTmp = m_pRasterGrid->m_Cell[nX][nY]
+        dTmp = m_pRasterGrid->Cell(nX, nY)
                    .dGetThisIterCliffCollapseErosionFine();
         break;
 
       case (RASTER_PLOT_CLIFF_COLLAPSE_EROSION_SAND):
-        dTmp = m_pRasterGrid->m_Cell[nX][nY]
+        dTmp = m_pRasterGrid->Cell(nX, nY)
                    .dGetThisIterCliffCollapseErosionSand();
         break;
 
       case (RASTER_PLOT_CLIFF_COLLAPSE_EROSION_COARSE):
-        dTmp = m_pRasterGrid->m_Cell[nX][nY]
+        dTmp = m_pRasterGrid->Cell(nX, nY)
                    .dGetThisIterCliffCollapseErosionCoarse();
         break;
 
       case (RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_EROSION_FINE):
-        dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetTotCliffCollapseFine();
+        dTmp = m_pRasterGrid->Cell(nX, nY).dGetTotCliffCollapseFine();
         break;
 
       case (RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_EROSION_SAND):
-        dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetTotCliffCollapseSand();
+        dTmp = m_pRasterGrid->Cell(nX, nY).dGetTotCliffCollapseSand();
         break;
 
       case (RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_EROSION_COARSE):
-        dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetTotCliffCollapseCoarse();
+        dTmp = m_pRasterGrid->Cell(nX, nY).dGetTotCliffCollapseCoarse();
         break;
 
       case (RASTER_PLOT_CLIFF_COLLAPSE_DEPOSITION_SAND):
-        dTmp = m_pRasterGrid->m_Cell[nX][nY]
+        dTmp = m_pRasterGrid->Cell(nX, nY)
                    .dGetThisIterCliffCollapseSandTalusDeposition();
         break;
 
       case (RASTER_PLOT_CLIFF_COLLAPSE_DEPOSITION_COARSE):
-        dTmp = m_pRasterGrid->m_Cell[nX][nY]
+        dTmp = m_pRasterGrid->Cell(nX, nY)
                    .dGetThisIterCliffCollapseCoarseTalusDeposition();
         break;
 
       case (RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_DEPOSITION_SAND):
-        dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetTotSandTalusDeposition();
+        dTmp = m_pRasterGrid->Cell(nX, nY).dGetTotSandTalusDeposition();
         break;
 
       case (RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_DEPOSITION_COARSE):
-        dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetTotCoarseTalusDeposition();
+        dTmp = m_pRasterGrid->Cell(nX, nY).dGetTotCoarseTalusDeposition();
         break;
 
       case (RASTER_PLOT_CLIFF_NOTCH_ALL):
         dTmp =
-            m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->dGetCliffNotchDepth();
+            m_pRasterGrid->Cell(nX, nY).pGetLandform()->dGetCliffNotchDepth();
         break;
 
       case (RASTER_PLOT_CLIFF_COLLAPSE_TIMESTEP):
-        dTmp = static_cast<double>(m_pRasterGrid->m_Cell[nX][nY]
+        dTmp = static_cast<double>(m_pRasterGrid->Cell(nX, nY)
                                        .pGetLandform()
                                        ->ulGetCliffCollapseTimestep());
         bIsUnsignedLong = true;
         break;
 
       case (RASTER_PLOT_INTERVENTION_HEIGHT):
-        dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetInterventionHeight();
+        dTmp = m_pRasterGrid->Cell(nX, nY).dGetInterventionHeight();
         break;
 
       case (RASTER_PLOT_DEEP_WATER_WAVE_ORIENTATION):
-        if (m_pRasterGrid->m_Cell[nX][nY].bIsInundated())
-          dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetCellDeepWaterWaveAngle();
+        if (m_pRasterGrid->Cell(nX, nY).bIsInundated())
+          dTmp = m_pRasterGrid->Cell(nX, nY).dGetCellDeepWaterWaveAngle();
         else
           dTmp = 0;
         break;
 
       case (RASTER_PLOT_DEEP_WATER_WAVE_HEIGHT):
-        if (m_pRasterGrid->m_Cell[nX][nY].bIsInundated())
-          dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetCellDeepWaterWaveHeight();
+        if (m_pRasterGrid->Cell(nX, nY).bIsInundated())
+          dTmp = m_pRasterGrid->Cell(nX, nY).dGetCellDeepWaterWaveHeight();
         else
           dTmp = 0;
         break;
 
       case (RASTER_PLOT_DEEP_WATER_WAVE_PERIOD):
-        if (m_pRasterGrid->m_Cell[nX][nY].bIsInundated())
-          dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetCellDeepWaterWavePeriod();
+        if (m_pRasterGrid->Cell(nX, nY).bIsInundated())
+          dTmp = m_pRasterGrid->Cell(nX, nY).dGetCellDeepWaterWavePeriod();
         else
           dTmp = 0;
         break;
 
       case (RASTER_PLOT_POLYGON_GAIN_OR_LOSS):
-        nPoly = m_pRasterGrid->m_Cell[nX][nY].nGetPolygonID();
-        nPolyCoast = m_pRasterGrid->m_Cell[nX][nY].nGetPolygonCoastID();
+        nPoly = m_pRasterGrid->Cell(nX, nY).nGetPolygonID();
+        nPolyCoast = m_pRasterGrid->Cell(nX, nY).nGetPolygonCoastID();
 
         if (nPoly == INT_NODATA)
           dTmp = m_dMissingValue;
@@ -1747,84 +1747,84 @@ bool CSimulation::bWriteRasterGISFile(int const nDataItem,
 
       case (RASTER_PLOT_POTENTIAL_PLATFORM_EROSION_MASK):
         // cppcheck-suppress assignBoolToFloat
-        dTmp = m_pRasterGrid->m_Cell[nX][nY].bPotentialPlatformErosion();
+        dTmp = m_pRasterGrid->Cell(nX, nY).bPotentialPlatformErosion();
         break;
 
       case (RASTER_PLOT_INUNDATION_MASK):
         // cppcheck-suppress assignBoolToFloat
-        dTmp = m_pRasterGrid->m_Cell[nX][nY].bIsInContiguousSea();
+        dTmp = m_pRasterGrid->Cell(nX, nY).bIsInContiguousSea();
         break;
 
       case (RASTER_PLOT_BEACH_MASK):
         dTmp = 0;
         nTopLayer =
-            m_pRasterGrid->m_Cell[nX][nY].nGetTopNonZeroLayerAboveBasement();
+            m_pRasterGrid->Cell(nX, nY).nGetTopNonZeroLayerAboveBasement();
 
         if ((nTopLayer == INT_NODATA) ||
             (nTopLayer == NO_NONZERO_THICKNESS_LAYERS))
           break;
 
-        if ((m_pRasterGrid->m_Cell[nX][nY]
+        if ((m_pRasterGrid->Cell(nX, nY)
                  .pGetLayerAboveBasement(nTopLayer)
                  ->dGetUnconsolidatedThickness() > 0) &&
-            (m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElev() >
+            (m_pRasterGrid->Cell(nX, nY).dGetSedimentTopElev() >
              m_dThisIterSWL))
           dTmp = 1;
 
         break;
 
       case (RASTER_PLOT_SLICE):
-        dTmp = m_pRasterGrid->m_Cell[nX][nY].nGetLayerAtElev(dElev);
+        dTmp = m_pRasterGrid->Cell(nX, nY).nGetLayerAtElev(dElev);
         break;
 
       case (RASTER_PLOT_LANDFORM):
-        dTmp = m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->nGetLFCategory();
+        dTmp = m_pRasterGrid->Cell(nX, nY).pGetLandform()->nGetLFCategory();
         bIsInteger = true;
 
         if ((static_cast<int>(dTmp) == LF_CAT_DRIFT) ||
             (static_cast<int>(dTmp) == LF_CAT_CLIFF))
           dTmp =
-              m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->nGetLFSubCategory();
+              m_pRasterGrid->Cell(nX, nY).pGetLandform()->nGetLFSubCategory();
 
         break;
 
       case (RASTER_PLOT_INTERVENTION_CLASS):
-        dTmp = m_pRasterGrid->m_Cell[nX][nY].nGetInterventionClass();
+        dTmp = m_pRasterGrid->Cell(nX, nY).nGetInterventionClass();
         bIsInteger = true;
         break;
 
       case (RASTER_PLOT_COAST):
-        dTmp = (m_pRasterGrid->m_Cell[nX][nY].bIsCoastline() ? 1 : 0);
+        dTmp = (m_pRasterGrid->Cell(nX, nY).bIsCoastline() ? 1 : 0);
         break;
 
       case (RASTER_PLOT_NORMAL_PROFILE):
-        // dTmp = (m_pRasterGrid->m_Cell[nX][nY].bIsProfile() ? 1 : 0);
-        dTmp = m_pRasterGrid->m_Cell[nX][nY].nGetProfileID();
+        // dTmp = (m_pRasterGrid->Cell(nX, nY).bIsProfile() ? 1 : 0);
+        dTmp = m_pRasterGrid->Cell(nX, nY).nGetProfileID();
         bIsInteger = true;
         break;
 
       case (RASTER_PLOT_ACTIVE_ZONE):
-        dTmp = (m_pRasterGrid->m_Cell[nX][nY].bIsInActiveZone() ? 1 : 0);
+        dTmp = (m_pRasterGrid->Cell(nX, nY).bIsInActiveZone() ? 1 : 0);
         break;
 
       case (RASTER_PLOT_POLYGON):
-        dTmp = m_pRasterGrid->m_Cell[nX][nY].nGetPolygonID();
+        dTmp = m_pRasterGrid->Cell(nX, nY).nGetPolygonID();
         bIsInteger = true;
         break;
 
       case (RASTER_PLOT_SHADOW_ZONE):
-        dTmp = m_pRasterGrid->m_Cell[nX][nY].nGetShadowZoneNumber();
+        dTmp = m_pRasterGrid->Cell(nX, nY).nGetShadowZoneNumber();
         bIsInteger = true;
         break;
 
       case (RASTER_PLOT_SHADOW_DOWNDRIFT_ZONE):
-        dTmp = m_pRasterGrid->m_Cell[nX][nY].nGetDownDriftZoneNumber();
+        dTmp = m_pRasterGrid->Cell(nX, nY).nGetDownDriftZoneNumber();
         bIsInteger = true;
         break;
 
       case (RASTER_PLOT_POLYGON_UPDRIFT_OR_DOWNDRIFT):
-        nPoly = m_pRasterGrid->m_Cell[nX][nY].nGetPolygonID();
-        nPolyCoast = m_pRasterGrid->m_Cell[nX][nY].nGetPolygonCoastID();
+        nPoly = m_pRasterGrid->Cell(nX, nY).nGetPolygonID();
+        nPolyCoast = m_pRasterGrid->Cell(nX, nY).nGetPolygonCoastID();
         bIsInteger = true;
 
         if (nPoly == INT_NODATA)
@@ -1838,23 +1838,23 @@ bool CSimulation::bWriteRasterGISFile(int const nDataItem,
         break;
 
       case (RASTER_PLOT_SEDIMENT_INPUT):
-        dTmp = m_pRasterGrid->m_Cell[nX][nY]
+        dTmp = m_pRasterGrid->Cell(nX, nY)
                    .pGetLayerAboveBasement(nTopLayer)
                    ->pGetUnconsolidatedSediment()
                    ->dGetTotAllSedimentInputDepth();
         break;
 
       case (RASTER_PLOT_SETUP_SURGE_FLOOD_MASK):
-        dTmp = (m_pRasterGrid->m_Cell[nX][nY].bIsFloodBySetupSurge() ? 1 : 0);
+        dTmp = (m_pRasterGrid->Cell(nX, nY).bIsFloodBySetupSurge() ? 1 : 0);
         break;
 
       case (RASTER_PLOT_SETUP_SURGE_RUNUP_FLOOD_MASK):
         dTmp =
-            (m_pRasterGrid->m_Cell[nX][nY].bIsFloodBySetupSurgeRunup() ? 1 : 0);
+            (m_pRasterGrid->Cell(nX, nY).bIsFloodBySetupSurgeRunup() ? 1 : 0);
         break;
 
       case (RASTER_PLOT_WAVE_FLOOD_LINE):
-        dTmp = (m_pRasterGrid->m_Cell[nX][nY].bIsFloodline() ? 1 : 0);
+        dTmp = (m_pRasterGrid->Cell(nX, nY).bIsFloodline() ? 1 : 0);
         break;
       }
 
@@ -2371,11 +2371,11 @@ int CSimulation::nInterpolateWavesToPolygonCells(
       int const nActualX = nX + m_nXMinBoundingBox;
       int const nActualY = nY + m_nYMinBoundingBox;
 
-      if (m_pRasterGrid->m_Cell[nActualX][nActualY]
+      if (m_pRasterGrid->Cell(nActualX, nActualY)
               .bIsInContiguousSea()) {
         // Only update sea cells
 
-        if (m_pRasterGrid->m_Cell[nActualX][nActualY].nGetPolygonID() ==
+        if (m_pRasterGrid->Cell(nActualX, nActualY).nGetPolygonID() ==
             INT_NODATA) {
           // --------------------------------------------------------------------
           // Deep water cell (NOT in a polygon)
@@ -2384,15 +2384,15 @@ int CSimulation::nInterpolateWavesToPolygonCells(
           // (these cells are beyond the coastal zone, so don't need interpolation)
 
           double const dDeepWaterWaveHeight =
-              m_pRasterGrid->m_Cell[nActualX][nActualY]
+              m_pRasterGrid->Cell(nActualX, nActualY)
                   .dGetCellDeepWaterWaveHeight();
-          m_pRasterGrid->m_Cell[nActualX][nActualY].SetWaveHeight(
+          m_pRasterGrid->Cell(nActualX, nActualY).SetWaveHeight(
               dDeepWaterWaveHeight);
 
           double const dDeepWaterWaveAngle =
-              m_pRasterGrid->m_Cell[nActualX][nActualY]
+              m_pRasterGrid->Cell(nActualX, nActualY)
                   .dGetCellDeepWaterWaveAngle();
-          m_pRasterGrid->m_Cell[nActualX][nActualY].SetWaveAngle(
+          m_pRasterGrid->Cell(nActualX, nActualY).SetWaveAngle(
               dDeepWaterWaveAngle);
         } else {
           // --------------------------------------------------------------------
@@ -2424,19 +2424,19 @@ int CSimulation::nInterpolateWavesToPolygonCells(
               atan2(dWaveHeightX, dWaveHeightY) * (180 / PI);
 
           // Update the cell's wave attributes
-          m_pRasterGrid->m_Cell[nActualX][nActualY].SetWaveHeight(
+          m_pRasterGrid->Cell(nActualX, nActualY).SetWaveHeight(
               dWaveHeight);
-          m_pRasterGrid->m_Cell[nActualX][nActualY].SetWaveAngle(
+          m_pRasterGrid->Cell(nActualX, nActualY).SetWaveAngle(
               dKeepWithin360(dWaveDir));
 
           // Calculate wave height-to-depth ratio and update active zone status
           // (active zone = where waves are breaking or near-breaking)
           double const dSeaDepth =
-              m_pRasterGrid->m_Cell[nActualX][nActualY].dGetSeaDepth();
+              m_pRasterGrid->Cell(nActualX, nActualY).dGetSeaDepth();
 
           if ((dWaveHeight / dSeaDepth) >=
               m_dBreakingWaveHeightDepthRatio)
-            m_pRasterGrid->m_Cell[nActualX][nActualY].SetInActiveZone(
+            m_pRasterGrid->Cell(nActualX, nActualY).SetInActiveZone(
                 true);
 
           // LogStream << " nX = " << nX << " nY = " << nY << " [" <<
@@ -2665,34 +2665,34 @@ int CSimulation::nInterpolateAllDeepWaterWaveValues(void) {
         for (int nY = 0; nY < m_nYGridSize; nY++) {
           for (int nX = 0; nX < m_nXGridSize; nX++) {
             if (bFPIsEqual(VdHeight[n], m_dMissingValue, TOLERANCE))
-              m_pRasterGrid->m_Cell[nX][nY].SetCellDeepWaterWaveHeight(
+              m_pRasterGrid->Cell(nX, nY).SetCellDeepWaterWaveHeight(
                   dAvgHeight);
 
             else
-              m_pRasterGrid->m_Cell[nX][nY].SetCellDeepWaterWaveHeight(
+              m_pRasterGrid->Cell(nX, nY).SetCellDeepWaterWaveHeight(
                   VdHeight[n]);
 
             if (bFPIsEqual(VdAngle[n], m_dMissingValue, TOLERANCE))
-              m_pRasterGrid->m_Cell[nX][nY].SetCellDeepWaterWaveAngle(
+              m_pRasterGrid->Cell(nX, nY).SetCellDeepWaterWaveAngle(
                   dAvgAngle);
 
             else
-              m_pRasterGrid->m_Cell[nX][nY].SetCellDeepWaterWaveAngle(
+              m_pRasterGrid->Cell(nX, nY).SetCellDeepWaterWaveAngle(
                   VdAngle[n]);
 
             if (bFPIsEqual(VdPeriod[n], m_dMissingValue, TOLERANCE))
-              m_pRasterGrid->m_Cell[nX][nY].SetCellDeepWaterWavePeriod(
+              m_pRasterGrid->Cell(nX, nY).SetCellDeepWaterWavePeriod(
                   dAvgPeriod);
 
             else
-              m_pRasterGrid->m_Cell[nX][nY].SetCellDeepWaterWavePeriod(
+              m_pRasterGrid->Cell(nX, nY).SetCellDeepWaterWavePeriod(
                   VdPeriod[n]);
 
             // LogStream << " [" << nX << "][" << nY << "] deep water wave
             // height = "
-            // << m_pRasterGrid->m_Cell[nX][nY].dGetCellDeepWaterWaveHeight() <<
+            // << m_pRasterGrid->Cell(nX, nY).dGetCellDeepWaterWaveHeight() <<
             // " deep water wave angle = " <<
-            // m_pRasterGrid->m_Cell[nX][nY].dGetCellDeepWaterWaveAngle() <<
+            // m_pRasterGrid->Cell(nX, nY).dGetCellDeepWaterWaveAngle() <<
             // endl;
             n++;
           }
@@ -2718,7 +2718,7 @@ int CSimulation::nInterpolateAllDeepWaterWaveValues(void) {
         // {
         //          // Write this value to the array
         // pdRaster[nn] =
-        // m_pRasterGrid->m_Cell[nX][nY].dGetCellDeepWaterWaveHeight(); nn++;
+        // m_pRasterGrid->Cell(nX, nY).dGetCellDeepWaterWaveHeight(); nn++;
         // }
         // }
         //
@@ -2751,7 +2751,7 @@ int CSimulation::nInterpolateAllDeepWaterWaveValues(void) {
         // {
         //          // Write this value to the array
         // pdRaster[nn] =
-        // m_pRasterGrid->m_Cell[nX][nY].dGetCellDeepWaterWaveAngle(); nn++;
+        // m_pRasterGrid->Cell(nX, nY).dGetCellDeepWaterWaveAngle(); nn++;
         // }
         // }
         //
