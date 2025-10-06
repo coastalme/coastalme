@@ -280,6 +280,9 @@ class CSimulation
    //! Save cliff notch incision depth vector GIS files?
    bool m_bCliffNotchSave;
 
+   //! Save wave transect points vector GIS files?
+   bool m_bWaveTransectPointsSave;
+
    //! Save wave shadow boundary vector GIS files?
    bool m_bShadowBoundarySave;
 
@@ -843,6 +846,9 @@ class CSimulation
 
    //! Length of the coastline-normal profiles, in m
    double m_dCoastNormalLength;
+
+   //! Approximate minimum spacing (m) between wave transects (real and synthetic) for wave interpolation densification
+   double m_dSyntheticTransectSpacing;
 
    //! Total sea depth (m) for this iteration
    double m_dThisIterTotSeaDepth;
@@ -1445,6 +1451,9 @@ class CSimulation
    //! Time series of wave period at deep water wave station
    vector<double> m_VdTSDeepWaterWaveStationPeriod;
 
+   //! Storage for wave transect points (real and synthetic) for debug output
+   vector<TransectWaveData> m_VAllTransectsWithSynthetic;
+
    //! X coordinate (grid CRS) for sediment input event
    vector<double> m_VdSedimentInputLocationX;
 
@@ -1623,7 +1632,7 @@ class CSimulation
    bool bWriteVectorGISFile(int const, string const*);
    void GetRasterOutputMinMax(int const, double&, double&, int const, double const);
    void SetRasterFileCreationDefaults(void);
-   int nInterpolateWavesToPolygonCells(vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*);
+   int nInterpolateWavesToPolygonCells(vector<TransectWaveData> const*, vector<double> const*, vector<double> const*, vector<double> const*, vector<double> const*);
 
    // Initialization
    bool bCreateErosionPotentialLookUp(vector<double>*, vector<double>*, vector<double>*);
@@ -1638,6 +1647,7 @@ class CSimulation
    int nAssignLandformsForAllCoasts(void);
    int nAssignLandformsForAllCells(void);
    int nDoAllPropagateWaves(void);
+   void GenerateSyntheticTransects(vector<TransectWaveData> const*, vector<TransectWaveData>*);
    int nDoAllShorePlatFormErosion(void);
    int nDoAllWaveEnergyToCoastLandforms(void);
    int nDoCliffCollapse(int const, CRWCliff *, double&, double&, double&, double&, double&);

@@ -158,6 +158,7 @@ class CConfiguration
    double m_dRandomFactor;
    double m_dNormalLength;
    double m_dStartDepthRatio;
+   double m_dSyntheticTransectSpacing;
 
    // Profile and Output Options
    bool m_bSaveProfileData;
@@ -550,6 +551,10 @@ class CConfiguration
    void SetStartDepthRatio(double d)
    {
       m_dStartDepthRatio = d;
+   }
+   void SetSyntheticTransectSpacing(double d)
+   {
+      m_dSyntheticTransectSpacing = d;
    }
 
    void SetSaveProfileData(bool b)
@@ -953,6 +958,10 @@ class CConfiguration
    double GetStartDepthRatio() const
    {
       return m_dStartDepthRatio;
+   }
+   double GetSyntheticTransectSpacing() const
+   {
+      return m_dSyntheticTransectSpacing;
    }
 
    // Profile and Output Options

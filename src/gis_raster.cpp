@@ -2172,53 +2172,133 @@ bool CSimulation::bWriteRasterGISFile(int const nDataItem,
 }
 
 //===============================================================================================================================
-//! Interpolates wave properties from all profiles to all within-polygon sea
-//! cells, using GDALGridCreate(), the library version of external utility
-//! gdal_grid
+//! Interpolates wave properties from profile points to all cells within polygons
+//!
+//! ALGORITHM: k-Nearest Neighbor Inverse Distance Weighting (k-NN IDW)
+//!
+//! This function takes wave height components (X and Y) measured at discrete profile points
+//! and interpolates them to a regular grid using a spatial interpolation method.
+//!
+//! METHOD OVERVIEW:
+//! 1. Builds a k-d tree spatial index from input profile point coordinates (X, Y)
+//! 2. For each grid cell, finds the k nearest profile points (typically k=12)
+//! 3. Calculates interpolated value using inverse distance weighting (IDW) with power=2
+//! 4. Converts X/Y wave components back to magnitude and direction
+//! 5. Updates grid cells with interpolated wave properties
+//!
+//! KEY PARAMETERS (defined in spatial_interpolation.cpp DualSpatialInterpolator):
+//! - k_neighbors = 12    Number of nearest points to use for interpolation
+//! - power = 2.0         Exponent for inverse distance weighting
+//!                       (higher = more weight to closer points)
+//!
+//! TUNING GUIDANCE:
+//! - Increase k_neighbors (e.g., 15-20) for smoother results with more averaging
+//! - Decrease k_neighbors (e.g., 8-10) for results that follow local variations more closely
+//! - Increase power (e.g., 3.0-4.0) to emphasize nearby points (sharper transitions)
+//! - Decrease power (e.g., 1.0-1.5) for smoother, more gradual transitions
+//!
+//! IMPORTANT NOTES:
+//! - This method does NOT respect transect structure (point 1 vs point 2, etc.)
+//! - Treats all input points equally regardless of which transect they belong to
+//! - Works well for scattered points but may not preserve transect-aligned features
+//! - For transect-aware interpolation, consider bilinear methods instead
+//!
+//! COASTLINE ORIENTATION:
+//! - The coastlines are available in m_VCoast[] vector
+//! - Each coast has flux orientation: m_VCoast[i].dGetFluxOrientation(coastpoint)
+//! - Each coast has breaking wave angle: m_VCoast[i].dGetBreakingWaveAngle(coastpoint)
+//! - These could be used to implement coast-aware interpolation algorithms
+//!
+//! @param pVTransects         Vector of TransectWaveData containing wave data per transect
+//! @param pVdDeepWaterX       X coordinates of deep water grid edge points
+//! @param pVdDeepWaterY       Y coordinates of deep water grid edge points
+//! @param pVdDeepWaterHeightX X component of wave height at deep water points
+//! @param pVdDeepWaterHeightY Y component of wave height at deep water points
+//! @return RTN_OK on success, error code otherwise
 //===============================================================================================================================
 int CSimulation::nInterpolateWavesToPolygonCells(
-    vector<double> const *pVdX, vector<double> const *pVdY,
-    vector<double> const *pVdHeightX, vector<double> const *pVdHeightY) {
+    vector<TransectWaveData> const *pVTransects,
+    vector<double> const *pVdDeepWaterX,
+    vector<double> const *pVdDeepWaterY,
+    vector<double> const *pVdDeepWaterHeightX,
+    vector<double> const *pVdDeepWaterHeightY) {
+
+  // ============================================================================
+  // STEP 1: Calculate grid dimensions and initialize variables
+  // ============================================================================
+
   int nXSize = 0;
   int nYSize = 0;
 
+  // Average values used as fallback when interpolation fails or returns NaN
   double dXAvg = 0;
   double dYAvg = 0;
 
+  // Calculate bounding box size
   nXSize = m_nXMaxBoundingBox - m_nXMinBoundingBox + 1;
   nYSize = m_nYMaxBoundingBox - m_nYMinBoundingBox + 1;
   int const nGridSize = nXSize * nYSize;
 
-  unsigned int const nPoints = static_cast<unsigned int>(pVdX->size());
+  // Count total points across all transects plus deep water points
+  unsigned int nPoints = 0;
+  for (const auto& transect : *pVTransects) {
+    nPoints += static_cast<unsigned int>(transect.VdX.size());
+  }
+  nPoints += static_cast<unsigned int>(pVdDeepWaterX->size());
 
-  //    // DEBUG CODE
-  //    ============================================================================================================
-  // for (int nn = 0; nn < nPoints; nn++)
-  // {
-  // LogStream << nn << " " << dX[nn] << " " << dY[nn] << " " << dZ[nn] << endl;
-  // }
-  //
-  // m_nXMaxBoundingBox = m_nXGridSize-1;
-  // m_nYMaxBoundingBox = m_nYGridSize-1;
-  // m_nXMinBoundingBox = 0;
-  // m_nYMinBoundingBox = 0;
-  //    // DEBUG CODE
-  //    ============================================================================================================
-
+  // Initialize output arrays (will hold interpolated X and Y wave components)
   vector<double> VdOutX(nGridSize, 0);
   vector<double> VdOutY(nGridSize, 0);
 
-  // Prepare point cloud for spatial interpolation
+  // ============================================================================
+  // STEP 2: Prepare input data for spatial interpolation
+  // ============================================================================
+
+  // Flatten transect data and deep water data into contiguous arrays for the interpolator
   std::vector<Point2D> points;
+  std::vector<double> VdHeightX;
+  std::vector<double> VdHeightY;
+
   points.reserve(nPoints);
-  for (unsigned int i = 0; i < nPoints; i++) {
-    points.emplace_back((*pVdX)[i], (*pVdY)[i]);
+  VdHeightX.reserve(nPoints);
+  VdHeightY.reserve(nPoints);
+
+  // Add profile/transect points
+  for (const auto& transect : *pVTransects) {
+    for (size_t i = 0; i < transect.VdX.size(); i++) {
+      points.emplace_back(transect.VdX[i], transect.VdY[i]);
+      VdHeightX.push_back(transect.VdHeightX[i]);
+      VdHeightY.push_back(transect.VdHeightY[i]);
+    }
   }
 
-  // Create optimized dual interpolator (shares k-d tree, uses OpenMP)
-  DualSpatialInterpolator interp(points, *pVdHeightX, *pVdHeightY, 12, 2.0);
+  // Add deep water grid edge points
+  for (size_t i = 0; i < pVdDeepWaterX->size(); i++) {
+    points.emplace_back((*pVdDeepWaterX)[i], (*pVdDeepWaterY)[i]);
+    VdHeightX.push_back((*pVdDeepWaterHeightX)[i]);
+    VdHeightY.push_back((*pVdDeepWaterHeightY)[i]);
+  }
 
-  // Build query points for the grid
+  // ============================================================================
+  // STEP 3: Create spatial interpolator
+  // ============================================================================
+  //
+  // DualSpatialInterpolator parameters:
+  // - points: Input point coordinates (from profiles/transects)
+  // - VdHeightX, VdHeightY: Wave height X and Y components at those points
+  // - k_neighbors = 12: Use 12 nearest neighbors for interpolation
+  //                     ** ADJUST THIS to change smoothness vs local detail **
+  // - power = 2.0: Inverse distance weighting power
+  //                ** ADJUST THIS to change influence of nearby vs distant points **
+  //
+  // The interpolator builds a k-d tree for fast nearest neighbor search
+  // and shares it between X and Y interpolation for efficiency
+  DualSpatialInterpolator interp(points, VdHeightX, VdHeightY, 6, 2.0);
+
+  // ============================================================================
+  // STEP 4: Build query points (grid cells where we want interpolated values)
+  // ============================================================================
+
   std::vector<Point2D> query_points;
   query_points.reserve(nGridSize);
   for (int nY = m_nYMinBoundingBox; nY <= m_nYMaxBoundingBox; nY++) {
@@ -2228,17 +2308,30 @@ int CSimulation::nInterpolateWavesToPolygonCells(
     }
   }
 
-  // Perform batch interpolation for both directions simultaneously
+  // ============================================================================
+  // STEP 5: Perform batch interpolation
+  // ============================================================================
+  //
+  // This does the actual interpolation for all grid points at once
+  // Uses OpenMP parallelization if available (see spatial_interpolation.cpp)
+  // Interpolates both X and Y components simultaneously using shared k-d tree
   interp.Interpolate(query_points, VdOutX, VdOutY);
 
-  // Validate interpolated results and calculate averages
+  // ============================================================================
+  // STEP 6: Validate results and calculate average values for fallback
+  // ============================================================================
+  //
+  // Check for NaN or unreasonably large values and replace with missing value marker
+  // Also calculate average of valid values to use as fallback
+
   int nXValid = 0;
   int nYValid = 0;
 
+  // Validate X component
   for (unsigned int n = 0; n < VdOutX.size(); n++) {
     if (isnan(VdOutX[n]))
       VdOutX[n] = m_dMissingValue;
-    else if (tAbs(VdOutX[n]) > 1e10)
+    else if (tAbs(VdOutX[n]) > 1e10)  // Sanity check for unreasonably large values
       VdOutX[n] = m_dMissingValue;
     else {
       dXAvg += VdOutX[n];
@@ -2246,10 +2339,11 @@ int CSimulation::nInterpolateWavesToPolygonCells(
     }
   }
 
+  // Validate Y component
   for (unsigned int n = 0; n < VdOutY.size(); n++) {
     if (isnan(VdOutY[n]))
       VdOutY[n] = m_dMissingValue;
-    else if (tAbs(VdOutY[n]) > 1e10)
+    else if (tAbs(VdOutY[n]) > 1e10)  // Sanity check for unreasonably large values
       VdOutY[n] = m_dMissingValue;
     else {
       dYAvg += VdOutY[n];
@@ -2257,12 +2351,19 @@ int CSimulation::nInterpolateWavesToPolygonCells(
     }
   }
 
+  // Calculate averages (for use as fallback when individual cells have missing values)
   if (nXValid > 0)
     dXAvg /= nXValid;
   if (nYValid > 0)
     dYAvg /= nYValid;
 
-  // Now put the X and Y directions together and update the raster cells
+  // ============================================================================
+  // STEP 7: Update grid cells with interpolated wave properties
+  // ============================================================================
+  //
+  // Convert X and Y components back to magnitude and direction,
+  // then update each cell's wave attributes
+
   int n = 0;
 
   for (int nY = 0; nY < nYSize; nY++) {
@@ -2273,9 +2374,15 @@ int CSimulation::nInterpolateWavesToPolygonCells(
       if (m_pRasterGrid->m_Cell[nActualX][nActualY]
               .bIsInContiguousSea()) {
         // Only update sea cells
+
         if (m_pRasterGrid->m_Cell[nActualX][nActualY].nGetPolygonID() ==
             INT_NODATA) {
-          // This is a deep water sea cell (not in a polygon)
+          // --------------------------------------------------------------------
+          // Deep water cell (NOT in a polygon)
+          // --------------------------------------------------------------------
+          // Use the cell's pre-assigned deep water wave values
+          // (these cells are beyond the coastal zone, so don't need interpolation)
+
           double const dDeepWaterWaveHeight =
               m_pRasterGrid->m_Cell[nActualX][nActualY]
                   .dGetCellDeepWaterWaveHeight();
@@ -2288,31 +2395,33 @@ int CSimulation::nInterpolateWavesToPolygonCells(
           m_pRasterGrid->m_Cell[nActualX][nActualY].SetWaveAngle(
               dDeepWaterWaveAngle);
         } else {
-          // This is in a polygon so is not a deep water sea cell
+          // --------------------------------------------------------------------
+          // Coastal zone cell (IN a polygon)
+          // --------------------------------------------------------------------
+          // Use the interpolated wave values calculated above
+
           double dWaveHeightX;
           double dWaveHeightY;
 
-          // Safety checks
+          // Get interpolated X component (use average as fallback if missing/invalid)
           if ((isnan(VdOutX[n])) ||
               (bFPIsEqual(VdOutX[n], m_dMissingValue, TOLERANCE)))
             dWaveHeightX = dXAvg;
           else
             dWaveHeightX = VdOutX[n];
 
+          // Get interpolated Y component (use average as fallback if missing/invalid)
           if ((isnan(VdOutY[n])) ||
               (bFPIsEqual(VdOutY[n], m_dMissingValue, TOLERANCE)))
             dWaveHeightY = dYAvg;
           else
             dWaveHeightY = VdOutY[n];
 
-          // Now calculate wave direction
+          // Convert X/Y components to magnitude and direction
           double const dWaveHeight = sqrt((dWaveHeightX * dWaveHeightX) +
                                           (dWaveHeightY * dWaveHeightY));
           double const dWaveDir =
               atan2(dWaveHeightX, dWaveHeightY) * (180 / PI);
-
-          // assert(isfinite(dWaveHeight));
-          // assert(isfinite(dWaveDir));
 
           // Update the cell's wave attributes
           m_pRasterGrid->m_Cell[nActualX][nActualY].SetWaveHeight(
@@ -2320,8 +2429,8 @@ int CSimulation::nInterpolateWavesToPolygonCells(
           m_pRasterGrid->m_Cell[nActualX][nActualY].SetWaveAngle(
               dKeepWithin360(dWaveDir));
 
-          // Calculate the wave height-to-depth ratio for this cell, then
-          // update the cell's active zone status
+          // Calculate wave height-to-depth ratio and update active zone status
+          // (active zone = where waves are breaking or near-breaking)
           double const dSeaDepth =
               m_pRasterGrid->m_Cell[nActualX][nActualY].dGetSeaDepth();
 
@@ -2343,78 +2452,6 @@ int CSimulation::nInterpolateWavesToPolygonCells(
       n = tMin(n, static_cast<int>(VdOutX.size() - 1));
     }
   }
-
-  // // DEBUG CODE
-  // ===========================================================================================================
-  // strOutFile = m_strOutPath;
-  // strOutFile += "sea_wave_height_after_";
-  // strOutFile += to_string(m_ulIter);
-  // strOutFile += ".tif";
-  //
-  // pDriver = GetGDALDriverManager()->GetDriverByName("gtiff");
-  // pDataSet = pDriver->Create(strOutFile.c_str(), m_nXGridSize,
-  // m_nYGridSize, 1, GDT_Float64, m_papszGDALRasterOptions);
-  // pDataSet->SetProjection(m_strGDALBasementDEMProjection.c_str());
-  // pDataSet->SetGeoTransform(m_dGeoTransform);
-  //
-  // nn = 0;
-  // pdRaster = new double[m_nXGridSize * m_nYGridSize];
-  // for (int nY = 0; nY < m_nYGridSize; nY++)
-  // {
-  // for (int nX = 0; nX < m_nXGridSize; nX++)
-  // {
-  // pdRaster[nn++] = m_pRasterGrid->m_Cell[nX][nY].dGetWaveHeight();
-  // }
-  // }
-  //
-  // pBand = pDataSet->GetRasterBand(1);
-  // pBand->SetNoDataValue(m_dMissingValue);
-  // nRet = pBand->RasterIO(GF_Write, 0, 0, m_nXGridSize, m_nYGridSize,
-  // pdRaster, m_nXGridSize, m_nYGridSize, GDT_Float64, 0, 0, NULL);
-  //
-  // if (nRet == CE_Failure)
-  // return RTN_ERR_GRIDCREATE;
-  //
-  // GDALClose(pDataSet);
-  // delete[] pdRaster;
-  // // DEBUG CODE
-  // ===========================================================================================================
-
-  // // DEBUG CODE
-  // ===========================================================================================================
-  // strOutFile = m_strOutPath;
-  // strOutFile += "sea_wave_angle_after_";
-  // strOutFile += to_string(m_ulIter);
-  // strOutFile += ".tif";
-  //
-  // pDriver = GetGDALDriverManager()->GetDriverByName("gtiff");
-  // pDataSet = pDriver->Create(strOutFile.c_str(), m_nXGridSize,
-  // m_nYGridSize, 1, GDT_Float64, m_papszGDALRasterOptions);
-  // pDataSet->SetProjection(m_strGDALBasementDEMProjection.c_str());
-  // pDataSet->SetGeoTransform(m_dGeoTransform);
-  //
-  // nn = 0;
-  // pdRaster = new double[m_nXGridSize * m_nYGridSize];
-  // for (int nY = 0; nY < m_nYGridSize; nY++)
-  // {
-  // for (int nX = 0; nX < m_nXGridSize; nX++)
-  // {
-  // pdRaster[nn++] = m_pRasterGrid->m_Cell[nX][nY].dGetWaveAngle();
-  // }
-  // }
-  //
-  // pBand = pDataSet->GetRasterBand(1);
-  // pBand->SetNoDataValue(m_dMissingValue);
-  // nRet = pBand->RasterIO(GF_Write, 0, 0, m_nXGridSize, m_nYGridSize,
-  // pdRaster, m_nXGridSize, m_nYGridSize, GDT_Float64, 0, 0, NULL);
-  //
-  // if (nRet == CE_Failure)
-  // return RTN_ERR_GRIDCREATE;
-  //
-  // GDALClose(pDataSet);
-  // delete[] pdRaster;
-  // // DEBUG CODE
-  // ===========================================================================================================
 
   return RTN_OK;
 }

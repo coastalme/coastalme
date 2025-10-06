@@ -130,6 +130,7 @@ CSimulation::CSimulation(void)
    m_bPolygonNodeSave =
    m_bPolygonBoundarySave =
    m_bCliffNotchSave =
+   m_bWaveTransectPointsSave =
    m_bShadowBoundarySave =
    m_bShadowDowndriftBoundarySave =
    m_bDeepWaterWaveAngleSave =

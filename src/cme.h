@@ -596,8 +596,9 @@ int const VECTOR_PLOT_STORM_SURGE = 19;
 int const VECTOR_PLOT_WAVE_ANGLE_AND_HEIGHT = 20;
 int const VECTOR_PLOT_WAVE_ENERGY_SINCE_COLLAPSE = 21;
 int const VECTOR_PLOT_WAVE_SETUP = 22;
-// int const VECTOR_PLOT_FLOOD_SWL_SETUP_SURGE_LINE = 23;
-// int const VECTOR_PLOT_FLOOD_SWL_SETUP_SURGE_RUNUP_LINE = 24;
+int const VECTOR_PLOT_WAVE_TRANSECT_POINTS = 23;
+// int const VECTOR_PLOT_FLOOD_SWL_SETUP_SURGE_LINE = 24;
+// int const VECTOR_PLOT_FLOOD_SWL_SETUP_SURGE_RUNUP_LINE = 25;
 
 // Return codes
 int const RTN_OK = 0;
@@ -1096,6 +1097,8 @@ string const VECTOR_WAVE_ENERGY_SINCE_COLLAPSE_CODE = "wave_energy";
 string const VECTOR_WAVE_ENERGY_SINCE_COLLAPSE_NAME = "wave_energy";
 string const VECTOR_WAVE_SETUP_CODE = "wave_setup";
 string const VECTOR_WAVE_SETUP_NAME = "wave_setup";
+string const VECTOR_WAVE_TRANSECT_POINTS_CODE = "wave_transect_points";
+string const VECTOR_WAVE_TRANSECT_POINTS_NAME = "wave_transect_points";
 
 // GIS vector output titles
 string const VECTOR_PLOT_AVG_WAVE_ANGLE_AND_HEIGHT_TITLE = "Average wave orientation and height";
@@ -1123,6 +1126,7 @@ string const VECTOR_PLOT_STORM_SURGE_TITLE = "Storm surge";
 string const VECTOR_PLOT_WAVE_ANGLE_AND_HEIGHT_TITLE = "Wave orientation and height";
 string const VECTOR_PLOT_WAVE_ENERGY_SINCE_COLLAPSE_TITLE = "Wave energy since collapse";
 string const VECTOR_PLOT_WAVE_SETUP_TITLE = "Wave setup";
+string const VECTOR_PLOT_WAVE_TRANSECT_POINTS_TITLE = "Wave transect points (real and synthetic)";
 
 // Time series codes
 string const TIME_SERIES_BEACH_CHANGE_NET_CODE = "beach_change_net";
@@ -1241,6 +1245,19 @@ struct FillToWidth
    FillToWidth(char f, int w) : chFill(f), nWidth(w) {}
    char chFill;
    int nWidth;
+};
+
+//! Struct to hold wave data for a single transect/profile
+struct TransectWaveData
+{
+   std::vector<double> VdX;
+   std::vector<double> VdY;
+   std::vector<double> VdHeightX;
+   std::vector<double> VdHeightY;
+   std::vector<bool> VbBreaking;
+   int nCoastID;
+   int nProfileID;
+   bool bIsGridEdge;
 };
 
 ostream &operator<<(ostream &, const FillToWidth &);
