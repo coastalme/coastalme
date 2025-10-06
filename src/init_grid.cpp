@@ -113,7 +113,7 @@ int CSimulation::nInitGridAndCalcStillWaterLevel(void)
    // And go through all cells in the RasterGrid array
    // Use OpenMP parallel loop with reduction clauses for thread-safe accumulation
 #ifdef _OPENMP
-#pragma omp parallel for collapse(2) reduction(+ : nZeroThickness)                                            \
+#pragma omp parallel for collapse(2) schedule(static) reduction(+ : nZeroThickness)                          \
     reduction(+ : m_dStartIterConsFineAllCells, m_dStartIterConsSandAllCells, m_dStartIterConsCoarseAllCells) \
     reduction(+ : m_dStartIterSuspFineAllCells, m_dStartIterUnconsFineAllCells, m_dStartIterUnconsSandAllCells, m_dStartIterUnconsCoarseAllCells)
 #endif
@@ -123,7 +123,7 @@ int CSimulation::nInitGridAndCalcStillWaterLevel(void)
       for (int nY = 0; nY < m_nYGridSize; nY++)
       {
          // Re-initialise values for this cell
-         m_pRasterGrid->m_Cell[nX][nY].InitCell();
+         m_pRasterGrid->Cell(nX, nY).InitCell();
 
          if (m_ulIter == 1)
          {
@@ -146,7 +146,7 @@ int CSimulation::nInitGridAndCalcStillWaterLevel(void)
             }
 
             // For the first timestep only, calculate the elevation of all this cell's layers. During the rest of the simulation, each cell's elevation is re-calculated just after any change occurs on that cell
-            m_pRasterGrid->m_Cell[nX][nY].CalcAllLayerElevsAndD50();
+            m_pRasterGrid->Cell(nX, nY).CalcAllLayerElevsAndD50();
          }
 
          // Note that these totals include sediment which is both within and outside the polygons (because we have not yet defined polygons for this iteration, duh!)
@@ -162,9 +162,9 @@ int CSimulation::nInitGridAndCalcStillWaterLevel(void)
          if (m_bSingleDeepWaterWaveValues)
          {
             // If we have just a single measurement for deep water waves (either given by the user, or from a single wave station) then set all cells, even dry land cells, to the same value for deep water wave height, deep water wave orientation, and deep water period
-            m_pRasterGrid->m_Cell[nX][nY].SetCellDeepWaterWaveHeight(m_dAllCellsDeepWaterWaveHeight);
-            m_pRasterGrid->m_Cell[nX][nY].SetCellDeepWaterWaveAngle(m_dAllCellsDeepWaterWaveAngle);
-            m_pRasterGrid->m_Cell[nX][nY].SetCellDeepWaterWavePeriod(m_dAllCellsDeepWaterWavePeriod);
+            m_pRasterGrid->Cell(nX, nY).SetCellDeepWaterWaveHeight(m_dAllCellsDeepWaterWaveHeight);
+            m_pRasterGrid->Cell(nX, nY).SetCellDeepWaterWaveAngle(m_dAllCellsDeepWaterWaveAngle);
+            m_pRasterGrid->Cell(nX, nY).SetCellDeepWaterWavePeriod(m_dAllCellsDeepWaterWavePeriod);
          }
       }
    }
@@ -217,7 +217,7 @@ int CSimulation::nInitGridAndCalcStillWaterLevel(void)
    // for (int nX = 0; nX < m_nXGridSize; nX++)
    // {
    //          // Write this value to the array
-   // pdRaster[nn] = m_pRasterGrid->m_Cell[nX][nY].dGetCellDeepWaterWaveHeight();
+   // pdRaster[nn] = m_pRasterGrid->Cell(nX, nY).dGetCellDeepWaterWaveHeight();
    // nn++;
    // }
    // }
@@ -246,7 +246,7 @@ int CSimulation::nInitGridAndCalcStillWaterLevel(void)
    // for (int nX = 0; nX < m_nXGridSize; nX++)
    // {
    //          // Write this value to the array
-   // pdRaster[nn] = m_pRasterGrid->m_Cell[nX][nY].dGetCellDeepWaterWaveAngle();
+   // pdRaster[nn] = m_pRasterGrid->Cell(nX, nY).dGetCellDeepWaterWaveAngle();
    // nn++;
    // }
    // }
@@ -275,7 +275,7 @@ int CSimulation::nInitGridAndCalcStillWaterLevel(void)
    // for (int nX = 0; nX < m_nXGridSize; nX++)
    // {
    //          // Write this value to the array
-   // pdRaster[nn] = m_pRasterGrid->m_Cell[nX][nY].dGetWaveAngle();
+   // pdRaster[nn] = m_pRasterGrid->Cell(nX, nY).dGetWaveAngle();
    // nn++;
    // }
    // }
@@ -304,7 +304,7 @@ int CSimulation::nInitGridAndCalcStillWaterLevel(void)
    // for (int nX = 0; nX < m_nXGridSize; nX++)
    // {
    //          // Write this value to the array
-   // pdRaster[nn] = m_pRasterGrid->m_Cell[nX][nY].dGetWaveHeight();
+   // pdRaster[nn] = m_pRasterGrid->Cell(nX, nY).dGetWaveHeight();
    // nn++;
    // }
    // }

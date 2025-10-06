@@ -108,7 +108,7 @@ int CSimulation::nDoAllWaveEnergyToCoastLandforms(void)
                // int nYCliff = pCliff->pPtiGetCellMarkedAsCliff()->nGetY();
                //
                //    // Get this cell's polygon
-               // int nPoly = m_pRasterGrid->m_Cell[nXCliff][nYCliff].nGetPolygonID();
+               // int nPoly = m_pRasterGrid->Cell(nXCliff, nYCliff).nGetPolygonID();
                //
                // LogStream << endl;
                // LogStream << "*****************************" << endl;
@@ -156,7 +156,7 @@ int CSimulation::nDoAllWaveEnergyToCoastLandforms(void)
                // int nYCliff = pCliff->pPtiGetCellMarkedAsCliff()->nGetY();
                //
                //    // Get this cell's polygon
-               // int nPoly = m_pRasterGrid->m_Cell[nXCliff][nYCliff].nGetPolygonID();
+               // int nPoly = m_pRasterGrid->Cell(nXCliff, nYCliff).nGetPolygonID();
                //
                // LogStream << endl;
                // LogStream << "*****************************" << endl;
@@ -279,65 +279,65 @@ int CSimulation::nDoCliffCollapse(int const nCoast, CRWCliff* pCliff, double& dF
    for (int n = nTopLayer; n > nNotchLayer; n--)
    {
       // Start with the unconsolidated sediment
-      dAvailable = m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(n)->pGetUnconsolidatedSediment()->dGetFineDepth() - m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(n)->pGetUnconsolidatedSediment()->dGetNotchFineLost();
+      dAvailable = m_pRasterGrid->Cell(nX, nY).pGetLayerAboveBasement(n)->pGetUnconsolidatedSediment()->dGetFineDepth() - m_pRasterGrid->Cell(nX, nY).pGetLayerAboveBasement(n)->pGetUnconsolidatedSediment()->dGetNotchFineLost();
 
       if (dAvailable > 0)
       {
          dFineCollapse += dAvailable;
          dFineUnconsLost += dAvailable;
-         m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(n)->pGetUnconsolidatedSediment()->SetFineDepth(0);
-         m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(n)->pGetUnconsolidatedSediment()->SetNotchFineLost(0);
+         m_pRasterGrid->Cell(nX, nY).pGetLayerAboveBasement(n)->pGetUnconsolidatedSediment()->SetFineDepth(0);
+         m_pRasterGrid->Cell(nX, nY).pGetLayerAboveBasement(n)->pGetUnconsolidatedSediment()->SetNotchFineLost(0);
       }
 
-      dAvailable = m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(n)->pGetUnconsolidatedSediment()->dGetSandDepth() - m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(n)->pGetUnconsolidatedSediment()->dGetNotchSandLost();
+      dAvailable = m_pRasterGrid->Cell(nX, nY).pGetLayerAboveBasement(n)->pGetUnconsolidatedSediment()->dGetSandDepth() - m_pRasterGrid->Cell(nX, nY).pGetLayerAboveBasement(n)->pGetUnconsolidatedSediment()->dGetNotchSandLost();
 
       if (dAvailable > 0)
       {
          dSandCollapse += dAvailable;
          dSandUnconsLost += dAvailable;
-         m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(n)->pGetUnconsolidatedSediment()->SetSandDepth(0);
-         m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(n)->pGetUnconsolidatedSediment()->SetNotchSandLost(0);
+         m_pRasterGrid->Cell(nX, nY).pGetLayerAboveBasement(n)->pGetUnconsolidatedSediment()->SetSandDepth(0);
+         m_pRasterGrid->Cell(nX, nY).pGetLayerAboveBasement(n)->pGetUnconsolidatedSediment()->SetNotchSandLost(0);
       }
 
-      dAvailable = m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(n)->pGetUnconsolidatedSediment()->dGetCoarseDepth() - m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(n)->pGetUnconsolidatedSediment()->dGetNotchCoarseLost();
+      dAvailable = m_pRasterGrid->Cell(nX, nY).pGetLayerAboveBasement(n)->pGetUnconsolidatedSediment()->dGetCoarseDepth() - m_pRasterGrid->Cell(nX, nY).pGetLayerAboveBasement(n)->pGetUnconsolidatedSediment()->dGetNotchCoarseLost();
 
       if (dAvailable > 0)
       {
          dCoarseCollapse += dAvailable;
          dCoarseUnconsLost += dAvailable;
-         m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(n)->pGetUnconsolidatedSediment()->SetCoarseDepth(0);
-         m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(n)->pGetUnconsolidatedSediment()->SetNotchCoarseLost(0);
+         m_pRasterGrid->Cell(nX, nY).pGetLayerAboveBasement(n)->pGetUnconsolidatedSediment()->SetCoarseDepth(0);
+         m_pRasterGrid->Cell(nX, nY).pGetLayerAboveBasement(n)->pGetUnconsolidatedSediment()->SetNotchCoarseLost(0);
       }
 
       // Now get the consolidated sediment
-      dAvailable = m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(n)->pGetConsolidatedSediment()->dGetFineDepth() - m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(n)->pGetConsolidatedSediment()->dGetNotchFineLost();
+      dAvailable = m_pRasterGrid->Cell(nX, nY).pGetLayerAboveBasement(n)->pGetConsolidatedSediment()->dGetFineDepth() - m_pRasterGrid->Cell(nX, nY).pGetLayerAboveBasement(n)->pGetConsolidatedSediment()->dGetNotchFineLost();
 
       if (dAvailable > 0)
       {
          dFineCollapse += dAvailable;
          dFineConsLost += dAvailable;
-         m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(n)->pGetConsolidatedSediment()->SetFineDepth(0);
-         m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(n)->pGetConsolidatedSediment()->SetNotchFineLost(0);
+         m_pRasterGrid->Cell(nX, nY).pGetLayerAboveBasement(n)->pGetConsolidatedSediment()->SetFineDepth(0);
+         m_pRasterGrid->Cell(nX, nY).pGetLayerAboveBasement(n)->pGetConsolidatedSediment()->SetNotchFineLost(0);
       }
 
-      dAvailable = m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(n)->pGetConsolidatedSediment()->dGetSandDepth() - m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(n)->pGetConsolidatedSediment()->dGetNotchSandLost();
+      dAvailable = m_pRasterGrid->Cell(nX, nY).pGetLayerAboveBasement(n)->pGetConsolidatedSediment()->dGetSandDepth() - m_pRasterGrid->Cell(nX, nY).pGetLayerAboveBasement(n)->pGetConsolidatedSediment()->dGetNotchSandLost();
 
       if (dAvailable > 0)
       {
          dSandCollapse += dAvailable;
          dSandConsLost += dAvailable;
-         m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(n)->pGetConsolidatedSediment()->SetSandDepth(0);
-         m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(n)->pGetConsolidatedSediment()->SetNotchSandLost(0);
+         m_pRasterGrid->Cell(nX, nY).pGetLayerAboveBasement(n)->pGetConsolidatedSediment()->SetSandDepth(0);
+         m_pRasterGrid->Cell(nX, nY).pGetLayerAboveBasement(n)->pGetConsolidatedSediment()->SetNotchSandLost(0);
       }
 
-      dAvailable = m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(n)->pGetConsolidatedSediment()->dGetCoarseDepth() - m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(n)->pGetConsolidatedSediment()->dGetNotchCoarseLost();
+      dAvailable = m_pRasterGrid->Cell(nX, nY).pGetLayerAboveBasement(n)->pGetConsolidatedSediment()->dGetCoarseDepth() - m_pRasterGrid->Cell(nX, nY).pGetLayerAboveBasement(n)->pGetConsolidatedSediment()->dGetNotchCoarseLost();
 
       if (dAvailable > 0)
       {
          dCoarseCollapse += dAvailable;
          dCoarseConsLost += dAvailable;
-         m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(n)->pGetConsolidatedSediment()->SetCoarseDepth(0);
-         m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(n)->pGetConsolidatedSediment()->SetNotchCoarseLost(0);
+         m_pRasterGrid->Cell(nX, nY).pGetLayerAboveBasement(n)->pGetConsolidatedSediment()->SetCoarseDepth(0);
+         m_pRasterGrid->Cell(nX, nY).pGetLayerAboveBasement(n)->pGetConsolidatedSediment()->SetNotchCoarseLost(0);
       }
    }
 
@@ -347,8 +347,8 @@ int CSimulation::nDoCliffCollapse(int const nCoast, CRWCliff* pCliff, double& dF
    double const dNotchLayerFracRemoved = (dNotchLayerTop - dNotchElev) / dNotchLayerThickness;
 
    // Sort out the notched layer's sediment, both consolidated and unconsolidated, for this cell. First the unconsolidated sediment
-   double dFineDepth = m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nNotchLayer)->pGetUnconsolidatedSediment()->dGetFineDepth();
-   dAvailable = dFineDepth - m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nNotchLayer)->pGetUnconsolidatedSediment()->dGetNotchFineLost();
+   double dFineDepth = m_pRasterGrid->Cell(nX, nY).pGetLayerAboveBasement(nNotchLayer)->pGetUnconsolidatedSediment()->dGetFineDepth();
+   dAvailable = dFineDepth - m_pRasterGrid->Cell(nX, nY).pGetLayerAboveBasement(nNotchLayer)->pGetUnconsolidatedSediment()->dGetNotchFineLost();
 
    if (dAvailable > 0)
    {
@@ -356,12 +356,12 @@ int CSimulation::nDoCliffCollapse(int const nCoast, CRWCliff* pCliff, double& dF
       double const dLost = dAvailable * dNotchLayerFracRemoved;
       dFineCollapse += dLost;
       dFineUnconsLost += dLost;
-      m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nNotchLayer)->pGetUnconsolidatedSediment()->SetFineDepth(dFineDepth - dLost);
-      m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nNotchLayer)->pGetUnconsolidatedSediment()->SetNotchFineLost(0);
+      m_pRasterGrid->Cell(nX, nY).pGetLayerAboveBasement(nNotchLayer)->pGetUnconsolidatedSediment()->SetFineDepth(dFineDepth - dLost);
+      m_pRasterGrid->Cell(nX, nY).pGetLayerAboveBasement(nNotchLayer)->pGetUnconsolidatedSediment()->SetNotchFineLost(0);
    }
 
-   double dSandDepth = m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nNotchLayer)->pGetUnconsolidatedSediment()->dGetSandDepth();
-   dAvailable = dSandDepth - m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nNotchLayer)->pGetUnconsolidatedSediment()->dGetNotchSandLost();
+   double dSandDepth = m_pRasterGrid->Cell(nX, nY).pGetLayerAboveBasement(nNotchLayer)->pGetUnconsolidatedSediment()->dGetSandDepth();
+   dAvailable = dSandDepth - m_pRasterGrid->Cell(nX, nY).pGetLayerAboveBasement(nNotchLayer)->pGetUnconsolidatedSediment()->dGetNotchSandLost();
 
    if (dAvailable > 0)
    {
@@ -369,12 +369,12 @@ int CSimulation::nDoCliffCollapse(int const nCoast, CRWCliff* pCliff, double& dF
       double const dLost = dAvailable * dNotchLayerFracRemoved;
       dSandCollapse += dLost;
       dSandUnconsLost += dLost;
-      m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nNotchLayer)->pGetUnconsolidatedSediment()->SetSandDepth(dSandDepth - dLost);
-      m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nNotchLayer)->pGetUnconsolidatedSediment()->SetNotchSandLost(0);
+      m_pRasterGrid->Cell(nX, nY).pGetLayerAboveBasement(nNotchLayer)->pGetUnconsolidatedSediment()->SetSandDepth(dSandDepth - dLost);
+      m_pRasterGrid->Cell(nX, nY).pGetLayerAboveBasement(nNotchLayer)->pGetUnconsolidatedSediment()->SetNotchSandLost(0);
    }
 
-   double dCoarseDepth = m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nNotchLayer)->pGetUnconsolidatedSediment()->dGetCoarseDepth();
-   dAvailable = dCoarseDepth - m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nNotchLayer)->pGetUnconsolidatedSediment()->dGetNotchCoarseLost();
+   double dCoarseDepth = m_pRasterGrid->Cell(nX, nY).pGetLayerAboveBasement(nNotchLayer)->pGetUnconsolidatedSediment()->dGetCoarseDepth();
+   dAvailable = dCoarseDepth - m_pRasterGrid->Cell(nX, nY).pGetLayerAboveBasement(nNotchLayer)->pGetUnconsolidatedSediment()->dGetNotchCoarseLost();
 
    if (dAvailable > 0)
    {
@@ -382,8 +382,8 @@ int CSimulation::nDoCliffCollapse(int const nCoast, CRWCliff* pCliff, double& dF
       double const dLost = dAvailable * dNotchLayerFracRemoved;
       dCoarseCollapse += dLost;
       dCoarseUnconsLost += dLost;
-      m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nNotchLayer)->pGetUnconsolidatedSediment()->SetCoarseDepth(dCoarseDepth - dLost);
-      m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nNotchLayer)->pGetUnconsolidatedSediment()->SetNotchCoarseLost(0);
+      m_pRasterGrid->Cell(nX, nY).pGetLayerAboveBasement(nNotchLayer)->pGetUnconsolidatedSediment()->SetCoarseDepth(dCoarseDepth - dLost);
+      m_pRasterGrid->Cell(nX, nY).pGetLayerAboveBasement(nNotchLayer)->pGetUnconsolidatedSediment()->SetNotchCoarseLost(0);
    }
 
    // Do the same for the consolidated sediment
@@ -396,12 +396,12 @@ int CSimulation::nDoCliffCollapse(int const nCoast, CRWCliff* pCliff, double& dF
       double const dLost = dAvailable * dNotchLayerFracRemoved;
       dFineCollapse += dLost;
       dFineConsLost += dLost;
-      m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nNotchLayer)->pGetConsolidatedSediment()->SetFineDepth(dFineDepth - dLost);
-      m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nNotchLayer)->pGetConsolidatedSediment()->SetNotchFineLost(0);
+      m_pRasterGrid->Cell(nX, nY).pGetLayerAboveBasement(nNotchLayer)->pGetConsolidatedSediment()->SetFineDepth(dFineDepth - dLost);
+      m_pRasterGrid->Cell(nX, nY).pGetLayerAboveBasement(nNotchLayer)->pGetConsolidatedSediment()->SetNotchFineLost(0);
    }
 
-   dSandDepth = m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nNotchLayer)->pGetConsolidatedSediment()->dGetSandDepth();
-   dAvailable = dSandDepth - m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nNotchLayer)->pGetConsolidatedSediment()->dGetNotchSandLost();
+   dSandDepth = m_pRasterGrid->Cell(nX, nY).pGetLayerAboveBasement(nNotchLayer)->pGetConsolidatedSediment()->dGetSandDepth();
+   dAvailable = dSandDepth - m_pRasterGrid->Cell(nX, nY).pGetLayerAboveBasement(nNotchLayer)->pGetConsolidatedSediment()->dGetNotchSandLost();
 
    if (dAvailable > 0)
    {
@@ -409,12 +409,12 @@ int CSimulation::nDoCliffCollapse(int const nCoast, CRWCliff* pCliff, double& dF
       double const dLost = dAvailable * dNotchLayerFracRemoved;
       dSandCollapse += dLost;
       dSandConsLost += dLost;
-      m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nNotchLayer)->pGetConsolidatedSediment()->SetSandDepth(dSandDepth - dLost);
-      m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nNotchLayer)->pGetConsolidatedSediment()->SetNotchSandLost(0);
+      m_pRasterGrid->Cell(nX, nY).pGetLayerAboveBasement(nNotchLayer)->pGetConsolidatedSediment()->SetSandDepth(dSandDepth - dLost);
+      m_pRasterGrid->Cell(nX, nY).pGetLayerAboveBasement(nNotchLayer)->pGetConsolidatedSediment()->SetNotchSandLost(0);
    }
 
-   dCoarseDepth = m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nNotchLayer)->pGetConsolidatedSediment()->dGetCoarseDepth();
-   dAvailable = dCoarseDepth - m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nNotchLayer)->pGetConsolidatedSediment()->dGetNotchCoarseLost();
+   dCoarseDepth = m_pRasterGrid->Cell(nX, nY).pGetLayerAboveBasement(nNotchLayer)->pGetConsolidatedSediment()->dGetCoarseDepth();
+   dAvailable = dCoarseDepth - m_pRasterGrid->Cell(nX, nY).pGetLayerAboveBasement(nNotchLayer)->pGetConsolidatedSediment()->dGetNotchCoarseLost();
 
    if (dAvailable > 0)
    {
@@ -422,12 +422,12 @@ int CSimulation::nDoCliffCollapse(int const nCoast, CRWCliff* pCliff, double& dF
       double const dLost = dAvailable * dNotchLayerFracRemoved;
       dCoarseCollapse += dLost;
       dCoarseConsLost += dLost;
-      m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nNotchLayer)->pGetConsolidatedSediment()->SetCoarseDepth(dCoarseDepth - dLost);
-      m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nNotchLayer)->pGetConsolidatedSediment()->SetNotchCoarseLost(0);
+      m_pRasterGrid->Cell(nX, nY).pGetLayerAboveBasement(nNotchLayer)->pGetConsolidatedSediment()->SetCoarseDepth(dCoarseDepth - dLost);
+      m_pRasterGrid->Cell(nX, nY).pGetLayerAboveBasement(nNotchLayer)->pGetConsolidatedSediment()->SetNotchCoarseLost(0);
    }
 
    // Update the cell's totals for cliff collapse erosion
-   m_pRasterGrid->m_Cell[nX][nY].IncrCliffCollapseErosion(dFineCollapse, dSandCollapse, dCoarseCollapse);
+   m_pRasterGrid->Cell(nX, nY).IncrCliffCollapseErosion(dFineCollapse, dSandCollapse, dCoarseCollapse);
 
    // Update the cell's layer elevations (pre talus deposition) and d50
    m_pRasterGrid->m_Cell[nX][nY].CalcAllLayerElevsAndD50();

@@ -435,4 +435,9 @@ class CGeomCell
    void SetDownDriftZoneNumber(int const);
    int nGetDownDriftZoneNumber(void) const;
 };
+
+// Include inline implementations for CGeomRasterGrid::Cell() methods
+// Must be included here after CGeomCell is fully defined to avoid circular dependency
+#include "raster_grid_inline.h"
+
 #endif // CELL_H

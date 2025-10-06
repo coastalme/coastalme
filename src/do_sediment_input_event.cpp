@@ -97,7 +97,7 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
          return RTN_ERR_SEDIMENT_INPUT_EVENT;
 
       // All OK, so get landform
-      CRWCellLandform* pLandform = m_pRasterGrid->m_Cell[nPointGridX][nPointGridY].pGetLandform();
+      CRWCellLandform* pLandform = m_pRasterGrid->Cell(nPointGridX, nPointGridY).pGetLandform();
 
       // Is this sediment input event at a pre-specified fixed point, or in a block on a coast, or where a line intersects with a coast?
       if (m_bSedimentInputAtPoint)
@@ -106,12 +106,12 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
          int const nTopLayer = m_pRasterGrid->m_Cell[nPointGridX][nPointGridY].nGetNumOfTopLayerAboveBasement();
 
          // Is this user-specified point in a polygon?
-         int const nThisPoly = m_pRasterGrid->m_Cell[nPointGridX][nPointGridY].nGetPolygonID();
+         int const nThisPoly = m_pRasterGrid->Cell(nPointGridX, nPointGridY).nGetPolygonID();
          int nThisPolyCoast = INT_NODATA;
          if (nThisPoly != INT_NODATA)
          {
             // Yes we are in a polygon, so get the coast ID of the polygon for this cell
-            nThisPolyCoast = m_pRasterGrid->m_Cell[nPointGridX][nPointGridY].nGetPolygonCoastID();
+            nThisPolyCoast = m_pRasterGrid->Cell(nPointGridX, nPointGridY).nGetPolygonCoastID();
 
             // Safety check
             if (nThisPolyCoast == INT_NODATA)
@@ -133,10 +133,10 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
          if (dFineDepth > 0)
          {
             // Yes, so add to this cell's fine unconsolidated sediment
-            m_pRasterGrid->m_Cell[nPointGridX][nPointGridY].pGetLayerAboveBasement(nTopLayer)->pGetUnconsolidatedSediment()->AddFineSedimentInputDepth(dFineDepth);
+            m_pRasterGrid->Cell(nPointGridX, nPointGridY).pGetLayerAboveBasement(nTopLayer)->pGetUnconsolidatedSediment()->AddFineSedimentInputDepth(dFineDepth);
 
             // And update the sediment top elevation value
-            m_pRasterGrid->m_Cell[nPointGridX][nPointGridY].CalcAllLayerElevsAndD50();
+            m_pRasterGrid->Cell(nPointGridX, nPointGridY).CalcAllLayerElevsAndD50();
 
             // If we are in a polygon, then add to this polygon's sand sediment input total
             if (nThisPoly != INT_NODATA)
@@ -155,10 +155,10 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
          if (dSandDepth > 0)
          {
             // Yes, so add to this cell's sand unconsolidated sediment
-            m_pRasterGrid->m_Cell[nPointGridX][nPointGridY].pGetLayerAboveBasement(nTopLayer)->pGetUnconsolidatedSediment()->AddSandSedimentInputDepth(dSandDepth);
+            m_pRasterGrid->Cell(nPointGridX, nPointGridY).pGetLayerAboveBasement(nTopLayer)->pGetUnconsolidatedSediment()->AddSandSedimentInputDepth(dSandDepth);
 
             // And update the sediment top elevation value
-            m_pRasterGrid->m_Cell[nPointGridX][nPointGridY].CalcAllLayerElevsAndD50();
+            m_pRasterGrid->Cell(nPointGridX, nPointGridY).CalcAllLayerElevsAndD50();
 
             // If we are in a polygon, then add to this polygon's sand sediment input total
             if (nThisPoly != INT_NODATA)
@@ -177,10 +177,10 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
          if (dCoarseDepth > 0)
          {
             // Yes, so add to this cell's coarse unconsolidated sediment
-            m_pRasterGrid->m_Cell[nPointGridX][nPointGridY].pGetLayerAboveBasement(nTopLayer)->pGetUnconsolidatedSediment()->AddCoarseSedimentInputDepth(dCoarseDepth);
+            m_pRasterGrid->Cell(nPointGridX, nPointGridY).pGetLayerAboveBasement(nTopLayer)->pGetUnconsolidatedSediment()->AddCoarseSedimentInputDepth(dCoarseDepth);
 
             // And update the sediment top elevation value
-            m_pRasterGrid->m_Cell[nPointGridX][nPointGridY].CalcAllLayerElevsAndD50();
+            m_pRasterGrid->Cell(nPointGridX, nPointGridY).CalcAllLayerElevsAndD50();
 
             // If we are in a polygon, then add to this polygon's coarse sediment input total
             if (nThisPoly != INT_NODATA)
@@ -212,8 +212,8 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
          if (m_nLogFileDetail >= LOG_FILE_MIDDLE_DETAIL)
             LogStream << m_ulIter << ": Closest coast point is on coast " << nCoastClosest << " at [" << nCoastX << "][" << nCoastY << "] = {" << dGridXToExtCRSX(nCoastX) << ", " << dGridYToExtCRSY(nCoastY) << "}, along-coast width of sediment block = " << dWidth << " m, coast-normal length of sediment block = " << dLen << " m" << endl;
 
-         int const nCoast = m_pRasterGrid->m_Cell[nCoastX][nCoastY].pGetLandform()->nGetCoast();
-         int const nCoastPoint = m_pRasterGrid->m_Cell[nCoastX][nCoastY].pGetLandform()->nGetPointOnCoast();
+         int const nCoast = m_pRasterGrid->Cell(nCoastX, nCoastY).pGetLandform()->nGetCoast();
+         int const nCoastPoint = m_pRasterGrid->Cell(nCoastX, nCoastY).pGetLandform()->nGetPointOnCoast();
          int const nHalfWidth = nRound(dWidth / m_dCellSide);
          int const nLength = nRound(dLen / m_dCellSide);
          int const nCoastLen = m_VCoast[nCoast].nGetCoastlineSize();
@@ -366,13 +366,13 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
             int const nY = VPoints[n].nGetY();
 
             // Add to this cell's fine unconsolidated sediment
-            m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nTopLayer)->pGetUnconsolidatedSediment()->AddFineSedimentInputDepth(dFineDepthPerCell);
+            m_pRasterGrid->Cell(nX, nY).pGetLayerAboveBasement(nTopLayer)->pGetUnconsolidatedSediment()->AddFineSedimentInputDepth(dFineDepthPerCell);
 
             // Add to this cell's sand unconsolidated sediment
-            m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nTopLayer)->pGetUnconsolidatedSediment()->AddSandSedimentInputDepth(dSandDepthPerCell);
+            m_pRasterGrid->Cell(nX, nY).pGetLayerAboveBasement(nTopLayer)->pGetUnconsolidatedSediment()->AddSandSedimentInputDepth(dSandDepthPerCell);
 
             // Add to this cell's coarse unconsolidated sediment
-            m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nTopLayer)->pGetUnconsolidatedSediment()->AddCoarseSedimentInputDepth(dCoarseDepthPerCell);
+            m_pRasterGrid->Cell(nX, nY).pGetLayerAboveBasement(nTopLayer)->pGetUnconsolidatedSediment()->AddCoarseSedimentInputDepth(dCoarseDepthPerCell);
          }
 
          // Add to the this-iteration totals
@@ -474,7 +474,7 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
             int const nY = nRound(dY);
 
             // Have we hit a coastline cell?
-            if (bIsWithinValidGrid(nX, nY) && m_pRasterGrid->m_Cell[nX][nY].bIsCoastline())
+            if (bIsWithinValidGrid(nX, nY) && m_pRasterGrid->Cell(nX, nY).bIsCoastline())
             {
                nCoastX = nX;
                nCoastY = nY;
@@ -482,7 +482,7 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
             }
 
             // Two diagonal(ish) raster lines can cross each other without any intersection, so must also test an adjacent cell for intersection (does not matter which adjacent cell)
-            if (bIsWithinValidGrid(nX, nY + 1) && m_pRasterGrid->m_Cell[nX][nY + 1].bIsCoastline())
+            if (bIsWithinValidGrid(nX, nY + 1) && m_pRasterGrid->Cell(nX, nY + 1).bIsCoastline())
             {
                nCoastX = nX;
                nCoastY = nY + 1;
@@ -514,12 +514,12 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
       int const nTopLayer = m_pRasterGrid->m_Cell[nCoastX][nCoastY].nGetNumOfTopLayerAboveBasement();
 
       // Is this intersection point in a polygon?
-      int const nThisPoly = m_pRasterGrid->m_Cell[nCoastX][nCoastY].nGetPolygonID();
+      int const nThisPoly = m_pRasterGrid->Cell(nCoastX, nCoastY).nGetPolygonID();
       int nThisPolyCoast = INT_NODATA;
       if (nThisPoly != INT_NODATA)
       {
          // Yes we are in a polygon, so get the coast ID of the polygon for this cell
-         nThisPolyCoast = m_pRasterGrid->m_Cell[nCoastX][nCoastY].nGetPolygonCoastID();
+         nThisPolyCoast = m_pRasterGrid->Cell(nCoastX, nCoastY).nGetPolygonCoastID();
 
          // Safety check
          if (nThisPolyCoast == INT_NODATA)
@@ -541,10 +541,10 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
       if (dFineDepth > 0)
       {
          // Yes, so add to this cell's fine unconsolidated sediment
-         m_pRasterGrid->m_Cell[nCoastX][nCoastY].pGetLayerAboveBasement(nTopLayer)->pGetUnconsolidatedSediment()->AddFineSedimentInputDepth(dFineDepth);
+         m_pRasterGrid->Cell(nCoastX, nCoastY).pGetLayerAboveBasement(nTopLayer)->pGetUnconsolidatedSediment()->AddFineSedimentInputDepth(dFineDepth);
 
          // And update the sediment top elevation value
-         m_pRasterGrid->m_Cell[nCoastX][nCoastY].CalcAllLayerElevsAndD50();
+         m_pRasterGrid->Cell(nCoastX, nCoastY).CalcAllLayerElevsAndD50();
 
          if (nThisPoly != INT_NODATA)
             // Add to this polygon's fine sediment input total
@@ -562,10 +562,10 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
       if (dSandDepth > 0)
       {
          // Yes, so add to this cell's sand unconsolidated sediment
-         m_pRasterGrid->m_Cell[nCoastX][nCoastY].pGetLayerAboveBasement(nTopLayer)->pGetUnconsolidatedSediment()->AddSandSedimentInputDepth(dSandDepth);
+         m_pRasterGrid->Cell(nCoastX, nCoastY).pGetLayerAboveBasement(nTopLayer)->pGetUnconsolidatedSediment()->AddSandSedimentInputDepth(dSandDepth);
 
          // And update the sediment top elevation value
-         m_pRasterGrid->m_Cell[nCoastX][nCoastY].CalcAllLayerElevsAndD50();
+         m_pRasterGrid->Cell(nCoastX, nCoastY).CalcAllLayerElevsAndD50();
 
          if (nThisPoly != INT_NODATA)
             // Add to this polygon's sand sediment input total
@@ -583,10 +583,10 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
       if (dCoarseDepth > 0)
       {
          // Yes, so add to this cell's coarse unconsolidated sediment
-         m_pRasterGrid->m_Cell[nCoastX][nCoastY].pGetLayerAboveBasement(nTopLayer)->pGetUnconsolidatedSediment()->AddCoarseSedimentInputDepth(dCoarseDepth);
+         m_pRasterGrid->Cell(nCoastX, nCoastY).pGetLayerAboveBasement(nTopLayer)->pGetUnconsolidatedSediment()->AddCoarseSedimentInputDepth(dCoarseDepth);
 
          // And update the sediment top elevation value
-         m_pRasterGrid->m_Cell[nCoastX][nCoastY].CalcAllLayerElevsAndD50();
+         m_pRasterGrid->Cell(nCoastX, nCoastY).CalcAllLayerElevsAndD50();
 
          if (nThisPoly != INT_NODATA)
             // Add to this polygon's coarse sediment input total

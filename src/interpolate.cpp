@@ -108,25 +108,47 @@ double CSimulation::dGetInterpolatedValue(vector<int> const* pVnXdata, vector<do
 }
 
 //===============================================================================================================================
-//! This is used by VdInterpolateCShoreProfileOutput, it returns the index of the value in pVdX which is less than or equal to the absolute difference between dValueIn and the pVdX value
+//! This is used by VdInterpolateCShoreProfileOutput, it returns the index of the value in pVdX which is closest to dValueIn
+//! Optimized version using binary search - assumes pVdX is sorted (monotonic)
+//! Complexity: O(log N) instead of O(N)
 //===============================================================================================================================
 int CSimulation::nFindIndex(vector<double> const* pVdX, double const dValueIn)
 {
-   double dLastValue = DBL_MAX;
-   int nIndexFound = 0;
+   int const nSize = static_cast<int>(pVdX->size());
 
-   for (unsigned int i = 0; i < pVdX->size(); ++i)
+   if (nSize == 0)
+      return 0;
+
+   if (nSize == 1)
+      return 0;
+
+   // Check if beyond bounds
+   if (dValueIn <= pVdX->at(0))
+      return 0;
+
+   if (dValueIn >= pVdX->at(nSize - 1))
+      return nSize - 1;
+
+   // Binary search to find the two points that bracket dValueIn
+   int nLeft = 0;
+   int nRight = nSize - 1;
+
+   while (nRight - nLeft > 1)
    {
-      double const dThisValue = tAbs(dValueIn - pVdX->at(i));
+      int const nMid = (nLeft + nRight) / 2;
 
-      if (dThisValue <= dLastValue)
-      {
-         dLastValue = dThisValue;
-         nIndexFound = i;
-      }
+      if (pVdX->at(nMid) <= dValueIn)
+         nLeft = nMid;
+      else
+         nRight = nMid;
    }
 
-   return nIndexFound;
+   // Now nLeft and nRight bracket dValueIn (or nLeft == nRight)
+   // Return the index of whichever is closer
+   double const dDistLeft = tAbs(dValueIn - pVdX->at(nLeft));
+   double const dDistRight = tAbs(dValueIn - pVdX->at(nRight));
+
+   return (dDistLeft <= dDistRight) ? nLeft : nRight;
 }
 
 //===============================================================================================================================

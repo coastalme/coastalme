@@ -2284,7 +2284,7 @@ void CSimulation::DoEndOfTimestepTotals(void)
             dEndIterConsSandAllCells += m_pRasterGrid->m_Cell[nX][nY].dGetConsSandDepthAllLayers();
             dEndIterConsCoarseAllCells += m_pRasterGrid->m_Cell[nX][nY].dGetConsCoarseDepthAllLayers();
 
-            double dSuspFine = m_pRasterGrid->m_Cell[nX][nY].dGetSuspendedSediment();
+            double dSuspFine = m_pRasterGrid->Cell(nX, nY).dGetSuspendedSediment();
 
             if (dSuspFine > 0)
             {
@@ -2317,14 +2317,14 @@ void CSimulation::DoEndOfTimestepTotals(void)
             }
 
             // Is this cell within a polygon?
-            if (m_pRasterGrid->m_Cell[nX][nY].nGetPolygonID() != INT_NODATA)
+            if (m_pRasterGrid->Cell(nX, nY).nGetPolygonID() != INT_NODATA)
             {
                // It is within a polygon
                dEndIterConsFineInPolygons += m_pRasterGrid->m_Cell[nX][nY].dGetConsFineDepthAllLayers();
                dEndIterConsSandInPolygons += m_pRasterGrid->m_Cell[nX][nY].dGetConsSandDepthAllLayers();
                dEndIterConsCoarseInPolygons += m_pRasterGrid->m_Cell[nX][nY].dGetConsCoarseDepthAllLayers();
 
-               dSuspFine = m_pRasterGrid->m_Cell[nX][nY].dGetSuspendedSediment();
+               dSuspFine = m_pRasterGrid->Cell(nX, nY).dGetSuspendedSediment();
 
                if (dSuspFine > 0)
                {

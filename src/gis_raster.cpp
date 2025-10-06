@@ -2679,7 +2679,7 @@ int CSimulation::nInterpolateAllDeepWaterWaveValues(void) {
         // {
         //          // Write this value to the array
         // pdRaster[nn] =
-        // m_pRasterGrid->m_Cell[nX][nY].dGetCellDeepWaterWaveAngle(); nn++;
+        // m_pRasterGrid-m_Cell[nX][nY].dGetCellDeepWaterWaveAngle(); nn++;
         // }
         // }
         //

@@ -116,7 +116,7 @@ void CSimulation::FindAllSeaCells(void)
       int const nX = m_VEdgeCell[n].nGetX();
       int const nY = m_VEdgeCell[n].nGetY();
 
-      if ((m_pRasterGrid->m_Cell[nX][nY].bIsInundated()) && (bFPIsEqual(m_pRasterGrid->m_Cell[nX][nY].dGetSeaDepth(), 0.0, TOLERANCE)))
+      if ((m_pRasterGrid->Cell(nX, nY).bIsInundated()) && (bFPIsEqual(m_pRasterGrid->Cell(nX, nY).dGetSeaDepth(), 0.0, TOLERANCE)))
          // This edge cell is below SWL and sea depth remains set to zero
          CellByCellFillSea(nX, nY);
    }
@@ -151,7 +151,7 @@ void CSimulation::CellByCellFillSea(int const nXStart, int const nYStart)
       int nX = Pti.nGetX();
       int const nY = Pti.nGetY();
 
-      while ((nX >= 0) && (!m_pRasterGrid->m_Cell[nX][nY].bBasementElevIsMissingValue()) && (m_pRasterGrid->m_Cell[nX][nY].bIsInundated()))
+      while ((nX >= 0) && (!m_pRasterGrid->Cell(nX, nY).bBasementElevIsMissingValue()) && (m_pRasterGrid->Cell(nX, nY).bIsInundated()))
          nX--;
 
       nX++;
@@ -159,23 +159,23 @@ void CSimulation::CellByCellFillSea(int const nXStart, int const nYStart)
       bool bSpanAbove = false;
       bool bSpanBelow = false;
 
-      while ((nX < m_nXGridSize) && (!m_pRasterGrid->m_Cell[nX][nY].bBasementElevIsMissingValue()) && (m_pRasterGrid->m_Cell[nX][nY].bIsInundated()) && (bFPIsEqual(m_pRasterGrid->m_Cell[nX][nY].dGetSeaDepth(), 0.0, TOLERANCE)))
+      while ((nX < m_nXGridSize) && (!m_pRasterGrid->Cell(nX, nY).bBasementElevIsMissingValue()) && (m_pRasterGrid->Cell(nX, nY).bIsInundated()) && (bFPIsEqual(m_pRasterGrid->Cell(nX, nY).dGetSeaDepth(), 0.0, TOLERANCE)))
       {
          // Set the sea depth for this cell
-         m_pRasterGrid->m_Cell[nX][nY].SetSeaDepth();
+         m_pRasterGrid->Cell(nX, nY).SetSeaDepth();
 
-         CRWCellLandform* pLandform = m_pRasterGrid->m_Cell[nX][nY].pGetLandform();
+         CRWCellLandform* pLandform = m_pRasterGrid->Cell(nX, nY).pGetLandform();
          int const nCat = pLandform->nGetLFCategory();
 
          // Have we had sediment input here?
          if ((nCat == LF_SEDIMENT_INPUT_CONSOLIDATED) || (nCat == LF_SEDIMENT_INPUT_UNCONSOLIDATED))
          {
-            if (m_pRasterGrid->m_Cell[nX][nY].bIsInundated())
+            if (m_pRasterGrid->Cell(nX, nY).bIsInundated())
             {
                m_pRasterGrid->m_Cell[nX][nY].SetInContiguousSea();
 
                // Set this sea cell to have deep water (off-shore) wave orientation and height, will change this later for cells closer to the shoreline if we have on-shore waves
-               m_pRasterGrid->m_Cell[nX][nY].SetWaveValuesToDeepWaterWaveValues();
+               m_pRasterGrid->Cell(nX, nY).SetWaveValuesToDeepWaterWaveValues();
             }
          }
          else
@@ -185,7 +185,7 @@ void CSimulation::CellByCellFillSea(int const nXStart, int const nYStart)
             pLandform->SetLFCategory(LF_SEA);
 
             // Set this sea cell to have deep water (off-shore) wave orientation and height, will change this later for cells closer to the shoreline if we have on-shore waves
-            m_pRasterGrid->m_Cell[nX][nY].SetWaveValuesToDeepWaterWaveValues();
+            m_pRasterGrid->Cell(nX, nY).SetWaveValuesToDeepWaterWaveValues();
          }
 
          // Now sort out the x-y extremities of the contiguous sea for the bounding box (used later in wave propagation)
@@ -204,22 +204,22 @@ void CSimulation::CellByCellFillSea(int const nXStart, int const nYStart)
          // Update count
          m_ulThisIterNumSeaCells++;
 
-         if ((! bSpanAbove) && (nY > 0) && (!m_pRasterGrid->m_Cell[nX][nY - 1].bBasementElevIsMissingValue()) && (m_pRasterGrid->m_Cell[nX][nY - 1].bIsInundated()))
+         if ((! bSpanAbove) && (nY > 0) && (!m_pRasterGrid->Cell(nX, nY - 1).bBasementElevIsMissingValue()) && (m_pRasterGrid->Cell(nX, nY - 1).bIsInundated()))
          {
             PtiStack.push(CGeom2DIPoint(nX, nY - 1));
             bSpanAbove = true;
          }
-         else if (bSpanAbove && (nY > 0) && (!m_pRasterGrid->m_Cell[nX][nY - 1].bBasementElevIsMissingValue()) && (!m_pRasterGrid->m_Cell[nX][nY - 1].bIsInundated()))
+         else if (bSpanAbove && (nY > 0) && (!m_pRasterGrid->Cell(nX, nY - 1).bBasementElevIsMissingValue()) && (!m_pRasterGrid->Cell(nX, nY - 1).bIsInundated()))
          {
             bSpanAbove = false;
          }
 
-         if ((! bSpanBelow) && (nY < m_nYGridSize - 1) && (!m_pRasterGrid->m_Cell[nX][nY + 1].bBasementElevIsMissingValue()) && (m_pRasterGrid->m_Cell[nX][nY + 1].bIsInundated()))
+         if ((! bSpanBelow) && (nY < m_nYGridSize - 1) && (!m_pRasterGrid->Cell(nX, nY + 1).bBasementElevIsMissingValue()) && (m_pRasterGrid->Cell(nX, nY + 1).bIsInundated()))
          {
             PtiStack.push(CGeom2DIPoint(nX, nY + 1));
             bSpanBelow = true;
          }
-         else if (bSpanBelow && (nY < m_nYGridSize - 1) && (!m_pRasterGrid->m_Cell[nX][nY + 1].bBasementElevIsMissingValue()) && (!m_pRasterGrid->m_Cell[nX][nY + 1].bIsInundated()))
+         else if (bSpanBelow && (nY < m_nYGridSize - 1) && (!m_pRasterGrid->Cell(nX, nY + 1).bBasementElevIsMissingValue()) && (!m_pRasterGrid->Cell(nX, nY + 1).bIsInundated()))
          {
             bSpanBelow = false;
          }
@@ -243,7 +243,7 @@ void CSimulation::CellByCellFillSea(int const nXStart, int const nYStart)
    // {
    //    for (int nX = 0; nX < m_nXGridSize; nX++)
    //    {
-   //    pdRaster[n++] = m_pRasterGrid->m_Cell[nX][nY].bIsInContiguousSea();
+   //    pdRaster[n++] = m_pRasterGrid->Cell(nX, nY).bIsInContiguousSea();
    //    }
    // }
    //
@@ -278,7 +278,7 @@ void CSimulation::CellByCellFillSea(int const nXStart, int const nYStart)
    // {
    //    for (int nX = 0; nX < m_nXGridSize; nX++)
    //    {
-   //       pdRaster[n++] = m_pRasterGrid->m_Cell[nX][nY].bIsInundated();
+   //       pdRaster[n++] = m_pRasterGrid->Cell(nX, nY).bIsInundated();
    //    }
    // }
    //
@@ -721,8 +721,8 @@ int CSimulation::nTraceAllCoasts(void)
       int const nYNext = m_VEdgeCell[n + 1].nGetY();
 
       // Get "Is it sea?" information for 'this' and 'next' cells
-      bool const bThisCellIsSea = m_pRasterGrid->m_Cell[nXThis][nYThis].bIsInContiguousSea();
-      bool const bNextCellIsSea = m_pRasterGrid->m_Cell[nXNext][nYNext].bIsInContiguousSea();
+      bool const bThisCellIsSea = m_pRasterGrid->Cell(nXThis, nYThis).bIsInContiguousSea();
+      bool const bNextCellIsSea = m_pRasterGrid->Cell(nXNext, nYNext).bIsInContiguousSea();
 
       // Is one cell land and the sea?
       if ((! bThisCellIsSea) && bNextCellIsSea)
@@ -1016,7 +1016,7 @@ int CSimulation::nTraceCoastLine(unsigned int const nTraceFromStartCellIndex, in
             bHasLeftStartEdge = true;
 
          // Flag this cell to ensure that it is not chosen as a coastline start cell later
-         m_pRasterGrid->m_Cell[nX][nY].SetPossibleCoastStartCell();
+         m_pRasterGrid->Cell(nX, nY).SetPossibleCoastStartCell();
          // LogStream << "Flagging [" << nX << "][" << nY << "] as possible coast start cell NOT YET LEFT EDGE" << endl;
       }
 
@@ -1264,16 +1264,16 @@ int CSimulation::nTraceCoastLine(unsigned int const nTraceFromStartCellIndex, in
       if (bIsWithinValidGrid(nXSeaward, nYSeaward))
       {
          // It is, so check if the cell in the seaward direction is a sea cell
-         if (m_pRasterGrid->m_Cell[nXSeaward][nYSeaward].bIsInContiguousSea())
+         if (m_pRasterGrid->Cell(nXSeaward, nYSeaward).bIsInContiguousSea())
          {
             // There is sea in this seaward direction, so we are on the coast
             bAtCoast = true;
 
             // Has the current cell already marked been marked as a coast cell?
-            if (! m_pRasterGrid->m_Cell[nX][nY].bIsCoastline())
+            if (! m_pRasterGrid->Cell(nX, nY).bIsCoastline())
             {
                // Not already marked, is this an intervention cell with the top above SWL?
-               if ((bIsInterventionCell(nX, nY)) && (m_pRasterGrid->m_Cell[nX][nY].dGetInterventionTopElev() >= m_dThisIterSWL))
+               if ((bIsInterventionCell(nX, nY)) && (m_pRasterGrid->Cell(nX, nY).dGetInterventionTopElev() >= m_dThisIterSWL))
                {
                   // It is, so add it to the vector
                   ILTempGridCRS.AppendIfNotPrevious(&Pti);
@@ -1301,16 +1301,16 @@ int CSimulation::nTraceCoastLine(unsigned int const nTraceFromStartCellIndex, in
       if (bIsWithinValidGrid(nXStraightOn, nYStraightOn))
       {
          // It is, so check if there is sea immediately in front
-         if (m_pRasterGrid->m_Cell[nXStraightOn][nYStraightOn].bIsInContiguousSea())
+         if (m_pRasterGrid->Cell(nXStraightOn, nYStraightOn).bIsInContiguousSea())
          {
             // Sea is in front, so we are on the coast
             bAtCoast = true;
 
             // Has the current cell already marked been marked as a coast cell?
-            if (! m_pRasterGrid->m_Cell[nX][nY].bIsCoastline())
+            if (! m_pRasterGrid->Cell(nX, nY).bIsCoastline())
             {
                // Not already marked, is this an intervention cell with the top above SWL?
-               if ((bIsInterventionCell(nX, nY)) && (m_pRasterGrid->m_Cell[nX][nY].dGetInterventionTopElev() >= m_dThisIterSWL))
+               if ((bIsInterventionCell(nX, nY)) && (m_pRasterGrid->Cell(nX, nY).dGetInterventionTopElev() >= m_dThisIterSWL))
                {
                   // It is, so add it to the vector object
                   ILTempGridCRS.AppendIfNotPrevious(&Pti);
@@ -1337,16 +1337,16 @@ int CSimulation::nTraceCoastLine(unsigned int const nTraceFromStartCellIndex, in
       if (bIsWithinValidGrid(nXAntiSeaward, nYAntiSeaward))
       {
          // It is, so check if there is sea in this anti-seaward cell
-         if (m_pRasterGrid->m_Cell[nXAntiSeaward][nYAntiSeaward].bIsInContiguousSea())
+         if (m_pRasterGrid->Cell(nXAntiSeaward, nYAntiSeaward).bIsInContiguousSea())
          {
             // There is sea on the anti-seaward side, so we are on the coast
             bAtCoast = true;
 
             // Has the current cell already marked been marked as a coast cell?
-            if (! m_pRasterGrid->m_Cell[nX][nY].bIsCoastline())
+            if (! m_pRasterGrid->Cell(nX, nY).bIsCoastline())
             {
                // Not already marked, is this an intervention cell with the top above SWL?
-               if ((bIsInterventionCell(nX, nY)) && (m_pRasterGrid->m_Cell[nX][nY].dGetInterventionTopElev() >= m_dThisIterSWL))
+               if ((bIsInterventionCell(nX, nY)) && (m_pRasterGrid->Cell(nX, nY).dGetInterventionTopElev() >= m_dThisIterSWL))
                {
                   // It is, so add it to the vector object
                   ILTempGridCRS.AppendIfNotPrevious(&Pti);
@@ -1456,7 +1456,7 @@ int CSimulation::nTraceCoastLine(unsigned int const nTraceFromStartCellIndex, in
    if ((nCoastEndX != nEndX) || (nCoastEndY != nEndY))
    {
       // The grid-edge cell at nEndX, nEndY is not already at end of ILTempGridCRS. But is the final cell in ILTempGridCRS already at the edge of the grid?
-      if (! m_pRasterGrid->m_Cell[nCoastEndX][nCoastEndY].bIsBoundingBoxEdge())
+      if (! m_pRasterGrid->Cell(nCoastEndX, nCoastEndY).bIsBoundingBoxEdge())
       {
          // The final cell in ILTempGridCRS is not a grid-edge cell, so add the grid-edge cell and mark the cell as coastline
          ILTempGridCRS.AppendIfNotPrevious(nEndX, nEndY);
@@ -1465,8 +1465,8 @@ int CSimulation::nTraceCoastLine(unsigned int const nTraceFromStartCellIndex, in
    }
 
    // Need to specify start edge and end edge for smoothing routines
-   int const nStartEdge = m_pRasterGrid->m_Cell[nStartX][nStartY].nGetBoundingBoxEdge();
-   int const nEndEdge = m_pRasterGrid->m_Cell[nEndX][nEndY].nGetBoundingBoxEdge();
+   int const nStartEdge = m_pRasterGrid->Cell(nStartX, nStartY).nGetBoundingBoxEdge();
+   int const nEndEdge = m_pRasterGrid->Cell(nEndX, nEndY).nGetBoundingBoxEdge();
 
    // Next, convert the grid coordinates in ILTempGridCRS (integer values stored as doubles) to external CRS coordinates (which will probably be non-integer, again stored as doubles). This is done now, so that smoothing is more effective
    CGeomLine LTempExtCRS;
@@ -1496,7 +1496,7 @@ int CSimulation::nTraceCoastLine(unsigned int const nTraceFromStartCellIndex, in
 
    // Now mark the coastline on the grid
    for (int n = 0; n < nCoastSize; n++)
-      m_pRasterGrid->m_Cell[ILTempGridCRS[n].nGetX()][ILTempGridCRS[n].nGetY()].SetAsCoastline(nCoast);
+      m_pRasterGrid->Cell(ILTempGridCRS[n].nGetX(), ILTempGridCRS[n].nGetY()).SetAsCoastline(nCoast);
 
    // Set the coastline (Ext CRS)
    m_VCoast[nCoast].SetCoastlineExtCRS(&LTempExtCRS);
@@ -1620,9 +1620,9 @@ int CSimulation::FindAllInundatedCells(void)
    {
       for (int nY = 0; nY < m_nYGridSize; nY++)
       {
-         m_pRasterGrid->m_Cell[nX][nY].UnSetCheckFloodCell();
-         m_pRasterGrid->m_Cell[nX][nY].UnSetInContiguousFlood();
-         m_pRasterGrid->m_Cell[nX][nY].SetAsFloodline(false);
+         m_pRasterGrid->Cell(nX, nY).UnSetCheckFloodCell();
+         m_pRasterGrid->Cell(nX, nY).UnSetInContiguousFlood();
+         m_pRasterGrid->Cell(nX, nY).SetAsFloodline(false);
       }
    }
 
@@ -1644,7 +1644,7 @@ int CSimulation::FindAllInundatedCells(void)
       int const nX = m_VEdgeCell[n].nGetX();
       int const nY = m_VEdgeCell[n].nGetY();
 
-      if ((! m_pRasterGrid->m_Cell[nX][nY].bIsCellFloodCheck()) && (m_pRasterGrid->m_Cell[nX][nY].bIsInundated()))
+      if ((! m_pRasterGrid->Cell(nX, nY).bIsCellFloodCheck()) && (m_pRasterGrid->Cell(nX, nY).bIsInundated()))
       {
          // This edge cell is below SWL and sea depth remains set to zero
          FloodFillLand(nX, nY);

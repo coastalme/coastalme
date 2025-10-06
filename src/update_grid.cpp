@@ -43,7 +43,7 @@ int CSimulation::nUpdateGrid(void)
 
    // Use OpenMP parallel reduction for thread-safe accumulation and min/max calculations
 #ifdef _OPENMP
-#pragma omp parallel for collapse(2)                                 \
+#pragma omp parallel for collapse(2) schedule(static)                \
     reduction(+ : m_ulThisIterNumCoastCells, m_dThisIterTotSeaDepth) \
     reduction(max : m_dThisIterTopElevMax)                           \
     reduction(min : m_dThisIterTopElevMin)
@@ -53,13 +53,13 @@ int CSimulation::nUpdateGrid(void)
    {
       for (int nY = 0; nY < m_nYGridSize; nY++)
       {
-         if (m_pRasterGrid->m_Cell[nX][nY].bIsCoastline())
+         if (m_pRasterGrid->Cell(nX, nY).bIsCoastline())
             m_ulThisIterNumCoastCells++;
 
-         if (m_pRasterGrid->m_Cell[nX][nY].bIsInContiguousSea())
+         if (m_pRasterGrid->Cell(nX, nY).bIsInContiguousSea())
          {
             // Is a sea cell
-            m_dThisIterTotSeaDepth += m_pRasterGrid->m_Cell[nX][nY].dGetSeaDepth();
+            m_dThisIterTotSeaDepth += m_pRasterGrid->Cell(nX, nY).dGetSeaDepth();
          }
 
          double const dTopElev = m_pRasterGrid->m_Cell[nX][nY].dGetTopElevIncSea();
@@ -83,15 +83,15 @@ int CSimulation::nUpdateGrid(void)
 
    // Parallelize the sediment distribution loop
 #ifdef _OPENMP
-#pragma omp parallel for collapse(2)
+#pragma omp parallel for collapse(2) schedule(static)
 #endif
 
    for (int nX = 0; nX < m_nXGridSize; nX++)
    {
       for (int nY = 0; nY < m_nYGridSize; nY++)
       {
-         if (m_pRasterGrid->m_Cell[nX][nY].bIsInContiguousSea())
-            m_pRasterGrid->m_Cell[nX][nY].AddSuspendedSediment(dSuspPerSeaCell);
+         if (m_pRasterGrid->Cell(nX, nY).bIsInContiguousSea())
+            m_pRasterGrid->Cell(nX, nY).AddSuspendedSediment(dSuspPerSeaCell);
       }
    }
 

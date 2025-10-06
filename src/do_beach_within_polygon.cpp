@@ -525,7 +525,7 @@ int CSimulation::nDoParallelProfileUnconsErosion(CGeomCoastPolygon* pPolygon, in
          continue;
 
       // Don't do cells twice
-      if (! m_pRasterGrid->m_Cell[nX][nY].bBeachErosionOrDepositionThisIter())
+      if (! m_pRasterGrid->Cell(nX, nY).bBeachErosionOrDepositionThisIter())
       {
          // Get this cell's current elevation
          double const dThisElevNow = m_pRasterGrid->m_Cell[nX][nY].dGetAllSedTopElevOmitTalus();
@@ -535,13 +535,13 @@ int CSimulation::nDoParallelProfileUnconsErosion(CGeomCoastPolygon* pPolygon, in
          // Subtract the two elevations
          double const dElevDiff = dThisElevNow - pVdParProfileDeanElev->at(nDistSeawardFromNewCoast);
 
-         if ((dElevDiff > 0) && (m_pRasterGrid->m_Cell[nX][nY].bIsInContiguousSea()))
+         if ((dElevDiff > 0) && (m_pRasterGrid->Cell(nX, nY).bIsInContiguousSea()))
          {
             // The current elevation is higher than the Dean elevation, so we have possible beach erosion (i.e. if not constrained by availability of unconsolidated sediment) here
             // LogStream << "\tnPoly = " << nPoly << " doing DOWN-COAST, possible beach erosion = " << dElevDiff << " at [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " <<  dGridCentroidYToExtCRSY(nY) << "} nCoastPoint = " << nCoastPoint << " nDistSeawardFromNewCoast = " << nDistSeawardFromNewCoast << " dThisElevNow = " << dThisElevNow << " Dean Elev = " << pVdParProfileDeanElev->at(nDistSeawardFromNewCoast) << endl;
 
             // Now get the number of the highest layer with non-zero thickness
-            int const nThisLayer = m_pRasterGrid->m_Cell[nX][nY].nGetTopNonZeroLayerAboveBasement();
+            int const nThisLayer = m_pRasterGrid->Cell(nX, nY).nGetTopNonZeroLayerAboveBasement();
 
             // Safety check
             if (nThisLayer == INT_NODATA)
@@ -591,7 +591,7 @@ int CSimulation::nDoParallelProfileUnconsErosion(CGeomCoastPolygon* pPolygon, in
             }
          }
 
-         else if ((dElevDiff < 0) && (m_pRasterGrid->m_Cell[nX][nY].bIsInContiguousSea()))
+         else if ((dElevDiff < 0) && (m_pRasterGrid->Cell(nX, nY).bIsInContiguousSea()))
          {
             if ((nTexture == TEXTURE_SAND) || (nTexture == TEXTURE_COARSE))
             {
@@ -612,8 +612,8 @@ int CSimulation::nDoParallelProfileUnconsErosion(CGeomCoastPolygon* pPolygon, in
 
                      if (nTexture == TEXTURE_SAND)
                      {
-                        double const dSandNow = m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nTopLayer)->pGetUnconsolidatedSediment()->dGetSandDepth();
-                        m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nTopLayer)->pGetUnconsolidatedSediment()->SetSandDepth(dSandNow + dTotToDeposit);
+                        double const dSandNow = m_pRasterGrid->Cell(nX, nY).pGetLayerAboveBasement(nTopLayer)->pGetUnconsolidatedSediment()->dGetSandDepth();
+                        m_pRasterGrid->Cell(nX, nY).pGetLayerAboveBasement(nTopLayer)->pGetUnconsolidatedSediment()->SetSandDepth(dSandNow + dTotToDeposit);
 
                         // Set the changed-this-timestep switch
                         m_bUnconsChangedThisIter[nTopLayer] = true;
@@ -630,8 +630,8 @@ int CSimulation::nDoParallelProfileUnconsErosion(CGeomCoastPolygon* pPolygon, in
 
                      if (nTexture == TEXTURE_COARSE)
                      {
-                        double const dCoarseNow = m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nTopLayer)->pGetUnconsolidatedSediment()->dGetCoarseDepth();
-                        m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nTopLayer)->pGetUnconsolidatedSediment()->SetCoarseDepth(dCoarseNow + dTotToDeposit);
+                        double const dCoarseNow = m_pRasterGrid->Cell(nX, nY).pGetLayerAboveBasement(nTopLayer)->pGetUnconsolidatedSediment()->dGetCoarseDepth();
+                        m_pRasterGrid->Cell(nX, nY).pGetLayerAboveBasement(nTopLayer)->pGetUnconsolidatedSediment()->SetCoarseDepth(dCoarseNow + dTotToDeposit);
 
                         // Set the changed-this-timestep switch
                         m_bUnconsChangedThisIter[nTopLayer] = true;
@@ -648,16 +648,16 @@ int CSimulation::nDoParallelProfileUnconsErosion(CGeomCoastPolygon* pPolygon, in
                   }
 
                   // Now update the cell's layer elevations
-                  m_pRasterGrid->m_Cell[nX][nY].CalcAllLayerElevsAndD50();
+                  m_pRasterGrid->Cell(nX, nY).CalcAllLayerElevsAndD50();
 
                   // Update the cell's sea depth
-                  m_pRasterGrid->m_Cell[nX][nY].SetSeaDepth();
+                  m_pRasterGrid->Cell(nX, nY).SetSeaDepth();
 
                   // Update the cell's beach deposition, and total beach deposition, values
-                  m_pRasterGrid->m_Cell[nX][nY].IncrBeachDeposition(dTotToDeposit);
+                  m_pRasterGrid->Cell(nX, nY).IncrBeachDeposition(dTotToDeposit);
 
                   // And set the landform category
-                  CRWCellLandform* pLandform = m_pRasterGrid->m_Cell[nX][nY].pGetLandform();
+                  CRWCellLandform* pLandform = m_pRasterGrid->Cell(nX, nY).pGetLandform();
                   int const nCat = pLandform->nGetLFCategory();
 
                   if ((nCat != LF_SEDIMENT_INPUT_UNCONSOLIDATED) && (nCat != LF_SEDIMENT_INPUT_CONSOLIDATED))
@@ -684,17 +684,17 @@ void CSimulation::ErodeCellBeachSedimentSupplyLimited(int const nX, int const nY
 
    if (nTexture == TEXTURE_FINE)
    {
-      dExistingAvailable = m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nThisLayer)->pGetUnconsolidatedSediment()->dGetFineDepth();
+      dExistingAvailable = m_pRasterGrid->Cell(nX, nY).pGetLayerAboveBasement(nThisLayer)->pGetUnconsolidatedSediment()->dGetFineDepth();
       dErodibility = m_dFineErodibilityNormalized;
    }
    else if (nTexture == TEXTURE_SAND)
    {
-      dExistingAvailable = m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nThisLayer)->pGetUnconsolidatedSediment()->dGetSandDepth();
+      dExistingAvailable = m_pRasterGrid->Cell(nX, nY).pGetLayerAboveBasement(nThisLayer)->pGetUnconsolidatedSediment()->dGetSandDepth();
       dErodibility = m_dSandErodibilityNormalized;
    }
    else if (nTexture == TEXTURE_COARSE)
    {
-      dExistingAvailable = m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nThisLayer)->pGetUnconsolidatedSediment()->dGetCoarseDepth();
+      dExistingAvailable = m_pRasterGrid->Cell(nX, nY).pGetLayerAboveBasement(nThisLayer)->pGetUnconsolidatedSediment()->dGetCoarseDepth();
       dErodibility = m_dCoarseErodibilityNormalized;
    }
 
@@ -714,32 +714,32 @@ void CSimulation::ErodeCellBeachSedimentSupplyLimited(int const nX, int const nY
    if (nTexture == TEXTURE_FINE)
    {
       // Set the value for this layer
-      m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nThisLayer)->pGetUnconsolidatedSediment()->SetFineDepth(dRemaining);
+      m_pRasterGrid->Cell(nX, nY).pGetLayerAboveBasement(nThisLayer)->pGetUnconsolidatedSediment()->SetFineDepth(dRemaining);
    }
    else if (nTexture == TEXTURE_SAND)
    {
       // Set the value for this layer
-      m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nThisLayer)->pGetUnconsolidatedSediment()->SetSandDepth(dRemaining);
+      m_pRasterGrid->Cell(nX, nY).pGetLayerAboveBasement(nThisLayer)->pGetUnconsolidatedSediment()->SetSandDepth(dRemaining);
    }
    else if (nTexture == TEXTURE_COARSE)
    {
       // Set the value for this layer
-      m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nThisLayer)->pGetUnconsolidatedSediment()->SetCoarseDepth(dRemaining);
+      m_pRasterGrid->Cell(nX, nY).pGetLayerAboveBasement(nThisLayer)->pGetUnconsolidatedSediment()->SetCoarseDepth(dRemaining);
    }
 
    // And set the changed-this-timestep switch
    m_bUnconsChangedThisIter[nThisLayer] = true;
 
    // Set the actual erosion value for this cell
-   m_pRasterGrid->m_Cell[nX][nY].SetActualBeachErosion(dRemoved);
+   m_pRasterGrid->Cell(nX, nY).SetActualBeachErosion(dRemoved);
 
    if (dRemoved > 0)
    {
       // Recalculate the elevation of every layer
-      m_pRasterGrid->m_Cell[nX][nY].CalcAllLayerElevsAndD50();
+      m_pRasterGrid->Cell(nX, nY).CalcAllLayerElevsAndD50();
 
       // And update the cell's sea depth
-      m_pRasterGrid->m_Cell[nX][nY].SetSeaDepth();
+      m_pRasterGrid->Cell(nX, nY).SetSeaDepth();
    }
 }
 
@@ -986,7 +986,7 @@ int CSimulation::nDoUnconsDepositionOnPolygon(int const nCoast, CGeomCoastPolygo
                continue;
 
             // Don't do cells twice
-            if (! m_pRasterGrid->m_Cell[nX][nY].bBeachErosionOrDepositionThisIter())
+            if (! m_pRasterGrid->Cell(nX, nY).bBeachErosionOrDepositionThisIter())
             {
                double const dTmpElev = m_pRasterGrid->m_Cell[nX][nY].dGetAllSedTopElevOmitTalus();
                double const dDiff = VdParProfileDeanElev[m] - dTmpElev;
@@ -1097,7 +1097,7 @@ int CSimulation::nDoUnconsDepositionOnPolygon(int const nCoast, CGeomCoastPolygo
             continue;
 
          // Don't do cells twice
-         if (! m_pRasterGrid->m_Cell[nX][nY].bBeachErosionOrDepositionThisIter())
+         if (! m_pRasterGrid->Cell(nX, nY).bBeachErosionOrDepositionThisIter())
          {
             // Get this cell's current elevation
             double const dThisElevNow = m_pRasterGrid->m_Cell[nX][nY].dGetAllSedTopElevOmitTalus();
@@ -1106,7 +1106,7 @@ int CSimulation::nDoUnconsDepositionOnPolygon(int const nCoast, CGeomCoastPolygo
 
             // Subtract the two elevations
             double const dElevDiff = VdParProfileDeanElev[nSeawardFromCoast] - dThisElevNow;
-            CRWCellLandform* pLandform = m_pRasterGrid->m_Cell[nX][nY].pGetLandform();
+            CRWCellLandform* pLandform = m_pRasterGrid->Cell(nX, nY).pGetLandform();
 
             if (dElevDiff > SED_ELEV_TOLERANCE)
             {
@@ -1132,9 +1132,9 @@ int CSimulation::nDoUnconsDepositionOnPolygon(int const nCoast, CGeomCoastPolygo
 
                      if (nTexture == TEXTURE_SAND)
                      {
-                        double const dSandNow = m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nTopLayer)->pGetUnconsolidatedSediment()->dGetSandDepth();
+                        double const dSandNow = m_pRasterGrid->Cell(nX, nY).pGetLayerAboveBasement(nTopLayer)->pGetUnconsolidatedSediment()->dGetSandDepth();
 
-                        m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nTopLayer)->pGetUnconsolidatedSediment()->SetSandDepth(dSandNow + dToDepositHere);
+                        m_pRasterGrid->Cell(nX, nY).pGetLayerAboveBasement(nTopLayer)->pGetUnconsolidatedSediment()->SetSandDepth(dSandNow + dToDepositHere);
 
                         // Set the changed-this-timestep switch
                         m_bUnconsChangedThisIter[nTopLayer] = true;
@@ -1145,7 +1145,7 @@ int CSimulation::nDoUnconsDepositionOnPolygon(int const nCoast, CGeomCoastPolygo
                         // LogStream << "XXXXXXX texture = " << strTexture << " dDepositedOnProfile = " << dDepositedOnProfile << " dDepositedOnPoly = " << dDepositedOnPoly << endl;
 
                         // Update the cell's beach deposition, and total beach deposition, values
-                        m_pRasterGrid->m_Cell[nX][nY].IncrBeachDeposition(dToDepositHere);
+                        m_pRasterGrid->Cell(nX, nY).IncrBeachDeposition(dToDepositHere);
 
                         dStillToDepositOnPoly -= dToDepositHere;
                         dStillToDepositOnProfile -= dToDepositHere;
@@ -1159,9 +1159,9 @@ int CSimulation::nDoUnconsDepositionOnPolygon(int const nCoast, CGeomCoastPolygo
                      }
                      else if (nTexture == TEXTURE_COARSE)
                      {
-                        double const dCoarseNow = m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nTopLayer)->pGetUnconsolidatedSediment()->dGetCoarseDepth();
+                        double const dCoarseNow = m_pRasterGrid->Cell(nX, nY).pGetLayerAboveBasement(nTopLayer)->pGetUnconsolidatedSediment()->dGetCoarseDepth();
 
-                        m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nTopLayer)->pGetUnconsolidatedSediment()->SetCoarseDepth(dCoarseNow + dToDepositHere);
+                        m_pRasterGrid->Cell(nX, nY).pGetLayerAboveBasement(nTopLayer)->pGetUnconsolidatedSediment()->SetCoarseDepth(dCoarseNow + dToDepositHere);
 
                         // Set the changed-this-timestep switch
                         m_bUnconsChangedThisIter[nTopLayer] = true;
@@ -1177,7 +1177,7 @@ int CSimulation::nDoUnconsDepositionOnPolygon(int const nCoast, CGeomCoastPolygo
                         // LogStream << "XXXXXXX texture = " << strTexture << " dDepositedOnProfile = " << dDepositedOnProfile << " dDepositedOnPoly = " << dDepositedOnPoly << endl;
 
                         // Update the cell's beach deposition, and total beach deposition, values
-                        m_pRasterGrid->m_Cell[nX][nY].IncrBeachDeposition(dToDepositHere);
+                        m_pRasterGrid->Cell(nX, nY).IncrBeachDeposition(dToDepositHere);
 
                         dStillToDepositOnPoly -= dToDepositHere;
                         dStillToDepositOnProfile -= dToDepositHere;
@@ -1195,10 +1195,10 @@ int CSimulation::nDoUnconsDepositionOnPolygon(int const nCoast, CGeomCoastPolygo
                if (bDeposited)
                {
                   // Update the cell's layer elevations
-                  m_pRasterGrid->m_Cell[nX][nY].CalcAllLayerElevsAndD50();
+                  m_pRasterGrid->Cell(nX, nY).CalcAllLayerElevsAndD50();
 
                   // Update the cell's sea depth
-                  m_pRasterGrid->m_Cell[nX][nY].SetSeaDepth();
+                  m_pRasterGrid->Cell(nX, nY).SetSeaDepth();
 
                   // And set the landform category
                   int const nCat = pLandform->nGetLFCategory();
@@ -1221,12 +1221,12 @@ int CSimulation::nDoUnconsDepositionOnPolygon(int const nCoast, CGeomCoastPolygo
                // The current elevation is higher than the Dean elevation, so we have potential beach erosion (i.e. not constrained by availability of unconsolidated sediment) here
                m_ulThisIterNumPotentialBeachErosionCells++;
 
-               m_pRasterGrid->m_Cell[nX][nY].SetPotentialBeachErosion(-dElevDiff);
+               m_pRasterGrid->Cell(nX, nY).SetPotentialBeachErosion(-dElevDiff);
 
                // LogStream << m_ulIter << ": nPoly = " << nPoly << " texture = " << strTexture << " going DOWN-COAST, potential beach erosion = " << -dElevDiff << " at [" << nX << "][" << nY << "] nCoastPoint = " << nCoastPoint << " nSeawardFromCoast = " << nSeawardFromCoast << " dThisElevNow = " << dThisElevNow << " Dean Elev = " << VdParProfileDeanElev[nSeawardFromCoast] << endl;
 
                // Now get the number of the highest layer with non-zero thickness
-               int const nThisLayer = m_pRasterGrid->m_Cell[nX][nY].nGetTopNonZeroLayerAboveBasement();
+               int const nThisLayer = m_pRasterGrid->Cell(nX, nY).nGetTopNonZeroLayerAboveBasement();
 
                // Safety check
                if (nThisLayer == INT_NODATA)
@@ -1479,7 +1479,7 @@ int CSimulation::nDoUnconsDepositionOnPolygon(int const nCoast, CGeomCoastPolygo
                   continue;
 
                // Don't do cells twice
-               if (! m_pRasterGrid->m_Cell[nX][nY].bBeachErosionOrDepositionThisIter())
+               if (! m_pRasterGrid->Cell(nX, nY).bBeachErosionOrDepositionThisIter())
                {
                   double const dTmpElev = m_pRasterGrid->m_Cell[nX][nY].dGetAllSedTopElevOmitTalus();
                   double const dDiff = VdParProfileDeanElev[m] - dTmpElev;
@@ -1590,7 +1590,7 @@ int CSimulation::nDoUnconsDepositionOnPolygon(int const nCoast, CGeomCoastPolygo
                continue;
 
             // Don't do cells twice
-            if (! m_pRasterGrid->m_Cell[nX][nY].bBeachErosionOrDepositionThisIter())
+            if (! m_pRasterGrid->Cell(nX, nY).bBeachErosionOrDepositionThisIter())
             {
                // Get this cell's current elevation
                double const dThisElevNow = m_pRasterGrid->m_Cell[nX][nY].dGetAllSedTopElevOmitTalus();
@@ -1599,7 +1599,7 @@ int CSimulation::nDoUnconsDepositionOnPolygon(int const nCoast, CGeomCoastPolygo
 
                // Subtract the two elevations
                double const dElevDiff = VdParProfileDeanElev[nSeawardFromCoast] - dThisElevNow;
-               CRWCellLandform* pLandform = m_pRasterGrid->m_Cell[nX][nY].pGetLandform();
+               CRWCellLandform* pLandform = m_pRasterGrid->Cell(nX, nY).pGetLandform();
 
                if (dElevDiff > SED_ELEV_TOLERANCE)
                {
@@ -1625,9 +1625,9 @@ int CSimulation::nDoUnconsDepositionOnPolygon(int const nCoast, CGeomCoastPolygo
 
                         if (nTexture == TEXTURE_SAND)
                         {
-                           double const dSandNow = m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nTopLayer)->pGetUnconsolidatedSediment()->dGetSandDepth();
+                           double const dSandNow = m_pRasterGrid->Cell(nX, nY).pGetLayerAboveBasement(nTopLayer)->pGetUnconsolidatedSediment()->dGetSandDepth();
 
-                           m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nTopLayer)->pGetUnconsolidatedSediment()->SetSandDepth(dSandNow + dToDepositHere);
+                           m_pRasterGrid->Cell(nX, nY).pGetLayerAboveBasement(nTopLayer)->pGetUnconsolidatedSediment()->SetSandDepth(dSandNow + dToDepositHere);
 
                            // Set the changed-this-timestep switch
                            m_bUnconsChangedThisIter[nTopLayer] = true;
@@ -1638,7 +1638,7 @@ int CSimulation::nDoUnconsDepositionOnPolygon(int const nCoast, CGeomCoastPolygo
                            // LogStream << "XXXXXXX texture = " << strTexture << " dDepositedOnProfile = " << dDepositedOnProfile << " dDepositedOnPoly = " << dDepositedOnPoly << endl;
 
                            // Update the cell's beach deposition, and total beach deposition, values
-                           m_pRasterGrid->m_Cell[nX][nY].IncrBeachDeposition(dToDepositHere);
+                           m_pRasterGrid->Cell(nX, nY).IncrBeachDeposition(dToDepositHere);
 
                            dStillToDepositOnPoly -= dToDepositHere;
                            dStillToDepositOnProfile -= dToDepositHere;
@@ -1652,9 +1652,9 @@ int CSimulation::nDoUnconsDepositionOnPolygon(int const nCoast, CGeomCoastPolygo
                         }
                         else if (nTexture == TEXTURE_COARSE)
                         {
-                           double const dCoarseNow = m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nTopLayer)->pGetUnconsolidatedSediment()->dGetCoarseDepth();
+                           double const dCoarseNow = m_pRasterGrid->Cell(nX, nY).pGetLayerAboveBasement(nTopLayer)->pGetUnconsolidatedSediment()->dGetCoarseDepth();
 
-                           m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nTopLayer)->pGetUnconsolidatedSediment()->SetCoarseDepth(dCoarseNow + dToDepositHere);
+                           m_pRasterGrid->Cell(nX, nY).pGetLayerAboveBasement(nTopLayer)->pGetUnconsolidatedSediment()->SetCoarseDepth(dCoarseNow + dToDepositHere);
 
                            // Set the changed-this-timestep switch
                            m_bUnconsChangedThisIter[nTopLayer] = true;
@@ -1670,7 +1670,7 @@ int CSimulation::nDoUnconsDepositionOnPolygon(int const nCoast, CGeomCoastPolygo
                            // LogStream << "XXXXXXX texture = " << strTexture << " dDepositedOnProfile = " << dDepositedOnProfile << " dDepositedOnPoly = " << dDepositedOnPoly << endl;
 
                            // Update the cell's beach deposition, and total beach deposition, values
-                           m_pRasterGrid->m_Cell[nX][nY].IncrBeachDeposition(dToDepositHere);
+                           m_pRasterGrid->Cell(nX, nY).IncrBeachDeposition(dToDepositHere);
 
                            dStillToDepositOnPoly -= dToDepositHere;
                            dStillToDepositOnProfile -= dToDepositHere;
@@ -1683,10 +1683,10 @@ int CSimulation::nDoUnconsDepositionOnPolygon(int const nCoast, CGeomCoastPolygo
                   if (bDeposited)
                   {
                      // Now update the cell's layer elevations
-                     m_pRasterGrid->m_Cell[nX][nY].CalcAllLayerElevsAndD50();
+                     m_pRasterGrid->Cell(nX, nY).CalcAllLayerElevsAndD50();
 
                      // Update the cell's sea depth
-                     m_pRasterGrid->m_Cell[nX][nY].SetSeaDepth();
+                     m_pRasterGrid->Cell(nX, nY).SetSeaDepth();
 
                      int const nCat = pLandform->nGetLFCategory();
 
@@ -1708,12 +1708,12 @@ int CSimulation::nDoUnconsDepositionOnPolygon(int const nCoast, CGeomCoastPolygo
                   // The current elevation is higher than the Dean elevation, so we could have beach erosion here
                   m_ulThisIterNumPotentialBeachErosionCells++;
 
-                  m_pRasterGrid->m_Cell[nX][nY].SetPotentialBeachErosion(-dElevDiff);
+                  m_pRasterGrid->Cell(nX, nY).SetPotentialBeachErosion(-dElevDiff);
 
                   // LogStream << m_ulIter << ": nPoly = " << nPoly << " texture = " << strTexture << " going UP-COAST, potential beach erosion = " << -dElevDiff << " at [" << nX << "][" << nY << "] nCoastPoint = " << nCoastPoint << " nSeawardFromCoast = " << nSeawardFromCoast << " dThisElevNow = " << dThisElevNow << " Dean Elev = " << VdParProfileDeanElev[nSeawardFromCoast] << endl;
 
                   // Now get the number of the highest layer with non-zero thickness
-                  int const nThisLayer = m_pRasterGrid->m_Cell[nX][nY].nGetTopNonZeroLayerAboveBasement();
+                  int const nThisLayer = m_pRasterGrid->Cell(nX, nY).nGetTopNonZeroLayerAboveBasement();
 
                   // Safety check
                   if (nThisLayer == INT_NODATA)
@@ -1838,7 +1838,7 @@ bool CSimulation::bElevAboveDeanElev(int const nX, int const nY, double const dE
    // TODO 075 What if it is bedrock that sticks above Dean profile?
    if (dElevDiff <= 0)
    {
-      if (m_pRasterGrid->m_Cell[nX][nY].bIsInContiguousSea())
+      if (m_pRasterGrid->Cell(nX, nY).bIsInContiguousSea())
          return true;
 
       int const nCat = pLandform->nGetLFCategory();
