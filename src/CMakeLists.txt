@@ -184,7 +184,7 @@ elseif(CMAKE_BUILD_TYPE_LC STREQUAL "relwithdebinfo")
       -fno-strict-overflow
       -fno-strict-aliasing
       -ftrivial-auto-var-init=zero
-      # -flto
+      -flto
   )
   if(CMAKE_CXX_COMPILER_ID MATCHES "^(GNU|LCC|QCC)$")
     # Production build using gcc
