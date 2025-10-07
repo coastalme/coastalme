@@ -4262,21 +4262,43 @@ bool CSimulation::bConfigureFromYamlFile(CConfiguration &config)
             config.SetFinalWaterLevel(
                hydro.GetChild("final_water_level").GetDoubleValue());
 
-         // Wave data configuration
-         if (hydro.HasChild("wave_height_time_series"))
-            config.SetWaveHeightTimeSeries(
-               hydro.GetChild("wave_height_time_series").GetValue());
-         if (hydro.HasChild("wave_height_shape_file"))
-            config.SetWaveStationDataFile(
-               hydro.GetChild("wave_height_shape_file").GetValue());
-         if (hydro.HasChild("wave_height"))
-            config.SetDeepWaterWaveHeight(
-               hydro.GetChild("wave_height").GetDoubleValue());
-         if (hydro.HasChild("wave_orientation"))
-            config.SetDeepWaterWaveOrientation(
-               hydro.GetChild("wave_orientation").GetDoubleValue());
-         if (hydro.HasChild("wave_period"))
-            config.SetWavePeriod(hydro.GetChild("wave_period").GetDoubleValue());
+         // Wave data configuration - read wave_input_mode first
+         string strWaveInputMode = "fixed";  // default
+         if (hydro.HasChild("wave_input_mode"))
+         {
+            strWaveInputMode = hydro.GetChild("wave_input_mode").GetValue();
+            config.SetWaveInputMode(strWaveInputMode);
+         }
+
+         // Conditionally read wave parameters based on input mode
+         if (strWaveInputMode == "time_series")
+         {
+            // Read time series wave inputs
+            if (hydro.HasChild("wave_height_time_series"))
+               config.SetWaveHeightTimeSeries(
+                  processFilePath(hydro.GetChild("wave_height_time_series").GetValue()));
+            if (hydro.HasChild("wave_height_shape_file"))
+               config.SetWaveStationDataFile(
+                  processFilePath(hydro.GetChild("wave_height_shape_file").GetValue()));
+         }
+         else if (strWaveInputMode == "fixed")
+         {
+            // Read fixed wave condition inputs
+            if (hydro.HasChild("wave_height"))
+               config.SetDeepWaterWaveHeight(
+                  hydro.GetChild("wave_height").GetDoubleValue());
+            if (hydro.HasChild("wave_orientation"))
+               config.SetDeepWaterWaveOrientation(
+                  hydro.GetChild("wave_orientation").GetDoubleValue());
+            if (hydro.HasChild("wave_period"))
+               config.SetWavePeriod(hydro.GetChild("wave_period").GetDoubleValue());
+         }
+         else
+         {
+            cerr << ERR << "Unknown wave_input_mode '" << strWaveInputMode
+                 << "'. Must be 'fixed' or 'time_series'" << endl;
+            return false;
+         }
 
          //  Tide data configuration
          if (hydro.HasChild("tide_data_file"))
@@ -5278,7 +5300,8 @@ bool CSimulation::bApplyConfiguration(CConfiguration const &config)
    {
       m_bHaveWaveStationData = true;
       m_strDeepWaterWaveStationsShapefile = config.GetWaveStationDataFile();
-      m_dAllCellsDeepWaterWaveHeight = config.GetDeepWaterWaveHeight();
+      // m_dAllCellsDeepWaterWaveHeight = config.GetDeepWaterWaveHeight();
+      m_strDeepWaterWavesInputFile = config.GetWaveHeightTimeSeries();
    }
 
    // Case 41: Tide data file (can be blank). This is the change (m) from still
