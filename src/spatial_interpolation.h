@@ -91,6 +91,13 @@ class SpatialInterpolator
                        int k_neighbors = 12,
                        double power = 2.0);
 
+   // Constructor for sharing k-d tree between interpolators (now public)
+   SpatialInterpolator(PointCloud const& cloud,
+                       KDTree* kdtree,
+                       std::vector<double> const& values,
+                       int k_neighbors,
+                       double power);
+
    ~SpatialInterpolator();
 
    // Interpolate at a single point
@@ -101,7 +108,7 @@ class SpatialInterpolator
                     std::vector<double>& results) const;
 
    // Get the k-d tree (for sharing between interpolators)
-   KDTree const* GetKDTree() const { return m_kdtree; }
+   KDTree* GetKDTree() const { return m_kdtree; }
 
    // Get the point cloud (for sharing between interpolators)
    PointCloud const& GetPointCloud() const { return m_cloud; }
@@ -116,13 +123,7 @@ class SpatialInterpolator
 
    static constexpr double EPSILON = 1e-10;
 
-   // Private constructor for sharing k-d tree
    friend class DualSpatialInterpolator;
-   SpatialInterpolator(PointCloud const& cloud,
-                       KDTree* kdtree,
-                       std::vector<double> const& values,
-                       int k_neighbors,
-                       double power);
 };
 
 // Optimized dual interpolator for X and Y values sharing same spatial points

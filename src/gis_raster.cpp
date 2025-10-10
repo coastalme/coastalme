@@ -73,7 +73,7 @@ void CSimulation::InitializeGDALPerformance(void) {
   // Configure GDAL for optimal performance
   // Enable GDAL threading - use all available CPU cores
 #ifdef _OPENMP
-  CPLSetConfigOption("GDAL_NUM_THREADS", "ALL_CPUS");
+  CPLSetConfigOption("GDAL_NUM_THREADS", "1");
 #else
   CPLSetConfigOption("GDAL_NUM_THREADS", "4"); // Fallback for non-OpenMP builds
 #endif
@@ -2111,10 +2111,6 @@ bool CSimulation::bWriteRasterGISFile(int const nDataItem,
       papszCategoryNames); // Not supported for some GIS formats
   CPLPopErrorHandler();
 
-  // Now write the data with optimized I/O
-  // Enable multi-threaded compression for faster writing
-  CPLSetThreadLocalConfigOption("GDAL_NUM_THREADS", "ALL_CPUS");
-
   if (CE_Failure == pBand->RasterIO(GF_Write, 0, 0, m_nXGridSize, m_nYGridSize,
                                     pdRaster, m_nXGridSize, m_nYGridSize,
                                     GDT_Float64, 0, 0, NULL)) {
@@ -2461,312 +2457,113 @@ int CSimulation::nInterpolateWavesToPolygonCells(
 //! this routine interplates these to all cells (including dry land cells)
 //===============================================================================================================================
 int CSimulation::nInterpolateAllDeepWaterWaveValues(void) {
-        // Interpolate deep water height and orientation from multiple
-        // user-supplied values
-        unsigned int const nUserPoints =
-            static_cast<unsigned int>(m_VdDeepWaterWaveStationX.size());
-
-        // Performance optimization: Enable GDAL threading for interpolation
-        CPLSetThreadLocalConfigOption("GDAL_NUM_THREADS", "ALL_CPUS");
-
-        // Call GDALGridCreate() with the GGA_InverseDistanceToAPower
-        // interpolation algorithm. It has following parameters: radius1 is the
-        // first radius (X axis if rotation angle is 0) of the search ellipse,
-        // set this to zero (the default) to use the whole point array; radius2
-        // is the second radius (Y axis if rotation angle is 0) of the search
-        // ellipse, again set this parameter to zero (the default) to use the
-        // whole point array; angle is the angle of the search ellipse rotation
-        // in degrees (counter clockwise, default 0.0); nodata is the NODATA
-        // marker to fill empty points (default 0.0) TODO 086
-        GDALGridInverseDistanceToAPowerOptions *pOptions =
-            new GDALGridInverseDistanceToAPowerOptions();
-        pOptions->dfAngle = 0;
-        pOptions->dfAnisotropyAngle = 0;
-        pOptions->dfAnisotropyRatio = 0;
-        pOptions->dfPower = 2; // Reduced from 3 to 2 for faster computation
-        pOptions->dfSmoothing =
-            50; // Reduced from 100 to 50 for faster computation
-        pOptions->dfRadius1 = 0;
-        pOptions->dfRadius2 = 0;
-        pOptions->nMaxPoints =
-            12; // Limit points for faster computation (was 0 = unlimited)
-        pOptions->nMinPoints = 3; // Minimum points needed for interpolation
-        pOptions->dfNoDataValue = m_nMissingValue;
-
-        // CPLSetConfigOption("CPL_DEBUG", "ON");
-        // CPLSetConfigOption("GDAL_NUM_THREADS", "1");
-
-        // OK, now create a gridded version of wave height: first create the
-        // GDAL context TODO 086 GDALGridContext* pContext =
-        // GDALGridContextCreate(GGA_InverseDistanceToAPower, pOptions,
-        // nUserPoints, &m_VdDeepWaterWaveStationX[0],
-        // &m_VdDeepWaterWaveStationY[0],
-        // &m_VdThisIterDeepWaterWaveStationHeight[0], true);
-        GDALGridContext *pContext = GDALGridContextCreate(
-            GGA_InverseDistanceToAPower, pOptions, nUserPoints,
-            m_VdDeepWaterWaveStationX.data(), m_VdDeepWaterWaveStationY.data(),
-            m_VdThisIterDeepWaterWaveStationHeight.data(), true);
-
-        if (pContext == NULL) {
-          delete pOptions;
-          return RTN_ERR_GRIDCREATE;
+      
+    unsigned int const nUserPoints = static_cast<unsigned int>(m_VdDeepWaterWaveStationX.size());
+    
+    if (nUserPoints < 3) {
+        // Need minimum 3 points for interpolation
+        LogStream << "ERROR: Insufficient wave station data points (" << nUserPoints << "), need at least 3" << endl;
+        return RTN_ERR_GRIDCREATE;
+    }
+    
+    // ============================================================================
+    // STEP 1: Build input point cloud
+    // ============================================================================
+    std::vector<Point2D> station_points;
+    station_points.reserve(nUserPoints);
+    
+    for (unsigned int i = 0; i < nUserPoints; i++) {
+        station_points.emplace_back(m_VdDeepWaterWaveStationX[i], 
+                                   m_VdDeepWaterWaveStationY[i]);
+    }
+    
+    // ============================================================================
+    // STEP 2: Create shared spatial interpolators 
+    // ============================================================================
+    // Use same parameters as existing nanoflann implementation
+    // k_neighbors=12 matches GDAL's nMaxPoints=12 setting
+    // power=2.0 matches GDAL's dfPower=2 setting
+    
+    SpatialInterpolator height_interp(station_points, m_VdThisIterDeepWaterWaveStationHeight, 12, 2.0);
+    
+    // Create angle and period interpolators sharing the same k-d tree for efficiency
+    SpatialInterpolator angle_interp(height_interp.GetPointCloud(), height_interp.GetKDTree(), 
+                                    m_VdThisIterDeepWaterWaveStationAngle, 12, 2.0);
+                                    
+    SpatialInterpolator period_interp(height_interp.GetPointCloud(), height_interp.GetKDTree(),
+                                     m_VdThisIterDeepWaterWaveStationPeriod, 12, 2.0);
+    
+    // ============================================================================
+    // STEP 3: Build query points (all grid cells)
+    // ============================================================================
+    std::vector<Point2D> query_points;
+    query_points.reserve(m_ulNumCells);
+    
+    for (int nY = 0; nY < m_nYGridSize; nY++) {
+        for (int nX = 0; nX < m_nXGridSize; nX++) {
+            // Convert grid coordinates to CRS coordinates  
+            double dX = dGridCentroidXToExtCRSX(nX);
+            double dY = dGridCentroidYToExtCRSY(nY);
+            query_points.emplace_back(dX, dY);
         }
-
-        // Now process the context
-        double *dHeightOut = new double[m_ulNumCells];
-        int nRet = GDALGridContextProcess(
-            pContext, 0, m_nXGridSize - 1, 0, m_nYGridSize - 1, m_nXGridSize,
-            m_nYGridSize, GDT_Float64, dHeightOut, NULL, NULL);
-
-        if (nRet == CE_Failure) {
-          delete[] dHeightOut;
-          delete pOptions;
-          return RTN_ERR_GRIDCREATE;
+    }
+    
+    // ============================================================================
+    // STEP 4: Perform batch interpolation (OpenMP parallelized)
+    // ============================================================================
+    std::vector<double> height_results, angle_results, period_results;
+    
+    // All three interpolations use the same k-d tree - very efficient!
+    height_interp.Interpolate(query_points, height_results);
+    angle_interp.Interpolate(query_points, angle_results); 
+    period_interp.Interpolate(query_points, period_results);
+    
+    // ============================================================================
+    // STEP 5: Apply results to grid (single pass, optimal cache usage)
+    // ============================================================================
+    
+    // Calculate averages for fallback (matches GDAL behavior)
+    double dAvgHeight = 0, dAvgAngle = 0, dAvgPeriod = 0;
+    int nValidHeight = 0, nValidAngle = 0, nValidPeriod = 0;
+    
+    for (size_t i = 0; i < height_results.size(); i++) {
+        if (std::isfinite(height_results[i])) {
+            dAvgHeight += height_results[i];
+            nValidHeight++;
         }
-
-        // Get rid of the context
-        GDALGridContextFree(pContext);
-
-        // Next create a gridded version of wave orientation: first create the
-        // GDAL context pContext =
-        // GDALGridContextCreate(GGA_InverseDistanceToAPower, pOptions,
-        // nUserPoints,  &(m_VdDeepWaterWaveStationX[0]),
-        // &(m_VdDeepWaterWaveStationY[0]),
-        // (&m_VdThisIterDeepWaterWaveStationAngle[0]), true);
-        pContext = GDALGridContextCreate(
-            GGA_InverseDistanceToAPower, pOptions, nUserPoints,
-            m_VdDeepWaterWaveStationX.data(), m_VdDeepWaterWaveStationY.data(),
-            m_VdThisIterDeepWaterWaveStationAngle.data(), true);
-
-        if (pContext == NULL) {
-          delete[] dHeightOut;
-          delete pOptions;
-          return RTN_ERR_GRIDCREATE;
+        if (std::isfinite(angle_results[i])) {
+            dAvgAngle += angle_results[i];
+            nValidAngle++;
         }
-
-        // Now process the context TODO 086
-        double *dAngleOut = new double[m_ulNumCells];
-        nRet = GDALGridContextProcess(
-            pContext, 0, m_nXGridSize - 1, 0, m_nYGridSize - 1, m_nXGridSize,
-            m_nYGridSize, GDT_Float64, dAngleOut, NULL, NULL);
-
-        if (nRet == CE_Failure) {
-          delete[] dHeightOut;
-          delete[] dAngleOut;
-          delete pOptions;
-          return RTN_ERR_GRIDCREATE;
+        if (std::isfinite(period_results[i])) {
+            dAvgPeriod += period_results[i];
+            nValidPeriod++;
         }
-
-        // Get rid of the context
-        GDALGridContextFree(pContext);
-
-        // OK, now create a gridded version of wave period: first create the
-        // GDAL context pContext =
-        // GDALGridContextCreate(GGA_InverseDistanceToAPower, pOptions,
-        // nUserPoints, &m_VdDeepWaterWaveStationX[0],
-        // &m_VdDeepWaterWaveStationY[0],
-        // &m_VdThisIterDeepWaterWaveStationPeriod[0], true);
-        pContext = GDALGridContextCreate(
-            GGA_InverseDistanceToAPower, pOptions, nUserPoints,
-            m_VdDeepWaterWaveStationX.data(), m_VdDeepWaterWaveStationY.data(),
-            m_VdThisIterDeepWaterWaveStationPeriod.data(), true);
-
-        if (pContext == NULL) {
-          delete pOptions;
-          return RTN_ERR_GRIDCREATE;
+    }
+    
+    if (nValidHeight > 0) dAvgHeight /= nValidHeight;
+    if (nValidAngle > 0) dAvgAngle /= nValidAngle;
+    if (nValidPeriod > 0) dAvgPeriod /= nValidPeriod;
+    
+    // Apply to grid cells in single OpenMP parallel loop
+    #pragma omp parallel for collapse(2) schedule(static)
+    for (int nY = 0; nY < m_nYGridSize; nY++) {
+        for (int nX = 0; nX < m_nXGridSize; nX++) {
+            int const idx = nY * m_nXGridSize + nX;
+            
+            // Apply height (with fallback to average)
+            double height = std::isfinite(height_results[idx]) ? height_results[idx] : dAvgHeight;
+            m_pRasterGrid->Cell(nX, nY).SetCellDeepWaterWaveHeight(height);
+            
+            // Apply angle (with fallback to average)  
+            double angle = std::isfinite(angle_results[idx]) ? angle_results[idx] : dAvgAngle;
+            m_pRasterGrid->Cell(nX, nY).SetCellDeepWaterWaveAngle(angle);
+            
+            // Apply period (with fallback to average)
+            double period = std::isfinite(period_results[idx]) ? period_results[idx] : dAvgPeriod;
+            m_pRasterGrid->Cell(nX, nY).SetCellDeepWaterWavePeriod(period);
         }
-
-        // Now process the context TODO 086
-        double *dPeriopdOut = new double[m_ulNumCells];
-        nRet = GDALGridContextProcess(
-            pContext, 0, m_nXGridSize - 1, 0, m_nYGridSize - 1, m_nXGridSize,
-            m_nYGridSize, GDT_Float64, dPeriopdOut, NULL, NULL);
-
-        if (nRet == CE_Failure) {
-          delete[] dPeriopdOut;
-          delete pOptions;
-          return RTN_ERR_GRIDCREATE;
-        }
-
-        // Get rid of the context
-        GDALGridContextFree(pContext);
-
-        // The output from GDALGridCreate() is in dHeightOut, dAngleOut and
-        // dPeriopdOut but must be reversed
-        vector<double> VdHeight;
-        vector<double> VdAngle;
-        vector<double> VdPeriod;
-
-        int n = 0;
-        int nValidHeight = 0;
-        int nValidAngle = 0;
-        int nValidPeriod = 0;
-
-        double dAvgHeight = 0;
-        double dAvgAngle = 0;
-        double dAvgPeriod = 0;
-
-        for (int nY = m_nYGridSize - 1; nY >= 0; nY--) {
-          for (int nX = 0; nX < m_nXGridSize; nX++) {
-            if (isfinite(dHeightOut[n])) {
-              VdHeight.push_back(dHeightOut[n]);
-
-              dAvgHeight += dHeightOut[n];
-              nValidHeight++;
-            }
-
-            else {
-              VdHeight.push_back(m_dMissingValue);
-            }
-
-            if (isfinite(dAngleOut[n])) {
-              VdAngle.push_back(dAngleOut[n]);
-
-              dAvgAngle += dAngleOut[n];
-              nValidAngle++;
-            }
-
-            else {
-              VdAngle.push_back(m_dMissingValue);
-            }
-
-            if (isfinite(dPeriopdOut[n])) {
-              VdPeriod.push_back(dPeriopdOut[n]);
-
-              dAvgPeriod += dPeriopdOut[n];
-              nValidPeriod++;
-            }
-
-            else {
-              VdPeriod.push_back(m_dMissingValue);
-            }
-
-            // LogStream << " nX = " << nX << " nY = " << nY << " n = " << n <<
-            // " dHeightOut[n] = " << dHeightOut[n] << " dAngleOut[n] = " <<
-            // dAngleOut[n] << endl;
-            n++;
-          }
-        }
-
-        // Calculate averages
-        dAvgHeight /= nValidHeight;
-        dAvgAngle /= nValidAngle;
-        dAvgPeriod /= nValidPeriod;
-
-        // Tidy
-        delete pOptions;
-        delete[] dHeightOut;
-        delete[] dAngleOut;
-        delete[] dPeriopdOut;
-
-        // Now update all raster cells
-        n = 0;
-
-        for (int nY = 0; nY < m_nYGridSize; nY++) {
-          for (int nX = 0; nX < m_nXGridSize; nX++) {
-            if (bFPIsEqual(VdHeight[n], m_dMissingValue, TOLERANCE))
-              m_pRasterGrid->Cell(nX, nY).SetCellDeepWaterWaveHeight(
-                  dAvgHeight);
-
-            else
-              m_pRasterGrid->Cell(nX, nY).SetCellDeepWaterWaveHeight(
-                  VdHeight[n]);
-
-            if (bFPIsEqual(VdAngle[n], m_dMissingValue, TOLERANCE))
-              m_pRasterGrid->Cell(nX, nY).SetCellDeepWaterWaveAngle(
-                  dAvgAngle);
-
-            else
-              m_pRasterGrid->Cell(nX, nY).SetCellDeepWaterWaveAngle(
-                  VdAngle[n]);
-
-            if (bFPIsEqual(VdPeriod[n], m_dMissingValue, TOLERANCE))
-              m_pRasterGrid->Cell(nX, nY).SetCellDeepWaterWavePeriod(
-                  dAvgPeriod);
-
-            else
-              m_pRasterGrid->Cell(nX, nY).SetCellDeepWaterWavePeriod(
-                  VdPeriod[n]);
-
-            // LogStream << " [" << nX << "][" << nY << "] deep water wave
-            // height = "
-            // << m_pRasterGrid->Cell(nX, nY).dGetCellDeepWaterWaveHeight() <<
-            // " deep water wave angle = " <<
-            // m_pRasterGrid->Cell(nX, nY).dGetCellDeepWaterWaveAngle() <<
-            // endl;
-            n++;
-          }
-        }
-
-        // // DEBUG CODE
-        // ===========================================================================================================
-        // string strOutFile = m_strOutPath;
-        // strOutFile += "init_deep_water_wave_height_";
-        // strOutFile += to_string(m_ulIter);
-        // strOutFile += ".tif";
-        // GDALDriver* pDriver =
-        // GetGDALDriverManager()->GetDriverByName("gtiff"); GDALDataset*
-        // pDataSet = pDriver->Create(strOutFile.c_str(), m_nXGridSize,
-        // m_nYGridSize, 1, GDT_Float64, m_papszGDALRasterOptions);
-        // pDataSet->SetProjection(m_strGDALBasementDEMProjection.c_str());
-        // pDataSet->SetGeoTransform(m_dGeoTransform);
-        // double* pdRaster = new double[m_ulNumCells];
-        // int nn = 0;
-        // for (int nY = 0; nY < m_nYGridSize; nY++)
-        // {
-        // for (int nX = 0; nX < m_nXGridSize; nX++)
-        // {
-        //          // Write this value to the array
-        // pdRaster[nn] =
-        // m_pRasterGrid->Cell(nX, nY).dGetCellDeepWaterWaveHeight(); nn++;
-        // }
-        // }
-        //
-        // GDALRasterBand* pBand = pDataSet->GetRasterBand(1);
-        // pBand->SetNoDataValue(m_nMissingValue);
-        // nRet = pBand->RasterIO(GF_Write, 0, 0, m_nXGridSize, m_nYGridSize,
-        // pdRaster, m_nXGridSize, m_nYGridSize, GDT_Float64, 0, 0, NULL);
-        //
-        // if (nRet == CE_Failure)
-        // return RTN_ERR_GRIDCREATE;
-        //
-        // GDALClose(pDataSet);
-        // // DEBUG CODE
-        // ===========================================================================================================
-
-        // // DEBUG CODE
-        // ===========================================================================================================
-        // strOutFile = m_strOutPath;
-        // strOutFile += "init_deep_water_wave_angle_";
-        // strOutFile += to_string(m_ulIter);
-        // strOutFile += ".tif";
-        // pDataSet = pDriver->Create(strOutFile.c_str(), m_nXGridSize,
-        // m_nYGridSize, 1, GDT_Float64, m_papszGDALRasterOptions);
-        // pDataSet->SetProjection(m_strGDALBasementDEMProjection.c_str());
-        // pDataSet->SetGeoTransform(m_dGeoTransform);
-        // nn = 0;
-        // for (int nY = 0; nY < m_nYGridSize; nY++)
-        // {
-        // for (int nX = 0; nX < m_nXGridSize; nX++)
-        // {
-        //          // Write this value to the array
-        // pdRaster[nn] =
-        // m_pRasterGrid->Cell(nX, nY).dGetCellDeepWaterWaveAngle(); nn++;
-        // }
-        // }
-        //
-        // pBand = pDataSet->GetRasterBand(1);
-        // pBand->SetNoDataValue(m_nMissingValue);
-        // nRet = pBand->RasterIO(GF_Write, 0, 0, m_nXGridSize, m_nYGridSize,
-        // pdRaster, m_nXGridSize, m_nYGridSize, GDT_Float64, 0, 0, NULL);
-        //
-        // if (nRet == CE_Failure)
-        // return RTN_ERR_GRIDCREATE;
-        //
-        // GDALClose(pDataSet);
-        // delete[] pdRaster;
-        // // DEBUG CODE
-        // ===========================================================================================================
-
-        return RTN_OK;
-      }
+    }
+    
+    return RTN_OK;
+}
