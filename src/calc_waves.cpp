@@ -232,7 +232,7 @@ void CSimulation::GenerateSyntheticTransects(vector<TransectWaveData> const *pVR
    // Using OpenMP to parallelize - each thread handles one pair
    int nCurrentIndex = 0;
 
-#pragma omp parallel for schedule(dynamic)
+#pragma omp parallel for schedule(static)
    for (int nPair = 0; nPair < nNumRealTransects - 1; nPair++)
    {
       int const nNumSynthetics = VnNumSyntheticsPerPair[nPair];
@@ -1353,7 +1353,7 @@ int CSimulation::nCalcWavePropertiesOnProfile(int const nCoast, int const nCoast
             dProfileBreakingWaveHeight = VdWaveHeight[nProfilePoint];
             dProfileBreakingWaveAngle = VdWaveDirection[nProfilePoint];
             dProfileBreakingDepth = m_pRasterGrid->Cell(nX, nY).dGetSeaDepth();      // Water depth for the cell 'under' this point in the profile
-            nProfileBreakingDist = nProfilePoint + 1;                                  // At the nearest point nProfilePoint = 0, so, plus one
+            nProfileBreakingDist = nProfilePoint + 1;                                // At the nearest point nProfilePoint = 0, so, plus one
 
             // LogStream << m_ulIter << ": \tcoast " << nCoast << " CShore breaking at [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "} nProfile = " << nProfile << ", nProfilePoint = " << nProfilePoint << ", dBreakingWaveHeight = " << dBreakingWaveHeight << ", dBreakingWaveAngle = " << dBreakingWaveAngle << ", dProfileBreakingDepth = " << dProfileBreakingDepth << ", nProfileBreakingDist = " << nProfileBreakingDist << endl;
          }
@@ -2486,7 +2486,7 @@ void CSimulation::CalcD50(void)
    }
 
 // Calculate the average d50 for every polygon
-#pragma omp parallel for schedule(dynamic)
+#pragma omp parallel for schedule(static)
    for (int nCoast = 0; nCoast < static_cast<int>(m_VCoast.size()); nCoast++)
    {
       for (int nPoly = 0; nPoly < m_VCoast[nCoast].nGetNumPolygons(); nPoly++)

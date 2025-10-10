@@ -20,7 +20,7 @@
 #include <cfloat>
 
 #ifdef _OPENMP
-#include <omp.h>
+   #include <omp.h>
 #endif
 
 #include "cme.h"
@@ -33,6 +33,11 @@
 //===============================================================================================================================
 int CSimulation::nUpdateGrid(void)
 {
+   // No sea cells?
+   if (m_ulThisIterNumSeaCells == 0)
+      // All land, assume this is an error
+      return RTN_ERR_NOSEACELLS;
+
    // Go through all cells in the raster grid and calculate some this-timestep totals
    m_dThisIterTopElevMax = -DBL_MAX;
    m_dThisIterTopElevMin = DBL_MAX;
@@ -41,28 +46,31 @@ int CSimulation::nUpdateGrid(void)
    m_ulThisIterNumCoastCells = 0;
    m_dThisIterTotSeaDepth = 0;
 
-   // Use OpenMP parallel reduction for thread-safe accumulation and min/max calculations
-#ifdef _OPENMP
-#pragma omp parallel for collapse(2) schedule(static)                \
-    reduction(+ : m_ulThisIterNumCoastCells, m_dThisIterTotSeaDepth) \
-    reduction(max : m_dThisIterTopElevMax)                           \
-    reduction(min : m_dThisIterTopElevMin)
-#endif
+   // Now go through all cells again and sort out suspended sediment load
+   double const dSuspPerSeaCell = m_dThisIterFineSedimentToSuspension / static_cast<double>(m_ulThisIterNumSeaCells);
+
+// Use OpenMP parallel reduction for thread-safe accumulation and min/max calculations
+#pragma omp parallel for collapse(2) schedule(static)               \
+   reduction(+ : m_ulThisIterNumCoastCells, m_dThisIterTotSeaDepth) \
+   reduction(max : m_dThisIterTopElevMax)                           \
+   reduction(min : m_dThisIterTopElevMin)
 
    for (int nX = 0; nX < m_nXGridSize; nX++)
    {
       for (int nY = 0; nY < m_nYGridSize; nY++)
       {
-         if (m_pRasterGrid->Cell(nX, nY).bIsCoastline())
+         auto this_cell = m_pRasterGrid->Cell(nX, nY);
+         if (this_cell.bIsCoastline())
             m_ulThisIterNumCoastCells++;
 
-         if (m_pRasterGrid->Cell(nX, nY).bIsInContiguousSea())
+         if (this_cell.bIsInContiguousSea())
          {
             // Is a sea cell
-            m_dThisIterTotSeaDepth += m_pRasterGrid->Cell(nX, nY).dGetSeaDepth();
+            m_dThisIterTotSeaDepth += this_cell.dGetSeaDepth();
+            this_cell.AddSuspendedSediment(dSuspPerSeaCell);
          }
 
-         double const dTopElev = m_pRasterGrid->m_Cell[nX][nY].dGetTopElevIncSea();
+         double const dTopElev = this_cell.dGetTopElevIncSea();
 
          // Get highest and lowest elevations of the top surface of the DEM
          if (dTopElev > m_dThisIterTopElevMax)
@@ -70,28 +78,6 @@ int CSimulation::nUpdateGrid(void)
 
          if (dTopElev < m_dThisIterTopElevMin)
             m_dThisIterTopElevMin = dTopElev;
-      }
-   }
-
-   // No sea cells?
-   if (m_ulThisIterNumSeaCells == 0)
-      // All land, assume this is an error
-      return RTN_ERR_NOSEACELLS;
-
-   // Now go through all cells again and sort out suspended sediment load
-   double const dSuspPerSeaCell = m_dThisIterFineSedimentToSuspension / static_cast<double>(m_ulThisIterNumSeaCells);
-
-   // Parallelize the sediment distribution loop
-#ifdef _OPENMP
-#pragma omp parallel for collapse(2) schedule(static)
-#endif
-
-   for (int nX = 0; nX < m_nXGridSize; nX++)
-   {
-      for (int nY = 0; nY < m_nYGridSize; nY++)
-      {
-         if (m_pRasterGrid->Cell(nX, nY).bIsInContiguousSea())
-            m_pRasterGrid->Cell(nX, nY).AddSuspendedSediment(dSuspPerSeaCell);
       }
    }
 

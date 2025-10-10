@@ -556,6 +556,7 @@ int CSimulation::nDoAllShadowZones(void)
 
       // =========================================================================================================================
       // The third stage: store the shadow zone boundary, cell-by-cell fill the shadow zone, then change wave properties by sweeping the shadow zone and the area downdrift from the shadow zone
+      // First pass: flood fill all shadow zones (must be serial due to shared m_VCoast writes)
       for (unsigned int nZone = 0; nZone < VILShadowBoundary.size(); nZone++)
       {
          // if (m_nLogFileDetail >= LOG_FILE_HIGH_DETAIL)
@@ -667,9 +668,16 @@ int CSimulation::nDoAllShadowZones(void)
                }
             }
 
-            // Sweep the shadow zone, changing wave orientation and height
-            DoShadowZoneAndDownDriftZone(nCoast, nZone, VnShadowBoundaryStartCoastPoint[nZone], VnShadowBoundaryEndCoastPoint[nZone]);
          }
+      }
+
+      // Second pass: sweep shadow zones and modify wave properties in parallel
+      // Each shadow zone has already been marked, so parallel processing is safe with critical sections
+      #pragma omp parallel for schedule(static) if(VILShadowBoundary.size() > 1)
+      for (unsigned int nZone = 0; nZone < VILShadowBoundary.size(); nZone++)
+      {
+         // Sweep the shadow zone, changing wave orientation and height
+         DoShadowZoneAndDownDriftZone(nCoast, nZone, VnShadowBoundaryStartCoastPoint[nZone], VnShadowBoundaryEndCoastPoint[nZone]);
       }
    }
 
@@ -981,7 +989,11 @@ void CSimulation::DoShadowZoneAndDownDriftZone(int const nCoast, int const nZone
    }
 
    // Store the downdrift boundary (external CRS), with the start point first
-   m_VCoast[nCoast].AppendShadowDowndriftBoundary(&LDownDriftBoundary);
+   // Protected with critical section since this modifies shared m_VCoast vector
+   #pragma omp critical(append_downdrift_boundary)
+   {
+      m_VCoast[nCoast].AppendShadowDowndriftBoundary(&LDownDriftBoundary);
+   }
 
    // Compare the lengths of the along-coast and the along-downdrift boundaries. The increment will be 1 for the smaller of the two, will be > 1 for the larger of the two
    int nMaxDistance;

@@ -144,7 +144,7 @@ int CSimulation::nInitGridAndCalcStillWaterLevel(void)
    // Parallel loop without reduction clauses - each thread accumulates into its own cache line
    // This approach eliminates the OpenMP reduction overhead that caused thread synchronization bottlenecks
 #ifdef _OPENMP
-#pragma omp parallel for collapse(2) schedule(static)
+#pragma omp parallel for collapse(2) schedule(static, m_ulNumCells/nMaxThreads)
 #endif
    for (int nX = 0; nX < m_nXGridSize; nX++)
    {
@@ -158,13 +158,16 @@ int CSimulation::nInitGridAndCalcStillWaterLevel(void)
 #endif
          ThreadLocalAccumulators& acc = threadAccum[tid];
 
+        // Get cell
+        auto& this_cell = m_pRasterGrid->Cell(nX, nY);
+
          // Re-initialise values for this cell
-         m_pRasterGrid->Cell(nX, nY).InitCell();
+         this_cell.InitCell();
 
          if (m_ulIter == 1)
          {
             // For the first timestep only, check to see that all cells have some sediment on them
-            double const dSedThickness = m_pRasterGrid->m_Cell[nX][nY].dGetAllSedDepthAllLayers();
+            double const dSedThickness = this_cell.dGetAllSedDepthAllLayers();
 
             if (dSedThickness <= 0)
             {
@@ -174,34 +177,33 @@ int CSimulation::nInitGridAndCalcStillWaterLevel(void)
                // In production, consider collecting problematic cells and logging after the parallel region
                if (m_nLogFileDetail >= LOG_FILE_MIDDLE_DETAIL)
                {
-#ifdef _OPENMP
-#pragma omp critical(logging)
-#endif
+// #ifdef _OPENMP
+// #pragma omp critical(logging)
+// #endif
                   LogStream << m_ulIter << ": " << WARN << "total sediment thickness is " << dSedThickness << " at [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "}" << endl;
                }
             }
 
             // For the first timestep only, calculate the elevation of all this cell's layers. During the rest of the simulation, each cell's elevation is re-calculated just after any change occurs on that cell
-            m_pRasterGrid->Cell(nX, nY).CalcAllLayerElevsAndD50();
+            this_cell.CalcAllLayerElevsAndD50();
          }
 
          // Accumulate into thread-local variables (no synchronization required!)
          // Note that these totals include sediment which is both within and outside the polygons (because we have not yet defined polygons for this iteration, duh!)
-         m_dStartIterConsFineAllCells += m_pRasterGrid->m_Cell[nX][nY].dGetConsFineDepthAllLayers();
-         m_dStartIterConsSandAllCells += m_pRasterGrid->m_Cell[nX][nY].dGetConsSandDepthAllLayers();
-         m_dStartIterConsCoarseAllCells += m_pRasterGrid->m_Cell[nX][nY].dGetConsCoarseDepthAllLayers();
-
-         m_dStartIterSuspFineAllCells += m_pRasterGrid->m_Cell[nX][nY].dGetSuspendedSediment();
-         m_dStartIterUnconsFineAllCells += m_pRasterGrid->m_Cell[nX][nY].dGetUnconsFineDepthAllLayers();
-         m_dStartIterUnconsSandAllCells += m_pRasterGrid->m_Cell[nX][nY].dGetUnconsSandDepthAllLayers();
-         m_dStartIterUnconsCoarseAllCells += m_pRasterGrid->m_Cell[nX][nY].dGetUnconsCoarseDepthAllLayers();
+         acc.dConsFine    += this_cell.dGetConsFineDepthAllLayers();
+         acc.dConsSand    += this_cell.dGetConsSandDepthAllLayers();
+         acc.dConsCoarse  += this_cell.dGetConsCoarseDepthAllLayers();
+         acc.dSuspFine    += this_cell.dGetSuspendedSediment();
+         acc.dUnconsFine  += this_cell.dGetUnconsFineDepthAllLayers();
+         acc.dUnconsSand  += this_cell.dGetUnconsSandDepthAllLayers();
+         acc.dUnconsCoarse+= this_cell.dGetUnconsCoarseDepthAllLayers();
 
          if (m_bSingleDeepWaterWaveValues)
          {
             // If we have just a single measurement for deep water waves (either given by the user, or from a single wave station) then set all cells, even dry land cells, to the same value for deep water wave height, deep water wave orientation, and deep water period
-            m_pRasterGrid->Cell(nX, nY).SetCellDeepWaterWaveHeight(m_dAllCellsDeepWaterWaveHeight);
-            m_pRasterGrid->Cell(nX, nY).SetCellDeepWaterWaveAngle(m_dAllCellsDeepWaterWaveAngle);
-            m_pRasterGrid->Cell(nX, nY).SetCellDeepWaterWavePeriod(m_dAllCellsDeepWaterWavePeriod);
+            this_cell.SetCellDeepWaterWaveHeight(m_dAllCellsDeepWaterWaveHeight);
+            this_cell.SetCellDeepWaterWaveAngle(m_dAllCellsDeepWaterWaveAngle);
+            this_cell.SetCellDeepWaterWavePeriod(m_dAllCellsDeepWaterWavePeriod);
          }
       }
    }
