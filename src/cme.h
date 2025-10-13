@@ -738,6 +738,7 @@ double const DBL_NODATA = -9999;
 string const PROGRAM_NAME = "Coastal Modelling Environment (CoastalME) version 1.4.0 (11 Nov 2025)";
 string const PROGRAM_NAME_SHORT = "CME";
 string const CME_INI = "cme.ini";
+string const CME_YAML = "cme.yaml";
 
 string const COPYRIGHT = "(C) 2025 Andres Payo and David Favis-Mortlock";
 string const LINE = "-------------------------------------------------------------------------------";
