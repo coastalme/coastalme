@@ -1600,6 +1600,7 @@ class CSimulation
    // Input and output routines
    int nHandleCommandLineParams(int, char const*[]);
    bool bReadIniFile(void);
+   bool bReadIniYamlFile(void);
    bool bReadRunDataFile(void);
    bool bReadYamlFile(void);
    bool bDetectFileFormat(string const& strFileName, bool& bIsYaml);
