@@ -244,8 +244,8 @@ int CSimulation::nTraceAllFloodCoasts(void)
       int const nYNext = m_VEdgeCell[n + 1].nGetY();
 
       // Get "Is it sea?" information for 'this' and 'next' cells
-      bool const bThisCellIsSea = m_pRasterGrid->m_Cell[nXThis][nYThis].bIsInContiguousSeaArea();
-      bool const bNextCellIsSea = m_pRasterGrid->m_Cell[nXNext][nYNext].bIsInContiguousSeaArea();
+      bool const bThisCellIsSea = m_pRasterGrid->m_Cell[nXThis][nYThis].bIsInContiguousSeaFlood();
+      bool const bNextCellIsSea = m_pRasterGrid->m_Cell[nXNext][nYNext].bIsInContiguousSeaFlood();
 
       // Are we at a coast?
       if ((! bThisCellIsSea) && bNextCellIsSea)
@@ -633,7 +633,7 @@ int CSimulation::nTraceFloodCoastLine(unsigned int const nTraceFromStartCellInde
       if (bIsWithinValidGrid(nXSeaward, nYSeaward))
       {
          // It is, so check if the cell in the seaward direction is a sea cell
-         if (m_pRasterGrid->m_Cell[nXSeaward][nYSeaward].bIsInContiguousSeaArea())
+         if (m_pRasterGrid->m_Cell[nXSeaward][nYSeaward].bIsInContiguousSeaFlood())
          {
             // There is sea in this seaward direction, so we are on the coast
             bAtCoast = true;
@@ -674,7 +674,7 @@ int CSimulation::nTraceFloodCoastLine(unsigned int const nTraceFromStartCellInde
       if (bIsWithinValidGrid(nXStraightOn, nYStraightOn))
       {
          // It is, so check if there is sea immediately in front
-         if (m_pRasterGrid->m_Cell[nXStraightOn][nYStraightOn].bIsInContiguousSeaArea())
+         if (m_pRasterGrid->m_Cell[nXStraightOn][nYStraightOn].bIsInContiguousSeaFlood())
          {
             // Sea is in front, so we are on the coast
             bAtCoast = true;
@@ -714,7 +714,7 @@ int CSimulation::nTraceFloodCoastLine(unsigned int const nTraceFromStartCellInde
       if (bIsWithinValidGrid(nXAntiSeaward, nYAntiSeaward))
       {
          // It is, so check if there is sea in this anti-seaward cell
-         if (m_pRasterGrid->m_Cell[nXAntiSeaward][nYAntiSeaward].bIsInContiguousSeaArea())
+         if (m_pRasterGrid->m_Cell[nXAntiSeaward][nYAntiSeaward].bIsInContiguousSeaFlood())
          {
             // There is sea on the anti-seaward side, so we are on the coast
             bAtCoast = true;

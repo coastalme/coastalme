@@ -921,7 +921,7 @@ class CSimulation
    //! Resistance of cliff to notch erosion
    double m_dCliffErosionResistance;
 
-   //! Notch overhang (i.e. length of horizontal incision) to initiate collapse (m)
+   //! Notch overhang (i.e. length of horizontal incision at the apex elevation) to initiate collapse (m)
    double m_dNotchIncisionAtCollapse;
 
    //! Elevation (m) of the apex of any cliff notches created during this iteration
@@ -929,6 +929,9 @@ class CSimulation
 
    //! Distance of notch base below SWL (m)
    double m_dNotchApexAboveMHW;
+
+   //! Elevation (m) of the top of any cliff notches created during this iteration
+   double m_dThisIterationNewNotchTopElev;
 
    //! Scale parameter A for cliff deposition (m^(1/3)), may be zero for auto-calculation
    double m_dCliffDepositionA;
@@ -1637,7 +1640,7 @@ class CSimulation
    int nDoAllWaveEnergyToCoastLandforms(void);
    int nDoCliffCollapse(int const, CRWCliff *, double&, double&, double&, int&, double&, double&);
    int nDoCliffCollapseTalusDeposition(int const, CRWCliff const*, double const, double const, int const);
-   int nMoveTalusToUnconsolidated(void);
+   int nMoveCliffTalusToUnconsolidated(void);
    int nUpdateGrid(void);
 
    // For cliff toe location
@@ -1731,7 +1734,8 @@ class CSimulation
    int nTruncateProfilesDifferentCoasts(int const, int const, int const, int const, int const, int const);
    int nTruncateProfileHitDifferentCoast(int const, int const, int const, int const);
    int nTruncateProfileMultiLineDifferentCoasts(CGeomProfile*, double const, double const);
-   void IncreaseCliffNotchIncision(CRWCliff*, double const);
+   bool bIncreaseCliffNotchIncision(int const, int const, int const, CRWCliff*, double const);
+   bool bCreateNotchInland(int const, int const, int const, int const);
 
    // GIS utility routines
    int nMarkBoundingBoxEdgeCells(void);
@@ -1777,6 +1781,7 @@ class CSimulation
    CGeom2DIPoint PtiFindClosestCoastPoint(int const, int const);
    int nConvertMetresToNumCells(double const) const;
    bool bIsAdjacentEdgeCell(CGeom2DIPoint const*, CGeom2DIPoint const*);
+   void GetClosestPoint(double const, double const, double const, double const, double const, double const, double&, double&);
 
    // Interpolation routines
    double dGetInterpolatedValue(vector<double> const*, vector<double> const*, double, bool);
@@ -1870,8 +1875,6 @@ class CSimulation
    void WritePolygonSortedSequence(vector<vector<vector<int>>>&);
    void WritePolygonActualMovement(vector<vector<vector<int>>>&);
    void DoEndOfRunDeletes(void);
-   void GetClosestPoint(double const, double const, double const, double const, double const, double const, double&, double&);
-
 
  protected:
  public:

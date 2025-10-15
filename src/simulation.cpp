@@ -352,6 +352,7 @@ CSimulation::CSimulation(void)
    m_dNotchIncisionAtCollapse = 0;
    m_dThisIterNewNotchApexElev = 0;
    m_dNotchApexAboveMHW = 0;
+   m_dThisIterationNewNotchTopElev = 0;
    m_dCliffDepositionA = 0;
    m_dCliffDepositionPlanviewWidth = 0;
    m_dCliffTalusMinDepositionLength = 0;
@@ -1190,7 +1191,7 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
       // Are we considering cliff collapse?
       if (m_bHaveConsolidatedSediment && m_bDoCliffCollapse)
       {
-         // Do all cliff collapses for this timestep (if any)
+         // Distribute wave energy to coast landforms (currently, this is only relevant to cliffs), maybe incise cliff notches, maybe do cliff collapses
          nRet = nDoAllWaveEnergyToCoastLandforms();
          if (nRet != RTN_OK)
             return nRet;
@@ -1200,7 +1201,7 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
             WritePolygonCliffCollapseErosion();
 
          // Move some cliff collapse talus to unconsolidated sediment
-         nRet = nMoveTalusToUnconsolidated();
+         nRet = nMoveCliffTalusToUnconsolidated();
          if (nRet != RTN_OK)
             return nRet;
       }

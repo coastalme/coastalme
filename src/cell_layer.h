@@ -69,7 +69,7 @@ class CRWCellLayer
    // double dGetConsolidationStatus(void) const;
    // void SetConsolidationStatus(double const);
 
-   CRWCellTalus* pGetTalus(void);
+   CRWCellTalus* pGetTalus(void) const;
    CRWCellTalus* pGetOrCreateTalus(void);
    void DeleteTalus(void);
 };

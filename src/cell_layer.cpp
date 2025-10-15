@@ -146,7 +146,7 @@ double CRWCellLayer::dGetTotalThickness(void) const
 // }
 
 //! Returns a pointer to the layer's talus object, or NULL if there is no talus object
-CRWCellTalus* CRWCellLayer::pGetTalus(void)
+CRWCellTalus* CRWCellLayer::pGetTalus(void) const
 {
    return m_pTalus;
 }

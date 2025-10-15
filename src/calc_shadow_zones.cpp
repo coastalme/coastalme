@@ -1180,7 +1180,6 @@ void CSimulation::DoShadowZoneAndDownDriftZone(int const nCoast, int const nZone
 
                nShadowZoneLength++;
             }
-
             else
             {
                // In downdrift zone
@@ -1201,7 +1200,6 @@ void CSimulation::DoShadowZoneAndDownDriftZone(int const nCoast, int const nZone
                   ProcessDownDriftCell(PtiRight.nGetX(), PtiRight.nGetY(), (m - nShadowZoneLength), (dLinkingLineLength - nShadowZoneLength), nZone);
             }
          }
-
          else
          {
             // We have, so the linking line has only one part: between the coast and the downdrift boundary.

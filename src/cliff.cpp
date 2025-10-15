@@ -72,19 +72,16 @@ void CRWCliff::SetNotchApexElev(double const dNewElev)
    m_dNotchApexElev = dNewElev;
 }
 
+//! Sets the horizontal incision (in external CRS units) of the erosional notch, measured inland from the side of the cell that touches the sea
+void CRWCliff::SetNotchIncision(double const dNewIncision)
+{
+   m_dNotchIncision = dNewIncision;
+}
+
 //! Returns the horizontal incision (in external CRS units) of the cliff's erosional notch (the 'overhang')
 double CRWCliff::dGetNotchIncision(void) const
 {
    return m_dNotchIncision;
-}
-
-//! Returns true if the horizontal incision of the erosional notch exceeds the critical notch incision
-bool CRWCliff::bReadyToCollapse(double const dThresholdNotchIncision) const
-{
-   if (m_dNotchIncision > dThresholdNotchIncision)
-      return true;
-   else
-      return false;
 }
 
 //! Increases the horizontal incision (in external CRS units) of the erosional notch, measured inland from the side of the cell that touches the sea
@@ -96,6 +93,15 @@ void CRWCliff::IncreaseNotchIncision(double const dLenIn)
    m_dNotchIncision = tMin(m_dNotchIncision, m_dMaxNotchIncision);
 
    // assert((m_dMaxNotchIncision - m_dNotchIncision) >=0);
+}
+
+//! Returns true if the horizontal incision of the erosional notch exceeds the critical notch incision
+bool CRWCliff::bReadyToCollapse(double const dThresholdNotchIncision) const
+{
+   if (m_dNotchIncision > dThresholdNotchIncision)
+      return true;
+   else
+      return false;
 }
 
 //! Instantiates the pure virtual function in the abstract parent class, so that CRWCliff is not an abstract class

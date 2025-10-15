@@ -115,8 +115,7 @@ class CGeomCell
    //! Depth of still water (m), is zero if not inundated
    double m_dSeaDepth;
 
-   //! Total depth of still water (m) since beginning of simulation (used to calc
-   //! average)
+   //! Total depth of still water (m) since beginning of simulation (used to calc average)
    double m_dTotSeaDepth;
 
    //! Wave height (m)
@@ -245,7 +244,7 @@ class CGeomCell
    bool bIsFloodBySetupSurge(void) const;
    void SetFloodBySetupSurgeRunup(void);
    bool bIsFloodBySetupSurgeRunup(void) const;
-   bool bIsInContiguousSeaArea(void) const;
+   bool bIsInContiguousSeaFlood(void) const;
 
    void SetInActiveZone(bool const);
    bool bIsInActiveZone(void) const;
@@ -304,7 +303,7 @@ class CGeomCell
    void SetSlopeForCliffToe(double const);
    double dGetSlopeForCliffToe(void) const;
 
-   double dGetTalusDepth(void);
+   double dGetTalusDepth(void) const;
 
    // double dGetVolEquivSedTopElev(void) const;
    double dGetSedimentTopElevOmitTalus(void) const;

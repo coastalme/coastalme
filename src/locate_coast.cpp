@@ -539,7 +539,7 @@ int CSimulation::nTraceCoastLine(unsigned int const nTraceFromStartCellIndex, in
                if ((nX == nXPoss) && (nY == nYPoss))
                {
                   if (m_nLogFileDetail >= LOG_FILE_HIGH_DETAIL)
-                     LogStream << m_ulIter << ": \tpossible coastline found, traced from [" << nStartX << "][" << nStartY << "]  = {" << dGridCentroidXToExtCRSX(nStartX) << ", " << dGridCentroidYToExtCRSY(nStartY) << "}, hit another possible coast start cell at [" << nX << "][" << nY << "]  = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "}" << endl;
+                     LogStream << m_ulIter << ": \tpossible coastline found, traced from [" << nStartX << "][" << nStartY << "]  = {" << dGridCentroidXToExtCRSX(nStartX) << ", " << dGridCentroidYToExtCRSY(nStartY) << "}, ended at possible coast start cell at [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "}" << endl;
 
                   pVbTraced->at(nn) = true;
                   bHitStartCell = true;
@@ -889,7 +889,10 @@ int CSimulation::nTraceCoastLine(unsigned int const nTraceFromStartCellIndex, in
       }
    } while (true);
 
-   // OK, we have finished tracing this coastline on the grid. But is the coastline too long or too short?
+   // OK, we have finished tracing this coastline on the grid, next remove any duplicates from the new coastline
+   ILTempGridCRS.RemoveDuplicates();
+
+   // Is the coastline too long or too short?
    int nCoastSize = ILTempGridCRS.nGetSize();
 
    if (bOffEdge)

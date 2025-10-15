@@ -381,7 +381,6 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
          m_dThisiterUnconsCoarseInput += dCoarseDepth;
       }
    }
-
    else if (m_bSedimentInputAlongLine)
    {
       // The location of the sediment input event is where a line intersects a coast. First get the line, using values read from the shapefile

@@ -49,10 +49,11 @@ class CRWCliff : public CACoastLandform
 
    void SetNotchApexElev(double const);
    double dGetNotchApexElev(void) const;
+   void SetNotchIncision(double const);
    double dGetNotchIncision(void) const;
+   void IncreaseNotchIncision(double const);
 
    bool bReadyToCollapse(double const) const;
-   void IncreaseNotchIncision(double const);
 
    void Display(void) override;
 };

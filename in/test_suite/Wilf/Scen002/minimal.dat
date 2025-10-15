@@ -43,12 +43,13 @@ GIS vector files to output                                         ["all", or fr
 GIS vector output format                                                                     : ESRI Shapefile ; ogrinfo --formats for others
 Time series files to output                                        ["all", or from codes.txt]: all          ; beach_change_net
 
-Coastline smoothing                          [0 = none, 1 = running mean, 2 = Savitzky-Golay]: 1
-Coastline smoothing window size                                                 [must be odd]: 31
+Coastline smoothing                          [0 = none, 1 = running mean, 2 = Savitzky-Golay]: 2
+Coastline smoothing window size                                                 [must be odd]: 13
 Polynomial order for Savitzky-Golay coastline smoothing                              [2 or 4]: 4
 Grid edge(s) to omit when searching for coastline                                      [NSWE]: W
 
-Profile slope running-mean smoothing window size                        [must be zero or odd]: 5
+
+Profile slope running-mean smoothing window size                        [must be zero or odd]: 0
 Max local slope (m/m)                                                                        : 1.18
 
 Maximum elevation of beach above SWL                                                      [m]: 10
@@ -93,10 +94,10 @@ Breaking wave height to water depth ratio (non dimensional)                     
 
 ; Sediment data --------------------------------------------------------------------------------------------------------
 Simulate coast platform erosion?                                                             : n
-Resistance to erosion of coast platform (m^(9/4)s^(3/2))                                     : 7e6        ; [2-6]e6 to produce 0.6 m/yr recession (Walkden & Hall, 2011)
+Resistance to erosion of coast platform (m^(9/4)s^(3/2))                                     : 8e6          ; [2-6]e6 to produce 0.6 m/yr recession (Walkden & Hall, 2011)
 
 Simulate beach sediment transport?                                                           : y
-Beach sediment transport at grid edges                [0 = closed, 1 = open, 2 = recirculate]: 2
+Beach sediment transport at grid edges                [0 = closed, 1 = open, 2 = recirculate]: 1
 
 Beach potential erosion/deposition equation                          [0 = CERC, 1 = Kamphuis]: 0
 

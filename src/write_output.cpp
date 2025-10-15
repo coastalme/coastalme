@@ -110,7 +110,7 @@ void CSimulation::WriteStartRunDetails(void)
              << m_strOutFile << endl;
 #endif
 
-   LogStream << "Log file (this file)                                      \t: "
+   LogStream << "Log file (this file)                                       \t: "
 #ifdef _WIN32
              << pstrChangeToForwardSlash(&m_strOutFile) << endl;
 #else
@@ -136,7 +136,7 @@ void CSimulation::WriteStartRunDetails(void)
 
    OutStream << endl;
 
-   LogStream << "Level of Log detail                                       \t: ";
+   LogStream << "Level of Log detail                                        \t: ";
 
    if (m_nLogFileDetail == LOG_FILE_LOW_DETAIL)
       LogStream << "1 (least detail)";
@@ -150,7 +150,9 @@ void CSimulation::WriteStartRunDetails(void)
    else if (m_nLogFileDetail == LOG_FILE_ALL)
       LogStream << "4 (everything)";
 
-   LogStream << "GDAL performance optimisations enabled: " << (m_bGDALOptimisations ? "Y" : "N") << endl;
+   LogStream << endl;
+
+   LogStream << "GDAL performance optimisations enabled                     \t: " << (m_bGDALOptimisations ? "Y" : "N") << endl;
 
    LogStream << endl << endl;
 

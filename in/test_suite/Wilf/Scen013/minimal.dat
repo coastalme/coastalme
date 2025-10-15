@@ -46,8 +46,8 @@ Time series files to output                                                   [s
 ;Get problems here since if the coastline vector has been heavily smoothed.
 ;This can result is 'false positives' profiles marked as invalid which are not actually invalid, because the profile hits land when m = 0 or m = 1.
 ;This results in some cells being flagged as profile cells which are actually inland
-Coastline smoothing                          [0 = none, 1 = running mean, 2 = Savitzky-Golay]: 1
-Coastline smoothing window size                                                 [must be odd]: 7
+Coastline smoothing                          [0 = none, 1 = running mean, 2 = Savitzky-Golay]: 2
+Coastline smoothing window size                                                 [must be odd]: 13                       ; 7 is min?
 Polynomial order for Savitzky-Golay coastline smoothing                              [2 or 4]: 4
 Grid edge(s) to omit when searching for coastline                                      [NSWE]: W
 
@@ -95,10 +95,10 @@ Breaking wave height to water depth ratio (non dimensional)                     
 
 ; Sediment data --------------------------------------------------------------------------------------------------------
 Simulate coast platform erosion?                                                             : y
-Resistance to erosion of coast platform (m^(9/4)s^(3/2))                                     : 7e6        ; [2-6]e6 to produce 0.6 m/yr recession (Walkden & Hall, 2011)
+Resistance to erosion of coast platform (m^(9/4)s^(3/2))                                     : 8e6          ; [2-6]e6 to produce 0.6 m/yr recession (Walkden & Hall, 2011)
 
 Simulate beach sediment transport?                                                           : y
-Beach sediment transport at grid edges                [0 = closed, 1 = open, 2 = recirculate]: 2
+Beach sediment transport at grid edges                [0 = closed, 1 = open, 2 = recirculate]: 1
 
 Beach potential erosion/deposition equation                          [0 = CERC, 1 = Kamphuis]: 0
 

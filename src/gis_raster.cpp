@@ -1158,9 +1158,11 @@ bool CSimulation::bWriteRasterGISFile(int const nDataItem, string const *strPlot
       strFilePathName.append(RASTER_TOTAL_CLIFF_COLLAPSE_DEPOSITION_COARSE_NAME);
       break;
 
+#ifdef _DEBUG
    case (RASTER_PLOT_CLIFF_COLLAPSE_TIMESTEP):
       strFilePathName.append(RASTER_CLIFF_COLLAPSE_TIMESTEP_NAME);
       break;
+#endif
 
    case (RASTER_PLOT_CLIFF_NOTCH_ALL):
       strFilePathName.append(RASTER_CLIFF_NOTCH_ALL_NAME);
@@ -1599,10 +1601,12 @@ bool CSimulation::bWriteRasterGISFile(int const nDataItem, string const *strPlot
             dTmp = m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->dGetCliffNotchIncisionDepth();
             break;
 
+#ifdef _DEBUG
          case (RASTER_PLOT_CLIFF_COLLAPSE_TIMESTEP):
             dTmp = static_cast<double>(m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->ulGetCliffCollapseTimestep());
             bIsUnsignedLong = true;
             break;
+#endif
 
          case (RASTER_PLOT_INTERVENTION_HEIGHT):
             dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetInterventionHeight();
@@ -1840,7 +1844,9 @@ bool CSimulation::bWriteRasterGISFile(int const nDataItem, string const *strPlot
       strUnits = "none";
    case (RASTER_PLOT_ACTIVE_ZONE):
    case (RASTER_PLOT_BEACH_MASK):
+#ifdef _DEBUG
    case (RASTER_PLOT_CLIFF_COLLAPSE_TIMESTEP):
+#endif
    case (RASTER_PLOT_COAST):
    case (RASTER_PLOT_INTERVENTION_CLASS):
    case (RASTER_PLOT_INUNDATION_MASK):

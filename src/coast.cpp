@@ -211,7 +211,7 @@ void CRWCoast::SetCoastlineGridCRS(CGeomILine const* pILCoastCells)
 // m_ILCellsMarkedAsCoastline.Append(CGeom2DIPoint(nX, nY));
 // }
 
-//! Returns the coordinates (grid CRS) of the cells marked as coastline
+//! Returns the coordinates (grid CRS) of the cell marked as coastline
 CGeom2DIPoint* CRWCoast::pPtiGetCellMarkedAsCoastline(int const n)
 {
    // TODO 055 No check to see if n < size()

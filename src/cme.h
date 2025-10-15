@@ -146,8 +146,7 @@
    TODO 014 Profile spacing, could try gradually increasing the profile spacing with increasing concavity, and decreasing the profile spacing with increasing convexity
    TODO 016 Check mass balance for recirculating unconsolidated sediment option
    TODO 023 Only calculate shore platform erosion if cell is in a polygon
-   TODO 024 Should we calculate platform erosion on a profile that has hit dry
-   land?
+   TODO 024 Should we calculate platform erosion on a profile that has hit dry land?
    TODO 044 Implement estuaries
    TODO 051 Implement other ways of calculating depth of closure, see TODO 045
    TODO 056 Check this please Andres
@@ -166,6 +165,11 @@
    TODO 088 In (almost) all whole-grid loops, immediately continue if cell is hinterland (but not when calculating cliff collapse)
    TODO 090 At present, sediment cannot move from a given coastline polygon to a polygon belonging to another coastline. Is this always true?
    TODO 091 These should not be LF categories
+   TODO 092 If we have only fine sediment, the surface formed as the coast recedes inland is dead level (because fine sediment goes to suspension, and hence the Dean profile stuff does not operate). This causes problems with profile creation and CShore. Need to impose a small slope here somehow
+   TODO 093 There are a number of cell attributes that are really only useful for debugging. To keep memory usage down on release versions, need to flag these attributes and their methods so that they are included only in debug versions
+   TODO 094 Problems with sediment recirculation when large volumes of sedimentare introduced at the input end of the coast: need to spread this input sediment over the whole of the grid-end polygon
+   TODO 095 Parallel profiles seem to create "streaks" of above-water sediment, these streaks interfere with subsequent profile creation (profiles which hit steaks arte marked as invalid). Investigate this
+   TODO 096 It is OK to specify OGRFieldDefn objects as const in recent versions (e.g. 14.2) of g++, but in older versions of g++ (e.g. 12.2) have problems with const here. Maybe make the const a pre-processor condion?
 
    OUTPUT
    TODO 065 Get GPKG output working: GDAL 3.9.1 does not yet implement this correctly. Currently is OK for vector output (but is very slow), not yet working for raster output
@@ -182,7 +186,7 @@
    TODO 074 Output history of what landforms are on a particular cell or cells. User inputs cell(s), how?
    TODO 082 Also show m_dStartIterUnconsFineAllCells etc. in log file
 
-   090 is max
+   096 is max
 
    COMPLETED
    TODO 003 Make coastline curvature moving window size a user input DONE in 1.1.22
@@ -378,8 +382,6 @@ int const CSHOREARRAYOUTSIZE = 1000;
 int const FLOOD_FILL_START_OFFSET = 2;                   // In cells: cell-by-cell fill starts this distance inside polygon
 int const GRID_MARGIN = 10;                              // Ignore this many along-coast grid-edge points re. shadow zone calcs
 int const INT_NODATA = -9999;                            // CME's internal NODATA value for ints
-int const MAX_CLIFF_TALUS_LENGTH = 100;                  // In cells: maximum length of the Dean  profile for cliff collapse talus
-int const MAX_SEAWARD_OFFSET_FOR_CLIFF_TALUS = 30;       // In cells: maximum distance that the Dean profile for cliff collapse talus can be offset from the coast
 int const MAX_LEN_SHADOW_LINE_TO_IGNORE = 200;           // In cells: if can't find cell-by-cell fill start point, continue if short shadow line
 int const MAX_NUM_PREV_ORIENTATION_VALUES = 10;          // Max length of deque used in tracing shadow boundary
 int const MAX_NUM_SHADOW_ZONES = 10;                     // Consider at most this number of shadow zones
@@ -522,7 +524,9 @@ int const RASTER_PLOT_CLIFF_COLLAPSE_DEPOSITION_SAND = 13;
 int const RASTER_PLOT_CLIFF_COLLAPSE_EROSION_COARSE = 14;
 int const RASTER_PLOT_CLIFF_COLLAPSE_EROSION_FINE = 15;
 int const RASTER_PLOT_CLIFF_COLLAPSE_EROSION_SAND = 16;
+#ifdef _DEBUG
 int const RASTER_PLOT_CLIFF_COLLAPSE_TIMESTEP = 17;
+#endif
 int const RASTER_PLOT_CLIFF_NOTCH_ALL = 18;
 int const RASTER_PLOT_CLIFF_TOE = 19;
 int const RASTER_PLOT_COARSE_CONSOLIDATED_SEDIMENT = 20;
@@ -751,10 +755,10 @@ double const CLIFF_COLLAPSE_HEIGHT_INCREMENT = 0.1;         // Increment the fra
 double const INTERVENTION_PROFILE_SPACING_FACTOR = 0.5;     // Profile spacing on interventions works better if it is smaller than profile spacing on coastline
 
 double const CLIFF_NOTCH_CUTOFF_DISTANCE = 2;               // Cut-off SWL distance (m), measured downwards from the cliff notch apex: below this there is no notch incision
-
+double const CLIFF_NOTCH_HEIGHT_ABOVE_APEX_ELEV = 0.05;     // Vertical distance (m) from the cliff notch apex to the top of the incised notch
 double const DBL_NODATA = -9999;
 
-string const PROGRAM_NAME = "Coastal Modelling Environment (CoastalME) version 1.4.0 (26 Sep 2025)";
+string const PROGRAM_NAME = "Coastal Modelling Environment (CoastalME) version 1.4.0 (15 Oct 2025)";
 string const PROGRAM_NAME_SHORT = "CME";
 string const CME_INI = "cme.ini";
 
@@ -1005,7 +1009,9 @@ string const RASTER_PLOT_CLIFF_COLLAPSE_DEPOSITION_SAND_TITLE = "Depth of sand t
 string const RASTER_PLOT_CLIFF_COLLAPSE_EROSION_COARSE_TITLE = "Cliff collapse depth of erosion, coarse sediment";
 string const RASTER_PLOT_CLIFF_COLLAPSE_EROSION_FINE_TITLE = "Cliff collapse depth of erosion, fine sediment";
 string const RASTER_PLOT_CLIFF_COLLAPSE_EROSION_SAND_TITLE = "Cliff collapse depth of erosion, sand sediment";
+#ifdef _DEBUG
 string const RASTER_PLOT_CLIFF_COLLAPSE_TIMESTEP_TITLE = "Timestep at which cliff collapse occurred";
+#endif
 string const RASTER_PLOT_CLIFF_NOTCH_ALL_TITLE = "All cliff notch incision";
 string const RASTER_PLOT_CLIFF_TOE_TITLE = "Cliff toe cells";
 string const RASTER_PLOT_COARSE_CONSOLIDATED_SEDIMENT_TITLE = "Consolidated coarse sediment depth";
