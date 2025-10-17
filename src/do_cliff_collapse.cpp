@@ -485,6 +485,10 @@ bool CSimulation::bIncreaseCliffNotchIncision(int const nCoast, int const nX, in
    // Get the coastline point of the cliff
    int const nCoastPoint = pCliff->nGetPointOnCoast();
 
+   // And get the wave runup at this point
+   double const dRunup = m_VCoast[nCoast].dGetRunUp(nCoastPoint);
+   double const dWaveElev = m_dThisIterSWL + dRunup;
+
    // Get the apex elevation of the cliff notch
    double const dNotchApexElev = pCliff->dGetNotchApexElev();
 
@@ -492,17 +496,12 @@ bool CSimulation::bIncreaseCliffNotchIncision(int const nCoast, int const nX, in
    if (! bFPIsEqual(dNotchApexElev, DBL_NODATA, TOLERANCE))
    {
       // This is a notch in this cliff object
-      double dNotchTopElev = dNotchApexElev + CLIFF_NOTCH_HEIGHT_ABOVE_APEX_ELEV;
       double const dSedTopElevNoTalus = m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElevOmitTalus();
 
-      assert(dNotchTopElev < dSedTopElevNoTalus);
+      assert(dNotchApexElev < dSedTopElevNoTalus);
 
       // Get the cutoff elevation (if this-iteration SWL is below this, there is no incision)
       double const dCutoffElev = dNotchApexElev - CLIFF_NOTCH_CUTOFF_DISTANCE;
-
-      // And get the wave runup at this point
-      double const dRunup = m_VCoast[nCoast].dGetRunUp(nCoastPoint);
-      double const dWaveElev = m_dThisIterSWL + dRunup;
 
       if (dWaveElev < dCutoffElev)
       {
@@ -510,12 +509,12 @@ bool CSimulation::bIncreaseCliffNotchIncision(int const nCoast, int const nX, in
 #if _DEBUG
          double const dSedTopElevIncTalus = m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElevIncTalus();
 
-         LogStream << m_ulIter << ": \tNO incision of existing notch at [" << nX << "][" << nY << "] dWaveElev = " << dWaveElev << " dCutoffElev = " << dCutoffElev << " dRunup = " << dRunup << " dNotchApexElev = " << dNotchApexElev << " dNotchTopElev = " << dNotchTopElev << " dSedTopElevNoTalus = " << dSedTopElevNoTalus << " dSedTopElevIncTalus = " << dSedTopElevIncTalus << endl;
+         LogStream << m_ulIter << ": \tNO incision of existing notch at [" << nX << "][" << nY << "] dWaveElev = " << dWaveElev << " dCutoffElev = " << dCutoffElev << " dRunup = " << dRunup << " dNotchApexElev = " << dNotchApexElev << " dSedTopElevNoTalus = " << dSedTopElevNoTalus << " dSedTopElevIncTalus = " << dSedTopElevIncTalus << endl;
 #endif
          return false;
       }
 
-      // We have some notch incision of this existing notch
+      // SWL is above the cutoff, so we have some incision of this existing notch
       double dWeight;
       if (dWaveElev > dNotchApexElev)
          // Should not happen: safety check
@@ -530,8 +529,11 @@ bool CSimulation::bIncreaseCliffNotchIncision(int const nCoast, int const nX, in
       // Deepen the cliff object's erosional notch as a result of wave energy during this timestep. Note that notch deepening may be constrained, since this-timestep notch extension cannot exceed the length (i.e. cellside minus notch depth) of sediment remaining on the cell
       pCliff->IncreaseNotchIncision(dNotchIncision);
 
+      // And add to the cell's accumulated wave energy
+      m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->AddToAccumWaveEnergy(dWaveEnergy* dWeight);
+
 #if _DEBUG
-      LogStream << m_ulIter << ": \tincision of existing notch at [" << nX << "][" << nY << "] dWaveElev = " << dWaveElev << " dCutoffElev = " << dCutoffElev << " dRunup = " << dRunup << "  dWeight = " << dWeight << " dNotchApexElev = " << dNotchApexElev << " dNotchTopElev = " << dNotchTopElev << " dSedTopElevNoTalus = " << dSedTopElevNoTalus << " dNotchIncision = " << dNotchIncision << endl;
+      LogStream << m_ulIter << ": \tincision of existing notch at [" << nX << "][" << nY << "] dWaveElev = " << dWaveElev << " dCutoffElev = " << dCutoffElev << " dRunup = " << dRunup << "  dWeight = " << dWeight << " dNotchApexElev = " << dNotchApexElev << " dSedTopElevNoTalus = " << dSedTopElevNoTalus << " dNotchIncision = " << dNotchIncision << endl;
 #endif
       return true;
    }
@@ -539,9 +541,8 @@ bool CSimulation::bIncreaseCliffNotchIncision(int const nCoast, int const nX, in
    {
       // No notch in this cliff object. Can we create one?
       double const dSedTopElevNoTalus = m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElevOmitTalus();
-      double dNotchTopElev = m_dThisIterNewNotchApexElev + CLIFF_NOTCH_HEIGHT_ABOVE_APEX_ELEV;
 
-      if (dNotchTopElev < dSedTopElevNoTalus)
+      if (m_dThisIterNewNotchApexElev < dSedTopElevNoTalus)
       {
          // Yes we can create a notch here
          pCliff->SetNotchApexElev(m_dThisIterNewNotchApexElev);
@@ -550,17 +551,13 @@ bool CSimulation::bIncreaseCliffNotchIncision(int const nCoast, int const nX, in
          // Get the cutoff elevation (if this-iteration SWL is below this, there is no incision)
          double const dCutoffElev = m_dThisIterNewNotchApexElev - CLIFF_NOTCH_CUTOFF_DISTANCE;
 
-         // And get the wave runup at this point
-         double const dRunup = m_VCoast[nCoast].dGetRunUp(nCoastPoint);
-         double const dWaveElev = m_dThisIterSWL + dRunup;
-
          if (dWaveElev < dCutoffElev)
          {
             // SWL is below the cutoff elevation, so no incision of this existing notch
 #if _DEBUG
             double const dSedTopElevIncTalus = m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElevIncTalus();
 
-            LogStream << m_ulIter << ": \tNO incision of new notch at [" << nX << "][" << nY << "] dWaveElev = " << dWaveElev << " dCutoffElev = " << dCutoffElev << " dRunup = " << dRunup << " dNotchApexElev = " << dNotchApexElev << " dNotchTopElev = " << dNotchTopElev << " dSedTopElevNoTalus = " << dSedTopElevNoTalus << " dSedTopElevIncTalus = " << dSedTopElevIncTalus << endl;
+            LogStream << m_ulIter << ": \tNO incision of new notch at [" << nX << "][" << nY << "] dWaveElev = " << dWaveElev << " dCutoffElev = " << dCutoffElev << " dRunup = " << dRunup << " dNotchApexElev = " << dNotchApexElev << " dSedTopElevNoTalus = " << dSedTopElevNoTalus << " dSedTopElevIncTalus = " << dSedTopElevIncTalus << endl;
 #endif
             return false;
          }
@@ -580,8 +577,11 @@ bool CSimulation::bIncreaseCliffNotchIncision(int const nCoast, int const nX, in
          // Deepen the cliff object's erosional notch as a result of wave energy during this timestep. Note that notch deepening may be constrained, since this-timestep notch extension cannot exceed the length (i.e. cellside minus notch depth) of sediment remaining on the cell
          pCliff->IncreaseNotchIncision(dNotchIncision);
 
+         // And add to the cell's accumulated wave energy
+         m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->AddToAccumWaveEnergy(dWaveEnergy * dWeight);
+
 #if _DEBUG
-         LogStream << m_ulIter << ": \tincision of newly-created notch at [" << nX << "][" << nY << "] dWaveElev = " << dWaveElev << " dCutoffElev = " << dCutoffElev << " dRunup = " << dRunup << "  dWeight = " << dWeight << " dNotchApexElev = " << dNotchApexElev << " dNotchTopElev = " << dNotchTopElev << " dSedTopElevNoTalus = " << dSedTopElevNoTalus << " dNotchIncision = " << dNotchIncision << endl;
+         LogStream << m_ulIter << ": \tincision of newly-created notch at [" << nX << "][" << nY << "] dWaveElev = " << dWaveElev << " dCutoffElev = " << dCutoffElev << " dRunup = " << dRunup << "  dWeight = " << dWeight << " dNotchApexElev = " << dNotchApexElev << " dSedTopElevNoTalus = " << dSedTopElevNoTalus << " dNotchIncision = " << dNotchIncision << endl;
 #endif
          return true;
       }
@@ -591,8 +591,7 @@ bool CSimulation::bIncreaseCliffNotchIncision(int const nCoast, int const nX, in
          if ((nCoastPoint == 0) || (nCoastPoint == m_VCoast[nCoast].nGetCoastlineSize()-1))
             return false;
 
-         return bCreateNotchInland(nCoast, nCoastPoint, nX, nY);
-
+         return bCreateNotchInland(nCoast, nCoastPoint, nX, nY, dWaveEnergy, dWaveElev);
       }
    }
 
@@ -601,21 +600,24 @@ bool CSimulation::bIncreaseCliffNotchIncision(int const nCoast, int const nX, in
 }
 
 //===============================================================================================================================
-//! Creates an erosional notch further inland
+//! If possible, creates an erosional notch further inland from a goven coastline point
 //===============================================================================================================================
-bool CSimulation::bCreateNotchInland(int const nCoast, int const nCoastPoint, int const nX, int const nY)
+bool CSimulation::bCreateNotchInland(int const nCoast, int const nCoastPoint, int const nX, int const nY, double const dWaveEnergy, double const dWaveElev)
 {
    LogStream << m_ulIter << ": \tIn bCreateNotchInland() for [" << nX << "][" << nY << "]" << endl;
 
    bool bFound = false;
    int nSeaHandedness = m_VCoast[nCoast].nGetSeaHandedness();
 
+   // Get the points before and after this coastline point
    CGeom2DIPoint* pPtiBefore = m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(nCoastPoint-1);
    CGeom2DIPoint* pPtiAfter = m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(nCoastPoint+1);
 
+   // Loop until we can create an inland notch, or until we hit the edge of the grid
    int n = 1;
    do
    {
+      // Get an inland point, planview orthogonal to the coastline at the coast point
       CGeom2DIPoint const PtiTmp = PtiGetPerpendicular(pPtiBefore, pPtiAfter, n, nSeaHandedness);
 
       if (! bIsWithinValidGrid(&PtiTmp))
@@ -624,29 +626,67 @@ bool CSimulation::bCreateNotchInland(int const nCoast, int const nCoastPoint, in
       int nXTmp = PtiTmp.nGetX();
       int nYTmp = PtiTmp.nGetY();
 
-      // Can we create a notch here?
-      double const dSedTopElevNoTalus = m_pRasterGrid->m_Cell[nXTmp][nYTmp].dGetSedimentTopElevOmitTalus();
-      double dNotchTopElev = m_dThisIterNewNotchApexElev + CLIFF_NOTCH_HEIGHT_ABOVE_APEX_ELEV;
+      bool bPreExistingNotch;
 
-      if (dNotchTopElev < dSedTopElevNoTalus)
+      // Get the existing notch apex elevation, if there is one
+      double dNotchApexElev = m_pRasterGrid->m_Cell[nXTmp][nYTmp].pGetLandform()->dGetCliffNotchApexElev();
+
+      if (bFPIsEqual(dNotchApexElev, DBL_NODATA, TOLERANCE))
       {
-         // Yes we can create a notch here
-         LogStream << m_ulIter << ": \tCan create notch inland at cell [" << nXTmp << "][" << nYTmp << "] dNotchTopElev = " << dNotchTopElev << " dSedTopElevNoTalus = " << dSedTopElevNoTalus << endl;
+         // There is no existing notch apex elevation
+         bPreExistingNotch = false;
 
-         // This was not a cliff in the previous timestep, but it is now
-         m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->SetLFCategory(LF_CAT_CLIFF);
-         m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->SetLFSubCategory(LF_SUBCAT_CLIFF_INLAND);
+         // So use the notch elevation for this timestep
+         dNotchApexElev = m_dThisIterNewNotchApexElev;
+      }
+      else
+         bPreExistingNotch = true;
 
-         // Get any pre-existing wave energy stored in the cell
-         double dAccumWaveEnergy = m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->dGetAccumWaveEnergy();
+      // So, can we create a notch here?
+      double const dSedTopElevNoTalus = m_pRasterGrid->m_Cell[nXTmp][nYTmp].dGetSedimentTopElevOmitTalus();
+      if (dNotchApexElev < dSedTopElevNoTalus)
+      {
+         // Yes we can potentially create a notch here
+#if _DEBUG
+         if (bPreExistingNotch)
+            LogStream << m_ulIter << ": \tIncision of re-existing inland cliff at [" << nXTmp << "][" << nYTmp << "] dNotchApexElev = " << dNotchApexElev << " dSedTopElevNoTalus = " << dSedTopElevNoTalus << endl;
+         else
+            LogStream << m_ulIter << ": \tCreation of new inland cliff at [" << nXTmp << "][" << nYTmp << "] dNotchApexElev = " << dNotchApexElev << " dSedTopElevNoTalus = " << dSedTopElevNoTalus << endl;
+#endif
 
-         double dNotchIncision = 0;
-         double dNotchApexElev = m_dThisIterNewNotchApexElev;
+         // Set the cell to be an inland cliff
+         m_pRasterGrid->m_Cell[nXTmp][nYTmp].pGetLandform()->SetLFCategory(LF_CAT_CLIFF);
+         m_pRasterGrid->m_Cell[nXTmp][nYTmp].pGetLandform()->SetLFSubCategory(LF_SUBCAT_CLIFF_INLAND);
+
+         // Set its apex elevation
+         m_pRasterGrid->m_Cell[nXTmp][nYTmp].pGetLandform()->SetCliffNotchApexElev(dNotchApexElev);
+
+         // We have some notch incision of this newly-created notch
+         double dWeight;
+         if (dWaveElev > dNotchApexElev)
+            // Should not happen: safety check
+            dWeight = 1;
+         else
+            // Assume a linear decrease in incision with distance downwards from notch apex
+            dWeight = 1 - ((dNotchApexElev - dWaveElev) / CLIFF_NOTCH_CUTOFF_DISTANCE);
+
+         // Calculate this-timestep cliff notch erosion (is a length in external CRS units). Note that only consolidated sediment can have a cliff notch
+         double const dNotchIncision = dWeight * dWaveEnergy / m_dCliffErosionResistance;
+
+         if (bPreExistingNotch)
+            m_pRasterGrid->m_Cell[nXTmp][nYTmp].pGetLandform()->AddToCliffNotchIncisionDepth(dNotchIncision);
+         else
+            m_pRasterGrid->m_Cell[nXTmp][nYTmp].pGetLandform()->SetCliffNotchIncisionDepth(dNotchIncision);
+
+         // And add to the cell's accumulated wave energy
+         m_pRasterGrid->m_Cell[nXTmp][nYTmp].pGetLandform()->AddToAccumWaveEnergy(dWaveEnergy * dWeight);
 
 #if _DEBUG
-         double const dSedTopElevIncTalus = m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElevIncTalus();
+         double const dSedTopElevIncTalus = m_pRasterGrid->m_Cell[nXTmp][nYTmp].dGetSedimentTopElevIncTalus();
 
-         LogStream << m_ulIter << ": \tINLAND cliff created at [" << nX << "][" << nY << "] dAccumWaveEnergy = " << dAccumWaveEnergy << " dNotchApexElev = " << dNotchApexElev << " dNotchTopElev = " << DBL_NODATA << " dSedTopElevNoTalus = " << dSedTopElevNoTalus << " dSedTopElevIncTalus = " << dSedTopElevIncTalus << " dNotchIncision = " << dNotchIncision << endl;
+         assert(dNotchApexElev < dSedTopElevNoTalus);
+
+         LogStream << m_ulIter << ": \tINLAND cliff created (or re-created) at [" << nXTmp << "][" << nYTmp << "] dNotchApexElev = " << dNotchApexElev << " dNotchTopElev = " << DBL_NODATA << " dSedTopElevNoTalus = " << dSedTopElevNoTalus << " dSedTopElevIncTalus = " << dSedTopElevIncTalus << " dNotchIncision = " << dNotchIncision << " dNotchApexElev = " << dNotchApexElev << endl;
 #endif
          bFound = true;
       }

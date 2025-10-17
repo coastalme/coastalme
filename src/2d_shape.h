@@ -57,7 +57,7 @@ class CA2DShape
 
    void Append(CGeom2DPoint const*);
    void Append(double const, double const);
-   void AppendIfNotAlready(double const, double const);
+   void AppendIfNotPrevious(double const, double const);
    CGeom2DPoint* pPtBack(void);
 
    CGeom2DPoint& operator[](int const);

@@ -119,11 +119,10 @@ int CSimulation::nAssignLandformsForAllCoasts(void)
 #if _DEBUG
                   double const dSedTopElevIncTalus = m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElevIncTalus();
                   double const dSedTopElevNoTalus = m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElevOmitTalus();
-                  double dNotchTopElev = dNotchApexElev + CLIFF_NOTCH_HEIGHT_ABOVE_APEX_ELEV;
 
-                  assert(dNotchTopElev < dSedTopElevNoTalus);
+                  assert(dNotchApexElev < dSedTopElevNoTalus);
 
-                  LogStream << m_ulIter << ": \tcontinues to be a cliff at [" << nX << "][" << nY << "] dAccumWaveEnergy = " << dAccumWaveEnergy << " dNotchApexElev = " << dNotchApexElev << " dNotchTopElev = " << dNotchTopElev << " dSedTopElevNoTalus = " << dSedTopElevNoTalus << " dSedTopElevIncTalus = " << dSedTopElevIncTalus << " dNotchIncision = " << dNotchIncision << endl;
+                  LogStream << m_ulIter << ": \tcontinues to be a cliff at [" << nX << "][" << nY << "] dAccumWaveEnergy = " << dAccumWaveEnergy << " dNotchApexElev = " << dNotchApexElev << " dSedTopElevNoTalus = " << dSedTopElevNoTalus << " dSedTopElevIncTalus = " << dSedTopElevIncTalus << " dNotchIncision = " << dNotchIncision << endl;
 #endif
                }
                else
@@ -139,9 +138,9 @@ int CSimulation::nAssignLandformsForAllCoasts(void)
                   double dNotchIncision = DBL_NODATA;
                   double dNotchApexElev = DBL_NODATA;
 
-                  // Would the new notch top elevation be below the top of the cell's consolidated sediment?
+                  // Would the new notch apex elevation be below the top of the cell's consolidated sediment?
                   double const dSedTopElevNoTalus = m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElevOmitTalus();
-                  if (m_dThisIterationNewNotchTopElev < dSedTopElevNoTalus)
+                  if (m_dThisIterNewNotchApexElev < dSedTopElevNoTalus)
                   {
                      // Yes it would, so this cliff object has a notch
                      dNotchIncision = 0;

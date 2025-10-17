@@ -40,7 +40,5 @@ class CGeomILine : public CA2DIShape
    // void SetYAt(int const, int const);
 
    bool bIsPresent(int const, int const);
-
-   void RemoveDuplicates(void);
 };
 #endif // ILINE_H

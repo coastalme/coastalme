@@ -77,24 +77,6 @@ bool CGeomILine::bIsPresent(int const nX, int const nY)
    return false;
 }
 
-//! Removes adjacent duplicate points from the line
-void CGeomILine::RemoveDuplicates(void)
-{
-   for (int j = 1; j < static_cast<int>(m_VPoints.size()); j++)
-   {
-      if (m_VPoints[j] == m_VPoints[j-1])
-      {
-         // // OK we have duplicate points. Now look at the next point along
-         // int nThisX = m_VPoints[j].nGetX();
-         // int nThisX = m_VPoints[j].nGetX();
-
-
-
-         m_VPoints.erase(m_VPoints.begin()+j);
-      }
-   }
-}
-
 //! Instantiates the pure virtual function in the abstract parent class, so that CGeomILine is not an abstract class
 void CGeomILine::Display(void)
 {

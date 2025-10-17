@@ -52,7 +52,8 @@ class CA2DIShape
    // void InsertAtFront(int const, int const);
    void Append(CGeom2DIPoint const*);
    void Append(int const, int const);
-   void AppendIfNotAlready(int const, int const);
+   void AppendIfNotPrevious(int const, int const);
+   void AppendIfNotPrevious(CGeom2DIPoint const*);
 
    // void SetPoints(const vector<CGeom2DIPoint>*);
    // int nLookUp(CGeom2DIPoint*);

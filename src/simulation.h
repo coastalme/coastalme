@@ -930,9 +930,6 @@ class CSimulation
    //! Distance of notch base below SWL (m)
    double m_dNotchApexAboveMHW;
 
-   //! Elevation (m) of the top of any cliff notches created during this iteration
-   double m_dThisIterationNewNotchTopElev;
-
    //! Scale parameter A for cliff deposition (m^(1/3)), may be zero for auto-calculation
    double m_dCliffDepositionA;
 
@@ -1735,7 +1732,7 @@ class CSimulation
    int nTruncateProfileHitDifferentCoast(int const, int const, int const, int const);
    int nTruncateProfileMultiLineDifferentCoasts(CGeomProfile*, double const, double const);
    bool bIncreaseCliffNotchIncision(int const, int const, int const, CRWCliff*, double const);
-   bool bCreateNotchInland(int const, int const, int const, int const);
+   bool bCreateNotchInland(int const, int const, int const, int const, double const, double const);
 
    // GIS utility routines
    int nMarkBoundingBoxEdgeCells(void);

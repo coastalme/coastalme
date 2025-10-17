@@ -352,7 +352,6 @@ CSimulation::CSimulation(void)
    m_dNotchIncisionAtCollapse = 0;
    m_dThisIterNewNotchApexElev = 0;
    m_dNotchApexAboveMHW = 0;
-   m_dThisIterationNewNotchTopElev = 0;
    m_dCliffDepositionA = 0;
    m_dCliffDepositionPlanviewWidth = 0;
    m_dCliffTalusMinDepositionLength = 0;

@@ -101,6 +101,12 @@ void CRWCellLandform::SetAccumWaveEnergy(double const dEnergyIn)
    m_dAccumWaveEnergy = dEnergyIn;
 }
 
+//! Add to acccumulated wave energy
+void CRWCellLandform::AddToAccumWaveEnergy(double const dEnergyIn)
+{
+   m_dAccumWaveEnergy += dEnergyIn;
+}
+
 //! Get accumulated wave energy
 double CRWCellLandform::dGetAccumWaveEnergy(void) const
 {
@@ -123,6 +129,12 @@ double CRWCellLandform::dGetCliffNotchApexElev(void) const
 void CRWCellLandform::SetCliffNotchIncisionDepth(double const dLenIn)
 {
    m_uLFData.m_sCliffData.m_dNotchIncision = dLenIn;
+}
+
+//! Adds to the horizontal depth of cliff notch incision for this cell. This is the horizontal distance from the edge of the cell to the incised back of the notch
+void CRWCellLandform::AddToCliffNotchIncisionDepth(double const dLenIn)
+{
+   m_uLFData.m_sCliffData.m_dNotchIncision += dLenIn;
 }
 
 //! Get the horizontal depth of cliff notch incision for this cell. This is the horizontal distance from the edge of the cell to the incised back of the notch

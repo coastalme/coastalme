@@ -755,10 +755,9 @@ double const CLIFF_COLLAPSE_HEIGHT_INCREMENT = 0.1;         // Increment the fra
 double const INTERVENTION_PROFILE_SPACING_FACTOR = 0.5;     // Profile spacing on interventions works better if it is smaller than profile spacing on coastline
 
 double const CLIFF_NOTCH_CUTOFF_DISTANCE = 2;               // Cut-off SWL distance (m), measured downwards from the cliff notch apex: below this there is no notch incision
-double const CLIFF_NOTCH_HEIGHT_ABOVE_APEX_ELEV = 0.05;     // Vertical distance (m) from the cliff notch apex to the top of the incised notch
 double const DBL_NODATA = -9999;
 
-string const PROGRAM_NAME = "Coastal Modelling Environment (CoastalME) version 1.4.0 (15 Oct 2025)";
+string const PROGRAM_NAME = "Coastal Modelling Environment (CoastalME) version 1.4.0 (17 Oct 2025)";
 string const PROGRAM_NAME_SHORT = "CME";
 string const CME_INI = "cme.ini";
 

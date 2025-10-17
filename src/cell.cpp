@@ -602,21 +602,6 @@ CRWCellLayer* CGeomCell::pGetLayerAboveBasement(int const nLayer)
    return &m_VLayerAboveBasement[nLayer];
 }
 
-// //! Returns the volume-equivalent elevation of the sediment's top surface for this cell (i.e. if there is a cliff notch, then lower the elevation by the notch's volume)
-// double CGeomCell::dGetVolEquivSedTopElev(void) const
-// {
-// double dTopElev = m_dBasementElevation;
-// for (unsigned int n = 0; n < m_VLayerAboveBasement.size(); n++)
-// {
-// dTopElev += (m_VLayerAboveBasement[n].dGetAllUnconsDepth() -
-// m_VLayerAboveBasement[n].dGetNotchUnconsolidatedLost()); dTopElev +=
-// (m_VLayerAboveBasement[n].dGetAllConsDepth() -
-// m_VLayerAboveBasement[n].dGetNotchConsolidatedLost());
-// }
-//
-// return dTopElev;
-// }
-
 //! Returns the elevation of the top surface of sediment (both consolidated and unconsolidated) for this cell, but ignoring any talus. If there is a cliff notch, ignore the missing volume
 double CGeomCell::dGetSedimentTopElevOmitTalus(void) const
 {

@@ -582,8 +582,8 @@ int CSimulation::nDoAllShadowZones(void)
                m_pRasterGrid->m_Cell[nTmpX][nTmpY].SetShadowZoneNumber(-(nZone + 1));
 
             // If not already there, append this values to the two shadow boundary vectors
-            LBoundary.AppendIfNotAlready(dGridCentroidXToExtCRSX(nTmpX), dGridCentroidYToExtCRSY(nTmpY));
-            LIBoundary.AppendIfNotAlready(nTmpX, nTmpY);
+            LBoundary.AppendIfNotPrevious(dGridCentroidXToExtCRSX(nTmpX), dGridCentroidYToExtCRSY(nTmpY));
+            LIBoundary.AppendIfNotPrevious(nTmpX, nTmpY);
 
             // LogStream << m_ulIter << ": coast " << nCoast << " shadow zone " << nZone << ", which starts at [" << nTmpX << "][" << nTmpY << "] = {" << dGridCentroidXToExtCRSX(nTmpX) << ", " << dGridCentroidYToExtCRSY(nTmpY) << "} has cell [" << nTmpX << "][" << nTmpY << "] marked as shadow zone boundary" << endl;
          }

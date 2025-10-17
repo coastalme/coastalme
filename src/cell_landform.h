@@ -78,10 +78,12 @@ class CRWCellLandform
    void SetPointOnCoast(int const);
    int nGetPointOnCoast(void) const;
    void SetAccumWaveEnergy(double const);
+   void AddToAccumWaveEnergy(double const);
    double dGetAccumWaveEnergy(void) const;
    void SetCliffNotchApexElev(double const);
    double dGetCliffNotchApexElev(void) const;
    void SetCliffNotchIncisionDepth(double const);
+   void AddToCliffNotchIncisionDepth(double const);
    double dGetCliffNotchIncisionDepth(void) const;
    // void SetCliffRemaining(double const);
    // double dGetCliffRemaining(void) const;

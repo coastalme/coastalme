@@ -305,7 +305,6 @@ class CGeomCell
 
    double dGetTalusDepth(void) const;
 
-   // double dGetVolEquivSedTopElev(void) const;
    double dGetSedimentTopElevOmitTalus(void) const;
    double dGetSedimentTopElevIncTalus(void);
    double dGetTopElevIncSea(void);

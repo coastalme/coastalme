@@ -1133,7 +1133,7 @@ double CSimulation::dCalcBeachProtectionFactor(int const nX, int const nY, doubl
 }
 
 //===============================================================================================================================
-//! Fills in 'holes' in the beach protection i.e. orphan cells which get omitted because of rounding problems
+//! Fills in 'holes' in the beach protection i.e. orphan cells which get omitted because of rounding problems, also removes 'legacy' cliff notches
 //===============================================================================================================================
 void CSimulation::FillInBeachProtectionHoles(void)
 {
@@ -1141,6 +1141,23 @@ void CSimulation::FillInBeachProtectionHoles(void)
    {
       for (int nY = 0; nY < m_nYGridSize; nY++)
       {
+         // Find any 'legacy' ciff cells: cells with an erosional notch apex elevation which is now -- due to shore platform erosion -- above the top of the consolidated sediment
+         double dNotchApexElev = m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->dGetCliffNotchApexElev();
+         if (! bFPIsEqual(dNotchApexElev, DBL_NODATA, TOLERANCE))
+         {
+            // This cell has an erosional notch
+            double const dSedTopElevNoTalus = m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElevOmitTalus();
+            if (dNotchApexElev >= dSedTopElevNoTalus)
+            {
+               // The apex elevation of the notch is above the top of the consolidated sediment, so this notch has been removed
+               m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->SetLFCategory(LF_CAT_HINTERLAND);
+               m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->SetLFSubCategory(LF_NONE);
+               m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->SetCliffNotchApexElev(DBL_NODATA);
+               m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->SetCliffNotchIncisionDepth(DBL_NODATA);
+            }
+         }
+
+         // Now look at beach protection
          if ((m_pRasterGrid->m_Cell[nX][nY].bIsInContiguousSea()) && (bFPIsEqual(m_pRasterGrid->m_Cell[nX][nY].dGetBeachProtectionFactor(), DBL_NODATA, TOLERANCE)))
          {
             // This is a sea cell, and it has an initialised beach protection value. So look at its N-S and W-E neighbours
