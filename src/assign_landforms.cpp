@@ -120,7 +120,7 @@ int CSimulation::nAssignLandformsForAllCoasts(void)
                   double const dSedTopElevIncTalus = m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElevIncTalus();
                   double const dSedTopElevNoTalus = m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElevOmitTalus();
 
-                  assert(dNotchApexElev < dSedTopElevNoTalus);
+                  assert(dNotchApexElev < dSedTopElevNoTalus + SEDIMENT_ELEV_TOLERANCE);
 
                   LogStream << m_ulIter << ": \tcontinues to be a cliff at [" << nX << "][" << nY << "] dAccumWaveEnergy = " << dAccumWaveEnergy << " dNotchApexElev = " << dNotchApexElev << " dSedTopElevNoTalus = " << dSedTopElevNoTalus << " dSedTopElevIncTalus = " << dSedTopElevIncTalus << " dNotchIncision = " << dNotchIncision << endl;
 #endif

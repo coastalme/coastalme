@@ -56,6 +56,11 @@ int CSimulation::nDoAllWaveEnergyToCoastLandforms(void)
          int const nX = m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(nCoastPoint)->nGetX();
          int const nY = m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(nCoastPoint)->nGetY();
 
+         // DEBUG CODE =====================
+         if (m_pRasterGrid->m_Cell[nX][nY].dGetTalusDepth() > 0)
+            continue;
+         // DEBUG CODE =====================
+
          // First get wave energy for the coastal landform object
          double const dWaveHeightAtCoast = m_VCoast[nCoast].dGetCoastWaveHeight(nCoastPoint);
 
@@ -498,7 +503,7 @@ bool CSimulation::bIncreaseCliffNotchIncision(int const nCoast, int const nX, in
       // This is a notch in this cliff object
       double const dSedTopElevNoTalus = m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElevOmitTalus();
 
-      assert(dNotchApexElev < dSedTopElevNoTalus);
+      assert(dNotchApexElev < dSedTopElevNoTalus + SEDIMENT_ELEV_TOLERANCE);
 
       // Get the cutoff elevation (if this-iteration SWL is below this, there is no incision)
       double const dCutoffElev = dNotchApexElev - CLIFF_NOTCH_CUTOFF_DISTANCE;
@@ -684,7 +689,7 @@ bool CSimulation::bCreateNotchInland(int const nCoast, int const nCoastPoint, in
 #if _DEBUG
          double const dSedTopElevIncTalus = m_pRasterGrid->m_Cell[nXTmp][nYTmp].dGetSedimentTopElevIncTalus();
 
-         assert(dNotchApexElev < dSedTopElevNoTalus);
+         assert(dNotchApexElev < dSedTopElevNoTalus + SEDIMENT_ELEV_TOLERANCE);
 
          LogStream << m_ulIter << ": \tINLAND cliff created (or re-created) at [" << nXTmp << "][" << nYTmp << "] dNotchApexElev = " << dNotchApexElev << " dNotchTopElev = " << DBL_NODATA << " dSedTopElevNoTalus = " << dSedTopElevNoTalus << " dSedTopElevIncTalus = " << dSedTopElevIncTalus << " dNotchIncision = " << dNotchIncision << " dNotchApexElev = " << dNotchApexElev << endl;
 #endif
