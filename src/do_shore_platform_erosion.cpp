@@ -135,7 +135,7 @@ int CSimulation::nDoAllShorePlatFormErosion(void)
    FillPotentialPlatformErosionHoles();
 
    // Do the same for beach protection
-   FillInBeachProtectionHoles();
+   FillInBeachProtectionHolesAndRemoveLegacyCliffs();
 
    // Finally calculate actual platform erosion on all sea cells (both on profiles, and between profiles)
    for (int nX = 0; nX < m_nXGridSize; nX++)
@@ -238,7 +238,7 @@ int CSimulation::nCalcPotentialPlatformErosionOnProfile(int const nCoast, CGeomP
       dVConsProfileZ[i] = m_pRasterGrid->m_Cell[nX][nY].dGetConsSedTopElevForLayerAboveBasement(nTopLayer);
 
       // Get the elevation for both consolidated and unconsolidated sediment on this cell
-      VdProfileZ[i] = m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElevOmitTalus();
+      VdProfileZ[i] = m_pRasterGrid->m_Cell[nX][nY].dGetAllSedTopElevOmitTalus();
 
       // And store the X-Y plane distance from the start of the profile
       VdProfileDistXY[i] = i * dSpacingXY;
@@ -282,7 +282,7 @@ int CSimulation::nCalcPotentialPlatformErosionOnProfile(int const nCoast, CGeomP
       dVProfileErosionPotential[i] = dLookUpErosionPotential(dVProfileDepthOverDB[i]);
 
       // If erosion potential (a -ve value) is tiny, set it to zero
-      if (dVProfileErosionPotential[i] > -SEDIMENT_ELEV_TOLERANCE)
+      if (dVProfileErosionPotential[i] > -SED_ELEV_TOLERANCE)
          dVProfileErosionPotential[i] = 0;
 
       // Keep track of the total erosion potential for this profile
@@ -545,7 +545,7 @@ int CSimulation::nCalcPotentialPlatformErosionBetweenProfiles(int const nCoast, 
          dVParConsProfileZ[i] = m_pRasterGrid->m_Cell[nXPar][nYPar].dGetConsSedTopElevForLayerAboveBasement(nTopLayer);
 
          // Get the elevation for both consolidated and unconsolidated sediment on this cell
-         dVParProfileZ[i] = m_pRasterGrid->m_Cell[nXPar][nYPar].dGetSedimentTopElevOmitTalus();
+         dVParProfileZ[i] = m_pRasterGrid->m_Cell[nXPar][nYPar].dGetAllSedTopElevOmitTalus();
 
          // And store the X-Y plane distance from the start of the profile
          dVParProfileDistXY[i] = i * dParSpacingXY;
@@ -594,7 +594,7 @@ int CSimulation::nCalcPotentialPlatformErosionBetweenProfiles(int const nCoast, 
          dVParProfileErosionPotential[i] = dLookUpErosionPotential(dVParProfileDepthOverDB[i]);
 
          // If erosion potential (a -ve value) is tiny, set it to zero
-         if (dVParProfileErosionPotential[i] > -SEDIMENT_ELEV_TOLERANCE)
+         if (dVParProfileErosionPotential[i] > -SED_ELEV_TOLERANCE)
             dVParProfileErosionPotential[i] = 0;
 
          // Keep track of the total erosion potential for this profile
@@ -1133,9 +1133,9 @@ double CSimulation::dCalcBeachProtectionFactor(int const nX, int const nY, doubl
 }
 
 //===============================================================================================================================
-//! Fills in 'holes' in the beach protection i.e. orphan cells which get omitted because of rounding problems, also removes 'legacy' cliff notches
+//! Fills in 'holes' in the beach protection i.e. orphan cells which get omitted because of rounding problems. Also removes 'legacy' cliff notches
 //===============================================================================================================================
-void CSimulation::FillInBeachProtectionHoles(void)
+void CSimulation::FillInBeachProtectionHolesAndRemoveLegacyCliffs(void)
 {
    for (int nX = 0; nX < m_nXGridSize; nX++)
    {
@@ -1146,7 +1146,7 @@ void CSimulation::FillInBeachProtectionHoles(void)
          if (! bFPIsEqual(dNotchApexElev, DBL_NODATA, TOLERANCE))
          {
             // This cell has an erosional notch
-            double const dSedTopElevNoTalus = m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElevOmitTalus();
+            double const dSedTopElevNoTalus = m_pRasterGrid->m_Cell[nX][nY].dGetAllSedTopElevOmitTalus();
             if (dNotchApexElev >= dSedTopElevNoTalus)
             {
                // The apex elevation of the notch is above the top of the consolidated sediment, so this notch has been removed

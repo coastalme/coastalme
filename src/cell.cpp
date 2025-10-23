@@ -603,15 +603,27 @@ CRWCellLayer* CGeomCell::pGetLayerAboveBasement(int const nLayer)
 }
 
 //! Returns the elevation of the top surface of sediment (both consolidated and unconsolidated) for this cell, but ignoring any talus. If there is a cliff notch, ignore the missing volume
-double CGeomCell::dGetSedimentTopElevOmitTalus(void) const
+double CGeomCell::dGetAllSedTopElevOmitTalus(void) const
 {
    return m_VdAllHorizonTopElev.back();
 }
 
 //! Returns the elevation of the top surface of sediment (both consolidated and unconsolidated) plus talus for this cell. If there is a cliff notch, ignore the missing volume
-double CGeomCell::dGetSedimentTopElevIncTalus(void)
+double CGeomCell::dGetAllSedTopElevIncTalus(void)
 {
-   return m_VdAllHorizonTopElev.back() + this->dGetTalusDepth();
+   return this->dGetAllSedTopElevOmitTalus() + this->dGetTalusDepth();
+}
+
+//! Returns the elevation of the top surface of sediment (both consolidated and unconsolidated) for this cell, but ignoring any talus. If there is a cliff notch, ignore the missing volume
+double CGeomCell::dGetConsSedTopElevOmitTalus(void) const
+{
+   return this->dGetBasementElev() + this->dGetAllConsDepthAllLayers();
+}
+
+//! Returns the elevation of the top surface of sediment (both consolidated and unconsolidated) plus talus for this cell. If there is a cliff notch, ignore the missing volume
+double CGeomCell::dGetConsSedTopElevIncTalus(void)
+{
+   return this->dGetConsSedTopElevOmitTalus() + this->dGetTalusDepth();
 }
 
 //! Returns the topmost elevation of the cell, including sea (sediment top elevation (both consolidated and unconsolidated), plus the depth of any talus, plus the height of any intervention, plus the sea depth)

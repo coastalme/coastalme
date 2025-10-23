@@ -334,14 +334,17 @@ int CSimulation::nDoAllPropagateWaves(void)
       }
    }
 
-   //    // DEBUG CODE ============================================================================================================
-   // LogStream << "Out of loop" << endl;
-   // for (int nn = 0; nn < VdXAll.size(); nn++)
-   // {
-   // LogStream << "nn = " << nn << " VdXAll[nn] = " << VdXAll[nn] << " VdYAll[nn] = " << VdYAll[nn] << " VdHeightXAll[nn] = " << VdHeightXAll[nn] << " VdHeightYAll[nn] = " << VdHeightYAll[nn] << " VbBreakingAll[nn] = " << VbBreakingAll[nn] << endl;
-   // }
-   // LogStream << endl;
-   //    // DEBUG CODE ============================================================================================================
+   // DEBUG CODE ============================================================================================================
+   if (m_ulIter == 102)
+   {
+      LogStream << m_ulIter << ": out of loop" << endl;
+      for (int nn = 0; nn < VdXAll.size(); nn++)
+      {
+         LogStream << "nn = " << nn << " VdXAll[nn] = " << VdXAll[nn] << " VdYAll[nn] = " << VdYAll[nn] << " VdHeightXAll[nn] = " << VdHeightXAll[nn] << " VdHeightYAll[nn] = " << VdHeightYAll[nn] << " VbBreakingAll[nn] = " << VbBreakingAll[nn] << endl;
+      }
+      LogStream << endl;
+   }
+   // DEBUG CODE ============================================================================================================
 
    // Are the waves off-shore for every profile? If so, do nothing more
    if (VbBreakingAll.empty())
@@ -1507,7 +1510,6 @@ int CSimulation::nGetThisProfileElevationsForCShore(int const nCoast, CGeomProfi
       // Calculate the horizontal distance relative to the most seaward point
       if (i == nProfSize - 1)
          dProfileDistXY = 0;
-
       else
       {
          dXDist = dGridCentroidXToExtCRSX(nX1) - dGridCentroidXToExtCRSX(nX),
@@ -1534,8 +1536,8 @@ int CSimulation::nGetThisProfileElevationsForCShore(int const nCoast, CGeomProfi
          // TODO 009 We are down to basement, decide what to do
          return RTN_OK;
 
-      // Get the elevation for both consolidated and unconsolidated sediment on this cell
-      double const dTopElev = m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElevOmitTalus() + m_pRasterGrid->m_Cell[nX][nY].dGetInterventionHeight();
+      // Get the elevation for both consolidated and unconsolidated sediment (including talus) on this cell
+      double const dTopElev = m_pRasterGrid->m_Cell[nX][nY].dGetAllSedTopElevIncTalus() + m_pRasterGrid->m_Cell[nX][nY].dGetInterventionHeight();
       double const VdProfileZ = dTopElev - m_dThisIterSWL;
 
       // Check that landward elevation is greater than SWL

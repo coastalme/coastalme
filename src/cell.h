@@ -296,18 +296,8 @@ class CGeomCell
    void SetLocalConsSlope(double const);
    double dGetConsSedSlope(void) const;
 
-   void SetBasementElev(double const);
-   double dGetBasementElev(void) const;
-   bool bBasementElevIsMissingValue(void) const;
-
    void SetSlopeForCliffToe(double const);
    double dGetSlopeForCliffToe(void) const;
-
-   double dGetTalusDepth(void) const;
-
-   double dGetSedimentTopElevOmitTalus(void) const;
-   double dGetSedimentTopElevIncTalus(void);
-   double dGetTopElevIncSea(void);
 
    bool bIsInundated(void);
    double dGetThisIterSWL(void) const;
@@ -362,6 +352,17 @@ class CGeomCell
    double dGetAllConsDepthAllLayers(void) const;
    double dGetAllUnconsDepthAllLayers(void) const;
    double dGetAllSedDepthAllLayers(void) const;
+
+   double dGetTalusDepth(void) const;
+
+   void SetBasementElev(double const);
+   double dGetBasementElev(void) const;
+   bool bBasementElevIsMissingValue(void) const;
+   double dGetAllSedTopElevOmitTalus(void) const;
+   double dGetAllSedTopElevIncTalus(void);
+   double dGetTopElevIncSea(void);
+   double dGetConsSedTopElevOmitTalus(void) const;
+   double dGetConsSedTopElevIncTalus(void);
 
    void SetPotentialPlatformErosion(double const);
    double dGetPotentialPlatformErosion(void) const;

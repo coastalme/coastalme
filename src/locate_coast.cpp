@@ -780,7 +780,7 @@ int CSimulation::nTraceCoastLine(unsigned int const nTraceFromStartCellIndex, in
                   // It is, so add it to the vector
                   ILTempGridCRS.AppendIfNotPrevious(&Pti);
                }
-               else if (m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElevOmitTalus() >= m_dThisIterSWL)
+               else if (m_pRasterGrid->m_Cell[nX][nY].dGetAllSedTopElevOmitTalus() >= m_dThisIterSWL)
                {
                   // The sediment top is above SWL so add it to the vector object
                   ILTempGridCRS.AppendIfNotPrevious(&Pti);
@@ -817,7 +817,7 @@ int CSimulation::nTraceCoastLine(unsigned int const nTraceFromStartCellIndex, in
                   // It is, so add it to the vector object
                   ILTempGridCRS.AppendIfNotPrevious(&Pti);
                }
-               else if (m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElevOmitTalus() >= m_dThisIterSWL)
+               else if (m_pRasterGrid->m_Cell[nX][nY].dGetAllSedTopElevOmitTalus() >= m_dThisIterSWL)
                {
                   // The sediment top is above SWL so add it to the vector object
                   ILTempGridCRS.AppendIfNotPrevious(&Pti);
@@ -853,7 +853,7 @@ int CSimulation::nTraceCoastLine(unsigned int const nTraceFromStartCellIndex, in
                   // It is, so add it to the vector object
                   ILTempGridCRS.AppendIfNotPrevious(&Pti);
                }
-               else if (m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElevOmitTalus() >= m_dThisIterSWL)
+               else if (m_pRasterGrid->m_Cell[nX][nY].dGetAllSedTopElevOmitTalus() >= m_dThisIterSWL)
                {
                   // The sediment top is above SWL so add it to the vector object
                   ILTempGridCRS.AppendIfNotPrevious(&Pti);

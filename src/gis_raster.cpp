@@ -1417,7 +1417,7 @@ bool CSimulation::bWriteRasterGISFile(int const nDataItem, string const *strPlot
             break;
 
          case (RASTER_PLOT_SED_TOP_INC_TALUS_ELEV):
-            dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElevIncTalus();
+            dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetAllSedTopElevIncTalus();
             break;
 
          case (RASTER_PLOT_TOP_ELEV_INC_SEA):
@@ -1666,7 +1666,7 @@ bool CSimulation::bWriteRasterGISFile(int const nDataItem, string const *strPlot
             if ((nTopLayer == INT_NODATA) || (nTopLayer == NO_NONZERO_THICKNESS_LAYERS))
                break;
 
-            if ((m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nTopLayer)->dGetAllUnconsDepth() > 0) && (m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElevOmitTalus() > m_dThisIterSWL))
+            if ((m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nTopLayer)->dGetAllUnconsDepth() > 0) && (m_pRasterGrid->m_Cell[nX][nY].dGetAllSedTopElevOmitTalus() > m_dThisIterSWL))
                dTmp = 1;
 
             break;

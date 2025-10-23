@@ -1169,17 +1169,17 @@ bool CSimulation::bSaveAllRasterGISFiles(void)
          if (m_bCliffNotchAllSave)
          {
             if (! bWriteRasterGISFile(RASTER_PLOT_CLIFF_NOTCH_ALL, &RASTER_PLOT_CLIFF_NOTCH_ALL_TITLE))
-            return false;
+               return false;
          }
 
 #ifdef _DEBUG
-      if (m_bCliffCollapseTimestepSave)
+         if (m_bCliffCollapseTimestepSave)
          {
             if (! bWriteRasterGISFile(RASTER_PLOT_CLIFF_COLLAPSE_TIMESTEP, &RASTER_PLOT_CLIFF_COLLAPSE_TIMESTEP_TITLE))
-            return false;
+               return false;
          }
-      }
 #endif
+      }
 
       if (m_bTotCliffCollapseSave)
       {
@@ -1522,7 +1522,7 @@ void CSimulation::GetRasterOutputMinMax(int const nDataItem, double& dMin, doubl
             break;
 
          case (RASTER_PLOT_SED_TOP_INC_TALUS_ELEV):
-            dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElevOmitTalus();
+            dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetAllSedTopElevOmitTalus();
             break;
 
          case (RASTER_PLOT_TALUS):

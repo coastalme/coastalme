@@ -1678,7 +1678,7 @@ class CSimulation
    int nCalcPotentialPlatformErosionBetweenProfiles(int const, CGeomProfile*, int const);
    void ConstructParallelProfile(int const, int const, int const, int const, int const, vector<CGeom2DIPoint>* const, vector<CGeom2DIPoint>*, vector<CGeom2DPoint> *);
    double dCalcBeachProtectionFactor(int const, int const, double const);
-   void FillInBeachProtectionHoles(void);
+   void FillInBeachProtectionHolesAndRemoveLegacyCliffs(void);
    void FillPotentialPlatformErosionHoles(void);
    void DoActualPlatformErosionOnCell(int const, int const);
    double dLookUpErosionPotential(double const);

@@ -745,7 +745,7 @@ double const CSHORE_FRICTION_FACTOR = 0.015;                // Friction factor f
 double const CSHORE_SURGE_LEVEL = 0.0;                      // TODO 007
 
 double const TOLERANCE = 1e-7;                              // For bFPIsEqual, if too small (e.g. 1e-10), get spurious "rounding" errors
-double const SEDIMENT_ELEV_TOLERANCE = 1e-10;               // For bFPIsEqual, used to compare depth-equivalent sediment amounts
+double const SED_ELEV_TOLERANCE = 1e-5;                     // Used to compare depth-equivalent sediment amounts in bFPIsEqual and elsewhere
 double const MASS_BALANCE_TOLERANCE = 1e-5;                 // For bFPIsEqual, used to compare for mass balance checks
 double const STRAIGHT_COAST_MAX_DETAILED_CURVATURE = -5;
 double const STRAIGHT_COAST_MAX_SMOOTH_CURVATURE = -1;
@@ -757,7 +757,7 @@ double const INTERVENTION_PROFILE_SPACING_FACTOR = 0.5;     // Profile spacing o
 double const CLIFF_NOTCH_CUTOFF_DISTANCE = 2;               // Cut-off SWL distance (m), measured downwards from the cliff notch apex: below this there is no notch incision
 double const DBL_NODATA = -9999;
 
-string const PROGRAM_NAME = "Coastal Modelling Environment (CoastalME) version 1.4.0 (17 Oct 2025)";
+string const PROGRAM_NAME = "Coastal Modelling Environment (CoastalME) version 1.4.0 (23 Oct 2025)";
 string const PROGRAM_NAME_SHORT = "CME";
 string const CME_INI = "cme.ini";
 

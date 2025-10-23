@@ -76,10 +76,10 @@ void CSimulation::nCalcSlopeAtAllCells(void)
          // Look at the four surounding cells
          if ((nX > 0) && (nX < m_nXGridSize - 1) && (nY > 0) && (nY < m_nYGridSize - 1))
          {
-            double const dElevLeft = m_pRasterGrid->m_Cell[nX - 1][nY].dGetSedimentTopElevOmitTalus();
-            double const dElevRight = m_pRasterGrid->m_Cell[nX + 1][nY].dGetSedimentTopElevOmitTalus();
-            double const dElevUp = m_pRasterGrid->m_Cell[nX][nY - 1].dGetSedimentTopElevOmitTalus();
-            double const dElevDown = m_pRasterGrid->m_Cell[nX][nY + 1].dGetSedimentTopElevOmitTalus();
+            double const dElevLeft = m_pRasterGrid->m_Cell[nX - 1][nY].dGetAllSedTopElevOmitTalus();
+            double const dElevRight = m_pRasterGrid->m_Cell[nX + 1][nY].dGetAllSedTopElevOmitTalus();
+            double const dElevUp = m_pRasterGrid->m_Cell[nX][nY - 1].dGetAllSedTopElevOmitTalus();
+            double const dElevDown = m_pRasterGrid->m_Cell[nX][nY + 1].dGetAllSedTopElevOmitTalus();
 
             // Calculate slope using finite difference method
             double const dSlopeX = (dElevRight - dElevLeft) / (2.0 * m_dCellSide);
@@ -555,8 +555,8 @@ CGeomLine CSimulation::nValidateCliffToeDirection(CGeomLine& CliffEdge, bool bRe
          if (bLeftIsCliff != bRightIsCliff)
          {
             // Get the elevation of these two adjacent cells
-            double const dLeftElev = m_pRasterGrid->m_Cell[nLeftX][nLeftY].dGetSedimentTopElevOmitTalus();
-            double const dRightElev = m_pRasterGrid->m_Cell[nRightX][nRightY].dGetSedimentTopElevOmitTalus();
+            double const dLeftElev = m_pRasterGrid->m_Cell[nLeftX][nLeftY].dGetAllSedTopElevOmitTalus();
+            double const dRightElev = m_pRasterGrid->m_Cell[nRightX][nRightY].dGetAllSedTopElevOmitTalus();
 
             // Determine which is the cliff side and which is the non-cliff side
             double dCliffElev;
