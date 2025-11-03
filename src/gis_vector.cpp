@@ -401,6 +401,107 @@ int CSimulation::nReadVectorGISFile(int const nDataItem)
 }
 
 //===============================================================================================================================
+//! Reads sea flood fill seed points from a point shapefile
+//===============================================================================================================================
+int CSimulation::nReadSeaFloodSeedPointShapefile(void)
+{
+   // Open the GDAL/OGR datasource
+   GDALDataset* pOGRDataSource = static_cast<GDALDataset*>(GDALOpenEx(m_strSeaFloodSeedPointShapefile.c_str(), GDAL_OF_VECTOR, NULL, NULL, NULL));
+
+   if (pOGRDataSource == NULL)
+   {
+      // Can't open file
+      cerr << ERR << "cannot open " << m_strSeaFloodSeedPointShapefile << " for input: " << CPLGetLastErrorMsg() << endl;
+      return RTN_ERR_VECTOR_FILE_READ;
+   }
+
+   // Get the first layer (assume seed points are in first layer)
+   OGRLayer* pOGRLayer = pOGRDataSource->GetLayer(0);
+
+   if (pOGRLayer == NULL)
+   {
+      cerr << ERR << "cannot get layer 0 from " << m_strSeaFloodSeedPointShapefile << endl;
+      GDALClose(pOGRDataSource);
+      return RTN_ERR_VECTOR_FILE_READ;
+   }
+
+   // Make sure we are at the beginning of the layer
+   pOGRLayer->ResetReading();
+
+   // Clear any existing seed points
+   m_VSeaFloodSeedPoint.clear();
+
+   // Iterate through all features in the layer
+   OGRFeature* pOGRFeature;
+   int nSeedCount = 0;
+
+   while ((pOGRFeature = pOGRLayer->GetNextFeature()) != NULL)
+   {
+      // Get the geometry for this feature
+      OGRGeometry* pOGRGeometry = pOGRFeature->GetGeometryRef();
+
+      if (pOGRGeometry == NULL)
+      {
+         cerr << WARN << "null geometry in " << m_strSeaFloodSeedPointShapefile << ", skipping feature" << endl;
+         OGRFeature::DestroyFeature(pOGRFeature);
+         continue;
+      }
+
+      // Check geometry type
+      int const nGeometry = wkbFlatten(pOGRGeometry->getGeometryType());
+
+      if (nGeometry != wkbPoint)
+      {
+         cerr << WARN << "non-point geometry in " << m_strSeaFloodSeedPointShapefile << ", skipping feature (expected point, got type " << nGeometry << ")" << endl;
+         OGRFeature::DestroyFeature(pOGRFeature);
+         continue;
+      }
+
+      // Extract point coordinates
+      OGRPoint* pOGRPoint = static_cast<OGRPoint*>(pOGRGeometry);
+      double const dExtX = pOGRPoint->getX();
+      double const dExtY = pOGRPoint->getY();
+
+      // Convert from external CRS to grid CRS
+      double const dGridX = dExtCRSXToGridX(dExtX);
+      double const dGridY = dExtCRSYToGridY(dExtY);
+
+      // Convert to integer grid coordinates
+      int const nGridX = static_cast<int>(dGridX);
+      int const nGridY = static_cast<int>(dGridY);
+
+      // Check if point is within grid bounds
+      if (nGridX < 0 || nGridX >= m_nXGridSize || nGridY < 0 || nGridY >= m_nYGridSize)
+      {
+         cerr << WARN << "seed point at (" << dExtX << ", " << dExtY << ") is outside grid bounds, skipping" << endl;
+         OGRFeature::DestroyFeature(pOGRFeature);
+         continue;
+      }
+
+      // Add to seed point vector
+      m_VSeaFloodSeedPoint.push_back(CGeom2DIPoint(nGridX, nGridY));
+      nSeedCount++;
+
+      // Clean up feature
+      OGRFeature::DestroyFeature(pOGRFeature);
+   }
+
+   // Clean up data source
+   GDALClose(pOGRDataSource);
+
+   if (nSeedCount == 0)
+   {
+      cerr << WARN << "no valid seed points found in " << m_strSeaFloodSeedPointShapefile << ", will use grid edge cells instead" << endl;
+   }
+   else
+   {
+      LogStream << "Read " << nSeedCount << " sea flood fill seed point" << (nSeedCount > 1 ? "s" : "") << " from " << m_strSeaFloodSeedPointShapefile << endl;
+   }
+
+   return RTN_OK;
+}
+
+//===============================================================================================================================
 //! Writes vector GIS files using GDAL/OGR
 //===============================================================================================================================
 bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const* strPlotTitle)

@@ -3521,6 +3521,31 @@ bool CSimulation::bReadRunDataFile(void)
                }
 
                break;
+
+            case 91:
+               // Sea flood fill seed point shapefile [optional - if blank, use grid edge cells]
+               if (! strRH.empty())
+               {
+#ifdef _WIN32
+                  // For Windows, make sure has backslashes, not Unix-style slashes
+                  strRH = pstrChangeToBackslash(&strRH);
+#endif
+
+                  // Check for absolute or relative path
+                  if ((strRH[0] == PATH_SEPARATOR) || (strRH[0] == TILDE) || (strRH[1] == COLON))
+                  {
+                     // Absolute path, use as-is
+                     m_strSeaFloodSeedPointShapefile = strRH;
+                  }
+                  else
+                  {
+                     // Relative path, prepend CME dir
+                     m_strSeaFloodSeedPointShapefile = m_strCMEDir;
+                     m_strSeaFloodSeedPointShapefile.append(strRH);
+                  }
+               }
+
+               break;
          }
 
          // Did an error occur?
@@ -4496,6 +4521,9 @@ bool CSimulation::bConfigureFromYamlFile(CConfiguration &config)
          if (grid.HasChild("max_beach_elevation"))
             config.SetMaxBeachElevation(
                grid.GetChild("max_beach_elevation").GetDoubleValue());
+         if (grid.HasChild("sea_flood_seed_shapefile"))
+            config.SetSeaFloodSeedPointShapefile(
+               processFilePath(grid.GetChild("sea_flood_seed_shapefile").GetValue()));
       }
 
       // Layers and Files
@@ -5465,6 +5493,9 @@ bool CSimulation::bApplyConfiguration(CConfiguration const &config)
    // Case 42: Breaking wave height-to-depth ratio, check that this is a valid
    // double
    m_dBreakingWaveHeightDepthRatio = config.GetBreakingWaveRatio();
+
+   // Case 91: Sea flood fill seed point shapefile (can be blank)
+   m_strSeaFloodSeedPointShapefile = config.GetSeaFloodSeedPointShapefile();
 
    // Case 43: Simulate coast platform erosion?
    m_bDoShorePlatformErosion = config.GetCoastPlatformErosion();

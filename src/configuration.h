@@ -111,6 +111,9 @@ class CConfiguration
    string m_strTideDataFile;
    double m_dBreakingWaveRatio;
 
+   // Sea flood fill seed points
+   string m_strSeaFloodSeedPointShapefile;
+
    // Sediment and Erosion
    bool m_bCoastPlatformErosion;
    double m_dPlatformErosionResistance;
@@ -387,6 +390,11 @@ class CConfiguration
    void SetBreakingWaveRatio(double d)
    {
       m_dBreakingWaveRatio = d;
+   }
+
+   void SetSeaFloodSeedPointShapefile(string const &str)
+   {
+      m_strSeaFloodSeedPointShapefile = str;
    }
 
    // Additional setters for comprehensive YAML support
@@ -803,6 +811,11 @@ class CConfiguration
    double GetBreakingWaveRatio() const
    {
       return m_dBreakingWaveRatio;
+   }
+
+   string GetSeaFloodSeedPointShapefile() const
+   {
+      return m_strSeaFloodSeedPointShapefile;
    }
 
    // Sediment and Erosion parameters

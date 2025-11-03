@@ -1335,6 +1335,12 @@ class CSimulation
    //! The name of the flood loction events shape file
    string m_strFloodLocationShapefile;
 
+   //! The name of the sea flood fill seed points shapefile
+   string m_strSeaFloodSeedPointShapefile;
+
+   //! Vector to store seed points read from shapefile (in grid coordinates)
+   vector<CGeom2DIPoint> m_VSeaFloodSeedPoint;
+
    //! System start-simulation time
    time_t m_tSysStartTime;
 
@@ -1630,6 +1636,7 @@ class CSimulation
    int nReadRasterBasementDEM(void);
    int nReadRasterGISFile(int const, int const);
    int nReadVectorGISFile(int const);
+   int nReadSeaFloodSeedPointShapefile(void);
    bool bWriteRasterGISFile(int const, string const*, int const = 0, double const = 0);
    bool bWriteVectorGISFile(int const, string const*);
    void GetRasterOutputMinMax(int const, double&, double&, int const, double const);

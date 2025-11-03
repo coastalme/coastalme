@@ -943,6 +943,16 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
          return (nRet);
    }
 
+   // Read sea flood fill seed points from shapefile if specified
+   if (! m_strSeaFloodSeedPointShapefile.empty())
+   {
+      LogStream << "Reading sea flood fill seed points from " << m_strSeaFloodSeedPointShapefile << endl;
+
+      nRet = nReadSeaFloodSeedPointShapefile();
+      if (nRet != RTN_OK)
+         return (nRet);
+   }
+
    // Open the main output
    OutStream.open(m_strOutFile.c_str(), ios::out | ios::trunc);
 
