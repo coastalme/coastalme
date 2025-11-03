@@ -3518,7 +3518,66 @@ bool CSimulation::bReadRunDataFile(void)
             if ((m_nRunUpEquation < 0) || (m_nRunUpEquation > 3))
                strErr = "line " + to_string(nLine) + ": runup equation code must be between 0 and 3";
 
-            break;
+            case 89:
+               // Order of cliff edge smoothing polynomial for Savitzky-Golay: usually 2 or 4, max is 6
+               if (m_bHaveConsolidatedSediment && m_bDoCliffCollapse && m_bCliffToeLocate)
+               {
+                  if (! bIsStringValidInt(strRH))
+                  {
+                     strErr = "line " + to_string(nLine) + ": invalid integer for Savitzky-Golay polynomial for cliff edge smoothing '" + strRH + "' in " + m_strDataPathName;
+                     break;
+                  }
+
+                  m_nSavGolCliffEdgePoly = stoi(strRH);
+
+                  if ((m_nSavGolCliffEdgePoly < 2) || (m_nSavGolCliffEdgePoly > 6) || (m_nSavGolCliffEdgePoly % 2))
+                     strErr = "line " + to_string(nLine) + ": order of Savitzky-Golay polynomial for cliff edge smoothing (must be 2, 4 or 6)";
+               }
+
+               break;
+
+            case 90:
+               // Slope limit for cliff toe detection
+               if (m_bHaveConsolidatedSediment && m_bDoCliffCollapse && m_bCliffToeLocate)
+               {
+                  if (! bIsStringValidDouble(strRH))
+                  {
+                     strErr = "line " + to_string(nLine) + ": invalid number for cliff toe slope limit '" + strRH + "' in " + m_strDataPathName;
+                     break;
+                  }
+
+                  m_dSlopeThresholdForCliffToe = stod(strRH);
+
+                  if (m_dSlopeThresholdForCliffToe <= 0)
+                     strErr = "line " + to_string(nLine) + ": cliff toe slope limit must be > 0";
+               }
+
+               break;
+
+            case 91:
+               // Sea flood fill seed point shapefile [optional - if blank, use grid edge cells]
+               if (! strRH.empty())
+               {
+#ifdef _WIN32
+                  // For Windows, make sure has backslashes, not Unix-style slashes
+                  strRH = pstrChangeToBackslash(&strRH);
+#endif
+
+                  // Check for absolute or relative path
+                  if ((strRH[0] == PATH_SEPARATOR) || (strRH[0] == TILDE) || (strRH[1] == COLON))
+                  {
+                     // Absolute path, use as-is
+                     m_strSeaFloodSeedPointShapefile = strRH;
+                  }
+                  else
+                  {
+                     // Relative path, prepend CME dir
+                     m_strSeaFloodSeedPointShapefile = m_strCMEDir;
+                     m_strSeaFloodSeedPointShapefile.append(strRH);
+                  }
+               }
+
+               break;
          }
 
          // Did an error occur?
@@ -4531,6 +4590,9 @@ bool CSimulation::bConfigureFromYamlFile(CConfiguration &config)
          if (grid.HasChild("max_beach_elevation"))
             config.SetMaxBeachElevation(
                grid.GetChild("max_beach_elevation").GetDoubleValue());
+         if (grid.HasChild("sea_flood_seed_shapefile"))
+            config.SetSeaFloodSeedPointShapefile(
+               processFilePath(grid.GetChild("sea_flood_seed_shapefile").GetValue()));
       }
 
       // Layers and Files
@@ -5500,6 +5562,9 @@ bool CSimulation::bApplyConfiguration(CConfiguration const &config)
    // Case 42: Breaking wave height-to-depth ratio, check that this is a valid
    // double
    m_dBreakingWaveHeightDepthRatio = config.GetBreakingWaveRatio();
+
+   // Case 91: Sea flood fill seed point shapefile (can be blank)
+   m_strSeaFloodSeedPointShapefile = config.GetSeaFloodSeedPointShapefile();
 
    // Case 43: Simulate coast platform erosion?
    m_bDoShorePlatformErosion = config.GetCoastPlatformErosion();
