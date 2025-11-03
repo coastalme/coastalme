@@ -62,20 +62,46 @@ using std::random_device;
 #include "yaml_parser.h"
 
 //===============================================================================================================================
-//! The bReadIniFile member function reads the initialisation file
+//! The bReadIniFile member function reads the initialisation file (tries YAML first, then falls back to .ini)
 //===============================================================================================================================
 bool CSimulation::bReadIniFile(void)
 {
-   // Check if user has supplied home directory
-   if (m_strCMEIni.empty())
-      // if not use the cme executable directory to find cme.ini
-      m_strCMEIni = m_strCMEDir;
+   // Store the original CME directory
+   string strOrigCMEDir = m_strCMEDir;
+   string strOrigCMEIni = m_strCMEIni;
 
+   // Try YAML format first
+   if (m_strCMEIni.empty())
+      m_strCMEIni = m_strCMEDir;
    else
-   {
-      // if user has supplied home directory replace cme run directory with user supplied dir
       m_strCMEDir = m_strCMEIni;
+
+   string strYamlPath = m_strCMEIni + CME_YAML;
+
+   // Check if YAML file exists
+   ifstream yamlTest(strYamlPath.c_str());
+   if (yamlTest.good())
+   {
+      yamlTest.close();
+      // YAML file exists, try to read it
+      if (bReadIniYamlFile())
+         return true;
+
+      // If YAML reading failed, show error and fall through to try .ini
+      cerr << "Warning: failed to read " << strYamlPath << ", trying .ini format" << endl;
    }
+   else
+      yamlTest.close();
+
+   // Reset paths for .ini file attempt
+   m_strCMEDir = strOrigCMEDir;
+   m_strCMEIni = strOrigCMEIni;
+
+   // Fall back to .ini format
+   if (m_strCMEIni.empty())
+      m_strCMEIni = m_strCMEDir;
+   else
+      m_strCMEDir = m_strCMEIni;
 
    m_strCMEIni.append(CME_INI);
 
@@ -238,6 +264,132 @@ bool CSimulation::bReadIniFile(void)
    }
 
    InStream.close();
+   return true;
+}
+
+//===============================================================================================================================
+//! Reads the initialization file in YAML format
+//===============================================================================================================================
+bool CSimulation::bReadIniYamlFile(void)
+{
+   // Check if user has supplied home directory
+   if (m_strCMEIni.empty())
+      // if not use the cme executable directory to find cme.yaml
+      m_strCMEIni = m_strCMEDir;
+
+   else
+   {
+      // if user has supplied home directory replace cme run directory with user supplied dir
+      m_strCMEDir = m_strCMEIni;
+   }
+
+   m_strCMEIni.append(CME_YAML);
+
+   // The .yaml file is assumed to be in the CoastalME executable's directory
+   string const strFilePathName(m_strCMEIni);
+
+   // Tell the user what is happening
+   cout << READING_FILE_LOCATIONS << strFilePathName << endl;
+
+   // Create a YAML parser
+   CYamlParser parser;
+
+   // Try to parse the YAML file
+   if (! parser.bParseFile(strFilePathName))
+   {
+      // Error: cannot parse YAML file
+      cerr << ERR << "cannot parse " << strFilePathName << ": " << parser.GetError() << endl;
+      return false;
+   }
+
+   // Get the root node
+   CYamlNode root = parser.GetRoot();
+
+   // Read input data file path
+   if (root.HasChild("input_data_file"))
+   {
+      string strRH = root.GetChild("input_data_file").GetValue();
+
+      if (strRH.empty())
+      {
+         cerr << ERR << "path and name of main datafile is empty in " << strFilePathName << endl;
+         return false;
+      }
+
+      // First check that we don't already have an input run-data filename, e.g. one entered on the command-line
+      if (m_strDataPathName.empty())
+      {
+         // We don't: so first check for leading slash, or leading Unix home dir symbol, or occurrence of a drive letter
+         if ((strRH[0] == PATH_SEPARATOR) || (strRH[0] == TILDE) || (strRH[1] == COLON))
+            // It has an absolute path, so use it 'as is'
+            m_strDataPathName = strRH;
+
+         else
+         {
+            // It has a relative path, so prepend the CoastalME dir
+            m_strDataPathName = m_strCMEDir;
+            m_strDataPathName.append(strRH);
+         }
+      }
+   }
+   else
+   {
+      cerr << ERR << "missing 'input_data_file' in " << strFilePathName << endl;
+      return false;
+   }
+
+   // Read output path
+   if (root.HasChild("output_path"))
+   {
+      string strRH = root.GetChild("output_path").GetValue();
+
+      if (strRH.empty())
+      {
+         cerr << ERR << "path for CoastalME output is empty in " << strFilePathName << endl;
+         return false;
+      }
+
+      // Check for trailing slash on CoastalME output directory name (is vital)
+      if (strRH[strRH.size() - 1] != PATH_SEPARATOR)
+         strRH.push_back(PATH_SEPARATOR);
+
+      // Now check for leading slash, or leading Unix home dir symbol, or occurrence of a drive letter
+      if ((strRH[0] == PATH_SEPARATOR) || (strRH[0] == TILDE) || (strRH[1] == COLON))
+         // It is an absolute path, so use it 'as is'
+         m_strOutPath = strRH;
+
+      else
+      {
+         // It is a relative path, so prepend the CoastalME dir
+         m_strOutPath = m_strCMEDir;
+         m_strOutPath.append(strRH);
+      }
+   }
+   else
+   {
+      cerr << ERR << "missing 'output_path' in " << strFilePathName << endl;
+      return false;
+   }
+
+   // Read email address (optional, only useful if running under Linux/Unix)
+   if (root.HasChild("email_address"))
+   {
+      string strRH = root.GetChild("email_address").GetValue();
+
+      if (! strRH.empty())
+      {
+         // Something was entered, do rudimentary check for valid email address
+         if (strRH.find('@') == string::npos)
+         {
+            cerr << ERR << "invalid email address in " << strFilePathName << endl
+                 << "'" << strRH << "'" << endl;
+            return false;
+         }
+
+         m_strMailAddress = strRH;
+      }
+   }
+
    return true;
 }
 
@@ -3369,6 +3521,31 @@ bool CSimulation::bReadRunDataFile(void)
                }
 
                break;
+
+            case 91:
+               // Sea flood fill seed point shapefile [optional - if blank, use grid edge cells]
+               if (! strRH.empty())
+               {
+#ifdef _WIN32
+                  // For Windows, make sure has backslashes, not Unix-style slashes
+                  strRH = pstrChangeToBackslash(&strRH);
+#endif
+
+                  // Check for absolute or relative path
+                  if ((strRH[0] == PATH_SEPARATOR) || (strRH[0] == TILDE) || (strRH[1] == COLON))
+                  {
+                     // Absolute path, use as-is
+                     m_strSeaFloodSeedPointShapefile = strRH;
+                  }
+                  else
+                  {
+                     // Relative path, prepend CME dir
+                     m_strSeaFloodSeedPointShapefile = m_strCMEDir;
+                     m_strSeaFloodSeedPointShapefile.append(strRH);
+                  }
+               }
+
+               break;
          }
 
          // Did an error occur?
@@ -4264,21 +4441,43 @@ bool CSimulation::bConfigureFromYamlFile(CConfiguration &config)
             config.SetFinalWaterLevel(
                hydro.GetChild("final_water_level").GetDoubleValue());
 
-         // Wave data configuration
-         if (hydro.HasChild("wave_height_time_series"))
-            config.SetWaveHeightTimeSeries(
-               hydro.GetChild("wave_height_time_series").GetValue());
-         if (hydro.HasChild("wave_height_shape_file"))
-            config.SetWaveStationDataFile(
-               hydro.GetChild("wave_height_shape_file").GetValue());
-         if (hydro.HasChild("wave_height"))
-            config.SetDeepWaterWaveHeight(
-               hydro.GetChild("wave_height").GetDoubleValue());
-         if (hydro.HasChild("wave_orientation"))
-            config.SetDeepWaterWaveOrientation(
-               hydro.GetChild("wave_orientation").GetDoubleValue());
-         if (hydro.HasChild("wave_period"))
-            config.SetWavePeriod(hydro.GetChild("wave_period").GetDoubleValue());
+         // Wave data configuration - read wave_input_mode first
+         string strWaveInputMode = "fixed";      // default
+         if (hydro.HasChild("wave_input_mode"))
+         {
+            strWaveInputMode = hydro.GetChild("wave_input_mode").GetValue();
+            config.SetWaveInputMode(strWaveInputMode);
+         }
+
+         // Conditionally read wave parameters based on input mode
+         if (strWaveInputMode == "time_series")
+         {
+            // Read time series wave inputs
+            if (hydro.HasChild("wave_height_time_series"))
+               config.SetWaveHeightTimeSeries(
+                  processFilePath(hydro.GetChild("wave_height_time_series").GetValue()));
+            if (hydro.HasChild("wave_height_shape_file"))
+               config.SetWaveStationDataFile(
+                  processFilePath(hydro.GetChild("wave_height_shape_file").GetValue()));
+         }
+         else if (strWaveInputMode == "fixed")
+         {
+            // Read fixed wave condition inputs
+            if (hydro.HasChild("wave_height"))
+               config.SetDeepWaterWaveHeight(
+                  hydro.GetChild("wave_height").GetDoubleValue());
+            if (hydro.HasChild("wave_orientation"))
+               config.SetDeepWaterWaveOrientation(
+                  hydro.GetChild("wave_orientation").GetDoubleValue());
+            if (hydro.HasChild("wave_period"))
+               config.SetWavePeriod(hydro.GetChild("wave_period").GetDoubleValue());
+         }
+         else
+         {
+            cerr << ERR << "Unknown wave_input_mode '" << strWaveInputMode
+                 << "'. Must be 'fixed' or 'time_series'" << endl;
+            return false;
+         }
 
          //  Tide data configuration
          if (hydro.HasChild("tide_data_file"))
@@ -4322,6 +4521,9 @@ bool CSimulation::bConfigureFromYamlFile(CConfiguration &config)
          if (grid.HasChild("max_beach_elevation"))
             config.SetMaxBeachElevation(
                grid.GetChild("max_beach_elevation").GetDoubleValue());
+         if (grid.HasChild("sea_flood_seed_shapefile"))
+            config.SetSeaFloodSeedPointShapefile(
+               processFilePath(grid.GetChild("sea_flood_seed_shapefile").GetValue()));
       }
 
       // Layers and Files
@@ -5280,7 +5482,8 @@ bool CSimulation::bApplyConfiguration(CConfiguration const &config)
    {
       m_bHaveWaveStationData = true;
       m_strDeepWaterWaveStationsShapefile = config.GetWaveStationDataFile();
-      m_dAllCellsDeepWaterWaveHeight = config.GetDeepWaterWaveHeight();
+      // m_dAllCellsDeepWaterWaveHeight = config.GetDeepWaterWaveHeight();
+      m_strDeepWaterWavesInputFile = config.GetWaveHeightTimeSeries();
    }
 
    // Case 41: Tide data file (can be blank). This is the change (m) from still
@@ -5290,6 +5493,9 @@ bool CSimulation::bApplyConfiguration(CConfiguration const &config)
    // Case 42: Breaking wave height-to-depth ratio, check that this is a valid
    // double
    m_dBreakingWaveHeightDepthRatio = config.GetBreakingWaveRatio();
+
+   // Case 91: Sea flood fill seed point shapefile (can be blank)
+   m_strSeaFloodSeedPointShapefile = config.GetSeaFloodSeedPointShapefile();
 
    // Case 43: Simulate coast platform erosion?
    m_bDoShorePlatformErosion = config.GetCoastPlatformErosion();
@@ -5353,7 +5559,7 @@ bool CSimulation::bApplyConfiguration(CConfiguration const &config)
    m_dDeanProfileStartAboveSWL = config.GetBermHeight();
 
    // Case 59: Simulate cliff collapse?
-   m_dDeanProfileStartAboveSWL = config.GetCliffCollapse();
+   m_bDoCliffCollapse = config.GetCliffCollapse();
 
    // Case 60: Cliff resistance to erosion
    if (m_bHaveConsolidatedSediment && m_bDoCliffCollapse)

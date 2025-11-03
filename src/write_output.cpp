@@ -2264,11 +2264,11 @@ void CSimulation::DoEndOfTimestepTotals(void)
       {
          for (int nY = 0; nY < m_nYGridSize; nY++)
          {
-            dEndIterConsFineAllCells += m_pRasterGrid->m_Cell[nX][nY].dGetTotConsFineThickConsiderNotch();
-            dEndIterConsSandAllCells += m_pRasterGrid->m_Cell[nX][nY].dGetTotConsSandThickConsiderNotch();
-            dEndIterConsCoarseAllCells += m_pRasterGrid->m_Cell[nX][nY].dGetTotConsCoarseThickConsiderNotch();
+            dEndIterConsFineAllCells += m_pRasterGrid->Cell(nX, nY).dGetTotConsFineThickConsiderNotch();
+            dEndIterConsSandAllCells += m_pRasterGrid->Cell(nX, nY).dGetTotConsSandThickConsiderNotch();
+            dEndIterConsCoarseAllCells += m_pRasterGrid->Cell(nX, nY).dGetTotConsCoarseThickConsiderNotch();
 
-            double dSuspFine = m_pRasterGrid->m_Cell[nX][nY].dGetSuspendedSediment();
+            double dSuspFine = m_pRasterGrid->Cell(nX, nY).dGetSuspendedSediment();
 
             if (dSuspFine > 0)
             {
@@ -2276,7 +2276,7 @@ void CSimulation::DoEndOfTimestepTotals(void)
                nSuspFineCellsAllCells++;
             }
 
-            double dUnconsFine = m_pRasterGrid->m_Cell[nX][nY].dGetTotUnconsFine();
+            double dUnconsFine = m_pRasterGrid->Cell(nX, nY).dGetTotUnconsFine();
 
             if (dUnconsFine > 0)
             {
@@ -2284,7 +2284,7 @@ void CSimulation::DoEndOfTimestepTotals(void)
                nUnconsFineCellsAllCells++;
             }
 
-            double dUnconsSand = m_pRasterGrid->m_Cell[nX][nY].dGetTotUnconsSand();
+            double dUnconsSand = m_pRasterGrid->Cell(nX, nY).dGetTotUnconsSand();
 
             if (dUnconsSand > 0)
             {
@@ -2292,7 +2292,7 @@ void CSimulation::DoEndOfTimestepTotals(void)
                nUnconsSandCellsAllCells++;
             }
 
-            double dUnconsCoarse = m_pRasterGrid->m_Cell[nX][nY].dGetTotUnconsCoarse();
+            double dUnconsCoarse = m_pRasterGrid->Cell(nX, nY).dGetTotUnconsCoarse();
 
             if (dUnconsCoarse > 0)
             {
@@ -2301,14 +2301,14 @@ void CSimulation::DoEndOfTimestepTotals(void)
             }
 
             // Is this cell within a polygon?
-            if (m_pRasterGrid->m_Cell[nX][nY].nGetPolygonID() != INT_NODATA)
+            if (m_pRasterGrid->Cell(nX, nY).nGetPolygonID() != INT_NODATA)
             {
                // It is within a polygon
-               dEndIterConsFineInPolygons += m_pRasterGrid->m_Cell[nX][nY].dGetTotConsFineThickConsiderNotch();
-               dEndIterConsSandInPolygons += m_pRasterGrid->m_Cell[nX][nY].dGetTotConsSandThickConsiderNotch();
-               dEndIterConsCoarseInPolygons += m_pRasterGrid->m_Cell[nX][nY].dGetTotConsCoarseThickConsiderNotch();
+               dEndIterConsFineInPolygons += m_pRasterGrid->Cell(nX, nY).dGetTotConsFineThickConsiderNotch();
+               dEndIterConsSandInPolygons += m_pRasterGrid->Cell(nX, nY).dGetTotConsSandThickConsiderNotch();
+               dEndIterConsCoarseInPolygons += m_pRasterGrid->Cell(nX, nY).dGetTotConsCoarseThickConsiderNotch();
 
-               dSuspFine = m_pRasterGrid->m_Cell[nX][nY].dGetSuspendedSediment();
+               dSuspFine = m_pRasterGrid->Cell(nX, nY).dGetSuspendedSediment();
 
                if (dSuspFine > 0)
                {
@@ -2316,7 +2316,7 @@ void CSimulation::DoEndOfTimestepTotals(void)
                   nSuspFineCellsInPolygons++;
                }
 
-               dUnconsFine = m_pRasterGrid->m_Cell[nX][nY].dGetTotUnconsFine();
+               dUnconsFine = m_pRasterGrid->Cell(nX, nY).dGetTotUnconsFine();
 
                if (dUnconsFine > 0)
                {
@@ -2324,7 +2324,7 @@ void CSimulation::DoEndOfTimestepTotals(void)
                   nUnconsFineCellsInPolygons++;
                }
 
-               dUnconsSand = m_pRasterGrid->m_Cell[nX][nY].dGetTotUnconsSand();
+               dUnconsSand = m_pRasterGrid->Cell(nX, nY).dGetTotUnconsSand();
 
                if (dUnconsSand > 0)
                {
@@ -2332,7 +2332,7 @@ void CSimulation::DoEndOfTimestepTotals(void)
                   nUnconsSandCellsInPolygons++;
                }
 
-               dUnconsCoarse = m_pRasterGrid->m_Cell[nX][nY].dGetTotUnconsCoarse();
+               dUnconsCoarse = m_pRasterGrid->Cell(nX, nY).dGetTotUnconsCoarse();
 
                if (dUnconsCoarse > 0)
                {

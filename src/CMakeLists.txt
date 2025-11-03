@@ -178,11 +178,22 @@ elseif(CMAKE_BUILD_TYPE_LC STREQUAL "relwithdebinfo")
   add_compile_options(
       -march=native
       -O3
+      -g3
+      -gdwarf-3
+      -fopenmp
+      # -foffload=nvidia-ptx
+      -ffast-math
+      -fno-omit-frame-pointer
       # -Wall
       -fno-delete-null-pointer-checks
       -fno-strict-overflow
       -fno-strict-aliasing
       -ftrivial-auto-var-init=zero
+      -flto=auto
+  )
+  add_link_options(
+      -flto=auto
+      -rdynamic
   )
   if(CMAKE_CXX_COMPILER_ID MATCHES "^(GNU|LCC|QCC)$")
     # Production build using gcc
@@ -239,6 +250,7 @@ elseif(CMAKE_BUILD_TYPE_LC STREQUAL "release")
       -fno-strict-overflow
       -fno-strict-aliasing
       -ftrivial-auto-var-init=zero
+      -flto
   )
   if(CMAKE_CXX_COMPILER_ID MATCHES "^(GNU|LCC|QCC)$")
     # Production build using gcc
@@ -251,9 +263,9 @@ endif()
 
 # Finally set some gcc-specific linker flags, for all build types
 if(UNIX)
-  add_link_options(-Wl)
+  # add_link_options(-Wl)
   if(LINUX)
-    add_link_options(--as-needed -Wl,--no-undefined)
+    # add_link_options(--as-needed -Wl,--no-undefined)
   elseif(APPLE)
   endif()
 endif()

@@ -227,32 +227,34 @@ using std::ostringstream;
 #include <ostream>
 using std::ostream;
 
+#include <vector>
+
 //===================================================== platform-specific stuff =================================================
 #ifdef _WIN32
    #define access _access
-   #define F_OK 0 // Test for file existence
+   #define F_OK   0      // Test for file existence
 #endif
 
 #ifdef _MSC_VER
    // MS Visual C++ compiler, byte order is IEEE little-endian
    #ifdef _DEBUG
-      #include <crtdbg.h> // useful
+      #include <crtdbg.h>      // useful
    #endif
 
-   // clock_t is a signed long: see <time.h>
-   long const CLOCK_T_MIN = LONG_MIN;
-   double const CLOCK_T_RANGE = static_cast<double>(LONG_MAX) - static_cast<double>(CLOCK_T_MIN);
+// clock_t is a signed long: see <time.h>
+long const CLOCK_T_MIN = LONG_MIN;
+double const CLOCK_T_RANGE = static_cast<double>(LONG_MAX) - static_cast<double>(CLOCK_T_MIN);
 
    #ifdef _M_ALPHA
-      string const PLATFORM = "MS Visual C++ for Alpha";
+string const PLATFORM = "MS Visual C++ for Alpha";
    #elif defined _M_IX86
-      string const PLATFORM = "MS Visual C++ for Intel x86";
+string const PLATFORM = "MS Visual C++ for Intel x86";
    #elif defined _M_MPPC
-      string const PLATFORM = "MS Visual C++ for Power PC";
+string const PLATFORM = "MS Visual C++ for Power PC";
    #elif defined _M_MRX000
-      string const PLATFORM = "MS Visual C++ for MIPS";
+string const PLATFORM = "MS Visual C++ for MIPS";
    #else
-      string const PLATFORM = "MS Visual C++ for unknown CPU";
+string const PLATFORM = "MS Visual C++ for unknown CPU";
    #endif
 
 #elif defined __GNUG__
@@ -261,32 +263,32 @@ using std::ostream;
       #error "CPU not defined"
    #else
       #ifdef x86
-         // Intel x86, byte order is little-endian
-         string const PLATFORM = "GNU Compiler for Intel x86";
-         // clock_t is an unsigned long: see <time.h>
-         unsigned long const CLOCK_T_MIN = 0;
-         double const CLOCK_T_RANGE = static_cast<double>(ULONG_MAX);
+// Intel x86, byte order is little-endian
+string const PLATFORM = "GNU Compiler for Intel x86";
+// clock_t is an unsigned long: see <time.h>
+unsigned long const CLOCK_T_MIN = 0;
+double const CLOCK_T_RANGE = static_cast<double>(ULONG_MAX);
       #elif defined rs6000
-         // IBM RS-6000, byte order is big-endian
-         string const PLATFORM = "GNU complier for IBM RS-6000";
-         // clock_t is a signed long: see <time.h> NEED TO CHECK
-         long const CLOCK_T_MIN = LONG_MIN;
-         double const CLOCK_T_RANGE =
-         static_cast<double>(LONG_MAX) - static_cast<double>(CLOCK_T_MIN);
+// IBM RS-6000, byte order is big-endian
+string const PLATFORM = "GNU complier for IBM RS-6000";
+// clock_t is a signed long: see <time.h> NEED TO CHECK
+long const CLOCK_T_MIN = LONG_MIN;
+double const CLOCK_T_RANGE =
+   static_cast<double>(LONG_MAX) - static_cast<double>(CLOCK_T_MIN);
       #elif defined ultrasparc
-         // Sun UltraSparc, byte order is big-endian
-         string const PLATFORM = "GNU compiler for Sun UltraSPARC";
-         // clock_t is a signed long: see <time.h>
-         long const CLOCK_T_MIN = LONG_MIN;
-         double const CLOCK_T_RANGE =
-         static_cast<double>(LONG_MAX) - static_cast<double>(CLOCK_T_MIN);
+// Sun UltraSparc, byte order is big-endian
+string const PLATFORM = "GNU compiler for Sun UltraSPARC";
+// clock_t is a signed long: see <time.h>
+long const CLOCK_T_MIN = LONG_MIN;
+double const CLOCK_T_RANGE =
+   static_cast<double>(LONG_MAX) - static_cast<double>(CLOCK_T_MIN);
       #else
-         // Something else
-         string const PLATFORM = "GNU compiler for unknown CPU";
-         // clock_t is a signed long: NEED TO CHECK <time.h>
-         long const CLOCK_T_MIN = LONG_MIN;
-         double const CLOCK_T_RANGE =
-         static_cast<double>(LONG_MAX) - static_cast<double>(CLOCK_T_MIN);
+// Something else
+string const PLATFORM = "GNU compiler for unknown CPU";
+// clock_t is a signed long: NEED TO CHECK <time.h>
+long const CLOCK_T_MIN = LONG_MIN;
+double const CLOCK_T_RANGE =
+   static_cast<double>(LONG_MAX) - static_cast<double>(CLOCK_T_MIN);
       #endif
    #endif
 
@@ -296,18 +298,18 @@ using std::ostream;
       #error "CPU not defined"
    #else
       #ifdef x86
-         // Intel x86, byte order is little-endian
-         string const PLATFORM = "Clang compiler for Intel x86";
-         // clock_t is an unsigned long: see <time.h>
-         unsigned long const CLOCK_T_MIN = 0;
-         double const CLOCK_T_RANGE = static_cast<double>(ULONG_MAX);
+// Intel x86, byte order is little-endian
+string const PLATFORM = "Clang compiler for Intel x86";
+// clock_t is an unsigned long: see <time.h>
+unsigned long const CLOCK_T_MIN = 0;
+double const CLOCK_T_RANGE = static_cast<double>(ULONG_MAX);
       #else
-         // Something else
-         string const PLATFORM = "Clang compiler for unknown CPU";
-         // clock_t is a signed long: NEED TO CHECK <time.h>
-         long const CLOCK_T_MIN = LONG_MIN;
-         double const CLOCK_T_RANGE =
-         static_cast<double>(LONG_MAX) - static_cast<double>(CLOCK_T_MIN);
+// Something else
+string const PLATFORM = "Clang compiler for unknown CPU";
+// clock_t is a signed long: NEED TO CHECK <time.h>
+long const CLOCK_T_MIN = LONG_MIN;
+double const CLOCK_T_RANGE =
+   static_cast<double>(LONG_MAX) - static_cast<double>(CLOCK_T_MIN);
       #endif
    #endif
 
@@ -318,15 +320,15 @@ using std::ostream;
    #define WEXITSTATUS(x) ((x) & 0xff)
 
 #elif defined __HP_aCC
-   // HP-UX aCC, byte order is big-endian, can be either 32-bit or 64-bit
-   string const PLATFORM = "HP-UX aC++";
-   // clock_t is an unsigned long: see <time.h>
-   unsigned long const CLOCK_T_MIN = 0;
+// HP-UX aCC, byte order is big-endian, can be either 32-bit or 64-bit
+string const PLATFORM = "HP-UX aC++";
+// clock_t is an unsigned long: see <time.h>
+unsigned long const CLOCK_T_MIN = 0;
    #ifdef __ia64
-      // However, clock_t is a 32-bit unsigned long and we are using 64-bit unsigned longs here
-      double const CLOCK_T_RANGE = 4294967295UL; // crude, improve
+// However, clock_t is a 32-bit unsigned long and we are using 64-bit unsigned longs here
+double const CLOCK_T_RANGE = 4294967295UL;      // crude, improve
    #else
-      double const CLOCK_T_RANGE = static_cast<double>(ULONG_MAX);
+double const CLOCK_T_RANGE = static_cast<double>(ULONG_MAX);
    #endif
 #endif
 
@@ -350,7 +352,7 @@ using std::ostream;
 char const COLON = ':';
 char const COMMA = ',';
 char const DASH = '-';
-char const PATH_SEPARATOR = '/'; // Works for Windows too!
+char const PATH_SEPARATOR = '/';      // Works for Windows too!
 char const QUOTE1 = ';';
 char const QUOTE2 = '#';
 char const SLASH = '/';
@@ -359,35 +361,35 @@ char const TILDE = '~';
 
 // TESTING options
 bool const ACCEPT_TRUNCATED_PROFILES = true;
-bool const CREATE_SHADOW_ZONE_IF_HITS_GRID_EDGE = true;  // If shadow line tracing hits grid edge, create shadow zone?
-bool const SAVE_CSHORE_OUTPUT = true;                    // #ifdef CSHORE_FILE_INOUT || CSHORE_BOTH, append all CShore output files to a whole-run master
-bool const USE_DEEP_WATER_FOR_SHADOW_LINE = true;        // Use deep water wave orientation in determining shadow line orientation?
+bool const CREATE_SHADOW_ZONE_IF_HITS_GRID_EDGE = true;      // If shadow line tracing hits grid edge, create shadow zone?
+bool const SAVE_CSHORE_OUTPUT = true;                        // #ifdef CSHORE_FILE_INOUT || CSHORE_BOTH, append all CShore output files to a whole-run master
+bool const USE_DEEP_WATER_FOR_SHADOW_LINE = true;            // Use deep water wave orientation in determining shadow line orientation?
 
 // Not likely that user will need to change these
-int const NUMBER_OF_RNGS = 2;                            // Number of random number generators
-int const SAVEMAX = 100000;                              // Maximum number of saves of spatial output
-int const BUF_SIZE = 2048;                               // Max length (inc. terminating NULL) of any C-type string
-int const CAPE_POINT_MIN_SPACING = 10;                   // In cells: for shadow zone stuff, cape points must not be closer than this
-int const CLOCK_CHECK_ITERATION = 5000;                  // If have done this many timesteps then reset the CPU time running total
-int const COAST_LENGTH_MAX = 10;                         // For safety check when tracing coast
-int const COAST_LENGTH_MIN_X_PROF_SPACE = 20;            // Ignore very short coasts less than this x profile spacing
+int const NUMBER_OF_RNGS = 2;                      // Number of random number generators
+int const SAVEMAX = 100000;                        // Maximum number of saves of spatial output
+int const BUF_SIZE = 2048;                         // Max length (inc. terminating NULL) of any C-type string
+int const CAPE_POINT_MIN_SPACING = 10;             // In cells: for shadow zone stuff, cape points must not be closer than this
+int const CLOCK_CHECK_ITERATION = 5000;            // If have done this many timesteps then reset the CPU time running total
+int const COAST_LENGTH_MAX = 10;                   // For safety check when tracing coast
+int const COAST_LENGTH_MIN_X_PROF_SPACE = 20;      // Ignore very short coasts less than this x profile spacing
 
 //! The size of the arrays output by CShore. If this is changed, then must also set the same value on line 12 of cshore_wrapper.f03 (integer, parameter :: NN = 1000, NL = 1) and recompile CShore. Eventually we should move to dynamically allocated arrays TODO 070
 int const CSHOREARRAYOUTSIZE = 1000;
 
-int const FLOOD_FILL_START_OFFSET = 2;                   // In cells: cell-by-cell fill starts this distance inside polygon
-int const GRID_MARGIN = 10;                              // Ignore this many along-coast grid-edge points re. shadow zone calcs
-int const INT_NODATA = -9999;                            // CME's internal NODATA value for ints
-int const MAX_CLIFF_TALUS_LENGTH = 100;                  // In cells: maximum length of the Dean  profile for cliff collapse talus
-int const MAX_SEAWARD_OFFSET_FOR_CLIFF_TALUS = 30;       // In cells: maximum distance that the Dean profile for cliff collapse talus can be offset from the coast
-int const MAX_LEN_SHADOW_LINE_TO_IGNORE = 200;           // In cells: if can't find cell-by-cell fill start point, continue if short shadow line
-int const MAX_NUM_PREV_ORIENTATION_VALUES = 10;          // Max length of deque used in tracing shadow boundary
-int const MAX_NUM_SHADOW_ZONES = 10;                     // Consider at most this number of shadow zones
-int const MIN_INLAND_OFFSET_UNCONS_EROSION = 5;          // Used in estimation of beach erosion
-int const MIN_PARALLEL_PROFILE_SIZE = 3;                 // In cells: min size for valid unconsolidated sediment parallel profile
-int const MIN_PROFILE_SIZE = 3;                          // In cells: min size for valid unconsolidated sediment profile
-int const DEFAULT_PROFILE_SPACING = 15;                  // In cells: profile creation does not work well if profiles are too closely spaced
-int const SAVGOL_POLYNOMIAL_MAX_ORDER = 6;               // Maximum order of Savitzky-Golay smoothing polynomial
+int const FLOOD_FILL_START_OFFSET = 2;                  // In cells: cell-by-cell fill starts this distance inside polygon
+int const GRID_MARGIN = 10;                             // Ignore this many along-coast grid-edge points re. shadow zone calcs
+int const INT_NODATA = -9999;                           // CME's internal NODATA value for ints
+int const MAX_CLIFF_TALUS_LENGTH = 100;                 // In cells: maximum length of the Dean  profile for cliff collapse talus
+int const MAX_SEAWARD_OFFSET_FOR_CLIFF_TALUS = 30;      // In cells: maximum distance that the Dean profile for cliff collapse talus can be offset from the coast
+int const MAX_LEN_SHADOW_LINE_TO_IGNORE = 200;          // In cells: if can't find cell-by-cell fill start point, continue if short shadow line
+int const MAX_NUM_PREV_ORIENTATION_VALUES = 10;         // Max length of deque used in tracing shadow boundary
+int const MAX_NUM_SHADOW_ZONES = 10;                    // Consider at most this number of shadow zones
+int const MIN_INLAND_OFFSET_UNCONS_EROSION = 5;         // Used in estimation of beach erosion
+int const MIN_PARALLEL_PROFILE_SIZE = 3;                // In cells: min size for valid unconsolidated sediment parallel profile
+int const MIN_PROFILE_SIZE = 3;                         // In cells: min size for valid unconsolidated sediment profile
+int const DEFAULT_PROFILE_SPACING = 15;                 // In cells: profile creation does not work well if profiles are too closely spaced
+int const SAVGOL_POLYNOMIAL_MAX_ORDER = 6;              // Maximum order of Savitzky-Golay smoothing polynomial
 
 // Log file detail level
 int const NO_LOG_FILE = 0;
@@ -407,8 +409,8 @@ int const SOUTH_WEST = 6;
 int const WEST = 7;
 int const NORTH_WEST = 8;
 
-int const DIRECTION_DOWNCOAST = 0; // Down-coast, i.e. along the coast so that the index of coastline points INCREASES
-int const DIRECTION_UPCOAST = 1;   // Up-coast, i.e. along the coast so that the index of coastline points DECREASES
+int const DIRECTION_DOWNCOAST = 0;      // Down-coast, i.e. along the coast so that the index of coastline points INCREASES
+int const DIRECTION_UPCOAST = 1;        // Up-coast, i.e. along the coast so that the index of coastline points DECREASES
 
 // Handedness codes, these show which side the sea is on when travelling down-coast (i.e. in the direction in which coastline point numbers INCREASE)
 int const NULL_HANDED = -1;
@@ -444,8 +446,8 @@ int const LF_CAT_SEDIMENT_INPUT_SUBMERGED = 16;          // TODO 091 These shoul
 int const LF_CAT_SEDIMENT_INPUT_NOT_SUBMERGED = 17;      // TODO 091 These should not be LF categories
 
 // Landform category codes for cells and coast landform objects
-int const LF_CAT_CLIFF = 3; // Raster output of LF_CAT_CLIFF shows LF_CAT_CLIFF subcategories, rather than just LF_CAT_CLIFF
-int const LF_CAT_DRIFT = 4; // Raster output of LF_CAT_DRIFT shows LF_CAT_DRIFT subcategories, rather than just LF_CAT_DRIFT
+int const LF_CAT_CLIFF = 3;      // Raster output of LF_CAT_CLIFF shows LF_CAT_CLIFF subcategories, rather than just LF_CAT_CLIFF
+int const LF_CAT_DRIFT = 4;      // Raster output of LF_CAT_DRIFT shows LF_CAT_DRIFT subcategories, rather than just LF_CAT_DRIFT
 int const LF_CAT_INTERVENTION = 5;
 
 // Landform sub-category codes for cells, LF_CAT_CLIFF
@@ -707,9 +709,9 @@ int const WAVE_MODEL_CSHORE = 1;
 int const UNCONS_SEDIMENT_EQUATION_CERC = 0;
 int const UNCONS_SEDIMENT_EQUATION_KAMPHUIS = 1;
 
-int const CLIFF_COLLAPSE_LENGTH_INCREMENT = 10;             // Increment the planview length of the cliff talus Dean profile, if we have not been able to deposit enough
-int const PROFILE_CHECK_DIST_FROM_COAST = 3;                // Used in checking shoreline-normal profiles for intersection
-int const GAP_BETWEEN_DIFFERENT_COAST_PROFILES = 30;        // In cells, is the gap between profile ends belonging to different coasts
+int const CLIFF_COLLAPSE_LENGTH_INCREMENT = 10;           // Increment the planview length of the cliff talus Dean profile, if we have not been able to deposit enough
+int const PROFILE_CHECK_DIST_FROM_COAST = 3;              // Used in checking shoreline-normal profiles for intersection
+int const GAP_BETWEEN_DIFFERENT_COAST_PROFILES = 30;      // In cells, is the gap between profile ends belonging to different coasts
 
 unsigned long const MASK = 0xfffffffful;
 unsigned long const SEDIMENT_INPUT_EVENT_ERROR = -1;
@@ -717,37 +719,38 @@ unsigned long const UNSIGNED_LONG_NODATA = 9999;
 
 double const PI = 3.141592653589793238462643;
 
-double const D50_FINE_DEFAULT = 0.0625;                     // In mm
-double const D50_SAND_DEFAULT = 0.42;                       // In mm
-double const D50_COARSE_DEFAULT = 19.0;                     // In mm
+double const D50_FINE_DEFAULT = 0.0625;      // In mm
+double const D50_SAND_DEFAULT = 0.42;        // In mm
+double const D50_COARSE_DEFAULT = 19.0;      // In mm
 
-double const BEACH_PROTECTION_HB_RATIO = 0.23;              // The beach protection factor is this times breaking depth
-double const WALKDEN_HALL_PARAM_1 = 3.25;                   // First parameter in Equation 4 from Walkden & Hall, 2005
-double const WALKDEN_HALL_PARAM_2 = 1.50;                   // Second parameter in Equation 4 from Walkden & Hall, 2005
+double const BEACH_PROTECTION_HB_RATIO = 0.23;      // The beach protection factor is this times breaking depth
+double const WALKDEN_HALL_PARAM_1 = 3.25;           // First parameter in Equation 4 from Walkden & Hall, 2005
+double const WALKDEN_HALL_PARAM_2 = 1.50;           // Second parameter in Equation 4 from Walkden & Hall, 2005
 
-double const DEPTH_OVER_DB_INCREMENT = 0.001;               // Depth over DB increment for erosion potential look-up function
-double const INVERSE_DEPTH_OVER_DB_INCREMENT = 1000;        // Inverse of the above
-double const DEAN_POWER = 2.0 / 3.0;                        // Dean profile exponent
+double const DEPTH_OVER_DB_INCREMENT = 0.001;             // Depth over DB increment for erosion potential look-up function
+double const INVERSE_DEPTH_OVER_DB_INCREMENT = 1000;      // Inverse of the above
+double const DEAN_POWER = 2.0 / 3.0;                      // Dean profile exponent
 
 // TODO 011 Let the user define these CShore input parameters
-double const CSHORE_FRICTION_FACTOR = 0.015;                // Friction factor for CShore model
-double const CSHORE_SURGE_LEVEL = 0.0;                      // TODO 007
+double const CSHORE_FRICTION_FACTOR = 0.015;      // Friction factor for CShore model
+double const CSHORE_SURGE_LEVEL = 0.0;            // TODO 007
 
-double const TOLERANCE = 1e-7;                              // For bFPIsEqual, if too small (e.g. 1e-10), get spurious "rounding" errors
-double const SEDIMENT_ELEV_TOLERANCE = 1e-10;               // For bFPIsEqual, used to compare depth-equivalent sediment amounts
-double const MASS_BALANCE_TOLERANCE = 1e-5;                 // For bFPIsEqual, used to compare for mass balance checks
+double const TOLERANCE = 1e-7;                     // For bFPIsEqual, if too small (e.g. 1e-10), get spurious "rounding" errors
+double const SEDIMENT_ELEV_TOLERANCE = 1e-10;      // For bFPIsEqual, used to compare depth-equivalent sediment amounts
+double const MASS_BALANCE_TOLERANCE = 1e-5;        // For bFPIsEqual, used to compare for mass balance checks
 double const STRAIGHT_COAST_MAX_DETAILED_CURVATURE = -5;
 double const STRAIGHT_COAST_MAX_SMOOTH_CURVATURE = -1;
-double const MIN_LENGTH_OF_SHADOW_ZONE_LINE = 10;           // Used in shadow line tracing
-double const MAX_LAND_LENGTH_OF_SHADOW_ZONE_LINE = 5;       // Used in shadow line tracing
-double const CLIFF_COLLAPSE_HEIGHT_INCREMENT = 0.1;         // Increment the fractional height of the cliff talus Dean profile, if we have not been able to deposit enough
-double const INTERVENTION_PROFILE_SPACING_FACTOR = 0.5;     // Profile spacing on interventions works better if it is smaller than profile spacing on coastline
+double const MIN_LENGTH_OF_SHADOW_ZONE_LINE = 10;            // Used in shadow line tracing
+double const MAX_LAND_LENGTH_OF_SHADOW_ZONE_LINE = 5;        // Used in shadow line tracing
+double const CLIFF_COLLAPSE_HEIGHT_INCREMENT = 0.1;          // Increment the fractional height of the cliff talus Dean profile, if we have not been able to deposit enough
+double const INTERVENTION_PROFILE_SPACING_FACTOR = 0.5;      // Profile spacing on interventions works better if it is smaller than profile spacing on coastline
 
 double const DBL_NODATA = -9999;
 
 string const PROGRAM_NAME = "Coastal Modelling Environment (CoastalME) version 1.4.0 (28 Aug 2025)";
 string const PROGRAM_NAME_SHORT = "CME";
 string const CME_INI = "cme.ini";
+string const CME_YAML = "cme.yaml";
 
 string const COPYRIGHT = "(C) 2025 Andres Payo and David Favis-Mortlock";
 string const LINE = "-------------------------------------------------------------------------------";
@@ -882,7 +885,7 @@ string const RASTER_CLIFF_COLLAPSE_TIMESTEP_CODE = "cliff_collapse_timestep";
 string const RASTER_CLIFF_COLLAPSE_TIMESTEP_NAME = "cliff_collapse_timestep_all";
 string const RASTER_CLIFF_NOTCH_ALL_CODE = "cliff_notch_all";
 string const RASTER_CLIFF_NOTCH_ALL_NAME = "cliff_notch_all";
-string const RASTER_CLIFF_TOE_NAME = "cliff_toe";                 // Note no code for this, because is chosen by m_bCliffToeLocate in input file
+string const RASTER_CLIFF_TOE_NAME = "cliff_toe";      // Note no code for this, because is chosen by m_bCliffToeLocate in input file
 string const RASTER_COARSE_CONS_CODE = "cons_sed_coarse";
 string const RASTER_COARSE_CONS_NAME = "cons_sed_coarse";
 string const RASTER_COARSE_UNCONS_CODE = "uncons_sed_coarse";
@@ -942,7 +945,7 @@ string const RASTER_SHADOW_ZONE_CODE = "shadow_zones";
 string const RASTER_SHADOW_ZONE_NAME = "shadow_zones";
 string const RASTER_SLICE_CODE = "slice";
 string const RASTER_SLICE_NAME = "slice";
-string const RASTER_SLOPE_FOR_CLIFF_TOE_NAME = "toe_slope";       // Note no code for this, because is chosen by m_bCliffToeLocate in input file
+string const RASTER_SLOPE_FOR_CLIFF_TOE_NAME = "toe_slope";      // Note no code for this, because is chosen by m_bCliffToeLocate in input file
 string const RASTER_SLOPE_OF_CONSOLIDATED_SEDIMENT_CODE = "cons_sediment_slope";
 string const RASTER_SLOPE_OF_CONSOLIDATED_SEDIMENT_NAME = "cons_sediment_slope";
 string const RASTER_SUSP_SED_CODE = "susp_sed";
@@ -1163,32 +1166,32 @@ string const WAVE_HEIGHT_Y_FILENAME = "wave_height_y.csv";
 string const ACTIVE_ZONE_FILENAME = "activezone.csv";
 
 //================================================ Globally-available functions =================================================
-template <class T>
+template<class T>
 T tMax(T a, T b)
 {
    return ((a > b) ? a : b);
 }
 
-template <class T>
+template<class T>
 T tMax(T a, T b, T c)
 {
    T max = (a < b) ? b : a;
    return ((max < c) ? c : max);
 }
 
-template <class T>
+template<class T>
 T tMin(T a, T b)
 {
    return ((a < b) ? a : b);
 }
 
-template <class T>
+template<class T>
 T tMin(T a, T b, T c)
 {
    return (a < b ? (a < c ? a : c) : (b < c ? b : c));
 }
 
-template <class T>
+template<class T>
 T tAbs(T a)
 {
    // From a posting dated 18 Nov 93 by rmartin@rcmcon.com (Robert Martin), archived in cpp_tips
@@ -1202,8 +1205,8 @@ T tAbs(T a)
 //    return ((a >= b) && (a <= c));
 // }
 
-template <typename T>
-string strDblToStr(const T &t)
+template<typename T>
+string strDblToStr(T const &t)
 {
    // From http://stackoverflow.com/questions/2125880/convert-float-to-stdstring-in-c
    ostringstream os;
@@ -1214,8 +1217,8 @@ string strDblToStr(const T &t)
 // ==============================================================================================================================
 // For comparison of two floating-point numbers, with a specified accuracy
 // ==============================================================================================================================
-template <class T>
-bool bFPIsEqual(const T d1, const T d2, const T dEpsilon)
+template<class T>
+bool bFPIsEqual(T const d1, T const d2, T const dEpsilon)
 {
    // Since the accuracy of floating-point numbers varies with their magnitude, we must compare them by using an accuracy threshold which is relative to the magnitude of the two numbers being compared. This is a blend of an example from Knuth's 'The Art of Computer Programming. Volume 1. Fundamental Algorithms' and a posting dated 18 Nov 93 by rmartin@rcmcon.com (Robert Martin), archived in cpp_tips
 
@@ -1242,7 +1245,9 @@ bool bIsStringValidInt(string &);
 
 struct FillToWidth
 {
-   FillToWidth(char f, int w) : chFill(f), nWidth(w) {}
+   FillToWidth(char f, int w) : chFill(f), nWidth(w)
+   {
+   }
    char chFill;
    int nWidth;
 };
@@ -1260,17 +1265,17 @@ struct TransectWaveData
    bool bIsGridEdge;
 };
 
-ostream &operator<<(ostream &, const FillToWidth &);
+ostream &operator<<(ostream &, FillToWidth const &);
 
 // string strDbl(double const, int const);
 string strDblRight(double const, int const, int const, bool const = true);
 string strIntRight(int const, int const);
-string strCentre(const char *, int const);
-string strCentre(const string &, int const);
-string strRight(const string &, int const);
-string strRight(const char *, int const);
-string strLeft(const string &, int const);
-string strLeft(const char *, int const);
+string strCentre(char const *, int const);
+string strCentre(string const &, int const);
+string strRight(string const &, int const);
+string strRight(char const *, int const);
+string strLeft(string const &, int const);
+string strLeft(char const *, int const);
 string strRightPerCent(double const, double const, int const, int const,
                        bool const = true);
 #endif
@@ -1278,4 +1283,4 @@ string strRightPerCent(double const, double const, int const, int const,
 //================================================= debugging stuff =============================================================
 // #define CLOCKCHECK          // Uncomment to check CPU clock rollover settings
 
-#endif // CME_H
+#endif      // CME_H

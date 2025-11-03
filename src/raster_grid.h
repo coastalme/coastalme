@@ -50,8 +50,13 @@ class CGeomRasterGrid
    //! A pointer to the CSimulation object
    CSimulation* m_pSim;
 
-   //! The 2D array of m_Cell objects. A c-style 2D array seems to be faster than using 2D STL vectors
-   CGeomCell** m_Cell;
+   //! Grid dimensions for indexing
+   int m_nXSize;
+   int m_nYSize;
+
+   //! Single contiguous array of cell objects for optimal cache performance
+   //! __restrict__ tells compiler this pointer doesn't alias, enabling better vectorization
+   CGeomCell* __restrict__ m_CellData;
 
  protected:
  public:
@@ -59,7 +64,12 @@ class CGeomRasterGrid
    ~CGeomRasterGrid(void);
 
    CSimulation* pGetSim(void);
-   // CGeomCell* pGetCell(int const, int const);
    int nCreateGrid(void);
+
+   //! Accessor for cell at (nX, nY) - provides optimal cache-friendly indexing
+   //! Implementation in raster_grid_inline.h to avoid circular dependency
+   inline CGeomCell& Cell(int const nX, int const nY);
+   inline CGeomCell const& Cell(int const nX, int const nY) const;
 };
+
 #endif // RASTERGRID_H

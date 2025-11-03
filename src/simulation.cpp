@@ -774,7 +774,7 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
 
    for (int nX = 0; nX < m_nXGridSize; nX++)
       for (int nY = 0; nY < m_nYGridSize; nY++)
-         m_pRasterGrid->m_Cell[nX][nY].AppendLayers(m_nLayers);
+         m_pRasterGrid->Cell(nX, nY).AppendLayers(m_nLayers);
 
    // Tell the user what is happening then read in the layer files
    AnnounceReadRasterFiles();
@@ -939,6 +939,16 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
 
       // Read in vector points for sediment input events
       nRet = nReadVectorGISFile(FLOOD_LOCATION_VEC);
+      if (nRet != RTN_OK)
+         return (nRet);
+   }
+
+   // Read sea flood fill seed points from shapefile if specified
+   if (! m_strSeaFloodSeedPointShapefile.empty())
+   {
+      LogStream << "Reading sea flood fill seed points from " << m_strSeaFloodSeedPointShapefile << endl;
+
+      nRet = nReadSeaFloodSeedPointShapefile();
       if (nRet != RTN_OK)
          return (nRet);
    }
@@ -1121,7 +1131,7 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
       // {
       // for (int nY = 0; nY < m_nYGridSize; nY++)
       // {
-      // int nTmp = m_pRasterGrid->m_Cell[nX][nY].nGetPolygonID();
+      // int nTmp = m_pRasterGrid->Cell(nX, nY).nGetPolygonID();
       // if (nTmp == INT_NODATA)
       // nNODATA++;
       //
@@ -1200,7 +1210,7 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
       // {
       // for (int nX = 0; nX < m_nXGridSize; nX++)
       // {
-      // pdRaster[nn++] = m_pRasterGrid->m_Cell[nX][nY].dGetWaveHeight();
+      // pdRaster[nn++] = m_pRasterGrid->Cell(nX, nY).dGetWaveHeight();
       // }
       // }
       //
@@ -1232,7 +1242,7 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
       // {
       // for (int nX = 0; nX < m_nXGridSize; nX++)
       // {
-      // pdRaster[nn++] = m_pRasterGrid->m_Cell[nX][nY].dGetWaveAngle();
+      // pdRaster[nn++] = m_pRasterGrid->Cell(nX, nY).dGetWaveAngle();
       // }
       // }
       //
@@ -1334,7 +1344,7 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
       // {
       // for (int nX = 0; nX < m_nXGridSize; nX++)
       // {
-      // pdRaster[nn++] = m_pRasterGrid->m_Cell[nX][nY].dGetWaveHeight();
+      // pdRaster[nn++] = m_pRasterGrid->Cell(nX, nY).dGetWaveHeight();
       // }
       // }
       //
@@ -1366,7 +1376,7 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
       // {
       // for (int nX = 0; nX < m_nXGridSize; nX++)
       // {
-      // pdRaster[nn++] = m_pRasterGrid->m_Cell[nX][nY].dGetWaveAngle();
+      // pdRaster[nn++] = m_pRasterGrid->Cell(nX, nY).dGetWaveAngle();
       // }
       // }
       //

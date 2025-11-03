@@ -66,6 +66,7 @@ class CGeomCoastPolygon;
 class CRWCliff;
 class CSedInputEvent;
 class CRWCellLandform;
+class CGeomCell;
 
 class CSimulation
 {
@@ -1334,6 +1335,12 @@ class CSimulation
    //! The name of the flood loction events shape file
    string m_strFloodLocationShapefile;
 
+   //! The name of the sea flood fill seed points shapefile
+   string m_strSeaFloodSeedPointShapefile;
+
+   //! Vector to store seed points read from shapefile (in grid coordinates)
+   vector<CGeom2DIPoint> m_VSeaFloodSeedPoint;
+
    //! System start-simulation time
    time_t m_tSysStartTime;
 
@@ -1599,6 +1606,7 @@ class CSimulation
    // Input and output routines
    int nHandleCommandLineParams(int, char const*[]);
    bool bReadIniFile(void);
+   bool bReadIniYamlFile(void);
    bool bReadRunDataFile(void);
    bool bReadYamlFile(void);
    bool bDetectFileFormat(string const& strFileName, bool& bIsYaml);
@@ -1628,6 +1636,7 @@ class CSimulation
    int nReadRasterBasementDEM(void);
    int nReadRasterGISFile(int const, int const);
    int nReadVectorGISFile(int const);
+   int nReadSeaFloodSeedPointShapefile(void);
    bool bWriteRasterGISFile(int const, string const*, int const = 0, double const = 0);
    bool bWriteVectorGISFile(int const, string const*);
    void GetRasterOutputMinMax(int const, double&, double&, int const, double const);
@@ -1695,7 +1704,7 @@ class CSimulation
    double dCalcBeachProtectionFactor(int const, int const, double const);
    void FillInBeachProtectionHoles(void);
    void FillPotentialPlatformErosionHoles(void);
-   void DoActualPlatformErosionOnCell(int const, int const);
+   void DoActualPlatformErosionOnCell(int const, int const, CGeomCell&);
    double dLookUpErosionPotential(double const);
    static CGeom2DPoint PtChooseEndPoint(int const, CGeom2DPoint const*, CGeom2DPoint const*, double const, double const, double const, double const);
    int nGetCoastNormalEndPoint(int const, int const, int const, CGeom2DPoint const*, double const, CGeom2DPoint *, CGeom2DIPoint *, bool const);
@@ -1713,6 +1722,9 @@ class CSimulation
    void ModifyBreakingWavePropertiesWithinShadowZoneToCoastline(int const, int const);
    static double dCalcCurvature(int const, CGeom2DPoint const*, CGeom2DPoint const*, CGeom2DPoint const*);
    void CalcD50AndFillWaveCalcHoles(void);
+   void CalcD50(void);
+   void FillWaveCalcHoles(void);
+   void ProcessNeighborForWaveCalc(int const, int const, int&, int&, int&, int&, int&, int&, int&, double&, double&);
    int nDoAllShadowZones(void);
    static bool bOnOrOffShoreAndUpOrDownCoast(double const, double const, int const, bool&);
    static CGeom2DIPoint PtiFollowWaveAngle(CGeom2DIPoint const*, double const, double&);

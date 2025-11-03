@@ -58,41 +58,41 @@ int CSimulation::nInitGridAndCalcStillWaterLevel(void)
    m_nYMinBoundingBox = INT_MAX;
    m_nYMaxBoundingBox = INT_MIN;
 
-   m_ulThisIterNumSeaCells =
-   m_ulThisIterNumCoastCells =
-   m_ulThisIterNumPotentialPlatformErosionCells =
+   m_ulThisIterNumSeaCells = 0;
+   m_ulThisIterNumCoastCells = 0;
+   m_ulThisIterNumPotentialPlatformErosionCells = 0;
    m_ulThisIterNumActualPlatformErosionCells = 0;
 
-   m_ulThisIterNumPotentialBeachErosionCells =
-   m_ulThisIterNumActualBeachErosionCells =
+   m_ulThisIterNumPotentialBeachErosionCells = 0;
+   m_ulThisIterNumActualBeachErosionCells = 0;
    m_ulThisIterNumBeachDepositionCells = 0;
 
-   m_dThisIterTotSeaDepth =
-   m_dThisIterPotentialPlatformErosion =
-   m_dThisIterPotentialBeachErosion =
-   m_dThisIterBeachErosionFine =
-   m_dThisIterBeachErosionSand =
-   m_dThisIterBeachErosionCoarse =
-   m_dThisIterBeachDepositionSand =
-   m_dThisIterBeachDepositionCoarse =
-   m_dThisIterPotentialSedLostBeachErosion =
-   m_dThisIterFineSedimentToSuspension =
-   m_dThisIterCliffCollapseErosionFineUncons =
-   m_dThisIterCliffCollapseErosionSandUncons =
-   m_dThisIterCliffCollapseErosionCoarseUncons =
-   m_dThisIterUnconsSandCliffDeposition =
-   m_dThisIterUnconsCoarseCliffDeposition =
-   m_dThisIterCliffCollapseErosionFineCons =
-   m_dThisIterCliffCollapseErosionSandCons =
-   m_dThisIterCliffCollapseErosionCoarseCons =
-   m_dThisIterActualPlatformErosionFineCons =
-   m_dThisIterActualPlatformErosionSandCons =
-   m_dThisIterActualPlatformErosionCoarseCons =
-   m_dThisIterLeftGridUnconsFine = // TODO 067 Suspended fine sediment never decreases i.e. no suspended fine sediment ever leaves the grid. Is this OK?
-   m_dThisIterLeftGridUnconsSand =
-   m_dThisIterLeftGridUnconsCoarse =
-   m_dThisiterUnconsFineInput =
-   m_dThisiterUnconsSandInput =
+   m_dThisIterTotSeaDepth = 0;
+   m_dThisIterPotentialPlatformErosion = 0;
+   m_dThisIterPotentialBeachErosion = 0;
+   m_dThisIterBeachErosionFine = 0;
+   m_dThisIterBeachErosionSand = 0;
+   m_dThisIterBeachErosionCoarse = 0;
+   m_dThisIterBeachDepositionSand = 0;
+   m_dThisIterBeachDepositionCoarse = 0;
+   m_dThisIterPotentialSedLostBeachErosion = 0;
+   m_dThisIterFineSedimentToSuspension = 0;
+   m_dThisIterCliffCollapseErosionFineUncons = 0;
+   m_dThisIterCliffCollapseErosionSandUncons = 0;
+   m_dThisIterCliffCollapseErosionCoarseUncons = 0;
+   m_dThisIterUnconsSandCliffDeposition = 0;
+   m_dThisIterUnconsCoarseCliffDeposition = 0;
+   m_dThisIterCliffCollapseErosionFineCons = 0;
+   m_dThisIterCliffCollapseErosionSandCons = 0;
+   m_dThisIterCliffCollapseErosionCoarseCons = 0;
+   m_dThisIterActualPlatformErosionFineCons = 0;
+   m_dThisIterActualPlatformErosionSandCons = 0;
+   m_dThisIterActualPlatformErosionCoarseCons = 0;
+   m_dThisIterLeftGridUnconsFine = 0; // TODO 067 Suspended fine sediment never decreases i.e. no suspended fine sediment ever leaves the grid. Is this OK?
+   m_dThisIterLeftGridUnconsSand = 0;
+   m_dThisIterLeftGridUnconsCoarse = 0;
+   m_dThisiterUnconsFineInput = 0;
+   m_dThisiterUnconsSandInput = 0;
    m_dThisiterUnconsCoarseInput = 0;
 
    for (int n = 0; n < m_nLayers; n++)
@@ -106,72 +106,126 @@ int CSimulation::nInitGridAndCalcStillWaterLevel(void)
 
    int nZeroThickness = 0;
 
-   m_dStartIterSuspFineAllCells =
-   m_dStartIterSuspFineInPolygons =
-   m_dStartIterUnconsFineAllCells =
-   m_dStartIterUnconsSandAllCells =
-   m_dStartIterUnconsCoarseAllCells =
-   m_dStartIterConsFineAllCells =
-   m_dStartIterConsSandAllCells =
+   m_dStartIterSuspFineAllCells = 0;
+   m_dStartIterSuspFineInPolygons = 0;
+   m_dStartIterUnconsFineAllCells = 0;
+   m_dStartIterUnconsSandAllCells = 0;
+   m_dStartIterUnconsCoarseAllCells = 0;
+   m_dStartIterConsFineAllCells = 0;
+   m_dStartIterConsSandAllCells = 0;
    m_dStartIterConsCoarseAllCells = 0;
 
-   // And go through all cells in the RasterGrid array
-   // Use OpenMP parallel loop with reduction clauses for thread-safe accumulation
+   // Cache-aligned accumulator structure to prevent false sharing between threads
+   // Each structure is padded to 64 bytes (typical cache line size) to ensure
+   // different threads' accumulators reside in separate cache lines
+   struct alignas(64) ThreadLocalAccumulators
+   {
+      int nZeroThickness;
+      double dConsFine;
+      double dConsSand;
+      double dConsCoarse;
+      double dSuspFine;
+      double dUnconsFine;
+      double dUnconsSand;
+      double dUnconsCoarse;
+
+      ThreadLocalAccumulators() :
+         nZeroThickness(0), dConsFine(0), dConsSand(0), dConsCoarse(0),
+         dSuspFine(0), dUnconsFine(0), dUnconsSand(0), dUnconsCoarse(0) {}
+   };
+
+   // Determine maximum number of threads for pre-allocation
+   // This scales efficiently from dev machine (8 cores) to production (32+ cores)
 #ifdef _OPENMP
-#pragma omp parallel for collapse(2) reduction(+ : nZeroThickness)                                            \
-    reduction(+ : m_dStartIterConsFineAllCells, m_dStartIterConsSandAllCells, m_dStartIterConsCoarseAllCells) \
-    reduction(+ : m_dStartIterSuspFineAllCells, m_dStartIterUnconsFineAllCells, m_dStartIterUnconsSandAllCells, m_dStartIterUnconsCoarseAllCells)
+   int const nMaxThreads = omp_get_max_threads();
+#else
+   int const nMaxThreads = 1;
 #endif
 
+   // Pre-allocate cache-aligned accumulators for each thread
+   // This eliminates false sharing and allows lock-free parallel accumulation
+   std::vector<ThreadLocalAccumulators> threadAccum(nMaxThreads);
+
+   // Parallel loop without reduction clauses - each thread accumulates into its own cache line
+   // This approach eliminates the OpenMP reduction overhead that caused thread synchronization bottlenecks
+#ifdef _OPENMP
+#pragma omp parallel for collapse(2) schedule(static, m_ulNumCells/nMaxThreads)
+#endif
    for (int nX = 0; nX < m_nXGridSize; nX++)
    {
       for (int nY = 0; nY < m_nYGridSize; nY++)
       {
+         // Get thread ID to access this thread's private accumulator
+#ifdef _OPENMP
+         int const tid = omp_get_thread_num();
+#else
+         int const tid = 0;
+#endif
+         ThreadLocalAccumulators& acc = threadAccum[tid];
+
+        // Get cell
+        auto& this_cell = m_pRasterGrid->Cell(nX, nY);
+      
          // Re-initialise values for this cell
-         m_pRasterGrid->m_Cell[nX][nY].InitCell();
+         this_cell.InitCell();
 
          if (m_ulIter == 1)
          {
             // For the first timestep only, check to see that all cells have some sediment on them
-            double const dSedThickness = m_pRasterGrid->m_Cell[nX][nY].dGetTotAllSedThickness();
+            double const dSedThickness = this_cell.dGetTotAllSedThickness();
 
             if (dSedThickness <= 0)
             {
-               nZeroThickness++;
+               acc.nZeroThickness++;
 
                // Note: Logging from parallel regions can cause race conditions, but this is for debugging only
                // In production, consider collecting problematic cells and logging after the parallel region
                if (m_nLogFileDetail >= LOG_FILE_MIDDLE_DETAIL)
                {
-#ifdef _OPENMP
-#pragma omp critical(logging)
-#endif
+// #ifdef _OPENMP
+// #pragma omp critical(logging)
+// #endif
                   LogStream << m_ulIter << ": " << WARN << "total sediment thickness is " << dSedThickness << " at [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "}" << endl;
                }
             }
 
             // For the first timestep only, calculate the elevation of all this cell's layers. During the rest of the simulation, each cell's elevation is re-calculated just after any change occurs on that cell
-            m_pRasterGrid->m_Cell[nX][nY].CalcAllLayerElevsAndD50();
+            this_cell.CalcAllLayerElevsAndD50();
          }
 
+         // Accumulate into thread-local variables (no synchronization required!)
          // Note that these totals include sediment which is both within and outside the polygons (because we have not yet defined polygons for this iteration, duh!)
-         m_dStartIterConsFineAllCells += m_pRasterGrid->m_Cell[nX][nY].dGetTotConsFineThickConsiderNotch();
-         m_dStartIterConsSandAllCells += m_pRasterGrid->m_Cell[nX][nY].dGetTotConsSandThickConsiderNotch();
-         m_dStartIterConsCoarseAllCells += m_pRasterGrid->m_Cell[nX][nY].dGetTotConsCoarseThickConsiderNotch();
-
-         m_dStartIterSuspFineAllCells += m_pRasterGrid->m_Cell[nX][nY].dGetSuspendedSediment();
-         m_dStartIterUnconsFineAllCells += m_pRasterGrid->m_Cell[nX][nY].dGetTotUnconsFine();
-         m_dStartIterUnconsSandAllCells += m_pRasterGrid->m_Cell[nX][nY].dGetTotUnconsSand();
-         m_dStartIterUnconsCoarseAllCells += m_pRasterGrid->m_Cell[nX][nY].dGetTotUnconsCoarse();
+         acc.dConsFine    += this_cell.dGetTotConsFineThickConsiderNotch();
+         acc.dConsSand    += this_cell.dGetTotConsSandThickConsiderNotch();
+         acc.dConsCoarse  += this_cell.dGetTotConsCoarseThickConsiderNotch();
+         acc.dSuspFine    += this_cell.dGetSuspendedSediment();
+         acc.dUnconsFine  += this_cell.dGetTotUnconsFine();
+         acc.dUnconsSand  += this_cell.dGetTotUnconsSand();
+         acc.dUnconsCoarse+= this_cell.dGetTotUnconsCoarse();
 
          if (m_bSingleDeepWaterWaveValues)
          {
             // If we have just a single measurement for deep water waves (either given by the user, or from a single wave station) then set all cells, even dry land cells, to the same value for deep water wave height, deep water wave orientation, and deep water period
-            m_pRasterGrid->m_Cell[nX][nY].SetCellDeepWaterWaveHeight(m_dAllCellsDeepWaterWaveHeight);
-            m_pRasterGrid->m_Cell[nX][nY].SetCellDeepWaterWaveAngle(m_dAllCellsDeepWaterWaveAngle);
-            m_pRasterGrid->m_Cell[nX][nY].SetCellDeepWaterWavePeriod(m_dAllCellsDeepWaterWavePeriod);
+            this_cell.SetCellDeepWaterWaveHeight(m_dAllCellsDeepWaterWaveHeight);
+            this_cell.SetCellDeepWaterWaveAngle(m_dAllCellsDeepWaterWaveAngle);
+            this_cell.SetCellDeepWaterWavePeriod(m_dAllCellsDeepWaterWavePeriod);
          }
       }
+   }
+
+   // After parallel region: combine thread-local results sequentially
+   // This is fast (O(nThreads), typically 8-32 operations) compared to the parallel work (O(nCells))
+   // and eliminates all the false sharing and synchronization overhead from the parallel loop
+   for (int t = 0; t < nMaxThreads; t++)
+   {
+      nZeroThickness += threadAccum[t].nZeroThickness;
+      m_dStartIterConsFineAllCells    += threadAccum[t].dConsFine;
+      m_dStartIterConsSandAllCells    += threadAccum[t].dConsSand;
+      m_dStartIterConsCoarseAllCells  += threadAccum[t].dConsCoarse;
+      m_dStartIterSuspFineAllCells    += threadAccum[t].dSuspFine;
+      m_dStartIterUnconsFineAllCells  += threadAccum[t].dUnconsFine;
+      m_dStartIterUnconsSandAllCells  += threadAccum[t].dUnconsSand;
+      m_dStartIterUnconsCoarseAllCells+= threadAccum[t].dUnconsCoarse;
    }
 
    if (m_bHaveWaveStationData && (! m_bSingleDeepWaterWaveValues))
@@ -222,7 +276,7 @@ int CSimulation::nInitGridAndCalcStillWaterLevel(void)
    // for (int nX = 0; nX < m_nXGridSize; nX++)
    // {
    //          // Write this value to the array
-   // pdRaster[nn] = m_pRasterGrid->m_Cell[nX][nY].dGetCellDeepWaterWaveHeight();
+   // pdRaster[nn] = m_pRasterGrid->Cell(nX, nY).dGetCellDeepWaterWaveHeight();
    // nn++;
    // }
    // }
@@ -251,7 +305,7 @@ int CSimulation::nInitGridAndCalcStillWaterLevel(void)
    // for (int nX = 0; nX < m_nXGridSize; nX++)
    // {
    //          // Write this value to the array
-   // pdRaster[nn] = m_pRasterGrid->m_Cell[nX][nY].dGetCellDeepWaterWaveAngle();
+   // pdRaster[nn] = m_pRasterGrid->Cell(nX, nY).dGetCellDeepWaterWaveAngle();
    // nn++;
    // }
    // }
@@ -280,7 +334,7 @@ int CSimulation::nInitGridAndCalcStillWaterLevel(void)
    // for (int nX = 0; nX < m_nXGridSize; nX++)
    // {
    //          // Write this value to the array
-   // pdRaster[nn] = m_pRasterGrid->m_Cell[nX][nY].dGetWaveAngle();
+   // pdRaster[nn] = m_pRasterGrid->Cell(nX, nY).dGetWaveAngle();
    // nn++;
    // }
    // }
@@ -309,7 +363,7 @@ int CSimulation::nInitGridAndCalcStillWaterLevel(void)
    // for (int nX = 0; nX < m_nXGridSize; nX++)
    // {
    //          // Write this value to the array
-   // pdRaster[nn] = m_pRasterGrid->m_Cell[nX][nY].dGetWaveHeight();
+   // pdRaster[nn] = m_pRasterGrid->Cell(nX, nY).dGetWaveHeight();
    // nn++;
    // }
    // }

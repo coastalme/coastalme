@@ -100,6 +100,7 @@ class CConfiguration
    bool m_bHasFinalWaterLevel;
 
    // Waves
+   string m_strWaveInputMode;
    string m_strWaveHeightTimeSeries;
    string m_strWaveStationDataFile;
    double m_dDeepWaterWaveHeight;
@@ -109,6 +110,9 @@ class CConfiguration
    // tides
    string m_strTideDataFile;
    double m_dBreakingWaveRatio;
+
+   // Sea flood fill seed points
+   string m_strSeaFloodSeedPointShapefile;
 
    // Sediment and Erosion
    bool m_bCoastPlatformErosion;
@@ -354,6 +358,10 @@ class CConfiguration
    }
 
    // Wave height Data
+   void SetWaveInputMode(string const &str)
+   {
+      m_strWaveInputMode = str;
+   }
    void SetWaveHeightTimeSeries(string const &str)
    {
       m_strWaveHeightTimeSeries = str;
@@ -382,6 +390,11 @@ class CConfiguration
    void SetBreakingWaveRatio(double d)
    {
       m_dBreakingWaveRatio = d;
+   }
+
+   void SetSeaFloodSeedPointShapefile(string const &str)
+   {
+      m_strSeaFloodSeedPointShapefile = str;
    }
 
    // Additional setters for comprehensive YAML support
@@ -766,6 +779,10 @@ class CConfiguration
    }
 
    // Wave data configuration getters (Cases 37-40)
+   string GetWaveInputMode() const
+   {
+      return m_strWaveInputMode;
+   }
    string GetWaveHeightTimeSeries() const
    {
       return m_strWaveHeightTimeSeries;
@@ -794,6 +811,11 @@ class CConfiguration
    double GetBreakingWaveRatio() const
    {
       return m_dBreakingWaveRatio;
+   }
+
+   string GetSeaFloodSeedPointShapefile() const
+   {
+      return m_strSeaFloodSeedPointShapefile;
    }
 
    // Sediment and Erosion parameters
