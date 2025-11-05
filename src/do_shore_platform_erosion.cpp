@@ -862,6 +862,9 @@ void CSimulation::DoActualPlatformErosionOnCell(int const nX, int const nY, CGeo
       // Recalculate the elevation of every layer
       rCell.CalcAllLayerElevsAndD50();
 
+      // Mark cell as changed for avalanche processing
+      MarkCellDirty(nX, nY);
+
       // And update the cell's sea depth
       rCell.SetSeaDepth();
 

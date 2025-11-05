@@ -223,6 +223,12 @@ class CGeomCell
    //! Total depth of unconsolidated beach sediment deposited
    double m_dTotBeachDeposition;
 
+   //! Depth of sediment moved by avalanching this timestep (depth in m)
+   double m_dAvalancheDepositionThisIter;
+
+   //! Total depth of sediment moved by avalanching
+   double m_dTotAvalancheDeposition;
+
    //! d50 of unconsolidated sediment on top layer with unconsolidated sediment depth > 0
    double m_dUnconsD50;
 
@@ -418,6 +424,10 @@ class CGeomCell
    double dGetBeachDeposition(void) const;
    double dGetTotBeachDeposition(void) const;
    // bool bBeachDepositionThisIter(void) const;
+
+   void IncrAvalancheDeposition(double const);
+   double dGetAvalancheDeposition(void) const;
+   double dGetTotAvalancheDeposition(void) const;
 
    bool bBeachErosionOrDepositionThisIter(void) const;
 

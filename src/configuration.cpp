@@ -233,6 +233,7 @@ vector<string> CConfiguration::GetRasterFiles() const
                                "basement_elevation",
                                "coastline",
                                "coast_normal",
+                               "dirty_cells",
                                "active_zone",
                                "cliff_collapse",
                                "total_cliff_collapse",

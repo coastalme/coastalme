@@ -434,6 +434,9 @@ int CSimulation::nDoCliffCollapse(int const nCoast, CRWCliff* pCliff, double& dF
 
    // Get the post-collapse cell elevation (talus will be deposited above this)
    dPostCollapseCellElevNoTalus = m_pRasterGrid->m_Cell[nX][nY].dGetAllSedTopElevOmitTalus();
+   // Mark cell as changed for avalanche processing
+   MarkCellDirty(nX, nY);
+
 
    if (m_nLogFileDetail >= LOG_FILE_MIDDLE_DETAIL)
       LogStream << m_ulIter << ": \tcoast " << nCoast << " cliff collapse at [" << nX << "][" << nY << "], before talus deposition: original cell elevation = " << dPreCollapseCellElev << ", new cell elevation = " << dPostCollapseCellElevNoTalus << ", change in elevation = " << dPreCollapseCellElev - dPostCollapseCellElevNoTalus << endl;

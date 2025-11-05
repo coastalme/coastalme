@@ -138,6 +138,9 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
             // And update the sediment top elevation value
             m_pRasterGrid->Cell(nPointGridX, nPointGridY).CalcAllLayerElevsAndD50();
 
+            // Mark cell as changed for avalanche processing
+            MarkCellDirty(nPointGridX, nPointGridY);
+
             // If we are in a polygon, then add to this polygon's sand sediment input total
             if (nThisPoly != INT_NODATA)
                m_VCoast[nThisPolyCoast].pGetPolygon(nThisPoly)->SetSedimentInputUnconsFine(dFineDepth);
@@ -160,6 +163,9 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
             // And update the sediment top elevation value
             m_pRasterGrid->Cell(nPointGridX, nPointGridY).CalcAllLayerElevsAndD50();
 
+            // Mark cell as changed for avalanche processing
+            MarkCellDirty(nPointGridX, nPointGridY);
+
             // If we are in a polygon, then add to this polygon's sand sediment input total
             if (nThisPoly != INT_NODATA)
                m_VCoast[nThisPolyCoast].pGetPolygon(nThisPoly)->SetSedimentInputUnconsSand(dSandDepth);
@@ -181,6 +187,9 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
 
             // And update the sediment top elevation value
             m_pRasterGrid->Cell(nPointGridX, nPointGridY).CalcAllLayerElevsAndD50();
+
+            // Mark cell as changed for avalanche processing
+            MarkCellDirty(nPointGridX, nPointGridY);
 
             // If we are in a polygon, then add to this polygon's coarse sediment input total
             if (nThisPoly != INT_NODATA)
@@ -546,6 +555,9 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
          // And update the sediment top elevation value
          m_pRasterGrid->Cell(nCoastX, nCoastY).CalcAllLayerElevsAndD50();
 
+         // Mark cell as changed for avalanche processing
+         MarkCellDirty(nCoastX, nCoastY);
+
          if (nThisPoly != INT_NODATA)
             // Add to this polygon's fine sediment input total
            m_VCoast[nThisPolyCoast].pGetPolygon(nThisPoly)->SetSedimentInputUnconsFine(dFineDepth);
@@ -567,6 +579,9 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
          // And update the sediment top elevation value
          m_pRasterGrid->Cell(nCoastX, nCoastY).CalcAllLayerElevsAndD50();
 
+         // Mark cell as changed for avalanche processing
+         MarkCellDirty(nCoastX, nCoastY);
+
          if (nThisPoly != INT_NODATA)
             // Add to this polygon's sand sediment input total
             m_VCoast[nThisPolyCoast].pGetPolygon(nThisPoly)->SetSedimentInputUnconsSand(dSandDepth);
@@ -587,6 +602,9 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
 
          // And update the sediment top elevation value
          m_pRasterGrid->Cell(nCoastX, nCoastY).CalcAllLayerElevsAndD50();
+
+         // Mark cell as changed for avalanche processing
+         MarkCellDirty(nCoastX, nCoastY);
 
          if (nThisPoly != INT_NODATA)
             // Add to this polygon's coarse sediment input total

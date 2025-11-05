@@ -110,3 +110,5 @@ valgrind*
 **/.DS_Store
 **/*.vim
 **/*.cbp
+
+.idea

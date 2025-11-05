@@ -14,6 +14,7 @@
 #ifndef SIMULATION_H
 #define SIMULATION_H
 /* ===============================================================================================================================
+
    This file is part of CoastalME, the Coastal Modelling Environment.
 
    CoastalME is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
@@ -21,6 +22,7 @@
    This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
    You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+
 ===============================================================================================================================*/
 #include <vector>
 using std::vector;
@@ -38,6 +40,9 @@ using std::string;
 
 #include <utility>
 using std::pair;
+
+#include <set>
+using std::set;
 
 #include <stack>
 using std::stack;
@@ -62,7 +67,7 @@ class CRWCoast;
 class CGeomProfile;
 class CGeomCoastPolygon;
 class CRWCliff;
-class CRWSedInputEvent;
+class CSedInputEvent;
 class CRWCellLandform;
 class CGeomCell;
 
@@ -81,11 +86,11 @@ class CSimulation
    //! Save basement raster DEMs?
    bool m_bBasementElevSave;
 
-   //! Save sediment (inc talus) top surface raster DEMs?
-   bool m_bSedIncTalusTopSurfSave;
+   //! Save sediment top surface raster DEMs?
+   bool m_bSedimentTopSurfSave;
 
-   //! Save top surface (sediment, talus, and sea) raster DEMs?
-   bool m_bTopSurfIncSeaSave;
+   //! Save fop surface (sediment and sea) raster DEMs?
+   bool m_bTopSurfSave;
 
    //! Save talus depth?
    bool m_bTalusSave;
@@ -501,6 +506,9 @@ class CSimulation
    //! The order of the cliff edge smoothing polynomial if Savitzky-Golay smoothing is used (usually 2 or 4, max is 6)
    int m_nSavGolCliffEdgePoly;
 
+   //! Slope limit for cliff toe detection
+   double m_dSlopeThresholdForCliffToe;
+
    //! The size of the window used for running-mean coast-normal profile smoothing (must be odd)
    int m_nProfileSmoothWindow;
 
@@ -531,11 +539,11 @@ class CSimulation
    //! Minimum valid coast length when searching for coasts
    int m_nCoastMin;
 
-   //! The number of cells with cliff collapse this iteration
-   int m_nNumThisIterCliffCollapse;
+   // NOT USED
+   // int m_nNThisIterCliffCollapse;
 
-   //! The total number of cells with cliff collapse since the start of the simulation
-   int m_nNumTotCliffCollapse;
+   // NOT USED
+   // int m_nNTotCliffCollapse;
 
    //! How sediment which moves off an edge of the grid is handled. Possible values are GRID_EDGE_CLOSED, GRID_EDGE_OPEN, GRID_EDGE_RECIRCULATE
    int m_nUnconsSedimentHandlingAtGridEdges;
@@ -593,6 +601,12 @@ class CSimulation
 
    //! TODO 007 Used in WAVESETUP + SURGE + RUNUP Finish surge and runup stuff
    int m_nLevel;
+
+   //! The default planview width of cliff collapse talus, in cells
+   int m_nDefaultTalusWidthInCells;
+
+   // The minimum planview length (in cells) of the Dean profile formed by the cliff collapse Talus
+   int m_nTalusProfileMinLenInCells;
 
    //! The data type used by GDAL for integer operations, can be GDT_Byte, GDT_Int16, GDT_UInt16, GDT_Int32, or GDT_UInt32
    GDALDataType m_GDALWriteIntDataType;
@@ -687,7 +701,7 @@ class CSimulation
    //! Duration of simulation, in hours
    double m_dSimDuration;
 
-   //! The length of an iteration (a timestep) in hours
+   //! The length of an iteration (a time step) in hours
    double m_dTimeStep;
 
    //! Time simulated so far, in hours
@@ -729,13 +743,13 @@ class CSimulation
    //! The mean still water level for this timestep (does not include tidal changes, but includes any long-term SWL change)
    double m_dThisIterMeanSWL;
 
-   //! If long-term SWL changes, the total change (m) so far since the start of simulation
+   //! If long-term SWL changes, the total change so far since the start of simulation
    double m_dAccumulatedSeaLevelChange;
 
-   //! Minimum still water level (m)
+   //! Minimum still water level
    double m_dMinSWLSoFar;
 
-   //! Maximum still water level (m)
+   //! Maximum still water level
    double m_dMaxSWLSoFar;
 
    //! TODO 007 Finish surge and runup stuff
@@ -795,16 +809,16 @@ class CSimulation
    //! The density of unconsolidated beach sediment (kg/m**3)
    double m_dBeachSedimentDensity;
 
-   //! The porosity of unconsolidated beach sediment (0-1)
+   //! The porosity of unconsolidated beach sediment (0 - 1)
    double m_dBeachSedimentPorosity;
 
-   //! The relative erodibility (0-1) of fine unconsolidated beach sediment
+   //! The relative erodibility (0- 1) of fine unconsolidated beach sediment
    double m_dFineErodibility;
 
-   //! The relative erodibility (0-1) of sand unconsolidated beach sediment
+   //! The relative erodibility (0- 1) of sand unconsolidated beach sediment
    double m_dSandErodibility;
 
-   //! The relative erodibility (0-1) of coarse unconsolidated beach sediment
+   //! The relative erodibility (0- 1) of coarse unconsolidated beach sediment
    double m_dCoarseErodibility;
 
    //! Relative erodibility of fine unconsolidated beach sediment, normalized
@@ -924,14 +938,14 @@ class CSimulation
    //! Resistance of cliff to notch erosion
    double m_dCliffErosionResistance;
 
-   //! Notch overhang (i.e. length of horizontal incision at the apex elevation) to initiate collapse (m)
-   double m_dNotchIncisionAtCollapse;
+   //! Notch overhang (i.e. length of horizontal incision) to initiate collapse (m)
+   double m_dNotchDepthAtCollapse;
 
-   //! Elevation (m) of the apex of any cliff notches created during this iteration
-   double m_dThisIterNewNotchApexElev;
+   //! This-iteration notch elevation (m)
+   double m_dThisIterNotchBaseElev;
 
    //! Distance of notch base below SWL (m)
-   double m_dNotchApexAboveMHW;
+   double m_dNotchBaseBelowSWL;
 
    //! Scale parameter A for cliff deposition (m^(1/3)), may be zero for auto-calculation
    double m_dCliffDepositionA;
@@ -1592,7 +1606,7 @@ class CSimulation
    vector<int> m_VCellFloodLocation;
 
    //! Sediment input events
-   vector<CRWSedInputEvent*> m_pVSedInputEvent;
+   vector<CSedInputEvent*> m_pVSedInputEvent;
 
    //! The c++11 random number generators
    default_random_engine m_Rand[NUMBER_OF_RNGS];
@@ -1643,7 +1657,6 @@ class CSimulation
 
    // Initialization
    bool bCreateErosionPotentialLookUp(vector<double>*, vector<double>*, vector<double>*);
-   void CalcMHWElevation(int const);
 
    // Top-level simulation routines
    static int nUpdateIntervention(void);
@@ -1658,9 +1671,8 @@ class CSimulation
    void GenerateSyntheticTransects(vector<TransectWaveData> const*, vector<TransectWaveData>*);
    int nDoAllShorePlatFormErosion(void);
    int nDoAllWaveEnergyToCoastLandforms(void);
-   int nDoCliffCollapse(int const, CRWCliff *, double&, double&, double&, int&, double&, double&);
-   void DoCliffCollapseTalusDeposition(int const, CRWCliff const*, double const, double const, int const);
-   int nMoveCliffTalusToUnconsolidated(void);
+   int nDoCliffCollapse(int const, CRWCliff *, double&, double&, double&, double&, double&);
+   int nDoCliffCollapseDeposition(int const, CRWCliff const*, double const, double const, double const, double const);
    int nUpdateGrid(void);
 
    // For cliff toe location
@@ -1697,11 +1709,12 @@ class CSimulation
    void CreateRasterizedProfile(int const, CGeomProfile*, vector<CGeom2DIPoint>*, vector<bool>*, bool&, bool&, bool&, bool&, bool&, bool&);
    static void CalcDeanProfile(vector<double>*, double const, double const, double const, bool const, int const, double const);
    static double dSubtractProfiles(vector<double> const*, vector<double> const*, vector<bool> const*);
+   void RasterizeCliffCollapseProfile(vector<CGeom2DPoint> const*, vector<CGeom2DIPoint>*) const;
    int nCalcPotentialPlatformErosionOnProfile(int const, CGeomProfile*);
    int nCalcPotentialPlatformErosionBetweenProfiles(int const, CGeomProfile*, int const);
    void ConstructParallelProfile(int const, int const, int const, int const, int const, vector<CGeom2DIPoint>* const, vector<CGeom2DIPoint>*, vector<CGeom2DPoint> *);
    double dCalcBeachProtectionFactor(int const, int const, double const);
-   void FillInBeachProtectionHolesAndRemoveLegacyCliffs(void);
+   void FillInBeachProtectionHoles(void);
    void FillPotentialPlatformErosionHoles(void);
    void DoActualPlatformErosionOnCell(int const, int const, CGeomCell&);
    double dLookUpErosionPotential(double const);
@@ -1728,7 +1741,7 @@ class CSimulation
    static bool bOnOrOffShoreAndUpOrDownCoast(double const, double const, int const, bool&);
    static CGeom2DIPoint PtiFollowWaveAngle(CGeom2DIPoint const*, double const, double&);
    // int nFindAllShadowZones(void);
-   int nCellByCellFillShadowZone(int const, int const, CGeom2DIPoint const*, CGeom2DIPoint const*, CGeom2DIPoint const*);
+   int nFloodFillShadowZone(int const, CGeom2DIPoint const*, CGeom2DIPoint const*, CGeom2DIPoint const*);
    void DoShadowZoneAndDownDriftZone(int const, int const, int const, int const);
    void ProcessDownDriftCell(int const, int const, int const, double const, int const);
    void ProcessShadowZoneCell(int const, int const, int const, CGeom2DIPoint const*, int const, int const, int const);
@@ -1757,8 +1770,6 @@ class CSimulation
    int nTruncateProfilesDifferentCoasts(int const, int const, int const, int const, int const, int const);
    int nTruncateProfileHitDifferentCoast(int const, int const, int const, int const);
    int nTruncateProfileMultiLineDifferentCoasts(CGeomProfile*, double const, double const);
-   bool bIncreaseCliffNotchIncision(int const, int const, int const, CRWCliff*, double const);
-   bool bCreateNotchInland(int const, int const, int const, int const, double const, double const);
 
    // GIS utility routines
    int nMarkBoundingBoxEdgeCells(void);
@@ -1801,11 +1812,8 @@ class CSimulation
    static int nGetOppositeDirection(int const);
    // static void GetSlopeAndInterceptFromPoints(CGeom2DIPoint const*,
    // CGeom2DIPoint const*, double&, double&);
-   CGeom2DIPoint PtiFindClosestCoastPoint(int const, int const, int&);
-   int nFindClosestCoastPoint(int const, int const, int&);
+   CGeom2DIPoint PtiFindClosestCoastPoint(int const, int const);
    int nConvertMetresToNumCells(double const) const;
-   bool bIsAdjacentEdgeCell(CGeom2DIPoint const*, CGeom2DIPoint const*);
-   void FindClosestPointOnStraightLine(double const, double const, double const, double const, double const, double const, double&, double&);
 
    // Interpolation routines
    double dGetInterpolatedValue(vector<double> const*, vector<double> const*, double, bool);
@@ -1899,6 +1907,8 @@ class CSimulation
    void WritePolygonSortedSequence(vector<vector<vector<int>>>&);
    void WritePolygonActualMovement(vector<vector<vector<int>>>&);
    void DoEndOfRunDeletes(void);
+   void GetClosestPoint(double const, double const, double const, double const, double const, double const, double&, double&);
+
 
  protected:
  public:
@@ -1910,14 +1920,14 @@ class CSimulation
    //! Returns the NODATA value
    double dGetMissingValue(void) const;
 
-   //! Returns this timestep's SWL
+   //! Returns this timestep's still water level
    double dGetThisIterSWL(void) const;
 
-   //! Returns this timestep's total water level TODO 007 Finish surge and runup stuff
+   //! Returns this timestep's total water level
    double dGetThisIterTotWaterLevel(void) const;
 
-   // //! Returns the vertical tolerance for beach cells to be included in smoothing
-   // double dGetMaxBeachElevAboveSWL(void) const;
+   // //! Returns the vertical tolerance for beach cells to be included in
+   // smoothing double dGetMaxBeachElevAboveSWL(void) const;
 
    //! Returns the cell size
    // double dGetCellSide(void) const;

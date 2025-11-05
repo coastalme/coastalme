@@ -90,6 +90,8 @@ CGeomCell::CGeomCell()
      m_dTotActualBeachErosion(0),
      m_dBeachDepositionThisIter(0),
      m_dTotBeachDeposition(0),
+     m_dAvalancheDepositionThisIter(0),
+     m_dTotAvalancheDeposition(0),
      m_dUnconsD50(0),
      m_dInterventionHeight(0)
 {
@@ -1208,6 +1210,25 @@ double CGeomCell::dGetTotBeachDeposition(void) const
 // {
 // return (m_dBeachDepositionThisIter > 0 ? true : false);
 // }
+
+//! Increment this-timestep avalanche deposition, also increment total avalanche deposition
+void CGeomCell::IncrAvalancheDeposition(double const dThisDeposition)
+{
+   m_dAvalancheDepositionThisIter += dThisDeposition;
+   m_dTotAvalancheDeposition += dThisDeposition;
+}
+
+//! Get avalanche deposition for this timestep
+double CGeomCell::dGetAvalancheDeposition(void) const
+{
+   return m_dAvalancheDepositionThisIter;
+}
+
+//! Get total avalanche deposition
+double CGeomCell::dGetTotAvalancheDeposition(void) const
+{
+   return m_dTotAvalancheDeposition;
+}
 
 //! Returns true only if this cell has had no deposition or erosion this timestep
 bool CGeomCell::bBeachErosionOrDepositionThisIter(void) const

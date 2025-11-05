@@ -650,6 +650,9 @@ int CSimulation::nDoParallelProfileUnconsErosion(CGeomCoastPolygon* pPolygon, in
                   // Now update the cell's layer elevations
                   m_pRasterGrid->Cell(nX, nY).CalcAllLayerElevsAndD50();
 
+                  // Mark cell as changed for avalanche processing
+                  MarkCellDirty(nX, nY);
+
                   // Update the cell's sea depth
                   m_pRasterGrid->Cell(nX, nY).SetSeaDepth();
 
@@ -737,6 +740,9 @@ void CSimulation::ErodeCellBeachSedimentSupplyLimited(int const nX, int const nY
    {
       // Recalculate the elevation of every layer
       m_pRasterGrid->Cell(nX, nY).CalcAllLayerElevsAndD50();
+
+      // Mark cell as changed for avalanche processing
+      MarkCellDirty(nX, nY);
 
       // And update the cell's sea depth
       m_pRasterGrid->Cell(nX, nY).SetSeaDepth();
@@ -1196,6 +1202,9 @@ int CSimulation::nDoUnconsDepositionOnPolygon(int const nCoast, CGeomCoastPolygo
                {
                   // Update the cell's layer elevations
                   m_pRasterGrid->Cell(nX, nY).CalcAllLayerElevsAndD50();
+
+                  // Mark cell as changed for avalanche processing
+                  MarkCellDirty(nX, nY);
 
                   // Update the cell's sea depth
                   m_pRasterGrid->Cell(nX, nY).SetSeaDepth();
@@ -1684,6 +1693,9 @@ int CSimulation::nDoUnconsDepositionOnPolygon(int const nCoast, CGeomCoastPolygo
                   {
                      // Now update the cell's layer elevations
                      m_pRasterGrid->Cell(nX, nY).CalcAllLayerElevsAndD50();
+
+                     // Mark cell as changed for avalanche processing
+                     MarkCellDirty(nX, nY);
 
                      // Update the cell's sea depth
                      m_pRasterGrid->Cell(nX, nY).SetSeaDepth();

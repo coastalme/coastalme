@@ -4472,7 +4472,15 @@ bool CSimulation::bConfigureFromYamlFile(CConfiguration &config)
          {
             CYamlNode rasterFiles = gis.GetChild("raster_files");
             if (rasterFiles.IsSequence())
+            {
                config.SetRasterFiles(rasterFiles.GetStringSequence());
+            }
+            else
+            {
+               // Allow the user to supply single entries not in list form
+               std::vector<std::string> tempVec{rasterFiles.GetValue()};
+               config.SetRasterFiles(tempVec);
+            }
          }
          if (gis.HasChild("vector_files"))
          {
@@ -5098,6 +5106,7 @@ bool CSimulation::bApplyConfiguration(CConfiguration const &config)
       m_bCoarseConsSedSave = false;
       m_bSedIncTalusTopSurfSave = false;
       m_bTopSurfIncSeaSave = false;
+      m_bDirtyCellsSave = false;
       m_bSeaDepthSave = false;
       m_bWaveHeightSave = false;
       m_bWaveAngleSave = false;
@@ -5160,6 +5169,8 @@ bool CSimulation::bApplyConfiguration(CConfiguration const &config)
             m_bCoarseUnconsSedSave = true;
          else if (code == "coarse_cons")
             m_bCoarseConsSedSave = true;
+         else if (code == "dirty_cells")
+            m_bDirtyCellsSave = true;
          else if (code == "sediment_top_elevation")
             m_bSedIncTalusTopSurfSave = true;
          else if (code == "top_elevation")
@@ -5192,6 +5203,10 @@ bool CSimulation::bApplyConfiguration(CConfiguration const &config)
             m_bBeachDepositionSave = true;
          else if (code == "total_beach_deposition")
             m_bTotalBeachDepositionSave = true;
+         else if (code == "avalanche_deposition")
+            m_bAvalancheDepositionSave = true;
+         else if (code == "total_avalanche_deposition")
+            m_bTotalAvalancheDepositionSave = true;
          else if (code == "landform")
             m_bLandformSave = true;
          // else if (code == "local_cons_sediment_slope")
