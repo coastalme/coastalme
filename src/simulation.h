@@ -170,6 +170,12 @@ class CSimulation
    //! Save beach (unconsolidated sediment) deposition raster GIS files?
    bool m_bBeachDepositionSave;
 
+   //! Save avalanche sediment movement raster GIS files?
+   bool m_bAvalancheDepositionSave;
+
+   //! Save total avalanche sediment movement raster GIS files?
+   bool m_bTotalAvalancheDepositionSave;
+
    //! Save total beach (unconsolidated sediment) deposition raster GIS files?
    bool m_bTotalBeachDepositionSave;
 
@@ -208,6 +214,9 @@ class CSimulation
 
    //! Save coarse consolidated sediment raster GIS files?
    bool m_bCoarseConsSedSave;
+
+   //! Save dirty cells (cells with sediment changes) raster GIS files?
+   bool m_bDirtyCellsSave;
 
    //! Save rasterized coastline GIS files?
    bool m_bRasterCoastlineSave;
@@ -1407,6 +1416,9 @@ class CSimulation
    //! One element per layer: has the consolidated sediment of this layer been changed during this iteration?
    vector<bool> m_bUnconsChangedThisIter;
 
+   //! Cells that had sediment changes this timestep (for avalanche processing)
+   set<pair<int, int>> m_DirtyCells;
+
    //! The numbers of the profiles which are to be saved
    vector<int> m_VnProfileToSave;
 
@@ -1674,6 +1686,13 @@ class CSimulation
    int nDoCliffCollapse(int const, CRWCliff *, double&, double&, double&, double&, double&);
    int nDoCliffCollapseDeposition(int const, CRWCliff const*, double const, double const, double const, double const);
    int nUpdateGrid(void);
+
+   // Sediment avalanche processing
+   void MarkCellDirty(int const, int const);
+   int nDoSedimentAvalanching(void);
+   double dCalculateSlope(int const, int const, int const, int const) const;
+   double dCalculateInstability(int const, int const) const;
+   set<pair<int, int>> RedistributeSediment(int const, int const);
 
    // For cliff toe location
    int nLocateCliffToe(void);
