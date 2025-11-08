@@ -80,6 +80,10 @@ CGeomCell::CGeomCell()
      m_dTotTalusSandDeposition(0),
      m_dTalusCoarseDepositionThisIter(0),
      m_dTotTalusCoarseDeposition(0),
+     m_dSandTalusToUnconsThisIter(0),
+     m_dTotSandTalusToUncons(0),
+     m_dCoarseTalusToUnconsThisIter(0),
+     m_dTotCoarseTalusToUncons(0),
      m_dPotentialBeachErosionThisIter(0),
      m_dTotPotentialBeachErosion(0),
      m_dActualBeachErosionThisIter(0),
@@ -89,7 +93,7 @@ CGeomCell::CGeomCell()
      m_dUnconsD50(0),
      m_dInterventionHeight(0)
 {
-   m_Landform.SetLFCategory(LF_NONE);
+   m_Landform.SetLFCategory(LF_UNKNOWN);
 }
 
 //! Destructor
@@ -890,6 +894,8 @@ void CGeomCell::InitCell(void)
    m_dCliffCollapseCoarseThisIter = 0;
    m_dTalusSandDepositionThisIter = 0;
    m_dTalusCoarseDepositionThisIter = 0;
+   m_dSandTalusToUnconsThisIter = 0;
+   m_dCoarseTalusToUnconsThisIter = 0;
    m_dPotentialBeachErosionThisIter = 0;
    m_dActualBeachErosionThisIter = 0;
    m_dBeachDepositionThisIter = 0;
@@ -1058,14 +1064,14 @@ double CGeomCell::dGetTotCliffCollapseCoarse(void) const
    return m_dTotCoarseCliffCollapse;
 }
 
-//! Increments the depth of this-timestep sand-sized talus from cliff collapse on this cell, also increments the total
+//! Increments the depth of this-timestep sand-sized cliff collapse talus on this cell, also increments the total
 void CGeomCell::AddSandTalusDeposition(double const dDepth)
 {
    m_dTalusSandDepositionThisIter += dDepth;
    m_dTotTalusSandDeposition += dDepth;
 }
 
-//! Increments the depth of this-timestep coarse-sized talus from cliff collapse on this cell, also increments the total
+//! Increments the depth of this-timestep coarse-sized cliff collapse talus on this cell, also increments the total
 void CGeomCell::AddCoarseTalusDeposition(double const dDepth)
 {
    m_dTalusCoarseDepositionThisIter += dDepth;
@@ -1094,6 +1100,44 @@ double CGeomCell::dGetTotSandTalusDeposition(void) const
 double CGeomCell::dGetTotCoarseTalusDeposition(void) const
 {
    return m_dTotTalusCoarseDeposition;
+}
+
+//! Adds to the totals of sand-sized talus moved to unconsolidated sediment on this cell
+void CGeomCell::AddSandTalusToUncons(double const dSandTalus)
+{
+   m_dSandTalusToUnconsThisIter += dSandTalus;
+   m_dTotSandTalusToUncons += dSandTalus;
+}
+
+//! Returns the this-iteration total of sand-sized talus moved to unconsolidated sediment on this cell
+double CGeomCell::dGetThisIterSandTalusToUncons(void)
+{
+   return m_dSandTalusToUnconsThisIter;
+}
+
+//! Returns the grand total of sand-sized talus moved to unconsolidated sediment on this cell
+double CGeomCell::dGetTotSandTalusToUncons(void)
+{
+   return m_dTotSandTalusToUncons;
+}
+
+//! Adds to the totals of coarse-sized talus moved to unconsolidated sediment on this cell
+void CGeomCell::AddCoarseTalusToUncons(double const dCoarseTalus)
+{
+   m_dCoarseTalusToUnconsThisIter += dCoarseTalus;
+   m_dTotCoarseTalusToUncons += dCoarseTalus;
+}
+
+//! Returns the this-iteration total of coarse-sized talus moved to unconsolidated sediment on this cell
+double CGeomCell::dGetThisIterCoarseTalusToUncons(void)
+{
+   return m_dCoarseTalusToUnconsThisIter;
+}
+
+//! Returns the grand total of coarse-sized talus moved to unconsolidated sediment on this cell
+double CGeomCell::dGetTotCoarseTalusToUncons(void)
+{
+   return m_dTotCoarseTalusToUncons;
 }
 
 //! Set potential (unconstrained) beach erosion and increment total beach potential erosion
@@ -1180,34 +1224,14 @@ double CGeomCell::dGetUnconsD50(void) const
    return m_dUnconsD50;
 }
 
-//! Sets the landform category and subcategory for an intervention
-void CGeomCell::SetInterventionClass(int const nSubCatCode)
-{
-   if (nSubCatCode != LF_NONE)
-   {
-      this->m_Landform.SetLFCategory(LF_CAT_INTERVENTION);
-
-      if (nSubCatCode == IO_INTERVENTION_STRUCT)
-         this->m_Landform.SetLFSubCategory(LF_SUBCAT_INTERVENTION_STRUCT);
-      else if (nSubCatCode == IO_INTERVENTION_NON_STRUCT)
-         this->m_Landform.SetLFSubCategory(LF_SUBCAT_INTERVENTION_NON_STRUCT);
-   }
-}
-
-//! Gets the intervention class
+//! Gets the intervention class for this cell, or returns INT_NODATA if there is not an intervention here
 int CGeomCell::nGetInterventionClass(void) const
 {
-   int nTmp = INT_NODATA;
+   int const nTmp = this->m_Landform.nGetLFCategory();
+   if ((nTmp == LF_INTERVENTION_STRUCT) || (nTmp == LF_INTERVENTION_NON_STRUCT))
+      return nTmp;
 
-   if (this->m_Landform.nGetLFCategory() == LF_CAT_INTERVENTION)
-   {
-      if (this->m_Landform.nGetLFSubCategory() == LF_SUBCAT_INTERVENTION_STRUCT)
-         nTmp = IO_INTERVENTION_STRUCT;
-      else if (this->m_Landform.nGetLFSubCategory() == LF_SUBCAT_INTERVENTION_NON_STRUCT)
-         nTmp = IO_INTERVENTION_NON_STRUCT;
-   }
-
-   return nTmp;
+   return INT_NODATA;
 }
 
 //! Sets the intervention height

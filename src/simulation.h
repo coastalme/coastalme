@@ -492,9 +492,6 @@ class CSimulation
    //! The order of the cliff edge smoothing polynomial if Savitzky-Golay smoothing is used (usually 2 or 4, max is 6)
    int m_nSavGolCliffEdgePoly;
 
-   //! Slope limit for cliff toe detection
-   double m_dSlopeThresholdForCliffToe;
-
    //! The size of the window used for running-mean coast-normal profile smoothing (must be odd)
    int m_nProfileSmoothWindow;
 
@@ -526,10 +523,10 @@ class CSimulation
    int m_nCoastMin;
 
    //! The number of cells with cliff collapse this iteration
-   int m_nNThisIterCliffCollapse;
+   int m_nNumThisIterCliffCollapse;
 
    //! The total number of cells with cliff collapse since the start of the simulation
-   int m_nNTotCliffCollapse;
+   int m_nNumTotCliffCollapse;
 
    //! How sediment which moves off an edge of the grid is handled. Possible values are GRID_EDGE_CLOSED, GRID_EDGE_OPEN, GRID_EDGE_RECIRCULATE
    int m_nUnconsSedimentHandlingAtGridEdges;
@@ -795,16 +792,16 @@ class CSimulation
    //! The density of unconsolidated beach sediment (kg/m**3)
    double m_dBeachSedimentDensity;
 
-   //! The porosity of unconsolidated beach sediment (0 - 1)
+   //! The porosity of unconsolidated beach sediment (0-1)
    double m_dBeachSedimentPorosity;
 
-   //! The relative erodibility (0- 1) of fine unconsolidated beach sediment
+   //! The relative erodibility (0-1) of fine unconsolidated beach sediment
    double m_dFineErodibility;
 
-   //! The relative erodibility (0- 1) of sand unconsolidated beach sediment
+   //! The relative erodibility (0-1) of sand unconsolidated beach sediment
    double m_dSandErodibility;
 
-   //! The relative erodibility (0- 1) of coarse unconsolidated beach sediment
+   //! The relative erodibility (0-1) of coarse unconsolidated beach sediment
    double m_dCoarseErodibility;
 
    //! Relative erodibility of fine unconsolidated beach sediment, normalized
@@ -1046,6 +1043,9 @@ class CSimulation
 
    //! This iteration's Mean High Water (MHW) elevation, calculated using a moving time window. If we have no tide data, this is set to mean SWL
    double m_dThisIterMHWElev;
+
+   //! Slope limit for cliff toe detection
+   double m_dSlopeThresholdForCliffToe;
 
    // These grand totals are all long doubles. The aim is to minimize rounding errors when many very small numbers are added to a single much larger number, see e.g. http://www.ddj.com/cpp/184403224
    //! All-simulation total of potential platform erosion (m), all size classes
@@ -1636,7 +1636,7 @@ class CSimulation
    int nDoAllShorePlatFormErosion(void);
    int nDoAllWaveEnergyToCoastLandforms(void);
    int nDoCliffCollapse(int const, CRWCliff *, double&, double&, double&, int&, double&, double&);
-   int nDoCliffCollapseTalusDeposition(int const, CRWCliff const*, double const, double const, int const);
+   void DoCliffCollapseTalusDeposition(int const, CRWCliff const*, double const, double const, int const);
    int nMoveCliffTalusToUnconsolidated(void);
    int nUpdateGrid(void);
 
@@ -1775,10 +1775,11 @@ class CSimulation
    static int nGetOppositeDirection(int const);
    // static void GetSlopeAndInterceptFromPoints(CGeom2DIPoint const*,
    // CGeom2DIPoint const*, double&, double&);
-   CGeom2DIPoint PtiFindClosestCoastPoint(int const, int const);
+   CGeom2DIPoint PtiFindClosestCoastPoint(int const, int const, int&);
+   int nFindClosestCoastPoint(int const, int const, int&);
    int nConvertMetresToNumCells(double const) const;
    bool bIsAdjacentEdgeCell(CGeom2DIPoint const*, CGeom2DIPoint const*);
-   void GetClosestPoint(double const, double const, double const, double const, double const, double const, double&, double&);
+   void FindClosestPointOnStraightLine(double const, double const, double const, double const, double const, double const, double&, double&);
 
    // Interpolation routines
    double dGetInterpolatedValue(vector<double> const*, vector<double> const*, double, bool);

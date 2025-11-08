@@ -193,6 +193,18 @@ class CGeomCell
    //! Total depth of unconsolidated coarse sediment deposited as a result of cliff collapse
    double m_dTotTalusCoarseDeposition;
 
+   //! Depth of sand-sized cliff collapse talus moved to unconsolidated sediment this timestep
+   double m_dSandTalusToUnconsThisIter;
+
+   //! Total depth of sand-sized cliff collapse talus moved to unconsolidated sediment
+   double m_dTotSandTalusToUncons;
+
+   //! Depth of coarse-sized cliff collapse talus moved to unconsolidated sediment this timestep
+   double m_dCoarseTalusToUnconsThisIter;
+
+   //! Total depth of coarse-sized cliff collapse talus moved to unconsolidated sediment
+   double m_dTotCoarseTalusToUncons;
+
    //! Depth of unconsolidated beach sediment that could be eroded this timestep, if no supply-limitation
    double m_dPotentialBeachErosionThisIter;
 
@@ -387,6 +399,13 @@ class CGeomCell
    double dGetThisIterCliffCollapseCoarseTalusDeposition(void) const;
    double dGetTotCoarseTalusDeposition(void) const;
 
+   void AddSandTalusToUncons(double const);
+   double dGetThisIterSandTalusToUncons(void);
+   double dGetTotSandTalusToUncons(void);
+   void AddCoarseTalusToUncons(double const);
+   double dGetThisIterCoarseTalusToUncons(void);
+   double dGetTotCoarseTalusToUncons(void);
+
    void SetPotentialBeachErosion(double const);
    double dGetPotentialBeachErosion(void) const;
    double dGetTotPotentialBeachErosion(void) const;
@@ -404,7 +423,6 @@ class CGeomCell
 
    double dGetUnconsD50(void) const;
 
-   void SetInterventionClass(int const);
    int nGetInterventionClass(void) const;
    void SetInterventionHeight(double const);
    double dGetInterventionHeight(void) const;

@@ -19,8 +19,6 @@
 ===============================================================================================================================*/
 #include <cstdio>
 
-#include <cfloat>
-
 #include <iostream>
 using std::cerr;
 using std::endl;
@@ -743,7 +741,7 @@ bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const* strPlot
       // OK, now do features
       OGRLineString OGRls;
 
-      for (int i = 0; i < static_cast<int>(m_VCoast.size()); i++)
+      for (int i = 0; i < static_cast<int>(m_VHighestSWLCoastLine.size()); i++)
       {
          // Create a feature object, one per coast
          OGRFeature* pOGRFeature = OGRFeature::CreateFeature(pOGRLayer->GetLayerDefn());
@@ -788,7 +786,7 @@ bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const* strPlot
       // OK, now do features
       OGRLineString OGRls;
 
-      for (int i = 0; i < static_cast<int>(m_VCoast.size()); i++)
+      for (int i = 0; i < static_cast<int>(m_VLowestSWLCoastLine.size()); i++)
       {
          // Create a feature object, one per coast
          OGRFeature* pOGRFeature = OGRFeature::CreateFeature(pOGRLayer->GetLayerDefn());
@@ -1376,7 +1374,7 @@ bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const* strPlot
                   int const nCategory = pCoastLandform->nGetLandFormCategory();
                   double dNotchDepth = 0.0;
 
-                  if (nCategory == LF_CAT_CLIFF)
+                  if ((nCategory == LF_CLIFF_ON_COASTLINE) || (nCategory == LF_CLIFF_INLAND))
                   {
                      CRWCliff const* pCliff = reinterpret_cast<CRWCliff*>(pCoastLandform);
 

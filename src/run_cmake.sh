@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # Change this to change build type
-#buildtype=DEBUG
-buildtype=RELEASE
+buildtype=DEBUG
+#buildtype=RELEASE
 #buildtype=PRERELEASE
 #buildtype=RELWITHDEBINFO        # Not yet implemented in CMakeLists.txt
 #buildtype=MINSIZEREL            # Not yet implemented in CMakeLists.txt

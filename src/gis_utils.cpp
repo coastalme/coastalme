@@ -1505,7 +1505,7 @@ void CSimulation::GetRasterOutputMinMax(int const nDataItem, double& dMin, doubl
             dTmp = INT_NODATA;
 
             if (bIsInterventionCell(nX, nY))
-               dTmp = m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->nGetLFSubCategory();
+               dTmp = m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->nGetLFCategory();
 
             break;
 
@@ -1522,7 +1522,7 @@ void CSimulation::GetRasterOutputMinMax(int const nDataItem, double& dMin, doubl
             break;
 
          case (RASTER_PLOT_SED_TOP_INC_TALUS_ELEV):
-            dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetAllSedTopElevOmitTalus();
+            dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetAllSedTopElevIncTalus();
             break;
 
          case (RASTER_PLOT_TALUS):
@@ -1852,7 +1852,7 @@ int CSimulation::nGetOppositeDirection(int const nDirection)
 //===============================================================================================================================
 //! Finds the closest point on any coastline to a given point
 //===============================================================================================================================
-CGeom2DIPoint CSimulation::PtiFindClosestCoastPoint(int const nX, int const nY)
+CGeom2DIPoint CSimulation::PtiFindClosestCoastPoint(int const nX, int const nY, int& nCoastFound)
 {
    unsigned int nMinSqDist = UINT_MAX;
    CGeom2DIPoint PtiCoastPoint;
@@ -1877,11 +1877,48 @@ CGeom2DIPoint CSimulation::PtiFindClosestCoastPoint(int const nX, int const nY)
          {
             nMinSqDist = nSqDist;
             PtiCoastPoint.SetXY(nXCoast, nYCoast);
+            nCoastFound = nCoast;
          }
       }
    }
 
    return PtiCoastPoint;
+}
+
+//===============================================================================================================================
+//! Finds the number of the closest point on any coastline to a given point, or INT_NODATA in case of error
+//===============================================================================================================================
+int CSimulation::nFindClosestCoastPoint(int const nX, int const nY, int& nCoastFound)
+{
+   unsigned int nMinSqDist = UINT_MAX;
+   int nCoastPoint = INT_NODATA;
+
+   // Do for every coast
+   for (int nCoast = 0; nCoast < static_cast<int>(m_VCoast.size()); nCoast++)
+   {
+      for (int j = 0; j < m_VCoast[nCoast].nGetCoastlineSize(); j++)
+      {
+         // Get the coords of the grid cell marked as coastline for the coastal landform object
+         int const nXCoast = m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(j)->nGetX();
+         int const nYCoast = m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(j)->nGetY();
+
+         // Calculate the squared distance between this point and the given point
+         int const nXDist = nX - nXCoast;
+         int const nYDist = nY - nYCoast;
+
+         unsigned int const nSqDist = (nXDist * nXDist) + (nYDist * nYDist);
+
+         // Is this the closest so dar?
+         if (nSqDist < nMinSqDist)
+         {
+            nMinSqDist = nSqDist;
+            nCoastPoint = j;
+            nCoastFound = nCoast;
+         }
+      }
+   }
+
+   return nCoastPoint;
 }
 
 //===============================================================================================================================
@@ -1893,9 +1930,9 @@ int CSimulation::nConvertMetresToNumCells(double const dLen) const
 }
 
 //===============================================================================================================================
-//! Given a line between two points and another point, this finds the closest point on the line to the other point. From https://cboard.cprogramming.com/c-programming/155809-find-closest-point-line.html
+//! For the straight line between two points A and B, and given another point C, this finds the closest point on the line A-B to the point C. From https://cboard.cprogramming.com/c-programming/155809-find-closest-point-line.html
 //===============================================================================================================================
-void CSimulation::GetClosestPoint(double const dAx, double const dAy, double const dBx, double const dBy, double const dPx, double const dPy, double& dXRet, double& dYRet)
+void CSimulation::FindClosestPointOnStraightLine(double const dAx, double const dAy, double const dBx, double const dBy, double const dPx, double const dPy, double& dXRet, double& dYRet)
 {
   double const dAPx = dPx - dAx;
   double const dAPy = dPy - dAy;

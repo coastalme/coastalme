@@ -139,6 +139,10 @@ int CSimulation::nSetAllCoastpointDeepWaterWaveValues(void)
 //===============================================================================================================================
 int CSimulation::nDoAllPropagateWaves(void)
 {
+   // DEBUG CODE ============================================================================================================
+   LogStream << m_ulIter << ":\t At start of nDoAllPropagateWaves()" << endl;
+   // DEBUG CODE ============================================================================================================
+
    // Set up all-profile vectors to hold the wave attribute data at every profile point on all profiles
    vector<bool> VbBreakingAll;
 
@@ -224,7 +228,7 @@ int CSimulation::nDoAllPropagateWaves(void)
    // OK, do we have some profiles other than start of coast or end of coast profiles in the all-profile vectors? We need to check this, because GDALGridCreate() in nInterpolateWavePropertiesToWithinPolygonCells() does not work if we give it only a start-of-coast or an end-of-coast profile to work with TODO 006 Is this still true?
    if (! bSomeNonStartOrEndOfCoastProfiles)
    {
-      LogStream << m_ulIter << ": waves are on-shore only, for start and/or end of coast profiles" << endl;
+      LogStream << m_ulIter << ":\t waves are on-shore only, for start and/or end of coast profiles" << endl;
 
       return RTN_OK;
    }
@@ -287,6 +291,10 @@ int CSimulation::nDoAllPropagateWaves(void)
       }
    }
 
+   // DEBUG CODE ============================================================================================================
+   LogStream << m_ulIter << ":\t starting loop" << endl;
+   // DEBUG CODE ============================================================================================================
+
    for (int nY = 0; nY < m_nYGridSize; nY++)
    {
       if (m_pRasterGrid->m_Cell[0][nY].bIsInContiguousSea())
@@ -334,17 +342,14 @@ int CSimulation::nDoAllPropagateWaves(void)
       }
    }
 
-   // DEBUG CODE ============================================================================================================
-   if (m_ulIter == 102)
-   {
-      LogStream << m_ulIter << ": out of loop" << endl;
-      for (int nn = 0; nn < VdXAll.size(); nn++)
-      {
-         LogStream << "nn = " << nn << " VdXAll[nn] = " << VdXAll[nn] << " VdYAll[nn] = " << VdYAll[nn] << " VdHeightXAll[nn] = " << VdHeightXAll[nn] << " VdHeightYAll[nn] = " << VdHeightYAll[nn] << " VbBreakingAll[nn] = " << VbBreakingAll[nn] << endl;
-      }
-      LogStream << endl;
-   }
-   // DEBUG CODE ============================================================================================================
+   // // DEBUG CODE ============================================================================================================
+   // LogStream << m_ulIter << ":\t out of loop" << endl;
+   // for (int nn = 0; nn < static_cast<int>(VdXAll.size()); nn++)
+   // {
+   //    LogStream << "\t \t nn = " << nn << " VdXAll[nn] = " << VdXAll[nn] << " VdYAll[nn] = " << VdYAll[nn] << " VdHeightXAll[nn] = " << VdHeightXAll[nn] << " VdHeightYAll[nn] = " << VdHeightYAll[nn] << " VbBreakingAll[nn] = " << VbBreakingAll[nn] << endl;
+   // }
+   // LogStream << endl;
+   // // DEBUG CODE ============================================================================================================
 
    // Are the waves off-shore for every profile? If so, do nothing more
    if (VbBreakingAll.empty())
@@ -1536,7 +1541,7 @@ int CSimulation::nGetThisProfileElevationsForCShore(int const nCoast, CGeomProfi
          // TODO 009 We are down to basement, decide what to do
          return RTN_OK;
 
-      // Get the elevation for both consolidated and unconsolidated sediment (including talus) on this cell
+      // Get the elevation for both consolidated and unconsolidated sediment (including any talus) on this cell
       double const dTopElev = m_pRasterGrid->m_Cell[nX][nY].dGetAllSedTopElevIncTalus() + m_pRasterGrid->m_Cell[nX][nY].dGetInterventionHeight();
       double const VdProfileZ = dTopElev - m_dThisIterSWL;
 

@@ -201,6 +201,12 @@ void CRWCoast::SetCoastlineGridCRS(CGeomILine const* pILCoastCells)
    m_ILCellsMarkedAsCoastline = *pILCoastCells;
 }
 
+//! Returns a pointer to the cells marked as coastline (grid CRS)
+CGeomILine* CRWCoast::pILGetCoastlineGridCRS(void)
+{
+   return &m_ILCellsMarkedAsCoastline;
+}
+
 // void CRWCoast::AppendCellMarkedAsCoastline(CGeom2DIPoint const* pPti)
 // {
 // m_ILCellsMarkedAsCoastline.Append(*pPti);

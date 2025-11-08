@@ -181,6 +181,7 @@ class CRWCoast
    // void DisplayCoastline(void);
 
    void SetCoastlineGridCRS(CGeomILine const*);
+   CGeomILine* pILGetCoastlineGridCRS(void);
    // void AppendCellMarkedAsCoastline(CGeom2DIPoint const*);
    // void AppendCellMarkedAsCoastline(int const, int const);
    CGeom2DIPoint* pPtiGetCellMarkedAsCoastline(int const);

@@ -27,7 +27,7 @@
 CACoastLandform::CACoastLandform(void)
     : m_nCoast(0),
       m_nPointOnCoastline(0),
-      m_nCategory(LF_NONE),
+      m_nCategory(LF_UNKNOWN),
       m_dTotAccumWaveEnergy(0),
       pCoast(NULL)
 {

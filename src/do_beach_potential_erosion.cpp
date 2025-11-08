@@ -20,7 +20,6 @@
 #include <assert.h>
 
 #include <cmath>
-#include <cfloat>
 
 #include <algorithm>
 using std::sort;

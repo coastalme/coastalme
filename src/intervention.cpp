@@ -26,14 +26,14 @@ using std::ios;
 #include "coast.h"
 #include "intervention.h"
 
-//! Constructor with three parameters
-CRWIntervention::CRWIntervention(CRWCoast* pCoastIn, int const nCoast, int const nPointOnCoast)
+//! Constructor with four parameters
+CRWIntervention::CRWIntervention(CRWCoast* pCoastIn, int const nCoast, int const nPointOnCoast, int const nLandCategory)
 {
    pCoast = pCoastIn;
 
    m_nCoast = nCoast;
    m_nPointOnCoastline = nPointOnCoast;
-   m_nCategory = LF_CAT_INTERVENTION;
+   m_nCategory = nLandCategory;
 }
 
 //! Destructor

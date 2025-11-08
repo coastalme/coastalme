@@ -48,6 +48,7 @@ class CRWCellLayer
    CRWCellSediment* pGetUnconsolidatedSediment(void);
    CRWCellSediment* pGetConsolidatedSediment(void);
 
+   bool bHasUncons(void);
    double dGetUnconsFineDepth(void) const;
    double dGetConsFineDepth(void) const;
    double dGetUnconsSandDepth(void) const;
@@ -69,6 +70,7 @@ class CRWCellLayer
    // double dGetConsolidationStatus(void) const;
    // void SetConsolidationStatus(double const);
 
+   bool bHasTalus(void);
    CRWCellTalus* pGetTalus(void) const;
    CRWCellTalus* pGetOrCreateTalus(void);
    void DeleteTalus(void);

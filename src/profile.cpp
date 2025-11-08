@@ -20,7 +20,6 @@
 #include <assert.h>
 
 #include <cstdio>
-#include <cmath>
 
 #include <vector>
 using std::vector;

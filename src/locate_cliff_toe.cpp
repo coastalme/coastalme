@@ -25,8 +25,6 @@
 #include <cmath>
 using std::sqrt;
 
-#include <cfloat>
-
 #include <cstdio>
 using std::size_t;
 

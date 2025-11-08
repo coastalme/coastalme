@@ -819,7 +819,7 @@ int CSimulation::nReadRasterGISFile(int const nDataItem, int const nLayer)
          switch (nDataItem)
          {
          case (LANDFORM_RASTER):
-            // Initial Landform Class GIS data, is integer TODO 030 Do we also need a landform sub-category input?
+            // Initial Landform Class GIS data, is integer
             nTmp = static_cast<int>(pdScanline[nX]);
 
             if ((isnan(nTmp)) || (nTmp == m_nGISMissingValue))
@@ -832,7 +832,7 @@ int CSimulation::nReadRasterGISFile(int const nDataItem, int const nLayer)
             break;
 
          case (INTERVENTION_CLASS_RASTER):
-            // Intervention class, is integer
+            // Intervention class, is integer. If not an intervention, show INT_NODATA
             nTmp = static_cast<int>(pdScanline[nX]);
 
             if ((isnan(nTmp)) || (nTmp == m_nGISMissingValue))
@@ -841,7 +841,7 @@ int CSimulation::nReadRasterGISFile(int const nDataItem, int const nLayer)
                nMissing++;
             }
 
-            m_pRasterGrid->m_Cell[nX][nY].SetInterventionClass(nTmp);
+            m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->SetLFCategory(nTmp);
             break;
 
          case (INTERVENTION_HEIGHT_RASTER):
@@ -1666,7 +1666,7 @@ bool CSimulation::bWriteRasterGISFile(int const nDataItem, string const *strPlot
             if ((nTopLayer == INT_NODATA) || (nTopLayer == NO_NONZERO_THICKNESS_LAYERS))
                break;
 
-            if ((m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nTopLayer)->dGetAllUnconsDepth() > 0) && (m_pRasterGrid->m_Cell[nX][nY].dGetAllSedTopElevOmitTalus() > m_dThisIterSWL))
+            if ((m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nTopLayer)->dGetAllUnconsDepth() > 0) && (m_pRasterGrid->m_Cell[nX][nY].dGetAllSedTopElevIncTalus() > m_dThisIterSWL))
                dTmp = 1;
 
             break;
@@ -1678,10 +1678,6 @@ bool CSimulation::bWriteRasterGISFile(int const nDataItem, string const *strPlot
          case (RASTER_PLOT_LANDFORM):
             dTmp = m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->nGetLFCategory();
             bIsInteger = true;
-
-            if ((static_cast<int>(dTmp) == LF_CAT_DRIFT) || (static_cast<int>(dTmp) == LF_CAT_CLIFF))
-               dTmp = m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->nGetLFSubCategory();
-
             break;
 
          case (RASTER_PLOT_INTERVENTION_CLASS):

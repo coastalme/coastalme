@@ -49,6 +49,15 @@ CRWCellSediment* CRWCellLayer::pGetConsolidatedSediment(void)
    return &m_ConsolidatedSediment;
 }
 
+//! Return true if the layer has unconsolidated sediment, false otherwise
+bool CRWCellLayer::bHasUncons(void)
+{
+   if (this->dGetAllUnconsDepth() > 0)
+      return true;
+
+   return false;
+}
+
 //! Returns the thickness of this cell's fine unconsolidated sediment
 double CRWCellLayer::dGetUnconsFineDepth(void) const
 {
@@ -144,6 +153,15 @@ double CRWCellLayer::dGetTotalThickness(void) const
 // {
 // m_dConsolidationStatus = dNewConsolidationStatus;
 // }
+
+//! Returns true if the layer has talus, false otherwise
+bool CRWCellLayer::bHasTalus(void)
+{
+   if (m_pTalus == NULL)
+      return false;
+
+   return true;
+}
 
 //! Returns a pointer to the layer's talus object, or NULL if there is no talus object
 CRWCellTalus* CRWCellLayer::pGetTalus(void) const

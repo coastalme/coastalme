@@ -108,7 +108,6 @@
    TODO 000 Should user input be split in two main files: one for frequently-changed things, one for rarely-changed things? If so, what should go into each file ('testing only' OK, but what else?)
    TODO 011 Should this constant be a user input? If so, TODO 071
    TODO 036 Read in changed deep water wave values (need TODO 071)
-   TODO 030 Do we also need to be able to input landform sub-categories? (need TODO 071)
    TODO 022 Get intervention update working (need TODO 071)
    TODO 042 Should we have a smallest valid input for KLS in the CERC equation?
    TODO 045 Method of getting depth of closure value needs to be a user input (need TODO 071)
@@ -164,7 +163,6 @@
    TODO 086 Try these as a more efficient replacement for GDALGridCreate(): https://github.com/delfrrr/delaunator-cpp https://www.cs.cmu.edu/~quake/triangle.html https://github.com/greenm01/poly2tri https://gts.sourceforge.net/index.html
    TODO 088 In (almost) all whole-grid loops, immediately continue if cell is hinterland (but not when calculating cliff collapse)
    TODO 090 At present, sediment cannot move from a given coastline polygon to a polygon belonging to another coastline. Is this always true?
-   TODO 091 These should not be LF categories
    TODO 092 If we have only fine sediment, the surface formed as the coast recedes inland is dead level (because fine sediment goes to suspension, and hence the Dean profile stuff does not operate). This causes problems with profile creation and CShore. Need to impose a small slope here somehow
    TODO 093 There are a number of cell attributes that are really only useful for debugging. To keep memory usage down on release versions, need to flag these attributes and their methods so that they are included only in debug versions
    TODO 094 Problems with sediment recirculation when large volumes of sedimentare introduced at the input end of the coast: need to spread this input sediment over the whole of the grid-end polygon
@@ -291,25 +289,25 @@ using std::ostream;
          double const CLOCK_T_RANGE = static_cast<double>(LONG_MAX) - static_cast<double>(CLOCK_T_MIN);
       #endif
    #endif
-#endif
-
-#ifdef __clang__
-   // Clang compiler
-   #ifndef CPU
-      #error "CPU not defined"
-   #else
-      #ifdef x86
-         // Intel x86, byte order is little-endian
-         string const PLATFORM = "Clang compiler for Intel x86";
-         // clock_t is an unsigned long: see <time.h>
-         unsigned long const CLOCK_T_MIN = 0;
-         double const CLOCK_T_RANGE = static_cast<double>(ULONG_MAX);
+#else
+   #ifdef __clang__
+      // Clang compiler
+      #ifndef CPU
+         #error "CPU not defined"
       #else
-         // Something else
-         string const PLATFORM = "Clang compiler for unknown CPU";
-         // clock_t is a signed long: NEED TO CHECK <time.h>
-         long const CLOCK_T_MIN = LONG_MIN;
-         double const CLOCK_T_RANGE = static_cast<double>(LONG_MAX) - static_cast<double>(CLOCK_T_MIN);
+         #ifdef x86
+            // Intel x86, byte order is little-endian
+            string const PLATFORM = "Clang compiler for Intel x86";
+            // clock_t is an unsigned long: see <time.h>
+            unsigned long const CLOCK_T_MIN = 0;
+            double const CLOCK_T_RANGE = static_cast<double>(ULONG_MAX);
+         #else
+            // Something else
+            string const PLATFORM = "Clang compiler for unknown CPU";
+            // clock_t is a signed long: NEED TO CHECK <time.h>
+            long const CLOCK_T_MIN = LONG_MIN;
+            double const CLOCK_T_RANGE = static_cast<double>(LONG_MAX) - static_cast<double>(CLOCK_T_MIN);
+         #endif
       #endif
    #endif
 #endif
@@ -373,7 +371,7 @@ int const SAVEMAX = 100000;                              // Maximum number of sa
 int const BUF_SIZE = 2048;                               // Max length (inc. terminating NULL) of any C-type string
 int const CAPE_POINT_MIN_SPACING = 10;                   // In cells: for shadow zone stuff, cape points must not be closer than this
 int const CLOCK_CHECK_ITERATION = 5000;                  // If have done this many timesteps then reset the CPU time running total
-int const COAST_LENGTH_MAX = 10;                         // For safety check when tracing coast
+int const COAST_LENGTH_MAX = 100;                        // For safety check when tracing coast
 int const COAST_LENGTH_MIN_X_PROF_SPACE = 20;            // Ignore very short coasts less than this x profile spacing
 
 //! The size of the arrays output by CShore. If this is changed, then must also set the same value on line 12 of cshore_wrapper.f03 (integer, parameter :: NN = 1000, NL = 1) and recompile CShore. Eventually we should move to dynamically allocated arrays TODO 070
@@ -434,40 +432,20 @@ int const IO_INTERVENTION_NONE = 0;
 int const IO_INTERVENTION_STRUCT = 1;
 int const IO_INTERVENTION_NON_STRUCT = 2;
 
-// Default landform category and subcategory code
-int const LF_NONE = 0;
-
-// Landform category codes for cells (is easiest if each has a unique numeric value, irrepective of whether it is category or subcategory, 19 is max now)
-int const LF_CAT_HINTERLAND = 1;
-int const LF_CAT_SEA = 2;
-int const LF_CAT_ISLAND = 14;
-int const LF_CAT_SEDIMENT_INPUT = 15;
-int const LF_CAT_SEDIMENT_INPUT_SUBMERGED = 16;          // TODO 091 These should not be LF categories
-int const LF_CAT_SEDIMENT_INPUT_NOT_SUBMERGED = 17;      // TODO 091 These should not be LF categories
-
-// Landform category codes for cells and coast landform objects
-int const LF_CAT_CLIFF = 3; // Raster output of LF_CAT_CLIFF shows LF_CAT_CLIFF subcategories, rather than just LF_CAT_CLIFF
-int const LF_CAT_DRIFT = 4; // Raster output of LF_CAT_DRIFT shows LF_CAT_DRIFT subcategories, rather than just LF_CAT_DRIFT
-int const LF_CAT_INTERVENTION = 5;
-
-// Landform sub-category codes for cells, LF_CAT_CLIFF
-int const LF_SUBCAT_CLIFF_ON_COASTLINE = 6;
-int const LF_SUBCAT_CLIFF_INLAND = 7;
-
-// Landform sub-category codes for cells, for LF_CAT_DRIFT
-int const LF_SUBCAT_DRIFT_MIXED = 8;
-int const LF_SUBCAT_DRIFT_TALUS = 9;
-int const LF_SUBCAT_DRIFT_BEACH = 10;
-// TODO 059 Implement dune landform class
-int const LF_SUBCAT_DRIFT_DUNES = 11;
-
-// Landform sub-category codes for cells, for LF_CAT_INTERVENTION. See also "Intervention input and output codes"
-int const LF_SUBCAT_INTERVENTION_STRUCT = 12;
-int const LF_SUBCAT_INTERVENTION_NON_STRUCT = 13;
-
-// Landform sub-category codes for sediment input events
-int const LF_SUBCAT_SEDIMENT_INPUT_UNCONSOLIDATED = 18;
-int const LF_SUBCAT_SEDIMENT_INPUT_CONSOLIDATED = 19;
+// Landform category codes
+int const LF_UNKNOWN = 0;
+int const LF_HINTERLAND = 1;
+int const LF_SEA = 2;
+int const LF_CLIFF_ON_COASTLINE = 6;
+int const LF_CLIFF_INLAND = 7;
+int const LF_DRIFT_TALUS = 9;
+int const LF_DRIFT_BEACH = 10;
+int const LF_DRIFT_DUNES = 11;                        // TODO 059 Implement dune landform class
+int const LF_INTERVENTION_STRUCT = 12;
+int const LF_INTERVENTION_NON_STRUCT = 13;
+int const LF_ISLAND = 14;                             // Not yet implemented
+int const LF_SEDIMENT_INPUT_UNCONSOLIDATED = 18;
+int const LF_SEDIMENT_INPUT_CONSOLIDATED = 19;
 
 // GIS raster input codes
 int const FINE_CONS_RASTER = 1;
@@ -686,6 +664,7 @@ int const RTN_ERR_CELL_NOT_FOUND_IN_HIT_PROFILE_DIFFERENT_COASTS = 80;
 int const RTN_ERR_POINT_NOT_FOUND_IN_MULTILINE_DIFFERENT_COASTS = 81;
 int const RTN_ERR_CELL_NOT_FOUND_IN_HIT_PROFILE = 82;
 int const RTN_ERR_CELL_IN_POLY_BUT_NO_POLY_COAST = 83;
+int const RTN_ERR_CLIFF_TALUS_TO_UNCONS = 84;
 int const RTN_ERR_UNKNOWN = 999;
 
 // Elevation and 'slice' codes
@@ -757,7 +736,7 @@ double const INTERVENTION_PROFILE_SPACING_FACTOR = 0.5;     // Profile spacing o
 double const CLIFF_NOTCH_CUTOFF_DISTANCE = 2;               // Cut-off SWL distance (m), measured downwards from the cliff notch apex: below this there is no notch incision
 double const DBL_NODATA = -9999;
 
-string const PROGRAM_NAME = "Coastal Modelling Environment (CoastalME) version 1.4.0 (23 Oct 2025)";
+string const PROGRAM_NAME = "Coastal Modelling Environment (CoastalME) version 1.4.0 (07 Nov 2025)";
 string const PROGRAM_NAME_SHORT = "CME";
 string const CME_INI = "cme.ini";
 

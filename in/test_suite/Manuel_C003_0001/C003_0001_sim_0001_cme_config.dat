@@ -103,10 +103,10 @@ Median size of coarse sediment (mm)                      [0 = default, only for 
 Density of beach sediment (kg/m3)                                                            : 2650      ; For quartz
 Beach sediment porosity                                                                      : 0.4
 
-; Arbitrary values of relative erosivities
-Fine erosivity                                                                               : 1
-Sand erosivity                                                                               : 0.7
-Coarse erosivity                                                                             : 0.3
+; Arbitrary values of relative erodibility
+Fine erodibility                                                                             : 1
+Sand erodibility                                                                             : 0.7
+Coarse erodibility                                                                           : 0.3
 
 Transport parameter KLS                                                   [only for CERC eqn]: 0.25      ; Should vary between 0.4 to 0.79
 Transport parameter                                                   [only for Kamphuis eqn]: 0.01

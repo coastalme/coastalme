@@ -27,9 +27,6 @@ class CRWCellLandform
    //! Landform category for this cell
    int m_nCategory;
 
-   //! Landform subcategory for this cell
-   int m_nSubCategory;
-
    //! Coast on which this landform sits (if any)
    int m_nCoast;
 
@@ -71,15 +68,17 @@ class CRWCellLandform
 
    void SetLFCategory(int const);
    int nGetLFCategory(void) const;
-   void SetLFSubCategory(int const);
-   int nGetLFSubCategory(void) const;
+
    void SetCoast(int const);
    int nGetCoast(void) const;
+
    void SetPointOnCoast(int const);
    int nGetPointOnCoast(void) const;
+
    void SetAccumWaveEnergy(double const);
    void AddToAccumWaveEnergy(double const);
    double dGetAccumWaveEnergy(void) const;
+
    void SetCliffNotchApexElev(double const);
    double dGetCliffNotchApexElev(void) const;
    void SetCliffNotchIncisionDepth(double const);
@@ -87,6 +86,7 @@ class CRWCellLandform
    double dGetCliffNotchIncisionDepth(void) const;
    // void SetCliffRemaining(double const);
    // double dGetCliffRemaining(void) const;
+
 #ifdef _DEBUG
    void SetCliffCollapseTimestep(unsigned long const);
    unsigned long ulGetCliffCollapseTimestep(void) const;

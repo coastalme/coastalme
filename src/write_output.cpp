@@ -1127,7 +1127,7 @@ bool CSimulation::bWriteTSFiles(void)
    if (m_bCliffCollapseErosionTSSave)
    {
       // Output the number of cells with cliff collapse this iteration
-      CliffCollapseErosionTSStream << m_nNThisIterCliffCollapse << "\t,\t";
+      CliffCollapseErosionTSStream << m_nNumThisIterCliffCollapse << "\t,\t";
 
       // Now output how much was eroded via cliff collapse, as is (m depth equivalent)
       CliffCollapseErosionTSStream << m_dSimElapsed << "\t,\t" << m_dThisIterCliffCollapseErosionFineUncons << ",\t" << m_dThisIterCliffCollapseErosionSandUncons << ",\t" << m_dThisIterCliffCollapseErosionCoarseUncons << endl;

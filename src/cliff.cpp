@@ -35,7 +35,7 @@ CRWCliff::CRWCliff(CRWCoast* pCoastIn, int const nCoast, int const nPointOnCoast
 
    m_nCoast = nCoast;
    m_nPointOnCoastline = nPointOnCoast;
-   m_nCategory = LF_CAT_CLIFF;
+   m_nCategory = LF_CLIFF_ON_COASTLINE;
 
    m_dMaxNotchIncision = dCellSide;
    m_dNotchIncision = dNotchIncisionIn;

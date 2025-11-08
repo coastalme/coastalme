@@ -23,15 +23,15 @@
 #include "drift.h"
 #include "coast.h"
 
-//! Constructor with three parameters and an intialization list
-CRWDrift::CRWDrift(CRWCoast* pCoastIn, int const nCoast, int const nPointOnCoast)
+//! Constructor with four parameters and an intialization list
+CRWDrift::CRWDrift(CRWCoast* pCoastIn, int const nCoast, int const nPointOnCoast, int const nLandCat)
     : m_dD50(0)
 {
    pCoast = pCoastIn;
 
    m_nCoast = nCoast;
    m_nPointOnCoastline = nPointOnCoast;
-   m_nCategory = LF_CAT_DRIFT;
+   m_nCategory = nLandCat;
 }
 
 //! Destructor

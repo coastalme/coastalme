@@ -23,8 +23,6 @@
 #include <cmath>
 using std::isnan;
 
-#include <cfloat>
-
 #include <iostream>
 using std::endl;
 using std::ios;

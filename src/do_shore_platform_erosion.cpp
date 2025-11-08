@@ -237,7 +237,7 @@ int CSimulation::nCalcPotentialPlatformErosionOnProfile(int const nCoast, CGeomP
       // Get the elevation for consolidated sediment only on this cell
       dVConsProfileZ[i] = m_pRasterGrid->m_Cell[nX][nY].dGetConsSedTopElevForLayerAboveBasement(nTopLayer);
 
-      // Get the elevation for both consolidated and unconsolidated sediment on this cell
+      // Get the elevation for both consolidated and unconsolidated sediment on this cell (ignore any talus)
       VdProfileZ[i] = m_pRasterGrid->m_Cell[nX][nY].dGetAllSedTopElevOmitTalus();
 
       // And store the X-Y plane distance from the start of the profile
@@ -544,7 +544,7 @@ int CSimulation::nCalcPotentialPlatformErosionBetweenProfiles(int const nCoast, 
          // Get the elevation for consolidated sediment only on this cell
          dVParConsProfileZ[i] = m_pRasterGrid->m_Cell[nXPar][nYPar].dGetConsSedTopElevForLayerAboveBasement(nTopLayer);
 
-         // Get the elevation for both consolidated and unconsolidated sediment on this cell
+         // Get the elevation for both consolidated and unconsolidated sediment on this cell (ignore any talus)
          dVParProfileZ[i] = m_pRasterGrid->m_Cell[nXPar][nYPar].dGetAllSedTopElevOmitTalus();
 
          // And store the X-Y plane distance from the start of the profile
@@ -1141,8 +1141,8 @@ void CSimulation::FillInBeachProtectionHolesAndRemoveLegacyCliffs(void)
    {
       for (int nY = 0; nY < m_nYGridSize; nY++)
       {
-         // Find any 'legacy' ciff cells: cells with an erosional notch apex elevation which is now -- due to shore platform erosion -- above the top of the consolidated sediment
-         double dNotchApexElev = m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->dGetCliffNotchApexElev();
+         // Find any 'legacy' ciff cells: cells with an erosional notch apex elevation which is now - due to shore platform erosion - above the top of the consolidated sediment
+         double const dNotchApexElev = m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->dGetCliffNotchApexElev();
          if (! bFPIsEqual(dNotchApexElev, DBL_NODATA, TOLERANCE))
          {
             // This cell has an erosional notch
@@ -1150,10 +1150,28 @@ void CSimulation::FillInBeachProtectionHolesAndRemoveLegacyCliffs(void)
             if (dNotchApexElev >= dSedTopElevNoTalus)
             {
                // The apex elevation of the notch is above the top of the consolidated sediment, so this notch has been removed
-               m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->SetLFCategory(LF_CAT_HINTERLAND);
-               m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->SetLFSubCategory(LF_NONE);
                m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->SetCliffNotchApexElev(DBL_NODATA);
                m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->SetCliffNotchIncisionDepth(DBL_NODATA);
+
+               // Now determine the landform category
+               int const nTopLayer = m_pRasterGrid->m_Cell[nX][nY].nGetTopNonZeroLayerAboveBasement();
+               CRWCellLayer* pTopLayer = m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nTopLayer);
+
+               if (pTopLayer->bHasTalus())
+               {
+                  // There is talus here
+                  m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->SetLFCategory(LF_DRIFT_TALUS);
+               }
+               else if (pTopLayer->bHasUncons())
+               {
+                  // There is some unconsolidated sediment here
+                  m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->SetLFCategory(LF_DRIFT_BEACH);
+               }
+               else
+               {
+                  // Set as hinterland
+                  m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->SetLFCategory(LF_HINTERLAND);
+               }
             }
          }
 

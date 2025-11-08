@@ -22,8 +22,7 @@
 
 //! Constructor
 CRWCellLandform::CRWCellLandform()
-    : m_nCategory(LF_NONE),
-      m_nSubCategory(LF_NONE),
+    : m_nCategory(LF_UNKNOWN),
       m_nCoast(-1),
       m_nPointOnCoastline(-1),
       m_dAccumWaveEnergy(0)
@@ -50,25 +49,6 @@ void CRWCellLandform::SetLFCategory(int const nClassIn)
 int CRWCellLandform::nGetLFCategory(void) const
 {
    return m_nCategory;
-}
-
-//! Set the both the landform sub-category, and the landform category (includes some rules to ensure category/subcategory consistency)
-void CRWCellLandform::SetLFSubCategory(int const nClassIn)
-{
-   m_nSubCategory = nClassIn;
-
-   if ((nClassIn == LF_SUBCAT_CLIFF_ON_COASTLINE) || (nClassIn == LF_SUBCAT_CLIFF_INLAND))
-      m_nCategory = LF_CAT_CLIFF;
-   else if ((nClassIn == LF_SUBCAT_DRIFT_TALUS) || (nClassIn == LF_SUBCAT_DRIFT_BEACH) || (nClassIn == LF_SUBCAT_DRIFT_MIXED))
-      m_nCategory = LF_CAT_DRIFT;
-   else if ((nClassIn == LF_SUBCAT_SEDIMENT_INPUT_UNCONSOLIDATED) || (nClassIn == LF_SUBCAT_SEDIMENT_INPUT_CONSOLIDATED))
-      m_nCategory = LF_CAT_SEDIMENT_INPUT;
-}
-
-//! Get the landform sub-category
-int CRWCellLandform::nGetLFSubCategory(void) const
-{
-   return m_nSubCategory;
 }
 
 //! Set the coast number

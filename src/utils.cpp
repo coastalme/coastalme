@@ -2304,6 +2304,10 @@ string CSimulation::strGetErrorText(int const nErr)
       strErr = "cell marked as in polygon, but does not have polygon's coast";
       break;
 
+   case RTN_ERR_CLIFF_TALUS_TO_UNCONS:
+      strErr = "cannot find closest point to coast when moving talus to unconsolidated sediment";
+      break;
+
    case RTN_ERR_UNKNOWN:
       strErr = "unknown error";
       break;
@@ -2660,14 +2664,13 @@ void CSimulation::CalcDeanProfile(vector<double>* pdVDeanProfile, double const d
    if (bDeposition)
    {
       // This Dean profile is for deposition i.e. seaward displacement of the profile
-      pdVDeanProfile->at(0) = dStartCellElev; // Is talus-top elev for cliffs, coast elevation for coasts
+      pdVDeanProfile->at(0) = dStartCellElev;   // Is coast elevation
 
       for (int n = 1; n < static_cast<int>(pdVDeanProfile->size()); n++)
       {
          if (n <= nSeawardOffset)
-            // As we extend the profile seaward, the elevation of any points coastward of the new coast point of the Dean profile are set to the elevation of the original coast or the talus top (is this realistic for talus?)
+            // As we extend the profile seaward, the elevation of any points coastward of the new coast point of the Dean profile are set to the elevation of the original coast point
             pdVDeanProfile->at(n) = dStartCellElev;
-
          else
          {
             double const dDistBelowTop = dA * pow(dDistFromProfileStart, DEAN_POWER);
@@ -2677,7 +2680,6 @@ void CSimulation::CalcDeanProfile(vector<double>* pdVDeanProfile, double const d
          }
       }
    }
-
    else
    {
       // This Dean profile is for erosion i.e. landward displacement of the profile
@@ -3045,7 +3047,8 @@ unsigned long CSimulation::ulConvertToTimestep(string const* pstrIn) const
 //===============================================================================================================================
 bool CSimulation::bIsInterventionCell(int const nX, int const nY) const
 {
-   if (m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->nGetLFCategory() == LF_CAT_INTERVENTION)
+   int const nCat = m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->nGetLFCategory();
+   if ((nCat == LF_INTERVENTION_STRUCT) || (nCat == LF_INTERVENTION_NON_STRUCT))
       return true;
 
    return false;

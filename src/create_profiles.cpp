@@ -21,7 +21,6 @@
 
 #include <cstdio>
 #include <cmath>
-#include <cfloat>
 
 #include <iostream>
 using std::cerr;
@@ -80,12 +79,12 @@ int CSimulation::nCreateAllProfiles(void)
       {
          double dCurvature;
 
-         if (m_VCoast[nCoast].pGetCoastLandform(nCoastPoint)->nGetLandFormCategory() != LF_CAT_INTERVENTION)
+         int const nCat = m_VCoast[nCoast].pGetCoastLandform(nCoastPoint)->nGetLandFormCategory();
+         if ((nCat != LF_INTERVENTION_STRUCT) && (nCat != LF_INTERVENTION_NON_STRUCT))
          {
             // Not an intervention coast point, so store the smoothed curvature
             dCurvature = m_VCoast[nCoast].dGetSmoothCurvature(nCoastPoint);
          }
-
          else
          {
             // This is an intervention coast point, which is likely to have some sharp angles. So store the detailed curvature
@@ -227,7 +226,7 @@ int CSimulation::nCreateAllProfiles(void)
       // //
       // //          LogStream << m_VCoast[nCoast].dGetSmoothCurvature(n) << "\t";
       // //
-      // //          if (m_VCoast[nCoast].pGetCoastLandform(n)->nGetLandFormCategory() == LF_CAT_INTERVENTION)
+      // //          if (m_VCoast[nCoast].pGetCoastLandform(n)->nGetLandFormCategory() == LF_INTERVENTION)
       // //             LogStream << "I\t";
       //
       // if (m_VCoast[nCoast].bIsProfileAtCoastPoint(n))
@@ -296,7 +295,8 @@ void CSimulation::LocateAndCreateProfiles(int const nCoast, int& nProfile, vecto
          // We have not already searched this coast point. Is it an intervention coast point?
          bool bIntervention = false;
 
-         if (m_VCoast[nCoast].pGetCoastLandform(nNormalPoint)->nGetLandFormCategory() == LF_CAT_INTERVENTION)
+         int const nCat = m_VCoast[nCoast].pGetCoastLandform(nNormalPoint)->nGetLandFormCategory();
+         if ((nCat == LF_INTERVENTION_STRUCT) || (nCat == LF_INTERVENTION_NON_STRUCT))
          {
             // It is an intervention
             bIntervention = true;
@@ -1627,7 +1627,7 @@ void CSimulation::CreateRasterizedProfile(int const nCoast, CGeomProfile* pProfi
                   bHitLand = true;
                   pProfile->SetHitLand(true);
 
-                  LogStream << m_ulIter << ": \tcoast " << nCoast << " profile " << nProfile << " HIT LAND at [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "}, elevation = " << m_pRasterGrid->m_Cell[nX][nY].dGetAllSedTopElevOmitTalus() << ", SWL = " << m_dThisIterSWL << endl;
+                  LogStream << m_ulIter << ": \tcoast " << nCoast << " profile " << nProfile << " HIT LAND at [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "}, elevation = " << m_pRasterGrid->m_Cell[nX][nY].dGetAllSedTopElevIncTalus() << ", SWL = " << m_dThisIterSWL << endl;
 
                   return;
                }
@@ -1638,7 +1638,7 @@ void CSimulation::CreateRasterizedProfile(int const nCoast, CGeomProfile* pProfi
                   bHitIntervention = true;
                   pProfile->SetHitIntervention(true);
 
-                  LogStream << m_ulIter << ": \tcoast " << nCoast << " profile " << nProfile << " HIT INTERVENTION at [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "}, elevation = " << m_pRasterGrid->m_Cell[nX][nY].dGetAllSedTopElevOmitTalus() << ", SWL = " << m_dThisIterSWL << endl;
+                  LogStream << m_ulIter << ": \tcoast " << nCoast << " profile " << nProfile << " HIT INTERVENTION at [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " << dGridCentroidYToExtCRSY(nY) << "}, elevation = " << m_pRasterGrid->m_Cell[nX][nY].dGetAllSedTopElevIncTalus() << ", SWL = " << m_dThisIterSWL << endl;
 
                   return;
                }

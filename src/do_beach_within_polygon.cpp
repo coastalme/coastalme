@@ -20,7 +20,6 @@
 #include <assert.h>
 
 #include <cmath>
-#include <cfloat>
 
 #include <iostream>
 using std::endl;
@@ -179,6 +178,7 @@ int CSimulation::nDoUnconsErosionOnPolygon(int const nCoast, CGeomCoastPolygon* 
       int nParProfLen;
       int nInlandOffset = -1;
 
+      // Note that we must not consider the extra elevation due to to any talus here, since talus is removed quickly compared with the time required to create a Dean profile
       double const dParProfCoastElev = m_pRasterGrid->m_Cell[nCoastX][nCoastY].dGetAllSedTopElevOmitTalus();
       double const dParProfEndElev = m_pRasterGrid->m_Cell[nParProfEndX][nParProfEndY].dGetAllSedTopElevOmitTalus();
 
@@ -660,8 +660,8 @@ int CSimulation::nDoParallelProfileUnconsErosion(CGeomCoastPolygon* pPolygon, in
                   CRWCellLandform* pLandform = m_pRasterGrid->m_Cell[nX][nY].pGetLandform();
                   int const nCat = pLandform->nGetLFCategory();
 
-                  if ((nCat != LF_CAT_SEDIMENT_INPUT) && (nCat != LF_CAT_SEDIMENT_INPUT_SUBMERGED) && (nCat != LF_CAT_SEDIMENT_INPUT_NOT_SUBMERGED))
-                     pLandform->SetLFSubCategory(LF_SUBCAT_DRIFT_BEACH);
+                  if ((nCat != LF_SEDIMENT_INPUT_UNCONSOLIDATED) && (nCat != LF_SEDIMENT_INPUT_CONSOLIDATED))
+                     pLandform->SetLFCategory(LF_DRIFT_BEACH);
 
                   // LogStream << m_ulIter << ": nPoly = " << nPoly << ", beach deposition = " << dTotToDeposit << " at [" << nX << "][" << nY << "] = {" << dGridCentroidXToExtCRSX(nX) << ", " <<  dGridCentroidYToExtCRSY(nY) << "} nCoastPoint = " << nCoastPoint << " nDistSeawardFromNewCoast = " << nDistSeawardFromNewCoast << endl;
                }
@@ -687,13 +687,11 @@ void CSimulation::ErodeCellBeachSedimentSupplyLimited(int const nX, int const nY
       dExistingAvailable = m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nThisLayer)->pGetUnconsolidatedSediment()->dGetFineDepth();
       dErodibility = m_dFineErodibilityNormalized;
    }
-
    else if (nTexture == TEXTURE_SAND)
    {
       dExistingAvailable = m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nThisLayer)->pGetUnconsolidatedSediment()->dGetSandDepth();
       dErodibility = m_dSandErodibilityNormalized;
    }
-
    else if (nTexture == TEXTURE_COARSE)
    {
       dExistingAvailable = m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nThisLayer)->pGetUnconsolidatedSediment()->dGetCoarseDepth();
@@ -718,13 +716,11 @@ void CSimulation::ErodeCellBeachSedimentSupplyLimited(int const nX, int const nY
       // Set the value for this layer
       m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nThisLayer)->pGetUnconsolidatedSediment()->SetFineDepth(dRemaining);
    }
-
    else if (nTexture == TEXTURE_SAND)
    {
       // Set the value for this layer
       m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nThisLayer)->pGetUnconsolidatedSediment()->SetSandDepth(dRemaining);
    }
-
    else if (nTexture == TEXTURE_COARSE)
    {
       // Set the value for this layer
@@ -961,7 +957,7 @@ int CSimulation::nDoUnconsDepositionOnPolygon(int const nCoast, CGeomCoastPolygo
 
          double const dInc = dParProfDeanLen / (nParProfLen - nSeawardOffset - 2);
 
-         // The elevation of the coast point in the Dean profile is the same as the elevation of the current coast point TODO 020 Is this correct? Should it be dParProfStartElev?
+         // The elevation of the coast point in the Dean profile is the same as the elevation of the current coast point, ignoring any talus (since talus is assumed to be removed quickly) TODO 020 Is this correct? Should it be dParProfStartElev?
          double const dCoastElev = m_pRasterGrid->m_Cell[nCoastX][nCoastY].dGetAllSedTopElevOmitTalus();
 
          // For this depositing parallel profile, calculate the Dean equilibrium profile of the unconsolidated sediment h(y) = A * y^(2/3) where h(y) is the distance below the highest point in the profile at a distance y from the landward start of the profile
@@ -1207,8 +1203,8 @@ int CSimulation::nDoUnconsDepositionOnPolygon(int const nCoast, CGeomCoastPolygo
                   // And set the landform category
                   int const nCat = pLandform->nGetLFCategory();
 
-                  if ((nCat != LF_CAT_SEDIMENT_INPUT) && (nCat != LF_CAT_SEDIMENT_INPUT_SUBMERGED) && (nCat != LF_CAT_SEDIMENT_INPUT_NOT_SUBMERGED))
-                     pLandform->SetLFSubCategory(LF_SUBCAT_DRIFT_BEACH);
+                  if ((nCat != LF_SEDIMENT_INPUT_CONSOLIDATED) && (nCat != LF_SEDIMENT_INPUT_UNCONSOLIDATED))
+                     pLandform->SetLFCategory(LF_DRIFT_BEACH);
 
                   // Update this-timestep totals
                   m_ulThisIterNumBeachDepositionCells++;
@@ -1694,8 +1690,8 @@ int CSimulation::nDoUnconsDepositionOnPolygon(int const nCoast, CGeomCoastPolygo
 
                      int const nCat = pLandform->nGetLFCategory();
 
-                     if ((nCat != LF_CAT_SEDIMENT_INPUT) && (nCat != LF_CAT_SEDIMENT_INPUT_SUBMERGED) && (nCat != LF_CAT_SEDIMENT_INPUT_NOT_SUBMERGED))
-                        pLandform->SetLFSubCategory(LF_SUBCAT_DRIFT_BEACH);
+                     if ((nCat != LF_SEDIMENT_INPUT_CONSOLIDATED) && (nCat != LF_SEDIMENT_INPUT_UNCONSOLIDATED))
+                        pLandform->SetLFCategory(LF_DRIFT_BEACH);
 
                      // Update this-timestep totals
                      m_ulThisIterNumBeachDepositionCells++;
@@ -1847,10 +1843,7 @@ bool CSimulation::bElevAboveDeanElev(int const nX, int const nY, double const dE
 
       int const nCat = pLandform->nGetLFCategory();
 
-      if (nCat == LF_CAT_DRIFT)
-         return true;
-
-      if ((nCat == LF_CAT_SEDIMENT_INPUT) || (nCat == LF_CAT_SEDIMENT_INPUT_SUBMERGED) || (nCat == LF_CAT_SEDIMENT_INPUT_NOT_SUBMERGED))
+      if ((nCat == LF_DRIFT_BEACH) || (nCat == LF_DRIFT_DUNES) || (nCat == LF_SEDIMENT_INPUT_UNCONSOLIDATED))
          return true;
    }
 

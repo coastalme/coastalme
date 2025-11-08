@@ -215,8 +215,8 @@ CSimulation::CSimulation(void)
    m_nYGridSize = 0;
    m_nCoastMax = 0;
    m_nCoastMin = 0;
-   m_nNThisIterCliffCollapse = 0;
-   m_nNTotCliffCollapse = 0;
+   m_nNumThisIterCliffCollapse = 0;
+   m_nNumTotCliffCollapse = 0;
    m_nUnconsSedimentHandlingAtGridEdges = 0;
    m_nBeachErosionDepositionEquation = 0;
    m_nWavePropagationModel = 0;
@@ -653,7 +653,6 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
 
    // Mark edge cells, as defined by the basement layer
    nRet = nMarkBoundingBoxEdgeCells();
-
    if (nRet != RTN_OK)
       return nRet;
 
@@ -878,9 +877,9 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
 
    // Misc initialisation calcs
    m_nCoastMax = COAST_LENGTH_MAX * tMax(m_nXGridSize, m_nYGridSize);                           // Arbitrary but probably OK
-   m_nCoastMin = tMin(m_nXGridSize, m_nYGridSize);                                              // In some cases the following rule doesn't work TODO 007 Finish surge and runup stuff
-   // nRound(COAST_LENGTH_MIN_X_PROF_SPACE * m_dCoastNormalSpacing / m_dCellSide);              // TODO 007 Finish surge and runup stuff
-   m_nCoastCurvatureInterval = tMax(nRound(m_dCoastNormalSpacing / (m_dCellSide * 2)), 2);      // TODO 007 Finish surge and runup stuff
+   // m_nCoastMin = tMin(m_nXGridSize, m_nYGridSize);
+   m_nCoastMin = nRound(COAST_LENGTH_MIN_X_PROF_SPACE * m_dCoastNormalSpacing / m_dCellSide);   // Arbitrary but probably OK
+   m_nCoastCurvatureInterval = tMax(nRound(m_dCoastNormalSpacing / (m_dCellSide * 2)), 2);      // Arbitrary but probably OK
 
    // For beach erosion/deposition, conversion from immersed weight to bulk volumetric (sand and voids) transport rate (Leo Van Rijn) TODO 007 need full reference
    m_dInmersedToBulkVolumetric = 1 / ((m_dBeachSedimentDensity - m_dSeaWaterDensity) * (1 - m_dBeachSedimentPorosity) * m_dG);
