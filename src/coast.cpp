@@ -117,7 +117,7 @@ void CRWCoast::SetCoastlineExtCRS(CGeomLine const* pLCoast)
    m_VdDeepWaterWaveAngle = vector<double>(nLen, DBL_NODATA);
    m_VdDeepWaterWavePeriod = vector<double>(nLen, DBL_NODATA);
    m_VdBreakingWaveHeight = vector<double>(nLen, DBL_NODATA);
-   m_VdWaveSetupSurge = vector<double>(nLen, 0); // it is better to initiate with DBL_NODATA but some values are outside of range in the interpolation
+   m_VdWaveSetupSurge = vector<double>(nLen, 0);               // it is better to initiate with DBL_NODATA but some values are outside of range in the interpolation
    // m_VdStormSurge = vector<double>(nLen, DBL_NODATA);
    m_VdRunUp = vector<double>(nLen, 0);
    m_VdCoastWaveHeight = vector<double>(nLen, DBL_NODATA);
@@ -201,6 +201,12 @@ void CRWCoast::SetCoastlineGridCRS(CGeomILine const* pILCoastCells)
    m_ILCellsMarkedAsCoastline = *pILCoastCells;
 }
 
+//! Returns a pointer to the cells marked as coastline (grid CRS)
+CGeomILine* CRWCoast::pILGetCoastlineGridCRS(void)
+{
+   return &m_ILCellsMarkedAsCoastline;
+}
+
 // void CRWCoast::AppendCellMarkedAsCoastline(CGeom2DIPoint const* pPti)
 // {
 // m_ILCellsMarkedAsCoastline.Append(*pPti);
@@ -211,7 +217,7 @@ void CRWCoast::SetCoastlineGridCRS(CGeomILine const* pILCoastCells)
 // m_ILCellsMarkedAsCoastline.Append(CGeom2DIPoint(nX, nY));
 // }
 
-//! Returns the coordinates (grid CRS) of the cells marked as coastline
+//! Returns the coordinates (grid CRS) of the cell marked as coastline
 CGeom2DIPoint* CRWCoast::pPtiGetCellMarkedAsCoastline(int const n)
 {
    // TODO 055 No check to see if n < size()
@@ -617,11 +623,11 @@ double CRWCoast::dGetLevel(int const nCoastPoint, int const level) const
 {
    switch (level)
    {
-   case 0: // WAVESETUPSURGE:
+   case 0:     // WAVESETUPSURGE:
       return m_VdWaveSetupSurge[nCoastPoint];
       break;
 
-   case 1: // WAVESETUPSURGE + RUNUP:
+   case 1:     // WAVESETUPSURGE + RUNUP:
       return m_VdWaveSetupSurge[nCoastPoint] + m_VdRunUp[nCoastPoint];
       break;
 
@@ -756,7 +762,7 @@ CGeomProfile* CRWCoast::pGetProfileAtCoastPoint(int const nCoastPoint) const
    return m_pVNormalProfileDownAllCoastpointSeq[nCoastPoint];
 }
 
-//! Appends a coastal landform to this coast
+//! Appends a coastal landform to the vector of coast landform objects
 void CRWCoast::AppendCoastLandform(CACoastLandform* pCoastLandform)
 {
    m_pVLandform.push_back(pCoastLandform);

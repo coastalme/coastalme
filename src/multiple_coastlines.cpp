@@ -202,7 +202,7 @@ int CSimulation::nTruncateProfilesDifferentCoasts(int const nThisProfileCoast, i
    double dClosestY;
 
    // On a line joining the start points of both profiles, find the point on that line which is closest to the intersection of both profiles
-   GetClosestPoint(dXThisProfileStart, dYThisProfileStart, dXHitProfileStart, dYHitProfileStart, nXIntersect, nYIntersect, dClosestX, dClosestY);
+   FindClosestPointOnStraightLine(dXThisProfileStart, dYThisProfileStart, dXHitProfileStart, dYHitProfileStart, nXIntersect, nYIntersect, dClosestX, dClosestY);
 
    // Get the distance between this closest point and each profile start point
    double const dThisDist = dGetDistanceBetween(pPtiThisProfileStart->nGetX(), pPtiThisProfileStart->nGetY(), dClosestX, dClosestY);

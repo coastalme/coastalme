@@ -240,7 +240,7 @@ double CRWCellSediment::dGetTotAllSedimentInputDepth(void) const
 //! Intializes the this-iteration total depth of sediment input for all size classes (m)
 void CRWCellSediment::InitThisIterSedimentInputAll(void)
 {
-   m_dFineSedimentInputThisIter =
-       m_dSandSedimentInputThisIter =
-           m_dCoarseSedimentInputThisIter = 0;
+   m_dFineSedimentInputThisIter = 0;
+   m_dSandSedimentInputThisIter = 0;
+   m_dCoarseSedimentInputThisIter = 0;
 }
