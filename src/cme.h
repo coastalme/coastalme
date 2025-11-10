@@ -256,9 +256,8 @@ using std::ostream;
    #else
       string const PLATFORM = "MS Visual C++ for unknown CPU";
    #endif
-#endif
 
-#ifdef __GNUG__
+#elif defined __GNUG__
    // GNU compiler
    #ifndef CPU
       #error "CPU not defined"
@@ -289,11 +288,11 @@ using std::ostream;
          double const CLOCK_T_RANGE = static_cast<double>(LONG_MAX) - static_cast<double>(CLOCK_T_MIN);
       #endif
    #endif
-#else
-   #ifdef __clang__
-      // Clang compiler
-      #ifndef CPU
-         #error "CPU not defined"
+
+#elif defined __clang__
+   // Clang compiler
+   #ifndef CPU
+      #error "CPU not defined"
       #else
          #ifdef x86
             // Intel x86, byte order is little-endian
@@ -310,16 +309,14 @@ using std::ostream;
          #endif
       #endif
    #endif
-#endif
 
-#ifdef __MINGW32__
+#elif defined __MINGW32__
    // Minimalist GNU for Windows
    //   #define __USE_MINGW_ANSI_STDIO 1        // Fix long doubles output problem,
    //   see http://stackoverflow.com/questions/7134547/gcc-printf-and-long-double-leads-to-wrong-output-c-type-conversion-messes-u
    #define WEXITSTATUS(x) ((x) & 0xff)
-#endif
 
-#ifdef __HP_aCC
+#elif defined __HP_aCC
    // HP-UX aCC, byte order is big-endian, can be either 32-bit or 64-bit
    string const PLATFORM = "HP-UX aC++";
    // clock_t is an unsigned long: see <time.h>
