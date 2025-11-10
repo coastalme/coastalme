@@ -585,12 +585,6 @@ class CSimulation
    //! TODO 007 Used in WAVESETUP + SURGE + RUNUP Finish surge and runup stuff
    int m_nLevel;
 
-   //! The default planview width of cliff collapse talus, in cells
-   int m_nDefaultTalusWidthInCells;
-
-   // The minimum planview length (in cells) of the Dean profile formed by the cliff collapse Talus
-   int m_nTalusProfileMinLenInCells;
-
    //! The data type used by GDAL for integer operations, can be GDT_Byte, GDT_Int16, GDT_UInt16, GDT_Int32, or GDT_UInt32
    GDALDataType m_GDALWriteIntDataType;
 

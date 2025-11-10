@@ -230,8 +230,6 @@ CSimulation::CSimulation(void)
    m_nLogFileDetail = 0;
    m_nRunUpEquation = 0;
    m_nLevel = 0;
-   m_nDefaultTalusWidthInCells = 0;
-   m_nTalusProfileMinLenInCells = 0;
 
    // TODO 011 May wish to make this a user-supplied value
    m_nGISMissingValue = INT_NODATA;
@@ -902,16 +900,6 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
       m_dDeltaSWLPerTimestep = (m_dTimeStep * (m_dFinalMeanSWL - m_dInitialMeanSWL)) / m_dSimDuration;
       m_dAccumulatedSeaLevelChange -= m_dDeltaSWLPerTimestep;
    }
-
-   // Calculate default planview width of cliff collapse talus, in cells
-   m_nDefaultTalusWidthInCells = nConvertMetresToNumCells(m_dCliffDepositionPlanviewWidth);
-
-   // The default talus collapse width must be an odd number of cells in width i.e. centred on the cliff collapse cell (but only if we are not at the end of the coast)
-   if ((m_nDefaultTalusWidthInCells % 2) == 0)
-      m_nDefaultTalusWidthInCells++;
-
-   // This is the minimum planview length (in cells) of the Dean profile. The initial length will be increased if we can't deposit sufficient talus
-   m_nTalusProfileMinLenInCells = nConvertMetresToNumCells(m_dCliffTalusMinDepositionLength);
 
    // ===================================================== The main loop ======================================================
    // Tell the user what is happening

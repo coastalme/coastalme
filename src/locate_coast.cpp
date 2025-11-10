@@ -24,6 +24,12 @@ using std::cerr;
 using std::endl;
 using std::ios;
 
+#include <ios>
+using std::fixed;
+
+#include <iomanip>
+using std::setprecision;
+
 #include <stack>
 using std::stack;
 
@@ -289,7 +295,7 @@ void CSimulation::CellByCellFillSea(int const nXStart, int const nYStart)
 
    // // DEBUG CODE ===========================================================================================================
    // LogStream << m_ulIter << ": cell-by-cell fill of sea from [" << nXStart << "][" << nYStart << "] = {" << dGridCentroidXToExtCRSX(nXStart) << ", " << dGridCentroidYToExtCRSY(nYStart) << "} with SWL = " << m_dThisIterSWL << ", " << m_ulThisIterNumSeaCells << " of " << m_ulNumCells << " cells now marked as sea (" <<  fixed << setprecision(3) << 100.0 * m_ulThisIterNumSeaCells / m_ulNumCells << " %)" << endl;
-
+   //
    // LogStream << " m_nXMinBoundingBox = " << m_nXMinBoundingBox << " m_nXMaxBoundingBox = " << m_nXMaxBoundingBox << " m_nYMinBoundingBox = " << m_nYMinBoundingBox << " m_nYMaxBoundingBox = " << m_nYMaxBoundingBox << endl;
    // // DEBUG CODE ===========================================================================================================
 }
@@ -301,6 +307,343 @@ int CSimulation::nTraceAllCoasts(void)
 {
    if (m_nLogFileDetail >= LOG_FILE_MIDDLE_DETAIL)
       LogStream << m_ulIter << ": Tracing coasts" << endl;
+
+// /*
+//    // TEST ================================================================
+//    int const BUFFER = 10;
+//    int const DUMMY_COAST_NUMBER = 99;
+//    int nValidCoast = -1;
+//    int nXCoastMin = tMax(m_nXMinBoundingBox + BUFFER, 0);
+//    int nXCoastMax = tMin(m_nXMaxBoundingBox + BUFFER, m_nXGridSize);
+//    int nYCoastMin = tMax(m_nYMinBoundingBox + BUFFER, 0);
+//    int nYCoastMax = tMin(m_nYMaxBoundingBox + BUFFER, m_nYGridSize);
+//
+//    for (int nX = nXCoastMin; nX < nXCoastMax; nX++)
+//    {
+//       for (int nY = nYCoastMin; nY < nYCoastMax; nY++)
+//       {
+//          for (int nSearchDirection = NORTH; nSearchDirection <= NORTH_WEST; nSearchDirection++)
+//          {
+//             int nXAdj;
+//             int nYAdj;
+//
+//             switch (nSearchDirection)
+//             {
+//             case NORTH:
+//                nXAdj = nX - 1;
+//                nYAdj = nY;
+//
+//                if (bIsWithinValidGrid(nXAdj, nYAdj))
+//                {
+//                   if (m_pRasterGrid->m_Cell[nXAdj][nYAdj].bIsInContiguousSea())
+//                   {
+//                      m_pRasterGrid->m_Cell[nXAdj][nYAdj].SetAsCoastline(DUMMY_COAST_NUMBER);
+//                      break;
+//                   }
+//                }
+//
+//                break;
+//
+//             case NORTH_EAST:
+//                nXAdj = nX;
+//                nYAdj = nY - 1;
+//
+//                if (bIsWithinValidGrid(nXAdj, nYAdj))
+//                {
+//                   if (m_pRasterGrid->m_Cell[nXAdj][nYAdj].bIsInContiguousSea())
+//                   {
+//                      m_pRasterGrid->m_Cell[nXAdj][nYAdj].SetAsCoastline(DUMMY_COAST_NUMBER);
+//                      break;
+//                   }
+//                }
+//
+//                break;
+//
+//             case EAST:
+//                nXAdj = nX;
+//                nYAdj = nY - 1;
+//
+//                if (bIsWithinValidGrid(nXAdj, nYAdj))
+//                {
+//                   if (m_pRasterGrid->m_Cell[nXAdj][nYAdj].bIsInContiguousSea())
+//                   {
+//                      m_pRasterGrid->m_Cell[nXAdj][nYAdj].SetAsCoastline(DUMMY_COAST_NUMBER);
+//                      break;
+//                   }
+//                }
+//
+//                break;
+//
+//             case SOUTH_EAST:
+//                nXAdj = nX + 1;
+//                nYAdj = nY;
+//
+//                if (bIsWithinValidGrid(nXAdj, nYAdj))
+//                {
+//                   if (m_pRasterGrid->m_Cell[nXAdj][nYAdj].bIsInContiguousSea())
+//                   {
+//                      m_pRasterGrid->m_Cell[nXAdj][nYAdj].SetAsCoastline(DUMMY_COAST_NUMBER);
+//                      break;
+//                   }
+//                }
+//
+//                break;
+//
+//             case SOUTH:
+//                nXAdj = nX + 1;
+//                nYAdj = nY;
+//
+//                if (bIsWithinValidGrid(nXAdj, nYAdj))
+//                {
+//                   if (m_pRasterGrid->m_Cell[nXAdj][nYAdj].bIsInContiguousSea())
+//                   {
+//                      m_pRasterGrid->m_Cell[nXAdj][nYAdj].SetAsCoastline(DUMMY_COAST_NUMBER);
+//                      break;
+//                   }
+//                }
+//
+//                break;
+//
+//             case SOUTH_WEST:
+//                nXAdj = nX + 1;
+//                nYAdj = nY;
+//
+//                if (bIsWithinValidGrid(nXAdj, nYAdj))
+//                {
+//                   if (m_pRasterGrid->m_Cell[nXAdj][nYAdj].bIsInContiguousSea())
+//                   {
+//                      m_pRasterGrid->m_Cell[nXAdj][nYAdj].SetAsCoastline(DUMMY_COAST_NUMBER);
+//                      break;
+//                   }
+//                }
+//
+//                break;
+//
+//             case WEST:
+//                nXAdj = nX;
+//                nYAdj = nY + 1;
+//
+//                if (bIsWithinValidGrid(nXAdj, nYAdj))
+//                {
+//                   if (m_pRasterGrid->m_Cell[nXAdj][nYAdj].bIsInContiguousSea())
+//                   {
+//                      m_pRasterGrid->m_Cell[nXAdj][nYAdj].SetAsCoastline(DUMMY_COAST_NUMBER);
+//                      break;
+//                   }
+//                }
+//
+//                break;
+//
+//             case NORTH_WEST:
+//                nXAdj = nX;
+//                nYAdj = nY + 1;
+//
+//                if (bIsWithinValidGrid(nXAdj, nYAdj))
+//                {
+//                   if (m_pRasterGrid->m_Cell[nXAdj][nYAdj].bIsInContiguousSea())
+//                   {
+//                      m_pRasterGrid->m_Cell[nXAdj][nYAdj].SetAsCoastline(DUMMY_COAST_NUMBER);
+//                      break;
+//                   }
+//                }
+//
+//                break;
+//             }
+//          }
+//       }
+//    }
+//
+//    // Now go along the list of edge cells, look for DUMMY_COAST_NUMBER
+//    bool bFound = false;
+//    do
+//    {
+//       for (unsigned int n = 0; n < m_VEdgeCell.size(); n++)
+//       {
+//          if (m_bOmitSearchNorthEdge && m_VEdgeCellEdge[n] == NORTH)
+//             continue;
+//
+//          if (m_bOmitSearchSouthEdge && m_VEdgeCellEdge[n] == SOUTH)
+//             continue;
+//
+//          if (m_bOmitSearchWestEdge && m_VEdgeCellEdge[n] == WEST)
+//             continue;
+//
+//          if (m_bOmitSearchEastEdge && m_VEdgeCellEdge[n] == EAST)
+//             continue;
+//
+//          int const nX = m_VEdgeCell[n].nGetX();
+//          int const nY = m_VEdgeCell[n].nGetY();
+//
+//          if (m_pRasterGrid->m_Cell[nX][nY].nGetCoastline() == DUMMY_COAST_NUMBER)
+//          {
+//             bFound = true;
+//             nValidCoast++;
+//
+//             // Set this edge cell
+//             m_pRasterGrid->m_Cell[nX][nY].SetAsCoastline(nValidCoast);
+//
+//             CGeomILine ILTempGridCRS;
+//
+//             int nXNext = nX;
+//             int nYNext = nX;
+//
+//             // Now look for other cells
+//             do
+//             {
+//                for (int nSearchDirection = NORTH; nSearchDirection <= NORTH_WEST; nSearchDirection++)
+//                {
+//                   int nXAdj;
+//                   int nYAdj;
+//
+//                   switch (nSearchDirection)
+//                   {
+//                   case NORTH:
+//                      nXAdj = nX - 1;
+//                      nYAdj = nY;
+//
+//                      if (bIsWithinValidGrid(nXAdj, nYAdj))
+//                      {
+//                         if (m_pRasterGrid->m_Cell[nXAdj][nYAdj].nGetCoastline() == DUMMY_COAST_NUMBER)
+//                         {
+//                            m_pRasterGrid->m_Cell[nXAdj][nYAdj].SetAsCoastline(nValidCoast);
+//
+//
+//                            break;
+//                         }
+//                      }
+//
+//                      break;
+//
+//                   case NORTH_EAST:
+//                      nXAdj = nX;
+//                      nYAdj = nY - 1;
+//
+//                      if (bIsWithinValidGrid(nXAdj, nYAdj))
+//                      {
+//                         if (m_pRasterGrid->m_Cell[nXAdj][nYAdj].bIsInContiguousSea())
+//                         {
+//                            m_pRasterGrid->m_Cell[nXAdj][nYAdj].SetAsCoastline(DUMMY_COAST_NUMBER);
+//                            break;
+//                         }
+//                      }
+//
+//                      break;
+//
+//                   case EAST:
+//                      nXAdj = nX;
+//                      nYAdj = nY - 1;
+//
+//                      if (bIsWithinValidGrid(nXAdj, nYAdj))
+//                      {
+//                         if (m_pRasterGrid->m_Cell[nXAdj][nYAdj].bIsInContiguousSea())
+//                         {
+//                            m_pRasterGrid->m_Cell[nXAdj][nYAdj].SetAsCoastline(DUMMY_COAST_NUMBER);
+//                            break;
+//                         }
+//                      }
+//
+//                      break;
+//
+//                   case SOUTH_EAST:
+//                      nXAdj = nX + 1;
+//                      nYAdj = nY;
+//
+//                      if (bIsWithinValidGrid(nXAdj, nYAdj))
+//                      {
+//                         if (m_pRasterGrid->m_Cell[nXAdj][nYAdj].bIsInContiguousSea())
+//                         {
+//                            m_pRasterGrid->m_Cell[nXAdj][nYAdj].SetAsCoastline(DUMMY_COAST_NUMBER);
+//                            break;
+//                         }
+//                      }
+//
+//                      break;
+//
+//                   case SOUTH:
+//                      nXAdj = nX + 1;
+//                      nYAdj = nY;
+//
+//                      if (bIsWithinValidGrid(nXAdj, nYAdj))
+//                      {
+//                         if (m_pRasterGrid->m_Cell[nXAdj][nYAdj].bIsInContiguousSea())
+//                         {
+//                            m_pRasterGrid->m_Cell[nXAdj][nYAdj].SetAsCoastline(DUMMY_COAST_NUMBER);
+//                            break;
+//                         }
+//                      }
+//
+//                      break;
+//
+//                   case SOUTH_WEST:
+//                      nXAdj = nX + 1;
+//                      nYAdj = nY;
+//
+//                      if (bIsWithinValidGrid(nXAdj, nYAdj))
+//                      {
+//                         if (m_pRasterGrid->m_Cell[nXAdj][nYAdj].bIsInContiguousSea())
+//                         {
+//                            m_pRasterGrid->m_Cell[nXAdj][nYAdj].SetAsCoastline(DUMMY_COAST_NUMBER);
+//                            break;
+//                         }
+//                      }
+//
+//                      break;
+//
+//                   case WEST:
+//                      nXAdj = nX;
+//                      nYAdj = nY + 1;
+//
+//                      if (bIsWithinValidGrid(nXAdj, nYAdj))
+//                      {
+//                         if (m_pRasterGrid->m_Cell[nXAdj][nYAdj].bIsInContiguousSea())
+//                         {
+//                            m_pRasterGrid->m_Cell[nXAdj][nYAdj].SetAsCoastline(DUMMY_COAST_NUMBER);
+//                            break;
+//                         }
+//                      }
+//
+//                      break;
+//
+//                   case NORTH_WEST:
+//                      nXAdj = nX;
+//                      nYAdj = nY + 1;
+//
+//                      if (bIsWithinValidGrid(nXAdj, nYAdj))
+//                      {
+//                         if (m_pRasterGrid->m_Cell[nXAdj][nYAdj].bIsInContiguousSea())
+//                         {
+//                            m_pRasterGrid->m_Cell[nXAdj][nYAdj].SetAsCoastline(DUMMY_COAST_NUMBER);
+//                            break;
+//                         }
+//                      }
+//
+//                      break;
+//                   }
+//                }
+//
+//             } while xxx;
+//
+//
+//
+//
+//
+//
+//          }
+//
+//
+//       }
+//    }
+//    while (bFound);
+//
+//
+//
+//
+//
+//
+//
+//
+//    // ============================================================*/
+
 
    int const TOOCLOSE = 1;
    int nValidCoast = 0;
