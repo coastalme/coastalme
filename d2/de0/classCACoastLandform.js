@@ -8,10 +8,10 @@ var classCACoastLandform =
     [ "nGetCoast", "d2/de0/classCACoastLandform.html#a48cad916a3fb1156ce1f84d12adf23e7", null ],
     [ "nGetLandFormCategory", "d2/de0/classCACoastLandform.html#ac161cb56a83d653b651aa08173a1f1ca", null ],
     [ "nGetPointOnCoast", "d2/de0/classCACoastLandform.html#a6a0284350c5965932c7cc74156ceadec", null ],
-    [ "pPtiGetCellMarkedAsLF", "d2/de0/classCACoastLandform.html#afd4b936869e33c47d2a741ff6404abf3", null ],
+    [ "pPtiGetCellMarkedAsCliff", "d2/de0/classCACoastLandform.html#a3587c2a97c2d0e5d4203d12e144bf4ea", null ],
     [ "m_dTotAccumWaveEnergy", "d2/de0/classCACoastLandform.html#aa033a9b06098d6467381e33b5e9cfd2a", null ],
     [ "m_nCategory", "d2/de0/classCACoastLandform.html#a9d5bd4b6b0d0e736800ce2f117cc67dd", null ],
     [ "m_nCoast", "d2/de0/classCACoastLandform.html#a9dd589536ca66abda8fcd4052bc5687a", null ],
-    [ "m_nPointOnCoast", "d2/de0/classCACoastLandform.html#a2c2b3f77788c0b1babf613ac7675e1ed", null ],
+    [ "m_nPointOnCoastline", "d2/de0/classCACoastLandform.html#ad915a351d479ab2dd8981c7978c7efa8", null ],
     [ "pCoast", "d2/de0/classCACoastLandform.html#a406771fa94a5a9f0d7117120f0709573", null ]
 ];

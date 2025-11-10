@@ -6,12 +6,12 @@ var searchData=
   ['inc_2fcshore_2eh_3',['cshore.h',['../d0/d93/inc_2cshore_8h.html',1,'']]],
   ['incrbeachdeposition_4',['IncrBeachDeposition',['../d1/dd9/classCGeomCell.html#a394f6357bbfb8858e7150698dbab2213',1,'CGeomCell']]],
   ['incrcliffcollapseerosion_5',['IncrCliffCollapseErosion',['../d1/dd9/classCGeomCell.html#acf18e3be7dbcd423dffa226e22da81ab',1,'CGeomCell']]],
-  ['inctotaccumwaveenergy_6',['IncTotAccumWaveEnergy',['../d2/de0/classCACoastLandform.html#ac850dc100a259660040b3b29c86a5057',1,'CACoastLandform']]],
-  ['init_5fgrid_2ecpp_7',['init_grid.cpp',['../da/d3c/init__grid_8cpp.html',1,'']]],
-  ['initcell_8',['InitCell',['../d1/dd9/classCGeomCell.html#a23ee007a2e5cfae10b8c36e5008e5a0e',1,'CGeomCell']]],
-  ['initializedefaults_9',['InitializeDefaults',['../dc/d01/classCConfiguration.html#ae129eb6e6e68502bf4eed7f5c4fd733a',1,'CConfiguration']]],
+  ['increasenotchincision_6',['IncreaseNotchIncision',['../d9/d8b/classCRWCliff.html#a95508416d27dc63dd8ee6bd9d5107e90',1,'CRWCliff']]],
+  ['inctotaccumwaveenergy_7',['IncTotAccumWaveEnergy',['../d2/de0/classCACoastLandform.html#ac850dc100a259660040b3b29c86a5057',1,'CACoastLandform']]],
+  ['init_5fgrid_2ecpp_8',['init_grid.cpp',['../da/d3c/init__grid_8cpp.html',1,'']]],
+  ['initcell_9',['InitCell',['../d1/dd9/classCGeomCell.html#a23ee007a2e5cfae10b8c36e5008e5a0e',1,'CGeomCell']]],
   ['initializegdalperformance_10',['InitializeGDALPerformance',['../d1/d98/classCSimulation.html#a38b6222457659711a3c8d0d95ef8ec2b',1,'CSimulation']]],
-  ['initializing_11',['INITIALIZING',['../d6/d2a/cme_8h.html#a76950589a8cb258c21b24cab7aac4262',1,'cme.h']]],
+  ['initializing_5ffinal_11',['INITIALIZING_FINAL',['../d6/d2a/cme_8h.html#ac7846fb78f9e49975756756a04844d23',1,'cme.h']]],
   ['initializing_5fnotice_12',['INITIALIZING_NOTICE',['../d6/d2a/cme_8h.html#a478db25cd56680e23b4b8f302f06cca2',1,'cme.h']]],
   ['initthisitersedimentinputall_13',['InitThisIterSedimentInputAll',['../d5/dc6/classCRWCellSediment.html#a8768fd259ff989b8af4616420f4ef09d',1,'CRWCellSediment']]],
   ['input_20file_14',['Specifying the input file',['../index.html#run_step1',1,'']]],
@@ -34,7 +34,6 @@ var searchData=
   ['io_5fintervention_5fnone_31',['IO_INTERVENTION_NONE',['../d6/d2a/cme_8h.html#a5529d94b0b4b2b998dee5bb0088714c8',1,'cme.h']]],
   ['io_5fintervention_5fstruct_32',['IO_INTERVENTION_STRUCT',['../d6/d2a/cme_8h.html#a49957f1437c6414cdf7817d96d3f201f',1,'cme.h']]],
   ['ios_33',['ios',['../df/d02/classios.html',1,'']]],
-  ['issequence_34',['IsSequence',['../d7/dab/classCYamlNode.html#a19adc5bc8ad5b359c679e6708709b546',1,'CYamlNode']]],
-  ['istringstream_35',['istringstream',['../dc/d35/classistringstream.html',1,'']]],
-  ['iterator_36',['iterator',['../d9/dcc/classarray_1_1iterator.html',1,'array&lt; T &gt;::iterator'],['../de/d81/classdeque_1_1iterator.html',1,'deque&lt; T &gt;::iterator'],['../dd/d7b/classmap_1_1iterator.html',1,'map&lt; K, T &gt;::iterator'],['../d5/d16/classstring_1_1iterator.html',1,'string::iterator'],['../d0/d05/classvector_1_1iterator.html',1,'vector&lt; T &gt;::iterator']]]
+  ['istringstream_34',['istringstream',['../dc/d35/classistringstream.html',1,'']]],
+  ['iterator_35',['iterator',['../d9/dcc/classarray_1_1iterator.html',1,'array&lt; T &gt;::iterator'],['../de/d81/classdeque_1_1iterator.html',1,'deque&lt; T &gt;::iterator'],['../d5/d16/classstring_1_1iterator.html',1,'string::iterator'],['../d0/d05/classvector_1_1iterator.html',1,'vector&lt; T &gt;::iterator']]]
 ];
