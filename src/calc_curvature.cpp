@@ -1,5 +1,4 @@
 /*!
-
    \file calc_curvature.cpp
    \brief Calculates curvature of 2D vectors
    \details TODO 001 A more detailed description of these routines.
@@ -7,11 +6,9 @@
    \author Andres Payo
    \date 2025
    \copyright GNU General Public License
-
 */
 
 /* ==============================================================================================================================
-
    This file is part of CoastalME, the Coastal Modelling Environment.
 
    CoastalME is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
@@ -19,8 +16,10 @@
    This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
    You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-
 ==============================================================================================================================*/
+#include <iostream>
+using std::endl;
+
 #include <cfloat>
 
 #include <cmath>
@@ -40,6 +39,9 @@ using std::inner_product;
 //===============================================================================================================================
 void CSimulation::DoCoastCurvature(int const nCoast, int const nHandedness)
 {
+   if (m_nLogFileDetail >= LOG_FILE_HIGH_DETAIL)
+      LogStream << m_ulIter << ": \tcalculating curvatures for coast " << nCoast << endl;
+
    int const nCoastSize = m_VCoast[nCoast].nGetCoastlineSize();
 
    // Start with detailed curvature, do every point on the coastline, apart from the first and last points
@@ -60,7 +62,7 @@ void CSimulation::DoCoastCurvature(int const nCoast, int const nHandedness)
    m_VCoast[nCoast].SetDetailedCurvature(nCoastSize - 1, dTemp);
 
    // Now create the smoothed curvature
-   int const nHalfWindow = m_nCoastCurvatureMovingWindowSize / 2;
+   int const nHalfWindow = m_nCoastSmoothingWindowSize / 2;
 
    // Apply a running mean smoothing filter, with a variable window size at both ends of the coastline
    for (int i = 0; i < nCoastSize; i++)
@@ -68,7 +70,7 @@ void CSimulation::DoCoastCurvature(int const nCoast, int const nHandedness)
       int nTmpWindow = 0;
       double dWindowTot = 0;
 
-      for (int j = -nHalfWindow; j < m_nCoastCurvatureMovingWindowSize - nHalfWindow; j++)
+      for (int j = -nHalfWindow; j < m_nCoastSmoothingWindowSize - nHalfWindow; j++)
       {
          // For points at both ends of the coastline, use a smaller window
          int const k = i + j;
@@ -120,8 +122,6 @@ void CSimulation::DoCoastCurvature(int const nCoast, int const nHandedness)
          dMaxConvexSmoothed = m_VCoast[nCoast].dGetSmoothCurvature(mm);
          // nMaxConvexSmoothedCoastPoint = mm;
       }
-
-      // Also set the pointer to a coastline-normal profile to null
    }
 
    if (bFPIsEqual(dMaxConvexDetailed, 0.0, TOLERANCE))
@@ -135,7 +135,7 @@ void CSimulation::DoCoastCurvature(int const nCoast, int const nHandedness)
 
    // LogStream << "-----------------" << endl;
    // for (int kk = 0; kk < m_VCoast.back().nGetCoastlineSize(); kk++)
-   // LogStream << kk << " [" << m_VCoast.back().pPtiGetCellMarkedAsCoastline(kk)->nGetX() << "][" << m_VCoast.back().pPtiGetCellMarkedAsCoastline(kk)->nGetY() << "] = {" << dGridCentroidXToExtCRSX(m_VCoast.back().pPtiGetCellMarkedAsCoastline(kk)->nGetX()) << ", " << dGridCentroidYToExtCRSY(m_VCoast.back().pPtiGetCellMarkedAsCoastline(kk)->nGetY()) << "}" << endl;
+   //    LogStream << kk << " [" << m_VCoast.back().pPtiGetCellMarkedAsCoastline(kk)->nGetX() << "][" << m_VCoast.back().pPtiGetCellMarkedAsCoastline(kk)->nGetY() << "] = {" << dGridCentroidXToExtCRSX(m_VCoast.back().pPtiGetCellMarkedAsCoastline(kk)->nGetX()) << ", " << dGridCentroidYToExtCRSY(m_VCoast.back().pPtiGetCellMarkedAsCoastline(kk)->nGetY()) << "} detailed curvature = " << m_VCoast[nCoast].dGetDetailedCurvature(kk) << " smooth curvature = " << m_VCoast[nCoast].dGetSmoothCurvature(kk) << endl;
    // LogStream << "-----------------" << endl;
 
    // CGeom2DIPoint PtiMax = *m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(nMaxConvexDetailedCoastPoint);

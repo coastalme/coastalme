@@ -1,5 +1,4 @@
 /*!
-
    \file multi_line.cpp
    \brief CGeomMultiLine routines
    \details TODO 001 A more detailed description of these routines.
@@ -7,11 +6,9 @@
    \author Andres Payo
    \date 2025
    \copyright GNU General Public License
-
 */
 
 /* ===============================================================================================================================
-
    This file is part of CoastalME, the Coastal Modelling Environment.
 
    CoastalME is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
@@ -19,11 +16,12 @@
    This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
    You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-
 ===============================================================================================================================*/
 #include <assert.h>
 
 #include "multi_line.h"
+#include "2d_point.h"
+#include "line.h"
 
 //! Constructor, no parameters
 CGeomMultiLine::CGeomMultiLine(void)
@@ -41,11 +39,11 @@ vector<CGeom2DPoint>& CGeomMultiLine::pGetPoints(void)
    return CGeomLine::m_VPoints;
 }
 
-//! Replaces the points of the CGeomLine
-void CGeomMultiLine::SetPoints(vector<CGeom2DPoint>& pVPts)
-{
-   CGeomLine::m_VPoints = pVPts;
-}
+// //! Replaces the points of the CGeomLine
+// void CGeomMultiLine::SetPoints(vector<CGeom2DPoint> const& pVPts)
+// {
+//    CGeomLine::m_VPoints = pVPts;
+// }
 
 //! Appends a new empty line segment
 void CGeomMultiLine::AppendLineSegment(void)
@@ -137,11 +135,11 @@ vector<vector<pair<int, int>>> CGeomMultiLine::prVVGetAllLineSegAfter(int const 
    return prVTmp;
 }
 
-//! Removes a line segment
-void CGeomMultiLine::RemoveLineSegment(int const nSegment)
-{
-   m_prVVLineSegment.erase(m_prVVLineSegment.begin() + nSegment);
-}
+// //! Removes a line segment
+// void CGeomMultiLine::RemoveLineSegment(int const nSegment)
+// {
+//    m_prVVLineSegment.erase(m_prVVLineSegment.begin() + nSegment);
+// }
 
 //! Appends a coincident profile pair to the CGeomMultiLine object's final line segment
 void CGeomMultiLine::AppendCoincidentProfileToLineSegments(pair<int, int> const prIn)
@@ -242,7 +240,7 @@ bool CGeomMultiLine::bFindProfileInCoincidentProfiles(int const nProfile)
 //! Finds the number of the most coastward line segment for which the two profiles are coincident, or -1 if they are not coincident. If they are coincident, also finds the line segment of the other profile
 void CGeomMultiLine::GetMostCoastwardSharedLineSegment(int const nOtherProfile, int& nThisLineSegment, int& nOtherLineSegment)
 {
-   nThisLineSegment =
+   nThisLineSegment = -1;
    nOtherLineSegment = -1;
 
    long unsigned int const nSegSize = m_prVVLineSegment.size();

@@ -1,5 +1,4 @@
 /*!
-
    \class CA2DShape
    \brief Abstract class, used as a base class for 2D objects (line, area, etc.)
    \details Abstract class, used as a base class for 2D objects (line, area, etc.)
@@ -9,7 +8,6 @@
    \copyright GNU General Public License
    \file 2d_shape.h
    \brief Contains CA2DShape definitions
-
 */
 
 #ifndef C2DSHAPE_H
@@ -41,7 +39,7 @@ class CA2DShape
    CA2DShape(void);
    virtual ~CA2DShape(void);
 
-   void Clear(void);
+   // void Clear(void);
 
    // void InsertAtFront(double const, double const);
    // void SetPoints(const vector<CGeom2DPoint>*);
@@ -59,7 +57,7 @@ class CA2DShape
 
    void Append(CGeom2DPoint const*);
    void Append(double const, double const);
-   void AppendIfNotAlready(double const, double const);
+   void AppendIfNotPrevious(double const, double const);
    CGeom2DPoint* pPtBack(void);
 
    CGeom2DPoint& operator[](int const);

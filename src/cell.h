@@ -14,22 +14,13 @@
 #ifndef CELL_H
 #define CELL_H
 /* ===============================================================================================================================
-
    This file is part of CoastalME, the Coastal Modelling Environment.
 
-   CoastalME is free software; you can redistribute it and/or modify it under
-the terms of the GNU General Public License as published by the Free Software
-Foundation; either version 3 of the License, or (at your option) any later
-version.
+   CoastalME is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
 
-   This program is distributed in the hope that it will be useful, but WITHOUT
-ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+   This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-   You should have received a copy of the GNU General Public License along with
-this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave,
-Cambridge, MA 02139, USA.
-
+   You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ===============================================================================================================================*/
 #include <vector>
 using std::vector;
@@ -55,19 +46,19 @@ class CGeomCell
    //! Switch to indicate that this cell is in the active zone
    bool m_bIsInActiveZone;
 
-   //! Is this cell a cliff?
-   bool m_bCliff;
+   //! Is this cell a cliff toe?
+   bool m_bCliffToe;
 
-   //! Switch to indicate that this cell is 'under' a runup flood line
+   //! Switch to indicate that this cell is 'under' a runup flood line TODO 007 Finish surge and runup stuff
    bool m_bFloodLine;
 
-   //! Switch to indicate that this cell is 'under' a runup wave flood line
+   //! Switch to indicate that this cell is 'under' a runup wave flood line TODO 007 Finish surge and runup stuff
    bool m_bWaveFlood;
 
-   // //! TODO 007 What is this used for?
+   // //! TODO 007 Finish surge and runup stuff
    // bool m_bCheckCell;
 
-   //! TODO 007 What is this used for?
+   //! TODO 007 Finish surge and runup stuff
    bool m_bCheckFloodCell;
 
    //! Switch to show this cell is 'under' a shadow boundary
@@ -76,13 +67,13 @@ class CGeomCell
    //! Switch to show that this cell could be the start of a coastline
    bool m_bPossibleCoastStartCell;
 
-   //! TODO 007 What is this used for?
+   //! TODO 007 Finish surge and runup stuff
    bool m_bPossibleFloodStartCell;
 
-   //! TODO 007 What is this used for?
+   //! TODO 007 Finish surge and runup stuff
    bool m_bFloodBySetupSurge;
 
-   //! TODO 007 What is this used for?
+   //! TODO 007 Finish surge and runup stuff
    bool m_bFloodBySetupSurgeRunup;
 
    //! If this cell is an edge (or bounding box) cell, this specifies the edge
@@ -119,13 +110,12 @@ class CGeomCell
    double m_dBasementElevation;
 
    //! Slope at this cell (degrees or unitless)
-   double m_dSlope;
+   double m_dSlopeForCliffToe;
 
    //! Depth of still water (m), is zero if not inundated
    double m_dSeaDepth;
 
-   //! Total depth of still water (m) since beginning of simulation (used to calc
-   //! average)
+   //! Total depth of still water (m) since beginning of simulation (used to calc average)
    double m_dTotSeaDepth;
 
    //! Wave height (m)
@@ -203,6 +193,18 @@ class CGeomCell
    //! Total depth of unconsolidated coarse sediment deposited as a result of cliff collapse
    double m_dTotTalusCoarseDeposition;
 
+   //! Depth of sand-sized cliff collapse talus moved to unconsolidated sediment this timestep
+   double m_dSandTalusToUnconsThisIter;
+
+   //! Total depth of sand-sized cliff collapse talus moved to unconsolidated sediment
+   double m_dTotSandTalusToUncons;
+
+   //! Depth of coarse-sized cliff collapse talus moved to unconsolidated sediment this timestep
+   double m_dCoarseTalusToUnconsThisIter;
+
+   //! Total depth of coarse-sized cliff collapse talus moved to unconsolidated sediment
+   double m_dTotCoarseTalusToUncons;
+
    //! Depth of unconsolidated beach sediment that could be eroded this timestep, if no supply-limitation
    double m_dPotentialBeachErosionThisIter;
 
@@ -232,7 +234,7 @@ class CGeomCell
 
    // Initialize these as empty vectors
 
-   //! Number of layers NOT including the basement. Layer 0 is the lowest
+   //! Cell sediment layers NOT including the basement. Layer 0 is the lowest
    vector<CRWCellLayer> m_VLayerAboveBasement;
 
    //! Number of layer-top elevations (inc. that of the basement, which is m_VdAllHorizonTopElev[0]) size 1 greater than size of m_VLayerAboveBasement
@@ -254,25 +256,23 @@ class CGeomCell
    bool bIsFloodBySetupSurge(void) const;
    void SetFloodBySetupSurgeRunup(void);
    bool bIsFloodBySetupSurgeRunup(void) const;
-   bool bIsInContiguousSeaArea(void) const;
+   bool bIsInContiguousSeaFlood(void) const;
 
    void SetInActiveZone(bool const);
    bool bIsInActiveZone(void) const;
    bool bPotentialPlatformErosion(void) const;
-   // bool bActualPlatformErosion(void) const;
+   bool bActualPlatformErosion(void) const;
    void SetAsCoastline(int const);
    bool bIsCoastline(void) const;
    int nGetCoastline(void) const;
    void SetAsFloodline(bool const);
    bool bIsFloodline(void) const;
 
-   void SetAsCliff(bool const);
-   bool bIsCliff(void) const;
+   void SetAsCliffToe(bool const);
+   bool bIsCliffToe(void) const;
 
-   void SetProfileID(int const);
    int nGetProfileID(void) const;
    bool bIsProfile(void) const;
-   void SetProfileCoastID(int const);
    int nGetProfileCoastID(void) const;
    void SetCoastAndProfileID(int const, int const);
 
@@ -289,16 +289,14 @@ class CGeomCell
    void SetPossibleFloodStartCell(void);
    bool bIsPossibleFloodStartCell(void) const;
 
-   void SetPolygonID(int const);
    int nGetPolygonID(void) const;
-   void SetPolygonCoastID(int const);
    int nGetPolygonCoastID(void) const;
    void SetCoastAndPolygonID(int const, int const);
 
    CRWCellLandform* pGetLandform(void);
 
    void SetWaveFlood(void);
-   bool bIsElevLessThanWaterLevel(void) const;
+   bool bElevLessThanSWL(void) const;
 
    void SetCheckCell(void);
    bool bIsCellCheck(void) const;
@@ -308,24 +306,14 @@ class CGeomCell
    bool bIsCellFloodCheck(void) const;
 
    void SetLocalConsSlope(double const);
-   double dGetLocalConsSlope(void) const;
+   double dGetConsSedSlope(void) const;
 
-   void SetBasementElev(double const);
-   double dGetBasementElev(void) const;
-   bool bBasementElevIsMissingValue(void) const;
+   void SetSlopeForCliffToe(double const);
+   double dGetSlopeForCliffToe(void) const;
 
-   void SetSlope(double const);
-   double dGetSlope(void) const;
-
-   // double dGetVolEquivSedTopElev(void) const;
-   double dGetSedimentTopElev(void) const;
-   double dGetSedimentPlusInterventionTopElev(void) const;
-   double dGetOverallTopElev(void) const;
-
-   bool bIsInundated(void) const;
+   bool bIsInundated(void);
    double dGetThisIterSWL(void) const;
-   double dGetThisIterTotWaterLevel(void) const;
-   // bool bIsSeaIncBeach(void) const;
+   double dGetThisIterTotWaterLevel(void) const;      // Not used TODO 007 Finish surge and runup stuff
    void SetSeaDepth(void);
    double dGetSeaDepth(void) const;
    void InitCell(void);
@@ -356,25 +344,37 @@ class CGeomCell
    double dGetTotSuspendedSediment(void) const;
 
    int nGetTopNonZeroLayerAboveBasement(void) const;
-   int nGetTopLayerAboveBasement(void) const;
+   int nGetNumOfTopLayerAboveBasement(void) const;
 
-   double dGetConsSedTopForLayerAboveBasement(int const) const;
-   CRWCellLayer *pGetLayerAboveBasement(int const);
+   int nGetNumLayers(void) const;
+   double dGetConsSedTopElevForLayerAboveBasement(int const) const;
+   CRWCellLayer* pGetLayerAboveBasement(int const);
    void AppendLayers(int const);
    void CalcAllLayerElevsAndD50(void);
    int nGetLayerAtElev(double const) const;
    double dCalcLayerElev(const int);
 
-   double dGetTotConsFineThickConsiderNotch(void) const;
-   double dGetTotUnconsFine(void) const;
-   double dGetTotConsSandThickConsiderNotch(void) const;
-   double dGetTotUnconsSand(void) const;
-   double dGetTotConsCoarseThickConsiderNotch(void) const;
-   double dGetTotUnconsCoarse(void) const;
+   double dGetConsFineDepthAllLayers(void) const;
+   double dGetUnconsFineDepthAllLayers(void) const;
+   double dGetConsSandDepthAllLayers(void) const;
+   double dGetUnconsSandDepthAllLayers(void) const;
+   double dGetConsCoarseDepthAllLayers(void) const;
+   double dGetUnconsCoarseDepthAllLayers(void) const;
 
-   double dGetTotConsThickness(void) const;
-   double dGetTotUnconsThickness(void) const;
-   double dGetTotAllSedThickness(void) const;
+   double dGetAllConsDepthAllLayers(void) const;
+   double dGetAllUnconsDepthAllLayers(void) const;
+   double dGetAllSedDepthAllLayers(void) const;
+
+   double dGetTalusDepth(void) const;
+
+   void SetBasementElev(double const);
+   double dGetBasementElev(void) const;
+   bool bBasementElevIsMissingValue(void) const;
+   double dGetAllSedTopElevOmitTalus(void) const;
+   double dGetAllSedTopElevIncTalus(void);
+   double dGetTopElevIncSea(void);
+   double dGetConsSedTopElevOmitTalus(void) const;
+   double dGetConsSedTopElevIncTalus(void);
 
    void SetPotentialPlatformErosion(double const);
    double dGetPotentialPlatformErosion(void) const;
@@ -399,6 +399,13 @@ class CGeomCell
    double dGetThisIterCliffCollapseCoarseTalusDeposition(void) const;
    double dGetTotCoarseTalusDeposition(void) const;
 
+   void AddSandTalusToUncons(double const);
+   double dGetThisIterSandTalusToUncons(void);
+   double dGetTotSandTalusToUncons(void);
+   void AddCoarseTalusToUncons(double const);
+   double dGetThisIterCoarseTalusToUncons(void);
+   double dGetTotCoarseTalusToUncons(void);
+
    void SetPotentialBeachErosion(double const);
    double dGetPotentialBeachErosion(void) const;
    double dGetTotPotentialBeachErosion(void) const;
@@ -416,7 +423,6 @@ class CGeomCell
 
    double dGetUnconsD50(void) const;
 
-   void SetInterventionClass(int const);
    int nGetInterventionClass(void) const;
    void SetInterventionHeight(double const);
    double dGetInterventionHeight(void) const;

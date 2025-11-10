@@ -1,96 +1,69 @@
-2d_shape.cpp:44:0: style: The function 'Clear' is never used. [unusedFunction]
-void CA2DShape::Clear(void)
+gis_raster.cpp:136:11: style: Condition '!m_strGDALBasementDEMProjection.empty()' is always true [knownConditionTrueFalse]
+      if (! m_strGDALBasementDEMProjection.empty())
+          ^
+gis_raster.cpp:117:44: note: Assuming that condition 'm_strGDALBasementDEMProjection.empty()' is not redundant
+   if (m_strGDALBasementDEMProjection.empty())
+                                           ^
+gis_raster.cpp:136:11: note: Condition '!m_strGDALBasementDEMProjection.empty()' is always true
+      if (! m_strGDALBasementDEMProjection.empty())
+          ^
+2di_shape.cpp:53:0: style: The function 'Clear' is never used. [unusedFunction]
+void CA2DIShape::Clear(void)
 ^
-cell.cpp:221:0: style: The function 'bIsPossibleFloodStartCell' is never used. [unusedFunction]
+cell.cpp:215:0: style: The function 'bIsPossibleFloodStartCell' is never used. [unusedFunction]
 bool CGeomCell::bIsPossibleFloodStartCell(void) const
 ^
-cell.cpp:283:0: style: The function 'SetProfileID' is never used. [unusedFunction]
-void CGeomCell::SetProfileID(int const nProfile)
+cell.cpp:227:0: style: The function 'bActualPlatformErosion' is never used. [unusedFunction]
+bool CGeomCell::bActualPlatformErosion(void) const
 ^
-cell.cpp:304:0: style: The function 'SetProfileCoastID' is never used. [unusedFunction]
-void CGeomCell::SetProfileCoastID(int const nCoast)
+cell.cpp:374:0: style: The function 'SetWaveFlood' is never used. [unusedFunction]
+void CGeomCell::SetWaveFlood(void)
 ^
-cell.cpp:323:0: style: The function 'SetPolygonID' is never used. [unusedFunction]
-void CGeomCell::SetPolygonID(int const nPolyID) { m_nPolygonID = nPolyID; }
+cell_talus.cpp:76:0: style: The function 'dGetSandAddedThisIter' is never used. [unusedFunction]
+double CRWCellTalus::dGetSandAddedThisIter(void) const
 ^
-cell.cpp:329:0: style: The function 'SetPolygonCoastID' is never used. [unusedFunction]
-void CGeomCell::SetPolygonCoastID(int const nPolyCoastID)
+cell_talus.cpp:82:0: style: The function 'dGetSandLostThisIter' is never used. [unusedFunction]
+double CRWCellTalus::dGetSandLostThisIter(void) const
 ^
-cell.cpp:375:0: style: The function 'SetWaveFlood' is never used. [unusedFunction]
-void CGeomCell::SetWaveFlood(void) { m_bWaveFlood = true; }
+cell_talus.cpp:88:0: style: The function 'dGetTotSandAdded' is never used. [unusedFunction]
+double CRWCellTalus::dGetTotSandAdded(void) const
 ^
-cell_sediment.cpp:95:0: style: The function 'AddFineDepth' is never used. [unusedFunction]
-void CRWCellSediment::AddFineDepth(double const dSedDepthToAdd)
+cell_talus.cpp:94:0: style: The function 'dGetTotSandLost' is never used. [unusedFunction]
+double CRWCellTalus::dGetTotSandLost(void) const
 ^
-cme.h:1273:0: style: The function 'bIsBetween' is never used. [unusedFunction]
-bool bIsBetween(T a, T b, T c)
+cell_talus.cpp:100:0: style: The function 'dGetCoarseAddedThisIter' is never used. [unusedFunction]
+double CRWCellTalus::dGetCoarseAddedThisIter(void) const
 ^
-coast.cpp:397:0: style: The function 'dGetSmoothCurvatureMean' is never used. [unusedFunction]
-double CRWCoast::dGetSmoothCurvatureMean(void) const
+cell_talus.cpp:106:0: style: The function 'dGetCoarseLostThisIter' is never used. [unusedFunction]
+double CRWCellTalus::dGetCoarseLostThisIter(void) const
 ^
-coast.cpp:409:0: style: The function 'dGetSmoothCurvatureSTD' is never used. [unusedFunction]
-double CRWCoast::dGetSmoothCurvatureSTD(void) const
+cell_talus.cpp:112:0: style: The function 'dGetTotCoarseAdded' is never used. [unusedFunction]
+double CRWCellTalus::dGetTotCoarseAdded(void) const
 ^
-coast.cpp:422:0: style: The function 'pGetLastProfile' is never used. [unusedFunction]
-CGeomProfile* CRWCoast::pGetLastProfile(void)
+cell_talus.cpp:118:0: style: The function 'dGetTotCoarseLost' is never used. [unusedFunction]
+double CRWCellTalus::dGetTotCoarseLost(void) const
 ^
-coast.cpp:472:0: style: The function 'pGetDownCoastProfile' is never used. [unusedFunction]
-CGeomProfile* CRWCoast::pGetDownCoastProfile(CGeomProfile const* pProfile)
+coast.cpp:205:0: style: The function 'pILGetCoastlineGridCRS' is never used. [unusedFunction]
+CGeomILine* CRWCoast::pILGetCoastlineGridCRS(void)
 ^
-coast.cpp:478:0: style: The function 'pGetDownCoastProfileNotIncLastProfile' is never used. [unusedFunction]
-CGeomProfile* CRWCoast::pGetDownCoastProfileNotIncLastProfile(CGeomProfile const* pProfile)
+coast_polygon.cpp:581:0: style: The function 'AddCliffCollapseUnconsSandDeposition' is never used. [unusedFunction]
+void CGeomCoastPolygon::AddCliffCollapseUnconsSandDeposition(double const dDepth)
 ^
-coast.cpp:489:0: style: The function 'pGetUpCoastProfile' is never used. [unusedFunction]
-CGeomProfile* CRWCoast::pGetUpCoastProfile(CGeomProfile const* pProfile)
+coast_polygon.cpp:593:0: style: The function 'AddCliffCollapseUnconsCoarseDeposition' is never used. [unusedFunction]
+void CGeomCoastPolygon::AddCliffCollapseUnconsCoarseDeposition(double const dDepth)
 ^
-coast_polygon.cpp:121:0: style: The function 'SetCoastEndPolygon' is never used. [unusedFunction]
-void CGeomCoastPolygon::SetCoastEndPolygon(void)
+coast_polygon.cpp:605:0: style: The function 'AddCliffCollapseSandErodedDeanProfile' is never used. [unusedFunction]
+void CGeomCoastPolygon::AddCliffCollapseSandErodedDeanProfile(double const dDepth)
 ^
-coast_polygon.cpp:133:0: style: The function 'SetCoastStartPolygon' is never used. [unusedFunction]
-void CGeomCoastPolygon::SetCoastStartPolygon(void)
+coast_polygon.cpp:617:0: style: The function 'AddCliffCollapseCoarseErodedDeanProfile' is never used. [unusedFunction]
+void CGeomCoastPolygon::AddCliffCollapseCoarseErodedDeanProfile(double const dDepth)
 ^
-coast_polygon.cpp:311:0: style: The function 'AddToSuspensionUnconsFine' is never used. [unusedFunction]
-void CGeomCoastPolygon::AddToSuspensionUnconsFine(double const dDepth)
+gis_utils.cpp:1965:0: style: The function 'bIsAdjacentEdgeCell' is never used. [unusedFunction]
+bool CSimulation::bIsAdjacentEdgeCell(CGeom2DIPoint const* pPt1, CGeom2DIPoint const* pPt2)
 ^
-coast_polygon.cpp:636:0: style: The function 'AddPlatformErosionToSuspensionUnconsFine' is never used. [unusedFunction]
-void CGeomCoastPolygon::AddPlatformErosionToSuspensionUnconsFine(double const dDepth)
-^
-coast_polygon.cpp:642:0: style: The function 'dGetPlatformErosionToSuspensionUnconsFine' is never used. [unusedFunction]
-double CGeomCoastPolygon::dGetPlatformErosionToSuspensionUnconsFine(void) const
-^
-coast_polygon.cpp:786:0: style: The function 'nGetNumVertices' is never used. [unusedFunction]
-int CGeomCoastPolygon::nGetNumVertices(void) const
-^
-coast_polygon.cpp:792:0: style: The function 'PtiGetVertex' is never used. [unusedFunction]
-CGeom2DIPoint CGeomCoastPolygon::PtiGetVertex(int const nIndex) const
-^
-create_polygons.cpp:1022:0: style: The function 'PtFindPointInPolygon' is never used. [unusedFunction]
-CGeom2DPoint CSimulation::PtFindPointInPolygon(vector<CGeom2DPoint> const* pPtPoints, int const nStartPoint)
-^
-gis_utils.cpp:677:0: style: The function 'PtGetPerpendicular' is never used. [unusedFunction]
-CGeom2DPoint CSimulation::PtGetPerpendicular(CGeom2DPoint const *PtStart,
-^
-multi_line.cpp:131:0: style: The function 'RemoveLineSegment' is never used. [unusedFunction]
-void CGeomMultiLine::RemoveLineSegment(int const nSegment)
-^
-profile.cpp:182:0: style: The function 'bTooShort' is never used. [unusedFunction]
-bool CGeomProfile::bTooShort(void) const
-^
-profile.cpp:194:0: style: The function 'bTruncated' is never used. [unusedFunction]
-bool CGeomProfile::bTruncated(void) const
-^
-utils.cpp:1456:0: style: The function 'CalcTime' is never used. [unusedFunction]
-void CSimulation::CalcTime(double const dRunLength)
-^
-utils.cpp:2318:0: style: The function 'pstrChangeToBackslash' is never used. [unusedFunction]
+utils.cpp:2441:0: style: The function 'pstrChangeToBackslash' is never used. [unusedFunction]
 string CSimulation::pstrChangeToBackslash(string const* strIn)
 ^
-utils.cpp:2328:0: style: The function 'pstrChangeToForwardSlash' is never used. [unusedFunction]
+utils.cpp:2451:0: style: The function 'pstrChangeToForwardSlash' is never used. [unusedFunction]
 string CSimulation::pstrChangeToForwardSlash(string const* strIn)
-^
-utils.cpp:2955:0: style: The function 'AppendPolygon' is never used. [unusedFunction]
-void CSimulation::AppendPolygon(CGeomCoastPolygon* pPolygon)
-^
-utils_global.cpp:116:0: style: The function 'strDbl' is never used. [unusedFunction]
-string strDbl(double const dX, int const nDigits)
 ^

@@ -1,5 +1,4 @@
 /*!
-
    \file init_grid.cpp
    \brief Initialises the raster grid and calculates sea depth on each cell
    \details TODO 001 A more detailed description of this routine.
@@ -7,11 +6,9 @@
    \author Andres Payo
    \date 2025
    \copyright GNU General Public License
-
 */
 
 /* ==============================================================================================================================
-
    This file is part of CoastalME, the Coastal Modelling Environment.
 
    CoastalME is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
@@ -19,11 +16,9 @@
    This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
    You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-
 ==============================================================================================================================*/
 #include <assert.h>
 
-#include <cstdio>
 #include <climits>
 
 #include <iostream>
@@ -41,63 +36,59 @@ using std::endl;
 #include "raster_grid.h"
 
 //===============================================================================================================================
-//! At the beginning of each timestep: clear vector coasts, profiles, and polygons, initialize the raster grid, and initialize some per-timestep accounting variables
+//! At the beginning of each timestep: clear vector coasts, profiles, and polygons, initialise the raster grid, and initialise some per-timestep accounting variables
 //===============================================================================================================================
 int CSimulation::nInitGridAndCalcStillWaterLevel(void)
 {
    // Clear all vector coastlines, profiles, and polygons
-   for (int i = 0; i < static_cast<int>(m_pVCoastPolygon.size()); i++)
-      delete m_pVCoastPolygon[i];
-
-   m_pVCoastPolygon.clear();
    m_VCoast.clear();
 
    // m_VFloodWaveSetup.clear();
    m_VFloodWaveSetupSurge.clear();
    m_VFloodWaveSetupSurgeRunup.clear();
 
-   // Do some every-timestep initialization
+   // Do some every-timestep initialisation
    m_nXMinBoundingBox = INT_MAX;
    m_nXMaxBoundingBox = INT_MIN;
    m_nYMinBoundingBox = INT_MAX;
    m_nYMaxBoundingBox = INT_MIN;
 
-   m_ulThisIterNumSeaCells =
-       m_ulThisIterNumCoastCells =
-           m_ulThisIterNumPotentialPlatformErosionCells =
-               m_ulThisIterNumActualPlatformErosionCells = 0;
+   m_ulThisIterNumSeaCells = 0;
+   m_ulThisIterNumCoastCells = 0;
+   m_ulThisIterNumPotentialPlatformErosionCells = 0;
+   m_ulThisIterNumActualPlatformErosionCells = 0;
 
-   m_ulThisIterNumPotentialBeachErosionCells =
-       m_ulThisIterNumActualBeachErosionCells =
-           m_ulThisIterNumBeachDepositionCells = 0;
+   m_ulThisIterNumPotentialBeachErosionCells = 0;
+   m_ulThisIterNumActualBeachErosionCells = 0;
+   m_ulThisIterNumBeachDepositionCells = 0;
 
-   m_dThisIterTotSeaDepth =
-       m_dThisIterPotentialPlatformErosion =
-           m_dThisIterPotentialBeachErosion =
-               m_dThisIterBeachErosionFine =
-                   m_dThisIterBeachErosionSand =
-                       m_dThisIterBeachErosionCoarse =
-                           m_dThisIterBeachDepositionSand =
-                               m_dThisIterBeachDepositionCoarse =
-                                   m_dThisIterPotentialSedLostBeachErosion =
-                                       m_dThisIterFineSedimentToSuspension =
-                                           m_dThisIterCliffCollapseErosionFineUncons =
-                                               m_dThisIterCliffCollapseErosionSandUncons =
-                                                   m_dThisIterCliffCollapseErosionCoarseUncons =
-                                                       m_dThisIterUnconsSandCliffDeposition =
-                                                           m_dThisIterUnconsCoarseCliffDeposition =
-                                                               m_dThisIterCliffCollapseErosionFineCons =
-                                                                   m_dThisIterCliffCollapseErosionSandCons =
-                                                                       m_dThisIterCliffCollapseErosionCoarseCons =
-                                                                           m_dThisIterActualPlatformErosionFineCons =
-                                                                               m_dThisIterActualPlatformErosionSandCons =
-                                                                                   m_dThisIterActualPlatformErosionCoarseCons =
-                                                                                       m_dThisIterLeftGridUnconsFine = // TODO 067 Suspended fine sediment never decreases i.e. no suspended fine sediment ever leaves the grid. Is this OK?
-       m_dThisIterLeftGridUnconsSand =
-           m_dThisIterLeftGridUnconsCoarse =
-               m_dThisiterUnconsFineInput =
-                   m_dThisiterUnconsSandInput =
-                       m_dThisiterUnconsCoarseInput = 0;
+   m_dThisIterTotSeaDepth = 0;
+   m_dThisIterPotentialPlatformErosion = 0;
+   m_dThisIterPotentialBeachErosion = 0;
+   m_dThisIterBeachErosionFine = 0;
+   m_dThisIterBeachErosionSand = 0;
+   m_dThisIterBeachErosionCoarse = 0;
+   m_dThisIterBeachDepositionSand = 0;
+   m_dThisIterBeachDepositionCoarse = 0;
+   m_dThisIterPotentialSedLostBeachErosion = 0;
+   m_dThisIterFineSedimentToSuspension = 0;
+   m_dThisIterCliffCollapseErosionFineUncons = 0;
+   m_dThisIterCliffCollapseErosionSandUncons = 0;
+   m_dThisIterCliffCollapseErosionCoarseUncons = 0;
+   m_dThisIterUnconsSandCliffDeposition = 0;
+   m_dThisIterUnconsCoarseCliffDeposition = 0;
+   m_dThisIterCliffCollapseErosionFineCons = 0;
+   m_dThisIterCliffCollapseErosionSandCons = 0;
+   m_dThisIterCliffCollapseErosionCoarseCons = 0;
+   m_dThisIterActualPlatformErosionFineCons = 0;
+   m_dThisIterActualPlatformErosionSandCons = 0;
+   m_dThisIterActualPlatformErosionCoarseCons = 0;
+   m_dThisIterLeftGridUnconsFine = 0; // TODO 067 Suspended fine sediment never decreases i.e. no suspended fine sediment ever leaves the grid. Is this OK?
+   m_dThisIterLeftGridUnconsSand = 0;
+   m_dThisIterLeftGridUnconsCoarse = 0;
+   m_dThisiterUnconsFineInput = 0;
+   m_dThisiterUnconsSandInput = 0;
+   m_dThisiterUnconsCoarseInput = 0;
 
    for (int n = 0; n < m_nLayers; n++)
    {
@@ -110,14 +101,14 @@ int CSimulation::nInitGridAndCalcStillWaterLevel(void)
 
    int nZeroThickness = 0;
 
-   m_dStartIterSuspFineAllCells =
-       m_dStartIterSuspFineInPolygons =
-           m_dStartIterUnconsFineAllCells =
-               m_dStartIterUnconsSandAllCells =
-                   m_dStartIterUnconsCoarseAllCells =
-                       m_dStartIterConsFineAllCells =
-                           m_dStartIterConsSandAllCells =
-                               m_dStartIterConsCoarseAllCells = 0;
+   m_dStartIterSuspFineAllCells = 0;
+   m_dStartIterSuspFineInPolygons = 0;
+   m_dStartIterUnconsFineAllCells = 0;
+   m_dStartIterUnconsSandAllCells = 0;
+   m_dStartIterUnconsCoarseAllCells = 0;
+   m_dStartIterConsFineAllCells = 0;
+   m_dStartIterConsSandAllCells = 0;
+   m_dStartIterConsCoarseAllCells = 0;
 
    // And go through all cells in the RasterGrid array
    // Use OpenMP parallel loop with reduction clauses for thread-safe accumulation
@@ -131,13 +122,13 @@ int CSimulation::nInitGridAndCalcStillWaterLevel(void)
    {
       for (int nY = 0; nY < m_nYGridSize; nY++)
       {
-         // Re-initialize values for this cell
+         // Re-initialise values for this cell
          m_pRasterGrid->m_Cell[nX][nY].InitCell();
 
          if (m_ulIter == 1)
          {
             // For the first timestep only, check to see that all cells have some sediment on them
-            double const dSedThickness = m_pRasterGrid->m_Cell[nX][nY].dGetTotAllSedThickness();
+            double const dSedThickness = m_pRasterGrid->m_Cell[nX][nY].dGetAllSedDepthAllLayers();
 
             if (dSedThickness <= 0)
             {
@@ -159,14 +150,14 @@ int CSimulation::nInitGridAndCalcStillWaterLevel(void)
          }
 
          // Note that these totals include sediment which is both within and outside the polygons (because we have not yet defined polygons for this iteration, duh!)
-         m_dStartIterConsFineAllCells += m_pRasterGrid->m_Cell[nX][nY].dGetTotConsFineThickConsiderNotch();
-         m_dStartIterConsSandAllCells += m_pRasterGrid->m_Cell[nX][nY].dGetTotConsSandThickConsiderNotch();
-         m_dStartIterConsCoarseAllCells += m_pRasterGrid->m_Cell[nX][nY].dGetTotConsCoarseThickConsiderNotch();
+         m_dStartIterConsFineAllCells += m_pRasterGrid->m_Cell[nX][nY].dGetConsFineDepthAllLayers();
+         m_dStartIterConsSandAllCells += m_pRasterGrid->m_Cell[nX][nY].dGetConsSandDepthAllLayers();
+         m_dStartIterConsCoarseAllCells += m_pRasterGrid->m_Cell[nX][nY].dGetConsCoarseDepthAllLayers();
 
          m_dStartIterSuspFineAllCells += m_pRasterGrid->m_Cell[nX][nY].dGetSuspendedSediment();
-         m_dStartIterUnconsFineAllCells += m_pRasterGrid->m_Cell[nX][nY].dGetTotUnconsFine();
-         m_dStartIterUnconsSandAllCells += m_pRasterGrid->m_Cell[nX][nY].dGetTotUnconsSand();
-         m_dStartIterUnconsCoarseAllCells += m_pRasterGrid->m_Cell[nX][nY].dGetTotUnconsCoarse();
+         m_dStartIterUnconsFineAllCells += m_pRasterGrid->m_Cell[nX][nY].dGetUnconsFineDepthAllLayers();
+         m_dStartIterUnconsSandAllCells += m_pRasterGrid->m_Cell[nX][nY].dGetUnconsSandDepthAllLayers();
+         m_dStartIterUnconsCoarseAllCells += m_pRasterGrid->m_Cell[nX][nY].dGetUnconsCoarseDepthAllLayers();
 
          if (m_bSingleDeepWaterWaveValues)
          {

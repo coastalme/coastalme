@@ -1,5 +1,4 @@
 /*!
-
    \file cliff.cpp
    \brief CRWCliff routines
    \details TODO 001 A more detailed description of these routines.
@@ -7,11 +6,9 @@
    \author Andres Payo
    \date 2025
    \copyright GNU General Public License
-
 */
 
 /* ===============================================================================================================================
-
    This file is part of CoastalME, the Coastal Modelling Environment.
 
    CoastalME is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
@@ -19,36 +16,31 @@
    This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
    You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-
 ===============================================================================================================================*/
 #include <assert.h>
 
 #include <iostream>
-// using std::cout;
-// using std::cerr;
-// using std::endl;
 using std::ios;
 
 #include "cme.h"
 #include "cliff.h"
 #include "coast.h"
 
-//! Constructor with seven parameters and an intialization list
-CRWCliff::CRWCliff(CRWCoast* pCoastIn, int const nCoast, int const nPointOnCoast, double const dCellSide, double const dNotchDepthIn, double const dNotchElevIn, double const dAccumWaveEnergyIn)
+//! Constructor with seven parameters and an initialization list
+CRWCliff::CRWCliff(CRWCoast* pCoastIn, int const nCoast, int const nPointOnCoast, double const dCellSide, double const dNotchIncisionIn, double const dNotchApexElevIn, double const dAccumWaveEnergyIn)
 {
    m_bCliffHasCollapsed = false;
 
    pCoast = pCoastIn;
 
    m_nCoast = nCoast;
-   m_nPointOnCoast = nPointOnCoast;
-   m_nCategory = LF_CAT_CLIFF;
+   m_nPointOnCoastline = nPointOnCoast;
+   m_nCategory = LF_CLIFF_ON_COASTLINE;
 
-   m_dMaxDepth = dCellSide;
-   m_dNotchDepth = dNotchDepthIn;
-   m_dNotchBaseElev = dNotchElevIn;
+   m_dMaxNotchIncision = dCellSide;
+   m_dNotchIncision = dNotchIncisionIn;
+   m_dNotchApexElev = dNotchApexElevIn;
    m_dTotAccumWaveEnergy = dAccumWaveEnergyIn;
-   // assert(m_dRemaining >=0);
 }
 
 //! Destructor
@@ -68,55 +60,48 @@ void CRWCliff::SetCliffCollapsed(void)
    m_bCliffHasCollapsed = true;
 }
 
-//! Returns the elevation of the base of the erosional notch
-double CRWCliff::dGetNotchBaseElev(void) const
+//! Returns the elevation of the apex of the erosional notch (in external CRS units)
+double CRWCliff::dGetNotchApexElev(void) const
 {
-   return m_dNotchBaseElev;
+   return m_dNotchApexElev;
 }
 
-//! Sets the elevation of the base of the erosional notch
-void CRWCliff::SetNotchBaseElev(double const dNewElev)
+//! Sets the elevation of the apex of the erosional notch (in external CRS units)
+void CRWCliff::SetNotchApexElev(double const dNewElev)
 {
-   m_dNotchBaseElev = dNewElev;
+   m_dNotchApexElev = dNewElev;
 }
 
-//! Returns the length (in external CRS units) of the cliff's remaining sediment 'behind' the erosional notch
-double CRWCliff::dGetRemaining(void) const
+//! Sets the horizontal incision (in external CRS units) of the erosional notch, measured inland from the side of the cell that touches the sea
+void CRWCliff::SetNotchIncision(double const dNewIncision)
 {
-   return (m_dMaxDepth - m_dNotchDepth);
+   m_dNotchIncision = dNewIncision;
 }
 
-// //! Sets the horizontal depth of the cliff's erosional notch
-// void CRWCliff::SetNotchDepth(double const dLenIn)
-// {
-// m_dNotchDepth = dLenIn;
-// }
-
-//! Returns the horizontal depth of the cliff's erosional notch (the 'overhang')
-double CRWCliff::dGetNotchDepth(void) const
+//! Returns the horizontal incision (in external CRS units) of the cliff's erosional notch (the 'overhang')
+double CRWCliff::dGetNotchIncision(void) const
 {
-   return m_dNotchDepth;
+   return m_dNotchIncision;
 }
 
-//! Returns true if the horizontal depth of the erosional notch exceeds the critical notch overhang
-bool CRWCliff::bReadyToCollapse(double const dThresholdNotchDepth) const
+//! Increases the horizontal incision (in external CRS units) of the erosional notch, measured inland from the side of the cell that touches the sea
+void CRWCliff::IncreaseNotchIncision(double const dLenIn)
 {
-   if (m_dNotchDepth >= dThresholdNotchDepth)
+   m_dNotchIncision += dLenIn;
+
+   // Constrain the notch incision, it cannot be greater than the max notch incision
+   m_dNotchIncision = tMin(m_dNotchIncision, m_dMaxNotchIncision);
+
+   // assert((m_dMaxNotchIncision - m_dNotchIncision) >=0);
+}
+
+//! Returns true if the horizontal incision of the erosional notch exceeds the critical notch incision
+bool CRWCliff::bReadyToCollapse(double const dThresholdNotchIncision) const
+{
+   if (m_dNotchIncision > dThresholdNotchIncision)
       return true;
-
    else
       return false;
-}
-
-//! Increases the XY-plane length (in external CRS units) of the erosional notch, measured inland from the side of the cell that touches the sea
-void CRWCliff::DeepenErosionalNotch(double const dLenIn)
-{
-   m_dNotchDepth += dLenIn;
-
-   // Constrain the notch depth, it cannot be greater than the max notch depth
-   m_dNotchDepth = tMin(m_dNotchDepth, m_dMaxDepth);
-
-   // assert((m_dMaxDepth - m_dNotchDepth) >=0);
 }
 
 //! Instantiates the pure virtual function in the abstract parent class, so that CRWCliff is not an abstract class

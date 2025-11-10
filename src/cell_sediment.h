@@ -1,5 +1,4 @@
 /*!
-
    \class CRWCellSediment
    \brief Real-world class used to represent the sediment (either consolidated or unconsolidated) associated with a cell layer object
    \details TODO 001 This is a more detailed description of the CRWCellSediment class.
@@ -9,13 +8,11 @@
    \copyright GNU General Public License
    \file cell_sediment.h
    \brief Contains CRWCellSediment definitions
-
 */
 
 #ifndef SEDIMENT_H
 #define SEDIMENT_H
 /* ===============================================================================================================================
-
    This file is part of CoastalME, the Coastal Modelling Environment.
 
    CoastalME is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
@@ -23,7 +20,6 @@
    This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
    You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-
 ===============================================================================================================================*/
 class CRWCellSediment
 {
@@ -73,7 +69,7 @@ class CRWCellSediment
 
    void SetFineDepth(double const);
    double dGetFineDepth(void) const;
-   void AddFineDepth(double const);
+   // void AddFineDepth(double const);
 
    void SetSandDepth(double const);
    double dGetSandDepth(void) const;

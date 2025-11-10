@@ -1,5 +1,4 @@
 /*!
-
    \class CGeomProfile
    \brief Geometry class used to represent coast profile objects
    \details TODO 001 This is a more detailed description of the CGeomProfile class.
@@ -9,13 +8,11 @@
    \copyright GNU General Public License
    \file profile.h
    \brief Contains CGeomProfile definitions
-
 */
 
 #ifndef PROFILE_H
 #define PROFILE_H
 /* ===============================================================================================================================
-
    This file is part of CoastalME, the Coastal Modelling Environment.
 
    CoastalME is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
@@ -23,7 +20,6 @@
    This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
    You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-
 ===============================================================================================================================*/
 #include <vector>
 using std::vector;
@@ -87,12 +83,6 @@ class CGeomProfile : public CGeomMultiLine
    //! The wave period at the end of the profile
    double m_dDeepWaterWavePeriod;
 
-   //! The on-coast start point of the profile in grid CRS
-   CGeom2DIPoint PtiStart;
-
-   //! The seaward end point of the profile in grid CRS
-   CGeom2DIPoint PtiEnd;
-
    //! Pointer to the adjacent up-coast profile (may be an invalid profile)
    CGeomProfile* m_pUpCoastAdjacentProfile;
 
@@ -110,23 +100,21 @@ class CGeomProfile : public CGeomMultiLine
 
  protected:
  public:
-   explicit CGeomProfile(int const, int const, int const, CGeom2DIPoint const*, CGeom2DIPoint const*, bool const);
+   explicit CGeomProfile(int const, int const, int const, bool const);
    ~CGeomProfile(void) override;
 
-   int nGetCoast(void) const;
-
+   int nGetCoastID(void) const;
    int nGetProfileID(void) const;
-   int nGetProfileCoastID(void) const;
    int nGetCoastPoint(void) const;
 
    CGeom2DIPoint* pPtiGetStartPoint(void);
-   void SetEndPoint(CGeom2DIPoint const*);
    CGeom2DIPoint* pPtiGetEndPoint(void);
 
    void SetStartOfCoast(bool const);
    bool bStartOfCoast(void) const;
    void SetEndOfCoast(bool const);
    bool bEndOfCoast(void) const;
+   bool bIsGridEdge(void) const;
 
    void SetCShoreProblem(bool const);
    bool bCShoreProblem(void) const;
@@ -161,7 +149,6 @@ class CGeomProfile : public CGeomMultiLine
    // void ShowProfile(void) const;
    int nGetProfileSize(void) const;
    CGeom2DPoint* pPtGetPointInProfile(int const);
-   CGeom2DIPoint* pPtiGetLastCellInProfile(void);
    vector<CGeom2DPoint> PtVGetThisPointAndAllAfter(int const);
    // void RemoveLineSegment(int const);
    bool bIsPointInProfile(double const, double const);
@@ -172,17 +159,19 @@ class CGeomProfile : public CGeomMultiLine
    // bool bPointShared(int const) const;
 
    void SetUpCoastAdjacentProfile(CGeomProfile*);
-   CGeomProfile* pGetUpCoastAdjacentProfile(void) const;
+   // CGeomProfile* pGetUpCoastAdjacentProfile(void) const;
    void SetDownCoastAdjacentProfile(CGeomProfile*);
    CGeomProfile* pGetDownCoastAdjacentProfile(void) const;
 
    void AppendCellInProfile(CGeom2DIPoint const*);
    void AppendCellInProfile(int const, int const);
-   void SetCellsInProfile(vector<CGeom2DIPoint>*);
+   void SetCellsInProfile(vector<CGeom2DIPoint> const*);
    vector<CGeom2DIPoint>* pPtiVGetCellsInProfile(void);
    CGeom2DIPoint* pPtiGetCellInProfile(int const);
    int nGetNumCellsInProfile(void) const;
-   int nGetIndexOfCellInProfile(int const, int const);
+   // int nGetIndexOfCellInProfile(int const, int const);
+   CGeom2DIPoint* pPtiGetLastCellInProfile(void);
+   CGeom2DIPoint* pPtiGetFirstCellInProfile(void);
 
    int nGetCellGivenDepth(CGeomRasterGrid const*, double const);
 

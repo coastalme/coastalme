@@ -1,5 +1,4 @@
 /*!
-
    \class CACoastLandform
    \brief Abstract class, used as a base class for landform objects on the coastline
    \details TODO 001 This is a more detailed description of the CACoastLandform class.
@@ -9,13 +8,11 @@
    \copyright GNU General Public License
    \file coast_landform.h
    \brief Contains CACoastLandform definitions
-
 */
 
 #ifndef COASTLANDFORM_H
 #define COASTLANDFORM_H
 /* ===============================================================================================================================
-
    This file is part of CoastalME, the Coastal Modelling Environment.
 
    CoastalME is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
@@ -23,11 +20,9 @@
    This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
    You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-
 ===============================================================================================================================*/
 
 #include "2di_point.h"
-#include "coast_landform.h"
 #include "coast.h"
 
 class CRWCoast; // Forward declaration
@@ -40,7 +35,7 @@ class CACoastLandform
    int m_nCoast;
 
    //! The point on the coast on which this coast landform sits
-   int m_nPointOnCoast;
+   int m_nPointOnCoastline;
 
    //! Landform category code
    int m_nCategory;
@@ -59,7 +54,7 @@ class CACoastLandform
    int nGetPointOnCoast(void) const;
    // void SetLandFormCategory(int const);
    int nGetLandFormCategory(void) const;
-   CGeom2DIPoint* pPtiGetCellMarkedAsLF(void) const;
+   CGeom2DIPoint* pPtiGetCellMarkedAsCliff(void) const;
    // void SetTotAccumWaveEnergy(double const);
    void IncTotAccumWaveEnergy(double const);
    double dGetTotAccumWaveEnergy(void) const;

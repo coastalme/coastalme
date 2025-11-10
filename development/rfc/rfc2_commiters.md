@@ -109,10 +109,26 @@ project.
 CoastalME coding guidelines
 ---------------------------
 
-- Do not save CoastalME source code files (*.cpp, *.h) with a limited line length (e.g. 80 characters). One consequence of doing this is that headers for fixed-width output (e.g. PER_ITER_HEAD1) are split and redistributed over several lines. This makes it much harder to ensure correct run-time alignment of such headers. Instead, allow unlimited line length. If this is not possible, allow a line length of at least 250 characters.
-- As far as is possible, format your new or modified source code to be similar in style to existing code.
-- Before submitting your contribution, please use a source code formatter. The clang-format source code formatter does an OK job (it is still under active development). To install this on a Linux system, run "apt install clang-format" or equivalent. There should be a clang-format configuration file (.clang-format) in your src directory if you have pulled the CoastalME code from github. To use clang-format to tidy CoastalME source code, run tidy_src.sh <filename> in the src directory. This will modify <filename> (which can be a .cpp or a .h file "in place" i.e. without making a backup. Please DO NOT run clang-format on files which you have not modified. For more about clang-format, see https://clang.llvm.org/docs/ClangFormat.html
-- Additionally, you are strongly advised to use a static code analyzer such as clang-tidy on your new or modified source code. Run do_clang-analyse.sh in the src directory, this will produce a text file named 000_clang-analyze_advice.txt, which gives suggestions for e.g. maiaining const-correctness of variables. Note however that not all suggestions by clang-tidy "work", some may prevent your code building. For this reason, it is sensible to try just a few suggestions at a time, then do a test build. 
+- Clarity, readability, and consitency of style are the most important attributes of any source code submitted to the CoastalME GitHub repository. The easy understandability of newly-submitted code is much more important than its run-time efficiency. Code can always be optimized later. "Premature optimization is the root of all evil", according to Donald Knuth (https://en.wikipedia.org/wiki/Donald_Knuth) 
+
+- If you submit source code which isn't clear, readable, well-commented, and in a style similar to existing CoastalME source code, then we'll ask you to tidy it then re-submit. We hope that you don't mind.
+
+- Here are some guidelines:
+
+   - Do not save CoastalME source code files (*.cpp, *.h) with a limited line length (e.g. 80 characters). One consequence of doing this is that headers for fixed-width output (e.g. PER_ITER_HEAD1) are split and redistributed over several lines. This makes it much harder to ensure correct run-time alignment of such headers. Instead, allow unlimited line length. If this is not possible, allow a line length of at least 250 characters.
+
+   - Please name your variables using (as far as possible) Hungarian Notation (https://en.wikipedia.org/wiki/Hungarian_notation)
+   
+   - Our preferred coding style is very broadly based on that of Microsoft (see https://clang.llvm.org/docs/ClangFormatStyleOptions.html#basedonstyle) but with three spaces as indentation. By far the easiest way to find out more about the CoastalME coding style is to look at the existing source code.
+   
+   - You may find it helpful to use a source code formatter before submitting your code. The clang-format source code formatter does an OK job (it is still under active development). To install this on a Linux system, run "apt install clang-format" or equivalent. There should be a clang-format configuration file (.clang-format) in your src directory if you have pulled the CoastalME code from GitHub. To use clang-format to tidy CoastalME source code, run tidy_src.sh <filename> in the src directory. This will modify <filename> (which can be a .cpp or a .h file) "in place" i.e. without making a backup. Please DO NOT run clang-format on files which you have not modified. For more about clang-format, see https://clang.llvm.org/docs/ClangFormat.html
+
+   - Fix all compiler warnings relating to your code before submitting it.
+
+   - Also you are strongly advised to use a static code analyzer such as clang-tidy on your new or modified source code. Run do_clang-analyse.sh in the src directory, this will produce a text file named 000_clang-analyze_advice.txt, which gives suggestions for e.g. maiaining const-correctness of variables. Note however that not all suggestions by clang-tidy "work", some may prevent your code building. For this reason, it is sensible to try just a few suggestions at a time, then do a test build. Then repeat, trying more clang-analyse suggestions.
+   
+   - It is also a good idea to try your modified version of CoastalME with the example datasets which are on GitHub (this is what we will do, to test your contribution, so you may as well try it first!). Use run_test_suite.sh for this. 
+   
 
 Relationship with other upstream projects imported in CoastalME code base
 ------------------------------------------------------------------------

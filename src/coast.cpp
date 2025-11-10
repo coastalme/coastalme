@@ -1,5 +1,4 @@
 /*!
-
    \file coast.cpp
    \brief CRWCoast routines
    \details TODO 001 A more detailed description of these routines.
@@ -7,11 +6,9 @@
    \author Andres Payo
    \date 2025
    \copyright GNU General Public License
-
 */
 
 /* ===============================================================================================================================
-
    This file is part of CoastalME, the Coastal Modelling Environment.
 
    CoastalME is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
@@ -19,7 +16,6 @@
    This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
    You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-
 ===============================================================================================================================*/
 #include <assert.h>
 
@@ -37,7 +33,7 @@ using std::vector;
 #include "line.h"
 #include "i_line.h"
 
-//! Constructor with initialization list
+//! Constructor with (partial) initialisation list
 CRWCoast::CRWCoast(CSimulation* pSimIn)
     : m_nSeaHandedness(NULL_HANDED),
       m_nStartEdge(INT_NODATA),
@@ -58,13 +54,16 @@ CRWCoast::~CRWCoast(void)
 
    for (unsigned int i = 0; i < m_pVLandform.size(); i++)
       delete m_pVLandform[i];
+
+   for (unsigned int i = 0; i < m_pVCoastPolygon.size(); i++)
+      delete m_pVCoastPolygon[i];
 }
 
-//! Returns a pointer to the simulation object
-CSimulation* CRWCoast::pGetSim(void) const
-{
-   return m_pSim;
-}
+// //! Returns a pointer to the simulation object
+// CSimulation* CRWCoast::pGetSim(void) const
+// {
+//    return m_pSim;
+// }
 
 //! Sets the handedness of the coast
 void CRWCoast::SetSeaHandedness(int const nNewHandedness)
@@ -102,7 +101,7 @@ int CRWCoast::nGetEndEdge(void) const
    return m_nEndEdge;
 }
 
-//! Given the vector line of a coast, this initializes coastline values (curvature, breaking wave height, wave angle, and flux orientation etc.)
+//! Given the vector line of a coast, this initialises coastline values (curvature, breaking wave height, wave angle, and flux orientation etc.)
 void CRWCoast::SetCoastlineExtCRS(CGeomLine const* pLCoast)
 {
    m_LCoastlineExtCRS = *pLCoast;
@@ -118,7 +117,7 @@ void CRWCoast::SetCoastlineExtCRS(CGeomLine const* pLCoast)
    m_VdDeepWaterWaveAngle = vector<double>(nLen, DBL_NODATA);
    m_VdDeepWaterWavePeriod = vector<double>(nLen, DBL_NODATA);
    m_VdBreakingWaveHeight = vector<double>(nLen, DBL_NODATA);
-   m_VdWaveSetupSurge = vector<double>(nLen, 0); // it is better to initiate with DBL_NODATA but some values are outside of range in the interpolation
+   m_VdWaveSetupSurge = vector<double>(nLen, 0);               // it is better to initiate with DBL_NODATA but some values are outside of range in the interpolation
    // m_VdStormSurge = vector<double>(nLen, DBL_NODATA);
    m_VdRunUp = vector<double>(nLen, 0);
    m_VdCoastWaveHeight = vector<double>(nLen, DBL_NODATA);
@@ -202,6 +201,12 @@ void CRWCoast::SetCoastlineGridCRS(CGeomILine const* pILCoastCells)
    m_ILCellsMarkedAsCoastline = *pILCoastCells;
 }
 
+//! Returns a pointer to the cells marked as coastline (grid CRS)
+CGeomILine* CRWCoast::pILGetCoastlineGridCRS(void)
+{
+   return &m_ILCellsMarkedAsCoastline;
+}
+
 // void CRWCoast::AppendCellMarkedAsCoastline(CGeom2DIPoint const* pPti)
 // {
 // m_ILCellsMarkedAsCoastline.Append(*pPti);
@@ -212,7 +217,7 @@ void CRWCoast::SetCoastlineGridCRS(CGeomILine const* pILCoastCells)
 // m_ILCellsMarkedAsCoastline.Append(CGeom2DIPoint(nX, nY));
 // }
 
-//! Returns the coordinates (grid CRS) of the cells marked as coastline
+//! Returns the coordinates (grid CRS) of the cell marked as coastline
 CGeom2DIPoint* CRWCoast::pPtiGetCellMarkedAsCoastline(int const n)
 {
    // TODO 055 No check to see if n < size()
@@ -390,11 +395,11 @@ void CRWCoast::SetSmoothCurvatureMean(double const dMean)
    m_dCurvatureSmoothMean = dMean;
 }
 
-//! Gets the mean of the coast's smoothed curvature
-double CRWCoast::dGetSmoothCurvatureMean(void) const
-{
-   return m_dCurvatureSmoothMean;
-}
+// //! Gets the mean of the coast's smoothed curvature
+// double CRWCoast::dGetSmoothCurvatureMean(void) const
+// {
+//    return m_dCurvatureSmoothMean;
+// }
 
 //! Sets the standard deviation of the coast's smoothed curvature
 void CRWCoast::SetSmoothCurvatureSTD(double const dSTD)
@@ -402,11 +407,11 @@ void CRWCoast::SetSmoothCurvatureSTD(double const dSTD)
    m_dCurvatureSmoothSTD = dSTD;
 }
 
-//! Gets the standard deviation of the coast's smoothed curvature
-double CRWCoast::dGetSmoothCurvatureSTD(void) const
-{
-   return m_dCurvatureSmoothSTD;
-}
+// //! Gets the standard deviation of the coast's smoothed curvature
+// double CRWCoast::dGetSmoothCurvatureSTD(void) const
+// {
+//    return m_dCurvatureSmoothSTD;
+// }
 
 //! Returns a pointer to a profile, in polygon-ID number sequence
 CGeomProfile* CRWCoast::pGetProfile(int const nProfile)
@@ -415,12 +420,12 @@ CGeomProfile* CRWCoast::pGetProfile(int const nProfile)
    return m_pVProfile[nProfile];
 }
 
-//! Returns a pointer to the last profile, in polygon-ID number sequence
-CGeomProfile* CRWCoast::pGetLastProfile(void)
-{
-   // TODO 055 Maybe add a safety check? that nProfile < m_pVProfile.size()
-   return m_pVProfile.back();
-}
+// //! Returns a pointer to the last profile, in polygon-ID number sequence
+// CGeomProfile* CRWCoast::pGetLastProfile(void)
+// {
+//    // TODO 055 Maybe add a safety check? that nProfile < m_pVProfile.size()
+//    return m_pVProfile.back();
+// }
 
 //! Appends a coastline-normal profile
 void CRWCoast::AppendProfile(CGeomProfile* pProfile)
@@ -465,27 +470,64 @@ CGeomProfile* CRWCoast::pGetProfileWithUpCoastSeq(int const nProf) const
    return m_pVProfileDownCoastSeq[nSize - (nProf + 1)];
 }
 
-//! Returns a pointer to the profile which is adjacent to and down-coast from the given profile pointer. It returns NULL if there is no valid down-coast profile
-CGeomProfile* CRWCoast::pGetDownCoastProfile(CGeomProfile const* pProfile)
+// //! Returns a pointer to the profile which is adjacent to and down-coast from the given profile pointer. It returns NULL if there is no valid down-coast profile
+// CGeomProfile* CRWCoast::pGetDownCoastProfile(CGeomProfile const* pProfile)
+// {
+//    return pProfile->pGetDownCoastAdjacentProfile();
+// }
+
+// //! Returns a pointer to the profile which is adjacent to and down-coast from the specified profile; however this profile must not be the last (coast-end) profile. It returns NULL if there is no valid down-coast profile
+// CGeomProfile* CRWCoast::pGetDownCoastProfileNotIncLastProfile(CGeomProfile const* pProfile)
+// {
+//    CGeomProfile* pDownCoastProfile = pProfile->pGetDownCoastAdjacentProfile();
+//
+//    if ((pDownCoastProfile != NULL) && (pDownCoastProfile->bEndOfCoast()))
+//       return NULL;
+//
+//    return pDownCoastProfile;
+// }
+
+// //! Returns a pointer to the profile which is adjacent to and up-coast from the specified profile. It returns NULL if there is no valid up-coast profile
+// CGeomProfile* CRWCoast::pGetUpCoastProfile(CGeomProfile const* pProfile)
+// {
+//    return pProfile->pGetUpCoastAdjacentProfile();
+// }
+
+//! Creates a coast polygon and returns a pointer to it
+CGeomCoastPolygon* CRWCoast::pPolyCreateAndAppendPolygon(int const nCoastID, int const nCoastPoint, CGeom2DIPoint const* pPtiNode, CGeom2DIPoint const* pPtiAntiNode, int const nProfileUpCoast, int const nProfileDownCoast, vector<CGeom2DPoint> const* pVIn, int const nNumPointsUpCoastProfile, int const nNumPointsDownCoastProfile, bool const bStartCoast, bool const bEndCoast)
 {
-   return pProfile->pGetDownCoastAdjacentProfile();
+   CGeomCoastPolygon* pPolygon = new CGeomCoastPolygon(nCoastID, nCoastPoint, nProfileUpCoast, nProfileDownCoast, pVIn, nNumPointsUpCoastProfile, nNumPointsDownCoastProfile, pPtiNode, pPtiAntiNode, bStartCoast, bEndCoast);
+
+   m_pVCoastPolygon.push_back(pPolygon);
+
+   return pPolygon;
 }
 
-//! Returns a pointer to the profile which is adjacent to and down-coast from the specified profile; however this profile must not be the last (coast-end) profile. It returns NULL if there is no valid down-coast profile
-CGeomProfile* CRWCoast::pGetDownCoastProfileNotIncLastProfile(CGeomProfile const* pProfile)
+//! Returns the number of coast polygons
+int CRWCoast::nGetNumPolygons(void) const
 {
-   CGeomProfile* pDownCoastProfile = pProfile->pGetDownCoastAdjacentProfile();
-
-   if ((pDownCoastProfile != NULL) && (pDownCoastProfile->bEndOfCoast()))
-      return NULL;
-
-   return pDownCoastProfile;
+   return static_cast<int>(m_pVCoastPolygon.size());
 }
 
-//! Returns a pointer to the profile which is adjacent to and up-coast from the specified profile. It returns NULL if there is no valid up-coast profile
-CGeomProfile* CRWCoast::pGetUpCoastProfile(CGeomProfile const* pProfile)
+//! Returns a pointer to a coast polygon, specified by down-coast (i.e. along the coast in the direction of increasing coastline point numbers) sequence
+CGeomCoastPolygon* CRWCoast::pGetPolygon(int const nPoly)
 {
-   return pProfile->pGetUpCoastAdjacentProfile();
+   // TODO 055 No check to see if nPoint < m_VnPolygon.size()
+   return m_pVCoastPolygon[nPoly];
+}
+
+//! Sets a coast polygon node
+void CRWCoast::SetPolygonNode(int const nPoint, int const nNode)
+{
+   // TODO 055 No check to see if nPoint < m_VnPolygonNode.size()
+   m_VnPolygonNode[nPoint] = nNode;
+}
+
+//! Gets a coast polygon node
+int CRWCoast::nGetPolygonNode(int const nPoint) const
+{
+   // TODO 055 No check to see if nPoint < m_VnPolygonNode.size()
+   return m_VnPolygonNode[nPoint];
 }
 
 //! Sets the deep water wave height for this coast point
@@ -581,11 +623,11 @@ double CRWCoast::dGetLevel(int const nCoastPoint, int const level) const
 {
    switch (level)
    {
-   case 0: // WAVESETUPSURGE:
+   case 0:     // WAVESETUPSURGE:
       return m_VdWaveSetupSurge[nCoastPoint];
       break;
 
-   case 1: // WAVESETUPSURGE + RUNUP:
+   case 1:     // WAVESETUPSURGE + RUNUP:
       return m_VdWaveSetupSurge[nCoastPoint] + m_VdRunUp[nCoastPoint];
       break;
 
@@ -720,7 +762,7 @@ CGeomProfile* CRWCoast::pGetProfileAtCoastPoint(int const nCoastPoint) const
    return m_pVNormalProfileDownAllCoastpointSeq[nCoastPoint];
 }
 
-//! Appends a coastal landform to this coast
+//! Appends a coastal landform to the vector of coast landform objects
 void CRWCoast::AppendCoastLandform(CACoastLandform* pCoastLandform)
 {
    m_pVLandform.push_back(pCoastLandform);
@@ -734,54 +776,6 @@ CACoastLandform* CRWCoast::pGetCoastLandform(int const nCoastPoint)
 
    return NULL;
 }
-
-//! Sets a coast polygon node
-void CRWCoast::SetPolygonNode(int const nPoint, int const nNode)
-{
-   // TODO 055 No check to see if nPoint < m_VnPolygonNode.size()
-   m_VnPolygonNode[nPoint] = nNode;
-}
-
-//! Gets a coast polygon node
-int CRWCoast::nGetPolygonNode(int const nPoint) const
-{
-   // TODO 055 No check to see if nPoint < m_VnPolygonNode.size()
-   return m_VnPolygonNode[nPoint];
-}
-
-//! Creates a coast polygon and returns a pointer to it
-CGeomCoastPolygon* CRWCoast::pPolyCreatePolygon(int const nCoastID, int const nCoastPoint, CGeom2DIPoint const* pPtiNode, CGeom2DIPoint const* pPtiAntiNode, int const nProfileUpCoast, int const nProfileDownCoast, vector<CGeom2DPoint> const* pVIn, int const nNumPointsUpCoastProfile, int const nNumPointsDownCoastProfile, bool const bStartCoast, bool const bEndCoast)
-{
-   CGeomCoastPolygon* pPolygon = new CGeomCoastPolygon(nCoastID, nCoastPoint, nProfileUpCoast, nProfileDownCoast, pVIn, nNumPointsUpCoastProfile, nNumPointsDownCoastProfile, pPtiNode, pPtiAntiNode, bStartCoast, bEndCoast);
-
-   return pPolygon;
-}
-
-//! Returns the number of coast polygons
-int CRWCoast::nGetNumPolygons(void) const
-{
-   return pGetSim()->nGetCoastPolygonSize();
-}
-
-//! Returns a pointer to a coast polygon, specified by down-coast (i.e. along the coast in the direction of increasing coastline point numbers) sequence
-CGeomCoastPolygon* CRWCoast::pGetPolygon(int const nPoly) const
-{
-   // TODO 055 No check to see if nPoint < m_VnPolygon.size()
-   return pGetSim()->pGetPolygon(nPoly);
-}
-
-// //! Appends to coast polygon length
-// void CRWCoast::AppendPolygonLength(const double dLength)
-// {
-// m_VdPolygonLength.push_back(dLength);
-// }
-//
-// //! Gets coast polygon length
-// double CRWCoast::dGetPolygonLength(int const nIndex) const
-// {
-//    // TODO 055 No check to see if nIndex < m_VdPolygonLength.size()
-// return m_VdPolygonLength[nIndex];
-// }
 
 //! Returns the number of shadow boundaries on this coast
 int CRWCoast::nGetNumShadowBoundaries(void) const

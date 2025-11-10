@@ -1,5 +1,4 @@
 /*!
-
    \file read_input.cpp
    \brief Reads non-GIS input files
    \details TODO 001 A more detailed description of these routines.
@@ -7,11 +6,9 @@
    \author Andres Payo
    \date 2025
    \copyright GNU General Public License
-
 */
 
 /* ==============================================================================================================================
-
    This file is part of CoastalME, the Coastal Modelling Environment.
 
    CoastalME is free software; you can redistribute it and/or modify it under the terms of the GNU General Public  License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
@@ -19,7 +16,6 @@
    This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
    You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-
 ==============================================================================================================================*/
 #include <cstdio>
 
@@ -57,7 +53,7 @@ using std::random_device;
 #include "simulation.h"
 
 //===============================================================================================================================
-//! The bReadIniFile member function reads the initialization file
+//! The bReadIniFile member function reads the initialisation file
 //===============================================================================================================================
 bool CSimulation::bReadIniFile(void)
 {
@@ -206,7 +202,7 @@ bool CSimulation::bReadIniFile(void)
 
          case 3:
             // Email address, only useful if running under Linux/Unix
-            if (!strRH.empty())
+            if (! strRH.empty())
             {
                // Something was entered, do rudimentary check for valid email address
                if (strRH.find('@') == string::npos)
@@ -220,7 +216,7 @@ bool CSimulation::bReadIniFile(void)
          }
 
          // Did an error occur?
-         if (!strErr.empty())
+         if (! strErr.empty())
          {
             // Error in input to initialisation file
             cerr << ERR << "reading " << strErr << " in " << strFilePathName << endl
@@ -237,7 +233,7 @@ bool CSimulation::bReadIniFile(void)
 }
 
 //===============================================================================================================================
-//! Reads the run details input file and does some initialization
+//! Reads the run details input file and does some initialisation
 // TODO 000 Should user input be split in two main files: one for frequently-changed things, one for rarely-changed things? If so, what should go into each file ('testing only' OK, but what else?)
 //===============================================================================================================================
 bool CSimulation::bReadRunDataFile(void)
@@ -465,7 +461,7 @@ bool CSimulation::bReadRunDataFile(void)
                break;
             }
 
-            // we have the multiplier, now calculate the timestep in hours: look for the whitespace between the number and unit
+            // We have the multiplier, now calculate the timestep in hours: look for the whitespace between the number and unit
             nPos = strRH.rfind(SPACE);
 
             if (nPos == string::npos)
@@ -474,10 +470,10 @@ bool CSimulation::bReadRunDataFile(void)
                break;
             }
 
-            // cut off rh bit of string
+            // Cut off rh bit of string
             strRH.resize(nPos);
 
-            // remove trailing spaces
+            // Remove trailing spaces
             strRH = strTrimRight(&strRH);
 
             // Check that this is a valid double
@@ -581,11 +577,11 @@ bool CSimulation::bReadRunDataFile(void)
                   nSpacePos = nNextSpace + 1;
                } while (nSpacePos < strNumbers.length());
 
-               if (!strErr.empty())
+               if (! strErr.empty())
                   break;
             } while (nCommaPos != string::npos);
 
-            if (!strErr.empty())
+            if (! strErr.empty())
                break;
 
             // Check if we only have one value (making it a regular interval)
@@ -747,7 +743,6 @@ bool CSimulation::bReadRunDataFile(void)
                strErr += RASTER_USUAL_OUTPUT_CODE;
                strErr += "', or at least one raster GIS output code";
             }
-
             else
             {
                // Convert to lower case
@@ -756,115 +751,126 @@ bool CSimulation::bReadRunDataFile(void)
                if (strRH.find(RASTER_ALL_OUTPUT_CODE) != string::npos)
                {
                   // Set switches for all GIS raster output. Some of these (e.g. all relating to fine sediment) are ignored if e.g. no fine sediment layers are read in
-                  m_bSuspSedSave =
-                  m_bAvgSuspSedSave =
-                  m_bFineUnconsSedSave =
-                  m_bFineConsSedSave =
-                  m_bSandUnconsSedSave =
-                  m_bSandConsSedSave =
-                  m_bCoarseUnconsSedSave =
-                  m_bCoarseConsSedSave =
-                  m_bSedimentTopSurfSave =
-                  m_bTopSurfSave =
-                  m_bSeaDepthSave =
-                  m_bWaveHeightSave =
-                  m_bWaveAngleSave =
-                  m_bPotentialPlatformErosionSave =
-                  m_bActualPlatformErosionSave =
-                  m_bTotalPotentialPlatformErosionSave =
-                  m_bTotalActualPlatformErosionSave =
-                  m_bPotentialBeachErosionSave =
-                  m_bActualBeachErosionSave =
-                  m_bTotalPotentialBeachErosionSave =
-                  m_bTotalActualBeachErosionSave =
-                  m_bBeachDepositionSave =
-                  m_bTotalBeachDepositionSave =
-                  m_bLandformSave =
-                  m_bLocalSlopeSave =
-                  m_bSlopeSave =
-                  m_bCliffSave =
-                  m_bAvgSeaDepthSave =
-                  m_bAvgWaveHeightSave =
-                  m_bAvgWaveAngleSave =
-                  m_bBeachProtectionSave =
-                  m_bBasementElevSave =
-                  m_bRasterCoastlineSave =
-                  m_bRasterNormalProfileSave =
-                  m_bActiveZoneSave =
-                  m_bCliffCollapseSave =
-                  m_bTotCliffCollapseSave =
-                  m_bCliffCollapseDepositionSave =
-                  m_bTotCliffCollapseDepositionSave =
-                  m_bRasterPolygonSave =
-                  m_bPotentialPlatformErosionMaskSave =
-                  m_bSeaMaskSave =
-                  m_bBeachMaskSave =
-                  m_bShadowZoneCodesSave =
-                  m_bDeepWaterWaveAngleSave =
-                  m_bDeepWaterWaveHeightSave =
-                  m_bDeepWaterWavePeriodSave =
-                  m_bPolygonUnconsSedUpOrDownDriftSave =
+                  m_bSuspSedSave = true;
+                  m_bAvgSuspSedSave = true;
+                  m_bFineUnconsSedSave = true;
+                  m_bFineConsSedSave = true;
+                  m_bSandUnconsSedSave = true;
+                  m_bSandConsSedSave = true;
+                  m_bCoarseUnconsSedSave = true;
+                  m_bCoarseConsSedSave = true;
+                  m_bSedIncTalusTopSurfSave = true;
+                  m_bTopSurfIncSeaSave = true;
+                  m_bTalusSave = true;
+                  m_bSeaDepthSave = true;
+                  m_bWaveHeightSave = true;
+                  m_bWaveAngleSave = true;
+                  m_bPotentialPlatformErosionSave = true;
+                  m_bActualPlatformErosionSave = true;
+                  m_bTotalPotentialPlatformErosionSave = true;
+                  m_bTotalActualPlatformErosionSave = true;
+                  m_bPotentialBeachErosionSave = true;
+                  m_bActualBeachErosionSave = true;
+                  m_bTotalPotentialBeachErosionSave = true;
+                  m_bTotalActualBeachErosionSave = true;
+                  m_bBeachDepositionSave = true;
+                  m_bTotalBeachDepositionSave = true;
+                  m_bLandformSave = true;
+                  m_bSlopeConsSedSave = true;
+                  m_bSlopeSaveForCliffToe = true;
+                  m_bCliffToeSave = true;
+                  m_bAvgSeaDepthSave = true;
+                  m_bAvgWaveHeightSave = true;
+                  m_bAvgWaveAngleSave = true;
+                  m_bBeachProtectionSave = true;
+                  m_bBasementElevSave = true;
+                  m_bRasterCoastlineSave = true;
+                  m_bRasterNormalProfileSave = true;
+                  m_bActiveZoneSave = true;
+                  m_bCliffCollapseSave = true;
+                  m_bTotCliffCollapseSave = true;
+                  m_bCliffCollapseDepositionSave = true;
+                  m_bTotCliffCollapseDepositionSave = true;
+                  m_bRasterPolygonSave = true;
+                  m_bPotentialPlatformErosionMaskSave = true;
+                  m_bSeaMaskSave = true;
+                  m_bBeachMaskSave = true;
+                  m_bShadowZoneCodesSave = true;
+                  m_bDeepWaterWaveAngleSave = true;
+                  m_bDeepWaterWaveHeightSave = true;
+                  m_bDeepWaterWavePeriodSave = true;
+                  m_bPolygonUnconsSedUpOrDownDriftSave = true;
                   m_bPolygonUnconsSedGainOrLossSave = true;
+                  m_bCliffNotchAllSave = true;
+                  m_bCliffCollapseTimestepSave = true;
                }
-
                else if (strRH.find(RASTER_USUAL_OUTPUT_CODE) != string::npos)
                {
                   // Set switches for usual GIS raster output. Again, some of these (e.g. all relating to fine sediment) are ignored if they are irrelevant
-                  m_bSuspSedSave =
-                  m_bAvgSuspSedSave =
-                  m_bFineUnconsSedSave =
-                  m_bFineConsSedSave =
-                  m_bSandUnconsSedSave =
-                  m_bSandConsSedSave =
-                  m_bCoarseUnconsSedSave =
-                  m_bCoarseConsSedSave =
-                  m_bSedimentTopSurfSave =
-                  m_bTopSurfSave =
-                  m_bSeaDepthSave =
-                  m_bWaveHeightSave =
-                  m_bWaveAngleSave =
-                  m_bPotentialPlatformErosionSave =
-                  m_bActualPlatformErosionSave =
-                  m_bTotalPotentialPlatformErosionSave =
-                  m_bTotalActualPlatformErosionSave =
-                  m_bPotentialBeachErosionSave =
-                  m_bActualBeachErosionSave =
-                  m_bTotalPotentialBeachErosionSave =
-                  m_bTotalActualBeachErosionSave =
-                  m_bBeachDepositionSave =
-                  m_bTotalBeachDepositionSave =
-                  m_bLandformSave =
-                  m_bLocalSlopeSave =
-                  m_bSlopeSave =
-                  m_bAvgWaveHeightSave =
-                  m_bAvgWaveAngleSave =
-                  m_bBeachProtectionSave =
-                  m_bBasementElevSave =
-                  m_bActiveZoneSave =
-                  m_bCliffCollapseSave =
-                  m_bTotCliffCollapseSave =
-                  m_bCliffCollapseDepositionSave =
-                  m_bTotCliffCollapseDepositionSave =
-                  m_bRasterPolygonSave =
-                  m_bShadowZoneCodesSave =
-                  m_bPolygonUnconsSedUpOrDownDriftSave =
-                  m_bPolygonUnconsSedGainOrLossSave =
-                  m_bRasterNormalProfileSave =
+                  m_bSuspSedSave = true;
+                  m_bAvgSuspSedSave = true;
+                  m_bFineUnconsSedSave = true;
+                  m_bFineConsSedSave = true;
+                  m_bSandUnconsSedSave = true;
+                  m_bSandConsSedSave = true;
+                  m_bCoarseUnconsSedSave = true;
+                  m_bCoarseConsSedSave = true;
+                  m_bSedIncTalusTopSurfSave = true;
+                  m_bTopSurfIncSeaSave = true;
+                  m_bTalusSave = true;
+                  m_bSeaDepthSave = true;
+                  m_bWaveHeightSave = true;
+                  m_bWaveAngleSave = true;
+                  m_bPotentialPlatformErosionSave = true;
+                  m_bActualPlatformErosionSave = true;
+                  m_bTotalPotentialPlatformErosionSave = true;
+                  m_bTotalActualPlatformErosionSave = true;
+                  m_bPotentialBeachErosionSave = true;
+                  m_bActualBeachErosionSave = true;
+                  m_bTotalPotentialBeachErosionSave = true;
+                  m_bTotalActualBeachErosionSave = true;
+                  m_bBeachDepositionSave = true;
+                  m_bTotalBeachDepositionSave = true;
+                  m_bLandformSave = true;
+                  m_bSlopeConsSedSave = true;
+                  m_bSlopeSaveForCliffToe = true;
+                  m_bAvgWaveHeightSave = true;
+                  m_bAvgWaveAngleSave = true;
+                  m_bBeachProtectionSave = true;
+                  m_bBasementElevSave = true;
+                  m_bActiveZoneSave = true;
+                  m_bCliffCollapseSave = true;
+                  m_bTotCliffCollapseSave = true;
+                  m_bCliffCollapseDepositionSave = true;
+                  m_bTotCliffCollapseDepositionSave = true;
+                  m_bRasterPolygonSave = true;
+                  m_bShadowZoneCodesSave = true;
+                  m_bPolygonUnconsSedUpOrDownDriftSave = true;
+                  m_bPolygonUnconsSedGainOrLossSave = true;
+                  m_bRasterNormalProfileSave = true;
                   m_bRasterCoastlineSave = true;
+                  m_bCliffNotchAllSave = true;
+                  m_bCliffCollapseTimestepSave = true;
                }
                else
                {
                   // We are not outputting either the "usual" or the "all" collections of raster GIS files, so set switches (and remove strings) for those optional files for which the user specified the code
                   if (strRH.find(RASTER_SEDIMENT_TOP_CODE) != string::npos)
                   {
-                     m_bSedimentTopSurfSave = true;
+                     m_bSedIncTalusTopSurfSave = true;
                      strRH = strRemoveSubstr(&strRH, &RASTER_SEDIMENT_TOP_CODE);
                   }
 
-                  if (strRH.find(RASTER_TOP_CODE) != string::npos)
+                  if (strRH.find(RASTER_TOP_ELEVATION_INC_SEA_CODE) != string::npos)
                   {
-                     m_bTopSurfSave = true;
-                     strRH = strRemoveSubstr(&strRH, &RASTER_TOP_CODE);
+                     m_bTopSurfIncSeaSave = true;
+                     strRH = strRemoveSubstr(&strRH, &RASTER_TOP_ELEVATION_INC_SEA_CODE);
+                  }
+
+                  if (strRH.find(RASTER_TALUS_CODE) != string::npos)
+                  {
+                     m_bTalusSave = true;
+                     strRH = strRemoveSubstr(&strRH, &RASTER_TALUS_CODE);
                   }
 
                   if (strRH.find(RASTER_SEA_DEPTH_CODE) != string::npos)
@@ -943,24 +949,6 @@ bool CSimulation::bReadRunDataFile(void)
                   {
                      m_bLandformSave = true;
                      strRH = strRemoveSubstr(&strRH, &RASTER_LANDFORM_CODE);
-                  }
-
-                  if (strRH.find(RASTER_LOCAL_SLOPE_CODE) != string::npos)
-                  {
-                     m_bLocalSlopeSave = true;
-                     strRH = strRemoveSubstr(&strRH, &RASTER_LOCAL_SLOPE_CODE);
-                  }
-
-                  if (strRH.find(RASTER_SLOPE_CODE) != string::npos)
-                  {
-                     m_bSlopeSave = true;
-                     strRH = strRemoveSubstr(&strRH, &RASTER_SLOPE_CODE);
-                  }
-
-                  if (strRH.find(RASTER_CLIFF_CODE) != string::npos)
-                  {
-                     m_bCliffSave = true;
-                     strRH = strRemoveSubstr(&strRH, &RASTER_CLIFF_CODE);
                   }
 
                   if (strRH.find(RASTER_AVG_SEA_DEPTH_CODE) != string::npos)
@@ -1227,8 +1215,20 @@ bool CSimulation::bReadRunDataFile(void)
                      strRH = strRemoveSubstr(&strRH, &RASTER_WAVE_FLOOD_LINE_CODE);
                   }
 
+                  if (strRH.find(RASTER_CLIFF_NOTCH_ALL_CODE) != string::npos)
+                  {
+                     m_bCliffNotchAllSave = true;
+                     strRH = strRemoveSubstr(&strRH, &RASTER_CLIFF_NOTCH_ALL_CODE);
+                  }
+
+                  if (strRH.find(RASTER_CLIFF_COLLAPSE_TIMESTEP_CODE) != string::npos)
+                  {
+                     m_bCliffCollapseTimestepSave = true;
+                     strRH = strRemoveSubstr(&strRH, &RASTER_CLIFF_COLLAPSE_TIMESTEP_CODE);
+                  }
+
                   // Check to see if all codes have been removed
-                  if (!strRH.empty())
+                  if (! strRH.empty())
                      strErr = "line " + to_string(nLine) + ": unknown code '" + strRH + "' in list of codes for raster GIS output";
                }
             }
@@ -1269,7 +1269,7 @@ bool CSimulation::bReadRunDataFile(void)
 
          case 15:
             // Elevations for raster slice output, if desired
-            if (!strRH.empty())
+            if (! strRH.empty())
             {
                m_bSliceSave = true;
 
@@ -1320,47 +1320,45 @@ bool CSimulation::bReadRunDataFile(void)
                if (strRH.find(VECTOR_ALL_OUTPUT_CODE) != string::npos)
                {
                   // Output all vector files
-                  m_bCoastSave =
-                  m_bCliffEdgeSave =
-                  m_bWaveAngleAndHeightSave =
-                  m_bNormalsSave =
-                  m_bInvalidNormalsSave =
-                  m_bAvgWaveAngleAndHeightSave =
-                  m_bWaveEnergySinceCollapseSave =
-                  m_bMeanWaveEnergySave =
-                  m_bBreakingWaveHeightSave =
-                  m_bCoastCurvatureSave =
-                  m_bPolygonNodeSave =
-                  m_bPolygonBoundarySave =
-                  m_bCliffNotchSave =
-                  m_bShadowBoundarySave =
-                  m_bShadowDowndriftBoundarySave =
-                  m_bDeepWaterWaveAngleAndHeightSave =
-                  m_bWaveSetupSave =
-                  m_bStormSurgeSave =
-                  m_bRunUpSave =
+                  m_bCoastSave = true;
+                  m_bCliffEdgeSave = true;
+                  m_bWaveAngleAndHeightSave = true;
+                  m_bNormalsSave = true;
+                  m_bInvalidNormalsSave = true;
+                  m_bAvgWaveAngleAndHeightSave = true;
+                  m_bWaveEnergySinceCollapseSave = true;
+                  m_bMeanWaveEnergySave = true;
+                  m_bBreakingWaveHeightSave = true;
+                  m_bCoastCurvatureSave = true;
+                  m_bPolygonNodeSave = true;
+                  m_bPolygonBoundarySave = true;
+                  m_bCliffNotchSave = true;
+                  m_bShadowBoundarySave = true;
+                  m_bShadowDowndriftBoundarySave = true;
+                  m_bDeepWaterWaveAngleAndHeightSave = true;
+                  m_bWaveSetupSave = true;
+                  m_bStormSurgeSave = true;
+                  m_bRunUpSave = true;
                   m_bVectorWaveFloodLineSave = true;
                }
-
                else if (strRH.find(VECTOR_USUAL_OUTPUT_CODE) != string::npos)
                {
                   // Output the "usual" collection of vector output files
-                  m_bCoastSave =
-                  m_bCliffEdgeSave =
-                  m_bWaveAngleAndHeightSave =
-                  m_bNormalsSave =
-                  m_bInvalidNormalsSave =
-                  m_bAvgWaveAngleAndHeightSave =
-                  m_bWaveEnergySinceCollapseSave =
-                  m_bMeanWaveEnergySave =
-                  m_bBreakingWaveHeightSave =
-                  m_bPolygonBoundarySave =
-                  m_bCliffNotchSave =
-                  m_bShadowBoundarySave =
-                  m_bShadowDowndriftBoundarySave =
+                  m_bCoastSave = true;
+                  m_bCliffEdgeSave = true;
+                  m_bWaveAngleAndHeightSave = true;
+                  m_bNormalsSave = true;
+                  m_bInvalidNormalsSave = true;
+                  m_bAvgWaveAngleAndHeightSave = true;
+                  m_bWaveEnergySinceCollapseSave = true;
+                  m_bMeanWaveEnergySave = true;
+                  m_bBreakingWaveHeightSave = true;
+                  m_bPolygonBoundarySave = true;
+                  m_bCliffNotchSave = true;
+                  m_bShadowBoundarySave = true;
+                  m_bShadowDowndriftBoundarySave = true;
                   m_bDeepWaterWaveAngleAndHeightSave = true;
                }
-
                else
                {
                   // Output only those vector files for which the user specified the code
@@ -1436,22 +1434,22 @@ bool CSimulation::bReadRunDataFile(void)
                      strRH = strRemoveSubstr(&strRH, &VECTOR_POLYGON_BOUNDARY_CODE);
                   }
 
-                  if (strRH.find(VECTOR_CLIFF_NOTCH_SIZE_CODE) != string::npos)
+                  if (strRH.find(VECTOR_CLIFF_NOTCH_ACTIVE_CODE) != string::npos)
                   {
                      m_bCliffNotchSave = true;
-                     strRH = strRemoveSubstr(&strRH, &VECTOR_CLIFF_NOTCH_SIZE_CODE);
+                     strRH = strRemoveSubstr(&strRH, &VECTOR_CLIFF_NOTCH_ACTIVE_CODE);
                   }
 
-                  if (strRH.find(VECTOR_SHADOW_BOUNDARY_CODE) != string::npos)
+                  if (strRH.find(VECTOR_SHADOW_ZONE_BOUNDARY_CODE) != string::npos)
                   {
                      m_bShadowBoundarySave = true;
-                     strRH = strRemoveSubstr(&strRH, &VECTOR_SHADOW_BOUNDARY_CODE);
+                     strRH = strRemoveSubstr(&strRH, &VECTOR_SHADOW_ZONE_BOUNDARY_CODE);
                   }
 
-                  if (strRH.find(VECTOR_DOWNDRIFT_BOUNDARY_CODE) != string::npos)
+                  if (strRH.find(VECTOR_DOWNDRIFT_ZONE_BOUNDARY_CODE) != string::npos)
                   {
                      m_bShadowDowndriftBoundarySave = true;
-                     strRH = strRemoveSubstr(&strRH, &VECTOR_DOWNDRIFT_BOUNDARY_CODE);
+                     strRH = strRemoveSubstr(&strRH, &VECTOR_DOWNDRIFT_ZONE_BOUNDARY_CODE);
                   }
 
                   if (strRH.find(VECTOR_DEEP_WATER_WAVE_ANGLE_AND_HEIGHT_CODE) != string::npos)
@@ -1485,7 +1483,7 @@ bool CSimulation::bReadRunDataFile(void)
                   }
 
                   // Check to see if all codes have been removed
-                  if (!strRH.empty())
+                  if (! strRH.empty())
                      strErr = "line " + to_string(nLine) + ": unknown code '" + strRH + "' in list of vector GIS output codes";
                }
             }
@@ -1503,27 +1501,27 @@ bool CSimulation::bReadRunDataFile(void)
 
          case 18:
             // Time series files to output
-            if (!strRH.empty())
+            if (! strRH.empty())
             {
                strRH = strToLower(&strRH);
 
                // First check for "all"
                if (strRH.find(RASTER_ALL_OUTPUT_CODE) != string::npos)
                {
-                  m_bSeaAreaTSSave =
-                  m_bStillWaterLevelTSSave =
-                  m_bActualPlatformErosionTSSave =
-                  m_bCliffCollapseErosionTSSave =
-                  m_bCliffCollapseDepositionTSSave =
-                  m_bCliffCollapseNetTSSave =
-                  m_bBeachErosionTSSave =
-                  m_bBeachDepositionTSSave =
-                  m_bBeachSedimentChangeNetTSSave =
-                  m_bSuspSedTSSave =
-                  m_bFloodSetupSurgeTSSave =
+                  m_bSeaAreaTSSave = true;
+                  m_bSWLTSSave = true;
+                  m_bActualPlatformErosionTSSave = true;
+                  m_bCliffCollapseErosionTSSave = true;
+                  m_bCliffCollapseDepositionTSSave = true;
+                  m_bCliffCollapseNetTSSave = true;
+                  m_bBeachErosionTSSave = true;
+                  m_bBeachDepositionTSSave = true;
+                  m_bBeachSedimentChangeNetTSSave = true;
+                  m_bSuspSedTSSave = true;
+                  m_bFloodSetupSurgeTSSave = true;
                   m_bFloodSetupSurgeRunupTSSave = true;
+                  m_bCliffNotchElevTSSave = true;
                }
-
                else
                {
                   if (strRH.find(TIME_SERIES_SEA_AREA_CODE) != string::npos)
@@ -1532,10 +1530,10 @@ bool CSimulation::bReadRunDataFile(void)
                      strRH = strRemoveSubstr(&strRH, &TIME_SERIES_SEA_AREA_CODE);
                   }
 
-                  if (strRH.find(TIME_SERIES_STILL_WATER_LEVEL_CODE) != string::npos)
+                  if (strRH.find(TIME_SERIES_SWL_CODE) != string::npos)
                   {
-                     m_bStillWaterLevelTSSave = true;
-                     strRH = strRemoveSubstr(&strRH, &TIME_SERIES_STILL_WATER_LEVEL_CODE);
+                     m_bSWLTSSave = true;
+                     strRH = strRemoveSubstr(&strRH, &TIME_SERIES_SWL_CODE);
                   }
 
                   if (strRH.find(TIME_SERIES_PLATFORM_EROSION_CODE) != string::npos)
@@ -1598,8 +1596,14 @@ bool CSimulation::bReadRunDataFile(void)
                      strRH = strRemoveSubstr(&strRH, &TIME_SERIES_FLOOD_SETUP_SURGE_RUNUP_CODE);
                   }
 
+                  if (strRH.find(TIME_SERIES_CLIFF_NOTCH_ELEV_CODE) != string::npos)
+                  {
+                     m_bCliffNotchElevTSSave = true;
+                     strRH = strRemoveSubstr(&strRH, &TIME_SERIES_CLIFF_NOTCH_ELEV_CODE);
+                  }
+
                   // Check to see if all codes have been removed
-                  if (!strRH.empty())
+                  if (! strRH.empty())
                      strErr = "line " + to_string(nLine) + ": unknown code '" + strRH + "' in list of time series output files";
                }
             }
@@ -1617,7 +1621,7 @@ bool CSimulation::bReadRunDataFile(void)
             m_nCoastSmooth = stoi(strRH);
 
             if ((m_nCoastSmooth < SMOOTH_NONE) || (m_nCoastSmooth > SMOOTH_SAVITZKY_GOLAY))
-               strErr = "line " + to_string(nLine) + ": coastline vector smoothing algorithm";
+               strErr = "line " + to_string(nLine) + ": coastline vector smoothing algorithm must be " + to_string(SMOOTH_NONE) + ", " + to_string(SMOOTH_RUNNING_MEAN) + ", or " + to_string(SMOOTH_SAVITZKY_GOLAY);
 
             break;
 
@@ -1778,7 +1782,7 @@ bool CSimulation::bReadRunDataFile(void)
 
          case 27:
             // Basement DEM file (can be blank)
-            if (!strRH.empty())
+            if (! strRH.empty())
             {
 #ifdef _WIN32
                // For Windows, make sure has backslashes, not Unix-style slashes
@@ -1789,7 +1793,6 @@ bool CSimulation::bReadRunDataFile(void)
                if ((strRH[0] == PATH_SEPARATOR) || (strRH[0] == TILDE) || (strRH[1] == COLON))
                   // It has an absolute path, so use it 'as is'
                   m_strInitialBasementDEMFile = strRH;
-
                else
                {
                   // It has a relative path, so prepend the CoastalME dir
@@ -1870,7 +1873,7 @@ bool CSimulation::bReadRunDataFile(void)
                   case 1:
 
                      // Initial fine unconsolidated sediment depth GIS file (can be blank)
-                     if (!strRH.empty())
+                     if (! strRH.empty())
                      {
                         // Set switch
                         m_bHaveFineSediment = true;
@@ -1898,7 +1901,7 @@ bool CSimulation::bReadRunDataFile(void)
 
                   case 2:
                      // Initial sand unconsolidated sediment depth GIS file (can be blank)
-                     if (!strRH.empty())
+                     if (! strRH.empty())
                      {
                         // Set switch
                         m_bHaveSandSediment = true;
@@ -1926,7 +1929,7 @@ bool CSimulation::bReadRunDataFile(void)
 
                   case 3:
                      // Initial coarse unconsolidated sediment depth GIS file (can be blank)
-                     if (!strRH.empty())
+                     if (! strRH.empty())
                      {
                         // Set switch
                         m_bHaveCoarseSediment = true;
@@ -1954,7 +1957,7 @@ bool CSimulation::bReadRunDataFile(void)
 
                   case 4:
                      // Initial fine consolidated sediment depth GIS file (can be blank)
-                     if (!strRH.empty())
+                     if (! strRH.empty())
                      {
                         // Set switches
                         m_bHaveConsolidatedSediment = true;
@@ -1983,7 +1986,7 @@ bool CSimulation::bReadRunDataFile(void)
 
                   case 5:
                      // Initial sand consolidated sediment depth GIS file (can be blank)
-                     if (!strRH.empty())
+                     if (! strRH.empty())
                      {
                         // Set switches
                         m_bHaveConsolidatedSediment = true;
@@ -1999,7 +2002,6 @@ bool CSimulation::bReadRunDataFile(void)
                            // It has an absolute path, so use it 'as is'
                            m_VstrInitialSandConsSedimentFile[nLayer] = strRH;
                         }
-
                         else
                         {
                            // It has a relative path, so prepend the CoastalME dir
@@ -2012,7 +2014,7 @@ bool CSimulation::bReadRunDataFile(void)
 
                   case 6:
                      // Initial coarse consolidated sediment depth GIS file (can be blank)
-                     if (!strRH.empty())
+                     if (! strRH.empty())
                      {
                         // Set switches
                         m_bHaveConsolidatedSediment = true;
@@ -2041,7 +2043,7 @@ bool CSimulation::bReadRunDataFile(void)
                   }
 
                   // Did an error occur?
-                  if (!strErr.empty())
+                  if (! strErr.empty())
                   {
                      // Error in input to run details file
                      cerr << ERR << "reading " << strErr << " in " << m_strDataPathName << endl
@@ -2056,7 +2058,7 @@ bool CSimulation::bReadRunDataFile(void)
 
          case 29:
             // Initial suspended sediment depth GIS file (can be blank)
-            if (!strRH.empty())
+            if (! strRH.empty())
             {
                // Set switch
                m_bHaveFineSediment = true;
@@ -2084,7 +2086,7 @@ bool CSimulation::bReadRunDataFile(void)
 
          case 30:
             // Initial Landform class GIS file (can be blank)
-            if (!strRH.empty())
+            if (! strRH.empty())
             {
 #ifdef _WIN32
                // For Windows, make sure has backslashes, not Unix-style slashes
@@ -2110,7 +2112,7 @@ bool CSimulation::bReadRunDataFile(void)
 
          case 31:
             // Initial Intervention class GIS file (can be blank: if so then intervention height file must also be blank)
-            if (!strRH.empty())
+            if (! strRH.empty())
             {
 #ifdef _WIN32
                // For Windows, make sure has backslashes, not Unix-style slashes
@@ -2190,7 +2192,7 @@ bool CSimulation::bReadRunDataFile(void)
             m_nWavePropagationModel = stoi(strRH);
 
             if ((m_nWavePropagationModel != WAVE_MODEL_COVE) && (m_nWavePropagationModel != WAVE_MODEL_CSHORE))
-               strErr = "line " + to_string(nLine) + ": wave propagation model must be 0 or 1";
+               strErr = "line " + to_string(nLine) + ": wave propagation model must be " + to_string( WAVE_MODEL_COVE) + " or" + to_string( WAVE_MODEL_CSHORE);
 
             break;
 
@@ -2366,7 +2368,7 @@ bool CSimulation::bReadRunDataFile(void)
 
          case 41:
             // Tide data file (can be blank). This is the change (m) from still water level for each timestep
-            if (!strRH.empty())
+            if (! strRH.empty())
             {
 #ifdef _WIN32
                // For Windows, make sure has backslashes, not Unix-style slashes
@@ -2456,7 +2458,7 @@ bool CSimulation::bReadRunDataFile(void)
                m_nUnconsSedimentHandlingAtGridEdges = stoi(strRH);
 
                if ((m_nUnconsSedimentHandlingAtGridEdges < GRID_EDGE_CLOSED) || (m_nUnconsSedimentHandlingAtGridEdges > GRID_EDGE_RECIRCULATE))
-                  strErr = "line " + to_string(nLine) + ": switch for handling of beach sediment at grid edges must be 0, 1, or 2";
+                  strErr = "line " + to_string(nLine) + ": switch for handling of beach sediment at grid edges must be " + to_string(GRID_EDGE_CLOSED) + ", " + to_string(GRID_EDGE_OPEN) + ", or " + to_string(GRID_EDGE_RECIRCULATE);
             }
 
             break;
@@ -2474,7 +2476,7 @@ bool CSimulation::bReadRunDataFile(void)
                m_nBeachErosionDepositionEquation = stoi(strRH);
 
                if ((m_nBeachErosionDepositionEquation != UNCONS_SEDIMENT_EQUATION_CERC) && (m_nBeachErosionDepositionEquation != UNCONS_SEDIMENT_EQUATION_KAMPHUIS))
-                  strErr = "line " + to_string(nLine) + ": switch for beach erosion/deposition equation must be 0 or 1";
+                  strErr = "line " + to_string(nLine) + ": switch for beach erosion/deposition equation must be " + to_string(UNCONS_SEDIMENT_EQUATION_CERC) + " or" + to_string(UNCONS_SEDIMENT_EQUATION_KAMPHUIS);
             }
 
             break;
@@ -2491,7 +2493,6 @@ bool CSimulation::bReadRunDataFile(void)
 
             if (m_dD50Fine < 0)
                strErr = "line " + to_string(nLine) + ": median particle size of fine sediment must be > 0";
-
             else if (bFPIsEqual(m_dD50Fine, 0.0, TOLERANCE))
                // Use default value
                m_dD50Fine = D50_FINE_DEFAULT;
@@ -2510,7 +2511,6 @@ bool CSimulation::bReadRunDataFile(void)
 
             if (m_dD50Sand < 0)
                strErr = "line " + to_string(nLine) + ": median particle size of sand sediment must be > 0";
-
             else if (bFPIsEqual(m_dD50Sand, 0.0, TOLERANCE))
                // Use default value
                m_dD50Sand = D50_SAND_DEFAULT;
@@ -2529,7 +2529,6 @@ bool CSimulation::bReadRunDataFile(void)
 
             if (m_dD50Coarse < 0)
                strErr = "line " + to_string(nLine) + ": median particle size of coarse sediment must be > 0";
-
             else if (bFPIsEqual(m_dD50Coarse, 0.0, TOLERANCE))
                // Use default value
                m_dD50Coarse = D50_COARSE_DEFAULT;
@@ -2730,22 +2729,22 @@ bool CSimulation::bReadRunDataFile(void)
                   break;
                }
 
-               m_dNotchDepthAtCollapse = strtod(strRH.c_str(), NULL);
+               m_dNotchIncisionAtCollapse = strtod(strRH.c_str(), NULL);
 
-               if (m_dNotchDepthAtCollapse <= 0)
+               if (m_dNotchIncisionAtCollapse <= 0)
                   strErr = "line " + to_string(nLine) + ": cliff notch overhang at collapse must be > 0";
             }
 
             break;
 
          case 62:
-            // Notch base below still water level (m)
+            // Notch apex above mean high water (MHW) level (m)
             if (m_bHaveConsolidatedSediment && m_bDoCliffCollapse)
             {
-               m_dNotchBaseBelowSWL = strtod(strRH.c_str(), NULL);
+               m_dNotchApexAboveMHW = strtod(strRH.c_str(), NULL);
 
-               if (m_dNotchBaseBelowSWL < 0)
-                  strErr = "line " + to_string(nLine) + ": cliff notch base below still water level must be > 0";
+               if (m_dNotchApexAboveMHW < 0)
+                  strErr = "line " + to_string(nLine) + ": distance of cliff notch apex above MHW level must be >= 0";
             }
 
             break;
@@ -2820,7 +2819,7 @@ bool CSimulation::bReadRunDataFile(void)
 
                m_dMinCliffTalusHeightFrac = strtod(strRH.c_str(), NULL);
 
-               if (m_dMinCliffTalusHeightFrac < 0)
+               if (m_dMinCliffTalusHeightFrac <= 0)
                   strErr = "line " + to_string(nLine) + ": minimum height of cliff collapse (as a fraction of cliff elevation) must be >= 0";
             }
 
@@ -2845,7 +2844,7 @@ bool CSimulation::bReadRunDataFile(void)
             // Output riverine flooding vector files
             if (m_bRiverineFlooding)
             {
-               if (!strRH.empty())
+               if (! strRH.empty())
                {
                   // Convert to lower case
                   strRH = strToLower(&strRH);
@@ -2853,9 +2852,9 @@ bool CSimulation::bReadRunDataFile(void)
                   // First look for "all"
                   if (strRH.find(VECTOR_ALL_RIVER_FLOOD_OUTPUT_CODE) != string::npos)
                   {
-                     m_bFloodSWLSetupLine =
-                         m_bFloodSWLSetupSurgeLine =
-                             m_bFloodSWLSetupSurgeRunupLine = true;
+                     m_bFloodSWLSetupLineSave = true;
+                     m_bFloodSWLSetupSurgeLine = true;
+                     m_bFloodSWLSetupSurgeRunupLineSave = true;
                   }
 
                   else
@@ -2863,7 +2862,7 @@ bool CSimulation::bReadRunDataFile(void)
                      // We are not outputting all vector flood GIS files, so set switches (and remove strings) for those optional files for which the user specified the code
                      if (strRH.find(VECTOR_FLOOD_SWL_SETUP_LINE_CODE) != string::npos)
                      {
-                        m_bFloodSWLSetupLine = true;
+                        m_bFloodSWLSetupLineSave = true;
                         strRH = strRemoveSubstr(&strRH, &VECTOR_FLOOD_SWL_SETUP_LINE_CODE);
                      }
 
@@ -2875,16 +2874,15 @@ bool CSimulation::bReadRunDataFile(void)
 
                      if (strRH.find(VECTOR_FLOOD_SWL_SETUP_SURGE_RUNUP_LINE_CODE) != string::npos)
                      {
-                        m_bFloodSWLSetupSurgeRunupLine = true;
+                        m_bFloodSWLSetupSurgeRunupLineSave = true;
                         strRH = strRemoveSubstr(&strRH, &VECTOR_FLOOD_SWL_SETUP_SURGE_RUNUP_LINE_CODE);
                      }
 
                      // Check to see if all codes have been removed
-                     if (!strRH.empty())
+                     if (! strRH.empty())
                         strErr = "line " + to_string(nLine) + ": unknown code '" + strRH + "' in list of riverine flooding output codes";
                   }
                }
-
                else
                   strErr = "line " + to_string(nLine) + ": if simulating riverine flooding, must contain '" + VECTOR_ALL_RIVER_FLOOD_OUTPUT_CODE + "' or at least one vector GIS output code for riverine flooding";
             }
@@ -2892,41 +2890,24 @@ bool CSimulation::bReadRunDataFile(void)
             break;
 
          case 69:
-            if (m_bRiverineFlooding)
-            {
-               // Run-up equation?
-               if (bIsStringValidInt(strRH))
-               {
-                  m_nRunUpEquation = stoi(strRH);
-               }
-
-               else
-                  strErr = "line " + to_string(nLine) + ": invalid code for run-up equation used in simulating floods";
-            }
-
-            break;
-
-         case 70:
             if (m_bRiverineFlooding && m_bVectorWaveFloodLineSave)
             {
                // Characteristic locations for flood?
                strRH = strToLower(&strRH);
 
-               m_bFloodLocation = false;
+               m_bFloodLocationSave = false;
 
                if (strRH.find('y') != string::npos)
-               {
-                  m_bFloodLocation = true;
-               }
+                  m_bFloodLocationSave = true;
             }
 
             break;
 
-         case 71:
+         case 70:
             if (m_bRiverineFlooding)
             {
                // Path of location points file
-               if (!strRH.empty())
+               if (! strRH.empty())
                {
 #ifdef _WIN32
                   // For Windows, make sure has backslashes, not Unix-style slashes
@@ -2946,7 +2927,7 @@ bool CSimulation::bReadRunDataFile(void)
                   }
 
                   // Set the switch
-                  m_bFloodLocation = true;
+                  m_bFloodLocationSave = true;
                }
 
                else
@@ -2955,7 +2936,7 @@ bool CSimulation::bReadRunDataFile(void)
 
             break;
 
-         case 72:
+         case 71:
             // Simulate sediment input?
             strRH = strToLower(&strRH);
 
@@ -2967,11 +2948,11 @@ bool CSimulation::bReadRunDataFile(void)
 
             break;
 
-         case 73:
+         case 72:
             // Sediment input location (point or line shapefile)
             if (m_bSedimentInput)
             {
-               if (!strRH.empty())
+               if (! strRH.empty())
                {
 #ifdef _WIN32
                   // For Windows, make sure has backslashes, not Unix-style slashes
@@ -2994,7 +2975,7 @@ bool CSimulation::bReadRunDataFile(void)
 
             break;
 
-         case 74:
+         case 73:
             // Sediment input type: required if have shapefile [P = Point, C = coast block, L = line]
             if (m_bSedimentInput)
             {
@@ -3015,7 +2996,7 @@ bool CSimulation::bReadRunDataFile(void)
 
             break;
 
-         case 75:
+         case 74:
             // Sediment input details file (required if have shapefile)
             if (m_bSedimentInput)
             {
@@ -3048,7 +3029,7 @@ bool CSimulation::bReadRunDataFile(void)
             break;
 
          // ------------------------------------------------------ Other data --------------------------------------------------
-         case 76:
+         case 75:
             // Gravitational acceleration (m2/s). First check that this is a valid double
             if (! bIsStringValidDouble(strRH))
             {
@@ -3063,19 +3044,19 @@ bool CSimulation::bReadRunDataFile(void)
 
             break;
 
-         case 77:
+         case 76:
             // Spacing of coastline normals (m)
             m_dCoastNormalSpacing = strtod(strRH.c_str(), NULL);
 
             if (bFPIsEqual(m_dCoastNormalSpacing, 0.0, TOLERANCE))
-               m_nCoastNormalSpacing = DEFAULT_PROFILE_SPACING; // In cells, we will set m_dCoastNormalSpacing later when we know m_dCellSide
+               m_nCoastNormalSpacing = DEFAULT_PROFILE_SPACING;      // In cells, we will set m_dCoastNormalSpacing later when we know m_dCellSide
 
             else if (m_dCoastNormalSpacing < 0)
                strErr = "line " + to_string(nLine) + ": spacing of coastline normals must be > 0";
 
             break;
 
-         case 78:
+         case 77:
             // Random factor for spacing of normals  [0 to 1, 0 = deterministic], check that this is a valid double
             if (! bIsStringValidDouble(strRH))
             {
@@ -3087,13 +3068,12 @@ bool CSimulation::bReadRunDataFile(void)
 
             if (m_dCoastNormalRandSpacingFactor < 0)
                strErr = "line " + to_string(nLine) + ": random factor for spacing of coastline normals must be >= 0";
-
             else if (m_dCoastNormalRandSpacingFactor > 1)
                strErr = "line " + to_string(nLine) + ": random factor for spacing of coastline normals must be < 1";
 
             break;
 
-         case 79:
+         case 78:
             // Length of coastline normals (m), check that this is a valid double
             if (! bIsStringValidDouble(strRH))
             {
@@ -3108,7 +3088,7 @@ bool CSimulation::bReadRunDataFile(void)
 
             break;
 
-         case 80:
+         case 79:
             // Start depth for wave calcs (ratio to deep water wave height), check that this is a valid double
             if (! bIsStringValidDouble(strRH))
             {
@@ -3124,15 +3104,15 @@ bool CSimulation::bReadRunDataFile(void)
             break;
 
          // ----------------------------------------------------- Testing only -------------------------------------------------
-         case 81:
+         case 80:
             // Output profile data?
             strRH = strToLower(&strRH);
 
-            m_bOutputProfileData = false;
+            m_bOutputConsolidatedProfileData = false;
 
             if (strRH.find('y') != string::npos)
             {
-               m_bOutputProfileData = true;
+               m_bOutputConsolidatedProfileData = true;
 
                if (! m_bDoShorePlatformErosion)
                {
@@ -3145,9 +3125,9 @@ bool CSimulation::bReadRunDataFile(void)
 
             break;
 
-         case 82:
+         case 81:
             // Numbers of profiles to be saved
-            if (m_bOutputProfileData)
+            if (m_bOutputConsolidatedProfileData)
             {
                VstrTmp = VstrSplit(&strRH, SPACE);
 
@@ -3175,9 +3155,9 @@ bool CSimulation::bReadRunDataFile(void)
 
             break;
 
-         case 83:
+         case 82:
             // Timesteps to save profiles
-            if (m_bOutputProfileData)
+            if (m_bOutputConsolidatedProfileData)
             {
                VstrTmp = VstrSplit(&strRH, SPACE);
 
@@ -3198,7 +3178,7 @@ bool CSimulation::bReadRunDataFile(void)
 
             break;
 
-         case 84:
+         case 83:
             // Output parallel profile data?
             strRH = strToLower(&strRH);
 
@@ -3209,7 +3189,7 @@ bool CSimulation::bReadRunDataFile(void)
 
             break;
 
-         case 85:
+         case 84:
             // Output erosion potential look-up data?
             strRH = strToLower(&strRH);
 
@@ -3220,102 +3200,110 @@ bool CSimulation::bReadRunDataFile(void)
 
             break;
 
-         case 86:
-            // Size of moving window for coastline curvature calculation (must be odd)
-            if (! bIsStringValidInt(strRH))
+         case 85:
+            // Cliff toe location? approach [0 = none, 1 = by slope threshold]
+            if (m_bHaveConsolidatedSediment && m_bDoCliffCollapse)
             {
-               strErr = "line ";
-               strErr += to_string(nLine);
-               strErr += ": invalid integer for size of moving window for coastline curvature calculation '";
-               strErr += strRH;
-               strErr += "' in ";
-               strErr += m_strDataPathName;
+               strRH = strToLower(&strRH);
 
-               break;
+               m_bCliffToeLocate = false;
+
+               if (strRH.find('y') != string::npos)
+               {
+                  m_bCliffToeLocate = true;
+                  m_bCliffToeSave = true;
+                  m_bSlopeSaveForCliffToe = true;
+               }
             }
 
-            m_nCoastCurvatureMovingWindowSize = stoi(strRH);
+            break;
 
-            if ((m_nCoastCurvatureMovingWindowSize <= 0) || ! (m_nCoastCurvatureMovingWindowSize % 2))
+         case 86:
+            // Cliff edge smoothing algorithm: 0 = none, 1 = running mean, 2 = Savitzky-Golay
+            if (m_bHaveConsolidatedSediment && m_bDoCliffCollapse && m_bCliffToeLocate)
             {
-               strErr = "line ";
-               strErr += to_string(nLine);
-               strErr += ": size of moving window for coastline curvature calculation (must be > 0 and odd)";
+               if (! bIsStringValidInt(strRH))
+               {
+                  strErr = "line ";
+                  strErr += to_string(nLine);
+                  strErr += ": invalid integer for cliff edge smoothing algorithm '";
+                  strErr += strRH;
+                  strErr += "' in " + m_strDataPathName;
+
+                  break;
+               }
+
+               m_nCliffEdgeSmooth = stoi(strRH);
+
+               if ((m_nCliffEdgeSmooth < SMOOTH_NONE) || (m_nCliffEdgeSmooth > SMOOTH_SAVITZKY_GOLAY))
+                  strErr = "line " + to_string(nLine) + ": cliff edge smoothing algorithm must be " + to_string(SMOOTH_NONE) + ", " + to_string(SMOOTH_RUNNING_MEAN) + ", or " + to_string(SMOOTH_SAVITZKY_GOLAY);
             }
 
             break;
 
          case 87:
-            // Cliff edge smoothing algorithm: 0 = none, 1 = running mean, 2 = Savitzky-Golay
-            if (! bIsStringValidInt(strRH))
+            // Size of cliff edge smoothing window: must be odd
+            if (m_bHaveConsolidatedSediment && m_bDoCliffCollapse && m_bCliffToeLocate)
             {
-               strErr = "line ";
-               strErr += to_string(nLine);
-               strErr += ": invalid integer for cliff edge smoothing algorithm '";
-               strErr += strRH;
-               strErr += "' in " + m_strDataPathName;
+               if (! bIsStringValidInt(strRH))
+               {
+                  strErr = "line " + to_string(nLine) + ": invalid integer for cliff edge smoothing window '" + strRH + "' in " + m_strDataPathName;
+                  break;
+               }
 
-               break;
+               m_nCliffEdgeSmoothWindow = stoi(strRH);
+
+               if ((m_nCliffEdgeSmoothWindow <= 0) || ! (m_nCliffEdgeSmoothWindow % 2))
+                  strErr = "line " + to_string(nLine) + ": size of cliff edge smoothing window (must be > 0 and odd)";
             }
-
-            m_nCliffEdgeSmooth = stoi(strRH);
-
-            if ((m_nCliffEdgeSmooth < SMOOTH_NONE) ||
-                (m_nCliffEdgeSmooth > SMOOTH_SAVITZKY_GOLAY))
-               strErr = "line " + to_string(nLine) +
-                        ": cliff edge smoothing algorithm";
 
             break;
 
          case 88:
-            // Size of cliff edge smoothing window: must be odd
-            if (! bIsStringValidInt(strRH))
+            // Order of cliff edge smoothing polynomial for Savitzky-Golay: usually 2 or 4, max is 6
+            if (m_bHaveConsolidatedSediment && m_bDoCliffCollapse && m_bCliffToeLocate)
             {
-               strErr = "line " + to_string(nLine) +
-                        ": invalid integer for cliff edge smoothing window '" +
-                        strRH + "' in " + m_strDataPathName;
-               break;
+               if (! bIsStringValidInt(strRH))
+               {
+                  strErr = "line " + to_string(nLine) + ": invalid integer for Savitzky-Golay polynomial for cliff edge smoothing '" + strRH + "' in " + m_strDataPathName;
+                  break;
+               }
+
+               m_nSavGolCliffEdgePoly = stoi(strRH);
+
+               if ((m_nSavGolCliffEdgePoly < 2) || (m_nSavGolCliffEdgePoly > 6) || (m_nSavGolCliffEdgePoly % 2))
+                  strErr = "line " + to_string(nLine) + ": order of Savitzky-Golay polynomial for cliff edge smoothing (must be 2, 4 or 6)";
             }
-
-            m_nCliffEdgeSmoothWindow = stoi(strRH);
-
-            if ((m_nCliffEdgeSmoothWindow <= 0) || ! (m_nCliffEdgeSmoothWindow % 2))
-               strErr = "line " + to_string(nLine) +
-                        ": size of cliff edge smoothing window (must be > 0 and odd)";
 
             break;
 
          case 89:
-            // Order of cliff edge smoothing polynomial for Savitzky-Golay: usually 2 or 4, max is 6
-            if (! bIsStringValidInt(strRH))
+            // Slope limit for cliff toe detection
+            if (m_bHaveConsolidatedSediment && m_bDoCliffCollapse && m_bCliffToeLocate)
             {
-               strErr = "line " + to_string(nLine) +
-                        ": invalid integer for Savitzky-Golay polynomial for cliff edge smoothing '" +
-                        strRH + "' in " + m_strDataPathName;
-               break;
+               if (! bIsStringValidDouble(strRH))
+               {
+                  strErr = "line " + to_string(nLine) + ": invalid number for cliff toe slope limit '" + strRH + "' in " + m_strDataPathName;
+                  break;
+               }
+
+               m_dSlopeThresholdForCliffToe = stod(strRH);
+
+               if (m_dSlopeThresholdForCliffToe <= 0)
+                  strErr = "line " + to_string(nLine) + ": cliff toe slope limit must be > 0";
             }
-
-            m_nSavGolCliffEdgePoly = stoi(strRH);
-
-            if ((m_nSavGolCliffEdgePoly < 2) || (m_nSavGolCliffEdgePoly > 6) ||
-                (m_nSavGolCliffEdgePoly % 2))
-               strErr = "line " + to_string(nLine) + ": order of Savitzky-Golay polynomial for cliff edge smoothing (must be 2, 4 or 6)";
 
             break;
 
          case 90:
-            // Cliff slope limit for cliff toe detection
-            if (! bIsStringValidDouble(strRH))
-            {
-               strErr = "line " + to_string(nLine) + ": invalid number for cliff slope limit '" + strRH + "' in " + m_strDataPathName;
-               break;
-            }
+            // Run-up equation?
+            if (bIsStringValidInt(strRH))
+               m_nRunUpEquation = stoi(strRH);
+            else
+               strErr = "line " + to_string(nLine) + ": invalid code for run-up equation used in simulating floods";
 
-            m_dCliffSlopeLimit = stod(strRH);
-
-            if (m_dCliffSlopeLimit <= 0)
-               strErr = "line " + to_string(nLine) +
-                        ": cliff slope limit must be > 0";
+            if ((m_nRunUpEquation < 0) || (m_nRunUpEquation > 3))
+               strErr = "line " + to_string(nLine) + ": runup equation code must be between 0 and 3";
 
             break;
          }
@@ -3690,13 +3678,15 @@ int CSimulation::nReadWaveStationInputFile(int const nWaveStations)
                if (dThisIter <= 0)
                   strErr = "line " + to_string(nLine) + ": timestep must be > 0";
 
+               if (dThisIter >= 24)
+                  strErr = "line " + to_string(nLine) + ": timestep must be < 24 hours";
+
                if (! bFPIsEqual(dThisIter, m_dTimeStep, TOLERANCE))
                   strErr = "line " + to_string(nLine) + ": timestep must be the same as the simulation timestep";
 
                break;
 
             case 3:
-
                // Read the number of stations
                if (! bIsStringValidInt(strRH))
                {
@@ -3718,7 +3708,6 @@ int CSimulation::nReadWaveStationInputFile(int const nWaveStations)
                break;
 
             case 4:
-
                // Read the expected number of time steps in the file
                if (! bIsStringValidInt(strRH))
                {
@@ -3738,7 +3727,6 @@ int CSimulation::nReadWaveStationInputFile(int const nWaveStations)
                break;
             }
          }
-
          else
          {
             // This is not a header line
@@ -3782,7 +3770,7 @@ int CSimulation::nReadWaveStationInputFile(int const nWaveStations)
       }
 
       // Did an error occur?
-      if (!strErr.empty())
+      if (! strErr.empty())
       {
          // Error in input to initialisation file
          cerr << ERR << strErr << " in deep water wave time series file " << m_strDeepWaterWavesInputFile << endl
@@ -3828,7 +3816,7 @@ int CSimulation::nReadWaveStationInputFile(int const nWaveStations)
       return RTN_ERR_READING_DEEP_WATER_WAVE_DATA;
    }
 
-   // All is OK, so we can now initialize the vectors that will store this timestep's deep water wave values
+   // All is OK, so we can now initialise the vectors that will store this timestep's deep water wave values
    for (int j = 0; j < nExpectedStations; j++)
    {
       m_VdThisIterDeepWaterWaveStationHeight.push_back(DBL_NODATA);
@@ -4036,8 +4024,8 @@ int CSimulation::nReadSedimentInputEventFile(void)
             // }
          }
 
-         // Create the CSedInputEvent object
-         CSedInputEvent *pEvent = new CSedInputEvent(nID, ulEventTimeStep, dFineSedVol, dSandSedVol, dCoarseSedVol, dLen, dWidth); //, dThick);
+         // Create the CRWSedInputEvent object
+         CRWSedInputEvent *pEvent = new CRWSedInputEvent(nID, ulEventTimeStep, dFineSedVol, dSandSedVol, dCoarseSedVol, dLen, dWidth); //, dThick);
 
          // And store it in the m_pVSedInputEvent vector
          m_pVSedInputEvent.push_back(pEvent);
@@ -4045,7 +4033,7 @@ int CSimulation::nReadSedimentInputEventFile(void)
    }
 
    // Did an error occur?
-   if (!strErr.empty())
+   if (! strErr.empty())
    {
       // Error in input to initialisation file
       cerr << ERR << strErr << " in sediment input event file " << m_strSedimentInputEventFile << endl

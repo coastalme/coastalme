@@ -14,7 +14,6 @@
 #ifndef COASTPOLYGON_H
 #define COASTPOLYGON_H
 /* ===============================================================================================================================
-
    This file is part of CoastalME, the Coastal Modelling Environment.
 
    CoastalME is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
@@ -22,7 +21,6 @@
    This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
    You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-
 ===============================================================================================================================*/
 #include "2d_point.h"
 #include "2di_point.h"
@@ -200,9 +198,9 @@ class CGeomCoastPolygon : public CA2DShape
    void SetDownCoastThisIter(bool const);
    bool bDownCoastThisIter(void) const;
 
-   void SetCoastEndPolygon(void);
+   // void SetCoastEndPolygon(void);
    bool bIsCoastEndPolygon(void) const;
-   void SetCoastStartPolygon(void);
+   // void SetCoastStartPolygon(void);
    bool bIsCoastStartPolygon(void) const;
 
    int nGetPolygonCoastID(void) const;
@@ -251,7 +249,7 @@ class CGeomCoastPolygon : public CA2DShape
    void SetBeachDepositionUnconsCoarse(double const);
    double dGetBeachDepositionUnconsCoarse(void) const;
 
-   void AddToSuspensionUnconsFine(double const);
+   // void AddToSuspensionUnconsFine(double const);
    // void SetZeroSuspensionUnconsFine(void);
    double dGetSuspensionUnconsFine(void) const;
 
@@ -316,8 +314,8 @@ class CGeomCoastPolygon : public CA2DShape
    void AddCliffCollapseCoarseErodedDeanProfile(double const);
    double dGetCliffCollapseCoarseErodedDeanProfile(void) const;
 
-   void AddPlatformErosionToSuspensionUnconsFine(double const);
-   double dGetPlatformErosionToSuspensionUnconsFine(void) const;
+   // void AddPlatformErosionToSuspensionUnconsFine(double const);
+   // double dGetPlatformErosionToSuspensionUnconsFine(void) const;
    void AddPlatformErosionUnconsSand(double const);
    double dGetPlatformErosionUnconsSand(void) const;
    void AddPlatformErosionUnconsCoarse(double const);
@@ -345,8 +343,8 @@ class CGeomCoastPolygon : public CA2DShape
    double dGetSedimentInputUnconsCoarse(void) const;
 
    void AppendVertex(CGeom2DIPoint const*);
-   int nGetNumVertices(void) const;
-   CGeom2DIPoint PtiGetVertex(int const) const;
+   // int nGetNumVertices(void) const;
+   // CGeom2DIPoint PtiGetVertex(int const) const;
 
    CGeom2DIPoint PtiGetFillStartPoint(void);
 };
