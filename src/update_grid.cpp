@@ -62,7 +62,7 @@ int CSimulation::nUpdateGrid(void)
             m_dThisIterTotSeaDepth += m_pRasterGrid->m_Cell[nX][nY].dGetSeaDepth();
          }
 
-         double const dTopElev = m_pRasterGrid->m_Cell[nX][nY].dGetOverallTopElev();
+         double const dTopElev = m_pRasterGrid->m_Cell[nX][nY].dGetTopElevIncSea();
 
          // Get highest and lowest elevations of the top surface of the DEM
          if (dTopElev > m_dThisIterTopElevMax)

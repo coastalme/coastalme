@@ -84,8 +84,8 @@ void CA2DIShape::Append(int const nX, int const nY)
    m_VPoints.push_back(CGeom2DIPoint(nX, nY));
 }
 
-//! Appends a new integer point to the vector which represents this 2D shape, but only if the point is not already present
-void CA2DIShape::AppendIfNotAlready(int const nX, int const nY)
+//! Appends a new integer point to the vector which represents this 2D shape, but only if the point is not the same as the previous point in the vector
+void CA2DIShape::AppendIfNotPrevious(int const nX, int const nY)
 {
    CGeom2DIPoint const PtiIn(nX, nY);
 
@@ -94,6 +94,16 @@ void CA2DIShape::AppendIfNotAlready(int const nX, int const nY)
 
    else if (m_VPoints.back() != &PtiIn)
       m_VPoints.push_back(PtiIn);
+}
+
+//! Appends a new integer point to the vector which represents this 2D shape, but only if the point is not the same as the previous point in the vector
+void CA2DIShape::AppendIfNotPrevious(CGeom2DIPoint const* pPtiIn)
+{
+   if (m_VPoints.empty())
+      m_VPoints.push_back(*pPtiIn);
+
+   else if (m_VPoints.back() != pPtiIn)
+      m_VPoints.push_back(*pPtiIn);
 }
 
 // void CA2DIShape::SetPoints(const vector<CGeom2DIPoint>* VNewPoints)

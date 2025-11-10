@@ -21,7 +21,6 @@
 
    You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ===============================================================================================================================*/
-
 #include "coast.h"
 #include "coast_landform.h"
 
@@ -31,14 +30,14 @@ class CRWCliff : public CACoastLandform
    //! Switch to say whether the cliff has just collapsed, earlier in this timestep
    bool m_bCliffHasCollapsed;
 
-   //! The maximum depth (in external CRS units) of an erosional notch, this is equal to the grid's m_dCellSide
-   double m_dMaxDepth;
+   //! The maximum horizontal incision (in external CRS units) of an erosional notch, this is equal to the grid's m_dCellSide
+   double m_dMaxNotchIncision;
 
    //! The horizontal depth (in external CRS units) of the erosional notch, measured inland from the side of the cell that touches the sea
-   double m_dNotchDepth;
+   double m_dNotchIncision;
 
-   //! Z-plane elevation (in external CRS units) of the base of the erosional notch. The notch is assumed to extend across the whole width of the coast cell, along the side of the cell that touches the sea
-   double m_dNotchBaseElev;
+   //! Elevation (in external CRS units) of the apex of the notch (in CoastalME, the mid point between the top and bottom of the notch). The notch is assumed to extend across the whole width of the coast cell, along the side of the cell that touches the sea
+   double m_dNotchApexElev;
 
  protected:
  public:
@@ -48,14 +47,13 @@ class CRWCliff : public CACoastLandform
    void SetCliffCollapsed(void);
    bool bHasCollapsed(void) const;
 
-   void SetNotchBaseElev(double const);
-   double dGetNotchBaseElev(void) const;
-   // double dGetRemaining(void) const;
-   // void SetNotchDepth(double const);
-   double dGetNotchDepth(void) const;
+   void SetNotchApexElev(double const);
+   double dGetNotchApexElev(void) const;
+   void SetNotchIncision(double const);
+   double dGetNotchIncision(void) const;
+   void IncreaseNotchIncision(double const);
 
    bool bReadyToCollapse(double const) const;
-   void DeepenErosionalNotch(double const);
 
    void Display(void) override;
 };
