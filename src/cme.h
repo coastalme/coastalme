@@ -308,7 +308,6 @@ using std::ostream;
             double const CLOCK_T_RANGE = static_cast<double>(LONG_MAX) - static_cast<double>(CLOCK_T_MIN);
          #endif
       #endif
-   #endif
 
 #elif defined __MINGW32__
    // Minimalist GNU for Windows
