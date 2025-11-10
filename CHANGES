@@ -244,6 +244,7 @@ CoastalME CHANGELOG
          Enable Linux clang builds
          Code tidying
 
+
 1.4.0_cliff_collapse
          Calculates mean high water (MHW) level
          Now outputs MHW time series
@@ -255,4 +256,6 @@ CoastalME CHANGELOG
          User can choose runup equation
          Improved coast-tracing error messages
          Code tidying
+
+
 
