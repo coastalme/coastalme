@@ -114,16 +114,35 @@ int CSimulation::nReadRasterBasementDEM(void)
    m_strGDALBasementDEMDriverDesc = pGDALDataset->GetDriver()->GetMetadataItem(GDAL_DMD_LONGNAME);
    m_strGDALBasementDEMProjection = pGDALDataset->GetProjectionRef();
 
-   // If we have reference units, then check that they are in metres (note US spelling)
-   if (! m_strGDALBasementDEMProjection.empty())
+   if (m_strGDALBasementDEMProjection.empty())
    {
-      string const strTmp = strToLower(&m_strGDALBasementDEMProjection);
+      // TODO
+      m_strGDALBasementDEMProjection = "";
+      // pGDALDataset->SetProjectionRef(m_strGDALBasementDEMProjection);
 
-      if ((strTmp.find("meter") == string::npos) && (strTmp.find("metre") == string::npos))
+// ENGCRS["Plane",
+//     EDATUM["Unknown engineering datum"],
+//     CS[Cartesian,2],
+//         AXIS["(E)",east,
+//             ORDER[1],
+//             LENGTHUNIT["Meter",1]],
+//         AXIS["(N)",north,
+//             ORDER[2],
+//             LENGTHUNIT["Meter",1]]]
+   }
+   else
+   {
+      // We have reference units, so check that they are in metres (note US spelling)
+      if (! m_strGDALBasementDEMProjection.empty())
       {
-         // error: x-y values must be in metres
-         cerr << ERR << "GIS file x-y values (" << m_strGDALBasementDEMProjection << ") in " << m_strInitialBasementDEMFile << " must be in metres" << endl;
-         return RTN_ERR_DEMFILE;
+         string const strTmp = strToLower(&m_strGDALBasementDEMProjection);
+
+         if ((strTmp.find("meter") == string::npos) && (strTmp.find("metre") == string::npos))
+         {
+            // error: x-y values must be in metres
+            cerr << ERR << "GIS file x-y values (" << m_strGDALBasementDEMProjection << ") in " << m_strInitialBasementDEMFile << " must be in metres" << endl;
+            return RTN_ERR_DEMFILE;
+         }
       }
    }
 
@@ -800,7 +819,7 @@ int CSimulation::nReadRasterGISFile(int const nDataItem, int const nLayer)
          switch (nDataItem)
          {
          case (LANDFORM_RASTER):
-            // Initial Landform Class GIS data, is integer TODO 030 Do we also need a landform sub-category input?
+            // Initial Landform Class GIS data, is integer
             nTmp = static_cast<int>(pdScanline[nX]);
 
             if ((isnan(nTmp)) || (nTmp == m_nGISMissingValue))
@@ -813,7 +832,7 @@ int CSimulation::nReadRasterGISFile(int const nDataItem, int const nLayer)
             break;
 
          case (INTERVENTION_CLASS_RASTER):
-            // Intervention class, is integer
+            // Intervention class, is integer. If not an intervention, show INT_NODATA
             nTmp = static_cast<int>(pdScanline[nX]);
 
             if ((isnan(nTmp)) || (nTmp == m_nGISMissingValue))
@@ -822,7 +841,7 @@ int CSimulation::nReadRasterGISFile(int const nDataItem, int const nLayer)
                nMissing++;
             }
 
-            m_pRasterGrid->m_Cell[nX][nY].SetInterventionClass(nTmp);
+            m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->SetLFCategory(nTmp);
             break;
 
          case (INTERVENTION_HEIGHT_RASTER):
@@ -969,15 +988,19 @@ bool CSimulation::bWriteRasterGISFile(int const nDataItem, string const *strPlot
       strFilePathName.append(RASTER_BASEMENT_ELEVATION_NAME);
       break;
 
-   case (RASTER_PLOT_SEDIMENT_TOP_ELEVATION):
+   case (RASTER_PLOT_SED_TOP_INC_TALUS_ELEV):
       strFilePathName.append(RASTER_SEDIMENT_TOP_ELEVATION_NAME);
       break;
 
-   case (RASTER_PLOT_OVERALL_TOP_ELEVATION):
-      strFilePathName.append(RASTER_OVERALL_TOP_ELEVATION_NAME);
+   case (RASTER_PLOT_TOP_ELEV_INC_SEA):
+      strFilePathName.append(RASTER_TOP_ELEVATION_INC_SEA_NAME);
       break;
 
-   case (RASTER_PLOT_SLOPE_OF_CONSOLIDATED_SEDIMENT):
+   case (RASTER_PLOT_TALUS):
+      strFilePathName.append(RASTER_TALUS_NAME);
+      break;
+
+   case (RASTER_PLOT_CONS_SED_SLOPE):
       strFilePathName.append(RASTER_SLOPE_OF_CONSOLIDATED_SEDIMENT_NAME);
       break;
 
@@ -1135,9 +1158,11 @@ bool CSimulation::bWriteRasterGISFile(int const nDataItem, string const *strPlot
       strFilePathName.append(RASTER_TOTAL_CLIFF_COLLAPSE_DEPOSITION_COARSE_NAME);
       break;
 
+#ifdef _DEBUG
    case (RASTER_PLOT_CLIFF_COLLAPSE_TIMESTEP):
       strFilePathName.append(RASTER_CLIFF_COLLAPSE_TIMESTEP_NAME);
       break;
+#endif
 
    case (RASTER_PLOT_CLIFF_NOTCH_ALL):
       strFilePathName.append(RASTER_CLIFF_NOTCH_ALL_NAME);
@@ -1391,15 +1416,19 @@ bool CSimulation::bWriteRasterGISFile(int const nDataItem, string const *strPlot
             dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetBasementElev();
             break;
 
-         case (RASTER_PLOT_SEDIMENT_TOP_ELEVATION):
-            dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElev();
+         case (RASTER_PLOT_SED_TOP_INC_TALUS_ELEV):
+            dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetAllSedTopElevIncTalus();
             break;
 
-         case (RASTER_PLOT_OVERALL_TOP_ELEVATION):
-            dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetSedimentPlusInterventionTopElev();
+         case (RASTER_PLOT_TOP_ELEV_INC_SEA):
+            dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetTopElevIncSea();
             break;
 
-         case (RASTER_PLOT_SLOPE_OF_CONSOLIDATED_SEDIMENT):
+         case (RASTER_PLOT_TALUS):
+            dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetTalusDepth();
+            break;
+
+         case (RASTER_PLOT_CONS_SED_SLOPE):
             dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetConsSedSlope();
             break;
 
@@ -1569,13 +1598,15 @@ bool CSimulation::bWriteRasterGISFile(int const nDataItem, string const *strPlot
             break;
 
          case (RASTER_PLOT_CLIFF_NOTCH_ALL):
-            dTmp = m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->dGetCliffNotchDepth();
+            dTmp = m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->dGetCliffNotchIncisionDepth();
             break;
 
+#ifdef _DEBUG
          case (RASTER_PLOT_CLIFF_COLLAPSE_TIMESTEP):
             dTmp = static_cast<double>(m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->ulGetCliffCollapseTimestep());
             bIsUnsignedLong = true;
             break;
+#endif
 
          case (RASTER_PLOT_INTERVENTION_HEIGHT):
             dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetInterventionHeight();
@@ -1635,7 +1666,7 @@ bool CSimulation::bWriteRasterGISFile(int const nDataItem, string const *strPlot
             if ((nTopLayer == INT_NODATA) || (nTopLayer == NO_NONZERO_THICKNESS_LAYERS))
                break;
 
-            if ((m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nTopLayer)->dGetUnconsolidatedThickness() > 0) && (m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElev() > m_dThisIterSWL))
+            if ((m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nTopLayer)->dGetAllUnconsDepth() > 0) && (m_pRasterGrid->m_Cell[nX][nY].dGetAllSedTopElevIncTalus() > m_dThisIterSWL))
                dTmp = 1;
 
             break;
@@ -1647,10 +1678,6 @@ bool CSimulation::bWriteRasterGISFile(int const nDataItem, string const *strPlot
          case (RASTER_PLOT_LANDFORM):
             dTmp = m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->nGetLFCategory();
             bIsInteger = true;
-
-            if ((static_cast<int>(dTmp) == LF_CAT_DRIFT) || (static_cast<int>(dTmp) == LF_CAT_CLIFF))
-               dTmp = m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->nGetLFSubCategory();
-
             break;
 
          case (RASTER_PLOT_INTERVENTION_CLASS):
@@ -1750,55 +1777,56 @@ bool CSimulation::bWriteRasterGISFile(int const nDataItem, string const *strPlot
 
    switch (nDataItem)
    {
-   case (RASTER_PLOT_BASEMENT_ELEVATION):
-   case (RASTER_PLOT_SEDIMENT_TOP_ELEVATION):
-   case (RASTER_PLOT_OVERALL_TOP_ELEVATION):
-   case (RASTER_PLOT_SEA_DEPTH):
-   case (RASTER_PLOT_AVG_SEA_DEPTH):
-   case (RASTER_PLOT_WAVE_HEIGHT):
-   case (RASTER_PLOT_AVG_WAVE_HEIGHT):
-   case (RASTER_PLOT_POTENTIAL_PLATFORM_EROSION):
-   case (RASTER_PLOT_ACTUAL_PLATFORM_EROSION):
-   case (RASTER_PLOT_TOTAL_POTENTIAL_PLATFORM_EROSION):
-   case (RASTER_PLOT_TOTAL_ACTUAL_PLATFORM_EROSION):
-   case (RASTER_PLOT_POTENTIAL_BEACH_EROSION):
    case (RASTER_PLOT_ACTUAL_BEACH_EROSION):
-   case (RASTER_PLOT_TOTAL_POTENTIAL_BEACH_EROSION):
-   case (RASTER_PLOT_TOTAL_ACTUAL_BEACH_EROSION):
-   case (RASTER_PLOT_BEACH_DEPOSITION):
-   case (RASTER_PLOT_TOTAL_BEACH_DEPOSITION):
-   case (RASTER_PLOT_SUSPENDED_SEDIMENT):
+   case (RASTER_PLOT_ACTUAL_PLATFORM_EROSION):
+   case (RASTER_PLOT_AVG_SEA_DEPTH):
    case (RASTER_PLOT_AVG_SUSPENDED_SEDIMENT):
-   case (RASTER_PLOT_FINE_UNCONSOLIDATED_SEDIMENT):
-   case (RASTER_PLOT_SAND_UNCONSOLIDATED_SEDIMENT):
-   case (RASTER_PLOT_COARSE_UNCONSOLIDATED_SEDIMENT):
-   case (RASTER_PLOT_FINE_CONSOLIDATED_SEDIMENT):
-   case (RASTER_PLOT_SAND_CONSOLIDATED_SEDIMENT):
-   case (RASTER_PLOT_COARSE_CONSOLIDATED_SEDIMENT):
+   case (RASTER_PLOT_AVG_WAVE_HEIGHT):
+   case (RASTER_PLOT_BASEMENT_ELEVATION):
+   case (RASTER_PLOT_BEACH_DEPOSITION):
+   case (RASTER_PLOT_CLIFF_COLLAPSE_DEPOSITION_COARSE):
+   case (RASTER_PLOT_CLIFF_COLLAPSE_DEPOSITION_SAND):
+   case (RASTER_PLOT_CLIFF_COLLAPSE_EROSION_COARSE):
    case (RASTER_PLOT_CLIFF_COLLAPSE_EROSION_FINE):
    case (RASTER_PLOT_CLIFF_COLLAPSE_EROSION_SAND):
-   case (RASTER_PLOT_CLIFF_COLLAPSE_EROSION_COARSE):
+   case (RASTER_PLOT_CLIFF_NOTCH_ALL):
+   case (RASTER_PLOT_COARSE_CONSOLIDATED_SEDIMENT):
+   case (RASTER_PLOT_COARSE_UNCONSOLIDATED_SEDIMENT):
+   case (RASTER_PLOT_DEEP_WATER_WAVE_HEIGHT):
+   case (RASTER_PLOT_FINE_CONSOLIDATED_SEDIMENT):
+   case (RASTER_PLOT_FINE_UNCONSOLIDATED_SEDIMENT):
+   case (RASTER_PLOT_INTERVENTION_HEIGHT):
+   case (RASTER_PLOT_POTENTIAL_BEACH_EROSION):
+   case (RASTER_PLOT_POTENTIAL_PLATFORM_EROSION):
+   case (RASTER_PLOT_SAND_CONSOLIDATED_SEDIMENT):
+   case (RASTER_PLOT_SAND_UNCONSOLIDATED_SEDIMENT):
+   case (RASTER_PLOT_SEA_DEPTH):
+   case (RASTER_PLOT_SEDIMENT_INPUT):
+   case (RASTER_PLOT_SED_TOP_INC_TALUS_ELEV):
+   case (RASTER_PLOT_SUSPENDED_SEDIMENT):
+   case (RASTER_PLOT_TALUS):
+   case (RASTER_PLOT_TOP_ELEV_INC_SEA):
+   case (RASTER_PLOT_TOTAL_ACTUAL_BEACH_EROSION):
+   case (RASTER_PLOT_TOTAL_ACTUAL_PLATFORM_EROSION):
+   case (RASTER_PLOT_TOTAL_BEACH_DEPOSITION):
+   case (RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_DEPOSITION_COARSE):
+   case (RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_DEPOSITION_SAND):
+   case (RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_EROSION_COARSE):
    case (RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_EROSION_FINE):
    case (RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_EROSION_SAND):
-   case (RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_EROSION_COARSE):
-   case (RASTER_PLOT_CLIFF_COLLAPSE_DEPOSITION_SAND):
-   case (RASTER_PLOT_CLIFF_COLLAPSE_DEPOSITION_COARSE):
-   case (RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_DEPOSITION_SAND):
-   case (RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_DEPOSITION_COARSE):
-   case (RASTER_PLOT_INTERVENTION_HEIGHT):
-   case (RASTER_PLOT_DEEP_WATER_WAVE_HEIGHT):
-   case (RASTER_PLOT_SEDIMENT_INPUT):
-   case (RASTER_PLOT_CLIFF_NOTCH_ALL):
+   case (RASTER_PLOT_TOTAL_POTENTIAL_BEACH_EROSION):
+   case (RASTER_PLOT_TOTAL_POTENTIAL_PLATFORM_EROSION):
+   case (RASTER_PLOT_WAVE_HEIGHT):
       strUnits = "m";
       break;
 
-   case (RASTER_PLOT_SLOPE_OF_CONSOLIDATED_SEDIMENT):
+   case (RASTER_PLOT_CONS_SED_SLOPE):
       strUnits = "m/m";
       break;
 
-   case (RASTER_PLOT_WAVE_ORIENTATION):
-   case (RASTER_PLOT_AVG_WAVE_ORIENTATION):
       strUnits = "degrees";
+   case (RASTER_PLOT_AVG_WAVE_ORIENTATION):
+   case (RASTER_PLOT_WAVE_ORIENTATION):
       break;
 
    case (RASTER_PLOT_POLYGON_GAIN_OR_LOSS):
@@ -1809,24 +1837,26 @@ bool CSimulation::bWriteRasterGISFile(int const nDataItem, string const *strPlot
       strUnits = "secs";
       break;
 
-   case (RASTER_PLOT_POTENTIAL_PLATFORM_EROSION_MASK):
-   case (RASTER_PLOT_INUNDATION_MASK):
-   case (RASTER_PLOT_BEACH_MASK):
-   case (RASTER_PLOT_SLICE):
-   case (RASTER_PLOT_LANDFORM):
-   case (RASTER_PLOT_INTERVENTION_CLASS):
-   case (RASTER_PLOT_COAST):
-   case (RASTER_PLOT_NORMAL_PROFILE):
+      strUnits = "none";
    case (RASTER_PLOT_ACTIVE_ZONE):
+   case (RASTER_PLOT_BEACH_MASK):
+#ifdef _DEBUG
+   case (RASTER_PLOT_CLIFF_COLLAPSE_TIMESTEP):
+#endif
+   case (RASTER_PLOT_COAST):
+   case (RASTER_PLOT_INTERVENTION_CLASS):
+   case (RASTER_PLOT_INUNDATION_MASK):
+   case (RASTER_PLOT_LANDFORM):
+   case (RASTER_PLOT_NORMAL_PROFILE):
    case (RASTER_PLOT_POLYGON):
-   case (RASTER_PLOT_SHADOW_ZONE):
-   case (RASTER_PLOT_SHADOW_DOWNDRIFT_ZONE):
    case (RASTER_PLOT_POLYGON_UPDRIFT_OR_DOWNDRIFT):
+   case (RASTER_PLOT_POTENTIAL_PLATFORM_EROSION_MASK):
    case (RASTER_PLOT_SETUP_SURGE_FLOOD_MASK):
    case (RASTER_PLOT_SETUP_SURGE_RUNUP_FLOOD_MASK):
+   case (RASTER_PLOT_SHADOW_DOWNDRIFT_ZONE):
+   case (RASTER_PLOT_SHADOW_ZONE):
+   case (RASTER_PLOT_SLICE):
    case (RASTER_PLOT_WAVE_FLOOD_LINE):
-   case (RASTER_PLOT_CLIFF_COLLAPSE_TIMESTEP):
-      strUnits = "none";
       break;
    }
 

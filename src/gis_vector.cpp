@@ -1,5 +1,4 @@
 /*!
-
    \file gis_vector.cpp
    \brief These functions use GDAL to read and write vector GIS files in several formats. This version will build with GDAL version 2 and upwards
    \details TODO 001 A more detailed description of these routines.
@@ -7,11 +6,9 @@
    \author Andres Payo
    \date 2025
    \copyright GNU General Public License
-
 */
 
 /* ===============================================================================================================================
-
    This file is part of CoastalME, the Coastal Modelling Environment.
 
    CoastalME is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
@@ -19,11 +16,8 @@
    This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
    You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-
 ===============================================================================================================================*/
 #include <cstdio>
-
-#include <cfloat>
 
 #include <iostream>
 using std::cerr;
@@ -747,7 +741,7 @@ bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const* strPlot
       // OK, now do features
       OGRLineString OGRls;
 
-      for (int i = 0; i < static_cast<int>(m_VCoast.size()); i++)
+      for (int i = 0; i < static_cast<int>(m_VHighestSWLCoastLine.size()); i++)
       {
          // Create a feature object, one per coast
          OGRFeature* pOGRFeature = OGRFeature::CreateFeature(pOGRLayer->GetLayerDefn());
@@ -792,7 +786,7 @@ bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const* strPlot
       // OK, now do features
       OGRLineString OGRls;
 
-      for (int i = 0; i < static_cast<int>(m_VCoast.size()); i++)
+      for (int i = 0; i < static_cast<int>(m_VLowestSWLCoastLine.size()); i++)
       {
          // Create a feature object, one per coast
          OGRFeature* pOGRFeature = OGRFeature::CreateFeature(pOGRLayer->GetLayerDefn());
@@ -1380,7 +1374,7 @@ bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const* strPlot
                   int const nCategory = pCoastLandform->nGetLandFormCategory();
                   double dNotchDepth = 0.0;
 
-                  if (nCategory == LF_CAT_CLIFF)
+                  if ((nCategory == LF_CLIFF_ON_COASTLINE) || (nCategory == LF_CLIFF_INLAND))
                   {
                      CRWCliff const* pCliff = reinterpret_cast<CRWCliff*>(pCoastLandform);
 
@@ -1388,7 +1382,7 @@ bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const* strPlot
                      if (pCliff->bHasCollapsed())
                         dNotchDepth = m_dCellSide;
                      else
-                        dNotchDepth = pCliff->dGetNotchDepth();
+                        dNotchDepth = pCliff->dGetNotchIncision();
                   }
 
                   // Set the feature's attribute

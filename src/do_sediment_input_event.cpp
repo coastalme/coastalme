@@ -1,5 +1,4 @@
 /*!
-
    \file do_sediment_input_event.cpp
    \brief Deposits sediment onto the grid
    \details TODO 001 A more detailed description of these routines.
@@ -7,11 +6,9 @@
    \author Andres Payo
    \date 2025
    \copyright GNU General Public License
-
 */
 
 /* ==============================================================================================================================
-
    This file is part of CoastalME, the Coastal Modelling Environment.
 
    CoastalME is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
@@ -19,7 +16,6 @@
    This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
    You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-
 ==============================================================================================================================*/
 #include <cstdio>
 
@@ -107,7 +103,7 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
       if (m_bSedimentInputAtPoint)
       {
          // Sediment input is at a user-specified point
-         int const nTopLayer = m_pRasterGrid->m_Cell[nPointGridX][nPointGridY].nGetTopLayerAboveBasement();
+         int const nTopLayer = m_pRasterGrid->m_Cell[nPointGridX][nPointGridY].nGetNumOfTopLayerAboveBasement();
 
          // Is this user-specified point in a polygon?
          int const nThisPoly = m_pRasterGrid->m_Cell[nPointGridX][nPointGridY].nGetPolygonID();
@@ -149,8 +145,8 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
             // Add to the this-iteration total of fine sediment input
             m_dThisiterUnconsFineInput += dFineDepth;
 
-            // And assign the cell's landform category and subcategory
-            pLandform->SetLFSubCategory(LF_SUBCAT_SEDIMENT_INPUT_UNCONSOLIDATED);
+            // And assign the cell's landform category
+            pLandform->SetLFCategory(LF_SEDIMENT_INPUT_UNCONSOLIDATED);
          }
 
          // Is some sand-sized unconsolidated sediment being input?
@@ -171,8 +167,8 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
             // Add to the this-iteration total of sand sediment input
             m_dThisiterUnconsSandInput += dSandDepth;
 
-            // And assign the cell's landform category and subcategory
-            pLandform->SetLFSubCategory(LF_SUBCAT_SEDIMENT_INPUT_UNCONSOLIDATED);
+            // And assign the cell's landform category
+            pLandform->SetLFCategory(LF_SEDIMENT_INPUT_UNCONSOLIDATED);
          }
 
          // Is some coarse unconsolidated sediment being input?
@@ -193,28 +189,28 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
             // Add to the this-iteration total of coarse sediment input
             m_dThisiterUnconsCoarseInput += dCoarseDepth;
 
-            // And assign the cell's landform category and subcategory
-            pLandform->SetLFSubCategory(LF_SUBCAT_SEDIMENT_INPUT_UNCONSOLIDATED);
+            // And assign the cell's landform category
+            pLandform->SetLFCategory(LF_SEDIMENT_INPUT_UNCONSOLIDATED);
          }
 
          if (m_nLogFileDetail >= LOG_FILE_MIDDLE_DETAIL)
             LogStream << ", depth of fine sediment added = " << dFineDepth << " m, depth of sand sediment added = " << dSandDepth << " m, depth of coarse sediment added = " << dCoarseDepth << " m" << endl;
       }
-
       else if (m_bSedimentInputAtCoast)
       {
          // Is in a sediment block, seaward from a coast
          if (m_nLogFileDetail >= LOG_FILE_MIDDLE_DETAIL)
             LogStream << m_ulIter << ": Sediment input event " << nEvent + 1 << " with location ID " << nLocID << " at closest point on coast to [" << nPointGridX << "][" << nPointGridY << "] = {" << dGridXToExtCRSX(nPointGridX) << ", " << dGridYToExtCRSY(nPointGridY) << "]" << endl;
 
-         // Find the closest point on the coastline
-         CGeom2DIPoint const PtiCoastPoint = PtiFindClosestCoastPoint(nPointGridX, nPointGridY);
+         // Find the closest point on any coastline
+         int nCoastClosest;
+         CGeom2DIPoint const PtiCoastPoint = PtiFindClosestCoastPoint(nPointGridX, nPointGridY, nCoastClosest);
 
          int const nCoastX = PtiCoastPoint.nGetX();
          int const nCoastY = PtiCoastPoint.nGetY();
 
          if (m_nLogFileDetail >= LOG_FILE_MIDDLE_DETAIL)
-            LogStream << m_ulIter << ": Closest coast point is at [" << nCoastX << "][" << nCoastY << "] = {" << dGridXToExtCRSX(nCoastX) << ", " << dGridYToExtCRSY(nCoastY) << "}, along-coast width of sediment block = " << dWidth << " m, coast-normal length of sediment block = " << dLen << " m" << endl;
+            LogStream << m_ulIter << ": Closest coast point is on coast " << nCoastClosest << " at [" << nCoastX << "][" << nCoastY << "] = {" << dGridXToExtCRSX(nCoastX) << ", " << dGridYToExtCRSY(nCoastY) << "}, along-coast width of sediment block = " << dWidth << " m, coast-normal length of sediment block = " << dLen << " m" << endl;
 
          int const nCoast = m_pRasterGrid->m_Cell[nCoastX][nCoastY].pGetLandform()->nGetCoast();
          int const nCoastPoint = m_pRasterGrid->m_Cell[nCoastX][nCoastY].pGetLandform()->nGetPointOnCoast();
@@ -362,7 +358,7 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
          double const dCoarseDepthPerCell = dCoarseDepth / dArea;
 
          // OK, so finally: put some sediment onto each cell in the sediment block
-         int const nTopLayer = m_pRasterGrid->m_Cell[nPointGridX][nPointGridY].nGetTopLayerAboveBasement();
+         int const nTopLayer = m_pRasterGrid->m_Cell[nPointGridX][nPointGridY].nGetNumOfTopLayerAboveBasement();
 
          for (unsigned int n = 0; n < nArea; n++)
          {
@@ -385,7 +381,6 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
          m_dThisiterUnconsCoarseInput += dCoarseDepth;
       }
    }
-
    else if (m_bSedimentInputAlongLine)
    {
       // The location of the sediment input event is where a line intersects a coast. First get the line, using values read from the shapefile
@@ -516,7 +511,7 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
 
       // OK we have an intersection of the line and coast. We will input the sediment here. Get landform and top layer
       CRWCellLandform* pLandform = m_pRasterGrid->m_Cell[nCoastX][nCoastY].pGetLandform();
-      int const nTopLayer = m_pRasterGrid->m_Cell[nCoastX][nCoastY].nGetTopLayerAboveBasement();
+      int const nTopLayer = m_pRasterGrid->m_Cell[nCoastX][nCoastY].nGetNumOfTopLayerAboveBasement();
 
       // Is this intersection point in a polygon?
       int const nThisPoly = m_pRasterGrid->m_Cell[nCoastX][nCoastY].nGetPolygonID();
@@ -558,8 +553,8 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
          // Add to the this-iteration total of fine sediment input
          m_dThisiterUnconsFineInput += dFineDepth;
 
-         // And assign the cell's landform category and subcategory
-         pLandform->SetLFSubCategory(LF_SUBCAT_SEDIMENT_INPUT_UNCONSOLIDATED);
+         // And assign the cell's landform category
+         pLandform->SetLFCategory(LF_SEDIMENT_INPUT_UNCONSOLIDATED);
       }
 
       // Is some sand-sized unconsolidated sediment being input?
@@ -579,8 +574,8 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
          // Add to the this-iteration total of sand sediment input
          m_dThisiterUnconsSandInput += dSandDepth;
 
-         // And assign the cell's landform category and subcategory
-         pLandform->SetLFSubCategory(LF_SUBCAT_SEDIMENT_INPUT_UNCONSOLIDATED);
+         // And assign the cell's landform category
+         pLandform->SetLFCategory(LF_SEDIMENT_INPUT_UNCONSOLIDATED);
       }
 
       // Is some coarse unconsolidated sediment being input?
@@ -600,8 +595,8 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
          // Add to the this-iteration total of coarse sediment input
          m_dThisiterUnconsCoarseInput += dCoarseDepth;
 
-         // And assign the cell's landform category and subcategory
-         pLandform->SetLFSubCategory(LF_SUBCAT_SEDIMENT_INPUT_UNCONSOLIDATED);
+         // And assign the cell's landform category
+         pLandform->SetLFCategory(LF_SEDIMENT_INPUT_UNCONSOLIDATED);
       }
 
       if (m_nLogFileDetail >= LOG_FILE_MIDDLE_DETAIL)

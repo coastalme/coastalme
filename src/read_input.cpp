@@ -1,5 +1,4 @@
 /*!
-
    \file read_input.cpp
    \brief Reads non-GIS input files
    \details TODO 001 A more detailed description of these routines.
@@ -7,11 +6,9 @@
    \author Andres Payo
    \date 2025
    \copyright GNU General Public License
-
 */
 
 /* ==============================================================================================================================
-
 
    This file is part of CoastalME, the Coastal Modelling Environment.
 
@@ -20,7 +17,6 @@
    This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
    You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-
 ==============================================================================================================================*/
 #include <cstdio>
 
@@ -3533,7 +3529,7 @@ int CSimulation::nReadWaveStationInputFile(int const nWaveStations)
    InStream.open(m_strDeepWaterWavesInputFile.c_str(), ios::in);
 
    // Did it open OK?
-   if (! InStream.is_open())
+   if (!InStream.is_open())
    {
       // Error: cannot open time series file for input
       cerr << ERR << "cannot open " << m_strDeepWaterWavesInputFile << " for input" << endl;
@@ -3556,7 +3552,7 @@ int CSimulation::nReadWaveStationInputFile(int const nWaveStations)
       strRec = strTrim(&strRec);
 
       // If it is a blank line or a comment then ignore it
-      if ((! strRec.empty()) && (strRec[0] != QUOTE1) && (strRec[0] != QUOTE2))
+      if ((!strRec.empty()) && (strRec[0] != QUOTE1) && (strRec[0] != QUOTE2))
       {
          // It isn't so increment counter
          nRead++;
@@ -3615,133 +3611,133 @@ int CSimulation::nReadWaveStationInputFile(int const nWaveStations)
 
             switch (nRead)
             {
-               case 1:
-                  // Get the start date/time for this data, format is [hh-mm-ss dd/mm/yyyy]
-                  VstrTmp = VstrSplit(&strRH, SPACE);
+            case 1:
+               // Get the start date/time for this data, format is [hh-mm-ss dd/mm/yyyy]
+               VstrTmp = VstrSplit(&strRH, SPACE);
 
-                  // Both date and time here?
-                  if (VstrTmp.size() < 2)
-                  {
-                     strErr = "line " + to_string(nLine) + ": must have both date and time for start of data in";
-                     break;
-                  }
+               // Both date and time here?
+               if (VstrTmp.size() < 2)
+               {
+                  strErr = "line " + to_string(nLine) + ": must have both date and time for start of data in";
+                  break;
+               }
 
-                  // OK, first sort out the time
-                  if (! bParseTime(&VstrTmp[0], nHour, nMin, nSec))
-                  {
-                     strErr = "line " + to_string(nLine) + ": could not understand start time for data";
-                     break;
-                  }
+               // OK, first sort out the time
+               if (! bParseTime(&VstrTmp[0], nHour, nMin, nSec))
+               {
+                  strErr = "line " + to_string(nLine) + ": could not understand start time for data";
+                  break;
+               }
 
-                  // Next sort out the date
-                  if (! bParseDate(&VstrTmp[1], nDay, nMonth, nYear))
-                  {
-                     strErr = "line " + to_string(nLine) + ": could not understand start date for data";
-                     break;
-                  }
+               // Next sort out the date
+               if (! bParseDate(&VstrTmp[1], nDay, nMonth, nYear))
+               {
+                  strErr = "line " + to_string(nLine) + ": could not understand start date for data";
+                  break;
+               }
 
-                  // Compare time and date with simulation time and date
-                  if ((nSec != m_nSimStartSec) ||
-                      (nMin != m_nSimStartMin) ||
-                      (nHour != m_nSimStartHour) ||
-                      (nDay != m_nSimStartDay) ||
-                      (nMonth != m_nSimStartMonth) ||
-                      (nYear != m_nSimStartYear))
-                  {
-                     strErr = "line " + to_string(nLine) + ": start time and date for wave time series data differs from simulation start time and date,";
-                     break;
-                  }
+               // Compare time and date with simulation time and date
+               if ((nSec != m_nSimStartSec) ||
+                   (nMin != m_nSimStartMin) ||
+                   (nHour != m_nSimStartHour) ||
+                   (nDay != m_nSimStartDay) ||
+                   (nMonth != m_nSimStartMonth) ||
+                   (nYear != m_nSimStartYear))
+               {
+                  strErr = "line " + to_string(nLine) + ": start time and date for wave time series data differs from simulation start time and date,";
+                  break;
+               }
+
+               break;
+
+            case 2:
+               // Get the timestep of this data (in hours or days)
+               strRH = strToLower(&strRH);
+
+               dMult = dGetTimeMultiplier(&strRH);
+
+               if (static_cast<int>(dMult) == TIME_UNKNOWN)
+               {
+                  strErr = "line " + to_string(nLine) + ": unknown units for timestep";
+                  break;
+               }
+
+               // We have the multiplier, now calculate the timestep in hours: look for the whitespace between the number and unit
+               nPos = strRH.rfind(SPACE);
+
+               if (nPos == string::npos)
+               {
+                  strErr = "line " + to_string(nLine) + ": format of timestep line";
+                  break;
+               }
+
+               // Cut off rh bit of string
+               strRH.resize(nPos);
+
+               // Remove trailing spaces
+               strRH = strTrimRight(&strRH);
+
+               // Check that this is a valid double
+               if (! bIsStringValidDouble(strRH))
+               {
+                  strErr = "line " + to_string(nLine) + ": invalid floating point number for timestep";
+                  break;
+               }
+
+               dThisIter = strtod(strRH.c_str(), NULL) * dMult; // in hours
+
+               if (dThisIter <= 0)
+                  strErr = "line " + to_string(nLine) + ": timestep must be > 0";
+
+               if (dThisIter >= 24)
+                  strErr = "line " + to_string(nLine) + ": timestep must be < 24 hours";
+
+               if (! bFPIsEqual(dThisIter, m_dTimeStep, TOLERANCE))
+                  strErr = "line " + to_string(nLine) + ": timestep must be the same as the simulation timestep";
+
+               break;
+
+            case 3:
+               // Read the number of stations
+               if (! bIsStringValidInt(strRH))
+               {
+                  strErr = "line " + to_string(nLine) + ": invalid integer for number of wave stations '" + strRH + "' in " + m_strDeepWaterWavesInputFile;
+                  break;
+               }
+
+               nExpectedStations = stoi(strRH);
+
+               // Check that the number of expected stations is equal to the number of stations on the point shape file
+               if (nExpectedStations != nWaveStations)
+               {
+                  // Error: number of points on shape file does not match the number of stations on the wave time series file
+                  strErr = "line " + to_string(nLine) + ": number of wave stations in " + m_strDeepWaterWaveStationsShapefile + " is " + to_string(nWaveStations) + " but we have " + to_string(nExpectedStations) + " stations";
 
                   break;
+               }
 
-               case 2:
-                  // Get the timestep of this data (in hours or days)
-                  strRH = strToLower(&strRH);
+               break;
 
-                  dMult = dGetTimeMultiplier(&strRH);
-
-                  if (static_cast<int>(dMult) == TIME_UNKNOWN)
-                  {
-                     strErr = "line " + to_string(nLine) + ": unknown units for timestep";
-                     break;
-                  }
-
-                  // We have the multiplier, now calculate the timestep in hours: look for the whitespace between the number and unit
-                  nPos = strRH.rfind(SPACE);
-
-                  if (nPos == string::npos)
-                  {
-                     strErr = "line " + to_string(nLine) + ": format of timestep line";
-                     break;
-                  }
-
-                  // Cut off rh bit of string
-                  strRH.resize(nPos);
-
-                  // Remove trailing spaces
-                  strRH = strTrimRight(&strRH);
-
-                  // Check that this is a valid double
-                  if (! bIsStringValidDouble(strRH))
-                  {
-                     strErr = "line " + to_string(nLine) + ": invalid floating point number for timestep";
-                     break;
-                  }
-
-                  dThisIter = strtod(strRH.c_str(), NULL) * dMult;      // in hours
-
-                  if (dThisIter <= 0)
-                     strErr = "line " + to_string(nLine) + ": timestep must be > 0";
-
-                  if (! bFPIsEqual(dThisIter, m_dTimeStep, TOLERANCE))
-                     strErr = "line " + to_string(nLine) + ": timestep must be the same as the simulation timestep";
-
+            case 4:
+               // Read the expected number of time steps in the file
+               if (! bIsStringValidInt(strRH))
+               {
+                  strErr = "line " + to_string(nLine) + ": invalid integer for expected number of time steps '" + strRH + "' in " + m_strDeepWaterWaveStationsShapefile;
                   break;
+               }
 
-               case 3:
+               m_nDeepWaterWaveDataNumTimeSteps = stoi(strRH);
 
-                  // Read the number of stations
-                  if (! bIsStringValidInt(strRH))
-                  {
-                     strErr = "line " + to_string(nLine) + ": invalid integer for number of wave stations '" + strRH + "' in " + m_strDeepWaterWavesInputFile;
-                     break;
-                  }
-
-                  nExpectedStations = stoi(strRH);
-
-                  // Check that the number of expected stations is equal to the number of stations on the point shape file
-                  if (nExpectedStations != nWaveStations)
-                  {
-                     // Error: number of points on shape file does not match the number of stations on the wave time series file
-                     strErr = "line " + to_string(nLine) + ": number of wave stations in " + m_strDeepWaterWaveStationsShapefile + " is " + to_string(nWaveStations) + " but we have " + to_string(nExpectedStations) + " stations";
-
-                     break;
-                  }
-
+               if (m_nDeepWaterWaveDataNumTimeSteps < 1)
+               {
+                  // Error: must have value(s) for at least one timestep
+                  strErr = "line " + to_string(nLine) + ": must have values for at least one timestep";
                   break;
+               }
 
-               case 4:
-
-                  // Read the expected number of time steps in the file
-                  if (! bIsStringValidInt(strRH))
-                  {
-                     strErr = "line " + to_string(nLine) + ": invalid integer for expected number of time steps '" + strRH + "' in " + m_strDeepWaterWaveStationsShapefile;
-                     break;
-                  }
-
-                  m_nDeepWaterWaveDataNumTimeSteps = stoi(strRH);
-
-                  if (m_nDeepWaterWaveDataNumTimeSteps < 1)
-                  {
-                     // Error: must have value(s) for at least one timestep
-                     strErr = "line " + to_string(nLine) + ": must have values for at least one timestep";
-                     break;
-                  }
-
-                  break;
+               break;
             }
          }
-
          else
          {
             // This is not a header line
@@ -3750,7 +3746,7 @@ int CSimulation::nReadWaveStationInputFile(int const nWaveStations)
             // Read in each wave attribute for each time step and station: split the string, and remove whitespace
             vector<string> VstrTmp = VstrSplit(&strRec, COMMA);
 
-            for (unsigned int i = 0; i < VstrTmp.size(); i++)      // VstrTmp.size() should be 3 x nExpectedStations
+            for (unsigned int i = 0; i < VstrTmp.size(); i++) // VstrTmp.size() should be 3 x nExpectedStations
             {
                // Remove leading and trailing whitespace
                VstrTmp[i] = strTrim(&VstrTmp[i]);
@@ -3852,6 +3848,7 @@ int CSimulation::nReadWaveStationInputFile(int const nWaveStations)
 
    return RTN_OK;
 }
+
 
 //===============================================================================================================================
 //! Reads the sediment input event file
@@ -4039,8 +4036,8 @@ int CSimulation::nReadSedimentInputEventFile(void)
             // }
          }
 
-         // Create the CSedInputEvent object
-         CSedInputEvent *pEvent = new CSedInputEvent(nID, ulEventTimeStep, dFineSedVol, dSandSedVol, dCoarseSedVol, dLen, dWidth);      //, dThick);
+         // Create the CRWSedInputEvent object
+         CRWSedInputEvent *pEvent = new CRWSedInputEvent(nID, ulEventTimeStep, dFineSedVol, dSandSedVol, dCoarseSedVol, dLen, dWidth); //, dThick);
 
          // And store it in the m_pVSedInputEvent vector
          m_pVSedInputEvent.push_back(pEvent);
