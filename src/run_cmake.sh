@@ -19,8 +19,8 @@ while getopts 'civh' flag; do
 done
 
 # Change this to change build type
-buildtype=DEBUG
-#buildtype=RELEASE
+#buildtype=DEBUG
+buildtype=RELEASE
 # buildtype=PRERELEASE
 #buildtype=RELWITHDEBINFO        # Not yet implemented in CMakeLists.txt
 #buildtype=MINSIZEREL            # Not yet implemented in CMakeLists.txt
@@ -32,7 +32,7 @@ compiler=GNU
 # compiler=CLANG
 
 # Change this to select the CShore library type
-# cshorelibrary=STATIC
+#cshorelibrary=STATIC
 cshorelibrary=SHARED
 
 # Change this to select CShore input/output method

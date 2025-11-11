@@ -255,6 +255,10 @@ elseif(CMAKE_BUILD_TYPE_LC STREQUAL "release")
       -ftrivial-auto-var-init=zero
       -flto
   )
+  add_link_options(
+      -flto=auto
+      -rdynamic
+  )
   if(CMAKE_CXX_COMPILER_ID MATCHES "^(GNU|LCC|QCC)$")
     # Production build using gcc
     message("Applying additional ${CMAKE_BUILD_TYPE_LC} flags for gcc")
@@ -412,7 +416,7 @@ if(WIN32)
   # TODO
 endif()
 
-# OK, now find the CShore library(and GFortran, if the CShore linkage is static)
+# OK, now find the CShore library (and GFortran, if the CShore linkage is static)
 find_package(CShoreLib REQUIRED)
 
 #message(STATUS "CSHORELIB_DIR=${CSHORELIB_DIR}")
@@ -421,13 +425,14 @@ message(STATUS "CSHORELIB_INCLUDE_DIR=${CSHORELIB_INCLUDE_DIR}")
 set(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} ${CSHORELIB_INCLUDE_DIR})
 
 if(CSHORE_LIBRARY_LC STREQUAL "static")
+   set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -static")
   set(LIBS ${LIBS} ${LIBGFORTRAN_LIBRARIES} ${LIBQUADMATH_LIBRARIES})
   set(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} ${GFORTRAN_INCLUDE_DIR})
-  #    include_directories(${GFORTRAN_INCLUDE_DIR})
-  #    target_link_libraries(${CME_EXECUTABLE} ${LIBS} ${LIBGFORTRAN_LIBRARIES})
-  #    target_link_libraries(${CME_EXECUTABLE} ${LIBS} ${LIBQUADMATH_LIBRARIES})
+     # include_directories(${GFORTRAN_INCLUDE_DIR})
+     # target_link_libraries(${CME_EXECUTABLE} ${LIBS} ${LIBGFORTRAN_LIBRARIES})
+     # target_link_libraries(${CME_EXECUTABLE} ${LIBS} ${LIBQUADMATH_LIBRARIES})
 else()
-  # Assume that libcshore.a is either in one of the system library dirs, or is in a location specified by export LD_LIBRARY_PATH
+  # Assume that libcshore.so is either in one of the system library dirs, or is in a location specified by export LD_LIBRARY_PATH
   set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 
   # We have the absolute path to the CShore library, now get the relative path from the install dir
