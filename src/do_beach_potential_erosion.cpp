@@ -1,5 +1,4 @@
 /*!
-
    \file do_beach_potential_erosion.cpp
    \brief Calculates potential (i.e. not constrained by the availability of unconsolidated sediment) beach erosion of unconsolidated sediment on coastal polygons
    \details TODO 001 A more detailed description of these routines.
@@ -7,11 +6,9 @@
    \author Andres Payo
    \date 2025
    \copyright GNU General Public License
-
 */
 
 /* ==============================================================================================================================
-
    This file is part of CoastalME, the Coastal Modelling Environment.
 
    CoastalME is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
@@ -19,12 +16,10 @@
    This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
    You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-
 ==============================================================================================================================*/
 #include <assert.h>
 
 #include <cmath>
-#include <cfloat>
 
 #include <algorithm>
 using std::sort;
@@ -142,7 +137,6 @@ void CSimulation::DoAllPotentialBeachErosion(void)
 
             if (nSeaHand == RIGHT_HANDED)
                dNormalOrientation = dKeepWithin360(dAvgFluxOrientation - 90);
-
             else
                dNormalOrientation = dKeepWithin360(dAvgFluxOrientation + 90);
 
@@ -151,7 +145,6 @@ void CSimulation::DoAllPotentialBeachErosion(void)
 
             if (dThetaBr > 270)
                dThetaBr = dAvgBreakingWaveAngle + 360.0 - dNormalOrientation;
-
             else if (dThetaBr < -270)
                dThetaBr = dNormalOrientation + 360.0 - dAvgBreakingWaveAngle;
 
@@ -174,29 +167,24 @@ void CSimulation::DoAllPotentialBeachErosion(void)
 
             if (m_nBeachErosionDepositionEquation == UNCONS_SEDIMENT_EQUATION_CERC)
             {
-               /*
-                  Use the CERC equation (Komar and Inman, 1970; USACE, 1984), this describes the immersive weight transport of sand (i.e. sand transport in suspension). Depth-integrated alongshore volumetric sediment transport is a function of breaking wave height Hb and angle αb:
+               // Use the CERC equation (Komar and Inman, 1970; USACE, 1984), this describes the immersive weight transport of sand (i.e. sand transport in suspension). Depth-integrated alongshore volumetric sediment transport is a function of breaking wave height Hb and angle αb:
+               //
+               //    Qls = Kls * Hb^(5/2) * sin(2 * αb)
+               //
+               // where Kls is a transport coefficient which varies between 0.4 to 0.79
 
-                  Qls = Kls * Hb^(5/2) * sin(2 * αb)
-
-                  where Kls is a transport coefficient which varies between 0.4 to 0.79
-               */
                dImmersedWeightTransport = m_dKLS / (16 * pow(m_dBreakingWaveHeightDepthRatio, 0.5)) * m_dSeaWaterDensity * pow(m_dG, 1.5) * pow(dAvgBreakingWaveHeight, 2.5) * sin((PI / 180) * 2 * dThetaBr);
             }
-
             else if (m_nBeachErosionDepositionEquation == UNCONS_SEDIMENT_EQUATION_KAMPHUIS)
             {
-               /*
-                  Use the Kamphuis (1990) equation to estimate the immersive weight transport of sand in kg/s:
-
-                  Qls = 2.33 * (Tp^(1.5)) * (tanBeta^(0.75)) * (d50^(-0.25)) * (Hb^2) * (sin(2 * αb)^(0.6))
-
-                  where:
-
-                  Tp = peak wave period
-                  tanBeta = beach slope, defined as the ratio of the water depth at the breaker line and the distance from the still water beach line to the breaker line
-                  d50 = median particle size in surf zone (m)
-               */
+               // Use the Kamphuis (1990) equation to estimate the immersive weight transport of sand in kg/s:
+               //
+               //    Qls = 2.33 * (Tp^(1.5)) * (tanBeta^(0.75)) * (d50^(-0.25)) * (Hb^2) * (sin(2 * αb)^(0.6))
+               //
+               // where:
+               // Tp = peak wave period
+               // tanBeta = beach slope, defined as the ratio of the water depth at the breaker line and the distance from the still water beach line to the breaker line
+               // d50 = median particle size in surf zone (m)
 
                if (dAvgBreakingDist > 0)
                {
@@ -222,7 +210,7 @@ void CSimulation::DoAllPotentialBeachErosion(void)
             double dSedimentDepth = dSedimentVol / m_dCellArea;
 
             // If this is just a tiny depth, do nothing
-            if (dSedimentDepth < SEDIMENT_ELEV_TOLERANCE)
+            if (dSedimentDepth < SED_ELEV_TOLERANCE)
                dSedimentDepth = 0;
 
             // LogStream << m_ulIter << ": polygon = " << nThisPoly << " nActiveZonePoints = " << nActiveZonePoints << " dAvgBreakingWaveHeight = " << dAvgBreakingWaveHeight << " dAvgFluxOrientation = " << dAvgFluxOrientation << " dNormalOrientation = " << dNormalOrientation << " dAvgBreakingWaveAngle = " << dAvgBreakingWaveAngle <<  " potential sediment transport this timestep = " << dSedimentDepth << " m " << (bDownCoast ? "DOWN" : "UP") << " coast" << endl;

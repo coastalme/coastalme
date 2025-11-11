@@ -72,8 +72,7 @@ void CSimulation::WriteStartRunDetails(void)
    OutStream << " Run started                                               \t: " << put_time(localtime(&m_tSysStartTime), "%T %A %d %B %Y") << endl;
 
    // Same info. for Log file
-   LogStream << m_strRunName << " run started at " << put_time(localtime(&m_tSysStartTime), "%T on %A %d %B %Y") << endl
-             << endl;
+   LogStream << m_strRunName << " run started at " << put_time(localtime(&m_tSysStartTime), "%T on %A %d %B %Y") << endl << endl;
 
    // Continue with Out file
    OutStream << " Initialization file                                       \t: "
@@ -111,7 +110,7 @@ void CSimulation::WriteStartRunDetails(void)
              << m_strOutFile << endl;
 #endif
 
-   LogStream << "Log file (this file)                                      \t: "
+   LogStream << "Log file (this file)                                       \t: "
 #ifdef _WIN32
              << pstrChangeToForwardSlash(&m_strOutFile) << endl;
 #else
@@ -137,7 +136,7 @@ void CSimulation::WriteStartRunDetails(void)
 
    OutStream << endl;
 
-   LogStream << "Level of Log detail                                       \t: ";
+   LogStream << "Level of Log detail                                        \t: ";
 
    if (m_nLogFileDetail == LOG_FILE_LOW_DETAIL)
       LogStream << "1 (least detail)";
@@ -151,7 +150,9 @@ void CSimulation::WriteStartRunDetails(void)
    else if (m_nLogFileDetail == LOG_FILE_ALL)
       LogStream << "4 (everything)";
 
-   LogStream << "GDAL performance optimisations enabled: " << (m_bGDALOptimisations ? "Y" : "N") << endl;
+   LogStream << endl;
+
+   LogStream << "GDAL performance optimisations enabled                     \t: " << (m_bGDALOptimisations ? "Y" : "N") << endl;
 
    LogStream << endl << endl;
 
@@ -559,8 +560,8 @@ void CSimulation::WriteStartRunDetails(void)
       OutStream << " Cliff resistance to erosion                               \t: " << m_dCliffErosionResistance << endl;
       OutStream << resetiosflags(ios::floatfield);
       OutStream << fixed << setprecision(1);
-      OutStream << " Notch overhang to initiate collapse                       \t: " << m_dNotchDepthAtCollapse << " m" << endl;
-      OutStream << " Notch base below SWL                                      \t: " << m_dNotchBaseBelowSWL << " m" << endl;
+      OutStream << " Notch overhang to initiate collapse                       \t: " << m_dNotchIncisionAtCollapse << " m" << endl;
+      OutStream << " Notch base below SWL                                      \t: " << m_dNotchApexAboveMHW << " m" << endl;
       OutStream << " Scale parameter A for cliff deposition                    \t: ";
 
       if (bFPIsEqual(m_dCliffDepositionA, 0.0, TOLERANCE))
@@ -619,6 +620,16 @@ void CSimulation::WriteStartRunDetails(void)
 
    if (m_bOutputErosionPotentialData)
       OutStream << " (see " << m_strOutPath << EROSION_POTENTIAL_LOOKUP_FILE << ")";
+
+   OutStream << " Runup equation                                            \t: ";
+   if (m_nRunUpEquation == 0)
+      OutStream << "none";
+   else if (m_nRunUpEquation == RUNUP_EQUATION_NIELSEN_HANSLOW)
+      OutStream << "Nielsen and Hanslow (1991)";
+   else if (m_nRunUpEquation == RUNUP_EQUATION_MASE)
+      OutStream << "Mase (1989)";
+   else if (m_nRunUpEquation == RUNUP_EQUATION_STOCKDON)
+      OutStream << "Stockdon et al. (2006)";
 
    OutStream << endl << endl;
 
@@ -1079,7 +1090,7 @@ bool CSimulation::bWritePerTimestepResultsCSV(void)
 //===============================================================================================================================
 bool CSimulation::bWriteTSFiles(void)
 {
-   // Sea area
+   // This-iteration sea area
    if (m_bSeaAreaTSSave)
    {
       // Output in external CRS units
@@ -1090,18 +1101,18 @@ bool CSimulation::bWriteTSFiles(void)
          return false;
    }
 
-   // Still water level
+   // This-iteration SWL, mean SWL, and MHW
    if (m_bSWLTSSave)
    {
       // Output as is (m)
-      SWLTSStream << m_dSimElapsed << "\t,\t" << m_dThisIterSWL << "\t,\t" << m_dThisIterMeanSWL << endl;
+      SWLTSStream << m_dSimElapsed << "\t,\t" << m_dThisIterSWL << "\t,\t" << m_dThisIterMeanSWL << "\t,\t" << m_dThisIterMHWElev << endl;
 
       // Did a time series file write error occur?
       if (SWLTSStream.fail())
          return false;
    }
 
-   // Actual platform erosion (fine, sand, and coarse)
+   // This-iteration actual platform erosion (fine, sand, and coarse)
    if (m_bActualPlatformErosionTSSave)
    {
       // Output as is (m depth equivalent)
@@ -1112,10 +1123,13 @@ bool CSimulation::bWriteTSFiles(void)
          return false;
    }
 
-   // Cliff collapse erosion (fine, sand, and coarse)
+   // This-iteration cliff collapse erosion (fine, sand, and coarse)
    if (m_bCliffCollapseErosionTSSave)
    {
-      // Output as is (m depth equivalent)
+      // Output the number of cells with cliff collapse this iteration
+      CliffCollapseErosionTSStream << m_nNumThisIterCliffCollapse << "\t,\t";
+
+      // Now output how much was eroded via cliff collapse, as is (m depth equivalent)
       CliffCollapseErosionTSStream << m_dSimElapsed << "\t,\t" << m_dThisIterCliffCollapseErosionFineUncons << ",\t" << m_dThisIterCliffCollapseErosionSandUncons << ",\t" << m_dThisIterCliffCollapseErosionCoarseUncons << endl;
 
       // Did a time series file write error occur?
@@ -1123,7 +1137,18 @@ bool CSimulation::bWriteTSFiles(void)
          return false;
    }
 
-   // Cliff collapse deposition (sand and coarse)
+   // This-iteration cliff notch apex elevation
+   if (m_bCliffNotchElevTSSave)
+   {
+      // Output as is (m depth equivalent)
+      CliffNotchElevTSStream << m_dSimElapsed << "\t,\t" << m_dThisIterNewNotchApexElev << endl;
+
+      // Did a time series file write error occur?
+      if (CliffNotchElevTSStream.fail())
+         return false;
+   }
+
+   // This-iteration cliff talus collapse deposition (sand and coarse)
    if (m_bCliffCollapseDepositionTSSave)
    {
       // Output as is (m depth equivalent)
@@ -1134,7 +1159,7 @@ bool CSimulation::bWriteTSFiles(void)
          return false;
    }
 
-   // Cliff collapse net
+   // This-iteration cliff collapse net
    if (m_bCliffCollapseNetTSSave)
    {
       // Output as is (m depth equivalent)
@@ -1145,7 +1170,7 @@ bool CSimulation::bWriteTSFiles(void)
          return false;
    }
 
-   // Beach erosion (fine, sand, and coarse)
+   // This-iteration beach erosion (fine, sand, and coarse)
    if (m_bBeachErosionTSSave)
    {
       // Output as is (m depth equivalent)
@@ -1156,7 +1181,7 @@ bool CSimulation::bWriteTSFiles(void)
          return false;
    }
 
-   // Beach deposition (sand and coarse)
+   // This-iteration beach deposition (sand and coarse)
    if (m_bBeachDepositionTSSave)
    {
       // Output as is (m depth equivalent)
@@ -1167,7 +1192,7 @@ bool CSimulation::bWriteTSFiles(void)
          return false;
    }
 
-   // Net change in beach sediment
+   // This iteration net change in beach sediment
    if (m_bBeachSedimentChangeNetTSSave)
    {
       // Output as is (m depth equivalent)
@@ -1178,6 +1203,7 @@ bool CSimulation::bWriteTSFiles(void)
          return false;
    }
 
+   // This-iteration suspended sediment to suspension
    if (m_bSuspSedTSSave)
    {
       // Output as is (m depth equivalent)
@@ -1188,6 +1214,7 @@ bool CSimulation::bWriteTSFiles(void)
          return false;
    }
 
+   // This-iteration setup surge water level
    if (m_bFloodSetupSurgeTSSave)
    {
       // Output as is (m depth equivalent)
@@ -1198,6 +1225,7 @@ bool CSimulation::bWriteTSFiles(void)
          return false;
    }
 
+   // This-iteration setup surge runup
    if (m_bFloodSetupSurgeRunupTSSave)
    {
       // Output as is (m depth equivalent)
@@ -1205,17 +1233,6 @@ bool CSimulation::bWriteTSFiles(void)
 
       // Did a time series file write error occur?
       if (FloodSetupSurgeRunupTSStream.fail())
-         return false;
-   }
-
-   // Cliff notch elevation
-   if (m_bCliffNotchElevTSSave)
-   {
-      // Output as is (m depth equivalent)
-      CliffNotchElevTSStream << m_dSimElapsed << "\t,\t" << m_dThisIterNotchBaseElev << endl;
-
-      // Did a time series file write error occur?
-      if (CliffNotchElevTSStream.fail())
          return false;
    }
 
@@ -1544,8 +1561,7 @@ int CSimulation::nWriteEndRunDetails(void)
    OutStream << "                                                       = " << 24 * ldTotalLost * m_dCellArea / m_dSimDuration << " m^3/day" << endl;
    OutStream << "                                                       = " << ldTotalLost * m_dCellArea / m_dSimDuration << " m^3/hour" << endl;
    OutStream << fixed << setprecision(6);
-   OutStream << "                                                       = " << ldTotalLost * m_dCellArea / (m_dSimDuration * 3600) << " m^3/sec" << endl
-             << endl;
+   OutStream << "                                                       = " << ldTotalLost * m_dCellArea / (m_dSimDuration * 3600) << " m^3/sec" << endl << endl;
    OutStream << fixed << setprecision(3);
 
    if (m_nLogFileDetail >= LOG_FILE_MIDDLE_DETAIL)
@@ -1656,11 +1672,11 @@ void CSimulation::WritePolygonPreExistingSedimentTable(void)
    double dTmpSandTot = 0;
    double dTmpCoarseTot = 0;
 
-   m_dTotalFineConsInPolygons =
-   m_dTotalSandConsInPolygons =
-   m_dTotalCoarseConsInPolygons =
-   m_dTotalFineUnconsInPolygons =
-   m_dTotalSandUnconsInPolygons =
+   m_dTotalFineConsInPolygons = 0;
+   m_dTotalSandConsInPolygons = 0;
+   m_dTotalCoarseConsInPolygons = 0;
+   m_dTotalFineUnconsInPolygons = 0;
+   m_dTotalSandUnconsInPolygons = 0;
    m_dTotalCoarseUnconsInPolygons = 0;
 
    // TODO 082 Also show m_dStartIterUnconsFineAllCells etc.
@@ -2264,9 +2280,9 @@ void CSimulation::DoEndOfTimestepTotals(void)
       {
          for (int nY = 0; nY < m_nYGridSize; nY++)
          {
-            dEndIterConsFineAllCells += m_pRasterGrid->m_Cell[nX][nY].dGetTotConsFineThickConsiderNotch();
-            dEndIterConsSandAllCells += m_pRasterGrid->m_Cell[nX][nY].dGetTotConsSandThickConsiderNotch();
-            dEndIterConsCoarseAllCells += m_pRasterGrid->m_Cell[nX][nY].dGetTotConsCoarseThickConsiderNotch();
+            dEndIterConsFineAllCells += m_pRasterGrid->m_Cell[nX][nY].dGetConsFineDepthAllLayers();
+            dEndIterConsSandAllCells += m_pRasterGrid->m_Cell[nX][nY].dGetConsSandDepthAllLayers();
+            dEndIterConsCoarseAllCells += m_pRasterGrid->m_Cell[nX][nY].dGetConsCoarseDepthAllLayers();
 
             double dSuspFine = m_pRasterGrid->m_Cell[nX][nY].dGetSuspendedSediment();
 
@@ -2276,7 +2292,7 @@ void CSimulation::DoEndOfTimestepTotals(void)
                nSuspFineCellsAllCells++;
             }
 
-            double dUnconsFine = m_pRasterGrid->m_Cell[nX][nY].dGetTotUnconsFine();
+            double dUnconsFine = m_pRasterGrid->m_Cell[nX][nY].dGetUnconsFineDepthAllLayers();
 
             if (dUnconsFine > 0)
             {
@@ -2284,7 +2300,7 @@ void CSimulation::DoEndOfTimestepTotals(void)
                nUnconsFineCellsAllCells++;
             }
 
-            double dUnconsSand = m_pRasterGrid->m_Cell[nX][nY].dGetTotUnconsSand();
+            double dUnconsSand = m_pRasterGrid->m_Cell[nX][nY].dGetUnconsSandDepthAllLayers();
 
             if (dUnconsSand > 0)
             {
@@ -2292,7 +2308,7 @@ void CSimulation::DoEndOfTimestepTotals(void)
                nUnconsSandCellsAllCells++;
             }
 
-            double dUnconsCoarse = m_pRasterGrid->m_Cell[nX][nY].dGetTotUnconsCoarse();
+            double dUnconsCoarse = m_pRasterGrid->m_Cell[nX][nY].dGetUnconsCoarseDepthAllLayers();
 
             if (dUnconsCoarse > 0)
             {
@@ -2304,9 +2320,9 @@ void CSimulation::DoEndOfTimestepTotals(void)
             if (m_pRasterGrid->m_Cell[nX][nY].nGetPolygonID() != INT_NODATA)
             {
                // It is within a polygon
-               dEndIterConsFineInPolygons += m_pRasterGrid->m_Cell[nX][nY].dGetTotConsFineThickConsiderNotch();
-               dEndIterConsSandInPolygons += m_pRasterGrid->m_Cell[nX][nY].dGetTotConsSandThickConsiderNotch();
-               dEndIterConsCoarseInPolygons += m_pRasterGrid->m_Cell[nX][nY].dGetTotConsCoarseThickConsiderNotch();
+               dEndIterConsFineInPolygons += m_pRasterGrid->m_Cell[nX][nY].dGetConsFineDepthAllLayers();
+               dEndIterConsSandInPolygons += m_pRasterGrid->m_Cell[nX][nY].dGetConsSandDepthAllLayers();
+               dEndIterConsCoarseInPolygons += m_pRasterGrid->m_Cell[nX][nY].dGetConsCoarseDepthAllLayers();
 
                dSuspFine = m_pRasterGrid->m_Cell[nX][nY].dGetSuspendedSediment();
 
@@ -2316,7 +2332,7 @@ void CSimulation::DoEndOfTimestepTotals(void)
                   nSuspFineCellsInPolygons++;
                }
 
-               dUnconsFine = m_pRasterGrid->m_Cell[nX][nY].dGetTotUnconsFine();
+               dUnconsFine = m_pRasterGrid->m_Cell[nX][nY].dGetUnconsFineDepthAllLayers();
 
                if (dUnconsFine > 0)
                {
@@ -2324,7 +2340,7 @@ void CSimulation::DoEndOfTimestepTotals(void)
                   nUnconsFineCellsInPolygons++;
                }
 
-               dUnconsSand = m_pRasterGrid->m_Cell[nX][nY].dGetTotUnconsSand();
+               dUnconsSand = m_pRasterGrid->m_Cell[nX][nY].dGetUnconsSandDepthAllLayers();
 
                if (dUnconsSand > 0)
                {
@@ -2332,7 +2348,7 @@ void CSimulation::DoEndOfTimestepTotals(void)
                   nUnconsSandCellsInPolygons++;
                }
 
-               dUnconsCoarse = m_pRasterGrid->m_Cell[nX][nY].dGetTotUnconsCoarse();
+               dUnconsCoarse = m_pRasterGrid->m_Cell[nX][nY].dGetUnconsCoarseDepthAllLayers();
 
                if (dUnconsCoarse > 0)
                {
@@ -2468,9 +2484,9 @@ void CSimulation::DoEndOfTimestepTotals(void)
       LogStream << endl;
 
       // Now look at unconsolidated sediment
-      dFineTmp =
-          dSandTmp =
-              dCoarseTmp = 0;
+      dFineTmp = 0;
+      dSandTmp = 0;
+      dCoarseTmp = 0;
 
       LogStream << m_ulIter << ": Unconsolidated sediment budget, all m^3." << endl;
 

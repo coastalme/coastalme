@@ -72,8 +72,8 @@ void CA2DShape::Append(double const dX, double const dY)
    m_VPoints.push_back(CGeom2DPoint(dX, dY));
 }
 
-//! Appends a point to this 2D shape only if it isn't already in the shape vector
-void CA2DShape::AppendIfNotAlready(double const dX, double const dY)
+//! Appends a point to this 2D shape only if the point is not the same as the previous point in the vector
+void CA2DShape::AppendIfNotPrevious(double const dX, double const dY)
 {
    CGeom2DPoint const PtIn(dX, dY);
 

@@ -37,6 +37,8 @@
 
 #include <cstdlib>
 
+#include <float.h>
+
 #include <cctype>
 using std::tolower;
 
@@ -79,6 +81,86 @@ using std::transform;
 #include "simulation.h"
 #include "coast.h"
 #include "2di_point.h"
+
+//===============================================================================================================================
+//! Returns the missing value code for double precision
+//===============================================================================================================================
+double CSimulation::dGetMissingValue(void) const
+{
+   return m_dMissingValue;
+}
+
+//===============================================================================================================================
+//! Returns the still water level (SWL)
+//===============================================================================================================================
+double CSimulation::dGetThisIterSWL(void) const
+{
+   return m_dThisIterSWL;
+}
+
+//===============================================================================================================================
+//! Returns the this-iteration total water level TODO 007 Finish surge and runup stuff
+//===============================================================================================================================
+double CSimulation::dGetThisIterTotWaterLevel(void) const
+{
+   return m_dThisIterDiffTotWaterLevel;
+}
+
+// //===============================================================================================================================
+// //! Returns the max elevation of the beach above SWL
+// //===============================================================================================================================
+// double CSimulation::dGetMaxBeachElevAboveSWL (void) const
+// {
+// return m_dMaxBeachElevAboveSWL;
+// }
+
+//===============================================================================================================================
+// Returns the cell side length
+//===============================================================================================================================
+// double CSimulation::dGetCellSide(void) const
+// {
+// return m_dCellSide;
+// }
+
+//===============================================================================================================================
+//! Returns X grid max
+//===============================================================================================================================
+int CSimulation::nGetGridXMax(void) const
+{
+   return m_nXGridSize;
+}
+
+//===============================================================================================================================
+//! Returns Y grid max
+//===============================================================================================================================
+int CSimulation::nGetGridYMax(void) const
+{
+   return m_nYGridSize;
+}
+
+//===============================================================================================================================
+//! Returns D50 for fine sediment
+//===============================================================================================================================
+double CSimulation::dGetD50Fine(void) const
+{
+   return m_dD50Fine;
+}
+
+//===============================================================================================================================
+//! Returns D50 for sand sediment
+//===============================================================================================================================
+double CSimulation::dGetD50Sand(void) const
+{
+   return m_dD50Sand;
+}
+
+//===============================================================================================================================
+//! Returns D50 for coarse sediment
+//===============================================================================================================================
+double CSimulation::dGetD50Coarse(void) const
+{
+   return m_dD50Coarse;
+}
 
 //===============================================================================================================================
 //! Handles command-line parameters
@@ -138,7 +220,7 @@ int CSimulation::nHandleCommandLineParams(int nArg, char const* pcArgv[])
                // User wants to use YAML format for input datafile
                m_bYamlInputFormat = true;
             }
-            
+
             else if (strArg.find("--home") != string::npos)
             {
                // Read in user defined runtime directory
@@ -673,21 +755,27 @@ string CSimulation::strListRasterFiles(void) const
       strTmp.append(", ");
    }
 
-   if (m_bSedimentTopSurfSave)
+   if (m_bSedIncTalusTopSurfSave)
    {
       strTmp.append(RASTER_SEDIMENT_TOP_CODE);
       strTmp.append(", ");
    }
 
-   if (m_bTopSurfSave)
+   if (m_bTopSurfIncSeaSave)
    {
-      strTmp.append(RASTER_TOP_CODE);
+      strTmp.append(RASTER_TOP_ELEVATION_INC_SEA_CODE);
+      strTmp.append(", ");
+   }
+
+   if (m_bTalusSave)
+   {
+      strTmp.append(RASTER_TALUS_CODE);
       strTmp.append(", ");
    }
 
    if (m_bSeaDepthSave)
    {
-      strTmp.append(RASTER_SEA_DEPTH_NAME);
+      strTmp.append(RASTER_SEA_DEPTH_CODE);
       strTmp.append(", ");
    }
 
@@ -2223,6 +2311,10 @@ string CSimulation::strGetErrorText(int const nErr)
       strErr = "cell marked as in polygon, but does not have polygon's coast";
       break;
 
+   case RTN_ERR_CLIFF_TALUS_TO_UNCONS:
+      strErr = "cannot find closest point to coast when moving talus to unconsolidated sediment";
+      break;
+
    case RTN_ERR_UNKNOWN:
       strErr = "unknown error";
       break;
@@ -2579,14 +2671,13 @@ void CSimulation::CalcDeanProfile(vector<double>* pdVDeanProfile, double const d
    if (bDeposition)
    {
       // This Dean profile is for deposition i.e. seaward displacement of the profile
-      pdVDeanProfile->at(0) = dStartCellElev; // Is talus-top elev for cliffs, coast elevation for coasts
+      pdVDeanProfile->at(0) = dStartCellElev;   // Is coast elevation
 
       for (int n = 1; n < static_cast<int>(pdVDeanProfile->size()); n++)
       {
          if (n <= nSeawardOffset)
-            // As we extend the profile seaward, the elevation of any points coastward of the new coast point of the Dean profile are set to the elevation of the original coast or the talus top (is this realistic for talus?)
+            // As we extend the profile seaward, the elevation of any points coastward of the new coast point of the Dean profile are set to the elevation of the original coast point
             pdVDeanProfile->at(n) = dStartCellElev;
-
          else
          {
             double const dDistBelowTop = dA * pow(dDistFromProfileStart, DEAN_POWER);
@@ -2596,7 +2687,6 @@ void CSimulation::CalcDeanProfile(vector<double>* pdVDeanProfile, double const d
          }
       }
    }
-
    else
    {
       // This Dean profile is for erosion i.e. landward displacement of the profile
@@ -2964,7 +3054,8 @@ unsigned long CSimulation::ulConvertToTimestep(string const* pstrIn) const
 //===============================================================================================================================
 bool CSimulation::bIsInterventionCell(int const nX, int const nY) const
 {
-   if (m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->nGetLFCategory() == LF_CAT_INTERVENTION)
+   int const nCat = m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->nGetLFCategory();
+   if ((nCat == LF_INTERVENTION_STRUCT) || (nCat == LF_INTERVENTION_NON_STRUCT))
       return true;
 
    return false;
@@ -2981,4 +3072,52 @@ void CSimulation::DoEndOfRunDeletes(void)
    // m_VFloodWaveSetup.clear();
    m_VFloodWaveSetupSurge.clear();
    m_VFloodWaveSetupSurgeRunup.clear();
+}
+
+//===============================================================================================================================
+//! Calculate Mean High Water (MHW) elevation for a given duration (in days). This is a tidal datum determined from the arithmetic mean of the high water heights observed each tidal day
+//===============================================================================================================================
+void CSimulation::CalcMHWElevation(int const nTideDataCount)
+{
+   // Calculate the number of tide values to read
+   int const nTidevaluesPerDay = tMax(nRound(24 / m_dTimeStep), 1);
+   int const nTideValuesToRead = nTidevaluesPerDay * NUM_DAYS_FOR_MEAN_HIGH_WATER_CALC;
+
+   int const nNumTideValues = static_cast<int>(m_VdTideData.size());
+
+   // Now read the tide data (note that this assumes that the first line of the tide data is the first tide reading of the day)
+   int nThisCount = nTideDataCount;
+   double dTotMaxTide = 0;
+   for (int n = 0; n < nTideValuesToRead; n++)
+   {
+      // Read in this days's tide data
+      double dDayMaxTide = -DBL_MAX;
+      for (int m = 0; m < nTidevaluesPerDay; m++)
+      {
+         // If necessary, wrap the tide data, i.e. start again with the first line of the tide data if we do not have enough
+         if (nThisCount > nNumTideValues - 1)
+            nThisCount = 0;
+
+         double const dThisTideData = m_VdTideData[nThisCount];
+
+         if (dThisTideData > dDayMaxTide)
+            dDayMaxTide = dThisTideData;
+
+         nThisCount++;
+      }
+
+      // We have the max tide for the day, so increment the total of highest daily tides
+      dTotMaxTide += dDayMaxTide;
+   }
+
+   // Now calculate the average max tide for the next NUM_DAYS_FOR_MEAN_HIGH_WATER_CALC days
+   double const dMaxTideAvg = dTotMaxTide / nTideValuesToRead;
+
+   // Finally, calculate MHW for this iteration (includes long-term SWL change)
+   m_dThisIterMHWElev = m_dThisIterMeanSWL + dMaxTideAvg;
+
+   // And set the apex elevation of any new cliff notches (i.e. cliff notches which will be created during this timestep) to be at or slightly above MHW level
+   m_dThisIterNewNotchApexElev = m_dThisIterMHWElev + m_dNotchApexAboveMHW;
+
+   // LogStream << m_ulIter << ": this-iteration MHW elevation = " << m_dThisIterMHWElev << " elevation of apex of new cliff notches = " << m_dThisIterNewNotchApexElev << endl;
 }

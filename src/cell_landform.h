@@ -27,9 +27,6 @@ class CRWCellLandform
    //! Landform category for this cell
    int m_nCategory;
 
-   //! Landform subcategory for this cell
-   int m_nSubCategory;
-
    //! Coast on which this landform sits (if any)
    int m_nCoast;
 
@@ -51,13 +48,15 @@ class CRWCellLandform
       struct
       {
          //! Cliff notch base elevation
-         double m_dNotchBaseElev;
+         double m_dNotchApexElev;
 
          //! Cliff notch, horizontal depth of incision
-         double m_dNotchDepth;
+         double m_dNotchIncision;
 
+#ifdef _DEBUG
          //! Timestep at which cliff collapse occurred
          unsigned long m_ulCollapseTimestep;
+#endif
       } m_sCliffData;
 
    } m_uLFData;
@@ -69,21 +68,28 @@ class CRWCellLandform
 
    void SetLFCategory(int const);
    int nGetLFCategory(void) const;
-   void SetLFSubCategory(int const);
-   int nGetLFSubCategory(void) const;
+
    void SetCoast(int const);
    int nGetCoast(void) const;
+
    void SetPointOnCoast(int const);
    int nGetPointOnCoast(void) const;
+
    void SetAccumWaveEnergy(double const);
+   void AddToAccumWaveEnergy(double const);
    double dGetAccumWaveEnergy(void) const;
-   void SetCliffNotchBaseElev(double const);
-   double dGetCliffNotchBaseElev(void) const;
-   void SetCliffNotchDepth(double const);
-   double dGetCliffNotchDepth(void) const;
+
+   void SetCliffNotchApexElev(double const);
+   double dGetCliffNotchApexElev(void) const;
+   void SetCliffNotchIncisionDepth(double const);
+   void AddToCliffNotchIncisionDepth(double const);
+   double dGetCliffNotchIncisionDepth(void) const;
    // void SetCliffRemaining(double const);
    // double dGetCliffRemaining(void) const;
+
+#ifdef _DEBUG
    void SetCliffCollapseTimestep(unsigned long const);
    unsigned long ulGetCliffCollapseTimestep(void) const;
+#endif
 };
 #endif // CELL_LANDFORM_H

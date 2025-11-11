@@ -22,15 +22,16 @@
 
 //! Constructor
 CRWCellLandform::CRWCellLandform()
-    : m_nCategory(LF_NONE),
-      m_nSubCategory(LF_NONE),
+    : m_nCategory(LF_UNKNOWN),
       m_nCoast(-1),
       m_nPointOnCoastline(-1),
       m_dAccumWaveEnergy(0)
 {
-   m_uLFData.m_sCliffData.m_dNotchBaseElev = DBL_NODATA;
-   m_uLFData.m_sCliffData.m_dNotchDepth = DBL_NODATA;
+   m_uLFData.m_sCliffData.m_dNotchApexElev = DBL_NODATA;
+   m_uLFData.m_sCliffData.m_dNotchIncision = DBL_NODATA;
+#ifdef _DEBUG
    m_uLFData.m_sCliffData.m_ulCollapseTimestep = UNSIGNED_LONG_NODATA;
+#endif
 }
 
 //! Destructor
@@ -48,25 +49,6 @@ void CRWCellLandform::SetLFCategory(int const nClassIn)
 int CRWCellLandform::nGetLFCategory(void) const
 {
    return m_nCategory;
-}
-
-//! Set the both the landform sub-category, and the landform category (includes some rules to ensure category/subcategory consistency)
-void CRWCellLandform::SetLFSubCategory(int const nClassIn)
-{
-   m_nSubCategory = nClassIn;
-
-   if ((nClassIn == LF_SUBCAT_CLIFF_ON_COASTLINE) || (nClassIn == LF_SUBCAT_CLIFF_INLAND))
-      m_nCategory = LF_CAT_CLIFF;
-   else if ((nClassIn == LF_SUBCAT_DRIFT_TALUS) || (nClassIn == LF_SUBCAT_DRIFT_BEACH) || (nClassIn == LF_SUBCAT_DRIFT_MIXED))
-      m_nCategory = LF_CAT_DRIFT;
-   else if ((nClassIn == LF_SUBCAT_SEDIMENT_INPUT_UNCONSOLIDATED) || (nClassIn == LF_SUBCAT_SEDIMENT_INPUT_CONSOLIDATED))
-      m_nCategory = LF_CAT_SEDIMENT_INPUT;
-}
-
-//! Get the landform sub-category
-int CRWCellLandform::nGetLFSubCategory(void) const
-{
-   return m_nSubCategory;
 }
 
 //! Set the coast number
@@ -99,34 +81,46 @@ void CRWCellLandform::SetAccumWaveEnergy(double const dEnergyIn)
    m_dAccumWaveEnergy = dEnergyIn;
 }
 
+//! Add to acccumulated wave energy
+void CRWCellLandform::AddToAccumWaveEnergy(double const dEnergyIn)
+{
+   m_dAccumWaveEnergy += dEnergyIn;
+}
+
 //! Get accumulated wave energy
 double CRWCellLandform::dGetAccumWaveEnergy(void) const
 {
    return m_dAccumWaveEnergy;
 }
 
-//! Set cliff notch base elevation
-void CRWCellLandform::SetCliffNotchBaseElev(double const dElevIn)
+//! Set cliff notch apex elevation
+void CRWCellLandform::SetCliffNotchApexElev(double const dElevIn)
 {
-   m_uLFData.m_sCliffData.m_dNotchBaseElev = dElevIn;
+   m_uLFData.m_sCliffData.m_dNotchApexElev = dElevIn;
 }
 
-//! Get cliff notch base elevation
-double CRWCellLandform::dGetCliffNotchBaseElev(void) const
+//! Get cliff notch apex elevation: this is the elevation of the most deeply incised horizontal plane within the notch, see Figure 3 in Trenhaile, A.S. (2015). Coastal notches: Their morphology, formation, and function. Earth-Science Reviews 150, 285-304. In CoastalME, where the notch is assumed to have the same depth of incision on all horizonal planes within the notch, the apex is assumed to be the vertical mid-point between the upper and lower edges of the notch
+double CRWCellLandform::dGetCliffNotchApexElev(void) const
 {
-   return m_uLFData.m_sCliffData.m_dNotchBaseElev;
+   return m_uLFData.m_sCliffData.m_dNotchApexElev;
 }
 
-//! Set the horizontal depth of cliff notch incision for this cell
-void CRWCellLandform::SetCliffNotchDepth(double const dLenIn)
+//! Set the horizontal depth of cliff notch incision for this cell. This is the horizontal distance from the edge of the cell to the incised back of the notch
+void CRWCellLandform::SetCliffNotchIncisionDepth(double const dLenIn)
 {
-   m_uLFData.m_sCliffData.m_dNotchDepth = dLenIn;
+   m_uLFData.m_sCliffData.m_dNotchIncision = dLenIn;
 }
 
-//! Get the horizontal depth of cliff notch incision for this cell
-double CRWCellLandform::dGetCliffNotchDepth(void) const
+//! Adds to the horizontal depth of cliff notch incision for this cell. This is the horizontal distance from the edge of the cell to the incised back of the notch
+void CRWCellLandform::AddToCliffNotchIncisionDepth(double const dLenIn)
 {
-   return m_uLFData.m_sCliffData.m_dNotchDepth;
+   m_uLFData.m_sCliffData.m_dNotchIncision += dLenIn;
+}
+
+//! Get the horizontal depth of cliff notch incision for this cell. This is the horizontal distance from the edge of the cell to the incised back of the notch
+double CRWCellLandform::dGetCliffNotchIncisionDepth(void) const
+{
+   return m_uLFData.m_sCliffData.m_dNotchIncision;
 }
 
 // //! Set the cliff depth remaining on this cell
@@ -135,6 +129,7 @@ double CRWCellLandform::dGetCliffNotchDepth(void) const
 //    m_uLFData.m_sCliffData.m_dRemaining = dLenIn;
 // }
 
+#ifdef _DEBUG
 //! Set the timestep at which cliff collapse occurred
 void CRWCellLandform::SetCliffCollapseTimestep(unsigned long const ulTimestep)
 {
@@ -146,4 +141,5 @@ unsigned long CRWCellLandform::ulGetCliffCollapseTimestep(void) const
 {
    return m_uLFData.m_sCliffData.m_ulCollapseTimestep;
 }
+#endif
 

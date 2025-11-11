@@ -1,0 +1,22 @@
+Thanks for your contribution, which inspired me to create a variant with the following characteristics:
+
+* Doesn't create a subprocess to compute the md5 for each suppression.
+* Eliminates any suppression name line from the checksum, so you can freely name your suppression rules.
+* Outputs the rules in a stable order (sorted by checksum) so that you can easily diff rules files.
+* You can specify your existing rule base as input while running your program, so duplicates are picked-off from previous runs.
+Usage:
+
+  grindmerge <input >output
+
+or, more cleverly:
+
+  valgrind --show-leak-kinds=all --leak-check=full  foo 3>&1 1>&2 2>&3 | grindmerge.sh -f oldrules >newrules
+
+The redirections swap stdout and stderr for valgrind (and your program), so that you can merge output with less noise. (Note that stderr output from your program will be discarded with this approach.)
+
+-f file lets you merge rules from an existing file while reading new data on stdin.
+
+Even if you generate your rules with wildcards, keep the resulting database for future runs so that you don't have to re-analyze the same reports.
+
+Enjoy.
+
