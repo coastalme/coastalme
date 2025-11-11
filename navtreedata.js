@@ -36,6 +36,15 @@ var NAVTREE =
       [ "Running CoastalME's test suite", "index.html#run_step3", null ],
       [ "Managing CoastalME's output", "index.html#run_step4", null ]
     ] ],
+    [ "Topics", "topics.html", "topics" ],
+    [ "Namespaces", "namespaces.html", [
+      [ "Namespace List", "namespaces.html", "namespaces_dup" ],
+      [ "Namespace Members", "namespacemembers.html", [
+        [ "All", "namespacemembers.html", null ],
+        [ "Functions", "namespacemembers_func.html", null ],
+        [ "Enumerations", "namespacemembers_enum.html", null ]
+      ] ]
+    ] ],
     [ "Data Structures", "annotated.html", [
       [ "Data Structures", "annotated.html", "annotated_dup" ],
       [ "Data Structure Index", "classes.html", null ],
@@ -44,6 +53,7 @@ var NAVTREE =
         [ "All", "functions.html", "functions_dup" ],
         [ "Functions", "functions_func.html", "functions_func" ],
         [ "Variables", "functions_vars.html", "functions_vars" ],
+        [ "Typedefs", "functions_type.html", null ],
         [ "Related Symbols", "functions_rela.html", null ]
       ] ]
     ] ],
@@ -53,7 +63,8 @@ var NAVTREE =
         [ "All", "globals.html", "globals_dup" ],
         [ "Functions", "globals_func.html", null ],
         [ "Variables", "globals_vars.html", "globals_vars" ],
-        [ "Typedefs", "globals_type.html", null ]
+        [ "Typedefs", "globals_type.html", null ],
+        [ "Macros", "globals_defs.html", null ]
       ] ]
     ] ]
   ] ]
@@ -62,18 +73,19 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"d1/d98/classCSimulation.html#a458e51ecc0449a41657145bb3b59b1de",
-"d1/d98/classCSimulation.html#a937fad7cdf9eb943dcb3132886008e18",
-"d1/d98/classCSimulation.html#ae7a8e20ea5a852f69bee1296ea3db020",
-"d1/dd9/classCGeomCell.html#a28962b8e41e82c7488373df1acec4bf2",
-"d3/d14/gis__vector_8cpp.html",
-"d6/d2a/cme_8h.html#a22d88fc088ccfc7b9d303879a933845f",
-"d6/d2a/cme_8h.html#a82426a65448ceda4c627551bd527e881",
-"d6/d2a/cme_8h.html#ad9851411f33c9543e11fb6ecefb06aca",
-"da/dae/classCGeomProfile.html#a11548359d3db93535befcaf518468f64",
-"dc/d01/classCConfiguration.html#a7c48e035f434be9b6dbff10f752093e4",
-"df/d45/classCGeomCoastPolygon.html#a0fd90dff4fa857f2012826e2fb1977c5",
-"globals_vars_d.html"
+"d1/d98/classCSimulation.html#a3a4363662afa125a3d12b0b62000d7dd",
+"d1/d98/classCSimulation.html#a88137bef651027792f9604086d7d60e6",
+"d1/d98/classCSimulation.html#ad6efeadaf2fb31baa509b6c689364da8",
+"d1/dbe/classCRWCoast.html#ae7a5003325513b3ccf0b3e826a357f0c",
+"d1/dfb/gis__raster_8cpp.html",
+"d5/dc6/classCRWCellSediment.html#a1d13f486c992f3a5ba3790f22caad688",
+"d6/d2a/cme_8h.html#a49957f1437c6414cdf7817d96d3f201f",
+"d6/d2a/cme_8h.html#a9b80da0a013dc9638b483c22500fa1cd",
+"d6/d2a/cme_8h.html#af6c6d20224df2dff4358def2628798b6",
+"da/dae/classCGeomProfile.html#a6927ee93268dfcfda8c0f9ab4fd13f68",
+"dc/d01/classCConfiguration.html#a669e8bc1f14a238da8c7d1fb351fb748",
+"dd/d6c/coast__landform_8h_source.html",
+"df/d45/classCGeomCoastPolygon.html#ad68047ef4a4f8e908858e960a0be4b05"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronization';

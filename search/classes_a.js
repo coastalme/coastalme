@@ -1,6 +1,4 @@
 var searchData=
 [
-  ['stack_0',['stack',['../d1/dc2/classstack.html',1,'']]],
-  ['string_1',['string',['../d5/d92/classstring.html',1,'']]],
-  ['stringstream_2',['stringstream',['../d9/d61/classstringstream.html',1,'']]]
+  ['node_0',['Node',['../d4/d39/structnanoflann_1_1KDTreeBaseClass_1_1Node.html',1,'nanoflann::KDTreeBaseClass']]]
 ];

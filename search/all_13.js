@@ -42,9 +42,18 @@ var searchData=
   ['time_5fyears_39',['TIME_YEARS',['../d6/d2a/cme_8h.html#ab5be4bd80026ae9a8db07b3a2078fd18',1,'cme.h']]],
   ['tmax_40',['tMax',['../d6/d2a/cme_8h.html#a7e895b460cef877dec4d12ead0c74f15',1,'tMax(T a, T b):&#160;cme.h'],['../d6/d2a/cme_8h.html#a291b9312aef99c7bd95a9de85ac68389',1,'tMax(T a, T b, T c):&#160;cme.h']]],
   ['tmin_41',['tMin',['../d6/d2a/cme_8h.html#a068017859403c0629d89f8d348f6c224',1,'tMin(T a, T b):&#160;cme.h'],['../d6/d2a/cme_8h.html#a7519b6befc02e6372a7c5ccd764b6135',1,'tMin(T a, T b, T c):&#160;cme.h']]],
-  ['tolerance_42',['TOLERANCE',['../d6/d2a/cme_8h.html#a08b1623863ee3bd4300a8892de323722',1,'cme.h']]],
-  ['truncatelinesegments_43',['TruncateLineSegments',['../d0/d89/classCGeomMultiLine.html#a5b5c8a7d272d53dd98279480f7a6a976',1,'CGeomMultiLine']]],
-  ['truncateoneprofileretainotherprofile_44',['TruncateOneProfileRetainOtherProfile',['../d1/d98/classCSimulation.html#add4b97b29fde8394685fa5802467731d',1,'CSimulation']]],
-  ['truncateprofile_45',['TruncateProfile',['../da/dae/classCGeomProfile.html#a0abde0df28990b1a8c20664d2bdcb07f',1,'CGeomProfile']]],
-  ['truncateprofileandappendnew_46',['TruncateProfileAndAppendNew',['../d1/d98/classCSimulation.html#a9d247d1e2cdf21052d912096a0a5be25',1,'CSimulation']]]
+  ['to_20tune_3a_42',['KEY PARAMETERS TO TUNE:',['../d4/da8/classSpatialInterpolator.html#autotoc_md1',1,'']]],
+  ['tolerance_43',['TOLERANCE',['../d6/d2a/cme_8h.html#a08b1623863ee3bd4300a8892de323722',1,'cme.h']]],
+  ['traits_44',['traits',['../d0/dcf/structnanoflann_1_1metric__L1_1_1traits.html',1,'nanoflann::metric_L1::traits&lt; T, DataSource, IndexType &gt;'],['../de/ddc/structnanoflann_1_1metric__L2_1_1traits.html',1,'nanoflann::metric_L2::traits&lt; T, DataSource, IndexType &gt;'],['../db/d84/structnanoflann_1_1metric__L2__Simple_1_1traits.html',1,'nanoflann::metric_L2_Simple::traits&lt; T, DataSource, IndexType &gt;'],['../d7/d0f/structnanoflann_1_1metric__SO2_1_1traits.html',1,'nanoflann::metric_SO2::traits&lt; T, DataSource, IndexType &gt;'],['../d4/dff/structnanoflann_1_1metric__SO3_1_1traits.html',1,'nanoflann::metric_SO3::traits&lt; T, DataSource, IndexType &gt;']]],
+  ['tree_20classes_20and_20adaptors_45',['KD-tree classes and adaptors',['../d0/d8e/group__kdtrees__grp.html',1,'']]],
+  ['treecount_5f_46',['treeCount_',['../d4/d9e/classnanoflann_1_1KDTreeSingleIndexDynamicAdaptor.html#a2f805b760e60bd0ff24fd1fafe05e7fe',1,'nanoflann::KDTreeSingleIndexDynamicAdaptor']]],
+  ['treeindex_5f_47',['treeIndex_',['../d1/db4/classnanoflann_1_1KDTreeSingleIndexDynamicAdaptor__.html#a251ac6fab7ee9b2e731d6ad15d466ec8',1,'nanoflann::KDTreeSingleIndexDynamicAdaptor_::treeIndex_'],['../d4/d9e/classnanoflann_1_1KDTreeSingleIndexDynamicAdaptor.html#ab74708de8276edf76d46c7cdf4bed18f',1,'nanoflann::KDTreeSingleIndexDynamicAdaptor::treeIndex_']]],
+  ['trees_48',['nanoflann C++ library for KD-trees',['../d7/d35/group__nanoflann__grp.html',1,'']]],
+  ['truncatelinesegments_49',['TruncateLineSegments',['../d0/d89/classCGeomMultiLine.html#a5b5c8a7d272d53dd98279480f7a6a976',1,'CGeomMultiLine']]],
+  ['truncateoneprofileretainotherprofile_50',['TruncateOneProfileRetainOtherProfile',['../d1/d98/classCSimulation.html#add4b97b29fde8394685fa5802467731d',1,'CSimulation']]],
+  ['truncateprofile_51',['TruncateProfile',['../da/dae/classCGeomProfile.html#a0abde0df28990b1a8c20664d2bdcb07f',1,'CGeomProfile']]],
+  ['truncateprofileandappendnew_52',['TruncateProfileAndAppendNew',['../d1/d98/classCSimulation.html#a9d247d1e2cdf21052d912096a0a5be25',1,'CSimulation']]],
+  ['tune_3a_53',['KEY PARAMETERS TO TUNE:',['../d4/da8/classSpatialInterpolator.html#autotoc_md1',1,'']]],
+  ['tuning_20parameters_3a_54',['TUNING PARAMETERS:',['../d2/d6b/structPoint2D.html#autotoc_md7',1,'']]],
+  ['type_55',['type',['../dd/d12/structnanoflann_1_1array__or__vector.html#a6802b707e96e829a9c1fc78fb58c7ef3',1,'nanoflann::array_or_vector::type'],['../df/d7b/structnanoflann_1_1array__or__vector_3-1_00_01T_01_4.html#abfd59e4836bdc8a8441e008cb8f12eb9',1,'nanoflann::array_or_vector&lt;-1, T &gt;::type'],['../dd/d12/structnanoflann_1_1array__or__vector.html#a6802b707e96e829a9c1fc78fb58c7ef3',1,'nanoflann::array_or_vector&lt;-1, T &gt;::type']]]
 ];

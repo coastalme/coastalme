@@ -1,0 +1,78 @@
+var group__nanoflann__grp =
+[
+    [ "Result set classes", "d8/d55/group__result__sets__grp.html", "d8/d55/group__result__sets__grp" ],
+    [ "Load/save auxiliary functions", "db/d0a/group__loadsave__grp.html", "db/d0a/group__loadsave__grp" ],
+    [ "Metric (distance) classes", "dc/ddd/group__metric__grp.html", "dc/ddd/group__metric__grp" ],
+    [ "Parameter structs", "d3/d0b/group__param__grp.html", "d3/d0b/group__param__grp" ],
+    [ "Memory allocation", "d7/df6/group__memalloc__grp.html", "d7/df6/group__memalloc__grp" ],
+    [ "Auxiliary metaprogramming stuff", "de/dfa/group__nanoflann__metaprog__grp.html", "de/dfa/group__nanoflann__metaprog__grp" ],
+    [ "KD-tree classes and adaptors", "d0/d8e/group__kdtrees__grp.html", "d0/d8e/group__kdtrees__grp" ],
+    [ "nanoflann::has_resize< T, typename >", "db/d13/structnanoflann_1_1has__resize.html", null ],
+    [ "nanoflann::has_resize< T, decltype((void) std::declval< T >().resize(1), 0)>", "da/d86/structnanoflann_1_1has__resize_3_01T_00_01decltype_07_07void_08_01std_1_1declval_3_01T_01_4_07_08_8resize_071_08_00_010_08_4.html", null ],
+    [ "nanoflann::has_assign< T, typename >", "d0/d8d/structnanoflann_1_1has__assign.html", null ],
+    [ "nanoflann::has_assign< T, decltype((void) std::declval< T >().assign(1, 0), 0)>", "da/dee/structnanoflann_1_1has__assign_3_01T_00_01decltype_07_07void_08_01std_1_1declval_3_01T_01_4_07_0384656df8feb37b62ef12dfcd439e93e.html", null ],
+    [ "nanoflann::IndexDist_Sorter", "d0/d61/structnanoflann_1_1IndexDist__Sorter.html", [
+      [ "operator()", "d0/d61/structnanoflann_1_1IndexDist__Sorter.html#a916a2c12be68be13b447d2dd7ae5cbbb", null ]
+    ] ],
+    [ "nanoflann::ResultItem< IndexType, DistanceType >", "d8/de3/structnanoflann_1_1ResultItem.html", [
+      [ "ResultItem", "d8/de3/structnanoflann_1_1ResultItem.html#a2ecdd45164fbde06dfed99ecd806c131", null ],
+      [ "ResultItem", "d8/de3/structnanoflann_1_1ResultItem.html#a41ff8a6fce5409ff8ac55cedfba3c0e3", null ],
+      [ "first", "d8/de3/structnanoflann_1_1ResultItem.html#af0bde6901f6c26b99a8c67212cc41ddc", null ],
+      [ "second", "d8/de3/structnanoflann_1_1ResultItem.html#a131d4fc59d80dc1bd0a509f6258889df", null ]
+    ] ],
+    [ "nanoflann::KDTreeBaseClass< Derived, Distance, DatasetAdaptor, DIM, index_t >", "df/d14/classnanoflann_1_1KDTreeBaseClass.html", [
+      [ "Interval", "d4/d08/structnanoflann_1_1KDTreeBaseClass_1_1Interval.html", [
+        [ "high", "d4/d08/structnanoflann_1_1KDTreeBaseClass_1_1Interval.html#ad0c01c08b71c987aff9ece6fb4c0a2d2", null ],
+        [ "low", "d4/d08/structnanoflann_1_1KDTreeBaseClass_1_1Interval.html#a61c3c11129d1740ef810c32807bc8738", null ]
+      ] ],
+      [ "Node", "d4/d39/structnanoflann_1_1KDTreeBaseClass_1_1Node.html", [
+        [ "child1", "d4/d39/structnanoflann_1_1KDTreeBaseClass_1_1Node.html#a97f23bf89b28c51c35eba0912fb63d94", null ],
+        [ "child2", "d4/d39/structnanoflann_1_1KDTreeBaseClass_1_1Node.html#a43167d1f83994cb74ab597c68d89261d", null ],
+        [ "divfeat", "d4/d39/structnanoflann_1_1KDTreeBaseClass_1_1Node.html#a6e1f2b7287da6c6eefa51262a9a945f5", null ],
+        [ "divhigh", "d4/d39/structnanoflann_1_1KDTreeBaseClass_1_1Node.html#aa90e14f141e9b9e3ccac8d37a0f6d76d", null ],
+        [ "divlow", "d4/d39/structnanoflann_1_1KDTreeBaseClass_1_1Node.html#a1fa44e6dcbb64427610efa7b85b652fe", null ],
+        [ "left", "d4/d39/structnanoflann_1_1KDTreeBaseClass_1_1Node.html#ab363a5dc812ae858cd491b5827cb89c7", null ],
+        [ "lr", "d4/d39/structnanoflann_1_1KDTreeBaseClass_1_1Node.html#a9c6c41600a5cbaec6c8a9da54b9a310b", null ],
+        [ "node_type", "d4/d39/structnanoflann_1_1KDTreeBaseClass_1_1Node.html#aede757f99be57159a032efd410e2bd24", null ],
+        [ "right", "d4/d39/structnanoflann_1_1KDTreeBaseClass_1_1Node.html#a5b040a325cdf2c4d419ce54badb9c27b", null ],
+        [ "sub", "d4/d39/structnanoflann_1_1KDTreeBaseClass_1_1Node.html#aede1aed1e165ae9db96a98b2e5944648", null ]
+      ] ],
+      [ "BoundingBox", "df/d14/classnanoflann_1_1KDTreeBaseClass.html#aebf0413c6f59d9a110cd17492ed1bb03", null ],
+      [ "Dimension", "df/d14/classnanoflann_1_1KDTreeBaseClass.html#a243fd953e694b877a30eab740f2a689d", null ],
+      [ "distance_vector_t", "df/d14/classnanoflann_1_1KDTreeBaseClass.html#a5838b34bdd328f5fe3ed34aa62f9c5ed", null ],
+      [ "DistanceType", "df/d14/classnanoflann_1_1KDTreeBaseClass.html#ad141d2e1ab93059f2de5020a128dbf89", null ],
+      [ "ElementType", "df/d14/classnanoflann_1_1KDTreeBaseClass.html#a568531f025502176331d657d9d281708", null ],
+      [ "IndexType", "df/d14/classnanoflann_1_1KDTreeBaseClass.html#aa04bbea6786b3506c6cab14d936df2af", null ],
+      [ "NodeConstPtr", "df/d14/classnanoflann_1_1KDTreeBaseClass.html#ad127a7dc85493d884abdb10700189abe", null ],
+      [ "NodePtr", "df/d14/classnanoflann_1_1KDTreeBaseClass.html#a744efd92c2841b249f4ca05e515f250b", null ],
+      [ "Offset", "df/d14/classnanoflann_1_1KDTreeBaseClass.html#ad5e3da7b9610009f2b1fbf724f43766b", null ],
+      [ "Size", "df/d14/classnanoflann_1_1KDTreeBaseClass.html#a328fa12c9d9b7c8a7728698dd3311df0", null ],
+      [ "computeInitialDistances", "df/d14/classnanoflann_1_1KDTreeBaseClass.html#a1c352f935fba404c182b89a41327bb5d", null ],
+      [ "computeMinMax", "df/d14/classnanoflann_1_1KDTreeBaseClass.html#a1f447ce5b26917b6ff7acbb2b038d31f", null ],
+      [ "dataset_get", "df/d14/classnanoflann_1_1KDTreeBaseClass.html#ae8586473f96133807b0f384af4ee0878", null ],
+      [ "divideTree", "df/d14/classnanoflann_1_1KDTreeBaseClass.html#a88d75541fc97a73f3d05afed26d74ec5", null ],
+      [ "divideTreeConcurrent", "df/d14/classnanoflann_1_1KDTreeBaseClass.html#ab3950948f0238a04eefbfefec443de76", null ],
+      [ "freeIndex", "df/d14/classnanoflann_1_1KDTreeBaseClass.html#a0fe02701493bf954fe7283f8fb0cd565", null ],
+      [ "load_tree", "df/d14/classnanoflann_1_1KDTreeBaseClass.html#a60db7de776a8fa1483c2cacfd71f3bca", null ],
+      [ "loadIndex", "df/d14/classnanoflann_1_1KDTreeBaseClass.html#ade0850b6ca61f000c48a63c38543a5af", null ],
+      [ "middleSplit_", "df/d14/classnanoflann_1_1KDTreeBaseClass.html#a10bceb3e318b87ab183e180fdc594f5a", null ],
+      [ "planeSplit", "df/d14/classnanoflann_1_1KDTreeBaseClass.html#a5c82acb52cf12ba4962b01d70bee6b81", null ],
+      [ "save_tree", "df/d14/classnanoflann_1_1KDTreeBaseClass.html#a94f0321cf28c9fd5ccb52f3d56671147", null ],
+      [ "saveIndex", "df/d14/classnanoflann_1_1KDTreeBaseClass.html#a2fc06a36245457762cc171d34f80ddee", null ],
+      [ "size", "df/d14/classnanoflann_1_1KDTreeBaseClass.html#aa13e90c0760a3b22a77ec6638bdd0890", null ],
+      [ "usedMemory", "df/d14/classnanoflann_1_1KDTreeBaseClass.html#ad9773cc4e61d108b64e4272111890b31", null ],
+      [ "veclen", "df/d14/classnanoflann_1_1KDTreeBaseClass.html#a10e620a123475ff0b34984797ea1bc19", null ],
+      [ "dim_", "df/d14/classnanoflann_1_1KDTreeBaseClass.html#a51a9278a664728ba897d9c1544032d71", null ],
+      [ "leaf_max_size_", "df/d14/classnanoflann_1_1KDTreeBaseClass.html#a7c0377a9bd5fbebca71b85724ef72cb6", null ],
+      [ "n_thread_build_", "df/d14/classnanoflann_1_1KDTreeBaseClass.html#a605ebf5e031c8ac694626d7b8970bc6f", null ],
+      [ "pool_", "df/d14/classnanoflann_1_1KDTreeBaseClass.html#ade6b735377b30520cd426b315d07002b", null ],
+      [ "root_bbox_", "df/d14/classnanoflann_1_1KDTreeBaseClass.html#a248609d7ee52c3c7bec5ee84ff7c9c19", null ],
+      [ "root_node_", "df/d14/classnanoflann_1_1KDTreeBaseClass.html#a972d4dcc38a5765c84f149ddcb118e2b", null ],
+      [ "size_", "df/d14/classnanoflann_1_1KDTreeBaseClass.html#ad5a92806f26ebcf076c7e89d7ad5b7e2", null ],
+      [ "size_at_index_build_", "df/d14/classnanoflann_1_1KDTreeBaseClass.html#ab0b8efb43b84979db5a5e2adca31e6b2", null ],
+      [ "vAcc_", "df/d14/classnanoflann_1_1KDTreeBaseClass.html#aa06c02336332fec40f46844995ac13bd", null ]
+    ] ],
+    [ "nanoflann::assign", "d7/d35/group__nanoflann__grp.html#ga8331979a31fb32a57092bbf62ff3357c", null ],
+    [ "nanoflann::pi_const", "d7/d35/group__nanoflann__grp.html#ga8f0721b066194bc7bb511f7344beb460", null ],
+    [ "nanoflann::resize", "d7/d35/group__nanoflann__grp.html#ga9de3899b4daa5a1c60febf57093bca74", null ]
+];

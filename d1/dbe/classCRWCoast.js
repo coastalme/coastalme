@@ -27,7 +27,7 @@ var classCRWCoast =
     [ "nGetCoastlineSize", "d1/dbe/classCRWCoast.html#a91449166a8df49fae05d8fcdf0bd2136", null ],
     [ "nGetCoastPointGivenCell", "d1/dbe/classCRWCoast.html#a6a6af57d19c557f10dd8e80c7c856e2f", null ],
     [ "nGetEndEdge", "d1/dbe/classCRWCoast.html#a2d322f39a2b5e51b0c2544f66b1efb7f", null ],
-    [ "nGetNumPolygons", "d1/dbe/classCRWCoast.html#af527777859e36678a880b37760ad8359", null ],
+    [ "nGetNumPolygons", "d1/dbe/classCRWCoast.html#a0eb997be39c9806570e31bc810a2ddf1", null ],
     [ "nGetNumProfiles", "d1/dbe/classCRWCoast.html#a84cd86d415ab742280dabeff3e1bacba", null ],
     [ "nGetNumShadowBoundaries", "d1/dbe/classCRWCoast.html#a6a8485d0dc82dd03f7a13648cd7c18cd", null ],
     [ "nGetNumShadowDowndriftBoundaries", "d1/dbe/classCRWCoast.html#a114b961db1451e15279969c25d2f1421", null ],

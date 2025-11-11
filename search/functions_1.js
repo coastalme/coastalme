@@ -88,13 +88,14 @@ var searchData=
   ['btooshort_85',['bTooShort',['../da/dae/classCGeomProfile.html#a941b6b75476754b07bff5128b52d8ad4',1,'CGeomProfile']]],
   ['btruncateddifferentcoast_86',['bTruncatedDifferentCoast',['../da/dae/classCGeomProfile.html#a6927ee93268dfcfda8c0f9ab4fd13f68',1,'CGeomProfile']]],
   ['btruncatedsamecoast_87',['bTruncatedSameCoast',['../da/dae/classCGeomProfile.html#aced84efc31db8be80fc225aefc135123',1,'CGeomProfile']]],
-  ['bupcoastisalreadypresent_88',['bUpCoastIsAlreadyPresent',['../df/d45/classCGeomCoastPolygon.html#a47a0a7f4a3c8a662e04b6cec488fcd6b',1,'CGeomCoastPolygon']]],
-  ['bwriteparprofiledata_89',['bWriteParProfileData',['../d1/d98/classCSimulation.html#a895b362ac483f31d1b9b2cbad55e5a4b',1,'CSimulation']]],
-  ['bwritepertimestepresults_90',['bWritePerTimestepResults',['../d1/d98/classCSimulation.html#a12eb5db7a1b6820a9516b1bdf9300206',1,'CSimulation']]],
-  ['bwritepertimestepresultscsv_91',['bWritePerTimestepResultsCSV',['../d1/d98/classCSimulation.html#a89aba720b0c62d69f0b824d191a4a7a7',1,'CSimulation']]],
-  ['bwritepertimestepresultsfixedwidth_92',['bWritePerTimestepResultsFixedWidth',['../d1/d98/classCSimulation.html#aa00d6d6ab1f5c61a6ae38ae3bc1a701c',1,'CSimulation']]],
-  ['bwriteprofiledata_93',['bWriteProfileData',['../d1/d98/classCSimulation.html#a87f6f2c63bd122a15032216b6efb5503',1,'CSimulation']]],
-  ['bwriterastergisfile_94',['bWriteRasterGISFile',['../d1/d98/classCSimulation.html#a04d8eb9adeca650966db464e84ba7bf8',1,'CSimulation']]],
-  ['bwritetsfiles_95',['bWriteTSFiles',['../d1/d98/classCSimulation.html#a6547fdbb035812094ba19f04ea46bc39',1,'CSimulation']]],
-  ['bwritevectorgisfile_96',['bWriteVectorGISFile',['../d1/d98/classCSimulation.html#a30a623f8ac310c5b704a441d97873fda',1,'CSimulation']]]
+  ['buildindex_88',['buildIndex',['../de/dd0/classnanoflann_1_1KDTreeSingleIndexAdaptor.html#a578c9c1e031edcb3bb82d5df20747f1e',1,'nanoflann::KDTreeSingleIndexAdaptor::buildIndex()'],['../d1/db4/classnanoflann_1_1KDTreeSingleIndexDynamicAdaptor__.html#a72f35d5aea4402ca6dd3d9fb22c6b020',1,'nanoflann::KDTreeSingleIndexDynamicAdaptor_::buildIndex()']]],
+  ['bupcoastisalreadypresent_89',['bUpCoastIsAlreadyPresent',['../df/d45/classCGeomCoastPolygon.html#a47a0a7f4a3c8a662e04b6cec488fcd6b',1,'CGeomCoastPolygon']]],
+  ['bwriteparprofiledata_90',['bWriteParProfileData',['../d1/d98/classCSimulation.html#a895b362ac483f31d1b9b2cbad55e5a4b',1,'CSimulation']]],
+  ['bwritepertimestepresults_91',['bWritePerTimestepResults',['../d1/d98/classCSimulation.html#a12eb5db7a1b6820a9516b1bdf9300206',1,'CSimulation']]],
+  ['bwritepertimestepresultscsv_92',['bWritePerTimestepResultsCSV',['../d1/d98/classCSimulation.html#a89aba720b0c62d69f0b824d191a4a7a7',1,'CSimulation']]],
+  ['bwritepertimestepresultsfixedwidth_93',['bWritePerTimestepResultsFixedWidth',['../d1/d98/classCSimulation.html#aa00d6d6ab1f5c61a6ae38ae3bc1a701c',1,'CSimulation']]],
+  ['bwriteprofiledata_94',['bWriteProfileData',['../d1/d98/classCSimulation.html#a87f6f2c63bd122a15032216b6efb5503',1,'CSimulation']]],
+  ['bwriterastergisfile_95',['bWriteRasterGISFile',['../d1/d98/classCSimulation.html#a04d8eb9adeca650966db464e84ba7bf8',1,'CSimulation']]],
+  ['bwritetsfiles_96',['bWriteTSFiles',['../d1/d98/classCSimulation.html#a6547fdbb035812094ba19f04ea46bc39',1,'CSimulation']]],
+  ['bwritevectorgisfile_97',['bWriteVectorGISFile',['../d1/d98/classCSimulation.html#a30a623f8ac310c5b704a441d97873fda',1,'CSimulation']]]
 ];

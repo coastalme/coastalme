@@ -1,9 +1,10 @@
 var searchData=
 [
-  ['ulconverttotimestep_0',['ulConvertToTimestep',['../d1/d98/classCSimulation.html#a506638311c349a08967f9e4ca3325334',1,'CSimulation']]],
-  ['ulgeteventtimestep_1',['ulGetEventTimeStep',['../d4/d9d/classCRWSedInputEvent.html#a847c313629ed0c6258977f3ac130fb7e',1,'CRWSedInputEvent']]],
-  ['unsetcheckfloodcell_2',['UnSetCheckFloodCell',['../d1/dd9/classCGeomCell.html#ae106cd0414a6692eec386b7777ffcf84',1,'CGeomCell']]],
-  ['unsetincontiguousflood_3',['UnSetInContiguousFlood',['../d1/dd9/classCGeomCell.html#a9c67655f5a57449a4dbb9dbba4597a8f',1,'CGeomCell']]],
-  ['usesystemtimeforrandomseed_4',['UseSystemTimeForRandomSeed',['../dc/d01/classCConfiguration.html#afc3a212aa254a1f7d4130f2a443b843b',1,'CConfiguration']]],
-  ['usesystemtimeforseed_5',['UseSystemTimeForSeed',['../dc/d01/classCConfiguration.html#aff4dd4f47acc09cef43ec15b676d6d2d',1,'CConfiguration']]]
+  ['tabs_0',['tAbs',['../d6/d2a/cme_8h.html#ae3b6dc50cfc97050529faa5e0bd66136',1,'cme.h']]],
+  ['tmax_1',['tMax',['../d6/d2a/cme_8h.html#a7e895b460cef877dec4d12ead0c74f15',1,'tMax(T a, T b):&#160;cme.h'],['../d6/d2a/cme_8h.html#a291b9312aef99c7bd95a9de85ac68389',1,'tMax(T a, T b, T c):&#160;cme.h']]],
+  ['tmin_2',['tMin',['../d6/d2a/cme_8h.html#a068017859403c0629d89f8d348f6c224',1,'tMin(T a, T b):&#160;cme.h'],['../d6/d2a/cme_8h.html#a7519b6befc02e6372a7c5ccd764b6135',1,'tMin(T a, T b, T c):&#160;cme.h']]],
+  ['truncatelinesegments_3',['TruncateLineSegments',['../d0/d89/classCGeomMultiLine.html#a5b5c8a7d272d53dd98279480f7a6a976',1,'CGeomMultiLine']]],
+  ['truncateoneprofileretainotherprofile_4',['TruncateOneProfileRetainOtherProfile',['../d1/d98/classCSimulation.html#add4b97b29fde8394685fa5802467731d',1,'CSimulation']]],
+  ['truncateprofile_5',['TruncateProfile',['../da/dae/classCGeomProfile.html#a0abde0df28990b1a8c20664d2bdcb07f',1,'CGeomProfile']]],
+  ['truncateprofileandappendnew_6',['TruncateProfileAndAppendNew',['../d1/d98/classCSimulation.html#a9d247d1e2cdf21052d912096a0a5be25',1,'CSimulation']]]
 ];

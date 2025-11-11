@@ -1,15 +1,20 @@
 var searchData=
 [
   ['obtaining_20the_20source_20code_0',['Obtaining the source code',['../index.html#install_step1',1,'']]],
-  ['ofstream_1',['ofstream',['../d9/d93/classofstream.html',1,'']]],
-  ['operator_21_3d_2',['operator!=',['../d5/d4e/classCGeom2DPoint.html#ab67a1d0553772d0bfdd4aaa925a4d52e',1,'CGeom2DPoint::operator!=(CGeom2DPoint const *) const'],['../d5/d4e/classCGeom2DPoint.html#a8ac9e5c85c6a387e88c4d2c0070be48d',1,'CGeom2DPoint::operator!=(CGeom2DPoint) const'],['../d6/d0d/classCGeom2DIPoint.html#a3532e1a64671c2338ca58a4800300984',1,'CGeom2DIPoint::operator!=(CGeom2DIPoint const *) const'],['../d6/d0d/classCGeom2DIPoint.html#a9b3e272a0dd2294d73e6c114ceca91c6',1,'CGeom2DIPoint::operator!=(CGeom2DIPoint) const']]],
-  ['operator_3c_3c_3',['operator&lt;&lt;',['../d2/dfd/utils__global_8cpp.html#ae0262af7d3f446a8eb6115d0cc71dee7',1,'utils_global.cpp']]],
-  ['operator_3d_4',['operator=',['../d5/d4e/classCGeom2DPoint.html#a41a2dd7367a0b2729848e7fca8a6e2e1',1,'CGeom2DPoint::operator=()'],['../d6/d0d/classCGeom2DIPoint.html#a9a2ddb4a1c8142159490364ef7018767',1,'CGeom2DIPoint::operator=()'],['../d5/dc6/classCRWCellSediment.html#ae45029320d13830b09569968d41c6be3',1,'CRWCellSediment::operator=()']]],
-  ['operator_3d_3d_5',['operator==',['../d5/d4e/classCGeom2DPoint.html#ac238ee088b928bbcfdad91e0c0905849',1,'CGeom2DPoint::operator==(CGeom2DPoint const *) const'],['../d5/d4e/classCGeom2DPoint.html#a3de57cf810783c31f7731a39187eb783',1,'CGeom2DPoint::operator==(CGeom2DPoint) const'],['../d6/d0d/classCGeom2DIPoint.html#a6f1eb2a5dffa10e54e5c1e3db069b036',1,'CGeom2DIPoint::operator==(CGeom2DIPoint const *) const'],['../d6/d0d/classCGeom2DIPoint.html#a3e98a887e57093a0477dffb7376279b2',1,'CGeom2DIPoint::operator==(CGeom2DIPoint) const']]],
-  ['operator_5b_5d_6',['operator[]',['../d9/d0e/classCA2DShape.html#af4420f608a68e28650424c8cab9ee51a',1,'CA2DShape::operator[]()'],['../d2/d0f/classCA2DIShape.html#ad79cc2e1d300fe5931e51fc70a865240',1,'CA2DIShape::operator[]()']]],
-  ['ostream_7',['ostream',['../d0/d43/classostream.html',1,'']]],
-  ['ostringstream_8',['ostringstream',['../d8/d79/classostringstream.html',1,'']]],
-  ['outext_9',['OUTEXT',['../d6/d2a/cme_8h.html#a4b80f97f210a9324fcbeb1678c9ad1da',1,'cme.h']]],
-  ['output_10',['Managing CoastalME&apos;s output',['../index.html#run_step4',1,'']]],
-  ['outstream_11',['OutStream',['../d1/d98/classCSimulation.html#af82d9601bd0baf856bb89973fb7516d4',1,'CSimulation']]]
+  ['offset_1',['Offset',['../df/d14/classnanoflann_1_1KDTreeBaseClass.html#ad5e3da7b9610009f2b1fbf724f43766b',1,'nanoflann::KDTreeBaseClass::Offset'],['../de/dd0/classnanoflann_1_1KDTreeSingleIndexAdaptor.html#a6bda5b2d247925f842cf7042480c9c84',1,'nanoflann::KDTreeSingleIndexAdaptor::Offset'],['../d1/db4/classnanoflann_1_1KDTreeSingleIndexDynamicAdaptor__.html#a72d3160be6d172ba991bdc700c3f9a24',1,'nanoflann::KDTreeSingleIndexDynamicAdaptor_::Offset'],['../d4/d9e/classnanoflann_1_1KDTreeSingleIndexDynamicAdaptor.html#a71963ef434e859eaa3b9effd198cb6b3',1,'nanoflann::KDTreeSingleIndexDynamicAdaptor::Offset'],['../d8/d4a/structnanoflann_1_1KDTreeEigenMatrixAdaptor.html#ae483cd39482dfe3ff90c68143e06d4ba',1,'nanoflann::KDTreeEigenMatrixAdaptor::Offset']]],
+  ['ofstream_2',['ofstream',['../d9/d93/classofstream.html',1,'']]],
+  ['operator_21_3d_3',['operator!=',['../d5/d4e/classCGeom2DPoint.html#ab67a1d0553772d0bfdd4aaa925a4d52e',1,'CGeom2DPoint::operator!=(CGeom2DPoint const *) const'],['../d5/d4e/classCGeom2DPoint.html#a8ac9e5c85c6a387e88c4d2c0070be48d',1,'CGeom2DPoint::operator!=(CGeom2DPoint) const'],['../d6/d0d/classCGeom2DIPoint.html#a3532e1a64671c2338ca58a4800300984',1,'CGeom2DIPoint::operator!=(CGeom2DIPoint const *) const'],['../d6/d0d/classCGeom2DIPoint.html#a9b3e272a0dd2294d73e6c114ceca91c6',1,'CGeom2DIPoint::operator!=(CGeom2DIPoint) const']]],
+  ['operator_26_4',['operator&amp;',['../d3/d0b/group__param__grp.html#ga510d8d446904836db0883bf283942ad3',1,'nanoflann']]],
+  ['operator_28_29_5',['operator()',['../d0/d61/structnanoflann_1_1IndexDist__Sorter.html#a916a2c12be68be13b447d2dd7ae5cbbb',1,'nanoflann::IndexDist_Sorter']]],
+  ['operator_3c_3c_6',['operator&lt;&lt;',['../d2/dfd/utils__global_8cpp.html#ae0262af7d3f446a8eb6115d0cc71dee7',1,'utils_global.cpp']]],
+  ['operator_3d_7',['operator=',['../d5/d4e/classCGeom2DPoint.html#a41a2dd7367a0b2729848e7fca8a6e2e1',1,'CGeom2DPoint::operator=()'],['../d6/d0d/classCGeom2DIPoint.html#a9a2ddb4a1c8142159490364ef7018767',1,'CGeom2DIPoint::operator=()'],['../d5/dc6/classCRWCellSediment.html#ae45029320d13830b09569968d41c6be3',1,'CRWCellSediment::operator=()'],['../d1/db4/classnanoflann_1_1KDTreeSingleIndexDynamicAdaptor__.html#afb4f7c5d6d99007bd1d0e8d1fb0cc1aa',1,'nanoflann::KDTreeSingleIndexDynamicAdaptor_::operator=()']]],
+  ['operator_3d_3d_8',['operator==',['../d5/d4e/classCGeom2DPoint.html#ac238ee088b928bbcfdad91e0c0905849',1,'CGeom2DPoint::operator==(CGeom2DPoint const *) const'],['../d5/d4e/classCGeom2DPoint.html#a3de57cf810783c31f7731a39187eb783',1,'CGeom2DPoint::operator==(CGeom2DPoint) const'],['../d6/d0d/classCGeom2DIPoint.html#a6f1eb2a5dffa10e54e5c1e3db069b036',1,'CGeom2DIPoint::operator==(CGeom2DIPoint const *) const'],['../d6/d0d/classCGeom2DIPoint.html#a3e98a887e57093a0477dffb7376279b2',1,'CGeom2DIPoint::operator==(CGeom2DIPoint) const']]],
+  ['operator_5b_5d_9',['operator[]',['../d9/d0e/classCA2DShape.html#af4420f608a68e28650424c8cab9ee51a',1,'CA2DShape::operator[]()'],['../d2/d0f/classCA2DIShape.html#ad79cc2e1d300fe5931e51fc70a865240',1,'CA2DIShape::operator[]()']]],
+  ['optimizations_3a_10',['PERFORMANCE OPTIMIZATIONS:',['../d4/da8/classSpatialInterpolator.html#autotoc_md2',1,'']]],
+  ['ostream_11',['ostream',['../d0/d43/classostream.html',1,'']]],
+  ['ostringstream_12',['ostringstream',['../d8/d79/classostringstream.html',1,'']]],
+  ['outext_13',['OUTEXT',['../d6/d2a/cme_8h.html#a4b80f97f210a9324fcbeb1678c9ad1da',1,'cme.h']]],
+  ['output_14',['Managing CoastalME&apos;s output',['../index.html#run_step4',1,'']]],
+  ['outstream_15',['OutStream',['../d1/d98/classCSimulation.html#af82d9601bd0baf856bb89973fb7516d4',1,'CSimulation']]],
+  ['overview_3a_16',['ALGORITHM OVERVIEW:',['../d4/da8/classSpatialInterpolator.html#autotoc_md0',1,'']]]
 ];
