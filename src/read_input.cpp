@@ -246,6 +246,22 @@ bool CSimulation::bReadIniFile(void)
 //===============================================================================================================================
 bool CSimulation::bReadRunDataFile(void)
 {
+   // Detect file format
+   bool bIsYaml;
+   if (! bDetectFileFormat(m_strDataPathName, bIsYaml))
+   {
+      cerr << ERR << "failed to detect file format for " << m_strDataPathName
+           << endl;
+      return false;
+   }
+
+   // Use appropriate parser based on format
+   if (bIsYaml)
+   {
+      return bReadYamlFile();
+   }
+   // Continue with original .dat file parsing
+   //
    // Create an ifstream object
    ifstream InStream;
 
@@ -5341,13 +5357,13 @@ bool CSimulation::bApplyConfiguration(CConfiguration const &config)
    // Case 61: Notch overhang at collapse (m)
    if (m_bHaveConsolidatedSediment && m_bDoCliffCollapse)
    {
-      m_dNotchDepthAtCollapse = config.GetNotchOverhang();
+      m_dNotchIncisionAtCollapse = config.GetNotchOverhang();
    }
 
    // Case 62: Notch base below still water level (m)
    if (m_bHaveConsolidatedSediment && m_bDoCliffCollapse)
    {
-      m_dNotchBaseBelowSWL = config.GetNotchBase();
+      m_dNotchApexAboveMHW = config.GetNotchBase();
    }
 
    // Case 63: Scale parameter A for cliff deposition (m^(1/3)) [0 = auto]
