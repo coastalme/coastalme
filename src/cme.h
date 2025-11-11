@@ -229,6 +229,8 @@ using std::ostringstream;
 #include <ostream>
 using std::ostream;
 
+#include <vector>
+
 //===================================================== platform-specific stuff =================================================
 #ifdef _WIN32
    #define access _access
