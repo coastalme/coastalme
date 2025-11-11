@@ -902,17 +902,18 @@ int CSimulation::nReadRasterGISFile(int const nDataItem, int const nLayer) {
         m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->SetLFCategory(nTmp);
         break;
 
-      case (INTERVENTION_CLASS_RASTER):
-        // Intervention class, is integer
-        nTmp = static_cast<int>(pdScanline[nX]);
+       case (INTERVENTION_CLASS_RASTER):
+          // Intervention class, is integer. If not an intervention, show INT_NODATA
+          nTmp = static_cast<int>(pdScanline[nX]);
 
-        if ((isnan(nTmp)) || (nTmp == m_nGISMissingValue)) {
-          nTmp = m_nMissingValue;
-          nMissing++;
-        }
+          if ((isnan(nTmp)) || (nTmp == m_nGISMissingValue))
+          {
+             nTmp = m_nMissingValue;
+             nMissing++;
+          }
 
-        m_pRasterGrid->m_Cell[nX][nY].SetInterventionClass(nTmp);
-        break;
+          m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->SetLFCategory(nTmp);
+          break;
 
       case (INTERVENTION_HEIGHT_RASTER):
         // Intervention height
