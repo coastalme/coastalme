@@ -42,13 +42,13 @@ cshoreinout=ARG
 
 # Always build CShore
 echo ""
-cd cshore
+cd cshore || exit
 if [ "$cflag" = "true" ]; then
 	rm -f ../lib/*
 	make clean
+	./make_cshore_lib.sh
 fi
 
-./make_cshore_lib.sh
 cd ..
 # Note: The cshore Makefile now correctly names libraries for MacOS automatically
 echo ""
