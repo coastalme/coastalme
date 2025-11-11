@@ -32,8 +32,8 @@ compiler=GNU
 # compiler=CLANG
 
 # Change this to select the CShore library type
-cshorelibrary=STATIC
-# cshorelibrary=SHARED
+# cshorelibrary=STATIC
+cshorelibrary=SHARED
 
 # Change this to select CShore input/output method
 #cshoreinout=FILE
