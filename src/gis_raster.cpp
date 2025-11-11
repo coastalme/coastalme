@@ -116,53 +116,34 @@ void CSimulation::InitializeGDALPerformance(void) {
   m_bGDALOptimisations = true;
 }
 
-//===============================================================================================================================
+  //===============================================================================================================================
 //! Reads a raster DEM of basement elevation data to the Cell array
 //===============================================================================================================================
-int CSimulation::nReadRasterBasementDEM(void) {
-  // Initialize GDAL performance settings (only needs to be done once)
-  static bool bGDALInitialized = false;
+int CSimulation::nReadRasterBasementDEM(void)
+{
+   // Initialize GDAL performance settings (only needs to be done once)
+   static bool bGDALInitialized = false;
 
-  if (!bGDALInitialized) {
-    InitializeGDALPerformance();
-    bGDALInitialized = true;
-  }
+   if (! bGDALInitialized)
+   {
+      InitializeGDALPerformance();
+      bGDALInitialized = true;
+   }
 
-  // Use GDAL to create a dataset object, which then opens the DEM file
-  GDALDataset *pGDALDataset = static_cast<GDALDataset *>(
-      GDALOpen(m_strInitialBasementDEMFile.c_str(), GA_ReadOnly));
+   // Use GDAL to create a dataset object, which then opens the DEM file
+   GDALDataset *pGDALDataset = static_cast<GDALDataset*>(GDALOpen(m_strInitialBasementDEMFile.c_str(), GA_ReadOnly));
 
-  if (NULL == pGDALDataset) {
-    // Can't open file (note will already have sent GDAL error message to
-    // stdout)
-    cerr << ERR << "cannot open " << m_strInitialBasementDEMFile
-         << " for input: " << CPLGetLastErrorMsg() << endl;
-    return RTN_ERR_DEMFILE;
-  }
-
-  // Opened OK, so get GDAL basement DEM dataset information
-  m_strGDALBasementDEMDriverCode = pGDALDataset->GetDriver()->GetDescription();
-  m_strGDALBasementDEMDriverDesc =
-      pGDALDataset->GetDriver()->GetMetadataItem(GDAL_DMD_LONGNAME);
-  m_strGDALBasementDEMProjection = pGDALDataset->GetProjectionRef();
-
-  // If we have reference units, then check that they are in metres (note US
-  // spelling)
-  if (!m_strGDALBasementDEMProjection.empty()) {
-    string const strTmp = strToLower(&m_strGDALBasementDEMProjection);
-
-    if ((strTmp.find("meter") == string::npos) &&
-        (strTmp.find("metre") == string::npos)) {
-      // error: x-y values must be in metres
-      cerr << ERR << "GIS file x-y values (" << m_strGDALBasementDEMProjection
-           << ") in " << m_strInitialBasementDEMFile << " must be in metres"
-           << endl;
+   if (NULL == pGDALDataset)
+   {
+      // Can't open file (note will already have sent GDAL error message to stdout)
+      cerr << ERR << "cannot open " << m_strInitialBasementDEMFile << " for input: " << CPLGetLastErrorMsg() << endl;
       return RTN_ERR_DEMFILE;
-    }
-  }
+   }
 
-  // Now get dataset size, and do some rudimentary checks
-  m_nXGridSize = pGDALDataset->GetRasterXSize();
+   // Opened OK, so get GDAL basement DEM dataset information
+   m_strGDALBasementDEMDriverCode = pGDALDataset->GetDriver()->GetDescription();
+   m_strGDALBasementDEMDriverDesc = pGDALDataset->GetDriver()->GetMetadataItem(GDAL_DMD_LONGNAME);
+   m_strGDALBasementDEMProjection = pGDALDataset->GetProjectionRef();
 
    if (m_strGDALBasementDEMProjection.empty())
    {
@@ -196,157 +177,144 @@ int CSimulation::nReadRasterBasementDEM(void) {
       }
    }
 
-  if (m_nYGridSize == 0) {
-    // Error: silly number of rows specified
-    cerr << ERR << "invalid number of rows (" << m_nYGridSize << ") in "
-         << m_strInitialBasementDEMFile << endl;
-    return RTN_ERR_DEMFILE;
-  }
+   // Now get dataset size, and do some rudimentary checks
+   m_nXGridSize = pGDALDataset->GetRasterXSize();
 
-  // Get geotransformation info (see http://www.gdal.org/classGDALDataset.html)
-  if (CE_Failure == pGDALDataset->GetGeoTransform(m_dGeoTransform)) {
-    // Can't get geotransformation (note will already have sent GDAL error
-    // message to stdout)
-    cerr << ERR << CPLGetLastErrorMsg() << " in " << m_strInitialBasementDEMFile
-         << endl;
-    return RTN_ERR_DEMFILE;
-  }
-
-  // CoastalME can only handle rasters that are oriented N-S and W-E. (If you
-  // need to work with a raster that is oriented differently, then you must
-  // rotate it before running CoastalME). So here we check whether row rotation
-  // (m_dGeoTransform[2]) and column rotation (m_dGeoTransform[4]) are both
-  // zero. See https://gdal.org/tutorials/geotransforms_tut.html
-  if ((!bFPIsEqual(m_dGeoTransform[2], 0.0, TOLERANCE)) ||
-      (!bFPIsEqual(m_dGeoTransform[4], 0.0, TOLERANCE))) {
-    // Error: not oriented NS and W-E
-    cerr << ERR << m_strInitialBasementDEMFile
-         << " is not oriented N-S and W-E. Row rotation = "
-         << m_dGeoTransform[2]
-         << " and column rotation = " << m_dGeoTransform[4] << endl;
-    return (RTN_ERR_RASTER_FILE_READ);
-  }
-
-  // Get the X and Y cell sizes, in external CRS units. Note that while the cell
-  // is supposed to be square, it may not be exactly so due to oddities with
-  // some GIS calculations
-  double const dCellSideX = tAbs(m_dGeoTransform[1]);
-  double const dCellSideY = tAbs(m_dGeoTransform[5]);
-
-  // Check that the cell is more or less square
-  if (!bFPIsEqual(dCellSideX, dCellSideY, 1e-2)) {
-    // Error: cell is not square enough
-    cerr << ERR << "cell is not square in " << m_strInitialBasementDEMFile
-         << ", is " << dCellSideX << " x " << dCellSideY << endl;
-    return (RTN_ERR_RASTER_FILE_READ);
-  }
-
-  // Calculate the average length of cell side, the cell's diagonal, and the
-  // area of a cell (in external CRS units)
-  m_dCellSide = (dCellSideX + dCellSideY) / 2.0;
-  m_dCellArea = m_dCellSide * m_dCellSide;
-  m_dCellDiagonal = hypot(m_dCellSide, m_dCellSide);
-
-  // And calculate the inverse values
-  m_dInvCellSide = 1 / m_dCellSide;
-  m_dInvCellDiagonal = 1 / m_dCellDiagonal;
-
-  // Save some values in external CRS
-  m_dNorthWestXExtCRS = m_dGeoTransform[0] - (m_dGeoTransform[1] / 2);
-  m_dNorthWestYExtCRS = m_dGeoTransform[3] - (m_dGeoTransform[5] / 2);
-  m_dSouthEastXExtCRS = m_dGeoTransform[0] +
-                        (m_nXGridSize * m_dGeoTransform[1]) +
-                        (m_dGeoTransform[1] / 2);
-  m_dSouthEastYExtCRS = m_dGeoTransform[3] +
-                        (m_nYGridSize * m_dGeoTransform[5]) +
-                        (m_dGeoTransform[5] / 2);
-
-  // And calc the grid area in external CRS units
-  m_dExtCRSGridArea = tAbs(m_dNorthWestXExtCRS - m_dSouthEastXExtCRS) *
-                      tAbs(m_dNorthWestYExtCRS * m_dSouthEastYExtCRS);
-
-  // Now get GDAL raster band information
-  GDALRasterBand *pGDALBand = pGDALDataset->GetRasterBand(1);
-  int nBlockXSize = 0, nBlockYSize = 0;
-  pGDALBand->GetBlockSize(&nBlockXSize, &nBlockYSize);
-  m_strGDALBasementDEMDataType =
-      GDALGetDataTypeName(pGDALBand->GetRasterDataType());
-
-  // If we have value units, then check them
-  string const strUnits = pGDALBand->GetUnitType();
-
-  if ((!strUnits.empty()) && (strUnits.find('m') == string::npos)) {
-    // Error: value units must be m
-    cerr << ERR << "DEM vertical units are (" << strUnits << " ) in "
-         << m_strInitialBasementDEMFile << ", should be 'm'" << endl;
-    return RTN_ERR_DEMFILE;
-  }
-
-  // If present, get the missing value (NODATA) setting
-  CPLPushErrorHandler(CPLQuietErrorHandler); // Needed to get next line to fail
-                                             // silently, if it fails
-  double const dMissingValue =
-      pGDALBand->GetNoDataValue(); // Will fail for some formats
-  CPLPopErrorHandler();
-
-  if (!bFPIsEqual(dMissingValue, m_dMissingValue, TOLERANCE)) {
-    cerr << "   " << NOTE << "NODATA value in " << m_strInitialBasementDEMFile
-         << " is " << dMissingValue
-         << "\n         instead using CoastalME's default floating-point "
-            "NODATA value "
-         << m_dMissingValue << endl;
-  }
-
-  // Next allocate memory for a 2D array of raster cell objects: tell the user
-  // what is happening
-  AnnounceAllocateMemory();
-  int const nRet = m_pRasterGrid->nCreateGrid();
-
-  if (nRet != RTN_OK)
-    return nRet;
-
-  // Allocate memory for a 1D floating-point array, to hold the scan line for
-  // GDAL
-  double *pdScanline = new double[m_nXGridSize];
-
-  if (NULL == pdScanline) {
-    // Error, can't allocate memory
-    cerr << ERR << "cannot allocate memory for " << m_nXGridSize
-         << " x 1D array" << endl;
-    return (RTN_ERR_MEMALLOC);
-  }
-
-  // Now read in the data
-  for (int j = 0; j < m_nYGridSize; j++) {
-    // Read scanline
-    if (CE_Failure == pGDALBand->RasterIO(GF_Read, 0, j, m_nXGridSize, 1,
-                                          pdScanline, m_nXGridSize, 1,
-                                          GDT_Float64, 0, 0, NULL)) {
-      // Error while reading scanline
-      cerr << ERR << CPLGetLastErrorMsg() << " in "
-           << m_strInitialBasementDEMFile << endl;
+   if (m_nXGridSize == 0)
+   {
+      // Error: silly number of columns specified
+      cerr << ERR << "invalid number of columns (" << m_nXGridSize << ") in " << m_strInitialBasementDEMFile << endl;
       return RTN_ERR_DEMFILE;
-    }
+   }
 
-    // All OK, so read scanline into cell elevations (including any missing
-    // values)
-    for (int i = 0; i < m_nXGridSize; i++) {
-      double dTmp = pdScanline[i];
+   m_nYGridSize = pGDALDataset->GetRasterYSize();
 
-      if ((isnan(dTmp)) || (bFPIsEqual(dTmp, m_dGISMissingValue, TOLERANCE)))
-        dTmp = m_dMissingValue;
+   if (m_nYGridSize == 0)
+   {
+      // Error: silly number of rows specified
+      cerr << ERR << "invalid number of rows (" << m_nYGridSize << ") in " << m_strInitialBasementDEMFile << endl;
+      return RTN_ERR_DEMFILE;
+   }
 
-      m_pRasterGrid->m_Cell[i][j].SetBasementElev(dTmp);
-    }
-  }
+   // Get geotransformation info (see http://www.gdal.org/classGDALDataset.html)
+   if (CE_Failure == pGDALDataset->GetGeoTransform(m_dGeoTransform))
+   {
+      // Can't get geotransformation (note will already have sent GDAL error message to stdout)
+      cerr << ERR << CPLGetLastErrorMsg() << " in " << m_strInitialBasementDEMFile << endl;
+      return RTN_ERR_DEMFILE;
+   }
 
-  // Finished, so get rid of dataset object
-  GDALClose(pGDALDataset);
+   // CoastalME can only handle rasters that are oriented N-S and W-E. (If you need to work with a raster that is oriented differently, then you must rotate it before running CoastalME). So here we check whether row rotation (m_dGeoTransform[2]) and column rotation (m_dGeoTransform[4]) are both zero. See https://gdal.org/tutorials/geotransforms_tut.html
+   if ((! bFPIsEqual(m_dGeoTransform[2], 0.0, TOLERANCE)) || (! bFPIsEqual(m_dGeoTransform[4], 0.0, TOLERANCE)))
+   {
+      // Error: not oriented NS and W-E
+      cerr << ERR << m_strInitialBasementDEMFile << " is not oriented N-S and W-E. Row rotation = " << m_dGeoTransform[2] << " and column rotation = " << m_dGeoTransform[4] << endl;
+      return (RTN_ERR_RASTER_FILE_READ);
+   }
 
-  // Get rid of memory allocated to this array
-  delete[] pdScanline;
+   // Get the X and Y cell sizes, in external CRS units. Note that while the cell is supposed to be square, it may not be exactly so due to oddities with some GIS calculations
+   double const dCellSideX = tAbs(m_dGeoTransform[1]);
+   double const dCellSideY = tAbs(m_dGeoTransform[5]);
 
-  return RTN_OK;
+   // Check that the cell is more or less square
+   if (! bFPIsEqual(dCellSideX, dCellSideY, 1e-2))
+   {
+      // Error: cell is not square enough
+      cerr << ERR << "cell is not square in " << m_strInitialBasementDEMFile << ", is " << dCellSideX << " x " << dCellSideY << endl;
+      return (RTN_ERR_RASTER_FILE_READ);
+   }
+
+   // Calculate the average length of cell side, the cell's diagonal, and the area of a cell (in external CRS units)
+   m_dCellSide = (dCellSideX + dCellSideY) / 2.0;
+   m_dCellArea = m_dCellSide * m_dCellSide;
+   m_dCellDiagonal = hypot(m_dCellSide, m_dCellSide);
+
+   // And calculate the inverse values
+   m_dInvCellSide = 1 / m_dCellSide;
+   m_dInvCellDiagonal = 1 / m_dCellDiagonal;
+
+   // Save some values in external CRS
+   m_dNorthWestXExtCRS = m_dGeoTransform[0] - (m_dGeoTransform[1] / 2);
+   m_dNorthWestYExtCRS = m_dGeoTransform[3] - (m_dGeoTransform[5] / 2);
+   m_dSouthEastXExtCRS = m_dGeoTransform[0] + (m_nXGridSize * m_dGeoTransform[1]) + (m_dGeoTransform[1] / 2);
+   m_dSouthEastYExtCRS = m_dGeoTransform[3] + (m_nYGridSize * m_dGeoTransform[5]) + (m_dGeoTransform[5] / 2);
+
+   // And calc the grid area in external CRS units
+   m_dExtCRSGridArea = tAbs(m_dNorthWestXExtCRS - m_dSouthEastXExtCRS) * tAbs(m_dNorthWestYExtCRS * m_dSouthEastYExtCRS);
+
+   // Now get GDAL raster band information
+   GDALRasterBand *pGDALBand = pGDALDataset->GetRasterBand(1);
+   int nBlockXSize = 0, nBlockYSize = 0;
+   pGDALBand->GetBlockSize(&nBlockXSize, &nBlockYSize);
+   m_strGDALBasementDEMDataType = GDALGetDataTypeName(pGDALBand->GetRasterDataType());
+
+   // If we have value units, then check them
+   string const strUnits = pGDALBand->GetUnitType();
+
+   if ((!strUnits.empty()) && (strUnits.find('m') == string::npos))
+   {
+      // Error: value units must be m
+      cerr << ERR << "DEM vertical units are (" << strUnits << " ) in " << m_strInitialBasementDEMFile << ", should be 'm'" << endl;
+      return RTN_ERR_DEMFILE;
+   }
+
+   // If present, get the missing value (NODATA) setting
+   CPLPushErrorHandler(CPLQuietErrorHandler);                // Needed to get next line to fail silently, if it fails
+   double const dMissingValue = pGDALBand->GetNoDataValue(); // Will fail for some formats
+   CPLPopErrorHandler();
+
+   if (! bFPIsEqual(dMissingValue, m_dMissingValue, TOLERANCE))
+   {
+      cerr << "   " << NOTE << "NODATA value in " << m_strInitialBasementDEMFile << " is " << dMissingValue << "\n         instead using CoastalME's default floating-point NODATA value " << m_dMissingValue << endl;
+   }
+
+   // Next allocate memory for a 2D array of raster cell objects: tell the user what is happening
+   AnnounceAllocateMemory();
+   int const nRet = m_pRasterGrid->nCreateGrid();
+
+   if (nRet != RTN_OK)
+      return nRet;
+
+   // Allocate memory for a 1D floating-point array, to hold the scan line for GDAL
+   double *pdScanline = new double[m_nXGridSize];
+
+   if (NULL == pdScanline)
+   {
+      // Error, can't allocate memory
+      cerr << ERR << "cannot allocate memory for " << m_nXGridSize << " x 1D array" << endl;
+      return (RTN_ERR_MEMALLOC);
+   }
+
+   // Now read in the data
+   for (int j = 0; j < m_nYGridSize; j++)
+   {
+      // Read scanline
+      if (CE_Failure == pGDALBand->RasterIO(GF_Read, 0, j, m_nXGridSize, 1, pdScanline, m_nXGridSize, 1, GDT_Float64, 0, 0, NULL))
+      {
+         // Error while reading scanline
+         cerr << ERR << CPLGetLastErrorMsg() << " in " << m_strInitialBasementDEMFile << endl;
+         return RTN_ERR_DEMFILE;
+      }
+
+      // All OK, so read scanline into cell elevations (including any missing values)
+      for (int i = 0; i < m_nXGridSize; i++)
+      {
+         double dTmp = pdScanline[i];
+
+         if ((isnan(dTmp)) || (bFPIsEqual(dTmp, m_dGISMissingValue, TOLERANCE)))
+            dTmp = m_dMissingValue;
+
+         m_pRasterGrid->m_Cell[i][j].SetBasementElev(dTmp);
+      }
+   }
+
+   // Finished, so get rid of dataset object
+   GDALClose(pGDALDataset);
+
+   // Get rid of memory allocated to this array
+   delete[] pdScanline;
+
+   return RTN_OK;
 }
 
 //===============================================================================================================================
