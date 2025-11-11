@@ -28,12 +28,12 @@ buildtype=RELWITHDEBINFO # Not yet implemented in CMakeLists.txt
 #buildtype=CALLGRIND
 
 # Change this to select the Linux compiler
-# compiler=GNU
-compiler=CLANG
+compiler=GNU
+# compiler=CLANG
 
 # Change this to select the CShore library type
-cshorelibrary=STATIC
-# cshorelibrary=SHARED
+# cshorelibrary=STATIC
+cshorelibrary=SHARED
 
 # Change this to select CShore input/output method
 #cshoreinout=FILE
@@ -42,13 +42,13 @@ cshoreinout=ARG
 
 # Always build CShore
 echo ""
-cd cshore
+cd cshore || exit
 if [ "$cflag" = "true" ]; then
 	rm -f ../lib/*
 	make clean
+	./make_cshore_lib.sh
 fi
 
-./make_cshore_lib.sh
 cd ..
 # Note: The cshore Makefile now correctly names libraries for MacOS automatically
 echo ""
@@ -79,7 +79,7 @@ fi
 #cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=$buildtype -DCOMPILER=$compiler -DCSHORE_LIBRARY=$cshorelibrary -DCSHORE_INOUT=$cshoreinout -DCMAKE_VERBOSE_MAKEFILE=ON $CMAKE_COMPILER_ARGS .
 #cmake -DCMAKE_BUILD_TYPE=$buildtype -DCOMPILER=$compiler -DCSHORE_LIBRARY=$cshorelibrary -DCSHORE_INOUT=$cshoreinout $CMAKE_COMPILER_ARGS . -G"CodeBlocks - Unix Makefiles"
 # Or Ninja?
-cmake -G Ninja -DCMAKE_BUILD_TYPE=$buildtype -DCSHORE_LIBRARY=$cshorelibrary -DCSHORE_INOUT=$cshoreinout $CMAKE_COMPILER_ARGS .
+cmake -G Ninja -DCMAKE_BUILD_TYPE=$buildtype -DCOMPILER=$compiler -DCSHORE_LIBRARY=$cshorelibrary -DCSHORE_INOUT=$cshoreinout $CMAKE_COMPILER_ARGS .
 
 if [ "$iflag" = "true" ]; then
 	# make install

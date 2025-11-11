@@ -1,5 +1,4 @@
 /*!
-
    \file do_beach_sediment_movement.cpp
    \brief Does between-polygon actual (supply-limited) redistribution of transported beach sediment
    \details TODO 001 A more detailed description of these routines.
@@ -7,11 +6,9 @@
    \author Andres Payo
    \date 2025
    \copyright GNU General Public License
-
 */
 
 /* ==============================================================================================================================
-
    This file is part of CoastalME, the Coastal Modelling Environment.
 
    CoastalME is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
@@ -19,13 +16,8 @@
    This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
    You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-
 ==============================================================================================================================*/
 #include <assert.h>
-
-#include <cmath>
-
-#include <cfloat>
 
 #include <iostream>
 using std::endl;
@@ -380,7 +372,7 @@ int CSimulation::nDoAllActualBeachErosionAndDeposition(void)
          // {
          // for (int nY1 = 0; nY1 < m_nYGridSize; nY1++)
          // {
-         // dTmpSandUncons += m_pRasterGrid->m_Cell[nX1][nY1].dGetTotUnconsSand();
+         // dTmpSandUncons += m_pRasterGrid->m_Cell[nX1][nY1].dGetUnconsSandDepthAllLayers();
          // }
          // }
          //
@@ -467,7 +459,7 @@ int CSimulation::nDoAllActualBeachErosionAndDeposition(void)
             // {
             // for (int nY1 = 0; nY1 < m_nYGridSize; nY1++)
             // {
-            // dTmpSandUncons += m_pRasterGrid->m_Cell[nX1][nY1].dGetTotUnconsSand();
+            // dTmpSandUncons += m_pRasterGrid->m_Cell[nX1][nY1].dGetUnconsSandDepthAllLayers();
             // }
             // }
             //
@@ -549,7 +541,7 @@ int CSimulation::nDoAllActualBeachErosionAndDeposition(void)
                // {
                // for (int nY1 = 0; nY1 < m_nYGridSize; nY1++)
                // {
-               // dTmpSandUncons += m_pRasterGrid->m_Cell[nX1][nY1].dGetTotUnconsSand();
+               // dTmpSandUncons += m_pRasterGrid->m_Cell[nX1][nY1].dGetUnconsSandDepthAllLayers();
                // }
                // }
                //
@@ -624,13 +616,6 @@ int CSimulation::nDoAllActualBeachErosionAndDeposition(void)
                               // Open grid edges, so this sediment goes off-grid
                               m_dThisIterLeftGridUnconsSand += dSandEroded;
                               m_dThisIterLeftGridUnconsCoarse += dCoarseEroded;
-
-                              // // DEBUG CODE ##################
-                              // if (m_ulIter == 5)
-                              // {
-                              // LogStream << m_ulIter << ": nPoly = " << nPoly << " LOST FROM GRID = " << dSandEroded * m_dCellArea << endl;
-                              // }
-                              // // DEBUG CODE ##################
                            }
                            else if (m_nUnconsSedimentHandlingAtGridEdges == GRID_EDGE_RECIRCULATE)
                            {
@@ -790,7 +775,7 @@ int CSimulation::nDoAllActualBeachErosionAndDeposition(void)
          // {
          // for (int nY1 = 0; nY1 < m_nYGridSize; nY1++)
          // {
-         // dTmpSandUncons += m_pRasterGrid->m_Cell[nX1][nY1].dGetTotUnconsSand();
+         // dTmpSandUncons += m_pRasterGrid->m_Cell[nX1][nY1].dGetUnconsSandDepthAllLayers();
          // }
          // }
          //
@@ -843,7 +828,7 @@ int CSimulation::nDoAllActualBeachErosionAndDeposition(void)
                m_dDepositionSandDiff += dSandNotDeposited;
 
             if (m_nLogFileDetail >= LOG_FILE_MIDDLE_DETAIL)
-               LogStream << m_ulIter << ": re-processing nThisPoly = " << nThisPoly << " dSandDeposited = " << dSandDeposited * m_dCellArea << " dSandNotDeposited = " << dSandNotDeposited * m_dCellArea << " m_dDepositionSandDiff = " << m_dDepositionSandDiff * m_dCellArea << endl;
+               LogStream << m_ulIter << ": \tcoast << " << nCoast << " re-processing nThisPoly = " << nThisPoly << " dSandDeposited = " << dSandDeposited * m_dCellArea << " dSandNotDeposited = " << dSandNotDeposited * m_dCellArea << " m_dDepositionSandDiff = " << m_dDepositionSandDiff * m_dCellArea << endl;
          }
 
          double const dCoarseToDepositOnPoly = pThisPolygon->dGetToDoBeachDepositionUnconsCoarse();
@@ -863,7 +848,7 @@ int CSimulation::nDoAllActualBeachErosionAndDeposition(void)
                m_dDepositionCoarseDiff += dCoarseNotDeposited;
 
             if (m_nLogFileDetail >= LOG_FILE_MIDDLE_DETAIL)
-               LogStream << m_ulIter << ": re-processing nThisPoly = " << nThisPoly << " dCoarseDeposited = " << dCoarseDeposited * m_dCellArea << " dCoarseNotDeposited = " << dCoarseNotDeposited * m_dCellArea << " m_dDepositionCoarseDiff = " << m_dDepositionCoarseDiff * m_dCellArea << endl;
+               LogStream << m_ulIter << ": \tcoast " << nCoast << " re-processing nThisPoly = " << nThisPoly << " dCoarseDeposited = " << dCoarseDeposited * m_dCellArea << " dCoarseNotDeposited = " << dCoarseNotDeposited * m_dCellArea << " m_dDepositionCoarseDiff = " << m_dDepositionCoarseDiff * m_dCellArea << endl;
          }
       }
    }

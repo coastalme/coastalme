@@ -21,13 +21,11 @@
 */
 
 /* ===============================================================================================================================
-
    This file is part of CoastalME, the Coastal Modelling Environment. CoastalME is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
 
    This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
    You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-
 ===============================================================================================================================*/
 #include <assert.h>
 
@@ -955,16 +953,20 @@ bool CSimulation::bSaveAllRasterGISFiles(void)
       }
    }
 
-   if (m_bSedimentTopSurfSave)
-      if (! bWriteRasterGISFile(RASTER_PLOT_SEDIMENT_TOP_ELEVATION, &RASTER_PLOT_SEDIMENT_TOP_ELEVATION_TITLE))
+   if (m_bSedIncTalusTopSurfSave)
+      if (! bWriteRasterGISFile(RASTER_PLOT_SED_TOP_INC_TALUS_ELEV, &RASTER_PLOT_SED_TOP_INC_TALUS_ELEV_TITLE))
          return false;
 
-   if (m_bTopSurfSave)
-      if (! bWriteRasterGISFile(RASTER_PLOT_OVERALL_TOP_ELEVATION, &RASTER_PLOT_OVERALL_TOP_ELEVATION_TITLE))
+   if (m_bTopSurfIncSeaSave)
+      if (! bWriteRasterGISFile(RASTER_PLOT_TOP_ELEV_INC_SEA, &RASTER_PLOT_TOP_ELEV_INC_SEA_TITLE))
+         return false;
+
+   if (m_bTalusSave)
+      if (! bWriteRasterGISFile(RASTER_PLOT_TALUS, &RASTER_PLOT_TALUS_TITLE))
          return false;
 
    if (m_bSlopeConsSedSave)
-      if (! bWriteRasterGISFile(RASTER_PLOT_SLOPE_OF_CONSOLIDATED_SEDIMENT, &RASTER_PLOT_SLOPE_OF_CONSOLIDATED_SEDIMENT_TITLE))
+      if (! bWriteRasterGISFile(RASTER_PLOT_CONS_SED_SLOPE, &RASTER_PLOT_CONS_SED_SLOPE_TITLE))
          return false;
 
    if (m_bSlopeSaveForCliffToe)
@@ -1167,14 +1169,16 @@ bool CSimulation::bSaveAllRasterGISFiles(void)
          if (m_bCliffNotchAllSave)
          {
             if (! bWriteRasterGISFile(RASTER_PLOT_CLIFF_NOTCH_ALL, &RASTER_PLOT_CLIFF_NOTCH_ALL_TITLE))
-            return false;
+               return false;
          }
 
+#ifdef _DEBUG
          if (m_bCliffCollapseTimestepSave)
          {
             if (! bWriteRasterGISFile(RASTER_PLOT_CLIFF_COLLAPSE_TIMESTEP, &RASTER_PLOT_CLIFF_COLLAPSE_TIMESTEP_TITLE))
-            return false;
+               return false;
          }
+#endif
       }
 
       if (m_bTotCliffCollapseSave)
@@ -1507,7 +1511,7 @@ void CSimulation::GetRasterOutputMinMax(int const nDataItem, double& dMin, doubl
             dTmp = INT_NODATA;
 
             if (bIsInterventionCell(nX, nY))
-               dTmp = m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->nGetLFSubCategory();
+               dTmp = m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->nGetLFCategory();
 
             break;
 
@@ -1523,15 +1527,19 @@ void CSimulation::GetRasterOutputMinMax(int const nDataItem, double& dMin, doubl
             dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetBasementElev();
             break;
 
-         case (RASTER_PLOT_SEDIMENT_TOP_ELEVATION):
-            dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetSedimentTopElev();
+         case (RASTER_PLOT_SED_TOP_INC_TALUS_ELEV):
+            dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetAllSedTopElevIncTalus();
             break;
 
-         case (RASTER_PLOT_OVERALL_TOP_ELEVATION):
-            dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetOverallTopElev();
+         case (RASTER_PLOT_TALUS):
+            dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetTalusDepth();
             break;
 
-         case (RASTER_PLOT_SLOPE_OF_CONSOLIDATED_SEDIMENT):
+         case (RASTER_PLOT_TOP_ELEV_INC_SEA):
+            dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetTopElevIncSea();
+            break;
+
+         case (RASTER_PLOT_CONS_SED_SLOPE):
             dTmp = m_pRasterGrid->m_Cell[nX][nY].dGetConsSedSlope();
             break;
 
@@ -1850,7 +1858,7 @@ int CSimulation::nGetOppositeDirection(int const nDirection)
 //===============================================================================================================================
 //! Finds the closest point on any coastline to a given point
 //===============================================================================================================================
-CGeom2DIPoint CSimulation::PtiFindClosestCoastPoint(int const nX, int const nY)
+CGeom2DIPoint CSimulation::PtiFindClosestCoastPoint(int const nX, int const nY, int& nCoastFound)
 {
    unsigned int nMinSqDist = UINT_MAX;
    CGeom2DIPoint PtiCoastPoint;
@@ -1875,11 +1883,48 @@ CGeom2DIPoint CSimulation::PtiFindClosestCoastPoint(int const nX, int const nY)
          {
             nMinSqDist = nSqDist;
             PtiCoastPoint.SetXY(nXCoast, nYCoast);
+            nCoastFound = nCoast;
          }
       }
    }
 
    return PtiCoastPoint;
+}
+
+//===============================================================================================================================
+//! Finds the number of the closest point on any coastline to a given point, or INT_NODATA in case of error
+//===============================================================================================================================
+int CSimulation::nFindClosestCoastPoint(int const nX, int const nY, int& nCoastFound)
+{
+   unsigned int nMinSqDist = UINT_MAX;
+   int nCoastPoint = INT_NODATA;
+
+   // Do for every coast
+   for (int nCoast = 0; nCoast < static_cast<int>(m_VCoast.size()); nCoast++)
+   {
+      for (int j = 0; j < m_VCoast[nCoast].nGetCoastlineSize(); j++)
+      {
+         // Get the coords of the grid cell marked as coastline for the coastal landform object
+         int const nXCoast = m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(j)->nGetX();
+         int const nYCoast = m_VCoast[nCoast].pPtiGetCellMarkedAsCoastline(j)->nGetY();
+
+         // Calculate the squared distance between this point and the given point
+         int const nXDist = nX - nXCoast;
+         int const nYDist = nY - nYCoast;
+
+         unsigned int const nSqDist = (nXDist * nXDist) + (nYDist * nYDist);
+
+         // Is this the closest so dar?
+         if (nSqDist < nMinSqDist)
+         {
+            nMinSqDist = nSqDist;
+            nCoastPoint = j;
+            nCoastFound = nCoast;
+         }
+      }
+   }
+
+   return nCoastPoint;
 }
 
 //===============================================================================================================================
@@ -1891,9 +1936,9 @@ int CSimulation::nConvertMetresToNumCells(double const dLen) const
 }
 
 //===============================================================================================================================
-//! Given a line between two points and another point, this finds the closest point on the line to the other point. From https://cboard.cprogramming.com/c-programming/155809-find-closest-point-line.html
+//! For the straight line between two points A and B, and given another point C, this finds the closest point on the line A-B to the point C. From https://cboard.cprogramming.com/c-programming/155809-find-closest-point-line.html
 //===============================================================================================================================
-void CSimulation::GetClosestPoint(double const dAx, double const dAy, double const dBx, double const dBy, double const dPx, double const dPy, double& dXRet, double& dYRet)
+void CSimulation::FindClosestPointOnStraightLine(double const dAx, double const dAy, double const dBx, double const dBy, double const dPx, double const dPy, double& dXRet, double& dYRet)
 {
   double const dAPx = dPx - dAx;
   double const dAPy = dPy - dAy;
@@ -1918,4 +1963,29 @@ void CSimulation::GetClosestPoint(double const dAx, double const dAy, double con
       dXRet = dAx + (dABx * dT);
       dYRet = dAy + (dABy * dT);
   }
+}
+
+//===============================================================================================================================
+//! Given two different edge cells, returns true if they are adjacent
+//===============================================================================================================================
+bool CSimulation::bIsAdjacentEdgeCell(CGeom2DIPoint const* pPt1, CGeom2DIPoint const* pPt2)
+{
+   int const nX1 = pPt1->nGetX();
+   int const nY1 = pPt1->nGetY();
+   int const nX2 = pPt2->nGetX();
+   int const nY2 = pPt2->nGetY();
+
+   if (nX1 == nX2)
+   {
+      if ((nY1 == nY2 + 1) || (nY1 == nY2 - 1))
+         return true;
+   }
+
+   if (nY1 == nY2)
+   {
+      if ((nX1 == nX2 + 1) || (nX1 == nX2 - 1))
+         return true;
+   }
+
+   return false;
 }

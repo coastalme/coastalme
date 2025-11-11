@@ -18,13 +18,23 @@
    You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ===============================================================================================================================*/
 #include <assert.h>
+#include <cstddef>
 
 #include "cell_layer.h"
 #include "cell_sediment.h"
+#include "cell_talus.h"
 
 //! Constructor
 CRWCellLayer::CRWCellLayer(void)
 {
+   m_pTalus = NULL;
+}
+
+//! Destructor
+CRWCellLayer::~CRWCellLayer(void)
+{
+   if (m_pTalus != NULL)
+      delete m_pTalus;
 }
 
 //! Returns a pointer to the cell's unconsolidated sediment object
@@ -39,50 +49,59 @@ CRWCellSediment* CRWCellLayer::pGetConsolidatedSediment(void)
    return &m_ConsolidatedSediment;
 }
 
+//! Return true if the layer has unconsolidated sediment, false otherwise
+bool CRWCellLayer::bHasUncons(void)
+{
+   if (this->dGetAllUnconsDepth() > 0)
+      return true;
+
+   return false;
+}
+
 //! Returns the thickness of this cell's fine unconsolidated sediment
-double CRWCellLayer::dGetFineUnconsolidatedThickness(void) const
+double CRWCellLayer::dGetUnconsFineDepth(void) const
 {
    return m_UnconsolidatedSediment.dGetFineDepth();
 }
 
 //! Returns the thickness of this cell's fine consolidated sediment
-double CRWCellLayer::dGetFineConsolidatedThickness(void) const
+double CRWCellLayer::dGetConsFineDepth(void) const
 {
    return m_ConsolidatedSediment.dGetFineDepth();
 }
 
 //! Returns the thickness of this cell's sand unconsolidated sediment
-double CRWCellLayer::dGetSandUnconsolidatedThickness(void) const
+double CRWCellLayer::dGetUnconsSandDepth(void) const
 {
    return m_UnconsolidatedSediment.dGetSandDepth();
 }
 
 //! Returns the thickness of this cell's sand consolidated sediment
-double CRWCellLayer::dGetSandConsolidatedThickness(void) const
+double CRWCellLayer::dGetConsSandDepth(void) const
 {
    return m_ConsolidatedSediment.dGetSandDepth();
 }
 
 //! Returns the thickness of this cell's coarse unconsolidated sediment
-double CRWCellLayer::dGetCoarseUnconsolidatedThickness(void) const
+double CRWCellLayer::dGetUnconsCoarseDepth(void) const
 {
    return m_UnconsolidatedSediment.dGetCoarseDepth();
 }
 
 //! Returns the thickness of this cell's coarse consolidated sediment
-double CRWCellLayer::dGetCoarseConsolidatedThickness(void) const
+double CRWCellLayer::dGetConsCoarseDepth(void) const
 {
    return m_ConsolidatedSediment.dGetCoarseDepth();
 }
 
 //! Returns the thickness of this cell's unconsolidated sediment (total for all size classes)
-double CRWCellLayer::dGetUnconsolidatedThickness(void) const
+double CRWCellLayer::dGetAllUnconsDepth(void) const
 {
    return (m_UnconsolidatedSediment.dGetFineDepth() + m_UnconsolidatedSediment.dGetSandDepth() + m_UnconsolidatedSediment.dGetCoarseDepth());
 }
 
 //! Returns the thickness of this cell's consolidated sediment (total for all size classes)
-double CRWCellLayer::dGetConsolidatedThickness(void) const
+double CRWCellLayer::dGetAllConsDepth(void) const
 {
    return (m_ConsolidatedSediment.dGetFineDepth() + m_ConsolidatedSediment.dGetSandDepth() + m_ConsolidatedSediment.dGetCoarseDepth());
 }
@@ -134,3 +153,38 @@ double CRWCellLayer::dGetTotalThickness(void) const
 // {
 // m_dConsolidationStatus = dNewConsolidationStatus;
 // }
+
+//! Returns true if the layer has talus, false otherwise
+bool CRWCellLayer::bHasTalus(void)
+{
+   if (m_pTalus == NULL)
+      return false;
+
+   return true;
+}
+
+//! Returns a pointer to the layer's talus object, or NULL if there is no talus object
+CRWCellTalus* CRWCellLayer::pGetTalus(void) const
+{
+   return m_pTalus;
+}
+
+//! Returns a pointer to the layer's talus object. If there is no talus object, then create one
+CRWCellTalus* CRWCellLayer::pGetOrCreateTalus(void)
+{
+   if (m_pTalus == NULL)
+   {
+      // No talus object here, so create one
+      m_pTalus = new CRWCellTalus();
+   }
+
+   return m_pTalus;
+}
+
+// Deletes this layer's talus object and resets the pointer
+void CRWCellLayer::DeleteTalus(void)
+{
+   delete m_pTalus;
+   m_pTalus = NULL;
+}
+

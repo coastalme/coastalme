@@ -22,14 +22,14 @@
    You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ===============================================================================================================================*/
 #include "cell_sediment.h"
+#include "cell_talus.h"
 
 class CRWCellLayer
 {
  private:
-   // double
-   // m_VdolSedFraction,
-   // m_dMechResistance,
-   // m_dConsolidationStatus;
+   // double m_VdolSedFraction;
+   // double m_dMechResistance;
+   // double m_dConsolidationStatus;
 
    //! This cell's unconsolidated sediment object
    CRWCellSediment m_UnconsolidatedSediment;
@@ -37,22 +37,27 @@ class CRWCellLayer
    //! This cell's consolidated sediment object
    CRWCellSediment m_ConsolidatedSediment;
 
+   //! Pointer to this cell layer's talus (unconsolidated sediment derived from cliff collapse), if any
+   CRWCellTalus* m_pTalus;
+
  protected:
  public:
    CRWCellLayer(void);
+   ~CRWCellLayer(void);
 
    CRWCellSediment* pGetUnconsolidatedSediment(void);
    CRWCellSediment* pGetConsolidatedSediment(void);
 
-   double dGetFineUnconsolidatedThickness(void) const;
-   double dGetFineConsolidatedThickness(void) const;
-   double dGetSandUnconsolidatedThickness(void) const;
-   double dGetSandConsolidatedThickness(void) const;
-   double dGetCoarseUnconsolidatedThickness(void) const;
-   double dGetCoarseConsolidatedThickness(void) const;
+   bool bHasUncons(void);
+   double dGetUnconsFineDepth(void) const;
+   double dGetConsFineDepth(void) const;
+   double dGetUnconsSandDepth(void) const;
+   double dGetConsSandDepth(void) const;
+   double dGetUnconsCoarseDepth(void) const;
+   double dGetConsCoarseDepth(void) const;
 
-   double dGetUnconsolidatedThickness(void) const;
-   double dGetConsolidatedThickness(void) const;
+   double dGetAllUnconsDepth(void) const;
+   double dGetAllConsDepth(void) const;
    double dGetTotalThickness(void) const;
 
    // double dGetNotchUnconsolidatedLost(void) const;
@@ -64,5 +69,10 @@ class CRWCellLayer
    // void SetMechResistance(double const);
    // double dGetConsolidationStatus(void) const;
    // void SetConsolidationStatus(double const);
+
+   bool bHasTalus(void);
+   CRWCellTalus* pGetTalus(void) const;
+   CRWCellTalus* pGetOrCreateTalus(void);
+   void DeleteTalus(void);
 };
 #endif // CELL_LAYER_H

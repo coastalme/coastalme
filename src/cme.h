@@ -108,7 +108,6 @@
    TODO 000 Should user input be split in two main files: one for frequently-changed things, one for rarely-changed things? If so, what should go into each file ('testing only' OK, but what else?)
    TODO 011 Should this constant be a user input? If so, TODO 071
    TODO 036 Read in changed deep water wave values (need TODO 071)
-   TODO 030 Do we also need to be able to input landform sub-categories? (need TODO 071)
    TODO 022 Get intervention update working (need TODO 071)
    TODO 042 Should we have a smallest valid input for KLS in the CERC equation?
    TODO 045 Method of getting depth of closure value needs to be a user input (need TODO 071)
@@ -146,8 +145,7 @@
    TODO 014 Profile spacing, could try gradually increasing the profile spacing with increasing concavity, and decreasing the profile spacing with increasing convexity
    TODO 016 Check mass balance for recirculating unconsolidated sediment option
    TODO 023 Only calculate shore platform erosion if cell is in a polygon
-   TODO 024 Should we calculate platform erosion on a profile that has hit dry
-   land?
+   TODO 024 Should we calculate platform erosion on a profile that has hit dry land?
    TODO 044 Implement estuaries
    TODO 051 Implement other ways of calculating depth of closure, see TODO 045
    TODO 056 Check this please Andres
@@ -165,7 +163,11 @@
    TODO 086 Try these as a more efficient replacement for GDALGridCreate(): https://github.com/delfrrr/delaunator-cpp https://www.cs.cmu.edu/~quake/triangle.html https://github.com/greenm01/poly2tri https://gts.sourceforge.net/index.html
    TODO 088 In (almost) all whole-grid loops, immediately continue if cell is hinterland (but not when calculating cliff collapse)
    TODO 090 At present, sediment cannot move from a given coastline polygon to a polygon belonging to another coastline. Is this always true?
-   TODO 091 These should not be LF categories
+   TODO 092 If we have only fine sediment, the surface formed as the coast recedes inland is dead level (because fine sediment goes to suspension, and hence the Dean profile stuff does not operate). This causes problems with profile creation and CShore. Need to impose a small slope here somehow
+   TODO 093 There are a number of cell attributes that are really only useful for debugging. To keep memory usage down on release versions, need to flag these attributes and their methods so that they are included only in debug versions
+   TODO 094 Problems with sediment recirculation when large volumes of sedimentare introduced at the input end of the coast: need to spread this input sediment over the whole of the grid-end polygon
+   TODO 095 Parallel profiles seem to create "streaks" of above-water sediment, these streaks interfere with subsequent profile creation (profiles which hit steaks arte marked as invalid). Investigate this
+   TODO 096 It is OK to specify OGRFieldDefn objects as const in recent versions (e.g. 14.2) of g++, but in older versions of g++ (e.g. 12.2) have problems with const here. Maybe make the const a pre-processor condion?
 
    OUTPUT
    TODO 065 Get GPKG output working: GDAL 3.9.1 does not yet implement this correctly. Currently is OK for vector output (but is very slow), not yet working for raster output
@@ -182,7 +184,7 @@
    TODO 074 Output history of what landforms are on a particular cell or cells. User inputs cell(s), how?
    TODO 082 Also show m_dStartIterUnconsFineAllCells etc. in log file
 
-   090 is max
+   096 is max
 
    COMPLETED
    TODO 003 Make coastline curvature moving window size a user input DONE in 1.1.22
@@ -271,22 +273,19 @@ using std::ostream;
          string const PLATFORM = "GNU complier for IBM RS-6000";
          // clock_t is a signed long: see <time.h> NEED TO CHECK
          long const CLOCK_T_MIN = LONG_MIN;
-         double const CLOCK_T_RANGE =
-         static_cast<double>(LONG_MAX) - static_cast<double>(CLOCK_T_MIN);
+         double const CLOCK_T_RANGE = static_cast<double>(LONG_MAX) - static_cast<double>(CLOCK_T_MIN);
       #elif defined ultrasparc
          // Sun UltraSparc, byte order is big-endian
          string const PLATFORM = "GNU compiler for Sun UltraSPARC";
          // clock_t is a signed long: see <time.h>
          long const CLOCK_T_MIN = LONG_MIN;
-         double const CLOCK_T_RANGE =
-         static_cast<double>(LONG_MAX) - static_cast<double>(CLOCK_T_MIN);
+         double const CLOCK_T_RANGE = static_cast<double>(LONG_MAX) - static_cast<double>(CLOCK_T_MIN);
       #else
          // Something else
          string const PLATFORM = "GNU compiler for unknown CPU";
          // clock_t is a signed long: NEED TO CHECK <time.h>
          long const CLOCK_T_MIN = LONG_MIN;
-         double const CLOCK_T_RANGE =
-         static_cast<double>(LONG_MAX) - static_cast<double>(CLOCK_T_MIN);
+         double const CLOCK_T_RANGE = static_cast<double>(LONG_MAX) - static_cast<double>(CLOCK_T_MIN);
       #endif
    #endif
 
@@ -294,22 +293,21 @@ using std::ostream;
    // Clang compiler
    #ifndef CPU
       #error "CPU not defined"
-   #else
-      #ifdef x86
-         // Intel x86, byte order is little-endian
-         string const PLATFORM = "Clang compiler for Intel x86";
-         // clock_t is an unsigned long: see <time.h>
-         unsigned long const CLOCK_T_MIN = 0;
-         double const CLOCK_T_RANGE = static_cast<double>(ULONG_MAX);
       #else
-         // Something else
-         string const PLATFORM = "Clang compiler for unknown CPU";
-         // clock_t is a signed long: NEED TO CHECK <time.h>
-         long const CLOCK_T_MIN = LONG_MIN;
-         double const CLOCK_T_RANGE =
-         static_cast<double>(LONG_MAX) - static_cast<double>(CLOCK_T_MIN);
+         #ifdef x86
+            // Intel x86, byte order is little-endian
+            string const PLATFORM = "Clang compiler for Intel x86";
+            // clock_t is an unsigned long: see <time.h>
+            unsigned long const CLOCK_T_MIN = 0;
+            double const CLOCK_T_RANGE = static_cast<double>(ULONG_MAX);
+         #else
+            // Something else
+            string const PLATFORM = "Clang compiler for unknown CPU";
+            // clock_t is a signed long: NEED TO CHECK <time.h>
+            long const CLOCK_T_MIN = LONG_MIN;
+            double const CLOCK_T_RANGE = static_cast<double>(LONG_MAX) - static_cast<double>(CLOCK_T_MIN);
+         #endif
       #endif
-   #endif
 
 #elif defined __MINGW32__
    // Minimalist GNU for Windows
@@ -369,7 +367,7 @@ int const SAVEMAX = 100000;                              // Maximum number of sa
 int const BUF_SIZE = 2048;                               // Max length (inc. terminating NULL) of any C-type string
 int const CAPE_POINT_MIN_SPACING = 10;                   // In cells: for shadow zone stuff, cape points must not be closer than this
 int const CLOCK_CHECK_ITERATION = 5000;                  // If have done this many timesteps then reset the CPU time running total
-int const COAST_LENGTH_MAX = 10;                         // For safety check when tracing coast
+int const COAST_LENGTH_MAX = 100;                        // For safety check when tracing coast
 int const COAST_LENGTH_MIN_X_PROF_SPACE = 20;            // Ignore very short coasts less than this x profile spacing
 
 //! The size of the arrays output by CShore. If this is changed, then must also set the same value on line 12 of cshore_wrapper.f03 (integer, parameter :: NN = 1000, NL = 1) and recompile CShore. Eventually we should move to dynamically allocated arrays TODO 070
@@ -378,8 +376,6 @@ int const CSHOREARRAYOUTSIZE = 1000;
 int const FLOOD_FILL_START_OFFSET = 2;                   // In cells: cell-by-cell fill starts this distance inside polygon
 int const GRID_MARGIN = 10;                              // Ignore this many along-coast grid-edge points re. shadow zone calcs
 int const INT_NODATA = -9999;                            // CME's internal NODATA value for ints
-int const MAX_CLIFF_TALUS_LENGTH = 100;                  // In cells: maximum length of the Dean  profile for cliff collapse talus
-int const MAX_SEAWARD_OFFSET_FOR_CLIFF_TALUS = 30;       // In cells: maximum distance that the Dean profile for cliff collapse talus can be offset from the coast
 int const MAX_LEN_SHADOW_LINE_TO_IGNORE = 200;           // In cells: if can't find cell-by-cell fill start point, continue if short shadow line
 int const MAX_NUM_PREV_ORIENTATION_VALUES = 10;          // Max length of deque used in tracing shadow boundary
 int const MAX_NUM_SHADOW_ZONES = 10;                     // Consider at most this number of shadow zones
@@ -407,8 +403,8 @@ int const SOUTH_WEST = 6;
 int const WEST = 7;
 int const NORTH_WEST = 8;
 
-int const DIRECTION_DOWNCOAST = 0; // Down-coast, i.e. along the coast so that the index of coastline points INCREASES
-int const DIRECTION_UPCOAST = 1;   // Up-coast, i.e. along the coast so that the index of coastline points DECREASES
+int const DIRECTION_DOWNCOAST = 0;     // Down-coast, i.e. along the coast so that the index of coastline points INCREASES
+int const DIRECTION_UPCOAST = 1;       // Up-coast, i.e. along the coast so that the index of coastline points DECREASES
 
 // Handedness codes, these show which side the sea is on when travelling down-coast (i.e. in the direction in which coastline point numbers INCREASE)
 int const NULL_HANDED = -1;
@@ -432,40 +428,20 @@ int const IO_INTERVENTION_NONE = 0;
 int const IO_INTERVENTION_STRUCT = 1;
 int const IO_INTERVENTION_NON_STRUCT = 2;
 
-// Default landform category and subcategory code
-int const LF_NONE = 0;
-
-// Landform category codes for cells (is easiest if each has a unique numeric value, irrepective of whether it is category or subcategory, 19 is max now)
-int const LF_CAT_HINTERLAND = 1;
-int const LF_CAT_SEA = 2;
-int const LF_CAT_ISLAND = 14;
-int const LF_CAT_SEDIMENT_INPUT = 15;
-int const LF_CAT_SEDIMENT_INPUT_SUBMERGED = 16;          // TODO 091 These should not be LF categories
-int const LF_CAT_SEDIMENT_INPUT_NOT_SUBMERGED = 17;      // TODO 091 These should not be LF categories
-
-// Landform category codes for cells and coast landform objects
-int const LF_CAT_CLIFF = 3; // Raster output of LF_CAT_CLIFF shows LF_CAT_CLIFF subcategories, rather than just LF_CAT_CLIFF
-int const LF_CAT_DRIFT = 4; // Raster output of LF_CAT_DRIFT shows LF_CAT_DRIFT subcategories, rather than just LF_CAT_DRIFT
-int const LF_CAT_INTERVENTION = 5;
-
-// Landform sub-category codes for cells, LF_CAT_CLIFF
-int const LF_SUBCAT_CLIFF_ON_COASTLINE = 6;
-int const LF_SUBCAT_CLIFF_INLAND = 7;
-
-// Landform sub-category codes for cells, for LF_CAT_DRIFT
-int const LF_SUBCAT_DRIFT_MIXED = 8;
-int const LF_SUBCAT_DRIFT_TALUS = 9;
-int const LF_SUBCAT_DRIFT_BEACH = 10;
-// TODO 059 Implement dune landform class
-int const LF_SUBCAT_DRIFT_DUNES = 11;
-
-// Landform sub-category codes for cells, for LF_CAT_INTERVENTION. See also "Intervention input and output codes"
-int const LF_SUBCAT_INTERVENTION_STRUCT = 12;
-int const LF_SUBCAT_INTERVENTION_NON_STRUCT = 13;
-
-// Landform sub-category codes for sediment input events
-int const LF_SUBCAT_SEDIMENT_INPUT_UNCONSOLIDATED = 18;
-int const LF_SUBCAT_SEDIMENT_INPUT_CONSOLIDATED = 19;
+// Landform category codes
+int const LF_UNKNOWN = 0;
+int const LF_HINTERLAND = 1;
+int const LF_SEA = 2;
+int const LF_CLIFF_ON_COASTLINE = 6;
+int const LF_CLIFF_INLAND = 7;
+int const LF_DRIFT_TALUS = 9;
+int const LF_DRIFT_BEACH = 10;
+int const LF_DRIFT_DUNES = 11;                        // TODO 059 Implement dune landform class
+int const LF_INTERVENTION_STRUCT = 12;
+int const LF_INTERVENTION_NON_STRUCT = 13;
+int const LF_ISLAND = 14;                             // Not yet implemented
+int const LF_SEDIMENT_INPUT_UNCONSOLIDATED = 18;
+int const LF_SEDIMENT_INPUT_CONSOLIDATED = 19;
 
 // GIS raster input codes
 int const FINE_CONS_RASTER = 1;
@@ -522,7 +498,9 @@ int const RASTER_PLOT_CLIFF_COLLAPSE_DEPOSITION_SAND = 13;
 int const RASTER_PLOT_CLIFF_COLLAPSE_EROSION_COARSE = 14;
 int const RASTER_PLOT_CLIFF_COLLAPSE_EROSION_FINE = 15;
 int const RASTER_PLOT_CLIFF_COLLAPSE_EROSION_SAND = 16;
+#ifdef _DEBUG
 int const RASTER_PLOT_CLIFF_COLLAPSE_TIMESTEP = 17;
+#endif
 int const RASTER_PLOT_CLIFF_NOTCH_ALL = 18;
 int const RASTER_PLOT_CLIFF_TOE = 19;
 int const RASTER_PLOT_COARSE_CONSOLIDATED_SEDIMENT = 20;
@@ -538,7 +516,7 @@ int const RASTER_PLOT_INTERVENTION_HEIGHT = 29;
 int const RASTER_PLOT_INUNDATION_MASK = 30;
 int const RASTER_PLOT_LANDFORM = 31;
 int const RASTER_PLOT_NORMAL_PROFILE = 32;
-int const RASTER_PLOT_OVERALL_TOP_ELEVATION = 33;
+int const RASTER_PLOT_TOP_ELEV_INC_SEA = 33;
 int const RASTER_PLOT_POLYGON = 34;
 int const RASTER_PLOT_POLYGON_GAIN_OR_LOSS = 35;
 int const RASTER_PLOT_POLYGON_UPDRIFT_OR_DOWNDRIFT = 36;
@@ -549,28 +527,29 @@ int const RASTER_PLOT_SAND_CONSOLIDATED_SEDIMENT = 40;
 int const RASTER_PLOT_SAND_UNCONSOLIDATED_SEDIMENT = 41;
 int const RASTER_PLOT_SEA_DEPTH = 42;
 int const RASTER_PLOT_SEDIMENT_INPUT = 43;
-int const RASTER_PLOT_SEDIMENT_TOP_ELEVATION = 44;
+int const RASTER_PLOT_SED_TOP_INC_TALUS_ELEV = 44;
 int const RASTER_PLOT_SETUP_SURGE_FLOOD_MASK = 45;
 int const RASTER_PLOT_SETUP_SURGE_RUNUP_FLOOD_MASK = 46;
 int const RASTER_PLOT_SHADOW_DOWNDRIFT_ZONE = 47;
 int const RASTER_PLOT_SHADOW_ZONE = 48;
 int const RASTER_PLOT_SLICE = 49;
 int const RASTER_PLOT_SLOPE_FOR_CLIFF_TOE = 50;
-int const RASTER_PLOT_SLOPE_OF_CONSOLIDATED_SEDIMENT = 51;
+int const RASTER_PLOT_CONS_SED_SLOPE = 51;
 int const RASTER_PLOT_SUSPENDED_SEDIMENT = 52;
-int const RASTER_PLOT_TOTAL_ACTUAL_BEACH_EROSION = 53;
-int const RASTER_PLOT_TOTAL_ACTUAL_PLATFORM_EROSION = 54;
-int const RASTER_PLOT_TOTAL_BEACH_DEPOSITION = 55;
-int const RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_DEPOSITION_COARSE = 56;
-int const RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_DEPOSITION_SAND = 57;
-int const RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_EROSION_COARSE = 58;
-int const RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_EROSION_FINE = 59;
-int const RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_EROSION_SAND = 60;
-int const RASTER_PLOT_TOTAL_POTENTIAL_BEACH_EROSION = 61;
-int const RASTER_PLOT_TOTAL_POTENTIAL_PLATFORM_EROSION = 62;
-int const RASTER_PLOT_WAVE_FLOOD_LINE = 63;
-int const RASTER_PLOT_WAVE_HEIGHT = 64;
-int const RASTER_PLOT_WAVE_ORIENTATION = 65;
+int const RASTER_PLOT_TALUS = 53;
+int const RASTER_PLOT_TOTAL_ACTUAL_BEACH_EROSION = 54;
+int const RASTER_PLOT_TOTAL_ACTUAL_PLATFORM_EROSION = 55;
+int const RASTER_PLOT_TOTAL_BEACH_DEPOSITION = 56;
+int const RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_DEPOSITION_COARSE = 57;
+int const RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_DEPOSITION_SAND = 58;
+int const RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_EROSION_COARSE = 59;
+int const RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_EROSION_FINE = 60;
+int const RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_EROSION_SAND = 61;
+int const RASTER_PLOT_TOTAL_POTENTIAL_BEACH_EROSION = 62;
+int const RASTER_PLOT_TOTAL_POTENTIAL_PLATFORM_EROSION = 63;
+int const RASTER_PLOT_WAVE_FLOOD_LINE = 64;
+int const RASTER_PLOT_WAVE_HEIGHT = 65;
+int const RASTER_PLOT_WAVE_ORIENTATION = 66;
 
 // GIS vector output codes
 // int const VECTOR_PLOT_FLOOD_SWL_SETUP_LINE = 19;
@@ -682,6 +661,7 @@ int const RTN_ERR_CELL_NOT_FOUND_IN_HIT_PROFILE_DIFFERENT_COASTS = 80;
 int const RTN_ERR_POINT_NOT_FOUND_IN_MULTILINE_DIFFERENT_COASTS = 81;
 int const RTN_ERR_CELL_NOT_FOUND_IN_HIT_PROFILE = 82;
 int const RTN_ERR_CELL_IN_POLY_BUT_NO_POLY_COAST = 83;
+int const RTN_ERR_CLIFF_TALUS_TO_UNCONS = 84;
 int const RTN_ERR_UNKNOWN = 999;
 
 // Elevation and 'slice' codes
@@ -708,8 +688,15 @@ int const UNCONS_SEDIMENT_EQUATION_CERC = 0;
 int const UNCONS_SEDIMENT_EQUATION_KAMPHUIS = 1;
 
 int const CLIFF_COLLAPSE_LENGTH_INCREMENT = 10;             // Increment the planview length of the cliff talus Dean profile, if we have not been able to deposit enough
-int const PROFILE_CHECK_DIST_FROM_COAST = 3;                // Used in checking shoreline-normal profiles for intersection
+int const PROFILE_CHECK_DIST_FROM_COAST = 20;               // TEST TODO Used in checking shoreline-normal profiles for intersection
 int const GAP_BETWEEN_DIFFERENT_COAST_PROFILES = 30;        // In cells, is the gap between profile ends belonging to different coasts
+
+int const NUM_DAYS_FOR_MEAN_HIGH_WATER_CALC = 30;           // Number of days to average daily high water elevation
+
+int const NO_RUNUP_EQUATION = 0;                            // Runup not considered
+int const RUNUP_EQUATION_NIELSEN_HANSLOW = 1;               // Runup equation is Nielsen, P. & Hanslow, D. J. 1991. Wave Runup Distributions on Natural Beaches. Journal of Coastal Research, 7, 1139-1152.  *** & DHI (2004) ???
+int const RUNUP_EQUATION_MASE = 2;                          // Runup equation is Mase, H. 1989. Random Wave Runup Height on Gentle Slope. Journal of Waterway, Port, Coastal, and Ocean Engineering, 115, 649-661.
+int const RUNUP_EQUATION_STOCKDON = 3;                      // Runup equation is Stockdon, H. F., Holman, R. A., Howd, P. A. & Sallenger JR, A. H. 2006. Empirical parameterization of setup, swash, and runup. Coastal Engineering, 53, 573-588.
 
 unsigned long const MASK = 0xfffffffful;
 unsigned long const SEDIMENT_INPUT_EVENT_ERROR = -1;
@@ -734,7 +721,7 @@ double const CSHORE_FRICTION_FACTOR = 0.015;                // Friction factor f
 double const CSHORE_SURGE_LEVEL = 0.0;                      // TODO 007
 
 double const TOLERANCE = 1e-7;                              // For bFPIsEqual, if too small (e.g. 1e-10), get spurious "rounding" errors
-double const SEDIMENT_ELEV_TOLERANCE = 1e-10;               // For bFPIsEqual, used to compare depth-equivalent sediment amounts
+double const SED_ELEV_TOLERANCE = 1e-5;                     // Used to compare depth-equivalent sediment amounts in bFPIsEqual and elsewhere
 double const MASS_BALANCE_TOLERANCE = 1e-5;                 // For bFPIsEqual, used to compare for mass balance checks
 double const STRAIGHT_COAST_MAX_DETAILED_CURVATURE = -5;
 double const STRAIGHT_COAST_MAX_SMOOTH_CURVATURE = -1;
@@ -743,9 +730,10 @@ double const MAX_LAND_LENGTH_OF_SHADOW_ZONE_LINE = 5;       // Used in shadow li
 double const CLIFF_COLLAPSE_HEIGHT_INCREMENT = 0.1;         // Increment the fractional height of the cliff talus Dean profile, if we have not been able to deposit enough
 double const INTERVENTION_PROFILE_SPACING_FACTOR = 0.5;     // Profile spacing on interventions works better if it is smaller than profile spacing on coastline
 
+double const CLIFF_NOTCH_CUTOFF_DISTANCE = 2;               // Cut-off SWL distance (m), measured downwards from the cliff notch apex: below this there is no notch incision
 double const DBL_NODATA = -9999;
 
-string const PROGRAM_NAME = "Coastal Modelling Environment (CoastalME) version 1.4.0 (28 Aug 2025)";
+string const PROGRAM_NAME = "Coastal Modelling Environment (CoastalME) version 1.4.0 (11 Nov 2025)";
 string const PROGRAM_NAME_SHORT = "CME";
 string const CME_INI = "cme.ini";
 
@@ -909,7 +897,6 @@ string const RASTER_INUNDATION_MASK_CODE = "inundation_mask";
 string const RASTER_INUNDATION_MASK_NAME = "inundation_mask";
 string const RASTER_LANDFORM_CODE = "landform_class";
 string const RASTER_LANDFORM_NAME = "landform_class";
-string const RASTER_OVERALL_TOP_ELEVATION_NAME = "top_elevation";
 string const RASTER_POLYGON_CODE = "polygon_raster";
 string const RASTER_POLYGON_GAIN_OR_LOSS_CODE = "polygon_gain_or_loss";
 string const RASTER_POLYGON_GAIN_OR_LOSS_NAME = "polygon_gain_or_loss";
@@ -947,7 +934,10 @@ string const RASTER_SLOPE_OF_CONSOLIDATED_SEDIMENT_CODE = "cons_sediment_slope";
 string const RASTER_SLOPE_OF_CONSOLIDATED_SEDIMENT_NAME = "cons_sediment_slope";
 string const RASTER_SUSP_SED_CODE = "susp_sed";
 string const RASTER_SUSP_SED_NAME = "susp_sed";
-string const RASTER_TOP_CODE = "top_elevation";
+string const RASTER_TALUS_CODE = "talus";
+string const RASTER_TALUS_NAME = "talus";
+string const RASTER_TOP_ELEVATION_INC_SEA_CODE = "top_elevation";
+string const RASTER_TOP_ELEVATION_INC_SEA_NAME = "top_elevation_inc_sea";
 string const RASTER_TOTAL_ACTUAL_BEACH_EROSION_CODE = "total_actual_beach_erosion";
 string const RASTER_TOTAL_ACTUAL_BEACH_EROSION_NAME = "total_actual_beach_erosion";
 string const RASTER_TOTAL_ACTUAL_PLATFORM_EROSION_CODE = "total_actual_platform_erosion";
@@ -995,8 +985,10 @@ string const RASTER_PLOT_CLIFF_COLLAPSE_DEPOSITION_SAND_TITLE = "Depth of sand t
 string const RASTER_PLOT_CLIFF_COLLAPSE_EROSION_COARSE_TITLE = "Cliff collapse depth of erosion, coarse sediment";
 string const RASTER_PLOT_CLIFF_COLLAPSE_EROSION_FINE_TITLE = "Cliff collapse depth of erosion, fine sediment";
 string const RASTER_PLOT_CLIFF_COLLAPSE_EROSION_SAND_TITLE = "Cliff collapse depth of erosion, sand sediment";
-string const RASTER_PLOT_CLIFF_NOTCH_ALL_TITLE = "All cliff notch incision";
+#ifdef _DEBUG
 string const RASTER_PLOT_CLIFF_COLLAPSE_TIMESTEP_TITLE = "Timestep at which cliff collapse occurred";
+#endif
+string const RASTER_PLOT_CLIFF_NOTCH_ALL_TITLE = "All cliff notch incision";
 string const RASTER_PLOT_CLIFF_TOE_TITLE = "Cliff toe cells";
 string const RASTER_PLOT_COARSE_CONSOLIDATED_SEDIMENT_TITLE = "Consolidated coarse sediment depth";
 string const RASTER_PLOT_COARSE_UNCONSOLIDATED_SEDIMENT_TITLE = "Unconsolidated coarse sediment depth";
@@ -1011,7 +1003,6 @@ string const RASTER_PLOT_INTERVENTION_HEIGHT_TITLE = "Intervention height";
 string const RASTER_PLOT_INUNDATION_MASK_TITLE = "Inundated area mask";
 string const RASTER_PLOT_LANDFORM_TITLE = "Landform class";
 string const RASTER_PLOT_NORMAL_PROFILE_TITLE = "Rasterized normal profiles";
-string const RASTER_PLOT_OVERALL_TOP_ELEVATION_TITLE = "Elevation of sediment top plus intervention, or sea surface";
 string const RASTER_PLOT_POLYGON_GAIN_OR_LOSS_TITLE = "Polygon gain or loss of unconsolidated sediment";
 string const RASTER_PLOT_POLYGON_TITLE = "Rasterized polygon boundaries";
 string const RASTER_PLOT_POLYGON_UPDRIFT_OR_DOWNDRIFT_TITLE = "Polygon updrift or downdrift movement of unconsolidated sediment";
@@ -1022,15 +1013,17 @@ string const RASTER_PLOT_SAND_CONSOLIDATED_SEDIMENT_TITLE = "Consolidated sand s
 string const RASTER_PLOT_SAND_UNCONSOLIDATED_SEDIMENT_TITLE = "Unconsolidated sand sediment depth";
 string const RASTER_PLOT_SEA_DEPTH_TITLE = "Sea depth";
 string const RASTER_PLOT_SEDIMENT_INPUT_EVENT_TITLE = "Sediment input event(s) since last GIS save";
-string const RASTER_PLOT_SEDIMENT_TOP_ELEVATION_TITLE = "Elevation of sediment top";
+string const RASTER_PLOT_SED_TOP_INC_TALUS_ELEV_TITLE = "Elevation of sediment top inc talus";
 string const RASTER_PLOT_SETUP_SURGE_FLOOD_MASK_TITLE = "Mask of setup-surge flood";
 string const RASTER_PLOT_SETUP_SURGE_RUNUP_FLOOD_MASK_TITLE = "Mask of setup-surge-runup flood";
 string const RASTER_PLOT_SHADOW_DOWNDRIFT_ZONE_TITLE = "Downdrift of wave shadow zones";
 string const RASTER_PLOT_SHADOW_ZONE_TITLE = "Wave shadow zones";
 string const RASTER_PLOT_SLICE_TITLE = "Slice though layers at elevation = ";
 string const RASTER_PLOT_SLOPE_FOR_CLIFF_TOE_TITLE = "Slope";
-string const RASTER_PLOT_SLOPE_OF_CONSOLIDATED_SEDIMENT_TITLE = "Local slope of consolidated sediment";
+string const RASTER_PLOT_CONS_SED_SLOPE_TITLE = "Local slope of consolidated sediment";
 string const RASTER_PLOT_SUSPENDED_SEDIMENT_TITLE = "Suspended sediment depth";
+string const RASTER_PLOT_TALUS_TITLE = "Talus from cliff collapse";
+string const RASTER_PLOT_TOP_ELEV_INC_SEA_TITLE = "Topmost elevation (sediment plus intervention plus se";
 string const RASTER_PLOT_TOTAL_ACTUAL_BEACH_EROSION_TITLE = "Total actual (constrained) beach erosion depth";
 string const RASTER_PLOT_TOTAL_ACTUAL_PLATFORM_EROSION_TITLE = "Total actual (constrained) shore platform erosion depth";
 string const RASTER_PLOT_TOTAL_BEACH_DEPOSITION_TITLE = "Total beach deposition depth";
