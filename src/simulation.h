@@ -83,10 +83,10 @@ class CSimulation
    bool m_bBasementElevSave;
 
    //! Save sediment top surface raster DEMs?
-   bool m_bSedimentTopSurfSave;
+   bool m_bSedIncTalusTopSurfSave;
 
    //! Save fop surface (sediment and sea) raster DEMs?
-   bool m_bTopSurfSave;
+   bool m_bTopSurfIncSeaSave;
 
    //! Save slope raster grids (used for cliff toe location)?
    bool m_bSlopeSaveForCliffToe;

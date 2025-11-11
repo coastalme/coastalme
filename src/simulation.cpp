@@ -68,8 +68,8 @@ CSimulation::CSimulation(void)
    m_bHaveSandSediment =
    m_bHaveCoarseSediment =
    m_bBasementElevSave =
-   m_bSedimentTopSurfSave =
-   m_bTopSurfSave =
+   m_bSedIncTalusTopSurfSave =
+   m_bTopSurfIncSeaSave =
    m_bSliceSave =
    m_bSeaDepthSave =
    m_bAvgSeaDepthSave =

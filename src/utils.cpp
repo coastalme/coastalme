@@ -138,7 +138,7 @@ int CSimulation::nHandleCommandLineParams(int nArg, char const* pcArgv[])
                // User wants to use YAML format for input datafile
                m_bYamlInputFormat = true;
             }
-            
+
             else if (strArg.find("--home") != string::npos)
             {
                // Read in user defined runtime directory
@@ -673,13 +673,13 @@ string CSimulation::strListRasterFiles(void) const
       strTmp.append(", ");
    }
 
-   if (m_bSedimentTopSurfSave)
+   if (m_bSedIncTalusTopSurfSave)
    {
       strTmp.append(RASTER_SEDIMENT_TOP_CODE);
       strTmp.append(", ");
    }
 
-   if (m_bTopSurfSave)
+   if (m_bTopSurfIncSeaSave)
    {
       strTmp.append(RASTER_TOP_CODE);
       strTmp.append(", ");

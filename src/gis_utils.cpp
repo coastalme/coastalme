@@ -955,11 +955,11 @@ bool CSimulation::bSaveAllRasterGISFiles(void)
       }
    }
 
-   if (m_bSedimentTopSurfSave)
+   if (m_bSedIncTalusTopSurfSave)
       if (! bWriteRasterGISFile(RASTER_PLOT_SEDIMENT_TOP_ELEVATION, &RASTER_PLOT_SEDIMENT_TOP_ELEVATION_TITLE))
          return false;
 
-   if (m_bTopSurfSave)
+   if (m_bTopSurfIncSeaSave)
       if (! bWriteRasterGISFile(RASTER_PLOT_OVERALL_TOP_ELEVATION, &RASTER_PLOT_OVERALL_TOP_ELEVATION_TITLE))
          return false;
 
