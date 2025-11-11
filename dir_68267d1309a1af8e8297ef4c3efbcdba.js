@@ -35,8 +35,6 @@ var dir_68267d1309a1af8e8297ef4c3efbcdba =
     [ "coast_landform.h", "dd/d6c/coast__landform_8h.html", "dd/d6c/coast__landform_8h" ],
     [ "coast_polygon.cpp", "df/d30/coast__polygon_8cpp.html", null ],
     [ "coast_polygon.h", "d6/db2/coast__polygon_8h.html", "d6/db2/coast__polygon_8h" ],
-    [ "configuration.cpp", "df/d22/configuration_8cpp.html", null ],
-    [ "configuration.h", "d2/d2c/configuration_8h.html", "d2/d2c/configuration_8h" ],
     [ "create_polygons.cpp", "d6/d91/create__polygons_8cpp.html", null ],
     [ "create_profiles.cpp", "da/db2/create__profiles_8cpp.html", "da/db2/create__profiles_8cpp" ],
     [ "do_beach_potential_erosion.cpp", "d6/d45/do__beach__potential__erosion_8cpp.html", null ],
@@ -80,7 +78,5 @@ var dir_68267d1309a1af8e8297ef4c3efbcdba =
     [ "update_grid.cpp", "dc/d0e/update__grid_8cpp.html", null ],
     [ "utils.cpp", "de/d06/utils_8cpp.html", null ],
     [ "utils_global.cpp", "d2/dfd/utils__global_8cpp.html", "d2/dfd/utils__global_8cpp" ],
-    [ "write_output.cpp", "d4/d6c/write__output_8cpp.html", null ],
-    [ "yaml_parser.cpp", "d1/d34/yaml__parser_8cpp.html", null ],
-    [ "yaml_parser.h", "d0/d18/yaml__parser_8h.html", "d0/d18/yaml__parser_8h" ]
+    [ "write_output.cpp", "d4/d6c/write__output_8cpp.html", null ]
 ];
