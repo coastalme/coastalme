@@ -9,6 +9,7 @@
 */
 
 /* ==============================================================================================================================
+
    This file is part of CoastalME, the Coastal Modelling Environment.
 
    CoastalME is free software; you can redistribute it and/or modify it under the terms of the GNU General Public  License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
@@ -20,11 +21,12 @@
 #include <cstdio>
 
 #include <cstdlib>
-using std::strtod;
 using std::atol;
+using std::strtod;
 
 #include <cctype>
 using std::isdigit;
+using std::tolower;
 
 #include <cmath>
 using std::floor;
@@ -44,13 +46,16 @@ using std::to_string;
 #include <algorithm>
 using std::find;
 using std::sort;
+using std::transform;
 
 #include <random>
 using std::random_device;
 
 #include "cme.h"
+#include "configuration.h"
 #include "sediment_input_event.h"
 #include "simulation.h"
+#include "yaml_parser.h"
 
 //===============================================================================================================================
 //! The bReadIniFile member function reads the initialisation file
@@ -83,7 +88,7 @@ bool CSimulation::bReadIniFile(void)
    InStream.open(strFilePathName.c_str(), ios::in);
 
    // Did it open OK?
-   if (!InStream.is_open())
+   if (! InStream.is_open())
    {
       // Error: cannot open .ini file for input
       cerr << ERR << "cannot open " << strFilePathName << " for input" << endl;
@@ -102,7 +107,7 @@ bool CSimulation::bReadIniFile(void)
       strRec = strTrim(&strRec);
 
       // If it is a blank line or a comment then ignore it
-      if ((!strRec.empty()) && (strRec[0] != QUOTE1) && (strRec[0] != QUOTE2))
+      if ((! strRec.empty()) && (strRec[0] != QUOTE1) && (strRec[0] != QUOTE2))
       {
          // It isn't so increment counter
          i++;
@@ -148,71 +153,71 @@ bool CSimulation::bReadIniFile(void)
 
          switch (i)
          {
-         case 1:
-            // The main input run-data filename
-            if (strRH.empty())
-               strErr = "line " + to_string(nLine) + ": path and name of main datafile";
+            case 1:
+               // The main input run-data filename
+               if (strRH.empty())
+                  strErr = "line " + to_string(nLine) + ": path and name of main datafile";
 
-            else
-            {
-               // First check that we don't already have an input run-data filename, e.g. one entered on the command-line
-               if (m_strDataPathName.empty())
+               else
                {
-                  // We don't: so first check for leading slash, or leading Unix home dir symbol, or occurrence of a drive letter
+                  // First check that we don't already have an input run-data filename, e.g. one entered on the command-line
+                  if (m_strDataPathName.empty())
+                  {
+                     // We don't: so first check for leading slash, or leading Unix home dir symbol, or occurrence of a drive letter
+                     if ((strRH[0] == PATH_SEPARATOR) || (strRH[0] == TILDE) || (strRH[1] == COLON))
+                        // It has an absolute path, so use it 'as is'
+                        m_strDataPathName = strRH;
+
+                     else
+                     {
+                        // It has a relative path, so prepend the CoastalME dir
+                        m_strDataPathName = m_strCMEDir;
+                        m_strDataPathName.append(strRH);
+                     }
+                  }
+               }
+
+               break;
+
+            case 2:
+               // Path for CoastalME output
+               if (strRH.empty())
+                  strErr = "line " + to_string(nLine) + ": path for CoastalME output";
+
+               else
+               {
+                  // Check for trailing slash on CoastalME output directory name (is vital)
+                  if (strRH[strRH.size() - 1] != PATH_SEPARATOR)
+                     strRH.push_back(PATH_SEPARATOR);
+
+                  // Now check for leading slash, or leading Unix home dir symbol, or occurrence of a drive letter
                   if ((strRH[0] == PATH_SEPARATOR) || (strRH[0] == TILDE) || (strRH[1] == COLON))
-                     // It has an absolute path, so use it 'as is'
-                     m_strDataPathName = strRH;
+                     // It is an absolute path, so use it 'as is'
+                     m_strOutPath = strRH;
 
                   else
                   {
-                     // It has a relative path, so prepend the CoastalME dir
-                     m_strDataPathName = m_strCMEDir;
-                     m_strDataPathName.append(strRH);
+                     // It is a relative path, so prepend the CoastalME dir
+                     m_strOutPath = m_strCMEDir;
+                     m_strOutPath.append(strRH);
                   }
                }
-            }
 
-            break;
+               break;
 
-         case 2:
-            // Path for CoastalME output
-            if (strRH.empty())
-               strErr = "line " + to_string(nLine) + ": path for CoastalME output";
-
-            else
-            {
-               // Check for trailing slash on CoastalME output directory name (is vital)
-               if (strRH[strRH.size() - 1] != PATH_SEPARATOR)
-                  strRH.push_back(PATH_SEPARATOR);
-
-               // Now check for leading slash, or leading Unix home dir symbol, or occurrence of a drive letter
-               if ((strRH[0] == PATH_SEPARATOR) || (strRH[0] == TILDE) || (strRH[1] == COLON))
-                  // It is an absolute path, so use it 'as is'
-                  m_strOutPath = strRH;
-
-               else
+            case 3:
+               // Email address, only useful if running under Linux/Unix
+               if (! strRH.empty())
                {
-                  // It is a relative path, so prepend the CoastalME dir
-                  m_strOutPath = m_strCMEDir;
-                  m_strOutPath.append(strRH);
+                  // Something was entered, do rudimentary check for valid email address
+                  if (strRH.find('@') == string::npos)
+                     strErr = "line " + to_string(nLine) + ": email address for messages";
+
+                  else
+                     m_strMailAddress = strRH;
                }
-            }
 
-            break;
-
-         case 3:
-            // Email address, only useful if running under Linux/Unix
-            if (! strRH.empty())
-            {
-               // Something was entered, do rudimentary check for valid email address
-               if (strRH.find('@') == string::npos)
-                  strErr = "line " + to_string(nLine) + ": email address for messages";
-
-               else
-                  m_strMailAddress = strRH;
-            }
-
-            break;
+               break;
          }
 
          // Did an error occur?
@@ -232,12 +237,31 @@ bool CSimulation::bReadIniFile(void)
    return true;
 }
 
+
 //===============================================================================================================================
-//! Reads the run details input file and does some initialisation
-// TODO 000 Should user input be split in two main files: one for frequently-changed things, one for rarely-changed things? If so, what should go into each file ('testing only' OK, but what else?)
+//! Reads the run details input file and does some initialization
+// TODO 000 Should user input be split in two main files: one for
+// frequently-changed things, one for rarely-changed things? If so, what should
+// go into each file ('testing only' OK, but what else?)
 //===============================================================================================================================
 bool CSimulation::bReadRunDataFile(void)
 {
+   // Detect file format
+   bool bIsYaml;
+   if (! bDetectFileFormat(m_strDataPathName, bIsYaml))
+   {
+      cerr << ERR << "failed to detect file format for " << m_strDataPathName
+           << endl;
+      return false;
+   }
+
+   // Use appropriate parser based on format
+   if (bIsYaml)
+   {
+      return bReadYamlFile();
+   }
+   // Continue with original .dat file parsing
+   //
    // Create an ifstream object
    ifstream InStream;
 
@@ -3398,7 +3422,8 @@ int CSimulation::nReadTideDataFile()
 }
 
 //===============================================================================================================================
-//! Reads the shape of the erosion potential distribution (see shape function in Walkden & Hall, 2005)
+//! Reads the shape of the erosion potential distribution (see shape function in
+//! Walkden & Hall, 2005)
 //===============================================================================================================================
 int CSimulation::nReadShapeFunctionFile()
 {
@@ -3507,7 +3532,9 @@ int CSimulation::nReadShapeFunctionFile()
 }
 
 //===============================================================================================================================
-//! Reads the deep water wave station input data. Each point in m_strDeepWaterWavesInputFile is a triad of wave height, orientation and period for each time step
+//! Reads the deep water wave station input data. Each point in
+//! m_strDeepWaterWavesInputFile is a triad of wave height, orientation and
+//! period for each time step
 //===============================================================================================================================
 int CSimulation::nReadWaveStationInputFile(int const nWaveStations)
 {
@@ -3838,6 +3865,7 @@ int CSimulation::nReadWaveStationInputFile(int const nWaveStations)
    return RTN_OK;
 }
 
+
 //===============================================================================================================================
 //! Reads the sediment input event file
 //===============================================================================================================================
@@ -3850,7 +3878,7 @@ int CSimulation::nReadSedimentInputEventFile(void)
    InStream.open(m_strSedimentInputEventFile.c_str(), ios::in);
 
    // Did it open OK?
-   if (!InStream.is_open())
+   if (! InStream.is_open())
    {
       // Error: cannot open time series file for input
       cerr << ERR << "cannot open " << m_strSedimentInputEventFile << " for input" << endl;
@@ -3871,7 +3899,7 @@ int CSimulation::nReadSedimentInputEventFile(void)
       strRec = strTrim(&strRec);
 
       // If it is a blank line or a comment then ignore it
-      if ((!strRec.empty()) && (strRec[0] != QUOTE1) && (strRec[0] != QUOTE2))
+      if ((! strRec.empty()) && (strRec[0] != QUOTE1) && (strRec[0] != QUOTE2))
       {
          // It isn't so increment counter
          nRead++;
@@ -4047,4 +4075,1463 @@ int CSimulation::nReadSedimentInputEventFile(void)
    InStream.close();
 
    return RTN_OK;
+}
+
+//===============================================================================================================================
+//! Detects whether the input file is in YAML or .dat format
+//===============================================================================================================================
+bool CSimulation::bDetectFileFormat(string const &strFileName, bool &bIsYaml)
+{
+   bIsYaml = false;
+
+   // First check command-line flag
+   if (m_bYamlInputFormat)
+   {
+      bIsYaml = true;
+      return true;
+   }
+
+   // Check file extension
+   size_t nDotPos = strFileName.find_last_of('.');
+   if (nDotPos != string::npos)
+   {
+      string strExt = strFileName.substr(nDotPos + 1);
+      std::transform(strExt.begin(), strExt.end(), strExt.begin(), ::tolower);
+
+      if (strExt == "yaml" || strExt == "yml")
+      {
+         bIsYaml = true;
+         return true;
+      }
+      else if (strExt == "dat")
+      {
+         bIsYaml = false;
+         return true;
+      }
+   }
+
+   // Default to .dat format if extension is ambiguous
+   bIsYaml = false;
+   return true;
+}
+
+//===============================================================================================================================
+//! Reads YAML configuration file
+//===============================================================================================================================
+bool CSimulation::bReadYamlFile(void)
+{
+   CConfiguration config;
+   if (! bConfigureFromYamlFile(config))
+      return false;
+
+   // Apply configuration values to simulation object
+   if (! bApplyConfiguration(config))
+      return false;
+
+   return true;
+}
+
+//===============================================================================================================================
+//! Configures simulation from YAML file
+//===============================================================================================================================
+bool CSimulation::bConfigureFromYamlFile(CConfiguration &config)
+{
+   CYamlParser parser;
+
+   if (! parser.bParseFile(m_strDataPathName))
+   {
+      cerr << ERR << "Failed to parse YAML file " << m_strDataPathName << ": "
+           << parser.GetError() << endl;
+      return false;
+   }
+
+   CYamlNode root = parser.GetRoot();
+
+   // Helper function to process file paths with base path
+   auto processFilePath = [&](string const &filePath) -> string
+   {
+      if (filePath.empty())
+         return filePath;
+
+      // Check if base_path is specified in YAML
+      string basePath;
+      if (root.HasChild("base_path"))
+      {
+         basePath = root.GetChild("base_path").GetValue();
+         if (! basePath.empty() && basePath.back() != PATH_SEPARATOR)
+         {
+            basePath += PATH_SEPARATOR;
+         }
+      }
+
+      // If no base path or file path is absolute, return as-is
+      if (basePath.empty() || (filePath[0] == PATH_SEPARATOR) ||
+          (filePath[0] == TILDE) ||
+          (filePath.length() > 1 && filePath[1] == COLON))
+      {
+         return filePath;
+      }
+
+      // Prepend base path to relative file path
+      return basePath + filePath;
+   };
+
+   try
+   {
+      // Run Information
+      if (root.HasChild("run_information"))
+      {
+         CYamlNode runInfo = root.GetChild("run_information");
+         if (runInfo.HasChild("output_file_names"))
+            config.SetRunName(runInfo.GetChild("output_file_names").GetValue());
+         if (runInfo.HasChild("log_file_detail"))
+            config.SetLogFileDetail(
+               runInfo.GetChild("log_file_detail").GetIntValue());
+         if (runInfo.HasChild("csv_per_timestep_results"))
+            config.SetCSVPerTimestepResults(
+               runInfo.GetChild("csv_per_timestep_results").GetBoolValue());
+      }
+
+      // simulation
+      if (root.HasChild("simulation"))
+
+      {
+         CYamlNode sim = root.GetChild("simulation");
+         config.SetStartDateTime(sim.GetChild("start_date_time").GetValue());
+         if (sim.HasChild("duration"))
+            config.SetDuration(sim.GetChild("duration").GetValue());
+         if (sim.HasChild("timestep"))
+            config.SetTimestep(sim.GetChild("timestep").GetValue());
+         if (sim.HasChild("save_times"))
+         {
+            CYamlNode saveTimes = sim.GetChild("save_times");
+            if (saveTimes.IsSequence())
+               config.SetSaveTimes(saveTimes.GetStringSequence());
+         }
+         if (sim.HasChild("random_seed"))
+            config.SetRandomSeed(sim.GetChild("random_seed").GetIntValue());
+      }
+
+      // GIS Output
+      if (root.HasChild("gis_output"))
+      {
+         CYamlNode gis = root.GetChild("gis_output");
+         if (gis.HasChild("max_save_digits"))
+            config.SetMaxSaveDigits(gis.GetChild("max_save_digits").GetIntValue());
+         if (gis.HasChild("save_digits_mode"))
+            config.SetSaveDigitsMode(gis.GetChild("save_digits_mode").GetValue());
+         if (gis.HasChild("raster_files"))
+         {
+            CYamlNode rasterFiles = gis.GetChild("raster_files");
+            if (rasterFiles.IsSequence())
+               config.SetRasterFiles(rasterFiles.GetStringSequence());
+         }
+         if (gis.HasChild("vector_files"))
+         {
+            CYamlNode vectorFiles = gis.GetChild("vector_files");
+            if (vectorFiles.IsSequence())
+               config.SetVectorFiles(vectorFiles.GetStringSequence());
+         }
+         if (gis.HasChild("raster_format"))
+            config.SetRasterFormat(gis.GetChild("raster_format").GetValue());
+         if (gis.HasChild("world_file"))
+            config.SetWorldFile(gis.GetChild("world_file").GetBoolValue());
+         if (gis.HasChild("scale_values"))
+            config.SetScaleValues(gis.GetChild("scale_values").GetBoolValue());
+      }
+
+      // Hydrology
+      if (root.HasChild("hydrology"))
+      {
+         CYamlNode hydro = root.GetChild("hydrology");
+         if (hydro.HasChild("wave_propagation_model"))
+         {
+            string strModel = hydro.GetChild("wave_propagation_model").GetValue();
+            if (strModel == "COVE")
+               config.SetWavePropagationModel(0);
+            else if (strModel == "CShore")
+               config.SetWavePropagationModel(1);
+         }
+         if (hydro.HasChild("seawater_density"))
+            config.SetSeawaterDensity(
+               hydro.GetChild("seawater_density").GetDoubleValue());
+         if (hydro.HasChild("initial_water_level"))
+            config.SetInitialWaterLevel(
+               hydro.GetChild("initial_water_level").GetDoubleValue());
+         if (hydro.HasChild("final_water_level"))
+            config.SetFinalWaterLevel(
+               hydro.GetChild("final_water_level").GetDoubleValue());
+
+         // Wave data configuration
+         if (hydro.HasChild("wave_height_time_series"))
+            config.SetWaveHeightTimeSeries(
+               hydro.GetChild("wave_height_time_series").GetValue());
+         if (hydro.HasChild("wave_height_shape_file"))
+            config.SetWaveStationDataFile(
+               hydro.GetChild("wave_height_shape_file").GetValue());
+         if (hydro.HasChild("wave_height"))
+            config.SetDeepWaterWaveHeight(
+               hydro.GetChild("wave_height").GetDoubleValue());
+         if (hydro.HasChild("wave_orientation"))
+            config.SetDeepWaterWaveOrientation(
+               hydro.GetChild("wave_orientation").GetDoubleValue());
+         if (hydro.HasChild("wave_period"))
+            config.SetWavePeriod(hydro.GetChild("wave_period").GetDoubleValue());
+
+         //  Tide data configuration
+         if (hydro.HasChild("tide_data_file"))
+            config.SetTideDataFile(processFilePath(hydro.GetChild("tide_data_file").GetValue()));
+         if (hydro.HasChild("breaking_wave_ratio"))
+            config.SetBreakingWaveRatio(
+               hydro.GetChild("breaking_wave_ratio").GetDoubleValue());
+      }
+
+      // Grid and Coastline
+      if (root.HasChild("grid_and_coastline"))
+      {
+         CYamlNode grid = root.GetChild("grid_and_coastline");
+         if (grid.HasChild("coastline_smoothing"))
+         {
+            string strSmoothing = grid.GetChild("coastline_smoothing").GetValue();
+            if (strSmoothing == "none")
+               config.SetCoastlineSmoothing(0);
+            else if (strSmoothing == "running_mean")
+               config.SetCoastlineSmoothing(1);
+            else if (strSmoothing == "savitzky_golay")
+               config.SetCoastlineSmoothing(2);
+            else
+               config.SetCoastlineSmoothing(
+                  grid.GetChild("coastline_smoothing").GetIntValue());
+         }
+         if (grid.HasChild("coastline_smoothing_window"))
+            config.SetCoastlineSmoothingWindow(
+               grid.GetChild("coastline_smoothing_window").GetIntValue());
+         if (grid.HasChild("polynomial_order"))
+            config.SetPolynomialOrder(
+               grid.GetChild("polynomial_order").GetIntValue());
+         if (grid.HasChild("omit_grid_edges"))
+            config.SetOmitGridEdges(grid.GetChild("omit_grid_edges").GetValue());
+         if (grid.HasChild("profile_smoothing_window"))
+            config.SetProfileSmoothingWindow(
+               grid.GetChild("profile_smoothing_window").GetIntValue());
+         if (grid.HasChild("max_local_slope"))
+            config.SetMaxLocalSlope(
+               grid.GetChild("max_local_slope").GetDoubleValue());
+         if (grid.HasChild("max_beach_elevation"))
+            config.SetMaxBeachElevation(
+               grid.GetChild("max_beach_elevation").GetDoubleValue());
+      }
+
+      // Layers and Files
+      if (root.HasChild("layers_and_files"))
+      {
+         CYamlNode layers = root.GetChild("layers_and_files");
+         if (layers.HasChild("num_layers"))
+            config.SetNumLayers(layers.GetChild("num_layers").GetIntValue());
+         if (layers.HasChild("basement_dem_file"))
+            config.SetBasementDEMFile(
+               processFilePath(layers.GetChild("basement_dem_file").GetValue()));
+         if (layers.HasChild("suspended_sediment_file"))
+            config.SetSuspendedSedFile(processFilePath(
+               layers.GetChild("suspended_sediment_file").GetValue()));
+         if (layers.HasChild("landform_file"))
+            config.SetLandformFile(
+               processFilePath(layers.GetChild("landform_file)").GetValue()));
+         if (layers.HasChild("intervention_class_file"))
+            config.SetInterventionClassFile(processFilePath(
+               layers.GetChild("intervention_class_file").GetValue()));
+         if (layers.HasChild("intervention_height_file"))
+            config.SetInterventionHeightFile(processFilePath(
+               layers.GetChild("intervention_height_file").GetValue()));
+
+         // Handle layer-specific files (assuming layer_0, layer_1, etc.)
+         if (layers.HasChild("layer_0"))
+         {
+            CYamlNode layer0 = layers.GetChild("layer_0");
+            vector<string> unconsFine, unconsSand, unconsCoarse;
+            vector<string> consFine, consSand, consCoarse;
+
+            if (layer0.HasChild("unconsolidated_fine"))
+               unconsFine.push_back(processFilePath(
+                  layer0.GetChild("unconsolidated_fine").GetValue()));
+            if (layer0.HasChild("unconsolidated_sand"))
+               unconsSand.push_back(processFilePath(
+                  layer0.GetChild("unconsolidated_sand").GetValue()));
+            if (layer0.HasChild("unconsolidated_coarse"))
+               unconsCoarse.push_back(processFilePath(
+                  layer0.GetChild("unconsolidated_coarse").GetValue()));
+            if (layer0.HasChild("consolidated_fine"))
+               consFine.push_back(
+                  processFilePath(layer0.GetChild("consolidated_fine").GetValue()));
+            if (layer0.HasChild("consolidated_sand"))
+               consSand.push_back(
+                  processFilePath(layer0.GetChild("consolidated_sand").GetValue()));
+            if (layer0.HasChild("consolidated_coarse"))
+               consCoarse.push_back(processFilePath(
+                  layer0.GetChild("consolidated_coarse").GetValue()));
+
+            config.SetUnconsFineFiles(unconsFine);
+            config.SetUnconsSandFiles(unconsSand);
+            config.SetUnconsCoarseFiles(unconsCoarse);
+            config.SetConsFineFiles(consFine);
+            config.SetConsSandFiles(consSand);
+            config.SetConsCoarseFiles(consCoarse);
+         }
+      }
+
+      // Sediment and Erosion
+      if (root.HasChild("sediment_and_erosion"))
+      {
+         CYamlNode sed = root.GetChild("sediment_and_erosion");
+         if (sed.HasChild("coast_platform_erosion"))
+            config.SetCoastPlatformErosion(
+               sed.GetChild("coast_platform_erosion").GetBoolValue());
+         if (sed.HasChild("platform_erosion_resistance"))
+            config.SetPlatformErosionResistance(
+               sed.GetChild("platform_erosion_resistance").GetDoubleValue());
+         if (sed.HasChild("beach_sediment_transport"))
+            config.SetBeachSedimentTransport(
+               sed.GetChild("beach_sediment_transport").GetBoolValue());
+         if (sed.HasChild("beach_transport_at_edges"))
+            config.SetBeachTransportAtEdges(
+               sed.GetChild("beach_transport_at_edges").GetIntValue());
+         if (sed.HasChild("beach_erosion_equation"))
+         {
+            string strEqn = sed.GetChild("beach_erosion_equation").GetValue();
+            config.SetBeachErosionEquation(strEqn == "CERC" ? 0 : 1);
+         }
+         if (sed.HasChild("sediment_density"))
+            config.SetSedimentDensity(
+               sed.GetChild("sediment_density").GetDoubleValue());
+         if (sed.HasChild("beach_sediment_porosity"))
+            config.SetBeachSedimentPorosity(
+               sed.GetChild("beach_sediment_porosity").GetDoubleValue());
+         if (sed.HasChild("transport_kls"))
+            config.SetTransportKLS(sed.GetChild("transport_kls").GetDoubleValue());
+         if (sed.HasChild("kamphuis_parameter"))
+            config.SetKamphuis(sed.GetChild("kamphuis_parameter").GetDoubleValue());
+         if (sed.HasChild("berm_height"))
+            config.SetBermHeight(sed.GetChild("berm_height").GetDoubleValue());
+
+         // Handle nested median_sizes and erosivity sections
+         if (sed.HasChild("median_sizes"))
+         {
+            CYamlNode sizes = sed.GetChild("median_sizes");
+            if (sizes.HasChild("fine"))
+               config.SetFineMedianSize(sizes.GetChild("fine").GetDoubleValue());
+            if (sizes.HasChild("sand"))
+               config.SetSandMedianSize(sizes.GetChild("sand").GetDoubleValue());
+            if (sizes.HasChild("coarse"))
+               config.SetCoarseMedianSize(sizes.GetChild("coarse").GetDoubleValue());
+         }
+         if (sed.HasChild("erosivity"))
+         {
+            CYamlNode eros = sed.GetChild("erosivity");
+            if (eros.HasChild("fine"))
+               config.SetFineErosivity(eros.GetChild("fine").GetDoubleValue());
+            if (eros.HasChild("sand"))
+               config.SetSandErosivity(eros.GetChild("sand").GetDoubleValue());
+            if (eros.HasChild("coarse"))
+               config.SetCoarseErosivity(eros.GetChild("coarse").GetDoubleValue());
+         }
+      }
+
+      // Cliff Parameters
+      if (root.HasChild("cliff_parameters"))
+      {
+         CYamlNode cliff = root.GetChild("cliff_parameters");
+         if (cliff.HasChild("cliff_collapse"))
+            config.SetCliffCollapse(
+               cliff.GetChild("cliff_collapse").GetBoolValue());
+         if (cliff.HasChild("cliff_erosion_resistance"))
+            config.SetCliffErosionResistance(
+               cliff.GetChild("cliff_erosion_resistance").GetDoubleValue());
+         if (cliff.HasChild("notch_overhang"))
+            config.SetNotchOverhang(
+               cliff.GetChild("notch_overhang").GetDoubleValue());
+         if (cliff.HasChild("notch_base"))
+            config.SetNotchBase(cliff.GetChild("notch_base").GetDoubleValue());
+         if (cliff.HasChild("deposition_scale_parameter_a"))
+            config.SetCliffDepositionA(
+               cliff.GetChild("deposition_scale_parameter_a").GetDoubleValue());
+         if (cliff.HasChild("talus_width"))
+            config.SetTalusWidth(cliff.GetChild("talus_width").GetDoubleValue());
+         if (cliff.HasChild("min_talus_length"))
+            config.SetMinTalusLength(
+               cliff.GetChild("min_talus_length").GetDoubleValue());
+         if (cliff.HasChild("min_talus_height"))
+            config.SetMinTalusHeight(
+               cliff.GetChild("min_talus_height").GetDoubleValue());
+      }
+
+      // Flood Parameters
+      if (root.HasChild("flood_parameters"))
+      {
+         CYamlNode flood = root.GetChild("flood_parameters");
+         if (flood.HasChild("flood_input"))
+            config.SetFloodInput(flood.GetChild("flood_input").GetBoolValue());
+         if (flood.HasChild("flood_coastline"))
+            config.SetFloodCoastline(flood.GetChild("flood_coastline").GetValue());
+         if (flood.HasChild("runup_equation"))
+            config.SetRunupEquation(flood.GetChild("runup_equation").GetValue());
+         if (flood.HasChild("characteristic_locations"))
+            config.SetFloodLocations(
+               flood.GetChild("characteristic_locations").GetValue());
+         if (flood.HasChild("flood_input_location"))
+            config.SetFloodInputLocation(
+               flood.GetChild("flood_input_location").GetValue());
+      }
+
+      // Sediment Input Parameters
+      if (root.HasChild("sediment_input_parameters"))
+      {
+         CYamlNode sedInput = root.GetChild("sediment_input_parameters");
+         if (sedInput.HasChild("sediment_input"))
+            config.SetSedimentInput(
+               sedInput.GetChild("sediment_input").GetBoolValue());
+         if (sedInput.HasChild("location"))
+            config.SetSedimentInputLocation(
+               sedInput.GetChild("location").GetValue());
+         if (sedInput.HasChild("type"))
+            config.SetSedimentInputType(sedInput.GetChild("type").GetValue());
+         if (sedInput.HasChild("details_file"))
+            config.SetSedimentInputDetails(
+               sedInput.GetChild("details_file").GetValue());
+      }
+
+      // Physics and Geometry
+      if (root.HasChild("physics_and_geometry"))
+      {
+         CYamlNode physics = root.GetChild("physics_and_geometry");
+         if (physics.HasChild("gravitational_acceleration"))
+            config.SetGravitationalAcceleration(
+               physics.GetChild("gravitational_acceleration").GetDoubleValue());
+         if (physics.HasChild("normal_spacing"))
+            config.SetNormalSpacing(
+               physics.GetChild("normal_spacing").GetDoubleValue());
+         if (physics.HasChild("random_factor"))
+            config.SetRandomFactor(
+               physics.GetChild("random_factor").GetDoubleValue());
+         if (physics.HasChild("normal_length"))
+            config.SetNormalLength(
+               physics.GetChild("normal_length").GetDoubleValue());
+         if (physics.HasChild("start_depth_ratio"))
+            config.SetStartDepthRatio(
+               physics.GetChild("start_depth_ratio").GetDoubleValue());
+      }
+
+      // Profile and Output
+      if (root.HasChild("profile_and_output"))
+      {
+         CYamlNode profile = root.GetChild("profile_and_output");
+         if (profile.HasChild("save_profile_data"))
+            config.SetSaveProfileData(
+               profile.GetChild("save_profile_data").GetBoolValue());
+         if (profile.HasChild("save_parallel_profiles"))
+            config.SetSaveParallelProfiles(
+               profile.GetChild("save_parallel_profiles").GetBoolValue());
+         if (profile.HasChild("output_erosion_potential"))
+            config.SetOutputErosionPotential(
+               profile.GetChild("output_erosion_potential").GetBoolValue());
+         if (profile.HasChild("curvature_window"))
+            config.SetCurvatureWindow(
+               profile.GetChild("curvature_window").GetIntValue());
+
+         // Handle numeric lists
+         if (profile.HasChild("profile_numbers"))
+         {
+            CYamlNode profileNums = profile.GetChild("profile_numbers");
+            if (profileNums.IsSequence())
+            {
+               vector<int> vecNums;
+               vector<CYamlNode> seq = profileNums.GetSequence();
+               for (auto const &node : seq)
+                  vecNums.push_back(node.GetIntValue());
+               config.SetProfileNumbers(vecNums);
+            }
+         }
+         if (profile.HasChild("profile_timesteps"))
+         {
+            CYamlNode profileTimes = profile.GetChild("profile_timesteps");
+            if (profileTimes.IsSequence())
+            {
+               vector<unsigned long> vecTimes;
+               vector<CYamlNode> seq = profileTimes.GetSequence();
+               for (auto const &node : seq)
+                  vecTimes.push_back(node.GetULongValue());
+               config.SetProfileTimesteps(vecTimes);
+            }
+         }
+      }
+
+      // Cliff Edge Processing
+      if (root.HasChild("cliff_edge_processing"))
+      {
+         CYamlNode cliffEdge = root.GetChild("cliff_edge_processing");
+         if (cliffEdge.HasChild("cliff_edge_smoothing"))
+         {
+            string strSmoothing =
+               cliffEdge.GetChild("cliff_edge_smoothing").GetValue();
+            if (strSmoothing == "none")
+               config.SetCliffEdgeSmoothing(0);
+            else if (strSmoothing == "running_mean")
+               config.SetCliffEdgeSmoothing(1);
+            else if (strSmoothing == "savitzky_golay")
+               config.SetCliffEdgeSmoothing(2);
+            else
+               config.SetCliffEdgeSmoothing(
+                  cliffEdge.GetChild("cliff_edge_smoothing").GetIntValue());
+         }
+         if (cliffEdge.HasChild("cliff_edge_smoothing_window"))
+            config.SetCliffEdgeSmoothingWindow(
+               cliffEdge.GetChild("cliff_edge_smoothing_window").GetIntValue());
+         if (cliffEdge.HasChild("cliff_edge_polynomial_order"))
+            config.SetCliffEdgePolynomialOrder(
+               cliffEdge.GetChild("cliff_edge_polynomial_order").GetIntValue());
+         if (cliffEdge.HasChild("cliff_slope_limit"))
+            config.SetCliffSlopeLimit(
+               cliffEdge.GetChild("cliff_slope_limit").GetDoubleValue());
+      }
+   }
+   catch (std::exception const &e)
+   {
+      cerr << ERR << "Error processing YAML configuration: " << e.what() << endl;
+      return false;
+   }
+
+   return true;
+}
+
+//===============================================================================================================================
+//! Applies configuration values to simulation member variables
+//===============================================================================================================================
+bool CSimulation::bApplyConfiguration(CConfiguration const &config)
+{
+   string strRec, strErr;
+   // Case 1: Text output file names, don't change case
+   m_strRunName = config.GetRunName();
+   m_strOutFile = m_strOutPath;
+   m_strOutFile.append(m_strRunName);
+   m_strOutFile.append(OUTEXT);
+
+   m_strLogFile = m_strOutPath;
+   m_strLogFile.append(m_strRunName);
+   m_strLogFile.append(LOGEXT);
+
+   // Case 2: Content of log file (0 = no log file, 1 = least detail, 3 = most
+   // detail)
+   m_nLogFileDetail = config.GetLogFileDetail();
+
+   // Case 3: Output per-timestep results in CSV format?
+   m_bCSVPerTimestepResults = config.GetCSVPerTimestepResults();
+
+   // Case 4: Parse start date/time [hh-mm-ss dd/mm/yyyy]
+   string strStartDateTime = config.GetStartDateTime();
+   if (! strStartDateTime.empty())
+   {
+      vector<string> VstrTmp = VstrSplit(&strStartDateTime, SPACE);
+      if (VstrTmp.size() >= 2)
+      {
+         int nHour, nMin, nSec, nDay, nMonth, nYear;
+         if (bParseTime(&VstrTmp[0], nHour, nMin, nSec))
+         {
+            if (bParseDate(&VstrTmp[1], nDay, nMonth, nYear))
+            {
+               m_nSimStartSec = nSec;
+               m_nSimStartMin = nMin;
+               m_nSimStartHour = nHour;
+               m_nSimStartDay = nDay;
+               m_nSimStartMonth = nMonth;
+               m_nSimStartYear = nYear;
+            }
+         }
+      }
+   }
+
+   // Case 5: Duration of simulation (in hours, days, months, or years)
+   string strDuration = config.GetDuration();
+   if (! strDuration.empty())
+   {
+      string strDurationLower = strToLower(&strDuration);
+      double dDurationMult = dGetTimeMultiplier(&strDurationLower);
+      if (static_cast<int>(dDurationMult) != TIME_UNKNOWN)
+      {
+         // Extract numeric part and multiply
+         string strNumeric = strDurationLower;
+         // Remove the unit part to get just the number
+         if (strNumeric.find("hour") != string::npos)
+            strNumeric = strNumeric.substr(0, strNumeric.find("hour"));
+         else if (strNumeric.find("day") != string::npos)
+            strNumeric = strNumeric.substr(0, strNumeric.find("day"));
+         else if (strNumeric.find("month") != string::npos)
+            strNumeric = strNumeric.substr(0, strNumeric.find("month"));
+         else if (strNumeric.find("year") != string::npos)
+            strNumeric = strNumeric.substr(0, strNumeric.find("year"));
+
+         if (bIsStringValidDouble(strNumeric))
+         {
+            m_dSimDuration = strtod(strNumeric.c_str(), NULL) * dDurationMult;
+         }
+      }
+   }
+
+   // Case 6: Timestep of simulation (in hours or days)
+   string strTimestep = config.GetTimestep();
+   if (! strTimestep.empty())
+   {
+      string strTimestepLower = strToLower(&strTimestep);
+      double dTimestepMult = dGetTimeMultiplier(&strTimestepLower);
+      if (static_cast<int>(dTimestepMult) != TIME_UNKNOWN)
+      {
+         // Extract numeric part and multiply
+         std::string strNumeric = strTimestepLower;
+         // Remove the unit part to get just the number
+         if (strNumeric.find("hour") != string::npos)
+            strNumeric = strNumeric.substr(0, strNumeric.find("hour"));
+         else if (strNumeric.find("day") != string::npos)
+            strNumeric = strNumeric.substr(0, strNumeric.find("day"));
+         else if (strNumeric.find("month") != string::npos)
+            strNumeric = strNumeric.substr(0, strNumeric.find("month"));
+         else if (strNumeric.find("year") != string::npos)
+            strNumeric = strNumeric.substr(0, strNumeric.find("year"));
+
+         if (bIsStringValidDouble(strNumeric))
+         {
+            m_dTimeStep = strtod(strNumeric.c_str(), NULL) * dTimestepMult;
+         }
+         if (m_dTimeStep <= 0)
+            strErr =
+               "timestep of simulation must be > 0";
+
+         if (m_dTimeStep >= m_dSimDuration)
+            strErr =
+               " timestep of simulation must be < the duration of the "
+               "simulation";
+      }
+   }
+
+   // Case 7: Save intervals - can handle multiple groups with different units
+   vector<string> vecSaveTimes = config.GetSaveTimes();
+   if (! vecSaveTimes.empty())
+   {
+      m_nUSave = 0;
+      m_bSaveRegular = false;
+
+      for (string const &strSaveTime : vecSaveTimes)
+      {
+         if (strSaveTime.empty())
+            continue;
+
+         string strSaveTimeLower = strToLower(&strSaveTime);
+
+         // Get multiplier for time units
+         double dMult = dGetTimeMultiplier(&strSaveTimeLower);
+         if (static_cast<int>(dMult) != TIME_UNKNOWN)
+         {
+            // Find last space to separate number from unit
+            size_t nLastSpace = strSaveTimeLower.rfind(SPACE);
+            if (nLastSpace != string::npos)
+            {
+               string strNumbers = strSaveTimeLower.substr(0, nLastSpace);
+               strNumbers = strTrimRight(&strNumbers);
+
+               // Parse numbers (could be multiple space-separated values)
+               vector<string> VstrNumbers = VstrSplit(&strNumbers, SPACE);
+               for (string const &strNum : VstrNumbers)
+               {
+                  if (! strNum.empty())      //&& bIsStringValidDouble(strNum))
+                  {
+                     if (m_nUSave < static_cast<int>(SAVEMAX) - 1)
+                     {
+                        double dValue = strtod(strNum.c_str(), NULL) * dMult;
+                        m_dUSaveTime[m_nUSave++] = dValue;
+                     }
+                  }
+               }
+            }
+         }
+      }
+
+      // Check if we have save times
+      if (m_nUSave == 1)
+      {
+         m_bSaveRegular = true;
+         m_dRegularSaveInterval = m_dUSaveTime[0];
+         m_dRegularSaveTime = m_dRegularSaveInterval;
+      }
+      else if (m_nUSave > 1)
+      {
+         // Multiple values - sort them
+         sort(m_dUSaveTime, m_dUSaveTime + m_nUSave);
+         // Put a dummy save interval as the last entry
+         m_dUSaveTime[m_nUSave] = m_dSimDuration + 1;
+      }
+   }
+
+   // Case 8: Random number seed(s)
+   if (config.UseSystemTimeForRandomSeed())
+   {
+      // Use system time for random seed
+      random_device rdev;
+      m_ulRandSeed[0] = rdev();
+      // Make all seeds the same
+      for (int n = 1; n < NUMBER_OF_RNGS; n++)
+         m_ulRandSeed[n] = m_ulRandSeed[0];
+   }
+   else
+   {
+      int nSeed = config.GetRandomSeed();
+      if (nSeed != 0)
+      {
+         // Use specified seed
+         m_ulRandSeed[0] = static_cast<unsigned long>(nSeed);
+         // Make all seeds the same
+         for (int n = 1; n < NUMBER_OF_RNGS; n++)
+            m_ulRandSeed[n] = m_ulRandSeed[0];
+      }
+   }
+
+   // Case 9: Max save digits for GIS output
+   m_nGISMaxSaveDigits = config.GetMaxSaveDigits();
+   if (m_nGISMaxSaveDigits < 2)
+      strErr = "max save digits for GIS output file names must be > 1";
+
+   // Case 10: Save digits mode (sequential vs iteration)
+   string strSaveDigitsMode = config.GetSaveDigitsMode();
+   if (! strSaveDigitsMode.empty())
+   {
+      string strSaveDigitsLower = strToLower(&strSaveDigitsMode);
+      if (strSaveDigitsLower.find('s') != string::npos)
+         m_bGISSaveDigitsSequential = true;
+      else if (strSaveDigitsLower.find('i') != string::npos)
+         m_bGISSaveDigitsSequential = false;
+   }
+
+   // Case 11: Raster GIS files to output
+   vector<string> rasterFiles = config.GetRasterFiles();
+   if (! rasterFiles.empty())
+   {
+      // Reset all raster output flags
+      m_bSuspSedSave = false;
+      m_bAvgSuspSedSave = false;
+      m_bFineUnconsSedSave = false;
+      m_bFineConsSedSave = false;
+      m_bSandUnconsSedSave = false;
+      m_bSandConsSedSave = false;
+      m_bCoarseUnconsSedSave = false;
+      m_bCoarseConsSedSave = false;
+      m_bSedIncTalusTopSurfSave = false;
+      m_bTopSurfIncSeaSave = false;
+      m_bSeaDepthSave = false;
+      m_bWaveHeightSave = false;
+      m_bWaveAngleSave = false;
+      m_bPotentialPlatformErosionSave = false;
+      m_bActualPlatformErosionSave = false;
+      m_bTotalPotentialPlatformErosionSave = false;
+      m_bTotalActualPlatformErosionSave = false;
+      m_bPotentialBeachErosionSave = false;
+      m_bActualBeachErosionSave = false;
+      m_bTotalPotentialBeachErosionSave = false;
+      m_bTotalActualBeachErosionSave = false;
+      m_bBeachDepositionSave = false;
+      m_bTotalBeachDepositionSave = false;
+      m_bLandformSave = false;
+      // m_bLocalSlopeSave = false;
+      // m_bSlopeSave = false;
+      // m_bCliffSave = false;
+      m_bAvgSeaDepthSave = false;
+      m_bAvgWaveHeightSave = false;
+      m_bAvgWaveAngleSave = false;
+      m_bBeachProtectionSave = false;
+      m_bBasementElevSave = false;
+      m_bRasterCoastlineSave = false;
+      m_bRasterNormalProfileSave = false;
+      m_bActiveZoneSave = false;
+      m_bCliffCollapseSave = false;
+      m_bTotCliffCollapseSave = false;
+      m_bCliffCollapseDepositionSave = false;
+      m_bTotCliffCollapseDepositionSave = false;
+      m_bRasterPolygonSave = false;
+      m_bPotentialPlatformErosionMaskSave = false;
+      m_bSeaMaskSave = false;
+      m_bBeachMaskSave = false;
+      m_bShadowZoneCodesSave = false;
+      m_bDeepWaterWaveAngleSave = false;
+      m_bDeepWaterWaveHeightSave = false;
+      m_bDeepWaterWavePeriodSave = false;
+      m_bPolygonUnconsSedUpOrDownDriftSave = false;
+      m_bPolygonUnconsSedGainOrLossSave = false;
+
+      // Set flags based on raster file codes (Case 11 implementation)
+      for (string const &rasterCode : rasterFiles)
+      {
+         string code = rasterCode;
+         std::transform(code.begin(), code.end(), code.begin(), ::tolower);
+
+         if (code == "suspended_sediment")
+            m_bSuspSedSave = true;
+         else if (code == "avg_suspended_sediment")
+            m_bAvgSuspSedSave = true;
+         else if (code == "fine_uncons")
+            m_bFineUnconsSedSave = true;
+         else if (code == "fine_cons")
+            m_bFineConsSedSave = true;
+         else if (code == "sand_uncons")
+            m_bSandUnconsSedSave = true;
+         else if (code == "sand_cons")
+            m_bSandConsSedSave = true;
+         else if (code == "coarse_uncons")
+            m_bCoarseUnconsSedSave = true;
+         else if (code == "coarse_cons")
+            m_bCoarseConsSedSave = true;
+         else if (code == "sediment_top_elevation")
+            m_bSedIncTalusTopSurfSave = true;
+         else if (code == "top_elevation")
+            m_bTopSurfIncSeaSave = true;
+         else if (code == "sea_depth")
+            m_bSeaDepthSave = true;
+         else if (code == "wave_height")
+            m_bWaveHeightSave = true;
+         else if (code == "wave_orientation")
+            m_bWaveAngleSave = true;
+         else if (code == "wave_period")
+            m_bDeepWaterWavePeriodSave = true;
+         else if (code == "potential_platform_erosion")
+            m_bPotentialPlatformErosionSave = true;
+         else if (code == "actual_platform_erosion")
+            m_bActualPlatformErosionSave = true;
+         else if (code == "total_potential_platform_erosion")
+            m_bTotalPotentialPlatformErosionSave = true;
+         else if (code == "total_actual_platform_erosion")
+            m_bTotalActualPlatformErosionSave = true;
+         else if (code == "potential_beach_erosion")
+            m_bPotentialBeachErosionSave = true;
+         else if (code == "actual_beach_erosion")
+            m_bActualBeachErosionSave = true;
+         else if (code == "total_potential_beach_erosion")
+            m_bTotalPotentialBeachErosionSave = true;
+         else if (code == "total_actual_beach_erosion")
+            m_bTotalActualBeachErosionSave = true;
+         else if (code == "beach_deposition")
+            m_bBeachDepositionSave = true;
+         else if (code == "total_beach_deposition")
+            m_bTotalBeachDepositionSave = true;
+         else if (code == "landform")
+            m_bLandformSave = true;
+         // else if (code == "local_cons_sediment_slope")
+         //    m_bLocalSlopeSave = true;
+         // else if (code == "slope")
+         //    m_bSlopeSave = true;
+         // else if (code == "cliff")
+         //    m_bCliffSave = true;
+         else if (code == "avg_sea_depth")
+            m_bAvgSeaDepthSave = true;
+         else if (code == "avg_wave_height")
+            m_bAvgWaveHeightSave = true;
+         else if (code == "avg_wave_orientation")
+            m_bAvgWaveAngleSave = true;
+         else if (code == "beach_protection")
+            m_bBeachProtectionSave = true;
+         else if (code == "basement_elevation")
+            m_bBasementElevSave = true;
+         else if (code == "coastline")
+            m_bRasterCoastlineSave = true;
+         else if (code == "coast_normal")
+            m_bRasterNormalProfileSave = true;
+         else if (code == "active_zone")
+            m_bActiveZoneSave = true;
+         else if (code == "cliff_collapse")
+            m_bCliffCollapseSave = true;
+         else if (code == "total_cliff_collapse")
+            m_bTotCliffCollapseSave = true;
+         else if (code == "cliff_collapse_deposition")
+            m_bCliffCollapseDepositionSave = true;
+         else if (code == "total_cliff_collapse_deposition")
+            m_bTotCliffCollapseDepositionSave = true;
+         else if (code == "polygon")
+            m_bRasterPolygonSave = true;
+         else if (code == "potential_platform_erosion_mask")
+            m_bPotentialPlatformErosionMaskSave = true;
+         else if (code == "sea_mask")
+            m_bSeaMaskSave = true;
+         else if (code == "beach_mask")
+            m_bBeachMaskSave = true;
+         else if (code == "shadow_zone_codes")
+            m_bShadowZoneCodesSave = true;
+         else if (code == "deep_water_wave_angle")
+            m_bDeepWaterWaveAngleSave = true;
+         else if (code == "deep_water_wave_height")
+            m_bDeepWaterWaveHeightSave = true;
+         else if (code == "deep_water_wave_period")
+            m_bDeepWaterWavePeriodSave = true;
+         else if (code == "polygon_uncons_sediment_up_or_down_drift")
+            m_bPolygonUnconsSedUpOrDownDriftSave = true;
+         else if (code == "polygon_uncons_sediment_gain_or_loss")
+            m_bPolygonUnconsSedGainOrLossSave = true;
+      }
+   }
+
+   // Case 12: GIS output format for raster and vector files
+   m_strRasterGISOutFormat = config.GetRasterFormat();
+
+   // Case 13: If needed, scale GIS raster output values
+   m_bScaleRasterOutput = config.GetScaleValues();
+
+   // Case 14: If needed, also output GIS raster world file
+   m_bWorldFile = config.GetWorldFile();
+
+   // Case 15: Elevations for raster slice output, if desired
+   if (! config.GetSliceElevations().empty())
+   {
+      m_bSliceSave = true;
+      m_VdSliceElev = config.GetSliceElevations();
+   }
+
+   // Case 16: Vector GIS files to output
+   vector<string> vectorFiles = config.GetVectorFiles();
+   if (! vectorFiles.empty())
+   {
+      // Reset all vector output flags
+      m_bCoastSave = false;
+      m_bCliffEdgeSave = false;
+      m_bWaveAngleAndHeightSave = false;
+      m_bNormalsSave = false;
+      m_bInvalidNormalsSave = false;
+      m_bAvgWaveAngleAndHeightSave = false;
+      m_bWaveEnergySinceCollapseSave = false;
+      m_bMeanWaveEnergySave = false;
+      m_bBreakingWaveHeightSave = false;
+      m_bCoastCurvatureSave = false;
+      m_bPolygonNodeSave = false;
+      m_bPolygonBoundarySave = false;
+      m_bCliffNotchSave = false;
+      m_bShadowBoundarySave = false;
+      m_bShadowDowndriftBoundarySave = false;
+      m_bDeepWaterWaveAngleAndHeightSave = false;
+      m_bWaveSetupSave = false;
+      m_bStormSurgeSave = false;
+      m_bRunUpSave = false;
+      m_bVectorWaveFloodLineSave = false;
+
+      // Set flags based on vector file codes (Case 16 implementation)
+      for (string const &vectorCode : vectorFiles)
+      {
+         string code = vectorCode;
+         std::transform(code.begin(), code.end(), code.begin(), ::tolower);
+
+         if (code == "coast")
+            m_bCoastSave = true;
+         else if (code == "cliff_edge")
+            m_bCliffEdgeSave = true;
+         else if (code == "wave_angle")
+            m_bWaveAngleAndHeightSave = true;
+         else if (code == "normals")
+            m_bNormalsSave = true;
+         else if (code == "invalid_normals")
+            m_bInvalidNormalsSave = true;
+         else if (code == "avg_wave_angle")
+            m_bAvgWaveAngleAndHeightSave = true;
+         else if (code == "wave_energy")
+            m_bWaveEnergySinceCollapseSave = true;
+         else if (code == "mean_wave_energy")
+            m_bMeanWaveEnergySave = true;
+         else if (code == "breaking_wave_height")
+            m_bBreakingWaveHeightSave = true;
+         else if (code == "coast_curvature")
+            m_bCoastCurvatureSave = true;
+         else if (code == "polygon_node")
+            m_bPolygonNodeSave = true;
+         else if (code == "polygon")
+            m_bPolygonBoundarySave = true;
+         else if (code == "cliff_notch")
+            m_bCliffNotchSave = true;
+         else if (code == "shadow_boundary")
+            m_bShadowBoundarySave = true;
+         else if (code == "downdrift_boundary")
+            m_bShadowDowndriftBoundarySave = true;
+         else if (code == "deep_water_wave_angle")
+            m_bDeepWaterWaveAngleAndHeightSave = true;
+         else if (code == "wave_setup")
+            m_bWaveSetupSave = true;
+         else if (code == "storm_surge")
+            m_bStormSurgeSave = true;
+         else if (code == "run_up")
+            m_bRunUpSave = true;
+         else if (code == "flood_line")
+            m_bVectorWaveFloodLineSave = true;
+      }
+   }
+
+   // Case 17: Vector GIS output format (note must retain original case)
+   m_strVectorGISOutFormat = config.GetVectorFormat();
+
+   // Case 18: Time series files to output
+   // TODO: Migrate from bReadRunDataFile()
+   vector<string> timeseriesFiles = config.GetTimeSeriesFiles();
+   if (! timeseriesFiles.empty())
+   {
+      for (string const &timeseriesCode : timeseriesFiles)
+      {
+         string code = timeseriesCode;
+         std::transform(code.begin(), code.end(), code.begin(), ::tolower);
+
+         if (code == "sea_area")
+            m_bSeaAreaTSSave = true;
+         if (code == "water_level")
+            m_bSWLTSSave = true;
+         if (code == "platform_erosion")
+            m_bActualPlatformErosionTSSave = true;
+         if (code == "cliff_collapse_erosion")
+            m_bCliffCollapseErosionTSSave = true;
+         if (code == "cliff_collapse_deposition")
+            m_bCliffCollapseDepositionTSSave = true;
+         if (code == "cliff_collapse_net")
+            m_bCliffCollapseNetTSSave = true;
+         if (code == "beach_erosion")
+            m_bBeachErosionTSSave = true;
+         if (code == "beach_deposition")
+            m_bBeachDepositionTSSave = true;
+         if (code == "beach_change_net")
+            m_bBeachSedimentChangeNetTSSave = true;
+         if (code == "suspended")
+            m_bSuspSedTSSave = true;
+         if (code == "suspended")
+            m_bSuspSedTSSave = true;
+         if (code == "wave_setup")
+            m_bFloodSetupSurgeTSSave = true;
+         if (code == "wave_runup")
+            m_bFloodSetupSurgeRunupTSSave = true;
+         if (code == "cliff_notch")
+            m_bCliffNotchElevTSSave = true;
+      }
+   }
+
+   // Case 19: Vector coastline smoothing algorithm: 0 = none, 1 = running mean,
+   // 2 = Savitzky-Golay
+   m_nCoastSmooth = config.GetCoastlineSmoothing();
+
+   // Case 20: Size of coastline smoothing window: must be odd
+   m_nCoastSmoothingWindowSize = config.GetCoastlineSmoothingWindow();
+
+   // Case 21: Order of coastline profile smoothing polynomial for
+   // Savitzky-Golay: usually 2 or 4, max is 6
+   m_nSavGolCoastPoly = config.GetPolynomialOrder();
+
+   // Case 22: Omit grid edges from search (north/south/east/west)
+   std::string strRH = config.GetOmitGridEdges();
+   if (strRH.find('n') != string::npos)
+   {
+      m_bOmitSearchNorthEdge = true;
+   }
+
+   if (strRH.find('s') != string::npos)
+   {
+      m_bOmitSearchSouthEdge = true;
+   }
+
+   if (strRH.find('w') != string::npos)
+   {
+      m_bOmitSearchWestEdge = true;
+   }
+
+   if (strRH.find('e') != string::npos)
+   {
+      m_bOmitSearchEastEdge = true;
+   }
+
+   // Case 23: Profile slope running-mean smoothing window size: must be odd
+   m_nProfileSmoothWindow = config.GetProfileSmoothingWindow();
+
+   // Case 24: Max local slope (m/m), first check that this is a valid double
+   m_dProfileMaxSlope = config.GetMaxLocalSlope();
+
+   // Case 25: Maximum elevation of beach above SWL, first check that this is a
+   // valid double
+   m_dMaxBeachElevAboveSWL = config.GetMaxBeachElevation();
+
+   // Case 26: Number of sediment layers
+   m_nLayers = config.GetNumLayers();
+   // OK we know the number of layers, so add elements to these vectors
+   for (int j = 0; j < m_nLayers; j++)
+   {
+      m_VstrInitialFineUnconsSedimentFile.push_back("");
+      m_VstrInitialSandUnconsSedimentFile.push_back("");
+      m_VstrInitialCoarseUnconsSedimentFile.push_back("");
+      m_VstrInitialFineConsSedimentFile.push_back("");
+      m_VstrInitialSandConsSedimentFile.push_back("");
+      m_VstrInitialCoarseConsSedimentFile.push_back("");
+      m_VstrGDALIUFDriverCode.push_back("");
+      m_VstrGDALIUFDriverDesc.push_back("");
+      m_VstrGDALIUFProjection.push_back("");
+      m_VstrGDALIUFDataType.push_back("");
+      m_VstrGDALIUSDriverCode.push_back("");
+      m_VstrGDALIUSDriverDesc.push_back("");
+      m_VstrGDALIUSProjection.push_back("");
+      m_VstrGDALIUSDataType.push_back("");
+      m_VstrGDALIUCDriverCode.push_back("");
+      m_VstrGDALIUCDriverDesc.push_back("");
+      m_VstrGDALIUCProjection.push_back("");
+      m_VstrGDALIUCDataType.push_back("");
+      m_VstrGDALICFDriverCode.push_back("");
+      m_VstrGDALICFDriverDesc.push_back("");
+      m_VstrGDALICFProjection.push_back("");
+      m_VstrGDALICFDataType.push_back("");
+      m_VstrGDALICSDriverCode.push_back("");
+      m_VstrGDALICSDriverDesc.push_back("");
+      m_VstrGDALICSProjection.push_back("");
+      m_VstrGDALICSDataType.push_back("");
+      m_VstrGDALICCDriverCode.push_back("");
+      m_VstrGDALICCDriverDesc.push_back("");
+      m_VstrGDALICCProjection.push_back("");
+      m_VstrGDALICCDataType.push_back("");
+   }
+
+   // Case 27: Basement DEM file (can be blank)
+   m_strInitialBasementDEMFile = config.GetBasementDEMFile();
+
+   // Cases 28: Initial sediment thickness files (unconsolidated and
+   // consolidated)
+   m_VstrInitialFineUnconsSedimentFile = config.GetUnconsFineFiles();
+   m_bHaveFineSediment = true;
+   m_VstrInitialSandUnconsSedimentFile = config.GetUnconsSandFiles();
+   m_bHaveSandSediment = true;
+   m_VstrInitialCoarseUnconsSedimentFile = config.GetUnconsCoarseFiles();
+   m_bHaveCoarseSediment = true;
+   m_VstrInitialFineConsSedimentFile = config.GetConsFineFiles();
+   m_bHaveConsolidatedSediment = true;
+   m_bHaveFineSediment = true;
+   m_VstrInitialSandConsSedimentFile = config.GetConsSandFiles();
+   m_bHaveSandSediment = true;
+   m_VstrInitialCoarseConsSedimentFile = config.GetConsCoarseFiles();
+   m_bHaveCoarseSediment = true;
+
+   // Case 29: Initial suspended sediment depth GIS file (can be blank)
+   string strSuspendedSed = config.GetSuspendedSedFile();
+   if (! strSuspendedSed.empty())
+   {
+      m_strInitialSuspSedimentFile = strSuspendedSed;
+   }
+
+   // Case 30: Basic simulation input files
+   m_strInitialLandformFile = config.GetLandformFile();
+
+   // Case 31: Initial Intervention class GIS file
+   // (can be blank: if so then intervention height file must also be blank)
+   string strInterventionClass = config.GetInterventionClassFile();
+   if (! strInterventionClass.empty())
+      m_strInterventionClassFile = strInterventionClass;
+
+   // Case 32: Initial Intervention height GIS file
+   // (can be blank: if so then intervention class file must also be blank)
+   string strInterventionHeight = config.GetInterventionHeightFile();
+   if (! strInterventionHeight.empty())
+      m_strInterventionHeightFile = strInterventionHeight;
+
+   // Case 33: Wave propagation model [0 = COVE, 1 = CShore]
+   m_nWavePropagationModel = config.GetWavePropagationModel();
+
+   // Case 34: Density of sea water (kg/m3), first check that this is a valid
+   // double
+   m_dSeaWaterDensity = config.GetSeawaterDensity();
+
+   // Case 35: Initial mean still water level (m), first check that this is a
+   // valid double TODO 041 Make this a per-timestep SWL file
+   m_dInitialMeanSWL = config.GetInitialWaterLevel();
+
+   // Case 36: Final water level (optional)
+   if (config.HasFinalWaterLevel())
+   {
+      if (! strInterventionHeight.empty())
+      {
+         m_dFinalMeanSWL = config.GetFinalWaterLevel();
+      }
+      else
+      {
+         m_dFinalMeanSWL = m_dInitialMeanSWL;
+      }
+   }
+   // Case 38-40 Parse Wave Data
+   // Case 38: Deep water wave height (m) or a file of point vectors giving deep
+   // Firstly has the user provided a filepath for wave data
+   if (config.GetWaveHeightTimeSeries().empty())
+   {
+      m_bSingleDeepWaterWaveValues = true;
+      m_bHaveWaveStationData = false;
+      // Case 37: Deep water wave height (m) or a file of point vectors giving deep
+      // water wave height (m) and orientation (for units, see below)
+      m_dAllCellsDeepWaterWaveHeight = config.GetDeepWaterWaveHeight();
+
+      // Case 39: Deep water wave orientation in input CRS: this is the
+      // oceanographic convention i.e. direction TOWARDS which the waves move (in
+      // degrees clockwise from north)
+      m_dAllCellsDeepWaterWaveAngle = config.GetDeepWaterWaveOrientation();
+
+      // Case 40: Wave period (sec)
+      m_dAllCellsDeepWaterWavePeriod = config.GetWavePeriod();
+   }
+   else
+   {
+      m_bHaveWaveStationData = true;
+      m_strDeepWaterWaveStationsShapefile = config.GetWaveStationDataFile();
+      m_dAllCellsDeepWaterWaveHeight = config.GetDeepWaterWaveHeight();
+   }
+
+   // Case 41: Tide data file (can be blank). This is the change (m) from still
+   // water level for each timestep
+   m_strTideDataFile = config.GetTideDataFile();
+
+   // Case 42: Breaking wave height-to-depth ratio, check that this is a valid
+   // double
+   m_dBreakingWaveHeightDepthRatio = config.GetBreakingWaveRatio();
+
+   // Case 43: Simulate coast platform erosion?
+   m_bDoShorePlatformErosion = config.GetCoastPlatformErosion();
+
+   // Case 44: If simulating coast platform erosion, R (coast platform resistance
+   // to erosion) values along profile, see Walkden & Hall, 2011
+   if (m_bDoShorePlatformErosion)
+   {
+      m_dR = config.GetPlatformErosionResistance();
+   }
+
+   // Case 45: Simulate beach sediment transport?
+   m_bDoBeachSedimentTransport = config.GetBeachSedimentTransport();
+
+   // Case 46: If simulating beach sediment transport, beach sediment transport
+   // at grid edges [0 = closed, 1 = open, 2 = re-circulate]
+   m_nUnconsSedimentHandlingAtGridEdges = config.GetBeachTransportAtEdges();
+
+   // Case 47: If simulating beach sediment transport, beach erosion/deposition
+   // equation [0 = CERC, 1 = Kamphuis]
+   m_nBeachErosionDepositionEquation = config.GetBeachErosionEquation();
+
+   // Case 48: Median size of fine sediment (mm), always needed [0 = default,
+   // only for Kamphuis eqn]. First check that this is a valid double
+   m_dD50Fine = config.GetFineMedianSize();
+
+   // Case 49: Median size of sand sediment (mm), always needed [0 = default,
+   // only for Kamphuis eqn]. First check that this is a valid double
+   m_dD50Sand = config.GetSandMedianSize();
+
+   // Case 50: Median size of coarse sediment (mm), always needed [0 = default,
+   // only for Kamphuis eqn]. First check that this is a valid double
+   m_dD50Coarse = config.GetCoarseMedianSize();
+
+   // Case 51: Density of unconsolidated beach sediment (kg/m3)
+   m_dBeachSedimentDensity = config.GetSedimentDensity();
+
+   // Case 52: Beach sediment porosity
+   m_dBeachSedimentPorosity = config.GetBeachSedimentPorosity();
+
+   // Case 53: Relative erodibility (0 - 1) of fine-sized sediment, always
+   // needed. First check that this is a valid double
+   m_dFineErodibility = config.GetFineErosivity();
+
+   // Case 54: Relative erodibility (0 - 1) of sand-sized sediment, always
+   // needed. First check that this is a valid double
+   m_dSandErodibility = config.GetSandErosivity();
+
+   // Case 55: Relative erodibility (0 - 1) of coarse-sized sediment, always
+   // needed. First check that this is a valid double
+   m_dCoarseErodibility = config.GetCoarseErosivity();
+
+   // Case 56: Transport parameter KLS in CERC equation
+   m_dKLS = config.GetTransportKLS();
+
+   // Case 57: Transport parameter for Kamphuis equation
+   m_dKamphuis = config.GetKamphuis();
+
+   // Case 58: Berm height i.e. height above SWL of start of depositional Dean
+   // profile
+   m_dDeanProfileStartAboveSWL = config.GetBermHeight();
+
+   // Case 59: Simulate cliff collapse?
+   m_dDeanProfileStartAboveSWL = config.GetCliffCollapse();
+
+   // Case 60: Cliff resistance to erosion
+   if (m_bHaveConsolidatedSediment && m_bDoCliffCollapse)
+   {
+      m_dCliffErosionResistance = config.GetCliffErosionResistance();
+   }
+
+   // Case 61: Notch overhang at collapse (m)
+   if (m_bHaveConsolidatedSediment && m_bDoCliffCollapse)
+   {
+      m_dNotchIncisionAtCollapse = config.GetNotchOverhang();
+   }
+
+   // Case 62: Notch base below still water level (m)
+   if (m_bHaveConsolidatedSediment && m_bDoCliffCollapse)
+   {
+      m_dNotchApexAboveMHW = config.GetNotchBase();
+   }
+
+   // Case 63: Scale parameter A for cliff deposition (m^(1/3)) [0 = auto]
+   if (m_bHaveConsolidatedSediment && m_bDoCliffCollapse)
+   {
+      m_dCliffDepositionA = config.GetScaleValues();
+   }
+
+   // Case 64: Approximate planview width of cliff collapse talus (in m)
+   if (m_bHaveConsolidatedSediment && m_bDoCliffCollapse)
+   {
+      m_dCliffDepositionPlanviewWidth = config.GetTalusWidth();
+   }
+
+   // Case 65: Planview length of cliff deposition talus (m)
+   if (m_bHaveConsolidatedSediment && m_bDoCliffCollapse)
+   {
+      m_dCliffTalusMinDepositionLength = config.GetMinTalusLength();
+   }
+
+   // Case 66: Minimum height of landward end of talus, as a fraction of cliff
+   // elevation
+   if (m_bHaveConsolidatedSediment && m_bDoCliffCollapse)
+   {
+      m_dMinCliffTalusHeightFrac = config.GetMinTalusHeight();
+   }
+
+   // Case 67: Simulate riverine flooding?
+   if (config.GetFloodInput())
+   {
+      m_bRiverineFlooding = true;
+      m_bSetupSurgeFloodMaskSave = true;
+      m_bSetupSurgeRunupFloodMaskSave = true;
+      m_bRasterWaveFloodLineSave = true;
+   }
+
+   // Case 68: Output riverine flooding vector files
+   if (config.GetFloodInput())
+   {
+      // TODO: This is a guess, please check
+      vector<string> floodFiles = config.GetFloodFiles();
+      if (! floodFiles.empty())
+      {
+         for (string const &floodCode : floodFiles)
+         {
+            string code = floodCode;
+            std::transform(code.begin(), code.end(), code.begin(), ::tolower);
+
+            if (code == "sea_area")
+               m_bSeaAreaTSSave = true;
+         }
+      }
+   }
+
+   // Case 69: Flooding runup equation?
+   if (config.GetFloodInput())
+   {
+      // TODO: This is a guess, please check
+      m_nRunUpEquation = config.GetRunupEquation();
+   }
+
+   // Case 70: Somthing unknown relating to riverine flooding
+   if (m_bRiverineFlooding && m_bVectorWaveFloodLineSave)
+   {
+      // TODO: This is a guess, please check
+      m_bFloodLocationSave = ! config.GetFloodInputLocation().empty();
+   }
+
+   // Case 71: Somthing unknown relating to riverine flooding
+   if (m_bRiverineFlooding)
+   {
+      // TODO: This is a guess, please check
+      m_strFloodLocationShapefile = config.GetFloodLocations();
+   }
+
+   // Case 72: Simulate sediment input?
+   if (config.GetSedimentInput())
+   {
+      m_bSedimentInput = true;
+      m_bSedimentInputEventSave = true;
+   }
+
+   // Case 73: Sediment input location (point or line shapefile)
+   if (m_bSedimentInput)
+   {
+      m_strSedimentInputEventShapefile = config.GetSedimentInputLocation();
+   }
+
+   // Case 74: Sediment input type: required if have shapefile [P = Point, C =
+   // coast block, L = line]
+   if (m_bSedimentInput)
+   {
+      strRH = config.GetSedimentInputType();
+      if (strRH.find('p') != string::npos)
+         m_bSedimentInputAtPoint = true;
+
+      else if (strRH.find('c') != string::npos)
+         m_bSedimentInputAtCoast = true;
+
+      else if (strRH.find('l') != string::npos)
+         m_bSedimentInputAlongLine = true;
+   }
+
+   // Case 75: Sediment input details file (required if have shapefile)
+   if (m_bSedimentInput)
+   {
+      m_strSedimentInputEventFile = config.GetSedimentInputLocation();
+   }
+
+   // Case 76: Gravitational acceleration (m2/s). First check that this is a
+   // valid double
+   m_dG = config.GetGravitationalAcceleration();
+
+   // Case 77: Spacing of coastline normals (m)
+   m_dCoastNormalSpacing = config.GetNormalSpacing();
+   if (bFPIsEqual(m_dCoastNormalSpacing, 0.0, TOLERANCE))
+      m_nCoastNormalSpacing =
+         DEFAULT_PROFILE_SPACING;      // In cells, we will set
+                                       // m_dCoastNormalSpacing later when we
+                                       // know m_dCellSide
+
+   // Case 78: Random factor for spacing of normals  [0 to 1, 0 = deterministic],
+   // check that this is a valid double
+   m_dCoastNormalRandSpacingFactor = config.GetRandomFactor();
+
+   // Case 79: Length of coastline normals (m), check that this is a valid double
+   m_dCoastNormalLength = config.GetNormalLength();
+
+   // Case 80: Start depth for wave calcs (ratio to deep water wave height)check
+   // that this is a valid double
+   m_dWaveDepthRatioForWaveCalcs = config.GetBreakingWaveRatio();
+
+   // Case 81: Output profile data?
+   // ISSUE: Why are we now only outputing consolidated, this feels like a bodge
+   m_bOutputConsolidatedProfileData = config.GetSaveProfileData();
+
+   // Case 82: Numbers of profiles to be saved
+   if (m_bOutputConsolidatedProfileData)
+   {
+      m_VnProfileToSave = config.GetProfileNumbers();
+   }
+
+   // Case 83: Timesteps to save profiles
+   if (m_bOutputConsolidatedProfileData)
+   {
+      m_VulProfileTimestep = config.GetProfileTimesteps();
+   }
+
+   // Case 84: Output parallel profile data?
+   m_bOutputParallelProfileData = config.GetSaveParallelProfiles();
+
+   // Case 85: Output erosion potential look-up data?
+   m_bOutputErosionPotentialData = config.GetOutputErosionPotential();
+
+   // Case 86: Cliff toe location? approach [0 = none, 1 = by slope threshold]
+   //TODO: Finish migration
+   m_bCliffToeLocate = false;
+
+   // Case 87: Cliff edge smoothing algorithm: 0 = none, 1 = running mean, 2 =
+   // Savitzky-Golay
+   m_nCliffEdgeSmooth = config.GetCliffEdgeSmoothing();
+
+   // Case 89: Size of moving window for coastline curvature calculation (must be
+   // odd)
+   m_nCliffEdgeSmoothWindow = config.GetCurvatureWindow();
+
+   // Case 90: Cliff slope limit for cliff toe detection
+   m_dSlopeThresholdForCliffToe = config.GetCliffSlopeLimit();
+
+   return true;
 }

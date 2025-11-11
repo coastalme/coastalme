@@ -49,6 +49,8 @@ using std::normal_distribution;
 #include <gdal.h>
 using ::GDALDataType;
 
+#include "yaml_parser.h"
+#include "configuration.h"
 #include "2d_point.h"
 #include "2di_point.h"
 #include "line.h"
@@ -338,6 +340,9 @@ class CSimulation
 
    //! Output per-timestep results in CSV format instead of fixed-width?
    bool m_bCSVPerTimestepResults;
+
+   //! Use YAML format for input datafile instead of .dat format?
+   bool m_bYamlInputFormat;
 
    //! Omit the north edge of the grid from coast-end searches?
    bool m_bOmitSearchNorthEdge;
@@ -1584,6 +1589,11 @@ class CSimulation
    int nHandleCommandLineParams(int, char const*[]);
    bool bReadIniFile(void);
    bool bReadRunDataFile(void);
+   bool bReadYamlFile(void);
+   bool bDetectFileFormat(string const& strFileName, bool& bIsYaml);
+   bool bConfigureFromDatFile(CConfiguration& config);
+   bool bConfigureFromYamlFile(CConfiguration& config);
+   bool bApplyConfiguration(CConfiguration const& config);
    bool bOpenLogFile(void);
    bool bSetUpTSFiles(void);
    void WriteStartRunDetails(void);

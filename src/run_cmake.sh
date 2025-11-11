@@ -27,9 +27,9 @@ echo ""
 rm -f ./lib/*
 cd cshore
 if [ "$OSTYPE" = "darwin"* ]; then
-   ./make_cshore_lib.sh $cshorelibrary $buildtype $cshoreinout
+	./make_cshore_lib.sh $cshorelibrary $buildtype $cshoreinout
 else
-   ./make_cshore_lib.sh
+	./make_cshore_lib.sh
 fi
 cd ..
 # Note: The cshore Makefile now correctly names libraries for MacOS automatically
@@ -42,13 +42,13 @@ echo ""
 
 # On Mac, switch to gcc15 to ensure openMP compatability
 if [ "$OSTYPE" = "darwin"* ]; then
-   export CC=gcc-15
-   export CXX=g++-15
-   CMAKE_COMPILER_ARGS="-DCMAKE_C_COMPILER=gcc-15 -DCMAKE_CXX_COMPILER=g++-15"
+	export CC=gcc-15
+	export CXX=g++-15
+	CMAKE_COMPILER_ARGS="-DCMAKE_C_COMPILER=gcc-15 -DCMAKE_CXX_COMPILER=g++-15"
 else
-#    echo "Using $compiler compiler, OpenMP may not be available"
-#    echo "For OpenMP support, install GCC or install libomp for Clang"
-   CMAKE_COMPILER_ARGS=""
+	#    echo "Using $compiler compiler, OpenMP may not be available"
+	#    echo "For OpenMP support, install GCC or install libomp for Clang"
+	CMAKE_COMPILER_ARGS=""
 fi
 echo ""
 
@@ -56,6 +56,9 @@ rm -f CMakeCache.txt
 cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=$buildtype -DCOMPILER=$compiler -DCSHORE_LIBRARY=$cshorelibrary -DCSHORE_INOUT=$cshoreinout $CMAKE_COMPILER_ARGS .
 #cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=$buildtype -DCOMPILER=$compiler -DCSHORE_LIBRARY=$cshorelibrary -DCSHORE_INOUT=$cshoreinout -DCMAKE_VERBOSE_MAKEFILE=ON $CMAKE_COMPILER_ARGS .
 #cmake -DCMAKE_BUILD_TYPE=$buildtype -DCOMPILER=$compiler -DCSHORE_LIBRARY=$cshorelibrary -DCSHORE_INOUT=$cshoreinout $CMAKE_COMPILER_ARGS . -G"CodeBlocks - Unix Makefiles"
+# Or Ninja?
+# cmake -G Ninja -DCMAKE_BUILD_TYPE=$buildtype -DCSHORE_LIBRARY=$cshorelibrary -DCSHORE_INOUT=$cshoreinout $CMAKE_COMPILER_ARGS .
+# ninja
 
 echo ""
 echo "================================================================="
@@ -80,48 +83,47 @@ echo ""
 
 # Some extra messages
 if [ "$buildtype" = "CALLGRIND" ]; then
-   echo "When the build has finished, use valgrind/callgrind as follows:"
-   echo ""
-   echo "To check for memory leaks:"
-   echo ""
-   echo "   valgrind --leak-check=yes --suppressions=system-libs.supp --track-origins=yes ./cme &> valgrind.txt"
-   echo ""
-   echo "Then look at valgrind.txt"
-   echo ""
-   echo "Or to check coverage:"
-   echo ""
-   echo "   valgrind --tool=callgrind ./cme"
-   echo ""
-   echo "Then run:"
-   echo ""
-   echo "   callgrind_annotate --auto=yes callgrind.out.XXXXX > ./profile/callgrind/callgrind.txt"
-   echo ""
-   echo "where XXXXX is the number of the callgrind.out.XXXXX that was produced by valgrind. Then look at ./profile/callgrind.txt"
-   echo ""
+	echo "When the build has finished, use valgrind/callgrind as follows:"
+	echo ""
+	echo "To check for memory leaks:"
+	echo ""
+	echo "   valgrind --leak-check=yes --suppressions=system-libs.supp --track-origins=yes ./cme &> valgrind.txt"
+	echo ""
+	echo "Then look at valgrind.txt"
+	echo ""
+	echo "Or to check coverage:"
+	echo ""
+	echo "   valgrind --tool=callgrind ./cme"
+	echo ""
+	echo "Then run:"
+	echo ""
+	echo "   callgrind_annotate --auto=yes callgrind.out.XXXXX > ./profile/callgrind/callgrind.txt"
+	echo ""
+	echo "where XXXXX is the number of the callgrind.out.XXXXX that was produced by valgrind. Then look at ./profile/callgrind.txt"
+	echo ""
 fi
 
 if [ "$buildtype" = "GCOV" ]; then
-   echo "When the build has finished, use gcov/lcov as follows:"
-   echo ""
-   echo "   ./cme"
-   echo "   lcov --capture --directory ./src/CMakeFiles/cme.dir/ --output-file ./profile/lcov_output/coverage.info"
-   echo "   cd ./profile/lcov_output"
-   echo "   genhtml coverage.info"
-   echo ""
-   echo "Then look at index.html in your browser"
-   echo ""
+	echo "When the build has finished, use gcov/lcov as follows:"
+	echo ""
+	echo "   ./cme"
+	echo "   lcov --capture --directory ./src/CMakeFiles/cme.dir/ --output-file ./profile/lcov_output/coverage.info"
+	echo "   cd ./profile/lcov_output"
+	echo "   genhtml coverage.info"
+	echo ""
+	echo "Then look at index.html in your browser"
+	echo ""
 fi
 
 if [ "$buildtype" = "PRERELEASE" ]; then
-   echo "When the build has finished:"
-   echo ""
-   echo "   ./cme 2> sanitize.log"
-   echo ""
-   echo "Then look at sanitize.log"
-   echo "DO NOT run using debugger e.g. gdb"
-   echo "Note that we get a large number of GDAL leaks since sanitize-blacklist is not supported by gcc"
-   echo ""
+	echo "When the build has finished:"
+	echo ""
+	echo "   ./cme 2> sanitize.log"
+	echo ""
+	echo "Then look at sanitize.log"
+	echo "DO NOT run using debugger e.g. gdb"
+	echo "Note that we get a large number of GDAL leaks since sanitize-blacklist is not supported by gcc"
+	echo ""
 fi
 
 #########################################################################################
-

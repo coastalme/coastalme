@@ -94,3 +94,5 @@ platform_erosion
 sea_area
 suspended
 water_level
+wave_setup
+wave_runup
