@@ -1,9 +1,27 @@
 #!/bin/bash
+verbose='false'
+cflag="false"
+iflag="false"
+while getopts 'civh' flag; do
+	case "${flag}" in
+	c) cflag="true" ;;
+	i) iflag="true" ;;
+	v) verbose='true' ;;
+	h)
+		printf "Usage: %s: [-c: clean] [-i: install] args\n" $0
+		exit 2
+		;;
+	*)
+		printf "Usage: %s [-c: clean] [-i: install] args\n" $0
+		exit 2
+		;;
+	esac
+done
 
 # Change this to change build type
 buildtype=DEBUG
 #buildtype=RELEASE
-#buildtype=PRERELEASE
+# buildtype=PRERELEASE
 #buildtype=RELWITHDEBINFO        # Not yet implemented in CMakeLists.txt
 #buildtype=MINSIZEREL            # Not yet implemented in CMakeLists.txt
 #buildtype=GCOV
@@ -11,10 +29,10 @@ buildtype=DEBUG
 
 # Change this to select the Linux compiler
 compiler=GNU
-#compiler=CLANG
+# compiler=CLANG
 
 # Change this to select the CShore library type
-#cshorelibrary=STATIC
+# cshorelibrary=STATIC
 cshorelibrary=SHARED
 
 # Change this to select CShore input/output method
@@ -24,13 +42,13 @@ cshoreinout=ARG
 
 # Always build CShore
 echo ""
-rm -f ./lib/*
-cd cshore
-if [ "$OSTYPE" = "darwin"* ]; then
-	./make_cshore_lib.sh $cshorelibrary $buildtype $cshoreinout
-else
+cd cshore || exit
+if [ "$cflag" = "true" ]; then
+	rm -f ../lib/*
+	make clean
 	./make_cshore_lib.sh
 fi
+
 cd ..
 # Note: The cshore Makefile now correctly names libraries for MacOS automatically
 echo ""
@@ -41,45 +59,51 @@ echo "================================================================="
 echo ""
 
 # On Mac, switch to gcc15 to ensure openMP compatability
-if [ "$OSTYPE" = "darwin"* ]; then
-	export CC=gcc-15
-	export CXX=g++-15
-	CMAKE_COMPILER_ARGS="-DCMAKE_C_COMPILER=gcc-15 -DCMAKE_CXX_COMPILER=g++-15"
-else
-	#    echo "Using $compiler compiler, OpenMP may not be available"
-	#    echo "For OpenMP support, install GCC or install libomp for Clang"
-	CMAKE_COMPILER_ARGS=""
-fi
+# if [ "$OSTYPE" = "darwin"* ]; then
+# 	# export CC=gcc-15
+# 	# export CXX=g++-15
+# 	# CMAKE_COMPILER_ARGS="-DCMAKE_C_COMPILER=gcc-15 -DCMAKE_CXX_COMPILER=g++-15"
+# else
+# 	#    echo "Using $compiler compiler, OpenMP may not be available"
+# 	#    echo "For OpenMP support, install GCC or install libomp for Clang"
+# 	CMAKE_COMPILER_ARGS=""
+# fi
 echo ""
 
-rm -f CMakeCache.txt
-cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=$buildtype -DCOMPILER=$compiler -DCSHORE_LIBRARY=$cshorelibrary -DCSHORE_INOUT=$cshoreinout $CMAKE_COMPILER_ARGS .
+if [ "$cflag" = "true" ]; then
+	make clean
+	rm -f CMakeCache.txt
+fi
+# CMAKE_COMPILER_ARGS="PKG_CPPFLAGS='-Xclang -fopenmp' PKG_LIBS=-lomp"
+# cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=$buildtype -DCOMPILER=$compiler -DCSHORE_LIBRARY=$cshorelibrary -DCSHORE_INOUT=$cshoreinout $CMAKE_COMPILER_ARGS .
 #cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=$buildtype -DCOMPILER=$compiler -DCSHORE_LIBRARY=$cshorelibrary -DCSHORE_INOUT=$cshoreinout -DCMAKE_VERBOSE_MAKEFILE=ON $CMAKE_COMPILER_ARGS .
 #cmake -DCMAKE_BUILD_TYPE=$buildtype -DCOMPILER=$compiler -DCSHORE_LIBRARY=$cshorelibrary -DCSHORE_INOUT=$cshoreinout $CMAKE_COMPILER_ARGS . -G"CodeBlocks - Unix Makefiles"
 # Or Ninja?
-# cmake -G Ninja -DCMAKE_BUILD_TYPE=$buildtype -DCSHORE_LIBRARY=$cshorelibrary -DCSHORE_INOUT=$cshoreinout $CMAKE_COMPILER_ARGS .
-# ninja
+cmake -G Ninja -DCMAKE_BUILD_TYPE=$buildtype -DCOMPILER=$compiler -DCSHORE_LIBRARY=$cshorelibrary -DCSHORE_INOUT=$cshoreinout $CMAKE_COMPILER_ARGS .
+
+if [ "$iflag" = "true" ]; then
+	# make install
+	ninja install #>output.txt
+	if [[ $OSTYPE == 'darwin'* ]]; then
+		# Let's sign to enable profiling
+		codesign -s - -f --entitlements ../debug.plist ../cme
+		echo "signed to enable profiling"
+	fi
+fi
 
 echo ""
 echo "================================================================="
 echo ""
 
-# Convert to upper case. Note that this requires bash 4 or greater
-build_uc="${buildtype^^}"
-compiler_uc="${compiler^^}"
-cshorelibrary_uc="${cshorelibrary^^}"
-cshoreinout_uc="${cshoreinout^^}"
+# Convert to upper case.
+build_uc=$(echo $buildtype | tr 'a-z' 'A-Z')
+compiler_uc=$(echo $compiler | tr 'a-z' 'A-Z')
+cshorelibrary_uc=$(echo $cshorelibrary | tr 'a-z' 'A-Z')
+cshoreinout_uc=$(echo $cshoreinout | tr 'a-z' 'A-Z')
 
 echo "Finished CMake (Compiler=$compiler_uc, Build type=$build_uc, CShore library=$cshorelibrary_uc, CShore input/output method=$cshoreinout_uc)"
 echo ""
 echo "================================================================="
-
-echo ""
-echo "Now build and install, by running:"
-echo ""
-echo "   make install"
-echo "   cd .."
-echo ""
 
 # Some extra messages
 if [ "$buildtype" = "CALLGRIND" ]; then

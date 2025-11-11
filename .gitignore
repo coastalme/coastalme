@@ -108,3 +108,5 @@ utils/
 valgrind*
 
 **/.DS_Store
+**/*.vim
+**/*.cbp
