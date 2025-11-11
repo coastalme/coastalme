@@ -99,7 +99,6 @@ $(function(){initNavTree('d4/da8/classSpatialInterpolator.html','../../'); initR
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pri-methods">Private Member Functions</a> &#124;
 <a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="#pri-static-attribs">Static Private Attributes</a> &#124;
 <a href="#friends">Friends</a>  </div>
@@ -113,21 +112,18 @@ $(function(){initNavTree('d4/da8/classSpatialInterpolator.html','../../'); initR
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a5b2993abdbcce3dec857ab457e27c89b" id="r_a5b2993abdbcce3dec857ab457e27c89b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5b2993abdbcce3dec857ab457e27c89b">SpatialInterpolator</a> (std::vector&lt; <a class="el" href="../../d2/d6b/structPoint2D.html">Point2D</a> &gt; const &amp;points, std::vector&lt; double &gt; const &amp;values, int k_neighbors=12, double power=2.0)</td></tr>
 <tr class="separator:a5b2993abdbcce3dec857ab457e27c89b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a33a4f73491f36bcb744c4bbb70ada41d" id="r_a33a4f73491f36bcb744c4bbb70ada41d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a33a4f73491f36bcb744c4bbb70ada41d">SpatialInterpolator</a> (<a class="el" href="../../dd/d9f/structPointCloud.html">PointCloud</a> const &amp;cloud, <a class="el" href="../../d7/d3e/spatial__interpolation_8h.html#ac08b211d50983a88a24bd6511313308d">KDTree</a> *kdtree, std::vector&lt; double &gt; const &amp;values, int k_neighbors, double power)</td></tr>
+<tr class="separator:a33a4f73491f36bcb744c4bbb70ada41d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a40c7f5ee99dd12adace2e59ac13d2be6" id="r_a40c7f5ee99dd12adace2e59ac13d2be6"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a40c7f5ee99dd12adace2e59ac13d2be6">~SpatialInterpolator</a> ()</td></tr>
 <tr class="separator:a40c7f5ee99dd12adace2e59ac13d2be6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6b9b12ac42f3c4a9f8d7cc2568b7c79d" id="r_a6b9b12ac42f3c4a9f8d7cc2568b7c79d"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6b9b12ac42f3c4a9f8d7cc2568b7c79d">Interpolate</a> (double x, double y) const</td></tr>
 <tr class="separator:a6b9b12ac42f3c4a9f8d7cc2568b7c79d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab8f6eca84b2c084566042c083678921c" id="r_ab8f6eca84b2c084566042c083678921c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab8f6eca84b2c084566042c083678921c">Interpolate</a> (std::vector&lt; <a class="el" href="../../d2/d6b/structPoint2D.html">Point2D</a> &gt; const &amp;query_points, std::vector&lt; double &gt; &amp;results) const</td></tr>
 <tr class="separator:ab8f6eca84b2c084566042c083678921c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7ef8918321c11e221d1c937a73ba211a" id="r_a7ef8918321c11e221d1c937a73ba211a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d7/d3e/spatial__interpolation_8h.html#ac08b211d50983a88a24bd6511313308d">KDTree</a> const *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7ef8918321c11e221d1c937a73ba211a">GetKDTree</a> () const</td></tr>
-<tr class="separator:a7ef8918321c11e221d1c937a73ba211a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7fce2d00effbb12c92c106b46a5e61a2" id="r_a7fce2d00effbb12c92c106b46a5e61a2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d7/d3e/spatial__interpolation_8h.html#ac08b211d50983a88a24bd6511313308d">KDTree</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7fce2d00effbb12c92c106b46a5e61a2">GetKDTree</a> () const</td></tr>
+<tr class="separator:a7fce2d00effbb12c92c106b46a5e61a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af36737bebecb6bd33edb0cb9723da991" id="r_af36737bebecb6bd33edb0cb9723da991"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../dd/d9f/structPointCloud.html">PointCloud</a> const &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af36737bebecb6bd33edb0cb9723da991">GetPointCloud</a> () const</td></tr>
 <tr class="separator:af36737bebecb6bd33edb0cb9723da991"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-methods" name="pri-methods"></a>
-Private Member Functions</h2></td></tr>
-<tr class="memitem:a33a4f73491f36bcb744c4bbb70ada41d" id="r_a33a4f73491f36bcb744c4bbb70ada41d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a33a4f73491f36bcb744c4bbb70ada41d">SpatialInterpolator</a> (<a class="el" href="../../dd/d9f/structPointCloud.html">PointCloud</a> const &amp;cloud, <a class="el" href="../../d7/d3e/spatial__interpolation_8h.html#ac08b211d50983a88a24bd6511313308d">KDTree</a> *kdtree, std::vector&lt; double &gt; const &amp;values, int k_neighbors, double power)</td></tr>
-<tr class="separator:a33a4f73491f36bcb744c4bbb70ada41d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
@@ -239,33 +235,11 @@ USAGE EXAMPLE:</h2>
 
 </div>
 </div>
-<a id="a40c7f5ee99dd12adace2e59ac13d2be6" name="a40c7f5ee99dd12adace2e59ac13d2be6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a40c7f5ee99dd12adace2e59ac13d2be6">&#9670;&#160;</a></span>~SpatialInterpolator()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">SpatialInterpolator::~SpatialInterpolator </td>
-          <td>(</td>
-          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="../../da/d2a/spatial__interpolation_8cpp_source.html#l00088">88</a> of file <a class="el" href="../../da/d2a/spatial__interpolation_8cpp_source.html">spatial_interpolation.cpp</a>.</p>
-
-</div>
-</div>
 <a id="a33a4f73491f36bcb744c4bbb70ada41d" name="a33a4f73491f36bcb744c4bbb70ada41d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a33a4f73491f36bcb744c4bbb70ada41d">&#9670;&#160;</a></span>SpatialInterpolator() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">SpatialInterpolator::SpatialInterpolator </td>
@@ -293,20 +267,34 @@ USAGE EXAMPLE:</h2>
           <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>power</em></span>&#160;)</td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="../../da/d2a/spatial__interpolation_8cpp_source.html#l00079">79</a> of file <a class="el" href="../../da/d2a/spatial__interpolation_8cpp_source.html">spatial_interpolation.cpp</a>.</p>
 
 </div>
 </div>
+<a id="a40c7f5ee99dd12adace2e59ac13d2be6" name="a40c7f5ee99dd12adace2e59ac13d2be6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a40c7f5ee99dd12adace2e59ac13d2be6">&#9670;&#160;</a></span>~SpatialInterpolator()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SpatialInterpolator::~SpatialInterpolator </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="../../da/d2a/spatial__interpolation_8cpp_source.html#l00088">88</a> of file <a class="el" href="../../da/d2a/spatial__interpolation_8cpp_source.html">spatial_interpolation.cpp</a>.</p>
+
+</div>
+</div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a7ef8918321c11e221d1c937a73ba211a" name="a7ef8918321c11e221d1c937a73ba211a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7ef8918321c11e221d1c937a73ba211a">&#9670;&#160;</a></span>GetKDTree()</h2>
+<a id="a7fce2d00effbb12c92c106b46a5e61a2" name="a7fce2d00effbb12c92c106b46a5e61a2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7fce2d00effbb12c92c106b46a5e61a2">&#9670;&#160;</a></span>GetKDTree()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -315,7 +303,7 @@ USAGE EXAMPLE:</h2>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="../../d7/d3e/spatial__interpolation_8h.html#ac08b211d50983a88a24bd6511313308d">KDTree</a> const  * SpatialInterpolator::GetKDTree </td>
+          <td class="memname"><a class="el" href="../../d7/d3e/spatial__interpolation_8h.html#ac08b211d50983a88a24bd6511313308d">KDTree</a> * SpatialInterpolator::GetKDTree </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td> const</td>
@@ -328,7 +316,9 @@ USAGE EXAMPLE:</h2>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../d7/d3e/spatial__interpolation_8h_source.html#l00104">104</a> of file <a class="el" href="../../d7/d3e/spatial__interpolation_8h_source.html">spatial_interpolation.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d7/d3e/spatial__interpolation_8h_source.html#l00111">111</a> of file <a class="el" href="../../d7/d3e/spatial__interpolation_8h_source.html">spatial_interpolation.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="../../d1/dfb/gis__raster_8cpp_source.html#l02482">CSimulation::nInterpolateAllDeepWaterWaveValues()</a>.</p>
 
 </div>
 </div>
@@ -355,7 +345,9 @@ USAGE EXAMPLE:</h2>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../d7/d3e/spatial__interpolation_8h_source.html#l00107">107</a> of file <a class="el" href="../../d7/d3e/spatial__interpolation_8h_source.html">spatial_interpolation.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d7/d3e/spatial__interpolation_8h_source.html#l00114">114</a> of file <a class="el" href="../../d7/d3e/spatial__interpolation_8h_source.html">spatial_interpolation.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="../../d1/dfb/gis__raster_8cpp_source.html#l02482">CSimulation::nInterpolateAllDeepWaterWaveValues()</a>.</p>
 
 </div>
 </div>
@@ -398,7 +390,7 @@ USAGE EXAMPLE:</h2>
 
 <p class="definition">Definition at line <a class="el" href="../../da/d2a/spatial__interpolation_8cpp_source.html#l00110">110</a> of file <a class="el" href="../../da/d2a/spatial__interpolation_8cpp_source.html">spatial_interpolation.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../da/d2a/spatial__interpolation_8cpp_source.html#l00166">Interpolate()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../da/d2a/spatial__interpolation_8cpp_source.html#l00166">Interpolate()</a>, and <a class="el" href="../../d1/dfb/gis__raster_8cpp_source.html#l02482">CSimulation::nInterpolateAllDeepWaterWaveValues()</a>.</p>
 
 </div>
 </div>
@@ -446,9 +438,9 @@ USAGE EXAMPLE:</h2>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../d7/d3e/spatial__interpolation_8h_source.html#l00120">120</a> of file <a class="el" href="../../d7/d3e/spatial__interpolation_8h_source.html">spatial_interpolation.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d7/d3e/spatial__interpolation_8h_source.html#l00126">126</a> of file <a class="el" href="../../d7/d3e/spatial__interpolation_8h_source.html">spatial_interpolation.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d7/d3e/spatial__interpolation_8h_source.html#l00120">DualSpatialInterpolator</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d7/d3e/spatial__interpolation_8h_source.html#l00126">DualSpatialInterpolator</a>.</p>
 
 </div>
 </div>
@@ -473,7 +465,7 @@ USAGE EXAMPLE:</h2>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../d7/d3e/spatial__interpolation_8h_source.html#l00117">117</a> of file <a class="el" href="../../d7/d3e/spatial__interpolation_8h_source.html">spatial_interpolation.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d7/d3e/spatial__interpolation_8h_source.html#l00124">124</a> of file <a class="el" href="../../d7/d3e/spatial__interpolation_8h_source.html">spatial_interpolation.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="../../da/d2a/spatial__interpolation_8cpp_source.html#l00110">Interpolate()</a>, and <a class="el" href="../../da/d2a/spatial__interpolation_8cpp_source.html#l00166">Interpolate()</a>.</p>
 
@@ -499,9 +491,9 @@ USAGE EXAMPLE:</h2>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../d7/d3e/spatial__interpolation_8h_source.html#l00110">110</a> of file <a class="el" href="../../d7/d3e/spatial__interpolation_8h_source.html">spatial_interpolation.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d7/d3e/spatial__interpolation_8h_source.html#l00117">117</a> of file <a class="el" href="../../d7/d3e/spatial__interpolation_8h_source.html">spatial_interpolation.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d7/d3e/spatial__interpolation_8h_source.html#l00107">GetPointCloud()</a>, <a class="el" href="../../da/d2a/spatial__interpolation_8cpp_source.html#l00110">Interpolate()</a>, <a class="el" href="../../da/d2a/spatial__interpolation_8cpp_source.html#l00166">Interpolate()</a>, <a class="el" href="../../da/d2a/spatial__interpolation_8cpp_source.html#l00079">SpatialInterpolator()</a>, and <a class="el" href="../../da/d2a/spatial__interpolation_8cpp_source.html#l00058">SpatialInterpolator()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d7/d3e/spatial__interpolation_8h_source.html#l00114">GetPointCloud()</a>, <a class="el" href="../../da/d2a/spatial__interpolation_8cpp_source.html#l00110">Interpolate()</a>, <a class="el" href="../../da/d2a/spatial__interpolation_8cpp_source.html#l00166">Interpolate()</a>, <a class="el" href="../../da/d2a/spatial__interpolation_8cpp_source.html#l00079">SpatialInterpolator()</a>, and <a class="el" href="../../da/d2a/spatial__interpolation_8cpp_source.html#l00058">SpatialInterpolator()</a>.</p>
 
 </div>
 </div>
@@ -525,7 +517,7 @@ USAGE EXAMPLE:</h2>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../d7/d3e/spatial__interpolation_8h_source.html#l00113">113</a> of file <a class="el" href="../../d7/d3e/spatial__interpolation_8h_source.html">spatial_interpolation.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d7/d3e/spatial__interpolation_8h_source.html#l00120">120</a> of file <a class="el" href="../../d7/d3e/spatial__interpolation_8h_source.html">spatial_interpolation.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="../../da/d2a/spatial__interpolation_8cpp_source.html#l00110">Interpolate()</a>, <a class="el" href="../../da/d2a/spatial__interpolation_8cpp_source.html#l00166">Interpolate()</a>, <a class="el" href="../../da/d2a/spatial__interpolation_8cpp_source.html#l00079">SpatialInterpolator()</a>, and <a class="el" href="../../da/d2a/spatial__interpolation_8cpp_source.html#l00058">SpatialInterpolator()</a>.</p>
 
@@ -551,9 +543,9 @@ USAGE EXAMPLE:</h2>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../d7/d3e/spatial__interpolation_8h_source.html#l00112">112</a> of file <a class="el" href="../../d7/d3e/spatial__interpolation_8h_source.html">spatial_interpolation.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d7/d3e/spatial__interpolation_8h_source.html#l00119">119</a> of file <a class="el" href="../../d7/d3e/spatial__interpolation_8h_source.html">spatial_interpolation.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d7/d3e/spatial__interpolation_8h_source.html#l00104">GetKDTree()</a>, <a class="el" href="../../da/d2a/spatial__interpolation_8cpp_source.html#l00110">Interpolate()</a>, <a class="el" href="../../da/d2a/spatial__interpolation_8cpp_source.html#l00166">Interpolate()</a>, <a class="el" href="../../da/d2a/spatial__interpolation_8cpp_source.html#l00079">SpatialInterpolator()</a>, <a class="el" href="../../da/d2a/spatial__interpolation_8cpp_source.html#l00058">SpatialInterpolator()</a>, and <a class="el" href="../../da/d2a/spatial__interpolation_8cpp_source.html#l00088">~SpatialInterpolator()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d7/d3e/spatial__interpolation_8h_source.html#l00111">GetKDTree()</a>, <a class="el" href="../../da/d2a/spatial__interpolation_8cpp_source.html#l00110">Interpolate()</a>, <a class="el" href="../../da/d2a/spatial__interpolation_8cpp_source.html#l00166">Interpolate()</a>, <a class="el" href="../../da/d2a/spatial__interpolation_8cpp_source.html#l00079">SpatialInterpolator()</a>, <a class="el" href="../../da/d2a/spatial__interpolation_8cpp_source.html#l00058">SpatialInterpolator()</a>, and <a class="el" href="../../da/d2a/spatial__interpolation_8cpp_source.html#l00088">~SpatialInterpolator()</a>.</p>
 
 </div>
 </div>
@@ -577,7 +569,7 @@ USAGE EXAMPLE:</h2>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../d7/d3e/spatial__interpolation_8h_source.html#l00115">115</a> of file <a class="el" href="../../d7/d3e/spatial__interpolation_8h_source.html">spatial_interpolation.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d7/d3e/spatial__interpolation_8h_source.html#l00122">122</a> of file <a class="el" href="../../d7/d3e/spatial__interpolation_8h_source.html">spatial_interpolation.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="../../da/d2a/spatial__interpolation_8cpp_source.html#l00079">SpatialInterpolator()</a>, <a class="el" href="../../da/d2a/spatial__interpolation_8cpp_source.html#l00058">SpatialInterpolator()</a>, and <a class="el" href="../../da/d2a/spatial__interpolation_8cpp_source.html#l00088">~SpatialInterpolator()</a>.</p>
 
@@ -603,7 +595,7 @@ USAGE EXAMPLE:</h2>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../d7/d3e/spatial__interpolation_8h_source.html#l00114">114</a> of file <a class="el" href="../../d7/d3e/spatial__interpolation_8h_source.html">spatial_interpolation.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d7/d3e/spatial__interpolation_8h_source.html#l00121">121</a> of file <a class="el" href="../../d7/d3e/spatial__interpolation_8h_source.html">spatial_interpolation.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="../../da/d2a/spatial__interpolation_8cpp_source.html#l00110">Interpolate()</a>, <a class="el" href="../../da/d2a/spatial__interpolation_8cpp_source.html#l00166">Interpolate()</a>, <a class="el" href="../../da/d2a/spatial__interpolation_8cpp_source.html#l00079">SpatialInterpolator()</a>, and <a class="el" href="../../da/d2a/spatial__interpolation_8cpp_source.html#l00058">SpatialInterpolator()</a>.</p>
 
@@ -629,7 +621,7 @@ USAGE EXAMPLE:</h2>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../d7/d3e/spatial__interpolation_8h_source.html#l00111">111</a> of file <a class="el" href="../../d7/d3e/spatial__interpolation_8h_source.html">spatial_interpolation.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d7/d3e/spatial__interpolation_8h_source.html#l00118">118</a> of file <a class="el" href="../../d7/d3e/spatial__interpolation_8h_source.html">spatial_interpolation.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="../../da/d2a/spatial__interpolation_8cpp_source.html#l00110">Interpolate()</a>, <a class="el" href="../../da/d2a/spatial__interpolation_8cpp_source.html#l00166">Interpolate()</a>, <a class="el" href="../../da/d2a/spatial__interpolation_8cpp_source.html#l00079">SpatialInterpolator()</a>, and <a class="el" href="../../da/d2a/spatial__interpolation_8cpp_source.html#l00058">SpatialInterpolator()</a>.</p>
 
@@ -645,7 +637,7 @@ USAGE EXAMPLE:</h2>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../d4/da8/classSpatialInterpolator.html">SpatialInterpolator</a></li>
-    <li class="footer">Generated on Tue Nov 11 2025 15:11:20 for CoastalME (Coastal Modelling Environment) by <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+    <li class="footer">Generated on Tue Nov 11 2025 16:47:56 for CoastalME (Coastal Modelling Environment) by <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
   </ul>
 </div>
 </body>

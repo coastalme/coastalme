@@ -10,7 +10,7 @@ var searchData=
   ['seaareatsstream_7',['SeaAreaTSStream',['../d1/d98/classCSimulation.html#ab3048e670203191c2509b10ca89284ab',1,'CSimulation']]],
   ['second_8',['second',['../d8/de3/structnanoflann_1_1ResultItem.html#a131d4fc59d80dc1bd0a509f6258889df',1,'nanoflann::ResultItem']]],
   ['second_5ftype_9',['second_type',['../d2/d11/classpair.html#a09062ed55f8c1988490e205006a4d129',1,'pair']]],
-  ['sed_5felev_5ftolerance_10',['SED_ELEV_TOLERANCE',['../d6/d2a/cme_8h.html#ada89a20325b6d7186eee0dbb91ea1cc6',1,'cme.h']]],
+  ['sediment_5felev_5ftolerance_10',['SEDIMENT_ELEV_TOLERANCE',['../d6/d2a/cme_8h.html#a992c7916632c97c6c1fa25fd5a788282',1,'cme.h']]],
   ['sediment_5finput_5fevent_5ferror_11',['SEDIMENT_INPUT_EVENT_ERROR',['../d6/d2a/cme_8h.html#ab4fcf4ed8eccc1e120d8dacc3c9acb0c',1,'cme.h']]],
   ['sediment_5finput_5fevent_5flocation_5fid_12',['SEDIMENT_INPUT_EVENT_LOCATION_ID',['../d6/d2a/cme_8h.html#a9df0402fcfcf21ec65d0309d7d58350e',1,'cme.h']]],
   ['sediment_5finput_5fevent_5flocation_5fline_5fgeometry_13',['SEDIMENT_INPUT_EVENT_LOCATION_LINE_GEOMETRY',['../d6/d2a/cme_8h.html#a98aced749676ac3ebce7ab1e7ed417b6',1,'cme.h']]],

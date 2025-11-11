@@ -1,12 +1,12 @@
 var searchData=
 [
   ['file_0',['Specifying the input file',['../index.html#run_step1',1,'']]],
-  ['fillinbeachprotectionholesandremovelegacycliffs_1',['FillInBeachProtectionHolesAndRemoveLegacyCliffs',['../d1/d98/classCSimulation.html#a7fb3eac8a75b1a1e1702129b60e33d29',1,'CSimulation']]],
+  ['fillinbeachprotectionholes_1',['FillInBeachProtectionHoles',['../d1/d98/classCSimulation.html#a45b070d19448816f0a4345981d81239e',1,'CSimulation']]],
   ['fillpotentialplatformerosionholes_2',['FillPotentialPlatformErosionHoles',['../d1/d98/classCSimulation.html#aa1822cd0877dd757ed449591018be8d4',1,'CSimulation']]],
-  ['final_5foutput_3',['FINAL_OUTPUT',['../d6/d2a/cme_8h.html#a78f99a9290118e4c075b63344c2b92a3',1,'cme.h']]],
-  ['findallinundatedcells_4',['FindAllInundatedCells',['../d1/d98/classCSimulation.html#af7ae84763429ab1098cc0fa47b0cb93c',1,'CSimulation']]],
-  ['findallseacells_5',['FindAllSeaCells',['../d1/d98/classCSimulation.html#a078c2e7912785c903a4ab0d5067543eb',1,'CSimulation']]],
-  ['findclosestpointonstraightline_6',['FindClosestPointOnStraightLine',['../d1/d98/classCSimulation.html#a36b8466d716ec2ec1396558f5d402341',1,'CSimulation']]],
+  ['fillwavecalcholes_3',['FillWaveCalcHoles',['../d1/d98/classCSimulation.html#a432ea139a49252ae0eaed507586cf29f',1,'CSimulation']]],
+  ['final_5foutput_4',['FINAL_OUTPUT',['../d6/d2a/cme_8h.html#a78f99a9290118e4c075b63344c2b92a3',1,'cme.h']]],
+  ['findallinundatedcells_5',['FindAllInundatedCells',['../d1/d98/classCSimulation.html#af7ae84763429ab1098cc0fa47b0cb93c',1,'CSimulation']]],
+  ['findallseacells_6',['FindAllSeaCells',['../d1/d98/classCSimulation.html#a078c2e7912785c903a4ab0d5067543eb',1,'CSimulation']]],
   ['findneighbors_7',['findNeighbors',['../de/dd0/classnanoflann_1_1KDTreeSingleIndexAdaptor.html#a8db3d50eb62cc39154427d3dc6170f15',1,'nanoflann::KDTreeSingleIndexAdaptor::findNeighbors()'],['../d1/db4/classnanoflann_1_1KDTreeSingleIndexDynamicAdaptor__.html#af187a96735d45182d4f77253b3f9c2d5',1,'nanoflann::KDTreeSingleIndexDynamicAdaptor_::findNeighbors()'],['../d4/d9e/classnanoflann_1_1KDTreeSingleIndexDynamicAdaptor.html#a333db6fd01d59765876c9aaab5f9a1a6',1,'nanoflann::KDTreeSingleIndexDynamicAdaptor::findNeighbors()']]],
   ['fine_5fcons_5fraster_8',['FINE_CONS_RASTER',['../d6/d2a/cme_8h.html#ad5789b44b179b77e10bcb0bbfac0405e',1,'cme.h']]],
   ['fine_5funcons_5fraster_9',['FINE_UNCONS_RASTER',['../d6/d2a/cme_8h.html#abc614ab3e34b7523e416dbd9596817c2',1,'cme.h']]],
