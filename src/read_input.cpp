@@ -241,43 +241,6 @@ bool CSimulation::bReadIniFile(void)
    return true;
 }
 
-//===============================================================================================================================
-//! Detects whether the input file is in YAML or .dat format
-//===============================================================================================================================
-bool CSimulation::bDetectFileFormat(string const &strFileName, bool &bIsYaml)
-{
-   bIsYaml = false;
-
-   // First check command-line flag
-   if (m_bYamlInputFormat)
-   {
-      bIsYaml = true;
-      return true;
-   }
-
-   // Check file extension
-   size_t nDotPos = strFileName.find_last_of('.');
-   if (nDotPos != string::npos)
-   {
-      string strExt = strFileName.substr(nDotPos + 1);
-      std::transform(strExt.begin(), strExt.end(), strExt.begin(), ::tolower);
-
-      if (strExt == "yaml" || strExt == "yml")
-      {
-         bIsYaml = true;
-         return true;
-      }
-      else if (strExt == "dat")
-      {
-         bIsYaml = false;
-         return true;
-      }
-   }
-
-   // Default to .dat format if extension is ambiguous
-   bIsYaml = false;
-   return true;
-}
 
 //===============================================================================================================================
 //! Reads the run details input file and does some initialization
@@ -4099,6 +4062,44 @@ int CSimulation::nReadSedimentInputEventFile(void)
    InStream.close();
 
    return RTN_OK;
+}
+
+//===============================================================================================================================
+//! Detects whether the input file is in YAML or .dat format
+//===============================================================================================================================
+bool CSimulation::bDetectFileFormat(string const &strFileName, bool &bIsYaml)
+{
+   bIsYaml = false;
+
+   // First check command-line flag
+   if (m_bYamlInputFormat)
+   {
+      bIsYaml = true;
+      return true;
+   }
+
+   // Check file extension
+   size_t nDotPos = strFileName.find_last_of('.');
+   if (nDotPos != string::npos)
+   {
+      string strExt = strFileName.substr(nDotPos + 1);
+      std::transform(strExt.begin(), strExt.end(), strExt.begin(), ::tolower);
+
+      if (strExt == "yaml" || strExt == "yml")
+      {
+         bIsYaml = true;
+         return true;
+      }
+      else if (strExt == "dat")
+      {
+         bIsYaml = false;
+         return true;
+      }
+   }
+
+   // Default to .dat format if extension is ambiguous
+   bIsYaml = false;
+   return true;
 }
 
 //===============================================================================================================================
