@@ -1,6 +1,4 @@
 var searchData=
 [
-  ['stack_0',['stack',['../d1/dc2/classstack.html',1,'']]],
-  ['string_1',['string',['../d5/d92/classstring.html',1,'']]],
-  ['stringstream_2',['stringstream',['../d9/d61/classstringstream.html',1,'']]]
+  ['reverse_5fiterator_0',['reverse_iterator',['../dd/d20/classarray_1_1reverse__iterator.html',1,'array&lt; T &gt;::reverse_iterator'],['../dc/d2b/classdeque_1_1reverse__iterator.html',1,'deque&lt; T &gt;::reverse_iterator'],['../dc/ddc/classmap_1_1reverse__iterator.html',1,'map&lt; K, T &gt;::reverse_iterator'],['../d0/d8d/classstring_1_1reverse__iterator.html',1,'string::reverse_iterator'],['../dd/d96/classvector_1_1reverse__iterator.html',1,'vector&lt; T &gt;::reverse_iterator']]]
 ];
