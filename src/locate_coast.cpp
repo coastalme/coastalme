@@ -308,7 +308,7 @@ int CSimulation::nTraceAllCoasts(void)
    if (m_nLogFileDetail >= LOG_FILE_MIDDLE_DETAIL)
       LogStream << m_ulIter << ": Tracing coasts" << endl;
 
-// /*
+
 //    // TEST ================================================================
 //    int const BUFFER = 10;
 //    int const DUMMY_COAST_NUMBER = 99;
@@ -454,7 +454,7 @@ int CSimulation::nTraceAllCoasts(void)
 //    }
 //
 //    // Now go along the list of edge cells, look for DUMMY_COAST_NUMBER
-//    bool bFound = false;
+//    bool bEdgeFound = false;
 //    do
 //    {
 //       for (unsigned int n = 0; n < m_VEdgeCell.size(); n++)
@@ -476,16 +476,18 @@ int CSimulation::nTraceAllCoasts(void)
 //
 //          if (m_pRasterGrid->m_Cell[nX][nY].nGetCoastline() == DUMMY_COAST_NUMBER)
 //          {
-//             bFound = true;
+//             bEdgeFound = true;
 //             nValidCoast++;
 //
 //             // Set this edge cell
 //             m_pRasterGrid->m_Cell[nX][nY].SetAsCoastline(nValidCoast);
 //
+//             // Create the coast vector
 //             CGeomILine ILTempGridCRS;
+//             CGeom2DIPoint const PtiStart(nX, nY);
+//             ILTempGridCRS.Append(&PtiStart);
 //
-//             int nXNext = nX;
-//             int nYNext = nX;
+//             bool bAdjFound = false;
 //
 //             // Now look for other cells
 //             do
@@ -507,6 +509,10 @@ int CSimulation::nTraceAllCoasts(void)
 //                         {
 //                            m_pRasterGrid->m_Cell[nXAdj][nYAdj].SetAsCoastline(nValidCoast);
 //
+//                            CGeom2DIPoint const PtiPoint(nX, nY);
+//                            ILTempGridCRS.Append(&PtiPoint);
+//
+//                            bAdjFound = true;
 //
 //                            break;
 //                         }
@@ -520,9 +526,15 @@ int CSimulation::nTraceAllCoasts(void)
 //
 //                      if (bIsWithinValidGrid(nXAdj, nYAdj))
 //                      {
-//                         if (m_pRasterGrid->m_Cell[nXAdj][nYAdj].bIsInContiguousSea())
+//                         if (m_pRasterGrid->m_Cell[nXAdj][nYAdj].nGetCoastline() == DUMMY_COAST_NUMBER)
 //                         {
-//                            m_pRasterGrid->m_Cell[nXAdj][nYAdj].SetAsCoastline(DUMMY_COAST_NUMBER);
+//                            m_pRasterGrid->m_Cell[nXAdj][nYAdj].SetAsCoastline(nValidCoast);
+//
+//                            CGeom2DIPoint const PtiPoint(nX, nY);
+//                            ILTempGridCRS.Append(&PtiPoint);
+//
+//                            bAdjFound = true;
+//
 //                            break;
 //                         }
 //                      }
@@ -535,9 +547,15 @@ int CSimulation::nTraceAllCoasts(void)
 //
 //                      if (bIsWithinValidGrid(nXAdj, nYAdj))
 //                      {
-//                         if (m_pRasterGrid->m_Cell[nXAdj][nYAdj].bIsInContiguousSea())
+//                         if (m_pRasterGrid->m_Cell[nXAdj][nYAdj].nGetCoastline() == DUMMY_COAST_NUMBER)
 //                         {
-//                            m_pRasterGrid->m_Cell[nXAdj][nYAdj].SetAsCoastline(DUMMY_COAST_NUMBER);
+//                            m_pRasterGrid->m_Cell[nXAdj][nYAdj].SetAsCoastline(nValidCoast);
+//
+//                            CGeom2DIPoint const PtiPoint(nX, nY);
+//                            ILTempGridCRS.Append(&PtiPoint);
+//
+//                            bAdjFound = true;
+//
 //                            break;
 //                         }
 //                      }
@@ -550,9 +568,15 @@ int CSimulation::nTraceAllCoasts(void)
 //
 //                      if (bIsWithinValidGrid(nXAdj, nYAdj))
 //                      {
-//                         if (m_pRasterGrid->m_Cell[nXAdj][nYAdj].bIsInContiguousSea())
+//                         if (m_pRasterGrid->m_Cell[nXAdj][nYAdj].nGetCoastline() == DUMMY_COAST_NUMBER)
 //                         {
-//                            m_pRasterGrid->m_Cell[nXAdj][nYAdj].SetAsCoastline(DUMMY_COAST_NUMBER);
+//                            m_pRasterGrid->m_Cell[nXAdj][nYAdj].SetAsCoastline(nValidCoast);
+//
+//                            CGeom2DIPoint const PtiPoint(nX, nY);
+//                            ILTempGridCRS.Append(&PtiPoint);
+//
+//                            bAdjFound = true;
+//
 //                            break;
 //                         }
 //                      }
@@ -565,9 +589,15 @@ int CSimulation::nTraceAllCoasts(void)
 //
 //                      if (bIsWithinValidGrid(nXAdj, nYAdj))
 //                      {
-//                         if (m_pRasterGrid->m_Cell[nXAdj][nYAdj].bIsInContiguousSea())
+//                         if (m_pRasterGrid->m_Cell[nXAdj][nYAdj].nGetCoastline() == DUMMY_COAST_NUMBER)
 //                         {
-//                            m_pRasterGrid->m_Cell[nXAdj][nYAdj].SetAsCoastline(DUMMY_COAST_NUMBER);
+//                            m_pRasterGrid->m_Cell[nXAdj][nYAdj].SetAsCoastline(nValidCoast);
+//
+//                            CGeom2DIPoint const PtiPoint(nX, nY);
+//                            ILTempGridCRS.Append(&PtiPoint);
+//
+//                            bAdjFound = true;
+//
 //                            break;
 //                         }
 //                      }
@@ -580,9 +610,15 @@ int CSimulation::nTraceAllCoasts(void)
 //
 //                      if (bIsWithinValidGrid(nXAdj, nYAdj))
 //                      {
-//                         if (m_pRasterGrid->m_Cell[nXAdj][nYAdj].bIsInContiguousSea())
+//                         if (m_pRasterGrid->m_Cell[nXAdj][nYAdj].nGetCoastline() == DUMMY_COAST_NUMBER)
 //                         {
-//                            m_pRasterGrid->m_Cell[nXAdj][nYAdj].SetAsCoastline(DUMMY_COAST_NUMBER);
+//                            m_pRasterGrid->m_Cell[nXAdj][nYAdj].SetAsCoastline(nValidCoast);
+//
+//                            CGeom2DIPoint const PtiPoint(nX, nY);
+//                            ILTempGridCRS.Append(&PtiPoint);
+//
+//                            bAdjFound = true;
+//
 //                            break;
 //                         }
 //                      }
@@ -595,9 +631,15 @@ int CSimulation::nTraceAllCoasts(void)
 //
 //                      if (bIsWithinValidGrid(nXAdj, nYAdj))
 //                      {
-//                         if (m_pRasterGrid->m_Cell[nXAdj][nYAdj].bIsInContiguousSea())
+//                         if (m_pRasterGrid->m_Cell[nXAdj][nYAdj].nGetCoastline() == DUMMY_COAST_NUMBER)
 //                         {
-//                            m_pRasterGrid->m_Cell[nXAdj][nYAdj].SetAsCoastline(DUMMY_COAST_NUMBER);
+//                            m_pRasterGrid->m_Cell[nXAdj][nYAdj].SetAsCoastline(nValidCoast);
+//
+//                            CGeom2DIPoint const PtiPoint(nX, nY);
+//                            ILTempGridCRS.Append(&PtiPoint);
+//
+//                            bAdjFound = true;
+//
 //                            break;
 //                         }
 //                      }
@@ -610,9 +652,15 @@ int CSimulation::nTraceAllCoasts(void)
 //
 //                      if (bIsWithinValidGrid(nXAdj, nYAdj))
 //                      {
-//                         if (m_pRasterGrid->m_Cell[nXAdj][nYAdj].bIsInContiguousSea())
+//                         if (m_pRasterGrid->m_Cell[nXAdj][nYAdj].nGetCoastline() == DUMMY_COAST_NUMBER)
 //                         {
-//                            m_pRasterGrid->m_Cell[nXAdj][nYAdj].SetAsCoastline(DUMMY_COAST_NUMBER);
+//                            m_pRasterGrid->m_Cell[nXAdj][nYAdj].SetAsCoastline(nValidCoast);
+//
+//                            CGeom2DIPoint const PtiPoint(nX, nY);
+//                            ILTempGridCRS.Append(&PtiPoint);
+//
+//                            bAdjFound = true;
+//
 //                            break;
 //                         }
 //                      }
@@ -621,7 +669,7 @@ int CSimulation::nTraceAllCoasts(void)
 //                   }
 //                }
 //
-//             } while xxx;
+//             } while (bAdjFound);
 //
 //
 //
@@ -633,7 +681,7 @@ int CSimulation::nTraceAllCoasts(void)
 //
 //       }
 //    }
-//    while (bFound);
+//    while (bEdgeFound);
 //
 //
 //
