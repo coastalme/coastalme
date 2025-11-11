@@ -573,6 +573,14 @@ bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const* strPlot
 
       break;
 
+   case (VECTOR_PLOT_WAVE_TRANSECT_POINTS):
+      strFilePathName.append(VECTOR_WAVE_TRANSECT_POINTS_NAME);
+
+      eGType = wkbPoint;
+      strType = "point";
+
+      break;
+
    case (VECTOR_PLOT_RUN_UP):
       strFilePathName.append(VECTOR_RUN_UP_NAME);
 
@@ -1469,6 +1477,125 @@ bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const* strPlot
                // Get rid of the feature object
                OGRFeature::DestroyFeature(pOGRFeature);
             }
+         }
+      }
+
+      break;
+   }
+
+   case (VECTOR_PLOT_WAVE_TRANSECT_POINTS):
+   {
+      // The layer has been created, so create fields for wave transect point attributes
+      string const strFieldValue1 = "ProfileID";
+      string const strFieldValue2 = "CoastID";
+      string const strFieldValue3 = "HeightX";
+      string const strFieldValue4 = "HeightY";
+      string const strFieldValue5 = "Height";
+      string const strFieldValue6 = "Angle";
+      string const strFieldValue7 = "Breaking";
+      string const strFieldValue8 = "IsSynthetic";
+
+      // Create field definitions
+      OGRFieldDefn const OGRField1(strFieldValue1.c_str(), OFTInteger);
+      if (pOGRLayer->CreateField(&OGRField1) != OGRERR_NONE)
+      {
+         cerr << ERR << "cannot create " << strType << " attribute field 1 '" << strFieldValue1 << "' in " << strFilePathName << endl << CPLGetLastErrorMsg() << endl;
+         return false;
+      }
+
+      OGRFieldDefn const OGRField2(strFieldValue2.c_str(), OFTInteger);
+      if (pOGRLayer->CreateField(&OGRField2) != OGRERR_NONE)
+      {
+         cerr << ERR << "cannot create " << strType << " attribute field 2 '" << strFieldValue2 << "' in " << strFilePathName << endl << CPLGetLastErrorMsg() << endl;
+         return false;
+      }
+
+      OGRFieldDefn const OGRField3(strFieldValue3.c_str(), OFTReal);
+      if (pOGRLayer->CreateField(&OGRField3) != OGRERR_NONE)
+      {
+         cerr << ERR << "cannot create " << strType << " attribute field 3 '" << strFieldValue3 << "' in " << strFilePathName << endl << CPLGetLastErrorMsg() << endl;
+         return false;
+      }
+
+      OGRFieldDefn const OGRField4(strFieldValue4.c_str(), OFTReal);
+      if (pOGRLayer->CreateField(&OGRField4) != OGRERR_NONE)
+      {
+         cerr << ERR << "cannot create " << strType << " attribute field 4 '" << strFieldValue4 << "' in " << strFilePathName << endl << CPLGetLastErrorMsg() << endl;
+         return false;
+      }
+
+      OGRFieldDefn const OGRField5(strFieldValue5.c_str(), OFTReal);
+      if (pOGRLayer->CreateField(&OGRField5) != OGRERR_NONE)
+      {
+         cerr << ERR << "cannot create " << strType << " attribute field 5 '" << strFieldValue5 << "' in " << strFilePathName << endl << CPLGetLastErrorMsg() << endl;
+         return false;
+      }
+
+      OGRFieldDefn const OGRField6(strFieldValue6.c_str(), OFTReal);
+      if (pOGRLayer->CreateField(&OGRField6) != OGRERR_NONE)
+      {
+         cerr << ERR << "cannot create " << strType << " attribute field 6 '" << strFieldValue6 << "' in " << strFilePathName << endl << CPLGetLastErrorMsg() << endl;
+         return false;
+      }
+
+      OGRFieldDefn const OGRField7(strFieldValue7.c_str(), OFTInteger);
+      if (pOGRLayer->CreateField(&OGRField7) != OGRERR_NONE)
+      {
+         cerr << ERR << "cannot create " << strType << " attribute field 7 '" << strFieldValue7 << "' in " << strFilePathName << endl << CPLGetLastErrorMsg() << endl;
+         return false;
+      }
+
+      OGRFieldDefn const OGRField8(strFieldValue8.c_str(), OFTInteger);
+      if (pOGRLayer->CreateField(&OGRField8) != OGRERR_NONE)
+      {
+         cerr << ERR << "cannot create " << strType << " attribute field 8 '" << strFieldValue8 << "' in " << strFilePathName << endl << CPLGetLastErrorMsg() << endl;
+         return false;
+      }
+
+      // Now create features for each point in each transect
+      OGRPoint OGRPt;
+
+      for (size_t nTransect = 0; nTransect < m_VAllTransectsWithSynthetic.size(); nTransect++)
+      {
+         TransectWaveData const& transect = m_VAllTransectsWithSynthetic[nTransect];
+
+         for (size_t nPoint = 0; nPoint < transect.VdX.size(); nPoint++)
+         {
+            // Create a feature object for this point
+            OGRFeature* pOGRFeature = OGRFeature::CreateFeature(pOGRLayer->GetLayerDefn());
+
+            // Set the feature's geometry (convert from grid CRS to external CRS)
+            OGRPt.setX(dGridCentroidXToExtCRSX(transect.VdX[nPoint]));
+            OGRPt.setY(dGridCentroidYToExtCRSY(transect.VdY[nPoint]));
+            pOGRFeature->SetGeometry(&OGRPt);
+
+            // Calculate wave height and angle from components
+            double const dHeightX = transect.VdHeightX[nPoint];
+            double const dHeightY = transect.VdHeightY[nPoint];
+            double const dHeight = sqrt(dHeightX * dHeightX + dHeightY * dHeightY);
+            double dAngle = atan2(dHeightX, dHeightY) * 180.0 / PI;
+            if (dAngle < 0)
+               dAngle += 360.0;
+
+            // Set the feature's attributes
+            pOGRFeature->SetField(strFieldValue1.c_str(), transect.nProfileID);
+            pOGRFeature->SetField(strFieldValue2.c_str(), transect.nCoastID);
+            pOGRFeature->SetField(strFieldValue3.c_str(), dHeightX);
+            pOGRFeature->SetField(strFieldValue4.c_str(), dHeightY);
+            pOGRFeature->SetField(strFieldValue5.c_str(), dHeight);
+            pOGRFeature->SetField(strFieldValue6.c_str(), dAngle);
+            pOGRFeature->SetField(strFieldValue7.c_str(), transect.VbBreaking[nPoint] ? 1 : 0);
+            pOGRFeature->SetField(strFieldValue8.c_str(), (transect.nProfileID == -1) ? 1 : 0);
+
+            // Create the feature in the output layer
+            if (pOGRLayer->CreateFeature(pOGRFeature) != OGRERR_NONE)
+            {
+               cerr << ERR << "cannot create " << strType << " feature " << strPlotTitle << " for transect " << nTransect << " point " << nPoint << " in " << strFilePathName << endl << CPLGetLastErrorMsg() << endl;
+               return false;
+            }
+
+            // Get rid of the feature object
+            OGRFeature::DestroyFeature(pOGRFeature);
          }
       }
 

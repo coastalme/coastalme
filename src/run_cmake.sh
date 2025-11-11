@@ -22,7 +22,7 @@ done
 #buildtype=DEBUG
 buildtype=RELEASE
 # buildtype=PRERELEASE
-#buildtype=RELWITHDEBINFO        # Not yet implemented in CMakeLists.txt
+# buildtype=RELWITHDEBINFO # Not yet implemented in CMakeLists.txt
 #buildtype=MINSIZEREL            # Not yet implemented in CMakeLists.txt
 #buildtype=GCOV
 #buildtype=CALLGRIND

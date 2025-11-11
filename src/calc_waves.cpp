@@ -135,10 +135,171 @@ int CSimulation::nSetAllCoastpointDeepWaterWaveValues(void)
 }
 
 //===============================================================================================================================
+//! Generates synthetic transects between existing transects to densify the point cloud for wave interpolation
+//! Number of synthetic transects created between each pair depends on the distance between them and the desired spacing
+//! Uses OpenMP parallelization to process multiple synthetic transects concurrently
+//! OPTIMIZED: Pre-computes external CRS positions to avoid redundant coordinate conversions
+//===============================================================================================================================
+void CSimulation::GenerateSyntheticTransects(vector<TransectWaveData> const* pVRealTransects, vector<TransectWaveData>* pVAllTransects)
+{
+   // Start with all the real transects
+   *pVAllTransects = *pVRealTransects;
+
+   // If no spacing specified or spacing is too large, just return the real ones
+   if (m_dSyntheticTransectSpacing <= 0)
+      return;
+
+   int const nNumRealTransects = static_cast<int>(pVRealTransects->size());
+   if (nNumRealTransects < 2)
+      return;
+
+   // ============================================================================
+   // OPTIMIZATION: Pre-compute external CRS positions for all transect start points
+   // This avoids redundant coordinate conversions (each transect appears in 2 pairs)
+   // ============================================================================
+   vector<double> VdTransectExtX(nNumRealTransects);
+   vector<double> VdTransectExtY(nNumRealTransects);
+
+   for (int i = 0; i < nNumRealTransects; i++)
+   {
+      TransectWaveData const& transect = (*pVRealTransects)[i];
+      if (!transect.VdX.empty())
+      {
+         VdTransectExtX[i] = dGridCentroidXToExtCRSX(transect.VdX[0]);
+         VdTransectExtY[i] = dGridCentroidYToExtCRSY(transect.VdY[0]);
+      }
+      else
+      {
+         VdTransectExtX[i] = 0.0;
+         VdTransectExtY[i] = 0.0;
+      }
+   }
+
+   // First pass: calculate distances and determine how many synthetic transects needed for each pair
+   vector<int> VnNumSyntheticsPerPair(nNumRealTransects - 1, 0);
+   int nTotalSynthetic = 0;
+
+   for (int nPair = 0; nPair < nNumRealTransects - 1; nPair++)
+   {
+      TransectWaveData const& transect1 = (*pVRealTransects)[nPair];
+      TransectWaveData const& transect2 = (*pVRealTransects)[nPair + 1];
+
+      // Only interpolate between transects on the same coast
+      if (transect1.nCoastID != transect2.nCoastID)
+         continue;
+
+      // Skip if either transect has no points
+      if (transect1.VdX.empty() || transect2.VdX.empty())
+         continue;
+
+      // Use pre-computed external CRS positions
+      double const dX1 = VdTransectExtX[nPair];
+      double const dY1 = VdTransectExtY[nPair];
+      double const dX2 = VdTransectExtX[nPair + 1];
+      double const dY2 = VdTransectExtY[nPair + 1];
+
+      // Calculate distance using pre-computed positions
+      double const dDX = dX2 - dX1;
+      double const dDY = dY2 - dY1;
+      double const dDistance = sqrt(dDX * dDX + dDY * dDY);
+
+      // Calculate number of synthetic transects needed: distance / spacing, rounded to nearest integer
+      // If distance <= spacing, we don't add any synthetic transects
+      int nNumSynthetics = 0;
+      if (dDistance > m_dSyntheticTransectSpacing)
+      {
+         nNumSynthetics = static_cast<int>(round(dDistance / m_dSyntheticTransectSpacing));
+         // Subtract 1 because we already have the two endpoints (real transects)
+         nNumSynthetics = std::max(0, nNumSynthetics - 1);
+      }
+
+      VnNumSyntheticsPerPair[nPair] = nNumSynthetics;
+      nTotalSynthetic += nNumSynthetics;
+   }
+
+   if (nTotalSynthetic <= 0)
+   {
+      LogStream << m_ulIter << ": No synthetic transects needed (all profile spacings <= " << m_dSyntheticTransectSpacing << " m)" << endl;
+      return;
+   }
+
+   // Pre-allocate space for synthetic transects
+   vector<TransectWaveData> VSyntheticTransects(nTotalSynthetic);
+
+   // Second pass: generate the synthetic transects
+   // Using OpenMP to parallelize - each thread handles one pair
+   int nCurrentIndex = 0;
+
+   #pragma omp parallel for schedule(dynamic)
+   for (int nPair = 0; nPair < nNumRealTransects - 1; nPair++)
+   {
+      int const nNumSynthetics = VnNumSyntheticsPerPair[nPair];
+      if (nNumSynthetics == 0)
+         continue;
+
+      TransectWaveData const& transect1 = (*pVRealTransects)[nPair];
+      TransectWaveData const& transect2 = (*pVRealTransects)[nPair + 1];
+
+      // Calculate the starting index for this pair's synthetic transects
+      int nPairStartIndex = 0;
+      for (int i = 0; i < nPair; i++)
+         nPairStartIndex += VnNumSyntheticsPerPair[i];
+
+      // Create synthetic transects for this pair
+      for (int nSynth = 1; nSynth <= nNumSynthetics; nSynth++)
+      {
+         int const nSynthIndex = nPairStartIndex + (nSynth - 1);
+         TransectWaveData& synthTransect = VSyntheticTransects[nSynthIndex];
+
+         // Calculate interpolation weight (0 < alpha < 1)
+         double const dAlpha = static_cast<double>(nSynth) / (nNumSynthetics + 1);
+         double const dOneMinusAlpha = 1.0 - dAlpha;
+
+         // Set metadata for synthetic transect
+         synthTransect.nCoastID = transect1.nCoastID;
+         synthTransect.nProfileID = -1; // Mark as synthetic
+         synthTransect.bIsGridEdge = false;
+
+         // Interpolate points - use the minimum length to avoid extrapolation
+         size_t const nMinLength = std::min(transect1.VdX.size(), transect2.VdX.size());
+
+         // Reserve space for efficiency
+         synthTransect.VdX.reserve(nMinLength);
+         synthTransect.VdY.reserve(nMinLength);
+         synthTransect.VdHeightX.reserve(nMinLength);
+         synthTransect.VdHeightY.reserve(nMinLength);
+         synthTransect.VbBreaking.reserve(nMinLength);
+
+         // Interpolate each point along the transect
+         for (size_t i = 0; i < nMinLength; i++)
+         {
+            // Linear interpolation of position
+            synthTransect.VdX.push_back(dOneMinusAlpha * transect1.VdX[i] + dAlpha * transect2.VdX[i]);
+            synthTransect.VdY.push_back(dOneMinusAlpha * transect1.VdY[i] + dAlpha * transect2.VdY[i]);
+
+            // Linear interpolation of wave height components
+            synthTransect.VdHeightX.push_back(dOneMinusAlpha * transect1.VdHeightX[i] + dAlpha * transect2.VdHeightX[i]);
+            synthTransect.VdHeightY.push_back(dOneMinusAlpha * transect1.VdHeightY[i] + dAlpha * transect2.VdHeightY[i]);
+
+            // Breaking status: true if either parent transect has breaking at this point
+            synthTransect.VbBreaking.push_back(transect1.VbBreaking[i] || transect2.VbBreaking[i]);
+         }
+      }
+   }
+
+   // Append all synthetic transects to the output vector
+   pVAllTransects->insert(pVAllTransects->end(), VSyntheticTransects.begin(), VSyntheticTransects.end());
+
+   LogStream << m_ulIter << ": Generated " << nTotalSynthetic << " synthetic transects between " << nNumRealTransects << " real transects (target spacing: " << m_dSyntheticTransectSpacing << " m)" << endl;
+}
+
+//===============================================================================================================================
 //! Simulates wave propagation along all coastline-normal profiles, on all coasts
 //===============================================================================================================================
 int CSimulation::nDoAllPropagateWaves(void)
 {
+   // Set up vector to hold wave data for each transect/profile
+   vector<TransectWaveData> VAllTransects;
    // DEBUG CODE ============================================================================================================
    LogStream << m_ulIter << ":\t At start of nDoAllPropagateWaves()" << endl;
    // DEBUG CODE ============================================================================================================
@@ -164,11 +325,7 @@ int CSimulation::nDoAllPropagateWaves(void)
       // Calculate wave properties at every point along each valid profile, and for the cells under the profiles. Do this alternately in up-coast and down-coast sequence
       for (int nn = 0; nn < nNumProfiles; nn++)
       {
-         vector<bool> VbBreaking;
-         vector<double> VdX;
-         vector<double> VdY;
-         vector<double> VdHeightX;
-         vector<double> VdHeightY;
+         TransectWaveData transect;
 
          CGeomProfile *pProfile;
 
@@ -177,7 +334,8 @@ int CSimulation::nDoAllPropagateWaves(void)
          else
             pProfile = m_VCoast[nCoast].pGetProfileWithUpCoastSeq(nn);
 
-         int const nRet = nCalcWavePropertiesOnProfile(nCoast, nCoastSize, pProfile, &VdX, &VdY, &VdHeightX, &VdHeightY, &VbBreaking);
+         int const nRet = nCalcWavePropertiesOnProfile(nCoast, nCoastSize, pProfile, &transect.VdX, &transect.VdY, &transect.VdHeightX, &transect.VdHeightY, &transect.VbBreaking);
+
          if (nRet != RTN_OK)
          {
             if (nRet == RTN_ERR_CSHORE_ERROR)
@@ -196,7 +354,7 @@ int CSimulation::nDoAllPropagateWaves(void)
          }
 
          // Are the waves off-shore? If so, do nothing more with this profile. The wave values for cells have already been given the off-shore value
-         if (VbBreaking.empty())
+         if (transect.VbBreaking.empty())
             continue;
 
          // Is this a start of coast or end of coast profile?
@@ -206,20 +364,13 @@ int CSimulation::nDoAllPropagateWaves(void)
             bSomeNonStartOrEndOfCoastProfiles = true;
          }
 
-         // // DEBUG CODE ===============================================================================================
-         // for (int nn = 0; nn < VdX.size(); nn++)
-         // {
-         // LogStream << "nProfile = " << nProfile << " nn = " << nn << " VdX[nn] = " << VdX[nn] << " VdY[nn] = " << VdY[nn] << " VdHeightX[nn] = " << VdHeightX[nn] << " VdHeightY[nn] = " << VdHeightY[nn] << " VbBreaking[nn] = " << VbBreaking[nn] << endl;
-         // }
-         // LogStream << endl;
-         // // DEBUG CODE ===============================================================================================
+         // Store metadata about this transect
+         transect.nCoastID = nCoast;
+         transect.nProfileID = pProfile->nGetProfileID();
+         transect.bIsGridEdge = pProfile->bIsGridEdge();
 
-         // Append to the all-profile vectors
-         VdXAll.insert(VdXAll.end(), VdX.begin(), VdX.end());
-         VdYAll.insert(VdYAll.end(), VdY.begin(), VdY.end());
-         VdHeightXAll.insert(VdHeightXAll.end(), VdHeightX.begin(), VdHeightX.end());
-         VdHeightYAll.insert(VdHeightYAll.end(), VdHeightY.begin(), VdHeightY.end());
-         VbBreakingAll.insert(VbBreakingAll.end(), VbBreaking.begin(), VbBreaking.end());
+         // Add this transect to the collection
+         VAllTransects.push_back(std::move(transect));
       }
 
       bDownCoast = ! bDownCoast;
@@ -234,6 +385,12 @@ int CSimulation::nDoAllPropagateWaves(void)
    }
 
    // We need to also send the deepwater points from the edge of the grid to nInterpolateWavePropertiesToWithinPolygonCells(), this is necessary to prevent GDALGridCreate() leaving holes in the interpolated grid when the polygons are far from regular
+   // Store deep water grid edge points separately (not as a transect)
+   vector<double> VdDeepWaterX;
+   vector<double> VdDeepWaterY;
+   vector<double> VdDeepWaterHeightX;
+   vector<double> VdDeepWaterHeightY;
+
    double dDeepWaterWaveX;
    double dDeepWaterWaveY;
 
@@ -253,8 +410,8 @@ int CSimulation::nDoAllPropagateWaves(void)
          if (nPolyID == INT_NODATA)
          {
             // Not in a polygon
-            VdXAll.push_back(nX);
-            VdYAll.push_back(0);
+            VdDeepWaterX.push_back(nX);
+            VdDeepWaterY.push_back(0);
 
             if (! m_bSingleDeepWaterWaveValues)
             {
@@ -263,8 +420,8 @@ int CSimulation::nDoAllPropagateWaves(void)
                dDeepWaterWaveY = m_pRasterGrid->m_Cell[nX][0].dGetCellDeepWaterWaveHeight() * cos(m_pRasterGrid->m_Cell[nX][0].dGetCellDeepWaterWaveAngle() * PI / 180);
             }
 
-            VdHeightXAll.push_back(dDeepWaterWaveX);
-            VdHeightYAll.push_back(dDeepWaterWaveY);
+            VdDeepWaterHeightX.push_back(dDeepWaterWaveX);
+            VdDeepWaterHeightY.push_back(dDeepWaterWaveY);
          }
       }
 
@@ -275,8 +432,8 @@ int CSimulation::nDoAllPropagateWaves(void)
          if (nPolyID == INT_NODATA)
          {
             // Not in a polygon
-            VdXAll.push_back(nX);
-            VdYAll.push_back(m_nYGridSize - 1);
+            VdDeepWaterX.push_back(nX);
+            VdDeepWaterY.push_back(m_nYGridSize - 1);
 
             if (! m_bSingleDeepWaterWaveValues)
             {
@@ -285,8 +442,8 @@ int CSimulation::nDoAllPropagateWaves(void)
                dDeepWaterWaveY = m_pRasterGrid->m_Cell[nX][m_nYGridSize - 1].dGetCellDeepWaterWaveHeight() * cos(m_pRasterGrid->m_Cell[nX][m_nYGridSize - 1].dGetCellDeepWaterWaveAngle() * PI / 180);
             }
 
-            VdHeightXAll.push_back(dDeepWaterWaveX);
-            VdHeightYAll.push_back(dDeepWaterWaveY);
+            VdDeepWaterHeightX.push_back(dDeepWaterWaveX);
+            VdDeepWaterHeightY.push_back(dDeepWaterWaveY);
          }
       }
    }
@@ -304,8 +461,8 @@ int CSimulation::nDoAllPropagateWaves(void)
          if (nPolyID == INT_NODATA)
          {
             // Not in a polygon
-            VdXAll.push_back(0);
-            VdYAll.push_back(nY);
+            VdDeepWaterX.push_back(0);
+            VdDeepWaterY.push_back(nY);
 
             if (! m_bSingleDeepWaterWaveValues)
             {
@@ -314,8 +471,8 @@ int CSimulation::nDoAllPropagateWaves(void)
                dDeepWaterWaveY = m_pRasterGrid->m_Cell[0][nY].dGetCellDeepWaterWaveHeight() * cos(m_pRasterGrid->m_Cell[0][nY].dGetCellDeepWaterWaveAngle() * PI / 180);
             }
 
-            VdHeightXAll.push_back(dDeepWaterWaveX);
-            VdHeightYAll.push_back(dDeepWaterWaveY);
+            VdDeepWaterHeightX.push_back(dDeepWaterWaveX);
+            VdDeepWaterHeightY.push_back(dDeepWaterWaveY);
          }
       }
 
@@ -326,8 +483,8 @@ int CSimulation::nDoAllPropagateWaves(void)
          if (nPolyID == INT_NODATA)
          {
             // Not in a polygon
-            VdXAll.push_back(m_nXGridSize - 1);
-            VdYAll.push_back(nY);
+            VdDeepWaterX.push_back(m_nXGridSize - 1);
+            VdDeepWaterY.push_back(nY);
 
             if (! m_bSingleDeepWaterWaveValues)
             {
@@ -336,30 +493,39 @@ int CSimulation::nDoAllPropagateWaves(void)
                dDeepWaterWaveY = m_pRasterGrid->m_Cell[m_nXGridSize - 1][nY].dGetCellDeepWaterWaveHeight() * cos(m_pRasterGrid->m_Cell[m_nXGridSize - 1][nY].dGetCellDeepWaterWaveAngle() * PI / 180);
             }
 
-            VdHeightXAll.push_back(dDeepWaterWaveX);
-            VdHeightYAll.push_back(dDeepWaterWaveY);
+            VdDeepWaterHeightX.push_back(dDeepWaterWaveX);
+            VdDeepWaterHeightY.push_back(dDeepWaterWaveY);
          }
       }
    }
 
-   // // DEBUG CODE ============================================================================================================
-   // LogStream << m_ulIter << ":\t out of loop" << endl;
-   // for (int nn = 0; nn < static_cast<int>(VdXAll.size()); nn++)
-   // {
-   //    LogStream << "\t \t nn = " << nn << " VdXAll[nn] = " << VdXAll[nn] << " VdYAll[nn] = " << VdYAll[nn] << " VdHeightXAll[nn] = " << VdHeightXAll[nn] << " VdHeightYAll[nn] = " << VdHeightYAll[nn] << " VbBreakingAll[nn] = " << VbBreakingAll[nn] << endl;
-   // }
-   // LogStream << endl;
-   // // DEBUG CODE ============================================================================================================
-
    // Are the waves off-shore for every profile? If so, do nothing more
-   if (VbBreakingAll.empty())
+   // Check if any transect has breaking waves
+   bool bHasBreakingWaves = false;
+   for (const auto& transect : VAllTransects)
+   {
+      if (!transect.VbBreaking.empty())
+      {
+         bHasBreakingWaves = true;
+         break;
+      }
+   }
+
+   if (!bHasBreakingWaves)
    {
       LogStream << m_ulIter << ": waves off-shore for all profiles" << endl;
       return RTN_OK;
    }
 
+   // Generate synthetic transects to densify the point cloud for better interpolation
+   vector<TransectWaveData> VAllTransectsWithSynthetic;
+   GenerateSyntheticTransects(&VAllTransects, &VAllTransectsWithSynthetic);
+
+   // Store transects for potential debug output
+   m_VAllTransectsWithSynthetic = VAllTransectsWithSynthetic;
+
    // Some waves are on-shore, so interpolate the wave attributes from all profile points to all within-polygon sea cells, also update the active zone status for each cell
-   int nRet = nInterpolateWavesToPolygonCells(&VdXAll, &VdYAll, &VdHeightXAll, &VdHeightYAll);
+   int nRet = nInterpolateWavesToPolygonCells(&VAllTransectsWithSynthetic, &VdDeepWaterX, &VdDeepWaterY, &VdDeepWaterHeightX, &VdDeepWaterHeightY);
 
    if (nRet != RTN_OK)
       return nRet;

@@ -4518,6 +4518,9 @@ bool CSimulation::bConfigureFromYamlFile(CConfiguration &config)
          if (physics.HasChild("start_depth_ratio"))
             config.SetStartDepthRatio(
                physics.GetChild("start_depth_ratio").GetDoubleValue());
+         if (physics.HasChild("synthetic_transect_spacing"))
+            config.SetSyntheticTransectSpacing(
+               physics.GetChild("synthetic_transect_spacing").GetDoubleValue());
       }
 
       // Profile and Output
@@ -5045,6 +5048,8 @@ bool CSimulation::bApplyConfiguration(CConfiguration const &config)
             m_bPolygonBoundarySave = true;
          else if (code == "cliff_notch")
             m_bCliffNotchSave = true;
+         else if (code == "wave_transect_points")
+            m_bWaveTransectPointsSave = true;
          else if (code == "shadow_boundary")
             m_bShadowBoundarySave = true;
          else if (code == "downdrift_boundary")
@@ -5491,6 +5496,9 @@ bool CSimulation::bApplyConfiguration(CConfiguration const &config)
 
    // Case 79: Length of coastline normals (m), check that this is a valid double
    m_dCoastNormalLength = config.GetNormalLength();
+
+   // Approximate minimum spacing (m) between wave transects for interpolation densification
+   m_dSyntheticTransectSpacing = config.GetSyntheticTransectSpacing();
 
    // Case 80: Start depth for wave calcs (ratio to deep water wave height)check
    // that this is a valid double

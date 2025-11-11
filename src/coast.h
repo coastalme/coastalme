@@ -31,13 +31,13 @@
 #include "2d_point.h"
 #include "2di_point.h"
 
-class CGeomProfile;           // Forward declarations
+class CGeomProfile;      // Forward declarations
 class CACoastLandform;
 class CGeomCoastPolygon;
 
 class CRWCoast
 {
- private:
+   private:
    //! Direction of the sea from the coastline, travelling down-coast (i.e. in direction of increasing coast point indices)
    int m_nSeaHandedness;
 
@@ -148,8 +148,8 @@ class CRWCoast
    //! Lines which comprise the edge of a downdrift zone, ext CRS
    vector<CGeomLine> m_LShadowDowndriftBoundary;
 
- protected:
- public:
+   protected:
+   public:
    explicit CRWCoast(CSimulation*);
    ~CRWCoast(void);
 
@@ -223,7 +223,7 @@ class CRWCoast
    CGeomProfile* pGetProfileWithUpCoastSeq(int const) const;
 
    CGeomCoastPolygon* pPolyCreateAndAppendPolygon(int const, int const, CGeom2DIPoint const*, CGeom2DIPoint const*, int const, int const, vector<CGeom2DPoint> const*, int const, int const, bool const, bool const);
-   int nGetNumPolygons(void) const;
+   std::size_t nGetNumPolygons(void) const;
    CGeomCoastPolygon* pGetPolygon(int const);
 
    void SetPolygonNode(int const, int const);
@@ -284,4 +284,4 @@ class CRWCoast
    void AppendShadowDowndriftBoundary(CGeomLine const*);
    CGeomLine* pGetShadowDowndriftBoundary(int const);
 };
-#endif // COAST_H
+#endif      // COAST_H

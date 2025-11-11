@@ -1407,6 +1407,12 @@ bool CSimulation::bSaveAllVectorGISFiles(void)
          return false;
    }
 
+   if (m_bWaveTransectPointsSave)
+   {
+      if (! bWriteVectorGISFile(VECTOR_PLOT_WAVE_TRANSECT_POINTS, &VECTOR_PLOT_WAVE_TRANSECT_POINTS_TITLE))
+         return false;
+   }
+
    if (m_bShadowBoundarySave)
    {
       if (! bWriteVectorGISFile(VECTOR_PLOT_SHADOW_ZONE_BOUNDARY, &VECTOR_PLOT_SHADOW_ZONE_BOUNDARY_TITLE))

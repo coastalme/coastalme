@@ -1,6 +1,7 @@
 /*!
    \file gis_raster.cpp
-   \brief These functions use GDAL (at least version 2) to read and write raster GIS files in several formats
+   \brief These functions use GDAL (at least version 2) to read and write raster
+   GIS files in several formats
    \details TODO 001 A more detailed description of these routines.
    \author David Favis-Mortlock
    \author Andres Payo
@@ -11,22 +12,29 @@
 /* ===============================================================================================================================
    This file is part of CoastalME, the Coastal Modelling Environment.
 
-   CoastalME is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
+   CoastalME is free software; you can redistribute it and/or modify it under
+the terms of the GNU General Public License as published by the Free Software
+Foundation; either version 3 of the License, or (at your option) any later
+version.
 
-   This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+   This program is distributed in the hope that it will be useful, but WITHOUT
+ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-   You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+   You should have received a copy of the GNU General Public License along with
+this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave,
+Cambridge, MA 02139, USA.
 ===============================================================================================================================*/
 #include <assert.h>
 
 #include <cstdio>
 
 #include <cmath>
+using std::atan2;
 using std::hypot;
+using std::isfinite;
 using std::isnan;
 using std::sqrt;
-using std::atan2;
-using std::isfinite;
 
 #include <vector>
 using std::vector;
@@ -45,47 +53,70 @@ using std::stringstream;
 #include <string>
 using std::to_string;
 
-#include <gdal.h>
-#include <gdal_priv.h>
-#include <gdal_alg.h>
 #include <cpl_conv.h>
 #include <cpl_error.h>
 #include <cpl_string.h>
+#include <gdal.h>
+#include <gdal_alg.h>
+#include <gdal_priv.h>
 
-#include "cme.h"
-#include "simulation.h"
-#include "coast.h"
 #include "2di_point.h"
+#include "cme.h"
+#include "coast.h"
+#include "simulation.h"
+#include "spatial_interpolation.h"
 
 //===============================================================================================================================
 //! Initialize GDAL with performance optimizations
 //===============================================================================================================================
-void CSimulation::InitializeGDALPerformance(void)
-{
-   // Configure GDAL for optimal performance
-   // Enable GDAL threading - use all available CPU cores
+void CSimulation::InitializeGDALPerformance(void) {
+  // Configure GDAL for optimal performance
+  // Enable GDAL threading - use all available CPU cores
 #ifdef _OPENMP
-   CPLSetConfigOption("GDAL_NUM_THREADS", "ALL_CPUS");
+  CPLSetConfigOption("GDAL_NUM_THREADS", "ALL_CPUS");
 #else
-   CPLSetConfigOption("GDAL_NUM_THREADS", "2"); // Fallback for non-OpenMP builds
+  CPLSetConfigOption("GDAL_NUM_THREADS", "4"); // Fallback for non-OpenMP builds
 #endif
 
-   // Optimize GDAL memory usage and caching
-   CPLSetConfigOption("GDAL_CACHEMAX", "2GB");                             // 2GB cache for large grids (was 1GB)
-   CPLSetConfigOption("GDAL_DISABLE_READDIR_ON_OPEN", "TRUE");             // Faster file access
-   CPLSetConfigOption("VSI_CACHE", "TRUE");                                // Enable virtual file system cache
-   CPLSetConfigOption("VSI_CACHE_SIZE", "256MB");                          // 256MB VSI cache
+  // Optimize GDAL memory usage and caching
+  CPLSetConfigOption("GDAL_CACHEMAX",
+                     "1.5GB"); // 2GB cache for large grids (was 1GB)
+  CPLSetConfigOption("GDAL_DISABLE_READDIR_ON_OPEN",
+                     "EMPTY_DIR");         // Faster file access
+  CPLSetConfigOption("VSI_CACHE", "TRUE"); // Enable virtual file system cache
+  CPLSetConfigOption("VSI_CACHE_SIZE", "512MB"); // 256MB VSI cache
 
-   // Optimize grid creation performance
-   CPLSetConfigOption("GDAL_GRID_MAX_POINTS_PER_QUADTREE_LEAF", "512");    // Faster spatial indexing
+  // Block and chunk optimizations for raster operations
+  CPLSetConfigOption("GDAL_TIFF_INTERNAL_MASK_TO_8BIT", "YES");
+  CPLSetConfigOption("GDAL_RASTERIO_RESAMPLING",
+                     "CUBIC"); // Better for coastal DEM data
 
-   // Disable GDAL warnings for cleaner output (optional)
-   // CPLSetConfigOption("CPL_LOG", "/dev/null");
+  // Grid creation optimizations (for GDALGridCreate performance)
+  CPLSetConfigOption("GDAL_GRID_MAX_POINTS_PER_QUADTREE_LEAF", "1024");
+  // Increased from 512
+  CPLSetConfigOption("GDAL_GRID_POINT_COUNT_THRESHOLD",
+                     "100"); // New 2024 option
 
-   m_bGDALOptimisations = true;
+  // Thread-safe dataset access (GDAL 3.10+)
+  CPLSetConfigOption("GDAL_DATASET_CACHE_SIZE", "64"); // Cache more datasets
+
+  // Compression optimizations for output
+  CPLSetConfigOption("GDAL_TIFF_OVR_BLOCKSIZE",
+                     "512"); // Optimal for coastal data
+
+  // Memory allocator optimization for multi-threading
+  CPLSetConfigOption("CPL_VSIL_USE_TEMP_FILE_FOR_RANDOM_WRITE", "YES");
+
+  // Disable GDAL warnings for cleaner output (optional)
+  // CPLSetConfigOption("CPL_LOG", "/dev/null");
+  // Debugging (remove in production)
+  // CPLSetConfigOption("CPL_DEBUG", "ON");
+  // CPLSetConfigOption("GDAL_DEBUG", "ON");
+
+  m_bGDALOptimisations = true;
 }
 
-//===============================================================================================================================
+  //===============================================================================================================================
 //! Reads a raster DEM of basement elevation data to the Cell array
 //===============================================================================================================================
 int CSimulation::nReadRasterBasementDEM(void)
@@ -287,1061 +318,1082 @@ int CSimulation::nReadRasterBasementDEM(void)
 }
 
 //===============================================================================================================================
-//! Mark cells which are at the edge of a bounding box which represents the valid part of the grid, as defined by the basement layer. The valid part of the grid may be the whole grid, or only part of the whole grid. The bounding box may be an irregular shape (but may not have re-entrant edges): simple shapes are more likely to work correctly
+//! Mark cells which are at the edge of a bounding box which represents the
+//! valid part of the grid, as defined by the basement layer. The valid part of
+//! the grid may be the whole grid, or only part of the whole grid. The bounding
+//! box may be an irregular shape (but may not have re-entrant edges): simple
+//! shapes are more likely to work correctly
 //===============================================================================================================================
-int CSimulation::nMarkBoundingBoxEdgeCells(void)
-{
-   // The bounding box must touch the edge of the grid at least once on each side of the grid, so store these points. Search in a clockwise direction around the edge of the grid
-   vector<CGeom2DIPoint> VPtiBoundingBoxCorner;
+int CSimulation::nMarkBoundingBoxEdgeCells(void) {
+  // The bounding box must touch the edge of the grid at least once on each side
+  // of the grid, so store these points. Search in a clockwise direction around
+  // the edge of the grid
+  vector<CGeom2DIPoint> VPtiBoundingBoxCorner;
 
-   // Start with the top (north) edge
-   bool bFound = false;
+  // Start with the top (north) edge
+  bool bFound = false;
 
-   for (int nX = 0; nX < m_nXGridSize; nX++)
-   {
-      if (bFound)
-         break;
+  for (int nX = 0; nX < m_nXGridSize; nX++) {
+    if (bFound)
+      break;
 
-      for (int nY = 0; nY < m_nYGridSize; nY++)
-      {
-         if (! m_pRasterGrid->m_Cell[nX][nY].bBasementElevIsMissingValue())
-         {
-            CGeom2DIPoint const PtiTmp(nX, nY);
-            VPtiBoundingBoxCorner.push_back(PtiTmp);
-            bFound = true;
-            break;
-         }
+    for (int nY = 0; nY < m_nYGridSize; nY++) {
+      if (!m_pRasterGrid->m_Cell[nX][nY].bBasementElevIsMissingValue()) {
+        CGeom2DIPoint const PtiTmp(nX, nY);
+        VPtiBoundingBoxCorner.push_back(PtiTmp);
+        bFound = true;
+        break;
       }
-   }
+    }
+  }
 
-   if (! bFound)
-   {
-      if (m_nLogFileDetail >= LOG_FILE_ALL)
-         LogStream << m_ulIter << ": north (top) edge of bounding box not found" << endl;
+  if (!bFound) {
+    if (m_nLogFileDetail >= LOG_FILE_ALL)
+      LogStream << m_ulIter << ": north (top) edge of bounding box not found"
+                << endl;
+
+    return RTN_ERR_BOUNDING_BOX;
+  }
+
+  // Do the same for the right (east) edge
+  bFound = false;
+
+  for (int nY = 0; nY < m_nYGridSize; nY++) {
+    if (bFound)
+      break;
+
+    for (int nX = m_nXGridSize - 1; nX >= 0; nX--) {
+      if (!m_pRasterGrid->m_Cell[nX][nY].bBasementElevIsMissingValue()) {
+        CGeom2DIPoint const PtiTmp(nX, nY);
+        VPtiBoundingBoxCorner.push_back(PtiTmp);
+        bFound = true;
+        break;
+      }
+    }
+  }
+
+  if (!bFound) {
+    if (m_nLogFileDetail >= LOG_FILE_ALL)
+      LogStream << m_ulIter << ": east (right) edge of bounding box not found"
+                << endl;
+
+    return RTN_ERR_BOUNDING_BOX;
+  }
+
+  // Do the same for the south (bottom) edge
+  bFound = false;
+
+  for (int nX = m_nXGridSize - 1; nX >= 0; nX--) {
+    if (bFound)
+      break;
+
+    for (int nY = m_nYGridSize - 1; nY >= 0; nY--) {
+      if (!m_pRasterGrid->m_Cell[nX][nY].bBasementElevIsMissingValue()) {
+        CGeom2DIPoint const PtiTmp(nX, nY);
+        VPtiBoundingBoxCorner.push_back(PtiTmp);
+        bFound = true;
+        break;
+      }
+    }
+  }
+
+  if (!bFound) {
+    if (m_nLogFileDetail >= LOG_FILE_ALL)
+      LogStream << m_ulIter << ": south (bottom) edge of bounding box not found"
+                << endl;
+
+    return RTN_ERR_BOUNDING_BOX;
+  }
+
+  // And finally repeat for the west (left) edge
+  bFound = false;
+
+  for (int nY = m_nYGridSize - 1; nY >= 0; nY--) {
+    if (bFound)
+      break;
+
+    for (int nX = 0; nX < m_nXGridSize; nX++) {
+      if (!m_pRasterGrid->m_Cell[nX][nY].bBasementElevIsMissingValue()) {
+        CGeom2DIPoint const PtiTmp(nX, nY);
+        VPtiBoundingBoxCorner.push_back(PtiTmp);
+        bFound = true;
+        break;
+      }
+    }
+  }
+
+  if (!bFound) {
+    if (m_nLogFileDetail >= LOG_FILE_ALL)
+      LogStream << m_ulIter << ": west (left) edge of bounding box not found"
+                << endl;
+
+    return RTN_ERR_BOUNDING_BOX;
+  }
+
+  // OK, so we have a point on each side of the grid, so start at this point and
+  // find the edges of the bounding box. Go round in a clockwise direction: top
+  // (north) edge first
+  for (int nX = VPtiBoundingBoxCorner[0].nGetX();
+       nX <= VPtiBoundingBoxCorner[1].nGetX(); nX++) {
+    bFound = false;
+
+    for (int nY = VPtiBoundingBoxCorner[0].nGetY(); nY < m_nYGridSize; nY++) {
+      if (m_pRasterGrid->m_Cell[nX][nY].bBasementElevIsMissingValue()) {
+        m_ulMissingValueBasementCells++;
+        continue;
+      }
+
+      // Found a bounding box edge cell
+      m_pRasterGrid->m_Cell[nX][nY].SetBoundingBoxEdge(NORTH);
+
+      m_VEdgeCell.push_back(CGeom2DIPoint(nX, nY));
+      m_VEdgeCellEdge.push_back(NORTH);
+
+      bFound = true;
+      break;
+    }
+
+    if (!bFound) {
+      if (m_nLogFileDetail >= LOG_FILE_MIDDLE_DETAIL)
+        LogStream
+            << m_ulIter
+            << ": could not find a bounding box edge cell for grid column "
+            << nX << endl;
 
       return RTN_ERR_BOUNDING_BOX;
-   }
+    }
+  }
 
-   // Do the same for the right (east) edge
-   bFound = false;
+  // Right (east) edge
+  for (int nY = VPtiBoundingBoxCorner[1].nGetY();
+       nY <= VPtiBoundingBoxCorner[2].nGetY(); nY++) {
+    bFound = false;
 
-   for (int nY = 0; nY < m_nYGridSize; nY++)
-   {
-      if (bFound)
-         break;
-
-      for (int nX = m_nXGridSize - 1; nX >= 0; nX--)
-      {
-         if (! m_pRasterGrid->m_Cell[nX][nY].bBasementElevIsMissingValue())
-         {
-            CGeom2DIPoint const PtiTmp(nX, nY);
-            VPtiBoundingBoxCorner.push_back(PtiTmp);
-            bFound = true;
-            break;
-         }
+    for (int nX = VPtiBoundingBoxCorner[1].nGetX(); nX >= 0; nX--) {
+      if (m_pRasterGrid->m_Cell[nX][nY].bBasementElevIsMissingValue()) {
+        m_ulMissingValueBasementCells++;
+        continue;
       }
-   }
 
-   if (! bFound)
-   {
-      if (m_nLogFileDetail >= LOG_FILE_ALL)
-         LogStream << m_ulIter << ": east (right) edge of bounding box not found" << endl;
+      // Found a bounding box edge cell
+      m_pRasterGrid->m_Cell[nX][nY].SetBoundingBoxEdge(EAST);
+
+      m_VEdgeCell.push_back(CGeom2DIPoint(nX, nY));
+      m_VEdgeCellEdge.push_back(EAST);
+
+      bFound = true;
+      break;
+    }
+
+    if (!bFound) {
+      if (m_nLogFileDetail >= LOG_FILE_MIDDLE_DETAIL)
+        LogStream << m_ulIter
+                  << ": could not find a bounding box edge cell for grid row "
+                  << nY << endl;
 
       return RTN_ERR_BOUNDING_BOX;
-   }
+    }
+  }
 
-   // Do the same for the south (bottom) edge
-   bFound = false;
+  // Bottom (south) edge
+  for (int nX = VPtiBoundingBoxCorner[2].nGetX();
+       nX >= VPtiBoundingBoxCorner[3].nGetX(); nX--) {
+    bFound = false;
 
-   for (int nX = m_nXGridSize - 1; nX >= 0; nX--)
-   {
-      if (bFound)
-         break;
-
-      for (int nY = m_nYGridSize - 1; nY >= 0; nY--)
-      {
-         if (! m_pRasterGrid->m_Cell[nX][nY].bBasementElevIsMissingValue())
-         {
-            CGeom2DIPoint const PtiTmp(nX, nY);
-            VPtiBoundingBoxCorner.push_back(PtiTmp);
-            bFound = true;
-            break;
-         }
+    for (int nY = VPtiBoundingBoxCorner[2].nGetY(); nY >= 0; nY--) {
+      if (m_pRasterGrid->m_Cell[nX][nY].bBasementElevIsMissingValue()) {
+        m_ulMissingValueBasementCells++;
+        continue;
       }
-   }
 
-   if (! bFound)
-   {
-      if (m_nLogFileDetail >= LOG_FILE_ALL)
-         LogStream << m_ulIter << ": south (bottom) edge of bounding box not found" << endl;
+      // Found a bounding box edge cell
+      m_pRasterGrid->m_Cell[nX][nY].SetBoundingBoxEdge(SOUTH);
+
+      m_VEdgeCell.push_back(CGeom2DIPoint(nX, nY));
+      m_VEdgeCellEdge.push_back(SOUTH);
+
+      bFound = true;
+      break;
+    }
+
+    if (!bFound) {
+      if (m_nLogFileDetail >= LOG_FILE_MIDDLE_DETAIL)
+        LogStream
+            << m_ulIter
+            << ": could not find a bounding box edge cell for grid column "
+            << nX << endl;
 
       return RTN_ERR_BOUNDING_BOX;
-   }
+    }
+  }
 
-   // And finally repeat for the west (left) edge
-   bFound = false;
-
-   for (int nY = m_nYGridSize - 1; nY >= 0; nY--)
-   {
-      if (bFound)
-         break;
-
-      for (int nX = 0; nX < m_nXGridSize; nX++)
-      {
-         if (! m_pRasterGrid->m_Cell[nX][nY].bBasementElevIsMissingValue())
-         {
-            CGeom2DIPoint const PtiTmp(nX, nY);
-            VPtiBoundingBoxCorner.push_back(PtiTmp);
-            bFound = true;
-            break;
-         }
+  // Left (west) edge
+  for (int nY = VPtiBoundingBoxCorner[3].nGetY();
+       nY >= VPtiBoundingBoxCorner[0].nGetY(); nY--) {
+    for (int nX = VPtiBoundingBoxCorner[3].nGetX(); nX < m_nXGridSize - 1; nX++)
+    // for (int nX = VPtiBoundingBoxCorner[3].nGetX(); nX <
+    // VPtiBoundingBoxCorner[3].nGetX(); nX++)
+    {
+      if (m_pRasterGrid->m_Cell[nX][nY].bBasementElevIsMissingValue()) {
+        m_ulMissingValueBasementCells++;
+        continue;
       }
-   }
 
-   if (! bFound)
-   {
-      if (m_nLogFileDetail >= LOG_FILE_ALL)
-         LogStream << m_ulIter << ": west (left) edge of bounding box not found" << endl;
+      // Found a bounding box edge cell
+      m_pRasterGrid->m_Cell[nX][nY].SetBoundingBoxEdge(WEST);
+
+      m_VEdgeCell.push_back(CGeom2DIPoint(nX, nY));
+      m_VEdgeCellEdge.push_back(WEST);
+
+      bFound = true;
+      break;
+    }
+
+    if (!bFound) {
+      if (m_nLogFileDetail >= LOG_FILE_MIDDLE_DETAIL)
+        LogStream << m_ulIter
+                  << ": could not find a bounding box edge cell for grid row "
+                  << nY << endl;
 
       return RTN_ERR_BOUNDING_BOX;
-   }
+    }
+  }
 
-   // OK, so we have a point on each side of the grid, so start at this point and find the edges of the bounding box. Go round in a clockwise direction: top (north) edge first
-   for (int nX = VPtiBoundingBoxCorner[0].nGetX(); nX <= VPtiBoundingBoxCorner[1].nGetX(); nX++)
-   {
-      bFound = false;
-
-      for (int nY = VPtiBoundingBoxCorner[0].nGetY(); nY < m_nYGridSize; nY++)
-      {
-         if (m_pRasterGrid->m_Cell[nX][nY].bBasementElevIsMissingValue())
-         {
-            m_ulMissingValueBasementCells++;
-            continue;
-         }
-
-         // Found a bounding box edge cell
-         m_pRasterGrid->m_Cell[nX][nY].SetBoundingBoxEdge(NORTH);
-
-         m_VEdgeCell.push_back(CGeom2DIPoint(nX, nY));
-         m_VEdgeCellEdge.push_back(NORTH);
-
-         bFound = true;
-         break;
-      }
-
-      if (! bFound)
-      {
-         if (m_nLogFileDetail >= LOG_FILE_MIDDLE_DETAIL)
-            LogStream << m_ulIter << ": could not find a bounding box edge cell for grid column " << nX << endl;
-
-         return RTN_ERR_BOUNDING_BOX;
-      }
-   }
-
-   // Right (east) edge
-   for (int nY = VPtiBoundingBoxCorner[1].nGetY(); nY <= VPtiBoundingBoxCorner[2].nGetY(); nY++)
-   {
-      bFound = false;
-
-      for (int nX = VPtiBoundingBoxCorner[1].nGetX(); nX >= 0; nX--)
-      {
-         if (m_pRasterGrid->m_Cell[nX][nY].bBasementElevIsMissingValue())
-         {
-            m_ulMissingValueBasementCells++;
-            continue;
-         }
-
-         // Found a bounding box edge cell
-         m_pRasterGrid->m_Cell[nX][nY].SetBoundingBoxEdge(EAST);
-
-         m_VEdgeCell.push_back(CGeom2DIPoint(nX, nY));
-         m_VEdgeCellEdge.push_back(EAST);
-
-         bFound = true;
-         break;
-      }
-
-      if (! bFound)
-      {
-         if (m_nLogFileDetail >= LOG_FILE_MIDDLE_DETAIL)
-            LogStream << m_ulIter << ": could not find a bounding box edge cell for grid row " << nY << endl;
-
-         return RTN_ERR_BOUNDING_BOX;
-      }
-   }
-
-   // Bottom (south) edge
-   for (int nX = VPtiBoundingBoxCorner[2].nGetX(); nX >= VPtiBoundingBoxCorner[3].nGetX(); nX--)
-   {
-      bFound = false;
-
-      for (int nY = VPtiBoundingBoxCorner[2].nGetY(); nY >= 0; nY--)
-      {
-         if (m_pRasterGrid->m_Cell[nX][nY].bBasementElevIsMissingValue())
-         {
-            m_ulMissingValueBasementCells++;
-            continue;
-         }
-
-         // Found a bounding box edge cell
-         m_pRasterGrid->m_Cell[nX][nY].SetBoundingBoxEdge(SOUTH);
-
-         m_VEdgeCell.push_back(CGeom2DIPoint(nX, nY));
-         m_VEdgeCellEdge.push_back(SOUTH);
-
-         bFound = true;
-         break;
-      }
-
-      if (! bFound)
-      {
-         if (m_nLogFileDetail >= LOG_FILE_MIDDLE_DETAIL)
-            LogStream << m_ulIter << ": could not find a bounding box edge cell for grid column " << nX << endl;
-
-         return RTN_ERR_BOUNDING_BOX;
-      }
-   }
-
-   // Left (west) edge
-   for (int nY = VPtiBoundingBoxCorner[3].nGetY(); nY >= VPtiBoundingBoxCorner[0].nGetY(); nY--)
-   {
-      for (int nX = VPtiBoundingBoxCorner[3].nGetX(); nX < m_nXGridSize - 1; nX++)
-      // for (int nX = VPtiBoundingBoxCorner[3].nGetX(); nX < VPtiBoundingBoxCorner[3].nGetX(); nX++)
-      {
-         if (m_pRasterGrid->m_Cell[nX][nY].bBasementElevIsMissingValue())
-         {
-            m_ulMissingValueBasementCells++;
-            continue;
-         }
-
-         // Found a bounding box edge cell
-         m_pRasterGrid->m_Cell[nX][nY].SetBoundingBoxEdge(WEST);
-
-         m_VEdgeCell.push_back(CGeom2DIPoint(nX, nY));
-         m_VEdgeCellEdge.push_back(WEST);
-
-         bFound = true;
-         break;
-      }
-
-      if (! bFound)
-      {
-         if (m_nLogFileDetail >= LOG_FILE_MIDDLE_DETAIL)
-            LogStream << m_ulIter << ": could not find a bounding box edge cell for grid row " << nY << endl;
-
-         return RTN_ERR_BOUNDING_BOX;
-      }
-   }
-
-   return RTN_OK;
+  return RTN_OK;
 }
 
 //===============================================================================================================================
 //! Reads raster GIS datafiles into the RasterGrid array
 //===============================================================================================================================
-int CSimulation::nReadRasterGISFile(int const nDataItem, int const nLayer)
-{
-   string strGISFile;
-   string strDriverCode;
-   string strDriverDesc;
-   string strProjection;
-   string strDataType;
+int CSimulation::nReadRasterGISFile(int const nDataItem, int const nLayer) {
+  string strGISFile;
+  string strDriverCode;
+  string strDriverDesc;
+  string strProjection;
+  string strDataType;
 
-   switch (nDataItem)
-   {
-   case (LANDFORM_RASTER):
-      // Initial Landform Class GIS data
-      strGISFile = m_strInitialLandformFile;
-      break;
+  switch (nDataItem) {
+  case (LANDFORM_RASTER):
+    // Initial Landform Class GIS data
+    strGISFile = m_strInitialLandformFile;
+    break;
 
-   case (INTERVENTION_CLASS_RASTER):
-      // Intervention class
-      strGISFile = m_strInterventionClassFile;
-      break;
+  case (INTERVENTION_CLASS_RASTER):
+    // Intervention class
+    strGISFile = m_strInterventionClassFile;
+    break;
 
-   case (INTERVENTION_HEIGHT_RASTER):
-      // Intervention height
-      strGISFile = m_strInterventionHeightFile;
-      break;
+  case (INTERVENTION_HEIGHT_RASTER):
+    // Intervention height
+    strGISFile = m_strInterventionHeightFile;
+    break;
 
-   case (SUSP_SED_RASTER):
-      // Initial Suspended Sediment GIS data
-      strGISFile = m_strInitialSuspSedimentFile;
-      break;
+  case (SUSP_SED_RASTER):
+    // Initial Suspended Sediment GIS data
+    strGISFile = m_strInitialSuspSedimentFile;
+    break;
 
-   case (FINE_UNCONS_RASTER):
-      // Initial Unconsolidated Fine Sediment GIS data
-      strGISFile = m_VstrInitialFineUnconsSedimentFile[nLayer];
-      break;
+  case (FINE_UNCONS_RASTER):
+    // Initial Unconsolidated Fine Sediment GIS data
+    strGISFile = m_VstrInitialFineUnconsSedimentFile[nLayer];
+    break;
 
-   case (SAND_UNCONS_RASTER):
-      // Initial Unconsolidated Sand Sediment GIS data
-      strGISFile = m_VstrInitialSandUnconsSedimentFile[nLayer];
-      break;
+  case (SAND_UNCONS_RASTER):
+    // Initial Unconsolidated Sand Sediment GIS data
+    strGISFile = m_VstrInitialSandUnconsSedimentFile[nLayer];
+    break;
 
-   case (COARSE_UNCONS_RASTER):
-      // Initial Unconsolidated Coarse Sediment GIS data
-      strGISFile = m_VstrInitialCoarseUnconsSedimentFile[nLayer];
-      break;
+  case (COARSE_UNCONS_RASTER):
+    // Initial Unconsolidated Coarse Sediment GIS data
+    strGISFile = m_VstrInitialCoarseUnconsSedimentFile[nLayer];
+    break;
 
-   case (FINE_CONS_RASTER):
-      // Initial Consolidated Fine Sediment GIS data
-      strGISFile = m_VstrInitialFineConsSedimentFile[nLayer];
-      break;
+  case (FINE_CONS_RASTER):
+    // Initial Consolidated Fine Sediment GIS data
+    strGISFile = m_VstrInitialFineConsSedimentFile[nLayer];
+    break;
 
-   case (SAND_CONS_RASTER):
-      // Initial Consolidated Sand Sediment GIS data
-      strGISFile = m_VstrInitialSandConsSedimentFile[nLayer];
-      break;
+  case (SAND_CONS_RASTER):
+    // Initial Consolidated Sand Sediment GIS data
+    strGISFile = m_VstrInitialSandConsSedimentFile[nLayer];
+    break;
 
-   case (COARSE_CONS_RASTER):
-      // Initial Consolidated Coarse Sediment GIS data
-      strGISFile = m_VstrInitialCoarseConsSedimentFile[nLayer];
-      break;
-   }
+  case (COARSE_CONS_RASTER):
+    // Initial Consolidated Coarse Sediment GIS data
+    strGISFile = m_VstrInitialCoarseConsSedimentFile[nLayer];
+    break;
+  }
 
-   // Use GDAL to create a dataset object, which then opens the GIS file
-   GDALDataset *pGDALDataset = static_cast<GDALDataset*>(GDALOpen(strGISFile.c_str(), GA_ReadOnly));
+  // Use GDAL to create a dataset object, which then opens the GIS file
+  GDALDataset *pGDALDataset =
+      static_cast<GDALDataset *>(GDALOpen(strGISFile.c_str(), GA_ReadOnly));
 
-   if (NULL == pGDALDataset)
-   {
-      // Can't open file (note will already have sent GDAL error message to stdout)
-      cerr << ERR << "cannot open " << strGISFile << " for input: " << CPLGetLastErrorMsg() << endl;
-      return (RTN_ERR_RASTER_FILE_READ);
-   }
+  if (NULL == pGDALDataset) {
+    // Can't open file (note will already have sent GDAL error message to
+    // stdout)
+    cerr << ERR << "cannot open " << strGISFile
+         << " for input: " << CPLGetLastErrorMsg() << endl;
+    return (RTN_ERR_RASTER_FILE_READ);
+  }
 
-   // Opened OK, so get dataset information
-   strDriverCode = pGDALDataset->GetDriver()->GetDescription();
-   strDriverDesc = pGDALDataset->GetDriver()->GetMetadataItem(GDAL_DMD_LONGNAME);
-   strProjection = pGDALDataset->GetProjectionRef();
+  // Opened OK, so get dataset information
+  strDriverCode = pGDALDataset->GetDriver()->GetDescription();
+  strDriverDesc = pGDALDataset->GetDriver()->GetMetadataItem(GDAL_DMD_LONGNAME);
+  strProjection = pGDALDataset->GetProjectionRef();
 
-   // Get geotransformation info
-   double dGeoTransform[6];
-   if (CE_Failure == pGDALDataset->GetGeoTransform(dGeoTransform))
-   {
-      // Can't get geotransformation (note will already have sent GDAL error message to stdout)
+  // Get geotransformation info
+  double dGeoTransform[6];
+  if (CE_Failure == pGDALDataset->GetGeoTransform(dGeoTransform)) {
+    // Can't get geotransformation (note will already have sent GDAL error
+    // message to stdout)
+    cerr << ERR << CPLGetLastErrorMsg() << " in " << strGISFile << endl;
+    return (RTN_ERR_RASTER_FILE_READ);
+  }
+
+  // Now get dataset size, and do some checks
+  int const nTmpXSize = pGDALDataset->GetRasterXSize();
+  if (nTmpXSize != m_nXGridSize) {
+    // Error: incorrect number of columns specified
+    cerr << ERR << "different number of columns in " << strGISFile << " ("
+         << nTmpXSize << ") and " << m_strInitialBasementDEMFile << "("
+         << m_nXGridSize << ")" << endl;
+    return (RTN_ERR_RASTER_FILE_READ);
+  }
+
+  int const nTmpYSize = pGDALDataset->GetRasterYSize();
+  if (nTmpYSize != m_nYGridSize) {
+    // Error: incorrect number of rows specified
+    cerr << ERR << "different number of rows in " << strGISFile << " ("
+         << nTmpYSize << ") and " << m_strInitialBasementDEMFile << " ("
+         << m_nYGridSize << ")" << endl;
+    return (RTN_ERR_RASTER_FILE_READ);
+  }
+
+  double dTmp = m_dGeoTransform[0] - (m_dGeoTransform[1] / 2);
+  if (!bFPIsEqual(dTmp, m_dNorthWestXExtCRS, TOLERANCE)) {
+    // Error: different min x from DEM file
+    cerr << ERR << "different min x values in " << strGISFile << " (" << dTmp
+         << ") and " << m_strInitialBasementDEMFile << " ("
+         << m_dNorthWestXExtCRS << ")" << endl;
+    return (RTN_ERR_RASTER_FILE_READ);
+  }
+
+  dTmp = m_dGeoTransform[3] - (m_dGeoTransform[5] / 2);
+  if (!bFPIsEqual(dTmp, m_dNorthWestYExtCRS, TOLERANCE)) {
+    // Error: different min x from DEM file
+    cerr << ERR << "different min y values in " << strGISFile << " (" << dTmp
+         << ") and " << m_strInitialBasementDEMFile << " ("
+         << m_dNorthWestYExtCRS << ")" << endl;
+    return (RTN_ERR_RASTER_FILE_READ);
+  }
+
+  double const dTmpResX = tAbs(dGeoTransform[1]);
+  if (!bFPIsEqual(dTmpResX, m_dCellSide, 1e-2)) {
+    // Error: different cell size in X direction: note that due to rounding
+    // errors in some GIS packages, must expect some discrepancies
+    cerr << ERR << "cell size in X direction (" << dTmpResX << ") in "
+         << strGISFile << " differs from cell size in of basement DEM ("
+         << m_dCellSide << ")" << endl;
+    return (RTN_ERR_RASTER_FILE_READ);
+  }
+
+  double const dTmpResY = tAbs(dGeoTransform[5]);
+  if (!bFPIsEqual(dTmpResY, m_dCellSide, 1e-2)) {
+    // Error: different cell size in Y direction: note that due to rounding
+    // errors in some GIS packages, must expect some discrepancies
+    cerr << ERR << "cell size in Y direction (" << dTmpResY << ") in "
+         << strGISFile << " differs from cell size of basement DEM ("
+         << m_dCellSide << ")" << endl;
+    return (RTN_ERR_RASTER_FILE_READ);
+  }
+
+  // Now get GDAL raster band information
+  GDALRasterBand *pGDALBand = pGDALDataset->GetRasterBand(
+      1); // TODO 028 Give a message if there are several bands
+  int nBlockXSize = 0, nBlockYSize = 0;
+  pGDALBand->GetBlockSize(&nBlockXSize, &nBlockYSize);
+  strDataType = GDALGetDataTypeName(pGDALBand->GetRasterDataType());
+
+  switch (nDataItem) {
+  case (LANDFORM_RASTER):
+    // Initial Landform Class GIS data
+    m_strGDALLDriverCode = strDriverCode;
+    m_strGDALLDriverDesc = strDriverDesc;
+    m_strGDALLProjection = strProjection;
+    m_strGDALLDataType = strDataType;
+    break;
+
+  case (INTERVENTION_CLASS_RASTER):
+    // Intervention class
+    m_strGDALICDriverCode = strDriverCode;
+    m_strGDALICDriverDesc = strDriverDesc;
+    m_strGDALICProjection = strProjection;
+    m_strGDALICDataType = strDataType;
+    break;
+
+  case (INTERVENTION_HEIGHT_RASTER):
+    // Intervention height
+    m_strGDALIHDriverCode = strDriverCode;
+    m_strGDALIHDriverDesc = strDriverDesc;
+    m_strGDALIHProjection = strProjection;
+    m_strGDALIHDataType = strDataType;
+    break;
+
+  case (SUSP_SED_RASTER):
+    // Initial Suspended Sediment GIS data
+    m_strGDALISSDriverCode = strDriverCode;
+    m_strGDALISSDriverDesc = strDriverDesc;
+    m_strGDALISSProjection = strProjection;
+    m_strGDALISSDataType = strDataType;
+    break;
+
+  case (FINE_UNCONS_RASTER):
+    // Initial Unconsolidated Fine Sediment GIS data
+    m_VstrGDALIUFDriverCode[nLayer] = strDriverCode;
+    m_VstrGDALIUFDriverDesc[nLayer] = strDriverDesc;
+    m_VstrGDALIUFProjection[nLayer] = strProjection;
+    m_VstrGDALIUFDataType[nLayer] = strDataType;
+    break;
+
+  case (SAND_UNCONS_RASTER):
+    // Initial Unconsolidated Sand Sediment GIS data
+    m_VstrGDALIUSDriverCode[nLayer] = strDriverCode;
+    m_VstrGDALIUSDriverDesc[nLayer] = strDriverDesc;
+    m_VstrGDALIUSProjection[nLayer] = strProjection;
+    m_VstrGDALIUSDataType[nLayer] = strDataType;
+    break;
+
+  case (COARSE_UNCONS_RASTER):
+    // Initial Unconsolidated Coarse Sediment GIS data
+    m_VstrGDALIUCDriverCode[nLayer] = strDriverCode;
+    m_VstrGDALIUCDriverDesc[nLayer] = strDriverDesc;
+    m_VstrGDALIUCProjection[nLayer] = strProjection;
+    m_VstrGDALIUCDataType[nLayer] = strDataType;
+    break;
+
+  case (FINE_CONS_RASTER):
+    // Initial Consolidated Fine Sediment GIS data
+    m_VstrGDALICFDriverCode[nLayer] = strDriverCode;
+    m_VstrGDALICFDriverDesc[nLayer] = strDriverDesc;
+    m_VstrGDALICFProjection[nLayer] = strProjection;
+    m_VstrGDALICFDataType[nLayer] = strDataType;
+    break;
+
+  case (SAND_CONS_RASTER):
+    // Initial Consolidated Sand Sediment GIS data
+    m_VstrGDALICSDriverCode[nLayer] = strDriverCode;
+    m_VstrGDALICSDriverDesc[nLayer] = strDriverDesc;
+    m_VstrGDALICSProjection[nLayer] = strProjection;
+    m_VstrGDALICSDataType[nLayer] = strDataType;
+    break;
+
+  case (COARSE_CONS_RASTER):
+    // Initial Consolidated Coarse Sediment GIS data
+    m_VstrGDALICCDriverCode[nLayer] = strDriverCode;
+    m_VstrGDALICCDriverDesc[nLayer] = strDriverDesc;
+    m_VstrGDALICCProjection[nLayer] = strProjection;
+    m_VstrGDALICCDataType[nLayer] = strDataType;
+    break;
+  }
+
+  // If present, get the missing value setting
+  string const strTmp = strToLower(&strDataType);
+  if (strTmp.find("int") != string::npos) {
+    // This is an integer layer
+    CPLPushErrorHandler(CPLQuietErrorHandler); // Needed to get next line to
+                                               // fail silently, if it fails
+    m_nGISMissingValue = static_cast<int>(
+        pGDALBand->GetNoDataValue()); // Note will fail for some formats
+    CPLPopErrorHandler();
+
+    if (m_nGISMissingValue != m_nMissingValue) {
+      cerr
+          << "   " << NOTE << "NODATA value in " << strGISFile << " is "
+          << m_nGISMissingValue
+          << "\n         instead using CoatalME's default integer NODATA value "
+          << m_nMissingValue << endl;
+    }
+  } else {
+    // This is a floating point layer
+    CPLPushErrorHandler(CPLQuietErrorHandler); // Needed to get next line to
+                                               // fail silently, if it fails
+    m_dGISMissingValue =
+        pGDALBand->GetNoDataValue(); // Note will fail for some formats
+    CPLPopErrorHandler();
+
+    if (!bFPIsEqual(m_dGISMissingValue, m_dMissingValue, TOLERANCE)) {
+      cerr << "   " << NOTE << "NODATA value in " << strGISFile << " is "
+           << m_dGISMissingValue
+           << "\n         instead using CoastalME's default floating-point "
+              "NODATA value "
+           << m_dMissingValue << endl;
+    }
+  }
+
+  // Allocate memory for a 1D array, to hold the scan line for GDAL
+  double *pdScanline = new double[m_nXGridSize];
+  if (NULL == pdScanline) {
+    // Error, can't allocate memory
+    cerr << ERR << "cannot allocate memory for " << m_nXGridSize
+         << " x 1D array" << endl;
+    return (RTN_ERR_MEMALLOC);
+  }
+
+  // Now read in the data
+  int nMissing = 0;
+
+  for (int nY = 0; nY < m_nYGridSize; nY++) {
+    // Read scanline
+    if (CE_Failure == pGDALBand->RasterIO(GF_Read, 0, nY, m_nXGridSize, 1,
+                                          pdScanline, m_nXGridSize, 1,
+                                          GDT_Float64, 0, 0, NULL)) {
+      // Error while reading scanline
       cerr << ERR << CPLGetLastErrorMsg() << " in " << strGISFile << endl;
       return (RTN_ERR_RASTER_FILE_READ);
-   }
+    }
 
-   // Now get dataset size, and do some checks
-   int const nTmpXSize = pGDALDataset->GetRasterXSize();
-   if (nTmpXSize != m_nXGridSize)
-   {
-      // Error: incorrect number of columns specified
-      cerr << ERR << "different number of columns in " << strGISFile << " (" << nTmpXSize << ") and " << m_strInitialBasementDEMFile << "(" << m_nXGridSize << ")" << endl;
-      return (RTN_ERR_RASTER_FILE_READ);
-   }
+    // All OK, so read scanline into cells (including any missing values)
+    for (int nX = 0; nX < m_nXGridSize; nX++) {
+      int nTmp;
 
-   int const nTmpYSize = pGDALDataset->GetRasterYSize();
-   if (nTmpYSize != m_nYGridSize)
-   {
-      // Error: incorrect number of rows specified
-      cerr << ERR << "different number of rows in " << strGISFile << " (" << nTmpYSize << ") and " << m_strInitialBasementDEMFile << " (" << m_nYGridSize << ")" << endl;
-      return (RTN_ERR_RASTER_FILE_READ);
-   }
+      switch (nDataItem) {
+      case (LANDFORM_RASTER):
+        // Initial Landform Class GIS data, is integer TODO 030 Do we also need
+        // a landform sub-category input?
+        nTmp = static_cast<int>(pdScanline[nX]);
 
-   double dTmp = m_dGeoTransform[0] - (m_dGeoTransform[1] / 2);
-   if (! bFPIsEqual(dTmp, m_dNorthWestXExtCRS, TOLERANCE))
-   {
-      // Error: different min x from DEM file
-      cerr << ERR << "different min x values in " << strGISFile << " (" << dTmp << ") and " << m_strInitialBasementDEMFile << " (" << m_dNorthWestXExtCRS << ")" << endl;
-      return (RTN_ERR_RASTER_FILE_READ);
-   }
+        if ((isnan(nTmp)) || (nTmp == m_nGISMissingValue)) {
+          nTmp = m_nMissingValue;
+          nMissing++;
+        }
 
-   dTmp = m_dGeoTransform[3] - (m_dGeoTransform[5] / 2);
-   if (! bFPIsEqual(dTmp, m_dNorthWestYExtCRS, TOLERANCE))
-   {
-      // Error: different min x from DEM file
-      cerr << ERR << "different min y values in " << strGISFile << " (" << dTmp << ") and " << m_strInitialBasementDEMFile << " (" << m_dNorthWestYExtCRS << ")" << endl;
-      return (RTN_ERR_RASTER_FILE_READ);
-   }
+        m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->SetLFCategory(nTmp);
+        break;
 
-   double const dTmpResX = tAbs(dGeoTransform[1]);
-   if (! bFPIsEqual(dTmpResX, m_dCellSide, 1e-2))
-   {
-      // Error: different cell size in X direction: note that due to rounding errors in some GIS packages, must expect some discrepancies
-      cerr << ERR << "cell size in X direction (" << dTmpResX << ") in " << strGISFile << " differs from cell size in of basement DEM (" << m_dCellSide << ")" << endl;
-      return (RTN_ERR_RASTER_FILE_READ);
-   }
+       case (INTERVENTION_CLASS_RASTER):
+          // Intervention class, is integer. If not an intervention, show INT_NODATA
+          nTmp = static_cast<int>(pdScanline[nX]);
 
-   double const dTmpResY = tAbs(dGeoTransform[5]);
-   if (! bFPIsEqual(dTmpResY, m_dCellSide, 1e-2))
-   {
-      // Error: different cell size in Y direction: note that due to rounding errors in some GIS packages, must expect some discrepancies
-      cerr << ERR << "cell size in Y direction (" << dTmpResY << ") in " << strGISFile << " differs from cell size of basement DEM (" << m_dCellSide << ")" << endl;
-      return (RTN_ERR_RASTER_FILE_READ);
-   }
+          if ((isnan(nTmp)) || (nTmp == m_nGISMissingValue))
+          {
+             nTmp = m_nMissingValue;
+             nMissing++;
+          }
 
-   // Now get GDAL raster band information
-   GDALRasterBand *pGDALBand = pGDALDataset->GetRasterBand(1); // TODO 028 Give a message if there are several bands
-   int nBlockXSize = 0, nBlockYSize = 0;
-   pGDALBand->GetBlockSize(&nBlockXSize, &nBlockYSize);
-   strDataType = GDALGetDataTypeName(pGDALBand->GetRasterDataType());
+          m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->SetLFCategory(nTmp);
+          break;
 
-   switch (nDataItem)
-   {
-   case (LANDFORM_RASTER):
-      // Initial Landform Class GIS data
-      m_strGDALLDriverCode = strDriverCode;
-      m_strGDALLDriverDesc = strDriverDesc;
-      m_strGDALLProjection = strProjection;
-      m_strGDALLDataType = strDataType;
-      break;
+      case (INTERVENTION_HEIGHT_RASTER):
+        // Intervention height
+        dTmp = pdScanline[nX];
 
-   case (INTERVENTION_CLASS_RASTER):
-      // Intervention class
-      m_strGDALICDriverCode = strDriverCode;
-      m_strGDALICDriverDesc = strDriverDesc;
-      m_strGDALICProjection = strProjection;
-      m_strGDALICDataType = strDataType;
-      break;
+        if ((isnan(dTmp)) ||
+            (bFPIsEqual(dTmp, m_dGISMissingValue, TOLERANCE))) {
+          dTmp = m_dMissingValue;
+          nMissing++;
+        }
 
-   case (INTERVENTION_HEIGHT_RASTER):
-      // Intervention height
-      m_strGDALIHDriverCode = strDriverCode;
-      m_strGDALIHDriverDesc = strDriverDesc;
-      m_strGDALIHProjection = strProjection;
-      m_strGDALIHDataType = strDataType;
-      break;
+        m_pRasterGrid->m_Cell[nX][nY].SetInterventionHeight(dTmp);
+        break;
 
-   case (SUSP_SED_RASTER):
-      // Initial Suspended Sediment GIS data
-      m_strGDALISSDriverCode = strDriverCode;
-      m_strGDALISSDriverDesc = strDriverDesc;
-      m_strGDALISSProjection = strProjection;
-      m_strGDALISSDataType = strDataType;
-      break;
+      case (SUSP_SED_RASTER):
+        // Initial Suspended Sediment GIS data
+        dTmp = pdScanline[nX];
 
-   case (FINE_UNCONS_RASTER):
-      // Initial Unconsolidated Fine Sediment GIS data
-      m_VstrGDALIUFDriverCode[nLayer] = strDriverCode;
-      m_VstrGDALIUFDriverDesc[nLayer] = strDriverDesc;
-      m_VstrGDALIUFProjection[nLayer] = strProjection;
-      m_VstrGDALIUFDataType[nLayer] = strDataType;
-      break;
+        if ((isnan(dTmp)) ||
+            (bFPIsEqual(dTmp, m_dGISMissingValue, TOLERANCE))) {
+          dTmp = m_dMissingValue;
+          nMissing++;
+        }
 
-   case (SAND_UNCONS_RASTER):
-      // Initial Unconsolidated Sand Sediment GIS data
-      m_VstrGDALIUSDriverCode[nLayer] = strDriverCode;
-      m_VstrGDALIUSDriverDesc[nLayer] = strDriverDesc;
-      m_VstrGDALIUSProjection[nLayer] = strProjection;
-      m_VstrGDALIUSDataType[nLayer] = strDataType;
-      break;
+        m_pRasterGrid->m_Cell[nX][nY].SetSuspendedSediment(dTmp);
+        break;
 
-   case (COARSE_UNCONS_RASTER):
-      // Initial Unconsolidated Coarse Sediment GIS data
-      m_VstrGDALIUCDriverCode[nLayer] = strDriverCode;
-      m_VstrGDALIUCDriverDesc[nLayer] = strDriverDesc;
-      m_VstrGDALIUCProjection[nLayer] = strProjection;
-      m_VstrGDALIUCDataType[nLayer] = strDataType;
-      break;
+      case (FINE_UNCONS_RASTER):
+        // Initial Unconsolidated Fine Sediment GIS data
+        dTmp = pdScanline[nX];
 
-   case (FINE_CONS_RASTER):
-      // Initial Consolidated Fine Sediment GIS data
-      m_VstrGDALICFDriverCode[nLayer] = strDriverCode;
-      m_VstrGDALICFDriverDesc[nLayer] = strDriverDesc;
-      m_VstrGDALICFProjection[nLayer] = strProjection;
-      m_VstrGDALICFDataType[nLayer] = strDataType;
-      break;
+        if ((isnan(dTmp)) ||
+            (bFPIsEqual(dTmp, m_dGISMissingValue, TOLERANCE))) {
+          dTmp = m_dMissingValue;
+          nMissing++;
+        }
 
-   case (SAND_CONS_RASTER):
-      // Initial Consolidated Sand Sediment GIS data
-      m_VstrGDALICSDriverCode[nLayer] = strDriverCode;
-      m_VstrGDALICSDriverDesc[nLayer] = strDriverDesc;
-      m_VstrGDALICSProjection[nLayer] = strProjection;
-      m_VstrGDALICSDataType[nLayer] = strDataType;
-      break;
+        m_pRasterGrid->m_Cell[nX][nY]
+            .pGetLayerAboveBasement(nLayer)
+            ->pGetUnconsolidatedSediment()
+            ->SetFineDepth(dTmp);
+        break;
 
-   case (COARSE_CONS_RASTER):
-      // Initial Consolidated Coarse Sediment GIS data
-      m_VstrGDALICCDriverCode[nLayer] = strDriverCode;
-      m_VstrGDALICCDriverDesc[nLayer] = strDriverDesc;
-      m_VstrGDALICCProjection[nLayer] = strProjection;
-      m_VstrGDALICCDataType[nLayer] = strDataType;
-      break;
-   }
+      case (SAND_UNCONS_RASTER):
+        // Initial Unconsolidated Sand Sediment GIS data
+        dTmp = pdScanline[nX];
 
-   // If present, get the missing value setting
-   string const strTmp = strToLower(&strDataType);
-   if (strTmp.find("int") != string::npos)
-   {
-      // This is an integer layer
-      CPLPushErrorHandler(CPLQuietErrorHandler);                          // Needed to get next line to fail silently, if it fails
-      m_nGISMissingValue = static_cast<int>(pGDALBand->GetNoDataValue()); // Note will fail for some formats
-      CPLPopErrorHandler();
+        if ((isnan(dTmp)) ||
+            (bFPIsEqual(dTmp, m_dGISMissingValue, TOLERANCE))) {
+          dTmp = m_dMissingValue;
+          nMissing++;
+        }
 
-      if (m_nGISMissingValue != m_nMissingValue)
-      {
-         cerr << "   " << NOTE << "NODATA value in " << strGISFile << " is " << m_nGISMissingValue << "\n         instead using CoatalME's default integer NODATA value " << m_nMissingValue << endl;
+        m_pRasterGrid->m_Cell[nX][nY]
+            .pGetLayerAboveBasement(nLayer)
+            ->pGetUnconsolidatedSediment()
+            ->SetSandDepth(dTmp);
+        break;
+
+      case (COARSE_UNCONS_RASTER):
+        // Initial Unconsolidated Coarse Sediment GIS data
+        dTmp = pdScanline[nX];
+
+        if ((isnan(dTmp)) ||
+            (bFPIsEqual(dTmp, m_dGISMissingValue, TOLERANCE))) {
+          dTmp = m_dMissingValue;
+          nMissing++;
+        }
+
+        m_pRasterGrid->m_Cell[nX][nY]
+            .pGetLayerAboveBasement(nLayer)
+            ->pGetUnconsolidatedSediment()
+            ->SetCoarseDepth(dTmp);
+        break;
+
+      case (FINE_CONS_RASTER):
+        // Initial Consolidated Fine Sediment GIS data
+        dTmp = pdScanline[nX];
+
+        if ((isnan(dTmp)) ||
+            (bFPIsEqual(dTmp, m_dGISMissingValue, TOLERANCE))) {
+          dTmp = m_dMissingValue;
+          nMissing++;
+        }
+
+        m_pRasterGrid->m_Cell[nX][nY]
+            .pGetLayerAboveBasement(nLayer)
+            ->pGetConsolidatedSediment()
+            ->SetFineDepth(dTmp);
+        break;
+
+      case (SAND_CONS_RASTER):
+        // Initial Consolidated Sand Sediment GIS data
+        dTmp = pdScanline[nX];
+
+        if ((isnan(dTmp)) ||
+            (bFPIsEqual(dTmp, m_dGISMissingValue, TOLERANCE))) {
+          dTmp = m_dMissingValue;
+          nMissing++;
+        }
+
+        m_pRasterGrid->m_Cell[nX][nY]
+            .pGetLayerAboveBasement(nLayer)
+            ->pGetConsolidatedSediment()
+            ->SetSandDepth(dTmp);
+        break;
+
+      case (COARSE_CONS_RASTER):
+        // Initial Consolidated Coarse Sediment GIS data
+        dTmp = pdScanline[nX];
+
+        if ((isnan(dTmp)) ||
+            (bFPIsEqual(dTmp, m_dGISMissingValue, TOLERANCE))) {
+          dTmp = m_dMissingValue;
+          nMissing++;
+        }
+
+        m_pRasterGrid->m_Cell[nX][nY]
+            .pGetLayerAboveBasement(nLayer)
+            ->pGetConsolidatedSediment()
+            ->SetCoarseDepth(dTmp);
+        break;
       }
-   }
-   else
-   {
-      // This is a floating point layer
-      CPLPushErrorHandler(CPLQuietErrorHandler);        // Needed to get next line to fail silently, if it fails
-      m_dGISMissingValue = pGDALBand->GetNoDataValue(); // Note will fail for some formats
-      CPLPopErrorHandler();
+    }
+  }
 
-      if (! bFPIsEqual(m_dGISMissingValue, m_dMissingValue, TOLERANCE))
-      {
-         cerr << "   " << NOTE << "NODATA value in " << strGISFile << " is " << m_dGISMissingValue << "\n         instead using CoastalME's default floating-point NODATA value " << m_dMissingValue << endl;
-      }
-   }
+  // Finished, so get rid of dataset object
+  GDALClose(pGDALDataset);
 
-   // Allocate memory for a 1D array, to hold the scan line for GDAL
-   double *pdScanline = new double[m_nXGridSize];
-   if (NULL == pdScanline)
-   {
-      // Error, can't allocate memory
-      cerr << ERR << "cannot allocate memory for " << m_nXGridSize << " x 1D array" << endl;
-      return (RTN_ERR_MEMALLOC);
-   }
+  // Get rid of memory allocated to this array
+  delete[] pdScanline;
 
-   // Now read in the data
-   int nMissing = 0;
+  if (nMissing > 0) {
+    cerr << WARN << nMissing << " missing values in " << strGISFile << endl;
+    LogStream << WARN << nMissing << " missing values in " << strGISFile
+              << endl;
+  }
 
-   for (int nY = 0; nY < m_nYGridSize; nY++)
-   {
-      // Read scanline
-      if (CE_Failure == pGDALBand->RasterIO(GF_Read, 0, nY, m_nXGridSize, 1, pdScanline, m_nXGridSize, 1, GDT_Float64, 0, 0, NULL))
-      {
-         // Error while reading scanline
-         cerr << ERR << CPLGetLastErrorMsg() << " in " << strGISFile << endl;
-         return (RTN_ERR_RASTER_FILE_READ);
-      }
-
-      // All OK, so read scanline into cells (including any missing values)
-      for (int nX = 0; nX < m_nXGridSize; nX++)
-      {
-         int nTmp;
-
-         switch (nDataItem)
-         {
-         case (LANDFORM_RASTER):
-            // Initial Landform Class GIS data, is integer
-            nTmp = static_cast<int>(pdScanline[nX]);
-
-            if ((isnan(nTmp)) || (nTmp == m_nGISMissingValue))
-            {
-               nTmp = m_nMissingValue;
-               nMissing++;
-            }
-
-            m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->SetLFCategory(nTmp);
-            break;
-
-         case (INTERVENTION_CLASS_RASTER):
-            // Intervention class, is integer. If not an intervention, show INT_NODATA
-            nTmp = static_cast<int>(pdScanline[nX]);
-
-            if ((isnan(nTmp)) || (nTmp == m_nGISMissingValue))
-            {
-               nTmp = m_nMissingValue;
-               nMissing++;
-            }
-
-            m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->SetLFCategory(nTmp);
-            break;
-
-         case (INTERVENTION_HEIGHT_RASTER):
-            // Intervention height
-            dTmp = pdScanline[nX];
-
-            if ((isnan(dTmp)) || (bFPIsEqual(dTmp, m_dGISMissingValue, TOLERANCE)))
-            {
-               dTmp = m_dMissingValue;
-               nMissing++;
-            }
-
-            m_pRasterGrid->m_Cell[nX][nY].SetInterventionHeight(dTmp);
-            break;
-
-         case (SUSP_SED_RASTER):
-            // Initial Suspended Sediment GIS data
-            dTmp = pdScanline[nX];
-
-            if ((isnan(dTmp)) || (bFPIsEqual(dTmp, m_dGISMissingValue, TOLERANCE)))
-            {
-               dTmp = m_dMissingValue;
-               nMissing++;
-            }
-
-            m_pRasterGrid->m_Cell[nX][nY].SetSuspendedSediment(dTmp);
-            break;
-
-         case (FINE_UNCONS_RASTER):
-            // Initial Unconsolidated Fine Sediment GIS data
-            dTmp = pdScanline[nX];
-
-            if ((isnan(dTmp)) || (bFPIsEqual(dTmp, m_dGISMissingValue, TOLERANCE)))
-            {
-               dTmp = m_dMissingValue;
-               nMissing++;
-            }
-
-            m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nLayer)->pGetUnconsolidatedSediment()->SetFineDepth(dTmp);
-            break;
-
-         case (SAND_UNCONS_RASTER):
-            // Initial Unconsolidated Sand Sediment GIS data
-            dTmp = pdScanline[nX];
-
-            if ((isnan(dTmp)) || (bFPIsEqual(dTmp, m_dGISMissingValue, TOLERANCE)))
-            {
-               dTmp = m_dMissingValue;
-               nMissing++;
-            }
-
-            m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nLayer)->pGetUnconsolidatedSediment()->SetSandDepth(dTmp);
-            break;
-
-         case (COARSE_UNCONS_RASTER):
-            // Initial Unconsolidated Coarse Sediment GIS data
-            dTmp = pdScanline[nX];
-
-            if ((isnan(dTmp)) || (bFPIsEqual(dTmp, m_dGISMissingValue, TOLERANCE)))
-            {
-               dTmp = m_dMissingValue;
-               nMissing++;
-            }
-
-            m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nLayer)->pGetUnconsolidatedSediment()->SetCoarseDepth(dTmp);
-            break;
-
-         case (FINE_CONS_RASTER):
-            // Initial Consolidated Fine Sediment GIS data
-            dTmp = pdScanline[nX];
-
-            if ((isnan(dTmp)) || (bFPIsEqual(dTmp, m_dGISMissingValue, TOLERANCE)))
-            {
-               dTmp = m_dMissingValue;
-               nMissing++;
-            }
-
-            m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nLayer)->pGetConsolidatedSediment()->SetFineDepth(dTmp);
-            break;
-
-         case (SAND_CONS_RASTER):
-            // Initial Consolidated Sand Sediment GIS data
-            dTmp = pdScanline[nX];
-
-            if ((isnan(dTmp)) || (bFPIsEqual(dTmp, m_dGISMissingValue, TOLERANCE)))
-            {
-               dTmp = m_dMissingValue;
-               nMissing++;
-            }
-
-            m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nLayer)->pGetConsolidatedSediment()->SetSandDepth(dTmp);
-            break;
-
-         case (COARSE_CONS_RASTER):
-            // Initial Consolidated Coarse Sediment GIS data
-            dTmp = pdScanline[nX];
-
-            if ((isnan(dTmp)) || (bFPIsEqual(dTmp, m_dGISMissingValue, TOLERANCE)))
-            {
-               dTmp = m_dMissingValue;
-               nMissing++;
-            }
-
-            m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nLayer)->pGetConsolidatedSediment()->SetCoarseDepth(dTmp);
-            break;
-         }
-      }
-   }
-
-   // Finished, so get rid of dataset object
-   GDALClose(pGDALDataset);
-
-   // Get rid of memory allocated to this array
-   delete[] pdScanline;
-
-   if (nMissing > 0)
-   {
-      cerr << WARN << nMissing << " missing values in " << strGISFile << endl;
-      LogStream << WARN << nMissing << " missing values in " << strGISFile << endl;
-   }
-
-   return RTN_OK;
+  return RTN_OK;
 }
 
 //===============================================================================================================================
 //! Writes GIS raster files using GDAL, using data from the RasterGrid array
 //===============================================================================================================================
-bool CSimulation::bWriteRasterGISFile(int const nDataItem, string const *strPlotTitle, int const nLayer, double const dElev)
-{
-   bool bIsInteger = false;
-   bool bIsUnsignedLong = false;
+bool CSimulation::bWriteRasterGISFile(int const nDataItem,
+                                      string const *strPlotTitle,
+                                      int const nLayer, double const dElev) {
+  bool bIsInteger = false;
+  bool bIsUnsignedLong = false;
+
+  // Begin constructing the file name for this save
+  string strFilePathName(m_strOutPath);
+  string strLayer = "_layer_";
+
+  stringstream ststrTmp;
 
-   // Begin constructing the file name for this save
-   string strFilePathName(m_strOutPath);
-   string strLayer = "_layer_";
-
-   stringstream ststrTmp;
-
-   strLayer.append(to_string(nLayer + 1));
-
-   switch (nDataItem)
-   {
-   case (RASTER_PLOT_BASEMENT_ELEVATION):
-      strFilePathName.append(RASTER_BASEMENT_ELEVATION_NAME);
-      break;
-
-   case (RASTER_PLOT_SED_TOP_INC_TALUS_ELEV):
-      strFilePathName.append(RASTER_SEDIMENT_TOP_ELEVATION_NAME);
-      break;
-
-   case (RASTER_PLOT_TOP_ELEV_INC_SEA):
-      strFilePathName.append(RASTER_TOP_ELEVATION_INC_SEA_NAME);
-      break;
-
-   case (RASTER_PLOT_TALUS):
-      strFilePathName.append(RASTER_TALUS_NAME);
-      break;
-
-   case (RASTER_PLOT_CONS_SED_SLOPE):
-      strFilePathName.append(RASTER_SLOPE_OF_CONSOLIDATED_SEDIMENT_NAME);
-      break;
-
-   case (RASTER_PLOT_SLOPE_FOR_CLIFF_TOE):
-      strFilePathName.append(RASTER_SLOPE_FOR_CLIFF_TOE_NAME);
-      break;
-
-   case (RASTER_PLOT_CLIFF_TOE):
-      strFilePathName.append(RASTER_CLIFF_TOE_NAME);
-      break;
-
-   case (RASTER_PLOT_SEA_DEPTH):
-      strFilePathName.append(RASTER_SEA_DEPTH_NAME);
-      break;
-
-   case (RASTER_PLOT_AVG_SEA_DEPTH):
-      strFilePathName.append(RASTER_AVG_SEA_DEPTH_NAME);
-      break;
-
-   case (RASTER_PLOT_WAVE_HEIGHT):
-      strFilePathName.append(RASTER_WAVE_HEIGHT_NAME);
-      break;
-
-   case (RASTER_PLOT_AVG_WAVE_HEIGHT):
-      strFilePathName.append(RASTER_AVG_WAVE_HEIGHT_NAME);
-      break;
-
-   case (RASTER_PLOT_WAVE_ORIENTATION):
-      strFilePathName.append(RASTER_WAVE_ORIENTATION_NAME);
-      break;
-
-   case (RASTER_PLOT_AVG_WAVE_ORIENTATION):
-      strFilePathName.append(RASTER_AVG_WAVE_ORIENTATION_NAME);
-      break;
-
-   case (RASTER_PLOT_BEACH_PROTECTION):
-      strFilePathName.append(RASTER_BEACH_PROTECTION_NAME);
-      break;
-
-   case (RASTER_PLOT_POTENTIAL_PLATFORM_EROSION):
-      strFilePathName.append(RASTER_POTENTIAL_PLATFORM_EROSION_NAME);
-      break;
-
-   case (RASTER_PLOT_ACTUAL_PLATFORM_EROSION):
-      strFilePathName.append(RASTER_ACTUAL_PLATFORM_EROSION_NAME);
-      break;
-
-   case (RASTER_PLOT_TOTAL_POTENTIAL_PLATFORM_EROSION):
-      strFilePathName.append(RASTER_TOTAL_POTENTIAL_PLATFORM_EROSION_NAME);
-      break;
-
-   case (RASTER_PLOT_TOTAL_ACTUAL_PLATFORM_EROSION):
-      strFilePathName.append(RASTER_TOTAL_ACTUAL_PLATFORM_EROSION_NAME);
-      break;
-
-   case (RASTER_PLOT_POTENTIAL_BEACH_EROSION):
-      strFilePathName.append(RASTER_POTENTIAL_BEACH_EROSION_NAME);
-      break;
-
-   case (RASTER_PLOT_ACTUAL_BEACH_EROSION):
-      strFilePathName.append(RASTER_ACTUAL_BEACH_EROSION_NAME);
-      break;
-
-   case (RASTER_PLOT_TOTAL_POTENTIAL_BEACH_EROSION):
-      strFilePathName.append(RASTER_TOTAL_POTENTIAL_BEACH_EROSION_NAME);
-      break;
-
-   case (RASTER_PLOT_TOTAL_ACTUAL_BEACH_EROSION):
-      strFilePathName.append(RASTER_TOTAL_ACTUAL_BEACH_EROSION_NAME);
-      break;
-
-   case (RASTER_PLOT_BEACH_DEPOSITION):
-      strFilePathName.append(RASTER_BEACH_DEPOSITION_NAME);
-      break;
-
-   case (RASTER_PLOT_TOTAL_BEACH_DEPOSITION):
-      strFilePathName.append(RASTER_TOTAL_BEACH_DEPOSITION_NAME);
-      break;
-
-   case (RASTER_PLOT_SUSPENDED_SEDIMENT):
-      strFilePathName.append(RASTER_SUSP_SED_NAME);
-      break;
-
-   case (RASTER_PLOT_AVG_SUSPENDED_SEDIMENT):
-      strFilePathName.append(RASTER_AVG_SUSP_SED_NAME);
-      break;
-
-   case (RASTER_PLOT_FINE_UNCONSOLIDATED_SEDIMENT):
-      strFilePathName.append(RASTER_FINE_UNCONS_NAME);
-      strFilePathName.append(strLayer);
-      break;
-
-   case (RASTER_PLOT_SAND_UNCONSOLIDATED_SEDIMENT):
-      strFilePathName.append(RASTER_SAND_UNCONS_NAME);
-      strFilePathName.append(strLayer);
-      break;
-
-   case (RASTER_PLOT_COARSE_UNCONSOLIDATED_SEDIMENT):
-      strFilePathName.append(RASTER_COARSE_UNCONS_NAME);
-      strFilePathName.append(strLayer);
-      break;
-
-   case (RASTER_PLOT_FINE_CONSOLIDATED_SEDIMENT):
-      strFilePathName.append(RASTER_FINE_CONS_NAME);
-      strFilePathName.append(strLayer);
-      break;
-
-   case (RASTER_PLOT_SAND_CONSOLIDATED_SEDIMENT):
-      strFilePathName.append(RASTER_SAND_CONS_NAME);
-      strFilePathName.append(strLayer);
-      break;
-
-   case (RASTER_PLOT_COARSE_CONSOLIDATED_SEDIMENT):
-      strFilePathName.append(RASTER_COARSE_CONS_NAME);
-      strFilePathName.append(strLayer);
-      break;
-
-   case (RASTER_PLOT_CLIFF_COLLAPSE_EROSION_FINE):
-      strFilePathName.append(RASTER_CLIFF_COLLAPSE_EROSION_FINE_NAME);
-      break;
-
-   case (RASTER_PLOT_CLIFF_COLLAPSE_EROSION_SAND):
-      strFilePathName.append(RASTER_CLIFF_COLLAPSE_EROSION_SAND_NAME);
-      break;
-
-   case (RASTER_PLOT_CLIFF_COLLAPSE_EROSION_COARSE):
-      strFilePathName.append(RASTER_CLIFF_COLLAPSE_EROSION_COARSE_NAME);
-      break;
-
-   case (RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_EROSION_FINE):
-      strFilePathName.append(RASTER_TOTAL_CLIFF_COLLAPSE_EROSION_FINE_NAME);
-      break;
-
-   case (RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_EROSION_SAND):
-      strFilePathName.append(RASTER_TOTAL_CLIFF_COLLAPSE_EROSION_SAND_NAME);
-      break;
-
-   case (RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_EROSION_COARSE):
-      strFilePathName.append(RASTER_TOTAL_CLIFF_COLLAPSE_EROSION_COARSE_NAME);
-      break;
-
-   case (RASTER_PLOT_CLIFF_COLLAPSE_DEPOSITION_SAND):
-      strFilePathName.append(RASTER_CLIFF_COLLAPSE_DEPOSITION_SAND_NAME);
-      break;
-
-   case (RASTER_PLOT_CLIFF_COLLAPSE_DEPOSITION_COARSE):
-      strFilePathName.append(RASTER_CLIFF_COLLAPSE_DEPOSITION_COARSE_NAME);
-      break;
-
-   case (RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_DEPOSITION_SAND):
-      strFilePathName.append(RASTER_TOTAL_CLIFF_COLLAPSE_DEPOSITION_SAND_NAME);
-      break;
-
-   case (RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_DEPOSITION_COARSE):
-      strFilePathName.append(RASTER_TOTAL_CLIFF_COLLAPSE_DEPOSITION_COARSE_NAME);
-      break;
-
-#ifdef _DEBUG
-   case (RASTER_PLOT_CLIFF_COLLAPSE_TIMESTEP):
-      strFilePathName.append(RASTER_CLIFF_COLLAPSE_TIMESTEP_NAME);
-      break;
-#endif
-
-   case (RASTER_PLOT_CLIFF_NOTCH_ALL):
-      strFilePathName.append(RASTER_CLIFF_NOTCH_ALL_NAME);
-      break;
-
-   case (RASTER_PLOT_INTERVENTION_HEIGHT):
-      strFilePathName.append(RASTER_INTERVENTION_HEIGHT_NAME);
-      break;
-
-   case (RASTER_PLOT_DEEP_WATER_WAVE_ORIENTATION):
-      strFilePathName.append(RASTER_DEEP_WATER_WAVE_ORIENTATION_NAME);
-      break;
-
-   case (RASTER_PLOT_DEEP_WATER_WAVE_HEIGHT):
-      strFilePathName.append(RASTER_DEEP_WATER_WAVE_HEIGHT_NAME);
-      break;
-
-   case (RASTER_PLOT_POLYGON_GAIN_OR_LOSS):
-      strFilePathName.append(RASTER_POLYGON_GAIN_OR_LOSS_NAME);
-      break;
-
-   case (RASTER_PLOT_DEEP_WATER_WAVE_PERIOD):
-      strFilePathName.append(RASTER_WAVE_PERIOD_NAME);
-      break;
-
-   case (RASTER_PLOT_SEDIMENT_INPUT):
-      strFilePathName.append(RASTER_SEDIMENT_INPUT_EVENT_NAME);
-      break;
-
-   case (RASTER_PLOT_BEACH_MASK):
-      bIsInteger = true;
-      strFilePathName.append(RASTER_BEACH_MASK_NAME);
-      break;
-
-   case (RASTER_PLOT_POTENTIAL_PLATFORM_EROSION_MASK):
-      bIsInteger = true;
-      strFilePathName.append(RASTER_POTENTIAL_PLATFORM_EROSION_MASK_NAME);
-      break;
-
-   case (RASTER_PLOT_INUNDATION_MASK):
-      bIsInteger = true;
-      strFilePathName.append(RASTER_INUNDATION_MASK_NAME);
-      break;
-
-   case (RASTER_PLOT_SLICE):
-      bIsInteger = true;
-      ststrTmp.str("");
-      ststrTmp.clear();
-
-      // TODO 031 Get working for multiple slices
-      strFilePathName.append(RASTER_SLICE_NAME);
-      ststrTmp << "_" << dElev << "_";
-      strFilePathName.append(ststrTmp.str());
-      break;
-
-   case (RASTER_PLOT_LANDFORM):
-      bIsInteger = true;
-      strFilePathName.append(RASTER_LANDFORM_NAME);
-      break;
-
-   case (RASTER_PLOT_INTERVENTION_CLASS):
-      bIsInteger = true;
-      strFilePathName.append(RASTER_INTERVENTION_CLASS_NAME);
-      break;
-
-   case (RASTER_PLOT_COAST):
-      bIsInteger = true;
-      strFilePathName.append(RASTER_COAST_NAME);
-      break;
-
-   case (RASTER_PLOT_NORMAL_PROFILE):
-      bIsInteger = true;
-      strFilePathName.append(RASTER_COAST_NORMAL_NAME);
-      break;
-
-   case (RASTER_PLOT_ACTIVE_ZONE):
-      bIsInteger = true;
-      strFilePathName.append(RASTER_ACTIVE_ZONE_NAME);
-      break;
-
-   case (RASTER_PLOT_POLYGON):
-      bIsInteger = true;
-      strFilePathName.append(RASTER_POLYGON_NAME);
-      break;
-
-   case (RASTER_PLOT_SHADOW_ZONE):
-      bIsInteger = true;
-      strFilePathName.append(RASTER_SHADOW_ZONE_NAME);
-      break;
-
-   case (RASTER_PLOT_SHADOW_DOWNDRIFT_ZONE):
-      bIsInteger = true;
-      strFilePathName.append(RASTER_SHADOW_DOWNDRIFT_ZONE_NAME);
-      break;
-
-   case (RASTER_PLOT_POLYGON_UPDRIFT_OR_DOWNDRIFT):
-      bIsInteger = true;
-      strFilePathName.append(RASTER_POLYGON_UPDRIFT_OR_DOWNDRIFT_NAME);
-      break;
-
-   case (RASTER_PLOT_SETUP_SURGE_FLOOD_MASK):
-      bIsInteger = true;
-      strFilePathName.append(RASTER_SETUP_SURGE_FLOOD_MASK_NAME);
-      break;
-
-   case (RASTER_PLOT_SETUP_SURGE_RUNUP_FLOOD_MASK):
-      bIsInteger = true;
-      strFilePathName.append(RASTER_SETUP_SURGE_RUNUP_FLOOD_MASK_NAME);
-      break;
-
-   case (RASTER_PLOT_WAVE_FLOOD_LINE):
-      bIsInteger = true;
-      strFilePathName.append(RASTER_WAVE_FLOOD_LINE_NAME);
-      break;
-   }
-
-   // Append the 'save number' to the filename, and prepend zeros to the save number
-   ststrTmp.str("");
-   ststrTmp.clear();
-
-   strFilePathName.append("_");
-
-   if (m_bGISSaveDigitsSequential)
-   {
-      // Save number is m_bGISSaveDigitsSequential
-      ststrTmp << FillToWidth('0', m_nGISMaxSaveDigits) << m_nGISSave;
-   }
-   else
-   {
-      // Save number is iteration
-      ststrTmp << FillToWidth('0', m_nGISMaxSaveDigits) << m_ulIter;
-   }
-
-   strFilePathName.append(ststrTmp.str());
-
-   // Finally, maybe append the extension
-   if (! m_strGDALRasterOutputDriverExtension.empty())
-   {
-      strFilePathName.append(".");
-      strFilePathName.append(m_strGDALRasterOutputDriverExtension);
-   }
-
-   // TODO 065 Used to try to debug floating point exception in pDriver->Create() below
-   // CPLSetConfigOption("CPL_DEBUG", "ON");
-   // CPLSetConfigOption("GDAL_NUM_THREADS", "1");
-
-   GDALDriver *pDriver;
-   GDALDataset *pDataSet;
-
-   if (m_bGDALCanCreate)
-   {
-      // The user-requested raster driver supports the Create() method
-      pDriver = GetGDALDriverManager()->GetDriverByName(m_strRasterGISOutFormat.c_str());
-
-      if (bIsInteger)
-      {
-         pDataSet = pDriver->Create(strFilePathName.c_str(), m_nXGridSize, m_nYGridSize, 1, GDT_Int16, m_papszGDALRasterOptions);
-      }
-      else if (bIsUnsignedLong)
-      {
-         pDataSet = pDriver->Create(strFilePathName.c_str(), m_nXGridSize, m_nYGridSize, 1, GDT_UInt32, m_papszGDALRasterOptions);
-
-      }
-      else if (m_strRasterGISOutFormat == "gpkg")
-      {
-         // TODO 065 Floating point exception here
-         pDataSet = pDriver->Create(strFilePathName.c_str(), m_nXGridSize, m_nYGridSize, 1, GDT_Byte, m_papszGDALRasterOptions);
-      }
-      else
-      {
-         pDataSet = pDriver->Create(strFilePathName.c_str(), m_nXGridSize, m_nYGridSize, 1, m_GDALWriteFloatDataType, m_papszGDALRasterOptions);
-      }
-
-      if (NULL == pDataSet)
-      {
-         // Error, couldn't create file
-         cerr << ERR << "cannot create " << m_strRasterGISOutFormat << " file named " << strFilePathName << endl
-              << CPLGetLastErrorMsg() << endl;
-         return false;
+  strLayer.append(to_string(nLayer + 1));
+
+  switch (nDataItem) {
+  case (RASTER_PLOT_BASEMENT_ELEVATION):
+    strFilePathName.append(RASTER_BASEMENT_ELEVATION_NAME);
+    break;
+
+  case (RASTER_PLOT_SED_TOP_INC_TALUS_ELEV):
+    strFilePathName.append(RASTER_SEDIMENT_TOP_ELEVATION_NAME);
+    break;
+
+  case (RASTER_PLOT_TOP_ELEV_INC_SEA):
+    strFilePathName.append(RASTER_TOP_ELEVATION_INC_SEA_NAME);
+    break;
+
+  case (RASTER_PLOT_TALUS):
+    strFilePathName.append(RASTER_TALUS_NAME);
+    break;
+
+  case (RASTER_PLOT_CONS_SED_SLOPE):
+    strFilePathName.append(RASTER_SLOPE_OF_CONSOLIDATED_SEDIMENT_NAME);
+    break;
+
+  case (RASTER_PLOT_SLOPE_FOR_CLIFF_TOE):
+    strFilePathName.append(RASTER_SLOPE_FOR_CLIFF_TOE_NAME);
+    break;
+
+  case (RASTER_PLOT_CLIFF_TOE):
+    strFilePathName.append(RASTER_CLIFF_TOE_NAME);
+    break;
+
+  case (RASTER_PLOT_SEA_DEPTH):
+    strFilePathName.append(RASTER_SEA_DEPTH_NAME);
+    break;
+
+  case (RASTER_PLOT_AVG_SEA_DEPTH):
+    strFilePathName.append(RASTER_AVG_SEA_DEPTH_NAME);
+    break;
+
+  case (RASTER_PLOT_WAVE_HEIGHT):
+    strFilePathName.append(RASTER_WAVE_HEIGHT_NAME);
+    break;
+
+  case (RASTER_PLOT_AVG_WAVE_HEIGHT):
+    strFilePathName.append(RASTER_AVG_WAVE_HEIGHT_NAME);
+    break;
+
+  case (RASTER_PLOT_WAVE_ORIENTATION):
+    strFilePathName.append(RASTER_WAVE_ORIENTATION_NAME);
+    break;
+
+  case (RASTER_PLOT_AVG_WAVE_ORIENTATION):
+    strFilePathName.append(RASTER_AVG_WAVE_ORIENTATION_NAME);
+    break;
+
+  case (RASTER_PLOT_BEACH_PROTECTION):
+    strFilePathName.append(RASTER_BEACH_PROTECTION_NAME);
+    break;
+
+  case (RASTER_PLOT_POTENTIAL_PLATFORM_EROSION):
+    strFilePathName.append(RASTER_POTENTIAL_PLATFORM_EROSION_NAME);
+    break;
+
+  case (RASTER_PLOT_ACTUAL_PLATFORM_EROSION):
+    strFilePathName.append(RASTER_ACTUAL_PLATFORM_EROSION_NAME);
+    break;
+
+  case (RASTER_PLOT_TOTAL_POTENTIAL_PLATFORM_EROSION):
+    strFilePathName.append(RASTER_TOTAL_POTENTIAL_PLATFORM_EROSION_NAME);
+    break;
+
+  case (RASTER_PLOT_TOTAL_ACTUAL_PLATFORM_EROSION):
+    strFilePathName.append(RASTER_TOTAL_ACTUAL_PLATFORM_EROSION_NAME);
+    break;
+
+  case (RASTER_PLOT_POTENTIAL_BEACH_EROSION):
+    strFilePathName.append(RASTER_POTENTIAL_BEACH_EROSION_NAME);
+    break;
+
+  case (RASTER_PLOT_ACTUAL_BEACH_EROSION):
+    strFilePathName.append(RASTER_ACTUAL_BEACH_EROSION_NAME);
+    break;
+
+  case (RASTER_PLOT_TOTAL_POTENTIAL_BEACH_EROSION):
+    strFilePathName.append(RASTER_TOTAL_POTENTIAL_BEACH_EROSION_NAME);
+    break;
+
+  case (RASTER_PLOT_TOTAL_ACTUAL_BEACH_EROSION):
+    strFilePathName.append(RASTER_TOTAL_ACTUAL_BEACH_EROSION_NAME);
+    break;
+
+  case (RASTER_PLOT_BEACH_DEPOSITION):
+    strFilePathName.append(RASTER_BEACH_DEPOSITION_NAME);
+    break;
+
+  case (RASTER_PLOT_TOTAL_BEACH_DEPOSITION):
+    strFilePathName.append(RASTER_TOTAL_BEACH_DEPOSITION_NAME);
+    break;
+
+  case (RASTER_PLOT_SUSPENDED_SEDIMENT):
+    strFilePathName.append(RASTER_SUSP_SED_NAME);
+    break;
+
+  case (RASTER_PLOT_AVG_SUSPENDED_SEDIMENT):
+    strFilePathName.append(RASTER_AVG_SUSP_SED_NAME);
+    break;
+
+  case (RASTER_PLOT_FINE_UNCONSOLIDATED_SEDIMENT):
+    strFilePathName.append(RASTER_FINE_UNCONS_NAME);
+    strFilePathName.append(strLayer);
+    break;
+
+  case (RASTER_PLOT_SAND_UNCONSOLIDATED_SEDIMENT):
+    strFilePathName.append(RASTER_SAND_UNCONS_NAME);
+    strFilePathName.append(strLayer);
+    break;
+
+  case (RASTER_PLOT_COARSE_UNCONSOLIDATED_SEDIMENT):
+    strFilePathName.append(RASTER_COARSE_UNCONS_NAME);
+    strFilePathName.append(strLayer);
+    break;
+
+  case (RASTER_PLOT_FINE_CONSOLIDATED_SEDIMENT):
+    strFilePathName.append(RASTER_FINE_CONS_NAME);
+    strFilePathName.append(strLayer);
+    break;
+
+  case (RASTER_PLOT_SAND_CONSOLIDATED_SEDIMENT):
+    strFilePathName.append(RASTER_SAND_CONS_NAME);
+    strFilePathName.append(strLayer);
+    break;
+
+  case (RASTER_PLOT_COARSE_CONSOLIDATED_SEDIMENT):
+    strFilePathName.append(RASTER_COARSE_CONS_NAME);
+    strFilePathName.append(strLayer);
+    break;
+
+  case (RASTER_PLOT_CLIFF_COLLAPSE_EROSION_FINE):
+    strFilePathName.append(RASTER_CLIFF_COLLAPSE_EROSION_FINE_NAME);
+    break;
+
+  case (RASTER_PLOT_CLIFF_COLLAPSE_EROSION_SAND):
+    strFilePathName.append(RASTER_CLIFF_COLLAPSE_EROSION_SAND_NAME);
+    break;
+
+  case (RASTER_PLOT_CLIFF_COLLAPSE_EROSION_COARSE):
+    strFilePathName.append(RASTER_CLIFF_COLLAPSE_EROSION_COARSE_NAME);
+    break;
+
+  case (RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_EROSION_FINE):
+    strFilePathName.append(RASTER_TOTAL_CLIFF_COLLAPSE_EROSION_FINE_NAME);
+    break;
+
+  case (RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_EROSION_SAND):
+    strFilePathName.append(RASTER_TOTAL_CLIFF_COLLAPSE_EROSION_SAND_NAME);
+    break;
+
+  case (RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_EROSION_COARSE):
+    strFilePathName.append(RASTER_TOTAL_CLIFF_COLLAPSE_EROSION_COARSE_NAME);
+    break;
+
+  case (RASTER_PLOT_CLIFF_COLLAPSE_DEPOSITION_SAND):
+    strFilePathName.append(RASTER_CLIFF_COLLAPSE_DEPOSITION_SAND_NAME);
+    break;
+
+  case (RASTER_PLOT_CLIFF_COLLAPSE_DEPOSITION_COARSE):
+    strFilePathName.append(RASTER_CLIFF_COLLAPSE_DEPOSITION_COARSE_NAME);
+    break;
+
+  case (RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_DEPOSITION_SAND):
+    strFilePathName.append(RASTER_TOTAL_CLIFF_COLLAPSE_DEPOSITION_SAND_NAME);
+    break;
+
+  case (RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_DEPOSITION_COARSE):
+    strFilePathName.append(RASTER_TOTAL_CLIFF_COLLAPSE_DEPOSITION_COARSE_NAME);
+    break;
+
+  case (RASTER_PLOT_CLIFF_COLLAPSE_TIMESTEP):
+    strFilePathName.append(RASTER_CLIFF_COLLAPSE_TIMESTEP_NAME);
+    break;
+
+  case (RASTER_PLOT_CLIFF_NOTCH_ALL):
+    strFilePathName.append(RASTER_CLIFF_NOTCH_ALL_NAME);
+    break;
+
+  case (RASTER_PLOT_INTERVENTION_HEIGHT):
+    strFilePathName.append(RASTER_INTERVENTION_HEIGHT_NAME);
+    break;
+
+  case (RASTER_PLOT_DEEP_WATER_WAVE_ORIENTATION):
+    strFilePathName.append(RASTER_DEEP_WATER_WAVE_ORIENTATION_NAME);
+    break;
+
+  case (RASTER_PLOT_DEEP_WATER_WAVE_HEIGHT):
+    strFilePathName.append(RASTER_DEEP_WATER_WAVE_HEIGHT_NAME);
+    break;
+
+  case (RASTER_PLOT_POLYGON_GAIN_OR_LOSS):
+    strFilePathName.append(RASTER_POLYGON_GAIN_OR_LOSS_NAME);
+    break;
+
+  case (RASTER_PLOT_DEEP_WATER_WAVE_PERIOD):
+    strFilePathName.append(RASTER_WAVE_PERIOD_NAME);
+    break;
+
+  case (RASTER_PLOT_SEDIMENT_INPUT):
+    strFilePathName.append(RASTER_SEDIMENT_INPUT_EVENT_NAME);
+    break;
+
+  case (RASTER_PLOT_BEACH_MASK):
+    bIsInteger = true;
+    strFilePathName.append(RASTER_BEACH_MASK_NAME);
+    break;
+
+  case (RASTER_PLOT_POTENTIAL_PLATFORM_EROSION_MASK):
+    bIsInteger = true;
+    strFilePathName.append(RASTER_POTENTIAL_PLATFORM_EROSION_MASK_NAME);
+    break;
+
+  case (RASTER_PLOT_INUNDATION_MASK):
+    bIsInteger = true;
+    strFilePathName.append(RASTER_INUNDATION_MASK_NAME);
+    break;
+
+  case (RASTER_PLOT_SLICE):
+    bIsInteger = true;
+    ststrTmp.str("");
+    ststrTmp.clear();
+
+    // TODO 031 Get working for multiple slices
+    strFilePathName.append(RASTER_SLICE_NAME);
+    ststrTmp << "_" << dElev << "_";
+    strFilePathName.append(ststrTmp.str());
+    break;
+
+  case (RASTER_PLOT_LANDFORM):
+    bIsInteger = true;
+    strFilePathName.append(RASTER_LANDFORM_NAME);
+    break;
+
+  case (RASTER_PLOT_INTERVENTION_CLASS):
+    bIsInteger = true;
+    strFilePathName.append(RASTER_INTERVENTION_CLASS_NAME);
+    break;
+
+  case (RASTER_PLOT_COAST):
+    bIsInteger = true;
+    strFilePathName.append(RASTER_COAST_NAME);
+    break;
+
+  case (RASTER_PLOT_NORMAL_PROFILE):
+    bIsInteger = true;
+    strFilePathName.append(RASTER_COAST_NORMAL_NAME);
+    break;
+
+  case (RASTER_PLOT_ACTIVE_ZONE):
+    bIsInteger = true;
+    strFilePathName.append(RASTER_ACTIVE_ZONE_NAME);
+    break;
+
+  case (RASTER_PLOT_POLYGON):
+    bIsInteger = true;
+    strFilePathName.append(RASTER_POLYGON_NAME);
+    break;
+
+  case (RASTER_PLOT_SHADOW_ZONE):
+    bIsInteger = true;
+    strFilePathName.append(RASTER_SHADOW_ZONE_NAME);
+    break;
+
+  case (RASTER_PLOT_SHADOW_DOWNDRIFT_ZONE):
+    bIsInteger = true;
+    strFilePathName.append(RASTER_SHADOW_DOWNDRIFT_ZONE_NAME);
+    break;
+
+  case (RASTER_PLOT_POLYGON_UPDRIFT_OR_DOWNDRIFT):
+    bIsInteger = true;
+    strFilePathName.append(RASTER_POLYGON_UPDRIFT_OR_DOWNDRIFT_NAME);
+    break;
+
+  case (RASTER_PLOT_SETUP_SURGE_FLOOD_MASK):
+    bIsInteger = true;
+    strFilePathName.append(RASTER_SETUP_SURGE_FLOOD_MASK_NAME);
+    break;
+
+  case (RASTER_PLOT_SETUP_SURGE_RUNUP_FLOOD_MASK):
+    bIsInteger = true;
+    strFilePathName.append(RASTER_SETUP_SURGE_RUNUP_FLOOD_MASK_NAME);
+    break;
+
+  case (RASTER_PLOT_WAVE_FLOOD_LINE):
+    bIsInteger = true;
+    strFilePathName.append(RASTER_WAVE_FLOOD_LINE_NAME);
+    break;
+  }
+
+  // Append the 'save number' to the filename, and prepend zeros to the save
+  // number
+  ststrTmp.str("");
+  ststrTmp.clear();
+
+  strFilePathName.append("_");
+
+  if (m_bGISSaveDigitsSequential) {
+    // Save number is m_bGISSaveDigitsSequential
+    ststrTmp << FillToWidth('0', m_nGISMaxSaveDigits) << m_nGISSave;
+  } else {
+    // Save number is iteration
+    ststrTmp << FillToWidth('0', m_nGISMaxSaveDigits) << m_ulIter;
+  }
+
+  strFilePathName.append(ststrTmp.str());
+
+  // Finally, maybe append the extension
+  if (!m_strGDALRasterOutputDriverExtension.empty()) {
+    strFilePathName.append(".");
+    strFilePathName.append(m_strGDALRasterOutputDriverExtension);
+  }
+
+  // TODO 065 Used to try to debug floating point exception in pDriver->Create()
+  // below CPLSetConfigOption("CPL_DEBUG", "ON");
+  // CPLSetConfigOption("GDAL_NUM_THREADS", "1");
+
+  GDALDriver *pDriver;
+  GDALDataset *pDataSet;
+
+  if (m_bGDALCanCreate) {
+    // The user-requested raster driver supports the Create() method
+    pDriver = GetGDALDriverManager()->GetDriverByName(
+        m_strRasterGISOutFormat.c_str());
+
+    if (bIsInteger) {
+      pDataSet =
+          pDriver->Create(strFilePathName.c_str(), m_nXGridSize, m_nYGridSize,
+                          1, GDT_Int16, m_papszGDALRasterOptions);
+    } else if (bIsUnsignedLong) {
+      pDataSet =
+          pDriver->Create(strFilePathName.c_str(), m_nXGridSize, m_nYGridSize,
+                          1, GDT_UInt32, m_papszGDALRasterOptions);
+
+    } else if (m_strRasterGISOutFormat == "gpkg") {
+      // TODO 065 Floating point exception here
+      pDataSet =
+          pDriver->Create(strFilePathName.c_str(), m_nXGridSize, m_nYGridSize,
+                          1, GDT_Byte, m_papszGDALRasterOptions);
+    } else {
+      pDataSet = pDriver->Create(strFilePathName.c_str(), m_nXGridSize,
+                                 m_nYGridSize, 1, m_GDALWriteFloatDataType,
+                                 m_papszGDALRasterOptions);
+    }
+
+    if (NULL == pDataSet) {
+      // Error, couldn't create file
+      cerr << ERR << "cannot create " << m_strRasterGISOutFormat
+           << " file named " << strFilePathName << endl;
+        return false;
       }
    }
    else
@@ -1997,699 +2049,652 @@ bool CSimulation::bWriteRasterGISFile(int const nDataItem, string const *strPlot
    {
       // Write error, better error message
       cerr << ERR << "cannot write data for " << m_strRasterGISOutFormat << " file named " << strFilePathName << endl
+        << CPLGetLastErrorMsg() << endl;
+    delete[] pdRaster;
+    return false;
+  }
+
+  // Calculate statistics for this band
+  double dMin, dMax, dMean, dStdDev;
+  CPLPushErrorHandler(CPLQuietErrorHandler); // Needed to get next line to fail
+                                             // silently, if it fails
+  pBand->ComputeStatistics(false, &dMin, &dMax, &dMean, &dStdDev, NULL, NULL);
+  CPLPopErrorHandler();
+
+  // And then write the statistics
+  CPLPushErrorHandler(CPLQuietErrorHandler); // Needed to get next line to fail
+                                             // silently, if it fails
+  pBand->SetStatistics(dMin, dMax, dMean, dStdDev);
+  CPLPopErrorHandler();
+
+  if (!m_bGDALCanCreate) {
+    // Since the user-selected raster driver cannot use the Create() method, we
+    // have been writing to a dataset created by the in-memory driver. So now we
+    // need to use CreateCopy() to copy this in-memory dataset to a file in the
+    // user-specified raster driver format
+    GDALDriver *pOutDriver = GetGDALDriverManager()->GetDriverByName(
+        m_strRasterGISOutFormat.c_str());
+    GDALDataset *pOutDataSet =
+        pOutDriver->CreateCopy(strFilePathName.c_str(), pDataSet, false,
+                               m_papszGDALRasterOptions, NULL, NULL);
+
+    if (NULL == pOutDataSet) {
+      // Couldn't create file
+      cerr << ERR << "cannot create " << m_strRasterGISOutFormat
+           << " file named " << strFilePathName << endl
            << CPLGetLastErrorMsg() << endl;
-      delete[] pdRaster;
       return false;
-   }
+    }
 
-   // Calculate statistics for this band
-   double dMin, dMax, dMean, dStdDev;
-   CPLPushErrorHandler(CPLQuietErrorHandler); // Needed to get next line to fail silently, if it fails
-   pBand->ComputeStatistics(false, &dMin, &dMax, &dMean, &dStdDev, NULL, NULL);
-   CPLPopErrorHandler();
+    // Get rid of this user-selected dataset object
+    GDALClose(pOutDataSet);
+  }
 
-   // And then write the statistics
-   CPLPushErrorHandler(CPLQuietErrorHandler); // Needed to get next line to fail silently, if it fails
-   pBand->SetStatistics(dMin, dMax, dMean, dStdDev);
-   CPLPopErrorHandler();
+  // Get rid of dataset object
+  GDALClose(pDataSet);
 
-   if (! m_bGDALCanCreate)
-   {
-      // Since the user-selected raster driver cannot use the Create() method, we have been writing to a dataset created by the in-memory driver. So now we need to use CreateCopy() to copy this in-memory dataset to a file in the user-specified raster driver format
-      GDALDriver *pOutDriver = GetGDALDriverManager()->GetDriverByName(m_strRasterGISOutFormat.c_str());
-      GDALDataset *pOutDataSet = pOutDriver->CreateCopy(strFilePathName.c_str(), pDataSet, false, m_papszGDALRasterOptions, NULL, NULL);
+  // Also get rid of memory allocated to this array
+  delete[] pdRaster;
 
-      if (NULL == pOutDataSet)
-      {
-         // Couldn't create file
-         cerr << ERR << "cannot create " << m_strRasterGISOutFormat << " file named " << strFilePathName << endl
-              << CPLGetLastErrorMsg() << endl;
-         return false;
-      }
-
-      // Get rid of this user-selected dataset object
-      GDALClose(pOutDataSet);
-   }
-
-   // Get rid of dataset object
-   GDALClose(pDataSet);
-
-   // Also get rid of memory allocated to this array
-   delete[] pdRaster;
-
-   return true;
+  return true;
 }
 
 //===============================================================================================================================
-//! Interpolates wave properties from all profiles to all within-polygon sea cells, using GDALGridCreate(), the library version of external utility gdal_grid
+//! Interpolates wave properties from profile points to all cells within polygons
+//!
+//! ALGORITHM: k-Nearest Neighbor Inverse Distance Weighting (k-NN IDW)
+//!
+//! This function takes wave height components (X and Y) measured at discrete profile points
+//! and interpolates them to a regular grid using a spatial interpolation method.
+//!
+//! METHOD OVERVIEW:
+//! 1. Builds a k-d tree spatial index from input profile point coordinates (X, Y)
+//! 2. For each grid cell, finds the k nearest profile points (typically k=12)
+//! 3. Calculates interpolated value using inverse distance weighting (IDW) with power=2
+//! 4. Converts X/Y wave components back to magnitude and direction
+//! 5. Updates grid cells with interpolated wave properties
+//!
+//! KEY PARAMETERS (defined in spatial_interpolation.cpp DualSpatialInterpolator):
+//! - k_neighbors = 12    Number of nearest points to use for interpolation
+//! - power = 2.0         Exponent for inverse distance weighting
+//!                       (higher = more weight to closer points)
+//!
+//! TUNING GUIDANCE:
+//! - Increase k_neighbors (e.g., 15-20) for smoother results with more averaging
+//! - Decrease k_neighbors (e.g., 8-10) for results that follow local variations more closely
+//! - Increase power (e.g., 3.0-4.0) to emphasize nearby points (sharper transitions)
+//! - Decrease power (e.g., 1.0-1.5) for smoother, more gradual transitions
+//!
+//! IMPORTANT NOTES:
+//! - This method does NOT respect transect structure (point 1 vs point 2, etc.)
+//! - Treats all input points equally regardless of which transect they belong to
+//! - Works well for scattered points but may not preserve transect-aligned features
+//! - For transect-aware interpolation, consider bilinear methods instead
+//!
+//! COASTLINE ORIENTATION:
+//! - The coastlines are available in m_VCoast[] vector
+//! - Each coast has flux orientation: m_VCoast[i].dGetFluxOrientation(coastpoint)
+//! - Each coast has breaking wave angle: m_VCoast[i].dGetBreakingWaveAngle(coastpoint)
+//! - These could be used to implement coast-aware interpolation algorithms
+//!
+//! @param pVTransects         Vector of TransectWaveData containing wave data per transect
+//! @param pVdDeepWaterX       X coordinates of deep water grid edge points
+//! @param pVdDeepWaterY       Y coordinates of deep water grid edge points
+//! @param pVdDeepWaterHeightX X component of wave height at deep water points
+//! @param pVdDeepWaterHeightY Y component of wave height at deep water points
+//! @return RTN_OK on success, error code otherwise
 //===============================================================================================================================
-int CSimulation::nInterpolateWavesToPolygonCells(vector<double> const *pVdX, vector<double> const *pVdY, vector<double> const *pVdHeightX, vector<double> const *pVdHeightY)
-{
-   int nXSize = 0;
-   int nYSize = 0;
+int CSimulation::nInterpolateWavesToPolygonCells(
+    vector<TransectWaveData> const *pVTransects,
+    vector<double> const *pVdDeepWaterX,
+    vector<double> const *pVdDeepWaterY,
+    vector<double> const *pVdDeepWaterHeightX,
+    vector<double> const *pVdDeepWaterHeightY) {
 
-   double dXAvg = 0;
-   double dYAvg = 0;
+  // ============================================================================
+  // STEP 1: Calculate grid dimensions and initialize variables
+  // ============================================================================
 
-   nXSize = m_nXMaxBoundingBox - m_nXMinBoundingBox + 1;
-   nYSize = m_nYMaxBoundingBox - m_nYMinBoundingBox + 1;
-   int const nGridSize = nXSize * nYSize;
+  int nXSize = 0;
+  int nYSize = 0;
 
-   unsigned int const nPoints = static_cast<unsigned int>(pVdX->size());
+  // Average values used as fallback when interpolation fails or returns NaN
+  double dXAvg = 0;
+  double dYAvg = 0;
 
-   //    // DEBUG CODE ============================================================================================================
-   // for (int nn = 0; nn < nPoints; nn++)
-   // {
-   // LogStream << nn << " " << dX[nn] << " " << dY[nn] << " " << dZ[nn] << endl;
-   // }
-   //
-   // m_nXMaxBoundingBox = m_nXGridSize-1;
-   // m_nYMaxBoundingBox = m_nYGridSize-1;
-   // m_nXMinBoundingBox = 0;
-   // m_nYMinBoundingBox = 0;
-   //    // DEBUG CODE ============================================================================================================
+  // Calculate bounding box size
+  nXSize = m_nXMaxBoundingBox - m_nXMinBoundingBox + 1;
+  nYSize = m_nYMaxBoundingBox - m_nYMinBoundingBox + 1;
+  int const nGridSize = nXSize * nYSize;
 
-   vector<double> VdOutX(nGridSize, 0);
-   vector<double> VdOutY(nGridSize, 0);
+  // Count total points across all transects plus deep water points
+  unsigned int nPoints = 0;
+  for (const auto& transect : *pVTransects) {
+    nPoints += static_cast<unsigned int>(transect.VdX.size());
+  }
+  nPoints += static_cast<unsigned int>(pVdDeepWaterX->size());
 
-   // Do first for X, then for Y
-   for (int nDirection = 0; nDirection < 2; nDirection++)
-   {
-      // Use the GDALGridCreate() linear interpolation algorithm: this computes a Delaunay triangulation of the point cloud, finding in which triangle of the triangulation the point is, and by doing linear interpolation from its barycentric coordinates within the triangle. If the point is not in any triangle, depending on the radius, the algorithm will use the value of the nearest point or the nodata value. Only available in GDAL 2.1 and later TODO 086
+  // Initialize output arrays (will hold interpolated X and Y wave components)
+  vector<double> VdOutX(nGridSize, 0);
+  vector<double> VdOutY(nGridSize, 0);
 
-      // Performance optimization: Use optimized settings for large grids
-      GDALGridLinearOptions *pOptions = new GDALGridLinearOptions();
-      pOptions->dfNoDataValue = m_dMissingValue;                  // Set the no-data marker to fill empty points
-      pOptions->dfRadius = -1;                                    // Set the search radius to infinite
-      pOptions->nSizeOfStructure = sizeof(GDALGridLinearOptions); // Needed for GDAL 3.6 onwards, see https://gdal.org/api/gdal_alg.html#_CPPv421GDALGridLinearOptions
+  // ============================================================================
+  // STEP 2: Prepare input data for spatial interpolation
+  // ============================================================================
 
-      // Performance enhancement: Enable grid threading for this specific operation
-      CPLSetThreadLocalConfigOption("GDAL_NUM_THREADS", "ALL_CPUS");
+  // Flatten transect data and deep water data into contiguous arrays for the interpolator
+  std::vector<Point2D> points;
+  std::vector<double> VdHeightX;
+  std::vector<double> VdHeightY;
 
-      // pOptions.dfRadius = static_cast<double>(nXSize + nYSize) / 2.0;                       // Set the search radius
+  points.reserve(nPoints);
+  VdHeightX.reserve(nPoints);
+  VdHeightY.reserve(nPoints);
 
-      // GDALGridNearestNeighborOptions* pOptions = new GDALGridNearestNeighborOptions();
-      // pOptions->dfNoDataValue = m_dMissingValue; // Set the no-data marker to fill empty points
-      // pOptions->dfRadius = -1;                   // Set the search radius to infinite
+  // Add profile/transect points
+  for (const auto& transect : *pVTransects) {
+    for (size_t i = 0; i < transect.VdX.size(); i++) {
+      points.emplace_back(transect.VdX[i], transect.VdY[i]);
+      VdHeightX.push_back(transect.VdHeightX[i]);
+      VdHeightY.push_back(transect.VdHeightY[i]);
+    }
+  }
 
-      // Call GDALGridCreate() TODO 086
-      int nRet;
+  // Add deep water grid edge points
+  for (size_t i = 0; i < pVdDeepWaterX->size(); i++) {
+    points.emplace_back((*pVdDeepWaterX)[i], (*pVdDeepWaterY)[i]);
+    VdHeightX.push_back((*pVdDeepWaterHeightX)[i]);
+    VdHeightY.push_back((*pVdDeepWaterHeightY)[i]);
+  }
 
-      if (nDirection == 0)
-      {
-         nRet = GDALGridCreate(GGA_Linear, pOptions, nPoints, pVdX->data(), pVdY->data(), pVdHeightX->data(), m_nXMinBoundingBox, m_nXMaxBoundingBox, m_nYMinBoundingBox, m_nYMaxBoundingBox, nXSize, nYSize, GDT_Float64, VdOutX.data(), NULL, NULL);
+  // ============================================================================
+  // STEP 3: Create spatial interpolator
+  // ============================================================================
+  //
+  // DualSpatialInterpolator parameters:
+  // - points: Input point coordinates (from profiles/transects)
+  // - VdHeightX, VdHeightY: Wave height X and Y components at those points
+  // - k_neighbors = 12: Use 12 nearest neighbors for interpolation
+  //                     ** ADJUST THIS to change smoothness vs local detail **
+  // - power = 2.0: Inverse distance weighting power
+  //                ** ADJUST THIS to change influence of nearby vs distant points **
+  //
+  // The interpolator builds a k-d tree for fast nearest neighbor search
+  // and shares it between X and Y interpolation for efficiency
+  DualSpatialInterpolator interp(points, VdHeightX, VdHeightY, 6, 2.0);
+
+  // ============================================================================
+  // STEP 4: Build query points (grid cells where we want interpolated values)
+  // ============================================================================
+
+  std::vector<Point2D> query_points;
+  query_points.reserve(nGridSize);
+  for (int nY = m_nYMinBoundingBox; nY <= m_nYMaxBoundingBox; nY++) {
+    for (int nX = m_nXMinBoundingBox; nX <= m_nXMaxBoundingBox; nX++) {
+      query_points.emplace_back(static_cast<double>(nX),
+                                static_cast<double>(nY));
+    }
+  }
+
+  // ============================================================================
+  // STEP 5: Perform batch interpolation
+  // ============================================================================
+  //
+  // This does the actual interpolation for all grid points at once
+  // Uses OpenMP parallelization if available (see spatial_interpolation.cpp)
+  // Interpolates both X and Y components simultaneously using shared k-d tree
+  interp.Interpolate(query_points, VdOutX, VdOutY);
+
+  // ============================================================================
+  // STEP 6: Validate results and calculate average values for fallback
+  // ============================================================================
+  //
+  // Check for NaN or unreasonably large values and replace with missing value marker
+  // Also calculate average of valid values to use as fallback
+
+  int nXValid = 0;
+  int nYValid = 0;
+
+  // Validate X component
+  for (unsigned int n = 0; n < VdOutX.size(); n++) {
+    if (isnan(VdOutX[n]))
+      VdOutX[n] = m_dMissingValue;
+    else if (tAbs(VdOutX[n]) > 1e10)  // Sanity check for unreasonably large values
+      VdOutX[n] = m_dMissingValue;
+    else {
+      dXAvg += VdOutX[n];
+      nXValid++;
+    }
+  }
+
+  // Validate Y component
+  for (unsigned int n = 0; n < VdOutY.size(); n++) {
+    if (isnan(VdOutY[n]))
+      VdOutY[n] = m_dMissingValue;
+    else if (tAbs(VdOutY[n]) > 1e10)  // Sanity check for unreasonably large values
+      VdOutY[n] = m_dMissingValue;
+    else {
+      dYAvg += VdOutY[n];
+      nYValid++;
+    }
+  }
+
+  // Calculate averages (for use as fallback when individual cells have missing values)
+  if (nXValid > 0)
+    dXAvg /= nXValid;
+  if (nYValid > 0)
+    dYAvg /= nYValid;
+
+  // ============================================================================
+  // STEP 7: Update grid cells with interpolated wave properties
+  // ============================================================================
+  //
+  // Convert X and Y components back to magnitude and direction,
+  // then update each cell's wave attributes
+
+  int n = 0;
+
+  for (int nY = 0; nY < nYSize; nY++) {
+    for (int nX = 0; nX < nXSize; nX++) {
+      int const nActualX = nX + m_nXMinBoundingBox;
+      int const nActualY = nY + m_nYMinBoundingBox;
+
+      if (m_pRasterGrid->m_Cell[nActualX][nActualY]
+              .bIsInContiguousSea()) {
+        // Only update sea cells
+
+        if (m_pRasterGrid->m_Cell[nActualX][nActualY].nGetPolygonID() ==
+            INT_NODATA) {
+          // --------------------------------------------------------------------
+          // Deep water cell (NOT in a polygon)
+          // --------------------------------------------------------------------
+          // Use the cell's pre-assigned deep water wave values
+          // (these cells are beyond the coastal zone, so don't need interpolation)
+
+          double const dDeepWaterWaveHeight =
+              m_pRasterGrid->m_Cell[nActualX][nActualY]
+                  .dGetCellDeepWaterWaveHeight();
+          m_pRasterGrid->m_Cell[nActualX][nActualY].SetWaveHeight(
+              dDeepWaterWaveHeight);
+
+          double const dDeepWaterWaveAngle =
+              m_pRasterGrid->m_Cell[nActualX][nActualY]
+                  .dGetCellDeepWaterWaveAngle();
+          m_pRasterGrid->m_Cell[nActualX][nActualY].SetWaveAngle(
+              dDeepWaterWaveAngle);
+        } else {
+          // --------------------------------------------------------------------
+          // Coastal zone cell (IN a polygon)
+          // --------------------------------------------------------------------
+          // Use the interpolated wave values calculated above
+
+          double dWaveHeightX;
+          double dWaveHeightY;
+
+          // Get interpolated X component (use average as fallback if missing/invalid)
+          if ((isnan(VdOutX[n])) ||
+              (bFPIsEqual(VdOutX[n], m_dMissingValue, TOLERANCE)))
+            dWaveHeightX = dXAvg;
+          else
+            dWaveHeightX = VdOutX[n];
+
+          // Get interpolated Y component (use average as fallback if missing/invalid)
+          if ((isnan(VdOutY[n])) ||
+              (bFPIsEqual(VdOutY[n], m_dMissingValue, TOLERANCE)))
+            dWaveHeightY = dYAvg;
+          else
+            dWaveHeightY = VdOutY[n];
+
+          // Convert X/Y components to magnitude and direction
+          double const dWaveHeight = sqrt((dWaveHeightX * dWaveHeightX) +
+                                          (dWaveHeightY * dWaveHeightY));
+          double const dWaveDir =
+              atan2(dWaveHeightX, dWaveHeightY) * (180 / PI);
+
+          // Update the cell's wave attributes
+          m_pRasterGrid->m_Cell[nActualX][nActualY].SetWaveHeight(
+              dWaveHeight);
+          m_pRasterGrid->m_Cell[nActualX][nActualY].SetWaveAngle(
+              dKeepWithin360(dWaveDir));
+
+          // Calculate wave height-to-depth ratio and update active zone status
+          // (active zone = where waves are breaking or near-breaking)
+          double const dSeaDepth =
+              m_pRasterGrid->m_Cell[nActualX][nActualY].dGetSeaDepth();
+
+          if ((dWaveHeight / dSeaDepth) >=
+              m_dBreakingWaveHeightDepthRatio)
+            m_pRasterGrid->m_Cell[nActualX][nActualY].SetInActiveZone(
+                true);
+
+          // LogStream << " nX = " << nX << " nY = " << nY << " [" <<
+          // nActualX
+          // << "][" << nActualY << "] waveheight = " << dWaveHeight << "
+          // dWaveDir = " << dWaveDir << " dKeepWithin360(dWaveDir) = " <<
+          // dKeepWithin360(dWaveDir) << endl;
+        }
       }
 
-      else
-      {
-         nRet = GDALGridCreate(GGA_Linear, pOptions, nPoints, pVdX->data(), pVdY->data(), pVdHeightY->data(), m_nXMinBoundingBox, m_nXMaxBoundingBox, m_nYMinBoundingBox, m_nYMaxBoundingBox, nXSize, nYSize, GDT_Float64, VdOutY.data(), NULL, NULL);
-      }
+      // Increment with safety check
+      n++;
+      n = tMin(n, static_cast<int>(VdOutX.size() - 1));
+    }
+  }
 
-      // int nRet;
-      // if (nDirection == 0)
-      // {
-      // nRet = GDALGridCreate(GGA_NearestNeighbor, pOptions, nPoints, pVdX->data(), pVdY->data(), pVdHeightX->data(), m_nXMinBoundingBox, m_nXMaxBoundingBox, m_nYMinBoundingBox, m_nYMaxBoundingBox, nXSize, nYSize, GDT_Float64, VdOutX.data(), NULL, NULL);
-      // }
-      // else
-      // {
-      // nRet = GDALGridCreate(GGA_NearestNeighbor, pOptions, nPoints, pVdX->data(), pVdY->data(), pVdHeightY->data(), m_nXMinBoundingBox, m_nXMaxBoundingBox, m_nYMinBoundingBox, m_nYMaxBoundingBox, nXSize, nYSize, GDT_Float64, VdOutY.data(), NULL, NULL);
-      // }
-
-      delete pOptions;
-
-      if (nRet == CE_Failure)
-      {
-         cerr << CPLGetLastErrorMsg() << endl;
-         return RTN_ERR_GRIDCREATE;
-      }
-
-      if (nDirection == 0)
-      {
-         int nXValid = 0;
-
-         // Safety check: unfortunately, GDALGridCreate(() outputs NaNs and other crazy values when the polygons are far from regular. So check for these
-         for (unsigned int n = 0; n < VdOutX.size(); n++)
-         {
-            if (isnan(VdOutX[n]))
-               VdOutX[n] = m_dMissingValue;
-
-            else if (tAbs(VdOutX[n]) > 1e10)
-               VdOutX[n] = m_dMissingValue;
-
-            else
-            {
-               dXAvg += VdOutX[n];
-               nXValid++;
-            }
-         }
-
-         dXAvg /= nXValid;
-      }
-
-      else
-      {
-         int nYValid = 0;
-
-         // Safety check: unfortunately, GDALGridCreate(() outputs NaNs and other crazy values when the polygon are far from regular. So check for these
-         for (unsigned int n = 0; n < VdOutY.size(); n++)
-         {
-            if (isnan(VdOutY[n]))
-               VdOutY[n] = m_dMissingValue;
-
-            else if (tAbs(VdOutY[n]) > 1e10)
-               VdOutY[n] = m_dMissingValue;
-
-            else
-            {
-               dYAvg += VdOutY[n];
-               nYValid++;
-            }
-         }
-
-         dYAvg /= nYValid;
-      }
-
-      // // DEBUG CODE ===========================================================================================================
-      // string strOutFile = m_strOutPath;
-      // strOutFile += "sea_wave_interpolation_";
-      // if (nDirection == 0)
-      // strOutFile += "X_";
-      // else
-      // strOutFile += "Y_";
-      // strOutFile += to_string(m_ulIter);
-      // strOutFile += ".tif";
-      //
-      // GDALDriver* pDriver = GetGDALDriverManager()->GetDriverByName("gtiff");
-      // GDALDataset* pDataSet = pDriver->Create(strOutFile.c_str(), m_nXGridSize, m_nYGridSize, 1, GDT_Float64, m_papszGDALRasterOptions);
-      // pDataSet->SetProjection(m_strGDALBasementDEMProjection.c_str());
-      // pDataSet->SetGeoTransform(m_dGeoTransform);
-      // double* pdRaster = new double[m_nXGridSize * m_nYGridSize];
-      // int m = 0;
-      // int n = 0;
-      // for (int nY = 0; nY < m_nYGridSize; nY++)
-      // {
-      // for (int nX = 0; nX < m_nXGridSize; nX++)
-      // {
-      // if ((nX < m_nXMinBoundingBox) || (nY < m_nYMinBoundingBox))
-      // {
-      // pdRaster[n++] = DBL_NODATA;
-      // }
-      // else
-      // {
-      //          // Write this value to the array
-      // if (nDirection == 0)
-      // {
-      // if (m < static_cast<int>(VdOutX.size()))
-      // {
-      // pdRaster[n++] = VdOutX[m++];
-      //                // LogStream << "nDirection = " << nDirection << " [" << nX << "][" << nY << "] = " << VpdOutX[n] << endl;
-      // }
-      // }
-      // else
-      // {
-      // if (m < static_cast<int>(VdOutY.size()))
-      // {
-      // pdRaster[n++] = VdOutY[m++];
-      //                // LogStream << "nDirection = " << nDirection << " [" << nX << "][" << nY << "] = " << VpdOutY[n] << endl;
-      // }
-      // }
-      // }
-      // }
-      // }
-      //
-      // GDALRasterBand* pBand = pDataSet->GetRasterBand(1);
-      // pBand->SetNoDataValue(m_dMissingValue);
-      // nRet = pBand->RasterIO(GF_Write, 0, 0, m_nXGridSize, m_nYGridSize, pdRaster, m_nXGridSize, m_nYGridSize, GDT_Float64, 0, 0, NULL);
-      //
-      // if (nRet == CE_Failure)
-      // return RTN_ERR_GRIDCREATE;
-      //
-      // GDALClose(pDataSet);
-      // delete[] pdRaster;
-      // // DEBUG CODE ===========================================================================================================
-   }
-
-   // // DEBUG CODE ===========================================================================================================
-   // string strOutFile = m_strOutPath;
-   // strOutFile += "sea_wave_height_before_";
-   // strOutFile += to_string(m_ulIter);
-   // strOutFile += ".tif";
-   //
-   // GDALDriver* pDriver = GetGDALDriverManager()->GetDriverByName("gtiff");
-   // GDALDataset* pDataSet = pDriver->Create(strOutFile.c_str(), m_nXGridSize, m_nYGridSize, 1, GDT_Float64, m_papszGDALRasterOptions);
-   // pDataSet->SetProjection(m_strGDALBasementDEMProjection.c_str());
-   // pDataSet->SetGeoTransform(m_dGeoTransform);
-   //
-   // int nn = 0;
-   // double* pdRaster = new double[m_nXGridSize * m_nYGridSize];
-   // for (int nY = 0; nY < m_nYGridSize; nY++)
-   // {
-   // for (int nX = 0; nX < m_nXGridSize; nX++)
-   // {
-   // pdRaster[nn++] = m_pRasterGrid->m_Cell[nX][nY].dGetWaveHeight();
-   // }
-   // }
-   //
-   // GDALRasterBand* pBand = pDataSet->GetRasterBand(1);
-   // pBand->SetNoDataValue(m_dMissingValue);
-   // int nRet = pBand->RasterIO(GF_Write, 0, 0, m_nXGridSize, m_nYGridSize, pdRaster, m_nXGridSize, m_nYGridSize, GDT_Float64, 0, 0, NULL);
-   //
-   // if (nRet == CE_Failure)
-   // return RTN_ERR_GRIDCREATE;
-   //
-   // GDALClose(pDataSet);
-   // delete[] pdRaster;
-   // // DEBUG CODE ===========================================================================================================
-
-   // // DEBUG CODE ===========================================================================================================
-   // strOutFile = m_strOutPath;
-   // strOutFile += "sea_wave_angle_before_";
-   // strOutFile += to_string(m_ulIter);
-   // strOutFile += ".tif";
-   //
-   // pDriver = GetGDALDriverManager()->GetDriverByName("gtiff");
-   // pDataSet = pDriver->Create(strOutFile.c_str(), m_nXGridSize, m_nYGridSize, 1, GDT_Float64, m_papszGDALRasterOptions);
-   // pDataSet->SetProjection(m_strGDALBasementDEMProjection.c_str());
-   // pDataSet->SetGeoTransform(m_dGeoTransform);
-   //
-   // nn = 0;
-   // pdRaster = new double[m_nXGridSize * m_nYGridSize];
-   // for (int nY = 0; nY < m_nYGridSize; nY++)
-   // {
-   // for (int nX = 0; nX < m_nXGridSize; nX++)
-   // {
-   // pdRaster[nn++] = m_pRasterGrid->m_Cell[nX][nY].dGetWaveAngle();
-   // }
-   // }
-   //
-   // pBand = pDataSet->GetRasterBand(1);
-   // pBand->SetNoDataValue(m_dMissingValue);
-   // nRet = pBand->RasterIO(GF_Write, 0, 0, m_nXGridSize, m_nYGridSize, pdRaster, m_nXGridSize, m_nYGridSize, GDT_Float64, 0, 0, NULL);
-   //
-   // if (nRet == CE_Failure)
-   // return RTN_ERR_GRIDCREATE;
-   //
-   // GDALClose(pDataSet);
-   // delete[] pdRaster;
-   // // DEBUG CODE ===========================================================================================================
-
-   // Now put the X and Y directions together and update the raster cells
-   int n = 0;
-
-   for (int nY = 0; nY < nYSize; nY++)
-   {
-      for (int nX = 0; nX < nXSize; nX++)
-      {
-         int const nActualX = nX + m_nXMinBoundingBox;
-         int const nActualY = nY + m_nYMinBoundingBox;
-
-         if (m_pRasterGrid->m_Cell[nActualX][nActualY].bIsInContiguousSea())
-         {
-            // Only update sea cells
-            if (m_pRasterGrid->m_Cell[nActualX][nActualY].nGetPolygonID() == INT_NODATA)
-            {
-               // This is a deep water sea cell (not in a polygon)
-               double const dDeepWaterWaveHeight = m_pRasterGrid->m_Cell[nActualX][nActualY].dGetCellDeepWaterWaveHeight();
-               m_pRasterGrid->m_Cell[nActualX][nActualY].SetWaveHeight(dDeepWaterWaveHeight);
-
-               double const dDeepWaterWaveAngle = m_pRasterGrid->m_Cell[nActualX][nActualY].dGetCellDeepWaterWaveAngle();
-               m_pRasterGrid->m_Cell[nActualX][nActualY].SetWaveAngle(dDeepWaterWaveAngle);
-            }
-            else
-            {
-               // This is in a polygon so is not a deep water sea cell
-               double dWaveHeightX;
-               double dWaveHeightY;
-
-               // Safety checks
-               if ((isnan(VdOutX[n])) || (bFPIsEqual(VdOutX[n], m_dMissingValue, TOLERANCE)))
-                  dWaveHeightX = dXAvg;
-               else
-                  dWaveHeightX = VdOutX[n];
-
-               if ((isnan(VdOutY[n])) || (bFPIsEqual(VdOutY[n], m_dMissingValue, TOLERANCE)))
-                  dWaveHeightY = dYAvg;
-               else
-                  dWaveHeightY = VdOutY[n];
-
-               // Now calculate wave direction
-               double const dWaveHeight = sqrt((dWaveHeightX * dWaveHeightX) + (dWaveHeightY * dWaveHeightY));
-               double const dWaveDir = atan2(dWaveHeightX, dWaveHeightY) * (180 / PI);
-
-               // assert(isfinite(dWaveHeight));
-               // assert(isfinite(dWaveDir));
-
-               // Update the cell's wave attributes
-               m_pRasterGrid->m_Cell[nActualX][nActualY].SetWaveHeight(dWaveHeight);
-               m_pRasterGrid->m_Cell[nActualX][nActualY].SetWaveAngle(dKeepWithin360(dWaveDir));
-
-               // Calculate the wave height-to-depth ratio for this cell, then update the cell's active zone status
-               double const dSeaDepth = m_pRasterGrid->m_Cell[nActualX][nActualY].dGetSeaDepth();
-
-               if ((dWaveHeight / dSeaDepth) >= m_dBreakingWaveHeightDepthRatio)
-                  m_pRasterGrid->m_Cell[nActualX][nActualY].SetInActiveZone(true);
-
-               // LogStream << " nX = " << nX << " nY = " << nY << " [" << nActualX << "][" << nActualY << "] waveheight = " << dWaveHeight << " dWaveDir = " << dWaveDir << " dKeepWithin360(dWaveDir) = " << dKeepWithin360(dWaveDir) << endl;
-            }
-         }
-
-         // Increment with safety check
-         n++;
-         n = tMin(n, static_cast<int>(VdOutX.size() - 1));
-      }
-   }
-
-   // // DEBUG CODE ===========================================================================================================
-   // strOutFile = m_strOutPath;
-   // strOutFile += "sea_wave_height_after_";
-   // strOutFile += to_string(m_ulIter);
-   // strOutFile += ".tif";
-   //
-   // pDriver = GetGDALDriverManager()->GetDriverByName("gtiff");
-   // pDataSet = pDriver->Create(strOutFile.c_str(), m_nXGridSize, m_nYGridSize, 1, GDT_Float64, m_papszGDALRasterOptions);
-   // pDataSet->SetProjection(m_strGDALBasementDEMProjection.c_str());
-   // pDataSet->SetGeoTransform(m_dGeoTransform);
-   //
-   // nn = 0;
-   // pdRaster = new double[m_nXGridSize * m_nYGridSize];
-   // for (int nY = 0; nY < m_nYGridSize; nY++)
-   // {
-   // for (int nX = 0; nX < m_nXGridSize; nX++)
-   // {
-   // pdRaster[nn++] = m_pRasterGrid->m_Cell[nX][nY].dGetWaveHeight();
-   // }
-   // }
-   //
-   // pBand = pDataSet->GetRasterBand(1);
-   // pBand->SetNoDataValue(m_dMissingValue);
-   // nRet = pBand->RasterIO(GF_Write, 0, 0, m_nXGridSize, m_nYGridSize, pdRaster, m_nXGridSize, m_nYGridSize, GDT_Float64, 0, 0, NULL);
-   //
-   // if (nRet == CE_Failure)
-   // return RTN_ERR_GRIDCREATE;
-   //
-   // GDALClose(pDataSet);
-   // delete[] pdRaster;
-   // // DEBUG CODE ===========================================================================================================
-
-   // // DEBUG CODE ===========================================================================================================
-   // strOutFile = m_strOutPath;
-   // strOutFile += "sea_wave_angle_after_";
-   // strOutFile += to_string(m_ulIter);
-   // strOutFile += ".tif";
-   //
-   // pDriver = GetGDALDriverManager()->GetDriverByName("gtiff");
-   // pDataSet = pDriver->Create(strOutFile.c_str(), m_nXGridSize, m_nYGridSize, 1, GDT_Float64, m_papszGDALRasterOptions);
-   // pDataSet->SetProjection(m_strGDALBasementDEMProjection.c_str());
-   // pDataSet->SetGeoTransform(m_dGeoTransform);
-   //
-   // nn = 0;
-   // pdRaster = new double[m_nXGridSize * m_nYGridSize];
-   // for (int nY = 0; nY < m_nYGridSize; nY++)
-   // {
-   // for (int nX = 0; nX < m_nXGridSize; nX++)
-   // {
-   // pdRaster[nn++] = m_pRasterGrid->m_Cell[nX][nY].dGetWaveAngle();
-   // }
-   // }
-   //
-   // pBand = pDataSet->GetRasterBand(1);
-   // pBand->SetNoDataValue(m_dMissingValue);
-   // nRet = pBand->RasterIO(GF_Write, 0, 0, m_nXGridSize, m_nYGridSize, pdRaster, m_nXGridSize, m_nYGridSize, GDT_Float64, 0, 0, NULL);
-   //
-   // if (nRet == CE_Failure)
-   // return RTN_ERR_GRIDCREATE;
-   //
-   // GDALClose(pDataSet);
-   // delete[] pdRaster;
-   // // DEBUG CODE ===========================================================================================================
-
-   return RTN_OK;
+  return RTN_OK;
 }
 
 //===============================================================================================================================
-//! If the user supplies multiple deep water wave height and angle values, this routine interplates these to all cells (including dry land cells)
+//! If the user supplies multiple deep water wave height and angle values,
+//! this routine interplates these to all cells (including dry land cells)
 //===============================================================================================================================
-int CSimulation::nInterpolateAllDeepWaterWaveValues(void)
-{
-   // Interpolate deep water height and orientation from multiple user-supplied values
-   unsigned int const nUserPoints = static_cast<unsigned int>(m_VdDeepWaterWaveStationX.size());
+int CSimulation::nInterpolateAllDeepWaterWaveValues(void) {
+        // Interpolate deep water height and orientation from multiple
+        // user-supplied values
+        unsigned int const nUserPoints =
+            static_cast<unsigned int>(m_VdDeepWaterWaveStationX.size());
 
-   // Performance optimization: Enable GDAL threading for interpolation
-   CPLSetThreadLocalConfigOption("GDAL_NUM_THREADS", "ALL_CPUS");
+        // Performance optimization: Enable GDAL threading for interpolation
+        CPLSetThreadLocalConfigOption("GDAL_NUM_THREADS", "ALL_CPUS");
 
-   // Call GDALGridCreate() with the GGA_InverseDistanceToAPower interpolation algorithm. It has following parameters: radius1 is the first radius (X axis if rotation angle is 0) of the search ellipse, set this to zero (the default) to use the whole point array; radius2 is the second radius (Y axis if rotation angle is 0) of the search ellipse, again set this parameter to zero (the default) to use the whole point array; angle is the angle of the search ellipse rotation in degrees (counter clockwise, default 0.0); nodata is the NODATA marker to fill empty points (default 0.0) TODO 086
-   GDALGridInverseDistanceToAPowerOptions *pOptions = new GDALGridInverseDistanceToAPowerOptions();
-   pOptions->dfAngle = 0;
-   pOptions->dfAnisotropyAngle = 0;
-   pOptions->dfAnisotropyRatio = 0;
-   pOptions->dfPower = 2;      // Reduced from 3 to 2 for faster computation
-   pOptions->dfSmoothing = 50; // Reduced from 100 to 50 for faster computation
-   pOptions->dfRadius1 = 0;
-   pOptions->dfRadius2 = 0;
-   pOptions->nMaxPoints = 12; // Limit points for faster computation (was 0 = unlimited)
-   pOptions->nMinPoints = 3;  // Minimum points needed for interpolation
-   pOptions->dfNoDataValue = m_nMissingValue;
+        // Call GDALGridCreate() with the GGA_InverseDistanceToAPower
+        // interpolation algorithm. It has following parameters: radius1 is the
+        // first radius (X axis if rotation angle is 0) of the search ellipse,
+        // set this to zero (the default) to use the whole point array; radius2
+        // is the second radius (Y axis if rotation angle is 0) of the search
+        // ellipse, again set this parameter to zero (the default) to use the
+        // whole point array; angle is the angle of the search ellipse rotation
+        // in degrees (counter clockwise, default 0.0); nodata is the NODATA
+        // marker to fill empty points (default 0.0) TODO 086
+        GDALGridInverseDistanceToAPowerOptions *pOptions =
+            new GDALGridInverseDistanceToAPowerOptions();
+        pOptions->dfAngle = 0;
+        pOptions->dfAnisotropyAngle = 0;
+        pOptions->dfAnisotropyRatio = 0;
+        pOptions->dfPower = 2; // Reduced from 3 to 2 for faster computation
+        pOptions->dfSmoothing =
+            50; // Reduced from 100 to 50 for faster computation
+        pOptions->dfRadius1 = 0;
+        pOptions->dfRadius2 = 0;
+        pOptions->nMaxPoints =
+            12; // Limit points for faster computation (was 0 = unlimited)
+        pOptions->nMinPoints = 3; // Minimum points needed for interpolation
+        pOptions->dfNoDataValue = m_nMissingValue;
 
-   // CPLSetConfigOption("CPL_DEBUG", "ON");
-   // CPLSetConfigOption("GDAL_NUM_THREADS", "1");
+        // CPLSetConfigOption("CPL_DEBUG", "ON");
+        // CPLSetConfigOption("GDAL_NUM_THREADS", "1");
 
-   // OK, now create a gridded version of wave height: first create the GDAL context TODO 086
-   // GDALGridContext* pContext = GDALGridContextCreate(GGA_InverseDistanceToAPower, pOptions, nUserPoints, &m_VdDeepWaterWaveStationX[0], &m_VdDeepWaterWaveStationY[0], &m_VdThisIterDeepWaterWaveStationHeight[0], true);
-   GDALGridContext *pContext = GDALGridContextCreate(GGA_InverseDistanceToAPower, pOptions, nUserPoints, m_VdDeepWaterWaveStationX.data(), m_VdDeepWaterWaveStationY.data(), m_VdThisIterDeepWaterWaveStationHeight.data(), true);
+        // OK, now create a gridded version of wave height: first create the
+        // GDAL context TODO 086 GDALGridContext* pContext =
+        // GDALGridContextCreate(GGA_InverseDistanceToAPower, pOptions,
+        // nUserPoints, &m_VdDeepWaterWaveStationX[0],
+        // &m_VdDeepWaterWaveStationY[0],
+        // &m_VdThisIterDeepWaterWaveStationHeight[0], true);
+        GDALGridContext *pContext = GDALGridContextCreate(
+            GGA_InverseDistanceToAPower, pOptions, nUserPoints,
+            m_VdDeepWaterWaveStationX.data(), m_VdDeepWaterWaveStationY.data(),
+            m_VdThisIterDeepWaterWaveStationHeight.data(), true);
 
-   if (pContext == NULL)
-   {
-      delete pOptions;
-      return RTN_ERR_GRIDCREATE;
-   }
+        if (pContext == NULL) {
+          delete pOptions;
+          return RTN_ERR_GRIDCREATE;
+        }
 
-   // Now process the context
-   double *dHeightOut = new double[m_ulNumCells];
-   int nRet = GDALGridContextProcess(pContext, 0, m_nXGridSize - 1, 0, m_nYGridSize - 1, m_nXGridSize, m_nYGridSize, GDT_Float64, dHeightOut, NULL, NULL);
+        // Now process the context
+        double *dHeightOut = new double[m_ulNumCells];
+        int nRet = GDALGridContextProcess(
+            pContext, 0, m_nXGridSize - 1, 0, m_nYGridSize - 1, m_nXGridSize,
+            m_nYGridSize, GDT_Float64, dHeightOut, NULL, NULL);
 
-   if (nRet == CE_Failure)
-   {
-      delete[] dHeightOut;
-      delete pOptions;
-      return RTN_ERR_GRIDCREATE;
-   }
+        if (nRet == CE_Failure) {
+          delete[] dHeightOut;
+          delete pOptions;
+          return RTN_ERR_GRIDCREATE;
+        }
 
-   // Get rid of the context
-   GDALGridContextFree(pContext);
+        // Get rid of the context
+        GDALGridContextFree(pContext);
 
-   // Next create a gridded version of wave orientation: first create the GDAL context
-   // pContext = GDALGridContextCreate(GGA_InverseDistanceToAPower, pOptions, nUserPoints,  &(m_VdDeepWaterWaveStationX[0]), &(m_VdDeepWaterWaveStationY[0]), (&m_VdThisIterDeepWaterWaveStationAngle[0]), true);
-   pContext = GDALGridContextCreate(GGA_InverseDistanceToAPower, pOptions, nUserPoints, m_VdDeepWaterWaveStationX.data(), m_VdDeepWaterWaveStationY.data(), m_VdThisIterDeepWaterWaveStationAngle.data(), true);
+        // Next create a gridded version of wave orientation: first create the
+        // GDAL context pContext =
+        // GDALGridContextCreate(GGA_InverseDistanceToAPower, pOptions,
+        // nUserPoints,  &(m_VdDeepWaterWaveStationX[0]),
+        // &(m_VdDeepWaterWaveStationY[0]),
+        // (&m_VdThisIterDeepWaterWaveStationAngle[0]), true);
+        pContext = GDALGridContextCreate(
+            GGA_InverseDistanceToAPower, pOptions, nUserPoints,
+            m_VdDeepWaterWaveStationX.data(), m_VdDeepWaterWaveStationY.data(),
+            m_VdThisIterDeepWaterWaveStationAngle.data(), true);
 
-   if (pContext == NULL)
-   {
-      delete[] dHeightOut;
-      delete pOptions;
-      return RTN_ERR_GRIDCREATE;
-   }
+        if (pContext == NULL) {
+          delete[] dHeightOut;
+          delete pOptions;
+          return RTN_ERR_GRIDCREATE;
+        }
 
-   // Now process the context TODO 086
-   double *dAngleOut = new double[m_ulNumCells];
-   nRet = GDALGridContextProcess(pContext, 0, m_nXGridSize - 1, 0, m_nYGridSize - 1, m_nXGridSize, m_nYGridSize, GDT_Float64, dAngleOut, NULL, NULL);
+        // Now process the context TODO 086
+        double *dAngleOut = new double[m_ulNumCells];
+        nRet = GDALGridContextProcess(
+            pContext, 0, m_nXGridSize - 1, 0, m_nYGridSize - 1, m_nXGridSize,
+            m_nYGridSize, GDT_Float64, dAngleOut, NULL, NULL);
 
-   if (nRet == CE_Failure)
-   {
-      delete[] dHeightOut;
-      delete[] dAngleOut;
-      delete pOptions;
-      return RTN_ERR_GRIDCREATE;
-   }
+        if (nRet == CE_Failure) {
+          delete[] dHeightOut;
+          delete[] dAngleOut;
+          delete pOptions;
+          return RTN_ERR_GRIDCREATE;
+        }
 
-   // Get rid of the context
-   GDALGridContextFree(pContext);
+        // Get rid of the context
+        GDALGridContextFree(pContext);
 
-   // OK, now create a gridded version of wave period: first create the GDAL context
-   // pContext = GDALGridContextCreate(GGA_InverseDistanceToAPower, pOptions, nUserPoints, &m_VdDeepWaterWaveStationX[0], &m_VdDeepWaterWaveStationY[0], &m_VdThisIterDeepWaterWaveStationPeriod[0], true);
-   pContext = GDALGridContextCreate(GGA_InverseDistanceToAPower, pOptions, nUserPoints, m_VdDeepWaterWaveStationX.data(), m_VdDeepWaterWaveStationY.data(), m_VdThisIterDeepWaterWaveStationPeriod.data(), true);
+        // OK, now create a gridded version of wave period: first create the
+        // GDAL context pContext =
+        // GDALGridContextCreate(GGA_InverseDistanceToAPower, pOptions,
+        // nUserPoints, &m_VdDeepWaterWaveStationX[0],
+        // &m_VdDeepWaterWaveStationY[0],
+        // &m_VdThisIterDeepWaterWaveStationPeriod[0], true);
+        pContext = GDALGridContextCreate(
+            GGA_InverseDistanceToAPower, pOptions, nUserPoints,
+            m_VdDeepWaterWaveStationX.data(), m_VdDeepWaterWaveStationY.data(),
+            m_VdThisIterDeepWaterWaveStationPeriod.data(), true);
 
-   if (pContext == NULL)
-   {
-      delete pOptions;
-      return RTN_ERR_GRIDCREATE;
-   }
+        if (pContext == NULL) {
+          delete pOptions;
+          return RTN_ERR_GRIDCREATE;
+        }
 
-   // Now process the context TODO 086
-   double *dPeriopdOut = new double[m_ulNumCells];
-   nRet = GDALGridContextProcess(pContext, 0, m_nXGridSize - 1, 0, m_nYGridSize - 1, m_nXGridSize, m_nYGridSize, GDT_Float64, dPeriopdOut, NULL, NULL);
+        // Now process the context TODO 086
+        double *dPeriopdOut = new double[m_ulNumCells];
+        nRet = GDALGridContextProcess(
+            pContext, 0, m_nXGridSize - 1, 0, m_nYGridSize - 1, m_nXGridSize,
+            m_nYGridSize, GDT_Float64, dPeriopdOut, NULL, NULL);
 
-   if (nRet == CE_Failure)
-   {
-      delete[] dPeriopdOut;
-      delete pOptions;
-      return RTN_ERR_GRIDCREATE;
-   }
+        if (nRet == CE_Failure) {
+          delete[] dPeriopdOut;
+          delete pOptions;
+          return RTN_ERR_GRIDCREATE;
+        }
 
-   // Get rid of the context
-   GDALGridContextFree(pContext);
+        // Get rid of the context
+        GDALGridContextFree(pContext);
 
-   // The output from GDALGridCreate() is in dHeightOut, dAngleOut and dPeriopdOut but must be reversed
-   vector<double> VdHeight;
-   vector<double> VdAngle;
-   vector<double> VdPeriod;
+        // The output from GDALGridCreate() is in dHeightOut, dAngleOut and
+        // dPeriopdOut but must be reversed
+        vector<double> VdHeight;
+        vector<double> VdAngle;
+        vector<double> VdPeriod;
 
-   int n = 0;
-   int nValidHeight = 0;
-   int nValidAngle = 0;
-   int nValidPeriod = 0;
+        int n = 0;
+        int nValidHeight = 0;
+        int nValidAngle = 0;
+        int nValidPeriod = 0;
 
-   double dAvgHeight = 0;
-   double dAvgAngle = 0;
-   double dAvgPeriod = 0;
+        double dAvgHeight = 0;
+        double dAvgAngle = 0;
+        double dAvgPeriod = 0;
 
-   for (int nY = m_nYGridSize - 1; nY >= 0; nY--)
-   {
-      for (int nX = 0; nX < m_nXGridSize; nX++)
-      {
-         if (isfinite(dHeightOut[n]))
-         {
-            VdHeight.push_back(dHeightOut[n]);
+        for (int nY = m_nYGridSize - 1; nY >= 0; nY--) {
+          for (int nX = 0; nX < m_nXGridSize; nX++) {
+            if (isfinite(dHeightOut[n])) {
+              VdHeight.push_back(dHeightOut[n]);
 
-            dAvgHeight += dHeightOut[n];
-            nValidHeight++;
-         }
+              dAvgHeight += dHeightOut[n];
+              nValidHeight++;
+            }
 
-         else
-         {
-            VdHeight.push_back(m_dMissingValue);
-         }
+            else {
+              VdHeight.push_back(m_dMissingValue);
+            }
 
-         if (isfinite(dAngleOut[n]))
-         {
-            VdAngle.push_back(dAngleOut[n]);
+            if (isfinite(dAngleOut[n])) {
+              VdAngle.push_back(dAngleOut[n]);
 
-            dAvgAngle += dAngleOut[n];
-            nValidAngle++;
-         }
+              dAvgAngle += dAngleOut[n];
+              nValidAngle++;
+            }
 
-         else
-         {
-            VdAngle.push_back(m_dMissingValue);
-         }
+            else {
+              VdAngle.push_back(m_dMissingValue);
+            }
 
-         if (isfinite(dPeriopdOut[n]))
-         {
-            VdPeriod.push_back(dPeriopdOut[n]);
+            if (isfinite(dPeriopdOut[n])) {
+              VdPeriod.push_back(dPeriopdOut[n]);
 
-            dAvgPeriod += dPeriopdOut[n];
-            nValidPeriod++;
-         }
+              dAvgPeriod += dPeriopdOut[n];
+              nValidPeriod++;
+            }
 
-         else
-         {
-            VdPeriod.push_back(m_dMissingValue);
-         }
+            else {
+              VdPeriod.push_back(m_dMissingValue);
+            }
 
-         // LogStream << " nX = " << nX << " nY = " << nY << " n = " << n << " dHeightOut[n] = " << dHeightOut[n] << " dAngleOut[n] = " << dAngleOut[n] << endl;
-         n++;
+            // LogStream << " nX = " << nX << " nY = " << nY << " n = " << n <<
+            // " dHeightOut[n] = " << dHeightOut[n] << " dAngleOut[n] = " <<
+            // dAngleOut[n] << endl;
+            n++;
+          }
+        }
+
+        // Calculate averages
+        dAvgHeight /= nValidHeight;
+        dAvgAngle /= nValidAngle;
+        dAvgPeriod /= nValidPeriod;
+
+        // Tidy
+        delete pOptions;
+        delete[] dHeightOut;
+        delete[] dAngleOut;
+        delete[] dPeriopdOut;
+
+        // Now update all raster cells
+        n = 0;
+
+        for (int nY = 0; nY < m_nYGridSize; nY++) {
+          for (int nX = 0; nX < m_nXGridSize; nX++) {
+            if (bFPIsEqual(VdHeight[n], m_dMissingValue, TOLERANCE))
+              m_pRasterGrid->m_Cell[nX][nY].SetCellDeepWaterWaveHeight(
+                  dAvgHeight);
+
+            else
+              m_pRasterGrid->m_Cell[nX][nY].SetCellDeepWaterWaveHeight(
+                  VdHeight[n]);
+
+            if (bFPIsEqual(VdAngle[n], m_dMissingValue, TOLERANCE))
+              m_pRasterGrid->m_Cell[nX][nY].SetCellDeepWaterWaveAngle(
+                  dAvgAngle);
+
+            else
+              m_pRasterGrid->m_Cell[nX][nY].SetCellDeepWaterWaveAngle(
+                  VdAngle[n]);
+
+            if (bFPIsEqual(VdPeriod[n], m_dMissingValue, TOLERANCE))
+              m_pRasterGrid->m_Cell[nX][nY].SetCellDeepWaterWavePeriod(
+                  dAvgPeriod);
+
+            else
+              m_pRasterGrid->m_Cell[nX][nY].SetCellDeepWaterWavePeriod(
+                  VdPeriod[n]);
+
+            // LogStream << " [" << nX << "][" << nY << "] deep water wave
+            // height = "
+            // << m_pRasterGrid->m_Cell[nX][nY].dGetCellDeepWaterWaveHeight() <<
+            // " deep water wave angle = " <<
+            // m_pRasterGrid->m_Cell[nX][nY].dGetCellDeepWaterWaveAngle() <<
+            // endl;
+            n++;
+          }
+        }
+
+        // // DEBUG CODE
+        // ===========================================================================================================
+        // string strOutFile = m_strOutPath;
+        // strOutFile += "init_deep_water_wave_height_";
+        // strOutFile += to_string(m_ulIter);
+        // strOutFile += ".tif";
+        // GDALDriver* pDriver =
+        // GetGDALDriverManager()->GetDriverByName("gtiff"); GDALDataset*
+        // pDataSet = pDriver->Create(strOutFile.c_str(), m_nXGridSize,
+        // m_nYGridSize, 1, GDT_Float64, m_papszGDALRasterOptions);
+        // pDataSet->SetProjection(m_strGDALBasementDEMProjection.c_str());
+        // pDataSet->SetGeoTransform(m_dGeoTransform);
+        // double* pdRaster = new double[m_ulNumCells];
+        // int nn = 0;
+        // for (int nY = 0; nY < m_nYGridSize; nY++)
+        // {
+        // for (int nX = 0; nX < m_nXGridSize; nX++)
+        // {
+        //          // Write this value to the array
+        // pdRaster[nn] =
+        // m_pRasterGrid->m_Cell[nX][nY].dGetCellDeepWaterWaveHeight(); nn++;
+        // }
+        // }
+        //
+        // GDALRasterBand* pBand = pDataSet->GetRasterBand(1);
+        // pBand->SetNoDataValue(m_nMissingValue);
+        // nRet = pBand->RasterIO(GF_Write, 0, 0, m_nXGridSize, m_nYGridSize,
+        // pdRaster, m_nXGridSize, m_nYGridSize, GDT_Float64, 0, 0, NULL);
+        //
+        // if (nRet == CE_Failure)
+        // return RTN_ERR_GRIDCREATE;
+        //
+        // GDALClose(pDataSet);
+        // // DEBUG CODE
+        // ===========================================================================================================
+
+        // // DEBUG CODE
+        // ===========================================================================================================
+        // strOutFile = m_strOutPath;
+        // strOutFile += "init_deep_water_wave_angle_";
+        // strOutFile += to_string(m_ulIter);
+        // strOutFile += ".tif";
+        // pDataSet = pDriver->Create(strOutFile.c_str(), m_nXGridSize,
+        // m_nYGridSize, 1, GDT_Float64, m_papszGDALRasterOptions);
+        // pDataSet->SetProjection(m_strGDALBasementDEMProjection.c_str());
+        // pDataSet->SetGeoTransform(m_dGeoTransform);
+        // nn = 0;
+        // for (int nY = 0; nY < m_nYGridSize; nY++)
+        // {
+        // for (int nX = 0; nX < m_nXGridSize; nX++)
+        // {
+        //          // Write this value to the array
+        // pdRaster[nn] =
+        // m_pRasterGrid->m_Cell[nX][nY].dGetCellDeepWaterWaveAngle(); nn++;
+        // }
+        // }
+        //
+        // pBand = pDataSet->GetRasterBand(1);
+        // pBand->SetNoDataValue(m_nMissingValue);
+        // nRet = pBand->RasterIO(GF_Write, 0, 0, m_nXGridSize, m_nYGridSize,
+        // pdRaster, m_nXGridSize, m_nYGridSize, GDT_Float64, 0, 0, NULL);
+        //
+        // if (nRet == CE_Failure)
+        // return RTN_ERR_GRIDCREATE;
+        //
+        // GDALClose(pDataSet);
+        // delete[] pdRaster;
+        // // DEBUG CODE
+        // ===========================================================================================================
+
+        return RTN_OK;
       }
-   }
-
-   // Calculate averages
-   dAvgHeight /= nValidHeight;
-   dAvgAngle /= nValidAngle;
-   dAvgPeriod /= nValidPeriod;
-
-   // Tidy
-   delete pOptions;
-   delete[] dHeightOut;
-   delete[] dAngleOut;
-   delete[] dPeriopdOut;
-
-   // Now update all raster cells
-   n = 0;
-
-   for (int nY = 0; nY < m_nYGridSize; nY++)
-   {
-      for (int nX = 0; nX < m_nXGridSize; nX++)
-      {
-         if (bFPIsEqual(VdHeight[n], m_dMissingValue, TOLERANCE))
-            m_pRasterGrid->m_Cell[nX][nY].SetCellDeepWaterWaveHeight(dAvgHeight);
-
-         else
-            m_pRasterGrid->m_Cell[nX][nY].SetCellDeepWaterWaveHeight(VdHeight[n]);
-
-         if (bFPIsEqual(VdAngle[n], m_dMissingValue, TOLERANCE))
-            m_pRasterGrid->m_Cell[nX][nY].SetCellDeepWaterWaveAngle(dAvgAngle);
-
-         else
-            m_pRasterGrid->m_Cell[nX][nY].SetCellDeepWaterWaveAngle(VdAngle[n]);
-
-         if (bFPIsEqual(VdPeriod[n], m_dMissingValue, TOLERANCE))
-            m_pRasterGrid->m_Cell[nX][nY].SetCellDeepWaterWavePeriod(dAvgPeriod);
-
-         else
-            m_pRasterGrid->m_Cell[nX][nY].SetCellDeepWaterWavePeriod(VdPeriod[n]);
-
-         // LogStream << " [" << nX << "][" << nY << "] deep water wave height = " << m_pRasterGrid->m_Cell[nX][nY].dGetCellDeepWaterWaveHeight() << " deep water wave angle = " << m_pRasterGrid->m_Cell[nX][nY].dGetCellDeepWaterWaveAngle() << endl;
-         n++;
-      }
-   }
-
-   // // DEBUG CODE ===========================================================================================================
-   // string strOutFile = m_strOutPath;
-   // strOutFile += "init_deep_water_wave_height_";
-   // strOutFile += to_string(m_ulIter);
-   // strOutFile += ".tif";
-   // GDALDriver* pDriver = GetGDALDriverManager()->GetDriverByName("gtiff");
-   // GDALDataset* pDataSet = pDriver->Create(strOutFile.c_str(), m_nXGridSize, m_nYGridSize, 1, GDT_Float64, m_papszGDALRasterOptions);
-   // pDataSet->SetProjection(m_strGDALBasementDEMProjection.c_str());
-   // pDataSet->SetGeoTransform(m_dGeoTransform);
-   // double* pdRaster = new double[m_ulNumCells];
-   // int nn = 0;
-   // for (int nY = 0; nY < m_nYGridSize; nY++)
-   // {
-   // for (int nX = 0; nX < m_nXGridSize; nX++)
-   // {
-   //          // Write this value to the array
-   // pdRaster[nn] = m_pRasterGrid->m_Cell[nX][nY].dGetCellDeepWaterWaveHeight();
-   // nn++;
-   // }
-   // }
-   //
-   // GDALRasterBand* pBand = pDataSet->GetRasterBand(1);
-   // pBand->SetNoDataValue(m_nMissingValue);
-   // nRet = pBand->RasterIO(GF_Write, 0, 0, m_nXGridSize, m_nYGridSize, pdRaster, m_nXGridSize, m_nYGridSize, GDT_Float64, 0, 0, NULL);
-   //
-   // if (nRet == CE_Failure)
-   // return RTN_ERR_GRIDCREATE;
-   //
-   // GDALClose(pDataSet);
-   // // DEBUG CODE ===========================================================================================================
-
-   // // DEBUG CODE ===========================================================================================================
-   // strOutFile = m_strOutPath;
-   // strOutFile += "init_deep_water_wave_angle_";
-   // strOutFile += to_string(m_ulIter);
-   // strOutFile += ".tif";
-   // pDataSet = pDriver->Create(strOutFile.c_str(), m_nXGridSize, m_nYGridSize, 1, GDT_Float64, m_papszGDALRasterOptions);
-   // pDataSet->SetProjection(m_strGDALBasementDEMProjection.c_str());
-   // pDataSet->SetGeoTransform(m_dGeoTransform);
-   // nn = 0;
-   // for (int nY = 0; nY < m_nYGridSize; nY++)
-   // {
-   // for (int nX = 0; nX < m_nXGridSize; nX++)
-   // {
-   //          // Write this value to the array
-   // pdRaster[nn] = m_pRasterGrid->m_Cell[nX][nY].dGetCellDeepWaterWaveAngle();
-   // nn++;
-   // }
-   // }
-   //
-   // pBand = pDataSet->GetRasterBand(1);
-   // pBand->SetNoDataValue(m_nMissingValue);
-   // nRet = pBand->RasterIO(GF_Write, 0, 0, m_nXGridSize, m_nYGridSize, pdRaster, m_nXGridSize, m_nYGridSize, GDT_Float64, 0, 0, NULL);
-   //
-   // if (nRet == CE_Failure)
-   // return RTN_ERR_GRIDCREATE;
-   //
-   // GDALClose(pDataSet);
-   // delete[] pdRaster;
-   // // DEBUG CODE ===========================================================================================================
-
-   return RTN_OK;
-}
