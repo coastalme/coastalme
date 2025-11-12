@@ -6,6 +6,8 @@
 # Set CMake required version
 cmake_minimum_required(VERSION 3.12 FATAL_ERROR)
 
+set(CMAKE_VERBOSE_MAKEFILE OFF)
+
 # This is needed if we want to use relative paths for e.g. the install dir.
 # Such as ${CMAKE_SOURCE_DIR}/.. This was deprecated in CMake 3.31
 if(${CMAKE_VERSION} VERSION_GREATER "3.31")
@@ -47,16 +49,10 @@ if(UNIX)
   endif()
 
 elseif(WIN32)
-  message(
-  FATAL_ERROR
-  "CoastalME cannot be built using the Visual Studio compiler"
-  )
+  message(FATAL_ERROR "CoastalME cannot be built using the Visual Studio compiler")
 
 elseif(MINGW)
-  message(
-  FATAL_ERROR
-  "CoastalME cannot be builtusing the MinGW compiler"
-  )
+  message(FATAL_ERROR "CoastalME cannot be builtusing the MinGW compiler")
 endif()
 
 message("")
