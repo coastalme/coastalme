@@ -752,11 +752,12 @@ int CSimulation::nMoveCliffTalusToUnconsolidated(void)
          for (int nLayer = 0; nLayer < nLayers; nLayer++)
          {
             // Is there talus on this cell layer?
-            CRWCellTalus* pTalus = m_pRasterGrid->Cell(nX, nY).pGetLayerAboveBasement(nLayer)->pGetTalus();
-
-            if (pTalus == NULL)
-               // No talus
+            if (! m_pRasterGrid->Cell(nX, nY).pGetLayerAboveBasement(nLayer)->bHasTalus())
+               // Nope
                continue;
+
+            // There is talus on this cell
+            CRWCellTalus* pTalus = m_pRasterGrid->Cell(nX, nY).pGetLayerAboveBasement(nLayer)->pGetTalus();
 
             // OK we have some talus which could be redistributed from this cell, if waves (inc runup) reach high enough
             double const dThisTalusBottomElev = m_pRasterGrid->Cell(nX, nY).dGetAllSedTopElevOmitTalus();

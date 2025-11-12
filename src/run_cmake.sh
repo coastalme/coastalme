@@ -1,4 +1,5 @@
 #!/bin/bash
+
 verbose='false'
 cflag="false"
 iflag="false"
@@ -22,7 +23,7 @@ done
 #buildtype=DEBUG
 #buildtype=RELEASE
 buildtype=PRERELEASE
-#buildtype=RELWITHDEBINFO # Not yet implemented in CMakeLists.txt
+#buildtype=RELWITHDEBINFO
 #buildtype=MINSIZEREL            # Not yet implemented in CMakeLists.txt
 #buildtype=GCOV
 #buildtype=CALLGRIND
@@ -42,14 +43,14 @@ cshoreinout=ARG
 
 # Always build CShore
 echo ""
-# cd cshore || exit
-# if [ "$cflag" = "true" ]; then
-# 	rm -f ../lib/*
-# 	make clean
-# 	./make_cshore_lib.sh
-# fi
-#
-# cd ..
+cd cshore || exit
+if [ "$cflag" = "true" ]; then
+	rm -f ../lib/*
+	make clean
+	./make_cshore_lib.sh
+fi
+
+cd ..
 # Note: The cshore Makefile now correctly names libraries for MacOS automatically
 echo ""
 

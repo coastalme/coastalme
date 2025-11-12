@@ -365,12 +365,12 @@ double CGeomCell::dGetTalusDepth(void) const
    for (int nLayer = 0; nLayer < static_cast<int>(m_VLayerAboveBasement.size()); nLayer++)
    {
       CRWCellTalus const* pTalus = m_VLayerAboveBasement[nLayer].pGetTalus();
-      if (pTalus != NULL)
-      {
-         // There is some talus on this layer
-         double const dThisTalusDepth = pTalus->dGetSandDepth() + pTalus->dGetCoarseDepth();
-         dTotTalusDepth += dThisTalusDepth;
-      }
+      if (pTalus == NULL)
+         continue;
+
+      // There is some talus on this layer
+      double const dThisTalusDepth = pTalus->dGetSandDepth() + pTalus->dGetCoarseDepth();
+      dTotTalusDepth += dThisTalusDepth;
    }
 
    return dTotTalusDepth;
