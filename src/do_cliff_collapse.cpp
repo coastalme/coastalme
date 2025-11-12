@@ -715,7 +715,13 @@ void CSimulation::DoCliffCollapseTalusDeposition(int const nCoast, CRWCliff cons
    CRWCellLayer* pLayer = m_pRasterGrid->Cell(nX, nY).pGetLayerAboveBasement(nNotchLayer);
 
    // And get a pointer to the cell layer's talus object
-   CRWCellTalus* pTalus = pLayer->pGetOrCreateTalus();
+   bool bCreated = false;
+   CRWCellTalus* pTalus = pLayer->pGetOrCreateTalus(bCreated);
+
+   if (bCreated)
+   {
+      LogStream << m_ulIter << ";\tcoast " << nCoast << " talus object created on on [" << nX << "][" << nY << "]" << endl;
+   }
 
    if (dSandFromCollapse > 0)
    {
@@ -734,9 +740,7 @@ void CSimulation::DoCliffCollapseTalusDeposition(int const nCoast, CRWCliff cons
    // And update the cell's sea depth
    m_pRasterGrid->Cell(nX, nY).SetSeaDepth();
 
-#ifdef _DEBUG
    LogStream << m_ulIter << ";\tcoast " << nCoast << " cliff collapse talus deposition on [" << nX << "][" << nY << "] dSandFromCollapse = " << dSandFromCollapse << " dCoarseFromCollapse = " << dCoarseFromCollapse << " sea depth = " << m_pRasterGrid->Cell(nX, nY).dGetSeaDepth() << endl;
-#endif
 }
 
 //===============================================================================================================================
@@ -1068,6 +1072,7 @@ int CSimulation::nMoveCliffTalusToUnconsolidated(void)
             if (bFPIsEqual(pTalus->dGetSandDepth() + pTalus->dGetCoarseDepth(), 0.0, TOLERANCE))
             {
                LogStream << m_ulIter << ": \tpTalus->dGetSandDepth() + pTalus->dGetCoarseDepth() = " << std::scientific << pTalus->dGetSandDepth() + pTalus->dGetCoarseDepth() << std::fixed << " so deleting talus object at [" << nX << "][" << nY << "]" << endl;
+
                m_pRasterGrid->Cell(nX, nY).pGetLayerAboveBasement(nLayer)->DeleteTalus();
             }
 
