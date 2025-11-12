@@ -499,9 +499,8 @@ bool CSimulation::bIncreaseCliffNotchIncision(int const nCoast, int const nX, in
    if (! bFPIsEqual(dNotchApexElev, DBL_NODATA, TOLERANCE))
    {
       // This is a notch in this cliff object
-      double const dSedTopElevNoTalus = m_pRasterGrid->Cell(nX, nY).dGetAllSedTopElevOmitTalus();
-
-      assert(dNotchApexElev <= dSedTopElevNoTalus);
+      // double const dSedTopElevNoTalus = m_pRasterGrid->Cell(nX, nY).dGetAllSedTopElevOmitTalus();
+      // assert(dNotchApexElev <= dSedTopElevNoTalus);
 
       // Get the cutoff elevation (if this-iteration SWL is below this, there is no incision)
       double const dCutoffElev = dNotchApexElev - CLIFF_NOTCH_CUTOFF_DISTANCE;

@@ -67,8 +67,7 @@ int CGeomRasterGrid::nCreateGrid(void)
    // TODO 038 Do better error handling if insufficient memory
    try
    {
-      // Single contiguous allocation - much faster than array-of-arrays
-      // Memory layout: all cells in a single block, indexed as [nX * m_nYSize + nY]
+      // Single contiguous allocation - much faster than array-of-arrays memory layout: all cells in a single block, indexed as [nX * m_nYSize + nY]
       m_CellData = new CGeomCell[nTotalCells];
    }
 

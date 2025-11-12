@@ -50,27 +50,27 @@ int CSimulation::nUpdateGrid(void)
    double const dSuspPerSeaCell = m_dThisIterFineSedimentToSuspension / static_cast<double>(m_ulThisIterNumSeaCells);
 
 // Use OpenMP parallel reduction for thread-safe accumulation and min/max calculations
-#pragma omp parallel for collapse(2) schedule(static)               \
-   reduction(+ : m_ulThisIterNumCoastCells, m_dThisIterTotSeaDepth) \
-   reduction(max : m_dThisIterTopElevMax)                           \
-   reduction(min : m_dThisIterTopElevMin)
+// #pragma omp parallel for collapse(2) schedule(static)               \
+//    reduction(+ : m_ulThisIterNumCoastCells, m_dThisIterTotSeaDepth) \
+//    reduction(max : m_dThisIterTopElevMax)                           \
+//    reduction(min : m_dThisIterTopElevMin)
 
    for (int nX = 0; nX < m_nXGridSize; nX++)
    {
       for (int nY = 0; nY < m_nYGridSize; nY++)
       {
-         auto this_cell = m_pRasterGrid->Cell(nX, nY);
-         if (this_cell.bIsCoastline())
+         CGeomCell ThisCell = m_pRasterGrid->Cell(nX, nY);
+         if (ThisCell.bIsCoastline())
             m_ulThisIterNumCoastCells++;
 
-         if (this_cell.bIsInContiguousSea())
+         if (ThisCell.bIsInContiguousSea())
          {
             // Is a sea cell
-            m_dThisIterTotSeaDepth += this_cell.dGetSeaDepth();
-            this_cell.AddSuspendedSediment(dSuspPerSeaCell);
+            m_dThisIterTotSeaDepth += ThisCell.dGetSeaDepth();
+            ThisCell.AddSuspendedSediment(dSuspPerSeaCell);
          }
 
-         double const dTopElev = this_cell.dGetTopElevIncSea();
+         double const dTopElev = ThisCell.dGetTopElevIncSea();
 
          // Get highest and lowest elevations of the top surface of the DEM
          if (dTopElev > m_dThisIterTopElevMax)
