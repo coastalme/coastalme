@@ -1,9 +1,9 @@
 var classSpatialInterpolator =
 [
     [ "SpatialInterpolator", "d4/da8/classSpatialInterpolator.html#a5b2993abdbcce3dec857ab457e27c89b", null ],
-    [ "SpatialInterpolator", "d4/da8/classSpatialInterpolator.html#a33a4f73491f36bcb744c4bbb70ada41d", null ],
     [ "~SpatialInterpolator", "d4/da8/classSpatialInterpolator.html#a40c7f5ee99dd12adace2e59ac13d2be6", null ],
-    [ "GetKDTree", "d4/da8/classSpatialInterpolator.html#a7fce2d00effbb12c92c106b46a5e61a2", null ],
+    [ "SpatialInterpolator", "d4/da8/classSpatialInterpolator.html#a33a4f73491f36bcb744c4bbb70ada41d", null ],
+    [ "GetKDTree", "d4/da8/classSpatialInterpolator.html#a7ef8918321c11e221d1c937a73ba211a", null ],
     [ "GetPointCloud", "d4/da8/classSpatialInterpolator.html#af36737bebecb6bd33edb0cb9723da991", null ],
     [ "Interpolate", "d4/da8/classSpatialInterpolator.html#a6b9b12ac42f3c4a9f8d7cc2568b7c79d", null ],
     [ "Interpolate", "d4/da8/classSpatialInterpolator.html#ab8f6eca84b2c084566042c083678921c", null ],

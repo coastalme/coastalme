@@ -72,12 +72,9 @@ var annotated_dup =
     [ "pair", "d2/d11/classpair.html", "d2/d11/classpair" ],
     [ "Point2D", "d2/d6b/structPoint2D.html", "d2/d6b/structPoint2D" ],
     [ "PointCloud", "dd/d9f/structPointCloud.html", "dd/d9f/structPointCloud" ],
-    [ "set", "d0/d59/classset.html", "d0/d59/classset" ],
     [ "SpatialInterpolator", "d4/da8/classSpatialInterpolator.html", "d4/da8/classSpatialInterpolator" ],
     [ "stack", "d1/dc2/classstack.html", "d1/dc2/classstack" ],
     [ "string", "d5/d92/classstring.html", "d5/d92/classstring" ],
     [ "stringstream", "d9/d61/classstringstream.html", null ],
-    [ "UnstableCell", "d1/d5e/structUnstableCell.html", "d1/d5e/structUnstableCell" ],
-    [ "UnstableCellComparator", "dd/d86/structUnstableCellComparator.html", "dd/d86/structUnstableCellComparator" ],
     [ "vector", "d7/dfc/classvector.html", "d7/dfc/classvector" ]
 ];
