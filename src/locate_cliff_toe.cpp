@@ -138,13 +138,11 @@ void CSimulation::nRemoveSmallCliffIslands(int const dMinCliffCellThreshold)
                pair<int, int> const currentCell = VStack.back();
                VStack.pop_back();
 
-               size_t const nCurX = static_cast<size_t>(currentCell.first);
-               size_t const nCurY = static_cast<size_t>(currentCell.second);
+               int const nCurX = static_cast<size_t>(currentCell.first);
+               int const nCurY = static_cast<size_t>(currentCell.second);
 
                // Skip if already visited or out of bounds
-               if (nCurX >= static_cast<unsigned int>(m_nXGridSize) ||
-                   nCurY >= static_cast<unsigned int>(m_nYGridSize) || bVisited[nCurX][nCurY] ||
-                   (! m_pRasterGrid->Cell(nCurX, nCurY).bIsCliffToe()))
+               if ((nCurX >= m_nXGridSize) || (nCurY >= m_nYGridSize) || (bVisited[nCurX][nCurY]) || (! m_pRasterGrid->Cell(nCurX, nCurY).bIsCliffToe()))
                {
                   continue;
                }

@@ -39,9 +39,10 @@
 //! double result = interp.Interpolate(5.0, 5.0);  // Interpolate at (5,5)
 //!
 //===============================================================================================================================
+#include <stdexcept>
 
 #include "spatial_interpolation.h"
-#include <stdexcept>
+#include "cme.h"
 
 #ifdef _OPENMP
 #include <omp.h>
@@ -117,9 +118,7 @@ double SpatialInterpolator::Interpolate(double x, double y) const
    std::vector<unsigned int> indices(k);
    std::vector<double> sq_dists(k);  // Squared distances (faster than actual distances)
 
-   unsigned int num_found = m_kdtree->knnSearch(query_pt, k,
-                                                 indices.data(),
-                                                 sq_dists.data());
+   long unsigned int num_found = m_kdtree->knnSearch(query_pt, k, indices.data(), sq_dists.data());
 
    if (num_found == 0)
       throw std::runtime_error("knnSearch found no neighbors");
@@ -134,7 +133,7 @@ double SpatialInterpolator::Interpolate(double x, double y) const
    double sum_weights = 0.0;
    double sum_weighted_values = 0.0;
 
-   if (m_power == 2.0)
+   if (bFPIsEqual(m_power, 2.0, TOLERANCE))
    {
       // *** OPTIMIZED PATH for power=2.0 ***
       // Since weight = 1/dist^2 and we have sq_dist = dist^2,
@@ -181,7 +180,7 @@ void SpatialInterpolator::Interpolate(std::vector<Point2D> const& query_points,
       {
          double const query_pt[2] = {query_points[i].x, query_points[i].y};
 
-         unsigned int num_found = m_kdtree->knnSearch(query_pt, k,
+         long unsigned int num_found = m_kdtree->knnSearch(query_pt, k,
                                                        indices.data(),
                                                        sq_dists.data());
 
@@ -202,7 +201,7 @@ void SpatialInterpolator::Interpolate(std::vector<Point2D> const& query_points,
          double sum_weights = 0.0;
          double sum_weighted_values = 0.0;
 
-         if (m_power == 2.0)
+         if (bFPIsEqual(m_power, 2.0, TOLERANCE))
          {
             for (size_t j = 0; j < num_found; j++)
             {
@@ -297,7 +296,7 @@ void DualSpatialInterpolator::InterpolatePoint(double x, double y,
    double const query_pt[2] = {x, y};
    size_t const k = std::min((size_t) m_k_neighbors, m_cloud.pts.size());
 
-   unsigned int num_found = m_kdtree->knnSearch(query_pt, k,
+   long unsigned int num_found = m_kdtree->knnSearch(query_pt, k,
                                                  indices.data(),
                                                  sq_dists.data());
 
@@ -320,7 +319,7 @@ void DualSpatialInterpolator::InterpolatePoint(double x, double y,
    double sum_weighted_x = 0.0;
    double sum_weighted_y = 0.0;
 
-   if (m_power == 2.0)
+   if (bFPIsEqual(m_power, 2.0, TOLERANCE))
    {
       for (size_t i = 0; i < num_found; i++)
       {

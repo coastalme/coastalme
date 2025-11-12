@@ -1666,8 +1666,8 @@ bool CSimulation::bWriteVectorGISFile(int const nDataItem, string const* strPlot
             OGRFeature* pOGRFeature = OGRFeature::CreateFeature(pOGRLayer->GetLayerDefn());
 
             // Set the feature's geometry (convert from grid CRS to external CRS)
-            OGRPt.setX(dGridCentroidXToExtCRSX(transect.VdX[nPoint]));
-            OGRPt.setY(dGridCentroidYToExtCRSY(transect.VdY[nPoint]));
+            OGRPt.setX(dGridCentroidXToExtCRSX(static_cast<int>(transect.VdX[nPoint])));
+            OGRPt.setY(dGridCentroidYToExtCRSY(static_cast<int>(transect.VdY[nPoint])));
             pOGRFeature->SetGeometry(&OGRPt);
 
             // Calculate wave height and angle from components
