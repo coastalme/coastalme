@@ -709,41 +709,41 @@ unsigned long const UNSIGNED_LONG_NODATA = 9999;
 
 double const PI = 3.141592653589793238462643;
 
-double const D50_FINE_DEFAULT = 0.0625;      // In mm
-double const D50_SAND_DEFAULT = 0.42;        // In mm
-double const D50_COARSE_DEFAULT = 19.0;      // In mm
+double const D50_FINE_DEFAULT = 0.0625;                     // In mm
+double const D50_SAND_DEFAULT = 0.42;                       // In mm
+double const D50_COARSE_DEFAULT = 19.0;                     // In mm
 
-double const BEACH_PROTECTION_HB_RATIO = 0.23;      // The beach protection factor is this times breaking depth
-double const WALKDEN_HALL_PARAM_1 = 3.25;           // First parameter in Equation 4 from Walkden & Hall, 2005
-double const WALKDEN_HALL_PARAM_2 = 1.50;           // Second parameter in Equation 4 from Walkden & Hall, 2005
+double const BEACH_PROTECTION_HB_RATIO = 0.23;              // The beach protection factor is this times breaking depth
+double const WALKDEN_HALL_PARAM_1 = 3.25;                   // First parameter in Equation 4 from Walkden & Hall, 2005
+double const WALKDEN_HALL_PARAM_2 = 1.50;                   // Second parameter in Equation 4 from Walkden & Hall, 2005
 
-double const DEPTH_OVER_DB_INCREMENT = 0.001;             // Depth over DB increment for erosion potential look-up function
-double const INVERSE_DEPTH_OVER_DB_INCREMENT = 1000;      // Inverse of the above
-double const DEAN_POWER = 2.0 / 3.0;                      // Dean profile exponent
+double const DEPTH_OVER_DB_INCREMENT = 0.001;               // Depth over DB increment for erosion potential look-up function
+double const INVERSE_DEPTH_OVER_DB_INCREMENT = 1000;        // Inverse of the above
+double const DEAN_POWER = 2.0 / 3.0;                        // Dean profile exponent
 
 // TODO 011 Let the user define these CShore input parameters
-double const CSHORE_FRICTION_FACTOR = 0.015;      // Friction factor for CShore model
-double const CSHORE_SURGE_LEVEL = 0.0;            // TODO 007
+double const CSHORE_FRICTION_FACTOR = 0.015;                // Friction factor for CShore model
+double const CSHORE_SURGE_LEVEL = 0.0;                      // TODO 007
 
 double const TOLERANCE = 1e-7;                              // For bFPIsEqual, if too small (e.g. 1e-10), get spurious "rounding" errors
 double const SED_ELEV_TOLERANCE = 1e-5;                     // Used to compare depth-equivalent sediment amounts in bFPIsEqual and elsewhere
 double const MASS_BALANCE_TOLERANCE = 1e-5;                 // For bFPIsEqual, used to compare for mass balance checks
 double const STRAIGHT_COAST_MAX_DETAILED_CURVATURE = -5;
 double const STRAIGHT_COAST_MAX_SMOOTH_CURVATURE = -1;
-double const MIN_LENGTH_OF_SHADOW_ZONE_LINE = 10;            // Used in shadow line tracing
-double const MAX_LAND_LENGTH_OF_SHADOW_ZONE_LINE = 5;        // Used in shadow line tracing
-double const CLIFF_COLLAPSE_HEIGHT_INCREMENT = 0.1;          // Increment the fractional height of the cliff talus Dean profile, if we have not been able to deposit enough
-double const INTERVENTION_PROFILE_SPACING_FACTOR = 0.5;      // Profile spacing on interventions works better if it is smaller than profile spacing on coastline
+double const MIN_LENGTH_OF_SHADOW_ZONE_LINE = 10;           // Used in shadow line tracing
+double const MAX_LAND_LENGTH_OF_SHADOW_ZONE_LINE = 5;       // Used in shadow line tracing
+double const CLIFF_COLLAPSE_HEIGHT_INCREMENT = 0.1;         // Increment the fractional height of the cliff talus Dean profile, if we have not been able to deposit enough
+double const INTERVENTION_PROFILE_SPACING_FACTOR = 0.5;     // Profile spacing on interventions works better if it is smaller than profile spacing on coastline
 
 double const CLIFF_NOTCH_CUTOFF_DISTANCE = 2;               // Cut-off SWL distance (m), measured downwards from the cliff notch apex: below this there is no notch incision
 double const DBL_NODATA = -9999;
 
-string const PROGRAM_NAME = "Coastal Modelling Environment (CoastalME) version 1.4.0 (11 Nov 2025)";
+string const PROGRAM_NAME = "Coastal Modelling Environment (CoastalME) version 1.4.1 (12 Nov 2025)";
 string const PROGRAM_NAME_SHORT = "CME";
 string const CME_INI = "cme.ini";
 string const CME_YAML = "cme.yaml";
 
-string const COPYRIGHT = "(C) 2025 Andres Payo and David Favis-Mortlock";
+string const COPYRIGHT = "(C) 2025 Andres Payo, David Favis-Mortlock, and Wilf Chun";
 string const LINE = "-------------------------------------------------------------------------------";
 string const DISCLAIMER1 = "This program is distributed in the hope that it will be useful, but WITHOUT ANY";
 string const DISCLAIMER2 = "WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A";
@@ -753,7 +753,7 @@ string const DISCLAIMER5 = "program; if not, contact the Free Software Foundatio
 string const DISCLAIMER6 = "Cambridge, MA 02139, USA.";
 
 string const ABOUT = "simulates the long-term behaviour of a coast. This initial version considers only simple soft cliff cross-shore effects";
-string const THANKS = "Many thanks to:\n\tTom Ashby\n\tManuel Cobos Budia\n\tWilf Chun\n\tMark Dickson\n\tJim W. Hall\n\tMartin D. Hurst\n\tMatthew Ives\n\tRobert J. Nicholls\n\tIan Townend\n\tMike J.A. Walkden";
+string const THANKS = "Many thanks to:\n\tTom Ashby\n\tManuel Cobos Budia\n\tMark Dickson\n\tJim W. Hall\n\tMartin D. Hurst\n\tMatthew Ives\n\tRobert J. Nicholls\n\tIan Townend\n\tMike J.A. Walkden";
 string const GDAL_DRIVERS = "GDAL drivers";
 
 string const USAGE = "Usage: cme [OPTION]...";

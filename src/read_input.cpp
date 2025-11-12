@@ -3483,30 +3483,30 @@ bool CSimulation::bReadRunDataFile(void)
 
             break;
 
-            case 91:
-               // Sea flood fill seed point shapefile [optional - if blank, use grid edge cells]
-               if (! strRH.empty())
-               {
+         case 91:
+            // Sea flood fill seed point shapefile [optional - if blank, use grid edge cells]
+            if (! strRH.empty())
+            {
 #ifdef _WIN32
-                  // For Windows, make sure has backslashes, not Unix-style slashes
-                  strRH = pstrChangeToBackslash(&strRH);
+               // For Windows, make sure has backslashes, not Unix-style slashes
+               strRH = pstrChangeToBackslash(&strRH);
 #endif
 
-                  // Check for absolute or relative path
-                  if ((strRH[0] == PATH_SEPARATOR) || (strRH[0] == TILDE) || (strRH[1] == COLON))
-                  {
-                     // Absolute path, use as-is
-                     m_strSeaFloodSeedPointShapefile = strRH;
-                  }
-                  else
-                  {
-                     // Relative path, prepend CME dir
-                     m_strSeaFloodSeedPointShapefile = m_strCMEDir;
-                     m_strSeaFloodSeedPointShapefile.append(strRH);
-                  }
+               // Check for absolute or relative path
+               if ((strRH[0] == PATH_SEPARATOR) || (strRH[0] == TILDE) || (strRH[1] == COLON))
+               {
+                  // Absolute path, use as-is
+                  m_strSeaFloodSeedPointShapefile = strRH;
                }
+               else
+               {
+                  // Relative path, prepend CME dir
+                  m_strSeaFloodSeedPointShapefile = m_strCMEDir;
+                  m_strSeaFloodSeedPointShapefile.append(strRH);
+               }
+            }
 
-               break;
+            break;
          }
 
          // Did an error occur?

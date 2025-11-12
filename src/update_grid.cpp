@@ -50,10 +50,10 @@ int CSimulation::nUpdateGrid(void)
    double const dSuspPerSeaCell = m_dThisIterFineSedimentToSuspension / static_cast<double>(m_ulThisIterNumSeaCells);
 
 // Use OpenMP parallel reduction for thread-safe accumulation and min/max calculations
-// #pragma omp parallel for collapse(2) schedule(static)               \
-//    reduction(+ : m_ulThisIterNumCoastCells, m_dThisIterTotSeaDepth) \
-//    reduction(max : m_dThisIterTopElevMax)                           \
-//    reduction(min : m_dThisIterTopElevMin)
+#pragma omp parallel for collapse(2) schedule(static)               \
+   reduction(+ : m_ulThisIterNumCoastCells, m_dThisIterTotSeaDepth) \
+   reduction(max : m_dThisIterTopElevMax)                           \
+   reduction(min : m_dThisIterTopElevMin)
 
    for (int nX = 0; nX < m_nXGridSize; nX++)
    {

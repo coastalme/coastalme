@@ -101,7 +101,7 @@ int CSimulation::nAssignLandformsForAllCoasts(void)
          }
 
          double const dConsSedTop = m_pRasterGrid->Cell(nX, nY).dGetConsSedTopElevForLayerAboveBasement(nLayer);
-         bool bConsSedAtSWL = false;
+         // bool bConsSedAtSWL = false;
 
          if (dConsSedTop >= m_dThisIterSWL)
          {
