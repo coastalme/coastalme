@@ -223,7 +223,7 @@ class CRWCoast
    CGeomProfile* pGetProfileWithUpCoastSeq(int const) const;
 
    CGeomCoastPolygon* pPolyCreateAndAppendPolygon(int const, int const, CGeom2DIPoint const*, CGeom2DIPoint const*, int const, int const, vector<CGeom2DPoint> const*, int const, int const, bool const, bool const);
-   std::size_t nGetNumPolygons(void) const;
+   int nGetNumPolygons(void) const;
    CGeomCoastPolygon* pGetPolygon(int const);
 
    void SetPolygonNode(int const, int const);

@@ -167,8 +167,8 @@ void CSimulation::GenerateSyntheticTransects(vector<TransectWaveData> const *pVR
       TransectWaveData const &transect = (*pVRealTransects)[i];
       if (! transect.VdX.empty())
       {
-         VdTransectExtX[i] = dGridCentroidXToExtCRSX(transect.VdX[0]);
-         VdTransectExtY[i] = dGridCentroidYToExtCRSY(transect.VdY[0]);
+         VdTransectExtX[i] = dGridCentroidXToExtCRSX(static_cast<int>(transect.VdX[0]));
+         VdTransectExtY[i] = dGridCentroidYToExtCRSY(static_cast<int>(transect.VdY[0]));
       }
       else
       {
@@ -230,7 +230,7 @@ void CSimulation::GenerateSyntheticTransects(vector<TransectWaveData> const *pVR
 
    // Second pass: generate the synthetic transects
    // Using OpenMP to parallelize - each thread handles one pair
-   int nCurrentIndex = 0;
+   // int nCurrentIndex = 0;
 
 #pragma omp parallel for schedule(static)
    for (int nPair = 0; nPair < nNumRealTransects - 1; nPair++)
