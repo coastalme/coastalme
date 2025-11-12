@@ -103,7 +103,7 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
       if (m_bSedimentInputAtPoint)
       {
          // Sediment input is at a user-specified point
-         int const nTopLayer = m_pRasterGrid->m_Cell[nPointGridX][nPointGridY].nGetNumOfTopLayerAboveBasement();
+         int const nTopLayer = m_pRasterGrid->Cell(nPointGridX, nPointGridY).nGetNumOfTopLayerAboveBasement();
 
          // Is this user-specified point in a polygon?
          int const nThisPoly = m_pRasterGrid->Cell(nPointGridX, nPointGridY).nGetPolygonID();
@@ -367,7 +367,7 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
          double const dCoarseDepthPerCell = dCoarseDepth / dArea;
 
          // OK, so finally: put some sediment onto each cell in the sediment block
-         int const nTopLayer = m_pRasterGrid->m_Cell[nPointGridX][nPointGridY].nGetNumOfTopLayerAboveBasement();
+         int const nTopLayer = m_pRasterGrid->Cell(nPointGridX, nPointGridY).nGetNumOfTopLayerAboveBasement();
 
          for (unsigned int n = 0; n < nArea; n++)
          {
@@ -519,8 +519,8 @@ int CSimulation::nDoSedimentInputEvent(int const nEvent)
       }
 
       // OK we have an intersection of the line and coast. We will input the sediment here. Get landform and top layer
-      CRWCellLandform* pLandform = m_pRasterGrid->m_Cell[nCoastX][nCoastY].pGetLandform();
-      int const nTopLayer = m_pRasterGrid->m_Cell[nCoastX][nCoastY].nGetNumOfTopLayerAboveBasement();
+      CRWCellLandform* pLandform = m_pRasterGrid->Cell(nCoastX, nCoastY).pGetLandform();
+      int const nTopLayer = m_pRasterGrid->Cell(nCoastX, nCoastY).nGetNumOfTopLayerAboveBasement();
 
       // Is this intersection point in a polygon?
       int const nThisPoly = m_pRasterGrid->Cell(nCoastX, nCoastY).nGetPolygonID();

@@ -389,43 +389,6 @@ bool CSimulation::bReadIniYamlFile(void)
    return true;
 }
 
-//===============================================================================================================================
-//! Detects whether the input file is in YAML or .dat format
-//===============================================================================================================================
-bool CSimulation::bDetectFileFormat(string const &strFileName, bool &bIsYaml)
-{
-   bIsYaml = false;
-
-   // First check command-line flag
-   if (m_bYamlInputFormat)
-   {
-      bIsYaml = true;
-      return true;
-   }
-
-   // Check file extension
-   size_t nDotPos = strFileName.find_last_of('.');
-   if (nDotPos != string::npos)
-   {
-      string strExt = strFileName.substr(nDotPos + 1);
-      std::transform(strExt.begin(), strExt.end(), strExt.begin(), ::tolower);
-
-      if (strExt == "yaml" || strExt == "yml")
-      {
-         bIsYaml = true;
-         return true;
-      }
-      else if (strExt == "dat")
-      {
-         bIsYaml = false;
-         return true;
-      }
-   }
-
-   // Default to .dat format if extension is ambiguous
-   bIsYaml = false;
-   return true;
-}
 
 //===============================================================================================================================
 //! Reads the run details input file and does some initialization
@@ -3518,41 +3481,7 @@ bool CSimulation::bReadRunDataFile(void)
             if ((m_nRunUpEquation < 0) || (m_nRunUpEquation > 3))
                strErr = "line " + to_string(nLine) + ": runup equation code must be between 0 and 3";
 
-            case 89:
-               // Order of cliff edge smoothing polynomial for Savitzky-Golay: usually 2 or 4, max is 6
-               if (m_bHaveConsolidatedSediment && m_bDoCliffCollapse && m_bCliffToeLocate)
-               {
-                  if (! bIsStringValidInt(strRH))
-                  {
-                     strErr = "line " + to_string(nLine) + ": invalid integer for Savitzky-Golay polynomial for cliff edge smoothing '" + strRH + "' in " + m_strDataPathName;
-                     break;
-                  }
-
-                  m_nSavGolCliffEdgePoly = stoi(strRH);
-
-                  if ((m_nSavGolCliffEdgePoly < 2) || (m_nSavGolCliffEdgePoly > 6) || (m_nSavGolCliffEdgePoly % 2))
-                     strErr = "line " + to_string(nLine) + ": order of Savitzky-Golay polynomial for cliff edge smoothing (must be 2, 4 or 6)";
-               }
-
-               break;
-
-            case 90:
-               // Slope limit for cliff toe detection
-               if (m_bHaveConsolidatedSediment && m_bDoCliffCollapse && m_bCliffToeLocate)
-               {
-                  if (! bIsStringValidDouble(strRH))
-                  {
-                     strErr = "line " + to_string(nLine) + ": invalid number for cliff toe slope limit '" + strRH + "' in " + m_strDataPathName;
-                     break;
-                  }
-
-                  m_dSlopeThresholdForCliffToe = stod(strRH);
-
-                  if (m_dSlopeThresholdForCliffToe <= 0)
-                     strErr = "line " + to_string(nLine) + ": cliff toe slope limit must be > 0";
-               }
-
-               break;
+            break;
 
             case 91:
                // Sea flood fill seed point shapefile [optional - if blank, use grid edge cells]

@@ -179,6 +179,7 @@ if(CMAKE_BUILD_TYPE_LC STREQUAL "debug")
 elseif(CMAKE_BUILD_TYPE_LC STREQUAL "relwithdebinfo")
   # Production build
   add_compile_options(
+      -Wfatal-errors
       -march=native
       -O3
       -g3

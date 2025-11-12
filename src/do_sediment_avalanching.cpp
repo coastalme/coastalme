@@ -45,8 +45,8 @@ using std::endl;
 double CSimulation::dCalculateSlope(int const nX1, int const nY1, int const nX2, int const nY2) const
 {
    // Get top surface elevations
-   double const dElev1 = m_pRasterGrid->Cell(nX1, nY1).dGetSedimentTopElev();
-   double const dElev2 = m_pRasterGrid->Cell(nX2, nY2).dGetSedimentTopElev();
+   double const dElev1 = m_pRasterGrid->Cell(nX1, nY1).dGetAllSedTopElevOmitTalus();
+   double const dElev2 = m_pRasterGrid->Cell(nX2, nY2).dGetAllSedTopElevOmitTalus();
 
    // Calculate distance between cells
    double dDistance;
@@ -117,12 +117,12 @@ std::set<std::pair<int, int>> CSimulation::RedistributeSediment(int const nX, in
    CGeomCell& source_cell = m_pRasterGrid->Cell(nX, nY);
 
    // Check if cell has sediment layers
-   int const nTopLayer = source_cell.nGetTopLayerAboveBasement();
-   if (nTopLayer < 0)
+   int const nTopLayer = source_cell.nGetTopNonZeroLayerAboveBasement();
+   if (nTopLayer <= 0)
       return affected_neighbors;  // No layers to redistribute
 
    // Get source cell elevation
-   double const dSourceElev = source_cell.dGetSedimentTopElev();
+   double const dSourceElev = source_cell.dGetAllSedTopElevOmitTalus();
 
    // Get unconsolidated sediment depths from top layer
    CRWCellSediment* pUnconsolidated = source_cell.pGetLayerAboveBasement(nTopLayer)->pGetUnconsolidatedSediment();
@@ -164,7 +164,7 @@ std::set<std::pair<int, int>> CSimulation::RedistributeSediment(int const nX, in
             continue;
 
          // Get neighbor elevation
-         double const dNeighborElev = m_pRasterGrid->Cell(nNeighborX, nNeighborY).dGetSedimentTopElev();
+         double const dNeighborElev = m_pRasterGrid->Cell(nNeighborX, nNeighborY).dGetAllSedTopElevOmitTalus();
 
          // Only redistribute to lower neighbors with excessive slope
          if (dNeighborElev < dSourceElev)
@@ -212,7 +212,7 @@ std::set<std::pair<int, int>> CSimulation::RedistributeSediment(int const nX, in
 
       // Track avalanche deposition (total depth moved into this cell)
       CGeomCell& neighbor_cell = m_pRasterGrid->Cell(neighbor.x, neighbor.y);
-      int const nNeighborTopLayer = neighbor_cell.nGetTopLayerAboveBasement();
+      int const nNeighborTopLayer = neighbor_cell.nGetTopNonZeroLayerAboveBasement();
 
       if (nNeighborTopLayer >= 0)
       {
@@ -231,12 +231,12 @@ std::set<std::pair<int, int>> CSimulation::RedistributeSediment(int const nX, in
 
          // Track avalanche deposition (total depth moved into this cell)
          neighbor_cell.IncrAvalancheDeposition(dMoveDepth);
-         
+
          // Debug output
          if (dMoveDepth > 0.001)
          {
-            LogStream << "   Avalanche: moved " << dMoveDepth << " m from (" 
-                     << nX << "," << nY << ") to (" << neighbor.x << "," << neighbor.y 
+            LogStream << "   Avalanche: moved " << dMoveDepth << " m from ("
+                     << nX << "," << nY << ") to (" << neighbor.x << "," << neighbor.y
                      << "), cell now has " << neighbor_cell.dGetAvalancheDeposition() << " m" << endl;
          }
 

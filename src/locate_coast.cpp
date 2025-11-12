@@ -130,7 +130,7 @@ void CSimulation::FindAllSeaCells(void)
             if (! m_pRasterGrid->Cell(nX, nY).bIsInundated())
             {
                LogStream << WARN << "seed point at grid [" << nX << "][" << nY << "] is above SWL (elev = "
-                         << m_pRasterGrid->Cell(nX, nY).dGetSedimentTopElev() << "m, SWL = "
+                         << m_pRasterGrid->Cell(nX, nY).dGetAllSedTopElevIncTalus() << "m, SWL = "
                          << m_dThisIterSWL << "m), skipping" << endl;
             }
          }
@@ -210,7 +210,7 @@ void CSimulation::CellByCellFillSea(int const nXStart, int const nYStart)
       int const nY = Pti.nGetY();
 
       // Check if this cell should be flooded (below SWL and not yet processed)
-      double const dElev = m_pRasterGrid->Cell(nX, nY).dGetSedimentTopElev();
+      double const dElev = m_pRasterGrid->Cell(nX, nY).dGetAllSedTopElevIncTalus();
 
       if (dElev < m_dThisIterSWL && bFPIsEqual(m_pRasterGrid->Cell(nX, nY).dGetSeaDepth(), 0.0, TOLERANCE))
       {
@@ -225,7 +225,7 @@ void CSimulation::CellByCellFillSea(int const nXStart, int const nYStart)
          {
             if (m_pRasterGrid->Cell(nX, nY).bIsInundated())
             {
-               m_pRasterGrid->m_Cell[nX][nY].SetInContiguousSea();
+               m_pRasterGrid->Cell(nX, nY).SetInContiguousSea();
 
                // Set this sea cell to have deep water (off-shore) wave orientation and height
                m_pRasterGrid->Cell(nX, nY).SetWaveValuesToDeepWaterWaveValues();
@@ -234,7 +234,7 @@ void CSimulation::CellByCellFillSea(int const nXStart, int const nYStart)
          else
          {
             // No sediment input here, just mark as sea
-            m_pRasterGrid->m_Cell[nX][nY].SetInContiguousSea();
+            m_pRasterGrid->Cell(nX, nY).SetInContiguousSea();
             pLandform->SetLFCategory(LF_SEA);
 
             // Set this sea cell to have deep water (off-shore) wave orientation and height
@@ -279,7 +279,7 @@ void CSimulation::CellByCellFillSea(int const nXStart, int const nYStart)
                continue;
 
             // Get neighbor elevation
-            double const dElevN = m_pRasterGrid->Cell(nXN, nYN).dGetSedimentTopElev();
+            double const dElevN = m_pRasterGrid->Cell(nXN, nYN).dGetAllSedTopElevIncTalus();
 
             // KEY CONSTRAINT: Only expand through cells below SWL
             // This prevents flooding isolated depressions behind barriers
@@ -399,9 +399,9 @@ int CSimulation::nTraceAllCoasts(void)
 //
 //                if (bIsWithinValidGrid(nXAdj, nYAdj))
 //                {
-//                   if (m_pRasterGrid->m_Cell[nXAdj][nYAdj].bIsInContiguousSea())
+//                   if (m_pRasterGrid->Cell(nXAdj, nYAdj).bIsInContiguousSea())
 //                   {
-//                      m_pRasterGrid->m_Cell[nXAdj][nYAdj].SetAsCoastline(DUMMY_COAST_NUMBER);
+//                      m_pRasterGrid->Cell(nXAdj, nYAdj).SetAsCoastline(DUMMY_COAST_NUMBER);
 //                      break;
 //                   }
 //                }
@@ -414,9 +414,9 @@ int CSimulation::nTraceAllCoasts(void)
 //
 //                if (bIsWithinValidGrid(nXAdj, nYAdj))
 //                {
-//                   if (m_pRasterGrid->m_Cell[nXAdj][nYAdj].bIsInContiguousSea())
+//                   if (m_pRasterGrid->Cell(nXAdj, nYAdj).bIsInContiguousSea())
 //                   {
-//                      m_pRasterGrid->m_Cell[nXAdj][nYAdj].SetAsCoastline(DUMMY_COAST_NUMBER);
+//                      m_pRasterGrid->Cell(nXAdj, nYAdj).SetAsCoastline(DUMMY_COAST_NUMBER);
 //                      break;
 //                   }
 //                }
@@ -429,9 +429,9 @@ int CSimulation::nTraceAllCoasts(void)
 //
 //                if (bIsWithinValidGrid(nXAdj, nYAdj))
 //                {
-//                   if (m_pRasterGrid->m_Cell[nXAdj][nYAdj].bIsInContiguousSea())
+//                   if (m_pRasterGrid->Cell(nXAdj, nYAdj).bIsInContiguousSea())
 //                   {
-//                      m_pRasterGrid->m_Cell[nXAdj][nYAdj].SetAsCoastline(DUMMY_COAST_NUMBER);
+//                      m_pRasterGrid->Cell(nXAdj, nYAdj).SetAsCoastline(DUMMY_COAST_NUMBER);
 //                      break;
 //                   }
 //                }
@@ -444,9 +444,9 @@ int CSimulation::nTraceAllCoasts(void)
 //
 //                if (bIsWithinValidGrid(nXAdj, nYAdj))
 //                {
-//                   if (m_pRasterGrid->m_Cell[nXAdj][nYAdj].bIsInContiguousSea())
+//                   if (m_pRasterGrid->Cell(nXAdj, nYAdj).bIsInContiguousSea())
 //                   {
-//                      m_pRasterGrid->m_Cell[nXAdj][nYAdj].SetAsCoastline(DUMMY_COAST_NUMBER);
+//                      m_pRasterGrid->Cell(nXAdj, nYAdj).SetAsCoastline(DUMMY_COAST_NUMBER);
 //                      break;
 //                   }
 //                }
@@ -459,9 +459,9 @@ int CSimulation::nTraceAllCoasts(void)
 //
 //                if (bIsWithinValidGrid(nXAdj, nYAdj))
 //                {
-//                   if (m_pRasterGrid->m_Cell[nXAdj][nYAdj].bIsInContiguousSea())
+//                   if (m_pRasterGrid->Cell(nXAdj, nYAdj).bIsInContiguousSea())
 //                   {
-//                      m_pRasterGrid->m_Cell[nXAdj][nYAdj].SetAsCoastline(DUMMY_COAST_NUMBER);
+//                      m_pRasterGrid->Cell(nXAdj, nYAdj).SetAsCoastline(DUMMY_COAST_NUMBER);
 //                      break;
 //                   }
 //                }
@@ -474,9 +474,9 @@ int CSimulation::nTraceAllCoasts(void)
 //
 //                if (bIsWithinValidGrid(nXAdj, nYAdj))
 //                {
-//                   if (m_pRasterGrid->m_Cell[nXAdj][nYAdj].bIsInContiguousSea())
+//                   if (m_pRasterGrid->Cell(nXAdj, nYAdj).bIsInContiguousSea())
 //                   {
-//                      m_pRasterGrid->m_Cell[nXAdj][nYAdj].SetAsCoastline(DUMMY_COAST_NUMBER);
+//                      m_pRasterGrid->Cell(nXAdj, nYAdj).SetAsCoastline(DUMMY_COAST_NUMBER);
 //                      break;
 //                   }
 //                }
@@ -489,9 +489,9 @@ int CSimulation::nTraceAllCoasts(void)
 //
 //                if (bIsWithinValidGrid(nXAdj, nYAdj))
 //                {
-//                   if (m_pRasterGrid->m_Cell[nXAdj][nYAdj].bIsInContiguousSea())
+//                   if (m_pRasterGrid->Cell(nXAdj, nYAdj).bIsInContiguousSea())
 //                   {
-//                      m_pRasterGrid->m_Cell[nXAdj][nYAdj].SetAsCoastline(DUMMY_COAST_NUMBER);
+//                      m_pRasterGrid->Cell(nXAdj, nYAdj).SetAsCoastline(DUMMY_COAST_NUMBER);
 //                      break;
 //                   }
 //                }
@@ -504,9 +504,9 @@ int CSimulation::nTraceAllCoasts(void)
 //
 //                if (bIsWithinValidGrid(nXAdj, nYAdj))
 //                {
-//                   if (m_pRasterGrid->m_Cell[nXAdj][nYAdj].bIsInContiguousSea())
+//                   if (m_pRasterGrid->Cell(nXAdj, nYAdj).bIsInContiguousSea())
 //                   {
-//                      m_pRasterGrid->m_Cell[nXAdj][nYAdj].SetAsCoastline(DUMMY_COAST_NUMBER);
+//                      m_pRasterGrid->Cell(nXAdj, nYAdj).SetAsCoastline(DUMMY_COAST_NUMBER);
 //                      break;
 //                   }
 //                }
@@ -538,13 +538,13 @@ int CSimulation::nTraceAllCoasts(void)
 //          int const nX = m_VEdgeCell[n].nGetX();
 //          int const nY = m_VEdgeCell[n].nGetY();
 //
-//          if (m_pRasterGrid->m_Cell[nX][nY].nGetCoastline() == DUMMY_COAST_NUMBER)
+//          if (m_pRasterGrid->Cell(nX, nY).nGetCoastline() == DUMMY_COAST_NUMBER)
 //          {
 //             bEdgeFound = true;
 //             nValidCoast++;
 //
 //             // Set this edge cell
-//             m_pRasterGrid->m_Cell[nX][nY].SetAsCoastline(nValidCoast);
+//             m_pRasterGrid->Cell(nX, nY).SetAsCoastline(nValidCoast);
 //
 //             // Create the coast vector
 //             CGeomILine ILTempGridCRS;
@@ -569,9 +569,9 @@ int CSimulation::nTraceAllCoasts(void)
 //
 //                      if (bIsWithinValidGrid(nXAdj, nYAdj))
 //                      {
-//                         if (m_pRasterGrid->m_Cell[nXAdj][nYAdj].nGetCoastline() == DUMMY_COAST_NUMBER)
+//                         if (m_pRasterGrid->Cell(nXAdj, nYAdj).nGetCoastline() == DUMMY_COAST_NUMBER)
 //                         {
-//                            m_pRasterGrid->m_Cell[nXAdj][nYAdj].SetAsCoastline(nValidCoast);
+//                            m_pRasterGrid->Cell(nXAdj, nYAdj).SetAsCoastline(nValidCoast);
 //
 //                            CGeom2DIPoint const PtiPoint(nX, nY);
 //                            ILTempGridCRS.Append(&PtiPoint);
@@ -590,9 +590,9 @@ int CSimulation::nTraceAllCoasts(void)
 //
 //                      if (bIsWithinValidGrid(nXAdj, nYAdj))
 //                      {
-//                         if (m_pRasterGrid->m_Cell[nXAdj][nYAdj].nGetCoastline() == DUMMY_COAST_NUMBER)
+//                         if (m_pRasterGrid->Cell(nXAdj, nYAdj).nGetCoastline() == DUMMY_COAST_NUMBER)
 //                         {
-//                            m_pRasterGrid->m_Cell[nXAdj][nYAdj].SetAsCoastline(nValidCoast);
+//                            m_pRasterGrid->Cell(nXAdj, nYAdj).SetAsCoastline(nValidCoast);
 //
 //                            CGeom2DIPoint const PtiPoint(nX, nY);
 //                            ILTempGridCRS.Append(&PtiPoint);
@@ -611,9 +611,9 @@ int CSimulation::nTraceAllCoasts(void)
 //
 //                      if (bIsWithinValidGrid(nXAdj, nYAdj))
 //                      {
-//                         if (m_pRasterGrid->m_Cell[nXAdj][nYAdj].nGetCoastline() == DUMMY_COAST_NUMBER)
+//                         if (m_pRasterGrid->Cell(nXAdj, nYAdj).nGetCoastline() == DUMMY_COAST_NUMBER)
 //                         {
-//                            m_pRasterGrid->m_Cell[nXAdj][nYAdj].SetAsCoastline(nValidCoast);
+//                            m_pRasterGrid->Cell(nXAdj, nYAdj).SetAsCoastline(nValidCoast);
 //
 //                            CGeom2DIPoint const PtiPoint(nX, nY);
 //                            ILTempGridCRS.Append(&PtiPoint);
@@ -632,9 +632,9 @@ int CSimulation::nTraceAllCoasts(void)
 //
 //                      if (bIsWithinValidGrid(nXAdj, nYAdj))
 //                      {
-//                         if (m_pRasterGrid->m_Cell[nXAdj][nYAdj].nGetCoastline() == DUMMY_COAST_NUMBER)
+//                         if (m_pRasterGrid->Cell(nXAdj, nYAdj).nGetCoastline() == DUMMY_COAST_NUMBER)
 //                         {
-//                            m_pRasterGrid->m_Cell[nXAdj][nYAdj].SetAsCoastline(nValidCoast);
+//                            m_pRasterGrid->Cell(nXAdj, nYAdj).SetAsCoastline(nValidCoast);
 //
 //                            CGeom2DIPoint const PtiPoint(nX, nY);
 //                            ILTempGridCRS.Append(&PtiPoint);
@@ -653,9 +653,9 @@ int CSimulation::nTraceAllCoasts(void)
 //
 //                      if (bIsWithinValidGrid(nXAdj, nYAdj))
 //                      {
-//                         if (m_pRasterGrid->m_Cell[nXAdj][nYAdj].nGetCoastline() == DUMMY_COAST_NUMBER)
+//                         if (m_pRasterGrid->Cell(nXAdj, nYAdj).nGetCoastline() == DUMMY_COAST_NUMBER)
 //                         {
-//                            m_pRasterGrid->m_Cell[nXAdj][nYAdj].SetAsCoastline(nValidCoast);
+//                            m_pRasterGrid->Cell(nXAdj, nYAdj).SetAsCoastline(nValidCoast);
 //
 //                            CGeom2DIPoint const PtiPoint(nX, nY);
 //                            ILTempGridCRS.Append(&PtiPoint);
@@ -674,9 +674,9 @@ int CSimulation::nTraceAllCoasts(void)
 //
 //                      if (bIsWithinValidGrid(nXAdj, nYAdj))
 //                      {
-//                         if (m_pRasterGrid->m_Cell[nXAdj][nYAdj].nGetCoastline() == DUMMY_COAST_NUMBER)
+//                         if (m_pRasterGrid->Cell(nXAdj, nYAdj).nGetCoastline() == DUMMY_COAST_NUMBER)
 //                         {
-//                            m_pRasterGrid->m_Cell[nXAdj][nYAdj].SetAsCoastline(nValidCoast);
+//                            m_pRasterGrid->Cell(nXAdj, nYAdj).SetAsCoastline(nValidCoast);
 //
 //                            CGeom2DIPoint const PtiPoint(nX, nY);
 //                            ILTempGridCRS.Append(&PtiPoint);
@@ -695,9 +695,9 @@ int CSimulation::nTraceAllCoasts(void)
 //
 //                      if (bIsWithinValidGrid(nXAdj, nYAdj))
 //                      {
-//                         if (m_pRasterGrid->m_Cell[nXAdj][nYAdj].nGetCoastline() == DUMMY_COAST_NUMBER)
+//                         if (m_pRasterGrid->Cell(nXAdj, nYAdj).nGetCoastline() == DUMMY_COAST_NUMBER)
 //                         {
-//                            m_pRasterGrid->m_Cell[nXAdj][nYAdj].SetAsCoastline(nValidCoast);
+//                            m_pRasterGrid->Cell(nXAdj, nYAdj).SetAsCoastline(nValidCoast);
 //
 //                            CGeom2DIPoint const PtiPoint(nX, nY);
 //                            ILTempGridCRS.Append(&PtiPoint);
@@ -716,9 +716,9 @@ int CSimulation::nTraceAllCoasts(void)
 //
 //                      if (bIsWithinValidGrid(nXAdj, nYAdj))
 //                      {
-//                         if (m_pRasterGrid->m_Cell[nXAdj][nYAdj].nGetCoastline() == DUMMY_COAST_NUMBER)
+//                         if (m_pRasterGrid->Cell(nXAdj, nYAdj).nGetCoastline() == DUMMY_COAST_NUMBER)
 //                         {
-//                            m_pRasterGrid->m_Cell[nXAdj][nYAdj].SetAsCoastline(nValidCoast);
+//                            m_pRasterGrid->Cell(nXAdj, nYAdj).SetAsCoastline(nValidCoast);
 //
 //                            CGeom2DIPoint const PtiPoint(nX, nY);
 //                            ILTempGridCRS.Append(&PtiPoint);
@@ -792,7 +792,7 @@ int CSimulation::nTraceAllCoasts(void)
       if ((! bThisCellIsSea) && bNextCellIsSea)
       {
          // Yes, we are at a possible coastline start cell with 'this' cell just above the sea. Has 'this' cell already been flagged as a possible start for a coastline (even if this subsequently 'failed' as a coastline)?
-         if (m_pRasterGrid->m_Cell[nXThis][nYThis].bIsPossibleCoastStartCell())
+         if (m_pRasterGrid->Cell(nXThis, nYThis).bIsPossibleCoastStartCell())
             continue;
 
          // Is 'this' cell too close to a cell that has previously been flagged as a possible coast start cell? Search first in one direction
@@ -806,7 +806,7 @@ int CSimulation::nTraceAllCoasts(void)
             int const nXTmp = m_VEdgeCell[nTmp].nGetX();
             int const nYTmp = m_VEdgeCell[nTmp].nGetY();
 
-            if (m_pRasterGrid->m_Cell[nXTmp][nYTmp].bIsPossibleCoastStartCell())
+            if (m_pRasterGrid->Cell(nXTmp, nYTmp).bIsPossibleCoastStartCell())
             {
                bTooClose = true;
                break;
@@ -825,7 +825,7 @@ int CSimulation::nTraceAllCoasts(void)
             int const nXTmp = m_VEdgeCell[nTmp].nGetX();
             int const nYTmp = m_VEdgeCell[nTmp].nGetY();
 
-            if (m_pRasterGrid->m_Cell[nXTmp][nYTmp].bIsPossibleCoastStartCell())
+            if (m_pRasterGrid->Cell(nXTmp, nYTmp).bIsPossibleCoastStartCell())
             {
                bTooClose = true;
                break;
@@ -835,7 +835,7 @@ int CSimulation::nTraceAllCoasts(void)
             continue;
 
          // All OK, so flag 'this' cell
-         m_pRasterGrid->m_Cell[nXThis][nYThis].SetPossibleCoastStartCell();
+         m_pRasterGrid->Cell(nXThis, nYThis).SetPossibleCoastStartCell();
 
          if (m_nLogFileDetail >= LOG_FILE_ALL)
             LogStream << m_ulIter << ": \tflagging [" << nXThis << "][" << nYThis << "] = {" << dGridCentroidXToExtCRSX(nXThis) << ", " << dGridCentroidYToExtCRSY(nYThis) << "} as possible coast start cell (left_handed edge)" << endl;
@@ -849,7 +849,7 @@ int CSimulation::nTraceAllCoasts(void)
       else if (bThisCellIsSea && (! bNextCellIsSea))
       {
          // We are at a possible coastline start cell with the 'next' cell just above the sea. Has the 'next' cell already been flagged as a possible start for a coastline (even if this subsequently 'failed' as a coastline)?
-         if (m_pRasterGrid->m_Cell[nXNext][nYNext].bIsPossibleCoastStartCell())
+         if (m_pRasterGrid->Cell(nXNext, nYNext).bIsPossibleCoastStartCell())
             continue;
 
          // Is the 'next' cell too close to a cell that has previously been flagged as a possible coast start cell? Search first in one direction
@@ -863,7 +863,7 @@ int CSimulation::nTraceAllCoasts(void)
             int const nXTmp = m_VEdgeCell[nTmp].nGetX();
             int const nYTmp = m_VEdgeCell[nTmp].nGetY();
 
-            if (m_pRasterGrid->m_Cell[nXTmp][nYTmp].bIsPossibleCoastStartCell())
+            if (m_pRasterGrid->Cell(nXTmp, nYTmp).bIsPossibleCoastStartCell())
             {
                bTooClose = true;
                break;
@@ -882,7 +882,7 @@ int CSimulation::nTraceAllCoasts(void)
             int const nXTmp = m_VEdgeCell[nTmp].nGetX();
             int const nYTmp = m_VEdgeCell[nTmp].nGetY();
 
-            if (m_pRasterGrid->m_Cell[nXTmp][nYTmp].bIsPossibleCoastStartCell())
+            if (m_pRasterGrid->Cell(nXTmp, nYTmp).bIsPossibleCoastStartCell())
             {
                bTooClose = true;
                break;
@@ -892,7 +892,7 @@ int CSimulation::nTraceAllCoasts(void)
             continue;
 
          // All OK, so flag the 'next' cell
-         m_pRasterGrid->m_Cell[nXNext][nYNext].SetPossibleCoastStartCell();
+         m_pRasterGrid->Cell(nXNext, nYNext).SetPossibleCoastStartCell();
 
          if (m_nLogFileDetail >= LOG_FILE_ALL)
             LogStream << m_ulIter << ": \tflagging [" << nXNext << "][" << nYNext << "] = {" << dGridCentroidXToExtCRSX(nXNext) << ", " << dGridCentroidYToExtCRSY(nYNext) << "} as possible coast start cell (right_handed edge)" << endl;
@@ -1342,7 +1342,7 @@ int CSimulation::nTraceCoastLine(unsigned int const nTraceFromStartCellIndex, in
                   // It is, so add it to the vector
                   ILTempGridCRS.AppendIfNotPrevious(&Pti);
                }
-               else if (m_pRasterGrid->m_Cell[nX][nY].dGetAllSedTopElevIncTalus() >= m_dThisIterSWL)
+               else if (m_pRasterGrid->Cell(nX, nY).dGetAllSedTopElevIncTalus() >= m_dThisIterSWL)
                {
                   // The sediment top (inc any talus) is above SWL so add it to the vector object
                   ILTempGridCRS.AppendIfNotPrevious(&Pti);
@@ -1379,7 +1379,7 @@ int CSimulation::nTraceCoastLine(unsigned int const nTraceFromStartCellIndex, in
                   // It is, so add it to the vector object
                   ILTempGridCRS.AppendIfNotPrevious(&Pti);
                }
-               else if (m_pRasterGrid->m_Cell[nX][nY].dGetAllSedTopElevIncTalus() >= m_dThisIterSWL)
+               else if (m_pRasterGrid->Cell(nX, nY).dGetAllSedTopElevIncTalus() >= m_dThisIterSWL)
                {
                   // The sediment top (inc any talus) is above SWL so add it to the vector object
                   ILTempGridCRS.AppendIfNotPrevious(&Pti);
@@ -1415,7 +1415,7 @@ int CSimulation::nTraceCoastLine(unsigned int const nTraceFromStartCellIndex, in
                   // It is, so add it to the vector object
                   ILTempGridCRS.AppendIfNotPrevious(&Pti);
                }
-               else if (m_pRasterGrid->m_Cell[nX][nY].dGetAllSedTopElevIncTalus() >= m_dThisIterSWL)
+               else if (m_pRasterGrid->Cell(nX, nY).dGetAllSedTopElevIncTalus() >= m_dThisIterSWL)
                {
                   // The sediment top (inc any talus) is above SWL so add it to the vector object
                   ILTempGridCRS.AppendIfNotPrevious(&Pti);

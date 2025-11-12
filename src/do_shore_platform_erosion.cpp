@@ -246,7 +246,7 @@ int CSimulation::nCalcPotentialPlatformErosionOnProfile(int const nCoast, CGeomP
       dVConsProfileZ[i] = m_pRasterGrid->Cell(nX, nY).dGetConsSedTopElevForLayerAboveBasement(nTopLayer);
 
       // Get the elevation for both consolidated and unconsolidated sediment on this cell (ignore any talus)
-      VdProfileZ[i] = m_pRasterGrid->m_Cell[nX][nY].dGetAllSedTopElevOmitTalus();
+      VdProfileZ[i] = m_pRasterGrid->Cell(nX, nY).dGetAllSedTopElevOmitTalus();
 
       // And store the X-Y plane distance from the start of the profile
       VdProfileDistXY[i] = i * dSpacingXY;
@@ -553,7 +553,7 @@ int CSimulation::nCalcPotentialPlatformErosionBetweenProfiles(int const nCoast, 
          dVParConsProfileZ[i] = m_pRasterGrid->Cell(nXPar, nYPar).dGetConsSedTopElevForLayerAboveBasement(nTopLayer);
 
          // Get the elevation for both consolidated and unconsolidated sediment on this cell (ignore any talus)
-         dVParProfileZ[i] = m_pRasterGrid->m_Cell[nXPar][nYPar].dGetAllSedTopElevOmitTalus();
+         dVParProfileZ[i] = m_pRasterGrid->Cell(nXPar, nYPar).dGetAllSedTopElevOmitTalus();
 
          // And store the X-Y plane distance from the start of the profile
          dVParProfileDistXY[i] = i * dParSpacingXY;
@@ -1140,7 +1140,7 @@ double CSimulation::dCalcBeachProtectionFactor(int const nX, int const nY, doubl
       return 0;
 
    // In SCAPE, 0.23 * the significant breaking wave height is assumed to be the maximum depth of beach that waves can penetrate to erode a platform. For depths less than this, the beach protective ability is assumed to vary linearly
-   double const dBeachDepth = m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nThisLayer)->dGetAllUnconsDepth();
+   double const dBeachDepth = m_pRasterGrid->Cell(nX, nY).pGetLayerAboveBasement(nThisLayer)->dGetAllUnconsDepth();
    double const dMaxPenetrationDepth = BEACH_PROTECTION_HB_RATIO * dBreakingWaveHeight;
    double dFactor = 0;
 
@@ -1162,41 +1162,41 @@ void CSimulation::FillInBeachProtectionHolesAndRemoveLegacyCliffs(void)
       for (int nY = 0; nY < m_nYGridSize; nY++)
       {
          // Find any 'legacy' ciff cells: cells with an erosional notch apex elevation which is now - due to shore platform erosion - above the top of the consolidated sediment
-         double const dNotchApexElev = m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->dGetCliffNotchApexElev();
+         double const dNotchApexElev = m_pRasterGrid->Cell(nX, nY).pGetLandform()->dGetCliffNotchApexElev();
          if (! bFPIsEqual(dNotchApexElev, DBL_NODATA, TOLERANCE))
          {
             // This cell has an erosional notch
-            double const dSedTopElevNoTalus = m_pRasterGrid->m_Cell[nX][nY].dGetAllSedTopElevOmitTalus();
+            double const dSedTopElevNoTalus = m_pRasterGrid->Cell(nX, nY).dGetAllSedTopElevOmitTalus();
             if (dNotchApexElev >= dSedTopElevNoTalus)
             {
                // The apex elevation of the notch is above the top of the consolidated sediment, so this notch has been removed
-               m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->SetCliffNotchApexElev(DBL_NODATA);
-               m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->SetCliffNotchIncisionDepth(DBL_NODATA);
+               m_pRasterGrid->Cell(nX, nY).pGetLandform()->SetCliffNotchApexElev(DBL_NODATA);
+               m_pRasterGrid->Cell(nX, nY).pGetLandform()->SetCliffNotchIncisionDepth(DBL_NODATA);
 
                // Now determine the landform category
-               int const nTopLayer = m_pRasterGrid->m_Cell[nX][nY].nGetTopNonZeroLayerAboveBasement();
-               CRWCellLayer* pTopLayer = m_pRasterGrid->m_Cell[nX][nY].pGetLayerAboveBasement(nTopLayer);
+               int const nTopLayer = m_pRasterGrid->Cell(nX, nY).nGetTopNonZeroLayerAboveBasement();
+               CRWCellLayer* pTopLayer = m_pRasterGrid->Cell(nX, nY).pGetLayerAboveBasement(nTopLayer);
 
                if (pTopLayer->bHasTalus())
                {
                   // There is talus here
-                  m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->SetLFCategory(LF_DRIFT_TALUS);
+                  m_pRasterGrid->Cell(nX, nY).pGetLandform()->SetLFCategory(LF_DRIFT_TALUS);
                }
                else if (pTopLayer->bHasUncons())
                {
                   // There is some unconsolidated sediment here
-                  m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->SetLFCategory(LF_DRIFT_BEACH);
+                  m_pRasterGrid->Cell(nX, nY).pGetLandform()->SetLFCategory(LF_DRIFT_BEACH);
                }
                else
                {
                   // Set as hinterland
-                  m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->SetLFCategory(LF_HINTERLAND);
+                  m_pRasterGrid->Cell(nX, nY).pGetLandform()->SetLFCategory(LF_HINTERLAND);
                }
             }
          }
 
          // Now look at beach protection
-         if ((m_pRasterGrid->m_Cell[nX][nY].bIsInContiguousSea()) && (bFPIsEqual(m_pRasterGrid->m_Cell[nX][nY].dGetBeachProtectionFactor(), DBL_NODATA, TOLERANCE)))
+         if ((m_pRasterGrid->Cell(nX, nY).bIsInContiguousSea()) && (bFPIsEqual(m_pRasterGrid->Cell(nX, nY).dGetBeachProtectionFactor(), DBL_NODATA, TOLERANCE)))
          {
             // This is a sea cell, and it has an initialised beach protection value. So look at its N-S and W-E neighbours
             int nXTmp;

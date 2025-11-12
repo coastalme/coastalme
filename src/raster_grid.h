@@ -53,6 +53,7 @@ class CGeomRasterGrid
    //! Single contiguous array of cell objects for optimal cache performance
    //! __restrict__ tells compiler this pointer doesn't alias, enabling better vectorization
    CGeomCell* __restrict__ m_CellData;
+   CGeomCell*  m_Cell;
 
  protected:
  public:

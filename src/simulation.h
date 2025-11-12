@@ -67,7 +67,7 @@ class CRWCoast;
 class CGeomProfile;
 class CGeomCoastPolygon;
 class CRWCliff;
-class CSedInputEvent;
+class CRWSedInputEvent;
 class CRWCellLandform;
 class CGeomCell;
 
@@ -86,11 +86,17 @@ class CSimulation
    //! Save basement raster DEMs?
    bool m_bBasementElevSave;
 
+   //! Save sediment inc talus top surface raster DEMs?
+   bool m_bSedIncTalusTopSurfSave;
+
    //! Save sediment top surface raster DEMs?
    bool m_bSedimentTopSurfSave;
 
    //! Save fop surface (sediment and sea) raster DEMs?
    bool m_bTopSurfSave;
+
+   //! Save top surface (sediment, talus, and sea) raster DEMs?
+   bool m_bTopSurfIncSeaSave;
 
    //! Save talus depth?
    bool m_bTalusSave;
@@ -515,9 +521,6 @@ class CSimulation
    //! The order of the cliff edge smoothing polynomial if Savitzky-Golay smoothing is used (usually 2 or 4, max is 6)
    int m_nSavGolCliffEdgePoly;
 
-   //! Slope limit for cliff toe detection
-   double m_dSlopeThresholdForCliffToe;
-
    //! The size of the window used for running-mean coast-normal profile smoothing (must be odd)
    int m_nProfileSmoothWindow;
 
@@ -548,11 +551,11 @@ class CSimulation
    //! Minimum valid coast length when searching for coasts
    int m_nCoastMin;
 
-   // NOT USED
-   // int m_nNThisIterCliffCollapse;
+   // the number of cells with cliff collapse this itteration
+   int m_nNumThisIterCliffCollapse;
 
-   // NOT USED
-   // int m_nNTotCliffCollapse;
+   // the total number of cells with cliff collapse since the start of the simmulation
+   int m_nNumTotCliffCollapse;
 
    //! How sediment which moves off an edge of the grid is handled. Possible values are GRID_EDGE_CLOSED, GRID_EDGE_OPEN, GRID_EDGE_RECIRCULATE
    int m_nUnconsSedimentHandlingAtGridEdges;
@@ -948,13 +951,13 @@ class CSimulation
    double m_dCliffErosionResistance;
 
    //! Notch overhang (i.e. length of horizontal incision) to initiate collapse (m)
-   double m_dNotchDepthAtCollapse;
+   double m_dNotchIncisionAtCollapse;
 
    //! This-iteration notch elevation (m)
-   double m_dThisIterNotchBaseElev;
+   double m_dThisIterNewNotchApexElev;
 
-   //! Distance of notch base below SWL (m)
-   double m_dNotchBaseBelowSWL;
+   //! Distance of notch apex above mhw (m)
+   double m_dNotchApexAboveMHW;
 
    //! Scale parameter A for cliff deposition (m^(1/3)), may be zero for auto-calculation
    double m_dCliffDepositionA;
@@ -1618,7 +1621,7 @@ class CSimulation
    vector<int> m_VCellFloodLocation;
 
    //! Sediment input events
-   vector<CSedInputEvent*> m_pVSedInputEvent;
+   vector<CRWSedInputEvent*> m_pVSedInputEvent;
 
    //! The c++11 random number generators
    default_random_engine m_Rand[NUMBER_OF_RNGS];
@@ -1669,6 +1672,7 @@ class CSimulation
 
    // Initialization
    bool bCreateErosionPotentialLookUp(vector<double>*, vector<double>*, vector<double>*);
+   void CalcMHWElevation(int const);
 
    // Top-level simulation routines
    static int nUpdateIntervention(void);
@@ -1683,8 +1687,9 @@ class CSimulation
    void GenerateSyntheticTransects(vector<TransectWaveData> const*, vector<TransectWaveData>*);
    int nDoAllShorePlatFormErosion(void);
    int nDoAllWaveEnergyToCoastLandforms(void);
-   int nDoCliffCollapse(int const, CRWCliff *, double&, double&, double&, double&, double&);
-   int nDoCliffCollapseDeposition(int const, CRWCliff const*, double const, double const, double const, double const);
+   int nDoCliffCollapse(int const, CRWCliff*, double&, double&, double&, int&, double&, double&);
+   void DoCliffCollapseTalusDeposition(int const, CRWCliff const*, double const, double const, int const);
+   int nMoveCliffTalusToUnconsolidated(void);
    int nUpdateGrid(void);
 
    // Sediment avalanche processing
@@ -1733,7 +1738,7 @@ class CSimulation
    int nCalcPotentialPlatformErosionBetweenProfiles(int const, CGeomProfile*, int const);
    void ConstructParallelProfile(int const, int const, int const, int const, int const, vector<CGeom2DIPoint>* const, vector<CGeom2DIPoint>*, vector<CGeom2DPoint> *);
    double dCalcBeachProtectionFactor(int const, int const, double const);
-   void FillInBeachProtectionHoles(void);
+   void FillInBeachProtectionHolesAndRemoveLegacyCliffs(void);
    void FillPotentialPlatformErosionHoles(void);
    void DoActualPlatformErosionOnCell(int const, int const, CGeomCell&);
    double dLookUpErosionPotential(double const);
@@ -1760,7 +1765,7 @@ class CSimulation
    static bool bOnOrOffShoreAndUpOrDownCoast(double const, double const, int const, bool&);
    static CGeom2DIPoint PtiFollowWaveAngle(CGeom2DIPoint const*, double const, double&);
    // int nFindAllShadowZones(void);
-   int nFloodFillShadowZone(int const, CGeom2DIPoint const*, CGeom2DIPoint const*, CGeom2DIPoint const*);
+   int nCellByCellFillShadowZone(int const, int const, CGeom2DIPoint const*, CGeom2DIPoint const*, CGeom2DIPoint const*);
    void DoShadowZoneAndDownDriftZone(int const, int const, int const, int const);
    void ProcessDownDriftCell(int const, int const, int const, double const, int const);
    void ProcessShadowZoneCell(int const, int const, int const, CGeom2DIPoint const*, int const, int const, int const);
@@ -1789,6 +1794,9 @@ class CSimulation
    int nTruncateProfilesDifferentCoasts(int const, int const, int const, int const, int const, int const);
    int nTruncateProfileHitDifferentCoast(int const, int const, int const, int const);
    int nTruncateProfileMultiLineDifferentCoasts(CGeomProfile*, double const, double const);
+   bool bIncreaseCliffNotchIncision(int const, int const, int const, CRWCliff*, double const);
+   bool bCreateNotchInland(int const, int const, int const, int const, double const, double const);
+
 
    // GIS utility routines
    int nMarkBoundingBoxEdgeCells(void);
@@ -1831,8 +1839,11 @@ class CSimulation
    static int nGetOppositeDirection(int const);
    // static void GetSlopeAndInterceptFromPoints(CGeom2DIPoint const*,
    // CGeom2DIPoint const*, double&, double&);
-   CGeom2DIPoint PtiFindClosestCoastPoint(int const, int const);
+   CGeom2DIPoint PtiFindClosestCoastPoint(int const, int const, int &);
+   int nFindClosestCoastPoint(int const, int const, int &);
    int nConvertMetresToNumCells(double const) const;
+   bool bIsAdjacentEdgeCell(CGeom2DIPoint const*, CGeom2DIPoint const*);
+   void FindClosestPointOnStraightLine(double const, double const, double const, double const, double const, double const, double&, double&);
 
    // Interpolation routines
    double dGetInterpolatedValue(vector<double> const*, vector<double> const*, double, bool);

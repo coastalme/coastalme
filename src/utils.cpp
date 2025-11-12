@@ -3069,7 +3069,7 @@ unsigned long CSimulation::ulConvertToTimestep(string const* pstrIn) const
 //===============================================================================================================================
 bool CSimulation::bIsInterventionCell(int const nX, int const nY) const
 {
-   int const nCat = m_pRasterGrid->m_Cell[nX][nY].pGetLandform()->nGetLFCategory();
+   int const nCat = m_pRasterGrid->Cell(nX, nY).pGetLandform()->nGetLFCategory();
    if ((nCat == LF_INTERVENTION_STRUCT) || (nCat == LF_INTERVENTION_NON_STRUCT))
       return true;
 
