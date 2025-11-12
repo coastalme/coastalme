@@ -232,6 +232,22 @@ elseif(CMAKE_BUILD_TYPE_LC STREQUAL "prerelease")
         -fsanitize=vptr
         -fsanitize=address
       )
+  add_link_options(
+        -fsanitize=undefined
+        -fsanitize=shift
+        -fsanitize=integer-divide-by-zero
+        -fsanitize=unreachable
+        -fsanitize=null
+        -fsanitize=return
+        -fsanitize=vla-bound
+        -fsanitize=float-divide-by-zero
+        -fsanitize=float-cast-overflow
+        -fsanitize=bounds
+        -fsanitize=alignment
+        -fsanitize=object-size
+        -fsanitize=vptr
+        -fsanitize=address
+      )
       # Note  -fsanitize-ignorelist=sanitize_ignorelist.txt not yet working
       # for gcc, need this to hide GDAL errors
     endif()
@@ -301,6 +317,13 @@ elseif(CMAKE_BUILD_TYPE_LC STREQUAL "relwithdebinfo")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS_DEBUG} ${CMAKE_CXX_FLAGS}")
   add_link_options(-g)
   set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CME_BINARY_DIR}/Debug CACHE PATH "Directory for Debug builds" FORCE)
+  # For Debug builds on any platform, add the model's "internal" debug flag(used for extra logging) etc.
+  add_compile_options(-D_DEBUG)
+
+elseif(CMAKE_BUILD_TYPE_LC STREQUAL "prerelease")
+  set(CSHORE_BUILD "DEBUG")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS_DEBUG} ${CMAKE_CXX_FLAGS}")
+  set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CME_BINARY_DIR}/prerelease CACHE PATH "Directory for prerelease builds" FORCE)
   # For Debug builds on any platform, add the model's "internal" debug flag(used for extra logging) etc.
   add_compile_options(-D_DEBUG)
 

@@ -508,11 +508,11 @@ bool CSimulation::bIncreaseCliffNotchIncision(int const nCoast, int const nX, in
       if (dWaveElev < dCutoffElev)
       {
          // SWL is below the cutoff elevation, so no incision of this existing notch
-#ifdef _DEBUG
          double const dSedTopElevIncTalus = m_pRasterGrid->Cell(nX, nY).dGetAllSedTopElevIncTalus();
+         double const dSedTopElevNoTalus = m_pRasterGrid->Cell(nX, nY).dGetAllSedTopElevOmitTalus();
 
          LogStream << m_ulIter << ": \tNO incision of existing notch at [" << nX << "][" << nY << "] dWaveElev = " << dWaveElev << " dCutoffElev = " << dCutoffElev << " dRunup = " << dRunup << " dNotchApexElev = " << dNotchApexElev << " dSedTopElevNoTalus = " << dSedTopElevNoTalus << " dSedTopElevIncTalus = " << dSedTopElevIncTalus << endl;
-#endif
+
          return false;
       }
 
@@ -534,9 +534,8 @@ bool CSimulation::bIncreaseCliffNotchIncision(int const nCoast, int const nX, in
       // And add to the cell's accumulated wave energy
       m_pRasterGrid->Cell(nX, nY).pGetLandform()->AddToAccumWaveEnergy(dWaveEnergy* dWeight);
 
-#ifdef _DEBUG
-      LogStream << m_ulIter << ": \tincision of existing notch at [" << nX << "][" << nY << "] dWaveElev = " << dWaveElev << " dCutoffElev = " << dCutoffElev << " dRunup = " << dRunup << "  dWeight = " << dWeight << " dNotchApexElev = " << dNotchApexElev << " dSedTopElevNoTalus = " << dSedTopElevNoTalus << " dNotchIncision = " << dNotchIncision << endl;
-#endif
+      double const dSedTopElevNoTalus = m_pRasterGrid->Cell(nX, nY).dGetAllSedTopElevOmitTalus();      LogStream << m_ulIter << ": \tincision of existing notch at [" << nX << "][" << nY << "] dWaveElev = " << dWaveElev << " dCutoffElev = " << dCutoffElev << " dRunup = " << dRunup << "  dWeight = " << dWeight << " dNotchApexElev = " << dNotchApexElev << " dSedTopElevNoTalus = " << dSedTopElevNoTalus << " dNotchIncision = " << dNotchIncision << endl;
+
       return true;
    }
    else
