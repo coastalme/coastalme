@@ -894,7 +894,7 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
 
    // Misc initialisation calcs
    m_nCoastMax = COAST_LENGTH_MAX * tMax(m_nXGridSize, m_nYGridSize);                           // Arbitrary but probably OK
-   m_nCoastMin = tMin(m_nXGridSize, m_nYGridSize);                                              // In some cases the following rule doesn't work TODO 007 Finish surge and runup stuff
+   m_nCoastMin = tMin(m_nXGridSize, m_nYGridSize)-1;                                              // In some cases the following rule doesn't work TODO 007 Finish surge and runup stuff
    // nRound(COAST_LENGTH_MIN_X_PROF_SPACE * m_dCoastNormalSpacing / m_dCellSide);              // TODO 007 Finish surge and runup stuff
    m_nCoastCurvatureInterval = tMax(nRound(m_dCoastNormalSpacing / (m_dCellSide * 2)), 2);      // TODO 007 Finish surge and runup stuff
 
