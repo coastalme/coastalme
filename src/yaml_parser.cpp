@@ -3,6 +3,7 @@
    \file yaml_parser.cpp
    \brief Simple YAML parser implementation for CoastalME
    \details A lightweight YAML parser using only standard C++ library
+   \author Wilf Chun
    \author David Favis-Mortlock
    \author Andres Payo
    \date 2025

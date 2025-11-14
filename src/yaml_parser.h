@@ -3,6 +3,7 @@
    \file yaml_parser.h
    \brief Simple YAML parser for CoastalME configuration files
    \details A lightweight YAML parser using only standard C++ library, designed specifically for CoastalME configuration needs
+   \author Wilf Chun
    \author David Favis-Mortlock
    \author Andres Payo
    \date 2025
