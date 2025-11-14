@@ -58,28 +58,54 @@ using std::random_device;
 #include "yaml_parser.h"
 
 //===============================================================================================================================
-//! The bReadIniFile member function reads the initialisation file
+//! The bReadIniFile member function reads the initialisation file (tries YAML first, then falls back to .ini)
 //===============================================================================================================================
 bool CSimulation::bReadIniFile(void)
 {
-   // Check if user has supplied home directory
-   if (m_strCMEIni.empty())
-      // if not use the cme executable directory to find cme.ini
-      m_strCMEIni = m_strCMEDir;
 
+   string strOrigCMEDir = m_strCMEDir;
+   string strOrigCMEIni = m_strCMEIni;
+
+   // Try YAML format first
+   if (m_strCMEIni.empty())
+      m_strCMEIni = m_strCMEDir;
    else
-   {
-      // if user has supplied home directory replace cme run directory with user supplied dir
       m_strCMEDir = m_strCMEIni;
+
+   string strYamlPath = m_strCMEIni + CME_YAML;
+
+   // Tell the user what is happening
+   // cout << READING_FILE_LOCATIONS << strFilePathName << endl;
+
+   // Check if YAML file exists
+   ifstream yamlTest(strYamlPath.c_str());
+   if (yamlTest.good())
+   {
+      yamlTest.close();
+      // YAML file exists, try to read it
+      if (bReadIniYamlFile())
+         return true;
+
+      // If YAML reading failed, show error and fall through to try .ini
+      cerr << "Warning: failed to read " << strYamlPath << ", trying .ini format" << endl;
    }
+   else
+      yamlTest.close();
+   // Reset paths for .ini file attempt
+
+   m_strCMEDir = strOrigCMEDir;
+   m_strCMEIni = strOrigCMEIni;
+
+   // Fall back to .ini format
+   if (m_strCMEIni.empty())
+      m_strCMEIni = m_strCMEDir;
+   else
+      m_strCMEDir = m_strCMEIni;
 
    m_strCMEIni.append(CME_INI);
 
    // The .ini file is assumed to be in the CoastalME executable's directory
    string const strFilePathName(m_strCMEIni);
-
-   // Tell the user what is happening
-   cout << READING_FILE_LOCATIONS << strFilePathName << endl;
 
    // Create an ifstream object
    ifstream InStream;
@@ -4112,6 +4138,132 @@ bool CSimulation::bDetectFileFormat(string const &strFileName, bool &bIsYaml)
 
    // Default to .dat format if extension is ambiguous
    bIsYaml = false;
+   return true;
+}
+
+//===============================================================================================================================
+//! Reads the initialization file in YAML format
+//===============================================================================================================================
+bool CSimulation::bReadIniYamlFile(void)
+{
+   // Check if user has supplied home directory
+   if (m_strCMEIni.empty())
+      // if not use the cme executable directory to find cme.yaml
+      m_strCMEIni = m_strCMEDir;
+
+   else
+   {
+      // if user has supplied home directory replace cme run directory with user supplied dir
+      m_strCMEDir = m_strCMEIni;
+   }
+
+   m_strCMEIni.append(CME_YAML);
+
+   // The .yaml file is assumed to be in the CoastalME executable's directory
+   string const strFilePathName(m_strCMEIni);
+
+   // Tell the user what is happening
+   cout << READING_FILE_LOCATIONS << strFilePathName << endl;
+
+   // Create a YAML parser
+   CYamlParser parser;
+
+   // Try to parse the YAML file
+   if (! parser.bParseFile(strFilePathName))
+   {
+      // Error: cannot parse YAML file
+      cerr << ERR << "cannot parse " << strFilePathName << ": " << parser.GetError() << endl;
+      return false;
+   }
+
+   // Get the root node
+   CYamlNode root = parser.GetRoot();
+
+   // Read input data file path
+   if (root.HasChild("input_data_file"))
+   {
+      string strRH = root.GetChild("input_data_file").GetValue();
+
+      if (strRH.empty())
+      {
+         cerr << ERR << "path and name of main datafile is empty in " << strFilePathName << endl;
+         return false;
+      }
+
+      // First check that we don't already have an input run-data filename, e.g. one entered on the command-line
+      if (m_strDataPathName.empty())
+      {
+         // We don't: so first check for leading slash, or leading Unix home dir symbol, or occurrence of a drive letter
+         if ((strRH[0] == PATH_SEPARATOR) || (strRH[0] == TILDE) || (strRH[1] == COLON))
+            // It has an absolute path, so use it 'as is'
+            m_strDataPathName = strRH;
+
+         else
+         {
+            // It has a relative path, so prepend the CoastalME dir
+            m_strDataPathName = m_strCMEDir;
+            m_strDataPathName.append(strRH);
+         }
+      }
+   }
+   else
+   {
+      cerr << ERR << "missing 'input_data_file' in " << strFilePathName << endl;
+      return false;
+   }
+
+   // Read output path
+   if (root.HasChild("output_path"))
+   {
+      string strRH = root.GetChild("output_path").GetValue();
+
+      if (strRH.empty())
+      {
+         cerr << ERR << "path for CoastalME output is empty in " << strFilePathName << endl;
+         return false;
+      }
+
+      // Check for trailing slash on CoastalME output directory name (is vital)
+      if (strRH[strRH.size() - 1] != PATH_SEPARATOR)
+         strRH.push_back(PATH_SEPARATOR);
+
+      // Now check for leading slash, or leading Unix home dir symbol, or occurrence of a drive letter
+      if ((strRH[0] == PATH_SEPARATOR) || (strRH[0] == TILDE) || (strRH[1] == COLON))
+         // It is an absolute path, so use it 'as is'
+         m_strOutPath = strRH;
+
+      else
+      {
+         // It is a relative path, so prepend the CoastalME dir
+         m_strOutPath = m_strCMEDir;
+         m_strOutPath.append(strRH);
+      }
+   }
+   else
+   {
+      cerr << ERR << "missing 'output_path' in " << strFilePathName << endl;
+      return false;
+   }
+
+   // Read email address (optional, only useful if running under Linux/Unix)
+   if (root.HasChild("email_address"))
+   {
+      string strRH = root.GetChild("email_address").GetValue();
+
+      if (! strRH.empty())
+      {
+         // Something was entered, do rudimentary check for valid email address
+         if (strRH.find('@') == string::npos)
+         {
+            cerr << ERR << "invalid email address in " << strFilePathName << endl
+                 << "'" << strRH << "'" << endl;
+            return false;
+         }
+
+         m_strMailAddress = strRH;
+      }
+   }
+
    return true;
 }
 
