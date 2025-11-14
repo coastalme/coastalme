@@ -5379,7 +5379,7 @@ bool CSimulation::bApplyConfiguration(CConfiguration const &config)
    m_dDeanProfileStartAboveSWL = config.GetBermHeight();
 
    // Case 59: Simulate cliff collapse?
-   m_dDeanProfileStartAboveSWL = config.GetCliffCollapse();
+   m_bDoCliffCollapse = config.GetCliffCollapse();
 
    // Case 60: Cliff resistance to erosion
    if (m_bHaveConsolidatedSediment && m_bDoCliffCollapse)
