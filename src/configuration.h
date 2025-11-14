@@ -64,7 +64,7 @@ class CConfiguration
    string m_strRasterFormat;
    bool m_bWorldFile;
    bool m_bScaleValues;
-   vector<double> m_vecSliceElevations;
+   vector<double> m_VdSliceElevations;
    vector<string> m_vecVectorFiles;
    string m_strVectorFormat;
    vector<string> m_vecTimeSeriesFiles;
@@ -184,10 +184,12 @@ class CConfiguration
    {
       m_strRunName = str;
    }
+
    void SetLogFileDetail(int n)
    {
       m_nLogFileDetail = n;
    }
+
    void SetCSVPerTimestepResults(bool b)
    {
       m_bCSVPerTimestepResults = b;
@@ -244,7 +246,7 @@ class CConfiguration
    }
    void SetSliceElevations(vector<double> const &vec)
    {
-      m_vecSliceElevations = vec;
+      m_VdSliceElevations = vec;
    }
    void SetVectorFiles(vector<string> const &vec)
    {
@@ -647,36 +649,43 @@ class CConfiguration
       return m_nRandomSeed;
    }
 
-   bool UseSystemTimeForRandomSeed() const
+   bool bUseSystemTimeForRandomSeed() const
    {
       return m_bUseSystemTimeForSeed;
    }
 
-   int GetMaxSaveDigits() const
+   int nGetMaxSaveDigits() const
    {
       return m_nMaxSaveDigits;
    }
-   string GetSaveDigitsMode() const
+
+   string const* strGetSaveDigitsMode() const
    {
-      return m_strSaveDigitsMode;
+      return &m_strSaveDigitsMode;
    }
-   vector<string> GetRasterFiles() const;
-   string GetRasterFormat() const
+
+   vector<string> VstrGetRasterFiles() const;
+
+   string const* strGetRasterFormat() const
    {
-      return m_strRasterFormat;
+      return &m_strRasterFormat;
    }
-   bool GetWorldFile() const
+
+   bool bGetWorldFile() const
    {
       return m_bWorldFile;
    }
-   bool GetScaleValues() const
+
+   bool bGetScaleValues() const
    {
       return m_bScaleValues;
    }
-   vector<double> GetSliceElevations() const
+
+   vector<double> VdGetSliceElevations() const
    {
-      return m_vecSliceElevations;
+      return m_VdSliceElevations;
    }
+
    vector<string> GetVectorFiles() const;
    string GetVectorFormat() const
    {
@@ -894,6 +903,12 @@ class CConfiguration
    {
       return m_dNotchOverhang;
    }
+
+   double dGetParamAScaleValue()const
+   {
+      return m_dCliffDepositionA;
+   }
+
    double GetNotchBase() const
    {
       return m_dNotchBase;

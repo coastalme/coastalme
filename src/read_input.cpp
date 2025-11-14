@@ -4337,8 +4337,7 @@ bool CSimulation::bConfigureFromYamlFile(CConfiguration &config)
          if (runInfo.HasChild("output_file_names"))
             config.SetRunName(runInfo.GetChild("output_file_names").GetValue());
          if (runInfo.HasChild("log_file_detail"))
-            config.SetLogFileDetail(
-               runInfo.GetChild("log_file_detail").GetIntValue());
+            config.SetLogFileDetail(runInfo.GetChild("log_file_detail").GetIntValue());
          if (runInfo.HasChild("csv_per_timestep_results"))
             config.SetCSVPerTimestepResults(
                runInfo.GetChild("csv_per_timestep_results").GetBoolValue());
@@ -4951,7 +4950,7 @@ bool CSimulation::bApplyConfiguration(CConfiguration const &config)
    }
 
    // Case 8: Random number seed(s)
-   if (config.UseSystemTimeForRandomSeed())
+   if (config.bUseSystemTimeForRandomSeed())
    {
       // Use system time for random seed
       random_device rdev;
@@ -4974,12 +4973,12 @@ bool CSimulation::bApplyConfiguration(CConfiguration const &config)
    }
 
    // Case 9: Max save digits for GIS output
-   m_nGISMaxSaveDigits = config.GetMaxSaveDigits();
+   m_nGISMaxSaveDigits = config.nGetMaxSaveDigits();
    if (m_nGISMaxSaveDigits < 2)
       strErr = "max save digits for GIS output file names must be > 1";
 
    // Case 10: Save digits mode (sequential vs iteration)
-   string strSaveDigitsMode = config.GetSaveDigitsMode();
+   string strSaveDigitsMode = *config.strGetSaveDigitsMode();
    if (! strSaveDigitsMode.empty())
    {
       string strSaveDigitsLower = strToLower(&strSaveDigitsMode);
@@ -4990,7 +4989,7 @@ bool CSimulation::bApplyConfiguration(CConfiguration const &config)
    }
 
    // Case 11: Raster GIS files to output
-   vector<string> rasterFiles = config.GetRasterFiles();
+   vector<string> rasterFiles = config.VstrGetRasterFiles();
    if (! rasterFiles.empty())
    {
       // Reset all raster output flags
@@ -5154,19 +5153,19 @@ bool CSimulation::bApplyConfiguration(CConfiguration const &config)
    }
 
    // Case 12: GIS output format for raster and vector files
-   m_strRasterGISOutFormat = config.GetRasterFormat();
+   m_strRasterGISOutFormat = *config.strGetRasterFormat();
 
    // Case 13: If needed, scale GIS raster output values
-   m_bScaleRasterOutput = config.GetScaleValues();
+   m_bScaleRasterOutput = config.bGetScaleValues();
 
    // Case 14: If needed, also output GIS raster world file
-   m_bWorldFile = config.GetWorldFile();
+   m_bWorldFile = config.bGetWorldFile();
 
    // Case 15: Elevations for raster slice output, if desired
-   if (! config.GetSliceElevations().empty())
+   if (! config.VdGetSliceElevations().empty())
    {
       m_bSliceSave = true;
-      m_VdSliceElev = config.GetSliceElevations();
+      m_VdSliceElev = config.VdGetSliceElevations();
    }
 
    // Case 16: Vector GIS files to output
@@ -5554,7 +5553,7 @@ bool CSimulation::bApplyConfiguration(CConfiguration const &config)
    // Case 63: Scale parameter A for cliff deposition (m^(1/3)) [0 = auto]
    if (m_bHaveConsolidatedSediment && m_bDoCliffCollapse)
    {
-      m_dCliffDepositionA = config.GetScaleValues();
+      m_dCliffDepositionA = config.dGetParamAScaleValue();
    }
 
    // Case 64: Approximate planview width of cliff collapse talus (in m)

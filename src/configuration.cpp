@@ -70,7 +70,7 @@ void CConfiguration::InitializeDefaults()
    m_strRasterFormat = "";
    m_bWorldFile = false;
    m_bScaleValues = false;
-   m_vecSliceElevations.clear();
+   m_VdSliceElevations.clear();
    m_vecVectorFiles.clear();
    m_vecVectorFiles.push_back("");
    m_strVectorFormat = "ESRI Shapefile";
@@ -184,7 +184,7 @@ void CConfiguration::InitializeDefaults()
 //===============================================================================================================================
 //! Get raster files with keyword expansion support
 //===============================================================================================================================
-vector<string> CConfiguration::GetRasterFiles() const
+vector<string> CConfiguration::VstrGetRasterFiles() const
 {
    // Case 11: Raster GIS files to output - expand "all" and "usual" keywords
    vector<string> expandedFiles;
