@@ -51,6 +51,7 @@ var classCSimulation =
     [ "bParseDate", "d1/d98/classCSimulation.html#a94ef62a7ee475f651e9a8e3aa42f4a5b", null ],
     [ "bParseTime", "d1/d98/classCSimulation.html#a14b2b0458d9490ed135caa1987cc711b", null ],
     [ "bReadIniFile", "d1/d98/classCSimulation.html#aa334696e1d3c65a969cab61d12f491cb", null ],
+    [ "bReadIniYamlFile", "d1/d98/classCSimulation.html#aa84bf70f79f5968785058b30d3ef587c", null ],
     [ "bReadRunDataFile", "d1/d98/classCSimulation.html#a643b642813a219245fe06f11d7bb754f", null ],
     [ "bReadYamlFile", "d1/d98/classCSimulation.html#a04d05a0d682a375bfaf00ed8132417e4", null ],
     [ "bSaveAllRasterGISFiles", "d1/d98/classCSimulation.html#aa280d4fdb8fba834f31c9de662bf09ba", null ],

@@ -72,7 +72,7 @@ var searchData=
   ['ngetnumoftoplayerabovebasement_69',['nGetNumOfTopLayerAboveBasement',['../d1/dd9/classCGeomCell.html#a2e8a70d1e9091f687cc78bf2e5acfd65',1,'CGeomCell']]],
   ['ngetnumpointsuseddowncoastprofile_70',['nGetNumPointsUsedDownCoastProfile',['../df/d45/classCGeomCoastPolygon.html#a19a835fe7c493f6853cf118fd3584847',1,'CGeomCoastPolygon']]],
   ['ngetnumpointsusedupcoastprofile_71',['nGetNumPointsUsedUpCoastProfile',['../df/d45/classCGeomCoastPolygon.html#a4a4ebf349a33da816f84f7b3f84c1b1e',1,'CGeomCoastPolygon']]],
-  ['ngetnumpolygons_72',['nGetNumPolygons',['../d1/dbe/classCRWCoast.html#a0eb997be39c9806570e31bc810a2ddf1',1,'CRWCoast']]],
+  ['ngetnumpolygons_72',['nGetNumPolygons',['../d1/dbe/classCRWCoast.html#af527777859e36678a880b37760ad8359',1,'CRWCoast']]],
   ['ngetnumprofiles_73',['nGetNumProfiles',['../d1/dbe/classCRWCoast.html#a84cd86d415ab742280dabeff3e1bacba',1,'CRWCoast']]],
   ['ngetnumshadowboundaries_74',['nGetNumShadowBoundaries',['../d1/dbe/classCRWCoast.html#a6a8485d0dc82dd03f7a13648cd7c18cd',1,'CRWCoast']]],
   ['ngetnumshadowdowndriftboundaries_75',['nGetNumShadowDowndriftBoundaries',['../d1/dbe/classCRWCoast.html#a114b961db1451e15279969c25d2f1421',1,'CRWCoast']]],
