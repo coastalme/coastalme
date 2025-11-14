@@ -1,6 +1,5 @@
 var NAVTREEINDEX5 =
 {
-"d1/df2/classstring_1_1const__iterator.html":[5,0,43,0],
 "d1/dfb/gis__raster_8cpp.html":[6,0,0,49],
 "d1/dfb/gis__raster_8cpp_source.html":[6,0,0,49],
 "d2/d0f/classCA2DIShape.html":[5,0,3],
@@ -249,5 +248,6 @@ var NAVTREEINDEX5 =
 "d5/dc6/classCRWCellSediment.html#a09e7de8337de200c1cc3991914b81e32":[5,0,18,15],
 "d5/dc6/classCRWCellSediment.html#a0e040b4dea833e47bbeb7cd285941b89":[5,0,18,7],
 "d5/dc6/classCRWCellSediment.html#a14b64a3a945d3480b4462ec0e9a3318b":[5,0,18,31],
-"d5/dc6/classCRWCellSediment.html#a1864d742a8f8a422e4641216b673373a":[5,0,18,30]
+"d5/dc6/classCRWCellSediment.html#a1864d742a8f8a422e4641216b673373a":[5,0,18,30],
+"d5/dc6/classCRWCellSediment.html#a1cc290e93cd71771941e8fb8b77bba1c":[5,0,18,12]
 };

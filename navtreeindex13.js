@@ -1,5 +1,6 @@
 var NAVTREEINDEX13 =
 {
+"df/d45/classCGeomCoastPolygon.html#ad3d5be855dac5a3d196b7c87f46442be":[5,0,10,84],
 "df/d45/classCGeomCoastPolygon.html#ad483f72c28b7bd2f9ecc4ec6ce27f654":[5,0,10,117],
 "df/d45/classCGeomCoastPolygon.html#ad67447c8e12766c20dbbdd19eab1c0bd":[5,0,10,56],
 "df/d45/classCGeomCoastPolygon.html#ad68047ef4a4f8e908858e960a0be4b05":[5,0,10,100],

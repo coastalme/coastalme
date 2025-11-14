@@ -111,8 +111,9 @@ var searchData=
   ['getvectorfiles_108',['GetVectorFiles',['../dc/d01/classCConfiguration.html#ae83f4ea3065a09c524604467a2d2c437',1,'CConfiguration']]],
   ['getvectorformat_109',['GetVectorFormat',['../dc/d01/classCConfiguration.html#a93c142e815e1c68c54fcb7e48937894d',1,'CConfiguration']]],
   ['getwaveheighttimeseries_110',['GetWaveHeightTimeSeries',['../dc/d01/classCConfiguration.html#af61f151f912bb70999f0ab4bf9b0babc',1,'CConfiguration']]],
-  ['getwaveperiod_111',['GetWavePeriod',['../dc/d01/classCConfiguration.html#ad3a868bb8b28ec297a9fdcdd232fb346',1,'CConfiguration']]],
-  ['getwavepropagationmodel_112',['GetWavePropagationModel',['../dc/d01/classCConfiguration.html#a8f45b1a7648123660d6722e1db9602b2',1,'CConfiguration']]],
-  ['getwavestationdatafile_113',['GetWaveStationDataFile',['../dc/d01/classCConfiguration.html#a3a576b3c2d651b278923419833b0860a',1,'CConfiguration']]],
-  ['getworldfile_114',['GetWorldFile',['../dc/d01/classCConfiguration.html#a7ceae5f47f41b79a9ab754228e03259b',1,'CConfiguration']]]
+  ['getwaveinputmode_111',['GetWaveInputMode',['../dc/d01/classCConfiguration.html#a30e78156a5aff0721118a6f6fb36560a',1,'CConfiguration']]],
+  ['getwaveperiod_112',['GetWavePeriod',['../dc/d01/classCConfiguration.html#ad3a868bb8b28ec297a9fdcdd232fb346',1,'CConfiguration']]],
+  ['getwavepropagationmodel_113',['GetWavePropagationModel',['../dc/d01/classCConfiguration.html#a8f45b1a7648123660d6722e1db9602b2',1,'CConfiguration']]],
+  ['getwavestationdatafile_114',['GetWaveStationDataFile',['../dc/d01/classCConfiguration.html#a3a576b3c2d651b278923419833b0860a',1,'CConfiguration']]],
+  ['getworldfile_115',['GetWorldFile',['../dc/d01/classCConfiguration.html#a7ceae5f47f41b79a9ab754228e03259b',1,'CConfiguration']]]
 ];
