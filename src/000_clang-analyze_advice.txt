@@ -19,11 +19,34 @@
    36 | #include "coast.h"
       | ^~~~~~~~~~~~~~~~~~
    37 | #include "simulation.h"
-/home/dave/coast/CoastalME/src/cme.h:1238:9: warning: member variable 'chFill' has public visibility [misc-non-private-member-variables-in-classes]
- 1238 |    char chFill;
+/home/dave/coast/CoastalME/src/calc_waves.cpp:308:4: warning: variable 'VbBreakingAll' of type 'vector<bool>' can be declared 'const' [misc-const-correctness]
+  308 |    vector<bool> VbBreakingAll;
+      |    ^
+      |                 const 
+/home/dave/coast/CoastalME/src/calc_waves.cpp:310:4: warning: variable 'VdXAll' of type 'vector<double>' can be declared 'const' [misc-const-correctness]
+  310 |    vector<double> VdXAll;
+      |    ^
+      |                   const 
+/home/dave/coast/CoastalME/src/calc_waves.cpp:311:4: warning: variable 'VdYAll' of type 'vector<double>' can be declared 'const' [misc-const-correctness]
+  311 |    vector<double> VdYAll;
+      |    ^
+      |                   const 
+/home/dave/coast/CoastalME/src/calc_waves.cpp:312:4: warning: variable 'VdHeightXAll' of type 'vector<double>' can be declared 'const' [misc-const-correctness]
+  312 |    vector<double> VdHeightXAll;
+      |    ^
+      |                   const 
+/home/dave/coast/CoastalME/src/calc_waves.cpp:313:4: warning: variable 'VdHeightYAll' of type 'vector<double>' can be declared 'const' [misc-const-correctness]
+  313 |    vector<double> VdHeightYAll;
+      |    ^
+      |                   const 
+/home/dave/coast/CoastalME/src/calc_waves.cpp:373:39: warning: no header providing "std::move" is directly included [misc-include-cleaner]
+   25 |          VAllTransects.push_back(std::move(transect));
+      |                                       ^
+/home/dave/coast/CoastalME/src/cme.h:1242:9: warning: member variable 'chFill' has public visibility [misc-non-private-member-variables-in-classes]
+ 1242 |    char chFill;
       |         ^
-/home/dave/coast/CoastalME/src/cme.h:1239:8: warning: member variable 'nWidth' has public visibility [misc-non-private-member-variables-in-classes]
- 1239 |    int nWidth;
+/home/dave/coast/CoastalME/src/cme.h:1243:8: warning: member variable 'nWidth' has public visibility [misc-non-private-member-variables-in-classes]
+ 1243 |    int nWidth;
       |        ^
 /home/dave/coast/CoastalME/src/coast.h:27:10: warning: circular header file dependency detected while including 'coast_landform.h', please check the include path [misc-header-include-cycle]
    27 | #include "coast_landform.h"
@@ -58,6 +81,72 @@
 /home/dave/coast/CoastalME/src/coast_landform.h:47:14: warning: member variable 'pCoast' has protected visibility [misc-non-private-member-variables-in-classes]
    47 |    CRWCoast* pCoast;
       |              ^
+/home/dave/coast/CoastalME/src/configuration.h:44:7: warning: Excessive padding in 'class CConfiguration' (91 padding bytes, where 3 is optimal). Optimal fields order: m_dMaxLocalSlope, m_dMaxBeachElevation, m_dSeawaterDensity, m_dInitialWaterLevel, m_dFinalWaterLevel, m_dDeepWaterWaveHeight, m_dDeepWaterWaveOrientation, m_dWavePeriod, m_dBreakingWaveRatio, m_dPlatformErosionResistance, m_dFineMedianSize, m_dSandMedianSize, m_dCoarseMedianSize, m_dSedimentDensity, m_dBeachSedimentPorosity, m_dFineErosivity, m_dSandErosivity, m_dCoarseErosivity, m_dTransportKLS, m_dKamphuis, m_dBermHeight, m_dCliffErosionResistance, m_dNotchOverhang, m_dNotchBase, m_dCliffDepositionA, m_dTalusWidth, m_dMinTalusLength, m_dMinTalusHeight, m_dGravitationalAcceleration, m_dNormalSpacing, m_dRandomFactor, m_dNormalLength, m_dStartDepthRatio, m_dSyntheticTransectSpacing, m_dCliffSlopeLimit, m_vecSaveTimes, m_vecRasterFiles, m_vecSliceElevations, m_vecVectorFiles, m_vecTimeSeriesFiles, m_vecUnconsFineFiles, m_vecUnconsSandFiles, m_vecUnconsCoarseFiles, m_vecConsFineFiles, m_vecConsSandFiles, m_vecConsCoarseFiles, m_vecFloodFiles, m_vecProfileNumbers, m_vecProfileTimesteps, m_strRunName, m_strStartDateTime, m_strDuration, m_strTimestep, m_strSaveDigitsMode, m_strRasterFormat, m_strVectorFormat, m_strOmitGridEdges, m_strBasementDEMFile, m_strSuspendedSedFile, m_strLandformFile, m_strInterventionClassFile, m_strInterventionHeightFile, m_strWaveInputMode, m_strWaveHeightTimeSeries, m_strWaveStationDataFile, m_strTideDataFile, m_strFloodCoastline, m_strFloodLocations, m_strFloodInputLocation, m_strSedimentInputLocation, m_strSedimentInputType, m_strSedimentInputDetails, m_nLogFileDetail, m_nRandomSeed, m_nMaxSaveDigits, m_nCoastlineSmoothing, m_nCoastlineSmoothingWindow, m_nPolynomialOrder, m_nProfileSmoothingWindow, m_nNumLayers, m_nWavePropagationModel, m_nBeachTransportAtEdges, m_nBeachErosionEquation, m_strRunupEquation, m_nCurvatureWindow, m_nCliffEdgeSmoothing, m_nCliffEdgeSmoothingWindow, m_nCliffEdgePolynomialOrder, m_bCSVPerTimestepResults, m_bUseSystemTimeForSeed, m_bWorldFile, m_bScaleValues, m_bHasFinalWaterLevel, m_bCoastPlatformErosion, m_bBeachSedimentTransport, m_bCliffCollapse, m_bFloodInput, m_bSedimentInput, m_bSaveProfileData, m_bSaveParallelProfiles, m_bOutputErosionPotential, consider reordering the fields or adding explicit padding members [clang-analyzer-optin.performance.Padding]
+   44 | class CConfiguration
+      | ~~~~~~^~~~~~~~~~~~~~
+   45 | {
+      | ~
+   46 |    private:
+      |    ~~~~~~~~
+   47 |    // Run Information
+      |    ~~~~~~~~~~~~~~~~~~
+   48 |    string m_strRunName;
+      |    ~~~~~~~~~~~~~~~~~~~~
+   49 |    int m_nLogFileDetail;
+      |    ~~~~~~~~~~~~~~~~~~~~~
+   50 |    bool m_bCSVPerTimestepResults;
+      |    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   51 | 
+   52 |    // Simulation timing
+      |    ~~~~~~~~~~~~~~~~~~~~
+   53 |    string m_strStartDateTime;
+      |    ~~~~~~~~~~~~~~~~~~~~~~~~~~
+   54 |    string m_strDuration;
+      |    ~~~~~~~~~~~~~~~~~~~~~
+   55 |    string m_strTimestep;
+      |    ~~~~~~~~~~~~~~~~~~~~~
+   56 |    vector<string> m_vecSaveTimes;
+      |    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   57 |    int m_nRandomSeed;
+      |    ~~~~~~~~~~~~~~~~~~
+   58 |    bool m_bUseSystemTimeForSeed;
+      |    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   59 | 
+/home/dave/coast/CoastalME/src/configuration.h:44:7: note: Excessive padding in 'class CConfiguration' (91 padding bytes, where 3 is optimal). Optimal fields order: m_dMaxLocalSlope, m_dMaxBeachElevation, m_dSeawaterDensity, m_dInitialWaterLevel, m_dFinalWaterLevel, m_dDeepWaterWaveHeight, m_dDeepWaterWaveOrientation, m_dWavePeriod, m_dBreakingWaveRatio, m_dPlatformErosionResistance, m_dFineMedianSize, m_dSandMedianSize, m_dCoarseMedianSize, m_dSedimentDensity, m_dBeachSedimentPorosity, m_dFineErosivity, m_dSandErosivity, m_dCoarseErosivity, m_dTransportKLS, m_dKamphuis, m_dBermHeight, m_dCliffErosionResistance, m_dNotchOverhang, m_dNotchBase, m_dCliffDepositionA, m_dTalusWidth, m_dMinTalusLength, m_dMinTalusHeight, m_dGravitationalAcceleration, m_dNormalSpacing, m_dRandomFactor, m_dNormalLength, m_dStartDepthRatio, m_dSyntheticTransectSpacing, m_dCliffSlopeLimit, m_vecSaveTimes, m_vecRasterFiles, m_vecSliceElevations, m_vecVectorFiles, m_vecTimeSeriesFiles, m_vecUnconsFineFiles, m_vecUnconsSandFiles, m_vecUnconsCoarseFiles, m_vecConsFineFiles, m_vecConsSandFiles, m_vecConsCoarseFiles, m_vecFloodFiles, m_vecProfileNumbers, m_vecProfileTimesteps, m_strRunName, m_strStartDateTime, m_strDuration, m_strTimestep, m_strSaveDigitsMode, m_strRasterFormat, m_strVectorFormat, m_strOmitGridEdges, m_strBasementDEMFile, m_strSuspendedSedFile, m_strLandformFile, m_strInterventionClassFile, m_strInterventionHeightFile, m_strWaveInputMode, m_strWaveHeightTimeSeries, m_strWaveStationDataFile, m_strTideDataFile, m_strFloodCoastline, m_strFloodLocations, m_strFloodInputLocation, m_strSedimentInputLocation, m_strSedimentInputType, m_strSedimentInputDetails, m_nLogFileDetail, m_nRandomSeed, m_nMaxSaveDigits, m_nCoastlineSmoothing, m_nCoastlineSmoothingWindow, m_nPolynomialOrder, m_nProfileSmoothingWindow, m_nNumLayers, m_nWavePropagationModel, m_nBeachTransportAtEdges, m_nBeachErosionEquation, m_strRunupEquation, m_nCurvatureWindow, m_nCliffEdgeSmoothing, m_nCliffEdgeSmoothingWindow, m_nCliffEdgePolynomialOrder, m_bCSVPerTimestepResults, m_bUseSystemTimeForSeed, m_bWorldFile, m_bScaleValues, m_bHasFinalWaterLevel, m_bCoastPlatformErosion, m_bBeachSedimentTransport, m_bCliffCollapse, m_bFloodInput, m_bSedimentInput, m_bSaveProfileData, m_bSaveParallelProfiles, m_bOutputErosionPotential, consider reordering the fields or adding explicit padding members
+   44 | class CConfiguration
+      | ~~~~~~^~~~~~~~~~~~~~
+   45 | {
+      | ~
+   46 |    private:
+      |    ~~~~~~~~
+   47 |    // Run Information
+      |    ~~~~~~~~~~~~~~~~~~
+   48 |    string m_strRunName;
+      |    ~~~~~~~~~~~~~~~~~~~~
+   49 |    int m_nLogFileDetail;
+      |    ~~~~~~~~~~~~~~~~~~~~~
+   50 |    bool m_bCSVPerTimestepResults;
+      |    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   51 | 
+   52 |    // Simulation timing
+      |    ~~~~~~~~~~~~~~~~~~~~
+   53 |    string m_strStartDateTime;
+      |    ~~~~~~~~~~~~~~~~~~~~~~~~~~
+   54 |    string m_strDuration;
+      |    ~~~~~~~~~~~~~~~~~~~~~
+   55 |    string m_strTimestep;
+      |    ~~~~~~~~~~~~~~~~~~~~~
+   56 |    vector<string> m_vecSaveTimes;
+      |    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   57 |    int m_nRandomSeed;
+      |    ~~~~~~~~~~~~~~~~~~
+   58 |    bool m_bUseSystemTimeForSeed;
+      |    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   59 | 
+/home/dave/coast/CoastalME/src/configuration.h:499:25: warning: parameter 'v' is passed by value and only copied once; consider moving it to avoid unnecessary copies [performance-unnecessary-value-param]
+   38 |       m_vecFloodFiles = v;
+      |                         ^
+      |                         std::move( )
 /home/dave/coast/CoastalME/src/do_cliff_collapse.cpp:24:12: warning: using decl 'cerr' is unused [misc-unused-using-decls]
    24 | using std::cerr;
       |            ^
@@ -69,6 +158,16 @@
    22 | #include "cme.h"
       | ^~~~~~~~~~~~~~~~
    23 | #include "drift.h"
+/home/dave/coast/CoastalME/src/gis_raster.cpp:2224:3: warning: variable 'interp' of type 'DualSpatialInterpolator' can be declared 'const' [misc-const-correctness]
+ 2224 |   DualSpatialInterpolator interp(points, VdHeightX, VdHeightY, 6, 2.0);
+      |   ^
+      |                           const 
+/home/dave/coast/CoastalME/src/gis_vector.cpp:1575:36: warning: no header providing "sqrt" is directly included [misc-include-cleaner]
+   20 |             double const dHeight = sqrt(dHeightX * dHeightX + dHeightY * dHeightY);
+      |                                    ^
+/home/dave/coast/CoastalME/src/gis_vector.cpp:1576:29: warning: no header providing "atan2" is directly included [misc-include-cleaner]
+ 1576 |             double dAngle = atan2(dHeightX, dHeightY) * 180.0 / PI;
+      |                             ^
 /home/dave/coast/CoastalME/src/init_grid.cpp:34:1: warning: included header coast.h is not used directly [misc-include-cleaner]
    34 | #include "coast.h"
       | ^~~~~~~~~~~~~~~~~~
@@ -77,6 +176,515 @@
    25 | #include "cme.h"
       | ^~~~~~~~~~~~~~~~
    26 | #include "coast.h"
+/home/dave/coast/CoastalME/src/locate_coast.cpp:28:12: warning: using decl 'fixed' is unused [misc-unused-using-decls]
+   28 | using std::fixed;
+      |            ^
+/home/dave/coast/CoastalME/src/locate_coast.cpp:28:12: note: remove the using
+   28 | using std::fixed;
+      | ~~~~~~~~~~~^~~~~~
+   29 | 
+/home/dave/coast/CoastalME/src/locate_coast.cpp:31:12: warning: using decl 'setprecision' is unused [misc-unused-using-decls]
+   31 | using std::setprecision;
+      |            ^
+/home/dave/coast/CoastalME/src/locate_coast.cpp:31:12: note: remove the using
+   31 | using std::setprecision;
+      | ~~~~~~~~~~~^~~~~~~~~~~~~
+   32 | 
+/home/dave/coast/CoastalME/src/nanoflann.hpp:188:18: warning: member variable 'first' has public visibility [misc-non-private-member-variables-in-classes]
+  188 |     IndexType    first;  //!< Index of the sample in the dataset
+      |                  ^
+/home/dave/coast/CoastalME/src/nanoflann.hpp:189:18: warning: member variable 'second' has public visibility [misc-non-private-member-variables-in-classes]
+  189 |     DistanceType second;  //!< Distance from sample to query point
+      |                  ^
+/home/dave/coast/CoastalME/src/nanoflann.hpp:390:24: warning: member variable 'radius' has public visibility [misc-non-private-member-variables-in-classes]
+  390 |     const DistanceType radius;
+      |                        ^
+/home/dave/coast/CoastalME/src/nanoflann.hpp:392:55: warning: member variable 'm_indices_dists' has public visibility [misc-non-private-member-variables-in-classes]
+  392 |     std::vector<ResultItem<IndexType, DistanceType>>& m_indices_dists;
+      |                                                       ^
+/home/dave/coast/CoastalME/src/nanoflann.hpp:504:23: warning: member variable 'data_source' has public visibility [misc-non-private-member-variables-in-classes]
+  504 |     const DataSource& data_source;
+      |                       ^
+/home/dave/coast/CoastalME/src/nanoflann.hpp:566:23: warning: member variable 'data_source' has public visibility [misc-non-private-member-variables-in-classes]
+  566 |     const DataSource& data_source;
+      |                       ^
+/home/dave/coast/CoastalME/src/nanoflann.hpp:631:23: warning: member variable 'data_source' has public visibility [misc-non-private-member-variables-in-classes]
+  631 |     const DataSource& data_source;
+      |                       ^
+/home/dave/coast/CoastalME/src/nanoflann.hpp:676:23: warning: member variable 'data_source' has public visibility [misc-non-private-member-variables-in-classes]
+  676 |     const DataSource& data_source;
+      |                       ^
+/home/dave/coast/CoastalME/src/nanoflann.hpp:722:9: warning: member variable 'distance_L2_Simple' has public visibility [misc-non-private-member-variables-in-classes]
+  722 |         distance_L2_Simple;
+      |         ^
+/home/dave/coast/CoastalME/src/nanoflann.hpp:795:12: warning: enum 'KDTreeSingleIndexAdaptorFlags' uses a larger base type ('int', size: 4 bytes) than necessary for its value set, consider using 'std::uint8_t' (1 byte) as the base type to reduce its size [performance-enum-size]
+  795 | enum class KDTreeSingleIndexAdaptorFlags
+      |            ^
+/home/dave/coast/CoastalME/src/nanoflann.hpp:823:35: warning: member variable 'leaf_max_size' has public visibility [misc-non-private-member-variables-in-classes]
+  823 |     size_t                        leaf_max_size;
+      |                                   ^
+/home/dave/coast/CoastalME/src/nanoflann.hpp:824:35: warning: member variable 'flags' has public visibility [misc-non-private-member-variables-in-classes]
+  824 |     KDTreeSingleIndexAdaptorFlags flags;
+      |                                   ^
+/home/dave/coast/CoastalME/src/nanoflann.hpp:825:35: warning: member variable 'n_thread_build' has public visibility [misc-non-private-member-variables-in-classes]
+  825 |     unsigned int                  n_thread_build;
+      |                                   ^
+/home/dave/coast/CoastalME/src/nanoflann.hpp:836:11: warning: member variable 'eps' has public visibility [misc-non-private-member-variables-in-classes]
+  836 |     float eps;  //!< search for eps-approximate neighbours (default: 0)
+      |           ^
+/home/dave/coast/CoastalME/src/nanoflann.hpp:837:11: warning: member variable 'sorted' has public visibility [misc-non-private-member-variables-in-classes]
+  837 |     bool  sorted;  //!< only for radius search, require neighbours sorted by
+      |           ^
+/home/dave/coast/CoastalME/src/nanoflann.hpp:885:10: warning: member variable 'usedMemory' has public visibility [misc-non-private-member-variables-in-classes]
+  885 |     Size usedMemory   = 0;
+      |          ^
+/home/dave/coast/CoastalME/src/nanoflann.hpp:886:10: warning: member variable 'wastedMemory' has public visibility [misc-non-private-member-variables-in-classes]
+  886 |     Size wastedMemory = 0;
+      |          ^
+/home/dave/coast/CoastalME/src/nanoflann.hpp:1029:28: warning: member variable 'vAcc_' has public visibility [misc-non-private-member-variables-in-classes]
+ 1029 |     std::vector<IndexType> vAcc_;
+      |                            ^
+/home/dave/coast/CoastalME/src/nanoflann.hpp:1068:13: warning: member variable 'root_node_' has public visibility [misc-non-private-member-variables-in-classes]
+ 1068 |     NodePtr root_node_ = nullptr;
+      |             ^
+/home/dave/coast/CoastalME/src/nanoflann.hpp:1070:10: warning: member variable 'leaf_max_size_' has public visibility [misc-non-private-member-variables-in-classes]
+ 1070 |     Size leaf_max_size_ = 0;
+      |          ^
+/home/dave/coast/CoastalME/src/nanoflann.hpp:1073:10: warning: member variable 'n_thread_build_' has public visibility [misc-non-private-member-variables-in-classes]
+ 1073 |     Size n_thread_build_ = 1;
+      |          ^
+/home/dave/coast/CoastalME/src/nanoflann.hpp:1075:10: warning: member variable 'size_' has public visibility [misc-non-private-member-variables-in-classes]
+ 1075 |     Size size_ = 0;
+      |          ^
+/home/dave/coast/CoastalME/src/nanoflann.hpp:1077:15: warning: member variable 'size_at_index_build_' has public visibility [misc-non-private-member-variables-in-classes]
+ 1077 |     Size      size_at_index_build_ = 0;
+      |               ^
+/home/dave/coast/CoastalME/src/nanoflann.hpp:1078:15: warning: member variable 'dim_' has public visibility [misc-non-private-member-variables-in-classes]
+ 1078 |     Dimension dim_                 = 0;  //!< Dimensionality of each data point
+      |               ^
+/home/dave/coast/CoastalME/src/nanoflann.hpp:1089:17: warning: member variable 'root_bbox_' has public visibility [misc-non-private-member-variables-in-classes]
+ 1089 |     BoundingBox root_bbox_;
+      |                 ^
+/home/dave/coast/CoastalME/src/nanoflann.hpp:1098:21: warning: member variable 'pool_' has public visibility [misc-non-private-member-variables-in-classes]
+ 1098 |     PooledAllocator pool_;
+      |                     ^
+/home/dave/coast/CoastalME/src/nanoflann.hpp:1135:13: warning: variable 'val' of type 'ElementType' (aka 'double') can be declared 'const' [misc-const-correctness]
+ 1135 |             ElementType val = dataset_get(obj, vAcc_[ind + i], element);
+      |             ^
+      |                         const 
+/home/dave/coast/CoastalME/src/nanoflann.hpp:1149:13: warning: function 'divideTree' is within a recursive call chain [misc-no-recursion]
+ 1149 |     NodePtr divideTree(
+      |             ^
+/home/dave/coast/CoastalME/src/nanoflann.hpp:1149:13: note: example recursive call chain, starting from function 'divideTree'
+/home/dave/coast/CoastalME/src/nanoflann.hpp:1193:28: note: Frame #1: function 'divideTree' calls function 'divideTree' here:
+ 1193 |             node->child1 = this->divideTree(obj, left, left + idx, left_bbox);
+      |                            ^
+/home/dave/coast/CoastalME/src/nanoflann.hpp:1193:28: note: ... which was the starting point of the recursive call chain; there may be other cycles
+/home/dave/coast/CoastalME/src/nanoflann.hpp:1224:13: warning: function 'divideTreeConcurrent' is within a recursive call chain [misc-no-recursion]
+ 1224 |     NodePtr divideTreeConcurrent(
+      |             ^
+/home/dave/coast/CoastalME/src/nanoflann.hpp:1224:13: note: example recursive call chain, starting from function 'divideTreeConcurrent'
+/home/dave/coast/CoastalME/src/nanoflann.hpp:1289:39: note: Frame #1: function 'divideTreeConcurrent' calls function 'divideTreeConcurrent' here:
+ 1289 |             node->child1            = this->divideTreeConcurrent(
+      |                                       ^
+/home/dave/coast/CoastalME/src/nanoflann.hpp:1289:39: note: ... which was the starting point of the recursive call chain; there may be other cycles
+/home/dave/coast/CoastalME/src/nanoflann.hpp:1329:13: warning: variable 'span' of type 'ElementType' (aka 'double') can be declared 'const' [misc-const-correctness]
+ 1329 |             ElementType span = bbox[i].high - bbox[i].low;
+      |             ^
+      |                         const 
+/home/dave/coast/CoastalME/src/nanoflann.hpp:1337:13: warning: variable 'span' of type 'ElementType' (aka 'double') can be declared 'const' [misc-const-correctness]
+ 1337 |             ElementType span = bbox[i].high - bbox[i].low;
+      |             ^
+      |                         const 
+/home/dave/coast/CoastalME/src/nanoflann.hpp:1342:17: warning: variable 'spread' of type 'ElementType' (aka 'double') can be declared 'const' [misc-const-correctness]
+ 1342 |                 ElementType spread = max_elem_ - min_elem_;
+      |                 ^
+      |                             const 
+/home/dave/coast/CoastalME/src/nanoflann.hpp:1353:9: warning: variable 'split_val' of type 'DistanceType' (aka 'double') can be declared 'const' [misc-const-correctness]
+ 1353 |         DistanceType split_val = (bbox[cutfeat].low + bbox[cutfeat].high) / 2;
+      |         ^
+      |                      const 
+/home/dave/coast/CoastalME/src/nanoflann.hpp:1557:27: warning: member variable 'dataset_' has public visibility [misc-non-private-member-variables-in-classes]
+ 1557 |     const DatasetAdaptor& dataset_;
+      |                           ^
+/home/dave/coast/CoastalME/src/nanoflann.hpp:1559:42: warning: member variable 'indexParams' has public visibility [misc-non-private-member-variables-in-classes]
+ 1559 |     const KDTreeSingleIndexAdaptorParams indexParams;
+      |                                          ^
+/home/dave/coast/CoastalME/src/nanoflann.hpp:1561:14: warning: member variable 'distance_' has public visibility [misc-non-private-member-variables-in-classes]
+ 1561 |     Distance distance_;
+      |              ^
+/home/dave/coast/CoastalME/src/nanoflann.hpp:1718:9: warning: variable 'epsError' of type 'float' can be declared 'const' [misc-const-correctness]
+ 1718 |         float epsError = 1 + searchParams.eps;
+      |         ^
+      |               const 
+/home/dave/coast/CoastalME/src/nanoflann.hpp:1725:9: warning: variable 'dist' of type 'DistanceType' (aka 'double') can be declared 'const' [misc-const-correctness]
+ 1725 |         DistanceType dist = this->computeInitialDistances(*this, vec, dists);
+      |         ^
+      |                      const 
+/home/dave/coast/CoastalME/src/nanoflann.hpp:1885:10: warning: function 'searchLevel<nanoflann::KNNResultSet<double, unsigned int>>' is within a recursive call chain [misc-no-recursion]
+ 1885 |     bool searchLevel(
+      |          ^
+/home/dave/coast/CoastalME/src/nanoflann.hpp:1885:10: note: example recursive call chain, starting from function 'searchLevel<nanoflann::KNNResultSet<double, unsigned int>>'
+/home/dave/coast/CoastalME/src/nanoflann.hpp:1938:14: note: Frame #1: function 'searchLevel<nanoflann::KNNResultSet<double, unsigned int>>' calls function 'searchLevel<nanoflann::KNNResultSet<double, unsigned int>>' here:
+ 1938 |         if (!searchLevel(result_set, vec, bestChild, mindist, dists, epsError))
+      |              ^
+/home/dave/coast/CoastalME/src/nanoflann.hpp:1938:14: note: ... which was the starting point of the recursive call chain; there may be other cycles
+/home/dave/coast/CoastalME/src/nanoflann.hpp:1886:70: warning: 'node' declared with a const-qualified type alias; results in the type being 'nanoflann::KDTreeBaseClass<nanoflann::KDTreeSingleIndexAdaptor<nanoflann::L2_Simple_Adaptor<double, PointCloud>, PointCloud, 2>, nanoflann::L2_Simple_Adaptor<double, PointCloud>, PointCloud, 2>::Node *const' instead of 'const nanoflann::KDTreeBaseClass<nanoflann::KDTreeSingleIndexAdaptor<nanoflann::L2_Simple_Adaptor<double, PointCloud>, PointCloud, 2>, nanoflann::L2_Simple_Adaptor<double, PointCloud>, PointCloud, 2>::Node *' [misc-misplaced-const]
+ 1886 |         RESULTSET& result_set, const ElementType* vec, const NodePtr node,
+      |                                                                      ^
+/home/dave/coast/CoastalME/src/nanoflann.hpp:1577:11: note: type alias declared here
+ 1577 |     using NodePtr = Node*;
+      |           ^
+/home/dave/coast/CoastalME/src/nanoflann.hpp:1886:70: warning: 'node' declared with a const-qualified type alias; results in the type being 'typename KDTreeBaseClass<KDTreeSingleIndexAdaptor<Distance, DatasetAdaptor, DIM, index_t>, type-parameter-0-0, type-parameter-0-1, DIM, type-parameter-0-3>::Node *const' instead of 'const typename KDTreeBaseClass<KDTreeSingleIndexAdaptor<Distance, DatasetAdaptor, DIM, index_t>, type-parameter-0-0, type-parameter-0-1, DIM, type-parameter-0-3>::Node *' [misc-misplaced-const]
+ 1886 |         RESULTSET& result_set, const ElementType* vec, const NodePtr node,
+      |                                                                      ^
+/home/dave/coast/CoastalME/src/nanoflann.hpp:1577:11: note: type alias declared here
+ 1577 |     using NodePtr = Node*;
+      |           ^
+/home/dave/coast/CoastalME/src/nanoflann.hpp:1893:13: warning: variable 'worst_dist' of type 'DistanceType' (aka 'double') can be declared 'const' [misc-const-correctness]
+ 1893 |             DistanceType worst_dist = result_set.worstDist();
+      |             ^
+      |                          const 
+/home/dave/coast/CoastalME/src/nanoflann.hpp:1898:17: warning: variable 'dist' of type 'DistanceType' (aka 'double') can be declared 'const' [misc-const-correctness]
+ 1898 |                 DistanceType    dist     = distance_.evalMetric(
+      |                 ^
+      |                                 const 
+/home/dave/coast/CoastalME/src/nanoflann.hpp:1914:9: warning: variable 'idx' of type 'Dimension' (aka 'int') can be declared 'const' [misc-const-correctness]
+ 1914 |         Dimension    idx   = node->node_type.sub.divfeat;
+      |         ^
+      |                      const 
+/home/dave/coast/CoastalME/src/nanoflann.hpp:1915:9: warning: variable 'val' of type 'ElementType' (aka 'double') can be declared 'const' [misc-const-correctness]
+ 1915 |         ElementType  val   = vec[idx];
+      |         ^
+      |                      const 
+/home/dave/coast/CoastalME/src/nanoflann.hpp:1916:9: warning: variable 'diff1' of type 'DistanceType' (aka 'double') can be declared 'const' [misc-const-correctness]
+ 1916 |         DistanceType diff1 = val - node->node_type.sub.divlow;
+      |         ^
+      |                      const 
+/home/dave/coast/CoastalME/src/nanoflann.hpp:1917:9: warning: variable 'diff2' of type 'DistanceType' (aka 'double') can be declared 'const' [misc-const-correctness]
+ 1917 |         DistanceType diff2 = val - node->node_type.sub.divhigh;
+      |         ^
+      |                      const 
+/home/dave/coast/CoastalME/src/nanoflann.hpp:1945:9: warning: variable 'dst' of type 'DistanceType' (aka 'double') can be declared 'const' [misc-const-correctness]
+ 1945 |         DistanceType dst = dists[idx];
+      |         ^
+      |                      const 
+/home/dave/coast/CoastalME/src/nanoflann.hpp:2032:27: warning: member variable 'dataset_' has public visibility [misc-non-private-member-variables-in-classes]
+ 2032 |     const DatasetAdaptor& dataset_;  //!< The source of our data
+      |                           ^
+/home/dave/coast/CoastalME/src/nanoflann.hpp:2034:36: warning: member variable 'index_params_' has public visibility [misc-non-private-member-variables-in-classes]
+ 2034 |     KDTreeSingleIndexAdaptorParams index_params_;
+      |                                    ^
+/home/dave/coast/CoastalME/src/nanoflann.hpp:2036:23: warning: member variable 'treeIndex_' has public visibility [misc-non-private-member-variables-in-classes]
+ 2036 |     std::vector<int>& treeIndex_;
+      |                       ^
+/home/dave/coast/CoastalME/src/nanoflann.hpp:2038:14: warning: member variable 'distance_' has public visibility [misc-non-private-member-variables-in-classes]
+ 2038 |     Distance distance_;
+      |              ^
+/home/dave/coast/CoastalME/src/nanoflann.hpp:2111:5: warning: operator=() should return 'KDTreeSingleIndexDynamicAdaptor_&' [misc-unconventional-assign-operator]
+ 2111 |     KDTreeSingleIndexDynamicAdaptor_ operator=(
+      |     ^
+/home/dave/coast/CoastalME/src/nanoflann.hpp:2313:70: warning: 'node' declared with a const-qualified type alias; results in the type being 'typename KDTreeBaseClass<KDTreeSingleIndexDynamicAdaptor_<Distance, DatasetAdaptor, DIM, IndexType>, type-parameter-0-0, type-parameter-0-1, DIM, type-parameter-0-3>::Node *const' instead of 'const typename KDTreeBaseClass<KDTreeSingleIndexDynamicAdaptor_<Distance, DatasetAdaptor, DIM, IndexType>, type-parameter-0-0, type-parameter-0-1, DIM, type-parameter-0-3>::Node *' [misc-misplaced-const]
+ 2313 |         RESULTSET& result_set, const ElementType* vec, const NodePtr node,
+      |                                                                      ^
+/home/dave/coast/CoastalME/src/nanoflann.hpp:2053:11: note: type alias declared here
+ 2053 |     using NodePtr = Node*;
+      |           ^
+/home/dave/coast/CoastalME/src/nanoflann.hpp:2428:10: warning: member variable 'leaf_max_size_' has protected visibility [misc-non-private-member-variables-in-classes]
+ 2428 |     Size leaf_max_size_;
+      |          ^
+/home/dave/coast/CoastalME/src/nanoflann.hpp:2429:10: warning: member variable 'treeCount_' has protected visibility [misc-non-private-member-variables-in-classes]
+ 2429 |     Size treeCount_;
+      |          ^
+/home/dave/coast/CoastalME/src/nanoflann.hpp:2430:10: warning: member variable 'pointCount_' has protected visibility [misc-non-private-member-variables-in-classes]
+ 2430 |     Size pointCount_;
+      |          ^
+/home/dave/coast/CoastalME/src/nanoflann.hpp:2435:27: warning: member variable 'dataset_' has protected visibility [misc-non-private-member-variables-in-classes]
+ 2435 |     const DatasetAdaptor& dataset_;  //!< The source of our data
+      |                           ^
+/home/dave/coast/CoastalME/src/nanoflann.hpp:2439:29: warning: member variable 'treeIndex_' has protected visibility [misc-non-private-member-variables-in-classes]
+ 2439 |     std::vector<int>        treeIndex_;
+      |                             ^
+/home/dave/coast/CoastalME/src/nanoflann.hpp:2440:29: warning: member variable 'removedPoints_' has protected visibility [misc-non-private-member-variables-in-classes]
+ 2440 |     std::unordered_set<int> removedPoints_;
+      |                             ^
+/home/dave/coast/CoastalME/src/nanoflann.hpp:2442:36: warning: member variable 'index_params_' has protected visibility [misc-non-private-member-variables-in-classes]
+ 2442 |     KDTreeSingleIndexAdaptorParams index_params_;
+      |                                    ^
+/home/dave/coast/CoastalME/src/nanoflann.hpp:2444:15: warning: member variable 'dim_' has protected visibility [misc-non-private-member-variables-in-classes]
+ 2444 |     Dimension dim_;  //!< Dimensionality of each data point
+      |               ^
+/home/dave/coast/CoastalME/src/nanoflann.hpp:2448:36: warning: member variable 'index_' has protected visibility [misc-non-private-member-variables-in-classes]
+ 2448 |     std::vector<index_container_t> index_;
+      |                                    ^
+/home/dave/coast/CoastalME/src/nanoflann.hpp:2483:14: warning: member variable 'distance_' has public visibility [misc-non-private-member-variables-in-classes]
+ 2483 |     Distance distance_;
+      |              ^
+/home/dave/coast/CoastalME/src/nanoflann.hpp:2644:14: warning: member variable 'index_' has public visibility [misc-non-private-member-variables-in-classes]
+ 2644 |     index_t* index_;  //! The kd-tree index for the user to call its methods as
+      |              ^
+/home/dave/coast/CoastalME/src/nanoflann.hpp:2680:52: warning: member variable 'm_data_matrix' has public visibility [misc-non-private-member-variables-in-classes]
+ 2680 |     const std::reference_wrapper<const MatrixType> m_data_matrix;
+      |                                                    ^
+/home/dave/coast/CoastalME/src/read_input.cpp:29:12: warning: using decl 'tolower' is unused [misc-unused-using-decls]
+   29 | using std::tolower;
+      |            ^
+/home/dave/coast/CoastalME/src/read_input.cpp:29:12: note: remove the using
+   29 | using std::tolower;
+      | ~~~~~~~~~~~^~~~~~~~
+   30 | 
+/home/dave/coast/CoastalME/src/read_input.cpp:49:12: warning: using decl 'transform' is unused [misc-unused-using-decls]
+   49 | using std::transform;
+      |            ^
+/home/dave/coast/CoastalME/src/read_input.cpp:49:12: note: remove the using
+   49 | using std::transform;
+      | ~~~~~~~~~~~^~~~~~~~~~
+   50 | 
+/home/dave/coast/CoastalME/src/read_input.cpp:66:4: warning: variable 'strOrigCMEDir' of type 'string' (aka 'basic_string<char>') can be declared 'const' [misc-const-correctness]
+   66 |    string strOrigCMEDir = m_strCMEDir;
+      |    ^
+      |           const 
+/home/dave/coast/CoastalME/src/read_input.cpp:67:4: warning: variable 'strOrigCMEIni' of type 'string' (aka 'basic_string<char>') can be declared 'const' [misc-const-correctness]
+   67 |    string strOrigCMEIni = m_strCMEIni;
+      |    ^
+      |           const 
+/home/dave/coast/CoastalME/src/read_input.cpp:75:4: warning: variable 'strYamlPath' of type 'string' (aka 'basic_string<char>') can be declared 'const' [misc-const-correctness]
+   75 |    string strYamlPath = m_strCMEIni + CME_YAML;
+      |    ^
+      |           const 
+/home/dave/coast/CoastalME/src/read_input.cpp:4121:4: warning: variable 'nDotPos' of type 'size_t' (aka 'unsigned long') can be declared 'const' [misc-const-correctness]
+ 4121 |    size_t nDotPos = strFileName.find_last_of('.');
+      |    ^
+      |           const 
+/home/dave/coast/CoastalME/src/read_input.cpp:4180:4: warning: variable 'root' of type 'CYamlNode' can be declared 'const' [misc-const-correctness]
+ 4180 |    CYamlNode root = parser.GetRoot();
+      |    ^
+      |              const 
+/home/dave/coast/CoastalME/src/read_input.cpp:4251:7: warning: variable 'strRH' of type 'string' (aka 'basic_string<char>') can be declared 'const' [misc-const-correctness]
+ 4251 |       string strRH = root.GetChild("email_address").GetValue();
+      |       ^
+      |              const 
+/home/dave/coast/CoastalME/src/read_input.cpp:4336:10: warning: variable 'runInfo' of type 'CYamlNode' can be declared 'const' [misc-const-correctness]
+ 4336 |          CYamlNode runInfo = root.GetChild("run_information");
+      |          ^
+      |                    const 
+/home/dave/coast/CoastalME/src/read_input.cpp:4351:10: warning: variable 'sim' of type 'CYamlNode' can be declared 'const' [misc-const-correctness]
+ 4351 |          CYamlNode sim = root.GetChild("simulation");
+      |          ^
+      |                    const 
+/home/dave/coast/CoastalME/src/read_input.cpp:4359:13: warning: variable 'saveTimes' of type 'CYamlNode' can be declared 'const' [misc-const-correctness]
+ 4359 |             CYamlNode saveTimes = sim.GetChild("save_times");
+      |             ^
+      |                       const 
+/home/dave/coast/CoastalME/src/read_input.cpp:4370:10: warning: variable 'gis' of type 'CYamlNode' can be declared 'const' [misc-const-correctness]
+ 4370 |          CYamlNode gis = root.GetChild("gis_output");
+      |          ^
+      |                    const 
+/home/dave/coast/CoastalME/src/read_input.cpp:4377:13: warning: variable 'rasterFiles' of type 'CYamlNode' can be declared 'const' [misc-const-correctness]
+ 4377 |             CYamlNode rasterFiles = gis.GetChild("raster_files");
+      |             ^
+      |                       const 
+/home/dave/coast/CoastalME/src/read_input.cpp:4383:16: warning: variable 'tempVec' of type 'std::vector<std::string>' (aka 'vector<basic_string<char>>') can be declared 'const' [misc-const-correctness]
+ 4383 |                std::vector<std::string> tempVec{rasterFiles.GetValue()};
+      |                ^
+      |                                         const 
+/home/dave/coast/CoastalME/src/read_input.cpp:4383:21: warning: no header providing "std::vector" is directly included [misc-include-cleaner]
+   24 |                std::vector<std::string> tempVec{rasterFiles.GetValue()};
+      |                     ^
+/home/dave/coast/CoastalME/src/read_input.cpp:4389:13: warning: variable 'vectorFiles' of type 'CYamlNode' can be declared 'const' [misc-const-correctness]
+ 4389 |             CYamlNode vectorFiles = gis.GetChild("vector_files");
+      |             ^
+      |                       const 
+/home/dave/coast/CoastalME/src/read_input.cpp:4404:10: warning: variable 'hydro' of type 'CYamlNode' can be declared 'const' [misc-const-correctness]
+ 4404 |          CYamlNode hydro = root.GetChild("hydrology");
+      |          ^
+      |                    const 
+/home/dave/coast/CoastalME/src/read_input.cpp:4407:13: warning: variable 'strModel' of type 'string' (aka 'basic_string<char>') can be declared 'const' [misc-const-correctness]
+ 4407 |             string strModel = hydro.GetChild("wave_propagation_model").GetValue();
+      |             ^
+      |                    const 
+/home/dave/coast/CoastalME/src/read_input.cpp:4471:10: warning: variable 'grid' of type 'CYamlNode' can be declared 'const' [misc-const-correctness]
+ 4471 |          CYamlNode grid = root.GetChild("grid_and_coastline");
+      |          ^
+      |                    const 
+/home/dave/coast/CoastalME/src/read_input.cpp:4474:13: warning: variable 'strSmoothing' of type 'string' (aka 'basic_string<char>') can be declared 'const' [misc-const-correctness]
+ 4474 |             string strSmoothing = grid.GetChild("coastline_smoothing").GetValue();
+      |             ^
+      |                    const 
+/home/dave/coast/CoastalME/src/read_input.cpp:4507:10: warning: variable 'layers' of type 'CYamlNode' can be declared 'const' [misc-const-correctness]
+ 4507 |          CYamlNode layers = root.GetChild("layers_and_files");
+      |          ^
+      |                    const 
+/home/dave/coast/CoastalME/src/read_input.cpp:4529:13: warning: variable 'layer0' of type 'CYamlNode' can be declared 'const' [misc-const-correctness]
+ 4529 |             CYamlNode layer0 = layers.GetChild("layer_0");
+      |             ^
+      |                       const 
+/home/dave/coast/CoastalME/src/read_input.cpp:4564:10: warning: variable 'sed' of type 'CYamlNode' can be declared 'const' [misc-const-correctness]
+ 4564 |          CYamlNode sed = root.GetChild("sediment_and_erosion");
+      |          ^
+      |                    const 
+/home/dave/coast/CoastalME/src/read_input.cpp:4579:13: warning: variable 'strEqn' of type 'string' (aka 'basic_string<char>') can be declared 'const' [misc-const-correctness]
+ 4579 |             string strEqn = sed.GetChild("beach_erosion_equation").GetValue();
+      |             ^
+      |                    const 
+/home/dave/coast/CoastalME/src/read_input.cpp:4598:13: warning: variable 'sizes' of type 'CYamlNode' can be declared 'const' [misc-const-correctness]
+ 4598 |             CYamlNode sizes = sed.GetChild("median_sizes");
+      |             ^
+      |                       const 
+/home/dave/coast/CoastalME/src/read_input.cpp:4608:13: warning: variable 'eros' of type 'CYamlNode' can be declared 'const' [misc-const-correctness]
+ 4608 |             CYamlNode eros = sed.GetChild("erosivity");
+      |             ^
+      |                       const 
+/home/dave/coast/CoastalME/src/read_input.cpp:4621:10: warning: variable 'cliff' of type 'CYamlNode' can be declared 'const' [misc-const-correctness]
+ 4621 |          CYamlNode cliff = root.GetChild("cliff_parameters");
+      |          ^
+      |                    const 
+/home/dave/coast/CoastalME/src/read_input.cpp:4649:10: warning: variable 'flood' of type 'CYamlNode' can be declared 'const' [misc-const-correctness]
+ 4649 |          CYamlNode flood = root.GetChild("flood_parameters");
+      |          ^
+      |                    const 
+/home/dave/coast/CoastalME/src/read_input.cpp:4667:10: warning: variable 'sedInput' of type 'CYamlNode' can be declared 'const' [misc-const-correctness]
+ 4667 |          CYamlNode sedInput = root.GetChild("sediment_input_parameters");
+      |          ^
+      |                    const 
+/home/dave/coast/CoastalME/src/read_input.cpp:4684:10: warning: variable 'physics' of type 'CYamlNode' can be declared 'const' [misc-const-correctness]
+ 4684 |          CYamlNode physics = root.GetChild("physics_and_geometry");
+      |          ^
+      |                    const 
+/home/dave/coast/CoastalME/src/read_input.cpp:4708:10: warning: variable 'profile' of type 'CYamlNode' can be declared 'const' [misc-const-correctness]
+ 4708 |          CYamlNode profile = root.GetChild("profile_and_output");
+      |          ^
+      |                    const 
+/home/dave/coast/CoastalME/src/read_input.cpp:4725:13: warning: variable 'profileNums' of type 'CYamlNode' can be declared 'const' [misc-const-correctness]
+ 4725 |             CYamlNode profileNums = profile.GetChild("profile_numbers");
+      |             ^
+      |                       const 
+/home/dave/coast/CoastalME/src/read_input.cpp:4729:16: warning: variable 'seq' of type 'vector<CYamlNode>' can be declared 'const' [misc-const-correctness]
+ 4729 |                vector<CYamlNode> seq = profileNums.GetSequence();
+      |                ^
+      |                                  const 
+/home/dave/coast/CoastalME/src/read_input.cpp:4731:19: warning: 'push_back' is called inside a loop; consider pre-allocating the container capacity before the loop [performance-inefficient-vector-operation]
+ 4730 |                for (auto const &node : seq)
+ 4731 |                   vecNums.push_back(node.GetIntValue());
+      |                   ^
+/home/dave/coast/CoastalME/src/read_input.cpp:4737:13: warning: variable 'profileTimes' of type 'CYamlNode' can be declared 'const' [misc-const-correctness]
+ 4737 |             CYamlNode profileTimes = profile.GetChild("profile_timesteps");
+      |             ^
+      |                       const 
+/home/dave/coast/CoastalME/src/read_input.cpp:4741:16: warning: variable 'seq' of type 'vector<CYamlNode>' can be declared 'const' [misc-const-correctness]
+ 4741 |                vector<CYamlNode> seq = profileTimes.GetSequence();
+      |                ^
+      |                                  const 
+/home/dave/coast/CoastalME/src/read_input.cpp:4743:19: warning: 'push_back' is called inside a loop; consider pre-allocating the container capacity before the loop [performance-inefficient-vector-operation]
+ 4742 |                for (auto const &node : seq)
+ 4743 |                   vecTimes.push_back(node.GetULongValue());
+      |                   ^
+/home/dave/coast/CoastalME/src/read_input.cpp:4752:10: warning: variable 'cliffEdge' of type 'CYamlNode' can be declared 'const' [misc-const-correctness]
+ 4752 |          CYamlNode cliffEdge = root.GetChild("cliff_edge_processing");
+      |          ^
+      |                    const 
+/home/dave/coast/CoastalME/src/read_input.cpp:4755:13: warning: variable 'strSmoothing' of type 'string' (aka 'basic_string<char>') can be declared 'const' [misc-const-correctness]
+ 4755 |             string strSmoothing =
+      |             ^
+      |                    const 
+/home/dave/coast/CoastalME/src/read_input.cpp:4778:16: warning: no header providing "std::exception" is directly included [misc-include-cleaner]
+   24 |    catch (std::exception const &e)
+      |                ^
+/home/dave/coast/CoastalME/src/read_input.cpp:4792:4: warning: variable 'strRec' of type 'string' (aka 'basic_string<char>') can be declared 'const' [misc-const-correctness]
+ 4792 |    string strRec, strErr;
+      |    ^
+/home/dave/coast/CoastalME/src/read_input.cpp:4811:4: warning: variable 'strStartDateTime' of type 'string' (aka 'basic_string<char>') can be declared 'const' [misc-const-correctness]
+ 4811 |    string strStartDateTime = config.GetStartDateTime();
+      |    ^
+      |           const 
+/home/dave/coast/CoastalME/src/read_input.cpp:4834:4: warning: variable 'strDuration' of type 'string' (aka 'basic_string<char>') can be declared 'const' [misc-const-correctness]
+ 4834 |    string strDuration = config.GetDuration();
+      |    ^
+      |           const 
+/home/dave/coast/CoastalME/src/read_input.cpp:4837:7: warning: variable 'strDurationLower' of type 'string' (aka 'basic_string<char>') can be declared 'const' [misc-const-correctness]
+ 4837 |       string strDurationLower = strToLower(&strDuration);
+      |       ^
+      |              const 
+/home/dave/coast/CoastalME/src/read_input.cpp:4838:7: warning: variable 'dDurationMult' of type 'double' can be declared 'const' [misc-const-correctness]
+ 4838 |       double dDurationMult = dGetTimeMultiplier(&strDurationLower);
+      |       ^
+      |              const 
+/home/dave/coast/CoastalME/src/read_input.cpp:4861:4: warning: variable 'strTimestep' of type 'string' (aka 'basic_string<char>') can be declared 'const' [misc-const-correctness]
+ 4861 |    string strTimestep = config.GetTimestep();
+      |    ^
+      |           const 
+/home/dave/coast/CoastalME/src/read_input.cpp:4864:7: warning: variable 'strTimestepLower' of type 'string' (aka 'basic_string<char>') can be declared 'const' [misc-const-correctness]
+ 4864 |       string strTimestepLower = strToLower(&strTimestep);
+      |       ^
+      |              const 
+/home/dave/coast/CoastalME/src/read_input.cpp:4865:7: warning: variable 'dTimestepMult' of type 'double' can be declared 'const' [misc-const-correctness]
+ 4865 |       double dTimestepMult = dGetTimeMultiplier(&strTimestepLower);
+      |       ^
+      |              const 
+/home/dave/coast/CoastalME/src/read_input.cpp:4896:4: warning: variable 'vecSaveTimes' of type 'vector<string>' (aka 'vector<basic_string<char>>') can be declared 'const' [misc-const-correctness]
+ 4896 |    vector<string> vecSaveTimes = config.GetSaveTimes();
+      |    ^
+      |                   const 
+/home/dave/coast/CoastalME/src/read_input.cpp:4907:10: warning: variable 'strSaveTimeLower' of type 'string' (aka 'basic_string<char>') can be declared 'const' [misc-const-correctness]
+ 4907 |          string strSaveTimeLower = strToLower(&strSaveTime);
+      |          ^
+      |                 const 
+/home/dave/coast/CoastalME/src/read_input.cpp:4910:10: warning: variable 'dMult' of type 'double' can be declared 'const' [misc-const-correctness]
+ 4910 |          double dMult = dGetTimeMultiplier(&strSaveTimeLower);
+      |          ^
+      |                 const 
+/home/dave/coast/CoastalME/src/read_input.cpp:4914:13: warning: variable 'nLastSpace' of type 'size_t' (aka 'unsigned long') can be declared 'const' [misc-const-correctness]
+ 4914 |             size_t nLastSpace = strSaveTimeLower.rfind(SPACE);
+      |             ^
+      |                    const 
+/home/dave/coast/CoastalME/src/read_input.cpp:4921:16: warning: variable 'VstrNumbers' of type 'vector<string>' (aka 'vector<basic_string<char>>') can be declared 'const' [misc-const-correctness]
+ 4921 |                vector<string> VstrNumbers = VstrSplit(&strNumbers, SPACE);
+      |                ^
+      |                               const 
+/home/dave/coast/CoastalME/src/read_input.cpp:4928:25: warning: variable 'dValue' of type 'double' can be declared 'const' [misc-const-correctness]
+ 4928 |                         double dValue = strtod(strNum.c_str(), NULL) * dMult;
+      |                         ^
+      |                                const 
+/home/dave/coast/CoastalME/src/read_input.cpp:4965:7: warning: variable 'nSeed' of type 'int' can be declared 'const' [misc-const-correctness]
+ 4965 |       int nSeed = config.GetRandomSeed();
+      |       ^
+      |           const 
+/home/dave/coast/CoastalME/src/read_input.cpp:4982:4: warning: variable 'strSaveDigitsMode' of type 'string' (aka 'basic_string<char>') can be declared 'const' [misc-const-correctness]
+ 4982 |    string strSaveDigitsMode = config.GetSaveDigitsMode();
+      |    ^
+      |           const 
+/home/dave/coast/CoastalME/src/read_input.cpp:4985:7: warning: variable 'strSaveDigitsLower' of type 'string' (aka 'basic_string<char>') can be declared 'const' [misc-const-correctness]
+ 4985 |       string strSaveDigitsLower = strToLower(&strSaveDigitsMode);
+      |       ^
+      |              const 
+/home/dave/coast/CoastalME/src/read_input.cpp:4993:4: warning: variable 'rasterFiles' of type 'vector<string>' (aka 'vector<basic_string<char>>') can be declared 'const' [misc-const-correctness]
+ 4993 |    vector<string> rasterFiles = config.GetRasterFiles();
+      |    ^
+      |                   const 
+/home/dave/coast/CoastalME/src/read_input.cpp:5173:4: warning: variable 'vectorFiles' of type 'vector<string>' (aka 'vector<basic_string<char>>') can be declared 'const' [misc-const-correctness]
+ 5173 |    vector<string> vectorFiles = config.GetVectorFiles();
+      |    ^
+      |                   const 
+/home/dave/coast/CoastalME/src/read_input.cpp:5254:4: warning: variable 'timeseriesFiles' of type 'vector<string>' (aka 'vector<basic_string<char>>') can be declared 'const' [misc-const-correctness]
+ 5254 |    vector<string> timeseriesFiles = config.GetTimeSeriesFiles();
+      |    ^
+      |                   const 
+/home/dave/coast/CoastalME/src/read_input.cpp:5393:4: warning: variable 'strSuspendedSed' of type 'string' (aka 'basic_string<char>') can be declared 'const' [misc-const-correctness]
+ 5393 |    string strSuspendedSed = config.GetSuspendedSedFile();
+      |    ^
+      |           const 
+/home/dave/coast/CoastalME/src/read_input.cpp:5404:4: warning: variable 'strInterventionClass' of type 'string' (aka 'basic_string<char>') can be declared 'const' [misc-const-correctness]
+ 5404 |    string strInterventionClass = config.GetInterventionClassFile();
+      |    ^
+      |           const 
+/home/dave/coast/CoastalME/src/read_input.cpp:5410:4: warning: variable 'strInterventionHeight' of type 'string' (aka 'basic_string<char>') can be declared 'const' [misc-const-correctness]
+ 5410 |    string strInterventionHeight = config.GetInterventionHeightFile();
+      |    ^
+      |           const 
+/home/dave/coast/CoastalME/src/read_input.cpp:5592:7: warning: variable 'floodFiles' of type 'vector<string>' (aka 'vector<basic_string<char>>') can be declared 'const' [misc-const-correctness]
+ 5592 |       vector<string> floodFiles = config.GetFloodFiles();
+      |       ^
+      |                      const 
 /home/dave/coast/CoastalME/src/sediment_input_event.cpp:22:1: warning: included header cme.h is not used directly [misc-include-cleaner]
    22 | #include "cme.h"
       | ^~~~~~~~~~~~~~~~
@@ -85,9 +693,81 @@
    55 | #include "coast.h"
       | ^~~~~~~~~~~~~~~~~~
    56 | 
-/home/dave/coast/CoastalME/src/simulation.h:1879:13: warning: member variable 'LogStream' has public visibility [misc-non-private-member-variables-in-classes]
- 1879 |    ofstream LogStream;
+/home/dave/coast/CoastalME/src/simulation.h:1894:13: warning: member variable 'LogStream' has public visibility [misc-non-private-member-variables-in-classes]
+ 1894 |    ofstream LogStream;
       |             ^
+/home/dave/coast/CoastalME/src/spatial_interpolation.cpp:59:47: warning: no header providing "std::vector" is directly included [misc-include-cleaner]
+   43 | SpatialInterpolator::SpatialInterpolator(std::vector<Point2D> const& points,
+      |                                               ^
+/home/dave/coast/CoastalME/src/spatial_interpolation.cpp:117:4: warning: no header providing "size_t" is directly included [misc-include-cleaner]
+   42 |    size_t const k = std::min((size_t) m_k_neighbors, m_cloud.pts.size());
+      |    ^
+/home/dave/coast/CoastalME/src/spatial_interpolation.cpp:117:26: warning: no header providing "std::min" is directly included [misc-include-cleaner]
+   42 |    size_t const k = std::min((size_t) m_k_neighbors, m_cloud.pts.size());
+      |                          ^
+/home/dave/coast/CoastalME/src/spatial_interpolation.cpp:121:4: warning: variable 'num_found' of type 'unsigned long' can be declared 'const' [misc-const-correctness]
+  121 |    long unsigned int num_found = m_kdtree->knnSearch(query_pt, k,
+      |    ^
+      |                      const 
+/home/dave/coast/CoastalME/src/spatial_interpolation.cpp:146:10: warning: variable 'weight' of type 'double' can be declared 'const' [misc-const-correctness]
+  146 |          double weight = 1.0 / sq_dists[i];  // 1/dist^2 = 1/sq_dist
+      |          ^
+      |                 const 
+/home/dave/coast/CoastalME/src/spatial_interpolation.cpp:157:10: warning: variable 'dist' of type 'double' can be declared 'const' [misc-const-correctness]
+  157 |          double dist = std::sqrt(sq_dists[i]);
+      |          ^
+      |                 const 
+/home/dave/coast/CoastalME/src/spatial_interpolation.cpp:157:29: warning: no header providing "std::sqrt" is directly included [misc-include-cleaner]
+   42 |          double dist = std::sqrt(sq_dists[i]);
+      |                             ^
+/home/dave/coast/CoastalME/src/spatial_interpolation.cpp:158:10: warning: variable 'weight' of type 'double' can be declared 'const' [misc-const-correctness]
+  158 |          double weight = 1.0 / std::pow(dist, m_power);
+      |          ^
+      |                 const 
+/home/dave/coast/CoastalME/src/spatial_interpolation.cpp:158:37: warning: no header providing "std::pow" is directly included [misc-include-cleaner]
+  158 |          double weight = 1.0 / std::pow(dist, m_power);
+      |                                     ^
+/home/dave/coast/CoastalME/src/spatial_interpolation.cpp:185:10: warning: variable 'num_found' of type 'unsigned long' can be declared 'const' [misc-const-correctness]
+  185 |          long unsigned int num_found = m_kdtree->knnSearch(query_pt, k,
+      |          ^
+      |                            const 
+/home/dave/coast/CoastalME/src/spatial_interpolation.cpp:210:16: warning: variable 'weight' of type 'double' can be declared 'const' [misc-const-correctness]
+  210 |                double weight = 1.0 / sq_dists[j];
+      |                ^
+      |                       const 
+/home/dave/coast/CoastalME/src/spatial_interpolation.cpp:219:16: warning: variable 'dist' of type 'double' can be declared 'const' [misc-const-correctness]
+  219 |                double dist = std::sqrt(sq_dists[j]);
+      |                ^
+      |                       const 
+/home/dave/coast/CoastalME/src/spatial_interpolation.cpp:220:16: warning: variable 'weight' of type 'double' can be declared 'const' [misc-const-correctness]
+  220 |                double weight = 1.0 / std::pow(dist, m_power);
+      |                ^
+      |                       const 
+/home/dave/coast/CoastalME/src/spatial_interpolation.cpp:301:4: warning: variable 'num_found' of type 'unsigned long' can be declared 'const' [misc-const-correctness]
+  301 |    long unsigned int num_found = m_kdtree->knnSearch(query_pt, k,
+      |    ^
+      |                      const 
+/home/dave/coast/CoastalME/src/spatial_interpolation.cpp:328:10: warning: variable 'weight' of type 'double' can be declared 'const' [misc-const-correctness]
+  328 |          double weight = 1.0 / sq_dists[i];
+      |          ^
+      |                 const 
+/home/dave/coast/CoastalME/src/spatial_interpolation.cpp:338:10: warning: variable 'dist' of type 'double' can be declared 'const' [misc-const-correctness]
+  338 |          double dist = std::sqrt(sq_dists[i]);
+      |          ^
+      |                 const 
+/home/dave/coast/CoastalME/src/spatial_interpolation.cpp:339:10: warning: variable 'weight' of type 'double' can be declared 'const' [misc-const-correctness]
+  339 |          double weight = 1.0 / std::pow(dist, m_power);
+      |          ^
+      |                 const 
+/home/dave/coast/CoastalME/src/spatial_interpolation.h:50:11: warning: member variable 'x' has public visibility [misc-non-private-member-variables-in-classes]
+   50 |    double x, y;
+      |           ^
+/home/dave/coast/CoastalME/src/spatial_interpolation.h:50:14: warning: member variable 'y' has public visibility [misc-non-private-member-variables-in-classes]
+   50 |    double x, y;
+      |              ^
+/home/dave/coast/CoastalME/src/spatial_interpolation.h:59:25: warning: member variable 'pts' has public visibility [misc-non-private-member-variables-in-classes]
+   59 |    std::vector<Point2D> pts;
+      |                         ^
 /home/dave/coast/CoastalME/src/update_grid.cpp:29:1: warning: included header coast.h is not used directly [misc-include-cleaner]
    29 | #include "coast.h"
       | ^~~~~~~~~~~~~~~~~~
@@ -96,6 +776,142 @@
    82 | #include "coast.h"
       | ^~~~~~~~~~~~~~~~~~
    83 | #include "2di_point.h"
+/home/dave/coast/CoastalME/src/yaml_parser.cpp:31:12: warning: using decl 'cerr' is unused [misc-unused-using-decls]
+   31 | using std::cerr;
+      |            ^
+/home/dave/coast/CoastalME/src/yaml_parser.cpp:31:12: note: remove the using
+   31 | using std::cerr;
+      | ~~~~~~~~~~~^~~~~
+   32 | using std::endl;
+/home/dave/coast/CoastalME/src/yaml_parser.cpp:32:12: warning: using decl 'endl' is unused [misc-unused-using-decls]
+   32 | using std::endl;
+      |            ^
+/home/dave/coast/CoastalME/src/yaml_parser.cpp:32:12: note: remove the using
+   32 | using std::endl;
+      | ~~~~~~~~~~~^~~~~
+   33 | using std::getline;
+/home/dave/coast/CoastalME/src/yaml_parser.cpp:35:12: warning: no header providing "std::stod" is directly included [misc-include-cleaner]
+   30 | 
+   31 | using std::cerr;
+   32 | using std::endl;
+   33 | using std::getline;
+   34 | using std::isspace;
+   35 | using std::stod;
+      |            ^
+/home/dave/coast/CoastalME/src/yaml_parser.cpp:36:12: warning: no header providing "std::stoi" is directly included [misc-include-cleaner]
+   36 | using std::stoi;
+      |            ^
+/home/dave/coast/CoastalME/src/yaml_parser.cpp:118:17: warning: no header providing "std::stoul" is directly included [misc-include-cleaner]
+  118 |          return stoul(m_strValue);
+      |                 ^
+/home/dave/coast/CoastalME/src/yaml_parser.cpp:162:7: warning: 'push_back' is called inside a loop; consider pre-allocating the container capacity before the loop [performance-inefficient-vector-operation]
+  160 |    for (auto const& node : m_vecChildren)
+  161 |    {
+  162 |       vecResult.push_back(node.GetValue());
+      |       ^
+/home/dave/coast/CoastalME/src/yaml_parser.cpp:195:16: warning: no header providing "std::exception" is directly included [misc-include-cleaner]
+   26 |    catch (std::exception const& e)
+      |                ^
+/home/dave/coast/CoastalME/src/yaml_parser.cpp:197:50: warning: no header providing "std::to_string" is directly included [misc-include-cleaner]
+  197 |       m_strError = "Parse error at line " + std::to_string(m_nCurrentLine) + ": " + e.what();
+      |                                                  ^
+/home/dave/coast/CoastalME/src/yaml_parser.cpp:223:9: warning: variable 'c' of type 'char' can be declared 'const' [misc-const-correctness]
+  223 |    for (char c : strLine)
+      |         ^
+      |              const 
+/home/dave/coast/CoastalME/src/yaml_parser.cpp:283:4: warning: variable 'nColonPos' of type 'size_t' (aka 'unsigned long') can be declared 'const' [misc-const-correctness]
+  283 |    size_t nColonPos = strTrimmed.find(':');
+      |    ^
+      |           const 
+/home/dave/coast/CoastalME/src/yaml_parser.cpp:283:4: warning: no header providing "size_t" is directly included [misc-include-cleaner]
+   26 |    size_t nColonPos = strTrimmed.find(':');
+      |    ^
+/home/dave/coast/CoastalME/src/yaml_parser.cpp:317:24: warning: function 'ParseSection' is within a recursive call chain [misc-no-recursion]
+  317 | CYamlNode CYamlParser::ParseSection(ifstream& fileStream, int nBaseIndent)
+      |                        ^
+/home/dave/coast/CoastalME/src/yaml_parser.cpp:317:24: note: example recursive call chain, starting from function 'ParseSection'
+/home/dave/coast/CoastalME/src/yaml_parser.cpp:357:27: note: Frame #1: function 'ParseSection' calls function 'ParseSection' here:
+  357 |                itemNode = ParseSection(fileStream, nIndent);
+      |                           ^
+/home/dave/coast/CoastalME/src/yaml_parser.cpp:357:27: note: ... which was the starting point of the recursive call chain; there may be other cycles
+/home/dave/coast/CoastalME/src/yaml_parser.cpp:330:7: warning: variable 'nIndent' of type 'int' can be declared 'const' [misc-const-correctness]
+  330 |       int nIndent = nGetIndentLevel(strLine);
+      |       ^
+      |           const 
+/home/dave/coast/CoastalME/src/yaml_parser.h:39:7: warning: function 'CYamlNode' is within a recursive call chain [misc-no-recursion]
+   39 | class CYamlNode
+      |       ^
+/home/dave/coast/CoastalME/src/yaml_parser.h:39:7: warning: function 'operator=' is within a recursive call chain [misc-no-recursion]
+/usr/bin/../lib/gcc/x86_64-linux-gnu/15/../../../../include/c++/15/bits/alloc_traits.h:665:2: warning: function 'construct<std::pair<const std::basic_string<char>, CYamlNode>, const std::pair<const std::basic_string<char>, CYamlNode> &>' is within a recursive call chain [misc-no-recursion]
+  665 |         construct(allocator_type& __a __attribute__((__unused__)),
+      |         ^
+/home/dave/coast/CoastalME/src/yaml_parser.h:39:7: note: example recursive call chain, starting from function 'CYamlNode'
+   39 | class CYamlNode
+      |       ^
+/home/dave/coast/CoastalME/src/yaml_parser.h:39:7: note: Frame #1: function 'CYamlNode' calls function 'map' here:
+/usr/bin/../lib/gcc/x86_64-linux-gnu/15/../../../../include/c++/15/bits/stl_map.h:222:7: note: Frame #2: function 'map' calls function '_Rb_tree' here:
+  222 |       map(const map&) = default;
+      |       ^
+/usr/bin/../lib/gcc/x86_64-linux-gnu/15/../../../../include/c++/15/bits/stl_tree.h:1564:16: note: Frame #3: function '_Rb_tree' calls function '_M_copy' here:
+ 1564 |           _M_root() = _M_copy(__x);
+      |                       ^
+/usr/bin/../lib/gcc/x86_64-linux-gnu/15/../../../../include/c++/15/bits/stl_tree.h:1534:9: note: Frame #4: function '_M_copy' calls function '_M_copy<false, std::_Rb_tree<std::basic_string<char>, std::pair<const std::basic_string<char>, CYamlNode>, std::_Select1st<std::pair<const std::basic_string<char>, CYamlNode>>, std::less<std::basic_string<char>>>::_Alloc_node>' here:
+ 1534 |         return _M_copy<__as_lvalue>(__x, __an);
+      |                ^
+/usr/bin/../lib/gcc/x86_64-linux-gnu/15/../../../../include/c++/15/bits/stl_tree.h:1523:6: note: Frame #5: function '_M_copy<false, std::_Rb_tree<std::basic_string<char>, std::pair<const std::basic_string<char>, CYamlNode>, std::_Select1st<std::pair<const std::basic_string<char>, CYamlNode>>, std::less<std::basic_string<char>>>::_Alloc_node>' calls function '_M_copy<false, std::_Rb_tree<std::basic_string<char>, std::pair<const std::basic_string<char>, CYamlNode>, std::_Select1st<std::pair<const std::basic_string<char>, CYamlNode>>, std::less<std::basic_string<char>>>::_Alloc_node>' here:
+ 1523 |             _M_copy<_MoveValues>(__x._M_begin_node(), _M_end(), __gen);
+      |             ^
+/usr/bin/../lib/gcc/x86_64-linux-gnu/15/../../../../include/c++/15/bits/stl_tree.h:2546:20: note: Frame #6: function '_M_copy<false, std::_Rb_tree<std::basic_string<char>, std::pair<const std::basic_string<char>, CYamlNode>, std::_Select1st<std::pair<const std::basic_string<char>, CYamlNode>>, std::less<std::basic_string<char>>>::_Alloc_node>' calls function '_M_clone_node<false, std::_Rb_tree<std::basic_string<char>, std::pair<const std::basic_string<char>, CYamlNode>, std::_Select1st<std::pair<const std::basic_string<char>, CYamlNode>>, std::less<std::basic_string<char>>>::_Alloc_node>' here:
+ 2546 |         _Node_ptr __top = _M_clone_node<_MoveValues>(__x, __node_gen);
+      |                           ^
+/usr/bin/../lib/gcc/x86_64-linux-gnu/15/../../../../include/c++/15/bits/stl_tree.h:1287:8: note: Frame #7: function '_M_clone_node<false, std::_Rb_tree<std::basic_string<char>, std::pair<const std::basic_string<char>, CYamlNode>, std::_Select1st<std::pair<const std::basic_string<char>, CYamlNode>>, std::less<std::basic_string<char>>>::_Alloc_node>' calls function 'operator()<const std::pair<const std::basic_string<char>, CYamlNode> &>' here:
+ 1287 |             = __node_gen(_GLIBCXX_FORWARD(_Vp, *__x->_M_valptr()));
+      |               ^
+/usr/bin/../lib/gcc/x86_64-linux-gnu/15/../../../../include/c++/15/bits/stl_tree.h:1136:13: note: Frame #8: function 'operator()<const std::pair<const std::basic_string<char>, CYamlNode> &>' calls function '_M_create_node<const std::pair<const std::basic_string<char>, CYamlNode> &>' here:
+ 1136 |           { return _M_t._M_create_node(_GLIBCXX_FORWARD(_Arg, __arg)); }
+      |                    ^
+/usr/bin/../lib/gcc/x86_64-linux-gnu/15/../../../../include/c++/15/bits/stl_tree.h:1254:4: note: Frame #9: function '_M_create_node<const std::pair<const std::basic_string<char>, CYamlNode> &>' calls function '_M_construct_node<const std::pair<const std::basic_string<char>, CYamlNode> &>' here:
+ 1254 |           _M_construct_node(__tmp, std::forward<_Args>(__args)...);
+      |           ^
+/usr/bin/../lib/gcc/x86_64-linux-gnu/15/../../../../include/c++/15/bits/stl_tree.h:1237:8: note: Frame #10: function '_M_construct_node<const std::pair<const std::basic_string<char>, CYamlNode> &>' calls function 'construct<std::pair<const std::basic_string<char>, CYamlNode>, const std::pair<const std::basic_string<char>, CYamlNode> &>' here:
+ 1237 |               _Node_alloc_traits::construct(_M_get_Node_allocator(),
+      |               ^
+/usr/bin/../lib/gcc/x86_64-linux-gnu/15/../../../../include/c++/15/bits/alloc_traits.h:674:4: note: Frame #11: function 'construct<std::pair<const std::basic_string<char>, CYamlNode>, const std::pair<const std::basic_string<char>, CYamlNode> &>' calls function 'construct<std::pair<const std::basic_string<char>, CYamlNode>, const std::pair<const std::basic_string<char>, CYamlNode> &>' here:
+  674 |           __a.construct(__p, std::forward<_Args>(__args)...);
+      |           ^
+/usr/bin/../lib/gcc/x86_64-linux-gnu/15/../../../../include/c++/15/bits/new_allocator.h:191:23: note: Frame #12: function 'construct<std::pair<const std::basic_string<char>, CYamlNode>, const std::pair<const std::basic_string<char>, CYamlNode> &>' calls function 'pair' here:
+  191 |         { ::new((void *)__p) _Up(std::forward<_Args>(__args)...); }
+      |                              ^
+/usr/bin/../lib/gcc/x86_64-linux-gnu/15/../../../../include/c++/15/bits/stl_pair.h:312:17: note: Frame #13: function 'pair' calls function 'CYamlNode' here:
+  312 |       constexpr pair(const pair&) = default;    ///< Copy constructor
+      |                 ^
+/usr/bin/../lib/gcc/x86_64-linux-gnu/15/../../../../include/c++/15/bits/stl_pair.h:312:17: note: ... which was the starting point of the recursive call chain; there may be other cycles
+/usr/bin/../lib/gcc/x86_64-linux-gnu/15/../../../../include/c++/15/bits/stl_algobase.h:400:5: warning: function '__assign_one<false, CYamlNode *, const CYamlNode *>' is within a recursive call chain [misc-no-recursion]
+  400 |     __assign_one(_OutIter& __out, _InIter& __in)
+      |     ^
+/home/dave/coast/CoastalME/src/yaml_parser.h:39:7: note: example recursive call chain, starting from function 'operator='
+   39 | class CYamlNode
+      |       ^
+/home/dave/coast/CoastalME/src/yaml_parser.h:39:7: note: Frame #1: function 'operator=' calls function 'operator=' here:
+/usr/bin/../lib/gcc/x86_64-linux-gnu/15/../../../../include/c++/15/bits/vector.tcc:250:22: note: Frame #2: function 'operator=' calls function 'copy<__gnu_cxx::__normal_iterator<const CYamlNode *, std::vector<CYamlNode>>, __gnu_cxx::__normal_iterator<CYamlNode *, std::vector<CYamlNode>>>' here:
+  250 |               std::_Destroy(std::copy(__x.begin(), __x.end(), begin()),
+      |                             ^
+/usr/bin/../lib/gcc/x86_64-linux-gnu/15/../../../../include/c++/15/bits/stl_algobase.h:641:14: note: Frame #3: function 'copy<__gnu_cxx::__normal_iterator<const CYamlNode *, std::vector<CYamlNode>>, __gnu_cxx::__normal_iterator<CYamlNode *, std::vector<CYamlNode>>>' calls function '__copy_move_a<false, __gnu_cxx::__normal_iterator<const CYamlNode *, std::vector<CYamlNode>>, __gnu_cxx::__normal_iterator<CYamlNode *, std::vector<CYamlNode>>>' here:
+  641 |       return std::__copy_move_a<__is_move_iterator<_II>::__value>
+      |              ^
+/usr/bin/../lib/gcc/x86_64-linux-gnu/15/../../../../include/c++/15/bits/stl_algobase.h:501:3: note: Frame #4: function '__copy_move_a<false, __gnu_cxx::__normal_iterator<const CYamlNode *, std::vector<CYamlNode>>, __gnu_cxx::__normal_iterator<CYamlNode *, std::vector<CYamlNode>>>' calls function '__copy_move_a1<false, const CYamlNode *, CYamlNode *>' here:
+  501 |                 std::__copy_move_a1<_IsMove>(std::__niter_base(__first),
+      |                 ^
+/usr/bin/../lib/gcc/x86_64-linux-gnu/15/../../../../include/c++/15/bits/stl_algobase.h:492:14: note: Frame #5: function '__copy_move_a1<false, const CYamlNode *, CYamlNode *>' calls function '__copy_move_a2<false, const CYamlNode *, const CYamlNode *, CYamlNode *>' here:
+  492 |     { return std::__copy_move_a2<_IsMove>(__first, __last, __result); }
+      |              ^
+/usr/bin/../lib/gcc/x86_64-linux-gnu/15/../../../../include/c++/15/bits/stl_algobase.h:462:2: note: Frame #6: function '__copy_move_a2<false, const CYamlNode *, const CYamlNode *, CYamlNode *>' calls function '__assign_one<false, CYamlNode *, const CYamlNode *>' here:
+  462 |         std::__assign_one<_IsMove>(__result, __first);
+      |         ^
+/usr/bin/../lib/gcc/x86_64-linux-gnu/15/../../../../include/c++/15/bits/stl_algobase.h:407:2: note: Frame #7: function '__assign_one<false, CYamlNode *, const CYamlNode *>' calls function 'operator=' here:
+  407 |         *__out = *__in;
+      |         ^
+/usr/bin/../lib/gcc/x86_64-linux-gnu/15/../../../../include/c++/15/bits/stl_algobase.h:407:2: note: ... which was the starting point of the recursive call chain; there may be other cycles
 /home/dave/coast/CoastalME/src/2d_shape.h:37:25: warning: member variable 'm_VPoints' has protected visibility [misc-non-private-member-variables-in-classes]
    37 |    vector<CGeom2DPoint> m_VPoints;
       |                         ^
@@ -106,11 +922,11 @@
    30 | #include "cme.h"
       | ^~~~~~~~~~~~~~~~
    31 | #include "raster_grid.h"
-/home/dave/coast/CoastalME/src/cme.h:1238:9: warning: member variable 'chFill' has public visibility [misc-non-private-member-variables-in-classes]
- 1238 |    char chFill;
+/home/dave/coast/CoastalME/src/cme.h:1242:9: warning: member variable 'chFill' has public visibility [misc-non-private-member-variables-in-classes]
+ 1242 |    char chFill;
       |         ^
-/home/dave/coast/CoastalME/src/cme.h:1239:8: warning: member variable 'nWidth' has public visibility [misc-non-private-member-variables-in-classes]
- 1239 |    int nWidth;
+/home/dave/coast/CoastalME/src/cme.h:1243:8: warning: member variable 'nWidth' has public visibility [misc-non-private-member-variables-in-classes]
+ 1243 |    int nWidth;
       |        ^
 /home/dave/coast/CoastalME/src/coast.h:27:10: warning: circular header file dependency detected while including 'coast_landform.h', please check the include path [misc-header-include-cycle]
    27 | #include "coast_landform.h"
@@ -139,6 +955,250 @@
 /home/dave/coast/CoastalME/src/coast_landform.h:47:14: warning: member variable 'pCoast' has protected visibility [misc-non-private-member-variables-in-classes]
    47 |    CRWCoast* pCoast;
       |              ^
-/home/dave/coast/CoastalME/src/simulation.h:1879:13: warning: member variable 'LogStream' has public visibility [misc-non-private-member-variables-in-classes]
- 1879 |    ofstream LogStream;
+/home/dave/coast/CoastalME/src/configuration.h:35:1: warning: included header algorithm is not used directly [misc-include-cleaner]
+   35 | #include <algorithm>
+      | ^~~~~~~~~~~~~~~~~~~~
+   36 | #include <cctype>
+/home/dave/coast/CoastalME/src/configuration.h:36:1: warning: included header cctype is not used directly [misc-include-cleaner]
+   36 | #include <cctype>
+      | ^~~~~~~~~~~~~~~~~
+   37 | #include <string>
+/home/dave/coast/CoastalME/src/configuration.h:44:7: warning: Excessive padding in 'class CConfiguration' (91 padding bytes, where 3 is optimal). Optimal fields order: m_dMaxLocalSlope, m_dMaxBeachElevation, m_dSeawaterDensity, m_dInitialWaterLevel, m_dFinalWaterLevel, m_dDeepWaterWaveHeight, m_dDeepWaterWaveOrientation, m_dWavePeriod, m_dBreakingWaveRatio, m_dPlatformErosionResistance, m_dFineMedianSize, m_dSandMedianSize, m_dCoarseMedianSize, m_dSedimentDensity, m_dBeachSedimentPorosity, m_dFineErosivity, m_dSandErosivity, m_dCoarseErosivity, m_dTransportKLS, m_dKamphuis, m_dBermHeight, m_dCliffErosionResistance, m_dNotchOverhang, m_dNotchBase, m_dCliffDepositionA, m_dTalusWidth, m_dMinTalusLength, m_dMinTalusHeight, m_dGravitationalAcceleration, m_dNormalSpacing, m_dRandomFactor, m_dNormalLength, m_dStartDepthRatio, m_dSyntheticTransectSpacing, m_dCliffSlopeLimit, m_vecSaveTimes, m_vecRasterFiles, m_vecSliceElevations, m_vecVectorFiles, m_vecTimeSeriesFiles, m_vecUnconsFineFiles, m_vecUnconsSandFiles, m_vecUnconsCoarseFiles, m_vecConsFineFiles, m_vecConsSandFiles, m_vecConsCoarseFiles, m_vecFloodFiles, m_vecProfileNumbers, m_vecProfileTimesteps, m_strRunName, m_strStartDateTime, m_strDuration, m_strTimestep, m_strSaveDigitsMode, m_strRasterFormat, m_strVectorFormat, m_strOmitGridEdges, m_strBasementDEMFile, m_strSuspendedSedFile, m_strLandformFile, m_strInterventionClassFile, m_strInterventionHeightFile, m_strWaveInputMode, m_strWaveHeightTimeSeries, m_strWaveStationDataFile, m_strTideDataFile, m_strFloodCoastline, m_strFloodLocations, m_strFloodInputLocation, m_strSedimentInputLocation, m_strSedimentInputType, m_strSedimentInputDetails, m_nLogFileDetail, m_nRandomSeed, m_nMaxSaveDigits, m_nCoastlineSmoothing, m_nCoastlineSmoothingWindow, m_nPolynomialOrder, m_nProfileSmoothingWindow, m_nNumLayers, m_nWavePropagationModel, m_nBeachTransportAtEdges, m_nBeachErosionEquation, m_strRunupEquation, m_nCurvatureWindow, m_nCliffEdgeSmoothing, m_nCliffEdgeSmoothingWindow, m_nCliffEdgePolynomialOrder, m_bCSVPerTimestepResults, m_bUseSystemTimeForSeed, m_bWorldFile, m_bScaleValues, m_bHasFinalWaterLevel, m_bCoastPlatformErosion, m_bBeachSedimentTransport, m_bCliffCollapse, m_bFloodInput, m_bSedimentInput, m_bSaveProfileData, m_bSaveParallelProfiles, m_bOutputErosionPotential, consider reordering the fields or adding explicit padding members [clang-analyzer-optin.performance.Padding]
+   44 | class CConfiguration
+      | ~~~~~~^~~~~~~~~~~~~~
+   45 | {
+      | ~
+   46 |    private:
+      |    ~~~~~~~~
+   47 |    // Run Information
+      |    ~~~~~~~~~~~~~~~~~~
+   48 |    string m_strRunName;
+      |    ~~~~~~~~~~~~~~~~~~~~
+   49 |    int m_nLogFileDetail;
+      |    ~~~~~~~~~~~~~~~~~~~~~
+   50 |    bool m_bCSVPerTimestepResults;
+      |    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   51 | 
+   52 |    // Simulation timing
+      |    ~~~~~~~~~~~~~~~~~~~~
+   53 |    string m_strStartDateTime;
+      |    ~~~~~~~~~~~~~~~~~~~~~~~~~~
+   54 |    string m_strDuration;
+      |    ~~~~~~~~~~~~~~~~~~~~~
+   55 |    string m_strTimestep;
+      |    ~~~~~~~~~~~~~~~~~~~~~
+   56 |    vector<string> m_vecSaveTimes;
+      |    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   57 |    int m_nRandomSeed;
+      |    ~~~~~~~~~~~~~~~~~~
+   58 |    bool m_bUseSystemTimeForSeed;
+      |    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   59 | 
+/home/dave/coast/CoastalME/src/configuration.h:44:7: note: Excessive padding in 'class CConfiguration' (91 padding bytes, where 3 is optimal). Optimal fields order: m_dMaxLocalSlope, m_dMaxBeachElevation, m_dSeawaterDensity, m_dInitialWaterLevel, m_dFinalWaterLevel, m_dDeepWaterWaveHeight, m_dDeepWaterWaveOrientation, m_dWavePeriod, m_dBreakingWaveRatio, m_dPlatformErosionResistance, m_dFineMedianSize, m_dSandMedianSize, m_dCoarseMedianSize, m_dSedimentDensity, m_dBeachSedimentPorosity, m_dFineErosivity, m_dSandErosivity, m_dCoarseErosivity, m_dTransportKLS, m_dKamphuis, m_dBermHeight, m_dCliffErosionResistance, m_dNotchOverhang, m_dNotchBase, m_dCliffDepositionA, m_dTalusWidth, m_dMinTalusLength, m_dMinTalusHeight, m_dGravitationalAcceleration, m_dNormalSpacing, m_dRandomFactor, m_dNormalLength, m_dStartDepthRatio, m_dSyntheticTransectSpacing, m_dCliffSlopeLimit, m_vecSaveTimes, m_vecRasterFiles, m_vecSliceElevations, m_vecVectorFiles, m_vecTimeSeriesFiles, m_vecUnconsFineFiles, m_vecUnconsSandFiles, m_vecUnconsCoarseFiles, m_vecConsFineFiles, m_vecConsSandFiles, m_vecConsCoarseFiles, m_vecFloodFiles, m_vecProfileNumbers, m_vecProfileTimesteps, m_strRunName, m_strStartDateTime, m_strDuration, m_strTimestep, m_strSaveDigitsMode, m_strRasterFormat, m_strVectorFormat, m_strOmitGridEdges, m_strBasementDEMFile, m_strSuspendedSedFile, m_strLandformFile, m_strInterventionClassFile, m_strInterventionHeightFile, m_strWaveInputMode, m_strWaveHeightTimeSeries, m_strWaveStationDataFile, m_strTideDataFile, m_strFloodCoastline, m_strFloodLocations, m_strFloodInputLocation, m_strSedimentInputLocation, m_strSedimentInputType, m_strSedimentInputDetails, m_nLogFileDetail, m_nRandomSeed, m_nMaxSaveDigits, m_nCoastlineSmoothing, m_nCoastlineSmoothingWindow, m_nPolynomialOrder, m_nProfileSmoothingWindow, m_nNumLayers, m_nWavePropagationModel, m_nBeachTransportAtEdges, m_nBeachErosionEquation, m_strRunupEquation, m_nCurvatureWindow, m_nCliffEdgeSmoothing, m_nCliffEdgeSmoothingWindow, m_nCliffEdgePolynomialOrder, m_bCSVPerTimestepResults, m_bUseSystemTimeForSeed, m_bWorldFile, m_bScaleValues, m_bHasFinalWaterLevel, m_bCoastPlatformErosion, m_bBeachSedimentTransport, m_bCliffCollapse, m_bFloodInput, m_bSedimentInput, m_bSaveProfileData, m_bSaveParallelProfiles, m_bOutputErosionPotential, consider reordering the fields or adding explicit padding members
+   44 | class CConfiguration
+      | ~~~~~~^~~~~~~~~~~~~~
+   45 | {
+      | ~
+   46 |    private:
+      |    ~~~~~~~~
+   47 |    // Run Information
+      |    ~~~~~~~~~~~~~~~~~~
+   48 |    string m_strRunName;
+      |    ~~~~~~~~~~~~~~~~~~~~
+   49 |    int m_nLogFileDetail;
+      |    ~~~~~~~~~~~~~~~~~~~~~
+   50 |    bool m_bCSVPerTimestepResults;
+      |    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   51 | 
+   52 |    // Simulation timing
+      |    ~~~~~~~~~~~~~~~~~~~~
+   53 |    string m_strStartDateTime;
+      |    ~~~~~~~~~~~~~~~~~~~~~~~~~~
+   54 |    string m_strDuration;
+      |    ~~~~~~~~~~~~~~~~~~~~~
+   55 |    string m_strTimestep;
+      |    ~~~~~~~~~~~~~~~~~~~~~
+   56 |    vector<string> m_vecSaveTimes;
+      |    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   57 |    int m_nRandomSeed;
+      |    ~~~~~~~~~~~~~~~~~~
+   58 |    bool m_bUseSystemTimeForSeed;
+      |    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   59 | 
+/home/dave/coast/CoastalME/src/configuration.h:499:25: warning: parameter 'v' is passed by value and only copied once; consider moving it to avoid unnecessary copies [performance-unnecessary-value-param]
+   38 |       m_vecFloodFiles = v;
+      |                         ^
+      |                         std::move( )
+/home/dave/coast/CoastalME/src/nanoflann.hpp:188:18: warning: member variable 'first' has public visibility [misc-non-private-member-variables-in-classes]
+  188 |     IndexType    first;  //!< Index of the sample in the dataset
+      |                  ^
+/home/dave/coast/CoastalME/src/nanoflann.hpp:189:18: warning: member variable 'second' has public visibility [misc-non-private-member-variables-in-classes]
+  189 |     DistanceType second;  //!< Distance from sample to query point
+      |                  ^
+/home/dave/coast/CoastalME/src/nanoflann.hpp:390:24: warning: member variable 'radius' has public visibility [misc-non-private-member-variables-in-classes]
+  390 |     const DistanceType radius;
+      |                        ^
+/home/dave/coast/CoastalME/src/nanoflann.hpp:392:55: warning: member variable 'm_indices_dists' has public visibility [misc-non-private-member-variables-in-classes]
+  392 |     std::vector<ResultItem<IndexType, DistanceType>>& m_indices_dists;
+      |                                                       ^
+/home/dave/coast/CoastalME/src/nanoflann.hpp:504:23: warning: member variable 'data_source' has public visibility [misc-non-private-member-variables-in-classes]
+  504 |     const DataSource& data_source;
+      |                       ^
+/home/dave/coast/CoastalME/src/nanoflann.hpp:566:23: warning: member variable 'data_source' has public visibility [misc-non-private-member-variables-in-classes]
+  566 |     const DataSource& data_source;
+      |                       ^
+/home/dave/coast/CoastalME/src/nanoflann.hpp:631:23: warning: member variable 'data_source' has public visibility [misc-non-private-member-variables-in-classes]
+  631 |     const DataSource& data_source;
+      |                       ^
+/home/dave/coast/CoastalME/src/nanoflann.hpp:676:23: warning: member variable 'data_source' has public visibility [misc-non-private-member-variables-in-classes]
+  676 |     const DataSource& data_source;
+      |                       ^
+/home/dave/coast/CoastalME/src/nanoflann.hpp:722:9: warning: member variable 'distance_L2_Simple' has public visibility [misc-non-private-member-variables-in-classes]
+  722 |         distance_L2_Simple;
+      |         ^
+/home/dave/coast/CoastalME/src/nanoflann.hpp:795:12: warning: enum 'KDTreeSingleIndexAdaptorFlags' uses a larger base type ('int', size: 4 bytes) than necessary for its value set, consider using 'std::uint8_t' (1 byte) as the base type to reduce its size [performance-enum-size]
+  795 | enum class KDTreeSingleIndexAdaptorFlags
+      |            ^
+/home/dave/coast/CoastalME/src/nanoflann.hpp:823:35: warning: member variable 'leaf_max_size' has public visibility [misc-non-private-member-variables-in-classes]
+  823 |     size_t                        leaf_max_size;
+      |                                   ^
+/home/dave/coast/CoastalME/src/nanoflann.hpp:824:35: warning: member variable 'flags' has public visibility [misc-non-private-member-variables-in-classes]
+  824 |     KDTreeSingleIndexAdaptorFlags flags;
+      |                                   ^
+/home/dave/coast/CoastalME/src/nanoflann.hpp:825:35: warning: member variable 'n_thread_build' has public visibility [misc-non-private-member-variables-in-classes]
+  825 |     unsigned int                  n_thread_build;
+      |                                   ^
+/home/dave/coast/CoastalME/src/nanoflann.hpp:836:11: warning: member variable 'eps' has public visibility [misc-non-private-member-variables-in-classes]
+  836 |     float eps;  //!< search for eps-approximate neighbours (default: 0)
+      |           ^
+/home/dave/coast/CoastalME/src/nanoflann.hpp:837:11: warning: member variable 'sorted' has public visibility [misc-non-private-member-variables-in-classes]
+  837 |     bool  sorted;  //!< only for radius search, require neighbours sorted by
+      |           ^
+/home/dave/coast/CoastalME/src/nanoflann.hpp:885:10: warning: member variable 'usedMemory' has public visibility [misc-non-private-member-variables-in-classes]
+  885 |     Size usedMemory   = 0;
+      |          ^
+/home/dave/coast/CoastalME/src/nanoflann.hpp:886:10: warning: member variable 'wastedMemory' has public visibility [misc-non-private-member-variables-in-classes]
+  886 |     Size wastedMemory = 0;
+      |          ^
+/home/dave/coast/CoastalME/src/nanoflann.hpp:1029:28: warning: member variable 'vAcc_' has public visibility [misc-non-private-member-variables-in-classes]
+ 1029 |     std::vector<IndexType> vAcc_;
+      |                            ^
+/home/dave/coast/CoastalME/src/nanoflann.hpp:1068:13: warning: member variable 'root_node_' has public visibility [misc-non-private-member-variables-in-classes]
+ 1068 |     NodePtr root_node_ = nullptr;
       |             ^
+/home/dave/coast/CoastalME/src/nanoflann.hpp:1070:10: warning: member variable 'leaf_max_size_' has public visibility [misc-non-private-member-variables-in-classes]
+ 1070 |     Size leaf_max_size_ = 0;
+      |          ^
+/home/dave/coast/CoastalME/src/nanoflann.hpp:1073:10: warning: member variable 'n_thread_build_' has public visibility [misc-non-private-member-variables-in-classes]
+ 1073 |     Size n_thread_build_ = 1;
+      |          ^
+/home/dave/coast/CoastalME/src/nanoflann.hpp:1075:10: warning: member variable 'size_' has public visibility [misc-non-private-member-variables-in-classes]
+ 1075 |     Size size_ = 0;
+      |          ^
+/home/dave/coast/CoastalME/src/nanoflann.hpp:1077:15: warning: member variable 'size_at_index_build_' has public visibility [misc-non-private-member-variables-in-classes]
+ 1077 |     Size      size_at_index_build_ = 0;
+      |               ^
+/home/dave/coast/CoastalME/src/nanoflann.hpp:1078:15: warning: member variable 'dim_' has public visibility [misc-non-private-member-variables-in-classes]
+ 1078 |     Dimension dim_                 = 0;  //!< Dimensionality of each data point
+      |               ^
+/home/dave/coast/CoastalME/src/nanoflann.hpp:1089:17: warning: member variable 'root_bbox_' has public visibility [misc-non-private-member-variables-in-classes]
+ 1089 |     BoundingBox root_bbox_;
+      |                 ^
+/home/dave/coast/CoastalME/src/nanoflann.hpp:1098:21: warning: member variable 'pool_' has public visibility [misc-non-private-member-variables-in-classes]
+ 1098 |     PooledAllocator pool_;
+      |                     ^
+/home/dave/coast/CoastalME/src/nanoflann.hpp:1557:27: warning: member variable 'dataset_' has public visibility [misc-non-private-member-variables-in-classes]
+ 1557 |     const DatasetAdaptor& dataset_;
+      |                           ^
+/home/dave/coast/CoastalME/src/nanoflann.hpp:1559:42: warning: member variable 'indexParams' has public visibility [misc-non-private-member-variables-in-classes]
+ 1559 |     const KDTreeSingleIndexAdaptorParams indexParams;
+      |                                          ^
+/home/dave/coast/CoastalME/src/nanoflann.hpp:1561:14: warning: member variable 'distance_' has public visibility [misc-non-private-member-variables-in-classes]
+ 1561 |     Distance distance_;
+      |              ^
+/home/dave/coast/CoastalME/src/nanoflann.hpp:1886:70: warning: 'node' declared with a const-qualified type alias; results in the type being 'typename KDTreeBaseClass<KDTreeSingleIndexAdaptor<Distance, DatasetAdaptor, DIM, index_t>, type-parameter-0-0, type-parameter-0-1, DIM, type-parameter-0-3>::Node *const' instead of 'const typename KDTreeBaseClass<KDTreeSingleIndexAdaptor<Distance, DatasetAdaptor, DIM, index_t>, type-parameter-0-0, type-parameter-0-1, DIM, type-parameter-0-3>::Node *' [misc-misplaced-const]
+ 1886 |         RESULTSET& result_set, const ElementType* vec, const NodePtr node,
+      |                                                                      ^
+/home/dave/coast/CoastalME/src/nanoflann.hpp:1577:11: note: type alias declared here
+ 1577 |     using NodePtr = Node*;
+      |           ^
+/home/dave/coast/CoastalME/src/nanoflann.hpp:2032:27: warning: member variable 'dataset_' has public visibility [misc-non-private-member-variables-in-classes]
+ 2032 |     const DatasetAdaptor& dataset_;  //!< The source of our data
+      |                           ^
+/home/dave/coast/CoastalME/src/nanoflann.hpp:2034:36: warning: member variable 'index_params_' has public visibility [misc-non-private-member-variables-in-classes]
+ 2034 |     KDTreeSingleIndexAdaptorParams index_params_;
+      |                                    ^
+/home/dave/coast/CoastalME/src/nanoflann.hpp:2036:23: warning: member variable 'treeIndex_' has public visibility [misc-non-private-member-variables-in-classes]
+ 2036 |     std::vector<int>& treeIndex_;
+      |                       ^
+/home/dave/coast/CoastalME/src/nanoflann.hpp:2038:14: warning: member variable 'distance_' has public visibility [misc-non-private-member-variables-in-classes]
+ 2038 |     Distance distance_;
+      |              ^
+/home/dave/coast/CoastalME/src/nanoflann.hpp:2111:5: warning: operator=() should return 'KDTreeSingleIndexDynamicAdaptor_&' [misc-unconventional-assign-operator]
+ 2111 |     KDTreeSingleIndexDynamicAdaptor_ operator=(
+      |     ^
+/home/dave/coast/CoastalME/src/nanoflann.hpp:2313:70: warning: 'node' declared with a const-qualified type alias; results in the type being 'typename KDTreeBaseClass<KDTreeSingleIndexDynamicAdaptor_<Distance, DatasetAdaptor, DIM, IndexType>, type-parameter-0-0, type-parameter-0-1, DIM, type-parameter-0-3>::Node *const' instead of 'const typename KDTreeBaseClass<KDTreeSingleIndexDynamicAdaptor_<Distance, DatasetAdaptor, DIM, IndexType>, type-parameter-0-0, type-parameter-0-1, DIM, type-parameter-0-3>::Node *' [misc-misplaced-const]
+ 2313 |         RESULTSET& result_set, const ElementType* vec, const NodePtr node,
+      |                                                                      ^
+/home/dave/coast/CoastalME/src/nanoflann.hpp:2053:11: note: type alias declared here
+ 2053 |     using NodePtr = Node*;
+      |           ^
+/home/dave/coast/CoastalME/src/nanoflann.hpp:2428:10: warning: member variable 'leaf_max_size_' has protected visibility [misc-non-private-member-variables-in-classes]
+ 2428 |     Size leaf_max_size_;
+      |          ^
+/home/dave/coast/CoastalME/src/nanoflann.hpp:2429:10: warning: member variable 'treeCount_' has protected visibility [misc-non-private-member-variables-in-classes]
+ 2429 |     Size treeCount_;
+      |          ^
+/home/dave/coast/CoastalME/src/nanoflann.hpp:2430:10: warning: member variable 'pointCount_' has protected visibility [misc-non-private-member-variables-in-classes]
+ 2430 |     Size pointCount_;
+      |          ^
+/home/dave/coast/CoastalME/src/nanoflann.hpp:2435:27: warning: member variable 'dataset_' has protected visibility [misc-non-private-member-variables-in-classes]
+ 2435 |     const DatasetAdaptor& dataset_;  //!< The source of our data
+      |                           ^
+/home/dave/coast/CoastalME/src/nanoflann.hpp:2439:29: warning: member variable 'treeIndex_' has protected visibility [misc-non-private-member-variables-in-classes]
+ 2439 |     std::vector<int>        treeIndex_;
+      |                             ^
+/home/dave/coast/CoastalME/src/nanoflann.hpp:2440:29: warning: member variable 'removedPoints_' has protected visibility [misc-non-private-member-variables-in-classes]
+ 2440 |     std::unordered_set<int> removedPoints_;
+      |                             ^
+/home/dave/coast/CoastalME/src/nanoflann.hpp:2442:36: warning: member variable 'index_params_' has protected visibility [misc-non-private-member-variables-in-classes]
+ 2442 |     KDTreeSingleIndexAdaptorParams index_params_;
+      |                                    ^
+/home/dave/coast/CoastalME/src/nanoflann.hpp:2444:15: warning: member variable 'dim_' has protected visibility [misc-non-private-member-variables-in-classes]
+ 2444 |     Dimension dim_;  //!< Dimensionality of each data point
+      |               ^
+/home/dave/coast/CoastalME/src/nanoflann.hpp:2448:36: warning: member variable 'index_' has protected visibility [misc-non-private-member-variables-in-classes]
+ 2448 |     std::vector<index_container_t> index_;
+      |                                    ^
+/home/dave/coast/CoastalME/src/nanoflann.hpp:2483:14: warning: member variable 'distance_' has public visibility [misc-non-private-member-variables-in-classes]
+ 2483 |     Distance distance_;
+      |              ^
+/home/dave/coast/CoastalME/src/nanoflann.hpp:2644:14: warning: member variable 'index_' has public visibility [misc-non-private-member-variables-in-classes]
+ 2644 |     index_t* index_;  //! The kd-tree index for the user to call its methods as
+      |              ^
+/home/dave/coast/CoastalME/src/nanoflann.hpp:2680:52: warning: member variable 'm_data_matrix' has public visibility [misc-non-private-member-variables-in-classes]
+ 2680 |     const std::reference_wrapper<const MatrixType> m_data_matrix;
+      |                                                    ^
+/home/dave/coast/CoastalME/src/simulation.h:1894:13: warning: member variable 'LogStream' has public visibility [misc-non-private-member-variables-in-classes]
+ 1894 |    ofstream LogStream;
+      |             ^
+/home/dave/coast/CoastalME/src/spatial_interpolation.h:41:1: warning: included header cmath is not used directly [misc-include-cleaner]
+   41 | #include <cmath>
+      | ^~~~~~~~~~~~~~~~
+   42 | #include <algorithm>
+/home/dave/coast/CoastalME/src/spatial_interpolation.h:42:1: warning: included header algorithm is not used directly [misc-include-cleaner]
+   42 | #include <algorithm>
+      | ^~~~~~~~~~~~~~~~~~~~
+   43 | #include "nanoflann.hpp"
+/home/dave/coast/CoastalME/src/spatial_interpolation.h:50:11: warning: member variable 'x' has public visibility [misc-non-private-member-variables-in-classes]
+   50 |    double x, y;
+      |           ^
+/home/dave/coast/CoastalME/src/spatial_interpolation.h:50:14: warning: member variable 'y' has public visibility [misc-non-private-member-variables-in-classes]
+   50 |    double x, y;
+      |              ^
+/home/dave/coast/CoastalME/src/spatial_interpolation.h:59:25: warning: member variable 'pts' has public visibility [misc-non-private-member-variables-in-classes]
+   59 |    std::vector<Point2D> pts;
+      |                         ^
+/home/dave/coast/CoastalME/src/spatial_interpolation.h:61:11: warning: no header providing "size_t" is directly included [misc-include-cleaner]
+   40 |    inline size_t kdtree_get_point_count() const
+      |           ^

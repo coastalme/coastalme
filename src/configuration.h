@@ -2,8 +2,8 @@
 
    \file configuration.h
    \brief Unified configuration class for CoastalME simulation parameters
-   \details Provides a single interface for accessing simulation parameters
-   regardless of input format (.dat or YAML)
+   \details Provides a single interface for accessing simulation parameters regardless of input format (.dat or YAML)
+   \author Wilf Chun
    \author David Favis-Mortlock
    \author Andres Payo
    \date 2025
@@ -607,26 +607,31 @@ class CConfiguration
    }
 
    // Getters for all parameters
-   string GetRunName() const
+   string const* strGetRunName() const
    {
-      return m_strRunName;
+      return &m_strRunName;
    }
-   int GetLogFileDetail() const
+
+   int nGetLogFileDetail() const
    {
       return m_nLogFileDetail;
    }
-   bool GetCSVPerTimestepResults() const
+
+   bool bGetCSVPerTimestepResults() const
    {
       return m_bCSVPerTimestepResults;
    }
-   string GetStartDateTime() const
+
+   string const* strGetStartDateTime() const
    {
-      return m_strStartDateTime;
+      return &m_strStartDateTime;
    }
-   string GetDuration() const
+
+   string const* strGetDuration() const
    {
-      return m_strDuration;
+      return &m_strDuration;
    }
+
    string GetTimestep() const
    {
       return m_strTimestep;

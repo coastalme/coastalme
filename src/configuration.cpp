@@ -3,6 +3,7 @@
    \file configuration.cpp
    \brief Implementation of unified configuration class for CoastalME
    \details Provides default values and initialization for simulation parameters
+   \author Wilf Chun
    \author David Favis-Mortlock
    \author Andres Payo
    \date 2025

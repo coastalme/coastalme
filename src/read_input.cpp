@@ -4789,9 +4789,10 @@ bool CSimulation::bConfigureFromYamlFile(CConfiguration &config)
 //===============================================================================================================================
 bool CSimulation::bApplyConfiguration(CConfiguration const &config)
 {
-   string strRec, strErr;
+   string strRec;
+   string strErr;
    // Case 1: Text output file names, don't change case
-   m_strRunName = config.GetRunName();
+   m_strRunName = *config.strGetRunName();
    m_strOutFile = m_strOutPath;
    m_strOutFile.append(m_strRunName);
    m_strOutFile.append(OUTEXT);
@@ -4800,15 +4801,14 @@ bool CSimulation::bApplyConfiguration(CConfiguration const &config)
    m_strLogFile.append(m_strRunName);
    m_strLogFile.append(LOGEXT);
 
-   // Case 2: Content of log file (0 = no log file, 1 = least detail, 3 = most
-   // detail)
-   m_nLogFileDetail = config.GetLogFileDetail();
+   // Case 2: Content of log file (0 = no log file, 1 = least detail, 3 = most detail)
+   m_nLogFileDetail = config.nGetLogFileDetail();
 
    // Case 3: Output per-timestep results in CSV format?
-   m_bCSVPerTimestepResults = config.GetCSVPerTimestepResults();
+   m_bCSVPerTimestepResults = config.bGetCSVPerTimestepResults();
 
    // Case 4: Parse start date/time [hh-mm-ss dd/mm/yyyy]
-   string strStartDateTime = config.GetStartDateTime();
+   string strStartDateTime = *config.strGetStartDateTime();
    if (! strStartDateTime.empty())
    {
       vector<string> VstrTmp = VstrSplit(&strStartDateTime, SPACE);
@@ -4831,7 +4831,7 @@ bool CSimulation::bApplyConfiguration(CConfiguration const &config)
    }
 
    // Case 5: Duration of simulation (in hours, days, months, or years)
-   string strDuration = config.GetDuration();
+   string strDuration = *config.strGetDuration();
    if (! strDuration.empty())
    {
       string strDurationLower = strToLower(&strDuration);

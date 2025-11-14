@@ -740,7 +740,7 @@ string const PROGRAM_NAME_SHORT = "CME";
 string const CME_INI = "cme.ini";
 string const CME_YAML = "cme.yaml";
 
-string const COPYRIGHT = "(C) 2025 Andres Payo and David Favis-Mortlock";
+string const COPYRIGHT = "(C) 2025 Andres Payo, David Favis-Mortlock, and Wilf Chun";
 string const LINE = "-------------------------------------------------------------------------------";
 string const DISCLAIMER1 = "This program is distributed in the hope that it will be useful, but WITHOUT ANY";
 string const DISCLAIMER2 = "WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A";
@@ -750,7 +750,7 @@ string const DISCLAIMER5 = "program; if not, contact the Free Software Foundatio
 string const DISCLAIMER6 = "Cambridge, MA 02139, USA.";
 
 string const ABOUT = "simulates the long-term behaviour of a coast. This initial version considers only simple soft cliff cross-shore effects";
-string const THANKS = "Many thanks to:\n\tTom Ashby\n\tManuel Cobos Budia\n\tWilf Chun\n\tMark Dickson\n\tJim W. Hall\n\tMartin D. Hurst\n\tMatthew Ives\n\tRobert J. Nicholls\n\tIan Townend\n\tMike J.A. Walkden";
+string const THANKS = "Many thanks to:\n\tTom Ashby\n\tManuel Cobos Budia\n\tMark Dickson\n\tJim W. Hall\n\tMartin D. Hurst\n\tMatthew Ives\n\tRobert J. Nicholls\n\tIan Townend\n\tMike J.A. Walkden";
 string const GDAL_DRIVERS = "GDAL drivers";
 
 string const USAGE = "Usage: cme [OPTION]...";
