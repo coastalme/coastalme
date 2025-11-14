@@ -76,7 +76,7 @@ if [ "$cflag" = "true" ]; then
 fi
 # CMAKE_COMPILER_ARGS="PKG_CPPFLAGS='-Xclang -fopenmp' PKG_LIBS=-lomp"
 # cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=$buildtype -DCOMPILER=$compiler -DCSHORE_LIBRARY=$cshorelibrary -DCSHORE_INOUT=$cshoreinout $CMAKE_COMPILER_ARGS .
-cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=$buildtype -DCOMPILER=$compiler -DCSHORE_LIBRARY=$cshorelibrary -DCSHORE_INOUT=$cshoreinout -DCMAKE_VERBOSE_MAKEFILE=ON $CMAKE_COMPILER_ARGS .
+cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=$buildtype -DCOMPILER=$compiler -DCSHORE_LIBRARY=$cshorelibrary -DCSHORE_INOUT=$cshoreinout -DCMAKE_VERBOSE_MAKEFILE=OFF $CMAKE_COMPILER_ARGS .
 #cmake -DCMAKE_BUILD_TYPE=$buildtype -DCOMPILER=$compiler -DCSHORE_LIBRARY=$cshorelibrary -DCSHORE_INOUT=$cshoreinout $CMAKE_COMPILER_ARGS . -G"CodeBlocks - Unix Makefiles"
 # Or Ninja?
 #cmake -G Ninja -DCMAKE_BUILD_TYPE=$buildtype -DCOMPILER=$compiler -DCSHORE_LIBRARY=$cshorelibrary -DCSHORE_INOUT=$cshoreinout $CMAKE_COMPILER_ARGS .
