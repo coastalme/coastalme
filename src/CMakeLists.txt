@@ -146,6 +146,7 @@ if(CMAKE_BUILD_TYPE_LC STREQUAL "debug")
     add_compile_options(-Wuseless-cast)
     if(CMAKE_CXX_COMPILER_VERSION VERSION_GREATER "13.0")
       add_compile_options(
+        -O2
         -Wformat
         -Wformat=2
         -Wimplicit-fallthrough
