@@ -4262,8 +4262,8 @@ bool CSimulation::bConfigureFromYamlFile(CConfiguration &config)
             config.SetFinalWaterLevel(
                hydro.GetChild("final_water_level").GetDoubleValue());
 
-         // Wave data configuration
-         string strWaveInputMode = "fixed";  // default
+         // Wave data configuration - read wave_input_mode first
+         string strWaveInputMode = "fixed";      // default
          if (hydro.HasChild("wave_input_mode"))
          {
             strWaveInputMode = hydro.GetChild("wave_input_mode").GetValue();
@@ -4294,12 +4294,11 @@ bool CSimulation::bConfigureFromYamlFile(CConfiguration &config)
                config.SetWavePeriod(hydro.GetChild("wave_period").GetDoubleValue());
          }
          else
-         {
+      {
             cerr << ERR << "Unknown wave_input_mode '" << strWaveInputMode
-                 << "'. Must be 'fixed' or 'time_series'" << endl;
+               << "'. Must be 'fixed' or 'time_series'" << endl;
             return false;
          }
-
          //  Tide data configuration
          if (hydro.HasChild("tide_data_file"))
             config.SetTideDataFile(processFilePath(hydro.GetChild("tide_data_file").GetValue()));
@@ -5286,7 +5285,7 @@ bool CSimulation::bApplyConfiguration(CConfiguration const &config)
       m_bHaveWaveStationData = false;
       // Case 37: Deep water wave height (m) or a file of point vectors giving deep
       // water wave height (m) and orientation (for units, see below)
-      m_dAllCellsDeepWaterWaveHeight = config.GetWaveHeightTimeSeries();
+      m_dAllCellsDeepWaterWaveHeight = config.GetDeepWaterWaveHeight();
 
       // Case 39: Deep water wave orientation in input CRS: this is the
       // oceanographic convention i.e. direction TOWARDS which the waves move (in
@@ -5300,7 +5299,8 @@ bool CSimulation::bApplyConfiguration(CConfiguration const &config)
    {
       m_bHaveWaveStationData = true;
       m_strDeepWaterWaveStationsShapefile = config.GetWaveStationDataFile();
-      m_dAllCellsDeepWaterWaveHeight = config.GetDeepWaterWaveHeight();
+      // m_dAllCellsDeepWaterWaveHeight = config.GetDeepWaterWaveHeight();
+      m_strDeepWaterWavesInputFile = config.GetWaveHeightTimeSeries();
    }
 
    // Case 41: Tide data file (can be blank). This is the change (m) from still
