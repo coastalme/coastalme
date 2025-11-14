@@ -632,18 +632,21 @@ class CConfiguration
       return &m_strDuration;
    }
 
-   string GetTimestep() const
+   string const* strGetTimestep() const
    {
-      return m_strTimestep;
+      return &m_strTimestep;
    }
-   vector<string> GetSaveTimes() const
+
+   vector<string> VstrGetSaveTimes() const
    {
       return m_vecSaveTimes;
    }
-   int GetRandomSeed() const
+
+   int nGetRandomSeed() const
    {
       return m_nRandomSeed;
    }
+
    bool UseSystemTimeForRandomSeed() const
    {
       return m_bUseSystemTimeForSeed;

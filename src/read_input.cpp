@@ -4858,7 +4858,7 @@ bool CSimulation::bApplyConfiguration(CConfiguration const &config)
    }
 
    // Case 6: Timestep of simulation (in hours or days)
-   string strTimestep = config.GetTimestep();
+   string strTimestep = *config.strGetTimestep();
    if (! strTimestep.empty())
    {
       string strTimestepLower = strToLower(&strTimestep);
@@ -4893,7 +4893,7 @@ bool CSimulation::bApplyConfiguration(CConfiguration const &config)
    }
 
    // Case 7: Save intervals - can handle multiple groups with different units
-   vector<string> vecSaveTimes = config.GetSaveTimes();
+   vector<string> vecSaveTimes = config.VstrGetSaveTimes();
    if (! vecSaveTimes.empty())
    {
       m_nUSave = 0;
@@ -4962,7 +4962,7 @@ bool CSimulation::bApplyConfiguration(CConfiguration const &config)
    }
    else
    {
-      int nSeed = config.GetRandomSeed();
+      int nSeed = config.nGetRandomSeed();
       if (nSeed != 0)
       {
          // Use specified seed
