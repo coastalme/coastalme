@@ -4223,8 +4223,14 @@ bool CSimulation::bConfigureFromYamlFile(CConfiguration &config)
          if (gis.HasChild("raster_files"))
          {
             CYamlNode rasterFiles = gis.GetChild("raster_files");
-            if (rasterFiles.IsSequence())
+            if (rasterFiles.IsSequence()){
                config.SetRasterFiles(rasterFiles.GetStringSequence());
+            }
+            else {
+               //Allow the user to supply single entries not in list form
+               std::vector<std::string> tempVec{rasterFiles.GetValue()};
+               config.SetRasterFiles(tempVec);
+            }
          }
          if (gis.HasChild("vector_files"))
          {
