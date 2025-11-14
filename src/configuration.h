@@ -100,6 +100,7 @@ class CConfiguration
    bool m_bHasFinalWaterLevel;
 
    // Waves
+   string m_strWaveInputMode;
    string m_strWaveHeightTimeSeries;
    string m_strWaveStationDataFile;
    double m_dDeepWaterWaveHeight;
@@ -354,6 +355,12 @@ class CConfiguration
    }
 
    // Wave height Data
+   // Wave height Data
+   void SetWaveInputMode(string const &str)
+   {
+      m_strWaveInputMode = str;
+   }
+
    void SetWaveHeightTimeSeries(string const &str)
    {
       m_strWaveHeightTimeSeries = str;
@@ -763,6 +770,10 @@ class CConfiguration
    bool HasFinalWaterLevel() const
    {
       return m_bHasFinalWaterLevel;
+   }
+   string GetWaveInputMode() const
+   {
+      return m_strWaveInputMode;
    }
 
    // Wave data configuration getters (Cases 37-40)
