@@ -106,6 +106,7 @@ void CConfiguration::InitializeDefaults()
    // m_dFinalWaterLevel = 0.0;
    m_bHasFinalWaterLevel = false;
 
+   m_strWaveInputMode = "fixed";
    m_strWaveHeightTimeSeries = "";
    m_strWaveStationDataFile = "";
    m_dDeepWaterWaveHeight = 1.0;
@@ -232,6 +233,7 @@ vector<string> CConfiguration::GetRasterFiles() const
                                "basement_elevation",
                                "coastline",
                                "coast_normal",
+                               "dirty_cells",
                                "active_zone",
                                "cliff_collapse",
                                "total_cliff_collapse",

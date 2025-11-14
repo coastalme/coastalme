@@ -33,8 +33,6 @@ CRWCellLayer::CRWCellLayer(void)
 //! Destructor
 CRWCellLayer::~CRWCellLayer(void)
 {
-   if (m_pTalus != NULL)
-      delete m_pTalus;
 }
 
 //! Returns a pointer to the cell's unconsolidated sediment object
@@ -170,12 +168,14 @@ CRWCellTalus* CRWCellLayer::pGetTalus(void) const
 }
 
 //! Returns a pointer to the layer's talus object. If there is no talus object, then create one
-CRWCellTalus* CRWCellLayer::pGetOrCreateTalus(void)
+CRWCellTalus* CRWCellLayer::pGetOrCreateTalus(bool& bCreated)
 {
+   bCreated = false;
    if (m_pTalus == NULL)
    {
       // No talus object here, so create one
       m_pTalus = new CRWCellTalus();
+      bCreated = true;
    }
 
    return m_pTalus;

@@ -234,29 +234,29 @@ using std::ostream;
 //===================================================== platform-specific stuff =================================================
 #ifdef _WIN32
    #define access _access
-   #define F_OK 0 // Test for file existence
+   #define F_OK   0      // Test for file existence
 #endif
 
 #ifdef _MSC_VER
    // MS Visual C++ compiler, byte order is IEEE little-endian
    #ifdef _DEBUG
-      #include <crtdbg.h> // useful
+      #include <crtdbg.h>      // useful
    #endif
 
-   // clock_t is a signed long: see <time.h>
-   long const CLOCK_T_MIN = LONG_MIN;
-   double const CLOCK_T_RANGE = static_cast<double>(LONG_MAX) - static_cast<double>(CLOCK_T_MIN);
+// clock_t is a signed long: see <time.h>
+long const CLOCK_T_MIN = LONG_MIN;
+double const CLOCK_T_RANGE = static_cast<double>(LONG_MAX) - static_cast<double>(CLOCK_T_MIN);
 
    #ifdef _M_ALPHA
-      string const PLATFORM = "MS Visual C++ for Alpha";
+string const PLATFORM = "MS Visual C++ for Alpha";
    #elif defined _M_IX86
-      string const PLATFORM = "MS Visual C++ for Intel x86";
+string const PLATFORM = "MS Visual C++ for Intel x86";
    #elif defined _M_MPPC
-      string const PLATFORM = "MS Visual C++ for Power PC";
+string const PLATFORM = "MS Visual C++ for Power PC";
    #elif defined _M_MRX000
-      string const PLATFORM = "MS Visual C++ for MIPS";
+string const PLATFORM = "MS Visual C++ for MIPS";
    #else
-      string const PLATFORM = "MS Visual C++ for unknown CPU";
+string const PLATFORM = "MS Visual C++ for unknown CPU";
    #endif
 
 #elif defined __GNUG__
@@ -265,11 +265,11 @@ using std::ostream;
       #error "CPU not defined"
    #else
       #ifdef x86
-         // Intel x86, byte order is little-endian
-         string const PLATFORM = "GNU Compiler for Intel x86";
-         // clock_t is an unsigned long: see <time.h>
-         unsigned long const CLOCK_T_MIN = 0;
-         double const CLOCK_T_RANGE = static_cast<double>(ULONG_MAX);
+// Intel x86, byte order is little-endian
+string const PLATFORM = "GNU Compiler for Intel x86";
+// clock_t is an unsigned long: see <time.h>
+unsigned long const CLOCK_T_MIN = 0;
+double const CLOCK_T_RANGE = static_cast<double>(ULONG_MAX);
       #elif defined rs6000
          // IBM RS-6000, byte order is big-endian
          string const PLATFORM = "GNU complier for IBM RS-6000";
@@ -318,15 +318,15 @@ using std::ostream;
    #define WEXITSTATUS(x) ((x) & 0xff)
 
 #elif defined __HP_aCC
-   // HP-UX aCC, byte order is big-endian, can be either 32-bit or 64-bit
-   string const PLATFORM = "HP-UX aC++";
-   // clock_t is an unsigned long: see <time.h>
-   unsigned long const CLOCK_T_MIN = 0;
+// HP-UX aCC, byte order is big-endian, can be either 32-bit or 64-bit
+string const PLATFORM = "HP-UX aC++";
+// clock_t is an unsigned long: see <time.h>
+unsigned long const CLOCK_T_MIN = 0;
    #ifdef __ia64
-      // However, clock_t is a 32-bit unsigned long and we are using 64-bit unsigned longs here
-      double const CLOCK_T_RANGE = 4294967295UL; // crude, improve
+// However, clock_t is a 32-bit unsigned long and we are using 64-bit unsigned longs here
+double const CLOCK_T_RANGE = 4294967295UL;      // crude, improve
    #else
-      double const CLOCK_T_RANGE = static_cast<double>(ULONG_MAX);
+double const CLOCK_T_RANGE = static_cast<double>(ULONG_MAX);
    #endif
 #endif
 
@@ -350,7 +350,7 @@ using std::ostream;
 char const COLON = ':';
 char const COMMA = ',';
 char const DASH = '-';
-char const PATH_SEPARATOR = '/'; // Works for Windows too!
+char const PATH_SEPARATOR = '/';      // Works for Windows too!
 char const QUOTE1 = ';';
 char const QUOTE2 = '#';
 char const SLASH = '/';
@@ -359,9 +359,9 @@ char const TILDE = '~';
 
 // TESTING options
 bool const ACCEPT_TRUNCATED_PROFILES = true;
-bool const CREATE_SHADOW_ZONE_IF_HITS_GRID_EDGE = true;  // If shadow line tracing hits grid edge, create shadow zone?
-bool const SAVE_CSHORE_OUTPUT = true;                    // #ifdef CSHORE_FILE_INOUT || CSHORE_BOTH, append all CShore output files to a whole-run master
-bool const USE_DEEP_WATER_FOR_SHADOW_LINE = true;        // Use deep water wave orientation in determining shadow line orientation?
+bool const CREATE_SHADOW_ZONE_IF_HITS_GRID_EDGE = true;      // If shadow line tracing hits grid edge, create shadow zone?
+bool const SAVE_CSHORE_OUTPUT = true;                        // #ifdef CSHORE_FILE_INOUT || CSHORE_BOTH, append all CShore output files to a whole-run master
+bool const USE_DEEP_WATER_FOR_SHADOW_LINE = true;            // Use deep water wave orientation in determining shadow line orientation?
 
 // Not likely that user will need to change these
 int const NUMBER_OF_RNGS = 2;                            // Number of random number generators
@@ -552,6 +552,9 @@ int const RASTER_PLOT_TOTAL_POTENTIAL_PLATFORM_EROSION = 63;
 int const RASTER_PLOT_WAVE_FLOOD_LINE = 64;
 int const RASTER_PLOT_WAVE_HEIGHT = 65;
 int const RASTER_PLOT_WAVE_ORIENTATION = 66;
+int const RASTER_PLOT_DIRTY_CELLS = 66;
+int const RASTER_PLOT_AVALANCHE_DEPOSITION = 67;
+int const RASTER_PLOT_TOTAL_AVALANCHE_DEPOSITION = 68;
 
 // GIS vector output codes
 // int const VECTOR_PLOT_FLOOD_SWL_SETUP_LINE = 19;
@@ -735,11 +738,12 @@ double const INTERVENTION_PROFILE_SPACING_FACTOR = 0.5;     // Profile spacing o
 double const CLIFF_NOTCH_CUTOFF_DISTANCE = 2;               // Cut-off SWL distance (m), measured downwards from the cliff notch apex: below this there is no notch incision
 double const DBL_NODATA = -9999;
 
-string const PROGRAM_NAME = "Coastal Modelling Environment (CoastalME) version 1.4.0 (11 Nov 2025)";
+string const PROGRAM_NAME = "Coastal Modelling Environment (CoastalME) version 1.4.1 (12 Nov 2025)";
 string const PROGRAM_NAME_SHORT = "CME";
 string const CME_INI = "cme.ini";
+string const CME_YAML = "cme.yaml";
 
-string const COPYRIGHT = "(C) 2025 Andres Payo and David Favis-Mortlock";
+string const COPYRIGHT = "(C) 2025 Andres Payo, David Favis-Mortlock, and Wilf Chun";
 string const LINE = "-------------------------------------------------------------------------------";
 string const DISCLAIMER1 = "This program is distributed in the hope that it will be useful, but WITHOUT ANY";
 string const DISCLAIMER2 = "WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A";
@@ -749,7 +753,7 @@ string const DISCLAIMER5 = "program; if not, contact the Free Software Foundatio
 string const DISCLAIMER6 = "Cambridge, MA 02139, USA.";
 
 string const ABOUT = "simulates the long-term behaviour of a coast. This initial version considers only simple soft cliff cross-shore effects";
-string const THANKS = "Many thanks to:\n\tTom Ashby\n\tManuel Cobos Budia\n\tWilf Chun\n\tMark Dickson\n\tJim W. Hall\n\tMartin D. Hurst\n\tMatthew Ives\n\tRobert J. Nicholls\n\tIan Townend\n\tMike J.A. Walkden";
+string const THANKS = "Many thanks to:\n\tTom Ashby\n\tManuel Cobos Budia\n\tMark Dickson\n\tJim W. Hall\n\tMartin D. Hurst\n\tMatthew Ives\n\tRobert J. Nicholls\n\tIan Townend\n\tMike J.A. Walkden";
 string const GDAL_DRIVERS = "GDAL drivers";
 
 string const USAGE = "Usage: cme [OPTION]...";
@@ -850,6 +854,8 @@ string const RASTER_AVG_WAVE_HEIGHT_CODE = "avg_wave_height";
 string const RASTER_AVG_WAVE_HEIGHT_NAME = "avg_wave_height";
 string const RASTER_AVG_WAVE_ORIENTATION_CODE = "avg_wave_orientation";
 string const RASTER_AVG_WAVE_ORIENTATION_NAME = "avg_wave_orientation";
+string const RASTER_AVALANCHE_DEPOSITION_CODE = "avalanche_deposition";
+string const RASTER_AVALANCHE_DEPOSITION_NAME = "avalanche_deposition";
 string const RASTER_BASEMENT_ELEVATION_CODE = "basement_elevation";
 string const RASTER_BASEMENT_ELEVATION_NAME = "basement_elevation";
 string const RASTER_BEACH_DEPOSITION_CODE = "beach_deposition";
@@ -872,7 +878,7 @@ string const RASTER_CLIFF_COLLAPSE_TIMESTEP_CODE = "cliff_collapse_timestep";
 string const RASTER_CLIFF_COLLAPSE_TIMESTEP_NAME = "cliff_collapse_timestep_all";
 string const RASTER_CLIFF_NOTCH_ALL_CODE = "cliff_notch_all";
 string const RASTER_CLIFF_NOTCH_ALL_NAME = "cliff_notch_all";
-string const RASTER_CLIFF_TOE_NAME = "cliff_toe";                 // Note no code for this, because is chosen by m_bCliffToeLocate in input file
+string const RASTER_CLIFF_TOE_NAME = "cliff_toe";      // Note no code for this, because is chosen by m_bCliffToeLocate in input file
 string const RASTER_COARSE_CONS_CODE = "cons_sed_coarse";
 string const RASTER_COARSE_CONS_NAME = "cons_sed_coarse";
 string const RASTER_COARSE_UNCONS_CODE = "uncons_sed_coarse";
@@ -887,6 +893,7 @@ string const RASTER_DEEP_WATER_WAVE_ORIENTATION_CODE = "deep_water_wave_orientat
 string const RASTER_DEEP_WATER_WAVE_ORIENTATION_NAME = "deep_water_wave_orientation";
 string const RASTER_DEEP_WATER_WAVE_PERIOD_CODE = "deep_water_wave_period";
 string const RASTER_DEEP_WATER_WAVE_PERIOD_NAME = "deep_water_wave_period";
+string const RASTER_DIRTY_CELLS_NAME = "dirty_cells";
 string const RASTER_FINE_CONS_CODE = "cons_sed_fine";
 string const RASTER_FINE_CONS_NAME = "cons_sed_fine";
 string const RASTER_FINE_UNCONS_CODE = "uncons_sed_fine";
@@ -931,7 +938,7 @@ string const RASTER_SHADOW_ZONE_CODE = "shadow_zones";
 string const RASTER_SHADOW_ZONE_NAME = "shadow_zones";
 string const RASTER_SLICE_CODE = "slice";
 string const RASTER_SLICE_NAME = "slice";
-string const RASTER_SLOPE_FOR_CLIFF_TOE_NAME = "toe_slope";       // Note no code for this, because is chosen by m_bCliffToeLocate in input file
+string const RASTER_SLOPE_FOR_CLIFF_TOE_NAME = "toe_slope";      // Note no code for this, because is chosen by m_bCliffToeLocate in input file
 string const RASTER_SLOPE_OF_CONSOLIDATED_SEDIMENT_CODE = "cons_sediment_slope";
 string const RASTER_SLOPE_OF_CONSOLIDATED_SEDIMENT_NAME = "cons_sediment_slope";
 string const RASTER_SUSP_SED_CODE = "susp_sed";
@@ -944,6 +951,8 @@ string const RASTER_TOTAL_ACTUAL_BEACH_EROSION_CODE = "total_actual_beach_erosio
 string const RASTER_TOTAL_ACTUAL_BEACH_EROSION_NAME = "total_actual_beach_erosion";
 string const RASTER_TOTAL_ACTUAL_PLATFORM_EROSION_CODE = "total_actual_platform_erosion";
 string const RASTER_TOTAL_ACTUAL_PLATFORM_EROSION_NAME = "total_actual_platform_erosion";
+string const RASTER_TOTAL_AVALANCHE_DEPOSITION_CODE = "total_avalanche_deposition";
+string const RASTER_TOTAL_AVALANCHE_DEPOSITION_NAME = "total_avalanche_deposition";
 string const RASTER_TOTAL_BEACH_DEPOSITION_CODE = "total_beach_deposition";
 string const RASTER_TOTAL_BEACH_DEPOSITION_NAME = "total_beach_deposition";
 string const RASTER_TOTAL_CLIFF_COLLAPSE_DEPOSITION_COARSE_CODE = "total_cliff_collapse_talus_deposition_coarse";
@@ -978,6 +987,7 @@ string const RASTER_PLOT_AVG_SEA_DEPTH_TITLE = "Average sea depth";
 string const RASTER_PLOT_AVG_SUSPENDED_SEDIMENT_TITLE = "Average depth of suspended sediment";
 string const RASTER_PLOT_AVG_WAVE_HEIGHT_TITLE = "Average wave height";
 string const RASTER_PLOT_AVG_WAVE_ORIENTATION_TITLE = "Average wave orientation";
+string const RASTER_PLOT_AVALANCHE_DEPOSITION_TITLE = "Avalanche sediment movement depth";
 string const RASTER_PLOT_BASEMENT_ELEVATION_TITLE = "Basement elevation";
 string const RASTER_PLOT_BEACH_DEPOSITION_TITLE = "Beach deposition depth";
 string const RASTER_PLOT_BEACH_MASK_TITLE = "Beach mask";
@@ -1028,6 +1038,7 @@ string const RASTER_PLOT_TALUS_TITLE = "Talus from cliff collapse";
 string const RASTER_PLOT_TOP_ELEV_INC_SEA_TITLE = "Topmost elevation (sediment plus intervention plus se";
 string const RASTER_PLOT_TOTAL_ACTUAL_BEACH_EROSION_TITLE = "Total actual (constrained) beach erosion depth";
 string const RASTER_PLOT_TOTAL_ACTUAL_PLATFORM_EROSION_TITLE = "Total actual (constrained) shore platform erosion depth";
+string const RASTER_PLOT_TOTAL_AVALANCHE_DEPOSITION_TITLE = "Total avalanche sediment movement depth";
 string const RASTER_PLOT_TOTAL_BEACH_DEPOSITION_TITLE = "Total beach deposition depth";
 string const RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_DEPOSITION_COARSE_TITLE = "Total depth of coarse talus from cliff collapse";
 string const RASTER_PLOT_TOTAL_CLIFF_COLLAPSE_DEPOSITION_SAND_TITLE = "Total depth of sand talus from cliff collapse";
@@ -1039,6 +1050,7 @@ string const RASTER_PLOT_TOTAL_POTENTIAL_PLATFORM_EROSION_TITLE = "Total potenti
 string const RASTER_PLOT_WAVE_FLOOD_LINE_TITLE = "Wave flood line";
 string const RASTER_PLOT_WAVE_HEIGHT_TITLE = "Wave height";
 string const RASTER_PLOT_WAVE_ORIENTATION_TITLE = "Wave orientation";
+string const RASTER_PLOT_DIRTY_CELLS_TITLE = "Cells with sediment changes (for avalanche tracking)";
 
 // GIS vector output user codes
 string const VECTOR_ALL_OUTPUT_CODE = "all";
@@ -1158,32 +1170,32 @@ string const WAVE_HEIGHT_Y_FILENAME = "wave_height_y.csv";
 string const ACTIVE_ZONE_FILENAME = "activezone.csv";
 
 //================================================ Globally-available functions =================================================
-template <class T>
+template<class T>
 T tMax(T a, T b)
 {
    return ((a > b) ? a : b);
 }
 
-template <class T>
+template<class T>
 T tMax(T a, T b, T c)
 {
    T max = (a < b) ? b : a;
    return ((max < c) ? c : max);
 }
 
-template <class T>
+template<class T>
 T tMin(T a, T b)
 {
    return ((a < b) ? a : b);
 }
 
-template <class T>
+template<class T>
 T tMin(T a, T b, T c)
 {
    return (a < b ? (a < c ? a : c) : (b < c ? b : c));
 }
 
-template <class T>
+template<class T>
 T tAbs(T a)
 {
    // From a posting dated 18 Nov 93 by rmartin@rcmcon.com (Robert Martin), archived in cpp_tips
@@ -1197,8 +1209,8 @@ T tAbs(T a)
 //    return ((a >= b) && (a <= c));
 // }
 
-template <typename T>
-string strDblToStr(const T &t)
+template<typename T>
+string strDblToStr(T const &t)
 {
    // From http://stackoverflow.com/questions/2125880/convert-float-to-stdstring-in-c
    ostringstream os;
@@ -1209,8 +1221,8 @@ string strDblToStr(const T &t)
 // ==============================================================================================================================
 // For comparison of two floating-point numbers, with a specified accuracy
 // ==============================================================================================================================
-template <class T>
-bool bFPIsEqual(const T d1, const T d2, const T dEpsilon)
+template<class T>
+bool bFPIsEqual(T const d1, T const d2, T const dEpsilon)
 {
    // Since the accuracy of floating-point numbers varies with their magnitude, we must compare them by using an accuracy threshold which is relative to the magnitude of the two numbers being compared. This is a blend of an example from Knuth's 'The Art of Computer Programming. Volume 1. Fundamental Algorithms' and a posting dated 18 Nov 93 by rmartin@rcmcon.com (Robert Martin), archived in cpp_tips
 
@@ -1237,7 +1249,9 @@ bool bIsStringValidInt(string &);
 
 struct FillToWidth
 {
-   FillToWidth(char f, int w) : chFill(f), nWidth(w) {}
+   FillToWidth(char f, int w) : chFill(f), nWidth(w)
+   {
+   }
    char chFill;
    int nWidth;
 };
@@ -1255,17 +1269,17 @@ struct TransectWaveData
    bool bIsGridEdge;
 };
 
-ostream &operator<<(ostream &, const FillToWidth &);
+ostream &operator<<(ostream &, FillToWidth const &);
 
 // string strDbl(double const, int const);
 string strDblRight(double const, int const, int const, bool const = true);
 string strIntRight(int const, int const);
-string strCentre(const char *, int const);
-string strCentre(const string &, int const);
-string strRight(const string &, int const);
-string strRight(const char *, int const);
-string strLeft(const string &, int const);
-string strLeft(const char *, int const);
+string strCentre(char const *, int const);
+string strCentre(string const &, int const);
+string strRight(string const &, int const);
+string strRight(char const *, int const);
+string strLeft(string const &, int const);
+string strLeft(char const *, int const);
 string strRightPerCent(double const, double const, int const, int const,
                        bool const = true);
 #endif
@@ -1273,4 +1287,4 @@ string strRightPerCent(double const, double const, int const, int const,
 //================================================= debugging stuff =============================================================
 // #define CLOCKCHECK          // Uncomment to check CPU clock rollover settings
 
-#endif // CME_H
+#endif      // CME_H

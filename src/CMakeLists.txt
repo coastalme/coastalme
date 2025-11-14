@@ -6,6 +6,8 @@
 # Set CMake required version
 cmake_minimum_required(VERSION 3.12 FATAL_ERROR)
 
+set(CMAKE_VERBOSE_MAKEFILE OFF)
+
 # This is needed if we want to use relative paths for e.g. the install dir.
 # Such as ${CMAKE_SOURCE_DIR}/.. This was deprecated in CMake 3.31
 if(${CMAKE_VERSION} VERSION_GREATER "3.31")
@@ -47,16 +49,10 @@ if(UNIX)
   endif()
 
 elseif(WIN32)
-  message(
-  FATAL_ERROR
-  "CoastalME cannot be built using the Visual Studio compiler"
-  )
+  message(FATAL_ERROR "CoastalME cannot be built using the Visual Studio compiler")
 
 elseif(MINGW)
-  message(
-  FATAL_ERROR
-  "CoastalME cannot be builtusing the MinGW compiler"
-  )
+  message(FATAL_ERROR "CoastalME cannot be builtusing the MinGW compiler")
 endif()
 
 message("")
@@ -179,6 +175,7 @@ if(CMAKE_BUILD_TYPE_LC STREQUAL "debug")
 elseif(CMAKE_BUILD_TYPE_LC STREQUAL "relwithdebinfo")
   # Production build
   add_compile_options(
+      -Wfatal-errors
       -march=native
       -O3
       -g3
@@ -220,6 +217,22 @@ elseif(CMAKE_BUILD_TYPE_LC STREQUAL "prerelease")
         -g
         -O0
         -fno-omit-frame-pointer
+        -fsanitize=undefined
+        -fsanitize=shift
+        -fsanitize=integer-divide-by-zero
+        -fsanitize=unreachable
+        -fsanitize=null
+        -fsanitize=return
+        -fsanitize=vla-bound
+        -fsanitize=float-divide-by-zero
+        -fsanitize=float-cast-overflow
+        -fsanitize=bounds
+        -fsanitize=alignment
+        -fsanitize=object-size
+        -fsanitize=vptr
+        -fsanitize=address
+      )
+  add_link_options(
         -fsanitize=undefined
         -fsanitize=shift
         -fsanitize=integer-divide-by-zero
@@ -304,6 +317,13 @@ elseif(CMAKE_BUILD_TYPE_LC STREQUAL "relwithdebinfo")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS_DEBUG} ${CMAKE_CXX_FLAGS}")
   add_link_options(-g)
   set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CME_BINARY_DIR}/Debug CACHE PATH "Directory for Debug builds" FORCE)
+  # For Debug builds on any platform, add the model's "internal" debug flag(used for extra logging) etc.
+  add_compile_options(-D_DEBUG)
+
+elseif(CMAKE_BUILD_TYPE_LC STREQUAL "prerelease")
+  set(CSHORE_BUILD "DEBUG")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS_DEBUG} ${CMAKE_CXX_FLAGS}")
+  set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CME_BINARY_DIR}/prerelease CACHE PATH "Directory for prerelease builds" FORCE)
   # For Debug builds on any platform, add the model's "internal" debug flag(used for extra logging) etc.
   add_compile_options(-D_DEBUG)
 

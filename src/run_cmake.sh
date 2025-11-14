@@ -1,4 +1,5 @@
 #!/bin/bash
+
 verbose='false'
 cflag="false"
 iflag="false"
@@ -19,10 +20,10 @@ while getopts 'civh' flag; do
 done
 
 # Change this to change build type
-#buildtype=DEBUG
-buildtype=RELEASE
-# buildtype=PRERELEASE
-# buildtype=RELWITHDEBINFO # Not yet implemented in CMakeLists.txt
+buildtype=DEBUG
+#buildtype=RELEASE
+#buildtype=PRERELEASE
+#buildtype=RELWITHDEBINFO
 #buildtype=MINSIZEREL            # Not yet implemented in CMakeLists.txt
 #buildtype=GCOV
 #buildtype=CALLGRIND
@@ -74,16 +75,18 @@ if [ "$cflag" = "true" ]; then
 	make clean
 	rm -f CMakeCache.txt
 fi
+
 # CMAKE_COMPILER_ARGS="PKG_CPPFLAGS='-Xclang -fopenmp' PKG_LIBS=-lomp"
+# usr/bin/cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=$buildtype -DCOMPILER=$compiler -DCSHORE_LIBRARY=$cshorelibrary -DCSHORE_INOUT=$cshoreinout $CMAKE_COMPILER_ARGS .
+cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=$buildtype -DCOMPILER=$compiler -DCSHORE_LIBRARY=$cshorelibrary -DCSHORE_INOUT=$cshoreinout -DCMAKE_VERBOSE_MAKEFILE=OFF $CMAKE_COMPILER_ARGS .
 # cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=$buildtype -DCOMPILER=$compiler -DCSHORE_LIBRARY=$cshorelibrary -DCSHORE_INOUT=$cshoreinout $CMAKE_COMPILER_ARGS .
-#cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=$buildtype -DCOMPILER=$compiler -DCSHORE_LIBRARY=$cshorelibrary -DCSHORE_INOUT=$cshoreinout -DCMAKE_VERBOSE_MAKEFILE=ON $CMAKE_COMPILER_ARGS .
 #cmake -DCMAKE_BUILD_TYPE=$buildtype -DCOMPILER=$compiler -DCSHORE_LIBRARY=$cshorelibrary -DCSHORE_INOUT=$cshoreinout $CMAKE_COMPILER_ARGS . -G"CodeBlocks - Unix Makefiles"
 # Or Ninja?
-cmake -G Ninja -DCMAKE_BUILD_TYPE=$buildtype -DCOMPILER=$compiler -DCSHORE_LIBRARY=$cshorelibrary -DCSHORE_INOUT=$cshoreinout $CMAKE_COMPILER_ARGS .
+# cmake -G Ninja -DCMAKE_BUILD_TYPE=$buildtype -DCOMPILER=$compiler -DCSHORE_LIBRARY=$cshorelibrary -DCSHORE_INOUT=$cshoreinout $CMAKE_COMPILER_ARGS .
 
 if [ "$iflag" = "true" ]; then
-	# make install
-	ninja install #>output.txt
+	make install
+# 	ninja -j1 install #>output.txt
 	if [[ $OSTYPE == 'darwin'* ]]; then
 		# Let's sign to enable profiling
 		codesign -s - -f --entitlements ../debug.plist ../cme

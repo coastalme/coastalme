@@ -1,4 +1,5 @@
 /*!
+
    \file simulation.cpp
    \brief The start-of-simulation routine
    \details TODO 001 A more detailed description of this routine.
@@ -6,9 +7,11 @@
    \author Andres Payo
    \date 2025
    \copyright GNU General Public License
+
 */
 
 /* ==============================================================================================================================
+
    This file is part of CoastalME, the Coastal Modelling Environment.
 
    CoastalME is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
@@ -16,6 +19,7 @@
    This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
    You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+
 ==============================================================================================================================*/
 #include <assert.h>
 
@@ -64,9 +68,8 @@ CSimulation::CSimulation(void)
    m_bHaveSandSediment = false;
    m_bHaveCoarseSediment = false;
    m_bBasementElevSave = false;
-   m_bSedIncTalusTopSurfSave = false;
-   m_bTopSurfIncSeaSave = false;
-   m_bTalusSave = false;
+   m_bSedimentTopSurfSave = false;
+   m_bTopSurfSave = false;
    m_bSliceSave = false;
    m_bSeaDepthSave = false;
    m_bAvgSeaDepthSave = false;
@@ -91,6 +94,8 @@ CSimulation::CSimulation(void)
    m_bTotalActualBeachErosionSave = false;
    m_bBeachDepositionSave = false;
    m_bTotalBeachDepositionSave = false;
+   m_bAvalancheDepositionSave = false;
+   m_bTotalAvalancheDepositionSave = false;
    m_bLandformSave = false;
    m_bSlopeConsSedSave = false;
    m_bSlopeSaveForCliffToe = false;
@@ -104,6 +109,7 @@ CSimulation::CSimulation(void)
    m_bFineConsSedSave = false;
    m_bSandConsSedSave = false;
    m_bCoarseConsSedSave = false;
+   m_bDirtyCellsSave = false;
    m_bRasterCoastlineSave = false;
    m_bRasterNormalProfileSave = false;
    m_bActiveZoneSave = false;
@@ -127,6 +133,7 @@ CSimulation::CSimulation(void)
    m_bPolygonNodeSave = false;
    m_bPolygonBoundarySave = false;
    m_bCliffNotchSave = false;
+   m_bWaveTransectPointsSave = false;
    m_bShadowBoundarySave = false;
    m_bShadowDowndriftBoundarySave = false;
    m_bDeepWaterWaveAngleSave = false;
@@ -191,8 +198,8 @@ CSimulation::CSimulation(void)
    m_bLowestSWLSoFar = false;
 
    m_bGDALCanCreate = true;
-   m_bCSVPerTimestepResults = true; // Default to CSV output format
-   m_bYamlInputFormat = false;      // Default to .dat format
+   m_bCSVPerTimestepResults = true;      // Default to CSV output format
+   m_bYamlInputFormat = false;           // Default to .dat format
 
    m_papszGDALRasterOptions = NULL;
    m_papszGDALVectorOptions = NULL;
@@ -216,8 +223,8 @@ CSimulation::CSimulation(void)
    m_nYGridSize = 0;
    m_nCoastMax = 0;
    m_nCoastMin = 0;
-   m_nNumThisIterCliffCollapse = 0;
-   m_nNumTotCliffCollapse = 0;
+   //m_nNThisIterCliffCollapse = 0;
+   //m_nNTotCliffCollapse = 0;
    m_nUnconsSedimentHandlingAtGridEdges = 0;
    m_nBeachErosionDepositionEquation = 0;
    m_nWavePropagationModel = 0;
@@ -231,6 +238,8 @@ CSimulation::CSimulation(void)
    m_nLogFileDetail = 0;
    m_nRunUpEquation = 0;
    m_nLevel = 0;
+   m_nDefaultTalusWidthInCells = 0;
+   m_nTalusProfileMinLenInCells = 0;
 
    // TODO 011 May wish to make this a user-supplied value
    m_nGISMissingValue = INT_NODATA;
@@ -326,8 +335,8 @@ CSimulation::CSimulation(void)
    m_dCoastNormalLength = 0;
    m_dThisIterTotSeaDepth = 0;
    m_dThisIterPotentialSedLostBeachErosion = 0;
-   m_dThisIterLeftGridUnconsFine = 0;        // TODO067
-   m_dThisIterLeftGridUnconsSand = 0;
+   m_dThisIterLeftGridUnconsFine =      //TODO067 0;
+      m_dThisIterLeftGridUnconsSand = 0;
    m_dThisIterLeftGridUnconsCoarse = 0;
    m_dThisIterPotentialPlatformErosion = 0;
    m_dThisIterActualPlatformErosionFineCons = 0;
@@ -384,7 +393,7 @@ CSimulation::CSimulation(void)
    m_dStartIterConsFineAllCells = 0;
    m_dStartIterConsSandAllCells = 0;
    m_dStartIterConsCoarseAllCells = 0;
-   m_dThisIterDiffTotWaterLevel = 0;         // Used in surge stuff TODO 007 Finish surge and runup stuff
+   m_dThisIterDiffTotWaterLevel = 0;
    m_dThisIterDiffWaveSetupWaterLevel = 0;
    m_dThisIterDiffWaveSetupSurgeWaterLevel = 0;
    m_dThisIterDiffWaveSetupSurgeRunupWaterLevel = 0;
@@ -397,7 +406,6 @@ CSimulation::CSimulation(void)
    m_dTotalSandConsInPolygons = 0;
    m_dTotalCoarseConsInPolygons = 0;
    m_dSlopeThresholdForCliffToe = 0;
-   m_dThisIterMHWElev = 0;
 
    m_dMinSWLSoFar = DBL_MAX;
    m_dMaxSWLSoFar = DBL_MIN;
@@ -631,10 +639,9 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
    if (nRet != RTN_OK)
       return nRet;
 
-   // Are we simulating cliff collapse?
+   // If we are simulating cliff collapse: then now that we have a value for m_dCellSide, we can check some more input parameters. Talus must be more than one cell wide, and since the number of cells must be odd, three cells is the minimum width
    if (m_bDoCliffCollapse)
    {
-      // We are: now that we have a value for m_dCellSide, we can check some more input parameters. Talus must be more than one cell wide, and since the number of cells must be odd, three cells is the minimum width
       int const nTmp = nConvertMetresToNumCells(m_dCliffDepositionPlanviewWidth);
       if (nTmp < 3)
       {
@@ -652,6 +659,7 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
 
    // Mark edge cells, as defined by the basement layer
    nRet = nMarkBoundingBoxEdgeCells();
+
    if (nRet != RTN_OK)
       return nRet;
 
@@ -689,7 +697,7 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
 
    for (int nX = 0; nX < m_nXGridSize; nX++)
       for (int nY = 0; nY < m_nYGridSize; nY++)
-         m_pRasterGrid->m_Cell[nX][nY].AppendLayers(m_nLayers);
+         m_pRasterGrid->Cell(nX, nY).AppendLayers(m_nLayers);
 
    // Tell the user what is happening then read in the layer files
    AnnounceReadRasterFiles();
@@ -858,6 +866,16 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
          return (nRet);
    }
 
+   // Read sea flood fill seed points from shapefile if specified
+   if (! m_strSeaFloodSeedPointShapefile.empty())
+   {
+      LogStream << "Reading sea flood fill seed points from " << m_strSeaFloodSeedPointShapefile << endl;
+
+      nRet = nReadSeaFloodSeedPointShapefile();
+      if (nRet != RTN_OK)
+         return (nRet);
+   }
+
    // Open the main output
    OutStream.open(m_strOutFile.c_str(), ios::out | ios::trunc);
 
@@ -876,9 +894,9 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
 
    // Misc initialisation calcs
    m_nCoastMax = COAST_LENGTH_MAX * tMax(m_nXGridSize, m_nYGridSize);                           // Arbitrary but probably OK
-   // m_nCoastMin = tMin(m_nXGridSize, m_nYGridSize);
-   m_nCoastMin = nRound(COAST_LENGTH_MIN_X_PROF_SPACE * m_dCoastNormalSpacing / m_dCellSide);   // Arbitrary but probably OK
-   m_nCoastCurvatureInterval = tMax(nRound(m_dCoastNormalSpacing / (m_dCellSide * 2)), 2);      // Arbitrary but probably OK
+   m_nCoastMin = tMin(m_nXGridSize, m_nYGridSize)-1;                                              // In some cases the following rule doesn't work TODO 007 Finish surge and runup stuff
+   // nRound(COAST_LENGTH_MIN_X_PROF_SPACE * m_dCoastNormalSpacing / m_dCellSide);              // TODO 007 Finish surge and runup stuff
+   m_nCoastCurvatureInterval = tMax(nRound(m_dCoastNormalSpacing / (m_dCellSide * 2)), 2);      // TODO 007 Finish surge and runup stuff
 
    // For beach erosion/deposition, conversion from immersed weight to bulk volumetric (sand and voids) transport rate (Leo Van Rijn) TODO 007 need full reference
    m_dInmersedToBulkVolumetric = 1 / ((m_dBeachSedimentDensity - m_dSeaWaterDensity) * (1 - m_dBeachSedimentPorosity) * m_dG);
@@ -902,6 +920,16 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
       m_dAccumulatedSeaLevelChange -= m_dDeltaSWLPerTimestep;
    }
 
+   // Calculate default planview width of cliff collapse talus, in cells
+   m_nDefaultTalusWidthInCells = nConvertMetresToNumCells(m_dCliffDepositionPlanviewWidth);
+
+   // The default talus collapse width must be an odd number of cells in width i.e. centred on the cliff collapse cell (but only if we are not at the end of the coast)
+   if ((m_nDefaultTalusWidthInCells % 2) == 0)
+      m_nDefaultTalusWidthInCells++;
+
+   // This is the minimum planview length (in cells) of the Dean profile. The initial length will be increased if we can't deposit sufficient talus
+   m_nTalusProfileMinLenInCells = nConvertMetresToNumCells(m_dCliffTalusMinDepositionLength);
+
    // ===================================================== The main loop ======================================================
    // Tell the user what is happening
    AnnounceIsRunning();
@@ -919,6 +947,9 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
          LogStream << "TIMESTEP " << m_ulIter << " " << string(154, '=') << endl;
 
       LogStream << fixed << setprecision(3);
+
+      // Note: m_DirtyCells is NOT cleared here - it accumulates across timesteps
+      // It will be cleared after GIS output is written (when saving at intervals)
 
       // Check to see if there is a new intervention in place: if so, update it on the RasterGrid array
       nRet = nUpdateIntervention();
@@ -1026,7 +1057,7 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
       // {
       // for (int nY = 0; nY < m_nYGridSize; nY++)
       // {
-      // int nTmp = m_pRasterGrid->m_Cell[nX][nY].nGetPolygonID();
+      // int nTmp = m_pRasterGrid->Cell(nX, nY).nGetPolygonID();
       // if (nTmp == INT_NODATA)
       // nNODATA++;
       //
@@ -1105,7 +1136,7 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
       // {
       // for (int nX = 0; nX < m_nXGridSize; nX++)
       // {
-      // pdRaster[nn++] = m_pRasterGrid->m_Cell[nX][nY].dGetWaveHeight();
+      // pdRaster[nn++] = m_pRasterGrid->Cell(nX, nY).dGetWaveHeight();
       // }
       // }
       //
@@ -1137,7 +1168,7 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
       // {
       // for (int nX = 0; nX < m_nXGridSize; nX++)
       // {
-      // pdRaster[nn++] = m_pRasterGrid->m_Cell[nX][nY].dGetWaveAngle();
+      // pdRaster[nn++] = m_pRasterGrid->Cell(nX, nY).dGetWaveAngle();
       // }
       // }
       //
@@ -1178,7 +1209,7 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
       // Are we considering cliff collapse?
       if (m_bHaveConsolidatedSediment && m_bDoCliffCollapse)
       {
-         // Distribute wave energy to coast landforms (currently, this is only relevant to cliffs), maybe incise cliff notches, maybe do cliff collapses
+         // Do all cliff collapses for this timestep (if any)
          nRet = nDoAllWaveEnergyToCoastLandforms();
          if (nRet != RTN_OK)
             return nRet;
@@ -1186,11 +1217,6 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
          // Output cliff collapse table to log file
          if (m_nLogFileDetail >= LOG_FILE_MIDDLE_DETAIL)
             WritePolygonCliffCollapseErosion();
-
-         // Move some cliff collapse talus to unconsolidated sediment
-         nRet = nMoveCliffTalusToUnconsolidated();
-         if (nRet != RTN_OK)
-            return nRet;
       }
 
       // Tell the user how the simulation is progressing
@@ -1219,6 +1245,11 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
             WritePolygonSedimentInputEventTable();
       }
 
+      // Process sediment avalanches on cells that changed this timestep
+      nRet = nDoSedimentAvalanching();
+      if (nRet != RTN_OK)
+         return nRet;
+
       //       // Add the fine sediment that was eroded this timestep (from the shore platform, from cliff collapse, from erosion of existing fine sediment during cliff collapse talus deposition, and from beach erosion; minus the fine sediment from beach erosion that went off-grid) to the suspended sediment load
       // double dFineThisIter = m_dThisIterActualPlatformErosionFineCons + m_dThisIterCliffCollapseErosionFineUncons + m_dThisIterCliffCollapseErosionFineCons + m_dThisIterCliffCollapseFineErodedDuringDeposition + m_dThisIterBeachErosionFine - m_dThisIterLeftGridUnconsFine;
       //
@@ -1244,7 +1275,7 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
       // {
       // for (int nX = 0; nX < m_nXGridSize; nX++)
       // {
-      // pdRaster[nn++] = m_pRasterGrid->m_Cell[nX][nY].dGetWaveHeight();
+      // pdRaster[nn++] = m_pRasterGrid->Cell(nX, nY).dGetWaveHeight();
       // }
       // }
       //
@@ -1276,7 +1307,7 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
       // {
       // for (int nX = 0; nX < m_nXGridSize; nX++)
       // {
-      // pdRaster[nn++] = m_pRasterGrid->m_Cell[nX][nY].dGetWaveAngle();
+      // pdRaster[nn++] = m_pRasterGrid->Cell(nX, nY).dGetWaveAngle();
       // }
       // }
       //
@@ -1336,6 +1367,10 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
 
          // Tell the user how the simulation is progressing
          AnnounceProgress();
+
+         // Clear dirty cells now that GIS output has been written
+         // This allows dirty cells to accumulate across timesteps when saving at intervals
+         m_DirtyCells.clear();
       }
 
       // Output per-timestep results to the .out file
@@ -1366,4 +1401,12 @@ int CSimulation::nDoSimulation(int nArg, char const* pcArgv[])
    // Do end-of-run memory clearance
    DoEndOfRunDeletes();
    return RTN_OK;
+}
+
+//===============================================================================================================================
+//! Mark a cell as having changed this timestep (for avalanche processing)
+//===============================================================================================================================
+void CSimulation::MarkCellDirty(int const nX, int const nY)
+{
+   m_DirtyCells.insert(make_pair(nX, nY));
 }

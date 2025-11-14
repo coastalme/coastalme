@@ -147,10 +147,10 @@ void CSimulation::FloodFillLand(int const nXStart, int const nYStart)
 
       while (nX >= 0)
       {
-         if (m_pRasterGrid->m_Cell[nX][nY].bIsCellFloodCheck())
+         if (m_pRasterGrid->Cell(nX, nY).bIsCellFloodCheck())
             break;
 
-         if (! m_pRasterGrid->m_Cell[nX][nY].bElevLessThanSWL())
+         if (! m_pRasterGrid->Cell(nX, nY).bElevLessThanSWL())
             break;
 
          nX--;
@@ -163,45 +163,45 @@ void CSimulation::FloodFillLand(int const nXStart, int const nYStart)
 
       while (nX < m_nXGridSize)
       {
-         if (m_pRasterGrid->m_Cell[nX][nY].bIsCellFloodCheck())
+         if (m_pRasterGrid->Cell(nX, nY).bIsCellFloodCheck())
             break;
 
-         if (! m_pRasterGrid->m_Cell[nX][nY].bElevLessThanSWL())
+         if (! m_pRasterGrid->Cell(nX, nY).bElevLessThanSWL())
             break;
 
          // Flood this cell
-         m_pRasterGrid->m_Cell[nX][nY].SetCheckFloodCell();
-         m_pRasterGrid->m_Cell[nX][nY].SetInContiguousFlood();
+         m_pRasterGrid->Cell(nX, nY).SetCheckFloodCell();
+         m_pRasterGrid->Cell(nX, nY).SetInContiguousFlood();
 
          switch (m_nLevel)
          {
          case 0: // WAVESETUP + STORMSURGE:
-            m_pRasterGrid->m_Cell[nX][nY].SetFloodBySetupSurge();
+            m_pRasterGrid->Cell(nX, nY).SetFloodBySetupSurge();
             break;
 
          case 1: // WAVESETUP + STORMSURGE + RUNUP:
-            m_pRasterGrid->m_Cell[nX][nY].SetFloodBySetupSurgeRunup();
+            m_pRasterGrid->Cell(nX, nY).SetFloodBySetupSurgeRunup();
             break;
          }
 
-         if ((! bSpanAbove) && (nY > 0) && (m_pRasterGrid->m_Cell[nX][nY - 1].bElevLessThanSWL()) && (!m_pRasterGrid->m_Cell[nX][nY - 1].bIsCellFloodCheck()))
+         if ((! bSpanAbove) && (nY > 0) && (m_pRasterGrid->Cell(nX, nY - 1).bElevLessThanSWL()) && (!m_pRasterGrid->Cell(nX, nY - 1).bIsCellFloodCheck()))
          {
             PtiStackFlood.push(CGeom2DIPoint(nX, nY - 1));
             bSpanAbove = true;
          }
 
-         else if (bSpanAbove && (nY > 0) && (!m_pRasterGrid->m_Cell[nX][nY - 1].bElevLessThanSWL()))
+         else if (bSpanAbove && (nY > 0) && (!m_pRasterGrid->Cell(nX, nY - 1).bElevLessThanSWL()))
          {
             bSpanAbove = false;
          }
 
-         if ((! bSpanBelow) && (nY < m_nYGridSize - 1) && (m_pRasterGrid->m_Cell[nX][nY + 1].bElevLessThanSWL()) && (!m_pRasterGrid->m_Cell[nX][nY + 1].bIsCellFloodCheck()))
+         if ((! bSpanBelow) && (nY < m_nYGridSize - 1) && (m_pRasterGrid->Cell(nX, nY + 1).bElevLessThanSWL()) && (!m_pRasterGrid->Cell(nX, nY + 1).bIsCellFloodCheck()))
          {
             PtiStackFlood.push(CGeom2DIPoint(nX, nY + 1));
             bSpanBelow = true;
          }
 
-         else if (bSpanBelow && (nY < m_nYGridSize - 1) && (!m_pRasterGrid->m_Cell[nX][nY + 1].bElevLessThanSWL()))
+         else if (bSpanBelow && (nY < m_nYGridSize - 1) && (!m_pRasterGrid->Cell(nX, nY + 1).bElevLessThanSWL()))
          {
             bSpanBelow = false;
          }
@@ -242,17 +242,17 @@ int CSimulation::nTraceAllFloodCoasts(void)
       int const nYNext = m_VEdgeCell[n + 1].nGetY();
 
       // Get "Is it sea?" information for 'this' and 'next' cells
-      bool const bThisCellIsSea = m_pRasterGrid->m_Cell[nXThis][nYThis].bIsInContiguousSeaFlood();
-      bool const bNextCellIsSea = m_pRasterGrid->m_Cell[nXNext][nYNext].bIsInContiguousSeaFlood();
+      bool const bThisCellIsSea = m_pRasterGrid->Cell(nXThis, nYThis).bIsInContiguousSeaFlood();
+      bool const bNextCellIsSea = m_pRasterGrid->Cell(nXNext, nYNext).bIsInContiguousSeaFlood();
 
       // Are we at a coast?
       if ((! bThisCellIsSea) && bNextCellIsSea)
       {
          // 'This' cell is just inland, has it already been flagged as a possible start for a coastline (even if this subsequently 'failed' as a coastline)?
-         // if (! m_pRasterGrid->m_Cell[nXThis][nYThis].bIsPossibleCoastStartCell())
+         // if (! m_pRasterGrid->Cell(nXThis, nYThis).bIsPossibleCoastStartCell())
          {
             // It has not, so flag it
-            m_pRasterGrid->m_Cell[nXThis][nYThis].SetPossibleFloodStartCell();
+            m_pRasterGrid->Cell(nXThis, nYThis).SetPossibleFloodStartCell();
 
             // And save it
             V2DIPossibleStartCell.push_back(CGeom2DIPoint(nXThis, nYThis));
@@ -265,10 +265,10 @@ int CSimulation::nTraceAllFloodCoasts(void)
       else if (bThisCellIsSea && (! bNextCellIsSea))
       {
          // The 'next' cell is just inland, has it already been flagged as a possible start for a coastline (even if this subsequently 'failed' as a coastline)?
-         // if (! m_pRasterGrid->m_Cell[nXNext][nYNext].bIsPossibleCoastStartCell())
+         // if (! m_pRasterGrid->Cell(nXNext, nYNext).bIsPossibleCoastStartCell())
          {
             // It has not, so flag it
-            m_pRasterGrid->m_Cell[nXNext][nYNext].SetPossibleFloodStartCell();
+            m_pRasterGrid->Cell(nXNext, nYNext).SetPossibleFloodStartCell();
 
             // And save it
             V2DIPossibleStartCell.push_back(CGeom2DIPoint(nXNext, nYNext));
@@ -338,7 +338,7 @@ int CSimulation::nTraceFloodCoastLine(unsigned int const nTraceFromStartCellInde
    CGeomILine ILTempGridCRS;
 
    // Mark the start cell as coast and add it to the vector object
-   m_pRasterGrid->m_Cell[nStartX][nStartY].SetAsFloodline(true);
+   m_pRasterGrid->Cell(nStartX, nStartY).SetAsFloodline(true);
    CGeom2DIPoint const PtiStart(nStartX, nStartY);
    ILTempGridCRS.Append(&PtiStart);
 
@@ -385,7 +385,7 @@ int CSimulation::nTraceFloodCoastLine(unsigned int const nTraceFromStartCellInde
             bHasLeftStartEdge = true;
 
          // Flag this cell to ensure that it is not chosen as a coastline start cell later
-         m_pRasterGrid->m_Cell[nX][nY].SetPossibleFloodStartCell();
+         m_pRasterGrid->Cell(nX, nY).SetPossibleFloodStartCell();
          // LogStream << "Flagging [" << nX << "][" << nY << "] as possible coast start cell NOT YET LEFT EDGE" << endl;
       }
 
@@ -631,26 +631,26 @@ int CSimulation::nTraceFloodCoastLine(unsigned int const nTraceFromStartCellInde
       if (bIsWithinValidGrid(nXSeaward, nYSeaward))
       {
          // It is, so check if the cell in the seaward direction is a sea cell
-         if (m_pRasterGrid->m_Cell[nXSeaward][nYSeaward].bIsInContiguousSeaFlood())
+         if (m_pRasterGrid->Cell(nXSeaward, nYSeaward).bIsInContiguousSeaFlood())
          {
             // There is sea in this seaward direction, so we are on the coast
             bAtCoast = true;
 
             // Has the current cell already marked been marked as a coast cell?
-            if (! m_pRasterGrid->m_Cell[nX][nY].bIsFloodline())
+            if (! m_pRasterGrid->Cell(nX, nY).bIsFloodline())
             {
                // Not already marked, is this an intervention cell with the top above SWL?
-               if ((bIsInterventionCell(nX, nY)) && (!m_pRasterGrid->m_Cell[nX][nY].bElevLessThanSWL()))
+               if ((bIsInterventionCell(nX, nY)) && (!m_pRasterGrid->Cell(nX, nY).bElevLessThanSWL()))
                {
                   // It is, so mark as coast and add it to the vector object
-                  m_pRasterGrid->m_Cell[nX][nY].SetAsFloodline(true);
+                  m_pRasterGrid->Cell(nX, nY).SetAsFloodline(true);
                   ILTempGridCRS.Append(&Pti);
                }
 
-               else if (! m_pRasterGrid->m_Cell[nX][nY].bElevLessThanSWL())
+               else if (! m_pRasterGrid->Cell(nX, nY).bElevLessThanSWL())
                {
                   // The sediment top is above SWL so mark as coast and add it to the vector object
-                  m_pRasterGrid->m_Cell[nX][nY].SetAsFloodline(true);
+                  m_pRasterGrid->Cell(nX, nY).SetAsFloodline(true);
                   ILTempGridCRS.Append(&Pti);
                }
             }
@@ -672,26 +672,26 @@ int CSimulation::nTraceFloodCoastLine(unsigned int const nTraceFromStartCellInde
       if (bIsWithinValidGrid(nXStraightOn, nYStraightOn))
       {
          // It is, so check if there is sea immediately in front
-         if (m_pRasterGrid->m_Cell[nXStraightOn][nYStraightOn].bIsInContiguousSeaFlood())
+         if (m_pRasterGrid->Cell(nXStraightOn, nYStraightOn).bIsInContiguousSeaFlood())
          {
             // Sea is in front, so we are on the coast
             bAtCoast = true;
 
             // Has the current cell already marked been marked as a floodline cell?
-            if (! m_pRasterGrid->m_Cell[nX][nY].bIsFloodline())
+            if (! m_pRasterGrid->Cell(nX, nY).bIsFloodline())
             {
                // Not already marked, is this an intervention cell with the top above SWL?
-               if ((bIsInterventionCell(nX, nY)) && (!m_pRasterGrid->m_Cell[nX][nY].bElevLessThanSWL()))
+               if ((bIsInterventionCell(nX, nY)) && (!m_pRasterGrid->Cell(nX, nY).bElevLessThanSWL()))
                {
                   // It is, so mark as coast and add it to the vector object
-                  m_pRasterGrid->m_Cell[nX][nY].SetAsFloodline(true);
+                  m_pRasterGrid->Cell(nX, nY).SetAsFloodline(true);
                   ILTempGridCRS.Append(&Pti);
                }
 
-               else if (! m_pRasterGrid->m_Cell[nX][nY].bElevLessThanSWL())
+               else if (! m_pRasterGrid->Cell(nX, nY).bElevLessThanSWL())
                {
                   // The sediment top is above SWL so mark as coast and add it to the vector object
-                  m_pRasterGrid->m_Cell[nX][nY].SetAsFloodline(true);
+                  m_pRasterGrid->Cell(nX, nY).SetAsFloodline(true);
                   ILTempGridCRS.Append(&Pti);
                }
             }
@@ -712,26 +712,26 @@ int CSimulation::nTraceFloodCoastLine(unsigned int const nTraceFromStartCellInde
       if (bIsWithinValidGrid(nXAntiSeaward, nYAntiSeaward))
       {
          // It is, so check if there is sea in this anti-seaward cell
-         if (m_pRasterGrid->m_Cell[nXAntiSeaward][nYAntiSeaward].bIsInContiguousSeaFlood())
+         if (m_pRasterGrid->Cell(nXAntiSeaward, nYAntiSeaward).bIsInContiguousSeaFlood())
          {
             // There is sea on the anti-seaward side, so we are on the coast
             bAtCoast = true;
 
             // Has the current cell already marked been marked as a floodline cell?
-            if (! m_pRasterGrid->m_Cell[nX][nY].bIsFloodline())
+            if (! m_pRasterGrid->Cell(nX, nY).bIsFloodline())
             {
                // Not already marked, is this an intervention cell with the top above SWL?
-               if ((bIsInterventionCell(nX, nY)) && (!m_pRasterGrid->m_Cell[nX][nY].bElevLessThanSWL()))
+               if ((bIsInterventionCell(nX, nY)) && (!m_pRasterGrid->Cell(nX, nY).bElevLessThanSWL()))
                {
                   // It is, so mark as coast and add it to the vector object
-                  m_pRasterGrid->m_Cell[nX][nY].SetAsFloodline(true);
+                  m_pRasterGrid->Cell(nX, nY).SetAsFloodline(true);
                   ILTempGridCRS.Append(&Pti);
                }
 
-               else if (! m_pRasterGrid->m_Cell[nX][nY].bElevLessThanSWL())
+               else if (! m_pRasterGrid->Cell(nX, nY).bElevLessThanSWL())
                {
                   // The sediment top is above SWL so mark as coast and add it to the vector object
-                  m_pRasterGrid->m_Cell[nX][nY].SetAsFloodline(true);
+                  m_pRasterGrid->Cell(nX, nY).SetAsFloodline(true);
                   ILTempGridCRS.Append(&Pti);
                }
             }
@@ -777,7 +777,7 @@ int CSimulation::nTraceFloodCoastLine(unsigned int const nTraceFromStartCellInde
 
       // Unmark these cells as coast cells
       for (int n = 0; n < nCoastSize; n++)
-         m_pRasterGrid->m_Cell[ILTempGridCRS[n].nGetX()][ILTempGridCRS[n].nGetY()].SetAsFloodline(false);
+         m_pRasterGrid->Cell(ILTempGridCRS[n].nGetX(), ILTempGridCRS[n].nGetY()).SetAsFloodline(false);
 
       return RTN_ERR_TRACING_FLOOD;
    }
@@ -797,7 +797,7 @@ int CSimulation::nTraceFloodCoastLine(unsigned int const nTraceFromStartCellInde
 
       // Unmark these cells as coast cells
       for (int n = 0; n < nCoastSize; n++)
-         m_pRasterGrid->m_Cell[ILTempGridCRS[n].nGetX()][ILTempGridCRS[n].nGetY()].SetAsFloodline(false);
+         m_pRasterGrid->Cell(ILTempGridCRS[n].nGetX(), ILTempGridCRS[n].nGetY()).SetAsFloodline(false);
 
       return RTN_ERR_TRACING_FLOOD;
    }
@@ -816,7 +816,7 @@ int CSimulation::nTraceFloodCoastLine(unsigned int const nTraceFromStartCellInde
 
       // Unmark these cells as coast cells
       for (int n = 0; n < nCoastSize; n++)
-         m_pRasterGrid->m_Cell[ILTempGridCRS[n].nGetX()][ILTempGridCRS[n].nGetY()].SetAsFloodline(false);
+         m_pRasterGrid->Cell(ILTempGridCRS[n].nGetX(), ILTempGridCRS[n].nGetY()).SetAsFloodline(false);
 
       return RTN_ERR_TRACING_FLOOD;
    }
@@ -838,7 +838,7 @@ int CSimulation::nTraceFloodCoastLine(unsigned int const nTraceFromStartCellInde
 
       // Unmark these cells as coast cells
       for (int n = 0; n < nCoastSize; n++)
-         m_pRasterGrid->m_Cell[ILTempGridCRS[n].nGetX()][ILTempGridCRS[n].nGetY()].SetAsFloodline(false);
+         m_pRasterGrid->Cell(ILTempGridCRS[n].nGetX(), ILTempGridCRS[n].nGetY()).SetAsFloodline(false);
 
       return RTN_ERR_TRACING_FLOOD;
    }
@@ -852,20 +852,20 @@ int CSimulation::nTraceFloodCoastLine(unsigned int const nTraceFromStartCellInde
    if ((nCoastEndX != nEndX) || (nCoastEndY != nEndY))
    {
       // The grid-edge cell at nEndX, nEndY is not already at end of ILTempGridCRS. But is the final cell in ILTempGridCRS already at the edge of the grid?
-      if (! m_pRasterGrid->m_Cell[nCoastEndX][nCoastEndY].bIsBoundingBoxEdge())
+      if (! m_pRasterGrid->Cell(nCoastEndX, nCoastEndY).bIsBoundingBoxEdge())
       {
          // The final cell in ILTempGridCRS is not a grid-edge cell, so add the grid-edge cell and mark the cell as coastline
          ILTempGridCRS.Append(nEndX, nEndY);
          nCoastSize++;
 
-         m_pRasterGrid->m_Cell[nEndX][nEndY].SetAsFloodline(true);
+         m_pRasterGrid->Cell(nEndX, nEndY).SetAsFloodline(true);
       }
    }
 
    // Need to specify start edge and end edge for smoothing routines
    // int
-   // nStartEdge = m_pRasterGrid->m_Cell[nStartX][nStartY].nGetBoundingBoxEdge(),
-   // nEndEdge = m_pRasterGrid->m_Cell[nEndX][nEndY].nGetBoundingBoxEdge();
+   // nStartEdge = m_pRasterGrid->Cell(nStartX, nStartY).nGetBoundingBoxEdge(),
+   // nEndEdge = m_pRasterGrid->Cell(nEndX, nEndY).nGetBoundingBoxEdge();
 
    // Next, convert the grid coordinates in ILTempGridCRS (integer values stored as doubles) to external CRS coordinates (which will probably be non-integer, again stored as doubles). This is done now, so that smoothing is more effective
    CGeomLine LTempExtCRS;

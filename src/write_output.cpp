@@ -2280,11 +2280,11 @@ void CSimulation::DoEndOfTimestepTotals(void)
       {
          for (int nY = 0; nY < m_nYGridSize; nY++)
          {
-            dEndIterConsFineAllCells += m_pRasterGrid->m_Cell[nX][nY].dGetConsFineDepthAllLayers();
-            dEndIterConsSandAllCells += m_pRasterGrid->m_Cell[nX][nY].dGetConsSandDepthAllLayers();
-            dEndIterConsCoarseAllCells += m_pRasterGrid->m_Cell[nX][nY].dGetConsCoarseDepthAllLayers();
+            dEndIterConsFineAllCells += m_pRasterGrid->Cell(nX, nY).dGetConsFineDepthAllLayers();
+            dEndIterConsSandAllCells += m_pRasterGrid->Cell(nX, nY).dGetConsSandDepthAllLayers();
+            dEndIterConsCoarseAllCells += m_pRasterGrid->Cell(nX, nY).dGetConsCoarseDepthAllLayers();
 
-            double dSuspFine = m_pRasterGrid->m_Cell[nX][nY].dGetSuspendedSediment();
+            double dSuspFine = m_pRasterGrid->Cell(nX, nY).dGetSuspendedSediment();
 
             if (dSuspFine > 0)
             {
@@ -2292,7 +2292,7 @@ void CSimulation::DoEndOfTimestepTotals(void)
                nSuspFineCellsAllCells++;
             }
 
-            double dUnconsFine = m_pRasterGrid->m_Cell[nX][nY].dGetUnconsFineDepthAllLayers();
+            double dUnconsFine = m_pRasterGrid->Cell(nX, nY).dGetUnconsFineDepthAllLayers();
 
             if (dUnconsFine > 0)
             {
@@ -2300,7 +2300,7 @@ void CSimulation::DoEndOfTimestepTotals(void)
                nUnconsFineCellsAllCells++;
             }
 
-            double dUnconsSand = m_pRasterGrid->m_Cell[nX][nY].dGetUnconsSandDepthAllLayers();
+            double dUnconsSand = m_pRasterGrid->Cell(nX, nY).dGetUnconsSandDepthAllLayers();
 
             if (dUnconsSand > 0)
             {
@@ -2308,7 +2308,7 @@ void CSimulation::DoEndOfTimestepTotals(void)
                nUnconsSandCellsAllCells++;
             }
 
-            double dUnconsCoarse = m_pRasterGrid->m_Cell[nX][nY].dGetUnconsCoarseDepthAllLayers();
+            double dUnconsCoarse = m_pRasterGrid->Cell(nX, nY).dGetUnconsCoarseDepthAllLayers();
 
             if (dUnconsCoarse > 0)
             {
@@ -2317,14 +2317,14 @@ void CSimulation::DoEndOfTimestepTotals(void)
             }
 
             // Is this cell within a polygon?
-            if (m_pRasterGrid->m_Cell[nX][nY].nGetPolygonID() != INT_NODATA)
+            if (m_pRasterGrid->Cell(nX, nY).nGetPolygonID() != INT_NODATA)
             {
                // It is within a polygon
-               dEndIterConsFineInPolygons += m_pRasterGrid->m_Cell[nX][nY].dGetConsFineDepthAllLayers();
-               dEndIterConsSandInPolygons += m_pRasterGrid->m_Cell[nX][nY].dGetConsSandDepthAllLayers();
-               dEndIterConsCoarseInPolygons += m_pRasterGrid->m_Cell[nX][nY].dGetConsCoarseDepthAllLayers();
+               dEndIterConsFineInPolygons += m_pRasterGrid->Cell(nX, nY).dGetConsFineDepthAllLayers();
+               dEndIterConsSandInPolygons += m_pRasterGrid->Cell(nX, nY).dGetConsSandDepthAllLayers();
+               dEndIterConsCoarseInPolygons += m_pRasterGrid->Cell(nX, nY).dGetConsCoarseDepthAllLayers();
 
-               dSuspFine = m_pRasterGrid->m_Cell[nX][nY].dGetSuspendedSediment();
+               dSuspFine = m_pRasterGrid->Cell(nX, nY).dGetSuspendedSediment();
 
                if (dSuspFine > 0)
                {
@@ -2332,7 +2332,7 @@ void CSimulation::DoEndOfTimestepTotals(void)
                   nSuspFineCellsInPolygons++;
                }
 
-               dUnconsFine = m_pRasterGrid->m_Cell[nX][nY].dGetUnconsFineDepthAllLayers();
+               dUnconsFine = m_pRasterGrid->Cell(nX, nY).dGetUnconsFineDepthAllLayers();
 
                if (dUnconsFine > 0)
                {
@@ -2340,7 +2340,7 @@ void CSimulation::DoEndOfTimestepTotals(void)
                   nUnconsFineCellsInPolygons++;
                }
 
-               dUnconsSand = m_pRasterGrid->m_Cell[nX][nY].dGetUnconsSandDepthAllLayers();
+               dUnconsSand = m_pRasterGrid->Cell(nX, nY).dGetUnconsSandDepthAllLayers();
 
                if (dUnconsSand > 0)
                {
@@ -2348,7 +2348,7 @@ void CSimulation::DoEndOfTimestepTotals(void)
                   nUnconsSandCellsInPolygons++;
                }
 
-               dUnconsCoarse = m_pRasterGrid->m_Cell[nX][nY].dGetUnconsCoarseDepthAllLayers();
+               dUnconsCoarse = m_pRasterGrid->Cell(nX, nY).dGetUnconsCoarseDepthAllLayers();
 
                if (dUnconsCoarse > 0)
                {

@@ -223,6 +223,12 @@ class CGeomCell
    //! Total depth of unconsolidated beach sediment deposited
    double m_dTotBeachDeposition;
 
+   //! Depth of sediment moved by avalanching this timestep (depth in m)
+   double m_dAvalancheDepositionThisIter;
+
+   //! Total depth of sediment moved by avalanching
+   double m_dTotAvalancheDeposition;
+
    //! d50 of unconsolidated sediment on top layer with unconsolidated sediment depth > 0
    double m_dUnconsD50;
 
@@ -419,6 +425,10 @@ class CGeomCell
    double dGetTotBeachDeposition(void) const;
    // bool bBeachDepositionThisIter(void) const;
 
+   void IncrAvalancheDeposition(double const);
+   double dGetAvalancheDeposition(void) const;
+   double dGetTotAvalancheDeposition(void) const;
+
    bool bBeachErosionOrDepositionThisIter(void) const;
 
    double dGetUnconsD50(void) const;
@@ -435,4 +445,9 @@ class CGeomCell
    void SetDownDriftZoneNumber(int const);
    int nGetDownDriftZoneNumber(void) const;
 };
+
+// Include inline implementations for CGeomRasterGrid::Cell() methods
+// Must be included here after CGeomCell is fully defined to avoid circular dependency
+#include "raster_grid_inline.h"
+
 #endif // CELL_H

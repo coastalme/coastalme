@@ -57,6 +57,7 @@ class CRWCellTalus
  protected:
  public:
    CRWCellTalus(void);
+   ~CRWCellTalus(void);
 
    void SetSandDepth(double const);
    double dGetSandDepth(void) const;

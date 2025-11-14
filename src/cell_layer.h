@@ -72,7 +72,7 @@ class CRWCellLayer
 
    bool bHasTalus(void);
    CRWCellTalus* pGetTalus(void) const;
-   CRWCellTalus* pGetOrCreateTalus(void);
+   CRWCellTalus* pGetOrCreateTalus(bool&);
    void DeleteTalus(void);
 };
 #endif // CELL_LAYER_H

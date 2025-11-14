@@ -65,7 +65,19 @@ If you see error messages about missing software (for example, telling you that 
 
 Run make install `make install`. This will create an executable file called cme in the CoastalME folder.
 
-Edit cme.ini to tell CoastalME which input file to read (for example, in/test_suite/minimal_wave_angle_230/minimal.dat). You'll need to make sure that the "Path for output" listed in cme.ini (for example, out/test_suite/minimal_wave_angle_230) exists. If it doesn't exist, then create it: `mkdir -p out/test_suite/minimal_wave_angle_230/`.
+CoastalME supports two configuration file formats: `.ini` (legacy) and `.yaml` (modern).
+
+**Using YAML format (recommended)**:
+Edit `cme.yaml` to specify input and output paths. Example:
+```yaml
+input_data_file: in/test_suite/minimal_wave_angle_230/minimal.yaml
+output_path: out/test_suite/minimal_wave_angle_230/
+```
+
+**Using legacy .ini format**:
+Edit `cme.ini` to tell CoastalME which input file to read (for example, in/test_suite/minimal_wave_angle_230/minimal.dat). You'll need to make sure that the "Path for output" listed in cme.ini (for example, out/test_suite/minimal_wave_angle_230) exists. If it doesn't exist, then create it: `mkdir -p out/test_suite/minimal_wave_angle_230/`.
+
+**Note**: CoastalME will automatically detect which format to use. If both `cme.yaml` and `cme.ini` exist, `cme.yaml` takes priority.
 
 Run cme `./cme`. Output will appear in the "Path for output" folder.
 

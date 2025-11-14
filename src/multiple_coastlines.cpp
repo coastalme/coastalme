@@ -79,10 +79,10 @@ int CSimulation::nDoMultipleCoastlines(void)
             int const nY = pCell->nGetY();
 
             // Have we hit a cell which is 'under' another coastline?
-            if (m_pRasterGrid->m_Cell[nX][nY].bIsCoastline())
+            if (m_pRasterGrid->Cell(nX, nY).bIsCoastline())
             {
                // Yes this is a coastline cell, as well as a coast-normal profile cell
-               int const nHitCoast = m_pRasterGrid->m_Cell[nX][nY].nGetCoastline();
+               int const nHitCoast = m_pRasterGrid->Cell(nX, nY).nGetCoastline();
                if (nHitCoast != nCoast)
                {
                   // We have hit a different coastline, so truncate this profile
@@ -98,10 +98,10 @@ int CSimulation::nDoMultipleCoastlines(void)
                if (nY+1 >= m_nYGridSize)
                   nYTmp = nY-1;
 
-               if (m_pRasterGrid->m_Cell[nX][nYTmp].bIsCoastline())
+               if (m_pRasterGrid->Cell(nX, nYTmp).bIsCoastline())
                {
                   // Yes this is a coastline cell, as well as a coast-normal profile cell
-                  int const nHitCoast = m_pRasterGrid->m_Cell[nX][nYTmp].nGetCoastline();
+                  int const nHitCoast = m_pRasterGrid->Cell(nX, nYTmp).nGetCoastline();
                   if (nHitCoast != nCoast)
                   {
                      // We have hit a different coastline, so truncate this profile
@@ -116,11 +116,11 @@ int CSimulation::nDoMultipleCoastlines(void)
             if (! pProfile->bIsGridEdge())
             {
                // Have we hit a cell which is 'under' a coast-normal profile belonging to another coast? NOTE Is a problem if get more than two coast normals passing through this cell
-               int nHitProfileCoast = m_pRasterGrid->m_Cell[nX][nY].nGetProfileCoastID();
+               int nHitProfileCoast = m_pRasterGrid->Cell(nX, nY).nGetProfileCoastID();
                if ((nHitProfileCoast != INT_NODATA) && (nHitProfileCoast != nCoast))
                {
                   // Yes, we have hit a profile which belongs to a different coast
-                  int const nHitProfile = m_pRasterGrid->m_Cell[nX][nY].nGetProfileID();
+                  int const nHitProfile = m_pRasterGrid->Cell(nX, nY).nGetProfileID();
 
                   // Safety check
                   if (nHitProfile != INT_NODATA)
@@ -138,11 +138,11 @@ int CSimulation::nDoMultipleCoastlines(void)
                   if (nY+1 >= m_nYGridSize)
                      nYTmp = nY-1;
 
-                  nHitProfileCoast = m_pRasterGrid->m_Cell[nX][nYTmp].nGetProfileCoastID();
+                  nHitProfileCoast = m_pRasterGrid->Cell(nX, nYTmp).nGetProfileCoastID();
                   if ((nHitProfileCoast != INT_NODATA) && (nHitProfileCoast != nCoast))
                   {
                      // Yes, we have hit a profile which belongs to a different coast
-                     int const nHitProfile = m_pRasterGrid->m_Cell[nX][nYTmp].nGetProfileID();
+                     int const nHitProfile = m_pRasterGrid->Cell(nX, nYTmp).nGetProfileID();
 
                      // Safety check
                      if (nHitProfile != INT_NODATA)
@@ -241,8 +241,8 @@ int CSimulation::nTruncateProfilesDifferentCoasts(int const nThisProfileCoast, i
       int const nXTmp = pVThisProfileCells->at(nn).nGetX();
       int const nYTmp = pVThisProfileCells->at(nn).nGetY();
 
-      if ((m_pRasterGrid->m_Cell[nXTmp][nYTmp].nGetProfileID() == nThisProfile) && (m_pRasterGrid->m_Cell[nXTmp][nYTmp].nGetProfileCoastID() == nThisProfileCoast))
-         m_pRasterGrid->m_Cell[nXTmp][nYTmp].SetCoastAndProfileID(INT_NODATA, INT_NODATA);
+      if ((m_pRasterGrid->Cell(nXTmp, nYTmp).nGetProfileID() == nThisProfile) && (m_pRasterGrid->Cell(nXTmp, nYTmp).nGetProfileCoastID() == nThisProfileCoast))
+         m_pRasterGrid->Cell(nXTmp, nYTmp).SetCoastAndProfileID(INT_NODATA, INT_NODATA);
 
       // LogStream << "For coast " << nThisProfileCoast << " profile " << nThisProfile << " unmarking [" << nXTmp << "][" << nYTmp << "]" << endl;
    }
@@ -253,8 +253,8 @@ int CSimulation::nTruncateProfilesDifferentCoasts(int const nThisProfileCoast, i
       int const nXTmp = pVHitProfileCells->at(nn).nGetX();
       int const nYTmp = pVHitProfileCells->at(nn).nGetY();
 
-      if ((m_pRasterGrid->m_Cell[nXTmp][nYTmp].nGetProfileID() == nHitProfile) && (m_pRasterGrid->m_Cell[nXTmp][nYTmp].nGetProfileCoastID() == nHitProfileCoast))
-         m_pRasterGrid->m_Cell[nXTmp][nYTmp].SetCoastAndProfileID(INT_NODATA, INT_NODATA);
+      if ((m_pRasterGrid->Cell(nXTmp, nYTmp).nGetProfileID() == nHitProfile) && (m_pRasterGrid->Cell(nXTmp, nYTmp).nGetProfileCoastID() == nHitProfileCoast))
+         m_pRasterGrid->Cell(nXTmp, nYTmp).SetCoastAndProfileID(INT_NODATA, INT_NODATA);
 
       // LogStream << "For coast " << nHitProfileCoast << " profile " << nHitProfile << " unmarking [" << nXTmp << "][" << nYTmp << "]" << endl;
    }
@@ -343,8 +343,8 @@ int CSimulation::nTruncateProfileHitDifferentCoast(int const nCoast, int const n
       int const nXThis = pVProfileCells->at(nn).nGetX();
       int const nYThis = pVProfileCells->at(nn).nGetY();
 
-      if ((m_pRasterGrid->m_Cell[nXThis][nYThis].nGetProfileID() == nProfile) && (m_pRasterGrid->m_Cell[nXThis][nYThis].nGetProfileCoastID() == nCoast))
-         m_pRasterGrid->m_Cell[nXThis][nYThis].SetCoastAndProfileID(INT_NODATA, INT_NODATA);
+      if ((m_pRasterGrid->Cell(nXThis, nYThis).nGetProfileID() == nProfile) && (m_pRasterGrid->Cell(nXThis, nYThis).nGetProfileCoastID() == nCoast))
+         m_pRasterGrid->Cell(nXThis, nYThis).SetCoastAndProfileID(INT_NODATA, INT_NODATA);
    }
 
    // Truncate the list of cells in the profile, and then update

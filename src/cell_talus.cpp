@@ -36,6 +36,11 @@ CRWCellTalus::CRWCellTalus(void)
 {
 }
 
+//! CRWCellTalus destructor
+CRWCellTalus::~CRWCellTalus(void)
+{
+}
+
 //! Sets this talus object's sand sediment depth equivalent. Note no checks here to see if new equiv depth is sensible (e.g. non-negative)
 void CRWCellTalus::SetSandDepth(double const dNewSedDepth)
 {
