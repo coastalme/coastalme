@@ -107,6 +107,7 @@ void CConfiguration::InitializeDefaults()
    // m_dFinalWaterLevel = 0.0;
    m_bHasFinalWaterLevel = false;
 
+   m_strWaveInputMode = "fixed";
    m_strWaveHeightTimeSeries = "";
    m_strWaveStationDataFile = "";
    m_dDeepWaterWaveHeight = 1.0;
