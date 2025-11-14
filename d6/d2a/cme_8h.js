@@ -23,7 +23,6 @@ var cme_8h =
     [ "CLIFF_NOTCH_CUTOFF_DISTANCE", "d6/d2a/cme_8h.html#aa2aa23783fa721796326fd269799a8b4", null ],
     [ "CLOCK_CHECK_ITERATION", "d6/d2a/cme_8h.html#a785969e2e0411a66768b017e77f72e8d", null ],
     [ "CME_INI", "d6/d2a/cme_8h.html#ac7b0117b632de60ff6e9a0ff89c5f1cd", null ],
-    [ "CME_YAML", "d6/d2a/cme_8h.html#a58942fcbfa72182462e8ba9eb6004d79", null ],
     [ "COARSE_CONS_RASTER", "d6/d2a/cme_8h.html#ad60195967f12b9ece8ad3a437182f254", null ],
     [ "COARSE_UNCONS_RASTER", "d6/d2a/cme_8h.html#abf85b5b7fd25cfc4336178ac649975a2", null ],
     [ "COAST_LENGTH_MAX", "d6/d2a/cme_8h.html#ad75a3d0b0920b046e92b0632488849d6", null ],

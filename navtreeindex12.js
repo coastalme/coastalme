@@ -1,7 +1,5 @@
 var NAVTREEINDEX12 =
 {
-"dd/d58/classdeque.html":[5,0,28],
-"dd/d58/classdeque.html#a090b92581de438d2e14bedc190f0b0f9":[5,0,28,4],
 "dd/d6a/simulation_8h.html":[6,0,0,76],
 "dd/d6a/simulation_8h_source.html":[6,0,0,76],
 "dd/d6c/coast__landform_8h.html":[6,0,0,32],
@@ -249,5 +247,7 @@ var NAVTREEINDEX12 =
 "df/d45/classCGeomCoastPolygon.html#ac95fa274fdac765fedcc6c69e233d59e":[5,0,10,119],
 "df/d45/classCGeomCoastPolygon.html#acaead10154b780f98e46e893a979828b":[5,0,10,40],
 "df/d45/classCGeomCoastPolygon.html#ace10f53ce9ab517206863511d2cbf7be":[5,0,10,131],
-"df/d45/classCGeomCoastPolygon.html#ace19eeda9ceb7f1d729cbfad37148237":[5,0,10,8]
+"df/d45/classCGeomCoastPolygon.html#ace19eeda9ceb7f1d729cbfad37148237":[5,0,10,8],
+"df/d45/classCGeomCoastPolygon.html#ad1df78c11a625b56a193cd5a0ae54192":[5,0,10,86],
+"df/d45/classCGeomCoastPolygon.html#ad3c0ba7655b3cacf392e0d4234404cf5":[5,0,10,49]
 };
