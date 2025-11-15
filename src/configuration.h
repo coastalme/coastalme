@@ -1,5 +1,4 @@
 /*!
-
    \file configuration.h
    \brief Unified configuration class for CoastalME simulation parameters
    \details Provides a single interface for accessing simulation parameters regardless of input format (.dat or YAML)
@@ -8,25 +7,17 @@
    \author Andres Payo
    \date 2025
    \copyright GNU General Public License
-
 */
 
 /* ==============================================================================================================================
 
    This file is part of CoastalME, the Coastal Modelling Environment.
 
-   CoastalME is free software; you can redistribute it and/or modify it under
-the terms of the GNU General Public  License as published by the Free Software
-Foundation; either version 3 of the License, or (at your option) any later
-version.
+   CoastalME is free software; you can redistribute it and/or modify it under the terms of the GNU General Public  License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
 
-   This program is distributed in the hope that it will be useful, but WITHOUT
-ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+   This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-   You should have received a copy of the GNU General Public License along with
-this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave,
-Cambridge, MA 02139, USA.
+   You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 ==============================================================================================================================*/
 #ifndef CONFIGURATION_H
@@ -35,10 +26,11 @@ Cambridge, MA 02139, USA.
 #include <algorithm>
 #include <cctype>
 #include <string>
-#include <vector>
-
 using std::string;
+#include <vector>
 using std::vector;
+
+#include "simulation.h"
 
 //! Unified configuration class for CoastalME simulation parameters
 class CConfiguration
@@ -609,7 +601,7 @@ class CConfiguration
    }
 
    // Getters for all parameters
-   string const* strGetRunName() const
+   string const* pstrGetRunName() const
    {
       return &m_strRunName;
    }
@@ -624,17 +616,17 @@ class CConfiguration
       return m_bCSVPerTimestepResults;
    }
 
-   string const* strGetStartDateTime() const
+   string const* pstrGetStartDateTime() const
    {
       return &m_strStartDateTime;
    }
 
-   string const* strGetDuration() const
+   string const* pstrGetDuration() const
    {
       return &m_strDuration;
    }
 
-   string const* strGetTimestep() const
+   string const* pstrGetTimestep() const
    {
       return &m_strTimestep;
    }
@@ -659,14 +651,14 @@ class CConfiguration
       return m_nMaxSaveDigits;
    }
 
-   string const* strGetSaveDigitsMode() const
+   string const* pstrGetSaveDigitsMode() const
    {
       return &m_strSaveDigitsMode;
    }
 
    vector<string> VstrGetRasterFiles() const;
 
-   string const* strGetRasterFormat() const
+   string const* pstrGetRasterFormat() const
    {
       return &m_strRasterFormat;
    }
@@ -686,47 +678,57 @@ class CConfiguration
       return m_VdSliceElevations;
    }
 
-   vector<string> GetVectorFiles() const;
-   string GetVectorFormat() const
-   {
-      return m_strVectorFormat;
-   }
-   vector<string> GetTimeSeriesFiles() const;
+   vector<string> VstrGetVectorFiles() const;
 
-   int GetCoastlineSmoothing() const
+   string const* pstrGetVectorFormat() const
+   {
+      return &m_strVectorFormat;
+   }
+
+   vector<string> VstrGetTimeSeriesFiles() const;
+
+   int nGetCoastlineSmoothing() const
    {
       return m_nCoastlineSmoothing;
    }
-   int GetCoastlineSmoothingWindow() const
+
+   int nGetCoastlineSmoothingWindow() const
    {
       return m_nCoastlineSmoothingWindow;
    }
-   int GetPolynomialOrder() const
+
+   int nGetPolynomialOrder() const
    {
       return m_nPolynomialOrder;
    }
-   string GetOmitGridEdges() const;
-   int GetProfileSmoothingWindow() const
+
+   string const strGetOmitGridEdges() const;
+
+   int nGetProfileSmoothingWindow() const
    {
       return m_nProfileSmoothingWindow;
    }
-   double GetMaxLocalSlope() const
+
+   double nGetMaxLocalSlope() const
    {
       return m_dMaxLocalSlope;
    }
-   double GetMaxBeachElevation() const
+
+   double dGetMaxBeachElevation() const
    {
       return m_dMaxBeachElevation;
    }
 
-   int GetNumLayers() const
+   int nGetNumLayers() const
    {
       return m_nNumLayers;
    }
-   string GetBasementDEMFile() const
+
+   string const* pstrGetBasementDEMFile() const
    {
-      return m_strBasementDEMFile;
+      return &m_strBasementDEMFile;
    }
+
    vector<string> GetUnconsFineFiles() const
    {
       return m_vecUnconsFineFiles;

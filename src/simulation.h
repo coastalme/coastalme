@@ -56,6 +56,7 @@ using ::GDALDataType;
 #include "line.h"
 #include "cme.h"
 #include "line.h"
+#include "configuration.h"
 
 class CGeomRasterGrid; // Forward declarations
 class CRWCoast;
@@ -64,6 +65,7 @@ class CGeomCoastPolygon;
 class CRWCliff;
 class CRWSedInputEvent;
 class CRWCellLandform;
+class CConfiguration;
 
 class CSimulation
 {
@@ -1864,7 +1866,6 @@ class CSimulation
    static string strTrim(string const*);
    static string strTrimLeft(string const*);
    static string strTrimRight(string const*);
-   static string strToLower(string const*);
    // static string strToUpper(string const*);
    static string strRemoveSubstr(string*, string const*);
    static vector<string>* VstrSplit(string const*, char const, vector<string>*);
@@ -1931,5 +1932,9 @@ class CSimulation
 
    //! Carries out end-of-simulation tidying (error messages etc.)
    void DoSimulationEnd(int const);
+
+   //! Returns a pointer to the lower case version of a string
+   static string strToLower(string const*);
+
 };
 #endif // SIMULATION_H

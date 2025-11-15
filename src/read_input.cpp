@@ -4385,9 +4385,9 @@ bool CSimulation::bConfigureFromYamlFile(CConfiguration &config)
          }
          if (gis.HasChild("vector_files"))
          {
-            CYamlNode vectorFiles = gis.GetChild("vector_files");
-            if (vectorFiles.IsSequence())
-               config.SetVectorFiles(vectorFiles.GetStringSequence());
+            CYamlNode VstrFiles = gis.GetChild("vector_files");
+            if (VstrFiles.IsSequence())
+               config.SetVectorFiles(VstrFiles.GetStringSequence());
          }
          if (gis.HasChild("raster_format"))
             config.SetRasterFormat(gis.GetChild("raster_format").GetValue());
@@ -4791,7 +4791,7 @@ bool CSimulation::bApplyConfiguration(CConfiguration const &config)
    string strRec;
    string strErr;
    // Case 1: Text output file names, don't change case
-   m_strRunName = *config.strGetRunName();
+   m_strRunName = *config.pstrGetRunName();
    m_strOutFile = m_strOutPath;
    m_strOutFile.append(m_strRunName);
    m_strOutFile.append(OUTEXT);
@@ -4807,7 +4807,7 @@ bool CSimulation::bApplyConfiguration(CConfiguration const &config)
    m_bCSVPerTimestepResults = config.bGetCSVPerTimestepResults();
 
    // Case 4: Parse start date/time [hh-mm-ss dd/mm/yyyy]
-   string strStartDateTime = *config.strGetStartDateTime();
+   string strStartDateTime = *config.pstrGetStartDateTime();
    if (! strStartDateTime.empty())
    {
       vector<string> VstrTmp = VstrSplit(&strStartDateTime, SPACE);
@@ -4830,7 +4830,7 @@ bool CSimulation::bApplyConfiguration(CConfiguration const &config)
    }
 
    // Case 5: Duration of simulation (in hours, days, months, or years)
-   string strDuration = *config.strGetDuration();
+   string strDuration = *config.pstrGetDuration();
    if (! strDuration.empty())
    {
       string strDurationLower = strToLower(&strDuration);
@@ -4857,7 +4857,7 @@ bool CSimulation::bApplyConfiguration(CConfiguration const &config)
    }
 
    // Case 6: Timestep of simulation (in hours or days)
-   string strTimestep = *config.strGetTimestep();
+   string strTimestep = *config.pstrGetTimestep();
    if (! strTimestep.empty())
    {
       string strTimestepLower = strToLower(&strTimestep);
@@ -4978,7 +4978,7 @@ bool CSimulation::bApplyConfiguration(CConfiguration const &config)
       strErr = "max save digits for GIS output file names must be > 1";
 
    // Case 10: Save digits mode (sequential vs iteration)
-   string strSaveDigitsMode = *config.strGetSaveDigitsMode();
+   string strSaveDigitsMode = *config.pstrGetSaveDigitsMode();
    if (! strSaveDigitsMode.empty())
    {
       string strSaveDigitsLower = strToLower(&strSaveDigitsMode);
@@ -5153,7 +5153,7 @@ bool CSimulation::bApplyConfiguration(CConfiguration const &config)
    }
 
    // Case 12: GIS output format for raster and vector files
-   m_strRasterGISOutFormat = *config.strGetRasterFormat();
+   m_strRasterGISOutFormat = *config.pstrGetRasterFormat();
 
    // Case 13: If needed, scale GIS raster output values
    m_bScaleRasterOutput = config.bGetScaleValues();
@@ -5169,8 +5169,8 @@ bool CSimulation::bApplyConfiguration(CConfiguration const &config)
    }
 
    // Case 16: Vector GIS files to output
-   vector<string> vectorFiles = config.GetVectorFiles();
-   if (! vectorFiles.empty())
+   vector<string> VstrFiles = config.VstrGetVectorFiles();
+   if (! VstrFiles.empty())
    {
       // Reset all vector output flags
       m_bCoastSave = false;
@@ -5195,7 +5195,7 @@ bool CSimulation::bApplyConfiguration(CConfiguration const &config)
       m_bVectorWaveFloodLineSave = false;
 
       // Set flags based on vector file codes (Case 16 implementation)
-      for (string const &vectorCode : vectorFiles)
+      for (string const &vectorCode : VstrFiles)
       {
          string code = vectorCode;
          std::transform(code.begin(), code.end(), code.begin(), ::tolower);
@@ -5246,11 +5246,11 @@ bool CSimulation::bApplyConfiguration(CConfiguration const &config)
    }
 
    // Case 17: Vector GIS output format (note must retain original case)
-   m_strVectorGISOutFormat = config.GetVectorFormat();
+   m_strVectorGISOutFormat = *config.pstrGetVectorFormat();
 
    // Case 18: Time series files to output
    // TODO: Migrate from bReadRunDataFile()
-   vector<string> timeseriesFiles = config.GetTimeSeriesFiles();
+   vector<string> timeseriesFiles = config.VstrGetTimeSeriesFiles();
    if (! timeseriesFiles.empty())
    {
       for (string const &timeseriesCode : timeseriesFiles)
@@ -5291,17 +5291,17 @@ bool CSimulation::bApplyConfiguration(CConfiguration const &config)
 
    // Case 19: Vector coastline smoothing algorithm: 0 = none, 1 = running mean,
    // 2 = Savitzky-Golay
-   m_nCoastSmooth = config.GetCoastlineSmoothing();
+   m_nCoastSmooth = config.nGetCoastlineSmoothing();
 
    // Case 20: Size of coastline smoothing window: must be odd
-   m_nCoastSmoothingWindowSize = config.GetCoastlineSmoothingWindow();
+   m_nCoastSmoothingWindowSize = config.nGetCoastlineSmoothingWindow();
 
    // Case 21: Order of coastline profile smoothing polynomial for
    // Savitzky-Golay: usually 2 or 4, max is 6
-   m_nSavGolCoastPoly = config.GetPolynomialOrder();
+   m_nSavGolCoastPoly = config.nGetPolynomialOrder();
 
    // Case 22: Omit grid edges from search (north/south/east/west)
-   std::string strRH = config.GetOmitGridEdges();
+   std::string strRH = config.strGetOmitGridEdges();
    if (strRH.find('n') != string::npos)
    {
       m_bOmitSearchNorthEdge = true;
@@ -5323,17 +5323,17 @@ bool CSimulation::bApplyConfiguration(CConfiguration const &config)
    }
 
    // Case 23: Profile slope running-mean smoothing window size: must be odd
-   m_nProfileSmoothWindow = config.GetProfileSmoothingWindow();
+   m_nProfileSmoothWindow = config.nGetProfileSmoothingWindow();
 
    // Case 24: Max local slope (m/m), first check that this is a valid double
-   m_dProfileMaxSlope = config.GetMaxLocalSlope();
+   m_dProfileMaxSlope = config.nGetMaxLocalSlope();
 
    // Case 25: Maximum elevation of beach above SWL, first check that this is a
    // valid double
-   m_dMaxBeachElevAboveSWL = config.GetMaxBeachElevation();
+   m_dMaxBeachElevAboveSWL = config.dGetMaxBeachElevation();
 
    // Case 26: Number of sediment layers
-   m_nLayers = config.GetNumLayers();
+   m_nLayers = config.nGetNumLayers();
    // OK we know the number of layers, so add elements to these vectors
    for (int j = 0; j < m_nLayers; j++)
    {
@@ -5370,7 +5370,7 @@ bool CSimulation::bApplyConfiguration(CConfiguration const &config)
    }
 
    // Case 27: Basement DEM file (can be blank)
-   m_strInitialBasementDEMFile = config.GetBasementDEMFile();
+   m_strInitialBasementDEMFile = *config.pstrGetBasementDEMFile();
 
    // Cases 28: Initial sediment thickness files (unconsolidated and
    // consolidated)

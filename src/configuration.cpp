@@ -1,5 +1,4 @@
 /*!
-
    \file configuration.cpp
    \brief Implementation of unified configuration class for CoastalME
    \details Provides default values and initialization for simulation parameters
@@ -8,11 +7,9 @@
    \author Andres Payo
    \date 2025
    \copyright GNU General Public License
-
 */
 
 /* ==============================================================================================================================
-
    This file is part of CoastalME, the Coastal Modelling Environment.
 
    CoastalME is free software; you can redistribute it and/or modify it under the terms of the GNU General Public  License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
@@ -20,14 +17,14 @@
    This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
    You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-
 ==============================================================================================================================*/
-#include "cme.h"
-#include "configuration.h"
-// #include "simulation.h"
 #include <algorithm>
 #include <string>
 #include <cctype>
+
+#include "cme.h"
+#include "configuration.h"
+#include "simulation.h"
 
 //===============================================================================================================================
 //! Constructor
@@ -191,9 +188,7 @@ vector<string> CConfiguration::VstrGetRasterFiles() const
 
    for (string const &fileSpec : m_vecRasterFiles)
    {
-      string fileSpecLower = fileSpec;
-      std::transform(fileSpecLower.begin(), fileSpecLower.end(),
-                     fileSpecLower.begin(), ::tolower);
+      string fileSpecLower = CSimulation::strToLower(&fileSpec);
 
       if (fileSpecLower == "all")
       {
@@ -346,16 +341,14 @@ vector<string> CConfiguration::VstrGetRasterFiles() const
 //===============================================================================================================================
 //! Get vector files with keyword expansion support
 //===============================================================================================================================
-vector<string> CConfiguration::GetVectorFiles() const
+vector<string> CConfiguration::VstrGetVectorFiles() const
 {
    // Case 16: Vector GIS files to output - expand "all" and "usual" keywords
    vector<string> expandedFiles;
 
    for (string const &fileSpec : m_vecVectorFiles)
    {
-      string fileSpecLower = fileSpec;
-      std::transform(fileSpecLower.begin(), fileSpecLower.end(),
-                     fileSpecLower.begin(), ::tolower);
+      string fileSpecLower = CSimulation::strToLower(&fileSpec);
 
       if (fileSpecLower == "all")
       {
@@ -389,16 +382,14 @@ vector<string> CConfiguration::GetVectorFiles() const
 
 //! Get time series files with keyword expansion support
 //===============================================================================================================================
-vector<string> CConfiguration::GetTimeSeriesFiles() const
+vector<string> CConfiguration::VstrGetTimeSeriesFiles() const
 {
    // Case 18: Timeseries files to output - expand "all" and "usual" keywords
    vector<string> expandedFiles;
 
    for (string const &fileSpec : m_vecVectorFiles)
    {
-      string fileSpecLower = fileSpec;
-      std::transform(fileSpecLower.begin(), fileSpecLower.end(),
-                     fileSpecLower.begin(), ::tolower);
+      string fileSpecLower = CSimulation::strToLower(&fileSpec);
 
       if (fileSpecLower == "all")
       {
@@ -428,9 +419,7 @@ vector<string> CConfiguration::GetFloodFiles() const
 
    for (string const &fileSpec : m_vecVectorFiles)
    {
-      string fileSpecLower = fileSpec;
-      std::transform(fileSpecLower.begin(), fileSpecLower.end(),
-                     fileSpecLower.begin(), ::tolower);
+      string fileSpecLower = CSimulation::strToLower(&fileSpec);
 
       if (fileSpecLower == "all")
       {
@@ -451,10 +440,8 @@ vector<string> CConfiguration::GetFloodFiles() const
    return expandedFiles;
 }
 
-string CConfiguration::GetOmitGridEdges() const
+string const CConfiguration::strGetOmitGridEdges() const
 {
    // This needs to be lower case
-   std::string my_text{m_strOmitGridEdges};
-   std::transform(my_text.begin(), my_text.end(), my_text.begin(), ::tolower);
-   return my_text;
+   return CSimulation::strToLower(&m_strOmitGridEdges);
 }
